@@ -9517,8 +9517,3 @@ func (t *TransferDetailRecord) String() string {
 
 // Max number of records to return for the query. Use `0` or negative value to return all records. Defaults to 20.
 type LimitRecord = *int
-
-// The payout program to filter results by. If not specified, all payout programs are included.
-//   - `Managed` returns only transactions from the Managed payout program.
-//   - `ODP` returns transactions from the ODP (on-demand payouts) payout program.
-type PayoutProgram = *string
