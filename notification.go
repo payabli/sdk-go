@@ -679,6 +679,7 @@ const (
 	NotificationStandardRequestContentEventTypeHoldingApplication          NotificationStandardRequestContentEventType = "HoldingApplication"
 	NotificationStandardRequestContentEventTypeDeclinedApplication         NotificationStandardRequestContentEventType = "DeclinedApplication"
 	NotificationStandardRequestContentEventTypeBoardingApplication         NotificationStandardRequestContentEventType = "BoardingApplication"
+	NotificationStandardRequestContentEventTypePaypointMoved               NotificationStandardRequestContentEventType = "PaypointMoved"
 	NotificationStandardRequestContentEventTypeFraudAlert                  NotificationStandardRequestContentEventType = "FraudAlert"
 	NotificationStandardRequestContentEventTypeInvoiceSent                 NotificationStandardRequestContentEventType = "InvoiceSent"
 	NotificationStandardRequestContentEventTypeInvoicePaid                 NotificationStandardRequestContentEventType = "InvoicePaid"
@@ -700,6 +701,7 @@ const (
 	NotificationStandardRequestContentEventTypePayOutProcessed             NotificationStandardRequestContentEventType = "PayOutProcessed"
 	NotificationStandardRequestContentEventTypePayOutCanceled              NotificationStandardRequestContentEventType = "PayOutCanceled"
 	NotificationStandardRequestContentEventTypePayOutPaid                  NotificationStandardRequestContentEventType = "PayOutPaid"
+	NotificationStandardRequestContentEventTypePayOutReturned              NotificationStandardRequestContentEventType = "PayOutReturned"
 	NotificationStandardRequestContentEventTypePayoutSubscriptionCreated   NotificationStandardRequestContentEventType = "PayoutSubscriptionCreated"
 	NotificationStandardRequestContentEventTypePayoutSubscriptionUpdated   NotificationStandardRequestContentEventType = "PayoutSubscriptionUpdated"
 	NotificationStandardRequestContentEventTypePayoutSubscriptionCanceled  NotificationStandardRequestContentEventType = "PayoutSubscriptionCanceled"
@@ -805,6 +807,8 @@ func NewNotificationStandardRequestContentEventTypeFromString(s string) (Notific
 		return NotificationStandardRequestContentEventTypeDeclinedApplication, nil
 	case "BoardingApplication":
 		return NotificationStandardRequestContentEventTypeBoardingApplication, nil
+	case "PaypointMoved":
+		return NotificationStandardRequestContentEventTypePaypointMoved, nil
 	case "FraudAlert":
 		return NotificationStandardRequestContentEventTypeFraudAlert, nil
 	case "InvoiceSent":
@@ -847,6 +851,8 @@ func NewNotificationStandardRequestContentEventTypeFromString(s string) (Notific
 		return NotificationStandardRequestContentEventTypePayOutCanceled, nil
 	case "PayOutPaid":
 		return NotificationStandardRequestContentEventTypePayOutPaid, nil
+	case "PayOutReturned":
+		return NotificationStandardRequestContentEventTypePayOutReturned, nil
 	case "PayoutSubscriptionCreated":
 		return NotificationStandardRequestContentEventTypePayoutSubscriptionCreated, nil
 	case "PayoutSubscriptionUpdated":

@@ -36,7 +36,7 @@ func (r *RawClient) AddBill(
 	entry string,
 	request *sdk.AddBillRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponseBills], error) {
+) (*core.Response[*sdk.BillResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -77,7 +77,7 @@ func (r *RawClient) AddBill(
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponseBills
+	var response *sdk.BillResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -96,7 +96,7 @@ func (r *RawClient) AddBill(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponseBills]{
+	return &core.Response[*sdk.BillResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -126,7 +126,7 @@ func (r *RawClient) DeleteAttachedFromBill(
 	idBill int,
 	request *sdk.DeleteAttachedFromBillRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponseBills], error) {
+) (*core.Response[*sdk.BillResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -171,7 +171,7 @@ func (r *RawClient) DeleteAttachedFromBill(
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponseBills
+	var response *sdk.BillResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -189,7 +189,7 @@ func (r *RawClient) DeleteAttachedFromBill(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponseBills]{
+	return &core.Response[*sdk.BillResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -201,7 +201,7 @@ func (r *RawClient) DeleteBill(
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
 	idBill int,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponseBills], error) {
+) (*core.Response[*sdk.BillResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -238,7 +238,7 @@ func (r *RawClient) DeleteBill(
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponseBills
+	var response *sdk.BillResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -256,7 +256,7 @@ func (r *RawClient) DeleteBill(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponseBills]{
+	return &core.Response[*sdk.BillResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -712,7 +712,7 @@ func (r *RawClient) SendToApprovalBill(
 	idBill int,
 	request *sdk.SendToApprovalBillRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponseBills], error) {
+) (*core.Response[*sdk.BillResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -760,7 +760,7 @@ func (r *RawClient) SendToApprovalBill(
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponseBills
+	var response *sdk.BillResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -779,7 +779,7 @@ func (r *RawClient) SendToApprovalBill(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponseBills]{
+	return &core.Response[*sdk.BillResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

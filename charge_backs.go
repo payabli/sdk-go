@@ -126,9 +126,9 @@ type ChargebackQueryRecords struct {
 	// Identifier of chargeback or return.
 	Id *int64 `json:"id,omitempty" url:"id,omitempty"`
 	// Last 4 digits of card or bank account involved in chargeback or return.
-	LastFour *string `json:"lastFour,omitempty" url:"lastFour,omitempty"`
+	LastFour string `json:"lastFour" url:"lastFour"`
 	// Type of payment vehicle: **ach** or **card**.
-	Method *string `json:"method,omitempty" url:"method,omitempty"`
+	Method string `json:"method" url:"method"`
 	// Net amount in chargeback or ACH return.
 	NetAmount     *Netamountnullable `json:"netAmount,omitempty" url:"netAmount,omitempty"`
 	OrderId       *Orderid           `json:"orderId,omitempty" url:"orderId,omitempty"`
@@ -208,16 +208,16 @@ func (c *ChargebackQueryRecords) GetId() *int64 {
 	return c.Id
 }
 
-func (c *ChargebackQueryRecords) GetLastFour() *string {
+func (c *ChargebackQueryRecords) GetLastFour() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.LastFour
 }
 
-func (c *ChargebackQueryRecords) GetMethod() *string {
+func (c *ChargebackQueryRecords) GetMethod() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.Method
 }

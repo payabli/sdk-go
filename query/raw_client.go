@@ -35,7 +35,7 @@ func (r *RawClient) ListBatchDetails(
 	entry sdk.Entry,
 	request *sdk.ListBatchDetailsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.QueryResponseSettlements], error) {
+) (*core.Response[*sdk.QueryBatchesDetailResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -79,7 +79,7 @@ func (r *RawClient) ListBatchDetails(
 			}
 		},
 	}
-	var response *sdk.QueryResponseSettlements
+	var response *sdk.QueryBatchesDetailResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -97,7 +97,7 @@ func (r *RawClient) ListBatchDetails(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.QueryResponseSettlements]{
+	return &core.Response[*sdk.QueryBatchesDetailResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1911,6 +1911,79 @@ func (r *RawClient) ListTransfers(
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/transfers/%v",
 		entry,
+	)
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+	headers := internal.MergeHeaders(
+		r.header.Clone(),
+		options.ToHeader(),
+	)
+	errorCodes := internal.ErrorCodes{
+		400: func(apiError *core.APIError) error {
+			return &sdk.BadRequestError{
+				APIError: apiError,
+			}
+		},
+		401: func(apiError *core.APIError) error {
+			return &sdk.UnauthorizedError{
+				APIError: apiError,
+			}
+		},
+		500: func(apiError *core.APIError) error {
+			return &sdk.InternalServerError{
+				APIError: apiError,
+			}
+		},
+		503: func(apiError *core.APIError) error {
+			return &sdk.ServiceUnavailableError{
+				APIError: apiError,
+			}
+		},
+	}
+	var response *sdk.TransferQueryResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*sdk.TransferQueryResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) ListTransfersOrg(
+	ctx context.Context,
+	request *sdk.ListTransfersRequestOrg,
+	opts ...option.RequestOption,
+) (*core.Response[*sdk.TransferQueryResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://api-sandbox.payabli.com/api",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/Query/transfers/org/%v",
+		request.OrgId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {

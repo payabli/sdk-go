@@ -32,7 +32,7 @@ import (
 	templates "sdk/templates"
 	tokenstorage "sdk/tokenstorage"
 	user "sdk/user"
-	vendorv "sdk/vendorv"
+	vendor_ "sdk/vendor_"
 	wallet "sdk/wallet"
 )
 
@@ -62,7 +62,7 @@ type Client struct {
 	Templates           *templates.Client
 	TokenStorage        *tokenstorage.Client
 	User                *user.Client
-	Vendorv             *vendorv.Client
+	Vendor              *vendor_.Client
 	Wallet              *wallet.Client
 
 	baseURL string
@@ -98,7 +98,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Templates:           templates.NewClient(opts...),
 		TokenStorage:        tokenstorage.NewClient(opts...),
 		User:                user.NewClient(opts...),
-		Vendorv:             vendorv.NewClient(opts...),
+		Vendor:              vendor_.NewClient(opts...),
 		Wallet:              wallet.NewClient(opts...),
 		baseURL:             options.BaseURL,
 		caller: internal.NewCaller(

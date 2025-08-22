@@ -33,7 +33,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 func (r *RawClient) ExportApplications(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
 	request *sdk.ExportApplicationsRequest,
@@ -113,7 +113,7 @@ func (r *RawClient) ExportBatchDetails(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	request *sdk.ExportBatchDetailsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[sdk.File], error) {
@@ -189,7 +189,7 @@ func (r *RawClient) ExportBatchDetails(
 func (r *RawClient) ExportBatchDetailsOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
 	request *sdk.ExportBatchDetailsOrgRequest,
@@ -269,7 +269,7 @@ func (r *RawClient) ExportBatches(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	request *sdk.ExportBatchesRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[sdk.File], error) {
@@ -345,7 +345,7 @@ func (r *RawClient) ExportBatches(
 func (r *RawClient) ExportBatchesOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
 	request *sdk.ExportBatchesOrgRequest,
@@ -425,7 +425,7 @@ func (r *RawClient) ExportBatchesOut(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	request *sdk.ExportBatchesOutRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[sdk.File], error) {
@@ -501,7 +501,7 @@ func (r *RawClient) ExportBatchesOut(
 func (r *RawClient) ExportBatchesOutOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
 	request *sdk.ExportBatchesOutOrgRequest,
@@ -581,7 +581,7 @@ func (r *RawClient) ExportBills(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	request *sdk.ExportBillsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[sdk.File], error) {
@@ -657,7 +657,7 @@ func (r *RawClient) ExportBills(
 func (r *RawClient) ExportBillsOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
 	request *sdk.ExportBillsOrgRequest,
@@ -737,7 +737,7 @@ func (r *RawClient) ExportChargebacks(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	request *sdk.ExportChargebacksRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[sdk.File], error) {
@@ -813,7 +813,7 @@ func (r *RawClient) ExportChargebacks(
 func (r *RawClient) ExportChargebacksOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
 	request *sdk.ExportChargebacksOrgRequest,
@@ -893,7 +893,7 @@ func (r *RawClient) ExportCustomers(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	request *sdk.ExportCustomersRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[sdk.File], error) {
@@ -969,7 +969,7 @@ func (r *RawClient) ExportCustomers(
 func (r *RawClient) ExportCustomersOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
 	request *sdk.ExportCustomersOrgRequest,
@@ -1049,7 +1049,7 @@ func (r *RawClient) ExportInvoices(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	request *sdk.ExportInvoicesRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[sdk.File], error) {
@@ -1125,7 +1125,7 @@ func (r *RawClient) ExportInvoices(
 func (r *RawClient) ExportInvoicesOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
 	request *sdk.ExportInvoicesOrgRequest,
@@ -1203,7 +1203,7 @@ func (r *RawClient) ExportInvoicesOrg(
 func (r *RawClient) ExportOrganizations(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
 	request *sdk.ExportOrganizationsRequest,
@@ -1283,7 +1283,7 @@ func (r *RawClient) ExportPayout(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	request *sdk.ExportPayoutRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[sdk.File], error) {
@@ -1359,7 +1359,7 @@ func (r *RawClient) ExportPayout(
 func (r *RawClient) ExportPayoutOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
 	request *sdk.ExportPayoutOrgRequest,
@@ -1437,7 +1437,7 @@ func (r *RawClient) ExportPayoutOrg(
 func (r *RawClient) ExportPaypoints(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
 	request *sdk.ExportPaypointsRequest,
@@ -1517,7 +1517,7 @@ func (r *RawClient) ExportSettlements(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	request *sdk.ExportSettlementsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[sdk.File], error) {
@@ -1593,7 +1593,7 @@ func (r *RawClient) ExportSettlements(
 func (r *RawClient) ExportSettlementsOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
 	request *sdk.ExportSettlementsOrgRequest,
@@ -1673,7 +1673,7 @@ func (r *RawClient) ExportSubscriptions(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	request *sdk.ExportSubscriptionsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[sdk.File], error) {
@@ -1749,7 +1749,7 @@ func (r *RawClient) ExportSubscriptions(
 func (r *RawClient) ExportSubscriptionsOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
 	request *sdk.ExportSubscriptionsOrgRequest,
@@ -1829,7 +1829,7 @@ func (r *RawClient) ExportTransactions(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	request *sdk.ExportTransactionsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[sdk.File], error) {
@@ -1905,7 +1905,7 @@ func (r *RawClient) ExportTransactions(
 func (r *RawClient) ExportTransactionsOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
 	request *sdk.ExportTransactionsOrgRequest,
@@ -1985,7 +1985,7 @@ func (r *RawClient) ExportTransferDetails(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	// Transfer identifier.
 	transferId int64,
 	request *sdk.ExportTransferDetailsRequest,
@@ -2141,7 +2141,7 @@ func (r *RawClient) ExportVendors(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	request *sdk.ExportVendorsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[sdk.File], error) {
@@ -2217,7 +2217,7 @@ func (r *RawClient) ExportVendors(
 func (r *RawClient) ExportVendorsOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdk.ExportFormat,
+	format *sdk.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
 	request *sdk.ExportVendorsOrgRequest,
@@ -2241,140 +2241,6 @@ func (r *RawClient) ExportVendorsOrg(
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
-	headers := internal.MergeHeaders(
-		r.header.Clone(),
-		options.ToHeader(),
-	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdk.File
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodGet,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[sdk.File]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       response,
-	}, nil
-}
-
-func (r *RawClient) GetInvoicePdf(
-	ctx context.Context,
-	// Invoice ID
-	idInvoice int,
-	opts ...option.RequestOption,
-) (*core.Response[sdk.File], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"https://api-sandbox.payabli.com/api",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/Export/invoicePdf/%v",
-		idInvoice,
-	)
-	headers := internal.MergeHeaders(
-		r.header.Clone(),
-		options.ToHeader(),
-	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdk.File
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodGet,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[sdk.File]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       response,
-	}, nil
-}
-
-func (r *RawClient) GetReportFile(
-	ctx context.Context,
-	// Report ID
-	id int64,
-	opts ...option.RequestOption,
-) (*core.Response[sdk.File], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"https://api-sandbox.payabli.com/api",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/Export/notificationReport/%v",
-		id,
-	)
 	headers := internal.MergeHeaders(
 		r.header.Clone(),
 		options.ToHeader(),

@@ -54,9 +54,6 @@ type OrganizationData struct {
 	ReplyToEmail          *ReplyToEmail  `json:"replyToEmail,omitempty" url:"-"`
 }
 
-// An alternate ID for the organization, in string format. This can be your internal identifier for an org, and is typically a name, like "My Suborganization".
-type Orgidstring = *string
-
 type ServiceCost struct {
 	Description   *string  `json:"description,omitempty" url:"description,omitempty"`
 	Enabled       *Enabled `json:"enabled,omitempty" url:"enabled,omitempty"`

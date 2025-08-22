@@ -16,6 +16,7 @@ type RequestAppByAuth struct {
 }
 
 type ListApplicationsRequest struct {
+	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
 	// The number of records to skip before starting to collect the result set.
 	FromRecord *int `json:"-" url:"fromRecord,omitempty"`
 	// Max number of records to return for the query. Use `0` or negative value to return all records.
@@ -4386,7 +4387,7 @@ func (a *ApplicationQueryRecord) String() string {
 }
 
 // Date the attestation was provided for PCI Compliance (`pciAttestation`), in MM/DD/YYYY format.
-type AttestationDate = *string
+type AttestationDate = string
 
 type BAddress struct {
 	Baddress  *LinkData `json:"baddress,omitempty" url:"baddress,omitempty"`
@@ -4833,10 +4834,10 @@ type BoardingAverageBillSize = string
 type BoardingAvgMonthlyBill = string
 
 // The business's fax number.
-type BoardingBusinessFax = *string
+type BoardingBusinessFax = string
 
 // The business's phone number.
-type BoardingBusinessPhone = *string
+type BoardingBusinessPhone = string
 
 // The maximum amount of credit that our lending partner, has authorized to your business. It's the upper boundary on how much you can spend or owe on a credit account at any given time.
 type BoardingCreditLimit = string
@@ -6207,22 +6208,22 @@ func (s *SSection) String() string {
 
 // Date when the signer signed the document. Accepted formats:
 // YYYY-MM-DD, MM/DD/YYYY
-type SignDate = *string
+type SignDate = string
 
 // Reference to the signed document.
-type SignedDocumentReference = *string
+type SignedDocumentReference = string
 
 // The signer's acceptance status. A true or false indicating an acceptance to the terms of service with the root org or provider.
 type SignerAcceptance = *bool
 
 // Additional line for the signer's address. If used, this must be the physical address of the signer, not a P.O. box.
-type SignerAddress1 = *string
+type SignerAddress1 = string
 
 // The signer's city.
-type SignerCity = *string
+type SignerCity = string
 
 // The signer's country in ISO-3166-1 alpha 2 format. See this reference for more: https://en.wikipedia.org/wiki/ISO_3166-1.
-type SignerCountry = *string
+type SignerCountry = string
 
 // Information about the application's signer.
 type SignerData struct {
@@ -6587,25 +6588,25 @@ func (s *SignerDataRequest) String() string {
 }
 
 // The signer's date of birth.
-type SignerDob = *string
+type SignerDob = string
 
 // The signer's name.
-type SignerName = *string
+type SignerName = string
 
 // The signer's phone number.
-type SignerPhone = *string
+type SignerPhone = string
 
 // The signer's SSN.
-type SignerSsn = *string
+type SignerSsn = string
 
 // The signer's state.
-type SignerState = *string
+type SignerState = string
 
 // The signer's zip code.
-type SignerZip = *string
+type SignerZip = string
 
 // The signer's address. This must be the physical address of the signer, not a P.O. box.
-type Signeraddress = *string
+type Signeraddress = string
 
 // The average transaction size that the business expects to process. For example, if you process \$10,000 a month across 10 transactions, that's an average ticket of \$1000.
 type Ticketamt = *float64

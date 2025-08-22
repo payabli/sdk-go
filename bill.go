@@ -28,6 +28,7 @@ func (a *AddBillRequest) MarshalJSON() ([]byte, error) {
 }
 
 type ListBillsRequest struct {
+	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
 	// The number of records to skip before starting to collect the result set.
 	FromRecord *int `json:"-" url:"fromRecord,omitempty"`
 	// Max number of records to return for the query. Use `0` or negative value to return all records.
@@ -82,6 +83,7 @@ type ListBillsRequest struct {
 }
 
 type ListBillsOrgRequest struct {
+	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
 	// The number of records to skip before starting to collect the result set.
 	FromRecord *int `json:"-" url:"fromRecord,omitempty"`
 	// Max number of records to return for the query. Use `0` or negative value to return all records.
@@ -189,181 +191,6 @@ type AdditionalDataMap = map[string]string
 // Approvals associated with the bill.
 type BillApprovals = []*BillQueryRecord2BillApprovalsItem
 
-type BillOutData struct {
-	AccountingField1 *AccountingField      `json:"accountingField1,omitempty" url:"accountingField1,omitempty"`
-	AccountingField2 *AccountingField      `json:"accountingField2,omitempty" url:"accountingField2,omitempty"`
-	AdditionalData   *AdditionalDataString `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
-	// An array of bill images. Attachments aren't required, but we strongly recommend including them. Including a bill image can make payouts smoother and prevent delays. You can include either the Base64-encoded file content, or you can include an fURL to a public file. The maximum file size for image uploads is 30 MB.
-	Attachments *Attachments `json:"attachments,omitempty" url:"attachments,omitempty"`
-	// Date of bill. Accepted formats: YYYY-MM-DD, MM/DD/YYYY.
-	BillDate  *Datenullable `json:"billDate,omitempty" url:"billDate,omitempty"`
-	BillItems *Billitems    `json:"billItems,omitempty" url:"billItems,omitempty"`
-	// Unique identifier for the bill. Required when adding a bill.
-	BillNumber *string   `json:"billNumber,omitempty" url:"billNumber,omitempty"`
-	Comments   *Comments `json:"comments,omitempty" url:"comments,omitempty"`
-	// Due date of bill. Accepted formats: YYYY-MM-DD, MM/DD/YYYY.
-	DueDate *Datenullable `json:"dueDate,omitempty" url:"dueDate,omitempty"`
-	// End Date for scheduled bills. Applied only in `Mode` = 1. Accepted formats: YYYY-MM-DD, MM/DD/YYYY
-	EndDate *Datenullable `json:"endDate,omitempty" url:"endDate,omitempty"`
-	// Frequency for scheduled bills. Applied only in `Mode` = 1.
-	Frequency *Frequency `json:"frequency,omitempty" url:"frequency,omitempty"`
-	// Bill mode: value `0` for one-time bills, `1` for scheduled bills.
-	Mode *int `json:"mode,omitempty" url:"mode,omitempty"`
-	// Net Amount owed in bill. Required when adding a bill.
-	NetAmount *NetAmountstring `json:"netAmount,omitempty" url:"netAmount,omitempty"`
-	Status    *Billstatus      `json:"status,omitempty" url:"status,omitempty"`
-	Terms     *Terms           `json:"terms,omitempty" url:"terms,omitempty"`
-	// The vendor associated with the bill. Although you can create a vendor in a create bill request, Payabli recommends creating a vendor separately and passing a valid `vendorNumber` here. At minimum, the `vendorNumber` is required.
-	Vendor *VendorData `json:"vendor,omitempty" url:"vendor,omitempty"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (b *BillOutData) GetAccountingField1() *AccountingField {
-	if b == nil {
-		return nil
-	}
-	return b.AccountingField1
-}
-
-func (b *BillOutData) GetAccountingField2() *AccountingField {
-	if b == nil {
-		return nil
-	}
-	return b.AccountingField2
-}
-
-func (b *BillOutData) GetAdditionalData() *AdditionalDataString {
-	if b == nil {
-		return nil
-	}
-	return b.AdditionalData
-}
-
-func (b *BillOutData) GetAttachments() *Attachments {
-	if b == nil {
-		return nil
-	}
-	return b.Attachments
-}
-
-func (b *BillOutData) GetBillDate() *Datenullable {
-	if b == nil {
-		return nil
-	}
-	return b.BillDate
-}
-
-func (b *BillOutData) GetBillItems() *Billitems {
-	if b == nil {
-		return nil
-	}
-	return b.BillItems
-}
-
-func (b *BillOutData) GetBillNumber() *string {
-	if b == nil {
-		return nil
-	}
-	return b.BillNumber
-}
-
-func (b *BillOutData) GetComments() *Comments {
-	if b == nil {
-		return nil
-	}
-	return b.Comments
-}
-
-func (b *BillOutData) GetDueDate() *Datenullable {
-	if b == nil {
-		return nil
-	}
-	return b.DueDate
-}
-
-func (b *BillOutData) GetEndDate() *Datenullable {
-	if b == nil {
-		return nil
-	}
-	return b.EndDate
-}
-
-func (b *BillOutData) GetFrequency() *Frequency {
-	if b == nil {
-		return nil
-	}
-	return b.Frequency
-}
-
-func (b *BillOutData) GetMode() *int {
-	if b == nil {
-		return nil
-	}
-	return b.Mode
-}
-
-func (b *BillOutData) GetNetAmount() *NetAmountstring {
-	if b == nil {
-		return nil
-	}
-	return b.NetAmount
-}
-
-func (b *BillOutData) GetStatus() *Billstatus {
-	if b == nil {
-		return nil
-	}
-	return b.Status
-}
-
-func (b *BillOutData) GetTerms() *Terms {
-	if b == nil {
-		return nil
-	}
-	return b.Terms
-}
-
-func (b *BillOutData) GetVendor() *VendorData {
-	if b == nil {
-		return nil
-	}
-	return b.Vendor
-}
-
-func (b *BillOutData) GetExtraProperties() map[string]interface{} {
-	return b.extraProperties
-}
-
-func (b *BillOutData) UnmarshalJSON(data []byte) error {
-	type unmarshaler BillOutData
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*b = BillOutData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
-	if err != nil {
-		return err
-	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (b *BillOutData) String() string {
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(b); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", b)
-}
-
 type BillQueryRecord2 struct {
 	AccountingField1 *AccountingField `json:"AccountingField1,omitempty" url:"AccountingField1,omitempty"`
 	AccountingField2 *AccountingField `json:"AccountingField2,omitempty" url:"AccountingField2,omitempty"`
@@ -400,7 +227,7 @@ type BillQueryRecord2 struct {
 	// Identifier of the bill.
 	IdBill *int64 `json:"IdBill,omitempty" url:"IdBill,omitempty"`
 	// Timestamp of when bill was last updated, in UTC.
-	LastUpdated *Datetimenullable `json:"LastUpdated,omitempty" url:"LastUpdated,omitempty"`
+	LastUpdated *DatetimeNullable `json:"LastUpdated,omitempty" url:"LastUpdated,omitempty"`
 	// Lot number associated with the bill.
 	LotNumber *string `json:"LotNumber,omitempty" url:"LotNumber,omitempty"`
 	// Bill mode: value `0` for single/one-time bills, `1` for scheduled bills.
@@ -570,7 +397,7 @@ func (b *BillQueryRecord2) GetIdBill() *int64 {
 	return b.IdBill
 }
 
-func (b *BillQueryRecord2) GetLastUpdated() *Datetimenullable {
+func (b *BillQueryRecord2) GetLastUpdated() *DatetimeNullable {
 	if b == nil {
 		return nil
 	}
@@ -732,7 +559,7 @@ type BillQueryRecord2BillApprovalsItem struct {
 	// Indicates whether the bill has been approved. `0` is false, and `1` is true.
 	Approved *int `json:"approved,omitempty" url:"approved,omitempty"`
 	// Timestamp of when the approval was made, in UTC.
-	ApprovedTime *Datetimenullable `json:"approvedTime,omitempty" url:"approvedTime,omitempty"`
+	ApprovedTime *DatetimeNullable `json:"approvedTime,omitempty" url:"approvedTime,omitempty"`
 	// Additional comments on the approval.
 	Comments *string `json:"comments,omitempty" url:"comments,omitempty"`
 	// The approving user's email address.
@@ -751,7 +578,7 @@ func (b *BillQueryRecord2BillApprovalsItem) GetApproved() *int {
 	return b.Approved
 }
 
-func (b *BillQueryRecord2BillApprovalsItem) GetApprovedTime() *Datetimenullable {
+func (b *BillQueryRecord2BillApprovalsItem) GetApprovedTime() *DatetimeNullable {
 	if b == nil {
 		return nil
 	}
@@ -1145,268 +972,64 @@ type Billitems = []*BillItem
 // - `100`: Paid "
 type Billstatus = int
 
-type ContactsResponse struct {
-	// Contact email address.
-	ContactEmail *Email `json:"ContactEmail,omitempty" url:"ContactEmail,omitempty"`
-	// Contact name.
-	ContactName *string `json:"ContactName,omitempty" url:"ContactName,omitempty"`
-	// Contact phone number.
-	ContactPhone *string `json:"ContactPhone,omitempty" url:"ContactPhone,omitempty"`
-	// Contact title.
-	ContactTitle *string `json:"ContactTitle,omitempty" url:"ContactTitle,omitempty"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *ContactsResponse) GetContactEmail() *Email {
-	if c == nil {
-		return nil
-	}
-	return c.ContactEmail
-}
-
-func (c *ContactsResponse) GetContactName() *string {
-	if c == nil {
-		return nil
-	}
-	return c.ContactName
-}
-
-func (c *ContactsResponse) GetContactPhone() *string {
-	if c == nil {
-		return nil
-	}
-	return c.ContactPhone
-}
-
-func (c *ContactsResponse) GetContactTitle() *string {
-	if c == nil {
-		return nil
-	}
-	return c.ContactTitle
-}
-
-func (c *ContactsResponse) GetExtraProperties() map[string]interface{} {
-	return c.extraProperties
-}
-
-func (c *ContactsResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler ContactsResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ContactsResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ContactsResponse) String() string {
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-type PayabliApiResponseBills struct {
-	ResponseCode   *Responsecode   `json:"responseCode,omitempty" url:"responseCode,omitempty"`
-	PageIdentifier *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
-	RoomId         *RoomIdNotInUse `json:"roomId,omitempty" url:"roomId,omitempty"`
-	IsSuccess      *IsSuccess      `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText   *ResponseText   `json:"responseText,omitempty" url:"responseText,omitempty"`
-	// If `isSuccess` = true, this contains the bill identifier. If `isSuccess` = false, this contains the reason for the error.
-	ResponseData *Responsedatanonobject `json:"responseData,omitempty" url:"responseData,omitempty"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PayabliApiResponseBills) GetResponseCode() *Responsecode {
-	if p == nil {
-		return nil
-	}
-	return p.ResponseCode
-}
-
-func (p *PayabliApiResponseBills) GetPageIdentifier() *PageIdentifier {
-	if p == nil {
-		return nil
-	}
-	return p.PageIdentifier
-}
-
-func (p *PayabliApiResponseBills) GetRoomId() *RoomIdNotInUse {
-	if p == nil {
-		return nil
-	}
-	return p.RoomId
-}
-
-func (p *PayabliApiResponseBills) GetIsSuccess() *IsSuccess {
-	if p == nil {
-		return nil
-	}
-	return p.IsSuccess
-}
-
-func (p *PayabliApiResponseBills) GetResponseText() *ResponseText {
-	if p == nil {
-		return nil
-	}
-	return p.ResponseText
-}
-
-func (p *PayabliApiResponseBills) GetResponseData() *Responsedatanonobject {
-	if p == nil {
-		return nil
-	}
-	return p.ResponseData
-}
-
-func (p *PayabliApiResponseBills) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
-}
-
-func (p *PayabliApiResponseBills) UnmarshalJSON(data []byte) error {
-	type unmarshaler PayabliApiResponseBills
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PayabliApiResponseBills(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PayabliApiResponseBills) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
 type TransactionOutQueryRecord struct {
-	// Events associated to this transaction.
-	Bills []*BillPayOutData `json:"Bills,omitempty" url:"Bills,omitempty"`
-	// Object referencing to paper check image.
-	CheckData *FileContent `json:"CheckData,omitempty" url:"CheckData,omitempty"`
-	// Paper check number related to payout transaction.
-	CheckNumber *string `json:"CheckNumber,omitempty" url:"CheckNumber,omitempty"`
+	// Identifier of payout transaction.
+	IdOut     *int64     `json:"IdOut,omitempty" url:"IdOut,omitempty"`
+	CreatedAt *CreatedAt `json:"CreatedAt,omitempty" url:"CreatedAt,omitempty"`
 	// Any comment or description for payout transaction.
 	Comments *Comments `json:"Comments,omitempty" url:"Comments,omitempty"`
-	// Timestamp when the payment was created, in UTC.
-	CreatedDate *CreatedAt `json:"CreatedDate,omitempty" url:"CreatedDate,omitempty"`
-	// Events associated to this transaction.
-	Events []*QueryTransactionEvents `json:"Events,omitempty" url:"Events,omitempty"`
-	// Service fee or sub-charge applied.
-	FeeAmount *float64      `json:"FeeAmount,omitempty" url:"FeeAmount,omitempty"`
-	Gateway   *Gatewayfield `json:"Gateway,omitempty" url:"Gateway,omitempty"`
-	// Identifier of payout transaction.
-	IdOut *int64 `json:"IdOut,omitempty" url:"IdOut,omitempty"`
-	// Timestamp when payment record was updated, in UTC.
-	LastUpdated   *LastModified      `json:"LastUpdated,omitempty" url:"LastUpdated,omitempty"`
-	NetAmount     *Netamountnullable `json:"NetAmount,omitempty" url:"NetAmount,omitempty"`
-	ParentOrgName *OrgParentName     `json:"parentOrgName,omitempty" url:"parentOrgName,omitempty"`
-	PaymentData   *QueryPaymentData  `json:"PaymentData,omitempty" url:"PaymentData,omitempty"`
-	// Unique identifier for group or batch containing the transaction.
-	PaymentGroup *string    `json:"PaymentGroup,omitempty" url:"PaymentGroup,omitempty"`
-	PaymentId    *Paymentid `json:"PaymentId,omitempty" url:"PaymentId,omitempty"`
-	// Method of payment applied to the transaction.
-	PaymentMethod *string `json:"PaymentMethod,omitempty" url:"PaymentMethod,omitempty"`
-	// Status of payout transaction.
-	PaymentStatus   *string  `json:"PaymentStatus,omitempty" url:"PaymentStatus,omitempty"`
-	PaypointDbaname *Dbaname `json:"paypointDbaname,omitempty" url:"paypointDbaname,omitempty"`
-	// Paypoint legal name.
-	PaypointLegalname *Legalname `json:"paypointLegalname,omitempty" url:"paypointLegalname,omitempty"`
-	Source            *Source    `json:"Source,omitempty" url:"Source,omitempty"`
+	// Vendor related to the payout transaction.
+	Vendor            *VendorQueryRecord `json:"Vendor,omitempty" url:"Vendor,omitempty"`
+	PaypointDbaname   *Dbaname           `json:"PaypointDbaname,omitempty" url:"PaypointDbaname,omitempty"`
+	PaypointLegalname *Legalname         `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
 	// Internal status of transaction.
 	Status *int `json:"Status,omitempty" url:"Status,omitempty"`
-	// Status of payout transaction.
-	StatusText *string `json:"StatusText,omitempty" url:"StatusText,omitempty"`
+	// Timestamp when payment record was updated, in UTC.
+	LastUpdated *LastModified `json:"LastUpdated,omitempty" url:"LastUpdated,omitempty"`
 	// Transaction total amount (including service fee or sub-charge).
-	TotalAmount *float64 `json:"TotalAmount,omitempty" url:"TotalAmount,omitempty"`
-	// Vendor related to the payout transaction.
-	Vendor *VendorQueryRecord `json:"Vendor,omitempty" url:"Vendor,omitempty"`
+	TotalAmount   *float64           `json:"TotalAmount,omitempty" url:"TotalAmount,omitempty"`
+	NetAmount     *Netamountnullable `json:"NetAmount,omitempty" url:"NetAmount,omitempty"`
+	FeeAmount     *FeeAmount         `json:"FeeAmount,omitempty" url:"FeeAmount,omitempty"`
+	Source        *Source            `json:"Source,omitempty" url:"Source,omitempty"`
+	ParentOrgName *OrgParentName     `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
+	ParentOrgId   *Orgid             `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
+	// The batch number for the payout transaction.
+	BatchNumber *string `json:"BatchNumber,omitempty" url:"BatchNumber,omitempty"`
+	// Status of payout transaction.
+	PaymentStatus *string `json:"PaymentStatus,omitempty" url:"PaymentStatus,omitempty"`
+	// Method of payment applied to the transaction.
+	PaymentMethod *string `json:"PaymentMethod,omitempty" url:"PaymentMethod,omitempty"`
+	CardToken     *string `json:"CardToken,omitempty" url:"CardToken,omitempty"`
+	// Paper check number related to payout transaction.
+	CheckNumber *string `json:"CheckNumber,omitempty" url:"CheckNumber,omitempty"`
+	// Object referencing to paper check image.
+	CheckData   *FileContent      `json:"CheckData,omitempty" url:"CheckData,omitempty"`
+	PaymentId   *Paymentid        `json:"PaymentId,omitempty" url:"PaymentId,omitempty"`
+	PaymentData *QueryPaymentData `json:"PaymentData,omitempty" url:"PaymentData,omitempty"`
+	// Events associated to this transaction.
+	Bills []*BillPayOutData `json:"Bills,omitempty" url:"Bills,omitempty"`
+	// Events associated to this transaction.
+	Events             []*QueryTransactionEvents `json:"Events,omitempty" url:"Events,omitempty"`
+	ExternalPaypointId *ExternalPaypointId       `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	EntryName          *Entrypointfield          `json:"EntryName,omitempty" url:"EntryName,omitempty"`
+	Gateway            *Gatewayfield             `json:"Gateway,omitempty" url:"Gateway,omitempty"`
+	// ID of the batch the transaction belongs to.
+	BatchId              *string               `json:"BatchId,omitempty" url:"BatchId,omitempty"`
+	HasVcardTransactions *HasVcardTransactions `json:"HasVcardTransactions,omitempty" url:"HasVcardTransactions,omitempty"`
+	IsSameDayAch         *IsSameDayAch         `json:"IsSameDayACH,omitempty" url:"IsSameDayACH,omitempty"`
+	// ID of the recurring payment schedule associated with the transaction.
+	ScheduleId       *int64                  `json:"ScheduleId,omitempty" url:"ScheduleId,omitempty"`
+	SettlementStatus *SettlementStatusPayout `json:"SettlementStatus,omitempty" url:"SettlementStatus,omitempty"`
+	RiskFlagged      *RiskFlagged            `json:"RiskFlagged,omitempty" url:"RiskFlagged,omitempty"`
+	RiskFlaggedOn    *RiskFlaggedOn          `json:"RiskFlaggedOn,omitempty" url:"RiskFlaggedOn,omitempty"`
+	RiskStatus       *RiskStatus             `json:"RiskStatus,omitempty" url:"RiskStatus,omitempty"`
+	RiskReason       *RiskReason             `json:"RiskReason,omitempty" url:"RiskReason,omitempty"`
+	RiskAction       *RiskAction             `json:"RiskAction,omitempty" url:"RiskAction,omitempty"`
+	RiskActionCode   *RiskActionCode         `json:"RiskActionCode,omitempty" url:"RiskActionCode,omitempty"`
+	PayoutProgram    *PayoutProgram          `json:"PayoutProgram,omitempty" url:"PayoutProgram,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
-}
-
-func (t *TransactionOutQueryRecord) GetBills() []*BillPayOutData {
-	if t == nil {
-		return nil
-	}
-	return t.Bills
-}
-
-func (t *TransactionOutQueryRecord) GetCheckData() *FileContent {
-	if t == nil {
-		return nil
-	}
-	return t.CheckData
-}
-
-func (t *TransactionOutQueryRecord) GetCheckNumber() *string {
-	if t == nil {
-		return nil
-	}
-	return t.CheckNumber
-}
-
-func (t *TransactionOutQueryRecord) GetComments() *Comments {
-	if t == nil {
-		return nil
-	}
-	return t.Comments
-}
-
-func (t *TransactionOutQueryRecord) GetCreatedDate() *CreatedAt {
-	if t == nil {
-		return nil
-	}
-	return t.CreatedDate
-}
-
-func (t *TransactionOutQueryRecord) GetEvents() []*QueryTransactionEvents {
-	if t == nil {
-		return nil
-	}
-	return t.Events
-}
-
-func (t *TransactionOutQueryRecord) GetFeeAmount() *float64 {
-	if t == nil {
-		return nil
-	}
-	return t.FeeAmount
-}
-
-func (t *TransactionOutQueryRecord) GetGateway() *Gatewayfield {
-	if t == nil {
-		return nil
-	}
-	return t.Gateway
 }
 
 func (t *TransactionOutQueryRecord) GetIdOut() *int64 {
@@ -1416,60 +1039,25 @@ func (t *TransactionOutQueryRecord) GetIdOut() *int64 {
 	return t.IdOut
 }
 
-func (t *TransactionOutQueryRecord) GetLastUpdated() *LastModified {
+func (t *TransactionOutQueryRecord) GetCreatedAt() *CreatedAt {
 	if t == nil {
 		return nil
 	}
-	return t.LastUpdated
+	return t.CreatedAt
 }
 
-func (t *TransactionOutQueryRecord) GetNetAmount() *Netamountnullable {
+func (t *TransactionOutQueryRecord) GetComments() *Comments {
 	if t == nil {
 		return nil
 	}
-	return t.NetAmount
+	return t.Comments
 }
 
-func (t *TransactionOutQueryRecord) GetParentOrgName() *OrgParentName {
+func (t *TransactionOutQueryRecord) GetVendor() *VendorQueryRecord {
 	if t == nil {
 		return nil
 	}
-	return t.ParentOrgName
-}
-
-func (t *TransactionOutQueryRecord) GetPaymentData() *QueryPaymentData {
-	if t == nil {
-		return nil
-	}
-	return t.PaymentData
-}
-
-func (t *TransactionOutQueryRecord) GetPaymentGroup() *string {
-	if t == nil {
-		return nil
-	}
-	return t.PaymentGroup
-}
-
-func (t *TransactionOutQueryRecord) GetPaymentId() *Paymentid {
-	if t == nil {
-		return nil
-	}
-	return t.PaymentId
-}
-
-func (t *TransactionOutQueryRecord) GetPaymentMethod() *string {
-	if t == nil {
-		return nil
-	}
-	return t.PaymentMethod
-}
-
-func (t *TransactionOutQueryRecord) GetPaymentStatus() *string {
-	if t == nil {
-		return nil
-	}
-	return t.PaymentStatus
+	return t.Vendor
 }
 
 func (t *TransactionOutQueryRecord) GetPaypointDbaname() *Dbaname {
@@ -1486,13 +1074,6 @@ func (t *TransactionOutQueryRecord) GetPaypointLegalname() *Legalname {
 	return t.PaypointLegalname
 }
 
-func (t *TransactionOutQueryRecord) GetSource() *Source {
-	if t == nil {
-		return nil
-	}
-	return t.Source
-}
-
 func (t *TransactionOutQueryRecord) GetStatus() *int {
 	if t == nil {
 		return nil
@@ -1500,11 +1081,11 @@ func (t *TransactionOutQueryRecord) GetStatus() *int {
 	return t.Status
 }
 
-func (t *TransactionOutQueryRecord) GetStatusText() *string {
+func (t *TransactionOutQueryRecord) GetLastUpdated() *LastModified {
 	if t == nil {
 		return nil
 	}
-	return t.StatusText
+	return t.LastUpdated
 }
 
 func (t *TransactionOutQueryRecord) GetTotalAmount() *float64 {
@@ -1514,11 +1095,214 @@ func (t *TransactionOutQueryRecord) GetTotalAmount() *float64 {
 	return t.TotalAmount
 }
 
-func (t *TransactionOutQueryRecord) GetVendor() *VendorQueryRecord {
+func (t *TransactionOutQueryRecord) GetNetAmount() *Netamountnullable {
 	if t == nil {
 		return nil
 	}
-	return t.Vendor
+	return t.NetAmount
+}
+
+func (t *TransactionOutQueryRecord) GetFeeAmount() *FeeAmount {
+	if t == nil {
+		return nil
+	}
+	return t.FeeAmount
+}
+
+func (t *TransactionOutQueryRecord) GetSource() *Source {
+	if t == nil {
+		return nil
+	}
+	return t.Source
+}
+
+func (t *TransactionOutQueryRecord) GetParentOrgName() *OrgParentName {
+	if t == nil {
+		return nil
+	}
+	return t.ParentOrgName
+}
+
+func (t *TransactionOutQueryRecord) GetParentOrgId() *Orgid {
+	if t == nil {
+		return nil
+	}
+	return t.ParentOrgId
+}
+
+func (t *TransactionOutQueryRecord) GetBatchNumber() *string {
+	if t == nil {
+		return nil
+	}
+	return t.BatchNumber
+}
+
+func (t *TransactionOutQueryRecord) GetPaymentStatus() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PaymentStatus
+}
+
+func (t *TransactionOutQueryRecord) GetPaymentMethod() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PaymentMethod
+}
+
+func (t *TransactionOutQueryRecord) GetCardToken() *string {
+	if t == nil {
+		return nil
+	}
+	return t.CardToken
+}
+
+func (t *TransactionOutQueryRecord) GetCheckNumber() *string {
+	if t == nil {
+		return nil
+	}
+	return t.CheckNumber
+}
+
+func (t *TransactionOutQueryRecord) GetCheckData() *FileContent {
+	if t == nil {
+		return nil
+	}
+	return t.CheckData
+}
+
+func (t *TransactionOutQueryRecord) GetPaymentId() *Paymentid {
+	if t == nil {
+		return nil
+	}
+	return t.PaymentId
+}
+
+func (t *TransactionOutQueryRecord) GetPaymentData() *QueryPaymentData {
+	if t == nil {
+		return nil
+	}
+	return t.PaymentData
+}
+
+func (t *TransactionOutQueryRecord) GetBills() []*BillPayOutData {
+	if t == nil {
+		return nil
+	}
+	return t.Bills
+}
+
+func (t *TransactionOutQueryRecord) GetEvents() []*QueryTransactionEvents {
+	if t == nil {
+		return nil
+	}
+	return t.Events
+}
+
+func (t *TransactionOutQueryRecord) GetExternalPaypointId() *ExternalPaypointId {
+	if t == nil {
+		return nil
+	}
+	return t.ExternalPaypointId
+}
+
+func (t *TransactionOutQueryRecord) GetEntryName() *Entrypointfield {
+	if t == nil {
+		return nil
+	}
+	return t.EntryName
+}
+
+func (t *TransactionOutQueryRecord) GetGateway() *Gatewayfield {
+	if t == nil {
+		return nil
+	}
+	return t.Gateway
+}
+
+func (t *TransactionOutQueryRecord) GetBatchId() *string {
+	if t == nil {
+		return nil
+	}
+	return t.BatchId
+}
+
+func (t *TransactionOutQueryRecord) GetHasVcardTransactions() *HasVcardTransactions {
+	if t == nil {
+		return nil
+	}
+	return t.HasVcardTransactions
+}
+
+func (t *TransactionOutQueryRecord) GetIsSameDayAch() *IsSameDayAch {
+	if t == nil {
+		return nil
+	}
+	return t.IsSameDayAch
+}
+
+func (t *TransactionOutQueryRecord) GetScheduleId() *int64 {
+	if t == nil {
+		return nil
+	}
+	return t.ScheduleId
+}
+
+func (t *TransactionOutQueryRecord) GetSettlementStatus() *SettlementStatusPayout {
+	if t == nil {
+		return nil
+	}
+	return t.SettlementStatus
+}
+
+func (t *TransactionOutQueryRecord) GetRiskFlagged() *RiskFlagged {
+	if t == nil {
+		return nil
+	}
+	return t.RiskFlagged
+}
+
+func (t *TransactionOutQueryRecord) GetRiskFlaggedOn() *RiskFlaggedOn {
+	if t == nil {
+		return nil
+	}
+	return t.RiskFlaggedOn
+}
+
+func (t *TransactionOutQueryRecord) GetRiskStatus() *RiskStatus {
+	if t == nil {
+		return nil
+	}
+	return t.RiskStatus
+}
+
+func (t *TransactionOutQueryRecord) GetRiskReason() *RiskReason {
+	if t == nil {
+		return nil
+	}
+	return t.RiskReason
+}
+
+func (t *TransactionOutQueryRecord) GetRiskAction() *RiskAction {
+	if t == nil {
+		return nil
+	}
+	return t.RiskAction
+}
+
+func (t *TransactionOutQueryRecord) GetRiskActionCode() *RiskActionCode {
+	if t == nil {
+		return nil
+	}
+	return t.RiskActionCode
+}
+
+func (t *TransactionOutQueryRecord) GetPayoutProgram() *PayoutProgram {
+	if t == nil {
+		return nil
+	}
+	return t.PayoutProgram
 }
 
 func (t *TransactionOutQueryRecord) GetExtraProperties() map[string]interface{} {
@@ -1554,7 +1338,7 @@ func (t *TransactionOutQueryRecord) String() string {
 }
 
 type VendorDataResponse struct {
-	VendorNumber VendorNumber `json:"VendorNumber,omitempty" url:"VendorNumber,omitempty"`
+	VendorNumber VendorNumber `json:"VendorNumber" url:"VendorNumber"`
 	// Primary name for vendor.
 	Name1 string `json:"Name1" url:"Name1"`
 	// Secondary name for vendor.
@@ -1563,7 +1347,7 @@ type VendorDataResponse struct {
 	Ein string `json:"EIN" url:"EIN"`
 	// Vendor's phone number.
 	Phone string `json:"Phone" url:"Phone"`
-	Email Email  `json:"Email,omitempty" url:"Email,omitempty"`
+	Email Email  `json:"Email" url:"Email"`
 	// Email address for remittance
 	RemitEmail *string `json:"RemitEmail,omitempty" url:"RemitEmail,omitempty"`
 	// Vendor's address.
@@ -1578,7 +1362,7 @@ type VendorDataResponse struct {
 	Zip string `json:"Zip" url:"Zip"`
 	// Vendor's country. Payabli supports only US and Canadian vendors.
 	Country string `json:"Country" url:"Country"`
-	Mcc     Mcc    `json:"Mcc,omitempty" url:"Mcc,omitempty"`
+	Mcc     Mcc    `json:"Mcc" url:"Mcc"`
 	// Additional location code used to identify the vendor.
 	LocationCode string `json:"LocationCode" url:"LocationCode"`
 	// Array of objects describing the vendor's contacts.
@@ -1607,14 +1391,14 @@ type VendorDataResponse struct {
 	CreatedDate time.Time `json:"CreatedDate" url:"CreatedDate"`
 	// Date when vendor was last updated
 	LastUpdated   time.Time     `json:"LastUpdated" url:"LastUpdated"`
-	RemitAddress1 Remitaddress1 `json:"remitAddress1,omitempty" url:"remitAddress1,omitempty"`
-	RemitAddress2 Remitaddress2 `json:"remitAddress2,omitempty" url:"remitAddress2,omitempty"`
-	RemitCity     Remitcity     `json:"remitCity,omitempty" url:"remitCity,omitempty"`
-	RemitState    Remitstate    `json:"remitState,omitempty" url:"remitState,omitempty"`
-	RemitZip      Remitzip      `json:"remitZip,omitempty" url:"remitZip,omitempty"`
-	RemitCountry  Remitcountry  `json:"remitCountry,omitempty" url:"remitCountry,omitempty"`
-	PayeeName1    PayeeName     `json:"payeeName1,omitempty" url:"payeeName1,omitempty"`
-	PayeeName2    PayeeName     `json:"payeeName2,omitempty" url:"payeeName2,omitempty"`
+	RemitAddress1 Remitaddress1 `json:"remitAddress1" url:"remitAddress1"`
+	RemitAddress2 Remitaddress2 `json:"remitAddress2" url:"remitAddress2"`
+	RemitCity     Remitcity     `json:"remitCity" url:"remitCity"`
+	RemitState    Remitstate    `json:"remitState" url:"remitState"`
+	RemitZip      Remitzip      `json:"remitZip" url:"remitZip"`
+	RemitCountry  Remitcountry  `json:"remitCountry" url:"remitCountry"`
+	PayeeName1    PayeeName     `json:"payeeName1" url:"payeeName1"`
+	PayeeName2    PayeeName     `json:"payeeName2" url:"payeeName2"`
 	// Custom field 1 for vendor
 	CustomField1 string `json:"customField1" url:"customField1"`
 	// Custom field 2 for vendor
@@ -1634,7 +1418,7 @@ type VendorDataResponse struct {
 
 func (v *VendorDataResponse) GetVendorNumber() VendorNumber {
 	if v == nil {
-		return nil
+		return ""
 	}
 	return v.VendorNumber
 }
@@ -1669,7 +1453,7 @@ func (v *VendorDataResponse) GetPhone() string {
 
 func (v *VendorDataResponse) GetEmail() Email {
 	if v == nil {
-		return nil
+		return ""
 	}
 	return v.Email
 }
@@ -1725,7 +1509,7 @@ func (v *VendorDataResponse) GetCountry() string {
 
 func (v *VendorDataResponse) GetMcc() Mcc {
 	if v == nil {
-		return nil
+		return ""
 	}
 	return v.Mcc
 }
@@ -1837,56 +1621,56 @@ func (v *VendorDataResponse) GetLastUpdated() time.Time {
 
 func (v *VendorDataResponse) GetRemitAddress1() Remitaddress1 {
 	if v == nil {
-		return nil
+		return ""
 	}
 	return v.RemitAddress1
 }
 
 func (v *VendorDataResponse) GetRemitAddress2() Remitaddress2 {
 	if v == nil {
-		return nil
+		return ""
 	}
 	return v.RemitAddress2
 }
 
 func (v *VendorDataResponse) GetRemitCity() Remitcity {
 	if v == nil {
-		return nil
+		return ""
 	}
 	return v.RemitCity
 }
 
 func (v *VendorDataResponse) GetRemitState() Remitstate {
 	if v == nil {
-		return nil
+		return ""
 	}
 	return v.RemitState
 }
 
 func (v *VendorDataResponse) GetRemitZip() Remitzip {
 	if v == nil {
-		return nil
+		return ""
 	}
 	return v.RemitZip
 }
 
 func (v *VendorDataResponse) GetRemitCountry() Remitcountry {
 	if v == nil {
-		return nil
+		return ""
 	}
 	return v.RemitCountry
 }
 
 func (v *VendorDataResponse) GetPayeeName1() PayeeName {
 	if v == nil {
-		return nil
+		return ""
 	}
 	return v.PayeeName1
 }
 
 func (v *VendorDataResponse) GetPayeeName2() PayeeName {
 	if v == nil {
-		return nil
+		return ""
 	}
 	return v.PayeeName2
 }
@@ -2468,195 +2252,6 @@ func (v *VendorResponseBillingData) String() string {
 	return fmt.Sprintf("%#v", v)
 }
 
-// Stored payment method information
-type VendorResponseStoredMethod struct {
-	IdPmethod      *string    `json:"IdPmethod,omitempty" url:"IdPmethod,omitempty"`
-	Method         *string    `json:"Method,omitempty" url:"Method,omitempty"`
-	Descriptor     *string    `json:"Descriptor,omitempty" url:"Descriptor,omitempty"`
-	MaskedAccount  *string    `json:"MaskedAccount,omitempty" url:"MaskedAccount,omitempty"`
-	ExpDate        *string    `json:"ExpDate,omitempty" url:"ExpDate,omitempty"`
-	HolderName     *string    `json:"HolderName,omitempty" url:"HolderName,omitempty"`
-	AchSecCode     *string    `json:"AchSecCode,omitempty" url:"AchSecCode,omitempty"`
-	AchHolderType  *string    `json:"AchHolderType,omitempty" url:"AchHolderType,omitempty"`
-	IsValidatedAch *bool      `json:"IsValidatedACH,omitempty" url:"IsValidatedACH,omitempty"`
-	Bin            *string    `json:"BIN,omitempty" url:"BIN,omitempty"`
-	BinData        *string    `json:"binData,omitempty" url:"binData,omitempty"`
-	Aba            *string    `json:"ABA,omitempty" url:"ABA,omitempty"`
-	PostalCode     *string    `json:"PostalCode,omitempty" url:"PostalCode,omitempty"`
-	MethodType     *string    `json:"MethodType,omitempty" url:"MethodType,omitempty"`
-	LastUpdated    *time.Time `json:"LastUpdated,omitempty" url:"LastUpdated,omitempty"`
-	CardUpdatedOn  *time.Time `json:"CardUpdatedOn,omitempty" url:"CardUpdatedOn,omitempty"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *VendorResponseStoredMethod) GetIdPmethod() *string {
-	if v == nil {
-		return nil
-	}
-	return v.IdPmethod
-}
-
-func (v *VendorResponseStoredMethod) GetMethod() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Method
-}
-
-func (v *VendorResponseStoredMethod) GetDescriptor() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Descriptor
-}
-
-func (v *VendorResponseStoredMethod) GetMaskedAccount() *string {
-	if v == nil {
-		return nil
-	}
-	return v.MaskedAccount
-}
-
-func (v *VendorResponseStoredMethod) GetExpDate() *string {
-	if v == nil {
-		return nil
-	}
-	return v.ExpDate
-}
-
-func (v *VendorResponseStoredMethod) GetHolderName() *string {
-	if v == nil {
-		return nil
-	}
-	return v.HolderName
-}
-
-func (v *VendorResponseStoredMethod) GetAchSecCode() *string {
-	if v == nil {
-		return nil
-	}
-	return v.AchSecCode
-}
-
-func (v *VendorResponseStoredMethod) GetAchHolderType() *string {
-	if v == nil {
-		return nil
-	}
-	return v.AchHolderType
-}
-
-func (v *VendorResponseStoredMethod) GetIsValidatedAch() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.IsValidatedAch
-}
-
-func (v *VendorResponseStoredMethod) GetBin() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Bin
-}
-
-func (v *VendorResponseStoredMethod) GetBinData() *string {
-	if v == nil {
-		return nil
-	}
-	return v.BinData
-}
-
-func (v *VendorResponseStoredMethod) GetAba() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Aba
-}
-
-func (v *VendorResponseStoredMethod) GetPostalCode() *string {
-	if v == nil {
-		return nil
-	}
-	return v.PostalCode
-}
-
-func (v *VendorResponseStoredMethod) GetMethodType() *string {
-	if v == nil {
-		return nil
-	}
-	return v.MethodType
-}
-
-func (v *VendorResponseStoredMethod) GetLastUpdated() *time.Time {
-	if v == nil {
-		return nil
-	}
-	return v.LastUpdated
-}
-
-func (v *VendorResponseStoredMethod) GetCardUpdatedOn() *time.Time {
-	if v == nil {
-		return nil
-	}
-	return v.CardUpdatedOn
-}
-
-func (v *VendorResponseStoredMethod) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VendorResponseStoredMethod) UnmarshalJSON(data []byte) error {
-	type embed VendorResponseStoredMethod
-	var unmarshaler = struct {
-		embed
-		LastUpdated   *internal.DateTime `json:"LastUpdated,omitempty"`
-		CardUpdatedOn *internal.DateTime `json:"CardUpdatedOn,omitempty"`
-	}{
-		embed: embed(*v),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*v = VendorResponseStoredMethod(unmarshaler.embed)
-	v.LastUpdated = unmarshaler.LastUpdated.TimePtr()
-	v.CardUpdatedOn = unmarshaler.CardUpdatedOn.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VendorResponseStoredMethod) MarshalJSON() ([]byte, error) {
-	type embed VendorResponseStoredMethod
-	var marshaler = struct {
-		embed
-		LastUpdated   *internal.DateTime `json:"LastUpdated,omitempty"`
-		CardUpdatedOn *internal.DateTime `json:"CardUpdatedOn,omitempty"`
-	}{
-		embed:         embed(*v),
-		LastUpdated:   internal.NewOptionalDateTime(v.LastUpdated),
-		CardUpdatedOn: internal.NewOptionalDateTime(v.CardUpdatedOn),
-	}
-	return json.Marshal(marshaler)
-}
-
-func (v *VendorResponseStoredMethod) String() string {
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
 // Vendor bill summary statistics
 type VendorResponseSummary struct {
 	ActiveBills            *int     `json:"ActiveBills,omitempty" url:"ActiveBills,omitempty"`
@@ -2822,6 +2417,351 @@ func (v *VendorResponseSummary) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", v)
+}
+
+type BillOutData struct {
+	AccountingField1 *AccountingField      `json:"accountingField1,omitempty" url:"accountingField1,omitempty"`
+	AccountingField2 *AccountingField      `json:"accountingField2,omitempty" url:"accountingField2,omitempty"`
+	AdditionalData   *AdditionalDataString `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	// An array of bill images. Attachments aren't required, but we strongly recommend including them. Including a bill image can make payouts smoother and prevent delays. You can include either the Base64-encoded file content, or you can include an fURL to a public file. The maximum file size for image uploads is 30 MB.
+	Attachments *Attachments `json:"attachments,omitempty" url:"attachments,omitempty"`
+	// Date of bill. Accepted formats: YYYY-MM-DD, MM/DD/YYYY.
+	BillDate  *Datenullable `json:"billDate,omitempty" url:"billDate,omitempty"`
+	BillItems *Billitems    `json:"billItems,omitempty" url:"billItems,omitempty"`
+	// Unique identifier for the bill. Required when adding a bill.
+	BillNumber *string   `json:"billNumber,omitempty" url:"billNumber,omitempty"`
+	Comments   *Comments `json:"comments,omitempty" url:"comments,omitempty"`
+	// Discount amount applied to the bill.
+	Discount *float64 `json:"discount,omitempty" url:"discount,omitempty"`
+	// Due date of bill. Accepted formats: YYYY-MM-DD, MM/DD/YYYY.
+	DueDate *Datenullable `json:"dueDate,omitempty" url:"dueDate,omitempty"`
+	// End Date for scheduled bills. Applied only in `Mode` = 1. Accepted formats: YYYY-MM-DD, MM/DD/YYYY
+	EndDate *Datenullable `json:"endDate,omitempty" url:"endDate,omitempty"`
+	// Frequency for scheduled bills. Applied only in `Mode` = 1.
+	Frequency *Frequency `json:"frequency,omitempty" url:"frequency,omitempty"`
+	// Lot number associated with the bill.
+	LotNumber *string `json:"lotNumber,omitempty" url:"lotNumber,omitempty"`
+	// Bill mode: value `0` for one-time bills, `1` for scheduled bills.
+	Mode *int `json:"mode,omitempty" url:"mode,omitempty"`
+	// Net Amount owed in bill. Required when adding a bill.
+	NetAmount *float64 `json:"netAmount,omitempty" url:"netAmount,omitempty"`
+	// Options for scheduled bills.
+	ScheduledOptions *BillOutDataScheduledOptions `json:"scheduledOptions,omitempty" url:"scheduledOptions,omitempty"`
+	Status           *Billstatus                  `json:"status,omitempty" url:"status,omitempty"`
+	Terms            *Terms                       `json:"terms,omitempty" url:"terms,omitempty"`
+	// Total amount of the bill.
+	TotalAmount *float64 `json:"totalAmount,omitempty" url:"totalAmount,omitempty"`
+	// The vendor associated with the bill. Although you can create a vendor in a create bill request, Payabli recommends creating a vendor separately and passing a valid `vendorNumber` here. At minimum, the `vendorNumber` is required.
+	Vendor *VendorData `json:"vendor,omitempty" url:"vendor,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BillOutData) GetAccountingField1() *AccountingField {
+	if b == nil {
+		return nil
+	}
+	return b.AccountingField1
+}
+
+func (b *BillOutData) GetAccountingField2() *AccountingField {
+	if b == nil {
+		return nil
+	}
+	return b.AccountingField2
+}
+
+func (b *BillOutData) GetAdditionalData() *AdditionalDataString {
+	if b == nil {
+		return nil
+	}
+	return b.AdditionalData
+}
+
+func (b *BillOutData) GetAttachments() *Attachments {
+	if b == nil {
+		return nil
+	}
+	return b.Attachments
+}
+
+func (b *BillOutData) GetBillDate() *Datenullable {
+	if b == nil {
+		return nil
+	}
+	return b.BillDate
+}
+
+func (b *BillOutData) GetBillItems() *Billitems {
+	if b == nil {
+		return nil
+	}
+	return b.BillItems
+}
+
+func (b *BillOutData) GetBillNumber() *string {
+	if b == nil {
+		return nil
+	}
+	return b.BillNumber
+}
+
+func (b *BillOutData) GetComments() *Comments {
+	if b == nil {
+		return nil
+	}
+	return b.Comments
+}
+
+func (b *BillOutData) GetDiscount() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.Discount
+}
+
+func (b *BillOutData) GetDueDate() *Datenullable {
+	if b == nil {
+		return nil
+	}
+	return b.DueDate
+}
+
+func (b *BillOutData) GetEndDate() *Datenullable {
+	if b == nil {
+		return nil
+	}
+	return b.EndDate
+}
+
+func (b *BillOutData) GetFrequency() *Frequency {
+	if b == nil {
+		return nil
+	}
+	return b.Frequency
+}
+
+func (b *BillOutData) GetLotNumber() *string {
+	if b == nil {
+		return nil
+	}
+	return b.LotNumber
+}
+
+func (b *BillOutData) GetMode() *int {
+	if b == nil {
+		return nil
+	}
+	return b.Mode
+}
+
+func (b *BillOutData) GetNetAmount() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.NetAmount
+}
+
+func (b *BillOutData) GetScheduledOptions() *BillOutDataScheduledOptions {
+	if b == nil {
+		return nil
+	}
+	return b.ScheduledOptions
+}
+
+func (b *BillOutData) GetStatus() *Billstatus {
+	if b == nil {
+		return nil
+	}
+	return b.Status
+}
+
+func (b *BillOutData) GetTerms() *Terms {
+	if b == nil {
+		return nil
+	}
+	return b.Terms
+}
+
+func (b *BillOutData) GetTotalAmount() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.TotalAmount
+}
+
+func (b *BillOutData) GetVendor() *VendorData {
+	if b == nil {
+		return nil
+	}
+	return b.Vendor
+}
+
+func (b *BillOutData) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BillOutData) UnmarshalJSON(data []byte) error {
+	type unmarshaler BillOutData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BillOutData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BillOutData) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BillOutDataScheduledOptions struct {
+	// The ID of the stored payment method to use for the bill.
+	StoredMethodId *string `json:"storedMethodId,omitempty" url:"storedMethodId,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BillOutDataScheduledOptions) GetStoredMethodId() *string {
+	if b == nil {
+		return nil
+	}
+	return b.StoredMethodId
+}
+
+func (b *BillOutDataScheduledOptions) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BillOutDataScheduledOptions) UnmarshalJSON(data []byte) error {
+	type unmarshaler BillOutDataScheduledOptions
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BillOutDataScheduledOptions(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BillOutDataScheduledOptions) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BillResponse struct {
+	ResponseCode   *Responsecode   `json:"responseCode,omitempty" url:"responseCode,omitempty"`
+	PageIdentifier *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
+	RoomId         *RoomIdNotInUse `json:"roomId,omitempty" url:"roomId,omitempty"`
+	IsSuccess      *IsSuccess      `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	ResponseText   *ResponseText   `json:"responseText,omitempty" url:"responseText,omitempty"`
+	// If `isSuccess` = true, this contains the bill identifier. If `isSuccess` = false, this contains the reason for the error.
+	ResponseData *Responsedatanonobject `json:"responseData,omitempty" url:"responseData,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BillResponse) GetResponseCode() *Responsecode {
+	if b == nil {
+		return nil
+	}
+	return b.ResponseCode
+}
+
+func (b *BillResponse) GetPageIdentifier() *PageIdentifier {
+	if b == nil {
+		return nil
+	}
+	return b.PageIdentifier
+}
+
+func (b *BillResponse) GetRoomId() *RoomIdNotInUse {
+	if b == nil {
+		return nil
+	}
+	return b.RoomId
+}
+
+func (b *BillResponse) GetIsSuccess() *IsSuccess {
+	if b == nil {
+		return nil
+	}
+	return b.IsSuccess
+}
+
+func (b *BillResponse) GetResponseText() *ResponseText {
+	if b == nil {
+		return nil
+	}
+	return b.ResponseText
+}
+
+func (b *BillResponse) GetResponseData() *Responsedatanonobject {
+	if b == nil {
+		return nil
+	}
+	return b.ResponseData
+}
+
+func (b *BillResponse) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BillResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler BillResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BillResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BillResponse) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
 }
 
 type BillResponseData struct {

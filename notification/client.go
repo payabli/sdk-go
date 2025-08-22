@@ -106,3 +106,21 @@ func (c *Client) UpdateNotification(
 	}
 	return response.Body, nil
 }
+
+// Gets a copy of a generated report by ID.
+func (c *Client) GetReportFile(
+	ctx context.Context,
+	// Report ID
+	id int64,
+	opts ...option.RequestOption,
+) (sdk.File, error) {
+	response, err := c.WithRawResponse.GetReportFile(
+		ctx,
+		id,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}

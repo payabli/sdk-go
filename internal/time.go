@@ -6,7 +6,6 @@ import (
 )
 
 const dateFormat = "2006-01-02"
-const dateTimeFormat = "2006-01-02T15:04:05.0000000"
 
 // DateTime wraps time.Time and adapts its JSON representation
 // to conform to a RFC3339 date (e.g. 2006-01-02).
@@ -119,7 +118,7 @@ func (d *DateTime) MarshalJSON() ([]byte, error) {
 	if d == nil || d.t == nil {
 		return nil, nil
 	}
-	return json.Marshal(d.t.Format(dateTimeFormat))
+	return json.Marshal(d.t.Format(time.RFC3339))
 }
 
 func (d *DateTime) UnmarshalJSON(data []byte) error {
@@ -128,7 +127,7 @@ func (d *DateTime) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	parsedTime, err := time.Parse(dateTimeFormat, raw)
+	parsedTime, err := time.Parse(time.RFC3339, raw)
 	if err != nil {
 		return err
 	}

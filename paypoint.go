@@ -245,3 +245,239 @@ func (g *GetEntryConfigResponse) String() string {
 	}
 	return fmt.Sprintf("%#v", g)
 }
+
+type MigratePaypointResponse struct {
+	IsSuccess    *IsSuccess    `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	ResponseCode *Responsecode `json:"responseCode,omitempty" url:"responseCode,omitempty"`
+	ResponseText *ResponseText `json:"responseText,omitempty" url:"responseText,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *MigratePaypointResponse) GetIsSuccess() *IsSuccess {
+	if m == nil {
+		return nil
+	}
+	return m.IsSuccess
+}
+
+func (m *MigratePaypointResponse) GetResponseCode() *Responsecode {
+	if m == nil {
+		return nil
+	}
+	return m.ResponseCode
+}
+
+func (m *MigratePaypointResponse) GetResponseText() *ResponseText {
+	if m == nil {
+		return nil
+	}
+	return m.ResponseText
+}
+
+func (m *MigratePaypointResponse) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
+}
+
+func (m *MigratePaypointResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler MigratePaypointResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = MigratePaypointResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *MigratePaypointResponse) String() string {
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+type NotificationRequest struct {
+	// Complete HTTP URL receiving the notification
+	NotificationUrl string `json:"notificationUrl" url:"notificationUrl"`
+	// A dictionary of key-value pairs to be inserted in the header when the notification request is submitted
+	WebHeaderParameters []*WebHeaderParameter `json:"webHeaderParameters,omitempty" url:"webHeaderParameters,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (n *NotificationRequest) GetNotificationUrl() string {
+	if n == nil {
+		return ""
+	}
+	return n.NotificationUrl
+}
+
+func (n *NotificationRequest) GetWebHeaderParameters() []*WebHeaderParameter {
+	if n == nil {
+		return nil
+	}
+	return n.WebHeaderParameters
+}
+
+func (n *NotificationRequest) GetExtraProperties() map[string]interface{} {
+	return n.extraProperties
+}
+
+func (n *NotificationRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler NotificationRequest
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*n = NotificationRequest(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *n)
+	if err != nil {
+		return err
+	}
+	n.extraProperties = extraProperties
+	n.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (n *NotificationRequest) String() string {
+	if len(n.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(n.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(n); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", n)
+}
+
+type PaypointMoveRequest struct {
+	EntryPoint Entrypointfield `json:"entryPoint" url:"entryPoint"`
+	// The ID for the paypoint's new parent organization.
+	NewParentOrganizationId int `json:"newParentOrganizationId" url:"newParentOrganizationId"`
+	// Optional notification request object for a webhook
+	NotificationRequest *NotificationRequest `json:"notificationRequest,omitempty" url:"notificationRequest,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PaypointMoveRequest) GetEntryPoint() Entrypointfield {
+	if p == nil {
+		return ""
+	}
+	return p.EntryPoint
+}
+
+func (p *PaypointMoveRequest) GetNewParentOrganizationId() int {
+	if p == nil {
+		return 0
+	}
+	return p.NewParentOrganizationId
+}
+
+func (p *PaypointMoveRequest) GetNotificationRequest() *NotificationRequest {
+	if p == nil {
+		return nil
+	}
+	return p.NotificationRequest
+}
+
+func (p *PaypointMoveRequest) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *PaypointMoveRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler PaypointMoveRequest
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PaypointMoveRequest(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PaypointMoveRequest) String() string {
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type WebHeaderParameter struct {
+	Key   string `json:"key" url:"key"`
+	Value string `json:"value" url:"value"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (w *WebHeaderParameter) GetKey() string {
+	if w == nil {
+		return ""
+	}
+	return w.Key
+}
+
+func (w *WebHeaderParameter) GetValue() string {
+	if w == nil {
+		return ""
+	}
+	return w.Value
+}
+
+func (w *WebHeaderParameter) GetExtraProperties() map[string]interface{} {
+	return w.extraProperties
+}
+
+func (w *WebHeaderParameter) UnmarshalJSON(data []byte) error {
+	type unmarshaler WebHeaderParameter
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*w = WebHeaderParameter(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *w)
+	if err != nil {
+		return err
+	}
+	w.extraProperties = extraProperties
+	w.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (w *WebHeaderParameter) String() string {
+	if len(w.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(w.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(w); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", w)
+}

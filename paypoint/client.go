@@ -169,3 +169,20 @@ func (c *Client) SettingsPage(
 	}
 	return response.Body, nil
 }
+
+// Migrates a paypoint to a new parent organization.
+func (c *Client) Migrate(
+	ctx context.Context,
+	request *sdk.PaypointMoveRequest,
+	opts ...option.RequestOption,
+) (*sdk.MigratePaypointResponse, error) {
+	response, err := c.WithRawResponse.Migrate(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}

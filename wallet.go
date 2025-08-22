@@ -34,7 +34,7 @@ type ConfigurePaypointRequestGooglePay struct {
 }
 
 // The internal identifier for Apple Pay-related information.
-type ApplePayId = *string
+type ApplePayId = string
 
 type ApplePayOrganizationUpdateData struct {
 	CreatedAt *CreatedAt `json:"createdAt,omitempty" url:"createdAt,omitempty"`
@@ -796,9 +796,6 @@ func (o *OrganizationUpdates) String() string {
 	}
 	return fmt.Sprintf("%#v", o)
 }
-
-// The paypoint name.
-type PaypointName = *string
 
 // When `true`, the wallet service configuration cascades to all paypoints and suborganizations belonging to the parent entity.
 type WalletCascade = bool

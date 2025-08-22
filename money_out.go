@@ -66,10 +66,9 @@ type BillDetailResponse struct {
 	// Timestamp when the payment was created, in UTC.
 	CreatedDate *CreatedAt `json:"CreatedDate,omitempty" url:"CreatedDate,omitempty"`
 	// Events associated to this transaction.
-	Events []*QueryTransactionEvents `json:"Events,omitempty" url:"Events,omitempty"`
-	// Service fee or sub-charge applied.
-	FeeAmount *float64      `json:"FeeAmount,omitempty" url:"FeeAmount,omitempty"`
-	Gateway   *Gatewayfield `json:"Gateway,omitempty" url:"Gateway,omitempty"`
+	Events    []*QueryTransactionEvents `json:"Events,omitempty" url:"Events,omitempty"`
+	FeeAmount *FeeAmount                `json:"FeeAmount,omitempty" url:"FeeAmount,omitempty"`
+	Gateway   *Gatewayfield             `json:"Gateway,omitempty" url:"Gateway,omitempty"`
 	// Identifier of payout transaction.
 	IdOut *int64 `json:"IdOut,omitempty" url:"IdOut,omitempty"`
 	// Timestamp when payment record was updated, in UTC.
@@ -143,7 +142,7 @@ func (b *BillDetailResponse) GetEvents() []*QueryTransactionEvents {
 	return b.Events
 }
 
-func (b *BillDetailResponse) GetFeeAmount() *float64 {
+func (b *BillDetailResponse) GetFeeAmount() *FeeAmount {
 	if b == nil {
 		return nil
 	}
@@ -776,7 +775,7 @@ func (p *PayabliApiResponse11ResponseData) String() string {
 }
 
 // A check number, between 1 and 9999, passed as a string. This value can be used for fraud prevention with the positive pay service.
-type VendorCheckNumber = *string
+type VendorCheckNumber = string
 
 type AuthorizePayoutBody struct {
 	AccountId  *Accountid      `json:"accountId,omitempty" url:"accountId,omitempty"`

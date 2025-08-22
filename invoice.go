@@ -53,6 +53,7 @@ type GetAttachedFileFromInvoiceRequest struct {
 }
 
 type ListInvoicesRequest struct {
+	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
 	// The number of records to skip before starting to collect the result set.
 	FromRecord *int `json:"-" url:"fromRecord,omitempty"`
 	// Max number of records to return for the query. Use `0` or negative value to return all records.
@@ -126,6 +127,7 @@ type ListInvoicesRequest struct {
 }
 
 type ListInvoicesOrgRequest struct {
+	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
 	// The number of records to skip before starting to collect the result set.
 	FromRecord *int `json:"-" url:"fromRecord,omitempty"`
 	// Max number of records to return for the query. Use `0` or negative value to return all records.
@@ -485,18 +487,18 @@ type GetInvoiceRecord struct {
 	InvoiceId         InvoiceId         `json:"invoiceId" url:"invoiceId"`
 	CustomerId        CustomerId        `json:"customerId,omitempty" url:"customerId,omitempty"`
 	PaypointId        PaypointId        `json:"paypointId,omitempty" url:"paypointId,omitempty"`
-	InvoiceNumber     Invoicenumber     `json:"invoiceNumber,omitempty" url:"invoiceNumber,omitempty"`
+	InvoiceNumber     Invoicenumber     `json:"invoiceNumber" url:"invoiceNumber"`
 	InvoiceDate       Datenullable      `json:"invoiceDate,omitempty" url:"invoiceDate,omitempty"`
 	InvoiceDueDate    Datenullable      `json:"invoiceDueDate,omitempty" url:"invoiceDueDate,omitempty"`
-	InvoiceSentDate   Datetimenullable  `json:"invoiceSentDate,omitempty" url:"invoiceSentDate,omitempty"`
+	InvoiceSentDate   DatetimeNullable  `json:"invoiceSentDate,omitempty" url:"invoiceSentDate,omitempty"`
 	InvoiceEndDate    Datenullable      `json:"invoiceEndDate,omitempty" url:"invoiceEndDate,omitempty"`
-	LastPaymentDate   Datetimenullable  `json:"lastPaymentDate,omitempty" url:"lastPaymentDate,omitempty"`
+	LastPaymentDate   DatetimeNullable  `json:"lastPaymentDate,omitempty" url:"lastPaymentDate,omitempty"`
 	CreatedAt         CreatedAt         `json:"createdAt" url:"createdAt"`
 	InvoiceStatus     Invoicestatus     `json:"invoiceStatus" url:"invoiceStatus"`
 	InvoiceType       InvoiceType       `json:"invoiceType" url:"invoiceType"`
 	Frequency         Frequency         `json:"frequency" url:"frequency"`
-	PaymentTerms      Terms             `json:"paymentTerms,omitempty" url:"paymentTerms,omitempty"`
-	TermsConditions   string            `json:"termsConditions" url:"termsConditions"`
+	PaymentTerms      Terms             `json:"paymentTerms" url:"paymentTerms"`
+	TermsConditions   *TermsConditions  `json:"termsConditions,omitempty" url:"termsConditions,omitempty"`
 	Notes             *string           `json:"notes,omitempty" url:"notes,omitempty"`
 	Tax               Tax               `json:"tax,omitempty" url:"tax,omitempty"`
 	Discount          Discount          `json:"discount,omitempty" url:"discount,omitempty"`
@@ -511,28 +513,28 @@ type GetInvoiceRecord struct {
 	LastName *string `json:"lastName,omitempty" url:"lastName,omitempty"`
 	// Company name of the recipient of the invoice.
 	Company              *string                   `json:"company,omitempty" url:"company,omitempty"`
-	ShippingAddress1     Shippingaddress           `json:"shippingAddress1,omitempty" url:"shippingAddress1,omitempty"`
-	ShippingAddress2     Shippingaddressadditional `json:"shippingAddress2,omitempty" url:"shippingAddress2,omitempty"`
+	ShippingAddress1     Shippingaddress           `json:"shippingAddress1" url:"shippingAddress1"`
+	ShippingAddress2     Shippingaddressadditional `json:"shippingAddress2" url:"shippingAddress2"`
 	ShippingCity         Shippingcity              `json:"shippingCity" url:"shippingCity"`
 	ShippingState        Shippingstate             `json:"shippingState" url:"shippingState"`
-	ShippingZip          Shippingzip               `json:"shippingZip,omitempty" url:"shippingZip,omitempty"`
+	ShippingZip          Shippingzip               `json:"shippingZip" url:"shippingZip"`
 	ShippingFromZip      ShippingFromZip           `json:"shippingFromZip" url:"shippingFromZip"`
 	ShippingCountry      Shippingcountry           `json:"shippingCountry" url:"shippingCountry"`
-	ShippingEmail        Email                     `json:"shippingEmail,omitempty" url:"shippingEmail,omitempty"`
+	ShippingEmail        Email                     `json:"shippingEmail" url:"shippingEmail"`
 	ShippingPhone        string                    `json:"shippingPhone" url:"shippingPhone"`
-	SummaryCommodityCode SummaryCommodityCode      `json:"summaryCommodityCode,omitempty" url:"summaryCommodityCode,omitempty"`
+	SummaryCommodityCode SummaryCommodityCode      `json:"summaryCommodityCode" url:"summaryCommodityCode"`
 	Items                []*BillItem               `json:"items" url:"items"`
 	Customer             *PayorDataResponse        `json:"Customer" url:"Customer"`
-	PaylinkId            PaylinkId                 `json:"paylinkId,omitempty" url:"paylinkId,omitempty"`
+	PaylinkId            PaylinkId                 `json:"paylinkId" url:"paylinkId"`
 	BillEvents           BillEvents                `json:"billEvents,omitempty" url:"billEvents,omitempty"`
 	ScheduledOptions     *BillOptions              `json:"scheduledOptions" url:"scheduledOptions"`
 	PaypointLegalname    string                    `json:"PaypointLegalname" url:"PaypointLegalname"`
-	PaypointDbaname      Dbaname                   `json:"PaypointDbaname,omitempty" url:"PaypointDbaname,omitempty"`
+	PaypointDbaname      Dbaname                   `json:"PaypointDbaname" url:"PaypointDbaname"`
 	PaypointEntryname    Entrypointfield           `json:"PaypointEntryname" url:"PaypointEntryname"`
 	ParentOrgName        OrgParentName             `json:"ParentOrgName" url:"ParentOrgName"`
-	AdditionalData       AdditionalDataString      `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
+	AdditionalData       *AdditionalDataString     `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
 	DocumentsRef         *DocumentsRef             `json:"DocumentsRef" url:"DocumentsRef"`
-	ExternalPaypointId   ExternalPaypointId        `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	ExternalPaypointId   *ExternalPaypointId       `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -561,7 +563,7 @@ func (g *GetInvoiceRecord) GetPaypointId() PaypointId {
 
 func (g *GetInvoiceRecord) GetInvoiceNumber() Invoicenumber {
 	if g == nil {
-		return nil
+		return ""
 	}
 	return g.InvoiceNumber
 }
@@ -580,7 +582,7 @@ func (g *GetInvoiceRecord) GetInvoiceDueDate() Datenullable {
 	return g.InvoiceDueDate
 }
 
-func (g *GetInvoiceRecord) GetInvoiceSentDate() Datetimenullable {
+func (g *GetInvoiceRecord) GetInvoiceSentDate() DatetimeNullable {
 	if g == nil {
 		return nil
 	}
@@ -594,7 +596,7 @@ func (g *GetInvoiceRecord) GetInvoiceEndDate() Datenullable {
 	return g.InvoiceEndDate
 }
 
-func (g *GetInvoiceRecord) GetLastPaymentDate() Datetimenullable {
+func (g *GetInvoiceRecord) GetLastPaymentDate() DatetimeNullable {
 	if g == nil {
 		return nil
 	}
@@ -631,14 +633,14 @@ func (g *GetInvoiceRecord) GetFrequency() Frequency {
 
 func (g *GetInvoiceRecord) GetPaymentTerms() Terms {
 	if g == nil {
-		return nil
+		return ""
 	}
 	return g.PaymentTerms
 }
 
-func (g *GetInvoiceRecord) GetTermsConditions() string {
+func (g *GetInvoiceRecord) GetTermsConditions() *TermsConditions {
 	if g == nil {
-		return ""
+		return nil
 	}
 	return g.TermsConditions
 }
@@ -722,14 +724,14 @@ func (g *GetInvoiceRecord) GetCompany() *string {
 
 func (g *GetInvoiceRecord) GetShippingAddress1() Shippingaddress {
 	if g == nil {
-		return nil
+		return ""
 	}
 	return g.ShippingAddress1
 }
 
 func (g *GetInvoiceRecord) GetShippingAddress2() Shippingaddressadditional {
 	if g == nil {
-		return nil
+		return ""
 	}
 	return g.ShippingAddress2
 }
@@ -750,7 +752,7 @@ func (g *GetInvoiceRecord) GetShippingState() Shippingstate {
 
 func (g *GetInvoiceRecord) GetShippingZip() Shippingzip {
 	if g == nil {
-		return nil
+		return ""
 	}
 	return g.ShippingZip
 }
@@ -771,7 +773,7 @@ func (g *GetInvoiceRecord) GetShippingCountry() Shippingcountry {
 
 func (g *GetInvoiceRecord) GetShippingEmail() Email {
 	if g == nil {
-		return nil
+		return ""
 	}
 	return g.ShippingEmail
 }
@@ -785,7 +787,7 @@ func (g *GetInvoiceRecord) GetShippingPhone() string {
 
 func (g *GetInvoiceRecord) GetSummaryCommodityCode() SummaryCommodityCode {
 	if g == nil {
-		return nil
+		return ""
 	}
 	return g.SummaryCommodityCode
 }
@@ -806,7 +808,7 @@ func (g *GetInvoiceRecord) GetCustomer() *PayorDataResponse {
 
 func (g *GetInvoiceRecord) GetPaylinkId() PaylinkId {
 	if g == nil {
-		return nil
+		return ""
 	}
 	return g.PaylinkId
 }
@@ -834,7 +836,7 @@ func (g *GetInvoiceRecord) GetPaypointLegalname() string {
 
 func (g *GetInvoiceRecord) GetPaypointDbaname() Dbaname {
 	if g == nil {
-		return nil
+		return ""
 	}
 	return g.PaypointDbaname
 }
@@ -853,7 +855,7 @@ func (g *GetInvoiceRecord) GetParentOrgName() OrgParentName {
 	return g.ParentOrgName
 }
 
-func (g *GetInvoiceRecord) GetAdditionalData() AdditionalDataString {
+func (g *GetInvoiceRecord) GetAdditionalData() *AdditionalDataString {
 	if g == nil {
 		return nil
 	}
@@ -867,7 +869,7 @@ func (g *GetInvoiceRecord) GetDocumentsRef() *DocumentsRef {
 	return g.DocumentsRef
 }
 
-func (g *GetInvoiceRecord) GetExternalPaypointId() ExternalPaypointId {
+func (g *GetInvoiceRecord) GetExternalPaypointId() *ExternalPaypointId {
 	if g == nil {
 		return nil
 	}
@@ -1187,7 +1189,7 @@ type QueryInvoiceResponseRecordsItem struct {
 	InvoiceId     InvoiceId     `json:"invoiceId" url:"invoiceId"`
 	CustomerId    CustomerId    `json:"customerId,omitempty" url:"customerId,omitempty"`
 	PaypointId    PaypointId    `json:"paypointId,omitempty" url:"paypointId,omitempty"`
-	InvoiceNumber Invoicenumber `json:"invoiceNumber,omitempty" url:"invoiceNumber,omitempty"`
+	InvoiceNumber Invoicenumber `json:"invoiceNumber" url:"invoiceNumber"`
 	// Invoice date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.
 	InvoiceDate Datenullable `json:"invoiceDate,omitempty" url:"invoiceDate,omitempty"`
 	// Invoice due date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.
@@ -1197,14 +1199,14 @@ type QueryInvoiceResponseRecordsItem struct {
 	// The end date for a scheduled invoice cycle (`invoiceType` = 1).
 	InvoiceEndDate Datenullable `json:"invoiceEndDate,omitempty" url:"invoiceEndDate,omitempty"`
 	// Timestamp of last payment.
-	LastPaymentDate *Datetimenullable `json:"lastPaymentDate,omitempty" url:"lastPaymentDate,omitempty"`
+	LastPaymentDate *DatetimeNullable `json:"lastPaymentDate,omitempty" url:"lastPaymentDate,omitempty"`
 	CreatedAt       CreatedAt         `json:"createdAt" url:"createdAt"`
 	InvoiceStatus   Invoicestatus     `json:"invoiceStatus" url:"invoiceStatus"`
 	InvoiceType     InvoiceType       `json:"invoiceType" url:"invoiceType"`
 	// Frequency of scheduled invoice.
-	Frequency       Frequency       `json:"frequency" url:"frequency"`
-	PaymentTerms    Terms           `json:"paymentTerms,omitempty" url:"paymentTerms,omitempty"`
-	TermsConditions TermsConditions `json:"termsConditions,omitempty" url:"termsConditions,omitempty"`
+	Frequency       Frequency        `json:"frequency" url:"frequency"`
+	PaymentTerms    Terms            `json:"paymentTerms" url:"paymentTerms"`
+	TermsConditions *TermsConditions `json:"termsConditions,omitempty" url:"termsConditions,omitempty"`
 	// Invoice notes.
 	Notes             *string           `json:"notes,omitempty" url:"notes,omitempty"`
 	Tax               Tax               `json:"tax,omitempty" url:"tax,omitempty"`
@@ -1220,18 +1222,18 @@ type QueryInvoiceResponseRecordsItem struct {
 	LastName string `json:"lastName" url:"lastName"`
 	// Company name of the recipient of the invoice.
 	Company          *string                   `json:"company,omitempty" url:"company,omitempty"`
-	ShippingAddress1 Shippingaddress           `json:"shippingAddress1,omitempty" url:"shippingAddress1,omitempty"`
-	ShippingAddress2 Shippingaddressadditional `json:"shippingAddress2,omitempty" url:"shippingAddress2,omitempty"`
+	ShippingAddress1 Shippingaddress           `json:"shippingAddress1" url:"shippingAddress1"`
+	ShippingAddress2 Shippingaddressadditional `json:"shippingAddress2" url:"shippingAddress2"`
 	ShippingCity     Shippingcity              `json:"shippingCity" url:"shippingCity"`
 	ShippingState    Shippingstate             `json:"shippingState" url:"shippingState"`
-	ShippingZip      Shippingzip               `json:"shippingZip,omitempty" url:"shippingZip,omitempty"`
+	ShippingZip      Shippingzip               `json:"shippingZip" url:"shippingZip"`
 	ShippingFromZip  ShippingFromZip           `json:"shippingFromZip" url:"shippingFromZip"`
 	ShippingCountry  Shippingcountry           `json:"shippingCountry" url:"shippingCountry"`
 	// Shipping recipient's contact email address.
-	ShippingEmail Email `json:"shippingEmail,omitempty" url:"shippingEmail,omitempty"`
+	ShippingEmail Email `json:"shippingEmail" url:"shippingEmail"`
 	// Recipient phone number.
-	ShippingPhone        string               `json:"shippingPhone" url:"shippingPhone"`
-	SummaryCommodityCode SummaryCommodityCode `json:"summaryCommodityCode,omitempty" url:"summaryCommodityCode,omitempty"`
+	ShippingPhone        string                `json:"shippingPhone" url:"shippingPhone"`
+	SummaryCommodityCode *SummaryCommodityCode `json:"summaryCommodityCode,omitempty" url:"summaryCommodityCode,omitempty"`
 	// Array of line items included in the invoice.
 	Items      []*BillItem        `json:"items" url:"items"`
 	Customer   *PayorDataResponse `json:"Customer" url:"Customer"`
@@ -1240,9 +1242,9 @@ type QueryInvoiceResponseRecordsItem struct {
 	// Object with options for scheduled invoices.
 	ScheduledOptions *BillOptions `json:"scheduledOptions,omitempty" url:"scheduledOptions,omitempty"`
 	// Paypoint's legal name.
-	PaypointLegalname Legalname `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
+	PaypointLegalname Legalname `json:"PaypointLegalname" url:"PaypointLegalname"`
 	// Paypoint's DBA name.
-	PaypointDbaname Dbaname `json:"PaypointDbaname,omitempty" url:"PaypointDbaname,omitempty"`
+	PaypointDbaname Dbaname `json:"PaypointDbaname" url:"PaypointDbaname"`
 	// Paypoint's entryname.
 	PaypointEntryname Entrypointfield `json:"PaypointEntryname" url:"PaypointEntryname"`
 	ParentOrgId       Orgid           `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
@@ -1251,7 +1253,7 @@ type QueryInvoiceResponseRecordsItem struct {
 	AdditionalData map[string]interface{} `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
 	// Object containing attachments associated to the invoice.
 	DocumentsRef       *DocumentsRef      `json:"DocumentsRef,omitempty" url:"DocumentsRef,omitempty"`
-	ExternalPaypointId ExternalPaypointId `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	ExternalPaypointId ExternalPaypointId `json:"externalPaypointID" url:"externalPaypointID"`
 	PageIdentifier     *PageIdentifier    `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 
 	extraProperties map[string]interface{}
@@ -1281,7 +1283,7 @@ func (q *QueryInvoiceResponseRecordsItem) GetPaypointId() PaypointId {
 
 func (q *QueryInvoiceResponseRecordsItem) GetInvoiceNumber() Invoicenumber {
 	if q == nil {
-		return nil
+		return ""
 	}
 	return q.InvoiceNumber
 }
@@ -1314,7 +1316,7 @@ func (q *QueryInvoiceResponseRecordsItem) GetInvoiceEndDate() Datenullable {
 	return q.InvoiceEndDate
 }
 
-func (q *QueryInvoiceResponseRecordsItem) GetLastPaymentDate() *Datetimenullable {
+func (q *QueryInvoiceResponseRecordsItem) GetLastPaymentDate() *DatetimeNullable {
 	if q == nil {
 		return nil
 	}
@@ -1351,12 +1353,12 @@ func (q *QueryInvoiceResponseRecordsItem) GetFrequency() Frequency {
 
 func (q *QueryInvoiceResponseRecordsItem) GetPaymentTerms() Terms {
 	if q == nil {
-		return nil
+		return ""
 	}
 	return q.PaymentTerms
 }
 
-func (q *QueryInvoiceResponseRecordsItem) GetTermsConditions() TermsConditions {
+func (q *QueryInvoiceResponseRecordsItem) GetTermsConditions() *TermsConditions {
 	if q == nil {
 		return nil
 	}
@@ -1442,14 +1444,14 @@ func (q *QueryInvoiceResponseRecordsItem) GetCompany() *string {
 
 func (q *QueryInvoiceResponseRecordsItem) GetShippingAddress1() Shippingaddress {
 	if q == nil {
-		return nil
+		return ""
 	}
 	return q.ShippingAddress1
 }
 
 func (q *QueryInvoiceResponseRecordsItem) GetShippingAddress2() Shippingaddressadditional {
 	if q == nil {
-		return nil
+		return ""
 	}
 	return q.ShippingAddress2
 }
@@ -1470,7 +1472,7 @@ func (q *QueryInvoiceResponseRecordsItem) GetShippingState() Shippingstate {
 
 func (q *QueryInvoiceResponseRecordsItem) GetShippingZip() Shippingzip {
 	if q == nil {
-		return nil
+		return ""
 	}
 	return q.ShippingZip
 }
@@ -1491,7 +1493,7 @@ func (q *QueryInvoiceResponseRecordsItem) GetShippingCountry() Shippingcountry {
 
 func (q *QueryInvoiceResponseRecordsItem) GetShippingEmail() Email {
 	if q == nil {
-		return nil
+		return ""
 	}
 	return q.ShippingEmail
 }
@@ -1503,7 +1505,7 @@ func (q *QueryInvoiceResponseRecordsItem) GetShippingPhone() string {
 	return q.ShippingPhone
 }
 
-func (q *QueryInvoiceResponseRecordsItem) GetSummaryCommodityCode() SummaryCommodityCode {
+func (q *QueryInvoiceResponseRecordsItem) GetSummaryCommodityCode() *SummaryCommodityCode {
 	if q == nil {
 		return nil
 	}
@@ -1547,14 +1549,14 @@ func (q *QueryInvoiceResponseRecordsItem) GetScheduledOptions() *BillOptions {
 
 func (q *QueryInvoiceResponseRecordsItem) GetPaypointLegalname() Legalname {
 	if q == nil {
-		return nil
+		return ""
 	}
 	return q.PaypointLegalname
 }
 
 func (q *QueryInvoiceResponseRecordsItem) GetPaypointDbaname() Dbaname {
 	if q == nil {
-		return nil
+		return ""
 	}
 	return q.PaypointDbaname
 }
@@ -1596,7 +1598,7 @@ func (q *QueryInvoiceResponseRecordsItem) GetDocumentsRef() *DocumentsRef {
 
 func (q *QueryInvoiceResponseRecordsItem) GetExternalPaypointId() ExternalPaypointId {
 	if q == nil {
-		return nil
+		return ""
 	}
 	return q.ExternalPaypointId
 }

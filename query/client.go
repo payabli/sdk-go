@@ -34,13 +34,14 @@ func NewClient(opts ...option.RequestOption) *Client {
 	}
 }
 
-// Retrieve a list of batches and their details, including settled and unsettled transactions for a paypoint. Use filters to limit results.
+// Retrieve a list of batches and their details, including settled and
+// unsettled transactions for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListBatchDetails(
 	ctx context.Context,
 	entry sdk.Entry,
 	request *sdk.ListBatchDetailsRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryResponseSettlements, error) {
+) (*sdk.QueryBatchesDetailResponse, error) {
 	response, err := c.WithRawResponse.ListBatchDetails(
 		ctx,
 		entry,
@@ -53,7 +54,7 @@ func (c *Client) ListBatchDetails(
 	return response.Body, nil
 }
 
-// Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results.
+// Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListBatchDetailsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -73,7 +74,7 @@ func (c *Client) ListBatchDetailsOrg(
 	return response.Body, nil
 }
 
-// Retrieve a list of batches for a paypoint. Use filters to limit results.
+// Retrieve a list of batches for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListBatches(
 	ctx context.Context,
 	entry sdk.Entry,
@@ -92,7 +93,7 @@ func (c *Client) ListBatches(
 	return response.Body, nil
 }
 
-// Retrieve a list of batches for an org. Use filters to limit results.
+// Retrieve a list of batches for an org. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListBatchesOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -112,7 +113,7 @@ func (c *Client) ListBatchesOrg(
 	return response.Body, nil
 }
 
-// Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results.
+// Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListBatchesOut(
 	ctx context.Context,
 	entry sdk.Entry,
@@ -131,7 +132,7 @@ func (c *Client) ListBatchesOut(
 	return response.Body, nil
 }
 
-// Retrieve a list of MoneyOut batches for an org. Use filters to limit results.
+// Retrieve a list of MoneyOut batches for an org. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListBatchesOutOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -151,7 +152,7 @@ func (c *Client) ListBatchesOutOrg(
 	return response.Body, nil
 }
 
-// Retrieves a list of chargebacks and returned transactions for a paypoint. Use filters to limit results.
+// Retrieves a list of chargebacks and returned transactions for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListChargebacks(
 	ctx context.Context,
 	entry sdk.Entry,
@@ -170,7 +171,7 @@ func (c *Client) ListChargebacks(
 	return response.Body, nil
 }
 
-// Retrieve a list of chargebacks and returned transactions for an org. Use filters to limit results.
+// Retrieve a list of chargebacks and returned transactions for an org. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListChargebacksOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -190,7 +191,7 @@ func (c *Client) ListChargebacksOrg(
 	return response.Body, nil
 }
 
-// Retrieves a list of customers for a paypoint. Use filters to limit results.
+// Retrieves a list of customers for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListCustomers(
 	ctx context.Context,
 	entry sdk.Entry,
@@ -209,7 +210,7 @@ func (c *Client) ListCustomers(
 	return response.Body, nil
 }
 
-// Retrieves a list of customers for an org. Use filters to limit results.
+// Retrieves a list of customers for an org. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListCustomersOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -307,7 +308,7 @@ func (c *Client) ListNotificationsOrg(
 	return response.Body, nil
 }
 
-// Retrieves a list of an organization's suborganizations and their full details such as orgId, users, and settings. Use filters to limit results.
+// Retrieves a list of an organization's suborganizations and their full details such as orgId, users, and settings. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListOrganizations(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -327,7 +328,7 @@ func (c *Client) ListOrganizations(
 	return response.Body, nil
 }
 
-// Retrieves a list of money out transactions (payouts) for a paypoint. Use filters to limit results.
+// Retrieves a list of money out transactions (payouts) for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListPayout(
 	ctx context.Context,
 	entry sdk.Entry,
@@ -346,7 +347,7 @@ func (c *Client) ListPayout(
 	return response.Body, nil
 }
 
-// Retrieves a list of money out transactions (payouts) for an organization. Use filters to limit results.
+// Retrieves a list of money out transactions (payouts) for an organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListPayoutOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -366,7 +367,7 @@ func (c *Client) ListPayoutOrg(
 	return response.Body, nil
 }
 
-// Returns a list of paypoints in an organization. Use filters to limit results.
+// Returns a list of paypoints in an organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListPaypoints(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -386,7 +387,7 @@ func (c *Client) ListPaypoints(
 	return response.Body, nil
 }
 
-// Retrieve a list of settled transactions for a paypoint. Use filters to limit results.
+// Retrieve a list of settled transactions for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListSettlements(
 	ctx context.Context,
 	entry sdk.Entry,
@@ -405,7 +406,7 @@ func (c *Client) ListSettlements(
 	return response.Body, nil
 }
 
-// Retrieve a list of settled transactions for an organization.
+// Retrieve a list of settled transactions for an organization. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListSettlementsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -425,7 +426,7 @@ func (c *Client) ListSettlementsOrg(
 	return response.Body, nil
 }
 
-// Returns a list of subscriptions for a single paypoint. Use filters to limit results.
+// Returns a list of subscriptions for a single paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListSubscriptions(
 	ctx context.Context,
 	entry sdk.Entry,
@@ -444,7 +445,7 @@ func (c *Client) ListSubscriptions(
 	return response.Body, nil
 }
 
-// Returns a list of subscriptions for a single org. Use filters to limit results.
+// Returns a list of subscriptions for a single org. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListSubscriptionsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -464,7 +465,7 @@ func (c *Client) ListSubscriptionsOrg(
 	return response.Body, nil
 }
 
-// Retrieve a list of transactions for a paypoint. Use filters to limit results.
+// Retrieve a list of transactions for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 // By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include `transactionDate` filters.
 // For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.
 //
@@ -491,11 +492,16 @@ func (c *Client) ListTransactions(
 	return response.Body, nil
 }
 
-// Retrieve a list of transactions for an organization. Use filters to limit results.
+// Retrieve a list of transactions for an organization. Use filters to
+// limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
 // By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include `transactionDate` filters.
+//
 // For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.
 //
-//	``` curl --request GET \
+// ```
+//
+//	curl --request GET \
 //	  --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&fromRecord=0&transactionDate(ge)=2024-04-01T00:00:00&transactionDate(le)=2024-04-09T23:59:59\
 //	  --header 'requestToken: <api-key>'
 //
@@ -519,7 +525,7 @@ func (c *Client) ListTransactionsOrg(
 	return response.Body, nil
 }
 
-// Retrieve a list of transfer details records for a paypoint. Use filters to limit results.
+// Retrieve a list of transfer details records for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListTransferDetails(
 	ctx context.Context,
 	entry sdk.Entry,
@@ -541,7 +547,7 @@ func (c *Client) ListTransferDetails(
 	return response.Body, nil
 }
 
-// Retrieve a list of transfers for a paypoint. Use filters to limit results.
+// Retrieve a list of transfers for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListTransfers(
 	ctx context.Context,
 	entry sdk.Entry,
@@ -551,6 +557,23 @@ func (c *Client) ListTransfers(
 	response, err := c.WithRawResponse.ListTransfers(
 		ctx,
 		entry,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Retrieve a list of transfers for an org. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+func (c *Client) ListTransfersOrg(
+	ctx context.Context,
+	request *sdk.ListTransfersRequestOrg,
+	opts ...option.RequestOption,
+) (*sdk.TransferQueryResponse, error) {
+	response, err := c.WithRawResponse.ListTransfersOrg(
+		ctx,
 		request,
 		opts...,
 	)
@@ -600,7 +623,7 @@ func (c *Client) ListUsersPaypoint(
 	return response.Body, nil
 }
 
-// Retrieve a list of vendors for an entrypoint. Use filters to limit results.
+// Retrieve a list of vendors for an entrypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListVendors(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
@@ -620,7 +643,7 @@ func (c *Client) ListVendors(
 	return response.Body, nil
 }
 
-// Retrieve a list of vendors for an organization. Use filters to limit results.
+// Retrieve a list of vendors for an organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListVendorsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -640,7 +663,7 @@ func (c *Client) ListVendorsOrg(
 	return response.Body, nil
 }
 
-// Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use filters to limit results.
+// Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListVcards(
 	ctx context.Context,
 	entry sdk.Entry,
@@ -659,7 +682,7 @@ func (c *Client) ListVcards(
 	return response.Body, nil
 }
 
-// Retrieve a list of vcards (virtual credit cards) issued for an organization. Use filters to limit results.
+// Retrieve a list of vcards (virtual credit cards) issued for an organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListVcardsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.

@@ -2040,27 +2040,24 @@ type ExportVendorsOrgRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 }
 
-// A file containing the response data, in the format specified in the request.
-type File = map[string]interface{}
-
-type ExportFormat string
+type ExportFormat1 string
 
 const (
-	ExportFormatCsv  ExportFormat = "csv"
-	ExportFormatXlsx ExportFormat = "xlsx"
+	ExportFormat1Csv  ExportFormat1 = "csv"
+	ExportFormat1Xlsx ExportFormat1 = "xlsx"
 )
 
-func NewExportFormatFromString(s string) (ExportFormat, error) {
+func NewExportFormat1FromString(s string) (ExportFormat1, error) {
 	switch s {
 	case "csv":
-		return ExportFormatCsv, nil
+		return ExportFormat1Csv, nil
 	case "xlsx":
-		return ExportFormatXlsx, nil
+		return ExportFormat1Xlsx, nil
 	}
-	var t ExportFormat
+	var t ExportFormat1
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
 }
 
-func (e ExportFormat) Ptr() *ExportFormat {
+func (e ExportFormat1) Ptr() *ExportFormat1 {
 	return &e
 }

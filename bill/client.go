@@ -41,7 +41,7 @@ func (c *Client) AddBill(
 	entry string,
 	request *sdk.AddBillRequest,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponseBills, error) {
+) (*sdk.BillResponse, error) {
 	response, err := c.WithRawResponse.AddBill(
 		ctx,
 		entry,
@@ -78,7 +78,7 @@ func (c *Client) DeleteAttachedFromBill(
 	idBill int,
 	request *sdk.DeleteAttachedFromBillRequest,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponseBills, error) {
+) (*sdk.BillResponse, error) {
 	response, err := c.WithRawResponse.DeleteAttachedFromBill(
 		ctx,
 		filename,
@@ -98,7 +98,7 @@ func (c *Client) DeleteBill(
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
 	idBill int,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponseBills, error) {
+) (*sdk.BillResponse, error) {
 	response, err := c.WithRawResponse.DeleteBill(
 		ctx,
 		idBill,
@@ -181,7 +181,7 @@ func (c *Client) GetBill(
 	return response.Body, nil
 }
 
-// Retrieve a list of bills for an entrypoint. Use filters to limit results.
+// Retrieve a list of bills for an entrypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListBills(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
@@ -201,7 +201,7 @@ func (c *Client) ListBills(
 	return response.Body, nil
 }
 
-// Retrieve a list of bills for an organization. Use filters to limit results.
+// Retrieve a list of bills for an organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListBillsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -248,7 +248,7 @@ func (c *Client) SendToApprovalBill(
 	idBill int,
 	request *sdk.SendToApprovalBillRequest,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponseBills, error) {
+) (*sdk.BillResponse, error) {
 	response, err := c.WithRawResponse.SendToApprovalBill(
 		ctx,
 		idBill,

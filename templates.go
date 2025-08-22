@@ -3246,9 +3246,9 @@ func (s *SignerSection) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
-type SubFooter = *string
+type SubFooter = string
 
-type SubHeader = *string
+type SubHeader = string
 
 type TemplateAdditionalDataField struct {
 	Visible  *Visible         `json:"visible,omitempty" url:"visible,omitempty"`

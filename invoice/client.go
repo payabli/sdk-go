@@ -194,7 +194,7 @@ func (c *Client) GetInvoiceNumber(
 	return response.Body, nil
 }
 
-// Returns a list of invoices for an entrypoint. Use filters to limit results.
+// Returns a list of invoices for an entrypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListInvoices(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
@@ -214,7 +214,7 @@ func (c *Client) ListInvoices(
 	return response.Body, nil
 }
 
-// Returns a list of invoices for an org. Use filters to limit results.
+// Returns a list of invoices for an org. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListInvoicesOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -246,6 +246,24 @@ func (c *Client) SendInvoice(
 		ctx,
 		idInvoice,
 		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Export a single invoice in PDF format.
+func (c *Client) GetInvoicePdf(
+	ctx context.Context,
+	// Invoice ID
+	idInvoice int,
+	opts ...option.RequestOption,
+) (sdk.File, error) {
+	response, err := c.WithRawResponse.GetInvoicePdf(
+		ctx,
+		idInvoice,
 		opts...,
 	)
 	if err != nil {

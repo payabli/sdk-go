@@ -184,7 +184,7 @@ func (c *Client) GetLinkApplication(
 	return response.Body, nil
 }
 
-// Returns a list of boarding applications for an organization. Use filters to limit results.
+// Returns a list of boarding applications for an organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListApplications(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
