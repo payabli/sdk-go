@@ -54,6 +54,11 @@ type CaptureOutRequest struct {
 	IdempotencyKey *IdempotencyKey `json:"-" url:"-"`
 }
 
+type SendVCardLinkRequest struct {
+	// The transaction ID of the virtual card payout. The ID is returned as `ReferenceId` in the response when you authorize a payout with POST /MoneyOut/authorize.
+	TransId string `json:"transId" url:"-"`
+}
+
 type BillDetailResponse struct {
 	// Events associated to this transaction.
 	Bills []*BillDetailsResponse `json:"Bills,omitempty" url:"Bills,omitempty"`
@@ -65,6 +70,7 @@ type BillDetailResponse struct {
 	Comments *Comments `json:"Comments,omitempty" url:"Comments,omitempty"`
 	// Timestamp when the payment was created, in UTC.
 	CreatedDate *CreatedAt `json:"CreatedDate,omitempty" url:"CreatedDate,omitempty"`
+	CreatedAt   *CreatedAt `json:"CreatedAt,omitempty" url:"CreatedAt,omitempty"`
 	// Events associated to this transaction.
 	Events    []*QueryTransactionEvents `json:"Events,omitempty" url:"Events,omitempty"`
 	FeeAmount *FeeAmount                `json:"FeeAmount,omitempty" url:"FeeAmount,omitempty"`
@@ -74,7 +80,8 @@ type BillDetailResponse struct {
 	// Timestamp when payment record was updated, in UTC.
 	LastUpdated   *LastModified      `json:"LastUpdated,omitempty" url:"LastUpdated,omitempty"`
 	NetAmount     *Netamountnullable `json:"NetAmount,omitempty" url:"NetAmount,omitempty"`
-	ParentOrgName *OrgParentName     `json:"parentOrgName,omitempty" url:"parentOrgName,omitempty"`
+	ParentOrgName *OrgParentName     `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
+	ParentOrgId   *OrgParentId       `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
 	PaymentData   *QueryPaymentData  `json:"PaymentData,omitempty" url:"PaymentData,omitempty"`
 	// Unique identifier for group or batch containing the transaction.
 	PaymentGroup *string    `json:"PaymentGroup,omitempty" url:"PaymentGroup,omitempty"`
@@ -83,9 +90,9 @@ type BillDetailResponse struct {
 	PaymentMethod *string `json:"PaymentMethod,omitempty" url:"PaymentMethod,omitempty"`
 	// Status of payout transaction.
 	PaymentStatus   *string  `json:"PaymentStatus,omitempty" url:"PaymentStatus,omitempty"`
-	PaypointDbaname *Dbaname `json:"paypointDbaname,omitempty" url:"paypointDbaname,omitempty"`
+	PaypointDbaname *Dbaname `json:"PaypointDbaname,omitempty" url:"PaypointDbaname,omitempty"`
 	// Paypoint legal name.
-	PaypointLegalname *Legalname `json:"paypointLegalname,omitempty" url:"paypointLegalname,omitempty"`
+	PaypointLegalname *Legalname `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
 	Source            *Source    `json:"Source,omitempty" url:"Source,omitempty"`
 	// Internal status of transaction.
 	Status *int `json:"Status,omitempty" url:"Status,omitempty"`
@@ -94,7 +101,21 @@ type BillDetailResponse struct {
 	// Transaction total amount (including service fee or sub-charge).
 	TotalAmount *float64 `json:"TotalAmount,omitempty" url:"TotalAmount,omitempty"`
 	// Vendor related to the payout transaction.
-	Vendor *VendorQueryRecord `json:"Vendor,omitempty" url:"Vendor,omitempty"`
+	Vendor             *VendorQueryRecord  `json:"Vendor,omitempty" url:"Vendor,omitempty"`
+	ExternalPaypointId *ExternalPaypointId `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	EntryName          *Entry              `json:"EntryName,omitempty" url:"EntryName,omitempty"`
+	// Identifier for the batch in which this transaction was processed. Used to track and reconcile batch-level operations.
+	BatchId              *string               `json:"BatchId,omitempty" url:"BatchId,omitempty"`
+	HasVcardTransactions *HasVcardTransactions `json:"HasVcardTransactions,omitempty" url:"HasVcardTransactions,omitempty"`
+	IsSameDayAch         *IsSameDayAch         `json:"IsSameDayACH,omitempty" url:"IsSameDayACH,omitempty"`
+	ScheduleId           *ScheduleId           `json:"ScheduleId,omitempty" url:"ScheduleId,omitempty"`
+	SettlementStatus     *SettlementStatus     `json:"SettlementStatus,omitempty" url:"SettlementStatus,omitempty"`
+	RiskFlagged          *RiskFlagged          `json:"RiskFlagged,omitempty" url:"RiskFlagged,omitempty"`
+	RiskFlaggedOn        *RiskFlaggedOn        `json:"RiskFlaggedOn,omitempty" url:"RiskFlaggedOn,omitempty"`
+	RiskStatus           *RiskStatus           `json:"RiskStatus,omitempty" url:"RiskStatus,omitempty"`
+	RiskReason           *RiskReason           `json:"RiskReason,omitempty" url:"RiskReason,omitempty"`
+	RiskAction           *RiskAction           `json:"RiskAction,omitempty" url:"RiskAction,omitempty"`
+	RiskActionCode       *RiskActionCode       `json:"RiskActionCode,omitempty" url:"RiskActionCode,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -133,6 +154,13 @@ func (b *BillDetailResponse) GetCreatedDate() *CreatedAt {
 		return nil
 	}
 	return b.CreatedDate
+}
+
+func (b *BillDetailResponse) GetCreatedAt() *CreatedAt {
+	if b == nil {
+		return nil
+	}
+	return b.CreatedAt
 }
 
 func (b *BillDetailResponse) GetEvents() []*QueryTransactionEvents {
@@ -182,6 +210,13 @@ func (b *BillDetailResponse) GetParentOrgName() *OrgParentName {
 		return nil
 	}
 	return b.ParentOrgName
+}
+
+func (b *BillDetailResponse) GetParentOrgId() *OrgParentId {
+	if b == nil {
+		return nil
+	}
+	return b.ParentOrgId
 }
 
 func (b *BillDetailResponse) GetPaymentData() *QueryPaymentData {
@@ -266,6 +301,97 @@ func (b *BillDetailResponse) GetVendor() *VendorQueryRecord {
 		return nil
 	}
 	return b.Vendor
+}
+
+func (b *BillDetailResponse) GetExternalPaypointId() *ExternalPaypointId {
+	if b == nil {
+		return nil
+	}
+	return b.ExternalPaypointId
+}
+
+func (b *BillDetailResponse) GetEntryName() *Entry {
+	if b == nil {
+		return nil
+	}
+	return b.EntryName
+}
+
+func (b *BillDetailResponse) GetBatchId() *string {
+	if b == nil {
+		return nil
+	}
+	return b.BatchId
+}
+
+func (b *BillDetailResponse) GetHasVcardTransactions() *HasVcardTransactions {
+	if b == nil {
+		return nil
+	}
+	return b.HasVcardTransactions
+}
+
+func (b *BillDetailResponse) GetIsSameDayAch() *IsSameDayAch {
+	if b == nil {
+		return nil
+	}
+	return b.IsSameDayAch
+}
+
+func (b *BillDetailResponse) GetScheduleId() *ScheduleId {
+	if b == nil {
+		return nil
+	}
+	return b.ScheduleId
+}
+
+func (b *BillDetailResponse) GetSettlementStatus() *SettlementStatus {
+	if b == nil {
+		return nil
+	}
+	return b.SettlementStatus
+}
+
+func (b *BillDetailResponse) GetRiskFlagged() *RiskFlagged {
+	if b == nil {
+		return nil
+	}
+	return b.RiskFlagged
+}
+
+func (b *BillDetailResponse) GetRiskFlaggedOn() *RiskFlaggedOn {
+	if b == nil {
+		return nil
+	}
+	return b.RiskFlaggedOn
+}
+
+func (b *BillDetailResponse) GetRiskStatus() *RiskStatus {
+	if b == nil {
+		return nil
+	}
+	return b.RiskStatus
+}
+
+func (b *BillDetailResponse) GetRiskReason() *RiskReason {
+	if b == nil {
+		return nil
+	}
+	return b.RiskReason
+}
+
+func (b *BillDetailResponse) GetRiskAction() *RiskAction {
+	if b == nil {
+		return nil
+	}
+	return b.RiskAction
+}
+
+func (b *BillDetailResponse) GetRiskActionCode() *RiskActionCode {
+	if b == nil {
+		return nil
+	}
+	return b.RiskActionCode
 }
 
 func (b *BillDetailResponse) GetExtraProperties() map[string]interface{} {
@@ -1057,6 +1183,62 @@ func (c *CaptureAllOutResponseResponseDataItem) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", c)
+}
+
+type OperationResult struct {
+	// Message describing the result. If the virtual card link was sent successfully, this contains the email address to which the link was sent.
+	Message *string `json:"message,omitempty" url:"message,omitempty"`
+	// Indicates whether the operation was successful.
+	Success bool `json:"success" url:"success"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (o *OperationResult) GetMessage() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Message
+}
+
+func (o *OperationResult) GetSuccess() bool {
+	if o == nil {
+		return false
+	}
+	return o.Success
+}
+
+func (o *OperationResult) GetExtraProperties() map[string]interface{} {
+	return o.extraProperties
+}
+
+func (o *OperationResult) UnmarshalJSON(data []byte) error {
+	type unmarshaler OperationResult
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*o = OperationResult(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *o)
+	if err != nil {
+		return err
+	}
+	o.extraProperties = extraProperties
+	o.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (o *OperationResult) String() string {
+	if len(o.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(o); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", o)
 }
 
 // Object containing payment details.

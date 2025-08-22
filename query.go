@@ -2759,62 +2759,61 @@ func (a *AssociatedVendor) String() string {
 type Avgticketamt = *float64
 
 type BatchDetailResponseRecord struct {
-	Id                            int                            `json:"Id" url:"Id"`
-	Method                        string                         `json:"Method" url:"Method"`
-	WalletType                    *string                        `json:"WalletType,omitempty" url:"WalletType,omitempty"`
-	SettledAmount                 float64                        `json:"SettledAmount" url:"SettledAmount"`
-	Type                          string                         `json:"Type" url:"Type"`
-	BatchNumber                   BatchNumber                    `json:"BatchNumber" url:"BatchNumber"`
-	BatchAmount                   float64                        `json:"BatchAmount" url:"BatchAmount"`
-	PaymentTransId                string                         `json:"PaymentTransId" url:"PaymentTransId"`
-	PaymentTransStatus            int                            `json:"PaymentTransStatus" url:"PaymentTransStatus"`
-	PaymentTransStatusDescription *PaymentTransStatusDescription `json:"PaymentTransStatusDescription,omitempty" url:"PaymentTransStatusDescription,omitempty"`
-	ScheduleReference             int                            `json:"ScheduleReference" url:"ScheduleReference"`
-	GatewayTransId                string                         `json:"GatewayTransId" url:"GatewayTransId"`
-	OrderId                       Orderid                        `json:"OrderId" url:"OrderId"`
-	TransMethod                   string                         `json:"TransMethod" url:"TransMethod"`
-	PaymentData                   *QueryPaymentData              `json:"PaymentData,omitempty" url:"PaymentData,omitempty"`
-	NetAmount                     Netamountnullable              `json:"NetAmount,omitempty" url:"NetAmount,omitempty"`
-	Operation                     Operation                      `json:"Operation" url:"Operation"`
-	Category                      Category                       `json:"Category" url:"Category"`
-	Source                        *Source                        `json:"Source,omitempty" url:"Source,omitempty"`
-	Status                        int                            `json:"Status" url:"Status"`
-	TransactionTime               TransactionTime                `json:"TransactionTime" url:"TransactionTime"`
-	Customer                      *QueryTransactionPayorData     `json:"Customer,omitempty" url:"Customer,omitempty"`
-	SettlementDate                time.Time                      `json:"SettlementDate" url:"SettlementDate"`
-	PaymentSettlementStatus       int                            `json:"PaymentSettlementStatus" url:"PaymentSettlementStatus"`
-	BatchStatus                   int                            `json:"BatchStatus" url:"BatchStatus"`
-	DepositDate                   DepositDate                    `json:"DepositDate" url:"DepositDate"`
-	ExpectedDepositDate           ExpectedDepositDate            `json:"ExpectedDepositDate" url:"ExpectedDepositDate"`
-	MaskedAccount                 Maskedaccount                  `json:"MaskedAccount" url:"MaskedAccount"`
-	CreatedAt                     CreatedAt                      `json:"CreatedAt" url:"CreatedAt"`
-	PaypointLegalname             Legalname                      `json:"PaypointLegalname" url:"PaypointLegalname"`
-	ResponseData                  *QueryResponseData             `json:"ResponseData,omitempty" url:"ResponseData,omitempty"`
-	PaypointDbaname               Dbaname                        `json:"PaypointDbaname" url:"PaypointDbaname"`
-	ParentOrgName                 OrgParentName                  `json:"ParentOrgName" url:"ParentOrgName"`
-	ParentOrgId                   int                            `json:"ParentOrgId" url:"ParentOrgId"`
-	PaypointEntryname             Entrypointfield                `json:"PaypointEntryname" url:"PaypointEntryname"`
-	DeviceId                      *Device                        `json:"DeviceId,omitempty" url:"DeviceId,omitempty"`
-	RetrievalId                   RetrievalId                    `json:"RetrievalId" url:"RetrievalId"`
-	ChargebackId                  ChargebackId                   `json:"ChargebackId,omitempty" url:"ChargebackId,omitempty"`
-	AchHolderType                 AchHolderType                  `json:"AchHolderType" url:"AchHolderType"`
-	AchSecCode                    AchSecCode                     `json:"AchSecCode" url:"AchSecCode"`
-	ConnectorName                 string                         `json:"ConnectorName" url:"ConnectorName"`
-	EntrypageId                   EntrypageId                    `json:"EntrypageId,omitempty" url:"EntrypageId,omitempty"`
-	FeeAmount                     FeeAmount                      `json:"FeeAmount" url:"FeeAmount"`
-	OrgId                         Orgid                          `json:"OrgId,omitempty" url:"OrgId,omitempty"`
-	PayorId                       PayorId                        `json:"PayorId,omitempty" url:"PayorId,omitempty"`
-	PaypointId                    PaypointId                     `json:"PaypointId,omitempty" url:"PaypointId,omitempty"`
-	PendingFeeAmount              PendingFeeAmount               `json:"PendingFeeAmount,omitempty" url:"PendingFeeAmount,omitempty"`
-	RefundId                      RefundId                       `json:"RefundId,omitempty" url:"RefundId,omitempty"`
-	ReturnedId                    ReturnedId                     `json:"ReturnedId" url:"ReturnedId"`
-	SplitFundingInstructions      SplitFunding                   `json:"splitFundingInstructions,omitempty" url:"splitFundingInstructions,omitempty"`
-	TotalAmount                   float64                        `json:"TotalAmount" url:"TotalAmount"`
-	CfeeTransactions              []*QueryCFeeTransaction        `json:"CfeeTransactions" url:"CfeeTransactions"`
-	InvoiceData                   *BillData                      `json:"invoiceData,omitempty" url:"invoiceData,omitempty"`
-	TransactionEvents             []*QueryTransactionEvents      `json:"TransactionEvents" url:"TransactionEvents"`
-	ExternalPaypointId            ExternalPaypointId             `json:"externalPaypointID" url:"externalPaypointID"`
-	IsHold                        int                            `json:"isHold" url:"isHold"`
+	Id                       int                        `json:"Id" url:"Id"`
+	Method                   string                     `json:"Method" url:"Method"`
+	WalletType               *string                    `json:"WalletType,omitempty" url:"WalletType,omitempty"`
+	SettledAmount            float64                    `json:"SettledAmount" url:"SettledAmount"`
+	Type                     string                     `json:"Type" url:"Type"`
+	BatchNumber              BatchNumber                `json:"BatchNumber" url:"BatchNumber"`
+	BatchAmount              float64                    `json:"BatchAmount" url:"BatchAmount"`
+	PaymentTransId           string                     `json:"PaymentTransId" url:"PaymentTransId"`
+	PaymentTransStatus       int                        `json:"PaymentTransStatus" url:"PaymentTransStatus"`
+	ScheduleReference        int                        `json:"ScheduleReference" url:"ScheduleReference"`
+	GatewayTransId           string                     `json:"GatewayTransId" url:"GatewayTransId"`
+	OrderId                  Orderid                    `json:"OrderId" url:"OrderId"`
+	TransMethod              string                     `json:"TransMethod" url:"TransMethod"`
+	PaymentData              *QueryPaymentData          `json:"PaymentData,omitempty" url:"PaymentData,omitempty"`
+	NetAmount                Netamountnullable          `json:"NetAmount,omitempty" url:"NetAmount,omitempty"`
+	Operation                Operation                  `json:"Operation" url:"Operation"`
+	Category                 Category                   `json:"Category" url:"Category"`
+	Source                   *Source                    `json:"Source,omitempty" url:"Source,omitempty"`
+	Status                   int                        `json:"Status" url:"Status"`
+	TransactionTime          TransactionTime            `json:"TransactionTime" url:"TransactionTime"`
+	Customer                 *QueryTransactionPayorData `json:"Customer,omitempty" url:"Customer,omitempty"`
+	SettlementDate           time.Time                  `json:"SettlementDate" url:"SettlementDate"`
+	PaymentSettlementStatus  int                        `json:"PaymentSettlementStatus" url:"PaymentSettlementStatus"`
+	BatchStatus              int                        `json:"BatchStatus" url:"BatchStatus"`
+	DepositDate              DepositDate                `json:"DepositDate" url:"DepositDate"`
+	ExpectedDepositDate      ExpectedDepositDate        `json:"ExpectedDepositDate" url:"ExpectedDepositDate"`
+	MaskedAccount            Maskedaccount              `json:"MaskedAccount" url:"MaskedAccount"`
+	CreatedAt                CreatedAt                  `json:"CreatedAt" url:"CreatedAt"`
+	PaypointLegalname        Legalname                  `json:"PaypointLegalname" url:"PaypointLegalname"`
+	ResponseData             *QueryResponseData         `json:"ResponseData,omitempty" url:"ResponseData,omitempty"`
+	PaypointDbaname          Dbaname                    `json:"PaypointDbaname" url:"PaypointDbaname"`
+	ParentOrgName            OrgParentName              `json:"ParentOrgName" url:"ParentOrgName"`
+	ParentOrgId              int                        `json:"ParentOrgId" url:"ParentOrgId"`
+	PaypointEntryname        Entrypointfield            `json:"PaypointEntryname" url:"PaypointEntryname"`
+	DeviceId                 *Device                    `json:"DeviceId,omitempty" url:"DeviceId,omitempty"`
+	RetrievalId              RetrievalId                `json:"RetrievalId" url:"RetrievalId"`
+	ChargebackId             ChargebackId               `json:"ChargebackId,omitempty" url:"ChargebackId,omitempty"`
+	AchHolderType            AchHolderType              `json:"AchHolderType" url:"AchHolderType"`
+	AchSecCode               AchSecCode                 `json:"AchSecCode" url:"AchSecCode"`
+	ConnectorName            string                     `json:"ConnectorName" url:"ConnectorName"`
+	EntrypageId              EntrypageId                `json:"EntrypageId,omitempty" url:"EntrypageId,omitempty"`
+	FeeAmount                FeeAmount                  `json:"FeeAmount" url:"FeeAmount"`
+	OrgId                    Orgid                      `json:"OrgId,omitempty" url:"OrgId,omitempty"`
+	PayorId                  PayorId                    `json:"PayorId,omitempty" url:"PayorId,omitempty"`
+	PaypointId               PaypointId                 `json:"PaypointId,omitempty" url:"PaypointId,omitempty"`
+	PendingFeeAmount         PendingFeeAmount           `json:"PendingFeeAmount,omitempty" url:"PendingFeeAmount,omitempty"`
+	RefundId                 RefundId                   `json:"RefundId,omitempty" url:"RefundId,omitempty"`
+	ReturnedId               ReturnedId                 `json:"ReturnedId" url:"ReturnedId"`
+	SplitFundingInstructions SplitFunding               `json:"splitFundingInstructions,omitempty" url:"splitFundingInstructions,omitempty"`
+	TotalAmount              float64                    `json:"TotalAmount" url:"TotalAmount"`
+	CfeeTransactions         []*QueryCFeeTransaction    `json:"CfeeTransactions" url:"CfeeTransactions"`
+	InvoiceData              *BillData                  `json:"invoiceData,omitempty" url:"invoiceData,omitempty"`
+	TransactionEvents        []*QueryTransactionEvents  `json:"TransactionEvents" url:"TransactionEvents"`
+	ExternalPaypointId       ExternalPaypointId         `json:"externalPaypointID" url:"externalPaypointID"`
+	IsHold                   int                        `json:"isHold" url:"isHold"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2881,13 +2880,6 @@ func (b *BatchDetailResponseRecord) GetPaymentTransStatus() int {
 		return 0
 	}
 	return b.PaymentTransStatus
-}
-
-func (b *BatchDetailResponseRecord) GetPaymentTransStatusDescription() *PaymentTransStatusDescription {
-	if b == nil {
-		return nil
-	}
-	return b.PaymentTransStatusDescription
 }
 
 func (b *BatchDetailResponseRecord) GetScheduleReference() int {
@@ -5719,17 +5711,16 @@ type QueryPayoutTransactionRecordsItem struct {
 	PayoutProgram   *PayoutProgram `json:"PayoutProgram,omitempty" url:"PayoutProgram,omitempty"`
 	PaypointDbaname *Dbaname       `json:"PaypointDbaname,omitempty" url:"PaypointDbaname,omitempty"`
 	// Paypoint legal name.
-	PaypointLegalname *Legalname      `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
-	RiskAction        *RiskAction     `json:"RiskAction,omitempty" url:"RiskAction,omitempty"`
-	RiskActionCode    *RiskActionCode `json:"RiskActionCode,omitempty" url:"RiskActionCode,omitempty"`
-	RiskFlagged       *RiskFlagged    `json:"RiskFlagged,omitempty" url:"RiskFlagged,omitempty"`
-	RiskFlaggedOn     *RiskFlaggedOn  `json:"RiskFlaggedOn,omitempty" url:"RiskFlaggedOn,omitempty"`
-	RiskReason        *RiskReason     `json:"RiskReason,omitempty" url:"RiskReason,omitempty"`
-	RiskStatus        *RiskStatus     `json:"RiskStatus,omitempty" url:"RiskStatus,omitempty"`
-	// Identifier of the autopay schedule associated with the transaction.
-	ScheduleId       *int                    `json:"ScheduleId,omitempty" url:"ScheduleId,omitempty"`
-	SettlementStatus *SettlementStatusPayout `json:"SettlementStatus,omitempty" url:"SettlementStatus,omitempty"`
-	Source           *Source                 `json:"Source,omitempty" url:"Source,omitempty"`
+	PaypointLegalname *Legalname              `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
+	RiskAction        *RiskAction             `json:"RiskAction,omitempty" url:"RiskAction,omitempty"`
+	RiskActionCode    *RiskActionCode         `json:"RiskActionCode,omitempty" url:"RiskActionCode,omitempty"`
+	RiskFlagged       *RiskFlagged            `json:"RiskFlagged,omitempty" url:"RiskFlagged,omitempty"`
+	RiskFlaggedOn     *RiskFlaggedOn          `json:"RiskFlaggedOn,omitempty" url:"RiskFlaggedOn,omitempty"`
+	RiskReason        *RiskReason             `json:"RiskReason,omitempty" url:"RiskReason,omitempty"`
+	RiskStatus        *RiskStatus             `json:"RiskStatus,omitempty" url:"RiskStatus,omitempty"`
+	ScheduleId        *ScheduleId             `json:"ScheduleId,omitempty" url:"ScheduleId,omitempty"`
+	SettlementStatus  *SettlementStatusPayout `json:"SettlementStatus,omitempty" url:"SettlementStatus,omitempty"`
+	Source            *Source                 `json:"Source,omitempty" url:"Source,omitempty"`
 	// Internal status of transaction.
 	Status *int `json:"Status,omitempty" url:"Status,omitempty"`
 	// Transaction total amount (including service fee or sub-charge).
@@ -5972,7 +5963,7 @@ func (q *QueryPayoutTransactionRecordsItem) GetRiskStatus() *RiskStatus {
 	return q.RiskStatus
 }
 
-func (q *QueryPayoutTransactionRecordsItem) GetScheduleId() *int {
+func (q *QueryPayoutTransactionRecordsItem) GetScheduleId() *ScheduleId {
 	if q == nil {
 		return nil
 	}
@@ -6837,9 +6828,8 @@ type QueryResponseSettlementsRecordsItem struct {
 	ParentOrgName *OrgParentName    `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
 	PaymentData   *QueryPaymentData `json:"PaymentData,omitempty" url:"PaymentData,omitempty"`
 	// The transaction ID for the payment.
-	PaymentTransId                *string                        `json:"PaymentTransId,omitempty" url:"PaymentTransId,omitempty"`
-	PaymentTransStatus            *TransStatus                   `json:"PaymentTransStatus,omitempty" url:"PaymentTransStatus,omitempty"`
-	PaymentTransStatusDescription *PaymentTransStatusDescription `json:"PaymentTransStatusDescription,omitempty" url:"PaymentTransStatusDescription,omitempty"`
+	PaymentTransId     *string      `json:"PaymentTransId,omitempty" url:"PaymentTransId,omitempty"`
+	PaymentTransStatus *TransStatus `json:"PaymentTransStatus,omitempty" url:"PaymentTransStatus,omitempty"`
 	// Paypoint DBA name.
 	PaypointDbaname *string `json:"PaypointDbaname,omitempty" url:"PaypointDbaname,omitempty"`
 	// Paypoint entryname.
@@ -7011,13 +7001,6 @@ func (q *QueryResponseSettlementsRecordsItem) GetPaymentTransStatus() *TransStat
 		return nil
 	}
 	return q.PaymentTransStatus
-}
-
-func (q *QueryResponseSettlementsRecordsItem) GetPaymentTransStatusDescription() *PaymentTransStatusDescription {
-	if q == nil {
-		return nil
-	}
-	return q.PaymentTransStatusDescription
 }
 
 func (q *QueryResponseSettlementsRecordsItem) GetPaypointDbaname() *string {
@@ -7512,9 +7495,6 @@ type Replyby = time.Time
 
 // Identifier of retrieval request
 type RetrievalId = int64
-
-// Settlement status for transaction. See [the docs](/developers/references/money-in-statuses#payment-funding-status) for a full reference.
-type SettlementStatus = int
 
 // Status of transaction. See [the docs](/developers/references/money-in-statuses#money-in-transaction-status) for a full reference.
 type TransStatus = int
@@ -8960,9 +8940,8 @@ type TransferDetailRecord struct {
 	// Status of transaction. See [the
 	// docs](/developers/references/money-in-statuses#money-in-transaction-status) for a
 	// full reference.
-	TransStatus            *int                           `json:"TransStatus,omitempty" url:"TransStatus,omitempty"`
-	TransStatusDescription *PaymentTransStatusDescription `json:"TransStatusDescription,omitempty" url:"TransStatusDescription,omitempty"`
-	PaypointId             *PaypointId                    `json:"PaypointId,omitempty" url:"PaypointId,omitempty"`
+	TransStatus *int        `json:"TransStatus,omitempty" url:"TransStatus,omitempty"`
+	PaypointId  *PaypointId `json:"PaypointId,omitempty" url:"PaypointId,omitempty"`
 	// Transaction total amount (including service fee or sub-charge)
 	TotalAmount *float64 `json:"TotalAmount,omitempty" url:"TotalAmount,omitempty"`
 	// Net amount paid
@@ -9243,13 +9222,6 @@ func (t *TransferDetailRecord) GetTransStatus() *int {
 		return nil
 	}
 	return t.TransStatus
-}
-
-func (t *TransferDetailRecord) GetTransStatusDescription() *PaymentTransStatusDescription {
-	if t == nil {
-		return nil
-	}
-	return t.TransStatusDescription
 }
 
 func (t *TransferDetailRecord) GetPaypointId() *PaypointId {

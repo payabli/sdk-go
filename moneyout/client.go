@@ -159,6 +159,23 @@ func (c *Client) VCardGet(
 	return response.Body, nil
 }
 
+// Sends a virtual card link via email to the vendor associated with the `transId`.
+func (c *Client) SendVCardLink(
+	ctx context.Context,
+	request *sdk.SendVCardLinkRequest,
+	opts ...option.RequestOption,
+) (*sdk.OperationResult, error) {
+	response, err := c.WithRawResponse.SendVCardLink(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 // Retrieve the image of a check associated with a processed transaction.
 // The check image is returned in the response body as a base64-encoded string.
 // The check image is only available for payouts that have been processed.

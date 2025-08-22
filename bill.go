@@ -60,6 +60,7 @@ type ListBillsRequest struct {
 	// - `approvalUserId` (`eq`, `ne`)
 	// - `parentOrgId` (`ne`, `eq`, `nin`, `in`)
 	// - `approvalUserEmail` (`eq`, `ne`)
+	// - `scheduleId` (`ne`, `eq`)
 	//
 	// List of comparison accepted - enclosed between parentheses:
 	// - `eq` or empty => equal
@@ -1014,19 +1015,18 @@ type TransactionOutQueryRecord struct {
 	EntryName          *Entrypointfield          `json:"EntryName,omitempty" url:"EntryName,omitempty"`
 	Gateway            *Gatewayfield             `json:"Gateway,omitempty" url:"Gateway,omitempty"`
 	// ID of the batch the transaction belongs to.
-	BatchId              *string               `json:"BatchId,omitempty" url:"BatchId,omitempty"`
-	HasVcardTransactions *HasVcardTransactions `json:"HasVcardTransactions,omitempty" url:"HasVcardTransactions,omitempty"`
-	IsSameDayAch         *IsSameDayAch         `json:"IsSameDayACH,omitempty" url:"IsSameDayACH,omitempty"`
-	// ID of the recurring payment schedule associated with the transaction.
-	ScheduleId       *int64                  `json:"ScheduleId,omitempty" url:"ScheduleId,omitempty"`
-	SettlementStatus *SettlementStatusPayout `json:"SettlementStatus,omitempty" url:"SettlementStatus,omitempty"`
-	RiskFlagged      *RiskFlagged            `json:"RiskFlagged,omitempty" url:"RiskFlagged,omitempty"`
-	RiskFlaggedOn    *RiskFlaggedOn          `json:"RiskFlaggedOn,omitempty" url:"RiskFlaggedOn,omitempty"`
-	RiskStatus       *RiskStatus             `json:"RiskStatus,omitempty" url:"RiskStatus,omitempty"`
-	RiskReason       *RiskReason             `json:"RiskReason,omitempty" url:"RiskReason,omitempty"`
-	RiskAction       *RiskAction             `json:"RiskAction,omitempty" url:"RiskAction,omitempty"`
-	RiskActionCode   *RiskActionCode         `json:"RiskActionCode,omitempty" url:"RiskActionCode,omitempty"`
-	PayoutProgram    *PayoutProgram          `json:"PayoutProgram,omitempty" url:"PayoutProgram,omitempty"`
+	BatchId              *string                 `json:"BatchId,omitempty" url:"BatchId,omitempty"`
+	HasVcardTransactions *HasVcardTransactions   `json:"HasVcardTransactions,omitempty" url:"HasVcardTransactions,omitempty"`
+	IsSameDayAch         *IsSameDayAch           `json:"IsSameDayACH,omitempty" url:"IsSameDayACH,omitempty"`
+	ScheduleId           *ScheduleId             `json:"ScheduleId,omitempty" url:"ScheduleId,omitempty"`
+	SettlementStatus     *SettlementStatusPayout `json:"SettlementStatus,omitempty" url:"SettlementStatus,omitempty"`
+	RiskFlagged          *RiskFlagged            `json:"RiskFlagged,omitempty" url:"RiskFlagged,omitempty"`
+	RiskFlaggedOn        *RiskFlaggedOn          `json:"RiskFlaggedOn,omitempty" url:"RiskFlaggedOn,omitempty"`
+	RiskStatus           *RiskStatus             `json:"RiskStatus,omitempty" url:"RiskStatus,omitempty"`
+	RiskReason           *RiskReason             `json:"RiskReason,omitempty" url:"RiskReason,omitempty"`
+	RiskAction           *RiskAction             `json:"RiskAction,omitempty" url:"RiskAction,omitempty"`
+	RiskActionCode       *RiskActionCode         `json:"RiskActionCode,omitempty" url:"RiskActionCode,omitempty"`
+	PayoutProgram        *PayoutProgram          `json:"PayoutProgram,omitempty" url:"PayoutProgram,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -1242,7 +1242,7 @@ func (t *TransactionOutQueryRecord) GetIsSameDayAch() *IsSameDayAch {
 	return t.IsSameDayAch
 }
 
-func (t *TransactionOutQueryRecord) GetScheduleId() *int64 {
+func (t *TransactionOutQueryRecord) GetScheduleId() *ScheduleId {
 	if t == nil {
 		return nil
 	}
