@@ -137,22 +137,22 @@ type AcceptOauth = *bool
 type AcceptRegister = *bool
 
 // Account number for bank account. This value is returned masked in responses.
-type AccountNumber = *string
+type AccountNumber = string
 
 // Expiration date of card used in transaction.
-type Accountexp = *string
+type Accountexp = string
 
 // Custom identifier for payment connector.
-type Accountid = *string
+type Accountid = string
 
 // Optional custom field.
-type AccountingField = *string
+type AccountingField = string
 
 // Bank account type or card brand.
-type Accounttype = *string
+type Accounttype = string
 
 // ZIP code for card used in transaction.
-type Accountzip = *string
+type Accountzip = string
 
 // Bank account holder. This field is **required** when `method` is `ach` or `check`.
 type AchHolder = string
@@ -178,6 +178,54 @@ func NewAchHolderTypeFromString(s string) (AchHolderType, error) {
 
 func (a AchHolderType) Ptr() *AchHolderType {
 	return &a
+}
+
+// ACH payment method.
+type AchPaymentMethod struct {
+	// ID of the stored ACH payment method. Required when using a previously saved ACH method when the vendor has more than one saved method. See the [Payouts with saved ACH payment methods](/developers/developer-guides/pay-out-manage-payouts) section for more details.
+	StoredMethodId *string `json:"storedMethodId,omitempty" url:"storedMethodId,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AchPaymentMethod) GetStoredMethodId() *string {
+	if a == nil {
+		return nil
+	}
+	return a.StoredMethodId
+}
+
+func (a *AchPaymentMethod) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AchPaymentMethod) UnmarshalJSON(data []byte) error {
+	type unmarshaler AchPaymentMethod
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AchPaymentMethod(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AchPaymentMethod) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
 }
 
 // Standard Entry Class (SEC) code is a three letter code that describes how an ACH payment was authorized. Supported values are:
@@ -327,13 +375,13 @@ type AdditionalData = map[string]map[string]interface{}
 //	}
 //
 // ```
-type AdditionalDataString = *string
+type AdditionalDataString = string
 
 // Additional line for the address.
-type AddressAddtlNullable = *string
+type AddressAddtlNullable = string
 
 // The address.
-type AddressNullable = *string
+type AddressNullable = string
 
 type AmountElement struct {
 	Categories []*PayCategory `json:"categories,omitempty" url:"categories,omitempty"`
@@ -401,7 +449,7 @@ func (a *AmountElement) String() string {
 type Attachments = []*FileContent
 
 // Authorization code for the transaction.
-type Authcode = *string
+type Authcode = string
 
 type AutoElement struct {
 	Enabled *Enabled `json:"enabled,omitempty" url:"enabled,omitempty"`
@@ -506,13 +554,13 @@ func (a *AutoElement) String() string {
 type Avgmonthly = *float64
 
 // Text code describing the result for address validation (applies only for card transactions).
-type Avsresponsetext = *string
+type Avsresponsetext = string
 
 // Business address. This must be a physical address, not a P.O. box.
-type Baddress1 = *string
+type Baddress1 = string
 
 // Business address additional line. If used, this must be the physical address of the business, not a P.O. box.
-type Baddress2 = *string
+type Baddress2 = string
 
 // Object that contains bank account details.
 type Bank struct {
@@ -704,19 +752,19 @@ func (b BankAccountHolderType) Ptr() *BankAccountHolderType {
 type BankData = []*Bank
 
 // Name of bank for account.
-type BankName = *string
+type BankName = string
 
 // User-defined name for the bank account.
 type BankNickname = string
 
 // The batch number.
-type BatchNumber = *string
+type BatchNumber = string
 
 // Business city
-type Bcity = *string
+type Bcity = string
 
 // Business country in ISO-3166-1 alpha 2 format. See: https://en.wikipedia.org/wiki/ISO_3166-1 for more information.
-type Bcountry = *string
+type Bcountry = string
 
 type BillData struct {
 	AdditionalData *AdditionalDataString `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
@@ -1439,16 +1487,16 @@ func (b *BillPayOutData) String() string {
 }
 
 // Additional line for the billing address.
-type BillingAddressAddtlNullable = *string
+type BillingAddressAddtlNullable = string
 
 // Billing address.
-type BillingAddressNullable = *string
+type BillingAddressNullable = string
 
 // Billing city.
-type BillingCityNullable = *string
+type BillingCityNullable = string
 
 // Billing address country.
-type BillingCountryNullable = *string
+type BillingCountryNullable = string
 
 type BillingData struct {
 	// Account number for bank account.
@@ -1559,78 +1607,126 @@ func (b *BillingData) String() string {
 }
 
 type BillingDataResponse struct {
-	AccountNumber *AccountNumber `json:"accountNumber,omitempty" url:"accountNumber,omitempty"`
+	// The bank's ID in Payabli.
+	Id                    int                   `json:"id" url:"id"`
+	AccountId             interface{}           `json:"accountId,omitempty" url:"accountId,omitempty"`
+	Nickname              string                `json:"nickname" url:"nickname"`
+	BankName              BankName              `json:"bankName" url:"bankName"`
+	RoutingAccount        RoutingAccount        `json:"routingAccount" url:"routingAccount"`
+	AccountNumber         AccountNumber         `json:"accountNumber" url:"accountNumber"`
+	TypeAccount           TypeAccount           `json:"typeAccount" url:"typeAccount"`
+	BankAccountHolderName BankAccountHolderName `json:"bankAccountHolderName" url:"bankAccountHolderName"`
+	BankAccountHolderType BankAccountHolderType `json:"bankAccountHolderType" url:"bankAccountHolderType"`
 	// Describes whether the bank account is used for deposits or withdrawals in Payabli:
 	//   - `0`: Deposit
 	//   - `1`: Withdrawal
 	//   - `2`: Deposit and withdrawal
-	BankAccountFunction   *int                   `json:"bankAccountFunction,omitempty" url:"bankAccountFunction,omitempty"`
-	BankAccountHolderName *BankAccountHolderName `json:"bankAccountHolderName,omitempty" url:"bankAccountHolderName,omitempty"`
-	BankAccountHolderType *BankAccountHolderType `json:"bankAccountHolderType,omitempty" url:"bankAccountHolderType,omitempty"`
-	BankName              *BankName              `json:"bankName,omitempty" url:"bankName,omitempty"`
-	// The bank's ID in Payabli.
-	Id             *int            `json:"id,omitempty" url:"id,omitempty"`
-	RoutingAccount *RoutingAccount `json:"routingAccount,omitempty" url:"routingAccount,omitempty"`
-	TypeAccount    *TypeAccount    `json:"typeAccount,omitempty" url:"typeAccount,omitempty"`
+	BankAccountFunction int           `json:"bankAccountFunction" url:"bankAccountFunction"`
+	Verified            bool          `json:"verified" url:"verified"`
+	Status              int           `json:"status" url:"status"`
+	Services            []interface{} `json:"services" url:"services"`
+	Default             bool          `json:"default" url:"default"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (b *BillingDataResponse) GetAccountNumber() *AccountNumber {
+func (b *BillingDataResponse) GetId() int {
 	if b == nil {
-		return nil
-	}
-	return b.AccountNumber
-}
-
-func (b *BillingDataResponse) GetBankAccountFunction() *int {
-	if b == nil {
-		return nil
-	}
-	return b.BankAccountFunction
-}
-
-func (b *BillingDataResponse) GetBankAccountHolderName() *BankAccountHolderName {
-	if b == nil {
-		return nil
-	}
-	return b.BankAccountHolderName
-}
-
-func (b *BillingDataResponse) GetBankAccountHolderType() *BankAccountHolderType {
-	if b == nil {
-		return nil
-	}
-	return b.BankAccountHolderType
-}
-
-func (b *BillingDataResponse) GetBankName() *BankName {
-	if b == nil {
-		return nil
-	}
-	return b.BankName
-}
-
-func (b *BillingDataResponse) GetId() *int {
-	if b == nil {
-		return nil
+		return 0
 	}
 	return b.Id
 }
 
-func (b *BillingDataResponse) GetRoutingAccount() *RoutingAccount {
+func (b *BillingDataResponse) GetAccountId() interface{} {
 	if b == nil {
 		return nil
+	}
+	return b.AccountId
+}
+
+func (b *BillingDataResponse) GetNickname() string {
+	if b == nil {
+		return ""
+	}
+	return b.Nickname
+}
+
+func (b *BillingDataResponse) GetBankName() BankName {
+	if b == nil {
+		return ""
+	}
+	return b.BankName
+}
+
+func (b *BillingDataResponse) GetRoutingAccount() RoutingAccount {
+	if b == nil {
+		return ""
 	}
 	return b.RoutingAccount
 }
 
-func (b *BillingDataResponse) GetTypeAccount() *TypeAccount {
+func (b *BillingDataResponse) GetAccountNumber() AccountNumber {
+	if b == nil {
+		return ""
+	}
+	return b.AccountNumber
+}
+
+func (b *BillingDataResponse) GetTypeAccount() TypeAccount {
+	if b == nil {
+		return ""
+	}
+	return b.TypeAccount
+}
+
+func (b *BillingDataResponse) GetBankAccountHolderName() BankAccountHolderName {
+	if b == nil {
+		return ""
+	}
+	return b.BankAccountHolderName
+}
+
+func (b *BillingDataResponse) GetBankAccountHolderType() BankAccountHolderType {
+	if b == nil {
+		return ""
+	}
+	return b.BankAccountHolderType
+}
+
+func (b *BillingDataResponse) GetBankAccountFunction() int {
+	if b == nil {
+		return 0
+	}
+	return b.BankAccountFunction
+}
+
+func (b *BillingDataResponse) GetVerified() bool {
+	if b == nil {
+		return false
+	}
+	return b.Verified
+}
+
+func (b *BillingDataResponse) GetStatus() int {
+	if b == nil {
+		return 0
+	}
+	return b.Status
+}
+
+func (b *BillingDataResponse) GetServices() []interface{} {
 	if b == nil {
 		return nil
 	}
-	return b.TypeAccount
+	return b.Services
+}
+
+func (b *BillingDataResponse) GetDefault() bool {
+	if b == nil {
+		return false
+	}
+	return b.Default
 }
 
 func (b *BillingDataResponse) GetExtraProperties() map[string]interface{} {
@@ -1666,15 +1762,25 @@ func (b *BillingDataResponse) String() string {
 }
 
 // Billing state. Must be 2-letter state code for address in US.
-type BillingStateNullable = *string
+type BillingStateNullable = string
 
 // Billing address ZIP code.
-type BillingZipNullable = *string
+type BillingZipNullable = string
 
-// Object containing information related to the card. This object is `null` unless the payment method is card. If the payment method is Apple Pay, the binData will be related to the DPAN (device primary account number), not the card connected to Apple Pay.
+// Object containing information related to the card. This object is `null`
+// unless the payment method is card. If the payment method is Apple Pay, the
+// binData will be related to the DPAN (device primary account number), not
+// the card connected to Apple Pay.
 type BinData struct {
-	// The card brand. For example, Visa, Mastercard, American Express, Discover.
+	// The number of characters from the beginning of the card number that
+	// were matched against a Bank Identification Number (BIN) or the Card
+	// Range table.
+	BinMatchedLength *string `json:"binMatchedLength,omitempty" url:"binMatchedLength,omitempty"`
+	// The card brand. For example, Visa, Mastercard, American Express,
+	// Discover.
 	BinCardBrand *string `json:"binCardBrand,omitempty" url:"binCardBrand,omitempty"`
+	// The type of card: Credit or Debit.
+	BinCardType *string `json:"binCardType,omitempty" url:"binCardType,omitempty"`
 	// The category of the card, which indicates the card product. For example: Standard, Gold, Platinum, etc. The binCardCategory for prepaid cards is marked `PREPAID`.
 	BinCardCategory *string `json:"binCardCategory,omitempty" url:"binCardCategory,omitempty"`
 	// The name of the financial institution that issued the card.
@@ -1684,14 +1790,25 @@ type BinData struct {
 	// The issuing financial institution's two-character ISO country code. See [this resource](https://www.iso.org/obp/ui/#search) for a list of codes.
 	BinCardIssuerCountryCodeA2 *string `json:"binCardIssuerCountryCodeA2,omitempty" url:"binCardIssuerCountryCodeA2,omitempty"`
 	// The issuing financial institution's ISO standard numeric country code. See [this resource](https://www.iso.org/obp/ui/#search) for a list of codes.
-	BinCardIssuerCountryNumber *float64 `json:"binCardIssuerCountryNumber,omitempty" url:"binCardIssuerCountryNumber,omitempty"`
-	// The type of card: Credit or Debit.
-	BinCardType *string `json:"binCardType,omitempty" url:"binCardType,omitempty"`
-	// The number of characters from the beginning of the card number that were matched against a Bank Identification Number (BIN) or the Card Range table.
-	BinMatchedLength *float64 `json:"binMatchedLength,omitempty" url:"binMatchedLength,omitempty"`
+	BinCardIssuerCountryNumber *string `json:"binCardIssuerCountryNumber,omitempty" url:"binCardIssuerCountryNumber,omitempty"`
+	// Indicates whether the card is regulated.
+	BinCardIsRegulated *string `json:"binCardIsRegulated,omitempty" url:"binCardIsRegulated,omitempty"`
+	// The use category classification for the card.
+	BinCardUseCategory *string `json:"binCardUseCategory,omitempty" url:"binCardUseCategory,omitempty"`
+	// The issuing financial institution's three-character ISO country code.
+	// See [this resource](https://www.iso.org/obp/ui/#search) for a list of
+	// codes.
+	BinCardIssuerCountryCodeA3 *string `json:"binCardIssuerCountryCodeA3,omitempty" url:"binCardIssuerCountryCodeA3,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
+}
+
+func (b *BinData) GetBinMatchedLength() *string {
+	if b == nil {
+		return nil
+	}
+	return b.BinMatchedLength
 }
 
 func (b *BinData) GetBinCardBrand() *string {
@@ -1699,6 +1816,13 @@ func (b *BinData) GetBinCardBrand() *string {
 		return nil
 	}
 	return b.BinCardBrand
+}
+
+func (b *BinData) GetBinCardType() *string {
+	if b == nil {
+		return nil
+	}
+	return b.BinCardType
 }
 
 func (b *BinData) GetBinCardCategory() *string {
@@ -1729,25 +1853,32 @@ func (b *BinData) GetBinCardIssuerCountryCodeA2() *string {
 	return b.BinCardIssuerCountryCodeA2
 }
 
-func (b *BinData) GetBinCardIssuerCountryNumber() *float64 {
+func (b *BinData) GetBinCardIssuerCountryNumber() *string {
 	if b == nil {
 		return nil
 	}
 	return b.BinCardIssuerCountryNumber
 }
 
-func (b *BinData) GetBinCardType() *string {
+func (b *BinData) GetBinCardIsRegulated() *string {
 	if b == nil {
 		return nil
 	}
-	return b.BinCardType
+	return b.BinCardIsRegulated
 }
 
-func (b *BinData) GetBinMatchedLength() *float64 {
+func (b *BinData) GetBinCardUseCategory() *string {
 	if b == nil {
 		return nil
 	}
-	return b.BinMatchedLength
+	return b.BinCardUseCategory
+}
+
+func (b *BinData) GetBinCardIssuerCountryCodeA3() *string {
+	if b == nil {
+		return nil
+	}
+	return b.BinCardIssuerCountryCodeA3
 }
 
 func (b *BinData) GetExtraProperties() map[string]interface{} {
@@ -1854,24 +1985,24 @@ type BoardingId = int64
 type BoardingLinkId = int
 
 // Business phone number.
-type Bphone = *string
+type Bphone = string
 
 // Business state.
-type Bstate = *string
+type Bstate = string
 
 // A summary of what the business sells in terms of goods or services.
-type Bsummary = *string
+type Bsummary = string
 
 // Business start date. Accepted formats:
 //
 //   - YYYY-MM-DD
 //
 //   - MM/DD/YYYY
-type Busstartdate = *string
+type Busstartdate = string
 
 type ButtomElement struct {
 	// Label for custom payment button
-	Label *string `json:"label,omitempty" url:"label,omitempty"`
+	Label string `json:"label" url:"label"`
 	// Specify size of custom payment button
 	Size *ButtomElementSize `json:"size,omitempty" url:"size,omitempty"`
 
@@ -1879,9 +2010,9 @@ type ButtomElement struct {
 	rawJSON         json.RawMessage
 }
 
-func (b *ButtomElement) GetLabel() *string {
+func (b *ButtomElement) GetLabel() string {
 	if b == nil {
-		return nil
+		return ""
 	}
 	return b.Label
 }
@@ -1952,7 +2083,7 @@ func (b ButtomElementSize) Ptr() *ButtomElementSize {
 }
 
 // Business ZIP.
-type Bzip = *string
+type Bzip = string
 
 type CardSetup struct {
 	// Determines whether American Express is accepted.
@@ -2029,7 +2160,7 @@ func (c *CardSetup) String() string {
 }
 
 // Card Verification Value (CVV) associated with the card number. We **strongly recommend** that you include this field when using `card` as a method.
-type Cardcvv = *string
+type Cardcvv = string
 
 // Card expiration date in format MMYY or MM/YY. Required for card transactions.
 type Cardexp = string
@@ -2041,13 +2172,51 @@ type Cardholder = string
 type Cardnumber = string
 
 // ZIP or postal code for the billing address of cardholder. We **strongly recommend** that you include this field when using `card` as a method.
-type Cardzip = *string
+type Cardzip = string
+
+// Check payment method.
+type CheckPaymentMethod struct {
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CheckPaymentMethod) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CheckPaymentMethod) UnmarshalJSON(data []byte) error {
+	type unmarshaler CheckPaymentMethod
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CheckPaymentMethod(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CheckPaymentMethod) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
 
 // The city.
-type CityNullable = *string
+type CityNullable = string
 
 // Any comment or description.
-type Comments = *string
+type Comments = string
 
 type ContactElement struct {
 	// Custom content for email
@@ -2224,8 +2393,82 @@ func (c *Contacts) String() string {
 // List of contacts.
 type ContactsField = []*Contacts
 
+type ContactsResponse struct {
+	// Contact email address.
+	ContactEmail *Email `json:"ContactEmail,omitempty" url:"ContactEmail,omitempty"`
+	// Contact name.
+	ContactName *string `json:"ContactName,omitempty" url:"ContactName,omitempty"`
+	// Contact phone number.
+	ContactPhone *string `json:"ContactPhone,omitempty" url:"ContactPhone,omitempty"`
+	// Contact title.
+	ContactTitle *string `json:"ContactTitle,omitempty" url:"ContactTitle,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ContactsResponse) GetContactEmail() *Email {
+	if c == nil {
+		return nil
+	}
+	return c.ContactEmail
+}
+
+func (c *ContactsResponse) GetContactName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ContactName
+}
+
+func (c *ContactsResponse) GetContactPhone() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ContactPhone
+}
+
+func (c *ContactsResponse) GetContactTitle() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ContactTitle
+}
+
+func (c *ContactsResponse) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ContactsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ContactsResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ContactsResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ContactsResponse) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 // The country in ISO-3166-1 alpha 2 format. See https://en.wikipedia.org/wiki/ISO_3166-1 for reference.
-type CountryNullable = *string
+type CountryNullable = string
 
 // Timestamp of when record was created, in UTC.
 type CreatedAt = time.Time
@@ -2496,7 +2739,7 @@ func (c *CustomerData) String() string {
 type CustomerId = *int64
 
 // User-provided unique identifier for the customer. This is typically the customer ID from your own system.
-type CustomerNumberNullable = *string
+type CustomerNumberNullable = string
 
 type CustomerQueryRecords struct {
 	CustomerId     *CustomerId             `json:"customerId,omitempty" url:"customerId,omitempty"`
@@ -3185,22 +3428,22 @@ func (c *CustomerSummaryRecord) String() string {
 type Customeridtrans = *int64
 
 // Text code describing the result for CVV validation (applies only for card transactions).
-type Cvvresponsetext = *string
+type Cvvresponsetext = string
 
 // Date in YYYY-MM-DD format.
 type Datenullable = *time.Time
 
 // Timestamp for operation, in UTC.
-type Datetimenullable = *time.Time
+type DatetimeNullable = *time.Time
 
 // The alternate or common name that this business is doing business under usually referred to as a DBA name.
-type Dbaname = *string
+type Dbaname = string
 
 // When the method is a card, this field displays card brand. When the method is ACH, this field displays the account type for ACH (checking or savings).
-type Descriptor = *string
+type Descriptor = string
 
 // Identifier of registered cloud device used in the transaction.
-type Device = *string
+type Device = string
 
 // Discount applied to the invoice.
 type Discount = *float64
@@ -3333,7 +3576,7 @@ type DomainName = string
 type DutyAmount = *float64
 
 // Business EIN or tax ID. This value is masked in API responses, for example `XXXX6789`.
-type Ein = *string
+type Ein = string
 
 type Element struct {
 	Enabled *Enabled `json:"enabled,omitempty" url:"enabled,omitempty"`
@@ -3390,7 +3633,7 @@ func (e *Element) String() string {
 }
 
 // Email address.
-type Email = *string
+type Email = string
 
 // Toggles whether the section or element is enabled.
 type Enabled = bool
@@ -3406,7 +3649,10 @@ type EntityId = int64
 // The entity's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 type Entry = string
 
-type EntryAttributes = *string
+type EntryAttributes = string
+
+// If applicable, the internal reference ID to the payment page capturing the payment.
+type EntrypageId = *int64
 
 // The entrypoint identifier.
 type Entrypointfield = string
@@ -3414,11 +3660,42 @@ type Entrypointfield = string
 // The expected time that the refund will be processed. This value only appears when the `resultCode` is `10`, which means that the refund has been initiated and is queued for processing. See [Enhanced Refund Flow](/guides/pay-in-enhanced-refund-flow) for more information about refund processing.
 type ExpectedProcessingDateTime = *time.Time
 
+// Export format for file downloads. When specified, returns data as a file instead of JSON.
+type ExportFormat string
+
+const (
+	// Comma-separated values file
+	ExportFormatCsv ExportFormat = "csv"
+	// Excel spreadsheet file
+	ExportFormatXlsx ExportFormat = "xlsx"
+)
+
+func NewExportFormatFromString(s string) (ExportFormat, error) {
+	switch s {
+	case "csv":
+		return ExportFormatCsv, nil
+	case "xlsx":
+		return ExportFormatXlsx, nil
+	}
+	var t ExportFormat
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (e ExportFormat) Ptr() *ExportFormat {
+	return &e
+}
+
 // A custom identifier for the paypoint, if applicable. Like `entrypoint` is the Payabli identifier for the merchant, `externalPaypointId` is a custom field you can use to include the merchant's ID from your own systems.
-type ExternalPaypointId = *string
+type ExternalPaypointId = string
 
 // Processor information, used for troubleshooting and reporting. This field contains a value when the API key used to make the request has management permissions.
-type ExternalProcessorInformation = *string
+type ExternalProcessorInformation = string
+
+// Service fee or sub-charge applied.
+type FeeAmount = float64
+
+// A file containing the response data, in the format specified in the request.
+type File = map[string]interface{}
 
 // Contains details about a file. Max upload size is 30 MB.
 type FileContent struct {
@@ -3795,7 +4072,7 @@ func (f Frequencynotification) Ptr() *Frequencynotification {
 }
 
 // Gateway used to process the transaction.
-type Gatewayfield = *string
+type Gatewayfield = string
 
 type GeneralEvents struct {
 	// Event description.
@@ -3898,6 +4175,8 @@ func (g *GeneralEvents) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+type HasVcardTransactions = *bool
+
 type HeaderElement struct {
 	Enabled *Enabled `json:"enabled,omitempty" url:"enabled,omitempty"`
 	// Header text for section
@@ -3965,7 +4244,7 @@ func (h *HeaderElement) String() string {
 type Highticketamt = *float64
 
 // Account holder name for the method.
-type Holdername = *string
+type Holdername = string
 
 // _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself.
 type IdempotencyKey = string
@@ -3985,7 +4264,7 @@ type Idpaypoint = int64
 //   - `merchant`: For merchant-initiated transactions
 //
 //     See [Understanding CIT and MIT Indicators](/guides/money-in-cit-mit) for more information.
-type Initiator = *string
+type Initiator = string
 
 type Instrument struct {
 	AchAccount     Achaccount              `json:"achAccount" url:"achAccount"`
@@ -4163,7 +4442,7 @@ func (i *InvoiceElement) String() string {
 type InvoiceType = int
 
 // Custom number identifying the bill or invoice. Must be unique in paypoint.
-type Invoicenumber = *string
+type Invoicenumber = string
 
 // Status for invoice.
 //
@@ -4176,38 +4455,45 @@ type Invoicenumber = *string
 //   - 99 cancelled
 type Invoicestatus = int
 
+// *Recommended*. The customer's IP address. This field is used to help prevent fraudulent transactions, and Payabli strongly recommends including this data.
+type IpAddress = string
+
 // When `true`, the service is enabled.
 type IsEnabled = bool
 
 // When `true`, indicates that this is the organization's root template.
 type IsRoot = *bool
 
+// Indicates if the payout transaction is processed as Same Day ACH. This
+// is only applicable for ACH transactions.
+type IsSameDayAch = *bool
+
 // Boolean indicating whether the operation was successful. A `true` value indicates success. A `false` value indicates failure.
 type IsSuccess = bool
 
 // Item or product commodity code. Max length of 250 characters.
-type ItemCommodityCode = *string
+type ItemCommodityCode = string
 
 // Item or product description. Max length of 250 characters.
-type ItemDescription = *string
+type ItemDescription = string
 
 // Item or product code. Max length of 250 characters.
-type ItemProductCode = *string
+type ItemProductCode = string
 
 // Item or product name. Max length of 250 characters.
-type ItemProductName = *string
+type ItemProductName = string
 
 // Unit of measurement. Max length of 100 characters.
-type ItemUnitofMeasure = *string
+type ItemUnitofMeasure = string
 
 // The cascade process ID.
-type JobId = *string
+type JobId = string
 
 // The cascade process status. Available values:
 //   - `in_progress`
 //   - `completed`
 //   - `failed`
-type JobStatus = *string
+type JobStatus = string
 
 type KeyValue struct {
 	// Key name.
@@ -4395,40 +4681,78 @@ func (l *LabelElement) String() string {
 // The user's locale for PartnerHub and PayHub localization. Supported values:
 //   - `en`
 //   - `es`
-type Language = *string
+type Language = string
 
 // Timestamp of when record was last updated, in UTC.
 type LastModified = *time.Time
 
 // Business legal name.
-type Legalname = *string
+type Legalname = string
 
 // Business license ID or state ID number.
-type License = *string
+type License = string
 
 // Business license issuing state or province.
-type Licensestate = *string
+type Licensestate = string
 
 // Additional location code used to identify the vendor.
-type LocationCode = *string
+type LocationCode = string
 
 // The business's mailing address.
-type Maddress = *string
+type Maddress = string
 
 // Additional line for the business's mailing address.
-type Maddress1 = *string
+type Maddress1 = string
+
+// Managed payment method for payables.
+type ManagedPaymentMethod struct {
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *ManagedPaymentMethod) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
+}
+
+func (m *ManagedPaymentMethod) UnmarshalJSON(data []byte) error {
+	type unmarshaler ManagedPaymentMethod
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = ManagedPaymentMethod(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ManagedPaymentMethod) String() string {
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
 
 // Masked card or bank account used in transaction. In the case of Apple Pay, this is a masked DPAN (device primary account number).
-type Maskedaccount = *string
+type Maskedaccount = string
 
 // Business Merchant Category Code (MCC). [This resource](https://github.com/greggles/mcc-codes/blob/main/mcc_codes.csv) lists MCC codes.
-type Mcc = *string
+type Mcc = string
 
 // The business's mail city.
-type Mcity = *string
+type Mcity = string
 
 // Business mailing country.
-type Mcountry = *string
+type Mcountry = string
 
 type MethodElement struct {
 	// Flag indicating if all allowed payment methods will be pre-selected.
@@ -4963,7 +5287,7 @@ func (m *MethodQueryRecords) String() string {
 }
 
 // The stored method's identifier (sometimes referred to as 'token') in Payabli. When `null`, the method wasn't created, or doesn't exist, depending on the operation performed.
-type MethodReferenceId = *string
+type MethodReferenceId = string
 
 // Method to use to send the notification to the target.
 type Methodnotification string
@@ -5104,12 +5428,12 @@ type Mfa = *bool
 type MfaMode = *int
 
 // The business's mailing address state.
-type Mstate = *string
+type Mstate = string
 
 // Business mailing ZIP.
-type Mzip = *string
+type Mzip = string
 
-type NameUser = *string
+type NameUser = string
 
 // Net Amount owed in bill. Required when adding a bill.
 type NetAmountstring = string
@@ -5362,6 +5686,7 @@ const (
 	NotificationContentEventTypePayOutProcessed             NotificationContentEventType = "PayOutProcessed"
 	NotificationContentEventTypePayOutCanceled              NotificationContentEventType = "PayOutCanceled"
 	NotificationContentEventTypePayOutPaid                  NotificationContentEventType = "PayOutPaid"
+	NotificationContentEventTypePayOutReturned              NotificationContentEventType = "PayOutReturned"
 	NotificationContentEventTypePayoutSubscriptionCreated   NotificationContentEventType = "PayoutSubscriptionCreated"
 	NotificationContentEventTypePayoutSubscriptionUpdated   NotificationContentEventType = "PayoutSubscriptionUpdated"
 	NotificationContentEventTypePayoutSubscriptionCanceled  NotificationContentEventType = "PayoutSubscriptionCanceled"
@@ -5502,6 +5827,8 @@ func NewNotificationContentEventTypeFromString(s string) (NotificationContentEve
 		return NotificationContentEventTypePayOutCanceled, nil
 	case "PayOutPaid":
 		return NotificationContentEventTypePayOutPaid, nil
+	case "PayOutReturned":
+		return NotificationContentEventTypePayOutReturned, nil
 	case "PayoutSubscriptionCreated":
 		return NotificationContentEventTypePayoutSubscriptionCreated, nil
 	case "PayoutSubscriptionUpdated":
@@ -5825,7 +6152,7 @@ func (o OdpSetupProcessingRegion) Ptr() *OdpSetupProcessingRegion {
 }
 
 // The transaction's operation.
-type Operation = *string
+type Operation = string
 
 // Customer's consent status.
 // Allowed status:
@@ -5841,10 +6168,10 @@ type OptinStatus = *int
 type Order = *int
 
 // Text description of the transaction.
-type Orderdescription = *string
+type Orderdescription = string
 
 // Custom identifier for the transaction.
-type Orderid = *string
+type Orderid = string
 
 type OrgData struct {
 	IdOrg      *Orgid       `json:"idOrg,omitempty" url:"idOrg,omitempty"`
@@ -6006,7 +6333,7 @@ func (o *OrgXScope) String() string {
 }
 
 // The organization's address.
-type Orgaddress = *string
+type Orgaddress = string
 
 type OrganizationQueryRecord struct {
 	Services                   []*OrganizationQueryRecordServicesItem `json:"services,omitempty" url:"services,omitempty"`
@@ -6021,7 +6348,7 @@ type OrganizationQueryRecord struct {
 	OrgCity                    *Orgcity                               `json:"orgCity,omitempty" url:"orgCity,omitempty"`
 	OrgCountry                 *Orgcountry                            `json:"orgCountry,omitempty" url:"orgCountry,omitempty"`
 	OrgEntryName               *Orgentryname                          `json:"orgEntryName,omitempty" url:"orgEntryName,omitempty"`
-	OrgId                      *Orgid                                 `json:"orgId,omitempty" url:"orgId,omitempty"`
+	OrgId                      *Orgidstring                           `json:"orgId,omitempty" url:"orgId,omitempty"`
 	OrgLogo                    *FileContent                           `json:"orgLogo,omitempty" url:"orgLogo,omitempty"`
 	OrgName                    *Orgname                               `json:"orgName,omitempty" url:"orgName,omitempty"`
 	OrgParentId                *OrgParentId                           `json:"orgParentId,omitempty" url:"orgParentId,omitempty"`
@@ -6125,7 +6452,7 @@ func (o *OrganizationQueryRecord) GetOrgEntryName() *Orgentryname {
 	return o.OrgEntryName
 }
 
-func (o *OrganizationQueryRecord) GetOrgId() *Orgid {
+func (o *OrganizationQueryRecord) GetOrgId() *Orgidstring {
 	if o == nil {
 		return nil
 	}
@@ -6365,16 +6692,19 @@ func (o *OrganizationQueryRecordServicesItem) String() string {
 }
 
 // The organization's city.
-type Orgcity = *string
+type Orgcity = string
 
 // The organization's country.
-type Orgcountry = *string
+type Orgcountry = string
 
 // The entryname for the org, in string format. If you leave this blank, Payabli uses the DBA name.
-type Orgentryname = *string
+type Orgentryname = string
 
 // Organization ID. Unique identifier assigned to an org by Payabli.
 type Orgid = *int64
+
+// An alternate ID for the organization, in string format. This can be your internal identifier for an org, and is typically a name, like "My Suborganization".
+type Orgidstring = string
 
 // The name of the organization.
 type Orgname = string
@@ -6389,10 +6719,10 @@ type Orgtimezone = int
 type Orgtype = int
 
 // The organization's website.
-type Orgwebsite = *string
+type Orgwebsite = string
 
 // The organization's ZIP code.
-type Orgzip = *string
+type Orgzip = string
 
 // The business ownership type.
 type OwnType string
@@ -6436,7 +6766,7 @@ func (o OwnType) Ptr() *OwnType {
 }
 
 // ID for the paypoint or organization that owns the notification.
-type Ownerid = *string
+type Ownerid = string
 
 type Owners struct {
 	// Person who is registered as the beneficial owner of the business. This is a combination of first and last name.
@@ -8559,10 +8889,10 @@ func (p *PayabliPages) String() string {
 }
 
 // Alternative name used to receive paper check.
-type PayeeName = *string
+type PayeeName = string
 
 // Identifier of payment link associated to the invoice or bill.
-type PaylinkId = *string
+type PaylinkId = string
 
 type PaymentCategories struct {
 	// Price/cost per unit of item or category.
@@ -8740,6 +9070,9 @@ func (p *PaymentDetail) String() string {
 	}
 	return fmt.Sprintf("%#v", p)
 }
+
+// Description of the payment transaction status. See [the docs](/developers/references/money-in-statuses#money-in-transaction-status) for a full reference.
+type PaymentTransStatusDescription = string
 
 // Unique transaction ID.
 type Paymentid = *string
@@ -9172,6 +9505,12 @@ func (p *PayorFields) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+// Unique ID for customer linked to the transaction.
+type PayorId = *int64
+
+// The payout program associated with the transaction: managed or on-demand.
+type PayoutProgram = string
+
 type PaypointData struct {
 	Address1           *AddressNullable            `json:"address1,omitempty" url:"address1,omitempty"`
 	Address2           *AddressAddtlNullable       `json:"address2,omitempty" url:"address2,omitempty"`
@@ -9491,6 +9830,9 @@ func (p *PaypointEntryConfig) String() string {
 
 // The paypoint's ID. Note that this is different than the entryname.
 type PaypointId = *int64
+
+// The paypoint name.
+type PaypointName = string
 
 type PaypointSummary struct {
 	AmountSubs *float64 `json:"amountSubs,omitempty" url:"amountSubs,omitempty"`
@@ -10509,62 +10851,6 @@ func (q *QueryTransactionPayorData) String() string {
 	return fmt.Sprintf("%#v", q)
 }
 
-type QueryTransferResponse struct {
-	// Summary information about the transfers.
-	Summary *QueryTransferSummary `json:"Summary,omitempty" url:"Summary,omitempty"`
-	// List of transfer transaction records.
-	Records []*TransactionQueryRecords `json:"Records,omitempty" url:"Records,omitempty"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (q *QueryTransferResponse) GetSummary() *QueryTransferSummary {
-	if q == nil {
-		return nil
-	}
-	return q.Summary
-}
-
-func (q *QueryTransferResponse) GetRecords() []*TransactionQueryRecords {
-	if q == nil {
-		return nil
-	}
-	return q.Records
-}
-
-func (q *QueryTransferResponse) GetExtraProperties() map[string]interface{} {
-	return q.extraProperties
-}
-
-func (q *QueryTransferResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler QueryTransferResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*q = QueryTransferResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *q)
-	if err != nil {
-		return err
-	}
-	q.extraProperties = extraProperties
-	q.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (q *QueryTransferResponse) String() string {
-	if len(q.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(q); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", q)
-}
-
 // When `true`, the element is read-only.
 type ReadOnly = *bool
 
@@ -10691,30 +10977,36 @@ func (r *ReceiptContent) String() string {
 // When `true`, Payabli will send the applicant a boarding link. Set this value to `false` if you are sending pre-filled applications via the API and don't want Payabli to send the applicant an email to complete the boarding application.
 type RecipientEmailNotification = bool
 
-type ReferenceName = *string
+type ReferenceName = string
 
 type ReferenceTemplateId = *int64
 
 // The transaction identifier in Payabli.
 type Referenceidtrans = string
 
+// Identifier of refund transaction linked to this payment.
+type RefundId = *int64
+
+// Remittance email address. Used for sending virtual cards and other information about payouts.
+type RemitEmail = string
+
 // Remittance address. Used for mailing paper checks.
-type Remitaddress1 = *string
+type Remitaddress1 = string
 
 // Remittance address additional line. Used for mailing paper checks.
-type Remitaddress2 = *string
+type Remitaddress2 = string
 
 // Remittance address city. Used for mailing paper checks.
-type Remitcity = *string
+type Remitcity = string
 
 // Remittance address country. Used for mailing paper checks.
-type Remitcountry = *string
+type Remitcountry = string
 
 // Remittance address state. Used for mailing paper checks.
-type Remitstate = *string
+type Remitstate = string
 
 // Remittance address ZIP code. Used for mailing paper checks.
-type Remitzip = *string
+type Remitzip = string
 
 // Email address for organization-level communications, such as messages about why an application was declined. This is required by commerce laws in the US.
 type ReplyToEmail = string
@@ -10805,16 +11097,40 @@ type Resulttext = string
 // When `true`, the applicant can save an incomplete application and resume it later. When `false`, the applicant  won't have an option to save their progress, and must complete the application in one session.
 type Resumable = bool
 
+// Identifier of return/chargeback transaction linked to this payment.
+type ReturnedId = int64
+
+// Action taken due to risk assessment
+type RiskAction = string
+
+// Numeric code representing the risk action
+type RiskActionCode = *int
+
+// Indicates if the transaction was flagged for risk
+type RiskFlagged = *bool
+
+// Timestamp when the transaction was flagged for risk
+type RiskFlaggedOn = *time.Time
+
+// Reason for risk flagging
+type RiskReason = string
+
+// Current risk status of the transaction
+type RiskStatus = string
+
 // Field not in use on this endpoint. It always returns `0`.
 type RoomIdNotInUse = *int64
 
 // Routing number of bank account.
-type RoutingAccount = *string
+type RoutingAccount = string
 
-type SalesCode = *string
+type SalesCode = string
 
 // When `true`, Payabli saves the payment method if the transaction is successful. The payment method ID is returned in the response as `methodReferenceId`. Defaults to `false`.
 type SaveIfSuccess = *bool
+
+// ID of the recurring payment schedule associated with the transaction.
+type ScheduleId = int64
 
 // The order of the transaction for cardholder-initiated transaction (CIT) and merchant-initiated transaction (MIT) purposes. This field is automatically detected and populated by Payabli.
 //
@@ -10825,7 +11141,7 @@ type SaveIfSuccess = *bool
 //   - `subsequent`: For merchant-initiated transactions after the first use of the payment method.
 //
 //     See [Understanding CIT and MIT Indicators](/guides/money-in-cit-mit) for more information.
-type Sequence = *string
+type Sequence = string
 
 // Controls which services will be enabled for the merchant.
 type Services struct {
@@ -11059,14 +11375,20 @@ func (s *SettingsQueryRecord) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
+// Settlement status for transaction. See [the docs](/developers/references/money-in-statuses#payment-funding-status) for a full reference.
+type SettlementStatus = int
+
+// The settlement status of the payout transaction. See [Payout Transaction Statuses](guides/money-out-statuses#payout-transaction-statuses) for a full reference.
+type SettlementStatusPayout = string
+
 // Sender shipping ZIP code.
 type ShippingFromZip = string
 
 // The shipping address.
-type Shippingaddress = *string
+type Shippingaddress = string
 
 // Additional line for shipping address.
-type Shippingaddressadditional = *string
+type Shippingaddressadditional = string
 
 // Shipping city.
 type Shippingcity = string
@@ -11078,12 +11400,12 @@ type Shippingcountry = string
 type Shippingstate = string
 
 // Shipping ZIP code. For Pay In functions, this field supports 5-digit and 9-digit ZIP codes and alphanumeric Canadian postal codes. For example: "37615-1234" or "37615".
-type Shippingzip = *string
+type Shippingzip = string
 
-type Signaturedata = *string
+type Signaturedata = string
 
 // Custom identifier to indicate the transaction or request source.
-type Source = *string
+type Source = string
 
 // Split funding instructions for the transaction. The total amount of the splits must match the total amount of the transaction.
 type SplitFunding = []*SplitFundingContent
@@ -11163,7 +11485,7 @@ func (s *SplitFundingContent) String() string {
 }
 
 // The state or province.
-type StateNullable = *string
+type StateNullable = string
 
 // Status of notification:
 //   - `0`: Inactive
@@ -11177,22 +11499,21 @@ type Statusnotification = *int
 //   - `recurring`: This type is used for recurring payments that occur per a set plan. For example, splitting an HOA special assessment over 6 monthly payments.
 //
 // See [Understanding CIT and MIT Indicators](/guides/money-in-cit-mit) for more information.
-type StoredMethodUsageType = *string
+type StoredMethodUsageType = string
 
 // Payabli identifier of a tokenized payment method. If this field is used in a request, the `method` field is overridden and the payment is made using the payment token.
-type Storedmethodid = *string
+type Storedmethodid = string
 
 // Refers to the payment page identifier. If provided, then the transaction is linked to the payment page.
-type Subdomain = *string
+type Subdomain = string
 
 type SubscriptionQueryRecords struct {
 	// Timestamp of when the subscription ws created, in UTC.
 	CreatedAt *CreatedAt                 `json:"CreatedAt,omitempty" url:"CreatedAt,omitempty"`
 	Customer  *QueryTransactionPayorData `json:"Customer,omitempty" url:"Customer,omitempty"`
 	// The subscription's end date.
-	EndDate *Datetimenullable `json:"EndDate,omitempty" url:"EndDate,omitempty"`
-	// If applicable, the internal reference ID to the payment page capturing the payment.
-	EntrypageId        *int64              `json:"EntrypageId,omitempty" url:"EntrypageId,omitempty"`
+	EndDate            *DatetimeNullable   `json:"EndDate,omitempty" url:"EndDate,omitempty"`
+	EntrypageId        *EntrypageId        `json:"EntrypageId,omitempty" url:"EntrypageId,omitempty"`
 	ExternalPaypointId *ExternalPaypointId `json:"ExternalPaypointID,omitempty" url:"ExternalPaypointID,omitempty"`
 	// Fee applied to the subscription.
 	FeeAmount *float64 `json:"FeeAmount,omitempty" url:"FeeAmount,omitempty"`
@@ -11202,7 +11523,7 @@ type SubscriptionQueryRecords struct {
 	IdSub       *int64    `json:"IdSub,omitempty" url:"IdSub,omitempty"`
 	InvoiceData *BillData `json:"InvoiceData,omitempty" url:"InvoiceData,omitempty"`
 	// The last time the subscription was processed.
-	LastRun *Datetimenullable `json:"LastRun,omitempty" url:"LastRun,omitempty"`
+	LastRun *DatetimeNullable `json:"LastRun,omitempty" url:"LastRun,omitempty"`
 	// The last date and time the subscription was updated.
 	LastUpdated *LastModified `json:"LastUpdated,omitempty" url:"LastUpdated,omitempty"`
 	// The number of cycles the subscription has left.
@@ -11212,7 +11533,7 @@ type SubscriptionQueryRecords struct {
 	// The subscription amount, minus any fees.
 	NetAmount *Netamountnullable `json:"NetAmount,omitempty" url:"NetAmount,omitempty"`
 	// The next date the subscription will be processed.
-	NextDate      *Datetimenullable `json:"NextDate,omitempty" url:"NextDate,omitempty"`
+	NextDate      *DatetimeNullable `json:"NextDate,omitempty" url:"NextDate,omitempty"`
 	ParentOrgName *OrgParentName    `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
 	PaymentData   *QueryPaymentData `json:"PaymentData,omitempty" url:"PaymentData,omitempty"`
 	// The paypoint's DBA name.
@@ -11226,7 +11547,7 @@ type SubscriptionQueryRecords struct {
 	PlanId *int    `json:"PlanId,omitempty" url:"PlanId,omitempty"`
 	Source *Source `json:"Source,omitempty" url:"Source,omitempty"`
 	// The subscription start date.
-	StartDate *Datetimenullable `json:"StartDate,omitempty" url:"StartDate,omitempty"`
+	StartDate *DatetimeNullable `json:"StartDate,omitempty" url:"StartDate,omitempty"`
 	// Events associated with the subscription.
 	SubEvents []*GeneralEvents `json:"SubEvents,omitempty" url:"SubEvents,omitempty"`
 	// The subscription's status.
@@ -11258,14 +11579,14 @@ func (s *SubscriptionQueryRecords) GetCustomer() *QueryTransactionPayorData {
 	return s.Customer
 }
 
-func (s *SubscriptionQueryRecords) GetEndDate() *Datetimenullable {
+func (s *SubscriptionQueryRecords) GetEndDate() *DatetimeNullable {
 	if s == nil {
 		return nil
 	}
 	return s.EndDate
 }
 
-func (s *SubscriptionQueryRecords) GetEntrypageId() *int64 {
+func (s *SubscriptionQueryRecords) GetEntrypageId() *EntrypageId {
 	if s == nil {
 		return nil
 	}
@@ -11307,7 +11628,7 @@ func (s *SubscriptionQueryRecords) GetInvoiceData() *BillData {
 	return s.InvoiceData
 }
 
-func (s *SubscriptionQueryRecords) GetLastRun() *Datetimenullable {
+func (s *SubscriptionQueryRecords) GetLastRun() *DatetimeNullable {
 	if s == nil {
 		return nil
 	}
@@ -11342,7 +11663,7 @@ func (s *SubscriptionQueryRecords) GetNetAmount() *Netamountnullable {
 	return s.NetAmount
 }
 
-func (s *SubscriptionQueryRecords) GetNextDate() *Datetimenullable {
+func (s *SubscriptionQueryRecords) GetNextDate() *DatetimeNullable {
 	if s == nil {
 		return nil
 	}
@@ -11405,7 +11726,7 @@ func (s *SubscriptionQueryRecords) GetSource() *Source {
 	return s.Source
 }
 
-func (s *SubscriptionQueryRecords) GetStartDate() *Datetimenullable {
+func (s *SubscriptionQueryRecords) GetStartDate() *DatetimeNullable {
 	if s == nil {
 		return nil
 	}
@@ -11483,7 +11804,7 @@ func (s *SubscriptionQueryRecords) String() string {
 type Subscriptionid = int64
 
 // Commodity code.
-type SummaryCommodityCode = *string
+type SummaryCommodityCode = string
 
 type SummaryOrg struct {
 	AmountSubs     *float64 `json:"amountSubs,omitempty" url:"amountSubs,omitempty"`
@@ -11578,13 +11899,13 @@ func (s *SummaryOrg) String() string {
 // For **method**=*sms* the expected value is a list of phone numbers separated by semicolon.
 //
 // For **method**=*web*. the expected value is a valid and complete URL. Webhooks support only standard HTTP ports: 80, 443, 8080, or 4443.
-type Target = *string
+type Target = string
 
 // Tax rate in percent applied to the invoice.
 type Tax = *float64
 
 // Business name in tax document. This is only relevant if a government entity has given you an alternative name to file tax documents with.
-type Taxfillname = *string
+type Taxfillname = string
 
 // The internal code for the template.
 type TemplateCode = *string
@@ -11593,7 +11914,7 @@ type TemplateCode = *string
 type TemplateId = *int64
 
 // The template name.
-type TemplateName = *string
+type TemplateName = string
 
 // Payment terms for invoice. If no terms are defined, then response data for this field defaults to `NET30`.
 //
@@ -11640,10 +11961,10 @@ type TemplateName = *string
 // - `25UF`: 25 days until further notice
 //
 // - `50UF`: 50 days until further notice
-type Terms = *string
+type Terms = string
 
 // Custom terms and conditions included in the invoice.
-type TermsConditions = *string
+type TermsConditions = string
 
 // Timezone, in UTC offset. For example, -5 is Eastern time.
 type Timezone = *int
@@ -11663,14 +11984,12 @@ type TransactionQueryRecords struct {
 	// Service Fee or sub-charge transaction associated to the main transaction.
 	CfeeTransactions []*QueryCFeeTransaction `json:"CfeeTransactions,omitempty" url:"CfeeTransactions,omitempty"`
 	// Connector used for transaction.
-	ConnectorName *string                    `json:"ConnectorName,omitempty" url:"ConnectorName,omitempty"`
-	Customer      *QueryTransactionPayorData `json:"Customer,omitempty" url:"Customer,omitempty"`
-	DeviceId      *Device                    `json:"DeviceId,omitempty" url:"DeviceId,omitempty"`
-	// If applicable, the internal reference ID to the payment page capturing the payment.
-	EntrypageId                  *int64                        `json:"EntrypageId,omitempty" url:"EntrypageId,omitempty"`
+	ConnectorName                *string                       `json:"ConnectorName,omitempty" url:"ConnectorName,omitempty"`
+	Customer                     *QueryTransactionPayorData    `json:"Customer,omitempty" url:"Customer,omitempty"`
+	DeviceId                     *Device                       `json:"DeviceId,omitempty" url:"DeviceId,omitempty"`
+	EntrypageId                  *EntrypageId                  `json:"EntrypageId,omitempty" url:"EntrypageId,omitempty"`
 	ExternalProcessorInformation *ExternalProcessorInformation `json:"ExternalProcessorInformation,omitempty" url:"ExternalProcessorInformation,omitempty"`
-	// Service fee or sub-charge applied.
-	FeeAmount *float64 `json:"FeeAmount,omitempty" url:"FeeAmount,omitempty"`
+	FeeAmount                    *FeeAmount                    `json:"FeeAmount,omitempty" url:"FeeAmount,omitempty"`
 	// Internal identifier used for processing.
 	GatewayTransId *string   `json:"GatewayTransId,omitempty" url:"GatewayTransId,omitempty"`
 	InvoiceData    *BillData `json:"InvoiceData,omitempty" url:"InvoiceData,omitempty"`
@@ -11685,9 +12004,8 @@ type TransactionQueryRecords struct {
 	ParentOrgName *OrgParentName    `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
 	PaymentData   *QueryPaymentData `json:"PaymentData,omitempty" url:"PaymentData,omitempty"`
 	// Unique Transaction ID.
-	PaymentTransId *string `json:"PaymentTransId,omitempty" url:"PaymentTransId,omitempty"`
-	// Unique ID for customer linked to the transaction.
-	PayorId *int64 `json:"PayorId,omitempty" url:"PayorId,omitempty"`
+	PaymentTransId *string  `json:"PaymentTransId,omitempty" url:"PaymentTransId,omitempty"`
+	PayorId        *PayorId `json:"PayorId,omitempty" url:"PayorId,omitempty"`
 	// Paypoint's DBA name.
 	PaypointDbaname *Dbaname `json:"PaypointDbaname,omitempty" url:"PaypointDbaname,omitempty"`
 	// Paypoint's entryname.
@@ -11695,13 +12013,11 @@ type TransactionQueryRecords struct {
 	// InternalId for paypoint.
 	PaypointId *int64 `json:"PaypointId,omitempty" url:"PaypointId,omitempty"`
 	// Paypoint's legal name.
-	PaypointLegalname *Legalname        `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
-	PendingFeeAmount  *PendingFeeAmount `json:"PendingFeeAmount,omitempty" url:"PendingFeeAmount,omitempty"`
-	// Identifier of refund transaction linked to this payment.
-	RefundId     *int64             `json:"RefundId,omitempty" url:"RefundId,omitempty"`
-	ResponseData *QueryResponseData `json:"ResponseData,omitempty" url:"ResponseData,omitempty"`
-	// Identifier of return/chargeback transaction linked to this payment.
-	ReturnedId *int64 `json:"ReturnedId,omitempty" url:"ReturnedId,omitempty"`
+	PaypointLegalname *Legalname         `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
+	PendingFeeAmount  *PendingFeeAmount  `json:"PendingFeeAmount,omitempty" url:"PendingFeeAmount,omitempty"`
+	RefundId          *RefundId          `json:"RefundId,omitempty" url:"RefundId,omitempty"`
+	ResponseData      *QueryResponseData `json:"ResponseData,omitempty" url:"ResponseData,omitempty"`
+	ReturnedId        *ReturnedId        `json:"ReturnedId,omitempty" url:"ReturnedId,omitempty"`
 	// Reference to the subscription that originated the transaction.
 	ScheduleReference *int64 `json:"ScheduleReference,omitempty" url:"ScheduleReference,omitempty"`
 	// Settlement status for transaction. See [the docs](/developers/references/money-in-statuses#payment-funding-status) for a full reference.
@@ -11713,7 +12029,7 @@ type TransactionQueryRecords struct {
 	// Events associated with this transaction.
 	TransactionEvents []*QueryTransactionEvents `json:"TransactionEvents,omitempty" url:"TransactionEvents,omitempty"`
 	// Transaction date and time, in UTC.
-	TransactionTime     *Datetimenullable `json:"TransactionTime,omitempty" url:"TransactionTime,omitempty"`
+	TransactionTime     *DatetimeNullable `json:"TransactionTime,omitempty" url:"TransactionTime,omitempty"`
 	TransAdditionalData interface{}       `json:"TransAdditionalData,omitempty" url:"TransAdditionalData,omitempty"`
 	// Status of transaction. See [the docs](/developers/references/money-in-statuses#money-in-transaction-status) for a full reference.
 	TransStatus *int `json:"TransStatus,omitempty" url:"TransStatus,omitempty"`
@@ -11778,7 +12094,7 @@ func (t *TransactionQueryRecords) GetDeviceId() *Device {
 	return t.DeviceId
 }
 
-func (t *TransactionQueryRecords) GetEntrypageId() *int64 {
+func (t *TransactionQueryRecords) GetEntrypageId() *EntrypageId {
 	if t == nil {
 		return nil
 	}
@@ -11792,7 +12108,7 @@ func (t *TransactionQueryRecords) GetExternalProcessorInformation() *ExternalPro
 	return t.ExternalProcessorInformation
 }
 
-func (t *TransactionQueryRecords) GetFeeAmount() *float64 {
+func (t *TransactionQueryRecords) GetFeeAmount() *FeeAmount {
 	if t == nil {
 		return nil
 	}
@@ -11869,7 +12185,7 @@ func (t *TransactionQueryRecords) GetPaymentTransId() *string {
 	return t.PaymentTransId
 }
 
-func (t *TransactionQueryRecords) GetPayorId() *int64 {
+func (t *TransactionQueryRecords) GetPayorId() *PayorId {
 	if t == nil {
 		return nil
 	}
@@ -11911,7 +12227,7 @@ func (t *TransactionQueryRecords) GetPendingFeeAmount() *PendingFeeAmount {
 	return t.PendingFeeAmount
 }
 
-func (t *TransactionQueryRecords) GetRefundId() *int64 {
+func (t *TransactionQueryRecords) GetRefundId() *RefundId {
 	if t == nil {
 		return nil
 	}
@@ -11925,7 +12241,7 @@ func (t *TransactionQueryRecords) GetResponseData() *QueryResponseData {
 	return t.ResponseData
 }
 
-func (t *TransactionQueryRecords) GetReturnedId() *int64 {
+func (t *TransactionQueryRecords) GetReturnedId() *ReturnedId {
 	if t == nil {
 		return nil
 	}
@@ -11974,7 +12290,7 @@ func (t *TransactionQueryRecords) GetTransactionEvents() []*QueryTransactionEven
 	return t.TransactionEvents
 }
 
-func (t *TransactionQueryRecords) GetTransactionTime() *Datetimenullable {
+func (t *TransactionQueryRecords) GetTransactionTime() *DatetimeNullable {
 	if t == nil {
 		return nil
 	}
@@ -12029,6 +12345,107 @@ func (t *TransactionQueryRecords) String() string {
 
 // Timestamp when transaction was submitted, in UTC.
 type TransactionTime = time.Time
+
+type TransferEvent struct {
+	// Description of the transfer event.
+	Description string `json:"description" url:"description"`
+	// Date and time when the transfer event occurred.
+	EventTime time.Time `json:"eventTime" url:"eventTime"`
+	// Reference data associated with the transfer event.
+	RefData string `json:"refData" url:"refData"`
+	// Additional data associated with the transfer event.
+	ExtraData string `json:"extraData" url:"extraData"`
+	// Source of the transfer event.
+	Source string `json:"source" url:"source"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransferEvent) GetDescription() string {
+	if t == nil {
+		return ""
+	}
+	return t.Description
+}
+
+func (t *TransferEvent) GetEventTime() time.Time {
+	if t == nil {
+		return time.Time{}
+	}
+	return t.EventTime
+}
+
+func (t *TransferEvent) GetRefData() string {
+	if t == nil {
+		return ""
+	}
+	return t.RefData
+}
+
+func (t *TransferEvent) GetExtraData() string {
+	if t == nil {
+		return ""
+	}
+	return t.ExtraData
+}
+
+func (t *TransferEvent) GetSource() string {
+	if t == nil {
+		return ""
+	}
+	return t.Source
+}
+
+func (t *TransferEvent) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransferEvent) UnmarshalJSON(data []byte) error {
+	type embed TransferEvent
+	var unmarshaler = struct {
+		embed
+		EventTime *internal.DateTime `json:"eventTime"`
+	}{
+		embed: embed(*t),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*t = TransferEvent(unmarshaler.embed)
+	t.EventTime = unmarshaler.EventTime.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransferEvent) MarshalJSON() ([]byte, error) {
+	type embed TransferEvent
+	var marshaler = struct {
+		embed
+		EventTime *internal.DateTime `json:"eventTime"`
+	}{
+		embed:     embed(*t),
+		EventTime: internal.NewDateTime(t.EventTime),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (t *TransferEvent) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
 
 // Type of bank account: Checking or Savings.
 type TypeAccount string
@@ -12314,7 +12731,45 @@ func (u *UsrAccess) String() string {
 //   - Locked:	85
 type UsrStatus = *int
 
-type ValueTemplates = *string
+// Virtual card payment method.
+type VCardPaymentMethod struct {
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *VCardPaymentMethod) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *VCardPaymentMethod) UnmarshalJSON(data []byte) error {
+	type unmarshaler VCardPaymentMethod
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VCardPaymentMethod(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VCardPaymentMethod) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type ValueTemplates = string
 
 type VendorData struct {
 	VendorNumber   *VendorNumber   `json:"vendorNumber,omitempty" url:"vendorNumber,omitempty"`
@@ -12331,6 +12786,10 @@ type VendorData struct {
 	Contacts *ContactsField `json:"contacts,omitempty" url:"contacts,omitempty"`
 	// Vendor's country.
 	Country *string `json:"country,omitempty" url:"country,omitempty"`
+	// Custom field 1 for vendor
+	CustomField1 *string `json:"customField1,omitempty" url:"customField1,omitempty"`
+	// Custom field 2 for vendor
+	CustomField2 *string `json:"customField2,omitempty" url:"customField2,omitempty"`
 	// Account number of paypoint in the vendor side.
 	CustomerVendorAccount *string    `json:"customerVendorAccount,omitempty" url:"customerVendorAccount,omitempty"`
 	Ein                   *VendorEin `json:"ein,omitempty" url:"ein,omitempty"`
@@ -12350,6 +12809,7 @@ type VendorData struct {
 	RemitAddress2       *Remitaddress2       `json:"remitAddress2,omitempty" url:"remitAddress2,omitempty"`
 	RemitCity           *Remitcity           `json:"remitCity,omitempty" url:"remitCity,omitempty"`
 	RemitCountry        *Remitcountry        `json:"remitCountry,omitempty" url:"remitCountry,omitempty"`
+	RemitEmail          *RemitEmail          `json:"remitEmail,omitempty" url:"remitEmail,omitempty"`
 	RemitState          *Remitstate          `json:"remitState,omitempty" url:"remitState,omitempty"`
 	RemitZip            *Remitzip            `json:"remitZip,omitempty" url:"remitZip,omitempty"`
 	// Vendor's state. Must be a 2 character state code.
@@ -12416,6 +12876,20 @@ func (v *VendorData) GetCountry() *string {
 		return nil
 	}
 	return v.Country
+}
+
+func (v *VendorData) GetCustomField1() *string {
+	if v == nil {
+		return nil
+	}
+	return v.CustomField1
+}
+
+func (v *VendorData) GetCustomField2() *string {
+	if v == nil {
+		return nil
+	}
+	return v.CustomField2
 }
 
 func (v *VendorData) GetCustomerVendorAccount() *string {
@@ -12530,6 +13004,13 @@ func (v *VendorData) GetRemitCountry() *Remitcountry {
 	return v.RemitCountry
 }
 
+func (v *VendorData) GetRemitEmail() *RemitEmail {
+	if v == nil {
+		return nil
+	}
+	return v.RemitEmail
+}
+
 func (v *VendorData) GetRemitState() *Remitstate {
 	if v == nil {
 		return nil
@@ -12604,143 +13085,225 @@ type VendorEin = string
 type VendorName1 = string
 
 // Secondary name for vendor.
-type VendorName2 = *string
+type VendorName2 = string
 
 // Custom number identifying the vendor. Must be unique in paypoint.
-type VendorNumber = *string
+type VendorNumber = string
 
 // Object containing details about the payment method to use for the payout.
 type VendorPaymentMethod struct {
-	// Payment method to use for payout. Leave empty for managed payables.
-	Method *VendorPaymentMethodMethod `json:"method,omitempty" url:"method,omitempty"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
+	Method  string
+	Managed *ManagedPaymentMethod
+	Vcard   *VCardPaymentMethod
+	Ach     *AchPaymentMethod
+	Check   *CheckPaymentMethod
 }
 
-func (v *VendorPaymentMethod) GetMethod() *VendorPaymentMethodMethod {
+func (v *VendorPaymentMethod) GetMethod() string {
 	if v == nil {
-		return nil
+		return ""
 	}
 	return v.Method
 }
 
-func (v *VendorPaymentMethod) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
+func (v *VendorPaymentMethod) GetManaged() *ManagedPaymentMethod {
+	if v == nil {
+		return nil
+	}
+	return v.Managed
+}
+
+func (v *VendorPaymentMethod) GetVcard() *VCardPaymentMethod {
+	if v == nil {
+		return nil
+	}
+	return v.Vcard
+}
+
+func (v *VendorPaymentMethod) GetAch() *AchPaymentMethod {
+	if v == nil {
+		return nil
+	}
+	return v.Ach
+}
+
+func (v *VendorPaymentMethod) GetCheck() *CheckPaymentMethod {
+	if v == nil {
+		return nil
+	}
+	return v.Check
 }
 
 func (v *VendorPaymentMethod) UnmarshalJSON(data []byte) error {
-	type unmarshaler VendorPaymentMethod
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	var unmarshaler struct {
+		Method string `json:"method"`
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*v = VendorPaymentMethod(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
+	v.Method = unmarshaler.Method
+	if unmarshaler.Method == "" {
+		return fmt.Errorf("%T did not include discriminant method", v)
 	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
+	switch unmarshaler.Method {
+	case "managed":
+		value := new(ManagedPaymentMethod)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		v.Managed = value
+	case "vcard":
+		value := new(VCardPaymentMethod)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		v.Vcard = value
+	case "ach":
+		value := new(AchPaymentMethod)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		v.Ach = value
+	case "check":
+		value := new(CheckPaymentMethod)
+		if err := json.Unmarshal(data, &value); err != nil {
+			return err
+		}
+		v.Check = value
+	}
 	return nil
 }
 
-func (v *VendorPaymentMethod) String() string {
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
+func (v VendorPaymentMethod) MarshalJSON() ([]byte, error) {
+	if err := v.validate(); err != nil {
+		return nil, err
+	}
+	if v.Managed != nil {
+		return internal.MarshalJSONWithExtraProperty(v.Managed, "method", "managed")
+	}
+	if v.Vcard != nil {
+		return internal.MarshalJSONWithExtraProperty(v.Vcard, "method", "vcard")
+	}
+	if v.Ach != nil {
+		return internal.MarshalJSONWithExtraProperty(v.Ach, "method", "ach")
+	}
+	if v.Check != nil {
+		return internal.MarshalJSONWithExtraProperty(v.Check, "method", "check")
+	}
+	return nil, fmt.Errorf("type %T does not define a non-empty union type", v)
+}
+
+type VendorPaymentMethodVisitor interface {
+	VisitManaged(*ManagedPaymentMethod) error
+	VisitVcard(*VCardPaymentMethod) error
+	VisitAch(*AchPaymentMethod) error
+	VisitCheck(*CheckPaymentMethod) error
+}
+
+func (v *VendorPaymentMethod) Accept(visitor VendorPaymentMethodVisitor) error {
+	if v.Managed != nil {
+		return visitor.VisitManaged(v.Managed)
+	}
+	if v.Vcard != nil {
+		return visitor.VisitVcard(v.Vcard)
+	}
+	if v.Ach != nil {
+		return visitor.VisitAch(v.Ach)
+	}
+	if v.Check != nil {
+		return visitor.VisitCheck(v.Check)
+	}
+	return fmt.Errorf("type %T does not define a non-empty union type", v)
+}
+
+func (v *VendorPaymentMethod) validate() error {
+	if v == nil {
+		return fmt.Errorf("type %T is nil", v)
+	}
+	var fields []string
+	if v.Managed != nil {
+		fields = append(fields, "managed")
+	}
+	if v.Vcard != nil {
+		fields = append(fields, "vcard")
+	}
+	if v.Ach != nil {
+		fields = append(fields, "ach")
+	}
+	if v.Check != nil {
+		fields = append(fields, "check")
+	}
+	if len(fields) == 0 {
+		if v.Method != "" {
+			return fmt.Errorf("type %T defines a discriminant set to %q but the field is not set", v, v.Method)
+		}
+		return fmt.Errorf("type %T is empty", v)
+	}
+	if len(fields) > 1 {
+		return fmt.Errorf("type %T defines values for %s, but only one value is allowed", v, fields)
+	}
+	if v.Method != "" {
+		field := fields[0]
+		if v.Method != field {
+			return fmt.Errorf(
+				"type %T defines a discriminant set to %q, but it does not match the %T field; either remove or update the discriminant to match",
+				v,
+				v.Method,
+				v,
+			)
 		}
 	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
-// Payment method to use for payout. Leave empty for managed payables.
-type VendorPaymentMethodMethod string
-
-const (
-	VendorPaymentMethodMethodManaged VendorPaymentMethodMethod = "managed"
-	VendorPaymentMethodMethodVcard   VendorPaymentMethodMethod = "vcard"
-	VendorPaymentMethodMethodAch     VendorPaymentMethodMethod = "ach"
-	VendorPaymentMethodMethodCheck   VendorPaymentMethodMethod = "check"
-)
-
-func NewVendorPaymentMethodMethodFromString(s string) (VendorPaymentMethodMethod, error) {
-	switch s {
-	case "managed":
-		return VendorPaymentMethodMethodManaged, nil
-	case "vcard":
-		return VendorPaymentMethodMethodVcard, nil
-	case "ach":
-		return VendorPaymentMethodMethodAch, nil
-	case "check":
-		return VendorPaymentMethodMethodCheck, nil
-	}
-	var t VendorPaymentMethodMethod
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (v VendorPaymentMethodMethod) Ptr() *VendorPaymentMethodMethod {
-	return &v
+	return nil
 }
 
 // Vendor's phone number. Phone number can't contain non-digit characters like hyphens or parentheses.
 type VendorPhone = *string
 
 type VendorQueryRecord struct {
-	AdditionalData *AdditionalData `json:"additionalData,omitempty" url:"additionalData,omitempty"`
-	// Vendor's address.
-	Address1 *AddressNullable `json:"address1,omitempty" url:"address1,omitempty"`
-	// Additional line for vendor's address.
-	Address2    *AddressAddtlNullable `json:"address2,omitempty" url:"address2,omitempty"`
-	BillingData *BillingDataResponse  `json:"billingData,omitempty" url:"billingData,omitempty"`
-	// Vendor's city.
-	City     *CityNullable  `json:"city,omitempty" url:"city,omitempty"`
-	Contacts *ContactsField `json:"contacts,omitempty" url:"contacts,omitempty"`
-	// Vendor's country.
-	Country     *string    `json:"country,omitempty" url:"country,omitempty"`
-	CreatedDate *CreatedAt `json:"createdDate,omitempty" url:"createdDate,omitempty"`
-	// Account number of paypoint in the vendor system.
-	CustomerVendorAccount *string `json:"customerVendorAccount,omitempty" url:"customerVendorAccount,omitempty"`
-	Ein                   *Ein    `json:"ein,omitempty" url:"ein,omitempty"`
-	// Vendor's email address.
-	Email               *Email               `json:"email,omitempty" url:"email,omitempty"`
-	EnrollmentStatus    *EnrollmentStatus    `json:"enrollmentStatus,omitempty" url:"enrollmentStatus,omitempty"`
-	ExternalPaypointId  *ExternalPaypointId  `json:"externalPaypointId,omitempty" url:"externalPaypointId,omitempty"`
-	InternalReferenceId *InternalReferenceId `json:"internalReferenceId,omitempty" url:"internalReferenceId,omitempty"`
-	LastUpdated         *LastModified        `json:"lastUpdated,omitempty" url:"lastUpdated,omitempty"`
-	// Additional location code used to identify the vendor.
-	LocationCode *string `json:"locationCode,omitempty" url:"locationCode,omitempty"`
-	Mcc          *Mcc    `json:"mcc,omitempty" url:"mcc,omitempty"`
-	// Primary name for vendor.
-	Name1 *string `json:"name1,omitempty" url:"name1,omitempty"`
-	// Secondary name for vendor.
-	Name2             *string              `json:"name2,omitempty" url:"name2,omitempty"`
-	ParentOrgName     *OrgParentName       `json:"parentOrgName,omitempty" url:"parentOrgName,omitempty"`
-	PayeeName1        *PayeeName           `json:"payeeName1,omitempty" url:"payeeName1,omitempty"`
-	PayeeName2        *PayeeName           `json:"payeeName2,omitempty" url:"payeeName2,omitempty"`
-	PaymentMethod     *VendorPaymentMethod `json:"paymentMethod,omitempty" url:"paymentMethod,omitempty"`
-	PaypointDbaname   *Dbaname             `json:"paypointDbaname,omitempty" url:"paypointDbaname,omitempty"`
-	PaypointEntryname *Entrypointfield     `json:"paypointEntryname,omitempty" url:"paypointEntryname,omitempty"`
-	PaypointLegalname *Legalname           `json:"paypointLegalname,omitempty" url:"paypointLegalname,omitempty"`
-	// Vendor's phone number.
-	Phone         *string        `json:"phone,omitempty" url:"phone,omitempty"`
-	RemitAddress1 *Remitaddress1 `json:"remitAddress1,omitempty" url:"remitAddress1,omitempty"`
-	RemitAddress2 *Remitaddress2 `json:"remitAddress2,omitempty" url:"remitAddress2,omitempty"`
-	RemitCity     *Remitcity     `json:"remitCity,omitempty" url:"remitCity,omitempty"`
-	RemitCountry  *Remitcountry  `json:"remitCountry,omitempty" url:"remitCountry,omitempty"`
-	RemitState    *Remitstate    `json:"remitState,omitempty" url:"remitState,omitempty"`
-	RemitZip      *Remitzip      `json:"remitZip,omitempty" url:"remitZip,omitempty"`
-	// Vendor's state.
-	State        *StateNullable `json:"state,omitempty" url:"state,omitempty"`
-	Summary      *VendorSummary `json:"summary,omitempty" url:"summary,omitempty"`
-	VendorId     *Vendorid      `json:"vendorId,omitempty" url:"vendorId,omitempty"`
-	VendorNumber *VendorNumber  `json:"vendorNumber,omitempty" url:"vendorNumber,omitempty"`
-	VendorStatus *Vendorstatus  `json:"vendorStatus,omitempty" url:"vendorStatus,omitempty"`
-	// Vendor's zip code.
-	Zip *ZipNullable `json:"zip,omitempty" url:"zip,omitempty"`
+	AdditionalData        *AdditionalData               `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	Address1              *AddressNullable              `json:"Address1,omitempty" url:"Address1,omitempty"`
+	Address2              *AddressAddtlNullable         `json:"Address2,omitempty" url:"Address2,omitempty"`
+	BillingData           *BillingDataResponse          `json:"BillingData,omitempty" url:"BillingData,omitempty"`
+	City                  *CityNullable                 `json:"City,omitempty" url:"City,omitempty"`
+	Contacts              *ContactsResponse             `json:"Contacts,omitempty" url:"Contacts,omitempty"`
+	Country               *string                       `json:"Country,omitempty" url:"Country,omitempty"`
+	CreatedDate           *CreatedAt                    `json:"CreatedDate,omitempty" url:"CreatedDate,omitempty"`
+	CustomerVendorAccount *string                       `json:"customerVendorAccount,omitempty" url:"customerVendorAccount,omitempty"`
+	CustomField1          *string                       `json:"customField1,omitempty" url:"customField1,omitempty"`
+	CustomField2          *string                       `json:"customField2,omitempty" url:"customField2,omitempty"`
+	Ein                   *Ein                          `json:"EIN,omitempty" url:"EIN,omitempty"`
+	Email                 *Email                        `json:"Email,omitempty" url:"Email,omitempty"`
+	EnrollmentStatus      *EnrollmentStatus             `json:"EnrollmentStatus,omitempty" url:"EnrollmentStatus,omitempty"`
+	ExternalPaypointId    *ExternalPaypointId           `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	InternalReferenceId   *InternalReferenceId          `json:"InternalReferenceId,omitempty" url:"InternalReferenceId,omitempty"`
+	LastUpdated           *LastModified                 `json:"LastUpdated,omitempty" url:"LastUpdated,omitempty"`
+	LocationCode          *string                       `json:"LocationCode,omitempty" url:"LocationCode,omitempty"`
+	Mcc                   *Mcc                          `json:"Mcc,omitempty" url:"Mcc,omitempty"`
+	Name1                 *string                       `json:"Name1,omitempty" url:"Name1,omitempty"`
+	Name2                 *string                       `json:"Name2,omitempty" url:"Name2,omitempty"`
+	ParentOrgName         *OrgParentName                `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
+	ParentOrgId           *OrgParentId                  `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
+	PayeeName1            *PayeeName                    `json:"payeeName1,omitempty" url:"payeeName1,omitempty"`
+	PayeeName2            *PayeeName                    `json:"payeeName2,omitempty" url:"payeeName2,omitempty"`
+	PaymentMethod         *VendorPaymentMethod          `json:"PaymentMethod,omitempty" url:"PaymentMethod,omitempty"`
+	PaypointDbaname       *Dbaname                      `json:"PaypointDbaname,omitempty" url:"PaypointDbaname,omitempty"`
+	PaypointEntryname     *Entrypointfield              `json:"PaypointEntryname,omitempty" url:"PaypointEntryname,omitempty"`
+	PaypointLegalname     *Legalname                    `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
+	Phone                 *string                       `json:"Phone,omitempty" url:"Phone,omitempty"`
+	RemitAddress1         *Remitaddress1                `json:"remitAddress1,omitempty" url:"remitAddress1,omitempty"`
+	RemitAddress2         *Remitaddress2                `json:"remitAddress2,omitempty" url:"remitAddress2,omitempty"`
+	RemitCity             *Remitcity                    `json:"remitCity,omitempty" url:"remitCity,omitempty"`
+	RemitCountry          *Remitcountry                 `json:"remitCountry,omitempty" url:"remitCountry,omitempty"`
+	RemitEmail            *RemitEmail                   `json:"RemitEmail,omitempty" url:"RemitEmail,omitempty"`
+	RemitState            *Remitstate                   `json:"remitState,omitempty" url:"remitState,omitempty"`
+	RemitZip              *Remitzip                     `json:"remitZip,omitempty" url:"remitZip,omitempty"`
+	State                 *StateNullable                `json:"State,omitempty" url:"State,omitempty"`
+	StoredMethods         []*VendorResponseStoredMethod `json:"StoredMethods,omitempty" url:"StoredMethods,omitempty"`
+	Summary               *VendorSummary                `json:"Summary,omitempty" url:"Summary,omitempty"`
+	VendorId              *Vendorid                     `json:"VendorId,omitempty" url:"VendorId,omitempty"`
+	VendorNumber          *VendorNumber                 `json:"VendorNumber,omitempty" url:"VendorNumber,omitempty"`
+	VendorStatus          *Vendorstatus                 `json:"VendorStatus,omitempty" url:"VendorStatus,omitempty"`
+	Zip                   *ZipNullable                  `json:"Zip,omitempty" url:"Zip,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -12781,7 +13344,7 @@ func (v *VendorQueryRecord) GetCity() *CityNullable {
 	return v.City
 }
 
-func (v *VendorQueryRecord) GetContacts() *ContactsField {
+func (v *VendorQueryRecord) GetContacts() *ContactsResponse {
 	if v == nil {
 		return nil
 	}
@@ -12807,6 +13370,20 @@ func (v *VendorQueryRecord) GetCustomerVendorAccount() *string {
 		return nil
 	}
 	return v.CustomerVendorAccount
+}
+
+func (v *VendorQueryRecord) GetCustomField1() *string {
+	if v == nil {
+		return nil
+	}
+	return v.CustomField1
+}
+
+func (v *VendorQueryRecord) GetCustomField2() *string {
+	if v == nil {
+		return nil
+	}
+	return v.CustomField2
 }
 
 func (v *VendorQueryRecord) GetEin() *Ein {
@@ -12886,6 +13463,13 @@ func (v *VendorQueryRecord) GetParentOrgName() *OrgParentName {
 	return v.ParentOrgName
 }
 
+func (v *VendorQueryRecord) GetParentOrgId() *OrgParentId {
+	if v == nil {
+		return nil
+	}
+	return v.ParentOrgId
+}
+
 func (v *VendorQueryRecord) GetPayeeName1() *PayeeName {
 	if v == nil {
 		return nil
@@ -12963,6 +13547,13 @@ func (v *VendorQueryRecord) GetRemitCountry() *Remitcountry {
 	return v.RemitCountry
 }
 
+func (v *VendorQueryRecord) GetRemitEmail() *RemitEmail {
+	if v == nil {
+		return nil
+	}
+	return v.RemitEmail
+}
+
 func (v *VendorQueryRecord) GetRemitState() *Remitstate {
 	if v == nil {
 		return nil
@@ -12982,6 +13573,13 @@ func (v *VendorQueryRecord) GetState() *StateNullable {
 		return nil
 	}
 	return v.State
+}
+
+func (v *VendorQueryRecord) GetStoredMethods() []*VendorResponseStoredMethod {
+	if v == nil {
+		return nil
+	}
+	return v.StoredMethods
 }
 
 func (v *VendorQueryRecord) GetSummary() *VendorSummary {
@@ -13051,62 +13649,222 @@ func (v *VendorQueryRecord) String() string {
 	return fmt.Sprintf("%#v", v)
 }
 
-type VendorSummary struct {
-	InTransitBills       *int     `json:"inTransitBills,omitempty" url:"inTransitBills,omitempty"`
-	InTransitBillsAmount *float64 `json:"inTransitBillsAmount,omitempty" url:"inTransitBillsAmount,omitempty"`
-	OverdueBills         *int     `json:"overdueBills,omitempty" url:"overdueBills,omitempty"`
-	OverdueBillsAmount   *float64 `json:"overdueBillsAmount,omitempty" url:"overdueBillsAmount,omitempty"`
-	PaidBills            *int     `json:"paidBills,omitempty" url:"paidBills,omitempty"`
-	PaidBillsAmount      *float64 `json:"paidBillsAmount,omitempty" url:"paidBillsAmount,omitempty"`
-	PendingBills         *int     `json:"pendingBills,omitempty" url:"pendingBills,omitempty"`
-	PendingBillsAmount   *float64 `json:"pendingBillsAmount,omitempty" url:"pendingBillsAmount,omitempty"`
-	TotalBills           *int     `json:"totalBills,omitempty" url:"totalBills,omitempty"`
-	TotalBillsAmount     *float64 `json:"totalBillsAmount,omitempty" url:"totalBillsAmount,omitempty"`
+// Stored payment method information
+type VendorResponseStoredMethod struct {
+	IdPmethod      *string    `json:"IdPmethod,omitempty" url:"IdPmethod,omitempty"`
+	Method         *string    `json:"Method,omitempty" url:"Method,omitempty"`
+	Descriptor     *string    `json:"Descriptor,omitempty" url:"Descriptor,omitempty"`
+	MaskedAccount  *string    `json:"MaskedAccount,omitempty" url:"MaskedAccount,omitempty"`
+	ExpDate        *string    `json:"ExpDate,omitempty" url:"ExpDate,omitempty"`
+	HolderName     *string    `json:"HolderName,omitempty" url:"HolderName,omitempty"`
+	AchSecCode     *string    `json:"AchSecCode,omitempty" url:"AchSecCode,omitempty"`
+	AchHolderType  *string    `json:"AchHolderType,omitempty" url:"AchHolderType,omitempty"`
+	IsValidatedAch *bool      `json:"IsValidatedACH,omitempty" url:"IsValidatedACH,omitempty"`
+	Bin            *string    `json:"BIN,omitempty" url:"BIN,omitempty"`
+	BinData        *string    `json:"binData,omitempty" url:"binData,omitempty"`
+	Aba            *string    `json:"ABA,omitempty" url:"ABA,omitempty"`
+	PostalCode     *string    `json:"PostalCode,omitempty" url:"PostalCode,omitempty"`
+	MethodType     *string    `json:"MethodType,omitempty" url:"MethodType,omitempty"`
+	LastUpdated    *time.Time `json:"LastUpdated,omitempty" url:"LastUpdated,omitempty"`
+	CardUpdatedOn  *time.Time `json:"CardUpdatedOn,omitempty" url:"CardUpdatedOn,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (v *VendorSummary) GetInTransitBills() *int {
+func (v *VendorResponseStoredMethod) GetIdPmethod() *string {
 	if v == nil {
 		return nil
 	}
-	return v.InTransitBills
+	return v.IdPmethod
 }
 
-func (v *VendorSummary) GetInTransitBillsAmount() *float64 {
+func (v *VendorResponseStoredMethod) GetMethod() *string {
 	if v == nil {
 		return nil
 	}
-	return v.InTransitBillsAmount
+	return v.Method
 }
 
-func (v *VendorSummary) GetOverdueBills() *int {
+func (v *VendorResponseStoredMethod) GetDescriptor() *string {
 	if v == nil {
 		return nil
 	}
-	return v.OverdueBills
+	return v.Descriptor
 }
 
-func (v *VendorSummary) GetOverdueBillsAmount() *float64 {
+func (v *VendorResponseStoredMethod) GetMaskedAccount() *string {
 	if v == nil {
 		return nil
 	}
-	return v.OverdueBillsAmount
+	return v.MaskedAccount
 }
 
-func (v *VendorSummary) GetPaidBills() *int {
+func (v *VendorResponseStoredMethod) GetExpDate() *string {
 	if v == nil {
 		return nil
 	}
-	return v.PaidBills
+	return v.ExpDate
 }
 
-func (v *VendorSummary) GetPaidBillsAmount() *float64 {
+func (v *VendorResponseStoredMethod) GetHolderName() *string {
 	if v == nil {
 		return nil
 	}
-	return v.PaidBillsAmount
+	return v.HolderName
+}
+
+func (v *VendorResponseStoredMethod) GetAchSecCode() *string {
+	if v == nil {
+		return nil
+	}
+	return v.AchSecCode
+}
+
+func (v *VendorResponseStoredMethod) GetAchHolderType() *string {
+	if v == nil {
+		return nil
+	}
+	return v.AchHolderType
+}
+
+func (v *VendorResponseStoredMethod) GetIsValidatedAch() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.IsValidatedAch
+}
+
+func (v *VendorResponseStoredMethod) GetBin() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Bin
+}
+
+func (v *VendorResponseStoredMethod) GetBinData() *string {
+	if v == nil {
+		return nil
+	}
+	return v.BinData
+}
+
+func (v *VendorResponseStoredMethod) GetAba() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Aba
+}
+
+func (v *VendorResponseStoredMethod) GetPostalCode() *string {
+	if v == nil {
+		return nil
+	}
+	return v.PostalCode
+}
+
+func (v *VendorResponseStoredMethod) GetMethodType() *string {
+	if v == nil {
+		return nil
+	}
+	return v.MethodType
+}
+
+func (v *VendorResponseStoredMethod) GetLastUpdated() *time.Time {
+	if v == nil {
+		return nil
+	}
+	return v.LastUpdated
+}
+
+func (v *VendorResponseStoredMethod) GetCardUpdatedOn() *time.Time {
+	if v == nil {
+		return nil
+	}
+	return v.CardUpdatedOn
+}
+
+func (v *VendorResponseStoredMethod) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *VendorResponseStoredMethod) UnmarshalJSON(data []byte) error {
+	type embed VendorResponseStoredMethod
+	var unmarshaler = struct {
+		embed
+		LastUpdated   *internal.DateTime `json:"LastUpdated,omitempty"`
+		CardUpdatedOn *internal.DateTime `json:"CardUpdatedOn,omitempty"`
+	}{
+		embed: embed(*v),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*v = VendorResponseStoredMethod(unmarshaler.embed)
+	v.LastUpdated = unmarshaler.LastUpdated.TimePtr()
+	v.CardUpdatedOn = unmarshaler.CardUpdatedOn.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VendorResponseStoredMethod) MarshalJSON() ([]byte, error) {
+	type embed VendorResponseStoredMethod
+	var marshaler = struct {
+		embed
+		LastUpdated   *internal.DateTime `json:"LastUpdated,omitempty"`
+		CardUpdatedOn *internal.DateTime `json:"CardUpdatedOn,omitempty"`
+	}{
+		embed:         embed(*v),
+		LastUpdated:   internal.NewOptionalDateTime(v.LastUpdated),
+		CardUpdatedOn: internal.NewOptionalDateTime(v.CardUpdatedOn),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (v *VendorResponseStoredMethod) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+type VendorSummary struct {
+	ActiveBills            *int     `json:"ActiveBills,omitempty" url:"ActiveBills,omitempty"`
+	PendingBills           *int     `json:"PendingBills,omitempty" url:"PendingBills,omitempty"`
+	InTransitBills         *int     `json:"InTransitBills,omitempty" url:"InTransitBills,omitempty"`
+	PaidBills              *int     `json:"PaidBills,omitempty" url:"PaidBills,omitempty"`
+	OverdueBills           *int     `json:"OverdueBills,omitempty" url:"OverdueBills,omitempty"`
+	ApprovedBills          *int     `json:"ApprovedBills,omitempty" url:"ApprovedBills,omitempty"`
+	DisapprovedBills       *int     `json:"DisapprovedBills,omitempty" url:"DisapprovedBills,omitempty"`
+	TotalBills             *int     `json:"TotalBills,omitempty" url:"TotalBills,omitempty"`
+	ActiveBillsAmount      *float64 `json:"ActiveBillsAmount,omitempty" url:"ActiveBillsAmount,omitempty"`
+	PendingBillsAmount     *float64 `json:"PendingBillsAmount,omitempty" url:"PendingBillsAmount,omitempty"`
+	InTransitBillsAmount   *float64 `json:"InTransitBillsAmount,omitempty" url:"InTransitBillsAmount,omitempty"`
+	PaidBillsAmount        *float64 `json:"PaidBillsAmount,omitempty" url:"PaidBillsAmount,omitempty"`
+	OverdueBillsAmount     *float64 `json:"OverdueBillsAmount,omitempty" url:"OverdueBillsAmount,omitempty"`
+	ApprovedBillsAmount    *float64 `json:"ApprovedBillsAmount,omitempty" url:"ApprovedBillsAmount,omitempty"`
+	DisapprovedBillsAmount *float64 `json:"DisapprovedBillsAmount,omitempty" url:"DisapprovedBillsAmount,omitempty"`
+	TotalBillsAmount       *float64 `json:"TotalBillsAmount,omitempty" url:"TotalBillsAmount,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *VendorSummary) GetActiveBills() *int {
+	if v == nil {
+		return nil
+	}
+	return v.ActiveBills
 }
 
 func (v *VendorSummary) GetPendingBills() *int {
@@ -13116,11 +13874,39 @@ func (v *VendorSummary) GetPendingBills() *int {
 	return v.PendingBills
 }
 
-func (v *VendorSummary) GetPendingBillsAmount() *float64 {
+func (v *VendorSummary) GetInTransitBills() *int {
 	if v == nil {
 		return nil
 	}
-	return v.PendingBillsAmount
+	return v.InTransitBills
+}
+
+func (v *VendorSummary) GetPaidBills() *int {
+	if v == nil {
+		return nil
+	}
+	return v.PaidBills
+}
+
+func (v *VendorSummary) GetOverdueBills() *int {
+	if v == nil {
+		return nil
+	}
+	return v.OverdueBills
+}
+
+func (v *VendorSummary) GetApprovedBills() *int {
+	if v == nil {
+		return nil
+	}
+	return v.ApprovedBills
+}
+
+func (v *VendorSummary) GetDisapprovedBills() *int {
+	if v == nil {
+		return nil
+	}
+	return v.DisapprovedBills
 }
 
 func (v *VendorSummary) GetTotalBills() *int {
@@ -13128,6 +13914,55 @@ func (v *VendorSummary) GetTotalBills() *int {
 		return nil
 	}
 	return v.TotalBills
+}
+
+func (v *VendorSummary) GetActiveBillsAmount() *float64 {
+	if v == nil {
+		return nil
+	}
+	return v.ActiveBillsAmount
+}
+
+func (v *VendorSummary) GetPendingBillsAmount() *float64 {
+	if v == nil {
+		return nil
+	}
+	return v.PendingBillsAmount
+}
+
+func (v *VendorSummary) GetInTransitBillsAmount() *float64 {
+	if v == nil {
+		return nil
+	}
+	return v.InTransitBillsAmount
+}
+
+func (v *VendorSummary) GetPaidBillsAmount() *float64 {
+	if v == nil {
+		return nil
+	}
+	return v.PaidBillsAmount
+}
+
+func (v *VendorSummary) GetOverdueBillsAmount() *float64 {
+	if v == nil {
+		return nil
+	}
+	return v.OverdueBillsAmount
+}
+
+func (v *VendorSummary) GetApprovedBillsAmount() *float64 {
+	if v == nil {
+		return nil
+	}
+	return v.ApprovedBillsAmount
+}
+
+func (v *VendorSummary) GetDisapprovedBillsAmount() *float64 {
+	if v == nil {
+		return nil
+	}
+	return v.DisapprovedBillsAmount
 }
 
 func (v *VendorSummary) GetTotalBillsAmount() *float64 {
@@ -13181,7 +14016,7 @@ type Vendorid = *int
 type Vendorstatus = *int
 
 // The business website address. Include only the domain and TLD, do not enter the protocol (http/https). For example: `www.example.com` is acceptable.
-type Website = *string
+type Website = string
 
 // Describes when customers are charged for goods or services. Accepted values:
 type Whencharged string
@@ -13291,4 +14126,4 @@ func (w Whenrefunded) Ptr() *Whenrefunded {
 }
 
 // ZIP code for address.
-type ZipNullable = *string
+type ZipNullable = string
