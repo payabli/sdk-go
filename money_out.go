@@ -909,7 +909,7 @@ type AuthorizePayoutBody struct {
 	// Array of bills associated to the transaction
 	InvoiceData      []*BillPayOutDataRequest `json:"invoiceData,omitempty" url:"invoiceData,omitempty"`
 	OrderDescription *Orderdescription        `json:"orderDescription,omitempty" url:"orderDescription,omitempty"`
-	OrderId          *Orderid                 `json:"orderId,omitempty" url:"orderId,omitempty"`
+	OrderId          *OrderId                 `json:"orderId,omitempty" url:"orderId,omitempty"`
 	// Object containing payment details.
 	PaymentDetails *RequestOutAuthorizePaymentDetails `json:"paymentDetails" url:"paymentDetails"`
 	PaymentMethod  *VendorPaymentMethod               `json:"paymentMethod,omitempty" url:"paymentMethod,omitempty"`
@@ -951,7 +951,7 @@ func (a *AuthorizePayoutBody) GetOrderDescription() *Orderdescription {
 	return a.OrderDescription
 }
 
-func (a *AuthorizePayoutBody) GetOrderId() *Orderid {
+func (a *AuthorizePayoutBody) GetOrderId() *OrderId {
 	if a == nil {
 		return nil
 	}

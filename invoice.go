@@ -274,7 +274,7 @@ type PayorDataResponse struct {
 	BillingPhone    *PhoneNumber                 `json:"BillingPhone,omitempty" url:"BillingPhone,omitempty"`
 	BillingState    *BillingStateNullable        `json:"BillingState,omitempty" url:"BillingState,omitempty"`
 	// Customer's billing ZIP code. For Pay In functions, this field supports 5-digit and 9-digit ZIP codes and alphanumeric Canadian postal codes. For example: "37615-1234" or "37615".
-	BillingZip *BillingZipNullable `json:"BillingZip,omitempty" url:"BillingZip,omitempty"`
+	BillingZip *BillingZip `json:"BillingZip,omitempty" url:"BillingZip,omitempty"`
 	// Customer's company name.
 	CompanyName    *string                 `json:"CompanyName,omitempty" url:"CompanyName,omitempty"`
 	CustomerId     *CustomerId             `json:"customerId,omitempty" url:"customerId,omitempty"`
@@ -353,7 +353,7 @@ func (p *PayorDataResponse) GetBillingState() *BillingStateNullable {
 	return p.BillingState
 }
 
-func (p *PayorDataResponse) GetBillingZip() *BillingZipNullable {
+func (p *PayorDataResponse) GetBillingZip() *BillingZip {
 	if p == nil {
 		return nil
 	}
@@ -485,8 +485,8 @@ func (p *PayorDataResponse) String() string {
 
 type GetInvoiceRecord struct {
 	InvoiceId         InvoiceId         `json:"invoiceId" url:"invoiceId"`
-	CustomerId        CustomerId        `json:"customerId,omitempty" url:"customerId,omitempty"`
-	PaypointId        PaypointId        `json:"paypointId,omitempty" url:"paypointId,omitempty"`
+	CustomerId        CustomerId        `json:"customerId" url:"customerId"`
+	PaypointId        PaypointId        `json:"paypointId" url:"paypointId"`
 	InvoiceNumber     Invoicenumber     `json:"invoiceNumber" url:"invoiceNumber"`
 	InvoiceDate       Datenullable      `json:"invoiceDate,omitempty" url:"invoiceDate,omitempty"`
 	InvoiceDueDate    Datenullable      `json:"invoiceDueDate,omitempty" url:"invoiceDueDate,omitempty"`
@@ -502,7 +502,7 @@ type GetInvoiceRecord struct {
 	Notes             *string           `json:"notes,omitempty" url:"notes,omitempty"`
 	Tax               Tax               `json:"tax,omitempty" url:"tax,omitempty"`
 	Discount          Discount          `json:"discount,omitempty" url:"discount,omitempty"`
-	InvoiceAmount     InvoiceAmount     `json:"invoiceAmount,omitempty" url:"invoiceAmount,omitempty"`
+	InvoiceAmount     InvoiceAmount     `json:"invoiceAmount" url:"invoiceAmount"`
 	InvoicePaidAmount InvoicePaidAmount `json:"invoicePaidAmount" url:"invoicePaidAmount"`
 	FreightAmount     FreightAmount     `json:"freightAmount,omitempty" url:"freightAmount,omitempty"`
 	DutyAmount        DutyAmount        `json:"dutyAmount,omitempty" url:"dutyAmount,omitempty"`
@@ -549,14 +549,14 @@ func (g *GetInvoiceRecord) GetInvoiceId() InvoiceId {
 
 func (g *GetInvoiceRecord) GetCustomerId() CustomerId {
 	if g == nil {
-		return nil
+		return 0
 	}
 	return g.CustomerId
 }
 
 func (g *GetInvoiceRecord) GetPaypointId() PaypointId {
 	if g == nil {
-		return nil
+		return 0
 	}
 	return g.PaypointId
 }
@@ -668,7 +668,7 @@ func (g *GetInvoiceRecord) GetDiscount() Discount {
 
 func (g *GetInvoiceRecord) GetInvoiceAmount() InvoiceAmount {
 	if g == nil {
-		return nil
+		return 0
 	}
 	return g.InvoiceAmount
 }
@@ -1051,7 +1051,7 @@ type InvoiceResponseWithoutData struct {
 	ResponseData   *Responsedatanonobject `json:"responseData" url:"responseData"`
 	ResponseText   ResponseText           `json:"responseText" url:"responseText"`
 	Pageidentifier *PageIdentifier        `json:"pageidentifier,omitempty" url:"pageidentifier,omitempty"`
-	RoomId         RoomIdNotInUse         `json:"roomId,omitempty" url:"roomId,omitempty"`
+	RoomId         RoomIdNotInUse         `json:"roomId" url:"roomId"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -1094,7 +1094,7 @@ func (i *InvoiceResponseWithoutData) GetPageidentifier() *PageIdentifier {
 
 func (i *InvoiceResponseWithoutData) GetRoomId() RoomIdNotInUse {
 	if i == nil {
-		return nil
+		return 0
 	}
 	return i.RoomId
 }
@@ -1187,8 +1187,8 @@ func (q *QueryInvoiceResponse) String() string {
 
 type QueryInvoiceResponseRecordsItem struct {
 	InvoiceId     InvoiceId     `json:"invoiceId" url:"invoiceId"`
-	CustomerId    CustomerId    `json:"customerId,omitempty" url:"customerId,omitempty"`
-	PaypointId    PaypointId    `json:"paypointId,omitempty" url:"paypointId,omitempty"`
+	CustomerId    CustomerId    `json:"customerId" url:"customerId"`
+	PaypointId    PaypointId    `json:"paypointId" url:"paypointId"`
 	InvoiceNumber Invoicenumber `json:"invoiceNumber" url:"invoiceNumber"`
 	// Invoice date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.
 	InvoiceDate Datenullable `json:"invoiceDate,omitempty" url:"invoiceDate,omitempty"`
@@ -1211,7 +1211,7 @@ type QueryInvoiceResponseRecordsItem struct {
 	Notes             *string           `json:"notes,omitempty" url:"notes,omitempty"`
 	Tax               Tax               `json:"tax,omitempty" url:"tax,omitempty"`
 	Discount          Discount          `json:"discount,omitempty" url:"discount,omitempty"`
-	InvoiceAmount     InvoiceAmount     `json:"invoiceAmount,omitempty" url:"invoiceAmount,omitempty"`
+	InvoiceAmount     InvoiceAmount     `json:"invoiceAmount" url:"invoiceAmount"`
 	InvoicePaidAmount InvoicePaidAmount `json:"invoicePaidAmount" url:"invoicePaidAmount"`
 	FreightAmount     FreightAmount     `json:"freightAmount,omitempty" url:"freightAmount,omitempty"`
 	DutyAmount        DutyAmount        `json:"dutyAmount,omitempty" url:"dutyAmount,omitempty"`
@@ -1247,7 +1247,7 @@ type QueryInvoiceResponseRecordsItem struct {
 	PaypointDbaname Dbaname `json:"PaypointDbaname" url:"PaypointDbaname"`
 	// Paypoint's entryname.
 	PaypointEntryname Entrypointfield `json:"PaypointEntryname" url:"PaypointEntryname"`
-	ParentOrgId       Orgid           `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
+	ParentOrgId       Orgid           `json:"ParentOrgId" url:"ParentOrgId"`
 	ParentOrgName     OrgParentName   `json:"ParentOrgName" url:"ParentOrgName"`
 	// Custom list of key:value pairs. This field is used to store any data related to the invoice or for your system.
 	AdditionalData map[string]interface{} `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
@@ -1269,14 +1269,14 @@ func (q *QueryInvoiceResponseRecordsItem) GetInvoiceId() InvoiceId {
 
 func (q *QueryInvoiceResponseRecordsItem) GetCustomerId() CustomerId {
 	if q == nil {
-		return nil
+		return 0
 	}
 	return q.CustomerId
 }
 
 func (q *QueryInvoiceResponseRecordsItem) GetPaypointId() PaypointId {
 	if q == nil {
-		return nil
+		return 0
 	}
 	return q.PaypointId
 }
@@ -1388,7 +1388,7 @@ func (q *QueryInvoiceResponseRecordsItem) GetDiscount() Discount {
 
 func (q *QueryInvoiceResponseRecordsItem) GetInvoiceAmount() InvoiceAmount {
 	if q == nil {
-		return nil
+		return 0
 	}
 	return q.InvoiceAmount
 }
@@ -1570,7 +1570,7 @@ func (q *QueryInvoiceResponseRecordsItem) GetPaypointEntryname() Entrypointfield
 
 func (q *QueryInvoiceResponseRecordsItem) GetParentOrgId() Orgid {
 	if q == nil {
-		return nil
+		return 0
 	}
 	return q.ParentOrgId
 }

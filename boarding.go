@@ -2102,8 +2102,9 @@ type ApplicationDataPayIn struct {
 	Btype          *OwnType  `json:"btype,omitempty" url:"btype,omitempty"`
 	Bzip           *Bzip     `json:"bzip,omitempty" url:"bzip,omitempty"`
 	// List of contacts for the business.
-	Contacts    []*ApplicationDataPayInContactsItem `json:"contacts,omitempty" url:"contacts,omitempty"`
-	CreditLimit *BoardingCreditLimit                `json:"creditLimit,omitempty" url:"creditLimit,omitempty"`
+	Contacts []*ApplicationDataPayInContactsItem `json:"contacts,omitempty" url:"contacts,omitempty"`
+	// The maximum amount of credit that our lending partner, has authorized to your business. It's the upper boundary on how much you can spend or owe on a credit account at any given time.
+	CreditLimit *string `json:"creditLimit,omitempty" url:"creditLimit,omitempty"`
 	// The alternate or common name that this business is doing business under usually referred to as a DBA name. Payabli strongly recommends including this information.
 	DbaName            *Dbaname            `json:"dbaName,omitempty" url:"dbaName,omitempty"`
 	Ein                *Ein                `json:"ein,omitempty" url:"ein,omitempty"`
@@ -2125,8 +2126,9 @@ type ApplicationDataPayIn struct {
 	// List of Owners with at least a 25% ownership.
 	Ownership []*ApplicationDataPayInOwnershipItem `json:"ownership,omitempty" url:"ownership,omitempty"`
 	// The business's phone number.
-	Phonenumber      PhoneNumber              `json:"phonenumber" url:"phonenumber"`
-	ProcessingRegion BoardingProcessingRegion `json:"processingRegion" url:"processingRegion"`
+	Phonenumber PhoneNumber `json:"phonenumber" url:"phonenumber"`
+	// The business's processing region, either `US` or `CA`.
+	ProcessingRegion string `json:"processingRegion" url:"processingRegion"`
 	// Email address for the applicant. This is used to send the applicant a boarding link.
 	RecipientEmail             *Email                      `json:"recipientEmail,omitempty" url:"recipientEmail,omitempty"`
 	RecipientEmailNotification *RecipientEmailNotification `json:"recipientEmailNotification,omitempty" url:"recipientEmailNotification,omitempty"`
@@ -2284,7 +2286,7 @@ func (a *ApplicationDataPayIn) GetContacts() []*ApplicationDataPayInContactsItem
 	return a.Contacts
 }
 
-func (a *ApplicationDataPayIn) GetCreditLimit() *BoardingCreditLimit {
+func (a *ApplicationDataPayIn) GetCreditLimit() *string {
 	if a == nil {
 		return nil
 	}
@@ -2417,7 +2419,7 @@ func (a *ApplicationDataPayIn) GetPhonenumber() PhoneNumber {
 	return a.Phonenumber
 }
 
-func (a *ApplicationDataPayIn) GetProcessingRegion() BoardingProcessingRegion {
+func (a *ApplicationDataPayIn) GetProcessingRegion() string {
 	if a == nil {
 		return ""
 	}
@@ -4839,9 +4841,6 @@ type BoardingBusinessFax = string
 // The business's phone number.
 type BoardingBusinessPhone = string
 
-// The maximum amount of credit that our lending partner, has authorized to your business. It's the upper boundary on how much you can spend or owe on a credit account at any given time.
-type BoardingCreditLimit = string
-
 type BoardingLinkQueryRecord struct {
 	AcceptOauth     *AcceptOauth     `json:"acceptOauth,omitempty" url:"acceptOauth,omitempty"`
 	AcceptRegister  *AcceptRegister  `json:"acceptRegister,omitempty" url:"acceptRegister,omitempty"`
@@ -4975,29 +4974,6 @@ func (b *BoardingLinkQueryRecord) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
-}
-
-// The business's processing region.
-type BoardingProcessingRegion string
-
-const (
-	BoardingProcessingRegionUs BoardingProcessingRegion = "US"
-	BoardingProcessingRegionCa BoardingProcessingRegion = "CA"
-)
-
-func NewBoardingProcessingRegionFromString(s string) (BoardingProcessingRegion, error) {
-	switch s {
-	case "US":
-		return BoardingProcessingRegionUs, nil
-	case "CA":
-		return BoardingProcessingRegionCa, nil
-	}
-	var t BoardingProcessingRegion
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (b BoardingProcessingRegion) Ptr() *BoardingProcessingRegion {
-	return &b
 }
 
 // The application's status in the merchant boarding process. See [Boarding Status Reference](/developers/references/boarding-statuses) for more.

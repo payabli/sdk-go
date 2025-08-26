@@ -131,7 +131,7 @@ type ChargebackQueryRecords struct {
 	Method string `json:"method" url:"method"`
 	// Net amount in chargeback or ACH return.
 	NetAmount     *Netamountnullable `json:"netAmount,omitempty" url:"netAmount,omitempty"`
-	OrderId       *Orderid           `json:"orderId,omitempty" url:"orderId,omitempty"`
+	OrderId       *OrderId           `json:"orderId,omitempty" url:"orderId,omitempty"`
 	ParentOrgName *OrgParentName     `json:"parentOrgName,omitempty" url:"parentOrgName,omitempty"`
 	PaymentData   *QueryPaymentData  `json:"paymentData,omitempty" url:"paymentData,omitempty"`
 	// ReferenceId of the transaction in Payabli.
@@ -229,7 +229,7 @@ func (c *ChargebackQueryRecords) GetNetAmount() *Netamountnullable {
 	return c.NetAmount
 }
 
-func (c *ChargebackQueryRecords) GetOrderId() *Orderid {
+func (c *ChargebackQueryRecords) GetOrderId() *OrderId {
 	if c == nil {
 		return nil
 	}

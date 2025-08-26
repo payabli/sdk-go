@@ -1405,7 +1405,7 @@ type VendorDataResponse struct {
 	CustomField2 string `json:"customField2" url:"customField2"`
 	// Account number of paypoint in the Vendor side.
 	CustomerVendorAccount *string             `json:"customerVendorAccount,omitempty" url:"customerVendorAccount,omitempty"`
-	InternalReferenceId   InternalReferenceId `json:"InternalReferenceId,omitempty" url:"InternalReferenceId,omitempty"`
+	InternalReferenceId   InternalReferenceId `json:"InternalReferenceId" url:"InternalReferenceId"`
 	AdditionalData        AdditionalDataMap   `json:"additionalData" url:"additionalData"`
 	// External paypoint identifier
 	ExternalPaypointId string `json:"externalPaypointID" url:"externalPaypointID"`
@@ -1698,7 +1698,7 @@ func (v *VendorDataResponse) GetCustomerVendorAccount() *string {
 
 func (v *VendorDataResponse) GetInternalReferenceId() InternalReferenceId {
 	if v == nil {
-		return nil
+		return 0
 	}
 	return v.InternalReferenceId
 }

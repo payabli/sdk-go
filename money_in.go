@@ -35,7 +35,7 @@ type RequestCredit struct {
 	CustomerData     *PayorDataRequest    `json:"customerData,omitempty" url:"-"`
 	Entrypoint       *Entrypointfield     `json:"entrypoint,omitempty" url:"-"`
 	OrderDescription *Orderdescription    `json:"orderDescription,omitempty" url:"-"`
-	OrderId          *Orderid             `json:"orderId,omitempty" url:"-"`
+	OrderId          *OrderId             `json:"orderId,omitempty" url:"-"`
 	PaymentDetails   *PaymentDetailCredit `json:"paymentDetails,omitempty" url:"-"`
 	// Object describing the ACH payment method to use for transaction.
 	PaymentMethod *RequestCreditPaymentMethod `json:"paymentMethod,omitempty" url:"-"`
@@ -53,7 +53,7 @@ type RequestRefund struct {
 	Amount           *float64          `json:"amount,omitempty" url:"-"`
 	Ipaddress        *IpAddress        `json:"ipaddress,omitempty" url:"-"`
 	OrderDescription *Orderdescription `json:"orderDescription,omitempty" url:"-"`
-	OrderId          *Orderid          `json:"orderId,omitempty" url:"-"`
+	OrderId          *OrderId          `json:"orderId,omitempty" url:"-"`
 	RefundDetails    *RefundDetail     `json:"refundDetails,omitempty" url:"-"`
 	Source           *Source           `json:"source,omitempty" url:"-"`
 }
@@ -70,7 +70,7 @@ type RequestPaymentValidate struct {
 	AccountId        *Accountid        `json:"accountId,omitempty" url:"-"`
 	EntryPoint       Entrypointfield   `json:"entryPoint" url:"-"`
 	OrderDescription *Orderdescription `json:"orderDescription,omitempty" url:"-"`
-	OrderId          *Orderid          `json:"orderId,omitempty" url:"-"`
+	OrderId          *OrderId          `json:"orderId,omitempty" url:"-"`
 	// Object describing payment method to use for transaction.
 	PaymentMethod *RequestPaymentValidatePaymentMethod `json:"paymentMethod,omitempty" url:"-"`
 }
@@ -1128,7 +1128,7 @@ type AuthResponseResponseData struct {
 	ResultText        Resulttext         `json:"resultText" url:"resultText"`
 	AvsResponseText   Avsresponsetext    `json:"avsResponseText" url:"avsResponseText"`
 	CvvResponseText   Cvvresponsetext    `json:"cvvResponseText" url:"cvvResponseText"`
-	CustomerId        Customeridtrans    `json:"customerId,omitempty" url:"customerId,omitempty"`
+	CustomerId        Customeridtrans    `json:"customerId" url:"customerId"`
 	MethodReferenceId *MethodReferenceId `json:"methodReferenceId,omitempty" url:"methodReferenceId,omitempty"`
 
 	extraProperties map[string]interface{}
@@ -1179,7 +1179,7 @@ func (a *AuthResponseResponseData) GetCvvResponseText() Cvvresponsetext {
 
 func (a *AuthResponseResponseData) GetCustomerId() Customeridtrans {
 	if a == nil {
-		return nil
+		return 0
 	}
 	return a.CustomerId
 }
@@ -1227,7 +1227,7 @@ func (a *AuthResponseResponseData) String() string {
 type CaptureResponse struct {
 	ResponseCode   Responsecode         `json:"responseCode" url:"responseCode"`
 	PageIdentifier *PageIdentifier      `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
-	RoomId         RoomIdNotInUse       `json:"roomId,omitempty" url:"roomId,omitempty"`
+	RoomId         RoomIdNotInUse       `json:"roomId" url:"roomId"`
 	IsSuccess      IsSuccess            `json:"isSuccess" url:"isSuccess"`
 	ResponseText   ResponseText         `json:"responseText" url:"responseText"`
 	ResponseData   *CaptureResponseData `json:"responseData" url:"responseData"`
@@ -1252,7 +1252,7 @@ func (c *CaptureResponse) GetPageIdentifier() *PageIdentifier {
 
 func (c *CaptureResponse) GetRoomId() RoomIdNotInUse {
 	if c == nil {
-		return nil
+		return 0
 	}
 	return c.RoomId
 }
@@ -1421,7 +1421,7 @@ type GetPaidResponseData struct {
 	ResultText        Resulttext         `json:"resultText" url:"resultText"`
 	AvsResponseText   Avsresponsetext    `json:"avsResponseText" url:"avsResponseText"`
 	CvvResponseText   Cvvresponsetext    `json:"cvvResponseText" url:"cvvResponseText"`
-	CustomerId        Customeridtrans    `json:"customerId,omitempty" url:"customerId,omitempty"`
+	CustomerId        Customeridtrans    `json:"customerId" url:"customerId"`
 	MethodReferenceId *MethodReferenceId `json:"methodReferenceId,omitempty" url:"methodReferenceId,omitempty"`
 
 	extraProperties map[string]interface{}
@@ -1472,7 +1472,7 @@ func (g *GetPaidResponseData) GetCvvResponseText() Cvvresponsetext {
 
 func (g *GetPaidResponseData) GetCustomerId() Customeridtrans {
 	if g == nil {
-		return nil
+		return 0
 	}
 	return g.CustomerId
 }
@@ -2334,7 +2334,7 @@ type TransRequestBody struct {
 	InvoiceData      *BillData         `json:"invoiceData,omitempty" url:"invoiceData,omitempty"`
 	Ipaddress        *IpAddress        `json:"ipaddress,omitempty" url:"ipaddress,omitempty"`
 	OrderDescription *Orderdescription `json:"orderDescription,omitempty" url:"orderDescription,omitempty"`
-	OrderId          *Orderid          `json:"orderId,omitempty" url:"orderId,omitempty"`
+	OrderId          *OrderId          `json:"orderId,omitempty" url:"orderId,omitempty"`
 	// Object describing details of the payment. Required.
 	PaymentDetails *PaymentDetail `json:"paymentDetails" url:"paymentDetails"`
 	// Information about the payment method for the transaction. Required and recommended fields for each payment method type are described in each schema below.
@@ -2389,7 +2389,7 @@ func (t *TransRequestBody) GetOrderDescription() *Orderdescription {
 	return t.OrderDescription
 }
 
-func (t *TransRequestBody) GetOrderId() *Orderid {
+func (t *TransRequestBody) GetOrderId() *OrderId {
 	if t == nil {
 		return nil
 	}
@@ -2534,7 +2534,7 @@ type ValidateResponseData struct {
 	ResultText        Resulttext         `json:"resultText" url:"resultText"`
 	AvsResponseText   Avsresponsetext    `json:"avsResponseText" url:"avsResponseText"`
 	CvvResponseText   Cvvresponsetext    `json:"cvvResponseText" url:"cvvResponseText"`
-	CustomerId        Customeridtrans    `json:"customerId,omitempty" url:"customerId,omitempty"`
+	CustomerId        Customeridtrans    `json:"customerId" url:"customerId"`
 	MethodReferenceId *MethodReferenceId `json:"methodReferenceId,omitempty" url:"methodReferenceId,omitempty"`
 
 	extraProperties map[string]interface{}
@@ -2585,7 +2585,7 @@ func (v *ValidateResponseData) GetCvvResponseText() Cvvresponsetext {
 
 func (v *ValidateResponseData) GetCustomerId() Customeridtrans {
 	if v == nil {
-		return nil
+		return 0
 	}
 	return v.CustomerId
 }
@@ -2633,7 +2633,7 @@ func (v *ValidateResponseData) String() string {
 type VoidResponse struct {
 	ResponseCode   Responsecode      `json:"responseCode" url:"responseCode"`
 	PageIdentifier *PageIdentifier   `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
-	RoomId         RoomIdNotInUse    `json:"roomId,omitempty" url:"roomId,omitempty"`
+	RoomId         RoomIdNotInUse    `json:"roomId" url:"roomId"`
 	IsSuccess      IsSuccess         `json:"isSuccess" url:"isSuccess"`
 	ResponseText   ResponseText      `json:"responseText" url:"responseText"`
 	ResponseData   *VoidResponseData `json:"responseData" url:"responseData"`
@@ -2658,7 +2658,7 @@ func (v *VoidResponse) GetPageIdentifier() *PageIdentifier {
 
 func (v *VoidResponse) GetRoomId() RoomIdNotInUse {
 	if v == nil {
-		return nil
+		return 0
 	}
 	return v.RoomId
 }

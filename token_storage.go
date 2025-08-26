@@ -633,7 +633,7 @@ type GetMethodResponseResponseDataCustomersItem struct {
 	BillingPhone    *PhoneNumber                 `json:"billingPhone,omitempty" url:"billingPhone,omitempty"`
 	BillingState    *BillingStateNullable        `json:"billingState,omitempty" url:"billingState,omitempty"`
 	// Customer's billing ZIP code. For Pay In functions, this field supports 5-digit and 9-digit ZIP codes and alphanumeric Canadian postal codes. For example: "37615-1234" or "37615".
-	BillingZip *BillingZipNullable `json:"billingZip,omitempty" url:"billingZip,omitempty"`
+	BillingZip *BillingZip `json:"billingZip,omitempty" url:"billingZip,omitempty"`
 	// Customer's company name.
 	Company        *string                 `json:"company,omitempty" url:"company,omitempty"`
 	CustomerId     *CustomerId             `json:"customerId,omitempty" url:"customerId,omitempty"`
@@ -748,7 +748,7 @@ func (g *GetMethodResponseResponseDataCustomersItem) GetBillingState() *BillingS
 	return g.BillingState
 }
 
-func (g *GetMethodResponseResponseDataCustomersItem) GetBillingZip() *BillingZipNullable {
+func (g *GetMethodResponseResponseDataCustomersItem) GetBillingZip() *BillingZip {
 	if g == nil {
 		return nil
 	}
