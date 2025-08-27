@@ -12,10 +12,10 @@ Instantiate and use the client with the following:
 package example
 
 import (
-    client "sdk/client"
-    option "sdk/option"
+    client "github.com/payabli/sdk-go/client"
+    option "github.com/payabli/sdk-go/option"
     context "context"
-    sdk "sdk"
+    sdk "github.com/payabli/sdk-go"
 )
 
 func do() {

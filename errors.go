@@ -4,7 +4,7 @@ package api
 
 import (
 	json "encoding/json"
-	core "sdk/core"
+	core "github.com/payabli/sdk-go/core"
 )
 
 // Bad request/ invalid data

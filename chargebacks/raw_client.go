@@ -5,11 +5,11 @@ package chargebacks
 import (
 	bytes "bytes"
 	context "context"
+	sdk "github.com/payabli/sdk-go"
+	core "github.com/payabli/sdk-go/core"
+	internal "github.com/payabli/sdk-go/internal"
+	option "github.com/payabli/sdk-go/option"
 	http "net/http"
-	sdk "sdk"
-	core "sdk/core"
-	internal "sdk/internal"
-	option "sdk/option"
 )
 
 type RawClient struct {

@@ -5,7 +5,7 @@ package api
 import (
 	json "encoding/json"
 	fmt "fmt"
-	internal "sdk/internal"
+	internal "github.com/payabli/sdk-go/internal"
 )
 
 type CheckCaptureRequestBody struct {

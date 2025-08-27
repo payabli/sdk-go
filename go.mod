@@ -1,4 +1,4 @@
-module sdk
+module github.com/payabli/sdk-go
 
 go 1.18
 

@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"testing"
 
-	"sdk/core"
+	"github.com/payabli/sdk-go/core"
 	"github.com/stretchr/testify/assert"
 )
 

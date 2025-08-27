@@ -12,7 +12,7 @@ import (
 	"reflect"
 	"strings"
 
-	"sdk/core"
+	"github.com/payabli/sdk-go/core"
 )
 
 const (

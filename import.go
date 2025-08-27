@@ -5,8 +5,8 @@ package api
 import (
 	json "encoding/json"
 	fmt "fmt"
+	internal "github.com/payabli/sdk-go/internal"
 	io "io"
-	internal "sdk/internal"
 )
 
 type ImportBillsRequest struct {

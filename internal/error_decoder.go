@@ -8,7 +8,7 @@ import (
 	"io"
 	"net/http"
 
-	"sdk/core"
+	"github.com/payabli/sdk-go/core"
 )
 
 // ErrorDecoder decodes *http.Response errors and returns a
