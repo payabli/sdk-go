@@ -53,10 +53,18 @@ func (c *Client) Authorize(
 	return response.Body, nil
 }
 
-// Capture an [authorized transaction](/api-reference/moneyin/authorize-a-transaction) to complete the transaction and move funds from the customer to merchant account.
+// <Warning>
+//
+//	This endpoint is deprecated and will be sunset on November 24, 2025. Migrate to [POST `/capture/{transId}`](/api-reference/moneyin/capture-an-authorized-transaction)`.
+//
+// </Warning>
+//
+//	Capture an [authorized
+//
+// transaction](/api-reference/moneyin/authorize-a-transaction) to complete the transaction and move funds from the customer to merchant account.
 func (c *Client) Capture(
 	ctx context.Context,
-	// Amount to be captured. The amount can't be greater the original total amount of the transaction. `0` captures the total amount authorized in the transaction.
+	// Amount to be captured. The amount can't be greater the original total amount of the transaction. `0` captures the total amount authorized in the transaction. Partial captures aren't supported.
 	amount float64,
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
@@ -66,6 +74,28 @@ func (c *Client) Capture(
 		ctx,
 		amount,
 		transId,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Capture an [authorized transaction](/api-reference/moneyin/authorize-a-transaction) to complete the transaction and move funds from the customer to merchant account.
+//
+// You can use this endpoint to capture both full and partial amounts of the original authorized transaction. See [Capture an authorized transaction](/developers/developer-guides/pay-in-auth-and-capture) for more information about this endpoint.
+func (c *Client) CaptureAuth(
+	ctx context.Context,
+	// ReferenceId for the transaction (PaymentId).
+	transId string,
+	request *sdk.CaptureRequest,
+	opts ...option.RequestOption,
+) (*sdk.CaptureResponse, error) {
+	response, err := c.WithRawResponse.CaptureAuth(
+		ctx,
+		transId,
+		request,
 		opts...,
 	)
 	if err != nil {

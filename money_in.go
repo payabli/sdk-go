@@ -6,6 +6,7 @@ import (
 	json "encoding/json"
 	fmt "fmt"
 	internal "github.com/payabli/sdk-go/internal"
+	time "time"
 )
 
 type RequestPaymentAuthorize struct {
@@ -235,6 +236,9 @@ func (c *Check) String() string {
 	}
 	return fmt.Sprintf("%#v", c)
 }
+
+// The expected time that the refund will be processed. This value only appears when the `resultCode` is `10`, which means that the refund has been initiated and is queued for processing. See [Enhanced Refund Flow](/guides/pay-in-enhanced-refund-flow) for more information about refund processing.
+type ExpectedProcessingDateTime = *time.Time
 
 // Method to use for the transaction.
 type Methodall string
@@ -1223,6 +1227,109 @@ func (a *AuthResponseResponseData) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+type CapturePaymentDetails struct {
+	// Total amount to be captured, including the `serviceFee` amount. The amount can't be greater the original
+	// total amount of the transaction, and can't be more than 15% lower than the original amount.
+	TotalAmount float64 `json:"totalAmount" url:"totalAmount"`
+	// Service fee to capture for the transaction.
+	ServiceFee *float64 `json:"serviceFee,omitempty" url:"serviceFee,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CapturePaymentDetails) GetTotalAmount() float64 {
+	if c == nil {
+		return 0
+	}
+	return c.TotalAmount
+}
+
+func (c *CapturePaymentDetails) GetServiceFee() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.ServiceFee
+}
+
+func (c *CapturePaymentDetails) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CapturePaymentDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler CapturePaymentDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CapturePaymentDetails(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CapturePaymentDetails) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type CaptureRequest struct {
+	PaymentDetails *CapturePaymentDetails `json:"paymentDetails" url:"paymentDetails"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CaptureRequest) GetPaymentDetails() *CapturePaymentDetails {
+	if c == nil {
+		return nil
+	}
+	return c.PaymentDetails
+}
+
+func (c *CaptureRequest) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CaptureRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler CaptureRequest
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CaptureRequest(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CaptureRequest) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 // Response for MoneyIn/capture endpoint
 type CaptureResponse struct {
 	ResponseCode   Responsecode         `json:"responseCode" url:"responseCode"`
@@ -2134,7 +2241,8 @@ func (r RequestPaymentValidatePaymentMethodMethod) Ptr() *RequestPaymentValidate
 }
 
 type ResponseDataRefunds struct {
-	AuthCode Authcode `json:"authCode" url:"authCode"`
+	AuthCode                   Authcode                    `json:"authCode" url:"authCode"`
+	ExpectedProcessingDateTime *ExpectedProcessingDateTime `json:"expectedProcessingDateTime,omitempty" url:"expectedProcessingDateTime,omitempty"`
 	// This field isn't applicable to refund operations.
 	AvsResponseText *Avsresponsetext `json:"avsResponseText,omitempty" url:"avsResponseText,omitempty"`
 	CustomerId      *CustomerId      `json:"customerId,omitempty" url:"customerId,omitempty"`
@@ -2156,6 +2264,13 @@ func (r *ResponseDataRefunds) GetAuthCode() Authcode {
 		return ""
 	}
 	return r.AuthCode
+}
+
+func (r *ResponseDataRefunds) GetExpectedProcessingDateTime() *ExpectedProcessingDateTime {
+	if r == nil {
+		return nil
+	}
+	return r.ExpectedProcessingDateTime
 }
 
 func (r *ResponseDataRefunds) GetAvsResponseText() *Avsresponsetext {

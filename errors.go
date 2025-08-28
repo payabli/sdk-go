@@ -151,6 +151,30 @@ func (u *UnauthorizedError) Unwrap() error {
 	return u.APIError
 }
 
+// Validation errors for capture requests. Possible response codes include: 3014, 3015, 3016.
+type CaptureError struct {
+	*core.APIError
+	Body *PayabliApiResponseError400
+}
+
+func (c *CaptureError) UnmarshalJSON(data []byte) error {
+	var body *PayabliApiResponseError400
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	c.StatusCode = 400
+	c.Body = body
+	return nil
+}
+
+func (c *CaptureError) MarshalJSON() ([]byte, error) {
+	return json.Marshal(c.Body)
+}
+
+func (c *CaptureError) Unwrap() error {
+	return c.APIError
+}
+
 type InvalidTransStatusError struct {
 	*core.APIError
 	Body *InvalidTransStatusErrorType

@@ -107,7 +107,7 @@ func (r *RawClient) Authorize(
 
 func (r *RawClient) Capture(
 	ctx context.Context,
-	// Amount to be captured. The amount can't be greater the original total amount of the transaction. `0` captures the total amount authorized in the transaction.
+	// Amount to be captured. The amount can't be greater the original total amount of the transaction. `0` captures the total amount authorized in the transaction. Partial captures aren't supported.
 	amount float64,
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
@@ -161,6 +161,80 @@ func (r *RawClient) Capture(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*sdk.CaptureResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) CaptureAuth(
+	ctx context.Context,
+	// ReferenceId for the transaction (PaymentId).
+	transId string,
+	request *sdk.CaptureRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*sdk.CaptureResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://api-sandbox.payabli.com/api",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/MoneyIn/capture/%v",
+		transId,
+	)
+	headers := internal.MergeHeaders(
+		r.header.Clone(),
+		options.ToHeader(),
+	)
+	errorCodes := internal.ErrorCodes{
+		400: func(apiError *core.APIError) error {
+			return &sdk.CaptureError{
+				APIError: apiError,
+			}
+		},
+		400: func(apiError *core.APIError) error {
+			return &sdk.BadRequestError{
+				APIError: apiError,
+			}
+		},
+		401: func(apiError *core.APIError) error {
+			return &sdk.UnauthorizedError{
+				APIError: apiError,
+			}
+		},
+		500: func(apiError *core.APIError) error {
+			return &sdk.InternalServerError{
+				APIError: apiError,
+			}
+		},
+		503: func(apiError *core.APIError) error {
+			return &sdk.ServiceUnavailableError{
+				APIError: apiError,
+			}
+		},
+	}
+	var response *sdk.CaptureResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
 			Response:        &response,
 			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
 		},

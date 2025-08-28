@@ -182,8 +182,10 @@ func (a AchHolderType) Ptr() *AchHolderType {
 
 // ACH payment method.
 type AchPaymentMethod struct {
+	// Payment method type
 	// ID of the stored ACH payment method. Required when using a previously saved ACH method when the vendor has more than one saved method. See the [Payouts with saved ACH payment methods](/developers/developer-guides/pay-out-manage-payouts) section for more details.
 	StoredMethodId *string `json:"storedMethodId,omitempty" url:"storedMethodId,omitempty"`
+	method         string
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -196,24 +198,49 @@ func (a *AchPaymentMethod) GetStoredMethodId() *string {
 	return a.StoredMethodId
 }
 
+func (a *AchPaymentMethod) Method() string {
+	return a.method
+}
+
 func (a *AchPaymentMethod) GetExtraProperties() map[string]interface{} {
 	return a.extraProperties
 }
 
 func (a *AchPaymentMethod) UnmarshalJSON(data []byte) error {
-	type unmarshaler AchPaymentMethod
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed AchPaymentMethod
+	var unmarshaler = struct {
+		embed
+		Method string `json:"method"`
+	}{
+		embed: embed(*a),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*a = AchPaymentMethod(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	*a = AchPaymentMethod(unmarshaler.embed)
+	if unmarshaler.Method != "ach" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", a, "ach", unmarshaler.Method)
+	}
+	a.method = unmarshaler.Method
+	extraProperties, err := internal.ExtractExtraProperties(data, *a, "method")
 	if err != nil {
 		return err
 	}
 	a.extraProperties = extraProperties
 	a.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (a *AchPaymentMethod) MarshalJSON() ([]byte, error) {
+	type embed AchPaymentMethod
+	var marshaler = struct {
+		embed
+		Method string `json:"method"`
+	}{
+		embed:  embed(*a),
+		Method: "ach",
+	}
+	return json.Marshal(marshaler)
 }
 
 func (a *AchPaymentMethod) String() string {
@@ -2174,44 +2201,6 @@ type Cardnumber = string
 // ZIP or postal code for the billing address of cardholder. We **strongly recommend** that you include this field when using `card` as a method.
 type Cardzip = string
 
-// Check payment method.
-type CheckPaymentMethod struct {
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *CheckPaymentMethod) GetExtraProperties() map[string]interface{} {
-	return c.extraProperties
-}
-
-func (c *CheckPaymentMethod) UnmarshalJSON(data []byte) error {
-	type unmarshaler CheckPaymentMethod
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = CheckPaymentMethod(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *CheckPaymentMethod) String() string {
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
 // The city.
 type CityNullable = string
 
@@ -3657,9 +3646,6 @@ type EntrypageId = int64
 // The entrypoint identifier.
 type Entrypointfield = string
 
-// The expected time that the refund will be processed. This value only appears when the `resultCode` is `10`, which means that the refund has been initiated and is queued for processing. See [Enhanced Refund Flow](/guides/pay-in-enhanced-refund-flow) for more information about refund processing.
-type ExpectedProcessingDateTime = *time.Time
-
 // Export format for file downloads. When specified, returns data as a file instead of JSON.
 type ExportFormat string
 
@@ -4703,44 +4689,6 @@ type Maddress = string
 
 // Additional line for the business's mailing address.
 type Maddress1 = string
-
-// Managed payment method for payables.
-type ManagedPaymentMethod struct {
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (m *ManagedPaymentMethod) GetExtraProperties() map[string]interface{} {
-	return m.extraProperties
-}
-
-func (m *ManagedPaymentMethod) UnmarshalJSON(data []byte) error {
-	type unmarshaler ManagedPaymentMethod
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*m = ManagedPaymentMethod(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *m)
-	if err != nil {
-		return err
-	}
-	m.extraProperties = extraProperties
-	m.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (m *ManagedPaymentMethod) String() string {
-	if len(m.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(m); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", m)
-}
 
 // Masked card or bank account used in transaction. In the case of Apple Pay, this is a masked DPAN (device primary account number).
 type Maskedaccount = string
@@ -12296,44 +12244,6 @@ func (u *UsrAccess) String() string {
 //   - Locked:	85
 type UsrStatus = *int
 
-// Virtual card payment method.
-type VCardPaymentMethod struct {
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *VCardPaymentMethod) GetExtraProperties() map[string]interface{} {
-	return v.extraProperties
-}
-
-func (v *VCardPaymentMethod) UnmarshalJSON(data []byte) error {
-	type unmarshaler VCardPaymentMethod
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VCardPaymentMethod(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VCardPaymentMethod) String() string {
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
-
 type ValueTemplates = string
 
 type VendorData struct {
@@ -12361,22 +12271,22 @@ type VendorData struct {
 	// Vendor's email address. Required for vCard.
 	Email *Email `json:"email,omitempty" url:"email,omitempty"`
 	// Internal identifier for global vendor account.
-	InternalReferenceId *int64               `json:"internalReferenceId,omitempty" url:"internalReferenceId,omitempty"`
-	LocationCode        *LocationCode        `json:"locationCode,omitempty" url:"locationCode,omitempty"`
-	Mcc                 *Mcc                 `json:"mcc,omitempty" url:"mcc,omitempty"`
-	Name1               *VendorName1         `json:"name1,omitempty" url:"name1,omitempty"`
-	Name2               *VendorName2         `json:"name2,omitempty" url:"name2,omitempty"`
-	PayeeName1          *PayeeName           `json:"payeeName1,omitempty" url:"payeeName1,omitempty"`
-	PayeeName2          *PayeeName           `json:"payeeName2,omitempty" url:"payeeName2,omitempty"`
-	PaymentMethod       *VendorPaymentMethod `json:"paymentMethod,omitempty" url:"paymentMethod,omitempty"`
-	Phone               *VendorPhone         `json:"phone,omitempty" url:"phone,omitempty"`
-	RemitAddress1       *Remitaddress1       `json:"remitAddress1,omitempty" url:"remitAddress1,omitempty"`
-	RemitAddress2       *Remitaddress2       `json:"remitAddress2,omitempty" url:"remitAddress2,omitempty"`
-	RemitCity           *Remitcity           `json:"remitCity,omitempty" url:"remitCity,omitempty"`
-	RemitCountry        *Remitcountry        `json:"remitCountry,omitempty" url:"remitCountry,omitempty"`
-	RemitEmail          *RemitEmail          `json:"remitEmail,omitempty" url:"remitEmail,omitempty"`
-	RemitState          *Remitstate          `json:"remitState,omitempty" url:"remitState,omitempty"`
-	RemitZip            *Remitzip            `json:"remitZip,omitempty" url:"remitZip,omitempty"`
+	InternalReferenceId *int64                     `json:"internalReferenceId,omitempty" url:"internalReferenceId,omitempty"`
+	LocationCode        *LocationCode              `json:"locationCode,omitempty" url:"locationCode,omitempty"`
+	Mcc                 *Mcc                       `json:"mcc,omitempty" url:"mcc,omitempty"`
+	Name1               *VendorName1               `json:"name1,omitempty" url:"name1,omitempty"`
+	Name2               *VendorName2               `json:"name2,omitempty" url:"name2,omitempty"`
+	PayeeName1          *PayeeName                 `json:"payeeName1,omitempty" url:"payeeName1,omitempty"`
+	PayeeName2          *PayeeName                 `json:"payeeName2,omitempty" url:"payeeName2,omitempty"`
+	PaymentMethod       *VendorPaymentMethodString `json:"paymentMethod,omitempty" url:"paymentMethod,omitempty"`
+	Phone               *VendorPhone               `json:"phone,omitempty" url:"phone,omitempty"`
+	RemitAddress1       *Remitaddress1             `json:"remitAddress1,omitempty" url:"remitAddress1,omitempty"`
+	RemitAddress2       *Remitaddress2             `json:"remitAddress2,omitempty" url:"remitAddress2,omitempty"`
+	RemitCity           *Remitcity                 `json:"remitCity,omitempty" url:"remitCity,omitempty"`
+	RemitCountry        *Remitcountry              `json:"remitCountry,omitempty" url:"remitCountry,omitempty"`
+	RemitEmail          *RemitEmail                `json:"remitEmail,omitempty" url:"remitEmail,omitempty"`
+	RemitState          *Remitstate                `json:"remitState,omitempty" url:"remitState,omitempty"`
+	RemitZip            *Remitzip                  `json:"remitZip,omitempty" url:"remitZip,omitempty"`
 	// Vendor's state. Must be a 2 character state code.
 	State        *string       `json:"state,omitempty" url:"state,omitempty"`
 	VendorStatus *Vendorstatus `json:"vendorStatus,omitempty" url:"vendorStatus,omitempty"`
@@ -12527,7 +12437,7 @@ func (v *VendorData) GetPayeeName2() *PayeeName {
 	return v.PayeeName2
 }
 
-func (v *VendorData) GetPaymentMethod() *VendorPaymentMethod {
+func (v *VendorData) GetPaymentMethod() *VendorPaymentMethodString {
 	if v == nil {
 		return nil
 	}
@@ -12655,13 +12565,19 @@ type VendorName2 = string
 // Custom number identifying the vendor. Must be unique in paypoint.
 type VendorNumber = string
 
-// Object containing details about the payment method to use for the payout.
+// Payment method object to use for the payout.
+// - `{ method: "managed" }` - Managed payment method
+// - `{ method: "vcard" }` - Virtual card payment method
+// - `{ method: "check" }` - Check payment method
+// - `{ method: "ach", storedMethodId?: "..." }` - ACH payment method with optional stored method ID
 type VendorPaymentMethod struct {
-	Method  string
-	Managed *ManagedPaymentMethod
-	Vcard   *VCardPaymentMethod
-	Ach     *AchPaymentMethod
-	Check   *CheckPaymentMethod
+	// Payment method type - "managed", "vcard", "check", or "ach"
+	Method string `json:"method" url:"method"`
+	// ID of the stored ACH payment method. Only applicable when method is "ach". Required when using a previously saved ACH method when the vendor has more than one saved method. See the [Payouts with saved ACH payment methods](/developers/developer-guides/pay-out-manage-payouts) section for more details.
+	StoredMethodId *string `json:"storedMethodId,omitempty" url:"storedMethodId,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
 }
 
 func (v *VendorPaymentMethod) GetMethod() string {
@@ -12671,155 +12587,51 @@ func (v *VendorPaymentMethod) GetMethod() string {
 	return v.Method
 }
 
-func (v *VendorPaymentMethod) GetManaged() *ManagedPaymentMethod {
+func (v *VendorPaymentMethod) GetStoredMethodId() *string {
 	if v == nil {
 		return nil
 	}
-	return v.Managed
+	return v.StoredMethodId
 }
 
-func (v *VendorPaymentMethod) GetVcard() *VCardPaymentMethod {
-	if v == nil {
-		return nil
-	}
-	return v.Vcard
-}
-
-func (v *VendorPaymentMethod) GetAch() *AchPaymentMethod {
-	if v == nil {
-		return nil
-	}
-	return v.Ach
-}
-
-func (v *VendorPaymentMethod) GetCheck() *CheckPaymentMethod {
-	if v == nil {
-		return nil
-	}
-	return v.Check
+func (v *VendorPaymentMethod) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
 }
 
 func (v *VendorPaymentMethod) UnmarshalJSON(data []byte) error {
-	var unmarshaler struct {
-		Method string `json:"method"`
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler VendorPaymentMethod
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	v.Method = unmarshaler.Method
-	if unmarshaler.Method == "" {
-		return fmt.Errorf("%T did not include discriminant method", v)
+	*v = VendorPaymentMethod(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
 	}
-	switch unmarshaler.Method {
-	case "managed":
-		value := new(ManagedPaymentMethod)
-		if err := json.Unmarshal(data, &value); err != nil {
-			return err
-		}
-		v.Managed = value
-	case "vcard":
-		value := new(VCardPaymentMethod)
-		if err := json.Unmarshal(data, &value); err != nil {
-			return err
-		}
-		v.Vcard = value
-	case "ach":
-		value := new(AchPaymentMethod)
-		if err := json.Unmarshal(data, &value); err != nil {
-			return err
-		}
-		v.Ach = value
-	case "check":
-		value := new(CheckPaymentMethod)
-		if err := json.Unmarshal(data, &value); err != nil {
-			return err
-		}
-		v.Check = value
-	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
 	return nil
 }
 
-func (v VendorPaymentMethod) MarshalJSON() ([]byte, error) {
-	if err := v.validate(); err != nil {
-		return nil, err
-	}
-	if v.Managed != nil {
-		return internal.MarshalJSONWithExtraProperty(v.Managed, "method", "managed")
-	}
-	if v.Vcard != nil {
-		return internal.MarshalJSONWithExtraProperty(v.Vcard, "method", "vcard")
-	}
-	if v.Ach != nil {
-		return internal.MarshalJSONWithExtraProperty(v.Ach, "method", "ach")
-	}
-	if v.Check != nil {
-		return internal.MarshalJSONWithExtraProperty(v.Check, "method", "check")
-	}
-	return nil, fmt.Errorf("type %T does not define a non-empty union type", v)
-}
-
-type VendorPaymentMethodVisitor interface {
-	VisitManaged(*ManagedPaymentMethod) error
-	VisitVcard(*VCardPaymentMethod) error
-	VisitAch(*AchPaymentMethod) error
-	VisitCheck(*CheckPaymentMethod) error
-}
-
-func (v *VendorPaymentMethod) Accept(visitor VendorPaymentMethodVisitor) error {
-	if v.Managed != nil {
-		return visitor.VisitManaged(v.Managed)
-	}
-	if v.Vcard != nil {
-		return visitor.VisitVcard(v.Vcard)
-	}
-	if v.Ach != nil {
-		return visitor.VisitAch(v.Ach)
-	}
-	if v.Check != nil {
-		return visitor.VisitCheck(v.Check)
-	}
-	return fmt.Errorf("type %T does not define a non-empty union type", v)
-}
-
-func (v *VendorPaymentMethod) validate() error {
-	if v == nil {
-		return fmt.Errorf("type %T is nil", v)
-	}
-	var fields []string
-	if v.Managed != nil {
-		fields = append(fields, "managed")
-	}
-	if v.Vcard != nil {
-		fields = append(fields, "vcard")
-	}
-	if v.Ach != nil {
-		fields = append(fields, "ach")
-	}
-	if v.Check != nil {
-		fields = append(fields, "check")
-	}
-	if len(fields) == 0 {
-		if v.Method != "" {
-			return fmt.Errorf("type %T defines a discriminant set to %q but the field is not set", v, v.Method)
-		}
-		return fmt.Errorf("type %T is empty", v)
-	}
-	if len(fields) > 1 {
-		return fmt.Errorf("type %T defines values for %s, but only one value is allowed", v, fields)
-	}
-	if v.Method != "" {
-		field := fields[0]
-		if v.Method != field {
-			return fmt.Errorf(
-				"type %T defines a discriminant set to %q, but it does not match the %T field; either remove or update the discriminant to match",
-				v,
-				v.Method,
-				v,
-			)
+func (v *VendorPaymentMethod) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
 		}
 	}
-	return nil
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
 }
+
+// The vendor's preferred payment method. Can be one of:
+// - `"managed"` - Managed payment method
+// - `"vcard"` - Virtual card payment method
+// - `"check"` - Check payment method
+// - `"ach"` - ACH payment method
+type VendorPaymentMethodString = string
 
 // Vendor's phone number. Phone number can't contain non-digit characters like hyphens or parentheses.
 type VendorPhone = *string
@@ -12850,7 +12662,7 @@ type VendorQueryRecord struct {
 	ParentOrgId           *OrgParentId                  `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
 	PayeeName1            *PayeeName                    `json:"payeeName1,omitempty" url:"payeeName1,omitempty"`
 	PayeeName2            *PayeeName                    `json:"payeeName2,omitempty" url:"payeeName2,omitempty"`
-	PaymentMethod         *VendorPaymentMethod          `json:"PaymentMethod,omitempty" url:"PaymentMethod,omitempty"`
+	PaymentMethod         *VendorPaymentMethodString    `json:"PaymentMethod,omitempty" url:"PaymentMethod,omitempty"`
 	PaypointDbaname       *Dbaname                      `json:"PaypointDbaname,omitempty" url:"PaypointDbaname,omitempty"`
 	PaypointEntryname     *Entrypointfield              `json:"PaypointEntryname,omitempty" url:"PaypointEntryname,omitempty"`
 	PaypointLegalname     *Legalname                    `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
@@ -13049,7 +12861,7 @@ func (v *VendorQueryRecord) GetPayeeName2() *PayeeName {
 	return v.PayeeName2
 }
 
-func (v *VendorQueryRecord) GetPaymentMethod() *VendorPaymentMethod {
+func (v *VendorQueryRecord) GetPaymentMethod() *VendorPaymentMethodString {
 	if v == nil {
 		return nil
 	}

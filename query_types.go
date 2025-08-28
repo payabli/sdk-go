@@ -732,6 +732,563 @@ func (q *QueryBatchesDetailResponse) String() string {
 	return fmt.Sprintf("%#v", q)
 }
 
+// Response body for queries about batches.
+type QueryBatchesResponse struct {
+	Records []*QueryBatchesResponseRecordsItem `json:"Records" url:"Records"`
+	Summary *BatchSummary                      `json:"Summary" url:"Summary"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (q *QueryBatchesResponse) GetRecords() []*QueryBatchesResponseRecordsItem {
+	if q == nil {
+		return nil
+	}
+	return q.Records
+}
+
+func (q *QueryBatchesResponse) GetSummary() *BatchSummary {
+	if q == nil {
+		return nil
+	}
+	return q.Summary
+}
+
+func (q *QueryBatchesResponse) GetExtraProperties() map[string]interface{} {
+	return q.extraProperties
+}
+
+func (q *QueryBatchesResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler QueryBatchesResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*q = QueryBatchesResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *q)
+	if err != nil {
+		return err
+	}
+	q.extraProperties = extraProperties
+	q.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (q *QueryBatchesResponse) String() string {
+	if len(q.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(q); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", q)
+}
+
+type QueryBatchesResponseRecordsItem struct {
+	// The batch ID.
+	IdBatch            *int                `json:"IdBatch,omitempty" url:"IdBatch,omitempty"`
+	BatchNumber        *BatchNumber        `json:"BatchNumber,omitempty" url:"BatchNumber,omitempty"`
+	TransferIdentifier *TransferIdentifier `json:"TransferIdentifier,omitempty" url:"TransferIdentifier,omitempty"`
+	// Events associated with the batch.
+	EventsData    []*GeneralEvents `json:"EventsData,omitempty" url:"EventsData,omitempty"`
+	ConnectorName *string          `json:"ConnectorName,omitempty" url:"ConnectorName,omitempty"`
+	// The batch date.
+	BatchDate *time.Time `json:"BatchDate,omitempty" url:"BatchDate,omitempty"`
+	// The amount of the batch.
+	BatchAmount *float64 `json:"BatchAmount,omitempty" url:"BatchAmount,omitempty"`
+	// The total of fees in the batch.
+	BatchFeesAmount *float64 `json:"BatchFeesAmount,omitempty" url:"BatchFeesAmount,omitempty"`
+	BatchAuthAmount *float64 `json:"BatchAuthAmount,omitempty" url:"BatchAuthAmount,omitempty"`
+	// Previously held funds that have been released after a risk review.
+	BatchReleasedAmount *float64 `json:"BatchReleasedAmount,omitempty" url:"BatchReleasedAmount,omitempty"`
+	// The total amount of the batch that's being held for fraud or risk concerns.
+	BatchHoldAmount *float64 `json:"BatchHoldAmount,omitempty" url:"BatchHoldAmount,omitempty"`
+	// Total amount of ACH returns deducted from batch.
+	BatchReturnedAmount *float64 `json:"BatchReturnedAmount,omitempty" url:"BatchReturnedAmount,omitempty"`
+	// The total amount of refunds deducted from batch.
+	BatchRefundAmount *float64 `json:"BatchRefundAmount,omitempty" url:"BatchRefundAmount,omitempty"`
+	// Total of split transactions that included split funding instructions at the time of authorization.
+	BatchSplitAmount *float64 `json:"BatchSplitAmount,omitempty" url:"BatchSplitAmount,omitempty"`
+	// The batch status. See [Batch Status](/developers/references/money-in-statuses#batch-status) for more.
+	BatchStatus int `json:"BatchStatus" url:"BatchStatus"`
+	// The number of records in the batch.
+	BatchRecords int           `json:"BatchRecords" url:"BatchRecords"`
+	PaypointId   *PaypointId   `json:"PaypointId,omitempty" url:"PaypointId,omitempty"`
+	PaypointName *PaypointName `json:"PaypointName,omitempty" url:"PaypointName,omitempty"`
+	PaypointDba  *Dbaname      `json:"PaypointDba,omitempty" url:"PaypointDba,omitempty"`
+	// The entrypoint's parent org.
+	ParentOrgName OrgParentName `json:"ParentOrgName" url:"ParentOrgName"`
+	// The parent organization ID.
+	ParentOrgId        int                 `json:"ParentOrgId" url:"ParentOrgId"`
+	ExternalPaypointId *ExternalPaypointId `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	EntryName          Entrypointfield     `json:"EntryName" url:"EntryName"`
+	// The bank name.
+	BankName *string `json:"BankName,omitempty" url:"BankName,omitempty"`
+	// The batch type.
+	BatchType *int `json:"BatchType,omitempty" url:"BatchType,omitempty"`
+	// The payment method used.
+	Method              *string              `json:"Method,omitempty" url:"Method,omitempty"`
+	ExpectedDepositDate *ExpectedDepositDate `json:"ExpectedDepositDate,omitempty" url:"ExpectedDepositDate,omitempty"`
+	DepositDate         *DepositDate         `json:"DepositDate,omitempty" url:"DepositDate,omitempty"`
+	// The batch transfer date.
+	TransferDate *time.Time `json:"TransferDate,omitempty" url:"TransferDate,omitempty"`
+	// Transfer details for the batch.
+	Transfer *QueryBatchesTransfer `json:"Transfer,omitempty" url:"Transfer,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetIdBatch() *int {
+	if q == nil {
+		return nil
+	}
+	return q.IdBatch
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetBatchNumber() *BatchNumber {
+	if q == nil {
+		return nil
+	}
+	return q.BatchNumber
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetTransferIdentifier() *TransferIdentifier {
+	if q == nil {
+		return nil
+	}
+	return q.TransferIdentifier
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetEventsData() []*GeneralEvents {
+	if q == nil {
+		return nil
+	}
+	return q.EventsData
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetConnectorName() *string {
+	if q == nil {
+		return nil
+	}
+	return q.ConnectorName
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetBatchDate() *time.Time {
+	if q == nil {
+		return nil
+	}
+	return q.BatchDate
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetBatchAmount() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.BatchAmount
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetBatchFeesAmount() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.BatchFeesAmount
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetBatchAuthAmount() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.BatchAuthAmount
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetBatchReleasedAmount() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.BatchReleasedAmount
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetBatchHoldAmount() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.BatchHoldAmount
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetBatchReturnedAmount() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.BatchReturnedAmount
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetBatchRefundAmount() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.BatchRefundAmount
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetBatchSplitAmount() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.BatchSplitAmount
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetBatchStatus() int {
+	if q == nil {
+		return 0
+	}
+	return q.BatchStatus
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetBatchRecords() int {
+	if q == nil {
+		return 0
+	}
+	return q.BatchRecords
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetPaypointId() *PaypointId {
+	if q == nil {
+		return nil
+	}
+	return q.PaypointId
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetPaypointName() *PaypointName {
+	if q == nil {
+		return nil
+	}
+	return q.PaypointName
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetPaypointDba() *Dbaname {
+	if q == nil {
+		return nil
+	}
+	return q.PaypointDba
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetParentOrgName() OrgParentName {
+	if q == nil {
+		return ""
+	}
+	return q.ParentOrgName
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetParentOrgId() int {
+	if q == nil {
+		return 0
+	}
+	return q.ParentOrgId
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetExternalPaypointId() *ExternalPaypointId {
+	if q == nil {
+		return nil
+	}
+	return q.ExternalPaypointId
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetEntryName() Entrypointfield {
+	if q == nil {
+		return ""
+	}
+	return q.EntryName
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetBankName() *string {
+	if q == nil {
+		return nil
+	}
+	return q.BankName
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetBatchType() *int {
+	if q == nil {
+		return nil
+	}
+	return q.BatchType
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetMethod() *string {
+	if q == nil {
+		return nil
+	}
+	return q.Method
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetExpectedDepositDate() *ExpectedDepositDate {
+	if q == nil {
+		return nil
+	}
+	return q.ExpectedDepositDate
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetDepositDate() *DepositDate {
+	if q == nil {
+		return nil
+	}
+	return q.DepositDate
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetTransferDate() *time.Time {
+	if q == nil {
+		return nil
+	}
+	return q.TransferDate
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetTransfer() *QueryBatchesTransfer {
+	if q == nil {
+		return nil
+	}
+	return q.Transfer
+}
+
+func (q *QueryBatchesResponseRecordsItem) GetExtraProperties() map[string]interface{} {
+	return q.extraProperties
+}
+
+func (q *QueryBatchesResponseRecordsItem) UnmarshalJSON(data []byte) error {
+	type embed QueryBatchesResponseRecordsItem
+	var unmarshaler = struct {
+		embed
+		BatchDate    *internal.DateTime `json:"BatchDate,omitempty"`
+		TransferDate *internal.DateTime `json:"TransferDate,omitempty"`
+	}{
+		embed: embed(*q),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*q = QueryBatchesResponseRecordsItem(unmarshaler.embed)
+	q.BatchDate = unmarshaler.BatchDate.TimePtr()
+	q.TransferDate = unmarshaler.TransferDate.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *q)
+	if err != nil {
+		return err
+	}
+	q.extraProperties = extraProperties
+	q.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (q *QueryBatchesResponseRecordsItem) MarshalJSON() ([]byte, error) {
+	type embed QueryBatchesResponseRecordsItem
+	var marshaler = struct {
+		embed
+		BatchDate    *internal.DateTime `json:"BatchDate,omitempty"`
+		TransferDate *internal.DateTime `json:"TransferDate,omitempty"`
+	}{
+		embed:        embed(*q),
+		BatchDate:    internal.NewOptionalDateTime(q.BatchDate),
+		TransferDate: internal.NewOptionalDateTime(q.TransferDate),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (q *QueryBatchesResponseRecordsItem) String() string {
+	if len(q.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(q); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", q)
+}
+
+// Transfer details within a batch response.
+type QueryBatchesTransfer struct {
+	// The transfer ID.
+	TransferId *int `json:"TransferId,omitempty" url:"TransferId,omitempty"`
+	// The transfer date.
+	TransferDate *time.Time `json:"TransferDate,omitempty" url:"TransferDate,omitempty"`
+	// The processor used for the transfer.
+	Processor *string `json:"Processor,omitempty" url:"Processor,omitempty"`
+	// The transfer status.
+	TransferStatus *int `json:"TransferStatus,omitempty" url:"TransferStatus,omitempty"`
+	// The gross amount of the transfer.
+	GrossAmount *float64 `json:"GrossAmount,omitempty" url:"GrossAmount,omitempty"`
+	// The chargeback amount.
+	ChargeBackAmount *float64 `json:"ChargeBackAmount,omitempty" url:"ChargeBackAmount,omitempty"`
+	// The returned amount.
+	ReturnedAmount *float64 `json:"ReturnedAmount,omitempty" url:"ReturnedAmount,omitempty"`
+	// The refund amount.
+	RefundAmount *float64 `json:"RefundAmount,omitempty" url:"RefundAmount,omitempty"`
+	// The amount being held.
+	HoldAmount *float64 `json:"HoldAmount,omitempty" url:"HoldAmount,omitempty"`
+	// The amount that has been released.
+	ReleasedAmount *float64 `json:"ReleasedAmount,omitempty" url:"ReleasedAmount,omitempty"`
+	// The billing fees amount.
+	BillingFeesAmount *float64 `json:"BillingFeesAmount,omitempty" url:"BillingFeesAmount,omitempty"`
+	// The third party paid amount.
+	ThirdPartyPaidAmount *float64 `json:"ThirdPartyPaidAmount,omitempty" url:"ThirdPartyPaidAmount,omitempty"`
+	// The adjustments amount.
+	AdjustmentsAmount *float64 `json:"AdjustmentsAmount,omitempty" url:"AdjustmentsAmount,omitempty"`
+	// The net funded amount.
+	NetFundedAmount *float64 `json:"NetFundedAmount,omitempty" url:"NetFundedAmount,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (q *QueryBatchesTransfer) GetTransferId() *int {
+	if q == nil {
+		return nil
+	}
+	return q.TransferId
+}
+
+func (q *QueryBatchesTransfer) GetTransferDate() *time.Time {
+	if q == nil {
+		return nil
+	}
+	return q.TransferDate
+}
+
+func (q *QueryBatchesTransfer) GetProcessor() *string {
+	if q == nil {
+		return nil
+	}
+	return q.Processor
+}
+
+func (q *QueryBatchesTransfer) GetTransferStatus() *int {
+	if q == nil {
+		return nil
+	}
+	return q.TransferStatus
+}
+
+func (q *QueryBatchesTransfer) GetGrossAmount() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.GrossAmount
+}
+
+func (q *QueryBatchesTransfer) GetChargeBackAmount() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.ChargeBackAmount
+}
+
+func (q *QueryBatchesTransfer) GetReturnedAmount() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.ReturnedAmount
+}
+
+func (q *QueryBatchesTransfer) GetRefundAmount() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.RefundAmount
+}
+
+func (q *QueryBatchesTransfer) GetHoldAmount() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.HoldAmount
+}
+
+func (q *QueryBatchesTransfer) GetReleasedAmount() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.ReleasedAmount
+}
+
+func (q *QueryBatchesTransfer) GetBillingFeesAmount() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.BillingFeesAmount
+}
+
+func (q *QueryBatchesTransfer) GetThirdPartyPaidAmount() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.ThirdPartyPaidAmount
+}
+
+func (q *QueryBatchesTransfer) GetAdjustmentsAmount() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.AdjustmentsAmount
+}
+
+func (q *QueryBatchesTransfer) GetNetFundedAmount() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.NetFundedAmount
+}
+
+func (q *QueryBatchesTransfer) GetExtraProperties() map[string]interface{} {
+	return q.extraProperties
+}
+
+func (q *QueryBatchesTransfer) UnmarshalJSON(data []byte) error {
+	type embed QueryBatchesTransfer
+	var unmarshaler = struct {
+		embed
+		TransferDate *internal.DateTime `json:"TransferDate,omitempty"`
+	}{
+		embed: embed(*q),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*q = QueryBatchesTransfer(unmarshaler.embed)
+	q.TransferDate = unmarshaler.TransferDate.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *q)
+	if err != nil {
+		return err
+	}
+	q.extraProperties = extraProperties
+	q.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (q *QueryBatchesTransfer) MarshalJSON() ([]byte, error) {
+	type embed QueryBatchesTransfer
+	var marshaler = struct {
+		embed
+		TransferDate *internal.DateTime `json:"TransferDate,omitempty"`
+	}{
+		embed:        embed(*q),
+		TransferDate: internal.NewOptionalDateTime(q.TransferDate),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (q *QueryBatchesTransfer) String() string {
+	if len(q.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(q); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", q)
+}
+
 type QueryTransferDetailResponse struct {
 	// List of transfer detail records
 	Records []*TransferDetailRecord `json:"Records,omitempty" url:"Records,omitempty"`

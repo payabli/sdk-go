@@ -1623,88 +1623,67 @@ func (r *RequestOutAuthorizeVendorData) String() string {
 }
 
 type VCardGetResponse struct {
-	// The initial amount loaded on the card.
-	Amount *float64 `json:"amount,omitempty" url:"amount,omitempty"`
-	// Information about the associated customer, if applicable.
-	AssociatedCustomer *string `json:"associatedCustomer,omitempty" url:"associatedCustomer,omitempty"`
-	// Information about the associated vendor.
-	AssociatedVendor *VCardGetResponseAssociatedVendor `json:"associatedVendor,omitempty" url:"associatedVendor,omitempty"`
-	// The masked number of the card.
-	CardNumber *string `json:"cardNumber,omitempty" url:"cardNumber,omitempty"`
+	// Indicates if the virtual card was sent.
+	VcardSent *bool `json:"vcardSent,omitempty" url:"vcardSent,omitempty"`
 	// A unique token identifier for the card.
 	CardToken *string `json:"cardToken,omitempty" url:"cardToken,omitempty"`
-	// The current balance available on the card.
-	CurrentBalance *float64 `json:"currentBalance,omitempty" url:"currentBalance,omitempty"`
-	// The current number of times the card has been used.
-	CurrentNumberOfUses *int `json:"currentNumberOfUses,omitempty" url:"currentNumberOfUses,omitempty"`
+	// The masked number of the card.
+	CardNumber *string `json:"cardNumber,omitempty" url:"cardNumber,omitempty"`
 	// Masked Card Verification Code.
 	Cvc *string `json:"cvc,omitempty" url:"cvc,omitempty"`
-	// The creation date of the record.
-	DateCreated *string `json:"dateCreated,omitempty" url:"dateCreated,omitempty"`
-	// The last modified date of the record.
-	DateModified *string `json:"dateModified,omitempty" url:"dateModified,omitempty"`
-	// Indicates if only the exact amount is allowed for transactions.
-	ExactAmount *bool `json:"exactAmount,omitempty" url:"exactAmount,omitempty"`
+	// The expiration date of the card.
+	ExpirationDate *string `json:"expirationDate,omitempty" url:"expirationDate,omitempty"`
+	// The current status of the card.
+	Status *string `json:"status,omitempty" url:"status,omitempty"`
+	// The initial amount loaded on the card.
+	Amount *float64 `json:"amount,omitempty" url:"amount,omitempty"`
+	// The current balance available on the card.
+	CurrentBalance *float64 `json:"currentBalance,omitempty" url:"currentBalance,omitempty"`
 	// The set limit for expenses.
 	ExpenseLimit *float64 `json:"expenseLimit,omitempty" url:"expenseLimit,omitempty"`
 	// The period for the expense limit.
 	ExpenseLimitPeriod *string `json:"expenseLimitPeriod,omitempty" url:"expenseLimitPeriod,omitempty"`
-	// The expiration date of the card.
-	ExpirationDate     *string             `json:"expirationDate,omitempty" url:"expirationDate,omitempty"`
-	ExternalPaypointId *ExternalPaypointId `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
 	// Maximum number of uses allowed for the card.
 	MaxNumberOfUses *int `json:"maxNumberOfUses,omitempty" url:"maxNumberOfUses,omitempty"`
+	// The current number of times the card has been used.
+	CurrentNumberOfUses *int `json:"currentNumberOfUses,omitempty" url:"currentNumberOfUses,omitempty"`
+	// Indicates if only the exact amount is allowed for transactions.
+	ExactAmount *bool `json:"exactAmount,omitempty" url:"exactAmount,omitempty"`
 	// Merchant Category Code, if applicable.
 	Mcc *string `json:"mcc,omitempty" url:"mcc,omitempty"`
+	// Transaction Category Code, if applicable.
+	Tcc *string `json:"tcc,omitempty" url:"tcc,omitempty"`
 	// A miscellaneous field for additional information.
 	Misc1 *string `json:"misc1,omitempty" url:"misc1,omitempty"`
 	// Another miscellaneous field for extra information.
 	Misc2 *string `json:"misc2,omitempty" url:"misc2,omitempty"`
+	// The creation date of the record.
+	DateCreated *string `json:"dateCreated,omitempty" url:"dateCreated,omitempty"`
+	// The last modified date of the record.
+	DateModified *string `json:"dateModified,omitempty" url:"dateModified,omitempty"`
+	// Information about the associated vendor.
+	AssociatedVendor *VCardGetResponseAssociatedVendor `json:"associatedVendor,omitempty" url:"associatedVendor,omitempty"`
+	// Information about the associated customer, if applicable.
+	AssociatedCustomer *string `json:"associatedCustomer,omitempty" url:"associatedCustomer,omitempty"`
 	// Name of the parent organization.
 	ParentOrgName *string `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
 	// The 'Doing Business As' name of the Paypoint.
 	PaypointDbaname *string `json:"PaypointDbaname,omitempty" url:"PaypointDbaname,omitempty"`
-	// Entry name for the Paypoint, if applicable.
-	PaypointEntryname *string `json:"PaypointEntryname,omitempty" url:"PaypointEntryname,omitempty"`
 	// The legal name of the Paypoint.
 	PaypointLegalname *string `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
-	// The current status of the card.
-	Status *string `json:"status,omitempty" url:"status,omitempty"`
-	// Transaction Category Code, if applicable.
-	Tcc *string `json:"tcc,omitempty" url:"tcc,omitempty"`
-	// Indicates if the virtual card was sent.
-	VcardSent *bool `json:"vcardSent,omitempty" url:"vcardSent,omitempty"`
+	// Entry name for the Paypoint, if applicable.
+	PaypointEntryname  *string             `json:"PaypointEntryname,omitempty" url:"PaypointEntryname,omitempty"`
+	ExternalPaypointId *ExternalPaypointId `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (v *VCardGetResponse) GetAmount() *float64 {
+func (v *VCardGetResponse) GetVcardSent() *bool {
 	if v == nil {
 		return nil
 	}
-	return v.Amount
-}
-
-func (v *VCardGetResponse) GetAssociatedCustomer() *string {
-	if v == nil {
-		return nil
-	}
-	return v.AssociatedCustomer
-}
-
-func (v *VCardGetResponse) GetAssociatedVendor() *VCardGetResponseAssociatedVendor {
-	if v == nil {
-		return nil
-	}
-	return v.AssociatedVendor
-}
-
-func (v *VCardGetResponse) GetCardNumber() *string {
-	if v == nil {
-		return nil
-	}
-	return v.CardNumber
+	return v.VcardSent
 }
 
 func (v *VCardGetResponse) GetCardToken() *string {
@@ -1714,18 +1693,11 @@ func (v *VCardGetResponse) GetCardToken() *string {
 	return v.CardToken
 }
 
-func (v *VCardGetResponse) GetCurrentBalance() *float64 {
+func (v *VCardGetResponse) GetCardNumber() *string {
 	if v == nil {
 		return nil
 	}
-	return v.CurrentBalance
-}
-
-func (v *VCardGetResponse) GetCurrentNumberOfUses() *int {
-	if v == nil {
-		return nil
-	}
-	return v.CurrentNumberOfUses
+	return v.CardNumber
 }
 
 func (v *VCardGetResponse) GetCvc() *string {
@@ -1735,25 +1707,32 @@ func (v *VCardGetResponse) GetCvc() *string {
 	return v.Cvc
 }
 
-func (v *VCardGetResponse) GetDateCreated() *string {
+func (v *VCardGetResponse) GetExpirationDate() *string {
 	if v == nil {
 		return nil
 	}
-	return v.DateCreated
+	return v.ExpirationDate
 }
 
-func (v *VCardGetResponse) GetDateModified() *string {
+func (v *VCardGetResponse) GetStatus() *string {
 	if v == nil {
 		return nil
 	}
-	return v.DateModified
+	return v.Status
 }
 
-func (v *VCardGetResponse) GetExactAmount() *bool {
+func (v *VCardGetResponse) GetAmount() *float64 {
 	if v == nil {
 		return nil
 	}
-	return v.ExactAmount
+	return v.Amount
+}
+
+func (v *VCardGetResponse) GetCurrentBalance() *float64 {
+	if v == nil {
+		return nil
+	}
+	return v.CurrentBalance
 }
 
 func (v *VCardGetResponse) GetExpenseLimit() *float64 {
@@ -1770,20 +1749,6 @@ func (v *VCardGetResponse) GetExpenseLimitPeriod() *string {
 	return v.ExpenseLimitPeriod
 }
 
-func (v *VCardGetResponse) GetExpirationDate() *string {
-	if v == nil {
-		return nil
-	}
-	return v.ExpirationDate
-}
-
-func (v *VCardGetResponse) GetExternalPaypointId() *ExternalPaypointId {
-	if v == nil {
-		return nil
-	}
-	return v.ExternalPaypointId
-}
-
 func (v *VCardGetResponse) GetMaxNumberOfUses() *int {
 	if v == nil {
 		return nil
@@ -1791,11 +1756,32 @@ func (v *VCardGetResponse) GetMaxNumberOfUses() *int {
 	return v.MaxNumberOfUses
 }
 
+func (v *VCardGetResponse) GetCurrentNumberOfUses() *int {
+	if v == nil {
+		return nil
+	}
+	return v.CurrentNumberOfUses
+}
+
+func (v *VCardGetResponse) GetExactAmount() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.ExactAmount
+}
+
 func (v *VCardGetResponse) GetMcc() *string {
 	if v == nil {
 		return nil
 	}
 	return v.Mcc
+}
+
+func (v *VCardGetResponse) GetTcc() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Tcc
 }
 
 func (v *VCardGetResponse) GetMisc1() *string {
@@ -1812,6 +1798,34 @@ func (v *VCardGetResponse) GetMisc2() *string {
 	return v.Misc2
 }
 
+func (v *VCardGetResponse) GetDateCreated() *string {
+	if v == nil {
+		return nil
+	}
+	return v.DateCreated
+}
+
+func (v *VCardGetResponse) GetDateModified() *string {
+	if v == nil {
+		return nil
+	}
+	return v.DateModified
+}
+
+func (v *VCardGetResponse) GetAssociatedVendor() *VCardGetResponseAssociatedVendor {
+	if v == nil {
+		return nil
+	}
+	return v.AssociatedVendor
+}
+
+func (v *VCardGetResponse) GetAssociatedCustomer() *string {
+	if v == nil {
+		return nil
+	}
+	return v.AssociatedCustomer
+}
+
 func (v *VCardGetResponse) GetParentOrgName() *string {
 	if v == nil {
 		return nil
@@ -1826,13 +1840,6 @@ func (v *VCardGetResponse) GetPaypointDbaname() *string {
 	return v.PaypointDbaname
 }
 
-func (v *VCardGetResponse) GetPaypointEntryname() *string {
-	if v == nil {
-		return nil
-	}
-	return v.PaypointEntryname
-}
-
 func (v *VCardGetResponse) GetPaypointLegalname() *string {
 	if v == nil {
 		return nil
@@ -1840,25 +1847,18 @@ func (v *VCardGetResponse) GetPaypointLegalname() *string {
 	return v.PaypointLegalname
 }
 
-func (v *VCardGetResponse) GetStatus() *string {
+func (v *VCardGetResponse) GetPaypointEntryname() *string {
 	if v == nil {
 		return nil
 	}
-	return v.Status
+	return v.PaypointEntryname
 }
 
-func (v *VCardGetResponse) GetTcc() *string {
+func (v *VCardGetResponse) GetExternalPaypointId() *ExternalPaypointId {
 	if v == nil {
 		return nil
 	}
-	return v.Tcc
-}
-
-func (v *VCardGetResponse) GetVcardSent() *bool {
-	if v == nil {
-		return nil
-	}
-	return v.VcardSent
+	return v.ExternalPaypointId
 }
 
 func (v *VCardGetResponse) GetExtraProperties() map[string]interface{} {
@@ -1895,214 +1895,96 @@ func (v *VCardGetResponse) String() string {
 
 // Information about the associated vendor.
 type VCardGetResponseAssociatedVendor struct {
-	// Field for additional data, if any.
-	AdditionalData *string `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	// Unique code identifying the vendor.
+	VendorNumber *string `json:"VendorNumber,omitempty" url:"VendorNumber,omitempty"`
+	// The primary name associated with the vendor.
+	Name1 *string `json:"Name1,omitempty" url:"Name1,omitempty"`
+	// Additional name information for the vendor.
+	Name2 *string `json:"Name2,omitempty" url:"Name2,omitempty"`
+	// Employer Identification Number of the vendor.
+	Ein *string `json:"EIN,omitempty" url:"EIN,omitempty"`
+	// Contact phone number of the vendor.
+	Phone *string `json:"Phone,omitempty" url:"Phone,omitempty"`
+	// Contact email address of the vendor.
+	Email *string `json:"Email,omitempty" url:"Email,omitempty"`
+	// Email address for remittance.
+	RemitEmail *string `json:"RemitEmail,omitempty" url:"RemitEmail,omitempty"`
 	// Primary address line of the vendor.
 	Address1 *string `json:"Address1,omitempty" url:"Address1,omitempty"`
 	// Secondary address line of the vendor.
 	Address2 *string `json:"Address2,omitempty" url:"Address2,omitempty"`
-	// Billing data for the vendor.
-	BillingData *VCardGetResponseAssociatedVendorBillingData `json:"BillingData,omitempty" url:"BillingData,omitempty"`
 	// City where the vendor is located.
-	City     *string   `json:"City,omitempty" url:"City,omitempty"`
-	Contacts *Contacts `json:"Contacts,omitempty" url:"Contacts,omitempty"`
+	City *string `json:"City,omitempty" url:"City,omitempty"`
+	// State where the vendor is located.
+	State *string `json:"State,omitempty" url:"State,omitempty"`
+	// ZIP code for the vendor's location.
+	Zip *string `json:"Zip,omitempty" url:"Zip,omitempty"`
 	// Country where the vendor is located.
 	Country *string `json:"Country,omitempty" url:"Country,omitempty"`
+	// Merchant Category Code for the vendor.
+	Mcc *string `json:"Mcc,omitempty" url:"Mcc,omitempty"`
+	// Unique location code for the vendor.
+	LocationCode *string `json:"LocationCode,omitempty" url:"LocationCode,omitempty"`
+	// Array of objects describing the vendor's contacts.
+	Contacts []*VCardGetResponseContact `json:"Contacts,omitempty" url:"Contacts,omitempty"`
+	// Billing data for the vendor.
+	BillingData *VCardGetResponseAssociatedVendorBillingData `json:"BillingData,omitempty" url:"BillingData,omitempty"`
+	// Preferred payment method for vendor.
+	PaymentMethod *string `json:"PaymentMethod,omitempty" url:"PaymentMethod,omitempty"`
+	// Status of the vendor.
+	VendorStatus *int `json:"VendorStatus,omitempty" url:"VendorStatus,omitempty"`
+	// Unique identifier for the vendor.
+	VendorId *int `json:"VendorId,omitempty" url:"VendorId,omitempty"`
+	// Enrollment status of the vendor.
+	EnrollmentStatus *string `json:"EnrollmentStatus,omitempty" url:"EnrollmentStatus,omitempty"`
+	// Summary of vendor's billing and transaction status.
+	Summary *VCardGetResponseAssociatedVendorSummary `json:"Summary,omitempty" url:"Summary,omitempty"`
+	// Legal name of the paypoint.
+	PaypointLegalname *Legalname `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
+	// DBA name of the paypoint.
+	PaypointDbaname *Dbaname `json:"PaypointDbaname,omitempty" url:"PaypointDbaname,omitempty"`
+	// Entryname of the paypoint.
+	PaypointEntryname *string        `json:"PaypointEntryname,omitempty" url:"PaypointEntryname,omitempty"`
+	ParentOrgName     *OrgParentName `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
+	// ID of the parent organization.
+	ParentOrgId *int `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
 	// Date when the vendor record was created.
-	CreatedDate *CreatedAt `json:"CreatedDate,omitempty" url:"CreatedDate,omitempty"`
-	// Account number of paypoint in the vendor side.
-	CustomerVendorAccount *string `json:"customerVendorAccount,omitempty" url:"customerVendorAccount,omitempty"`
+	CreatedDate *string `json:"CreatedDate,omitempty" url:"CreatedDate,omitempty"`
+	// Date when the vendor's information was last updated.
+	LastUpdated   *string        `json:"LastUpdated,omitempty" url:"LastUpdated,omitempty"`
+	RemitAddress1 *Remitaddress1 `json:"remitAddress1,omitempty" url:"remitAddress1,omitempty"`
+	RemitAddress2 *Remitaddress2 `json:"remitAddress2,omitempty" url:"remitAddress2,omitempty"`
+	RemitCity     *Remitcity     `json:"remitCity,omitempty" url:"remitCity,omitempty"`
+	RemitState    *Remitstate    `json:"remitState,omitempty" url:"remitState,omitempty"`
+	RemitZip      *Remitzip      `json:"remitZip,omitempty" url:"remitZip,omitempty"`
+	RemitCountry  *Remitcountry  `json:"remitCountry,omitempty" url:"remitCountry,omitempty"`
+	// Primary name of the payee.
+	PayeeName1 *string `json:"payeeName1,omitempty" url:"payeeName1,omitempty"`
+	// Secondary name of the payee.
+	PayeeName2 *string `json:"payeeName2,omitempty" url:"payeeName2,omitempty"`
 	// A custom field for additional data.
 	CustomField1 *string `json:"customField1,omitempty" url:"customField1,omitempty"`
 	// Another custom field for extra data.
 	CustomField2 *string `json:"customField2,omitempty" url:"customField2,omitempty"`
-	// Employer Identification Number of the vendor.
-	Ein *string `json:"EIN,omitempty" url:"EIN,omitempty"`
-	// Contact email address of the vendor.
-	Email *string `json:"Email,omitempty" url:"Email,omitempty"`
-	// Enrollment status of the vendor.
-	EnrollmentStatus   *string             `json:"EnrollmentStatus,omitempty" url:"EnrollmentStatus,omitempty"`
-	ExternalPaypointId *ExternalPaypointId `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	// Account number of paypoint in the vendor side.
+	CustomerVendorAccount *string `json:"customerVendorAccount,omitempty" url:"customerVendorAccount,omitempty"`
 	// Internal reference ID used within the system.
 	InternalReferenceId *int `json:"InternalReferenceId,omitempty" url:"InternalReferenceId,omitempty"`
-	// Date when the vendor's information was last updated.
-	LastUpdated *LastModified `json:"LastUpdated,omitempty" url:"LastUpdated,omitempty"`
-	// Unique location code for the vendor.
-	LocationCode *string `json:"LocationCode,omitempty" url:"LocationCode,omitempty"`
-	// Merchant Category Code for the vendor.
-	Mcc *string `json:"Mcc,omitempty" url:"Mcc,omitempty"`
-	// The primary name associated with the vendor.
-	Name1 *string `json:"Name1,omitempty" url:"Name1,omitempty"`
-	// Additional name information for the vendor.
-	Name2         *string        `json:"Name2,omitempty" url:"Name2,omitempty"`
-	ParentOrgName *OrgParentName `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
-	// Primary name of the payee.
-	PayeeName1 *string `json:"payeeName1,omitempty" url:"payeeName1,omitempty"`
-	// Secondary name of the payee.
-	PayeeName2    *string              `json:"payeeName2,omitempty" url:"payeeName2,omitempty"`
-	PaymentMethod *VendorPaymentMethod `json:"paymentMethod,omitempty" url:"paymentMethod,omitempty"`
-	// DBA name of the paypoint.
-	PaypointDbaname *Dbaname `json:"PaypointDbaname,omitempty" url:"PaypointDbaname,omitempty"`
-	// Entryname of the paypoint.
-	PaypointEntryname *string `json:"PaypointEntryname,omitempty" url:"PaypointEntryname,omitempty"`
-	// Legal name of the paypoint.
-	PaypointLegalname *Legalname `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
-	// Contact phone number of the vendor.
-	Phone         *string        `json:"Phone,omitempty" url:"Phone,omitempty"`
-	RemitAddress1 *Remitaddress1 `json:"remitAddress1,omitempty" url:"remitAddress1,omitempty"`
-	RemitAddress2 *Remitaddress2 `json:"remitAddress2,omitempty" url:"remitAddress2,omitempty"`
-	RemitCity     *Remitcity     `json:"remitCity,omitempty" url:"remitCity,omitempty"`
-	RemitCountry  *Remitcountry  `json:"remitCountry,omitempty" url:"remitCountry,omitempty"`
-	RemitState    *Remitstate    `json:"remitState,omitempty" url:"remitState,omitempty"`
-	RemitZip      *Remitzip      `json:"remitZip,omitempty" url:"remitZip,omitempty"`
-	// State where the vendor is located.
-	State *string `json:"State,omitempty" url:"State,omitempty"`
-	// Summary of vendor's billing and transaction status.
-	Summary *VCardGetResponseAssociatedVendorSummary `json:"Summary,omitempty" url:"Summary,omitempty"`
-	// Unique identifier for the vendor.
-	VendorId *int `json:"VendorId,omitempty" url:"VendorId,omitempty"`
-	// Unique code identifying the vendor.
-	VendorNumber *string `json:"VendorNumber,omitempty" url:"VendorNumber,omitempty"`
-	// Status of the vendor.
-	VendorStatus *int `json:"VendorStatus,omitempty" url:"VendorStatus,omitempty"`
-	// ZIP code for the vendor's location.
-	Zip *string `json:"Zip,omitempty" url:"Zip,omitempty"`
+	// Field for additional data, if any.
+	AdditionalData     *string             `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	ExternalPaypointId *ExternalPaypointId `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	// Stored payment methods for the vendor.
+	StoredMethods *string `json:"StoredMethods,omitempty" url:"StoredMethods,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (v *VCardGetResponseAssociatedVendor) GetAdditionalData() *string {
+func (v *VCardGetResponseAssociatedVendor) GetVendorNumber() *string {
 	if v == nil {
 		return nil
 	}
-	return v.AdditionalData
-}
-
-func (v *VCardGetResponseAssociatedVendor) GetAddress1() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Address1
-}
-
-func (v *VCardGetResponseAssociatedVendor) GetAddress2() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Address2
-}
-
-func (v *VCardGetResponseAssociatedVendor) GetBillingData() *VCardGetResponseAssociatedVendorBillingData {
-	if v == nil {
-		return nil
-	}
-	return v.BillingData
-}
-
-func (v *VCardGetResponseAssociatedVendor) GetCity() *string {
-	if v == nil {
-		return nil
-	}
-	return v.City
-}
-
-func (v *VCardGetResponseAssociatedVendor) GetContacts() *Contacts {
-	if v == nil {
-		return nil
-	}
-	return v.Contacts
-}
-
-func (v *VCardGetResponseAssociatedVendor) GetCountry() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Country
-}
-
-func (v *VCardGetResponseAssociatedVendor) GetCreatedDate() *CreatedAt {
-	if v == nil {
-		return nil
-	}
-	return v.CreatedDate
-}
-
-func (v *VCardGetResponseAssociatedVendor) GetCustomerVendorAccount() *string {
-	if v == nil {
-		return nil
-	}
-	return v.CustomerVendorAccount
-}
-
-func (v *VCardGetResponseAssociatedVendor) GetCustomField1() *string {
-	if v == nil {
-		return nil
-	}
-	return v.CustomField1
-}
-
-func (v *VCardGetResponseAssociatedVendor) GetCustomField2() *string {
-	if v == nil {
-		return nil
-	}
-	return v.CustomField2
-}
-
-func (v *VCardGetResponseAssociatedVendor) GetEin() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Ein
-}
-
-func (v *VCardGetResponseAssociatedVendor) GetEmail() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Email
-}
-
-func (v *VCardGetResponseAssociatedVendor) GetEnrollmentStatus() *string {
-	if v == nil {
-		return nil
-	}
-	return v.EnrollmentStatus
-}
-
-func (v *VCardGetResponseAssociatedVendor) GetExternalPaypointId() *ExternalPaypointId {
-	if v == nil {
-		return nil
-	}
-	return v.ExternalPaypointId
-}
-
-func (v *VCardGetResponseAssociatedVendor) GetInternalReferenceId() *int {
-	if v == nil {
-		return nil
-	}
-	return v.InternalReferenceId
-}
-
-func (v *VCardGetResponseAssociatedVendor) GetLastUpdated() *LastModified {
-	if v == nil {
-		return nil
-	}
-	return v.LastUpdated
-}
-
-func (v *VCardGetResponseAssociatedVendor) GetLocationCode() *string {
-	if v == nil {
-		return nil
-	}
-	return v.LocationCode
-}
-
-func (v *VCardGetResponseAssociatedVendor) GetMcc() *string {
-	if v == nil {
-		return nil
-	}
-	return v.Mcc
+	return v.VendorNumber
 }
 
 func (v *VCardGetResponseAssociatedVendor) GetName1() *string {
@@ -2119,32 +2001,144 @@ func (v *VCardGetResponseAssociatedVendor) GetName2() *string {
 	return v.Name2
 }
 
-func (v *VCardGetResponseAssociatedVendor) GetParentOrgName() *OrgParentName {
+func (v *VCardGetResponseAssociatedVendor) GetEin() *string {
 	if v == nil {
 		return nil
 	}
-	return v.ParentOrgName
+	return v.Ein
 }
 
-func (v *VCardGetResponseAssociatedVendor) GetPayeeName1() *string {
+func (v *VCardGetResponseAssociatedVendor) GetPhone() *string {
 	if v == nil {
 		return nil
 	}
-	return v.PayeeName1
+	return v.Phone
 }
 
-func (v *VCardGetResponseAssociatedVendor) GetPayeeName2() *string {
+func (v *VCardGetResponseAssociatedVendor) GetEmail() *string {
 	if v == nil {
 		return nil
 	}
-	return v.PayeeName2
+	return v.Email
 }
 
-func (v *VCardGetResponseAssociatedVendor) GetPaymentMethod() *VendorPaymentMethod {
+func (v *VCardGetResponseAssociatedVendor) GetRemitEmail() *string {
+	if v == nil {
+		return nil
+	}
+	return v.RemitEmail
+}
+
+func (v *VCardGetResponseAssociatedVendor) GetAddress1() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Address1
+}
+
+func (v *VCardGetResponseAssociatedVendor) GetAddress2() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Address2
+}
+
+func (v *VCardGetResponseAssociatedVendor) GetCity() *string {
+	if v == nil {
+		return nil
+	}
+	return v.City
+}
+
+func (v *VCardGetResponseAssociatedVendor) GetState() *string {
+	if v == nil {
+		return nil
+	}
+	return v.State
+}
+
+func (v *VCardGetResponseAssociatedVendor) GetZip() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Zip
+}
+
+func (v *VCardGetResponseAssociatedVendor) GetCountry() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Country
+}
+
+func (v *VCardGetResponseAssociatedVendor) GetMcc() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Mcc
+}
+
+func (v *VCardGetResponseAssociatedVendor) GetLocationCode() *string {
+	if v == nil {
+		return nil
+	}
+	return v.LocationCode
+}
+
+func (v *VCardGetResponseAssociatedVendor) GetContacts() []*VCardGetResponseContact {
+	if v == nil {
+		return nil
+	}
+	return v.Contacts
+}
+
+func (v *VCardGetResponseAssociatedVendor) GetBillingData() *VCardGetResponseAssociatedVendorBillingData {
+	if v == nil {
+		return nil
+	}
+	return v.BillingData
+}
+
+func (v *VCardGetResponseAssociatedVendor) GetPaymentMethod() *string {
 	if v == nil {
 		return nil
 	}
 	return v.PaymentMethod
+}
+
+func (v *VCardGetResponseAssociatedVendor) GetVendorStatus() *int {
+	if v == nil {
+		return nil
+	}
+	return v.VendorStatus
+}
+
+func (v *VCardGetResponseAssociatedVendor) GetVendorId() *int {
+	if v == nil {
+		return nil
+	}
+	return v.VendorId
+}
+
+func (v *VCardGetResponseAssociatedVendor) GetEnrollmentStatus() *string {
+	if v == nil {
+		return nil
+	}
+	return v.EnrollmentStatus
+}
+
+func (v *VCardGetResponseAssociatedVendor) GetSummary() *VCardGetResponseAssociatedVendorSummary {
+	if v == nil {
+		return nil
+	}
+	return v.Summary
+}
+
+func (v *VCardGetResponseAssociatedVendor) GetPaypointLegalname() *Legalname {
+	if v == nil {
+		return nil
+	}
+	return v.PaypointLegalname
 }
 
 func (v *VCardGetResponseAssociatedVendor) GetPaypointDbaname() *Dbaname {
@@ -2161,18 +2155,32 @@ func (v *VCardGetResponseAssociatedVendor) GetPaypointEntryname() *string {
 	return v.PaypointEntryname
 }
 
-func (v *VCardGetResponseAssociatedVendor) GetPaypointLegalname() *Legalname {
+func (v *VCardGetResponseAssociatedVendor) GetParentOrgName() *OrgParentName {
 	if v == nil {
 		return nil
 	}
-	return v.PaypointLegalname
+	return v.ParentOrgName
 }
 
-func (v *VCardGetResponseAssociatedVendor) GetPhone() *string {
+func (v *VCardGetResponseAssociatedVendor) GetParentOrgId() *int {
 	if v == nil {
 		return nil
 	}
-	return v.Phone
+	return v.ParentOrgId
+}
+
+func (v *VCardGetResponseAssociatedVendor) GetCreatedDate() *string {
+	if v == nil {
+		return nil
+	}
+	return v.CreatedDate
+}
+
+func (v *VCardGetResponseAssociatedVendor) GetLastUpdated() *string {
+	if v == nil {
+		return nil
+	}
+	return v.LastUpdated
 }
 
 func (v *VCardGetResponseAssociatedVendor) GetRemitAddress1() *Remitaddress1 {
@@ -2196,13 +2204,6 @@ func (v *VCardGetResponseAssociatedVendor) GetRemitCity() *Remitcity {
 	return v.RemitCity
 }
 
-func (v *VCardGetResponseAssociatedVendor) GetRemitCountry() *Remitcountry {
-	if v == nil {
-		return nil
-	}
-	return v.RemitCountry
-}
-
 func (v *VCardGetResponseAssociatedVendor) GetRemitState() *Remitstate {
 	if v == nil {
 		return nil
@@ -2217,46 +2218,74 @@ func (v *VCardGetResponseAssociatedVendor) GetRemitZip() *Remitzip {
 	return v.RemitZip
 }
 
-func (v *VCardGetResponseAssociatedVendor) GetState() *string {
+func (v *VCardGetResponseAssociatedVendor) GetRemitCountry() *Remitcountry {
 	if v == nil {
 		return nil
 	}
-	return v.State
+	return v.RemitCountry
 }
 
-func (v *VCardGetResponseAssociatedVendor) GetSummary() *VCardGetResponseAssociatedVendorSummary {
+func (v *VCardGetResponseAssociatedVendor) GetPayeeName1() *string {
 	if v == nil {
 		return nil
 	}
-	return v.Summary
+	return v.PayeeName1
 }
 
-func (v *VCardGetResponseAssociatedVendor) GetVendorId() *int {
+func (v *VCardGetResponseAssociatedVendor) GetPayeeName2() *string {
 	if v == nil {
 		return nil
 	}
-	return v.VendorId
+	return v.PayeeName2
 }
 
-func (v *VCardGetResponseAssociatedVendor) GetVendorNumber() *string {
+func (v *VCardGetResponseAssociatedVendor) GetCustomField1() *string {
 	if v == nil {
 		return nil
 	}
-	return v.VendorNumber
+	return v.CustomField1
 }
 
-func (v *VCardGetResponseAssociatedVendor) GetVendorStatus() *int {
+func (v *VCardGetResponseAssociatedVendor) GetCustomField2() *string {
 	if v == nil {
 		return nil
 	}
-	return v.VendorStatus
+	return v.CustomField2
 }
 
-func (v *VCardGetResponseAssociatedVendor) GetZip() *string {
+func (v *VCardGetResponseAssociatedVendor) GetCustomerVendorAccount() *string {
 	if v == nil {
 		return nil
 	}
-	return v.Zip
+	return v.CustomerVendorAccount
+}
+
+func (v *VCardGetResponseAssociatedVendor) GetInternalReferenceId() *int {
+	if v == nil {
+		return nil
+	}
+	return v.InternalReferenceId
+}
+
+func (v *VCardGetResponseAssociatedVendor) GetAdditionalData() *string {
+	if v == nil {
+		return nil
+	}
+	return v.AdditionalData
+}
+
+func (v *VCardGetResponseAssociatedVendor) GetExternalPaypointId() *ExternalPaypointId {
+	if v == nil {
+		return nil
+	}
+	return v.ExternalPaypointId
+}
+
+func (v *VCardGetResponseAssociatedVendor) GetStoredMethods() *string {
+	if v == nil {
+		return nil
+	}
+	return v.StoredMethods
 }
 
 func (v *VCardGetResponseAssociatedVendor) GetExtraProperties() map[string]interface{} {
@@ -2293,25 +2322,72 @@ func (v *VCardGetResponseAssociatedVendor) String() string {
 
 // Billing data for the vendor.
 type VCardGetResponseAssociatedVendorBillingData struct {
+	// Unique identifier for billing data.
+	Id *int `json:"id,omitempty" url:"id,omitempty"`
+	// Account identifier.
+	AccountId *string `json:"accountId,omitempty" url:"accountId,omitempty"`
+	// Nickname for the account.
+	Nickname *string `json:"nickname,omitempty" url:"nickname,omitempty"`
+	// Name of the bank used for transactions.
+	BankName *string `json:"bankName,omitempty" url:"bankName,omitempty"`
+	// Routing number for the bank account.
+	RoutingAccount *string `json:"routingAccount,omitempty" url:"routingAccount,omitempty"`
 	// Masked account number for transactions.
 	AccountNumber *string `json:"accountNumber,omitempty" url:"accountNumber,omitempty"`
-	// Function of the bank account.
-	BankAccountFunction *int `json:"bankAccountFunction,omitempty" url:"bankAccountFunction,omitempty"`
+	// Type of the bank account.
+	TypeAccount *string `json:"typeAccount,omitempty" url:"typeAccount,omitempty"`
 	// Name of the bank account holder.
 	BankAccountHolderName *string `json:"bankAccountHolderName,omitempty" url:"bankAccountHolderName,omitempty"`
 	// Type of bank account holder.
 	BankAccountHolderType *string `json:"bankAccountHolderType,omitempty" url:"bankAccountHolderType,omitempty"`
-	// Name of the bank used for transactions.
-	BankName *string `json:"bankName,omitempty" url:"bankName,omitempty"`
-	// Unique identifier for billing data.
-	Id *string `json:"id,omitempty" url:"id,omitempty"`
-	// Routing number for the bank account.
-	RoutingAccount *string `json:"routingAccount,omitempty" url:"routingAccount,omitempty"`
-	// Type of the bank account.
-	TypeAccount *string `json:"typeAccount,omitempty" url:"typeAccount,omitempty"`
+	// Function of the bank account.
+	BankAccountFunction *int `json:"bankAccountFunction,omitempty" url:"bankAccountFunction,omitempty"`
+	// Indicates if the account is verified.
+	Verified *bool `json:"verified,omitempty" url:"verified,omitempty"`
+	// Status of the billing data.
+	Status *int `json:"status,omitempty" url:"status,omitempty"`
+	// Services associated with the account.
+	Services []interface{} `json:"services,omitempty" url:"services,omitempty"`
+	// Indicates if this is the default billing account.
+	Default *bool `json:"default,omitempty" url:"default,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
+}
+
+func (v *VCardGetResponseAssociatedVendorBillingData) GetId() *int {
+	if v == nil {
+		return nil
+	}
+	return v.Id
+}
+
+func (v *VCardGetResponseAssociatedVendorBillingData) GetAccountId() *string {
+	if v == nil {
+		return nil
+	}
+	return v.AccountId
+}
+
+func (v *VCardGetResponseAssociatedVendorBillingData) GetNickname() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Nickname
+}
+
+func (v *VCardGetResponseAssociatedVendorBillingData) GetBankName() *string {
+	if v == nil {
+		return nil
+	}
+	return v.BankName
+}
+
+func (v *VCardGetResponseAssociatedVendorBillingData) GetRoutingAccount() *string {
+	if v == nil {
+		return nil
+	}
+	return v.RoutingAccount
 }
 
 func (v *VCardGetResponseAssociatedVendorBillingData) GetAccountNumber() *string {
@@ -2321,11 +2397,11 @@ func (v *VCardGetResponseAssociatedVendorBillingData) GetAccountNumber() *string
 	return v.AccountNumber
 }
 
-func (v *VCardGetResponseAssociatedVendorBillingData) GetBankAccountFunction() *int {
+func (v *VCardGetResponseAssociatedVendorBillingData) GetTypeAccount() *string {
 	if v == nil {
 		return nil
 	}
-	return v.BankAccountFunction
+	return v.TypeAccount
 }
 
 func (v *VCardGetResponseAssociatedVendorBillingData) GetBankAccountHolderName() *string {
@@ -2342,32 +2418,39 @@ func (v *VCardGetResponseAssociatedVendorBillingData) GetBankAccountHolderType()
 	return v.BankAccountHolderType
 }
 
-func (v *VCardGetResponseAssociatedVendorBillingData) GetBankName() *string {
+func (v *VCardGetResponseAssociatedVendorBillingData) GetBankAccountFunction() *int {
 	if v == nil {
 		return nil
 	}
-	return v.BankName
+	return v.BankAccountFunction
 }
 
-func (v *VCardGetResponseAssociatedVendorBillingData) GetId() *string {
+func (v *VCardGetResponseAssociatedVendorBillingData) GetVerified() *bool {
 	if v == nil {
 		return nil
 	}
-	return v.Id
+	return v.Verified
 }
 
-func (v *VCardGetResponseAssociatedVendorBillingData) GetRoutingAccount() *string {
+func (v *VCardGetResponseAssociatedVendorBillingData) GetStatus() *int {
 	if v == nil {
 		return nil
 	}
-	return v.RoutingAccount
+	return v.Status
 }
 
-func (v *VCardGetResponseAssociatedVendorBillingData) GetTypeAccount() *string {
+func (v *VCardGetResponseAssociatedVendorBillingData) GetServices() []interface{} {
 	if v == nil {
 		return nil
 	}
-	return v.TypeAccount
+	return v.Services
+}
+
+func (v *VCardGetResponseAssociatedVendorBillingData) GetDefault() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.Default
 }
 
 func (v *VCardGetResponseAssociatedVendorBillingData) GetExtraProperties() map[string]interface{} {
@@ -2406,34 +2489,34 @@ func (v *VCardGetResponseAssociatedVendorBillingData) String() string {
 type VCardGetResponseAssociatedVendorSummary struct {
 	// Number of active bills.
 	ActiveBills *int `json:"ActiveBills,omitempty" url:"ActiveBills,omitempty"`
-	// Total amount of active bills.
-	ActiveBillsAmount *float64 `json:"ActiveBillsAmount,omitempty" url:"ActiveBillsAmount,omitempty"`
-	// Number of bills that have been approved.
-	ApprovedBills *int `json:"ApprovedBills,omitempty" url:"ApprovedBills,omitempty"`
-	// Total amount of approved bills.
-	ApprovedBillsAmount *float64 `json:"ApprovedBillsAmount,omitempty" url:"ApprovedBillsAmount,omitempty"`
-	// Number of bills that have been disapproved.
-	DisapprovedBills *int `json:"DisapprovedBills,omitempty" url:"DisapprovedBills,omitempty"`
-	// Total amount of rejected bills.
-	DisapprovedBillsAmount *float64 `json:"DisapprovedBillsAmount,omitempty" url:"DisapprovedBillsAmount,omitempty"`
-	// Number of bills in transit.
-	InTransitBills *int `json:"InTransitBills,omitempty" url:"InTransitBills,omitempty"`
-	// Total amount of bills in transit.
-	InTransitBillsAmount *float64 `json:"InTransitBillsAmount,omitempty" url:"InTransitBillsAmount,omitempty"`
-	// Number of bills that are overdue.
-	OverdueBills *int `json:"OverdueBills,omitempty" url:"OverdueBills,omitempty"`
-	// Total amount of overdue bills.
-	OverdueBillsAmount *float64 `json:"OverdueBillsAmount,omitempty" url:"OverdueBillsAmount,omitempty"`
-	// Number of bills that have been paid.
-	PaidBills *int `json:"PaidBills,omitempty" url:"PaidBills,omitempty"`
-	// Total amount of paid bills.
-	PaidBillsAmount *float64 `json:"PaidBillsAmount,omitempty" url:"PaidBillsAmount,omitempty"`
 	// Number of bills pending approval or payment.
 	PendingBills *int `json:"PendingBills,omitempty" url:"PendingBills,omitempty"`
-	// Total amount of pending bills.
-	PendingBillsAmount *float64 `json:"PendingBillsAmount,omitempty" url:"PendingBillsAmount,omitempty"`
+	// Number of bills in transit.
+	InTransitBills *int `json:"InTransitBills,omitempty" url:"InTransitBills,omitempty"`
+	// Number of bills that have been paid.
+	PaidBills *int `json:"PaidBills,omitempty" url:"PaidBills,omitempty"`
+	// Number of bills that are overdue.
+	OverdueBills *int `json:"OverdueBills,omitempty" url:"OverdueBills,omitempty"`
+	// Number of bills that have been approved.
+	ApprovedBills *int `json:"ApprovedBills,omitempty" url:"ApprovedBills,omitempty"`
+	// Number of bills that have been disapproved.
+	DisapprovedBills *int `json:"DisapprovedBills,omitempty" url:"DisapprovedBills,omitempty"`
 	// Total number of bills.
 	TotalBills *int `json:"TotalBills,omitempty" url:"TotalBills,omitempty"`
+	// Total amount of active bills.
+	ActiveBillsAmount *float64 `json:"ActiveBillsAmount,omitempty" url:"ActiveBillsAmount,omitempty"`
+	// Total amount of pending bills.
+	PendingBillsAmount *float64 `json:"PendingBillsAmount,omitempty" url:"PendingBillsAmount,omitempty"`
+	// Total amount of bills in transit.
+	InTransitBillsAmount *float64 `json:"InTransitBillsAmount,omitempty" url:"InTransitBillsAmount,omitempty"`
+	// Total amount of paid bills.
+	PaidBillsAmount *float64 `json:"PaidBillsAmount,omitempty" url:"PaidBillsAmount,omitempty"`
+	// Total amount of overdue bills.
+	OverdueBillsAmount *float64 `json:"OverdueBillsAmount,omitempty" url:"OverdueBillsAmount,omitempty"`
+	// Total amount of approved bills.
+	ApprovedBillsAmount *float64 `json:"ApprovedBillsAmount,omitempty" url:"ApprovedBillsAmount,omitempty"`
+	// Total amount of rejected bills.
+	DisapprovedBillsAmount *float64 `json:"DisapprovedBillsAmount,omitempty" url:"DisapprovedBillsAmount,omitempty"`
 	// Total amount of all bills.
 	TotalBillsAmount *float64 `json:"TotalBillsAmount,omitempty" url:"TotalBillsAmount,omitempty"`
 
@@ -2448,39 +2531,11 @@ func (v *VCardGetResponseAssociatedVendorSummary) GetActiveBills() *int {
 	return v.ActiveBills
 }
 
-func (v *VCardGetResponseAssociatedVendorSummary) GetActiveBillsAmount() *float64 {
+func (v *VCardGetResponseAssociatedVendorSummary) GetPendingBills() *int {
 	if v == nil {
 		return nil
 	}
-	return v.ActiveBillsAmount
-}
-
-func (v *VCardGetResponseAssociatedVendorSummary) GetApprovedBills() *int {
-	if v == nil {
-		return nil
-	}
-	return v.ApprovedBills
-}
-
-func (v *VCardGetResponseAssociatedVendorSummary) GetApprovedBillsAmount() *float64 {
-	if v == nil {
-		return nil
-	}
-	return v.ApprovedBillsAmount
-}
-
-func (v *VCardGetResponseAssociatedVendorSummary) GetDisapprovedBills() *int {
-	if v == nil {
-		return nil
-	}
-	return v.DisapprovedBills
-}
-
-func (v *VCardGetResponseAssociatedVendorSummary) GetDisapprovedBillsAmount() *float64 {
-	if v == nil {
-		return nil
-	}
-	return v.DisapprovedBillsAmount
+	return v.PendingBills
 }
 
 func (v *VCardGetResponseAssociatedVendorSummary) GetInTransitBills() *int {
@@ -2490,11 +2545,11 @@ func (v *VCardGetResponseAssociatedVendorSummary) GetInTransitBills() *int {
 	return v.InTransitBills
 }
 
-func (v *VCardGetResponseAssociatedVendorSummary) GetInTransitBillsAmount() *float64 {
+func (v *VCardGetResponseAssociatedVendorSummary) GetPaidBills() *int {
 	if v == nil {
 		return nil
 	}
-	return v.InTransitBillsAmount
+	return v.PaidBills
 }
 
 func (v *VCardGetResponseAssociatedVendorSummary) GetOverdueBills() *int {
@@ -2504,32 +2559,32 @@ func (v *VCardGetResponseAssociatedVendorSummary) GetOverdueBills() *int {
 	return v.OverdueBills
 }
 
-func (v *VCardGetResponseAssociatedVendorSummary) GetOverdueBillsAmount() *float64 {
+func (v *VCardGetResponseAssociatedVendorSummary) GetApprovedBills() *int {
 	if v == nil {
 		return nil
 	}
-	return v.OverdueBillsAmount
+	return v.ApprovedBills
 }
 
-func (v *VCardGetResponseAssociatedVendorSummary) GetPaidBills() *int {
+func (v *VCardGetResponseAssociatedVendorSummary) GetDisapprovedBills() *int {
 	if v == nil {
 		return nil
 	}
-	return v.PaidBills
+	return v.DisapprovedBills
 }
 
-func (v *VCardGetResponseAssociatedVendorSummary) GetPaidBillsAmount() *float64 {
+func (v *VCardGetResponseAssociatedVendorSummary) GetTotalBills() *int {
 	if v == nil {
 		return nil
 	}
-	return v.PaidBillsAmount
+	return v.TotalBills
 }
 
-func (v *VCardGetResponseAssociatedVendorSummary) GetPendingBills() *int {
+func (v *VCardGetResponseAssociatedVendorSummary) GetActiveBillsAmount() *float64 {
 	if v == nil {
 		return nil
 	}
-	return v.PendingBills
+	return v.ActiveBillsAmount
 }
 
 func (v *VCardGetResponseAssociatedVendorSummary) GetPendingBillsAmount() *float64 {
@@ -2539,11 +2594,39 @@ func (v *VCardGetResponseAssociatedVendorSummary) GetPendingBillsAmount() *float
 	return v.PendingBillsAmount
 }
 
-func (v *VCardGetResponseAssociatedVendorSummary) GetTotalBills() *int {
+func (v *VCardGetResponseAssociatedVendorSummary) GetInTransitBillsAmount() *float64 {
 	if v == nil {
 		return nil
 	}
-	return v.TotalBills
+	return v.InTransitBillsAmount
+}
+
+func (v *VCardGetResponseAssociatedVendorSummary) GetPaidBillsAmount() *float64 {
+	if v == nil {
+		return nil
+	}
+	return v.PaidBillsAmount
+}
+
+func (v *VCardGetResponseAssociatedVendorSummary) GetOverdueBillsAmount() *float64 {
+	if v == nil {
+		return nil
+	}
+	return v.OverdueBillsAmount
+}
+
+func (v *VCardGetResponseAssociatedVendorSummary) GetApprovedBillsAmount() *float64 {
+	if v == nil {
+		return nil
+	}
+	return v.ApprovedBillsAmount
+}
+
+func (v *VCardGetResponseAssociatedVendorSummary) GetDisapprovedBillsAmount() *float64 {
+	if v == nil {
+		return nil
+	}
+	return v.DisapprovedBillsAmount
 }
 
 func (v *VCardGetResponseAssociatedVendorSummary) GetTotalBillsAmount() *float64 {
@@ -2574,6 +2657,81 @@ func (v *VCardGetResponseAssociatedVendorSummary) UnmarshalJSON(data []byte) err
 }
 
 func (v *VCardGetResponseAssociatedVendorSummary) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+// Contact information structure.
+type VCardGetResponseContact struct {
+	// Name of the contact.
+	ContactName *string `json:"ContactName,omitempty" url:"ContactName,omitempty"`
+	// Email of the contact.
+	ContactEmail *string `json:"ContactEmail,omitempty" url:"ContactEmail,omitempty"`
+	// Title of the contact.
+	ContactTitle *string `json:"ContactTitle,omitempty" url:"ContactTitle,omitempty"`
+	// Phone number of the contact.
+	ContactPhone *string `json:"ContactPhone,omitempty" url:"ContactPhone,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *VCardGetResponseContact) GetContactName() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ContactName
+}
+
+func (v *VCardGetResponseContact) GetContactEmail() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ContactEmail
+}
+
+func (v *VCardGetResponseContact) GetContactTitle() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ContactTitle
+}
+
+func (v *VCardGetResponseContact) GetContactPhone() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ContactPhone
+}
+
+func (v *VCardGetResponseContact) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *VCardGetResponseContact) UnmarshalJSON(data []byte) error {
+	type unmarshaler VCardGetResponseContact
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VCardGetResponseContact(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VCardGetResponseContact) String() string {
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
