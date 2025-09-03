@@ -9,34 +9,72 @@ import (
 	time "time"
 )
 
-type PayLinkData struct {
+type PayLinkDataBill struct {
 	IdempotencyKey *IdempotencyKey `json:"-" url:"-"`
 	// Indicates whether customer can modify the payment amount. A value of `true` means the amount isn't modifiable, a value `false` means the payor can modify the amount to pay.
 	AmountFixed *bool `json:"-" url:"amountFixed,omitempty"`
 	// List of recipient email addresses. When there is more than one, separate them by a semicolon (;).
+	Mail2 *string                 `json:"-" url:"mail2,omitempty"`
+	Body  *PaymentPageRequestBody `json:"-" url:"-"`
+}
+
+func (p *PayLinkDataBill) UnmarshalJSON(data []byte) error {
+	body := new(PaymentPageRequestBody)
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	p.Body = body
+	return nil
+}
+
+func (p *PayLinkDataBill) MarshalJSON() ([]byte, error) {
+	return json.Marshal(p.Body)
+}
+
+type PayLinkDataOut struct {
+	EntryPoint Entry `json:"-" url:"entryPoint"`
+	// The vendor number for the vendor being paid with this payment link.
+	VendorNumber string `json:"-" url:"vendorNumber"`
+	// List of recipient email addresses. When there is more than one, separate them by a semicolon (;).
 	Mail2 *string `json:"-" url:"mail2,omitempty"`
-	// ContactUs section of payment link page
-	ContactUs *ContactElement `json:"contactUs,omitempty" url:"-"`
-	// Invoices section of payment link page
-	Invoices *InvoiceElement `json:"invoices,omitempty" url:"-"`
-	// Logo section of payment link page
-	Logo *Element `json:"logo,omitempty" url:"-"`
-	// Message section of payment link page
-	MessageBeforePaying *LabelElement `json:"messageBeforePaying,omitempty" url:"-"`
-	// Notes section of payment link page
-	Notes *NoteElement `json:"notes,omitempty" url:"-"`
-	// Page header section of payment link page
-	Page *PageElement `json:"page,omitempty" url:"-"`
-	// Payment button section of payment link page
-	PaymentButton *LabelElement `json:"paymentButton,omitempty" url:"-"`
-	// Payment methods section of payment link page
-	PaymentMethods *MethodElement `json:"paymentMethods,omitempty" url:"-"`
-	// Customer/Payor section of payment link page
-	Payor *PayorElement `json:"payor,omitempty" url:"-"`
-	// Review section of payment link page
-	Review *HeaderElement `json:"review,omitempty" url:"-"`
-	// Settings section of payment link page
-	Settings *PagelinkSetting `json:"settings,omitempty" url:"-"`
+	// Indicates whether customer can modify the payment amount. A value of `true` means the amount isn't modifiable, a value `false` means the payor can modify the amount to pay.
+	AmountFixed *string                 `json:"-" url:"amountFixed,omitempty"`
+	Body        *PaymentPageRequestBody `json:"-" url:"-"`
+}
+
+func (p *PayLinkDataOut) UnmarshalJSON(data []byte) error {
+	body := new(PaymentPageRequestBody)
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	p.Body = body
+	return nil
+}
+
+func (p *PayLinkDataOut) MarshalJSON() ([]byte, error) {
+	return json.Marshal(p.Body)
+}
+
+type PayLinkDataInvoice struct {
+	IdempotencyKey *IdempotencyKey `json:"-" url:"-"`
+	// Indicates whether customer can modify the payment amount. A value of `true` means the amount isn't modifiable, a value `false` means the payor can modify the amount to pay.
+	AmountFixed *bool `json:"-" url:"amountFixed,omitempty"`
+	// List of recipient email addresses. When there is more than one, separate them by a semicolon (;).
+	Mail2 *string                 `json:"-" url:"mail2,omitempty"`
+	Body  *PaymentPageRequestBody `json:"-" url:"-"`
+}
+
+func (p *PayLinkDataInvoice) UnmarshalJSON(data []byte) error {
+	body := new(PaymentPageRequestBody)
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	p.Body = body
+	return nil
+}
+
+func (p *PayLinkDataInvoice) MarshalJSON() ([]byte, error) {
+	return json.Marshal(p.Body)
 }
 
 type RefreshPayLinkFromIdRequest struct {
@@ -132,69 +170,6 @@ func (p *PagelinkSetting) UnmarshalJSON(data []byte) error {
 }
 
 func (p *PagelinkSetting) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
-type PayabliApiResponsePaymentLinks struct {
-	IsSuccess *IsSuccess `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	// If `isSuccess` = true, this contains the payment link identifier. If `isSuccess` = false, this contains the reason of the error.
-	ResponseData *string       `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText *ResponseText `json:"responseText,omitempty" url:"responseText,omitempty"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PayabliApiResponsePaymentLinks) GetIsSuccess() *IsSuccess {
-	if p == nil {
-		return nil
-	}
-	return p.IsSuccess
-}
-
-func (p *PayabliApiResponsePaymentLinks) GetResponseData() *string {
-	if p == nil {
-		return nil
-	}
-	return p.ResponseData
-}
-
-func (p *PayabliApiResponsePaymentLinks) GetResponseText() *ResponseText {
-	if p == nil {
-		return nil
-	}
-	return p.ResponseText
-}
-
-func (p *PayabliApiResponsePaymentLinks) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
-}
-
-func (p *PayabliApiResponsePaymentLinks) UnmarshalJSON(data []byte) error {
-	type unmarshaler PayabliApiResponsePaymentLinks
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PayabliApiResponsePaymentLinks(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PayabliApiResponsePaymentLinks) String() string {
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -632,6 +607,206 @@ func (g *GetPayLinkFromIdResponseResponseData) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", g)
+}
+
+type PayabliApiResponsePaymentLinks struct {
+	IsSuccess *IsSuccess `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	// If `isSuccess` = true, this contains the payment link identifier. If `isSuccess` = false, this contains the reason of the error.
+	ResponseData *string       `json:"responseData,omitempty" url:"responseData,omitempty"`
+	ResponseText *ResponseText `json:"responseText,omitempty" url:"responseText,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PayabliApiResponsePaymentLinks) GetIsSuccess() *IsSuccess {
+	if p == nil {
+		return nil
+	}
+	return p.IsSuccess
+}
+
+func (p *PayabliApiResponsePaymentLinks) GetResponseData() *string {
+	if p == nil {
+		return nil
+	}
+	return p.ResponseData
+}
+
+func (p *PayabliApiResponsePaymentLinks) GetResponseText() *ResponseText {
+	if p == nil {
+		return nil
+	}
+	return p.ResponseText
+}
+
+func (p *PayabliApiResponsePaymentLinks) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *PayabliApiResponsePaymentLinks) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayabliApiResponsePaymentLinks
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PayabliApiResponsePaymentLinks(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PayabliApiResponsePaymentLinks) String() string {
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+type PaymentPageRequestBody struct {
+	// ContactUs section of payment link page
+	ContactUs *ContactElement `json:"contactUs,omitempty" url:"contactUs,omitempty"`
+	// Invoices section of payment link page
+	Invoices *InvoiceElement `json:"invoices,omitempty" url:"invoices,omitempty"`
+	// Logo section of payment link page
+	Logo *Element `json:"logo,omitempty" url:"logo,omitempty"`
+	// Message section of payment link page
+	MessageBeforePaying *LabelElement `json:"messageBeforePaying,omitempty" url:"messageBeforePaying,omitempty"`
+	// Notes section of payment link page
+	Notes *NoteElement `json:"notes,omitempty" url:"notes,omitempty"`
+	// Page header section of payment link page
+	Page *PageElement `json:"page,omitempty" url:"page,omitempty"`
+	// Payment button section of payment link page
+	PaymentButton *LabelElement `json:"paymentButton,omitempty" url:"paymentButton,omitempty"`
+	// Payment methods section of payment link page
+	PaymentMethods *MethodElement `json:"paymentMethods,omitempty" url:"paymentMethods,omitempty"`
+	// Customer/Payor section of payment link page
+	Payor *PayorElement `json:"payor,omitempty" url:"payor,omitempty"`
+	// Review section of payment link page
+	Review *HeaderElement `json:"review,omitempty" url:"review,omitempty"`
+	// Settings section of payment link page
+	Settings *PagelinkSetting `json:"settings,omitempty" url:"settings,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PaymentPageRequestBody) GetContactUs() *ContactElement {
+	if p == nil {
+		return nil
+	}
+	return p.ContactUs
+}
+
+func (p *PaymentPageRequestBody) GetInvoices() *InvoiceElement {
+	if p == nil {
+		return nil
+	}
+	return p.Invoices
+}
+
+func (p *PaymentPageRequestBody) GetLogo() *Element {
+	if p == nil {
+		return nil
+	}
+	return p.Logo
+}
+
+func (p *PaymentPageRequestBody) GetMessageBeforePaying() *LabelElement {
+	if p == nil {
+		return nil
+	}
+	return p.MessageBeforePaying
+}
+
+func (p *PaymentPageRequestBody) GetNotes() *NoteElement {
+	if p == nil {
+		return nil
+	}
+	return p.Notes
+}
+
+func (p *PaymentPageRequestBody) GetPage() *PageElement {
+	if p == nil {
+		return nil
+	}
+	return p.Page
+}
+
+func (p *PaymentPageRequestBody) GetPaymentButton() *LabelElement {
+	if p == nil {
+		return nil
+	}
+	return p.PaymentButton
+}
+
+func (p *PaymentPageRequestBody) GetPaymentMethods() *MethodElement {
+	if p == nil {
+		return nil
+	}
+	return p.PaymentMethods
+}
+
+func (p *PaymentPageRequestBody) GetPayor() *PayorElement {
+	if p == nil {
+		return nil
+	}
+	return p.Payor
+}
+
+func (p *PaymentPageRequestBody) GetReview() *HeaderElement {
+	if p == nil {
+		return nil
+	}
+	return p.Review
+}
+
+func (p *PaymentPageRequestBody) GetSettings() *PagelinkSetting {
+	if p == nil {
+		return nil
+	}
+	return p.Settings
+}
+
+func (p *PaymentPageRequestBody) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *PaymentPageRequestBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler PaymentPageRequestBody
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PaymentPageRequestBody(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PaymentPageRequestBody) String() string {
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
 }
 
 type PayLinkUpdateData struct {

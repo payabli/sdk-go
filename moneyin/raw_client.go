@@ -198,11 +198,6 @@ func (r *RawClient) CaptureAuth(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.CaptureError{
-				APIError: apiError,
-			}
-		},
-		400: func(apiError *core.APIError) error {
 			return &sdk.BadRequestError{
 				APIError: apiError,
 			}

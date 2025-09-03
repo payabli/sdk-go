@@ -34,7 +34,7 @@ func (r *RawClient) AddPayLinkFromInvoice(
 	ctx context.Context,
 	// Invoice ID
 	idInvoice int,
-	request *sdk.PayLinkData,
+	request *sdk.PayLinkDataInvoice,
 	opts ...option.RequestOption,
 ) (*core.Response[*sdk.PayabliApiResponsePaymentLinks], error) {
 	options := core.NewRequestOptions(opts...)
@@ -46,6 +46,86 @@ func (r *RawClient) AddPayLinkFromInvoice(
 	endpointURL := internal.EncodeURL(
 		baseURL+"/PaymentLink/%v",
 		idInvoice,
+	)
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+	headers := internal.MergeHeaders(
+		r.header.Clone(),
+		options.ToHeader(),
+	)
+	if request.IdempotencyKey != nil {
+		headers.Add("idempotencyKey", *request.IdempotencyKey)
+	}
+	headers.Add("Content-Type", "application/json")
+	errorCodes := internal.ErrorCodes{
+		400: func(apiError *core.APIError) error {
+			return &sdk.BadRequestError{
+				APIError: apiError,
+			}
+		},
+		401: func(apiError *core.APIError) error {
+			return &sdk.UnauthorizedError{
+				APIError: apiError,
+			}
+		},
+		500: func(apiError *core.APIError) error {
+			return &sdk.InternalServerError{
+				APIError: apiError,
+			}
+		},
+		503: func(apiError *core.APIError) error {
+			return &sdk.ServiceUnavailableError{
+				APIError: apiError,
+			}
+		},
+	}
+	var response *sdk.PayabliApiResponsePaymentLinks
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*sdk.PayabliApiResponsePaymentLinks]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) AddPayLinkFromBill(
+	ctx context.Context,
+	// The Payabli ID for the bill.
+	billId int,
+	request *sdk.PayLinkDataBill,
+	opts ...option.RequestOption,
+) (*core.Response[*sdk.PayabliApiResponsePaymentLinks], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://api-sandbox.payabli.com/api",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/PaymentLink/bill/%v",
+		billId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -513,6 +593,83 @@ func (r *RawClient) UpdatePayLinkFromId(
 		&internal.CallParams{
 			URL:             endpointURL,
 			Method:          http.MethodPut,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*sdk.PayabliApiResponsePaymentLinks]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) AddPayLinkFromBillLotNumber(
+	ctx context.Context,
+	// Lot number of the bills to pay. All bills with this lot number will be included.
+	lotNumber string,
+	request *sdk.PayLinkDataOut,
+	opts ...option.RequestOption,
+) (*core.Response[*sdk.PayabliApiResponsePaymentLinks], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://api-sandbox.payabli.com/api",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/PaymentLink/bill/lotNumber/%v",
+		lotNumber,
+	)
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+	headers := internal.MergeHeaders(
+		r.header.Clone(),
+		options.ToHeader(),
+	)
+	headers.Add("Content-Type", "application/json")
+	errorCodes := internal.ErrorCodes{
+		400: func(apiError *core.APIError) error {
+			return &sdk.BadRequestError{
+				APIError: apiError,
+			}
+		},
+		401: func(apiError *core.APIError) error {
+			return &sdk.UnauthorizedError{
+				APIError: apiError,
+			}
+		},
+		500: func(apiError *core.APIError) error {
+			return &sdk.InternalServerError{
+				APIError: apiError,
+			}
+		},
+		503: func(apiError *core.APIError) error {
+			return &sdk.ServiceUnavailableError{
+				APIError: apiError,
+			}
+		},
+	}
+	var response *sdk.PayabliApiResponsePaymentLinks
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
 			BodyProperties:  options.BodyProperties,

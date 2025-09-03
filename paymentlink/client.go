@@ -39,12 +39,32 @@ func (c *Client) AddPayLinkFromInvoice(
 	ctx context.Context,
 	// Invoice ID
 	idInvoice int,
-	request *sdk.PayLinkData,
+	request *sdk.PayLinkDataInvoice,
 	opts ...option.RequestOption,
 ) (*sdk.PayabliApiResponsePaymentLinks, error) {
 	response, err := c.WithRawResponse.AddPayLinkFromInvoice(
 		ctx,
 		idInvoice,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Generates a payment link for a bill from the bill ID.
+func (c *Client) AddPayLinkFromBill(
+	ctx context.Context,
+	// The Payabli ID for the bill.
+	billId int,
+	request *sdk.PayLinkDataBill,
+	opts ...option.RequestOption,
+) (*sdk.PayabliApiResponsePaymentLinks, error) {
+	response, err := c.WithRawResponse.AddPayLinkFromBill(
+		ctx,
+		billId,
 		request,
 		opts...,
 	)
@@ -161,6 +181,26 @@ func (c *Client) UpdatePayLinkFromId(
 	response, err := c.WithRawResponse.UpdatePayLinkFromId(
 		ctx,
 		payLinkId,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Generates a vendor payment link for a specific bill lot number. This allows you to pay all bills with the same lot number for a vendor with a single payment link.
+func (c *Client) AddPayLinkFromBillLotNumber(
+	ctx context.Context,
+	// Lot number of the bills to pay. All bills with this lot number will be included.
+	lotNumber string,
+	request *sdk.PayLinkDataOut,
+	opts ...option.RequestOption,
+) (*sdk.PayabliApiResponsePaymentLinks, error) {
+	response, err := c.WithRawResponse.AddPayLinkFromBillLotNumber(
+		ctx,
+		lotNumber,
 		request,
 		opts...,
 	)
