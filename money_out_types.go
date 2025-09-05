@@ -871,7 +871,7 @@ type RequestOutAuthorizeVendorData struct {
 	AdditionalData        *AdditionalData                       `json:"additionalData,omitempty" url:"additionalData,omitempty"`
 	Address2              *AddressAddtlNullable                 `json:"address2,omitempty" url:"address2,omitempty"`
 	InternalReferenceId   *int64                                `json:"internalReferenceId,omitempty" url:"internalReferenceId,omitempty"`
-	LocationCode          *LocationCode                         `json:"locationCode,omitempty" url:"locationCode,omitempty"`
+	LocationCode1         *LocationCode                         `json:"locationCode1,omitempty" url:"locationCode1,omitempty"`
 	PayeeName1            *PayeeName                            `json:"payeeName1,omitempty" url:"payeeName1,omitempty"`
 	PayeeName2            *PayeeName                            `json:"payeeName2,omitempty" url:"payeeName2,omitempty"`
 	PaymentMethod         *VendorPaymentMethod                  `json:"paymentMethod,omitempty" url:"paymentMethod,omitempty"`
@@ -1077,11 +1077,11 @@ func (r *RequestOutAuthorizeVendorData) GetInternalReferenceId() *int64 {
 	return r.InternalReferenceId
 }
 
-func (r *RequestOutAuthorizeVendorData) GetLocationCode() *LocationCode {
+func (r *RequestOutAuthorizeVendorData) GetLocationCode1() *LocationCode {
 	if r == nil {
 		return nil
 	}
-	return r.LocationCode
+	return r.LocationCode1
 }
 
 func (r *RequestOutAuthorizeVendorData) GetPayeeName1() *PayeeName {
