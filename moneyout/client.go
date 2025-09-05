@@ -37,9 +37,9 @@ func NewClient(opts ...option.RequestOption) *Client {
 // Authorizes transaction for payout. Authorized transactions aren't flagged for settlement until captured. Use `referenceId` returned in the response to capture the transaction.
 func (c *Client) AuthorizeOut(
 	ctx context.Context,
-	request *sdk.RequestOutAuthorize,
+	request *sdk.MoneyOutTypesRequestOutAuthorize,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponse11, error) {
+) (*sdk.AuthCapturePayoutResponse, error) {
 	response, err := c.WithRawResponse.AuthorizeOut(
 		ctx,
 		request,
@@ -110,7 +110,7 @@ func (c *Client) CaptureOut(
 	referenceId string,
 	request *sdk.CaptureOutRequest,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponse11, error) {
+) (*sdk.AuthCapturePayoutResponse, error) {
 	response, err := c.WithRawResponse.CaptureOut(
 		ctx,
 		referenceId,

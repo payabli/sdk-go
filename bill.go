@@ -1371,8 +1371,8 @@ type VendorDataResponse struct {
 	BillingData *VendorResponseBillingData `json:"BillingData" url:"BillingData"`
 	// Preferred payment method for vendor.
 	PaymentMethod VendorDataResponsePaymentMethod `json:"PaymentMethod" url:"PaymentMethod"`
-	VendorStatus  Vendorstatus                    `json:"VendorStatus,omitempty" url:"VendorStatus,omitempty"`
-	VendorId      Vendorid                        `json:"VendorId,omitempty" url:"VendorId,omitempty"`
+	VendorStatus  Vendorstatus                    `json:"VendorStatus" url:"VendorStatus"`
+	VendorId      Vendorid                        `json:"VendorId" url:"VendorId"`
 	// Vendor enrollment status
 	EnrollmentStatus *string `json:"EnrollmentStatus,omitempty" url:"EnrollmentStatus,omitempty"`
 	// Vendor bill summary statistics
@@ -1544,14 +1544,14 @@ func (v *VendorDataResponse) GetPaymentMethod() VendorDataResponsePaymentMethod 
 
 func (v *VendorDataResponse) GetVendorStatus() Vendorstatus {
 	if v == nil {
-		return nil
+		return 0
 	}
 	return v.VendorStatus
 }
 
 func (v *VendorDataResponse) GetVendorId() Vendorid {
 	if v == nil {
-		return nil
+		return 0
 	}
 	return v.VendorId
 }

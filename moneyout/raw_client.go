@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) AuthorizeOut(
 	ctx context.Context,
-	request *sdk.RequestOutAuthorize,
+	request *sdk.MoneyOutTypesRequestOutAuthorize,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponse11], error) {
+) (*core.Response[*sdk.AuthCapturePayoutResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -79,7 +79,7 @@ func (r *RawClient) AuthorizeOut(
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponse11
+	var response *sdk.AuthCapturePayoutResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -98,7 +98,7 @@ func (r *RawClient) AuthorizeOut(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponse11]{
+	return &core.Response[*sdk.AuthCapturePayoutResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -310,7 +310,7 @@ func (r *RawClient) CaptureOut(
 	referenceId string,
 	request *sdk.CaptureOutRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponse11], error) {
+) (*core.Response[*sdk.AuthCapturePayoutResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -351,7 +351,7 @@ func (r *RawClient) CaptureOut(
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponse11
+	var response *sdk.AuthCapturePayoutResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -369,7 +369,7 @@ func (r *RawClient) CaptureOut(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponse11]{
+	return &core.Response[*sdk.AuthCapturePayoutResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

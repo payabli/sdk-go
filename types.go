@@ -813,7 +813,7 @@ type BillData struct {
 	// Indicate the date to finish a scheduled invoice cycle (`invoiceType“ = 1) in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.
 	InvoiceEndDate *Datenullable `json:"invoiceEndDate,omitempty" url:"invoiceEndDate,omitempty"`
 	// Invoice number. Identifies the invoice under a paypoint.
-	InvoiceNumber *Invoicenumber `json:"invoiceNumber,omitempty" url:"invoiceNumber,omitempty"`
+	InvoiceNumber *InvoiceNumber `json:"invoiceNumber,omitempty" url:"invoiceNumber,omitempty"`
 	InvoiceStatus *Invoicestatus `json:"invoiceStatus,omitempty" url:"invoiceStatus,omitempty"`
 	InvoiceType   *InvoiceType   `json:"invoiceType,omitempty" url:"invoiceType,omitempty"`
 	// Array of line items included in the invoice.
@@ -927,7 +927,7 @@ func (b *BillData) GetInvoiceEndDate() *Datenullable {
 	return b.InvoiceEndDate
 }
 
-func (b *BillData) GetInvoiceNumber() *Invoicenumber {
+func (b *BillData) GetInvoiceNumber() *InvoiceNumber {
 	if b == nil {
 		return nil
 	}
@@ -1380,7 +1380,7 @@ type BillPayOutData struct {
 	// Bill date in format YYYY-MM-DD or MM/DD/YYYY.
 	InvoiceDate *Datenullable `json:"invoiceDate,omitempty" url:"invoiceDate,omitempty"`
 	// Custom number identifying the bill. Must be unique in paypoint. **Required** for new bill and when `billId` isn't provided.
-	InvoiceNumber *Invoicenumber `json:"invoiceNumber,omitempty" url:"invoiceNumber,omitempty"`
+	InvoiceNumber *InvoiceNumber `json:"invoiceNumber,omitempty" url:"invoiceNumber,omitempty"`
 	// Net Amount owed in bill. Required when adding a bill.
 	NetAmount *NetAmountstring `json:"netAmount,omitempty" url:"netAmount,omitempty"`
 	// Bill discount amount.
@@ -1425,7 +1425,7 @@ func (b *BillPayOutData) GetInvoiceDate() *Datenullable {
 	return b.InvoiceDate
 }
 
-func (b *BillPayOutData) GetInvoiceNumber() *Invoicenumber {
+func (b *BillPayOutData) GetInvoiceNumber() *InvoiceNumber {
 	if b == nil {
 		return nil
 	}
@@ -1502,6 +1502,149 @@ func (b *BillPayOutData) UnmarshalJSON(data []byte) error {
 }
 
 func (b *BillPayOutData) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BillPayOutDataRequest struct {
+	// Bill ID in Payabli.
+	BillId *int64 `json:"billId,omitempty" url:"billId,omitempty"`
+	// Any comments about bill. **For managed payouts, this field has a limit of 100 characters**.
+	Comments *Comments `json:"comments,omitempty" url:"comments,omitempty"`
+	// Bill due date in format YYYY-MM-DD or MM/DD/YYYY.
+	DueDate *Datenullable `json:"dueDate,omitempty" url:"dueDate,omitempty"`
+	// Bill date in format YYYY-MM-DD or MM/DD/YYYY.
+	InvoiceDate *Datenullable `json:"invoiceDate,omitempty" url:"invoiceDate,omitempty"`
+	// Custom number identifying the bill. Must be unique in paypoint. **Required** for new bill and when `billId` isn't provided.
+	InvoiceNumber *InvoiceNumber `json:"invoiceNumber,omitempty" url:"invoiceNumber,omitempty"`
+	// Net Amount owed in bill. Required when adding a bill.
+	NetAmount *NetAmountstring `json:"netAmount,omitempty" url:"netAmount,omitempty"`
+	// Bill discount amount.
+	Discount *string `json:"discount,omitempty" url:"discount,omitempty"`
+	// Description of payment terms.
+	Terms            *Terms                `json:"terms,omitempty" url:"terms,omitempty"`
+	AccountingField1 *AccountingField      `json:"accountingField1,omitempty" url:"accountingField1,omitempty"`
+	AccountingField2 *AccountingField      `json:"accountingField2,omitempty" url:"accountingField2,omitempty"`
+	AdditionalData   *AdditionalDataString `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	// Bill image attachment. Send the bill image as Base64-encoded string, or as a publicly accessible link. For full details on using this field with a payout authorization, see [the documentation](/developers/developer-guides/pay-out-manage-payouts).
+	Attachments *Attachments `json:"attachments,omitempty" url:"attachments,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BillPayOutDataRequest) GetBillId() *int64 {
+	if b == nil {
+		return nil
+	}
+	return b.BillId
+}
+
+func (b *BillPayOutDataRequest) GetComments() *Comments {
+	if b == nil {
+		return nil
+	}
+	return b.Comments
+}
+
+func (b *BillPayOutDataRequest) GetDueDate() *Datenullable {
+	if b == nil {
+		return nil
+	}
+	return b.DueDate
+}
+
+func (b *BillPayOutDataRequest) GetInvoiceDate() *Datenullable {
+	if b == nil {
+		return nil
+	}
+	return b.InvoiceDate
+}
+
+func (b *BillPayOutDataRequest) GetInvoiceNumber() *InvoiceNumber {
+	if b == nil {
+		return nil
+	}
+	return b.InvoiceNumber
+}
+
+func (b *BillPayOutDataRequest) GetNetAmount() *NetAmountstring {
+	if b == nil {
+		return nil
+	}
+	return b.NetAmount
+}
+
+func (b *BillPayOutDataRequest) GetDiscount() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Discount
+}
+
+func (b *BillPayOutDataRequest) GetTerms() *Terms {
+	if b == nil {
+		return nil
+	}
+	return b.Terms
+}
+
+func (b *BillPayOutDataRequest) GetAccountingField1() *AccountingField {
+	if b == nil {
+		return nil
+	}
+	return b.AccountingField1
+}
+
+func (b *BillPayOutDataRequest) GetAccountingField2() *AccountingField {
+	if b == nil {
+		return nil
+	}
+	return b.AccountingField2
+}
+
+func (b *BillPayOutDataRequest) GetAdditionalData() *AdditionalDataString {
+	if b == nil {
+		return nil
+	}
+	return b.AdditionalData
+}
+
+func (b *BillPayOutDataRequest) GetAttachments() *Attachments {
+	if b == nil {
+		return nil
+	}
+	return b.Attachments
+}
+
+func (b *BillPayOutDataRequest) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BillPayOutDataRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler BillPayOutDataRequest
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BillPayOutDataRequest(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BillPayOutDataRequest) String() string {
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -1941,13 +2084,13 @@ func (b *BinData) String() string {
 }
 
 // Numeric percent of volume processed in person. To pass validation, `binperson`, `binweb`, and `binphone` must total 100 together.
-type Binperson = *int
+type Binperson = int
 
 // Numeric percent of volume processed by phone. To pass validation, `binperson`, `binweb`, and `binphone` must total 100 together.
-type Binphone = *int
+type Binphone = int
 
 // Numeric percent of volume processed on web. To pass validation, `binperson`, `binweb`, and `binphone` must total 100 together.
-type Binweb = *int
+type Binweb = int
 
 type BoardingApplicationAttachments struct {
 	// Array of objects describing files contained in the ZIP file.
@@ -3337,7 +3480,7 @@ func (c *CustomerQueryRecordsCustomerConsentSms) String() string {
 // - `0` Inactive
 // - `1` Active
 // - `85` Locked (typically due to multiple failed login attempts)
-type CustomerStatus = *int
+type CustomerStatus = int
 
 type CustomerSummaryRecord struct {
 	// Number total of transactions or payments
@@ -4424,11 +4567,11 @@ func (i *InvoiceElement) String() string {
 	return fmt.Sprintf("%#v", i)
 }
 
+// Custom number identifying the bill or invoice. Must be unique in paypoint.
+type InvoiceNumber = string
+
 // Type of invoice. Only `0` for one-time invoices is currently supported.
 type InvoiceType = int
-
-// Custom number identifying the bill or invoice. Must be unique in paypoint.
-type Invoicenumber = string
 
 // Status for invoice.
 //
@@ -5373,7 +5516,7 @@ func (m *MethodsList) String() string {
 // When `true`, multi-factor authentication (MFA) is enabled.
 type Mfa = *bool
 
-type MfaMode = *int
+type MfaMode = int
 
 // The business's mailing address state.
 type Mstate = string
@@ -6007,10 +6150,10 @@ type Operation = string
 //   - -1: Customer opt in pending
 //
 //   - 1: Customer has opted in to communications
-type OptinStatus = *int
+type OptinStatus = int
 
 // Order of element or section in container.
-type Order = *int
+type Order = int
 
 // Custom identifier for the transaction.
 type OrderId = string
@@ -11104,7 +11247,7 @@ type StateNullable = string
 // Status of notification:
 //   - `0`: Inactive
 //   - `1`: Active
-type Statusnotification = *int
+type Statusnotification = int
 
 // **Strongly recommended** The usage type for the stored method, used for merchant-initiated transactions (MIT). If you don't specify a value, Payabli defaults to `unscheduled`.
 // Available values:
@@ -11581,7 +11724,7 @@ type Terms = string
 type TermsConditions = string
 
 // Timezone, in UTC offset. For example, -5 is Eastern time.
-type Timezone = *int
+type Timezone = int
 
 // Total number of pages in response.
 type Totalpages = int
@@ -12242,7 +12385,7 @@ func (u *UsrAccess) String() string {
 //   - Active:	1
 //   - Deleted:	-99
 //   - Locked:	85
-type UsrStatus = *int
+type UsrStatus = int
 
 type ValueTemplates = string
 
@@ -13382,7 +13525,7 @@ func (v *VendorSummary) String() string {
 }
 
 // Payabli identifier for vendor record.
-type Vendorid = *int
+type Vendorid = int
 
 // Vendor's status.
 // Allowed status:
@@ -13390,7 +13533,7 @@ type Vendorid = *int
 //   - 0 Inactive
 //
 //   - 1 Active
-type Vendorstatus = *int
+type Vendorstatus = int
 
 // The business website address. Include only the domain and TLD, do not enter the protocol (http/https). For example: `www.example.com` is acceptable.
 type Website = string

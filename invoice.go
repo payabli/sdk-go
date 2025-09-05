@@ -487,7 +487,7 @@ type GetInvoiceRecord struct {
 	InvoiceId         InvoiceId         `json:"invoiceId" url:"invoiceId"`
 	CustomerId        CustomerId        `json:"customerId" url:"customerId"`
 	PaypointId        PaypointId        `json:"paypointId" url:"paypointId"`
-	InvoiceNumber     Invoicenumber     `json:"invoiceNumber" url:"invoiceNumber"`
+	InvoiceNumber     InvoiceNumber     `json:"invoiceNumber" url:"invoiceNumber"`
 	InvoiceDate       Datenullable      `json:"invoiceDate,omitempty" url:"invoiceDate,omitempty"`
 	InvoiceDueDate    Datenullable      `json:"invoiceDueDate,omitempty" url:"invoiceDueDate,omitempty"`
 	InvoiceSentDate   DatetimeNullable  `json:"invoiceSentDate,omitempty" url:"invoiceSentDate,omitempty"`
@@ -561,7 +561,7 @@ func (g *GetInvoiceRecord) GetPaypointId() PaypointId {
 	return g.PaypointId
 }
 
-func (g *GetInvoiceRecord) GetInvoiceNumber() Invoicenumber {
+func (g *GetInvoiceRecord) GetInvoiceNumber() InvoiceNumber {
 	if g == nil {
 		return ""
 	}
@@ -1189,7 +1189,7 @@ type QueryInvoiceResponseRecordsItem struct {
 	InvoiceId     InvoiceId     `json:"invoiceId" url:"invoiceId"`
 	CustomerId    CustomerId    `json:"customerId" url:"customerId"`
 	PaypointId    PaypointId    `json:"paypointId" url:"paypointId"`
-	InvoiceNumber Invoicenumber `json:"invoiceNumber" url:"invoiceNumber"`
+	InvoiceNumber InvoiceNumber `json:"invoiceNumber" url:"invoiceNumber"`
 	// Invoice date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.
 	InvoiceDate Datenullable `json:"invoiceDate,omitempty" url:"invoiceDate,omitempty"`
 	// Invoice due date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.
@@ -1281,7 +1281,7 @@ func (q *QueryInvoiceResponseRecordsItem) GetPaypointId() PaypointId {
 	return q.PaypointId
 }
 
-func (q *QueryInvoiceResponseRecordsItem) GetInvoiceNumber() Invoicenumber {
+func (q *QueryInvoiceResponseRecordsItem) GetInvoiceNumber() InvoiceNumber {
 	if q == nil {
 		return ""
 	}

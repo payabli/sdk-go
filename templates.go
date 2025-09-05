@@ -2792,10 +2792,10 @@ func (p *PayabliApiResponseTemplateId) String() string {
 type PolicyId = string
 
 // The element's column position.
-type PosCol = *int
+type PosCol = int
 
 // The element's row position.
-type PosRow = *int
+type PosRow = int
 
 type ProcessingSection struct {
 	Avgmonthly    *TemplateElement `json:"avgmonthly,omitempty" url:"avgmonthly,omitempty"`
