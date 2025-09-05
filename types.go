@@ -4824,7 +4824,7 @@ type License = string
 // Business license issuing state or province.
 type Licensestate = string
 
-// Additional location code used to identify the vendor.
+// A location code used to identify the vendor's location.
 type LocationCode = string
 
 // The business's mailing address.

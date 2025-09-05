@@ -1361,10 +1361,9 @@ type VendorDataResponse struct {
 	// Vendor's zip code.
 	Zip string `json:"Zip" url:"Zip"`
 	// Vendor's country. Payabli supports only US and Canadian vendors.
-	Country string `json:"Country" url:"Country"`
-	Mcc     Mcc    `json:"Mcc" url:"Mcc"`
-	// Additional location code used to identify the vendor.
-	LocationCode string `json:"LocationCode" url:"LocationCode"`
+	Country      string       `json:"Country" url:"Country"`
+	Mcc          Mcc          `json:"Mcc" url:"Mcc"`
+	LocationCode LocationCode `json:"LocationCode" url:"LocationCode"`
 	// Array of objects describing the vendor's contacts.
 	Contacts []*ContactsResponse `json:"Contacts" url:"Contacts"`
 	// Object containing vendor's bank information.
@@ -1514,7 +1513,7 @@ func (v *VendorDataResponse) GetMcc() Mcc {
 	return v.Mcc
 }
 
-func (v *VendorDataResponse) GetLocationCode() string {
+func (v *VendorDataResponse) GetLocationCode() LocationCode {
 	if v == nil {
 		return ""
 	}

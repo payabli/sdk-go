@@ -855,7 +855,6 @@ type RequestOutAuthorizeVendorData struct {
 	Zip                   *string                               `json:"zip,omitempty" url:"zip,omitempty"`
 	Country               *string                               `json:"country,omitempty" url:"country,omitempty"`
 	Mcc                   *Mcc                                  `json:"mcc,omitempty" url:"mcc,omitempty"`
-	LocationCode          *LocationCode                         `json:"LocationCode,omitempty" url:"LocationCode,omitempty"`
 	Contacts              *ContactsField                        `json:"contacts,omitempty" url:"contacts,omitempty"`
 	BillingData           *RequestOutAuthorizeVendorBillingData `json:"billingData,omitempty" url:"billingData,omitempty"`
 	VendorStatus          *Vendorstatus                         `json:"vendorStatus,omitempty" url:"vendorStatus,omitempty"`
@@ -871,7 +870,7 @@ type RequestOutAuthorizeVendorData struct {
 	AdditionalData        *AdditionalData                       `json:"additionalData,omitempty" url:"additionalData,omitempty"`
 	Address2              *AddressAddtlNullable                 `json:"address2,omitempty" url:"address2,omitempty"`
 	InternalReferenceId   *int64                                `json:"internalReferenceId,omitempty" url:"internalReferenceId,omitempty"`
-	LocationCode1         *LocationCode                         `json:"locationCode1,omitempty" url:"locationCode1,omitempty"`
+	LocationCode          *LocationCode                         `json:"locationCode,omitempty" url:"locationCode,omitempty"`
 	PayeeName1            *PayeeName                            `json:"payeeName1,omitempty" url:"payeeName1,omitempty"`
 	PayeeName2            *PayeeName                            `json:"payeeName2,omitempty" url:"payeeName2,omitempty"`
 	PaymentMethod         *VendorPaymentMethod                  `json:"paymentMethod,omitempty" url:"paymentMethod,omitempty"`
@@ -963,13 +962,6 @@ func (r *RequestOutAuthorizeVendorData) GetMcc() *Mcc {
 		return nil
 	}
 	return r.Mcc
-}
-
-func (r *RequestOutAuthorizeVendorData) GetLocationCode() *LocationCode {
-	if r == nil {
-		return nil
-	}
-	return r.LocationCode
 }
 
 func (r *RequestOutAuthorizeVendorData) GetContacts() *ContactsField {
@@ -1077,11 +1069,11 @@ func (r *RequestOutAuthorizeVendorData) GetInternalReferenceId() *int64 {
 	return r.InternalReferenceId
 }
 
-func (r *RequestOutAuthorizeVendorData) GetLocationCode1() *LocationCode {
+func (r *RequestOutAuthorizeVendorData) GetLocationCode() *LocationCode {
 	if r == nil {
 		return nil
 	}
-	return r.LocationCode1
+	return r.LocationCode
 }
 
 func (r *RequestOutAuthorizeVendorData) GetPayeeName1() *PayeeName {
@@ -1751,9 +1743,8 @@ type VCardGetResponseAssociatedVendor struct {
 	// Country where the vendor is located.
 	Country *string `json:"Country,omitempty" url:"Country,omitempty"`
 	// Merchant Category Code for the vendor.
-	Mcc *string `json:"Mcc,omitempty" url:"Mcc,omitempty"`
-	// Unique location code for the vendor.
-	LocationCode *string `json:"LocationCode,omitempty" url:"LocationCode,omitempty"`
+	Mcc          *string       `json:"Mcc,omitempty" url:"Mcc,omitempty"`
+	LocationCode *LocationCode `json:"LocationCode,omitempty" url:"LocationCode,omitempty"`
 	// Array of objects describing the vendor's contacts.
 	Contacts []*VCardGetResponseContact `json:"Contacts,omitempty" url:"Contacts,omitempty"`
 	// Billing data for the vendor.
@@ -1907,7 +1898,7 @@ func (v *VCardGetResponseAssociatedVendor) GetMcc() *string {
 	return v.Mcc
 }
 
-func (v *VCardGetResponseAssociatedVendor) GetLocationCode() *string {
+func (v *VCardGetResponseAssociatedVendor) GetLocationCode() *LocationCode {
 	if v == nil {
 		return nil
 	}
