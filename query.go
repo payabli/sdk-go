@@ -4571,7 +4571,7 @@ type QueryPayoutTransactionRecordsItem struct {
 	ParentOrgName *OrgParentName                                `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
 	ParentOrgId   *OrgParentId                                  `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
 	PaymentData   *QueryPayoutTransactionRecordsItemPaymentData `json:"PaymentData,omitempty" url:"PaymentData,omitempty"`
-	PaymentId     *Paymentid                                    `json:"PaymentId,omitempty" url:"PaymentId,omitempty"`
+	PaymentId     *PaymentIdString                              `json:"PaymentId,omitempty" url:"PaymentId,omitempty"`
 	// The payment method for the transaction.
 	PaymentMethod *string `json:"PaymentMethod,omitempty" url:"PaymentMethod,omitempty"`
 	// Status of payout transaction. See [Payout Transaction Statuses](guides/money-out-statuses#payout-transaction-statuses) for a full reference.
@@ -4747,7 +4747,7 @@ func (q *QueryPayoutTransactionRecordsItem) GetPaymentData() *QueryPayoutTransac
 	return q.PaymentData
 }
 
-func (q *QueryPayoutTransactionRecordsItem) GetPaymentId() *Paymentid {
+func (q *QueryPayoutTransactionRecordsItem) GetPaymentId() *PaymentIdString {
 	if q == nil {
 		return nil
 	}

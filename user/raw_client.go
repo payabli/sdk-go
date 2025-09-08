@@ -14,11 +14,12 @@ import (
 type RawClient struct {
 	baseURL string
 	caller  *internal.Caller
-	header  http.Header
+	options *core.RequestOptions
 }
 
 func NewRawClient(options *core.RequestOptions) *RawClient {
 	return &RawClient{
+		options: options,
 		baseURL: options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
@@ -26,7 +27,6 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 				MaxAttempts: options.MaxAttempts,
 			},
 		),
-		header: options.ToHeader(),
 	}
 }
 
@@ -43,7 +43,7 @@ func (r *RawClient) AddUser(
 	)
 	endpointURL := baseURL + "/User"
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -106,7 +106,7 @@ func (r *RawClient) AuthRefreshUser(
 	)
 	endpointURL := baseURL + "/User/authrefresh"
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -169,7 +169,7 @@ func (r *RawClient) AuthResetUser(
 	)
 	endpointURL := baseURL + "/User/authreset"
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
@@ -239,7 +239,7 @@ func (r *RawClient) AuthUser(
 		provider,
 	)
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
@@ -304,7 +304,7 @@ func (r *RawClient) ChangePswUser(
 	)
 	endpointURL := baseURL + "/User/authpsw"
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
@@ -373,7 +373,7 @@ func (r *RawClient) DeleteUser(
 		userId,
 	)
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -441,7 +441,7 @@ func (r *RawClient) EditMfaUser(
 		userId,
 	)
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -510,7 +510,7 @@ func (r *RawClient) EditUser(
 		userId,
 	)
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -586,7 +586,7 @@ func (r *RawClient) GetUser(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -648,7 +648,7 @@ func (r *RawClient) LogoutUser(
 	)
 	endpointURL := baseURL + "/User/authlogout"
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -721,7 +721,7 @@ func (r *RawClient) ResendMfaCode(
 		usrname,
 	)
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -784,7 +784,7 @@ func (r *RawClient) ValidateMfaUser(
 	)
 	endpointURL := baseURL + "/User/mfa"
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")

@@ -14,11 +14,12 @@ import (
 type RawClient struct {
 	baseURL string
 	caller  *internal.Caller
-	header  http.Header
+	options *core.RequestOptions
 }
 
 func NewRawClient(options *core.RequestOptions) *RawClient {
 	return &RawClient{
+		options: options,
 		baseURL: options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
@@ -26,7 +27,6 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 				MaxAttempts: options.MaxAttempts,
 			},
 		),
-		header: options.ToHeader(),
 	}
 }
 
@@ -50,7 +50,7 @@ func (r *RawClient) Authorize(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	if request.IdempotencyKey != nil {
@@ -125,7 +125,7 @@ func (r *RawClient) Capture(
 		transId,
 	)
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -193,7 +193,7 @@ func (r *RawClient) CaptureAuth(
 		transId,
 	)
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -264,7 +264,7 @@ func (r *RawClient) Credit(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	if request.IdempotencyKey != nil {
@@ -336,7 +336,7 @@ func (r *RawClient) Details(
 		transId,
 	)
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -406,7 +406,7 @@ func (r *RawClient) Getpaid(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	if request.IdempotencyKey != nil {
@@ -489,7 +489,7 @@ func (r *RawClient) Reverse(
 		transId,
 	)
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -564,7 +564,7 @@ func (r *RawClient) Refund(
 		transId,
 	)
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -632,7 +632,7 @@ func (r *RawClient) RefundWithInstructions(
 		transId,
 	)
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	if request.IdempotencyKey != nil {
@@ -704,7 +704,7 @@ func (r *RawClient) ReverseCredit(
 		transId,
 	)
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -779,7 +779,7 @@ func (r *RawClient) SendReceipt2Trans(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -842,7 +842,7 @@ func (r *RawClient) Validate(
 	)
 	endpointURL := baseURL + "/MoneyIn/validate"
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	if request.IdempotencyKey != nil {
@@ -914,7 +914,7 @@ func (r *RawClient) Void(
 		transId,
 	)
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{

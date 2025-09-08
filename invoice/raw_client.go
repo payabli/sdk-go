@@ -14,11 +14,12 @@ import (
 type RawClient struct {
 	baseURL string
 	caller  *internal.Caller
-	header  http.Header
+	options *core.RequestOptions
 }
 
 func NewRawClient(options *core.RequestOptions) *RawClient {
 	return &RawClient{
+		options: options,
 		baseURL: options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
@@ -26,7 +27,6 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 				MaxAttempts: options.MaxAttempts,
 			},
 		),
-		header: options.ToHeader(),
 	}
 }
 
@@ -55,7 +55,7 @@ func (r *RawClient) AddInvoice(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	if request.IdempotencyKey != nil {
@@ -140,7 +140,7 @@ func (r *RawClient) DeleteAttachedFromInvoice(
 		idInvoice,
 	)
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -207,7 +207,7 @@ func (r *RawClient) DeleteInvoice(
 		idInvoice,
 	)
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -282,7 +282,7 @@ func (r *RawClient) EditInvoice(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
@@ -374,7 +374,7 @@ func (r *RawClient) GetAttachedFileFromInvoice(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -441,7 +441,7 @@ func (r *RawClient) GetInvoice(
 		idInvoice,
 	)
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -508,7 +508,7 @@ func (r *RawClient) GetInvoiceNumber(
 		entry,
 	)
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -583,7 +583,7 @@ func (r *RawClient) ListInvoices(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -658,7 +658,7 @@ func (r *RawClient) ListInvoicesOrg(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -733,7 +733,7 @@ func (r *RawClient) SendInvoice(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -800,7 +800,7 @@ func (r *RawClient) GetInvoicePdf(
 		idInvoice,
 	)
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{

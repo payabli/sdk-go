@@ -33,7 +33,6 @@ import (
 	user "github.com/payabli/sdk-go/user"
 	vendor_ "github.com/payabli/sdk-go/vendor_"
 	wallet "github.com/payabli/sdk-go/wallet"
-	http "net/http"
 )
 
 type Client struct {
@@ -65,41 +64,42 @@ type Client struct {
 	Vendor              *vendor_.Client
 	Wallet              *wallet.Client
 
+	options *core.RequestOptions
 	baseURL string
 	caller  *internal.Caller
-	header  http.Header
 }
 
 func NewClient(opts ...option.RequestOption) *Client {
 	options := core.NewRequestOptions(opts...)
 	return &Client{
-		Bill:                bill.NewClient(opts...),
-		Boarding:            boarding.NewClient(opts...),
-		ChargeBacks:         chargebacks.NewClient(opts...),
-		CheckCapture:        checkcapture.NewClient(opts...),
-		Cloud:               cloud.NewClient(opts...),
-		Customer:            customer.NewClient(opts...),
-		Export:              export.NewClient(opts...),
-		HostedPaymentPages:  hostedpaymentpages.NewClient(opts...),
-		Import:              import_.NewClient(opts...),
-		Invoice:             invoice.NewClient(opts...),
-		LineItem:            lineitem.NewClient(opts...),
-		MoneyIn:             moneyin.NewClient(opts...),
-		MoneyOut:            moneyout.NewClient(opts...),
-		Notification:        notification.NewClient(opts...),
-		Ocr:                 ocr.NewClient(opts...),
-		Organization:        organization.NewClient(opts...),
-		PaymentLink:         paymentlink.NewClient(opts...),
-		PaymentMethodDomain: paymentmethoddomain.NewClient(opts...),
-		Paypoint:            paypoint.NewClient(opts...),
-		Query:               query.NewClient(opts...),
-		Statistic:           statistic.NewClient(opts...),
-		Subscription:        subscription.NewClient(opts...),
-		Templates:           templates.NewClient(opts...),
-		TokenStorage:        tokenstorage.NewClient(opts...),
-		User:                user.NewClient(opts...),
-		Vendor:              vendor_.NewClient(opts...),
-		Wallet:              wallet.NewClient(opts...),
+		Bill:                bill.NewClient(options),
+		Boarding:            boarding.NewClient(options),
+		ChargeBacks:         chargebacks.NewClient(options),
+		CheckCapture:        checkcapture.NewClient(options),
+		Cloud:               cloud.NewClient(options),
+		Customer:            customer.NewClient(options),
+		Export:              export.NewClient(options),
+		HostedPaymentPages:  hostedpaymentpages.NewClient(options),
+		Import:              import_.NewClient(options),
+		Invoice:             invoice.NewClient(options),
+		LineItem:            lineitem.NewClient(options),
+		MoneyIn:             moneyin.NewClient(options),
+		MoneyOut:            moneyout.NewClient(options),
+		Notification:        notification.NewClient(options),
+		Ocr:                 ocr.NewClient(options),
+		Organization:        organization.NewClient(options),
+		PaymentLink:         paymentlink.NewClient(options),
+		PaymentMethodDomain: paymentmethoddomain.NewClient(options),
+		Paypoint:            paypoint.NewClient(options),
+		Query:               query.NewClient(options),
+		Statistic:           statistic.NewClient(options),
+		Subscription:        subscription.NewClient(options),
+		Templates:           templates.NewClient(options),
+		TokenStorage:        tokenstorage.NewClient(options),
+		User:                user.NewClient(options),
+		Vendor:              vendor_.NewClient(options),
+		Wallet:              wallet.NewClient(options),
+		options:             options,
 		baseURL:             options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
@@ -107,6 +107,5 @@ func NewClient(opts ...option.RequestOption) *Client {
 				MaxAttempts: options.MaxAttempts,
 			},
 		),
-		header: options.ToHeader(),
 	}
 }

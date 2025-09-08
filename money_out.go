@@ -84,8 +84,8 @@ type BillDetailResponse struct {
 	ParentOrgId   *OrgParentId       `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
 	PaymentData   *QueryPaymentData  `json:"PaymentData,omitempty" url:"PaymentData,omitempty"`
 	// Unique identifier for group or batch containing the transaction.
-	PaymentGroup *string    `json:"PaymentGroup,omitempty" url:"PaymentGroup,omitempty"`
-	PaymentId    *Paymentid `json:"PaymentId,omitempty" url:"PaymentId,omitempty"`
+	PaymentGroup *string          `json:"PaymentGroup,omitempty" url:"PaymentGroup,omitempty"`
+	PaymentId    *PaymentIdString `json:"PaymentId,omitempty" url:"PaymentId,omitempty"`
 	// Method of payment applied to the transaction.
 	PaymentMethod *string `json:"PaymentMethod,omitempty" url:"PaymentMethod,omitempty"`
 	// Status of payout transaction.
@@ -233,7 +233,7 @@ func (b *BillDetailResponse) GetPaymentGroup() *string {
 	return b.PaymentGroup
 }
 
-func (b *BillDetailResponse) GetPaymentId() *Paymentid {
+func (b *BillDetailResponse) GetPaymentId() *PaymentIdString {
 	if b == nil {
 		return nil
 	}

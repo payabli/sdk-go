@@ -14,11 +14,12 @@ import (
 type RawClient struct {
 	baseURL string
 	caller  *internal.Caller
-	header  http.Header
+	options *core.RequestOptions
 }
 
 func NewRawClient(options *core.RequestOptions) *RawClient {
 	return &RawClient{
+		options: options,
 		baseURL: options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
@@ -26,7 +27,6 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 				MaxAttempts: options.MaxAttempts,
 			},
 		),
-		header: options.ToHeader(),
 	}
 }
 
@@ -54,7 +54,7 @@ func (r *RawClient) ListBatchDetails(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -129,7 +129,7 @@ func (r *RawClient) ListBatchDetailsOrg(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -203,7 +203,7 @@ func (r *RawClient) ListBatches(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -278,7 +278,7 @@ func (r *RawClient) ListBatchesOrg(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -352,7 +352,7 @@ func (r *RawClient) ListBatchesOut(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -427,7 +427,7 @@ func (r *RawClient) ListBatchesOutOrg(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -501,7 +501,7 @@ func (r *RawClient) ListChargebacks(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -576,7 +576,7 @@ func (r *RawClient) ListChargebacksOrg(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -650,7 +650,7 @@ func (r *RawClient) ListCustomers(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -725,7 +725,7 @@ func (r *RawClient) ListCustomersOrg(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -799,7 +799,7 @@ func (r *RawClient) ListNotificationReports(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -874,7 +874,7 @@ func (r *RawClient) ListNotificationReportsOrg(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -948,7 +948,7 @@ func (r *RawClient) ListNotifications(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -1023,7 +1023,7 @@ func (r *RawClient) ListNotificationsOrg(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -1098,7 +1098,7 @@ func (r *RawClient) ListOrganizations(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -1172,7 +1172,7 @@ func (r *RawClient) ListPayout(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -1247,7 +1247,7 @@ func (r *RawClient) ListPayoutOrg(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -1322,7 +1322,7 @@ func (r *RawClient) ListPaypoints(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -1396,7 +1396,7 @@ func (r *RawClient) ListSettlements(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -1471,7 +1471,7 @@ func (r *RawClient) ListSettlementsOrg(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -1545,7 +1545,7 @@ func (r *RawClient) ListSubscriptions(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -1620,7 +1620,7 @@ func (r *RawClient) ListSubscriptionsOrg(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -1694,7 +1694,7 @@ func (r *RawClient) ListTransactions(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -1769,7 +1769,7 @@ func (r *RawClient) ListTransactionsOrg(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -1846,7 +1846,7 @@ func (r *RawClient) ListTransferDetails(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -1920,7 +1920,7 @@ func (r *RawClient) ListTransfers(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -1993,7 +1993,7 @@ func (r *RawClient) ListTransfersOrg(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -2068,7 +2068,7 @@ func (r *RawClient) ListUsersOrg(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -2143,7 +2143,7 @@ func (r *RawClient) ListUsersPaypoint(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -2218,7 +2218,7 @@ func (r *RawClient) ListVendors(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -2293,7 +2293,7 @@ func (r *RawClient) ListVendorsOrg(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -2367,7 +2367,7 @@ func (r *RawClient) ListVcards(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -2442,7 +2442,7 @@ func (r *RawClient) ListVcardsOrg(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{

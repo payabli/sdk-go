@@ -14,11 +14,12 @@ import (
 type RawClient struct {
 	baseURL string
 	caller  *internal.Caller
-	header  http.Header
+	options *core.RequestOptions
 }
 
 func NewRawClient(options *core.RequestOptions) *RawClient {
 	return &RawClient{
+		options: options,
 		baseURL: options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
@@ -26,7 +27,6 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 				MaxAttempts: options.MaxAttempts,
 			},
 		),
-		header: options.ToHeader(),
 	}
 }
 
@@ -48,7 +48,7 @@ func (r *RawClient) AddBill(
 		entry,
 	)
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	if request.IdempotencyKey != nil {
@@ -146,7 +146,7 @@ func (r *RawClient) DeleteAttachedFromBill(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -213,7 +213,7 @@ func (r *RawClient) DeleteBill(
 		idBill,
 	)
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -281,7 +281,7 @@ func (r *RawClient) EditBill(
 		idBill,
 	)
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -370,7 +370,7 @@ func (r *RawClient) GetAttachedFromBill(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -437,7 +437,7 @@ func (r *RawClient) GetBill(
 		idBill,
 	)
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -512,7 +512,7 @@ func (r *RawClient) ListBills(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -587,7 +587,7 @@ func (r *RawClient) ListBillsOrg(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -655,7 +655,7 @@ func (r *RawClient) ModifyApprovalBill(
 		idBill,
 	)
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{
@@ -731,7 +731,7 @@ func (r *RawClient) SendToApprovalBill(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	if request.IdempotencyKey != nil {
@@ -814,7 +814,7 @@ func (r *RawClient) SetApprovedBill(
 		endpointURL += "?" + queryParams.Encode()
 	}
 	headers := internal.MergeHeaders(
-		r.header.Clone(),
+		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	errorCodes := internal.ErrorCodes{

@@ -8828,11 +8828,14 @@ func (p *PaymentDetail) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+// The unique transaction ID. This value is a string representation of a long integer.
+type PaymentIdString = string
+
 // Description of the payment transaction status. See [the docs](/developers/references/money-in-statuses#money-in-transaction-status) for a full reference.
 type PaymentTransStatusDescription = string
 
 // Unique transaction ID.
-type Paymentid = *string
+type Paymentid = int64
 
 // Customer information. May be required, depending on the paypoint's settings. Required for subscriptions.
 type PayorDataRequest struct {

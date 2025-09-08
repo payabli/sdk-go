@@ -236,10 +236,9 @@ type BillQueryRecord2 struct {
 	// Net amount of the bill.
 	NetAmount *float64 `json:"NetAmount,omitempty" url:"NetAmount,omitempty"`
 	// Parent organization identifier.
-	ParentOrgId   *int64         `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
-	ParentOrgName *OrgParentName `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
-	// Payment identifier.
-	PaymentId *string `json:"PaymentId,omitempty" url:"PaymentId,omitempty"`
+	ParentOrgId   *int64           `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
+	ParentOrgName *OrgParentName   `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
+	PaymentId     *PaymentIdString `json:"PaymentId,omitempty" url:"PaymentId,omitempty"`
 	// Preferred payment method used.
 	PaymentMethod *BillQueryRecord2PaymentMethod `json:"PaymentMethod,omitempty" url:"PaymentMethod,omitempty"`
 	// Paylink identifier associated with the bill.
@@ -440,7 +439,7 @@ func (b *BillQueryRecord2) GetParentOrgName() *OrgParentName {
 	return b.ParentOrgName
 }
 
-func (b *BillQueryRecord2) GetPaymentId() *string {
+func (b *BillQueryRecord2) GetPaymentId() *PaymentIdString {
 	if b == nil {
 		return nil
 	}
@@ -1005,7 +1004,7 @@ type TransactionOutQueryRecord struct {
 	CheckNumber *string `json:"CheckNumber,omitempty" url:"CheckNumber,omitempty"`
 	// Object referencing to paper check image.
 	CheckData   *FileContent      `json:"CheckData,omitempty" url:"CheckData,omitempty"`
-	PaymentId   *Paymentid        `json:"PaymentId,omitempty" url:"PaymentId,omitempty"`
+	PaymentId   *PaymentIdString  `json:"PaymentId,omitempty" url:"PaymentId,omitempty"`
 	PaymentData *QueryPaymentData `json:"PaymentData,omitempty" url:"PaymentData,omitempty"`
 	// Events associated to this transaction.
 	Bills []*BillPayOutData `json:"Bills,omitempty" url:"Bills,omitempty"`
@@ -1172,7 +1171,7 @@ func (t *TransactionOutQueryRecord) GetCheckData() *FileContent {
 	return t.CheckData
 }
 
-func (t *TransactionOutQueryRecord) GetPaymentId() *Paymentid {
+func (t *TransactionOutQueryRecord) GetPaymentId() *PaymentIdString {
 	if t == nil {
 		return nil
 	}
