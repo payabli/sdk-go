@@ -28,13 +28,39 @@ func do() {
         context.TODO(),
         &sdk.RequestPayment{
             Body: &sdk.TransRequestBody{
+                CustomerData: &sdk.PayorDataRequest{
+                    CustomerId: sdk.Int64(
+                        4440,
+                    ),
+                },
+                EntryPoint: sdk.String(
+                    "f743aed24a",
+                ),
+                Ipaddress: sdk.String(
+                    "255.255.255.255",
+                ),
                 PaymentDetails: &sdk.PaymentDetail{
-                    TotalAmount: 1.1,
+                    ServiceFee: sdk.Float64(
+                        0,
+                    ),
+                    TotalAmount: 100,
                 },
                 PaymentMethod: &sdk.PaymentMethod{
                     PayMethodCredit: &sdk.PayMethodCredit{
-                        Cardexp: "alpha",
-                        Cardnumber: "cardnumber",
+                        Cardcvv: sdk.String(
+                            "999",
+                        ),
+                        Cardexp: "02/27",
+                        CardHolder: sdk.String(
+                            "Kassiane Cassian",
+                        ),
+                        Cardnumber: "4111111111111111",
+                        Cardzip: sdk.String(
+                            "12345",
+                        ),
+                        Initiator: sdk.String(
+                            "payor",
+                        ),
                     },
                 },
             },
