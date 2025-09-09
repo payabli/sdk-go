@@ -50,7 +50,7 @@ URL, which is particularly useful in test environments.
 
 ```go
 client := client.NewClient(
-    option.WithBaseURL(api.Environments.Sandbox),
+    option.WithBaseURL(payabli.Environments.Sandbox),
 )
 ```
 
