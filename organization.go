@@ -9,27 +9,26 @@ import (
 )
 
 type AddOrganizationRequest struct {
-	// A unique ID you can include to prevent duplicating objects or transactions if a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself.
-	IdempotencyKey *string        `json:"-" url:"-"`
-	Services       []*ServiceCost `json:"services,omitempty" url:"-"`
-	BillingInfo    *Instrument    `json:"billingInfo,omitempty" url:"-"`
-	Contacts       *ContactsField `json:"contacts,omitempty" url:"-"`
-	HasBilling     *bool          `json:"hasBilling,omitempty" url:"-"`
-	HasResidual    *bool          `json:"hasResidual,omitempty" url:"-"`
-	OrgAddress     *Orgaddress    `json:"orgAddress,omitempty" url:"-"`
-	OrgCity        *Orgcity       `json:"orgCity,omitempty" url:"-"`
-	OrgCountry     *Orgcountry    `json:"orgCountry,omitempty" url:"-"`
-	OrgEntryName   *Orgentryname  `json:"orgEntryName,omitempty" url:"-"`
-	OrgId          *Orgidstring   `json:"orgId,omitempty" url:"-"`
-	OrgLogo        *FileContent   `json:"orgLogo,omitempty" url:"-"`
-	OrgName        Orgname        `json:"orgName" url:"-"`
-	OrgParentId    *OrgParentId   `json:"orgParentId,omitempty" url:"-"`
-	OrgState       *Orgstate      `json:"orgState,omitempty" url:"-"`
-	OrgTimezone    *Orgtimezone   `json:"orgTimezone,omitempty" url:"-"`
-	OrgType        Orgtype        `json:"orgType" url:"-"`
-	OrgWebsite     *Orgwebsite    `json:"orgWebsite,omitempty" url:"-"`
-	OrgZip         *Orgzip        `json:"orgZip,omitempty" url:"-"`
-	ReplyToEmail   ReplyToEmail   `json:"replyToEmail" url:"-"`
+	IdempotencyKey *IdempotencyKey `json:"-" url:"-"`
+	Services       []*ServiceCost  `json:"services,omitempty" url:"-"`
+	BillingInfo    *Instrument     `json:"billingInfo,omitempty" url:"-"`
+	Contacts       *ContactsField  `json:"contacts,omitempty" url:"-"`
+	HasBilling     *bool           `json:"hasBilling,omitempty" url:"-"`
+	HasResidual    *bool           `json:"hasResidual,omitempty" url:"-"`
+	OrgAddress     *Orgaddress     `json:"orgAddress,omitempty" url:"-"`
+	OrgCity        *Orgcity        `json:"orgCity,omitempty" url:"-"`
+	OrgCountry     *Orgcountry     `json:"orgCountry,omitempty" url:"-"`
+	OrgEntryName   *Orgentryname   `json:"orgEntryName,omitempty" url:"-"`
+	OrgId          *Orgidstring    `json:"orgId,omitempty" url:"-"`
+	OrgLogo        *FileContent    `json:"orgLogo,omitempty" url:"-"`
+	OrgName        Orgname         `json:"orgName" url:"-"`
+	OrgParentId    *OrgParentId    `json:"orgParentId,omitempty" url:"-"`
+	OrgState       *Orgstate       `json:"orgState,omitempty" url:"-"`
+	OrgTimezone    *Orgtimezone    `json:"orgTimezone,omitempty" url:"-"`
+	OrgType        Orgtype         `json:"orgType" url:"-"`
+	OrgWebsite     *Orgwebsite     `json:"orgWebsite,omitempty" url:"-"`
+	OrgZip         *Orgzip         `json:"orgZip,omitempty" url:"-"`
+	ReplyToEmail   ReplyToEmail    `json:"replyToEmail" url:"-"`
 }
 
 type OrganizationData struct {

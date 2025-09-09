@@ -624,8 +624,8 @@ func (b *BatchDetailResponseSummary) String() string {
 }
 
 type ListOrganizationsResponse struct {
-	Records []*OrganizationQueryRecord `json:"Records,omitempty" url:"Records,omitempty"`
-	Summary *QuerySummary              `json:"Summary,omitempty" url:"Summary,omitempty"`
+	Records []*OrganizationQueryRecord `json:"Records" url:"Records"`
+	Summary *QuerySummary              `json:"Summary" url:"Summary"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -1291,9 +1291,9 @@ func (q *QueryBatchesTransfer) String() string {
 
 type QueryTransferDetailResponse struct {
 	// List of transfer detail records
-	Records []*TransferDetailRecord `json:"Records,omitempty" url:"Records,omitempty"`
+	Records []*TransferDetailRecord `json:"Records" url:"Records"`
 	// Summary of the transfer details query
-	Summary *QueryTransferSummary `json:"Summary,omitempty" url:"Summary,omitempty"`
+	Summary *QueryTransferSummary `json:"Summary" url:"Summary"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -1347,9 +1347,9 @@ func (q *QueryTransferDetailResponse) String() string {
 
 type QueryTransferResponse struct {
 	// Summary information about the transfers.
-	Summary *QueryTransferSummary `json:"Summary,omitempty" url:"Summary,omitempty"`
+	Summary *QueryTransferSummary `json:"Summary" url:"Summary"`
 	// List of transfer transaction records.
-	Records []*TransactionQueryRecords `json:"Records,omitempty" url:"Records,omitempty"`
+	Records []*TransactionQueryRecords `json:"Records" url:"Records"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -1420,6 +1420,9 @@ type QueryTransferSummary struct {
 	TotalNetAmountTransfer *float64 `json:"totalNetAmountTransfer,omitempty" url:"totalNetAmountTransfer,omitempty"`
 	// Service fees are any pass-through fees charged to the customer at the time of payment.  These aren't transferred to the merchant when the batch is transferred and funded.
 	ServiceFees *float64 `json:"serviceFees,omitempty" url:"serviceFees,omitempty"`
+	// The net batch amount is the gross batch amount minus any returns, refunds,
+	// billing and fees items, chargebacks, adjustments, and third party payments.
+	NetBatchAmount *float64 `json:"netBatchAmount,omitempty" url:"netBatchAmount,omitempty"`
 	// The transfer amount is the net batch amount plus or minus any returns, refunds,  billing and fees items, chargebacks, adjustments, and third party payments.  This is the amount from the batch that is transferred to the merchant bank account.
 	TransferAmount *float64 `json:"transferAmount,omitempty" url:"transferAmount,omitempty"`
 	// Refunds deducted from batch.
@@ -1504,6 +1507,13 @@ func (q *QueryTransferSummary) GetServiceFees() *float64 {
 		return nil
 	}
 	return q.ServiceFees
+}
+
+func (q *QueryTransferSummary) GetNetBatchAmount() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.NetBatchAmount
 }
 
 func (q *QueryTransferSummary) GetTransferAmount() *float64 {

@@ -1960,6 +1960,9 @@ type ListTransfersRequest struct {
 	//   - `bankAccountNumber` (ct, nct, ne, eq)
 	//   - `bankRoutingNumber` (ct, nct, ne, eq)
 	//   - `batchCurrency` (in, nin, ne, eq)
+	//   - `parentOrgName` (ct, nct, ne, eq)
+	//   - `parentOrgId` (ct, nct, ne, eq)
+	//   - `externalPaypointID` (ct, nct)
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
@@ -6387,6 +6390,14 @@ type Transfer struct {
 	PaypointDbaName *Dbaname `json:"paypointDbaName,omitempty" url:"paypointDbaName,omitempty"`
 	// The paypoint logo URL.
 	PaypointLogo *string `json:"paypointLogo,omitempty" url:"paypointLogo,omitempty"`
+	// The parent organization name.
+	ParentOrgName *string `json:"parentOrgName,omitempty" url:"parentOrgName,omitempty"`
+	// The parent organization ID.
+	ParentOrgId *int `json:"parentOrgId,omitempty" url:"parentOrgId,omitempty"`
+	// The parent organization logo URL.
+	ParentOrgLogo *string `json:"parentOrgLogo,omitempty" url:"parentOrgLogo,omitempty"`
+	// The external paypoint ID.
+	ExternalPaypointId *string `json:"externalPaypointId,omitempty" url:"externalPaypointId,omitempty"`
 	// Bank account information for the transfer.
 	BankAccount *TransferBankAccount `json:"bankAccount,omitempty" url:"bankAccount,omitempty"`
 	// Date when the transfer occurred.
@@ -6497,6 +6508,34 @@ func (t *Transfer) GetPaypointLogo() *string {
 		return nil
 	}
 	return t.PaypointLogo
+}
+
+func (t *Transfer) GetParentOrgName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ParentOrgName
+}
+
+func (t *Transfer) GetParentOrgId() *int {
+	if t == nil {
+		return nil
+	}
+	return t.ParentOrgId
+}
+
+func (t *Transfer) GetParentOrgLogo() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ParentOrgLogo
+}
+
+func (t *Transfer) GetExternalPaypointId() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ExternalPaypointId
 }
 
 func (t *Transfer) GetBankAccount() *TransferBankAccount {
