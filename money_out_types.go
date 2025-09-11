@@ -196,22 +196,145 @@ func (a *AuthCapturePayoutResponseData) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+// Payment method object for vendor payouts.
+// - `{ method: "managed" }` - Managed payment method
+// - `{ method: "vcard" }` - Virtual card payment method
+// - `{ method: "check" }` - Check payment method
+// - `{ method: "ach", achHolder: "...", achRouting: "...", achAccount: "...", achAccountType: "..." }` - ACH payment method with bank details
+// - `{ method: "ach", storedMethodId: "..." }` - ACH payment method using stored method ID
+type AuthorizePaymentMethod struct {
+	// Payment method type - "managed", "vcard", "check", or "ach"
+	Method string `json:"method" url:"method"`
+	// Account holder name for ACH payments. Required when method is "ach" and not using `storedMethodId`.
+	AchHolder *string `json:"achHolder,omitempty" url:"achHolder,omitempty"`
+	// Bank routing number for ACH payments. Required when method is "ach" and not using `storedMethodId`.
+	AchRouting *string `json:"achRouting,omitempty" url:"achRouting,omitempty"`
+	// Bank account number for ACH payments. Required when method is "ach" and not using `storedMethodId`.
+	AchAccount *string `json:"achAccount,omitempty" url:"achAccount,omitempty"`
+	// Account type for ACH payments ("checking" or "savings"). Required when method is "ach" and not using `storedMethodId`.
+	AchAccountType *string        `json:"achAccountType,omitempty" url:"achAccountType,omitempty"`
+	AchCode        *AchSecCode    `json:"achCode,omitempty" url:"achCode,omitempty"`
+	AchHolderType  *AchHolderType `json:"achHolderType,omitempty" url:"achHolderType,omitempty"`
+	// ID of the stored ACH payment method. Only applicable when method is `ach`. Use this to reference a previously saved ACH method instead of providing bank details directly.
+	StoredMethodId        *string                `json:"storedMethodId,omitempty" url:"storedMethodId,omitempty"`
+	Initiator             *Initiator             `json:"initiator,omitempty" url:"initiator,omitempty"`
+	StoredMethodUsageType *StoredMethodUsageType `json:"storedMethodUsageType,omitempty" url:"storedMethodUsageType,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AuthorizePaymentMethod) GetMethod() string {
+	if a == nil {
+		return ""
+	}
+	return a.Method
+}
+
+func (a *AuthorizePaymentMethod) GetAchHolder() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AchHolder
+}
+
+func (a *AuthorizePaymentMethod) GetAchRouting() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AchRouting
+}
+
+func (a *AuthorizePaymentMethod) GetAchAccount() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AchAccount
+}
+
+func (a *AuthorizePaymentMethod) GetAchAccountType() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AchAccountType
+}
+
+func (a *AuthorizePaymentMethod) GetAchCode() *AchSecCode {
+	if a == nil {
+		return nil
+	}
+	return a.AchCode
+}
+
+func (a *AuthorizePaymentMethod) GetAchHolderType() *AchHolderType {
+	if a == nil {
+		return nil
+	}
+	return a.AchHolderType
+}
+
+func (a *AuthorizePaymentMethod) GetStoredMethodId() *string {
+	if a == nil {
+		return nil
+	}
+	return a.StoredMethodId
+}
+
+func (a *AuthorizePaymentMethod) GetInitiator() *Initiator {
+	if a == nil {
+		return nil
+	}
+	return a.Initiator
+}
+
+func (a *AuthorizePaymentMethod) GetStoredMethodUsageType() *StoredMethodUsageType {
+	if a == nil {
+		return nil
+	}
+	return a.StoredMethodUsageType
+}
+
+func (a *AuthorizePaymentMethod) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AuthorizePaymentMethod) UnmarshalJSON(data []byte) error {
+	type unmarshaler AuthorizePaymentMethod
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AuthorizePaymentMethod(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AuthorizePaymentMethod) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
 type AuthorizePayoutBody struct {
-	EntryPoint       Entrypointfield      `json:"entryPoint" url:"entryPoint"`
-	Source           *Source              `json:"source,omitempty" url:"source,omitempty"`
-	OrderId          *OrderId             `json:"orderId,omitempty" url:"orderId,omitempty"`
-	OrderDescription *Orderdescription    `json:"orderDescription,omitempty" url:"orderDescription,omitempty"`
-	PaymentMethod    *VendorPaymentMethod `json:"paymentMethod" url:"paymentMethod"`
+	EntryPoint       Entrypointfield         `json:"entryPoint" url:"entryPoint"`
+	Source           *Source                 `json:"source,omitempty" url:"source,omitempty"`
+	OrderId          *OrderId                `json:"orderId,omitempty" url:"orderId,omitempty"`
+	OrderDescription *Orderdescription       `json:"orderDescription,omitempty" url:"orderDescription,omitempty"`
+	PaymentMethod    *AuthorizePaymentMethod `json:"paymentMethod" url:"paymentMethod"`
 	// Object containing payment details.
 	PaymentDetails *RequestOutAuthorizePaymentDetails `json:"paymentDetails" url:"paymentDetails"`
 	// Object containing vendor data.
-	// <Note>
-	//
-	//	When creating a new vendor in a payout authorization, the system first checks `billingData` for the vendor's billing information.
-	//	If `billingData` is empty, it falls back to the `paymentMethod` object information.
-	//	For existing vendors, `paymentMethod` is ignored unless a `storedMethodId` is provided.
-	//
-	// </Note>
 	VendorData *RequestOutAuthorizeVendorData `json:"vendorData" url:"vendorData"`
 	// Array of bills associated to the transaction
 	InvoiceData    []*RequestOutAuthorizeInvoiceData `json:"invoiceData" url:"invoiceData"`
@@ -251,7 +374,7 @@ func (a *AuthorizePayoutBody) GetOrderDescription() *Orderdescription {
 	return a.OrderDescription
 }
 
-func (a *AuthorizePayoutBody) GetPaymentMethod() *VendorPaymentMethod {
+func (a *AuthorizePayoutBody) GetPaymentMethod() *AuthorizePaymentMethod {
 	if a == nil {
 		return nil
 	}
@@ -762,7 +885,7 @@ func (r *RequestOutAuthorizePaymentDetails) String() string {
 	return fmt.Sprintf("%#v", r)
 }
 
-// Object containing vendor's bank information.
+// Object containing vendor's bank information. This object is deprecated for this endpoint. Use the `paymentMethod` object in payout authorize requests instead.
 type RequestOutAuthorizeVendorBillingData struct {
 	BankName              *BankName              `json:"bankName,omitempty" url:"bankName,omitempty"`
 	RoutingAccount        *RoutingAccount        `json:"routingAccount,omitempty" url:"routingAccount,omitempty"`

@@ -11404,7 +11404,7 @@ client.MoneyOut.AuthorizeOut(
                         47,
                     ),
                 },
-                PaymentMethod: &sdk.VendorPaymentMethod{
+                PaymentMethod: &sdk.AuthorizePaymentMethod{
                     Method: "managed",
                 },
                 VendorData: &sdk.RequestOutAuthorizeVendorData{
