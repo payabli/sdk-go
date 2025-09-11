@@ -8439,6 +8439,7 @@ Import a list of bills from a CSV file. See the [Import Guide](/developers/devel
 client.Import.ImportBills(
         context.TODO(),
         "8cfec329267",
+        nil,
     )
 }
 ```
@@ -8497,6 +8498,7 @@ Import a list of customers from a CSV file. See the [Import Guide](/developers/d
 client.Import.ImportCustomer(
         context.TODO(),
         "8cfec329267",
+        nil,
         &sdk.ImportCustomerRequest{},
     )
 }
@@ -8564,6 +8566,7 @@ Import a list of vendors from a CSV file. See the [Import Guide](/developers/dev
 client.Import.ImportVendor(
         context.TODO(),
         "8cfec329267",
+        nil,
     )
 }
 ```
