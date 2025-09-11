@@ -162,7 +162,7 @@ func (c *CaptureError) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	c.StatusCode = 423
+	c.StatusCode = 400
 	c.Body = body
 	return nil
 }
