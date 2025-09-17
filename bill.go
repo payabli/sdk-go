@@ -2680,7 +2680,7 @@ type BillResponse struct {
 	PageIdentifier *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 	RoomId         *RoomIdNotInUse `json:"roomId,omitempty" url:"roomId,omitempty"`
 	IsSuccess      *IsSuccess      `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText   *ResponseText   `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText   ResponseText    `json:"responseText" url:"responseText"`
 	// If `isSuccess` = true, this contains the bill identifier. If `isSuccess` = false, this contains the reason for the error.
 	ResponseData *Responsedatanonobject `json:"responseData,omitempty" url:"responseData,omitempty"`
 
@@ -2716,9 +2716,9 @@ func (b *BillResponse) GetIsSuccess() *IsSuccess {
 	return b.IsSuccess
 }
 
-func (b *BillResponse) GetResponseText() *ResponseText {
+func (b *BillResponse) GetResponseText() ResponseText {
 	if b == nil {
-		return nil
+		return ""
 	}
 	return b.ResponseText
 }
@@ -3118,7 +3118,7 @@ type EditBillResponse struct {
 	PageIdentifier *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 	RoomId         *RoomIdNotInUse `json:"roomId,omitempty" url:"roomId,omitempty"`
 	IsSuccess      *IsSuccess      `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText   *ResponseText   `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText   ResponseText    `json:"responseText" url:"responseText"`
 	// If `isSuccess` = true, this contains the bill identifier. If `isSuccess` = false, this contains the reason for the error.
 	ResponseData *int `json:"responseData,omitempty" url:"responseData,omitempty"`
 
@@ -3154,9 +3154,9 @@ func (e *EditBillResponse) GetIsSuccess() *IsSuccess {
 	return e.IsSuccess
 }
 
-func (e *EditBillResponse) GetResponseText() *ResponseText {
+func (e *EditBillResponse) GetResponseText() ResponseText {
 	if e == nil {
-		return nil
+		return ""
 	}
 	return e.ResponseText
 }
@@ -3206,7 +3206,7 @@ type GetBillResponse struct {
 	PageIdentifier *PageIdentifier   `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 	RoomId         *RoomIdNotInUse   `json:"roomId,omitempty" url:"roomId,omitempty"`
 	IsSuccess      *IsSuccess        `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText   *ResponseText     `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText   ResponseText      `json:"responseText" url:"responseText"`
 	ResponseData   *BillResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
 
 	extraProperties map[string]interface{}
@@ -3241,9 +3241,9 @@ func (g *GetBillResponse) GetIsSuccess() *IsSuccess {
 	return g.IsSuccess
 }
 
-func (g *GetBillResponse) GetResponseText() *ResponseText {
+func (g *GetBillResponse) GetResponseText() ResponseText {
 	if g == nil {
-		return nil
+		return ""
 	}
 	return g.ResponseText
 }
@@ -3288,8 +3288,8 @@ func (g *GetBillResponse) String() string {
 }
 
 type ModifyApprovalBillResponse struct {
-	IsSuccess    *IsSuccess    `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText *ResponseText `json:"responseText,omitempty" url:"responseText,omitempty"`
+	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
 	// If `isSuccess` = true, this contains the bill identifier. If `isSuccess` = false, this contains the reason for the error.
 	ResponseData *int `json:"responseData,omitempty" url:"responseData,omitempty"`
 
@@ -3304,9 +3304,9 @@ func (m *ModifyApprovalBillResponse) GetIsSuccess() *IsSuccess {
 	return m.IsSuccess
 }
 
-func (m *ModifyApprovalBillResponse) GetResponseText() *ResponseText {
+func (m *ModifyApprovalBillResponse) GetResponseText() ResponseText {
 	if m == nil {
-		return nil
+		return ""
 	}
 	return m.ResponseText
 }
@@ -3351,8 +3351,8 @@ func (m *ModifyApprovalBillResponse) String() string {
 }
 
 type SetApprovedBillResponse struct {
-	IsSuccess    *IsSuccess    `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText *ResponseText `json:"responseText,omitempty" url:"responseText,omitempty"`
+	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
 	// If `isSuccess` = true, this contains the bill identifier. If `isSuccess` = false, this contains the reason for the error.
 	ResponseData *int `json:"responseData,omitempty" url:"responseData,omitempty"`
 
@@ -3367,9 +3367,9 @@ func (s *SetApprovedBillResponse) GetIsSuccess() *IsSuccess {
 	return s.IsSuccess
 }
 
-func (s *SetApprovedBillResponse) GetResponseText() *ResponseText {
+func (s *SetApprovedBillResponse) GetResponseText() ResponseText {
 	if s == nil {
-		return nil
+		return ""
 	}
 	return s.ResponseText
 }

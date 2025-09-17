@@ -30,8 +30,8 @@ type DeviceEntry struct {
 type CloudQueryApiResponse struct {
 	IsSuccess *IsSuccess `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	// List of devices and history of registration.
-	ResponseList []*PoiDevice  `json:"responseList,omitempty" url:"responseList,omitempty"`
-	ResponseText *ResponseText `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseList []*PoiDevice `json:"responseList,omitempty" url:"responseList,omitempty"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -51,9 +51,9 @@ func (c *CloudQueryApiResponse) GetResponseList() []*PoiDevice {
 	return c.ResponseList
 }
 
-func (c *CloudQueryApiResponse) GetResponseText() *ResponseText {
+func (c *CloudQueryApiResponse) GetResponseText() ResponseText {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.ResponseText
 }
@@ -282,7 +282,7 @@ func (p *PoiDevice) String() string {
 
 type AddDeviceResponse struct {
 	IsSuccess      *IsSuccess      `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText   *ResponseText   `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText   ResponseText    `json:"responseText" url:"responseText"`
 	PageIdentifier *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 	// If `isSuccess` = true, this contains the device identifier.
 	// If `isSuccess` = false, this contains the reason for the error.
@@ -299,9 +299,9 @@ func (a *AddDeviceResponse) GetIsSuccess() *IsSuccess {
 	return a.IsSuccess
 }
 
-func (a *AddDeviceResponse) GetResponseText() *ResponseText {
+func (a *AddDeviceResponse) GetResponseText() ResponseText {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.ResponseText
 }
@@ -354,7 +354,7 @@ func (a *AddDeviceResponse) String() string {
 
 type RemoveDeviceResponse struct {
 	IsSuccess      *IsSuccess      `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText   *ResponseText   `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText   ResponseText    `json:"responseText" url:"responseText"`
 	PageIdentifier *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 	// If `isSuccess` = true, this contains the device identifier.
 	// If `isSuccess` = false, this contains the reason for the error.
@@ -371,9 +371,9 @@ func (r *RemoveDeviceResponse) GetIsSuccess() *IsSuccess {
 	return r.IsSuccess
 }
 
-func (r *RemoveDeviceResponse) GetResponseText() *ResponseText {
+func (r *RemoveDeviceResponse) GetResponseText() ResponseText {
 	if r == nil {
-		return nil
+		return ""
 	}
 	return r.ResponseText
 }

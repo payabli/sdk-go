@@ -7719,7 +7719,7 @@ func (p *PayMethodCredit) String() string {
 type PayabliApiResponse struct {
 	IsSuccess    *IsSuccess    `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	ResponseData *Responsedata `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText *ResponseText `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText ResponseText  `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -7739,9 +7739,9 @@ func (p *PayabliApiResponse) GetResponseData() *Responsedata {
 	return p.ResponseData
 }
 
-func (p *PayabliApiResponse) GetResponseText() *ResponseText {
+func (p *PayabliApiResponse) GetResponseText() ResponseText {
 	if p == nil {
-		return nil
+		return ""
 	}
 	return p.ResponseText
 }
@@ -7784,7 +7784,7 @@ type PayabliApiResponse00Responsedatanonobject struct {
 	// Describes the room ID. Only in use on Boarding endpoints, returns `0` when not applicable.
 	RoomId       *int64                 `json:"roomId,omitempty" url:"roomId,omitempty"`
 	IsSuccess    *IsSuccess             `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText *ResponseText          `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText ResponseText           `json:"responseText" url:"responseText"`
 	ResponseData *Responsedatanonobject `json:"responseData,omitempty" url:"responseData,omitempty"`
 
 	extraProperties map[string]interface{}
@@ -7819,9 +7819,9 @@ func (p *PayabliApiResponse00Responsedatanonobject) GetIsSuccess() *IsSuccess {
 	return p.IsSuccess
 }
 
-func (p *PayabliApiResponse00Responsedatanonobject) GetResponseText() *ResponseText {
+func (p *PayabliApiResponse00Responsedatanonobject) GetResponseText() ResponseText {
 	if p == nil {
-		return nil
+		return ""
 	}
 	return p.ResponseText
 }
@@ -8107,8 +8107,8 @@ func (p *PayabliApiResponseError400ResponseData) String() string {
 }
 
 type PayabliApiResponseGeneric2Part struct {
-	IsSuccess    *IsSuccess    `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText *ResponseText `json:"responseText,omitempty" url:"responseText,omitempty"`
+	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -8121,9 +8121,9 @@ func (p *PayabliApiResponseGeneric2Part) GetIsSuccess() *IsSuccess {
 	return p.IsSuccess
 }
 
-func (p *PayabliApiResponseGeneric2Part) GetResponseText() *ResponseText {
+func (p *PayabliApiResponseGeneric2Part) GetResponseText() ResponseText {
 	if p == nil {
-		return nil
+		return ""
 	}
 	return p.ResponseText
 }
@@ -10770,6 +10770,9 @@ type Remitzip = string
 
 // Email address for organization-level communications, such as messages about why an application was declined. This is required by commerce laws in the US.
 type ReplyToEmail = string
+
+// Time that a response to a chargeback is due, in UTC.
+type Replyby = time.Time
 
 // When `true`, the element is required.
 type RequiredElement = bool

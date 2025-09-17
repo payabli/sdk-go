@@ -5804,7 +5804,7 @@ type PayabliApiResponse00 struct {
 	PageIdentifier *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 	ResponseCode   *Responsecode   `json:"responseCode,omitempty" url:"responseCode,omitempty"`
 	ResponseData   *Responsedata   `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText   *ResponseText   `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText   ResponseText    `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5838,9 +5838,9 @@ func (p *PayabliApiResponse00) GetResponseData() *Responsedata {
 	return p.ResponseData
 }
 
-func (p *PayabliApiResponse00) GetResponseText() *ResponseText {
+func (p *PayabliApiResponse00) GetResponseText() ResponseText {
 	if p == nil {
-		return nil
+		return ""
 	}
 	return p.ResponseText
 }

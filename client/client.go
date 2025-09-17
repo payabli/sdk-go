@@ -19,6 +19,7 @@ import (
 	moneyin "github.com/payabli/sdk-go/moneyin"
 	moneyout "github.com/payabli/sdk-go/moneyout"
 	notification "github.com/payabli/sdk-go/notification"
+	notificationlogs "github.com/payabli/sdk-go/notificationlogs"
 	ocr "github.com/payabli/sdk-go/ocr"
 	option "github.com/payabli/sdk-go/option"
 	organization "github.com/payabli/sdk-go/organization"
@@ -50,6 +51,7 @@ type Client struct {
 	MoneyIn             *moneyin.Client
 	MoneyOut            *moneyout.Client
 	Notification        *notification.Client
+	Notificationlogs    *notificationlogs.Client
 	Ocr                 *ocr.Client
 	Organization        *organization.Client
 	PaymentLink         *paymentlink.Client
@@ -86,6 +88,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		MoneyIn:             moneyin.NewClient(options),
 		MoneyOut:            moneyout.NewClient(options),
 		Notification:        notification.NewClient(options),
+		Notificationlogs:    notificationlogs.NewClient(options),
 		Ocr:                 ocr.NewClient(options),
 		Organization:        organization.NewClient(options),
 		PaymentLink:         paymentlink.NewClient(options),

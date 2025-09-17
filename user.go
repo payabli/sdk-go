@@ -163,8 +163,8 @@ type PayabliApiResponseMfaBasic struct {
 	MfaMode           *string            `json:"mfaMode,omitempty" url:"mfaMode,omitempty"`
 	MfaValidationCode *MfaValidationCode `json:"mfaValidationCode,omitempty" url:"mfaValidationCode,omitempty"`
 	// Data returned by the response, masked for security.
-	ResponseData *string       `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText *ResponseText `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseData *string      `json:"responseData,omitempty" url:"responseData,omitempty"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -205,9 +205,9 @@ func (p *PayabliApiResponseMfaBasic) GetResponseData() *string {
 	return p.ResponseData
 }
 
-func (p *PayabliApiResponseMfaBasic) GetResponseText() *ResponseText {
+func (p *PayabliApiResponseMfaBasic) GetResponseText() ResponseText {
 	if p == nil {
-		return nil
+		return ""
 	}
 	return p.ResponseText
 }
@@ -249,7 +249,7 @@ type PayabliApiResponseUserMfa struct {
 	IsSuccess         *IsSuccess             `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	Remaining         *int                   `json:"remaining,omitempty" url:"remaining,omitempty"`
 	ResponseData      *Responsedatanonobject `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText      *ResponseText          `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText      ResponseText           `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -283,9 +283,9 @@ func (p *PayabliApiResponseUserMfa) GetResponseData() *Responsedatanonobject {
 	return p.ResponseData
 }
 
-func (p *PayabliApiResponseUserMfa) GetResponseText() *ResponseText {
+func (p *PayabliApiResponseUserMfa) GetResponseText() ResponseText {
 	if p == nil {
-		return nil
+		return ""
 	}
 	return p.ResponseText
 }
@@ -453,8 +453,8 @@ func (u *UserData) String() string {
 type AddUserResponse struct {
 	IsSuccess *IsSuccess `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	// The response data.
-	ResponseData *string       `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText *ResponseText `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseData *string      `json:"responseData,omitempty" url:"responseData,omitempty"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -474,9 +474,9 @@ func (a *AddUserResponse) GetResponseData() *string {
 	return a.ResponseData
 }
 
-func (a *AddUserResponse) GetResponseText() *ResponseText {
+func (a *AddUserResponse) GetResponseText() ResponseText {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.ResponseText
 }
@@ -514,8 +514,8 @@ func (a *AddUserResponse) String() string {
 }
 
 type AuthResetUserResponse struct {
-	IsSuccess    *IsSuccess    `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText *ResponseText `json:"responseText,omitempty" url:"responseText,omitempty"`
+	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -528,9 +528,9 @@ func (a *AuthResetUserResponse) GetIsSuccess() *IsSuccess {
 	return a.IsSuccess
 }
 
-func (a *AuthResetUserResponse) GetResponseText() *ResponseText {
+func (a *AuthResetUserResponse) GetResponseText() ResponseText {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.ResponseText
 }
@@ -568,8 +568,8 @@ func (a *AuthResetUserResponse) String() string {
 }
 
 type ChangePswUserResponse struct {
-	IsSuccess    *IsSuccess    `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText *ResponseText `json:"responseText,omitempty" url:"responseText,omitempty"`
+	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -582,9 +582,9 @@ func (c *ChangePswUserResponse) GetIsSuccess() *IsSuccess {
 	return c.IsSuccess
 }
 
-func (c *ChangePswUserResponse) GetResponseText() *ResponseText {
+func (c *ChangePswUserResponse) GetResponseText() ResponseText {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.ResponseText
 }
@@ -622,15 +622,15 @@ func (c *ChangePswUserResponse) String() string {
 }
 
 type DeleteUserResponse struct {
-	ResponseText *ResponseText `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (d *DeleteUserResponse) GetResponseText() *ResponseText {
+func (d *DeleteUserResponse) GetResponseText() ResponseText {
 	if d == nil {
-		return nil
+		return ""
 	}
 	return d.ResponseText
 }
@@ -668,8 +668,8 @@ func (d *DeleteUserResponse) String() string {
 }
 
 type EditMfaUserResponse struct {
-	IsSuccess    *IsSuccess    `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText *ResponseText `json:"responseText,omitempty" url:"responseText,omitempty"`
+	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -682,9 +682,9 @@ func (e *EditMfaUserResponse) GetIsSuccess() *IsSuccess {
 	return e.IsSuccess
 }
 
-func (e *EditMfaUserResponse) GetResponseText() *ResponseText {
+func (e *EditMfaUserResponse) GetResponseText() ResponseText {
 	if e == nil {
-		return nil
+		return ""
 	}
 	return e.ResponseText
 }
@@ -722,8 +722,8 @@ func (e *EditMfaUserResponse) String() string {
 }
 
 type LogoutUserResponse struct {
-	IsSuccess    *IsSuccess    `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText *ResponseText `json:"responseText,omitempty" url:"responseText,omitempty"`
+	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -736,9 +736,9 @@ func (l *LogoutUserResponse) GetIsSuccess() *IsSuccess {
 	return l.IsSuccess
 }
 
-func (l *LogoutUserResponse) GetResponseText() *ResponseText {
+func (l *LogoutUserResponse) GetResponseText() ResponseText {
 	if l == nil {
-		return nil
+		return ""
 	}
 	return l.ResponseText
 }

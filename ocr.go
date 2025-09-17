@@ -1045,9 +1045,9 @@ func (o *OcrVendorBillingData) String() string {
 }
 
 type PayabliApiResponseOcr struct {
-	IsSuccess    *IsSuccess    `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText *ResponseText `json:"responseText,omitempty" url:"responseText,omitempty"`
-	ResponseCode *Responsecode `json:"responseCode,omitempty" url:"responseCode,omitempty"`
+	IsSuccess    IsSuccess    `json:"isSuccess" url:"isSuccess"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
+	ResponseCode Responsecode `json:"responseCode" url:"responseCode"`
 	// Details of the OCR processing result
 	ResponseData *OcrResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
 
@@ -1055,23 +1055,23 @@ type PayabliApiResponseOcr struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PayabliApiResponseOcr) GetIsSuccess() *IsSuccess {
+func (p *PayabliApiResponseOcr) GetIsSuccess() IsSuccess {
 	if p == nil {
-		return nil
+		return false
 	}
 	return p.IsSuccess
 }
 
-func (p *PayabliApiResponseOcr) GetResponseText() *ResponseText {
+func (p *PayabliApiResponseOcr) GetResponseText() ResponseText {
 	if p == nil {
-		return nil
+		return ""
 	}
 	return p.ResponseText
 }
 
-func (p *PayabliApiResponseOcr) GetResponseCode() *Responsecode {
+func (p *PayabliApiResponseOcr) GetResponseCode() Responsecode {
 	if p == nil {
-		return nil
+		return 0
 	}
 	return p.ResponseCode
 }

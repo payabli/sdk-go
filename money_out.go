@@ -539,7 +539,7 @@ func (b *BillDetailsResponse) String() string {
 // The response for canceling a single payout transaction.
 type PayabliApiResponse0000 struct {
 	IsSuccess      *IsSuccess                       `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText   *ResponseText                    `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText   ResponseText                     `json:"responseText" url:"responseText"`
 	PageIdentifier *PageIdentifier                  `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 	ResponseCode   *Responsecode                    `json:"responseCode,omitempty" url:"responseCode,omitempty"`
 	ResponseData   *PayabliApiResponse0ResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
@@ -555,9 +555,9 @@ func (p *PayabliApiResponse0000) GetIsSuccess() *IsSuccess {
 	return p.IsSuccess
 }
 
-func (p *PayabliApiResponse0000) GetResponseText() *ResponseText {
+func (p *PayabliApiResponse0000) GetResponseText() ResponseText {
 	if p == nil {
-		return nil
+		return ""
 	}
 	return p.ResponseText
 }

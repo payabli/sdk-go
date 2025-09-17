@@ -461,7 +461,7 @@ type CaptureAllOutResponse struct {
 	ResponseCode   *Responsecode   `json:"responseCode,omitempty" url:"responseCode,omitempty"`
 	// Array of objects describing the transactions.
 	ResponseData []*CaptureAllOutResponseResponseDataItem `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText *ResponseText                            `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText ResponseText                             `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -495,9 +495,9 @@ func (c *CaptureAllOutResponse) GetResponseData() []*CaptureAllOutResponseRespon
 	return c.ResponseData
 }
 
-func (c *CaptureAllOutResponse) GetResponseText() *ResponseText {
+func (c *CaptureAllOutResponse) GetResponseText() ResponseText {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.ResponseText
 }
@@ -1618,6 +1618,8 @@ type VCardGetResponse struct {
 	// Entry name for the Paypoint, if applicable.
 	PaypointEntryname  *string             `json:"PaypointEntryname,omitempty" url:"PaypointEntryname,omitempty"`
 	ExternalPaypointId *ExternalPaypointId `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	// The unique identifier for the paypoint.
+	PaypointId *int `json:"paypointId,omitempty" url:"paypointId,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -1803,6 +1805,13 @@ func (v *VCardGetResponse) GetExternalPaypointId() *ExternalPaypointId {
 		return nil
 	}
 	return v.ExternalPaypointId
+}
+
+func (v *VCardGetResponse) GetPaypointId() *int {
+	if v == nil {
+		return nil
+	}
+	return v.PaypointId
 }
 
 func (v *VCardGetResponse) GetExtraProperties() map[string]interface{} {

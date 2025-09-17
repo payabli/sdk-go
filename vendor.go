@@ -13,8 +13,8 @@ type PayabliApiResponseVendors struct {
 	PageIdentifier *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 	ResponseCode   *Responsecode   `json:"responseCode,omitempty" url:"responseCode,omitempty"`
 	// If the request was successful, this field contains the identifier for the vendor.
-	ResponseData *int          `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText *ResponseText `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseData *int         `json:"responseData,omitempty" url:"responseData,omitempty"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -48,9 +48,9 @@ func (p *PayabliApiResponseVendors) GetResponseData() *int {
 	return p.ResponseData
 }
 
-func (p *PayabliApiResponseVendors) GetResponseText() *ResponseText {
+func (p *PayabliApiResponseVendors) GetResponseText() ResponseText {
 	if p == nil {
-		return nil
+		return ""
 	}
 	return p.ResponseText
 }

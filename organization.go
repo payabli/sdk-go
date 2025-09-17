@@ -159,7 +159,7 @@ type AddOrganizationResponse struct {
 	IsSuccess *IsSuccess `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	// Returns the organization ID.
 	ResponseData *Responsedatanonobject `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText *ResponseText          `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText ResponseText           `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -179,9 +179,9 @@ func (a *AddOrganizationResponse) GetResponseData() *Responsedatanonobject {
 	return a.ResponseData
 }
 
-func (a *AddOrganizationResponse) GetResponseText() *ResponseText {
+func (a *AddOrganizationResponse) GetResponseText() ResponseText {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.ResponseText
 }
@@ -222,7 +222,7 @@ type DeleteOrganizationResponse struct {
 	IsSuccess *IsSuccess `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	// Returns the organization ID.
 	ResponseData *Responsedatanonobject `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText *ResponseText          `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText ResponseText           `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -242,9 +242,9 @@ func (d *DeleteOrganizationResponse) GetResponseData() *Responsedatanonobject {
 	return d.ResponseData
 }
 
-func (d *DeleteOrganizationResponse) GetResponseText() *ResponseText {
+func (d *DeleteOrganizationResponse) GetResponseText() ResponseText {
 	if d == nil {
-		return nil
+		return ""
 	}
 	return d.ResponseText
 }
@@ -284,10 +284,10 @@ func (d *DeleteOrganizationResponse) String() string {
 type EditOrganizationResponse struct {
 	IsSuccess      *IsSuccess      `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	PageIdentifier *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
-	ResponseCode   *Responsecode   `json:"responseCode,omitempty" url:"responseCode,omitempty"`
+	ResponseCode   Responsecode    `json:"responseCode" url:"responseCode"`
 	// Returns the organization ID.
 	ResponseData *Responsedatanonobject `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText *ResponseText          `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText ResponseText           `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -307,9 +307,9 @@ func (e *EditOrganizationResponse) GetPageIdentifier() *PageIdentifier {
 	return e.PageIdentifier
 }
 
-func (e *EditOrganizationResponse) GetResponseCode() *Responsecode {
+func (e *EditOrganizationResponse) GetResponseCode() Responsecode {
 	if e == nil {
-		return nil
+		return 0
 	}
 	return e.ResponseCode
 }
@@ -321,9 +321,9 @@ func (e *EditOrganizationResponse) GetResponseData() *Responsedatanonobject {
 	return e.ResponseData
 }
 
-func (e *EditOrganizationResponse) GetResponseText() *ResponseText {
+func (e *EditOrganizationResponse) GetResponseText() ResponseText {
 	if e == nil {
-		return nil
+		return ""
 	}
 	return e.ResponseText
 }

@@ -638,93 +638,315 @@ func (n *NotificationStandardRequestContent) String() string {
 type NotificationStandardRequestContentEventType string
 
 const (
-	NotificationStandardRequestContentEventTypeApprovedPayment             NotificationStandardRequestContentEventType = "ApprovedPayment"
-	NotificationStandardRequestContentEventTypeAuthorizedPayment           NotificationStandardRequestContentEventType = "AuthorizedPayment"
-	NotificationStandardRequestContentEventTypeDeclinedPayment             NotificationStandardRequestContentEventType = "DeclinedPayment"
-	NotificationStandardRequestContentEventTypeOriginatedPayment           NotificationStandardRequestContentEventType = "OriginatedPayment"
-	NotificationStandardRequestContentEventTypeSettledPayment              NotificationStandardRequestContentEventType = "SettledPayment"
-	NotificationStandardRequestContentEventTypeSubscriptionCreated         NotificationStandardRequestContentEventType = "SubscriptionCreated"
-	NotificationStandardRequestContentEventTypeSubscriptionUpdated         NotificationStandardRequestContentEventType = "SubscriptionUpdated"
-	NotificationStandardRequestContentEventTypeSubscriptionCanceled        NotificationStandardRequestContentEventType = "SubscriptionCanceled"
-	NotificationStandardRequestContentEventTypeSubscriptionCompleted       NotificationStandardRequestContentEventType = "SubscriptionCompleted"
-	NotificationStandardRequestContentEventTypeFundedPayment               NotificationStandardRequestContentEventType = "FundedPayment"
-	NotificationStandardRequestContentEventTypeVoidedPayment               NotificationStandardRequestContentEventType = "VoidedPayment"
-	NotificationStandardRequestContentEventTypeRefundedPayment             NotificationStandardRequestContentEventType = "RefundedPayment"
-	NotificationStandardRequestContentEventTypeHoldTransaction             NotificationStandardRequestContentEventType = "HoldTransaction"
-	NotificationStandardRequestContentEventTypeReleasedTransaction         NotificationStandardRequestContentEventType = "ReleasedTransaction"
-	NotificationStandardRequestContentEventTypeHoldBatch                   NotificationStandardRequestContentEventType = "HoldBatch"
-	NotificationStandardRequestContentEventTypeReleasedBatch               NotificationStandardRequestContentEventType = "ReleasedBatch"
-	NotificationStandardRequestContentEventTypeTransferAdjusted            NotificationStandardRequestContentEventType = "TransferAdjusted"
-	NotificationStandardRequestContentEventTypeTransferDisabledCreditFund  NotificationStandardRequestContentEventType = "TransferDisabledCreditFund"
-	NotificationStandardRequestContentEventTypeTransferDisabledDebitFund   NotificationStandardRequestContentEventType = "TransferDisabledDebitFund"
-	NotificationStandardRequestContentEventTypeTransferNotAvailableBalance NotificationStandardRequestContentEventType = "TransferNotAvailableBalance"
-	NotificationStandardRequestContentEventTypeTransferReadyforRetry       NotificationStandardRequestContentEventType = "TransferReadyforRetry"
-	NotificationStandardRequestContentEventTypeTransferResolved            NotificationStandardRequestContentEventType = "TransferResolved"
-	NotificationStandardRequestContentEventTypeTransferReturn              NotificationStandardRequestContentEventType = "TransferReturn"
-	NotificationStandardRequestContentEventTypeTransferSuccess             NotificationStandardRequestContentEventType = "TransferSuccess"
-	NotificationStandardRequestContentEventTypeTransferSuspended           NotificationStandardRequestContentEventType = "TransferSuspended"
-	NotificationStandardRequestContentEventTypeTransferError               NotificationStandardRequestContentEventType = "TransferError"
-	NotificationStandardRequestContentEventTypeSendReceipt                 NotificationStandardRequestContentEventType = "SendReceipt"
-	NotificationStandardRequestContentEventTypeRecoveredTransaction        NotificationStandardRequestContentEventType = "RecoveredTransaction"
-	NotificationStandardRequestContentEventTypeCreatedApplication          NotificationStandardRequestContentEventType = "CreatedApplication"
-	NotificationStandardRequestContentEventTypeApprovedApplication         NotificationStandardRequestContentEventType = "ApprovedApplication"
-	NotificationStandardRequestContentEventTypeFailedBoardingApplication   NotificationStandardRequestContentEventType = "FailedBoardingApplication"
-	NotificationStandardRequestContentEventTypeSubmittedApplication        NotificationStandardRequestContentEventType = "SubmittedApplication"
-	NotificationStandardRequestContentEventTypeActivatedMerchant           NotificationStandardRequestContentEventType = "ActivatedMerchant"
-	NotificationStandardRequestContentEventTypeReceivedChargeBack          NotificationStandardRequestContentEventType = "ReceivedChargeBack"
-	NotificationStandardRequestContentEventTypeChargebackUpdated           NotificationStandardRequestContentEventType = "ChargebackUpdated"
-	NotificationStandardRequestContentEventTypeReceivedRetrieval           NotificationStandardRequestContentEventType = "ReceivedRetrieval"
-	NotificationStandardRequestContentEventTypeRetrievalUpdated            NotificationStandardRequestContentEventType = "RetrievalUpdated"
-	NotificationStandardRequestContentEventTypeReceivedAchReturn           NotificationStandardRequestContentEventType = "ReceivedAchReturn"
-	NotificationStandardRequestContentEventTypeHoldingApplication          NotificationStandardRequestContentEventType = "HoldingApplication"
-	NotificationStandardRequestContentEventTypeDeclinedApplication         NotificationStandardRequestContentEventType = "DeclinedApplication"
-	NotificationStandardRequestContentEventTypeBoardingApplication         NotificationStandardRequestContentEventType = "BoardingApplication"
-	NotificationStandardRequestContentEventTypePaypointMoved               NotificationStandardRequestContentEventType = "PaypointMoved"
-	NotificationStandardRequestContentEventTypeFraudAlert                  NotificationStandardRequestContentEventType = "FraudAlert"
-	NotificationStandardRequestContentEventTypeInvoiceSent                 NotificationStandardRequestContentEventType = "InvoiceSent"
-	NotificationStandardRequestContentEventTypeInvoicePaid                 NotificationStandardRequestContentEventType = "InvoicePaid"
-	NotificationStandardRequestContentEventTypeInvoiceCreated              NotificationStandardRequestContentEventType = "InvoiceCreated"
-	NotificationStandardRequestContentEventTypeBillPaid                    NotificationStandardRequestContentEventType = "BillPaid"
-	NotificationStandardRequestContentEventTypeBillApproved                NotificationStandardRequestContentEventType = "BillApproved"
-	NotificationStandardRequestContentEventTypeBillDisApproved             NotificationStandardRequestContentEventType = "BillDisApproved"
-	NotificationStandardRequestContentEventTypeBillCanceled                NotificationStandardRequestContentEventType = "BillCanceled"
-	NotificationStandardRequestContentEventTypeBillProcessing              NotificationStandardRequestContentEventType = "BillProcessing"
-	NotificationStandardRequestContentEventTypeCardCreated                 NotificationStandardRequestContentEventType = "CardCreated"
-	NotificationStandardRequestContentEventTypeCardActivated               NotificationStandardRequestContentEventType = "CardActivated"
-	NotificationStandardRequestContentEventTypeCardDeactivated             NotificationStandardRequestContentEventType = "CardDeactivated"
-	NotificationStandardRequestContentEventTypeCardExpired                 NotificationStandardRequestContentEventType = "CardExpired"
-	NotificationStandardRequestContentEventTypeCardExpiring                NotificationStandardRequestContentEventType = "CardExpiring"
-	NotificationStandardRequestContentEventTypeCardLimitUpdated            NotificationStandardRequestContentEventType = "CardLimitUpdated"
-	NotificationStandardRequestContentEventTypeBatchClosed                 NotificationStandardRequestContentEventType = "BatchClosed"
-	NotificationStandardRequestContentEventTypeBatchNotClosed              NotificationStandardRequestContentEventType = "BatchNotClosed"
-	NotificationStandardRequestContentEventTypePayOutFunded                NotificationStandardRequestContentEventType = "PayOutFunded"
-	NotificationStandardRequestContentEventTypePayOutProcessed             NotificationStandardRequestContentEventType = "PayOutProcessed"
-	NotificationStandardRequestContentEventTypePayOutCanceled              NotificationStandardRequestContentEventType = "PayOutCanceled"
-	NotificationStandardRequestContentEventTypePayOutPaid                  NotificationStandardRequestContentEventType = "PayOutPaid"
-	NotificationStandardRequestContentEventTypePayOutReturned              NotificationStandardRequestContentEventType = "PayOutReturned"
-	NotificationStandardRequestContentEventTypePayoutSubscriptionCreated   NotificationStandardRequestContentEventType = "PayoutSubscriptionCreated"
-	NotificationStandardRequestContentEventTypePayoutSubscriptionUpdated   NotificationStandardRequestContentEventType = "PayoutSubscriptionUpdated"
-	NotificationStandardRequestContentEventTypePayoutSubscriptionCanceled  NotificationStandardRequestContentEventType = "PayoutSubscriptionCanceled"
-	NotificationStandardRequestContentEventTypePayoutSubscriptionCompleted NotificationStandardRequestContentEventType = "PayoutSubscriptionCompleted"
-	NotificationStandardRequestContentEventTypePayoutSubscriptionReminder  NotificationStandardRequestContentEventType = "PayoutSubscriptionReminder"
-	NotificationStandardRequestContentEventTypeImportFileReceived          NotificationStandardRequestContentEventType = "importFileReceived"
-	NotificationStandardRequestContentEventTypeImportFileProcessed         NotificationStandardRequestContentEventType = "importFileProcessed"
-	NotificationStandardRequestContentEventTypeImportFileError             NotificationStandardRequestContentEventType = "importFileError"
-	NotificationStandardRequestContentEventTypeExportFileSent              NotificationStandardRequestContentEventType = "exportFileSent"
-	NotificationStandardRequestContentEventTypeExportFileError             NotificationStandardRequestContentEventType = "exportFileError"
-	NotificationStandardRequestContentEventTypeUpdatedMerchant             NotificationStandardRequestContentEventType = "UpdatedMerchant"
-	NotificationStandardRequestContentEventTypeReport                      NotificationStandardRequestContentEventType = "Report"
-	NotificationStandardRequestContentEventTypeFailedEmailNotification     NotificationStandardRequestContentEventType = "FailedEmailNotification"
-	NotificationStandardRequestContentEventTypeFailedWebNotification       NotificationStandardRequestContentEventType = "FailedWebNotification"
-	NotificationStandardRequestContentEventTypeFailedSmsNotification       NotificationStandardRequestContentEventType = "FailedSMSNotification"
-	NotificationStandardRequestContentEventTypeUserPasswordExpiring        NotificationStandardRequestContentEventType = "UserPasswordExpiring"
-	NotificationStandardRequestContentEventTypeUserPasswordExpired         NotificationStandardRequestContentEventType = "UserPasswordExpired"
-	NotificationStandardRequestContentEventTypeTransactionNotFound         NotificationStandardRequestContentEventType = "TransactionNotFound"
-	NotificationStandardRequestContentEventTypeSystemAlert                 NotificationStandardRequestContentEventType = "SystemAlert"
+	NotificationStandardRequestContentEventTypePayinTransactionInitiated         NotificationStandardRequestContentEventType = "payin_transaction_initiated"
+	NotificationStandardRequestContentEventTypePayinTransactionAuthorized        NotificationStandardRequestContentEventType = "payin_transaction_authorized"
+	NotificationStandardRequestContentEventTypePayinTransactionApprovedcaptured  NotificationStandardRequestContentEventType = "payin_transaction_approvedcaptured"
+	NotificationStandardRequestContentEventTypePayinTransactionDeclined          NotificationStandardRequestContentEventType = "payin_transaction_declined"
+	NotificationStandardRequestContentEventTypePayinTransactionTechnicaldecline  NotificationStandardRequestContentEventType = "payin_transaction_technicaldecline"
+	NotificationStandardRequestContentEventTypePayinTransactionFailed            NotificationStandardRequestContentEventType = "payin_transaction_failed"
+	NotificationStandardRequestContentEventTypePayinTransactionError             NotificationStandardRequestContentEventType = "payin_transaction_error"
+	NotificationStandardRequestContentEventTypePayinTransactionPaid              NotificationStandardRequestContentEventType = "payin_transaction_paid"
+	NotificationStandardRequestContentEventTypePayinTransactionReturned          NotificationStandardRequestContentEventType = "payin_transaction_returned"
+	NotificationStandardRequestContentEventTypePayinTransactionRejected          NotificationStandardRequestContentEventType = "payin_transaction_rejected"
+	NotificationStandardRequestContentEventTypePayinTransactionVoidedcancelled   NotificationStandardRequestContentEventType = "payin_transaction_voidedcancelled"
+	NotificationStandardRequestContentEventTypePayinTransactionProcessing        NotificationStandardRequestContentEventType = "payin_transaction_processing"
+	NotificationStandardRequestContentEventTypePayinTransactionProcessed         NotificationStandardRequestContentEventType = "payin_transaction_processed"
+	NotificationStandardRequestContentEventTypePayinTransactionOnhold            NotificationStandardRequestContentEventType = "payin_transaction_onhold"
+	NotificationStandardRequestContentEventTypePayinTransactionReleased          NotificationStandardRequestContentEventType = "payin_transaction_released"
+	NotificationStandardRequestContentEventTypePayinTransactionRecovered         NotificationStandardRequestContentEventType = "payin_transaction_recovered"
+	NotificationStandardRequestContentEventTypePayoutTransactionInitiated        NotificationStandardRequestContentEventType = "payout_transaction_initiated"
+	NotificationStandardRequestContentEventTypePayoutTransactionAuthorized       NotificationStandardRequestContentEventType = "payout_transaction_authorized"
+	NotificationStandardRequestContentEventTypePayoutTransactionApprovedcaptured NotificationStandardRequestContentEventType = "payout_transaction_approvedcaptured"
+	NotificationStandardRequestContentEventTypePayoutTransactionDeclined         NotificationStandardRequestContentEventType = "payout_transaction_declined"
+	NotificationStandardRequestContentEventTypePayoutTransactionTechnicaldecline NotificationStandardRequestContentEventType = "payout_transaction_technicaldecline"
+	NotificationStandardRequestContentEventTypePayoutTransactionFailed           NotificationStandardRequestContentEventType = "payout_transaction_failed"
+	NotificationStandardRequestContentEventTypePayoutTransactionError            NotificationStandardRequestContentEventType = "payout_transaction_error"
+	NotificationStandardRequestContentEventTypePayoutTransactionPaid             NotificationStandardRequestContentEventType = "payout_transaction_paid"
+	NotificationStandardRequestContentEventTypePayoutTransactionReturned         NotificationStandardRequestContentEventType = "payout_transaction_returned"
+	NotificationStandardRequestContentEventTypePayoutTransactionRejected         NotificationStandardRequestContentEventType = "payout_transaction_rejected"
+	NotificationStandardRequestContentEventTypePayoutTransactionVoidedcancelled  NotificationStandardRequestContentEventType = "payout_transaction_voidedcancelled"
+	NotificationStandardRequestContentEventTypePayoutTransactionProcessing       NotificationStandardRequestContentEventType = "payout_transaction_processing"
+	NotificationStandardRequestContentEventTypePayoutTransactionProcessed        NotificationStandardRequestContentEventType = "payout_transaction_processed"
+	NotificationStandardRequestContentEventTypePayoutTransactionOnhold           NotificationStandardRequestContentEventType = "payout_transaction_onhold"
+	NotificationStandardRequestContentEventTypePayoutTransactionReleased         NotificationStandardRequestContentEventType = "payout_transaction_released"
+	NotificationStandardRequestContentEventTypePayoutTransactionRecovered        NotificationStandardRequestContentEventType = "payout_transaction_recovered"
+	NotificationStandardRequestContentEventTypePayinBatchOpen                    NotificationStandardRequestContentEventType = "payin_batch_open"
+	NotificationStandardRequestContentEventTypePayinBatchOnhold                  NotificationStandardRequestContentEventType = "payin_batch_onhold"
+	NotificationStandardRequestContentEventTypePayinBatchReleased                NotificationStandardRequestContentEventType = "payin_batch_released"
+	NotificationStandardRequestContentEventTypePayinBatchProcessed               NotificationStandardRequestContentEventType = "payin_batch_processed"
+	NotificationStandardRequestContentEventTypePayinBatchPaid                    NotificationStandardRequestContentEventType = "payin_batch_paid"
+	NotificationStandardRequestContentEventTypePayinBatchFunded                  NotificationStandardRequestContentEventType = "payin_batch_funded"
+	NotificationStandardRequestContentEventTypePayinBatchClosed                  NotificationStandardRequestContentEventType = "payin_batch_closed"
+	NotificationStandardRequestContentEventTypePayinBatchNotclosed               NotificationStandardRequestContentEventType = "payin_batch_notclosed"
+	NotificationStandardRequestContentEventTypePayinBatchFundpending             NotificationStandardRequestContentEventType = "payin_batch_fundpending"
+	NotificationStandardRequestContentEventTypePayinBatchCancelled               NotificationStandardRequestContentEventType = "payin_batch_cancelled"
+	NotificationStandardRequestContentEventTypePayinBatchTransferred             NotificationStandardRequestContentEventType = "payin_batch_transferred"
+	NotificationStandardRequestContentEventTypePayinBatchResolved                NotificationStandardRequestContentEventType = "payin_batch_resolved"
+	NotificationStandardRequestContentEventTypePayoutBatchOpen                   NotificationStandardRequestContentEventType = "payout_batch_open"
+	NotificationStandardRequestContentEventTypePayoutBatchOnhold                 NotificationStandardRequestContentEventType = "payout_batch_onhold"
+	NotificationStandardRequestContentEventTypePayoutBatchReleased               NotificationStandardRequestContentEventType = "payout_batch_released"
+	NotificationStandardRequestContentEventTypePayoutBatchProcessed              NotificationStandardRequestContentEventType = "payout_batch_processed"
+	NotificationStandardRequestContentEventTypePayoutBatchPaid                   NotificationStandardRequestContentEventType = "payout_batch_paid"
+	NotificationStandardRequestContentEventTypePayoutBatchFunded                 NotificationStandardRequestContentEventType = "payout_batch_funded"
+	NotificationStandardRequestContentEventTypePayoutBatchClosed                 NotificationStandardRequestContentEventType = "payout_batch_closed"
+	NotificationStandardRequestContentEventTypePayoutBatchNotclosed              NotificationStandardRequestContentEventType = "payout_batch_notclosed"
+	NotificationStandardRequestContentEventTypePayoutBatchFundpending            NotificationStandardRequestContentEventType = "payout_batch_fundpending"
+	NotificationStandardRequestContentEventTypePayoutBatchCancelled              NotificationStandardRequestContentEventType = "payout_batch_cancelled"
+	NotificationStandardRequestContentEventTypePayoutBatchTransferred            NotificationStandardRequestContentEventType = "payout_batch_transferred"
+	NotificationStandardRequestContentEventTypePayoutBatchResolved               NotificationStandardRequestContentEventType = "payout_batch_resolved"
+	NotificationStandardRequestContentEventTypePayinBatchSettlementPending       NotificationStandardRequestContentEventType = "payin_batch_settlement_pending"
+	NotificationStandardRequestContentEventTypePayinBatchSettlementIntransit     NotificationStandardRequestContentEventType = "payin_batch_settlement_intransit"
+	NotificationStandardRequestContentEventTypePayinBatchSettlementTransferred   NotificationStandardRequestContentEventType = "payin_batch_settlement_transferred"
+	NotificationStandardRequestContentEventTypePayinBatchSettlementFunded        NotificationStandardRequestContentEventType = "payin_batch_settlement_funded"
+	NotificationStandardRequestContentEventTypePayinBatchSettlementResolved      NotificationStandardRequestContentEventType = "payin_batch_settlement_resolved"
+	NotificationStandardRequestContentEventTypePayinBatchSettlementException     NotificationStandardRequestContentEventType = "payin_batch_settlement_exception"
+	NotificationStandardRequestContentEventTypePayinBatchSettlementAchreturn     NotificationStandardRequestContentEventType = "payin_batch_settlement_achreturn"
+	NotificationStandardRequestContentEventTypePayinBatchSettlementHeld          NotificationStandardRequestContentEventType = "payin_batch_settlement_held"
+	NotificationStandardRequestContentEventTypePayinBatchSettlementReleased      NotificationStandardRequestContentEventType = "payin_batch_settlement_released"
+	NotificationStandardRequestContentEventTypePayoutBatchSettlementPending      NotificationStandardRequestContentEventType = "payout_batch_settlement_pending"
+	NotificationStandardRequestContentEventTypePayoutBatchSettlementIntransit    NotificationStandardRequestContentEventType = "payout_batch_settlement_intransit"
+	NotificationStandardRequestContentEventTypePayoutBatchSettlementTransferred  NotificationStandardRequestContentEventType = "payout_batch_settlement_transferred"
+	NotificationStandardRequestContentEventTypePayoutBatchSettlementFunded       NotificationStandardRequestContentEventType = "payout_batch_settlement_funded"
+	NotificationStandardRequestContentEventTypePayoutBatchSettlementResolved     NotificationStandardRequestContentEventType = "payout_batch_settlement_resolved"
+	NotificationStandardRequestContentEventTypePayoutBatchSettlementException    NotificationStandardRequestContentEventType = "payout_batch_settlement_exception"
+	NotificationStandardRequestContentEventTypePayoutBatchSettlementAchreturn    NotificationStandardRequestContentEventType = "payout_batch_settlement_achreturn"
+	NotificationStandardRequestContentEventTypePayoutBatchSettlementHeld         NotificationStandardRequestContentEventType = "payout_batch_settlement_held"
+	NotificationStandardRequestContentEventTypePayoutBatchSettlementReleased     NotificationStandardRequestContentEventType = "payout_batch_settlement_released"
+	NotificationStandardRequestContentEventTypeApprovedPayment                   NotificationStandardRequestContentEventType = "ApprovedPayment"
+	NotificationStandardRequestContentEventTypeAuthorizedPayment                 NotificationStandardRequestContentEventType = "AuthorizedPayment"
+	NotificationStandardRequestContentEventTypeDeclinedPayment                   NotificationStandardRequestContentEventType = "DeclinedPayment"
+	NotificationStandardRequestContentEventTypeOriginatedPayment                 NotificationStandardRequestContentEventType = "OriginatedPayment"
+	NotificationStandardRequestContentEventTypeSettledPayment                    NotificationStandardRequestContentEventType = "SettledPayment"
+	NotificationStandardRequestContentEventTypeSubscriptionCreated               NotificationStandardRequestContentEventType = "SubscriptionCreated"
+	NotificationStandardRequestContentEventTypeSubscriptionUpdated               NotificationStandardRequestContentEventType = "SubscriptionUpdated"
+	NotificationStandardRequestContentEventTypeSubscriptionCanceled              NotificationStandardRequestContentEventType = "SubscriptionCanceled"
+	NotificationStandardRequestContentEventTypeSubscriptionCompleted             NotificationStandardRequestContentEventType = "SubscriptionCompleted"
+	NotificationStandardRequestContentEventTypeFundedPayment                     NotificationStandardRequestContentEventType = "FundedPayment"
+	NotificationStandardRequestContentEventTypeVoidedPayment                     NotificationStandardRequestContentEventType = "VoidedPayment"
+	NotificationStandardRequestContentEventTypeRefundedPayment                   NotificationStandardRequestContentEventType = "RefundedPayment"
+	NotificationStandardRequestContentEventTypeHoldTransaction                   NotificationStandardRequestContentEventType = "HoldTransaction"
+	NotificationStandardRequestContentEventTypeReleasedTransaction               NotificationStandardRequestContentEventType = "ReleasedTransaction"
+	NotificationStandardRequestContentEventTypeHoldBatch                         NotificationStandardRequestContentEventType = "HoldBatch"
+	NotificationStandardRequestContentEventTypeReleasedBatch                     NotificationStandardRequestContentEventType = "ReleasedBatch"
+	NotificationStandardRequestContentEventTypeTransferAdjusted                  NotificationStandardRequestContentEventType = "TransferAdjusted"
+	NotificationStandardRequestContentEventTypeTransferDisabledCreditFund        NotificationStandardRequestContentEventType = "TransferDisabledCreditFund"
+	NotificationStandardRequestContentEventTypeTransferDisabledDebitFund         NotificationStandardRequestContentEventType = "TransferDisabledDebitFund"
+	NotificationStandardRequestContentEventTypeTransferNotAvailableBalance       NotificationStandardRequestContentEventType = "TransferNotAvailableBalance"
+	NotificationStandardRequestContentEventTypeTransferReadyforRetry             NotificationStandardRequestContentEventType = "TransferReadyforRetry"
+	NotificationStandardRequestContentEventTypeTransferResolved                  NotificationStandardRequestContentEventType = "TransferResolved"
+	NotificationStandardRequestContentEventTypeTransferReturn                    NotificationStandardRequestContentEventType = "TransferReturn"
+	NotificationStandardRequestContentEventTypeTransferSuccess                   NotificationStandardRequestContentEventType = "TransferSuccess"
+	NotificationStandardRequestContentEventTypeTransferSuspended                 NotificationStandardRequestContentEventType = "TransferSuspended"
+	NotificationStandardRequestContentEventTypeTransferError                     NotificationStandardRequestContentEventType = "TransferError"
+	NotificationStandardRequestContentEventTypeSendReceipt                       NotificationStandardRequestContentEventType = "SendReceipt"
+	NotificationStandardRequestContentEventTypeRecoveredTransaction              NotificationStandardRequestContentEventType = "RecoveredTransaction"
+	NotificationStandardRequestContentEventTypeCreatedApplication                NotificationStandardRequestContentEventType = "CreatedApplication"
+	NotificationStandardRequestContentEventTypeApprovedApplication               NotificationStandardRequestContentEventType = "ApprovedApplication"
+	NotificationStandardRequestContentEventTypeFailedBoardingApplication         NotificationStandardRequestContentEventType = "FailedBoardingApplication"
+	NotificationStandardRequestContentEventTypeSubmittedApplication              NotificationStandardRequestContentEventType = "SubmittedApplication"
+	NotificationStandardRequestContentEventTypeActivatedMerchant                 NotificationStandardRequestContentEventType = "ActivatedMerchant"
+	NotificationStandardRequestContentEventTypeReceivedChargeBack                NotificationStandardRequestContentEventType = "ReceivedChargeBack"
+	NotificationStandardRequestContentEventTypeChargebackUpdated                 NotificationStandardRequestContentEventType = "ChargebackUpdated"
+	NotificationStandardRequestContentEventTypeReceivedRetrieval                 NotificationStandardRequestContentEventType = "ReceivedRetrieval"
+	NotificationStandardRequestContentEventTypeRetrievalUpdated                  NotificationStandardRequestContentEventType = "RetrievalUpdated"
+	NotificationStandardRequestContentEventTypeReceivedAchReturn                 NotificationStandardRequestContentEventType = "ReceivedAchReturn"
+	NotificationStandardRequestContentEventTypeHoldingApplication                NotificationStandardRequestContentEventType = "HoldingApplication"
+	NotificationStandardRequestContentEventTypeDeclinedApplication               NotificationStandardRequestContentEventType = "DeclinedApplication"
+	NotificationStandardRequestContentEventTypeBoardingApplication               NotificationStandardRequestContentEventType = "BoardingApplication"
+	NotificationStandardRequestContentEventTypePaypointMoved                     NotificationStandardRequestContentEventType = "PaypointMoved"
+	NotificationStandardRequestContentEventTypeFraudAlert                        NotificationStandardRequestContentEventType = "FraudAlert"
+	NotificationStandardRequestContentEventTypeInvoiceSent                       NotificationStandardRequestContentEventType = "InvoiceSent"
+	NotificationStandardRequestContentEventTypeInvoicePaid                       NotificationStandardRequestContentEventType = "InvoicePaid"
+	NotificationStandardRequestContentEventTypeInvoiceCreated                    NotificationStandardRequestContentEventType = "InvoiceCreated"
+	NotificationStandardRequestContentEventTypeBillPaid                          NotificationStandardRequestContentEventType = "BillPaid"
+	NotificationStandardRequestContentEventTypeBillApproved                      NotificationStandardRequestContentEventType = "BillApproved"
+	NotificationStandardRequestContentEventTypeBillDisApproved                   NotificationStandardRequestContentEventType = "BillDisApproved"
+	NotificationStandardRequestContentEventTypeBillCanceled                      NotificationStandardRequestContentEventType = "BillCanceled"
+	NotificationStandardRequestContentEventTypeBillProcessing                    NotificationStandardRequestContentEventType = "BillProcessing"
+	NotificationStandardRequestContentEventTypeCardCreated                       NotificationStandardRequestContentEventType = "CardCreated"
+	NotificationStandardRequestContentEventTypeCardActivated                     NotificationStandardRequestContentEventType = "CardActivated"
+	NotificationStandardRequestContentEventTypeCardDeactivated                   NotificationStandardRequestContentEventType = "CardDeactivated"
+	NotificationStandardRequestContentEventTypeCardExpired                       NotificationStandardRequestContentEventType = "CardExpired"
+	NotificationStandardRequestContentEventTypeCardExpiring                      NotificationStandardRequestContentEventType = "CardExpiring"
+	NotificationStandardRequestContentEventTypeCardLimitUpdated                  NotificationStandardRequestContentEventType = "CardLimitUpdated"
+	NotificationStandardRequestContentEventTypeBatchClosed                       NotificationStandardRequestContentEventType = "BatchClosed"
+	NotificationStandardRequestContentEventTypeBatchNotClosed                    NotificationStandardRequestContentEventType = "BatchNotClosed"
+	NotificationStandardRequestContentEventTypePayOutFunded                      NotificationStandardRequestContentEventType = "PayOutFunded"
+	NotificationStandardRequestContentEventTypePayOutProcessed                   NotificationStandardRequestContentEventType = "PayOutProcessed"
+	NotificationStandardRequestContentEventTypePayOutCanceled                    NotificationStandardRequestContentEventType = "PayOutCanceled"
+	NotificationStandardRequestContentEventTypePayOutPaid                        NotificationStandardRequestContentEventType = "PayOutPaid"
+	NotificationStandardRequestContentEventTypePayOutReturned                    NotificationStandardRequestContentEventType = "PayOutReturned"
+	NotificationStandardRequestContentEventTypePayoutSubscriptionCreated         NotificationStandardRequestContentEventType = "PayoutSubscriptionCreated"
+	NotificationStandardRequestContentEventTypePayoutSubscriptionUpdated         NotificationStandardRequestContentEventType = "PayoutSubscriptionUpdated"
+	NotificationStandardRequestContentEventTypePayoutSubscriptionCanceled        NotificationStandardRequestContentEventType = "PayoutSubscriptionCanceled"
+	NotificationStandardRequestContentEventTypePayoutSubscriptionCompleted       NotificationStandardRequestContentEventType = "PayoutSubscriptionCompleted"
+	NotificationStandardRequestContentEventTypePayoutSubscriptionReminder        NotificationStandardRequestContentEventType = "PayoutSubscriptionReminder"
+	NotificationStandardRequestContentEventTypeImportFileReceived                NotificationStandardRequestContentEventType = "importFileReceived"
+	NotificationStandardRequestContentEventTypeImportFileProcessed               NotificationStandardRequestContentEventType = "importFileProcessed"
+	NotificationStandardRequestContentEventTypeImportFileError                   NotificationStandardRequestContentEventType = "importFileError"
+	NotificationStandardRequestContentEventTypeExportFileSent                    NotificationStandardRequestContentEventType = "exportFileSent"
+	NotificationStandardRequestContentEventTypeExportFileError                   NotificationStandardRequestContentEventType = "exportFileError"
+	NotificationStandardRequestContentEventTypeUpdatedMerchant                   NotificationStandardRequestContentEventType = "UpdatedMerchant"
+	NotificationStandardRequestContentEventTypeReport                            NotificationStandardRequestContentEventType = "Report"
+	NotificationStandardRequestContentEventTypeFailedEmailNotification           NotificationStandardRequestContentEventType = "FailedEmailNotification"
+	NotificationStandardRequestContentEventTypeFailedWebNotification             NotificationStandardRequestContentEventType = "FailedWebNotification"
+	NotificationStandardRequestContentEventTypeFailedSmsNotification             NotificationStandardRequestContentEventType = "FailedSMSNotification"
+	NotificationStandardRequestContentEventTypeUserPasswordExpiring              NotificationStandardRequestContentEventType = "UserPasswordExpiring"
+	NotificationStandardRequestContentEventTypeUserPasswordExpired               NotificationStandardRequestContentEventType = "UserPasswordExpired"
+	NotificationStandardRequestContentEventTypeTransactionNotFound               NotificationStandardRequestContentEventType = "TransactionNotFound"
+	NotificationStandardRequestContentEventTypeSystemAlert                       NotificationStandardRequestContentEventType = "SystemAlert"
 )
 
 func NewNotificationStandardRequestContentEventTypeFromString(s string) (NotificationStandardRequestContentEventType, error) {
 	switch s {
+	case "payin_transaction_initiated":
+		return NotificationStandardRequestContentEventTypePayinTransactionInitiated, nil
+	case "payin_transaction_authorized":
+		return NotificationStandardRequestContentEventTypePayinTransactionAuthorized, nil
+	case "payin_transaction_approvedcaptured":
+		return NotificationStandardRequestContentEventTypePayinTransactionApprovedcaptured, nil
+	case "payin_transaction_declined":
+		return NotificationStandardRequestContentEventTypePayinTransactionDeclined, nil
+	case "payin_transaction_technicaldecline":
+		return NotificationStandardRequestContentEventTypePayinTransactionTechnicaldecline, nil
+	case "payin_transaction_failed":
+		return NotificationStandardRequestContentEventTypePayinTransactionFailed, nil
+	case "payin_transaction_error":
+		return NotificationStandardRequestContentEventTypePayinTransactionError, nil
+	case "payin_transaction_paid":
+		return NotificationStandardRequestContentEventTypePayinTransactionPaid, nil
+	case "payin_transaction_returned":
+		return NotificationStandardRequestContentEventTypePayinTransactionReturned, nil
+	case "payin_transaction_rejected":
+		return NotificationStandardRequestContentEventTypePayinTransactionRejected, nil
+	case "payin_transaction_voidedcancelled":
+		return NotificationStandardRequestContentEventTypePayinTransactionVoidedcancelled, nil
+	case "payin_transaction_processing":
+		return NotificationStandardRequestContentEventTypePayinTransactionProcessing, nil
+	case "payin_transaction_processed":
+		return NotificationStandardRequestContentEventTypePayinTransactionProcessed, nil
+	case "payin_transaction_onhold":
+		return NotificationStandardRequestContentEventTypePayinTransactionOnhold, nil
+	case "payin_transaction_released":
+		return NotificationStandardRequestContentEventTypePayinTransactionReleased, nil
+	case "payin_transaction_recovered":
+		return NotificationStandardRequestContentEventTypePayinTransactionRecovered, nil
+	case "payout_transaction_initiated":
+		return NotificationStandardRequestContentEventTypePayoutTransactionInitiated, nil
+	case "payout_transaction_authorized":
+		return NotificationStandardRequestContentEventTypePayoutTransactionAuthorized, nil
+	case "payout_transaction_approvedcaptured":
+		return NotificationStandardRequestContentEventTypePayoutTransactionApprovedcaptured, nil
+	case "payout_transaction_declined":
+		return NotificationStandardRequestContentEventTypePayoutTransactionDeclined, nil
+	case "payout_transaction_technicaldecline":
+		return NotificationStandardRequestContentEventTypePayoutTransactionTechnicaldecline, nil
+	case "payout_transaction_failed":
+		return NotificationStandardRequestContentEventTypePayoutTransactionFailed, nil
+	case "payout_transaction_error":
+		return NotificationStandardRequestContentEventTypePayoutTransactionError, nil
+	case "payout_transaction_paid":
+		return NotificationStandardRequestContentEventTypePayoutTransactionPaid, nil
+	case "payout_transaction_returned":
+		return NotificationStandardRequestContentEventTypePayoutTransactionReturned, nil
+	case "payout_transaction_rejected":
+		return NotificationStandardRequestContentEventTypePayoutTransactionRejected, nil
+	case "payout_transaction_voidedcancelled":
+		return NotificationStandardRequestContentEventTypePayoutTransactionVoidedcancelled, nil
+	case "payout_transaction_processing":
+		return NotificationStandardRequestContentEventTypePayoutTransactionProcessing, nil
+	case "payout_transaction_processed":
+		return NotificationStandardRequestContentEventTypePayoutTransactionProcessed, nil
+	case "payout_transaction_onhold":
+		return NotificationStandardRequestContentEventTypePayoutTransactionOnhold, nil
+	case "payout_transaction_released":
+		return NotificationStandardRequestContentEventTypePayoutTransactionReleased, nil
+	case "payout_transaction_recovered":
+		return NotificationStandardRequestContentEventTypePayoutTransactionRecovered, nil
+	case "payin_batch_open":
+		return NotificationStandardRequestContentEventTypePayinBatchOpen, nil
+	case "payin_batch_onhold":
+		return NotificationStandardRequestContentEventTypePayinBatchOnhold, nil
+	case "payin_batch_released":
+		return NotificationStandardRequestContentEventTypePayinBatchReleased, nil
+	case "payin_batch_processed":
+		return NotificationStandardRequestContentEventTypePayinBatchProcessed, nil
+	case "payin_batch_paid":
+		return NotificationStandardRequestContentEventTypePayinBatchPaid, nil
+	case "payin_batch_funded":
+		return NotificationStandardRequestContentEventTypePayinBatchFunded, nil
+	case "payin_batch_closed":
+		return NotificationStandardRequestContentEventTypePayinBatchClosed, nil
+	case "payin_batch_notclosed":
+		return NotificationStandardRequestContentEventTypePayinBatchNotclosed, nil
+	case "payin_batch_fundpending":
+		return NotificationStandardRequestContentEventTypePayinBatchFundpending, nil
+	case "payin_batch_cancelled":
+		return NotificationStandardRequestContentEventTypePayinBatchCancelled, nil
+	case "payin_batch_transferred":
+		return NotificationStandardRequestContentEventTypePayinBatchTransferred, nil
+	case "payin_batch_resolved":
+		return NotificationStandardRequestContentEventTypePayinBatchResolved, nil
+	case "payout_batch_open":
+		return NotificationStandardRequestContentEventTypePayoutBatchOpen, nil
+	case "payout_batch_onhold":
+		return NotificationStandardRequestContentEventTypePayoutBatchOnhold, nil
+	case "payout_batch_released":
+		return NotificationStandardRequestContentEventTypePayoutBatchReleased, nil
+	case "payout_batch_processed":
+		return NotificationStandardRequestContentEventTypePayoutBatchProcessed, nil
+	case "payout_batch_paid":
+		return NotificationStandardRequestContentEventTypePayoutBatchPaid, nil
+	case "payout_batch_funded":
+		return NotificationStandardRequestContentEventTypePayoutBatchFunded, nil
+	case "payout_batch_closed":
+		return NotificationStandardRequestContentEventTypePayoutBatchClosed, nil
+	case "payout_batch_notclosed":
+		return NotificationStandardRequestContentEventTypePayoutBatchNotclosed, nil
+	case "payout_batch_fundpending":
+		return NotificationStandardRequestContentEventTypePayoutBatchFundpending, nil
+	case "payout_batch_cancelled":
+		return NotificationStandardRequestContentEventTypePayoutBatchCancelled, nil
+	case "payout_batch_transferred":
+		return NotificationStandardRequestContentEventTypePayoutBatchTransferred, nil
+	case "payout_batch_resolved":
+		return NotificationStandardRequestContentEventTypePayoutBatchResolved, nil
+	case "payin_batch_settlement_pending":
+		return NotificationStandardRequestContentEventTypePayinBatchSettlementPending, nil
+	case "payin_batch_settlement_intransit":
+		return NotificationStandardRequestContentEventTypePayinBatchSettlementIntransit, nil
+	case "payin_batch_settlement_transferred":
+		return NotificationStandardRequestContentEventTypePayinBatchSettlementTransferred, nil
+	case "payin_batch_settlement_funded":
+		return NotificationStandardRequestContentEventTypePayinBatchSettlementFunded, nil
+	case "payin_batch_settlement_resolved":
+		return NotificationStandardRequestContentEventTypePayinBatchSettlementResolved, nil
+	case "payin_batch_settlement_exception":
+		return NotificationStandardRequestContentEventTypePayinBatchSettlementException, nil
+	case "payin_batch_settlement_achreturn":
+		return NotificationStandardRequestContentEventTypePayinBatchSettlementAchreturn, nil
+	case "payin_batch_settlement_held":
+		return NotificationStandardRequestContentEventTypePayinBatchSettlementHeld, nil
+	case "payin_batch_settlement_released":
+		return NotificationStandardRequestContentEventTypePayinBatchSettlementReleased, nil
+	case "payout_batch_settlement_pending":
+		return NotificationStandardRequestContentEventTypePayoutBatchSettlementPending, nil
+	case "payout_batch_settlement_intransit":
+		return NotificationStandardRequestContentEventTypePayoutBatchSettlementIntransit, nil
+	case "payout_batch_settlement_transferred":
+		return NotificationStandardRequestContentEventTypePayoutBatchSettlementTransferred, nil
+	case "payout_batch_settlement_funded":
+		return NotificationStandardRequestContentEventTypePayoutBatchSettlementFunded, nil
+	case "payout_batch_settlement_resolved":
+		return NotificationStandardRequestContentEventTypePayoutBatchSettlementResolved, nil
+	case "payout_batch_settlement_exception":
+		return NotificationStandardRequestContentEventTypePayoutBatchSettlementException, nil
+	case "payout_batch_settlement_achreturn":
+		return NotificationStandardRequestContentEventTypePayoutBatchSettlementAchreturn, nil
+	case "payout_batch_settlement_held":
+		return NotificationStandardRequestContentEventTypePayoutBatchSettlementHeld, nil
+	case "payout_batch_settlement_released":
+		return NotificationStandardRequestContentEventTypePayoutBatchSettlementReleased, nil
 	case "ApprovedPayment":
 		return NotificationStandardRequestContentEventTypeApprovedPayment, nil
 	case "AuthorizedPayment":
@@ -957,7 +1179,7 @@ type PayabliApiResponseNotifications struct {
 	ResponseCode   *Responsecode   `json:"responseCode,omitempty" url:"responseCode,omitempty"`
 	// When the request was successful, this contains the notification ID, or `nID` used to manage the notification.
 	ResponseData *PayabliApiResponseNotificationsResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText *ResponseText                                `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText ResponseText                                 `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -991,9 +1213,9 @@ func (p *PayabliApiResponseNotifications) GetResponseData() *PayabliApiResponseN
 	return p.ResponseData
 }
 
-func (p *PayabliApiResponseNotifications) GetResponseText() *ResponseText {
+func (p *PayabliApiResponseNotifications) GetResponseText() ResponseText {
 	if p == nil {
-		return nil
+		return ""
 	}
 	return p.ResponseText
 }

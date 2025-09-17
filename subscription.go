@@ -111,9 +111,9 @@ func (s *ScheduleDetail) String() string {
 
 // Success response
 type AddSubscriptionResponse struct {
-	CustomerId   *CustomerId   `json:"customerId,omitempty" url:"customerId,omitempty"`
-	ResponseText *ResponseText `json:"responseText,omitempty" url:"responseText,omitempty"`
-	IsSuccess    *IsSuccess    `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	CustomerId   *CustomerId  `json:"customerId,omitempty" url:"customerId,omitempty"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
+	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	// The identifier of the newly created subscription.
 	ResponseData int `json:"responseData" url:"responseData"`
 
@@ -128,9 +128,9 @@ func (a *AddSubscriptionResponse) GetCustomerId() *CustomerId {
 	return a.CustomerId
 }
 
-func (a *AddSubscriptionResponse) GetResponseText() *ResponseText {
+func (a *AddSubscriptionResponse) GetResponseText() ResponseText {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.ResponseText
 }
@@ -187,8 +187,8 @@ type RemoveSubscriptionResponse struct {
 	// If `isSuccess` = true, this contains the identifier of the subscription.
 	//
 	// If `isSuccess` = false, this contains the reason for the failure.
-	ResponseData *string       `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText *ResponseText `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseData *string      `json:"responseData,omitempty" url:"responseData,omitempty"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -208,9 +208,9 @@ func (r *RemoveSubscriptionResponse) GetResponseData() *string {
 	return r.ResponseData
 }
 
-func (r *RemoveSubscriptionResponse) GetResponseText() *ResponseText {
+func (r *RemoveSubscriptionResponse) GetResponseText() ResponseText {
 	if r == nil {
-		return nil
+		return ""
 	}
 	return r.ResponseText
 }
@@ -520,9 +520,9 @@ type UpdateSubscriptionResponse struct {
 	// If `isSuccess` = true, this contains the identifier of the subscription, and sometimes extra information, depending on what was updated.
 	//
 	// If `isSuccess` = false, this contains the reason for the failure.
-	ResponseData *string       `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText *ResponseText `json:"responseText,omitempty" url:"responseText,omitempty"`
-	CustomerId   *CustomerId   `json:"customerId,omitempty" url:"customerId,omitempty"`
+	ResponseData *string      `json:"responseData,omitempty" url:"responseData,omitempty"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
+	CustomerId   *CustomerId  `json:"customerId,omitempty" url:"customerId,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -542,9 +542,9 @@ func (u *UpdateSubscriptionResponse) GetResponseData() *string {
 	return u.ResponseData
 }
 
-func (u *UpdateSubscriptionResponse) GetResponseText() *ResponseText {
+func (u *UpdateSubscriptionResponse) GetResponseText() ResponseText {
 	if u == nil {
-		return nil
+		return ""
 	}
 	return u.ResponseText
 }

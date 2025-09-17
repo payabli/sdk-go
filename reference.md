@@ -12315,6 +12315,300 @@ client.Notification.GetReportFile(
 </dl>
 </details>
 
+## Notificationlogs
+<details><summary><code>client.Notificationlogs.SearchNotificationLogs(request) -> []*sdk.NotificationLog</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Search notification logs with filtering and pagination.
+  - Start date and end date cannot be more than 30 days apart
+  - Either `orgId` or `paypointId` must be provided
+
+This endpoint requires the `notifications_create` OR `notifications_read` permission.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Notificationlogs.SearchNotificationLogs(
+        context.TODO(),
+        &sdk.SearchNotificationLogsRequest{
+            PageSize: sdk.Int(
+                20,
+            ),
+            Body: &sdk.NotificationLogSearchRequest{
+                StartDate: sdk.MustParseDateTime(
+                    "2024-01-01T00:00:00Z",
+                ),
+                EndDate: sdk.MustParseDateTime(
+                    "2024-01-31T23:59:59Z",
+                ),
+                OrgId: sdk.Int64(
+                    12345,
+                ),
+                NotificationEvent: sdk.String(
+                    "ActivatedMerchant",
+                ),
+                Succeeded: sdk.Bool(
+                    true,
+                ),
+            },
+        },
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**pageSize:** `*sdk.Pagesize` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**skip:** `*int` — The number of records to skip before starting to collect the result set. 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `*sdk.NotificationLogSearchRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Notificationlogs.GetNotificationLog(Uuid) -> *sdk.NotificationLogDetail</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get detailed information for a specific notification log entry.
+This endpoint requires the `notifications_create` OR `notifications_read` permission.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Notificationlogs.GetNotificationLog(
+        context.TODO(),
+        uuid.MustParse(
+            "550e8400-e29b-41d4-a716-446655440000",
+        ),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**uuid:** `uuid.UUID` — The notification log entry.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Notificationlogs.RetryNotificationLog(Uuid) -> *sdk.NotificationLogDetail</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retry sending a specific notification.
+
+**Permissions:** notifications_create
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Notificationlogs.RetryNotificationLog(
+        context.TODO(),
+        uuid.MustParse(
+            "550e8400-e29b-41d4-a716-446655440000",
+        ),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**uuid:** `uuid.UUID` — Unique id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Notificationlogs.BulkRetryNotificationLogs(request) -> error</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retry sending multiple notifications (maximum 50 IDs).
+This is an async process, so use the search endpoint again to check the notification status.
+
+This endpoint requires the `notifications_create` permission.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Notificationlogs.BulkRetryNotificationLogs(
+        context.TODO(),
+        []uuid.UUID{
+            uuid.MustParse(
+                "550e8400-e29b-41d4-a716-446655440000",
+            ),
+            uuid.MustParse(
+                "550e8400-e29b-41d4-a716-446655440001",
+            ),
+            uuid.MustParse(
+                "550e8400-e29b-41d4-a716-446655440002",
+            ),
+        },
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `sdk.BulkRetryRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Ocr
 <details><summary><code>client.Ocr.OcrDocumentForm(TypeResult, request) -> *sdk.PayabliApiResponseOcr</code></summary>
 <dl>

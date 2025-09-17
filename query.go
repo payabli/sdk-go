@@ -6357,9 +6357,6 @@ func (q *QueryUserResponse) String() string {
 	return fmt.Sprintf("%#v", q)
 }
 
-// Time that a response to a chargeback is due, in UTC.
-type Replyby = time.Time
-
 // Identifier of retrieval request
 type RetrievalId = int64
 
@@ -6378,7 +6375,7 @@ type Transfer struct {
 	TransferIdentifier TransferIdentifier `json:"transferIdentifier" url:"transferIdentifier"`
 	// The ID of the batch the transfer belongs to.
 	BatchId int `json:"batchId" url:"batchId"`
-	// The paypoint entry name.
+	// The paypoint entryname.
 	PaypointEntryName *string `json:"paypointEntryName,omitempty" url:"paypointEntryName,omitempty"`
 	// The paypoint legal name.
 	PaypointLegalName *Legalname `json:"paypointLegalName,omitempty" url:"paypointLegalName,omitempty"`
@@ -6390,10 +6387,12 @@ type Transfer struct {
 	ParentOrgName *string `json:"parentOrgName,omitempty" url:"parentOrgName,omitempty"`
 	// The parent organization ID.
 	ParentOrgId *int `json:"parentOrgId,omitempty" url:"parentOrgId,omitempty"`
+	// The parent organization entryname.
+	ParentOrgEntryName *string `json:"parentOrgEntryName,omitempty" url:"parentOrgEntryName,omitempty"`
 	// The parent organization logo URL.
 	ParentOrgLogo *string `json:"parentOrgLogo,omitempty" url:"parentOrgLogo,omitempty"`
 	// The external paypoint ID.
-	ExternalPaypointId *string `json:"externalPaypointId,omitempty" url:"externalPaypointId,omitempty"`
+	ExternalPaypointId *string `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
 	// Bank account information for the transfer.
 	BankAccount *TransferBankAccount `json:"bankAccount,omitempty" url:"bankAccount,omitempty"`
 	// Date when the transfer occurred.
@@ -6518,6 +6517,13 @@ func (t *Transfer) GetParentOrgId() *int {
 		return nil
 	}
 	return t.ParentOrgId
+}
+
+func (t *Transfer) GetParentOrgEntryName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ParentOrgEntryName
 }
 
 func (t *Transfer) GetParentOrgLogo() *string {
@@ -7094,6 +7100,8 @@ type VCardRecord struct {
 	// The paypoint's entry name (entrypoint).
 	PaypointEntryname  *Entrypointfield    `json:"PaypointEntryname,omitempty" url:"PaypointEntryname,omitempty"`
 	ExternalPaypointId *ExternalPaypointId `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	// The paypoint's unique identifier.
+	PaypointId *int `json:"paypointId,omitempty" url:"paypointId,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -7279,6 +7287,13 @@ func (v *VCardRecord) GetExternalPaypointId() *ExternalPaypointId {
 		return nil
 	}
 	return v.ExternalPaypointId
+}
+
+func (v *VCardRecord) GetPaypointId() *int {
+	if v == nil {
+		return nil
+	}
+	return v.PaypointId
 }
 
 func (v *VCardRecord) GetExtraProperties() map[string]interface{} {

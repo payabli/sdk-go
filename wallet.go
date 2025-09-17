@@ -365,7 +365,7 @@ type ConfigureApplePayOrganizationApiResponse struct {
 	PageIdentifier *PageIdentifier                 `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 	ResponseCode   *Responsecode                   `json:"responseCode,omitempty" url:"responseCode,omitempty"`
 	ResponseData   *ApplePayOrganizationUpdateData `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText   *ResponseText                   `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText   ResponseText                    `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -399,9 +399,9 @@ func (c *ConfigureApplePayOrganizationApiResponse) GetResponseData() *ApplePayOr
 	return c.ResponseData
 }
 
-func (c *ConfigureApplePayOrganizationApiResponse) GetResponseText() *ResponseText {
+func (c *ConfigureApplePayOrganizationApiResponse) GetResponseText() ResponseText {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.ResponseText
 }
@@ -443,7 +443,7 @@ type ConfigureApplePaypointApiResponse struct {
 	PageIdentifier *PageIdentifier                   `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 	ResponseCode   *Responsecode                     `json:"responseCode,omitempty" url:"responseCode,omitempty"`
 	ResponseData   *ApplePayPaypointRegistrationData `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText   *ResponseText                     `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText   ResponseText                      `json:"responseText" url:"responseText"`
 	// Field not in use on this endpoint
 	RoomId *int64 `json:"roomId,omitempty" url:"roomId,omitempty"`
 
@@ -479,9 +479,9 @@ func (c *ConfigureApplePaypointApiResponse) GetResponseData() *ApplePayPaypointR
 	return c.ResponseData
 }
 
-func (c *ConfigureApplePaypointApiResponse) GetResponseText() *ResponseText {
+func (c *ConfigureApplePaypointApiResponse) GetResponseText() ResponseText {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.ResponseText
 }

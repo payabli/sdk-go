@@ -68,7 +68,7 @@ func (u *UpdateMethodRequest) MarshalJSON() ([]byte, error) {
 type PayabliApiResponsePaymethodDelete struct {
 	IsSuccess    *IsSuccess                                     `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	ResponseData *PayabliApiResponsePaymethodDeleteResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText *ResponseText                                  `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText ResponseText                                   `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -88,9 +88,9 @@ func (p *PayabliApiResponsePaymethodDelete) GetResponseData() *PayabliApiRespons
 	return p.ResponseData
 }
 
-func (p *PayabliApiResponsePaymethodDelete) GetResponseText() *ResponseText {
+func (p *PayabliApiResponsePaymethodDelete) GetResponseText() ResponseText {
 	if p == nil {
-		return nil
+		return ""
 	}
 	return p.ResponseText
 }
@@ -192,7 +192,7 @@ func (p *PayabliApiResponsePaymethodDeleteResponseData) String() string {
 
 type AddMethodResponse struct {
 	IsSuccess    *IsSuccess                     `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText *ResponseText                  `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText ResponseText                   `json:"responseText" url:"responseText"`
 	ResponseData *AddMethodResponseResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
 
 	extraProperties map[string]interface{}
@@ -206,9 +206,9 @@ func (a *AddMethodResponse) GetIsSuccess() *IsSuccess {
 	return a.IsSuccess
 }
 
-func (a *AddMethodResponse) GetResponseText() *ResponseText {
+func (a *AddMethodResponse) GetResponseText() ResponseText {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.ResponseText
 }
@@ -397,7 +397,7 @@ type CreateAnonymous = *bool
 type GetMethodResponse struct {
 	IsSuccess    *IsSuccess                     `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	ResponseData *GetMethodResponseResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText *ResponseText                  `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText ResponseText                   `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -417,9 +417,9 @@ func (g *GetMethodResponse) GetResponseData() *GetMethodResponseResponseData {
 	return g.ResponseData
 }
 
-func (g *GetMethodResponse) GetResponseText() *ResponseText {
+func (g *GetMethodResponse) GetResponseText() ResponseText {
 	if g == nil {
-		return nil
+		return ""
 	}
 	return g.ResponseText
 }

@@ -13,19 +13,19 @@ type GetEntryConfigRequest struct {
 }
 
 type GetBasicEntryByIdResponse struct {
-	IsSuccess      *IsSuccess           `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	IsSuccess      IsSuccess            `json:"isSuccess" url:"isSuccess"`
 	PageIdentifier *PageIdentifier      `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 	ResponseCode   *Responsecode        `json:"responseCode,omitempty" url:"responseCode,omitempty"`
 	ResponseData   *PaypointEntryConfig `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText   *ResponseText        `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText   ResponseText         `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (g *GetBasicEntryByIdResponse) GetIsSuccess() *IsSuccess {
+func (g *GetBasicEntryByIdResponse) GetIsSuccess() IsSuccess {
 	if g == nil {
-		return nil
+		return false
 	}
 	return g.IsSuccess
 }
@@ -51,9 +51,9 @@ func (g *GetBasicEntryByIdResponse) GetResponseData() *PaypointEntryConfig {
 	return g.ResponseData
 }
 
-func (g *GetBasicEntryByIdResponse) GetResponseText() *ResponseText {
+func (g *GetBasicEntryByIdResponse) GetResponseText() ResponseText {
 	if g == nil {
-		return nil
+		return ""
 	}
 	return g.ResponseText
 }
@@ -91,19 +91,19 @@ func (g *GetBasicEntryByIdResponse) String() string {
 }
 
 type GetBasicEntryResponse struct {
-	IsSuccess      *IsSuccess           `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	IsSuccess      IsSuccess            `json:"isSuccess" url:"isSuccess"`
 	PageIdentifier *PageIdentifier      `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 	ResponseCode   *Responsecode        `json:"responseCode,omitempty" url:"responseCode,omitempty"`
 	ResponseData   *PaypointEntryConfig `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText   *ResponseText        `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText   ResponseText         `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (g *GetBasicEntryResponse) GetIsSuccess() *IsSuccess {
+func (g *GetBasicEntryResponse) GetIsSuccess() IsSuccess {
 	if g == nil {
-		return nil
+		return false
 	}
 	return g.IsSuccess
 }
@@ -129,9 +129,9 @@ func (g *GetBasicEntryResponse) GetResponseData() *PaypointEntryConfig {
 	return g.ResponseData
 }
 
-func (g *GetBasicEntryResponse) GetResponseText() *ResponseText {
+func (g *GetBasicEntryResponse) GetResponseText() ResponseText {
 	if g == nil {
-		return nil
+		return ""
 	}
 	return g.ResponseText
 }
@@ -169,19 +169,19 @@ func (g *GetBasicEntryResponse) String() string {
 }
 
 type GetEntryConfigResponse struct {
-	IsSuccess      *IsSuccess           `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	IsSuccess      IsSuccess            `json:"isSuccess" url:"isSuccess"`
 	PageIdentifier *PageIdentifier      `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 	ResponseCode   *Responsecode        `json:"responseCode,omitempty" url:"responseCode,omitempty"`
 	ResponseData   *PaypointEntryConfig `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText   *ResponseText        `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText   ResponseText         `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (g *GetEntryConfigResponse) GetIsSuccess() *IsSuccess {
+func (g *GetEntryConfigResponse) GetIsSuccess() IsSuccess {
 	if g == nil {
-		return nil
+		return false
 	}
 	return g.IsSuccess
 }
@@ -207,9 +207,9 @@ func (g *GetEntryConfigResponse) GetResponseData() *PaypointEntryConfig {
 	return g.ResponseData
 }
 
-func (g *GetEntryConfigResponse) GetResponseText() *ResponseText {
+func (g *GetEntryConfigResponse) GetResponseText() ResponseText {
 	if g == nil {
-		return nil
+		return ""
 	}
 	return g.ResponseText
 }
@@ -247,17 +247,17 @@ func (g *GetEntryConfigResponse) String() string {
 }
 
 type MigratePaypointResponse struct {
-	IsSuccess    *IsSuccess    `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	IsSuccess    IsSuccess     `json:"isSuccess" url:"isSuccess"`
 	ResponseCode *Responsecode `json:"responseCode,omitempty" url:"responseCode,omitempty"`
-	ResponseText *ResponseText `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText ResponseText  `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (m *MigratePaypointResponse) GetIsSuccess() *IsSuccess {
+func (m *MigratePaypointResponse) GetIsSuccess() IsSuccess {
 	if m == nil {
-		return nil
+		return false
 	}
 	return m.IsSuccess
 }
@@ -269,9 +269,9 @@ func (m *MigratePaypointResponse) GetResponseCode() *Responsecode {
 	return m.ResponseCode
 }
 
-func (m *MigratePaypointResponse) GetResponseText() *ResponseText {
+func (m *MigratePaypointResponse) GetResponseText() ResponseText {
 	if m == nil {
-		return nil
+		return ""
 	}
 	return m.ResponseText
 }

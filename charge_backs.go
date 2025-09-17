@@ -21,6 +21,69 @@ type ResponseChargeBack struct {
 	Notes *string `json:"notes,omitempty" url:"-"`
 }
 
+type AddResponseResponse struct {
+	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
+	// If `isSuccess` = true, this contains the chargeback identifier. If `isSuccess` = false, this contains the reason for the error.
+	ResponseData *int `json:"responseData,omitempty" url:"responseData,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AddResponseResponse) GetIsSuccess() *IsSuccess {
+	if a == nil {
+		return nil
+	}
+	return a.IsSuccess
+}
+
+func (a *AddResponseResponse) GetResponseText() ResponseText {
+	if a == nil {
+		return ""
+	}
+	return a.ResponseText
+}
+
+func (a *AddResponseResponse) GetResponseData() *int {
+	if a == nil {
+		return nil
+	}
+	return a.ResponseData
+}
+
+func (a *AddResponseResponse) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AddResponseResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler AddResponseResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AddResponseResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AddResponseResponse) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
 type ChargeBackResponse struct {
 	// Object with attached files to response
 	Attachments *BoardingApplicationAttachments `json:"attachments,omitempty" url:"attachments,omitempty"`
@@ -113,42 +176,150 @@ func (c *ChargeBackResponse) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type ChargebackMessage struct {
+	// Message identifier.
+	Id int `json:"Id" url:"Id"`
+	// Room identifier for the message.
+	RoomId int `json:"RoomId" url:"RoomId"`
+	// User identifier who sent the message.
+	UserId int `json:"UserId" url:"UserId"`
+	// Name of the user who sent the message.
+	UserName string `json:"UserName" url:"UserName"`
+	// Content of the message.
+	Content string `json:"Content" url:"Content"`
+	// Timestamp when the message was created.
+	CreatedAt time.Time `json:"CreatedAt" url:"CreatedAt"`
+	// Type of message.
+	MessageType int `json:"MessageType" url:"MessageType"`
+	// Additional properties of the message.
+	MessageProperties map[string]string `json:"MessageProperties,omitempty" url:"MessageProperties,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ChargebackMessage) GetId() int {
+	if c == nil {
+		return 0
+	}
+	return c.Id
+}
+
+func (c *ChargebackMessage) GetRoomId() int {
+	if c == nil {
+		return 0
+	}
+	return c.RoomId
+}
+
+func (c *ChargebackMessage) GetUserId() int {
+	if c == nil {
+		return 0
+	}
+	return c.UserId
+}
+
+func (c *ChargebackMessage) GetUserName() string {
+	if c == nil {
+		return ""
+	}
+	return c.UserName
+}
+
+func (c *ChargebackMessage) GetContent() string {
+	if c == nil {
+		return ""
+	}
+	return c.Content
+}
+
+func (c *ChargebackMessage) GetCreatedAt() time.Time {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.CreatedAt
+}
+
+func (c *ChargebackMessage) GetMessageType() int {
+	if c == nil {
+		return 0
+	}
+	return c.MessageType
+}
+
+func (c *ChargebackMessage) GetMessageProperties() map[string]string {
+	if c == nil {
+		return nil
+	}
+	return c.MessageProperties
+}
+
+func (c *ChargebackMessage) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ChargebackMessage) UnmarshalJSON(data []byte) error {
+	type embed ChargebackMessage
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"CreatedAt"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ChargebackMessage(unmarshaler.embed)
+	c.CreatedAt = unmarshaler.CreatedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ChargebackMessage) MarshalJSON() ([]byte, error) {
+	type embed ChargebackMessage
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"CreatedAt"`
+	}{
+		embed:     embed(*c),
+		CreatedAt: internal.NewDateTime(c.CreatedAt),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ChargebackMessage) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type ChargebackQueryRecords struct {
-	AccountType *Accounttype `json:"accountType,omitempty" url:"accountType,omitempty"`
-	// Number of case assigned to the chargeback.
-	CaseNumber *string `json:"caseNumber,omitempty" url:"caseNumber,omitempty"`
-	// Date of chargeback in format YYYY-MM-DD or MM/DD/YYYY.
-	ChargebackDate *time.Time `json:"chargebackDate,omitempty" url:"chargebackDate,omitempty"`
-	// Timestamp when the register was created, in UTC.
-	CreatedAt *CreatedAt                 `json:"createdAt,omitempty" url:"createdAt,omitempty"`
-	Customer  *QueryTransactionPayorData `json:"customer,omitempty" url:"customer,omitempty"`
 	// Identifier of chargeback or return.
-	Id *int64 `json:"id,omitempty" url:"id,omitempty"`
-	// Last 4 digits of card or bank account involved in chargeback or return.
-	LastFour string `json:"lastFour" url:"lastFour"`
-	// Type of payment vehicle: **ach** or **card**.
-	Method string `json:"method" url:"method"`
-	// Net amount in chargeback or ACH return.
-	NetAmount     *Netamountnullable `json:"netAmount,omitempty" url:"netAmount,omitempty"`
-	OrderId       *OrderId           `json:"orderId,omitempty" url:"orderId,omitempty"`
-	ParentOrgName *OrgParentName     `json:"parentOrgName,omitempty" url:"parentOrgName,omitempty"`
-	PaymentData   *QueryPaymentData  `json:"paymentData,omitempty" url:"paymentData,omitempty"`
-	// ReferenceId of the transaction in Payabli.
-	PaymentId *string `json:"PaymentId,omitempty" url:"PaymentId,omitempty"`
-	// The paypoint's DBA name.
-	PaypointDbaname *Dbaname `json:"paypointDbaname,omitempty" url:"paypointDbaname,omitempty"`
-	// The paypoint's entryname.
-	PaypointEntryname *Entrypointfield `json:"paypointEntryname,omitempty" url:"paypointEntryname,omitempty"`
-	// The paypoint's legal name.
-	PaypointLegalname *Legalname `json:"paypointLegalname,omitempty" url:"paypointLegalname,omitempty"`
-	// Text describing the chargeback or ACH return reason.
-	Reason *string `json:"reason,omitempty" url:"reason,omitempty"`
+	Id int64 `json:"Id" url:"Id"`
+	// Date of chargeback in format YYYY-MM-DD or MM/DD/YYYY.
+	ChargebackDate time.Time `json:"ChargebackDate" url:"ChargebackDate"`
+	// Number of case assigned to the chargeback.
+	CaseNumber string `json:"CaseNumber" url:"CaseNumber"`
 	// R code for returned ACH or custom code identifying the reason.
-	ReasonCode *string `json:"reasonCode,omitempty" url:"reasonCode,omitempty"`
+	ReasonCode string `json:"ReasonCode" url:"ReasonCode"`
+	// Text describing the chargeback or ACH return reason.
+	Reason string `json:"Reason" url:"Reason"`
 	// Processor reference number to the chargeback.
-	ReferenceNumber *string `json:"referenceNumber,omitempty" url:"referenceNumber,omitempty"`
-	// Chargeback response records.
-	Responses []*ChargeBackResponse `json:"responses,omitempty" url:"responses,omitempty"`
+	ReferenceNumber string `json:"ReferenceNumber" url:"ReferenceNumber"`
+	// Last 4 digits of card or bank account involved in chargeback or return.
+	LastFour    string      `json:"LastFour" url:"LastFour"`
+	AccountType Accounttype `json:"AccountType" url:"AccountType"`
 	// Status for chargeback or ACH return
 	//
 	// - 0: Open (chargebacks only)
@@ -157,54 +328,89 @@ type ChargebackQueryRecords struct {
 	// - 3: Closed-Lost (chargebacks only)
 	// - 4: ACH Return (ACH only)
 	// - 5: ACH Dispute, Not Authorized (ACH only)
-	Status          *int                     `json:"status,omitempty" url:"status,omitempty"`
-	Transaction     *TransactionQueryRecords `json:"transaction,omitempty" url:"transaction,omitempty"`
-	TransactionTime *TransactionTime         `json:"transactionTime,omitempty" url:"transactionTime,omitempty"`
+	Status int `json:"Status" url:"Status"`
+	// Type of payment vehicle: **ach** or **card**.
+	Method string `json:"Method" url:"Method"`
+	// Timestamp when the register was created, in UTC.
+	CreatedAt CreatedAt `json:"CreatedAt" url:"CreatedAt"`
+	ReplyBy   Replyby   `json:"ReplyBy" url:"ReplyBy"`
+	// ReferenceId of the transaction in Payabli.
+	PaymentTransId string `json:"PaymentTransId" url:"PaymentTransId"`
+	// Reference to the subscription originating the transaction.
+	ScheduleReference *int64  `json:"ScheduleReference,omitempty" url:"ScheduleReference,omitempty"`
+	OrderId           OrderId `json:"OrderId" url:"OrderId"`
+	// Net amount in chargeback or ACH return.
+	NetAmount       Netamountnullable          `json:"NetAmount,omitempty" url:"NetAmount,omitempty"`
+	TransactionTime TransactionTime            `json:"TransactionTime" url:"TransactionTime"`
+	Customer        *QueryTransactionPayorData `json:"Customer" url:"Customer"`
+	PaymentData     *QueryPaymentData          `json:"PaymentData" url:"PaymentData"`
+	// The paypoint's legal name.
+	PaypointLegalname Legalname `json:"PaypointLegalname" url:"PaypointLegalname"`
+	// The paypoint's DBA name.
+	PaypointDbaname Dbaname       `json:"PaypointDbaname" url:"PaypointDbaname"`
+	ParentOrgName   OrgParentName `json:"ParentOrgName" url:"ParentOrgName"`
+	// The ID of the parent organization.
+	ParentOrgId int64 `json:"ParentOrgId" url:"ParentOrgId"`
+	// The paypoint's entryname.
+	PaypointEntryname Entrypointfield `json:"PaypointEntryname" url:"PaypointEntryname"`
+	// Chargeback response records.
+	Responses          []*ChargeBackResponse    `json:"Responses" url:"Responses"`
+	Transaction        *TransactionQueryRecords `json:"Transaction" url:"Transaction"`
+	ExternalPaypointId *ExternalPaypointId      `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	Pageidentifier     *PageIdentifier          `json:"pageidentifier,omitempty" url:"pageidentifier,omitempty"`
+	// Messages related to the chargeback.
+	Messages []*ChargebackMessage `json:"messages" url:"messages"`
+	// Service group classification.
+	ServiceGroup string `json:"ServiceGroup" url:"ServiceGroup"`
+	// Type of dispute classification.
+	DisputeType string `json:"DisputeType" url:"DisputeType"`
+	// Name of the payment processor.
+	ProcessorName string `json:"ProcessorName" url:"ProcessorName"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (c *ChargebackQueryRecords) GetAccountType() *Accounttype {
+func (c *ChargebackQueryRecords) GetId() int64 {
 	if c == nil {
-		return nil
+		return 0
 	}
-	return c.AccountType
+	return c.Id
 }
 
-func (c *ChargebackQueryRecords) GetCaseNumber() *string {
+func (c *ChargebackQueryRecords) GetChargebackDate() time.Time {
 	if c == nil {
-		return nil
-	}
-	return c.CaseNumber
-}
-
-func (c *ChargebackQueryRecords) GetChargebackDate() *time.Time {
-	if c == nil {
-		return nil
+		return time.Time{}
 	}
 	return c.ChargebackDate
 }
 
-func (c *ChargebackQueryRecords) GetCreatedAt() *CreatedAt {
+func (c *ChargebackQueryRecords) GetCaseNumber() string {
 	if c == nil {
-		return nil
+		return ""
 	}
-	return c.CreatedAt
+	return c.CaseNumber
 }
 
-func (c *ChargebackQueryRecords) GetCustomer() *QueryTransactionPayorData {
+func (c *ChargebackQueryRecords) GetReasonCode() string {
 	if c == nil {
-		return nil
+		return ""
 	}
-	return c.Customer
+	return c.ReasonCode
 }
 
-func (c *ChargebackQueryRecords) GetId() *int64 {
+func (c *ChargebackQueryRecords) GetReason() string {
 	if c == nil {
-		return nil
+		return ""
 	}
-	return c.Id
+	return c.Reason
+}
+
+func (c *ChargebackQueryRecords) GetReferenceNumber() string {
+	if c == nil {
+		return ""
+	}
+	return c.ReferenceNumber
 }
 
 func (c *ChargebackQueryRecords) GetLastFour() string {
@@ -214,6 +420,20 @@ func (c *ChargebackQueryRecords) GetLastFour() string {
 	return c.LastFour
 }
 
+func (c *ChargebackQueryRecords) GetAccountType() Accounttype {
+	if c == nil {
+		return ""
+	}
+	return c.AccountType
+}
+
+func (c *ChargebackQueryRecords) GetStatus() int {
+	if c == nil {
+		return 0
+	}
+	return c.Status
+}
+
 func (c *ChargebackQueryRecords) GetMethod() string {
 	if c == nil {
 		return ""
@@ -221,25 +441,60 @@ func (c *ChargebackQueryRecords) GetMethod() string {
 	return c.Method
 }
 
-func (c *ChargebackQueryRecords) GetNetAmount() *Netamountnullable {
+func (c *ChargebackQueryRecords) GetCreatedAt() CreatedAt {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.CreatedAt
+}
+
+func (c *ChargebackQueryRecords) GetReplyBy() Replyby {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.ReplyBy
+}
+
+func (c *ChargebackQueryRecords) GetPaymentTransId() string {
+	if c == nil {
+		return ""
+	}
+	return c.PaymentTransId
+}
+
+func (c *ChargebackQueryRecords) GetScheduleReference() *int64 {
+	if c == nil {
+		return nil
+	}
+	return c.ScheduleReference
+}
+
+func (c *ChargebackQueryRecords) GetOrderId() OrderId {
+	if c == nil {
+		return ""
+	}
+	return c.OrderId
+}
+
+func (c *ChargebackQueryRecords) GetNetAmount() Netamountnullable {
 	if c == nil {
 		return nil
 	}
 	return c.NetAmount
 }
 
-func (c *ChargebackQueryRecords) GetOrderId() *OrderId {
+func (c *ChargebackQueryRecords) GetTransactionTime() TransactionTime {
 	if c == nil {
-		return nil
+		return time.Time{}
 	}
-	return c.OrderId
+	return c.TransactionTime
 }
 
-func (c *ChargebackQueryRecords) GetParentOrgName() *OrgParentName {
+func (c *ChargebackQueryRecords) GetCustomer() *QueryTransactionPayorData {
 	if c == nil {
 		return nil
 	}
-	return c.ParentOrgName
+	return c.Customer
 }
 
 func (c *ChargebackQueryRecords) GetPaymentData() *QueryPaymentData {
@@ -249,53 +504,39 @@ func (c *ChargebackQueryRecords) GetPaymentData() *QueryPaymentData {
 	return c.PaymentData
 }
 
-func (c *ChargebackQueryRecords) GetPaymentId() *string {
+func (c *ChargebackQueryRecords) GetPaypointLegalname() Legalname {
 	if c == nil {
-		return nil
-	}
-	return c.PaymentId
-}
-
-func (c *ChargebackQueryRecords) GetPaypointDbaname() *Dbaname {
-	if c == nil {
-		return nil
-	}
-	return c.PaypointDbaname
-}
-
-func (c *ChargebackQueryRecords) GetPaypointEntryname() *Entrypointfield {
-	if c == nil {
-		return nil
-	}
-	return c.PaypointEntryname
-}
-
-func (c *ChargebackQueryRecords) GetPaypointLegalname() *Legalname {
-	if c == nil {
-		return nil
+		return ""
 	}
 	return c.PaypointLegalname
 }
 
-func (c *ChargebackQueryRecords) GetReason() *string {
+func (c *ChargebackQueryRecords) GetPaypointDbaname() Dbaname {
 	if c == nil {
-		return nil
+		return ""
 	}
-	return c.Reason
+	return c.PaypointDbaname
 }
 
-func (c *ChargebackQueryRecords) GetReasonCode() *string {
+func (c *ChargebackQueryRecords) GetParentOrgName() OrgParentName {
 	if c == nil {
-		return nil
+		return ""
 	}
-	return c.ReasonCode
+	return c.ParentOrgName
 }
 
-func (c *ChargebackQueryRecords) GetReferenceNumber() *string {
+func (c *ChargebackQueryRecords) GetParentOrgId() int64 {
 	if c == nil {
-		return nil
+		return 0
 	}
-	return c.ReferenceNumber
+	return c.ParentOrgId
+}
+
+func (c *ChargebackQueryRecords) GetPaypointEntryname() Entrypointfield {
+	if c == nil {
+		return ""
+	}
+	return c.PaypointEntryname
 }
 
 func (c *ChargebackQueryRecords) GetResponses() []*ChargeBackResponse {
@@ -305,13 +546,6 @@ func (c *ChargebackQueryRecords) GetResponses() []*ChargeBackResponse {
 	return c.Responses
 }
 
-func (c *ChargebackQueryRecords) GetStatus() *int {
-	if c == nil {
-		return nil
-	}
-	return c.Status
-}
-
 func (c *ChargebackQueryRecords) GetTransaction() *TransactionQueryRecords {
 	if c == nil {
 		return nil
@@ -319,11 +553,46 @@ func (c *ChargebackQueryRecords) GetTransaction() *TransactionQueryRecords {
 	return c.Transaction
 }
 
-func (c *ChargebackQueryRecords) GetTransactionTime() *TransactionTime {
+func (c *ChargebackQueryRecords) GetExternalPaypointId() *ExternalPaypointId {
 	if c == nil {
 		return nil
 	}
-	return c.TransactionTime
+	return c.ExternalPaypointId
+}
+
+func (c *ChargebackQueryRecords) GetPageidentifier() *PageIdentifier {
+	if c == nil {
+		return nil
+	}
+	return c.Pageidentifier
+}
+
+func (c *ChargebackQueryRecords) GetMessages() []*ChargebackMessage {
+	if c == nil {
+		return nil
+	}
+	return c.Messages
+}
+
+func (c *ChargebackQueryRecords) GetServiceGroup() string {
+	if c == nil {
+		return ""
+	}
+	return c.ServiceGroup
+}
+
+func (c *ChargebackQueryRecords) GetDisputeType() string {
+	if c == nil {
+		return ""
+	}
+	return c.DisputeType
+}
+
+func (c *ChargebackQueryRecords) GetProcessorName() string {
+	if c == nil {
+		return ""
+	}
+	return c.ProcessorName
 }
 
 func (c *ChargebackQueryRecords) GetExtraProperties() map[string]interface{} {
@@ -334,7 +603,7 @@ func (c *ChargebackQueryRecords) UnmarshalJSON(data []byte) error {
 	type embed ChargebackQueryRecords
 	var unmarshaler = struct {
 		embed
-		ChargebackDate *internal.DateTime `json:"chargebackDate,omitempty"`
+		ChargebackDate *internal.DateTime `json:"ChargebackDate"`
 	}{
 		embed: embed(*c),
 	}
@@ -342,7 +611,7 @@ func (c *ChargebackQueryRecords) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*c = ChargebackQueryRecords(unmarshaler.embed)
-	c.ChargebackDate = unmarshaler.ChargebackDate.TimePtr()
+	c.ChargebackDate = unmarshaler.ChargebackDate.Time()
 	extraProperties, err := internal.ExtractExtraProperties(data, *c)
 	if err != nil {
 		return err
@@ -356,10 +625,10 @@ func (c *ChargebackQueryRecords) MarshalJSON() ([]byte, error) {
 	type embed ChargebackQueryRecords
 	var marshaler = struct {
 		embed
-		ChargebackDate *internal.DateTime `json:"chargebackDate,omitempty"`
+		ChargebackDate *internal.DateTime `json:"ChargebackDate"`
 	}{
 		embed:          embed(*c),
-		ChargebackDate: internal.NewOptionalDateTime(c.ChargebackDate),
+		ChargebackDate: internal.NewDateTime(c.ChargebackDate),
 	}
 	return json.Marshal(marshaler)
 }
@@ -374,67 +643,4 @@ func (c *ChargebackQueryRecords) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", c)
-}
-
-type AddResponseResponse struct {
-	IsSuccess    *IsSuccess    `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText *ResponseText `json:"responseText,omitempty" url:"responseText,omitempty"`
-	// If `isSuccess` = true, this contains the chargeback identifier. If `isSuccess` = false, this contains the reason for the error.
-	ResponseData *int `json:"responseData,omitempty" url:"responseData,omitempty"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (a *AddResponseResponse) GetIsSuccess() *IsSuccess {
-	if a == nil {
-		return nil
-	}
-	return a.IsSuccess
-}
-
-func (a *AddResponseResponse) GetResponseText() *ResponseText {
-	if a == nil {
-		return nil
-	}
-	return a.ResponseText
-}
-
-func (a *AddResponseResponse) GetResponseData() *int {
-	if a == nil {
-		return nil
-	}
-	return a.ResponseData
-}
-
-func (a *AddResponseResponse) GetExtraProperties() map[string]interface{} {
-	return a.extraProperties
-}
-
-func (a *AddResponseResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler AddResponseResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*a = AddResponseResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *a)
-	if err != nil {
-		return err
-	}
-	a.extraProperties = extraProperties
-	a.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (a *AddResponseResponse) String() string {
-	if len(a.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(a); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", a)
 }

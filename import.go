@@ -29,7 +29,7 @@ type PayabliApiResponseImport struct {
 	ResponseCode   *Responsecode   `json:"responseCode,omitempty" url:"responseCode,omitempty"`
 	// The response data containing the result of the import operation.
 	ResponseData *PayabliApiResponseImportResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText *ResponseText                         `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText ResponseText                          `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -63,9 +63,9 @@ func (p *PayabliApiResponseImport) GetResponseData() *PayabliApiResponseImportRe
 	return p.ResponseData
 }
 
-func (p *PayabliApiResponseImport) GetResponseText() *ResponseText {
+func (p *PayabliApiResponseImport) GetResponseText() ResponseText {
 	if p == nil {
-		return nil
+		return ""
 	}
 	return p.ResponseText
 }

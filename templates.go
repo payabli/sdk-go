@@ -935,8 +935,8 @@ func (b *BasicTemplateElement) String() string {
 type BoardingLinkApiResponse struct {
 	// Reference name for boarding link (if responseText = Success) or
 	// List of empty fields separated by comma (if responseText = Fail)
-	ResponseData *string       `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText *ResponseText `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseData *string      `json:"responseData,omitempty" url:"responseData,omitempty"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -949,9 +949,9 @@ func (b *BoardingLinkApiResponse) GetResponseData() *string {
 	return b.ResponseData
 }
 
-func (b *BoardingLinkApiResponse) GetResponseText() *ResponseText {
+func (b *BoardingLinkApiResponse) GetResponseText() ResponseText {
 	if b == nil {
-		return nil
+		return ""
 	}
 	return b.ResponseText
 }
@@ -2715,7 +2715,7 @@ type PayabliApiResponseTemplateId struct {
 	ResponseCode   *Responsecode   `json:"responseCode,omitempty" url:"responseCode,omitempty"`
 	// When the operation is successful, contains the template's ID.
 	ResponseData *Responsedatanonobject `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText *ResponseText          `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText ResponseText           `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2749,9 +2749,9 @@ func (p *PayabliApiResponseTemplateId) GetResponseData() *Responsedatanonobject 
 	return p.ResponseData
 }
 
-func (p *PayabliApiResponseTemplateId) GetResponseText() *ResponseText {
+func (p *PayabliApiResponseTemplateId) GetResponseText() ResponseText {
 	if p == nil {
-		return nil
+		return ""
 	}
 	return p.ResponseText
 }

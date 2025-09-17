@@ -396,7 +396,7 @@ func (p *PushPayLinkRequestSms) String() string {
 
 type GetPayLinkFromIdResponse struct {
 	IsSuccess    *IsSuccess                            `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText *ResponseText                         `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseText ResponseText                          `json:"responseText" url:"responseText"`
 	ResponseData *GetPayLinkFromIdResponseResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
 
 	extraProperties map[string]interface{}
@@ -410,9 +410,9 @@ func (g *GetPayLinkFromIdResponse) GetIsSuccess() *IsSuccess {
 	return g.IsSuccess
 }
 
-func (g *GetPayLinkFromIdResponse) GetResponseText() *ResponseText {
+func (g *GetPayLinkFromIdResponse) GetResponseText() ResponseText {
 	if g == nil {
-		return nil
+		return ""
 	}
 	return g.ResponseText
 }
@@ -610,18 +610,18 @@ func (g *GetPayLinkFromIdResponseResponseData) String() string {
 }
 
 type PayabliApiResponsePaymentLinks struct {
-	IsSuccess *IsSuccess `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	IsSuccess IsSuccess `json:"isSuccess" url:"isSuccess"`
 	// If `isSuccess` = true, this contains the payment link identifier. If `isSuccess` = false, this contains the reason of the error.
-	ResponseData *string       `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText *ResponseText `json:"responseText,omitempty" url:"responseText,omitempty"`
+	ResponseData *string      `json:"responseData,omitempty" url:"responseData,omitempty"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (p *PayabliApiResponsePaymentLinks) GetIsSuccess() *IsSuccess {
+func (p *PayabliApiResponsePaymentLinks) GetIsSuccess() IsSuccess {
 	if p == nil {
-		return nil
+		return false
 	}
 	return p.IsSuccess
 }
@@ -633,9 +633,9 @@ func (p *PayabliApiResponsePaymentLinks) GetResponseData() *string {
 	return p.ResponseData
 }
 
-func (p *PayabliApiResponsePaymentLinks) GetResponseText() *ResponseText {
+func (p *PayabliApiResponsePaymentLinks) GetResponseText() ResponseText {
 	if p == nil {
-		return nil
+		return ""
 	}
 	return p.ResponseText
 }
