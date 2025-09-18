@@ -6,7 +6,15 @@ import (
 	json "encoding/json"
 	fmt "fmt"
 	internal "github.com/payabli/sdk-go/internal"
+	big "math/big"
 	time "time"
+)
+
+var (
+	fileContentImageOnlyFieldFtype    = big.NewInt(1 << 0)
+	fileContentImageOnlyFieldFilename = big.NewInt(1 << 1)
+	fileContentImageOnlyFieldFurl     = big.NewInt(1 << 2)
+	fileContentImageOnlyFieldFContent = big.NewInt(1 << 3)
 )
 
 type FileContentImageOnly struct {
@@ -17,6 +25,9 @@ type FileContentImageOnly struct {
 	Furl *string `json:"furl,omitempty" url:"furl,omitempty"`
 	// Base64-encoded file content
 	FContent *string `json:"fContent,omitempty" url:"fContent,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -54,6 +65,41 @@ func (f *FileContentImageOnly) GetExtraProperties() map[string]interface{} {
 	return f.extraProperties
 }
 
+func (f *FileContentImageOnly) require(field *big.Int) {
+	if f.explicitFields == nil {
+		f.explicitFields = big.NewInt(0)
+	}
+	f.explicitFields.Or(f.explicitFields, field)
+}
+
+// SetFtype sets the Ftype field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *FileContentImageOnly) SetFtype(ftype *FileContentFtype) {
+	f.Ftype = ftype
+	f.require(fileContentImageOnlyFieldFtype)
+}
+
+// SetFilename sets the Filename field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *FileContentImageOnly) SetFilename(filename *string) {
+	f.Filename = filename
+	f.require(fileContentImageOnlyFieldFilename)
+}
+
+// SetFurl sets the Furl field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *FileContentImageOnly) SetFurl(furl *string) {
+	f.Furl = furl
+	f.require(fileContentImageOnlyFieldFurl)
+}
+
+// SetFContent sets the FContent field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (f *FileContentImageOnly) SetFContent(fContent *string) {
+	f.FContent = fContent
+	f.require(fileContentImageOnlyFieldFContent)
+}
+
 func (f *FileContentImageOnly) UnmarshalJSON(data []byte) error {
 	type unmarshaler FileContentImageOnly
 	var value unmarshaler
@@ -70,6 +116,17 @@ func (f *FileContentImageOnly) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (f *FileContentImageOnly) MarshalJSON() ([]byte, error) {
+	type embed FileContentImageOnly
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*f),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, f.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (f *FileContentImageOnly) String() string {
 	if len(f.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(f.rawJSON); err == nil {
@@ -82,12 +139,23 @@ func (f *FileContentImageOnly) String() string {
 	return fmt.Sprintf("%#v", f)
 }
 
+var (
+	ocrAttachmentFieldFtype          = big.NewInt(1 << 0)
+	ocrAttachmentFieldFilename       = big.NewInt(1 << 1)
+	ocrAttachmentFieldFileDescriptor = big.NewInt(1 << 2)
+	ocrAttachmentFieldFurl           = big.NewInt(1 << 3)
+	ocrAttachmentFieldFContent       = big.NewInt(1 << 4)
+)
+
 type OcrAttachment struct {
 	Ftype          *string `json:"ftype,omitempty" url:"ftype,omitempty"`
 	Filename       *string `json:"filename,omitempty" url:"filename,omitempty"`
 	FileDescriptor *string `json:"fileDescriptor,omitempty" url:"fileDescriptor,omitempty"`
 	Furl           *string `json:"furl,omitempty" url:"furl,omitempty"`
 	FContent       *string `json:"fContent,omitempty" url:"fContent,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -132,6 +200,48 @@ func (o *OcrAttachment) GetExtraProperties() map[string]interface{} {
 	return o.extraProperties
 }
 
+func (o *OcrAttachment) require(field *big.Int) {
+	if o.explicitFields == nil {
+		o.explicitFields = big.NewInt(0)
+	}
+	o.explicitFields.Or(o.explicitFields, field)
+}
+
+// SetFtype sets the Ftype field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrAttachment) SetFtype(ftype *string) {
+	o.Ftype = ftype
+	o.require(ocrAttachmentFieldFtype)
+}
+
+// SetFilename sets the Filename field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrAttachment) SetFilename(filename *string) {
+	o.Filename = filename
+	o.require(ocrAttachmentFieldFilename)
+}
+
+// SetFileDescriptor sets the FileDescriptor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrAttachment) SetFileDescriptor(fileDescriptor *string) {
+	o.FileDescriptor = fileDescriptor
+	o.require(ocrAttachmentFieldFileDescriptor)
+}
+
+// SetFurl sets the Furl field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrAttachment) SetFurl(furl *string) {
+	o.Furl = furl
+	o.require(ocrAttachmentFieldFurl)
+}
+
+// SetFContent sets the FContent field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrAttachment) SetFContent(fContent *string) {
+	o.FContent = fContent
+	o.require(ocrAttachmentFieldFContent)
+}
+
 func (o *OcrAttachment) UnmarshalJSON(data []byte) error {
 	type unmarshaler OcrAttachment
 	var value unmarshaler
@@ -148,6 +258,17 @@ func (o *OcrAttachment) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *OcrAttachment) MarshalJSON() ([]byte, error) {
+	type embed OcrAttachment
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*o),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, o.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (o *OcrAttachment) String() string {
 	if len(o.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
@@ -159,6 +280,21 @@ func (o *OcrAttachment) String() string {
 	}
 	return fmt.Sprintf("%#v", o)
 }
+
+var (
+	ocrBillItemFieldItemTotalAmount   = big.NewInt(1 << 0)
+	ocrBillItemFieldItemTaxAmount     = big.NewInt(1 << 1)
+	ocrBillItemFieldItemTaxRate       = big.NewInt(1 << 2)
+	ocrBillItemFieldItemProductCode   = big.NewInt(1 << 3)
+	ocrBillItemFieldItemProductName   = big.NewInt(1 << 4)
+	ocrBillItemFieldItemDescription   = big.NewInt(1 << 5)
+	ocrBillItemFieldItemCommodityCode = big.NewInt(1 << 6)
+	ocrBillItemFieldItemUnitOfMeasure = big.NewInt(1 << 7)
+	ocrBillItemFieldItemCost          = big.NewInt(1 << 8)
+	ocrBillItemFieldItemQty           = big.NewInt(1 << 9)
+	ocrBillItemFieldItemMode          = big.NewInt(1 << 10)
+	ocrBillItemFieldItemCategories    = big.NewInt(1 << 11)
+)
 
 type OcrBillItem struct {
 	ItemTotalAmount   *float64 `json:"itemTotalAmount,omitempty" url:"itemTotalAmount,omitempty"`
@@ -173,6 +309,9 @@ type OcrBillItem struct {
 	ItemQty           *int     `json:"itemQty,omitempty" url:"itemQty,omitempty"`
 	ItemMode          *int     `json:"itemMode,omitempty" url:"itemMode,omitempty"`
 	ItemCategories    []string `json:"itemCategories,omitempty" url:"itemCategories,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -266,6 +405,97 @@ func (o *OcrBillItem) GetExtraProperties() map[string]interface{} {
 	return o.extraProperties
 }
 
+func (o *OcrBillItem) require(field *big.Int) {
+	if o.explicitFields == nil {
+		o.explicitFields = big.NewInt(0)
+	}
+	o.explicitFields.Or(o.explicitFields, field)
+}
+
+// SetItemTotalAmount sets the ItemTotalAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrBillItem) SetItemTotalAmount(itemTotalAmount *float64) {
+	o.ItemTotalAmount = itemTotalAmount
+	o.require(ocrBillItemFieldItemTotalAmount)
+}
+
+// SetItemTaxAmount sets the ItemTaxAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrBillItem) SetItemTaxAmount(itemTaxAmount *float64) {
+	o.ItemTaxAmount = itemTaxAmount
+	o.require(ocrBillItemFieldItemTaxAmount)
+}
+
+// SetItemTaxRate sets the ItemTaxRate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrBillItem) SetItemTaxRate(itemTaxRate *float64) {
+	o.ItemTaxRate = itemTaxRate
+	o.require(ocrBillItemFieldItemTaxRate)
+}
+
+// SetItemProductCode sets the ItemProductCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrBillItem) SetItemProductCode(itemProductCode *string) {
+	o.ItemProductCode = itemProductCode
+	o.require(ocrBillItemFieldItemProductCode)
+}
+
+// SetItemProductName sets the ItemProductName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrBillItem) SetItemProductName(itemProductName *string) {
+	o.ItemProductName = itemProductName
+	o.require(ocrBillItemFieldItemProductName)
+}
+
+// SetItemDescription sets the ItemDescription field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrBillItem) SetItemDescription(itemDescription *string) {
+	o.ItemDescription = itemDescription
+	o.require(ocrBillItemFieldItemDescription)
+}
+
+// SetItemCommodityCode sets the ItemCommodityCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrBillItem) SetItemCommodityCode(itemCommodityCode *string) {
+	o.ItemCommodityCode = itemCommodityCode
+	o.require(ocrBillItemFieldItemCommodityCode)
+}
+
+// SetItemUnitOfMeasure sets the ItemUnitOfMeasure field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrBillItem) SetItemUnitOfMeasure(itemUnitOfMeasure *string) {
+	o.ItemUnitOfMeasure = itemUnitOfMeasure
+	o.require(ocrBillItemFieldItemUnitOfMeasure)
+}
+
+// SetItemCost sets the ItemCost field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrBillItem) SetItemCost(itemCost *float64) {
+	o.ItemCost = itemCost
+	o.require(ocrBillItemFieldItemCost)
+}
+
+// SetItemQty sets the ItemQty field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrBillItem) SetItemQty(itemQty *int) {
+	o.ItemQty = itemQty
+	o.require(ocrBillItemFieldItemQty)
+}
+
+// SetItemMode sets the ItemMode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrBillItem) SetItemMode(itemMode *int) {
+	o.ItemMode = itemMode
+	o.require(ocrBillItemFieldItemMode)
+}
+
+// SetItemCategories sets the ItemCategories field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrBillItem) SetItemCategories(itemCategories []string) {
+	o.ItemCategories = itemCategories
+	o.require(ocrBillItemFieldItemCategories)
+}
+
 func (o *OcrBillItem) UnmarshalJSON(data []byte) error {
 	type unmarshaler OcrBillItem
 	var value unmarshaler
@@ -282,6 +512,17 @@ func (o *OcrBillItem) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *OcrBillItem) MarshalJSON() ([]byte, error) {
+	type embed OcrBillItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*o),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, o.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (o *OcrBillItem) String() string {
 	if len(o.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
@@ -294,11 +535,21 @@ func (o *OcrBillItem) String() string {
 	return fmt.Sprintf("%#v", o)
 }
 
+var (
+	ocrBillItemAdditionalDataFieldCategory        = big.NewInt(1 << 0)
+	ocrBillItemAdditionalDataFieldCurrencyCode    = big.NewInt(1 << 1)
+	ocrBillItemAdditionalDataFieldType            = big.NewInt(1 << 2)
+	ocrBillItemAdditionalDataFieldReferenceNumber = big.NewInt(1 << 3)
+)
+
 type OcrBillItemAdditionalData struct {
 	Category        *string `json:"category,omitempty" url:"category,omitempty"`
 	CurrencyCode    *string `json:"currency_code,omitempty" url:"currency_code,omitempty"`
 	Type            *string `json:"type,omitempty" url:"type,omitempty"`
 	ReferenceNumber *string `json:"reference_number,omitempty" url:"reference_number,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -336,6 +587,41 @@ func (o *OcrBillItemAdditionalData) GetExtraProperties() map[string]interface{} 
 	return o.extraProperties
 }
 
+func (o *OcrBillItemAdditionalData) require(field *big.Int) {
+	if o.explicitFields == nil {
+		o.explicitFields = big.NewInt(0)
+	}
+	o.explicitFields.Or(o.explicitFields, field)
+}
+
+// SetCategory sets the Category field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrBillItemAdditionalData) SetCategory(category *string) {
+	o.Category = category
+	o.require(ocrBillItemAdditionalDataFieldCategory)
+}
+
+// SetCurrencyCode sets the CurrencyCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrBillItemAdditionalData) SetCurrencyCode(currencyCode *string) {
+	o.CurrencyCode = currencyCode
+	o.require(ocrBillItemAdditionalDataFieldCurrencyCode)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrBillItemAdditionalData) SetType(type_ *string) {
+	o.Type = type_
+	o.require(ocrBillItemAdditionalDataFieldType)
+}
+
+// SetReferenceNumber sets the ReferenceNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrBillItemAdditionalData) SetReferenceNumber(referenceNumber *string) {
+	o.ReferenceNumber = referenceNumber
+	o.require(ocrBillItemAdditionalDataFieldReferenceNumber)
+}
+
 func (o *OcrBillItemAdditionalData) UnmarshalJSON(data []byte) error {
 	type unmarshaler OcrBillItemAdditionalData
 	var value unmarshaler
@@ -352,6 +638,17 @@ func (o *OcrBillItemAdditionalData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *OcrBillItemAdditionalData) MarshalJSON() ([]byte, error) {
+	type embed OcrBillItemAdditionalData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*o),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, o.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (o *OcrBillItemAdditionalData) String() string {
 	if len(o.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
@@ -364,8 +661,15 @@ func (o *OcrBillItemAdditionalData) String() string {
 	return fmt.Sprintf("%#v", o)
 }
 
+var (
+	ocrResponseDataFieldResultData = big.NewInt(1 << 0)
+)
+
 type OcrResponseData struct {
 	ResultData *OcrResultData `json:"resultData,omitempty" url:"resultData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -380,6 +684,20 @@ func (o *OcrResponseData) GetResultData() *OcrResultData {
 
 func (o *OcrResponseData) GetExtraProperties() map[string]interface{} {
 	return o.extraProperties
+}
+
+func (o *OcrResponseData) require(field *big.Int) {
+	if o.explicitFields == nil {
+		o.explicitFields = big.NewInt(0)
+	}
+	o.explicitFields.Or(o.explicitFields, field)
+}
+
+// SetResultData sets the ResultData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrResponseData) SetResultData(resultData *OcrResultData) {
+	o.ResultData = resultData
+	o.require(ocrResponseDataFieldResultData)
 }
 
 func (o *OcrResponseData) UnmarshalJSON(data []byte) error {
@@ -398,6 +716,17 @@ func (o *OcrResponseData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *OcrResponseData) MarshalJSON() ([]byte, error) {
+	type embed OcrResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*o),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, o.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (o *OcrResponseData) String() string {
 	if len(o.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
@@ -409,6 +738,26 @@ func (o *OcrResponseData) String() string {
 	}
 	return fmt.Sprintf("%#v", o)
 }
+
+var (
+	ocrResultDataFieldBillNumber       = big.NewInt(1 << 0)
+	ocrResultDataFieldNetAmount        = big.NewInt(1 << 1)
+	ocrResultDataFieldBillDate         = big.NewInt(1 << 2)
+	ocrResultDataFieldDueDate          = big.NewInt(1 << 3)
+	ocrResultDataFieldComments         = big.NewInt(1 << 4)
+	ocrResultDataFieldBillItems        = big.NewInt(1 << 5)
+	ocrResultDataFieldMode             = big.NewInt(1 << 6)
+	ocrResultDataFieldAccountingField1 = big.NewInt(1 << 7)
+	ocrResultDataFieldAccountingField2 = big.NewInt(1 << 8)
+	ocrResultDataFieldAdditionalData   = big.NewInt(1 << 9)
+	ocrResultDataFieldVendor           = big.NewInt(1 << 10)
+	ocrResultDataFieldEndDate          = big.NewInt(1 << 11)
+	ocrResultDataFieldFrequency        = big.NewInt(1 << 12)
+	ocrResultDataFieldTerms            = big.NewInt(1 << 13)
+	ocrResultDataFieldStatus           = big.NewInt(1 << 14)
+	ocrResultDataFieldLotNumber        = big.NewInt(1 << 15)
+	ocrResultDataFieldAttachments      = big.NewInt(1 << 16)
+)
 
 type OcrResultData struct {
 	BillNumber       *string                    `json:"billNumber,omitempty" url:"billNumber,omitempty"`
@@ -428,6 +777,9 @@ type OcrResultData struct {
 	Status           *int                       `json:"status,omitempty" url:"status,omitempty"`
 	LotNumber        *string                    `json:"lotNumber,omitempty" url:"lotNumber,omitempty"`
 	Attachments      []*OcrAttachment           `json:"attachments,omitempty" url:"attachments,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -556,6 +908,132 @@ func (o *OcrResultData) GetExtraProperties() map[string]interface{} {
 	return o.extraProperties
 }
 
+func (o *OcrResultData) require(field *big.Int) {
+	if o.explicitFields == nil {
+		o.explicitFields = big.NewInt(0)
+	}
+	o.explicitFields.Or(o.explicitFields, field)
+}
+
+// SetBillNumber sets the BillNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrResultData) SetBillNumber(billNumber *string) {
+	o.BillNumber = billNumber
+	o.require(ocrResultDataFieldBillNumber)
+}
+
+// SetNetAmount sets the NetAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrResultData) SetNetAmount(netAmount *float64) {
+	o.NetAmount = netAmount
+	o.require(ocrResultDataFieldNetAmount)
+}
+
+// SetBillDate sets the BillDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrResultData) SetBillDate(billDate *time.Time) {
+	o.BillDate = billDate
+	o.require(ocrResultDataFieldBillDate)
+}
+
+// SetDueDate sets the DueDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrResultData) SetDueDate(dueDate *time.Time) {
+	o.DueDate = dueDate
+	o.require(ocrResultDataFieldDueDate)
+}
+
+// SetComments sets the Comments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrResultData) SetComments(comments *string) {
+	o.Comments = comments
+	o.require(ocrResultDataFieldComments)
+}
+
+// SetBillItems sets the BillItems field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrResultData) SetBillItems(billItems []*OcrBillItem) {
+	o.BillItems = billItems
+	o.require(ocrResultDataFieldBillItems)
+}
+
+// SetMode sets the Mode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrResultData) SetMode(mode *int) {
+	o.Mode = mode
+	o.require(ocrResultDataFieldMode)
+}
+
+// SetAccountingField1 sets the AccountingField1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrResultData) SetAccountingField1(accountingField1 *string) {
+	o.AccountingField1 = accountingField1
+	o.require(ocrResultDataFieldAccountingField1)
+}
+
+// SetAccountingField2 sets the AccountingField2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrResultData) SetAccountingField2(accountingField2 *string) {
+	o.AccountingField2 = accountingField2
+	o.require(ocrResultDataFieldAccountingField2)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrResultData) SetAdditionalData(additionalData *OcrBillItemAdditionalData) {
+	o.AdditionalData = additionalData
+	o.require(ocrResultDataFieldAdditionalData)
+}
+
+// SetVendor sets the Vendor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrResultData) SetVendor(vendor_ *OcrVendor) {
+	o.Vendor = vendor_
+	o.require(ocrResultDataFieldVendor)
+}
+
+// SetEndDate sets the EndDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrResultData) SetEndDate(endDate *time.Time) {
+	o.EndDate = endDate
+	o.require(ocrResultDataFieldEndDate)
+}
+
+// SetFrequency sets the Frequency field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrResultData) SetFrequency(frequency *string) {
+	o.Frequency = frequency
+	o.require(ocrResultDataFieldFrequency)
+}
+
+// SetTerms sets the Terms field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrResultData) SetTerms(terms *string) {
+	o.Terms = terms
+	o.require(ocrResultDataFieldTerms)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrResultData) SetStatus(status *int) {
+	o.Status = status
+	o.require(ocrResultDataFieldStatus)
+}
+
+// SetLotNumber sets the LotNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrResultData) SetLotNumber(lotNumber *string) {
+	o.LotNumber = lotNumber
+	o.require(ocrResultDataFieldLotNumber)
+}
+
+// SetAttachments sets the Attachments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrResultData) SetAttachments(attachments []*OcrAttachment) {
+	o.Attachments = attachments
+	o.require(ocrResultDataFieldAttachments)
+}
+
 func (o *OcrResultData) UnmarshalJSON(data []byte) error {
 	type embed OcrResultData
 	var unmarshaler = struct {
@@ -595,7 +1073,8 @@ func (o *OcrResultData) MarshalJSON() ([]byte, error) {
 		DueDate:  internal.NewOptionalDateTime(o.DueDate),
 		EndDate:  internal.NewOptionalDateTime(o.EndDate),
 	}
-	return json.Marshal(marshaler)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, o.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (o *OcrResultData) String() string {
@@ -609,6 +1088,40 @@ func (o *OcrResultData) String() string {
 	}
 	return fmt.Sprintf("%#v", o)
 }
+
+var (
+	ocrVendorFieldVendorNumber          = big.NewInt(1 << 0)
+	ocrVendorFieldName1                 = big.NewInt(1 << 1)
+	ocrVendorFieldName2                 = big.NewInt(1 << 2)
+	ocrVendorFieldEin                   = big.NewInt(1 << 3)
+	ocrVendorFieldPhone                 = big.NewInt(1 << 4)
+	ocrVendorFieldEmail                 = big.NewInt(1 << 5)
+	ocrVendorFieldAddress1              = big.NewInt(1 << 6)
+	ocrVendorFieldAddress2              = big.NewInt(1 << 7)
+	ocrVendorFieldCity                  = big.NewInt(1 << 8)
+	ocrVendorFieldState                 = big.NewInt(1 << 9)
+	ocrVendorFieldZip                   = big.NewInt(1 << 10)
+	ocrVendorFieldCountry               = big.NewInt(1 << 11)
+	ocrVendorFieldMcc                   = big.NewInt(1 << 12)
+	ocrVendorFieldLocationCode          = big.NewInt(1 << 13)
+	ocrVendorFieldContacts              = big.NewInt(1 << 14)
+	ocrVendorFieldBillingData           = big.NewInt(1 << 15)
+	ocrVendorFieldPaymentMethod         = big.NewInt(1 << 16)
+	ocrVendorFieldVendorStatus          = big.NewInt(1 << 17)
+	ocrVendorFieldRemitAddress1         = big.NewInt(1 << 18)
+	ocrVendorFieldRemitAddress2         = big.NewInt(1 << 19)
+	ocrVendorFieldRemitCity             = big.NewInt(1 << 20)
+	ocrVendorFieldRemitState            = big.NewInt(1 << 21)
+	ocrVendorFieldRemitZip              = big.NewInt(1 << 22)
+	ocrVendorFieldRemitCountry          = big.NewInt(1 << 23)
+	ocrVendorFieldPayeeName1            = big.NewInt(1 << 24)
+	ocrVendorFieldPayeeName2            = big.NewInt(1 << 25)
+	ocrVendorFieldCustomerVendorAccount = big.NewInt(1 << 26)
+	ocrVendorFieldInternalReferenceId   = big.NewInt(1 << 27)
+	ocrVendorFieldCustomField1          = big.NewInt(1 << 28)
+	ocrVendorFieldCustomField2          = big.NewInt(1 << 29)
+	ocrVendorFieldAdditionalData        = big.NewInt(1 << 30)
+)
 
 type OcrVendor struct {
 	VendorNumber          *string                  `json:"vendorNumber,omitempty" url:"vendorNumber,omitempty"`
@@ -642,6 +1155,9 @@ type OcrVendor struct {
 	CustomField1          *string                  `json:"customField1,omitempty" url:"customField1,omitempty"`
 	CustomField2          *string                  `json:"customField2,omitempty" url:"customField2,omitempty"`
 	AdditionalData        *OcrVendorAdditionalData `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -868,6 +1384,230 @@ func (o *OcrVendor) GetExtraProperties() map[string]interface{} {
 	return o.extraProperties
 }
 
+func (o *OcrVendor) require(field *big.Int) {
+	if o.explicitFields == nil {
+		o.explicitFields = big.NewInt(0)
+	}
+	o.explicitFields.Or(o.explicitFields, field)
+}
+
+// SetVendorNumber sets the VendorNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetVendorNumber(vendorNumber *string) {
+	o.VendorNumber = vendorNumber
+	o.require(ocrVendorFieldVendorNumber)
+}
+
+// SetName1 sets the Name1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetName1(name1 *string) {
+	o.Name1 = name1
+	o.require(ocrVendorFieldName1)
+}
+
+// SetName2 sets the Name2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetName2(name2 *string) {
+	o.Name2 = name2
+	o.require(ocrVendorFieldName2)
+}
+
+// SetEin sets the Ein field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetEin(ein *string) {
+	o.Ein = ein
+	o.require(ocrVendorFieldEin)
+}
+
+// SetPhone sets the Phone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetPhone(phone *string) {
+	o.Phone = phone
+	o.require(ocrVendorFieldPhone)
+}
+
+// SetEmail sets the Email field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetEmail(email *string) {
+	o.Email = email
+	o.require(ocrVendorFieldEmail)
+}
+
+// SetAddress1 sets the Address1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetAddress1(address1 *string) {
+	o.Address1 = address1
+	o.require(ocrVendorFieldAddress1)
+}
+
+// SetAddress2 sets the Address2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetAddress2(address2 *string) {
+	o.Address2 = address2
+	o.require(ocrVendorFieldAddress2)
+}
+
+// SetCity sets the City field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetCity(city *string) {
+	o.City = city
+	o.require(ocrVendorFieldCity)
+}
+
+// SetState sets the State field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetState(state *string) {
+	o.State = state
+	o.require(ocrVendorFieldState)
+}
+
+// SetZip sets the Zip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetZip(zip *string) {
+	o.Zip = zip
+	o.require(ocrVendorFieldZip)
+}
+
+// SetCountry sets the Country field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetCountry(country *string) {
+	o.Country = country
+	o.require(ocrVendorFieldCountry)
+}
+
+// SetMcc sets the Mcc field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetMcc(mcc *string) {
+	o.Mcc = mcc
+	o.require(ocrVendorFieldMcc)
+}
+
+// SetLocationCode sets the LocationCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetLocationCode(locationCode *string) {
+	o.LocationCode = locationCode
+	o.require(ocrVendorFieldLocationCode)
+}
+
+// SetContacts sets the Contacts field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetContacts(contacts []*Contacts) {
+	o.Contacts = contacts
+	o.require(ocrVendorFieldContacts)
+}
+
+// SetBillingData sets the BillingData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetBillingData(billingData *OcrVendorBillingData) {
+	o.BillingData = billingData
+	o.require(ocrVendorFieldBillingData)
+}
+
+// SetPaymentMethod sets the PaymentMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetPaymentMethod(paymentMethod *string) {
+	o.PaymentMethod = paymentMethod
+	o.require(ocrVendorFieldPaymentMethod)
+}
+
+// SetVendorStatus sets the VendorStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetVendorStatus(vendorStatus *int) {
+	o.VendorStatus = vendorStatus
+	o.require(ocrVendorFieldVendorStatus)
+}
+
+// SetRemitAddress1 sets the RemitAddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetRemitAddress1(remitAddress1 *string) {
+	o.RemitAddress1 = remitAddress1
+	o.require(ocrVendorFieldRemitAddress1)
+}
+
+// SetRemitAddress2 sets the RemitAddress2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetRemitAddress2(remitAddress2 *string) {
+	o.RemitAddress2 = remitAddress2
+	o.require(ocrVendorFieldRemitAddress2)
+}
+
+// SetRemitCity sets the RemitCity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetRemitCity(remitCity *string) {
+	o.RemitCity = remitCity
+	o.require(ocrVendorFieldRemitCity)
+}
+
+// SetRemitState sets the RemitState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetRemitState(remitState *string) {
+	o.RemitState = remitState
+	o.require(ocrVendorFieldRemitState)
+}
+
+// SetRemitZip sets the RemitZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetRemitZip(remitZip *string) {
+	o.RemitZip = remitZip
+	o.require(ocrVendorFieldRemitZip)
+}
+
+// SetRemitCountry sets the RemitCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetRemitCountry(remitCountry *string) {
+	o.RemitCountry = remitCountry
+	o.require(ocrVendorFieldRemitCountry)
+}
+
+// SetPayeeName1 sets the PayeeName1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetPayeeName1(payeeName1 *string) {
+	o.PayeeName1 = payeeName1
+	o.require(ocrVendorFieldPayeeName1)
+}
+
+// SetPayeeName2 sets the PayeeName2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetPayeeName2(payeeName2 *string) {
+	o.PayeeName2 = payeeName2
+	o.require(ocrVendorFieldPayeeName2)
+}
+
+// SetCustomerVendorAccount sets the CustomerVendorAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetCustomerVendorAccount(customerVendorAccount *string) {
+	o.CustomerVendorAccount = customerVendorAccount
+	o.require(ocrVendorFieldCustomerVendorAccount)
+}
+
+// SetInternalReferenceId sets the InternalReferenceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetInternalReferenceId(internalReferenceId *int64) {
+	o.InternalReferenceId = internalReferenceId
+	o.require(ocrVendorFieldInternalReferenceId)
+}
+
+// SetCustomField1 sets the CustomField1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetCustomField1(customField1 *string) {
+	o.CustomField1 = customField1
+	o.require(ocrVendorFieldCustomField1)
+}
+
+// SetCustomField2 sets the CustomField2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetCustomField2(customField2 *string) {
+	o.CustomField2 = customField2
+	o.require(ocrVendorFieldCustomField2)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendor) SetAdditionalData(additionalData *OcrVendorAdditionalData) {
+	o.AdditionalData = additionalData
+	o.require(ocrVendorFieldAdditionalData)
+}
+
 func (o *OcrVendor) UnmarshalJSON(data []byte) error {
 	type unmarshaler OcrVendor
 	var value unmarshaler
@@ -884,6 +1624,17 @@ func (o *OcrVendor) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *OcrVendor) MarshalJSON() ([]byte, error) {
+	type embed OcrVendor
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*o),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, o.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (o *OcrVendor) String() string {
 	if len(o.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
@@ -896,8 +1647,15 @@ func (o *OcrVendor) String() string {
 	return fmt.Sprintf("%#v", o)
 }
 
+var (
+	ocrVendorAdditionalDataFieldWeb = big.NewInt(1 << 0)
+)
+
 type OcrVendorAdditionalData struct {
 	Web *string `json:"web,omitempty" url:"web,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -912,6 +1670,20 @@ func (o *OcrVendorAdditionalData) GetWeb() *string {
 
 func (o *OcrVendorAdditionalData) GetExtraProperties() map[string]interface{} {
 	return o.extraProperties
+}
+
+func (o *OcrVendorAdditionalData) require(field *big.Int) {
+	if o.explicitFields == nil {
+		o.explicitFields = big.NewInt(0)
+	}
+	o.explicitFields.Or(o.explicitFields, field)
+}
+
+// SetWeb sets the Web field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendorAdditionalData) SetWeb(web *string) {
+	o.Web = web
+	o.require(ocrVendorAdditionalDataFieldWeb)
 }
 
 func (o *OcrVendorAdditionalData) UnmarshalJSON(data []byte) error {
@@ -930,6 +1702,17 @@ func (o *OcrVendorAdditionalData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *OcrVendorAdditionalData) MarshalJSON() ([]byte, error) {
+	type embed OcrVendorAdditionalData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*o),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, o.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (o *OcrVendorAdditionalData) String() string {
 	if len(o.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
@@ -942,6 +1725,17 @@ func (o *OcrVendorAdditionalData) String() string {
 	return fmt.Sprintf("%#v", o)
 }
 
+var (
+	ocrVendorBillingDataFieldId                    = big.NewInt(1 << 0)
+	ocrVendorBillingDataFieldBankName              = big.NewInt(1 << 1)
+	ocrVendorBillingDataFieldRoutingAccount        = big.NewInt(1 << 2)
+	ocrVendorBillingDataFieldAccountNumber         = big.NewInt(1 << 3)
+	ocrVendorBillingDataFieldTypeAccount           = big.NewInt(1 << 4)
+	ocrVendorBillingDataFieldBankAccountHolderName = big.NewInt(1 << 5)
+	ocrVendorBillingDataFieldBankAccountHolderType = big.NewInt(1 << 6)
+	ocrVendorBillingDataFieldBankAccountFunction   = big.NewInt(1 << 7)
+)
+
 type OcrVendorBillingData struct {
 	Id                    *int    `json:"id,omitempty" url:"id,omitempty"`
 	BankName              *string `json:"bankName,omitempty" url:"bankName,omitempty"`
@@ -951,6 +1745,9 @@ type OcrVendorBillingData struct {
 	BankAccountHolderName *string `json:"bankAccountHolderName,omitempty" url:"bankAccountHolderName,omitempty"`
 	BankAccountHolderType *string `json:"bankAccountHolderType,omitempty" url:"bankAccountHolderType,omitempty"`
 	BankAccountFunction   *int    `json:"bankAccountFunction,omitempty" url:"bankAccountFunction,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -1016,6 +1813,69 @@ func (o *OcrVendorBillingData) GetExtraProperties() map[string]interface{} {
 	return o.extraProperties
 }
 
+func (o *OcrVendorBillingData) require(field *big.Int) {
+	if o.explicitFields == nil {
+		o.explicitFields = big.NewInt(0)
+	}
+	o.explicitFields.Or(o.explicitFields, field)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendorBillingData) SetId(id *int) {
+	o.Id = id
+	o.require(ocrVendorBillingDataFieldId)
+}
+
+// SetBankName sets the BankName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendorBillingData) SetBankName(bankName *string) {
+	o.BankName = bankName
+	o.require(ocrVendorBillingDataFieldBankName)
+}
+
+// SetRoutingAccount sets the RoutingAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendorBillingData) SetRoutingAccount(routingAccount *string) {
+	o.RoutingAccount = routingAccount
+	o.require(ocrVendorBillingDataFieldRoutingAccount)
+}
+
+// SetAccountNumber sets the AccountNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendorBillingData) SetAccountNumber(accountNumber *string) {
+	o.AccountNumber = accountNumber
+	o.require(ocrVendorBillingDataFieldAccountNumber)
+}
+
+// SetTypeAccount sets the TypeAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendorBillingData) SetTypeAccount(typeAccount *string) {
+	o.TypeAccount = typeAccount
+	o.require(ocrVendorBillingDataFieldTypeAccount)
+}
+
+// SetBankAccountHolderName sets the BankAccountHolderName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendorBillingData) SetBankAccountHolderName(bankAccountHolderName *string) {
+	o.BankAccountHolderName = bankAccountHolderName
+	o.require(ocrVendorBillingDataFieldBankAccountHolderName)
+}
+
+// SetBankAccountHolderType sets the BankAccountHolderType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendorBillingData) SetBankAccountHolderType(bankAccountHolderType *string) {
+	o.BankAccountHolderType = bankAccountHolderType
+	o.require(ocrVendorBillingDataFieldBankAccountHolderType)
+}
+
+// SetBankAccountFunction sets the BankAccountFunction field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrVendorBillingData) SetBankAccountFunction(bankAccountFunction *int) {
+	o.BankAccountFunction = bankAccountFunction
+	o.require(ocrVendorBillingDataFieldBankAccountFunction)
+}
+
 func (o *OcrVendorBillingData) UnmarshalJSON(data []byte) error {
 	type unmarshaler OcrVendorBillingData
 	var value unmarshaler
@@ -1032,6 +1892,17 @@ func (o *OcrVendorBillingData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *OcrVendorBillingData) MarshalJSON() ([]byte, error) {
+	type embed OcrVendorBillingData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*o),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, o.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (o *OcrVendorBillingData) String() string {
 	if len(o.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
@@ -1044,12 +1915,22 @@ func (o *OcrVendorBillingData) String() string {
 	return fmt.Sprintf("%#v", o)
 }
 
+var (
+	payabliApiResponseOcrFieldIsSuccess    = big.NewInt(1 << 0)
+	payabliApiResponseOcrFieldResponseText = big.NewInt(1 << 1)
+	payabliApiResponseOcrFieldResponseCode = big.NewInt(1 << 2)
+	payabliApiResponseOcrFieldResponseData = big.NewInt(1 << 3)
+)
+
 type PayabliApiResponseOcr struct {
 	IsSuccess    IsSuccess    `json:"isSuccess" url:"isSuccess"`
 	ResponseText ResponseText `json:"responseText" url:"responseText"`
 	ResponseCode Responsecode `json:"responseCode" url:"responseCode"`
 	// Details of the OCR processing result
 	ResponseData *OcrResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -1087,6 +1968,41 @@ func (p *PayabliApiResponseOcr) GetExtraProperties() map[string]interface{} {
 	return p.extraProperties
 }
 
+func (p *PayabliApiResponseOcr) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseOcr) SetIsSuccess(isSuccess IsSuccess) {
+	p.IsSuccess = isSuccess
+	p.require(payabliApiResponseOcrFieldIsSuccess)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseOcr) SetResponseText(responseText ResponseText) {
+	p.ResponseText = responseText
+	p.require(payabliApiResponseOcrFieldResponseText)
+}
+
+// SetResponseCode sets the ResponseCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseOcr) SetResponseCode(responseCode Responsecode) {
+	p.ResponseCode = responseCode
+	p.require(payabliApiResponseOcrFieldResponseCode)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseOcr) SetResponseData(responseData *OcrResponseData) {
+	p.ResponseData = responseData
+	p.require(payabliApiResponseOcrFieldResponseData)
+}
+
 func (p *PayabliApiResponseOcr) UnmarshalJSON(data []byte) error {
 	type unmarshaler PayabliApiResponseOcr
 	var value unmarshaler
@@ -1101,6 +2017,17 @@ func (p *PayabliApiResponseOcr) UnmarshalJSON(data []byte) error {
 	p.extraProperties = extraProperties
 	p.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (p *PayabliApiResponseOcr) MarshalJSON() ([]byte, error) {
+	type embed PayabliApiResponseOcr
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (p *PayabliApiResponseOcr) String() string {

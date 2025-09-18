@@ -4,7 +4,7 @@ package paypoint
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -38,7 +38,7 @@ func (c *Client) GetBasicEntry(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	opts ...option.RequestOption,
-) (*sdk.GetBasicEntryResponse, error) {
+) (*sdkgo.GetBasicEntryResponse, error) {
 	response, err := c.WithRawResponse.GetBasicEntry(
 		ctx,
 		entry,
@@ -56,7 +56,7 @@ func (c *Client) GetBasicEntryById(
 	// Paypoint ID. You can find this value by querying `/api/Query/paypoints/{orgId}`
 	idPaypoint string,
 	opts ...option.RequestOption,
-) (*sdk.GetBasicEntryByIdResponse, error) {
+) (*sdkgo.GetBasicEntryByIdResponse, error) {
 	response, err := c.WithRawResponse.GetBasicEntryById(
 		ctx,
 		idPaypoint,
@@ -73,9 +73,9 @@ func (c *Client) GetEntryConfig(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdk.GetEntryConfigRequest,
+	request *sdkgo.GetEntryConfigRequest,
 	opts ...option.RequestOption,
-) (*sdk.GetEntryConfigResponse, error) {
+) (*sdkgo.GetEntryConfigResponse, error) {
 	response, err := c.WithRawResponse.GetEntryConfig(
 		ctx,
 		entry,
@@ -96,7 +96,7 @@ func (c *Client) GetPage(
 	// Payment page identifier. The subdomain value is the last portion of the payment page URL. For example, in`https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
 	subdomain string,
 	opts ...option.RequestOption,
-) (*sdk.PayabliPages, error) {
+) (*sdkgo.PayabliPages, error) {
 	response, err := c.WithRawResponse.GetPage(
 		ctx,
 		entry,
@@ -117,7 +117,7 @@ func (c *Client) RemovePage(
 	// Payment page identifier. The subdomain value is the last portion of the payment page URL. For example, in`https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
 	subdomain string,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponseGeneric2Part, error) {
+) (*sdkgo.PayabliApiResponseGeneric2Part, error) {
 	response, err := c.WithRawResponse.RemovePage(
 		ctx,
 		entry,
@@ -135,9 +135,9 @@ func (c *Client) SaveLogo(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdk.FileContent,
+	request *sdkgo.FileContent,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponse00Responsedatanonobject, error) {
+) (*sdkgo.PayabliApiResponse00Responsedatanonobject, error) {
 	response, err := c.WithRawResponse.SaveLogo(
 		ctx,
 		entry,
@@ -156,7 +156,7 @@ func (c *Client) SettingsPage(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	opts ...option.RequestOption,
-) (*sdk.SettingsQueryRecord, error) {
+) (*sdkgo.SettingsQueryRecord, error) {
 	response, err := c.WithRawResponse.SettingsPage(
 		ctx,
 		entry,
@@ -171,9 +171,9 @@ func (c *Client) SettingsPage(
 // Migrates a paypoint to a new parent organization.
 func (c *Client) Migrate(
 	ctx context.Context,
-	request *sdk.PaypointMoveRequest,
+	request *sdkgo.PaypointMoveRequest,
 	opts ...option.RequestOption,
-) (*sdk.MigratePaypointResponse, error) {
+) (*sdkgo.MigratePaypointResponse, error) {
 	response, err := c.WithRawResponse.Migrate(
 		ctx,
 		request,

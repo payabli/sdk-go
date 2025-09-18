@@ -4,6 +4,14 @@ package payabli
 
 import (
 	fmt "fmt"
+	big "math/big"
+)
+
+var (
+	exportApplicationsRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportApplicationsRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportApplicationsRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportApplicationsRequestFieldParameters    = big.NewInt(1 << 3)
 )
 
 type ExportApplicationsRequest struct {
@@ -67,7 +75,52 @@ type ExportApplicationsRequest struct {
 	//
 	// Example: `dbaname(ct)=hoa` returns all records with a `dbaname` containing "hoa"
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportApplicationsRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportApplicationsRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportApplicationsRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportApplicationsRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportApplicationsRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportApplicationsRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportApplicationsRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportApplicationsRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportApplicationsRequestFieldParameters)
+}
+
+var (
+	exportBatchDetailsRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportBatchDetailsRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportBatchDetailsRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportBatchDetailsRequestFieldParameters    = big.NewInt(1 << 3)
+)
 
 type ExportBatchDetailsRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -141,7 +194,52 @@ type ExportBatchDetailsRequest struct {
 	//
 	// Example: `amount(gt)=20` return all records with amount greater than 20.00
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportBatchDetailsRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBatchDetailsRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportBatchDetailsRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBatchDetailsRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportBatchDetailsRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBatchDetailsRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportBatchDetailsRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBatchDetailsRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportBatchDetailsRequestFieldParameters)
+}
+
+var (
+	exportBatchDetailsOrgRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportBatchDetailsOrgRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportBatchDetailsOrgRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportBatchDetailsOrgRequestFieldParameters    = big.NewInt(1 << 3)
+)
 
 type ExportBatchDetailsOrgRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -215,7 +313,52 @@ type ExportBatchDetailsOrgRequest struct {
 	//
 	// Example: `amount(gt)=20` return all records with amount greater than 20.00
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportBatchDetailsOrgRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBatchDetailsOrgRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportBatchDetailsOrgRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBatchDetailsOrgRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportBatchDetailsOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBatchDetailsOrgRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportBatchDetailsOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBatchDetailsOrgRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportBatchDetailsOrgRequestFieldParameters)
+}
+
+var (
+	exportBatchesRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportBatchesRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportBatchesRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportBatchesRequestFieldParameters    = big.NewInt(1 << 3)
+)
 
 type ExportBatchesRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -279,7 +422,52 @@ type ExportBatchesRequest struct {
 	//
 	// Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater than 20.00
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportBatchesRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBatchesRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportBatchesRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBatchesRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportBatchesRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBatchesRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportBatchesRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBatchesRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportBatchesRequestFieldParameters)
+}
+
+var (
+	exportBatchesOrgRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportBatchesOrgRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportBatchesOrgRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportBatchesOrgRequestFieldParameters    = big.NewInt(1 << 3)
+)
 
 type ExportBatchesOrgRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -341,7 +529,52 @@ type ExportBatchesOrgRequest struct {
 	// - `fromRecord`: initial record in query
 	// Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater than 20.00
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportBatchesOrgRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBatchesOrgRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportBatchesOrgRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBatchesOrgRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportBatchesOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBatchesOrgRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportBatchesOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBatchesOrgRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportBatchesOrgRequestFieldParameters)
+}
+
+var (
+	exportBatchesOutRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportBatchesOutRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportBatchesOutRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportBatchesOutRequestFieldParameters    = big.NewInt(1 << 3)
+)
 
 type ExportBatchesOutRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -386,7 +619,52 @@ type ExportBatchesOutRequest struct {
 	//
 	// Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater than 20.00"
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportBatchesOutRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBatchesOutRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportBatchesOutRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBatchesOutRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportBatchesOutRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBatchesOutRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportBatchesOutRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBatchesOutRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportBatchesOutRequestFieldParameters)
+}
+
+var (
+	exportBatchesOutOrgRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportBatchesOutOrgRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportBatchesOutOrgRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportBatchesOutOrgRequestFieldParameters    = big.NewInt(1 << 3)
+)
 
 type ExportBatchesOutOrgRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -431,7 +709,52 @@ type ExportBatchesOutOrgRequest struct {
 	//
 	// Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater than 20.00"
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportBatchesOutOrgRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBatchesOutOrgRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportBatchesOutOrgRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBatchesOutOrgRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportBatchesOutOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBatchesOutOrgRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportBatchesOutOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBatchesOutOrgRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportBatchesOutOrgRequestFieldParameters)
+}
+
+var (
+	exportBillsRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportBillsRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportBillsRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportBillsRequestFieldParameters    = big.NewInt(1 << 3)
+)
 
 type ExportBillsRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -493,7 +816,52 @@ type ExportBillsRequest struct {
 	//
 	// Example: totalAmount(gt)=20  return all records with totalAmount greater than 20.00
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportBillsRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBillsRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportBillsRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBillsRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportBillsRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBillsRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportBillsRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBillsRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportBillsRequestFieldParameters)
+}
+
+var (
+	exportBillsOrgRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportBillsOrgRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportBillsOrgRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportBillsOrgRequestFieldParameters    = big.NewInt(1 << 3)
+)
 
 type ExportBillsOrgRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -555,7 +923,52 @@ type ExportBillsOrgRequest struct {
 	//
 	// Example: totalAmount(gt)=20  return all records with totalAmount greater than 20.00
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportBillsOrgRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBillsOrgRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportBillsOrgRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBillsOrgRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportBillsOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBillsOrgRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportBillsOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportBillsOrgRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportBillsOrgRequestFieldParameters)
+}
+
+var (
+	exportChargebacksRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportChargebacksRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportChargebacksRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportChargebacksRequestFieldParameters    = big.NewInt(1 << 3)
+)
 
 type ExportChargebacksRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -638,7 +1051,52 @@ type ExportChargebacksRequest struct {
 	//
 	// Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportChargebacksRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportChargebacksRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportChargebacksRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportChargebacksRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportChargebacksRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportChargebacksRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportChargebacksRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportChargebacksRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportChargebacksRequestFieldParameters)
+}
+
+var (
+	exportChargebacksOrgRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportChargebacksOrgRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportChargebacksOrgRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportChargebacksOrgRequestFieldParameters    = big.NewInt(1 << 3)
+)
 
 type ExportChargebacksOrgRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -721,7 +1179,52 @@ type ExportChargebacksOrgRequest struct {
 	//
 	// Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportChargebacksOrgRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportChargebacksOrgRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportChargebacksOrgRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportChargebacksOrgRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportChargebacksOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportChargebacksOrgRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportChargebacksOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportChargebacksOrgRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportChargebacksOrgRequestFieldParameters)
+}
+
+var (
+	exportCustomersRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportCustomersRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportCustomersRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportCustomersRequestFieldParameters    = big.NewInt(1 << 3)
+)
 
 type ExportCustomersRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -797,7 +1300,52 @@ type ExportCustomersRequest struct {
 	// **Example:**
 	// balance(gt)=20 return all records with balance greater than 20.00
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportCustomersRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportCustomersRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportCustomersRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportCustomersRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportCustomersRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportCustomersRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportCustomersRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportCustomersRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportCustomersRequestFieldParameters)
+}
+
+var (
+	exportCustomersOrgRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportCustomersOrgRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportCustomersOrgRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportCustomersOrgRequestFieldParameters    = big.NewInt(1 << 3)
+)
 
 type ExportCustomersOrgRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -873,7 +1421,52 @@ type ExportCustomersOrgRequest struct {
 	// **Example:**
 	// balance(gt)=20 return all records with balance greater than 20.00
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportCustomersOrgRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportCustomersOrgRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportCustomersOrgRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportCustomersOrgRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportCustomersOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportCustomersOrgRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportCustomersOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportCustomersOrgRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportCustomersOrgRequestFieldParameters)
+}
+
+var (
+	exportInvoicesRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportInvoicesRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportInvoicesRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportInvoicesRequestFieldParameters    = big.NewInt(1 << 3)
+)
 
 type ExportInvoicesRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -959,7 +1552,52 @@ type ExportInvoicesRequest struct {
 	//
 	// Example: `totalAmount(gt)=20` returns all records with `totalAmount` greater than 20.00
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportInvoicesRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportInvoicesRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportInvoicesRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportInvoicesRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportInvoicesRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportInvoicesRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportInvoicesRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportInvoicesRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportInvoicesRequestFieldParameters)
+}
+
+var (
+	exportInvoicesOrgRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportInvoicesOrgRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportInvoicesOrgRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportInvoicesOrgRequestFieldParameters    = big.NewInt(1 << 3)
+)
 
 type ExportInvoicesOrgRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -1045,7 +1683,52 @@ type ExportInvoicesOrgRequest struct {
 	//
 	// Example: totalAmount(gt)=20  return all records with totalAmount greater than 20.00
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportInvoicesOrgRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportInvoicesOrgRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportInvoicesOrgRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportInvoicesOrgRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportInvoicesOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportInvoicesOrgRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportInvoicesOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportInvoicesOrgRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportInvoicesOrgRequestFieldParameters)
+}
+
+var (
+	exportOrganizationsRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportOrganizationsRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportOrganizationsRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportOrganizationsRequestFieldParameters    = big.NewInt(1 << 3)
+)
 
 type ExportOrganizationsRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -1106,7 +1789,52 @@ type ExportOrganizationsRequest struct {
 	//
 	// Example: name(ct)=hoa  return all records where name contains "hoa"
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportOrganizationsRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportOrganizationsRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportOrganizationsRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportOrganizationsRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportOrganizationsRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportOrganizationsRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportOrganizationsRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportOrganizationsRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportOrganizationsRequestFieldParameters)
+}
+
+var (
+	exportPayoutRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportPayoutRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportPayoutRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportPayoutRequestFieldParameters    = big.NewInt(1 << 3)
+)
 
 type ExportPayoutRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -1166,7 +1894,52 @@ type ExportPayoutRequest struct {
 	//
 	// Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.00
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportPayoutRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportPayoutRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportPayoutRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportPayoutRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportPayoutRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportPayoutRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportPayoutRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportPayoutRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportPayoutRequestFieldParameters)
+}
+
+var (
+	exportPayoutOrgRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportPayoutOrgRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportPayoutOrgRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportPayoutOrgRequestFieldParameters    = big.NewInt(1 << 3)
+)
 
 type ExportPayoutOrgRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -1226,7 +1999,52 @@ type ExportPayoutOrgRequest struct {
 	//
 	// Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.00
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportPayoutOrgRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportPayoutOrgRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportPayoutOrgRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportPayoutOrgRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportPayoutOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportPayoutOrgRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportPayoutOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportPayoutOrgRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportPayoutOrgRequestFieldParameters)
+}
+
+var (
+	exportPaypointsRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportPaypointsRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportPaypointsRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportPaypointsRequestFieldParameters    = big.NewInt(1 << 3)
+)
 
 type ExportPaypointsRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -1288,7 +2106,52 @@ type ExportPaypointsRequest struct {
 	//
 	// Example: `dbaname(ct)=hoa` returns all records with `dbaname` containing "hoa"
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportPaypointsRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportPaypointsRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportPaypointsRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportPaypointsRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportPaypointsRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportPaypointsRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportPaypointsRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportPaypointsRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportPaypointsRequestFieldParameters)
+}
+
+var (
+	exportSettlementsRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportSettlementsRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportSettlementsRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportSettlementsRequestFieldParameters    = big.NewInt(1 << 3)
+)
 
 type ExportSettlementsRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -1370,7 +2233,52 @@ type ExportSettlementsRequest struct {
 	//
 	// Example: `settledAmount(gt)=20` returns all records with a `settledAmount` greater than 20.00
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportSettlementsRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportSettlementsRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportSettlementsRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportSettlementsRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportSettlementsRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportSettlementsRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportSettlementsRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportSettlementsRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportSettlementsRequestFieldParameters)
+}
+
+var (
+	exportSettlementsOrgRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportSettlementsOrgRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportSettlementsOrgRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportSettlementsOrgRequestFieldParameters    = big.NewInt(1 << 3)
+)
 
 type ExportSettlementsOrgRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -1452,7 +2360,52 @@ type ExportSettlementsOrgRequest struct {
 	//
 	// Example: `settledAmount(gt)=20` returns all records with a `settledAmount` greater than 20.00
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportSettlementsOrgRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportSettlementsOrgRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportSettlementsOrgRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportSettlementsOrgRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportSettlementsOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportSettlementsOrgRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportSettlementsOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportSettlementsOrgRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportSettlementsOrgRequestFieldParameters)
+}
+
+var (
+	exportSubscriptionsRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportSubscriptionsRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportSubscriptionsRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportSubscriptionsRequestFieldParameters    = big.NewInt(1 << 3)
+)
 
 type ExportSubscriptionsRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -1536,7 +2489,52 @@ type ExportSubscriptionsRequest struct {
 	//
 	// Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportSubscriptionsRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportSubscriptionsRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportSubscriptionsRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportSubscriptionsRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportSubscriptionsRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportSubscriptionsRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportSubscriptionsRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportSubscriptionsRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportSubscriptionsRequestFieldParameters)
+}
+
+var (
+	exportSubscriptionsOrgRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportSubscriptionsOrgRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportSubscriptionsOrgRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportSubscriptionsOrgRequestFieldParameters    = big.NewInt(1 << 3)
+)
 
 type ExportSubscriptionsOrgRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -1620,7 +2618,52 @@ type ExportSubscriptionsOrgRequest struct {
 	//
 	// Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportSubscriptionsOrgRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportSubscriptionsOrgRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportSubscriptionsOrgRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportSubscriptionsOrgRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportSubscriptionsOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportSubscriptionsOrgRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportSubscriptionsOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportSubscriptionsOrgRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportSubscriptionsOrgRequestFieldParameters)
+}
+
+var (
+	exportTransactionsRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportTransactionsRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportTransactionsRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportTransactionsRequestFieldParameters    = big.NewInt(1 << 3)
+)
 
 type ExportTransactionsRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -1708,7 +2751,52 @@ type ExportTransactionsRequest struct {
 	//
 	// Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportTransactionsRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportTransactionsRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportTransactionsRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportTransactionsRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportTransactionsRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportTransactionsRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportTransactionsRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportTransactionsRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportTransactionsRequestFieldParameters)
+}
+
+var (
+	exportTransactionsOrgRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportTransactionsOrgRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportTransactionsOrgRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportTransactionsOrgRequestFieldParameters    = big.NewInt(1 << 3)
+)
 
 type ExportTransactionsOrgRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -1796,7 +2884,53 @@ type ExportTransactionsOrgRequest struct {
 	//
 	// Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportTransactionsOrgRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportTransactionsOrgRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportTransactionsOrgRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportTransactionsOrgRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportTransactionsOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportTransactionsOrgRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportTransactionsOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportTransactionsOrgRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportTransactionsOrgRequestFieldParameters)
+}
+
+var (
+	exportTransferDetailsRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportTransferDetailsRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportTransferDetailsRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportTransferDetailsRequestFieldParameters    = big.NewInt(1 << 3)
+	exportTransferDetailsRequestFieldSortBy        = big.NewInt(1 << 4)
+)
 
 type ExportTransferDetailsRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -1850,7 +2984,60 @@ type ExportTransferDetailsRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportTransferDetailsRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportTransferDetailsRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportTransferDetailsRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportTransferDetailsRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportTransferDetailsRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportTransferDetailsRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportTransferDetailsRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportTransferDetailsRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportTransferDetailsRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportTransferDetailsRequest) SetSortBy(sortBy *string) {
+	e.SortBy = sortBy
+	e.require(exportTransferDetailsRequestFieldSortBy)
+}
+
+var (
+	exportTransfersRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportTransfersRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportTransfersRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportTransfersRequestFieldParameters    = big.NewInt(1 << 3)
+	exportTransfersRequestFieldSortBy        = big.NewInt(1 << 4)
+)
 
 type ExportTransfersRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -1906,7 +3093,59 @@ type ExportTransfersRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportTransfersRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportTransfersRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportTransfersRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportTransfersRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportTransfersRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportTransfersRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportTransfersRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportTransfersRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportTransfersRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportTransfersRequest) SetSortBy(sortBy *string) {
+	e.SortBy = sortBy
+	e.require(exportTransfersRequestFieldSortBy)
+}
+
+var (
+	exportVendorsRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportVendorsRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportVendorsRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportVendorsRequestFieldParameters    = big.NewInt(1 << 3)
+)
 
 type ExportVendorsRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -1972,7 +3211,52 @@ type ExportVendorsRequest struct {
 	//
 	// Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (e *ExportVendorsRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportVendorsRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportVendorsRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportVendorsRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportVendorsRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportVendorsRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportVendorsRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportVendorsRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportVendorsRequestFieldParameters)
+}
+
+var (
+	exportVendorsOrgRequestFieldColumnsExport = big.NewInt(1 << 0)
+	exportVendorsOrgRequestFieldFromRecord    = big.NewInt(1 << 1)
+	exportVendorsOrgRequestFieldLimitRecord   = big.NewInt(1 << 2)
+	exportVendorsOrgRequestFieldParameters    = big.NewInt(1 << 3)
+)
 
 type ExportVendorsOrgRequest struct {
 	ColumnsExport *string `json:"-" url:"columnsExport,omitempty"`
@@ -2038,6 +3322,44 @@ type ExportVendorsOrgRequest struct {
 	//
 	// Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (e *ExportVendorsOrgRequest) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetColumnsExport sets the ColumnsExport field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportVendorsOrgRequest) SetColumnsExport(columnsExport *string) {
+	e.ColumnsExport = columnsExport
+	e.require(exportVendorsOrgRequestFieldColumnsExport)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportVendorsOrgRequest) SetFromRecord(fromRecord *int) {
+	e.FromRecord = fromRecord
+	e.require(exportVendorsOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportVendorsOrgRequest) SetLimitRecord(limitRecord *int) {
+	e.LimitRecord = limitRecord
+	e.require(exportVendorsOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *ExportVendorsOrgRequest) SetParameters(parameters map[string]*string) {
+	e.Parameters = parameters
+	e.require(exportVendorsOrgRequestFieldParameters)
 }
 
 type ExportFormat1 string

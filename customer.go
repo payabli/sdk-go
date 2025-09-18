@@ -6,6 +6,13 @@ import (
 	json "encoding/json"
 	fmt "fmt"
 	internal "github.com/payabli/sdk-go/internal"
+	big "math/big"
+)
+
+var (
+	addCustomerRequestFieldIdempotencyKey        = big.NewInt(1 << 0)
+	addCustomerRequestFieldForceCustomerCreation = big.NewInt(1 << 1)
+	addCustomerRequestFieldReplaceExisting       = big.NewInt(1 << 2)
 )
 
 type AddCustomerRequest struct {
@@ -15,6 +22,37 @@ type AddCustomerRequest struct {
 	// Flag indicating to replace existing customer with a new record. Possible values: 0 (don't replace), 1 (replace). Default is `0`.
 	ReplaceExisting *int          `json:"-" url:"replaceExisting,omitempty"`
 	Body            *CustomerData `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (a *AddCustomerRequest) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetIdempotencyKey sets the IdempotencyKey field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddCustomerRequest) SetIdempotencyKey(idempotencyKey *IdempotencyKey) {
+	a.IdempotencyKey = idempotencyKey
+	a.require(addCustomerRequestFieldIdempotencyKey)
+}
+
+// SetForceCustomerCreation sets the ForceCustomerCreation field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddCustomerRequest) SetForceCustomerCreation(forceCustomerCreation *bool) {
+	a.ForceCustomerCreation = forceCustomerCreation
+	a.require(addCustomerRequestFieldForceCustomerCreation)
+}
+
+// SetReplaceExisting sets the ReplaceExisting field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddCustomerRequest) SetReplaceExisting(replaceExisting *int) {
+	a.ReplaceExisting = replaceExisting
+	a.require(addCustomerRequestFieldReplaceExisting)
 }
 
 func (a *AddCustomerRequest) UnmarshalJSON(data []byte) error {
@@ -30,10 +68,19 @@ func (a *AddCustomerRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(a.Body)
 }
 
+var (
+	payabliApiResponseCustomerQueryFieldIsSuccess    = big.NewInt(1 << 0)
+	payabliApiResponseCustomerQueryFieldResponseData = big.NewInt(1 << 1)
+	payabliApiResponseCustomerQueryFieldResponseText = big.NewInt(1 << 2)
+)
+
 type PayabliApiResponseCustomerQuery struct {
 	IsSuccess    *IsSuccess            `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	ResponseData *CustomerQueryRecords `json:"responseData,omitempty" url:"responseData,omitempty"`
 	ResponseText ResponseText          `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -64,6 +111,34 @@ func (p *PayabliApiResponseCustomerQuery) GetExtraProperties() map[string]interf
 	return p.extraProperties
 }
 
+func (p *PayabliApiResponseCustomerQuery) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseCustomerQuery) SetIsSuccess(isSuccess *IsSuccess) {
+	p.IsSuccess = isSuccess
+	p.require(payabliApiResponseCustomerQueryFieldIsSuccess)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseCustomerQuery) SetResponseData(responseData *CustomerQueryRecords) {
+	p.ResponseData = responseData
+	p.require(payabliApiResponseCustomerQueryFieldResponseData)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseCustomerQuery) SetResponseText(responseText ResponseText) {
+	p.ResponseText = responseText
+	p.require(payabliApiResponseCustomerQueryFieldResponseText)
+}
+
 func (p *PayabliApiResponseCustomerQuery) UnmarshalJSON(data []byte) error {
 	type unmarshaler PayabliApiResponseCustomerQuery
 	var value unmarshaler
@@ -78,6 +153,17 @@ func (p *PayabliApiResponseCustomerQuery) UnmarshalJSON(data []byte) error {
 	p.extraProperties = extraProperties
 	p.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (p *PayabliApiResponseCustomerQuery) MarshalJSON() ([]byte, error) {
+	type embed PayabliApiResponseCustomerQuery
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (p *PayabliApiResponseCustomerQuery) String() string {

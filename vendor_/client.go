@@ -4,7 +4,7 @@ package vendor_
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -37,9 +37,9 @@ func (c *Client) AddVendor(
 	ctx context.Context,
 	// Entrypoint identifier.
 	entry string,
-	request *sdk.VendorData,
+	request *sdkgo.VendorData,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponseVendors, error) {
+) (*sdkgo.PayabliApiResponseVendors, error) {
 	response, err := c.WithRawResponse.AddVendor(
 		ctx,
 		entry,
@@ -58,7 +58,7 @@ func (c *Client) DeleteVendor(
 	// Vendor ID.
 	idVendor int,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponseVendors, error) {
+) (*sdkgo.PayabliApiResponseVendors, error) {
 	response, err := c.WithRawResponse.DeleteVendor(
 		ctx,
 		idVendor,
@@ -75,9 +75,9 @@ func (c *Client) EditVendor(
 	ctx context.Context,
 	// Vendor ID.
 	idVendor int,
-	request *sdk.VendorData,
+	request *sdkgo.VendorData,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponseVendors, error) {
+) (*sdkgo.PayabliApiResponseVendors, error) {
 	response, err := c.WithRawResponse.EditVendor(
 		ctx,
 		idVendor,
@@ -96,7 +96,7 @@ func (c *Client) GetVendor(
 	// Vendor ID.
 	idVendor int,
 	opts ...option.RequestOption,
-) (*sdk.VendorQueryRecord, error) {
+) (*sdkgo.VendorQueryRecord, error) {
 	response, err := c.WithRawResponse.GetVendor(
 		ctx,
 		idVendor,

@@ -4,7 +4,7 @@ package notification
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) AddNotification(
 	ctx context.Context,
-	request *sdk.AddNotificationRequest,
+	request *sdkgo.AddNotificationRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponseNotifications], error) {
+) (*core.Response[*sdkgo.PayabliApiResponseNotifications], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -48,27 +48,27 @@ func (r *RawClient) AddNotification(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponseNotifications
+	var response *sdkgo.PayabliApiResponseNotifications
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -87,7 +87,7 @@ func (r *RawClient) AddNotification(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponseNotifications]{
+	return &core.Response[*sdkgo.PayabliApiResponseNotifications]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -99,7 +99,7 @@ func (r *RawClient) DeleteNotification(
 	// Notification ID.
 	nId string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponseNotifications], error) {
+) (*core.Response[*sdkgo.PayabliApiResponseNotifications], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -116,27 +116,27 @@ func (r *RawClient) DeleteNotification(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponseNotifications
+	var response *sdkgo.PayabliApiResponseNotifications
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -154,7 +154,7 @@ func (r *RawClient) DeleteNotification(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponseNotifications]{
+	return &core.Response[*sdkgo.PayabliApiResponseNotifications]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -166,7 +166,7 @@ func (r *RawClient) GetNotification(
 	// Notification ID.
 	nId string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.NotificationQueryRecord], error) {
+) (*core.Response[*sdkgo.NotificationQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -183,27 +183,27 @@ func (r *RawClient) GetNotification(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.NotificationQueryRecord
+	var response *sdkgo.NotificationQueryRecord
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -221,7 +221,7 @@ func (r *RawClient) GetNotification(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.NotificationQueryRecord]{
+	return &core.Response[*sdkgo.NotificationQueryRecord]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -232,9 +232,9 @@ func (r *RawClient) UpdateNotification(
 	ctx context.Context,
 	// Notification ID.
 	nId string,
-	request *sdk.UpdateNotificationRequest,
+	request *sdkgo.UpdateNotificationRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponseNotifications], error) {
+) (*core.Response[*sdkgo.PayabliApiResponseNotifications], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -251,27 +251,27 @@ func (r *RawClient) UpdateNotification(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponseNotifications
+	var response *sdkgo.PayabliApiResponseNotifications
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -290,7 +290,7 @@ func (r *RawClient) UpdateNotification(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponseNotifications]{
+	return &core.Response[*sdkgo.PayabliApiResponseNotifications]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -302,7 +302,7 @@ func (r *RawClient) GetReportFile(
 	// Report ID
 	id int64,
 	opts ...option.RequestOption,
-) (*core.Response[sdk.File], error) {
+) (*core.Response[sdkgo.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -319,27 +319,27 @@ func (r *RawClient) GetReportFile(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response sdk.File
+	var response sdkgo.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -357,7 +357,7 @@ func (r *RawClient) GetReportFile(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdk.File]{
+	return &core.Response[sdkgo.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

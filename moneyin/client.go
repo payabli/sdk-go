@@ -4,7 +4,7 @@ package moneyin
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -37,9 +37,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // **Note**: Only card transactions can be authorized. This endpoint can't be used for ACH transactions.
 func (c *Client) Authorize(
 	ctx context.Context,
-	request *sdk.RequestPaymentAuthorize,
+	request *sdkgo.RequestPaymentAuthorize,
 	opts ...option.RequestOption,
-) (*sdk.AuthResponse, error) {
+) (*sdkgo.AuthResponse, error) {
 	response, err := c.WithRawResponse.Authorize(
 		ctx,
 		request,
@@ -67,7 +67,7 @@ func (c *Client) Capture(
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
 	opts ...option.RequestOption,
-) (*sdk.CaptureResponse, error) {
+) (*sdkgo.CaptureResponse, error) {
 	response, err := c.WithRawResponse.Capture(
 		ctx,
 		amount,
@@ -87,9 +87,9 @@ func (c *Client) CaptureAuth(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
-	request *sdk.CaptureRequest,
+	request *sdkgo.CaptureRequest,
 	opts ...option.RequestOption,
-) (*sdk.CaptureResponse, error) {
+) (*sdkgo.CaptureResponse, error) {
 	response, err := c.WithRawResponse.CaptureAuth(
 		ctx,
 		transId,
@@ -107,9 +107,9 @@ func (c *Client) CaptureAuth(
 // This feature must be enabled by Payabli on a per-merchant basis. Contact support for help.
 func (c *Client) Credit(
 	ctx context.Context,
-	request *sdk.RequestCredit,
+	request *sdkgo.RequestCredit,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponse0, error) {
+) (*sdkgo.PayabliApiResponse0, error) {
 	response, err := c.WithRawResponse.Credit(
 		ctx,
 		request,
@@ -127,7 +127,7 @@ func (c *Client) Details(
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
 	opts ...option.RequestOption,
-) (*sdk.TransactionQueryRecords, error) {
+) (*sdkgo.TransactionQueryRecords, error) {
 	response, err := c.WithRawResponse.Details(
 		ctx,
 		transId,
@@ -142,9 +142,9 @@ func (c *Client) Details(
 // Make a single transaction. This method authorizes and captures a payment in one step.
 func (c *Client) Getpaid(
 	ctx context.Context,
-	request *sdk.RequestPayment,
+	request *sdkgo.RequestPayment,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponseGetPaid, error) {
+) (*sdkgo.PayabliApiResponseGetPaid, error) {
 	response, err := c.WithRawResponse.Getpaid(
 		ctx,
 		request,
@@ -169,7 +169,7 @@ func (c *Client) Reverse(
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
 	opts ...option.RequestOption,
-) (*sdk.ReverseResponse, error) {
+) (*sdkgo.ReverseResponse, error) {
 	response, err := c.WithRawResponse.Reverse(
 		ctx,
 		amount,
@@ -195,7 +195,7 @@ func (c *Client) Refund(
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
 	opts ...option.RequestOption,
-) (*sdk.RefundResponse, error) {
+) (*sdkgo.RefundResponse, error) {
 	response, err := c.WithRawResponse.Refund(
 		ctx,
 		amount,
@@ -213,9 +213,9 @@ func (c *Client) RefundWithInstructions(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
-	request *sdk.RequestRefund,
+	request *sdkgo.RequestRefund,
 	opts ...option.RequestOption,
-) (*sdk.RefundWithInstructionsResponse, error) {
+) (*sdkgo.RefundWithInstructionsResponse, error) {
 	response, err := c.WithRawResponse.RefundWithInstructions(
 		ctx,
 		transId,
@@ -234,7 +234,7 @@ func (c *Client) ReverseCredit(
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponse, error) {
+) (*sdkgo.PayabliApiResponse, error) {
 	response, err := c.WithRawResponse.ReverseCredit(
 		ctx,
 		transId,
@@ -251,9 +251,9 @@ func (c *Client) SendReceipt2Trans(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
-	request *sdk.SendReceipt2TransRequest,
+	request *sdkgo.SendReceipt2TransRequest,
 	opts ...option.RequestOption,
-) (*sdk.ReceiptResponse, error) {
+) (*sdkgo.ReceiptResponse, error) {
 	response, err := c.WithRawResponse.SendReceipt2Trans(
 		ctx,
 		transId,
@@ -269,9 +269,9 @@ func (c *Client) SendReceipt2Trans(
 // Validates a card number without running a transaction or authorizing a charge.
 func (c *Client) Validate(
 	ctx context.Context,
-	request *sdk.RequestPaymentValidate,
+	request *sdkgo.RequestPaymentValidate,
 	opts ...option.RequestOption,
-) (*sdk.ValidateResponse, error) {
+) (*sdkgo.ValidateResponse, error) {
 	response, err := c.WithRawResponse.Validate(
 		ctx,
 		request,
@@ -289,7 +289,7 @@ func (c *Client) Void(
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
 	opts ...option.RequestOption,
-) (*sdk.VoidResponse, error) {
+) (*sdkgo.VoidResponse, error) {
 	response, err := c.WithRawResponse.Void(
 		ctx,
 		transId,

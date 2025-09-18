@@ -4,7 +4,7 @@ package cloud
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -34,9 +34,9 @@ func (r *RawClient) AddDevice(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdk.DeviceEntry,
+	request *sdkgo.DeviceEntry,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.AddDeviceResponse], error) {
+) (*core.Response[*sdkgo.AddDeviceResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -57,27 +57,27 @@ func (r *RawClient) AddDevice(
 	headers.Add("Content-Type", "application/json")
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.AddDeviceResponse
+	var response *sdkgo.AddDeviceResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -96,7 +96,7 @@ func (r *RawClient) AddDevice(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.AddDeviceResponse]{
+	return &core.Response[*sdkgo.AddDeviceResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -110,7 +110,7 @@ func (r *RawClient) HistoryDevice(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.CloudQueryApiResponse], error) {
+) (*core.Response[*sdkgo.CloudQueryApiResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -128,27 +128,27 @@ func (r *RawClient) HistoryDevice(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.CloudQueryApiResponse
+	var response *sdkgo.CloudQueryApiResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -166,7 +166,7 @@ func (r *RawClient) HistoryDevice(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.CloudQueryApiResponse]{
+	return &core.Response[*sdkgo.CloudQueryApiResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -177,9 +177,9 @@ func (r *RawClient) ListDevice(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdk.ListDeviceRequest,
+	request *sdkgo.ListDeviceRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.CloudQueryApiResponse], error) {
+) (*core.Response[*sdkgo.CloudQueryApiResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -203,27 +203,27 @@ func (r *RawClient) ListDevice(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.CloudQueryApiResponse
+	var response *sdkgo.CloudQueryApiResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -241,7 +241,7 @@ func (r *RawClient) ListDevice(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.CloudQueryApiResponse]{
+	return &core.Response[*sdkgo.CloudQueryApiResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -255,7 +255,7 @@ func (r *RawClient) RemoveDevice(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.RemoveDeviceResponse], error) {
+) (*core.Response[*sdkgo.RemoveDeviceResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -273,27 +273,27 @@ func (r *RawClient) RemoveDevice(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.RemoveDeviceResponse
+	var response *sdkgo.RemoveDeviceResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -311,7 +311,7 @@ func (r *RawClient) RemoveDevice(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.RemoveDeviceResponse]{
+	return &core.Response[*sdkgo.RemoveDeviceResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

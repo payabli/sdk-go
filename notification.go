@@ -6,6 +6,22 @@ import (
 	json "encoding/json"
 	fmt "fmt"
 	internal "github.com/payabli/sdk-go/internal"
+	big "math/big"
+)
+
+var (
+	notificationQueryRecordFieldContent        = big.NewInt(1 << 0)
+	notificationQueryRecordFieldCreatedAt      = big.NewInt(1 << 1)
+	notificationQueryRecordFieldFrequency      = big.NewInt(1 << 2)
+	notificationQueryRecordFieldLastUpdated    = big.NewInt(1 << 3)
+	notificationQueryRecordFieldMethod         = big.NewInt(1 << 4)
+	notificationQueryRecordFieldNotificationId = big.NewInt(1 << 5)
+	notificationQueryRecordFieldOwnerId        = big.NewInt(1 << 6)
+	notificationQueryRecordFieldOwnerName      = big.NewInt(1 << 7)
+	notificationQueryRecordFieldOwnerType      = big.NewInt(1 << 8)
+	notificationQueryRecordFieldSource         = big.NewInt(1 << 9)
+	notificationQueryRecordFieldStatus         = big.NewInt(1 << 10)
+	notificationQueryRecordFieldTarget         = big.NewInt(1 << 11)
 )
 
 type NotificationQueryRecord struct {
@@ -26,6 +42,9 @@ type NotificationQueryRecord struct {
 	Source *Source             `json:"source,omitempty" url:"source,omitempty"`
 	Status *Statusnotification `json:"status,omitempty" url:"status,omitempty"`
 	Target *Target             `json:"target,omitempty" url:"target,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -119,6 +138,97 @@ func (n *NotificationQueryRecord) GetExtraProperties() map[string]interface{} {
 	return n.extraProperties
 }
 
+func (n *NotificationQueryRecord) require(field *big.Int) {
+	if n.explicitFields == nil {
+		n.explicitFields = big.NewInt(0)
+	}
+	n.explicitFields.Or(n.explicitFields, field)
+}
+
+// SetContent sets the Content field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationQueryRecord) SetContent(content *NotificationContent) {
+	n.Content = content
+	n.require(notificationQueryRecordFieldContent)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationQueryRecord) SetCreatedAt(createdAt *CreatedAt) {
+	n.CreatedAt = createdAt
+	n.require(notificationQueryRecordFieldCreatedAt)
+}
+
+// SetFrequency sets the Frequency field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationQueryRecord) SetFrequency(frequency *Frequencynotification) {
+	n.Frequency = frequency
+	n.require(notificationQueryRecordFieldFrequency)
+}
+
+// SetLastUpdated sets the LastUpdated field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationQueryRecord) SetLastUpdated(lastUpdated *LastModified) {
+	n.LastUpdated = lastUpdated
+	n.require(notificationQueryRecordFieldLastUpdated)
+}
+
+// SetMethod sets the Method field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationQueryRecord) SetMethod(method *Methodnotification) {
+	n.Method = method
+	n.require(notificationQueryRecordFieldMethod)
+}
+
+// SetNotificationId sets the NotificationId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationQueryRecord) SetNotificationId(notificationId *NotificationId) {
+	n.NotificationId = notificationId
+	n.require(notificationQueryRecordFieldNotificationId)
+}
+
+// SetOwnerId sets the OwnerId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationQueryRecord) SetOwnerId(ownerId *Ownerid) {
+	n.OwnerId = ownerId
+	n.require(notificationQueryRecordFieldOwnerId)
+}
+
+// SetOwnerName sets the OwnerName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationQueryRecord) SetOwnerName(ownerName *string) {
+	n.OwnerName = ownerName
+	n.require(notificationQueryRecordFieldOwnerName)
+}
+
+// SetOwnerType sets the OwnerType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationQueryRecord) SetOwnerType(ownerType *Ownertype) {
+	n.OwnerType = ownerType
+	n.require(notificationQueryRecordFieldOwnerType)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationQueryRecord) SetSource(source *Source) {
+	n.Source = source
+	n.require(notificationQueryRecordFieldSource)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationQueryRecord) SetStatus(status *Statusnotification) {
+	n.Status = status
+	n.require(notificationQueryRecordFieldStatus)
+}
+
+// SetTarget sets the Target field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationQueryRecord) SetTarget(target *Target) {
+	n.Target = target
+	n.require(notificationQueryRecordFieldTarget)
+}
+
 func (n *NotificationQueryRecord) UnmarshalJSON(data []byte) error {
 	type unmarshaler NotificationQueryRecord
 	var value unmarshaler
@@ -135,6 +245,17 @@ func (n *NotificationQueryRecord) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (n *NotificationQueryRecord) MarshalJSON() ([]byte, error) {
+	type embed NotificationQueryRecord
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*n),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, n.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (n *NotificationQueryRecord) String() string {
 	if len(n.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(n.rawJSON); err == nil {
@@ -148,6 +269,16 @@ func (n *NotificationQueryRecord) String() string {
 }
 
 // Information about the report notification configuration (report-email, report-web).
+var (
+	notificationReportRequestFieldContent   = big.NewInt(1 << 0)
+	notificationReportRequestFieldFrequency = big.NewInt(1 << 1)
+	notificationReportRequestFieldMethod    = big.NewInt(1 << 2)
+	notificationReportRequestFieldOwnerId   = big.NewInt(1 << 3)
+	notificationReportRequestFieldOwnerType = big.NewInt(1 << 4)
+	notificationReportRequestFieldStatus    = big.NewInt(1 << 5)
+	notificationReportRequestFieldTarget    = big.NewInt(1 << 6)
+)
+
 type NotificationReportRequest struct {
 	Content   *NotificationReportRequestContent  `json:"content" url:"content"`
 	Frequency NotificationReportRequestFrequency `json:"frequency" url:"frequency"`
@@ -162,6 +293,9 @@ type NotificationReportRequest struct {
 	//
 	// For method=report-web the expected value is a valid and complete URL. Webhooks support only standard HTTP ports: 80, 443, 8080, or 4443.
 	Target string `json:"target" url:"target"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -220,6 +354,62 @@ func (n *NotificationReportRequest) GetExtraProperties() map[string]interface{} 
 	return n.extraProperties
 }
 
+func (n *NotificationReportRequest) require(field *big.Int) {
+	if n.explicitFields == nil {
+		n.explicitFields = big.NewInt(0)
+	}
+	n.explicitFields.Or(n.explicitFields, field)
+}
+
+// SetContent sets the Content field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationReportRequest) SetContent(content *NotificationReportRequestContent) {
+	n.Content = content
+	n.require(notificationReportRequestFieldContent)
+}
+
+// SetFrequency sets the Frequency field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationReportRequest) SetFrequency(frequency NotificationReportRequestFrequency) {
+	n.Frequency = frequency
+	n.require(notificationReportRequestFieldFrequency)
+}
+
+// SetMethod sets the Method field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationReportRequest) SetMethod(method NotificationReportRequestMethod) {
+	n.Method = method
+	n.require(notificationReportRequestFieldMethod)
+}
+
+// SetOwnerId sets the OwnerId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationReportRequest) SetOwnerId(ownerId *Ownerid) {
+	n.OwnerId = ownerId
+	n.require(notificationReportRequestFieldOwnerId)
+}
+
+// SetOwnerType sets the OwnerType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationReportRequest) SetOwnerType(ownerType Ownertype) {
+	n.OwnerType = ownerType
+	n.require(notificationReportRequestFieldOwnerType)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationReportRequest) SetStatus(status *Statusnotification) {
+	n.Status = status
+	n.require(notificationReportRequestFieldStatus)
+}
+
+// SetTarget sets the Target field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationReportRequest) SetTarget(target string) {
+	n.Target = target
+	n.require(notificationReportRequestFieldTarget)
+}
+
 func (n *NotificationReportRequest) UnmarshalJSON(data []byte) error {
 	type unmarshaler NotificationReportRequest
 	var value unmarshaler
@@ -236,6 +426,17 @@ func (n *NotificationReportRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (n *NotificationReportRequest) MarshalJSON() ([]byte, error) {
+	type embed NotificationReportRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*n),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, n.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (n *NotificationReportRequest) String() string {
 	if len(n.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(n.rawJSON); err == nil {
@@ -247,6 +448,16 @@ func (n *NotificationReportRequest) String() string {
 	}
 	return fmt.Sprintf("%#v", n)
 }
+
+var (
+	notificationReportRequestContentFieldEventType           = big.NewInt(1 << 0)
+	notificationReportRequestContentFieldFileFormat          = big.NewInt(1 << 1)
+	notificationReportRequestContentFieldInternalData        = big.NewInt(1 << 2)
+	notificationReportRequestContentFieldReportName          = big.NewInt(1 << 3)
+	notificationReportRequestContentFieldTimeZone            = big.NewInt(1 << 4)
+	notificationReportRequestContentFieldTransactionId       = big.NewInt(1 << 5)
+	notificationReportRequestContentFieldWebHeaderParameters = big.NewInt(1 << 6)
+)
 
 type NotificationReportRequestContent struct {
 	// The notification's event name.
@@ -262,6 +473,9 @@ type NotificationReportRequestContent struct {
 	TransactionId *string `json:"transactionId,omitempty" url:"transactionId,omitempty"`
 	// Array of pairs key:value to insert in header of request to target in **method** = *report-web*.
 	WebHeaderParameters []*KeyValueDuo `json:"webHeaderParameters,omitempty" url:"webHeaderParameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -313,6 +527,62 @@ func (n *NotificationReportRequestContent) GetExtraProperties() map[string]inter
 	return n.extraProperties
 }
 
+func (n *NotificationReportRequestContent) require(field *big.Int) {
+	if n.explicitFields == nil {
+		n.explicitFields = big.NewInt(0)
+	}
+	n.explicitFields.Or(n.explicitFields, field)
+}
+
+// SetEventType sets the EventType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationReportRequestContent) SetEventType(eventType *string) {
+	n.EventType = eventType
+	n.require(notificationReportRequestContentFieldEventType)
+}
+
+// SetFileFormat sets the FileFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationReportRequestContent) SetFileFormat(fileFormat *NotificationReportRequestContentFileFormat) {
+	n.FileFormat = fileFormat
+	n.require(notificationReportRequestContentFieldFileFormat)
+}
+
+// SetInternalData sets the InternalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationReportRequestContent) SetInternalData(internalData []*KeyValueDuo) {
+	n.InternalData = internalData
+	n.require(notificationReportRequestContentFieldInternalData)
+}
+
+// SetReportName sets the ReportName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationReportRequestContent) SetReportName(reportName *NotificationReportRequestContentReportName) {
+	n.ReportName = reportName
+	n.require(notificationReportRequestContentFieldReportName)
+}
+
+// SetTimeZone sets the TimeZone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationReportRequestContent) SetTimeZone(timeZone *Timezone) {
+	n.TimeZone = timeZone
+	n.require(notificationReportRequestContentFieldTimeZone)
+}
+
+// SetTransactionId sets the TransactionId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationReportRequestContent) SetTransactionId(transactionId *string) {
+	n.TransactionId = transactionId
+	n.require(notificationReportRequestContentFieldTransactionId)
+}
+
+// SetWebHeaderParameters sets the WebHeaderParameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationReportRequestContent) SetWebHeaderParameters(webHeaderParameters []*KeyValueDuo) {
+	n.WebHeaderParameters = webHeaderParameters
+	n.require(notificationReportRequestContentFieldWebHeaderParameters)
+}
+
 func (n *NotificationReportRequestContent) UnmarshalJSON(data []byte) error {
 	type unmarshaler NotificationReportRequestContent
 	var value unmarshaler
@@ -327,6 +597,17 @@ func (n *NotificationReportRequestContent) UnmarshalJSON(data []byte) error {
 	n.extraProperties = extraProperties
 	n.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (n *NotificationReportRequestContent) MarshalJSON() ([]byte, error) {
+	type embed NotificationReportRequestContent
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*n),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, n.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (n *NotificationReportRequestContent) String() string {
@@ -460,6 +741,16 @@ func (n NotificationReportRequestMethod) Ptr() *NotificationReportRequestMethod 
 }
 
 // Information about the standard notification configuration (email, sms, web).
+var (
+	notificationStandardRequestFieldContent   = big.NewInt(1 << 0)
+	notificationStandardRequestFieldFrequency = big.NewInt(1 << 1)
+	notificationStandardRequestFieldMethod    = big.NewInt(1 << 2)
+	notificationStandardRequestFieldOwnerId   = big.NewInt(1 << 3)
+	notificationStandardRequestFieldOwnerType = big.NewInt(1 << 4)
+	notificationStandardRequestFieldStatus    = big.NewInt(1 << 5)
+	notificationStandardRequestFieldTarget    = big.NewInt(1 << 6)
+)
+
 type NotificationStandardRequest struct {
 	Content   *NotificationStandardRequestContent  `json:"content,omitempty" url:"content,omitempty"`
 	Frequency NotificationStandardRequestFrequency `json:"frequency" url:"frequency"`
@@ -474,6 +765,9 @@ type NotificationStandardRequest struct {
 	// - For method=sms the expected value is a list of phone numbers separated by semicolon.
 	// - For method=web the expected value is a valid and complete URL. Webhooks support only standard HTTP ports: 80, 443, 8080, or 4443.
 	Target string `json:"target" url:"target"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -532,6 +826,62 @@ func (n *NotificationStandardRequest) GetExtraProperties() map[string]interface{
 	return n.extraProperties
 }
 
+func (n *NotificationStandardRequest) require(field *big.Int) {
+	if n.explicitFields == nil {
+		n.explicitFields = big.NewInt(0)
+	}
+	n.explicitFields.Or(n.explicitFields, field)
+}
+
+// SetContent sets the Content field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationStandardRequest) SetContent(content *NotificationStandardRequestContent) {
+	n.Content = content
+	n.require(notificationStandardRequestFieldContent)
+}
+
+// SetFrequency sets the Frequency field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationStandardRequest) SetFrequency(frequency NotificationStandardRequestFrequency) {
+	n.Frequency = frequency
+	n.require(notificationStandardRequestFieldFrequency)
+}
+
+// SetMethod sets the Method field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationStandardRequest) SetMethod(method NotificationStandardRequestMethod) {
+	n.Method = method
+	n.require(notificationStandardRequestFieldMethod)
+}
+
+// SetOwnerId sets the OwnerId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationStandardRequest) SetOwnerId(ownerId *Ownerid) {
+	n.OwnerId = ownerId
+	n.require(notificationStandardRequestFieldOwnerId)
+}
+
+// SetOwnerType sets the OwnerType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationStandardRequest) SetOwnerType(ownerType Ownertype) {
+	n.OwnerType = ownerType
+	n.require(notificationStandardRequestFieldOwnerType)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationStandardRequest) SetStatus(status *Statusnotification) {
+	n.Status = status
+	n.require(notificationStandardRequestFieldStatus)
+}
+
+// SetTarget sets the Target field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationStandardRequest) SetTarget(target string) {
+	n.Target = target
+	n.require(notificationStandardRequestFieldTarget)
+}
+
 func (n *NotificationStandardRequest) UnmarshalJSON(data []byte) error {
 	type unmarshaler NotificationStandardRequest
 	var value unmarshaler
@@ -548,6 +898,17 @@ func (n *NotificationStandardRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (n *NotificationStandardRequest) MarshalJSON() ([]byte, error) {
+	type embed NotificationStandardRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*n),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, n.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (n *NotificationStandardRequest) String() string {
 	if len(n.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(n.rawJSON); err == nil {
@@ -560,6 +921,13 @@ func (n *NotificationStandardRequest) String() string {
 	return fmt.Sprintf("%#v", n)
 }
 
+var (
+	notificationStandardRequestContentFieldEventType           = big.NewInt(1 << 0)
+	notificationStandardRequestContentFieldInternalData        = big.NewInt(1 << 1)
+	notificationStandardRequestContentFieldTransactionId       = big.NewInt(1 << 2)
+	notificationStandardRequestContentFieldWebHeaderParameters = big.NewInt(1 << 3)
+)
+
 type NotificationStandardRequestContent struct {
 	// The notification's event name.
 	EventType *NotificationStandardRequestContentEventType `json:"eventType,omitempty" url:"eventType,omitempty"`
@@ -569,6 +937,9 @@ type NotificationStandardRequestContent struct {
 	TransactionId *string `json:"transactionId,omitempty" url:"transactionId,omitempty"`
 	// Array of pairs key:value to insert in header of request to target in **method** = *web*.
 	WebHeaderParameters []*KeyValueDuo `json:"webHeaderParameters,omitempty" url:"webHeaderParameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -606,6 +977,41 @@ func (n *NotificationStandardRequestContent) GetExtraProperties() map[string]int
 	return n.extraProperties
 }
 
+func (n *NotificationStandardRequestContent) require(field *big.Int) {
+	if n.explicitFields == nil {
+		n.explicitFields = big.NewInt(0)
+	}
+	n.explicitFields.Or(n.explicitFields, field)
+}
+
+// SetEventType sets the EventType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationStandardRequestContent) SetEventType(eventType *NotificationStandardRequestContentEventType) {
+	n.EventType = eventType
+	n.require(notificationStandardRequestContentFieldEventType)
+}
+
+// SetInternalData sets the InternalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationStandardRequestContent) SetInternalData(internalData []*KeyValueDuo) {
+	n.InternalData = internalData
+	n.require(notificationStandardRequestContentFieldInternalData)
+}
+
+// SetTransactionId sets the TransactionId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationStandardRequestContent) SetTransactionId(transactionId *string) {
+	n.TransactionId = transactionId
+	n.require(notificationStandardRequestContentFieldTransactionId)
+}
+
+// SetWebHeaderParameters sets the WebHeaderParameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationStandardRequestContent) SetWebHeaderParameters(webHeaderParameters []*KeyValueDuo) {
+	n.WebHeaderParameters = webHeaderParameters
+	n.require(notificationStandardRequestContentFieldWebHeaderParameters)
+}
+
 func (n *NotificationStandardRequestContent) UnmarshalJSON(data []byte) error {
 	type unmarshaler NotificationStandardRequestContent
 	var value unmarshaler
@@ -620,6 +1026,17 @@ func (n *NotificationStandardRequestContent) UnmarshalJSON(data []byte) error {
 	n.extraProperties = extraProperties
 	n.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (n *NotificationStandardRequestContent) MarshalJSON() ([]byte, error) {
+	type embed NotificationStandardRequestContent
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*n),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, n.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (n *NotificationStandardRequestContent) String() string {
@@ -1170,6 +1587,14 @@ func (n NotificationStandardRequestMethod) Ptr() *NotificationStandardRequestMet
 	return &n
 }
 
+var (
+	payabliApiResponseNotificationsFieldIsSuccess      = big.NewInt(1 << 0)
+	payabliApiResponseNotificationsFieldPageIdentifier = big.NewInt(1 << 1)
+	payabliApiResponseNotificationsFieldResponseCode   = big.NewInt(1 << 2)
+	payabliApiResponseNotificationsFieldResponseData   = big.NewInt(1 << 3)
+	payabliApiResponseNotificationsFieldResponseText   = big.NewInt(1 << 4)
+)
+
 type PayabliApiResponseNotifications struct {
 	// If `isSuccess` = true, `responseData` contains the notification identifier.
 	//
@@ -1180,6 +1605,9 @@ type PayabliApiResponseNotifications struct {
 	// When the request was successful, this contains the notification ID, or `nID` used to manage the notification.
 	ResponseData *PayabliApiResponseNotificationsResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
 	ResponseText ResponseText                                 `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -1224,6 +1652,48 @@ func (p *PayabliApiResponseNotifications) GetExtraProperties() map[string]interf
 	return p.extraProperties
 }
 
+func (p *PayabliApiResponseNotifications) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseNotifications) SetIsSuccess(isSuccess *IsSuccess) {
+	p.IsSuccess = isSuccess
+	p.require(payabliApiResponseNotificationsFieldIsSuccess)
+}
+
+// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseNotifications) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+	p.PageIdentifier = pageIdentifier
+	p.require(payabliApiResponseNotificationsFieldPageIdentifier)
+}
+
+// SetResponseCode sets the ResponseCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseNotifications) SetResponseCode(responseCode *Responsecode) {
+	p.ResponseCode = responseCode
+	p.require(payabliApiResponseNotificationsFieldResponseCode)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseNotifications) SetResponseData(responseData *PayabliApiResponseNotificationsResponseData) {
+	p.ResponseData = responseData
+	p.require(payabliApiResponseNotificationsFieldResponseData)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseNotifications) SetResponseText(responseText ResponseText) {
+	p.ResponseText = responseText
+	p.require(payabliApiResponseNotificationsFieldResponseText)
+}
+
 func (p *PayabliApiResponseNotifications) UnmarshalJSON(data []byte) error {
 	type unmarshaler PayabliApiResponseNotifications
 	var value unmarshaler
@@ -1238,6 +1708,17 @@ func (p *PayabliApiResponseNotifications) UnmarshalJSON(data []byte) error {
 	p.extraProperties = extraProperties
 	p.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (p *PayabliApiResponseNotifications) MarshalJSON() ([]byte, error) {
+	type embed PayabliApiResponseNotifications
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (p *PayabliApiResponseNotifications) String() string {

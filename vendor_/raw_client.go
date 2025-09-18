@@ -4,7 +4,7 @@ package vendor_
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -34,9 +34,9 @@ func (r *RawClient) AddVendor(
 	ctx context.Context,
 	// Entrypoint identifier.
 	entry string,
-	request *sdk.VendorData,
+	request *sdkgo.VendorData,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponseVendors], error) {
+) (*core.Response[*sdkgo.PayabliApiResponseVendors], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,27 +53,27 @@ func (r *RawClient) AddVendor(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponseVendors
+	var response *sdkgo.PayabliApiResponseVendors
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -92,7 +92,7 @@ func (r *RawClient) AddVendor(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponseVendors]{
+	return &core.Response[*sdkgo.PayabliApiResponseVendors]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -104,7 +104,7 @@ func (r *RawClient) DeleteVendor(
 	// Vendor ID.
 	idVendor int,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponseVendors], error) {
+) (*core.Response[*sdkgo.PayabliApiResponseVendors], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -121,27 +121,27 @@ func (r *RawClient) DeleteVendor(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponseVendors
+	var response *sdkgo.PayabliApiResponseVendors
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -159,7 +159,7 @@ func (r *RawClient) DeleteVendor(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponseVendors]{
+	return &core.Response[*sdkgo.PayabliApiResponseVendors]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -170,9 +170,9 @@ func (r *RawClient) EditVendor(
 	ctx context.Context,
 	// Vendor ID.
 	idVendor int,
-	request *sdk.VendorData,
+	request *sdkgo.VendorData,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponseVendors], error) {
+) (*core.Response[*sdkgo.PayabliApiResponseVendors], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -189,27 +189,27 @@ func (r *RawClient) EditVendor(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponseVendors
+	var response *sdkgo.PayabliApiResponseVendors
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -228,7 +228,7 @@ func (r *RawClient) EditVendor(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponseVendors]{
+	return &core.Response[*sdkgo.PayabliApiResponseVendors]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -240,7 +240,7 @@ func (r *RawClient) GetVendor(
 	// Vendor ID.
 	idVendor int,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.VendorQueryRecord], error) {
+) (*core.Response[*sdkgo.VendorQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -257,27 +257,27 @@ func (r *RawClient) GetVendor(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.VendorQueryRecord
+	var response *sdkgo.VendorQueryRecord
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -295,7 +295,7 @@ func (r *RawClient) GetVendor(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.VendorQueryRecord]{
+	return &core.Response[*sdkgo.VendorQueryRecord]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

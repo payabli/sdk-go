@@ -4,7 +4,7 @@ package hostedpaymentpages
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -40,7 +40,7 @@ func (c *Client) LoadPage(
 	// Payment page identifier. The subdomain value is the last part of the payment page URL. For example, in`https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
 	subdomain string,
 	opts ...option.RequestOption,
-) (*sdk.PayabliPages, error) {
+) (*sdkgo.PayabliPages, error) {
 	response, err := c.WithRawResponse.LoadPage(
 		ctx,
 		entry,
@@ -59,9 +59,9 @@ func (c *Client) NewPage(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdk.NewPageRequest,
+	request *sdkgo.NewPageRequest,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponse00Responsedatanonobject, error) {
+) (*sdkgo.PayabliApiResponse00Responsedatanonobject, error) {
 	response, err := c.WithRawResponse.NewPage(
 		ctx,
 		entry,
@@ -81,9 +81,9 @@ func (c *Client) SavePage(
 	entry string,
 	// Payment page identifier. The subdomain value is the last part of the payment page URL. For example, in`https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
 	subdomain string,
-	request *sdk.PayabliPages,
+	request *sdkgo.PayabliPages,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponse00Responsedatanonobject, error) {
+) (*sdkgo.PayabliApiResponse00Responsedatanonobject, error) {
 	response, err := c.WithRawResponse.SavePage(
 		ctx,
 		entry,

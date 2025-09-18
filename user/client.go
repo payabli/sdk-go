@@ -4,7 +4,7 @@ package user
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -34,9 +34,9 @@ func NewClient(options *core.RequestOptions) *Client {
 
 func (c *Client) AddUser(
 	ctx context.Context,
-	request *sdk.UserData,
+	request *sdkgo.UserData,
 	opts ...option.RequestOption,
-) (*sdk.AddUserResponse, error) {
+) (*sdkgo.AddUserResponse, error) {
 	response, err := c.WithRawResponse.AddUser(
 		ctx,
 		request,
@@ -51,7 +51,7 @@ func (c *Client) AddUser(
 func (c *Client) AuthRefreshUser(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponseUserMfa, error) {
+) (*sdkgo.PayabliApiResponseUserMfa, error) {
 	response, err := c.WithRawResponse.AuthRefreshUser(
 		ctx,
 		opts...,
@@ -64,9 +64,9 @@ func (c *Client) AuthRefreshUser(
 
 func (c *Client) AuthResetUser(
 	ctx context.Context,
-	request *sdk.UserAuthResetRequest,
+	request *sdkgo.UserAuthResetRequest,
 	opts ...option.RequestOption,
-) (*sdk.AuthResetUserResponse, error) {
+) (*sdkgo.AuthResetUserResponse, error) {
 	response, err := c.WithRawResponse.AuthResetUser(
 		ctx,
 		request,
@@ -83,9 +83,9 @@ func (c *Client) AuthUser(
 	ctx context.Context,
 	// Auth provider. This fields is optional and defaults to null for the built-in provider.
 	provider string,
-	request *sdk.UserAuthRequest,
+	request *sdkgo.UserAuthRequest,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponseMfaBasic, error) {
+) (*sdkgo.PayabliApiResponseMfaBasic, error) {
 	response, err := c.WithRawResponse.AuthUser(
 		ctx,
 		provider,
@@ -100,9 +100,9 @@ func (c *Client) AuthUser(
 
 func (c *Client) ChangePswUser(
 	ctx context.Context,
-	request *sdk.UserAuthPswResetRequest,
+	request *sdkgo.UserAuthPswResetRequest,
 	opts ...option.RequestOption,
-) (*sdk.ChangePswUserResponse, error) {
+) (*sdkgo.ChangePswUserResponse, error) {
 	response, err := c.WithRawResponse.ChangePswUser(
 		ctx,
 		request,
@@ -119,7 +119,7 @@ func (c *Client) DeleteUser(
 	// The Payabli-generated `userId` value.
 	userId int64,
 	opts ...option.RequestOption,
-) (*sdk.DeleteUserResponse, error) {
+) (*sdkgo.DeleteUserResponse, error) {
 	response, err := c.WithRawResponse.DeleteUser(
 		ctx,
 		userId,
@@ -135,9 +135,9 @@ func (c *Client) EditMfaUser(
 	ctx context.Context,
 	// User Identifier
 	userId int64,
-	request *sdk.MfaData,
+	request *sdkgo.MfaData,
 	opts ...option.RequestOption,
-) (*sdk.EditMfaUserResponse, error) {
+) (*sdkgo.EditMfaUserResponse, error) {
 	response, err := c.WithRawResponse.EditMfaUser(
 		ctx,
 		userId,
@@ -154,9 +154,9 @@ func (c *Client) EditUser(
 	ctx context.Context,
 	// User Identifier
 	userId int64,
-	request *sdk.UserData,
+	request *sdkgo.UserData,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponse, error) {
+) (*sdkgo.PayabliApiResponse, error) {
 	response, err := c.WithRawResponse.EditUser(
 		ctx,
 		userId,
@@ -173,9 +173,9 @@ func (c *Client) GetUser(
 	ctx context.Context,
 	// The Payabli-generated `userId` value.
 	userId int64,
-	request *sdk.GetUserRequest,
+	request *sdkgo.GetUserRequest,
 	opts ...option.RequestOption,
-) (*sdk.UserQueryRecord, error) {
+) (*sdkgo.UserQueryRecord, error) {
 	response, err := c.WithRawResponse.GetUser(
 		ctx,
 		userId,
@@ -191,7 +191,7 @@ func (c *Client) GetUser(
 func (c *Client) LogoutUser(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*sdk.LogoutUserResponse, error) {
+) (*sdkgo.LogoutUserResponse, error) {
 	response, err := c.WithRawResponse.LogoutUser(
 		ctx,
 		opts...,
@@ -211,7 +211,7 @@ func (c *Client) ResendMfaCode(
 	//
 	usrname string,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponseMfaBasic, error) {
+) (*sdkgo.PayabliApiResponseMfaBasic, error) {
 	response, err := c.WithRawResponse.ResendMfaCode(
 		ctx,
 		entry,
@@ -227,9 +227,9 @@ func (c *Client) ResendMfaCode(
 
 func (c *Client) ValidateMfaUser(
 	ctx context.Context,
-	request *sdk.MfaValidationData,
+	request *sdkgo.MfaValidationData,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponseUserMfa, error) {
+) (*sdkgo.PayabliApiResponseUserMfa, error) {
 	response, err := c.WithRawResponse.ValidateMfaUser(
 		ctx,
 		request,

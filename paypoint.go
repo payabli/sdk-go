@@ -6,11 +6,41 @@ import (
 	json "encoding/json"
 	fmt "fmt"
 	internal "github.com/payabli/sdk-go/internal"
+	big "math/big"
+)
+
+var (
+	getEntryConfigRequestFieldEntrypages = big.NewInt(1 << 0)
 )
 
 type GetEntryConfigRequest struct {
 	Entrypages *string `json:"-" url:"entrypages,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (g *GetEntryConfigRequest) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetEntrypages sets the Entrypages field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetEntryConfigRequest) SetEntrypages(entrypages *string) {
+	g.Entrypages = entrypages
+	g.require(getEntryConfigRequestFieldEntrypages)
+}
+
+var (
+	getBasicEntryByIdResponseFieldIsSuccess      = big.NewInt(1 << 0)
+	getBasicEntryByIdResponseFieldPageIdentifier = big.NewInt(1 << 1)
+	getBasicEntryByIdResponseFieldResponseCode   = big.NewInt(1 << 2)
+	getBasicEntryByIdResponseFieldResponseData   = big.NewInt(1 << 3)
+	getBasicEntryByIdResponseFieldResponseText   = big.NewInt(1 << 4)
+)
 
 type GetBasicEntryByIdResponse struct {
 	IsSuccess      IsSuccess            `json:"isSuccess" url:"isSuccess"`
@@ -18,6 +48,9 @@ type GetBasicEntryByIdResponse struct {
 	ResponseCode   *Responsecode        `json:"responseCode,omitempty" url:"responseCode,omitempty"`
 	ResponseData   *PaypointEntryConfig `json:"responseData,omitempty" url:"responseData,omitempty"`
 	ResponseText   ResponseText         `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -62,6 +95,48 @@ func (g *GetBasicEntryByIdResponse) GetExtraProperties() map[string]interface{} 
 	return g.extraProperties
 }
 
+func (g *GetBasicEntryByIdResponse) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBasicEntryByIdResponse) SetIsSuccess(isSuccess IsSuccess) {
+	g.IsSuccess = isSuccess
+	g.require(getBasicEntryByIdResponseFieldIsSuccess)
+}
+
+// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBasicEntryByIdResponse) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+	g.PageIdentifier = pageIdentifier
+	g.require(getBasicEntryByIdResponseFieldPageIdentifier)
+}
+
+// SetResponseCode sets the ResponseCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBasicEntryByIdResponse) SetResponseCode(responseCode *Responsecode) {
+	g.ResponseCode = responseCode
+	g.require(getBasicEntryByIdResponseFieldResponseCode)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBasicEntryByIdResponse) SetResponseData(responseData *PaypointEntryConfig) {
+	g.ResponseData = responseData
+	g.require(getBasicEntryByIdResponseFieldResponseData)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBasicEntryByIdResponse) SetResponseText(responseText ResponseText) {
+	g.ResponseText = responseText
+	g.require(getBasicEntryByIdResponseFieldResponseText)
+}
+
 func (g *GetBasicEntryByIdResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler GetBasicEntryByIdResponse
 	var value unmarshaler
@@ -78,6 +153,17 @@ func (g *GetBasicEntryByIdResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (g *GetBasicEntryByIdResponse) MarshalJSON() ([]byte, error) {
+	type embed GetBasicEntryByIdResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (g *GetBasicEntryByIdResponse) String() string {
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
@@ -90,12 +176,23 @@ func (g *GetBasicEntryByIdResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+var (
+	getBasicEntryResponseFieldIsSuccess      = big.NewInt(1 << 0)
+	getBasicEntryResponseFieldPageIdentifier = big.NewInt(1 << 1)
+	getBasicEntryResponseFieldResponseCode   = big.NewInt(1 << 2)
+	getBasicEntryResponseFieldResponseData   = big.NewInt(1 << 3)
+	getBasicEntryResponseFieldResponseText   = big.NewInt(1 << 4)
+)
+
 type GetBasicEntryResponse struct {
 	IsSuccess      IsSuccess            `json:"isSuccess" url:"isSuccess"`
 	PageIdentifier *PageIdentifier      `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 	ResponseCode   *Responsecode        `json:"responseCode,omitempty" url:"responseCode,omitempty"`
 	ResponseData   *PaypointEntryConfig `json:"responseData,omitempty" url:"responseData,omitempty"`
 	ResponseText   ResponseText         `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -140,6 +237,48 @@ func (g *GetBasicEntryResponse) GetExtraProperties() map[string]interface{} {
 	return g.extraProperties
 }
 
+func (g *GetBasicEntryResponse) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBasicEntryResponse) SetIsSuccess(isSuccess IsSuccess) {
+	g.IsSuccess = isSuccess
+	g.require(getBasicEntryResponseFieldIsSuccess)
+}
+
+// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBasicEntryResponse) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+	g.PageIdentifier = pageIdentifier
+	g.require(getBasicEntryResponseFieldPageIdentifier)
+}
+
+// SetResponseCode sets the ResponseCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBasicEntryResponse) SetResponseCode(responseCode *Responsecode) {
+	g.ResponseCode = responseCode
+	g.require(getBasicEntryResponseFieldResponseCode)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBasicEntryResponse) SetResponseData(responseData *PaypointEntryConfig) {
+	g.ResponseData = responseData
+	g.require(getBasicEntryResponseFieldResponseData)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBasicEntryResponse) SetResponseText(responseText ResponseText) {
+	g.ResponseText = responseText
+	g.require(getBasicEntryResponseFieldResponseText)
+}
+
 func (g *GetBasicEntryResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler GetBasicEntryResponse
 	var value unmarshaler
@@ -156,6 +295,17 @@ func (g *GetBasicEntryResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (g *GetBasicEntryResponse) MarshalJSON() ([]byte, error) {
+	type embed GetBasicEntryResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (g *GetBasicEntryResponse) String() string {
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
@@ -168,12 +318,23 @@ func (g *GetBasicEntryResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+var (
+	getEntryConfigResponseFieldIsSuccess      = big.NewInt(1 << 0)
+	getEntryConfigResponseFieldPageIdentifier = big.NewInt(1 << 1)
+	getEntryConfigResponseFieldResponseCode   = big.NewInt(1 << 2)
+	getEntryConfigResponseFieldResponseData   = big.NewInt(1 << 3)
+	getEntryConfigResponseFieldResponseText   = big.NewInt(1 << 4)
+)
+
 type GetEntryConfigResponse struct {
 	IsSuccess      IsSuccess            `json:"isSuccess" url:"isSuccess"`
 	PageIdentifier *PageIdentifier      `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 	ResponseCode   *Responsecode        `json:"responseCode,omitempty" url:"responseCode,omitempty"`
 	ResponseData   *PaypointEntryConfig `json:"responseData,omitempty" url:"responseData,omitempty"`
 	ResponseText   ResponseText         `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -218,6 +379,48 @@ func (g *GetEntryConfigResponse) GetExtraProperties() map[string]interface{} {
 	return g.extraProperties
 }
 
+func (g *GetEntryConfigResponse) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetEntryConfigResponse) SetIsSuccess(isSuccess IsSuccess) {
+	g.IsSuccess = isSuccess
+	g.require(getEntryConfigResponseFieldIsSuccess)
+}
+
+// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetEntryConfigResponse) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+	g.PageIdentifier = pageIdentifier
+	g.require(getEntryConfigResponseFieldPageIdentifier)
+}
+
+// SetResponseCode sets the ResponseCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetEntryConfigResponse) SetResponseCode(responseCode *Responsecode) {
+	g.ResponseCode = responseCode
+	g.require(getEntryConfigResponseFieldResponseCode)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetEntryConfigResponse) SetResponseData(responseData *PaypointEntryConfig) {
+	g.ResponseData = responseData
+	g.require(getEntryConfigResponseFieldResponseData)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetEntryConfigResponse) SetResponseText(responseText ResponseText) {
+	g.ResponseText = responseText
+	g.require(getEntryConfigResponseFieldResponseText)
+}
+
 func (g *GetEntryConfigResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler GetEntryConfigResponse
 	var value unmarshaler
@@ -234,6 +437,17 @@ func (g *GetEntryConfigResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (g *GetEntryConfigResponse) MarshalJSON() ([]byte, error) {
+	type embed GetEntryConfigResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (g *GetEntryConfigResponse) String() string {
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
@@ -246,10 +460,19 @@ func (g *GetEntryConfigResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+var (
+	migratePaypointResponseFieldIsSuccess    = big.NewInt(1 << 0)
+	migratePaypointResponseFieldResponseCode = big.NewInt(1 << 1)
+	migratePaypointResponseFieldResponseText = big.NewInt(1 << 2)
+)
+
 type MigratePaypointResponse struct {
 	IsSuccess    IsSuccess     `json:"isSuccess" url:"isSuccess"`
 	ResponseCode *Responsecode `json:"responseCode,omitempty" url:"responseCode,omitempty"`
 	ResponseText ResponseText  `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -280,6 +503,34 @@ func (m *MigratePaypointResponse) GetExtraProperties() map[string]interface{} {
 	return m.extraProperties
 }
 
+func (m *MigratePaypointResponse) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MigratePaypointResponse) SetIsSuccess(isSuccess IsSuccess) {
+	m.IsSuccess = isSuccess
+	m.require(migratePaypointResponseFieldIsSuccess)
+}
+
+// SetResponseCode sets the ResponseCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MigratePaypointResponse) SetResponseCode(responseCode *Responsecode) {
+	m.ResponseCode = responseCode
+	m.require(migratePaypointResponseFieldResponseCode)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MigratePaypointResponse) SetResponseText(responseText ResponseText) {
+	m.ResponseText = responseText
+	m.require(migratePaypointResponseFieldResponseText)
+}
+
 func (m *MigratePaypointResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler MigratePaypointResponse
 	var value unmarshaler
@@ -296,6 +547,17 @@ func (m *MigratePaypointResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (m *MigratePaypointResponse) MarshalJSON() ([]byte, error) {
+	type embed MigratePaypointResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (m *MigratePaypointResponse) String() string {
 	if len(m.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
@@ -308,11 +570,19 @@ func (m *MigratePaypointResponse) String() string {
 	return fmt.Sprintf("%#v", m)
 }
 
+var (
+	notificationRequestFieldNotificationUrl     = big.NewInt(1 << 0)
+	notificationRequestFieldWebHeaderParameters = big.NewInt(1 << 1)
+)
+
 type NotificationRequest struct {
 	// Complete HTTP URL receiving the notification
 	NotificationUrl string `json:"notificationUrl" url:"notificationUrl"`
 	// A dictionary of key-value pairs to be inserted in the header when the notification request is submitted
 	WebHeaderParameters []*WebHeaderParameter `json:"webHeaderParameters,omitempty" url:"webHeaderParameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -336,6 +606,27 @@ func (n *NotificationRequest) GetExtraProperties() map[string]interface{} {
 	return n.extraProperties
 }
 
+func (n *NotificationRequest) require(field *big.Int) {
+	if n.explicitFields == nil {
+		n.explicitFields = big.NewInt(0)
+	}
+	n.explicitFields.Or(n.explicitFields, field)
+}
+
+// SetNotificationUrl sets the NotificationUrl field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationRequest) SetNotificationUrl(notificationUrl string) {
+	n.NotificationUrl = notificationUrl
+	n.require(notificationRequestFieldNotificationUrl)
+}
+
+// SetWebHeaderParameters sets the WebHeaderParameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationRequest) SetWebHeaderParameters(webHeaderParameters []*WebHeaderParameter) {
+	n.WebHeaderParameters = webHeaderParameters
+	n.require(notificationRequestFieldWebHeaderParameters)
+}
+
 func (n *NotificationRequest) UnmarshalJSON(data []byte) error {
 	type unmarshaler NotificationRequest
 	var value unmarshaler
@@ -352,6 +643,17 @@ func (n *NotificationRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (n *NotificationRequest) MarshalJSON() ([]byte, error) {
+	type embed NotificationRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*n),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, n.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (n *NotificationRequest) String() string {
 	if len(n.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(n.rawJSON); err == nil {
@@ -364,12 +666,21 @@ func (n *NotificationRequest) String() string {
 	return fmt.Sprintf("%#v", n)
 }
 
+var (
+	paypointMoveRequestFieldEntryPoint              = big.NewInt(1 << 0)
+	paypointMoveRequestFieldNewParentOrganizationId = big.NewInt(1 << 1)
+	paypointMoveRequestFieldNotificationRequest     = big.NewInt(1 << 2)
+)
+
 type PaypointMoveRequest struct {
 	EntryPoint Entrypointfield `json:"entryPoint" url:"entryPoint"`
 	// The ID for the paypoint's new parent organization.
 	NewParentOrganizationId int `json:"newParentOrganizationId" url:"newParentOrganizationId"`
 	// Optional notification request object for a webhook
 	NotificationRequest *NotificationRequest `json:"notificationRequest,omitempty" url:"notificationRequest,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -400,6 +711,34 @@ func (p *PaypointMoveRequest) GetExtraProperties() map[string]interface{} {
 	return p.extraProperties
 }
 
+func (p *PaypointMoveRequest) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetEntryPoint sets the EntryPoint field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointMoveRequest) SetEntryPoint(entryPoint Entrypointfield) {
+	p.EntryPoint = entryPoint
+	p.require(paypointMoveRequestFieldEntryPoint)
+}
+
+// SetNewParentOrganizationId sets the NewParentOrganizationId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointMoveRequest) SetNewParentOrganizationId(newParentOrganizationId int) {
+	p.NewParentOrganizationId = newParentOrganizationId
+	p.require(paypointMoveRequestFieldNewParentOrganizationId)
+}
+
+// SetNotificationRequest sets the NotificationRequest field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointMoveRequest) SetNotificationRequest(notificationRequest *NotificationRequest) {
+	p.NotificationRequest = notificationRequest
+	p.require(paypointMoveRequestFieldNotificationRequest)
+}
+
 func (p *PaypointMoveRequest) UnmarshalJSON(data []byte) error {
 	type unmarshaler PaypointMoveRequest
 	var value unmarshaler
@@ -416,6 +755,17 @@ func (p *PaypointMoveRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (p *PaypointMoveRequest) MarshalJSON() ([]byte, error) {
+	type embed PaypointMoveRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (p *PaypointMoveRequest) String() string {
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
@@ -428,9 +778,17 @@ func (p *PaypointMoveRequest) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+var (
+	webHeaderParameterFieldKey   = big.NewInt(1 << 0)
+	webHeaderParameterFieldValue = big.NewInt(1 << 1)
+)
+
 type WebHeaderParameter struct {
 	Key   string `json:"key" url:"key"`
 	Value string `json:"value" url:"value"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -454,6 +812,27 @@ func (w *WebHeaderParameter) GetExtraProperties() map[string]interface{} {
 	return w.extraProperties
 }
 
+func (w *WebHeaderParameter) require(field *big.Int) {
+	if w.explicitFields == nil {
+		w.explicitFields = big.NewInt(0)
+	}
+	w.explicitFields.Or(w.explicitFields, field)
+}
+
+// SetKey sets the Key field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebHeaderParameter) SetKey(key string) {
+	w.Key = key
+	w.require(webHeaderParameterFieldKey)
+}
+
+// SetValue sets the Value field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (w *WebHeaderParameter) SetValue(value string) {
+	w.Value = value
+	w.require(webHeaderParameterFieldValue)
+}
+
 func (w *WebHeaderParameter) UnmarshalJSON(data []byte) error {
 	type unmarshaler WebHeaderParameter
 	var value unmarshaler
@@ -468,6 +847,17 @@ func (w *WebHeaderParameter) UnmarshalJSON(data []byte) error {
 	w.extraProperties = extraProperties
 	w.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (w *WebHeaderParameter) MarshalJSON() ([]byte, error) {
+	type embed WebHeaderParameter
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*w),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, w.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (w *WebHeaderParameter) String() string {

@@ -4,7 +4,7 @@ package organization
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Creates an organization under a parent organization. This is also referred to as a suborganization.
 func (c *Client) AddOrganization(
 	ctx context.Context,
-	request *sdk.AddOrganizationRequest,
+	request *sdkgo.AddOrganizationRequest,
 	opts ...option.RequestOption,
-) (*sdk.AddOrganizationResponse, error) {
+) (*sdkgo.AddOrganizationResponse, error) {
 	response, err := c.WithRawResponse.AddOrganization(
 		ctx,
 		request,
@@ -55,7 +55,7 @@ func (c *Client) DeleteOrganization(
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
 	opts ...option.RequestOption,
-) (*sdk.DeleteOrganizationResponse, error) {
+) (*sdkgo.DeleteOrganizationResponse, error) {
 	response, err := c.WithRawResponse.DeleteOrganization(
 		ctx,
 		orgId,
@@ -72,9 +72,9 @@ func (c *Client) EditOrganization(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdk.OrganizationData,
+	request *sdkgo.OrganizationData,
 	opts ...option.RequestOption,
-) (*sdk.EditOrganizationResponse, error) {
+) (*sdkgo.EditOrganizationResponse, error) {
 	response, err := c.WithRawResponse.EditOrganization(
 		ctx,
 		orgId,
@@ -93,7 +93,7 @@ func (c *Client) GetBasicOrganization(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	opts ...option.RequestOption,
-) (*sdk.OrganizationQueryRecord, error) {
+) (*sdkgo.OrganizationQueryRecord, error) {
 	response, err := c.WithRawResponse.GetBasicOrganization(
 		ctx,
 		entry,
@@ -111,7 +111,7 @@ func (c *Client) GetBasicOrganizationById(
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
 	opts ...option.RequestOption,
-) (*sdk.OrganizationQueryRecord, error) {
+) (*sdkgo.OrganizationQueryRecord, error) {
 	response, err := c.WithRawResponse.GetBasicOrganizationById(
 		ctx,
 		orgId,
@@ -129,7 +129,7 @@ func (c *Client) GetOrganization(
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
 	opts ...option.RequestOption,
-) (*sdk.OrganizationQueryRecord, error) {
+) (*sdkgo.OrganizationQueryRecord, error) {
 	response, err := c.WithRawResponse.GetOrganization(
 		ctx,
 		orgId,
@@ -147,7 +147,7 @@ func (c *Client) GetSettingsOrganization(
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
 	opts ...option.RequestOption,
-) (*sdk.SettingsQueryRecord, error) {
+) (*sdkgo.SettingsQueryRecord, error) {
 	response, err := c.WithRawResponse.GetSettingsOrganization(
 		ctx,
 		orgId,

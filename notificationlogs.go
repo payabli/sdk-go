@@ -7,7 +7,13 @@ import (
 	fmt "fmt"
 	uuid "github.com/google/uuid"
 	internal "github.com/payabli/sdk-go/internal"
+	big "math/big"
 	time "time"
+)
+
+var (
+	searchNotificationLogsRequestFieldPageSize = big.NewInt(1 << 0)
+	searchNotificationLogsRequestFieldSkip     = big.NewInt(1 << 1)
 )
 
 type SearchNotificationLogsRequest struct {
@@ -15,6 +21,30 @@ type SearchNotificationLogsRequest struct {
 	// The number of records to skip before starting to collect the result set.
 	Skip *int                          `json:"-" url:"Skip,omitempty"`
 	Body *NotificationLogSearchRequest `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (s *SearchNotificationLogsRequest) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetPageSize sets the PageSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchNotificationLogsRequest) SetPageSize(pageSize *Pagesize) {
+	s.PageSize = pageSize
+	s.require(searchNotificationLogsRequestFieldPageSize)
+}
+
+// SetSkip sets the Skip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchNotificationLogsRequest) SetSkip(skip *int) {
+	s.Skip = skip
+	s.require(searchNotificationLogsRequestFieldSkip)
 }
 
 func (s *SearchNotificationLogsRequest) UnmarshalJSON(data []byte) error {
@@ -33,9 +63,17 @@ func (s *SearchNotificationLogsRequest) MarshalJSON() ([]byte, error) {
 // A list of notification log IDs to retry. The maximum number of IDs that can be retried in a single request is 50.
 type BulkRetryRequest = []uuid.UUID
 
+var (
+	keyValueArrayFieldKey   = big.NewInt(1 << 0)
+	keyValueArrayFieldValue = big.NewInt(1 << 1)
+)
+
 type KeyValueArray struct {
 	Key   *string  `json:"key,omitempty" url:"key,omitempty"`
 	Value []string `json:"value,omitempty" url:"value,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -59,6 +97,27 @@ func (k *KeyValueArray) GetExtraProperties() map[string]interface{} {
 	return k.extraProperties
 }
 
+func (k *KeyValueArray) require(field *big.Int) {
+	if k.explicitFields == nil {
+		k.explicitFields = big.NewInt(0)
+	}
+	k.explicitFields.Or(k.explicitFields, field)
+}
+
+// SetKey sets the Key field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (k *KeyValueArray) SetKey(key *string) {
+	k.Key = key
+	k.require(keyValueArrayFieldKey)
+}
+
+// SetValue sets the Value field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (k *KeyValueArray) SetValue(value []string) {
+	k.Value = value
+	k.require(keyValueArrayFieldValue)
+}
+
 func (k *KeyValueArray) UnmarshalJSON(data []byte) error {
 	type unmarshaler KeyValueArray
 	var value unmarshaler
@@ -75,6 +134,17 @@ func (k *KeyValueArray) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (k *KeyValueArray) MarshalJSON() ([]byte, error) {
+	type embed KeyValueArray
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*k),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, k.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (k *KeyValueArray) String() string {
 	if len(k.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(k.rawJSON); err == nil {
@@ -86,6 +156,21 @@ func (k *KeyValueArray) String() string {
 	}
 	return fmt.Sprintf("%#v", k)
 }
+
+var (
+	notificationLogFieldId                = big.NewInt(1 << 0)
+	notificationLogFieldOrgId             = big.NewInt(1 << 1)
+	notificationLogFieldPaypointId        = big.NewInt(1 << 2)
+	notificationLogFieldNotificationEvent = big.NewInt(1 << 3)
+	notificationLogFieldTarget            = big.NewInt(1 << 4)
+	notificationLogFieldResponseStatus    = big.NewInt(1 << 5)
+	notificationLogFieldSuccess           = big.NewInt(1 << 6)
+	notificationLogFieldJobData           = big.NewInt(1 << 7)
+	notificationLogFieldCreatedDate       = big.NewInt(1 << 8)
+	notificationLogFieldSuccessDate       = big.NewInt(1 << 9)
+	notificationLogFieldLastFailedDate    = big.NewInt(1 << 10)
+	notificationLogFieldIsInProgress      = big.NewInt(1 << 11)
+)
 
 type NotificationLog struct {
 	// The unique identifier for the notification.
@@ -112,6 +197,9 @@ type NotificationLog struct {
 	LastFailedDate *time.Time `json:"lastFailedDate,omitempty" url:"lastFailedDate,omitempty"`
 	// Indicates whether the notification is currently in progress.
 	IsInProgress bool `json:"isInProgress" url:"isInProgress"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -205,6 +293,97 @@ func (n *NotificationLog) GetExtraProperties() map[string]interface{} {
 	return n.extraProperties
 }
 
+func (n *NotificationLog) require(field *big.Int) {
+	if n.explicitFields == nil {
+		n.explicitFields = big.NewInt(0)
+	}
+	n.explicitFields.Or(n.explicitFields, field)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLog) SetId(id uuid.UUID) {
+	n.Id = id
+	n.require(notificationLogFieldId)
+}
+
+// SetOrgId sets the OrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLog) SetOrgId(orgId *int64) {
+	n.OrgId = orgId
+	n.require(notificationLogFieldOrgId)
+}
+
+// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLog) SetPaypointId(paypointId *int64) {
+	n.PaypointId = paypointId
+	n.require(notificationLogFieldPaypointId)
+}
+
+// SetNotificationEvent sets the NotificationEvent field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLog) SetNotificationEvent(notificationEvent *string) {
+	n.NotificationEvent = notificationEvent
+	n.require(notificationLogFieldNotificationEvent)
+}
+
+// SetTarget sets the Target field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLog) SetTarget(target *string) {
+	n.Target = target
+	n.require(notificationLogFieldTarget)
+}
+
+// SetResponseStatus sets the ResponseStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLog) SetResponseStatus(responseStatus *string) {
+	n.ResponseStatus = responseStatus
+	n.require(notificationLogFieldResponseStatus)
+}
+
+// SetSuccess sets the Success field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLog) SetSuccess(success bool) {
+	n.Success = success
+	n.require(notificationLogFieldSuccess)
+}
+
+// SetJobData sets the JobData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLog) SetJobData(jobData *string) {
+	n.JobData = jobData
+	n.require(notificationLogFieldJobData)
+}
+
+// SetCreatedDate sets the CreatedDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLog) SetCreatedDate(createdDate time.Time) {
+	n.CreatedDate = createdDate
+	n.require(notificationLogFieldCreatedDate)
+}
+
+// SetSuccessDate sets the SuccessDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLog) SetSuccessDate(successDate *time.Time) {
+	n.SuccessDate = successDate
+	n.require(notificationLogFieldSuccessDate)
+}
+
+// SetLastFailedDate sets the LastFailedDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLog) SetLastFailedDate(lastFailedDate *time.Time) {
+	n.LastFailedDate = lastFailedDate
+	n.require(notificationLogFieldLastFailedDate)
+}
+
+// SetIsInProgress sets the IsInProgress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLog) SetIsInProgress(isInProgress bool) {
+	n.IsInProgress = isInProgress
+	n.require(notificationLogFieldIsInProgress)
+}
+
 func (n *NotificationLog) UnmarshalJSON(data []byte) error {
 	type embed NotificationLog
 	var unmarshaler = struct {
@@ -244,7 +423,8 @@ func (n *NotificationLog) MarshalJSON() ([]byte, error) {
 		SuccessDate:    internal.NewOptionalDateTime(n.SuccessDate),
 		LastFailedDate: internal.NewOptionalDateTime(n.LastFailedDate),
 	}
-	return json.Marshal(marshaler)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, n.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (n *NotificationLog) String() string {
@@ -258,6 +438,24 @@ func (n *NotificationLog) String() string {
 	}
 	return fmt.Sprintf("%#v", n)
 }
+
+var (
+	notificationLogDetailFieldId                = big.NewInt(1 << 0)
+	notificationLogDetailFieldOrgId             = big.NewInt(1 << 1)
+	notificationLogDetailFieldPaypointId        = big.NewInt(1 << 2)
+	notificationLogDetailFieldNotificationEvent = big.NewInt(1 << 3)
+	notificationLogDetailFieldTarget            = big.NewInt(1 << 4)
+	notificationLogDetailFieldResponseStatus    = big.NewInt(1 << 5)
+	notificationLogDetailFieldSuccess           = big.NewInt(1 << 6)
+	notificationLogDetailFieldJobData           = big.NewInt(1 << 7)
+	notificationLogDetailFieldCreatedDate       = big.NewInt(1 << 8)
+	notificationLogDetailFieldSuccessDate       = big.NewInt(1 << 9)
+	notificationLogDetailFieldLastFailedDate    = big.NewInt(1 << 10)
+	notificationLogDetailFieldIsInProgress      = big.NewInt(1 << 11)
+	notificationLogDetailFieldWebHeaders        = big.NewInt(1 << 12)
+	notificationLogDetailFieldResponseHeaders   = big.NewInt(1 << 13)
+	notificationLogDetailFieldResponseContent   = big.NewInt(1 << 14)
+)
 
 type NotificationLogDetail struct {
 	// The unique identifier for the notification.
@@ -287,6 +485,9 @@ type NotificationLogDetail struct {
 	WebHeaders      []*StringStringKeyValuePair `json:"webHeaders,omitempty" url:"webHeaders,omitempty"`
 	ResponseHeaders []*KeyValueArray            `json:"responseHeaders,omitempty" url:"responseHeaders,omitempty"`
 	ResponseContent *string                     `json:"responseContent,omitempty" url:"responseContent,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -401,6 +602,118 @@ func (n *NotificationLogDetail) GetExtraProperties() map[string]interface{} {
 	return n.extraProperties
 }
 
+func (n *NotificationLogDetail) require(field *big.Int) {
+	if n.explicitFields == nil {
+		n.explicitFields = big.NewInt(0)
+	}
+	n.explicitFields.Or(n.explicitFields, field)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogDetail) SetId(id uuid.UUID) {
+	n.Id = id
+	n.require(notificationLogDetailFieldId)
+}
+
+// SetOrgId sets the OrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogDetail) SetOrgId(orgId *int64) {
+	n.OrgId = orgId
+	n.require(notificationLogDetailFieldOrgId)
+}
+
+// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogDetail) SetPaypointId(paypointId *int64) {
+	n.PaypointId = paypointId
+	n.require(notificationLogDetailFieldPaypointId)
+}
+
+// SetNotificationEvent sets the NotificationEvent field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogDetail) SetNotificationEvent(notificationEvent *string) {
+	n.NotificationEvent = notificationEvent
+	n.require(notificationLogDetailFieldNotificationEvent)
+}
+
+// SetTarget sets the Target field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogDetail) SetTarget(target *string) {
+	n.Target = target
+	n.require(notificationLogDetailFieldTarget)
+}
+
+// SetResponseStatus sets the ResponseStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogDetail) SetResponseStatus(responseStatus *string) {
+	n.ResponseStatus = responseStatus
+	n.require(notificationLogDetailFieldResponseStatus)
+}
+
+// SetSuccess sets the Success field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogDetail) SetSuccess(success bool) {
+	n.Success = success
+	n.require(notificationLogDetailFieldSuccess)
+}
+
+// SetJobData sets the JobData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogDetail) SetJobData(jobData *string) {
+	n.JobData = jobData
+	n.require(notificationLogDetailFieldJobData)
+}
+
+// SetCreatedDate sets the CreatedDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogDetail) SetCreatedDate(createdDate time.Time) {
+	n.CreatedDate = createdDate
+	n.require(notificationLogDetailFieldCreatedDate)
+}
+
+// SetSuccessDate sets the SuccessDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogDetail) SetSuccessDate(successDate *time.Time) {
+	n.SuccessDate = successDate
+	n.require(notificationLogDetailFieldSuccessDate)
+}
+
+// SetLastFailedDate sets the LastFailedDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogDetail) SetLastFailedDate(lastFailedDate *time.Time) {
+	n.LastFailedDate = lastFailedDate
+	n.require(notificationLogDetailFieldLastFailedDate)
+}
+
+// SetIsInProgress sets the IsInProgress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogDetail) SetIsInProgress(isInProgress bool) {
+	n.IsInProgress = isInProgress
+	n.require(notificationLogDetailFieldIsInProgress)
+}
+
+// SetWebHeaders sets the WebHeaders field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogDetail) SetWebHeaders(webHeaders []*StringStringKeyValuePair) {
+	n.WebHeaders = webHeaders
+	n.require(notificationLogDetailFieldWebHeaders)
+}
+
+// SetResponseHeaders sets the ResponseHeaders field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogDetail) SetResponseHeaders(responseHeaders []*KeyValueArray) {
+	n.ResponseHeaders = responseHeaders
+	n.require(notificationLogDetailFieldResponseHeaders)
+}
+
+// SetResponseContent sets the ResponseContent field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogDetail) SetResponseContent(responseContent *string) {
+	n.ResponseContent = responseContent
+	n.require(notificationLogDetailFieldResponseContent)
+}
+
 func (n *NotificationLogDetail) UnmarshalJSON(data []byte) error {
 	type embed NotificationLogDetail
 	var unmarshaler = struct {
@@ -440,7 +753,8 @@ func (n *NotificationLogDetail) MarshalJSON() ([]byte, error) {
 		SuccessDate:    internal.NewOptionalDateTime(n.SuccessDate),
 		LastFailedDate: internal.NewOptionalDateTime(n.LastFailedDate),
 	}
-	return json.Marshal(marshaler)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, n.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (n *NotificationLogDetail) String() string {
@@ -455,6 +769,15 @@ func (n *NotificationLogDetail) String() string {
 	return fmt.Sprintf("%#v", n)
 }
 
+var (
+	notificationLogSearchRequestFieldStartDate         = big.NewInt(1 << 0)
+	notificationLogSearchRequestFieldEndDate           = big.NewInt(1 << 1)
+	notificationLogSearchRequestFieldNotificationEvent = big.NewInt(1 << 2)
+	notificationLogSearchRequestFieldSucceeded         = big.NewInt(1 << 3)
+	notificationLogSearchRequestFieldOrgId             = big.NewInt(1 << 4)
+	notificationLogSearchRequestFieldPaypointId        = big.NewInt(1 << 5)
+)
+
 type NotificationLogSearchRequest struct {
 	// The start date for the search.
 	StartDate time.Time `json:"startDate" url:"startDate"`
@@ -468,6 +791,9 @@ type NotificationLogSearchRequest struct {
 	OrgId *int64 `json:"orgId,omitempty" url:"orgId,omitempty"`
 	// The ID of the paypoint to filter by.
 	PaypointId *int64 `json:"paypointId,omitempty" url:"paypointId,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -519,6 +845,55 @@ func (n *NotificationLogSearchRequest) GetExtraProperties() map[string]interface
 	return n.extraProperties
 }
 
+func (n *NotificationLogSearchRequest) require(field *big.Int) {
+	if n.explicitFields == nil {
+		n.explicitFields = big.NewInt(0)
+	}
+	n.explicitFields.Or(n.explicitFields, field)
+}
+
+// SetStartDate sets the StartDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogSearchRequest) SetStartDate(startDate time.Time) {
+	n.StartDate = startDate
+	n.require(notificationLogSearchRequestFieldStartDate)
+}
+
+// SetEndDate sets the EndDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogSearchRequest) SetEndDate(endDate time.Time) {
+	n.EndDate = endDate
+	n.require(notificationLogSearchRequestFieldEndDate)
+}
+
+// SetNotificationEvent sets the NotificationEvent field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogSearchRequest) SetNotificationEvent(notificationEvent *string) {
+	n.NotificationEvent = notificationEvent
+	n.require(notificationLogSearchRequestFieldNotificationEvent)
+}
+
+// SetSucceeded sets the Succeeded field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogSearchRequest) SetSucceeded(succeeded *bool) {
+	n.Succeeded = succeeded
+	n.require(notificationLogSearchRequestFieldSucceeded)
+}
+
+// SetOrgId sets the OrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogSearchRequest) SetOrgId(orgId *int64) {
+	n.OrgId = orgId
+	n.require(notificationLogSearchRequestFieldOrgId)
+}
+
+// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogSearchRequest) SetPaypointId(paypointId *int64) {
+	n.PaypointId = paypointId
+	n.require(notificationLogSearchRequestFieldPaypointId)
+}
+
 func (n *NotificationLogSearchRequest) UnmarshalJSON(data []byte) error {
 	type embed NotificationLogSearchRequest
 	var unmarshaler = struct {
@@ -554,7 +929,8 @@ func (n *NotificationLogSearchRequest) MarshalJSON() ([]byte, error) {
 		StartDate: internal.NewDateTime(n.StartDate),
 		EndDate:   internal.NewDateTime(n.EndDate),
 	}
-	return json.Marshal(marshaler)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, n.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (n *NotificationLogSearchRequest) String() string {
@@ -569,9 +945,17 @@ func (n *NotificationLogSearchRequest) String() string {
 	return fmt.Sprintf("%#v", n)
 }
 
+var (
+	stringStringKeyValuePairFieldKey   = big.NewInt(1 << 0)
+	stringStringKeyValuePairFieldValue = big.NewInt(1 << 1)
+)
+
 type StringStringKeyValuePair struct {
 	Key   *string `json:"key,omitempty" url:"key,omitempty"`
 	Value *string `json:"value,omitempty" url:"value,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -595,6 +979,27 @@ func (s *StringStringKeyValuePair) GetExtraProperties() map[string]interface{} {
 	return s.extraProperties
 }
 
+func (s *StringStringKeyValuePair) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetKey sets the Key field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StringStringKeyValuePair) SetKey(key *string) {
+	s.Key = key
+	s.require(stringStringKeyValuePairFieldKey)
+}
+
+// SetValue sets the Value field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StringStringKeyValuePair) SetValue(value *string) {
+	s.Value = value
+	s.require(stringStringKeyValuePairFieldValue)
+}
+
 func (s *StringStringKeyValuePair) UnmarshalJSON(data []byte) error {
 	type unmarshaler StringStringKeyValuePair
 	var value unmarshaler
@@ -609,6 +1014,17 @@ func (s *StringStringKeyValuePair) UnmarshalJSON(data []byte) error {
 	s.extraProperties = extraProperties
 	s.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (s *StringStringKeyValuePair) MarshalJSON() ([]byte, error) {
+	type embed StringStringKeyValuePair
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (s *StringStringKeyValuePair) String() string {

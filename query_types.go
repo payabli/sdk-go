@@ -6,7 +6,66 @@ import (
 	json "encoding/json"
 	fmt "fmt"
 	internal "github.com/payabli/sdk-go/internal"
+	big "math/big"
 	time "time"
+)
+
+var (
+	batchDetailResponseRecordFieldId                       = big.NewInt(1 << 0)
+	batchDetailResponseRecordFieldMethod                   = big.NewInt(1 << 1)
+	batchDetailResponseRecordFieldWalletType               = big.NewInt(1 << 2)
+	batchDetailResponseRecordFieldSettledAmount            = big.NewInt(1 << 3)
+	batchDetailResponseRecordFieldType                     = big.NewInt(1 << 4)
+	batchDetailResponseRecordFieldBatchNumber              = big.NewInt(1 << 5)
+	batchDetailResponseRecordFieldBatchAmount              = big.NewInt(1 << 6)
+	batchDetailResponseRecordFieldPaymentTransId           = big.NewInt(1 << 7)
+	batchDetailResponseRecordFieldPaymentTransStatus       = big.NewInt(1 << 8)
+	batchDetailResponseRecordFieldScheduleReference        = big.NewInt(1 << 9)
+	batchDetailResponseRecordFieldGatewayTransId           = big.NewInt(1 << 10)
+	batchDetailResponseRecordFieldOrderId                  = big.NewInt(1 << 11)
+	batchDetailResponseRecordFieldTransMethod              = big.NewInt(1 << 12)
+	batchDetailResponseRecordFieldPaymentData              = big.NewInt(1 << 13)
+	batchDetailResponseRecordFieldNetAmount                = big.NewInt(1 << 14)
+	batchDetailResponseRecordFieldOperation                = big.NewInt(1 << 15)
+	batchDetailResponseRecordFieldCategory                 = big.NewInt(1 << 16)
+	batchDetailResponseRecordFieldSource                   = big.NewInt(1 << 17)
+	batchDetailResponseRecordFieldStatus                   = big.NewInt(1 << 18)
+	batchDetailResponseRecordFieldTransactionTime          = big.NewInt(1 << 19)
+	batchDetailResponseRecordFieldCustomer                 = big.NewInt(1 << 20)
+	batchDetailResponseRecordFieldSettlementDate           = big.NewInt(1 << 21)
+	batchDetailResponseRecordFieldPaymentSettlementStatus  = big.NewInt(1 << 22)
+	batchDetailResponseRecordFieldBatchStatus              = big.NewInt(1 << 23)
+	batchDetailResponseRecordFieldDepositDate              = big.NewInt(1 << 24)
+	batchDetailResponseRecordFieldExpectedDepositDate      = big.NewInt(1 << 25)
+	batchDetailResponseRecordFieldMaskedAccount            = big.NewInt(1 << 26)
+	batchDetailResponseRecordFieldCreatedAt                = big.NewInt(1 << 27)
+	batchDetailResponseRecordFieldPaypointLegalname        = big.NewInt(1 << 28)
+	batchDetailResponseRecordFieldResponseData             = big.NewInt(1 << 29)
+	batchDetailResponseRecordFieldPaypointDbaname          = big.NewInt(1 << 30)
+	batchDetailResponseRecordFieldParentOrgName            = big.NewInt(1 << 31)
+	batchDetailResponseRecordFieldParentOrgId              = big.NewInt(1 << 32)
+	batchDetailResponseRecordFieldPaypointEntryname        = big.NewInt(1 << 33)
+	batchDetailResponseRecordFieldDeviceId                 = big.NewInt(1 << 34)
+	batchDetailResponseRecordFieldRetrievalId              = big.NewInt(1 << 35)
+	batchDetailResponseRecordFieldChargebackId             = big.NewInt(1 << 36)
+	batchDetailResponseRecordFieldAchHolderType            = big.NewInt(1 << 37)
+	batchDetailResponseRecordFieldAchSecCode               = big.NewInt(1 << 38)
+	batchDetailResponseRecordFieldConnectorName            = big.NewInt(1 << 39)
+	batchDetailResponseRecordFieldEntrypageId              = big.NewInt(1 << 40)
+	batchDetailResponseRecordFieldFeeAmount                = big.NewInt(1 << 41)
+	batchDetailResponseRecordFieldOrgId                    = big.NewInt(1 << 42)
+	batchDetailResponseRecordFieldPayorId                  = big.NewInt(1 << 43)
+	batchDetailResponseRecordFieldPaypointId               = big.NewInt(1 << 44)
+	batchDetailResponseRecordFieldPendingFeeAmount         = big.NewInt(1 << 45)
+	batchDetailResponseRecordFieldRefundId                 = big.NewInt(1 << 46)
+	batchDetailResponseRecordFieldReturnedId               = big.NewInt(1 << 47)
+	batchDetailResponseRecordFieldSplitFundingInstructions = big.NewInt(1 << 48)
+	batchDetailResponseRecordFieldTotalAmount              = big.NewInt(1 << 49)
+	batchDetailResponseRecordFieldCfeeTransactions         = big.NewInt(1 << 50)
+	batchDetailResponseRecordFieldInvoiceData              = big.NewInt(1 << 51)
+	batchDetailResponseRecordFieldTransactionEvents        = big.NewInt(1 << 52)
+	batchDetailResponseRecordFieldExternalPaypointId       = big.NewInt(1 << 53)
+	batchDetailResponseRecordFieldIsHold                   = big.NewInt(1 << 54)
 )
 
 type BatchDetailResponseRecord struct {
@@ -65,6 +124,9 @@ type BatchDetailResponseRecord struct {
 	TransactionEvents        []*QueryTransactionEvents  `json:"TransactionEvents" url:"TransactionEvents"`
 	ExternalPaypointId       ExternalPaypointId         `json:"externalPaypointID" url:"externalPaypointID"`
 	IsHold                   int                        `json:"isHold" url:"isHold"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -459,6 +521,398 @@ func (b *BatchDetailResponseRecord) GetExtraProperties() map[string]interface{} 
 	return b.extraProperties
 }
 
+func (b *BatchDetailResponseRecord) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetId(id int) {
+	b.Id = id
+	b.require(batchDetailResponseRecordFieldId)
+}
+
+// SetMethod sets the Method field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetMethod(method string) {
+	b.Method = method
+	b.require(batchDetailResponseRecordFieldMethod)
+}
+
+// SetWalletType sets the WalletType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetWalletType(walletType *string) {
+	b.WalletType = walletType
+	b.require(batchDetailResponseRecordFieldWalletType)
+}
+
+// SetSettledAmount sets the SettledAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetSettledAmount(settledAmount float64) {
+	b.SettledAmount = settledAmount
+	b.require(batchDetailResponseRecordFieldSettledAmount)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetType(type_ string) {
+	b.Type = type_
+	b.require(batchDetailResponseRecordFieldType)
+}
+
+// SetBatchNumber sets the BatchNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetBatchNumber(batchNumber BatchNumber) {
+	b.BatchNumber = batchNumber
+	b.require(batchDetailResponseRecordFieldBatchNumber)
+}
+
+// SetBatchAmount sets the BatchAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetBatchAmount(batchAmount float64) {
+	b.BatchAmount = batchAmount
+	b.require(batchDetailResponseRecordFieldBatchAmount)
+}
+
+// SetPaymentTransId sets the PaymentTransId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetPaymentTransId(paymentTransId string) {
+	b.PaymentTransId = paymentTransId
+	b.require(batchDetailResponseRecordFieldPaymentTransId)
+}
+
+// SetPaymentTransStatus sets the PaymentTransStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetPaymentTransStatus(paymentTransStatus int) {
+	b.PaymentTransStatus = paymentTransStatus
+	b.require(batchDetailResponseRecordFieldPaymentTransStatus)
+}
+
+// SetScheduleReference sets the ScheduleReference field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetScheduleReference(scheduleReference int) {
+	b.ScheduleReference = scheduleReference
+	b.require(batchDetailResponseRecordFieldScheduleReference)
+}
+
+// SetGatewayTransId sets the GatewayTransId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetGatewayTransId(gatewayTransId string) {
+	b.GatewayTransId = gatewayTransId
+	b.require(batchDetailResponseRecordFieldGatewayTransId)
+}
+
+// SetOrderId sets the OrderId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetOrderId(orderId OrderId) {
+	b.OrderId = orderId
+	b.require(batchDetailResponseRecordFieldOrderId)
+}
+
+// SetTransMethod sets the TransMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetTransMethod(transMethod string) {
+	b.TransMethod = transMethod
+	b.require(batchDetailResponseRecordFieldTransMethod)
+}
+
+// SetPaymentData sets the PaymentData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetPaymentData(paymentData *QueryPaymentData) {
+	b.PaymentData = paymentData
+	b.require(batchDetailResponseRecordFieldPaymentData)
+}
+
+// SetNetAmount sets the NetAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetNetAmount(netAmount Netamountnullable) {
+	b.NetAmount = netAmount
+	b.require(batchDetailResponseRecordFieldNetAmount)
+}
+
+// SetOperation sets the Operation field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetOperation(operation Operation) {
+	b.Operation = operation
+	b.require(batchDetailResponseRecordFieldOperation)
+}
+
+// SetCategory sets the Category field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetCategory(category Category) {
+	b.Category = category
+	b.require(batchDetailResponseRecordFieldCategory)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetSource(source *Source) {
+	b.Source = source
+	b.require(batchDetailResponseRecordFieldSource)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetStatus(status int) {
+	b.Status = status
+	b.require(batchDetailResponseRecordFieldStatus)
+}
+
+// SetTransactionTime sets the TransactionTime field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetTransactionTime(transactionTime TransactionTime) {
+	b.TransactionTime = transactionTime
+	b.require(batchDetailResponseRecordFieldTransactionTime)
+}
+
+// SetCustomer sets the Customer field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetCustomer(customer *QueryTransactionPayorData) {
+	b.Customer = customer
+	b.require(batchDetailResponseRecordFieldCustomer)
+}
+
+// SetSettlementDate sets the SettlementDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetSettlementDate(settlementDate time.Time) {
+	b.SettlementDate = settlementDate
+	b.require(batchDetailResponseRecordFieldSettlementDate)
+}
+
+// SetPaymentSettlementStatus sets the PaymentSettlementStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetPaymentSettlementStatus(paymentSettlementStatus int) {
+	b.PaymentSettlementStatus = paymentSettlementStatus
+	b.require(batchDetailResponseRecordFieldPaymentSettlementStatus)
+}
+
+// SetBatchStatus sets the BatchStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetBatchStatus(batchStatus int) {
+	b.BatchStatus = batchStatus
+	b.require(batchDetailResponseRecordFieldBatchStatus)
+}
+
+// SetDepositDate sets the DepositDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetDepositDate(depositDate DepositDate) {
+	b.DepositDate = depositDate
+	b.require(batchDetailResponseRecordFieldDepositDate)
+}
+
+// SetExpectedDepositDate sets the ExpectedDepositDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetExpectedDepositDate(expectedDepositDate ExpectedDepositDate) {
+	b.ExpectedDepositDate = expectedDepositDate
+	b.require(batchDetailResponseRecordFieldExpectedDepositDate)
+}
+
+// SetMaskedAccount sets the MaskedAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetMaskedAccount(maskedAccount Maskedaccount) {
+	b.MaskedAccount = maskedAccount
+	b.require(batchDetailResponseRecordFieldMaskedAccount)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetCreatedAt(createdAt CreatedAt) {
+	b.CreatedAt = createdAt
+	b.require(batchDetailResponseRecordFieldCreatedAt)
+}
+
+// SetPaypointLegalname sets the PaypointLegalname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetPaypointLegalname(paypointLegalname Legalname) {
+	b.PaypointLegalname = paypointLegalname
+	b.require(batchDetailResponseRecordFieldPaypointLegalname)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetResponseData(responseData *QueryResponseData) {
+	b.ResponseData = responseData
+	b.require(batchDetailResponseRecordFieldResponseData)
+}
+
+// SetPaypointDbaname sets the PaypointDbaname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetPaypointDbaname(paypointDbaname Dbaname) {
+	b.PaypointDbaname = paypointDbaname
+	b.require(batchDetailResponseRecordFieldPaypointDbaname)
+}
+
+// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetParentOrgName(parentOrgName OrgParentName) {
+	b.ParentOrgName = parentOrgName
+	b.require(batchDetailResponseRecordFieldParentOrgName)
+}
+
+// SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetParentOrgId(parentOrgId int) {
+	b.ParentOrgId = parentOrgId
+	b.require(batchDetailResponseRecordFieldParentOrgId)
+}
+
+// SetPaypointEntryname sets the PaypointEntryname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetPaypointEntryname(paypointEntryname Entrypointfield) {
+	b.PaypointEntryname = paypointEntryname
+	b.require(batchDetailResponseRecordFieldPaypointEntryname)
+}
+
+// SetDeviceId sets the DeviceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetDeviceId(deviceId *Device) {
+	b.DeviceId = deviceId
+	b.require(batchDetailResponseRecordFieldDeviceId)
+}
+
+// SetRetrievalId sets the RetrievalId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetRetrievalId(retrievalId RetrievalId) {
+	b.RetrievalId = retrievalId
+	b.require(batchDetailResponseRecordFieldRetrievalId)
+}
+
+// SetChargebackId sets the ChargebackId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetChargebackId(chargebackId ChargebackId) {
+	b.ChargebackId = chargebackId
+	b.require(batchDetailResponseRecordFieldChargebackId)
+}
+
+// SetAchHolderType sets the AchHolderType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetAchHolderType(achHolderType AchHolderType) {
+	b.AchHolderType = achHolderType
+	b.require(batchDetailResponseRecordFieldAchHolderType)
+}
+
+// SetAchSecCode sets the AchSecCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetAchSecCode(achSecCode AchSecCode) {
+	b.AchSecCode = achSecCode
+	b.require(batchDetailResponseRecordFieldAchSecCode)
+}
+
+// SetConnectorName sets the ConnectorName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetConnectorName(connectorName string) {
+	b.ConnectorName = connectorName
+	b.require(batchDetailResponseRecordFieldConnectorName)
+}
+
+// SetEntrypageId sets the EntrypageId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetEntrypageId(entrypageId EntrypageId) {
+	b.EntrypageId = entrypageId
+	b.require(batchDetailResponseRecordFieldEntrypageId)
+}
+
+// SetFeeAmount sets the FeeAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetFeeAmount(feeAmount FeeAmount) {
+	b.FeeAmount = feeAmount
+	b.require(batchDetailResponseRecordFieldFeeAmount)
+}
+
+// SetOrgId sets the OrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetOrgId(orgId Orgid) {
+	b.OrgId = orgId
+	b.require(batchDetailResponseRecordFieldOrgId)
+}
+
+// SetPayorId sets the PayorId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetPayorId(payorId PayorId) {
+	b.PayorId = payorId
+	b.require(batchDetailResponseRecordFieldPayorId)
+}
+
+// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetPaypointId(paypointId PaypointId) {
+	b.PaypointId = paypointId
+	b.require(batchDetailResponseRecordFieldPaypointId)
+}
+
+// SetPendingFeeAmount sets the PendingFeeAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetPendingFeeAmount(pendingFeeAmount PendingFeeAmount) {
+	b.PendingFeeAmount = pendingFeeAmount
+	b.require(batchDetailResponseRecordFieldPendingFeeAmount)
+}
+
+// SetRefundId sets the RefundId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetRefundId(refundId RefundId) {
+	b.RefundId = refundId
+	b.require(batchDetailResponseRecordFieldRefundId)
+}
+
+// SetReturnedId sets the ReturnedId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetReturnedId(returnedId ReturnedId) {
+	b.ReturnedId = returnedId
+	b.require(batchDetailResponseRecordFieldReturnedId)
+}
+
+// SetSplitFundingInstructions sets the SplitFundingInstructions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetSplitFundingInstructions(splitFundingInstructions SplitFunding) {
+	b.SplitFundingInstructions = splitFundingInstructions
+	b.require(batchDetailResponseRecordFieldSplitFundingInstructions)
+}
+
+// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetTotalAmount(totalAmount float64) {
+	b.TotalAmount = totalAmount
+	b.require(batchDetailResponseRecordFieldTotalAmount)
+}
+
+// SetCfeeTransactions sets the CfeeTransactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetCfeeTransactions(cfeeTransactions []*QueryCFeeTransaction) {
+	b.CfeeTransactions = cfeeTransactions
+	b.require(batchDetailResponseRecordFieldCfeeTransactions)
+}
+
+// SetInvoiceData sets the InvoiceData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetInvoiceData(invoiceData *BillData) {
+	b.InvoiceData = invoiceData
+	b.require(batchDetailResponseRecordFieldInvoiceData)
+}
+
+// SetTransactionEvents sets the TransactionEvents field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetTransactionEvents(transactionEvents []*QueryTransactionEvents) {
+	b.TransactionEvents = transactionEvents
+	b.require(batchDetailResponseRecordFieldTransactionEvents)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetExternalPaypointId(externalPaypointId ExternalPaypointId) {
+	b.ExternalPaypointId = externalPaypointId
+	b.require(batchDetailResponseRecordFieldExternalPaypointId)
+}
+
+// SetIsHold sets the IsHold field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseRecord) SetIsHold(isHold int) {
+	b.IsHold = isHold
+	b.require(batchDetailResponseRecordFieldIsHold)
+}
+
 func (b *BatchDetailResponseRecord) UnmarshalJSON(data []byte) error {
 	type embed BatchDetailResponseRecord
 	var unmarshaler = struct {
@@ -490,7 +944,8 @@ func (b *BatchDetailResponseRecord) MarshalJSON() ([]byte, error) {
 		embed:          embed(*b),
 		SettlementDate: internal.NewDateTime(b.SettlementDate),
 	}
-	return json.Marshal(marshaler)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (b *BatchDetailResponseRecord) String() string {
@@ -505,6 +960,19 @@ func (b *BatchDetailResponseRecord) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+var (
+	batchDetailResponseSummaryFieldServiceFees    = big.NewInt(1 << 0)
+	batchDetailResponseSummaryFieldTransferAmount = big.NewInt(1 << 1)
+	batchDetailResponseSummaryFieldRefunds        = big.NewInt(1 << 2)
+	batchDetailResponseSummaryFieldHeldAmount     = big.NewInt(1 << 3)
+	batchDetailResponseSummaryFieldTotalRecords   = big.NewInt(1 << 4)
+	batchDetailResponseSummaryFieldTotalAmount    = big.NewInt(1 << 5)
+	batchDetailResponseSummaryFieldTotalNetAmount = big.NewInt(1 << 6)
+	batchDetailResponseSummaryFieldTotalPages     = big.NewInt(1 << 7)
+	batchDetailResponseSummaryFieldPageSize       = big.NewInt(1 << 8)
+	batchDetailResponseSummaryFieldPageidentifier = big.NewInt(1 << 9)
+)
+
 type BatchDetailResponseSummary struct {
 	ServiceFees    float64         `json:"serviceFees" url:"serviceFees"`
 	TransferAmount float64         `json:"transferAmount" url:"transferAmount"`
@@ -516,6 +984,9 @@ type BatchDetailResponseSummary struct {
 	TotalPages     Totalpages      `json:"totalPages" url:"totalPages"`
 	PageSize       Pagesize        `json:"pageSize" url:"pageSize"`
 	Pageidentifier *PageIdentifier `json:"pageidentifier,omitempty" url:"pageidentifier,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -595,6 +1066,83 @@ func (b *BatchDetailResponseSummary) GetExtraProperties() map[string]interface{}
 	return b.extraProperties
 }
 
+func (b *BatchDetailResponseSummary) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetServiceFees sets the ServiceFees field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseSummary) SetServiceFees(serviceFees float64) {
+	b.ServiceFees = serviceFees
+	b.require(batchDetailResponseSummaryFieldServiceFees)
+}
+
+// SetTransferAmount sets the TransferAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseSummary) SetTransferAmount(transferAmount float64) {
+	b.TransferAmount = transferAmount
+	b.require(batchDetailResponseSummaryFieldTransferAmount)
+}
+
+// SetRefunds sets the Refunds field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseSummary) SetRefunds(refunds float64) {
+	b.Refunds = refunds
+	b.require(batchDetailResponseSummaryFieldRefunds)
+}
+
+// SetHeldAmount sets the HeldAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseSummary) SetHeldAmount(heldAmount float64) {
+	b.HeldAmount = heldAmount
+	b.require(batchDetailResponseSummaryFieldHeldAmount)
+}
+
+// SetTotalRecords sets the TotalRecords field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseSummary) SetTotalRecords(totalRecords Totalrecords) {
+	b.TotalRecords = totalRecords
+	b.require(batchDetailResponseSummaryFieldTotalRecords)
+}
+
+// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseSummary) SetTotalAmount(totalAmount float64) {
+	b.TotalAmount = totalAmount
+	b.require(batchDetailResponseSummaryFieldTotalAmount)
+}
+
+// SetTotalNetAmount sets the TotalNetAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseSummary) SetTotalNetAmount(totalNetAmount float64) {
+	b.TotalNetAmount = totalNetAmount
+	b.require(batchDetailResponseSummaryFieldTotalNetAmount)
+}
+
+// SetTotalPages sets the TotalPages field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseSummary) SetTotalPages(totalPages Totalpages) {
+	b.TotalPages = totalPages
+	b.require(batchDetailResponseSummaryFieldTotalPages)
+}
+
+// SetPageSize sets the PageSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseSummary) SetPageSize(pageSize Pagesize) {
+	b.PageSize = pageSize
+	b.require(batchDetailResponseSummaryFieldPageSize)
+}
+
+// SetPageidentifier sets the Pageidentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchDetailResponseSummary) SetPageidentifier(pageidentifier *PageIdentifier) {
+	b.Pageidentifier = pageidentifier
+	b.require(batchDetailResponseSummaryFieldPageidentifier)
+}
+
 func (b *BatchDetailResponseSummary) UnmarshalJSON(data []byte) error {
 	type unmarshaler BatchDetailResponseSummary
 	var value unmarshaler
@@ -611,6 +1159,17 @@ func (b *BatchDetailResponseSummary) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (b *BatchDetailResponseSummary) MarshalJSON() ([]byte, error) {
+	type embed BatchDetailResponseSummary
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (b *BatchDetailResponseSummary) String() string {
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
@@ -623,9 +1182,17 @@ func (b *BatchDetailResponseSummary) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+var (
+	listOrganizationsResponseFieldRecords = big.NewInt(1 << 0)
+	listOrganizationsResponseFieldSummary = big.NewInt(1 << 1)
+)
+
 type ListOrganizationsResponse struct {
 	Records []*OrganizationQueryRecord `json:"Records" url:"Records"`
 	Summary *QuerySummary              `json:"Summary" url:"Summary"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -649,6 +1216,27 @@ func (l *ListOrganizationsResponse) GetExtraProperties() map[string]interface{} 
 	return l.extraProperties
 }
 
+func (l *ListOrganizationsResponse) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListOrganizationsResponse) SetRecords(records []*OrganizationQueryRecord) {
+	l.Records = records
+	l.require(listOrganizationsResponseFieldRecords)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListOrganizationsResponse) SetSummary(summary *QuerySummary) {
+	l.Summary = summary
+	l.require(listOrganizationsResponseFieldSummary)
+}
+
 func (l *ListOrganizationsResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler ListOrganizationsResponse
 	var value unmarshaler
@@ -665,6 +1253,17 @@ func (l *ListOrganizationsResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (l *ListOrganizationsResponse) MarshalJSON() ([]byte, error) {
+	type embed ListOrganizationsResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (l *ListOrganizationsResponse) String() string {
 	if len(l.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
@@ -678,9 +1277,17 @@ func (l *ListOrganizationsResponse) String() string {
 }
 
 // Response body for queries about batch details.
+var (
+	queryBatchesDetailResponseFieldRecords = big.NewInt(1 << 0)
+	queryBatchesDetailResponseFieldSummary = big.NewInt(1 << 1)
+)
+
 type QueryBatchesDetailResponse struct {
 	Records []*BatchDetailResponseRecord `json:"Records" url:"Records"`
 	Summary *BatchDetailResponseSummary  `json:"Summary" url:"Summary"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -704,6 +1311,27 @@ func (q *QueryBatchesDetailResponse) GetExtraProperties() map[string]interface{}
 	return q.extraProperties
 }
 
+func (q *QueryBatchesDetailResponse) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesDetailResponse) SetRecords(records []*BatchDetailResponseRecord) {
+	q.Records = records
+	q.require(queryBatchesDetailResponseFieldRecords)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesDetailResponse) SetSummary(summary *BatchDetailResponseSummary) {
+	q.Summary = summary
+	q.require(queryBatchesDetailResponseFieldSummary)
+}
+
 func (q *QueryBatchesDetailResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryBatchesDetailResponse
 	var value unmarshaler
@@ -720,6 +1348,17 @@ func (q *QueryBatchesDetailResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (q *QueryBatchesDetailResponse) MarshalJSON() ([]byte, error) {
+	type embed QueryBatchesDetailResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QueryBatchesDetailResponse) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -733,9 +1372,17 @@ func (q *QueryBatchesDetailResponse) String() string {
 }
 
 // Response body for queries about batches.
+var (
+	queryBatchesResponseFieldRecords = big.NewInt(1 << 0)
+	queryBatchesResponseFieldSummary = big.NewInt(1 << 1)
+)
+
 type QueryBatchesResponse struct {
 	Records []*QueryBatchesResponseRecordsItem `json:"Records" url:"Records"`
 	Summary *BatchSummary                      `json:"Summary" url:"Summary"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -759,6 +1406,27 @@ func (q *QueryBatchesResponse) GetExtraProperties() map[string]interface{} {
 	return q.extraProperties
 }
 
+func (q *QueryBatchesResponse) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponse) SetRecords(records []*QueryBatchesResponseRecordsItem) {
+	q.Records = records
+	q.require(queryBatchesResponseFieldRecords)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponse) SetSummary(summary *BatchSummary) {
+	q.Summary = summary
+	q.require(queryBatchesResponseFieldSummary)
+}
+
 func (q *QueryBatchesResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryBatchesResponse
 	var value unmarshaler
@@ -775,6 +1443,17 @@ func (q *QueryBatchesResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (q *QueryBatchesResponse) MarshalJSON() ([]byte, error) {
+	type embed QueryBatchesResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QueryBatchesResponse) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -786,6 +1465,39 @@ func (q *QueryBatchesResponse) String() string {
 	}
 	return fmt.Sprintf("%#v", q)
 }
+
+var (
+	queryBatchesResponseRecordsItemFieldIdBatch             = big.NewInt(1 << 0)
+	queryBatchesResponseRecordsItemFieldBatchNumber         = big.NewInt(1 << 1)
+	queryBatchesResponseRecordsItemFieldTransferIdentifier  = big.NewInt(1 << 2)
+	queryBatchesResponseRecordsItemFieldEventsData          = big.NewInt(1 << 3)
+	queryBatchesResponseRecordsItemFieldConnectorName       = big.NewInt(1 << 4)
+	queryBatchesResponseRecordsItemFieldBatchDate           = big.NewInt(1 << 5)
+	queryBatchesResponseRecordsItemFieldBatchAmount         = big.NewInt(1 << 6)
+	queryBatchesResponseRecordsItemFieldBatchFeesAmount     = big.NewInt(1 << 7)
+	queryBatchesResponseRecordsItemFieldBatchAuthAmount     = big.NewInt(1 << 8)
+	queryBatchesResponseRecordsItemFieldBatchReleasedAmount = big.NewInt(1 << 9)
+	queryBatchesResponseRecordsItemFieldBatchHoldAmount     = big.NewInt(1 << 10)
+	queryBatchesResponseRecordsItemFieldBatchReturnedAmount = big.NewInt(1 << 11)
+	queryBatchesResponseRecordsItemFieldBatchRefundAmount   = big.NewInt(1 << 12)
+	queryBatchesResponseRecordsItemFieldBatchSplitAmount    = big.NewInt(1 << 13)
+	queryBatchesResponseRecordsItemFieldBatchStatus         = big.NewInt(1 << 14)
+	queryBatchesResponseRecordsItemFieldBatchRecords        = big.NewInt(1 << 15)
+	queryBatchesResponseRecordsItemFieldPaypointId          = big.NewInt(1 << 16)
+	queryBatchesResponseRecordsItemFieldPaypointName        = big.NewInt(1 << 17)
+	queryBatchesResponseRecordsItemFieldPaypointDba         = big.NewInt(1 << 18)
+	queryBatchesResponseRecordsItemFieldParentOrgName       = big.NewInt(1 << 19)
+	queryBatchesResponseRecordsItemFieldParentOrgId         = big.NewInt(1 << 20)
+	queryBatchesResponseRecordsItemFieldExternalPaypointId  = big.NewInt(1 << 21)
+	queryBatchesResponseRecordsItemFieldEntryName           = big.NewInt(1 << 22)
+	queryBatchesResponseRecordsItemFieldBankName            = big.NewInt(1 << 23)
+	queryBatchesResponseRecordsItemFieldBatchType           = big.NewInt(1 << 24)
+	queryBatchesResponseRecordsItemFieldMethod              = big.NewInt(1 << 25)
+	queryBatchesResponseRecordsItemFieldExpectedDepositDate = big.NewInt(1 << 26)
+	queryBatchesResponseRecordsItemFieldDepositDate         = big.NewInt(1 << 27)
+	queryBatchesResponseRecordsItemFieldTransferDate        = big.NewInt(1 << 28)
+	queryBatchesResponseRecordsItemFieldTransfer            = big.NewInt(1 << 29)
+)
 
 type QueryBatchesResponseRecordsItem struct {
 	// The batch ID.
@@ -837,6 +1549,9 @@ type QueryBatchesResponseRecordsItem struct {
 	TransferDate *time.Time `json:"TransferDate,omitempty" url:"TransferDate,omitempty"`
 	// Transfer details for the batch.
 	Transfer *QueryBatchesTransfer `json:"Transfer,omitempty" url:"Transfer,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -1056,6 +1771,223 @@ func (q *QueryBatchesResponseRecordsItem) GetExtraProperties() map[string]interf
 	return q.extraProperties
 }
 
+func (q *QueryBatchesResponseRecordsItem) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetIdBatch sets the IdBatch field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetIdBatch(idBatch *int) {
+	q.IdBatch = idBatch
+	q.require(queryBatchesResponseRecordsItemFieldIdBatch)
+}
+
+// SetBatchNumber sets the BatchNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetBatchNumber(batchNumber *BatchNumber) {
+	q.BatchNumber = batchNumber
+	q.require(queryBatchesResponseRecordsItemFieldBatchNumber)
+}
+
+// SetTransferIdentifier sets the TransferIdentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetTransferIdentifier(transferIdentifier *TransferIdentifier) {
+	q.TransferIdentifier = transferIdentifier
+	q.require(queryBatchesResponseRecordsItemFieldTransferIdentifier)
+}
+
+// SetEventsData sets the EventsData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetEventsData(eventsData []*GeneralEvents) {
+	q.EventsData = eventsData
+	q.require(queryBatchesResponseRecordsItemFieldEventsData)
+}
+
+// SetConnectorName sets the ConnectorName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetConnectorName(connectorName *string) {
+	q.ConnectorName = connectorName
+	q.require(queryBatchesResponseRecordsItemFieldConnectorName)
+}
+
+// SetBatchDate sets the BatchDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetBatchDate(batchDate *time.Time) {
+	q.BatchDate = batchDate
+	q.require(queryBatchesResponseRecordsItemFieldBatchDate)
+}
+
+// SetBatchAmount sets the BatchAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetBatchAmount(batchAmount *float64) {
+	q.BatchAmount = batchAmount
+	q.require(queryBatchesResponseRecordsItemFieldBatchAmount)
+}
+
+// SetBatchFeesAmount sets the BatchFeesAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetBatchFeesAmount(batchFeesAmount *float64) {
+	q.BatchFeesAmount = batchFeesAmount
+	q.require(queryBatchesResponseRecordsItemFieldBatchFeesAmount)
+}
+
+// SetBatchAuthAmount sets the BatchAuthAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetBatchAuthAmount(batchAuthAmount *float64) {
+	q.BatchAuthAmount = batchAuthAmount
+	q.require(queryBatchesResponseRecordsItemFieldBatchAuthAmount)
+}
+
+// SetBatchReleasedAmount sets the BatchReleasedAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetBatchReleasedAmount(batchReleasedAmount *float64) {
+	q.BatchReleasedAmount = batchReleasedAmount
+	q.require(queryBatchesResponseRecordsItemFieldBatchReleasedAmount)
+}
+
+// SetBatchHoldAmount sets the BatchHoldAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetBatchHoldAmount(batchHoldAmount *float64) {
+	q.BatchHoldAmount = batchHoldAmount
+	q.require(queryBatchesResponseRecordsItemFieldBatchHoldAmount)
+}
+
+// SetBatchReturnedAmount sets the BatchReturnedAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetBatchReturnedAmount(batchReturnedAmount *float64) {
+	q.BatchReturnedAmount = batchReturnedAmount
+	q.require(queryBatchesResponseRecordsItemFieldBatchReturnedAmount)
+}
+
+// SetBatchRefundAmount sets the BatchRefundAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetBatchRefundAmount(batchRefundAmount *float64) {
+	q.BatchRefundAmount = batchRefundAmount
+	q.require(queryBatchesResponseRecordsItemFieldBatchRefundAmount)
+}
+
+// SetBatchSplitAmount sets the BatchSplitAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetBatchSplitAmount(batchSplitAmount *float64) {
+	q.BatchSplitAmount = batchSplitAmount
+	q.require(queryBatchesResponseRecordsItemFieldBatchSplitAmount)
+}
+
+// SetBatchStatus sets the BatchStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetBatchStatus(batchStatus int) {
+	q.BatchStatus = batchStatus
+	q.require(queryBatchesResponseRecordsItemFieldBatchStatus)
+}
+
+// SetBatchRecords sets the BatchRecords field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetBatchRecords(batchRecords int) {
+	q.BatchRecords = batchRecords
+	q.require(queryBatchesResponseRecordsItemFieldBatchRecords)
+}
+
+// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetPaypointId(paypointId *PaypointId) {
+	q.PaypointId = paypointId
+	q.require(queryBatchesResponseRecordsItemFieldPaypointId)
+}
+
+// SetPaypointName sets the PaypointName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetPaypointName(paypointName *PaypointName) {
+	q.PaypointName = paypointName
+	q.require(queryBatchesResponseRecordsItemFieldPaypointName)
+}
+
+// SetPaypointDba sets the PaypointDba field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetPaypointDba(paypointDba *Dbaname) {
+	q.PaypointDba = paypointDba
+	q.require(queryBatchesResponseRecordsItemFieldPaypointDba)
+}
+
+// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetParentOrgName(parentOrgName OrgParentName) {
+	q.ParentOrgName = parentOrgName
+	q.require(queryBatchesResponseRecordsItemFieldParentOrgName)
+}
+
+// SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetParentOrgId(parentOrgId int) {
+	q.ParentOrgId = parentOrgId
+	q.require(queryBatchesResponseRecordsItemFieldParentOrgId)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
+	q.ExternalPaypointId = externalPaypointId
+	q.require(queryBatchesResponseRecordsItemFieldExternalPaypointId)
+}
+
+// SetEntryName sets the EntryName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetEntryName(entryName Entrypointfield) {
+	q.EntryName = entryName
+	q.require(queryBatchesResponseRecordsItemFieldEntryName)
+}
+
+// SetBankName sets the BankName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetBankName(bankName *string) {
+	q.BankName = bankName
+	q.require(queryBatchesResponseRecordsItemFieldBankName)
+}
+
+// SetBatchType sets the BatchType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetBatchType(batchType *int) {
+	q.BatchType = batchType
+	q.require(queryBatchesResponseRecordsItemFieldBatchType)
+}
+
+// SetMethod sets the Method field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetMethod(method *string) {
+	q.Method = method
+	q.require(queryBatchesResponseRecordsItemFieldMethod)
+}
+
+// SetExpectedDepositDate sets the ExpectedDepositDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetExpectedDepositDate(expectedDepositDate *ExpectedDepositDate) {
+	q.ExpectedDepositDate = expectedDepositDate
+	q.require(queryBatchesResponseRecordsItemFieldExpectedDepositDate)
+}
+
+// SetDepositDate sets the DepositDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetDepositDate(depositDate *DepositDate) {
+	q.DepositDate = depositDate
+	q.require(queryBatchesResponseRecordsItemFieldDepositDate)
+}
+
+// SetTransferDate sets the TransferDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetTransferDate(transferDate *time.Time) {
+	q.TransferDate = transferDate
+	q.require(queryBatchesResponseRecordsItemFieldTransferDate)
+}
+
+// SetTransfer sets the Transfer field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesResponseRecordsItem) SetTransfer(transfer *QueryBatchesTransfer) {
+	q.Transfer = transfer
+	q.require(queryBatchesResponseRecordsItemFieldTransfer)
+}
+
 func (q *QueryBatchesResponseRecordsItem) UnmarshalJSON(data []byte) error {
 	type embed QueryBatchesResponseRecordsItem
 	var unmarshaler = struct {
@@ -1091,7 +2023,8 @@ func (q *QueryBatchesResponseRecordsItem) MarshalJSON() ([]byte, error) {
 		BatchDate:    internal.NewOptionalDateTime(q.BatchDate),
 		TransferDate: internal.NewOptionalDateTime(q.TransferDate),
 	}
-	return json.Marshal(marshaler)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (q *QueryBatchesResponseRecordsItem) String() string {
@@ -1107,6 +2040,23 @@ func (q *QueryBatchesResponseRecordsItem) String() string {
 }
 
 // Transfer details within a batch response.
+var (
+	queryBatchesTransferFieldTransferId           = big.NewInt(1 << 0)
+	queryBatchesTransferFieldTransferDate         = big.NewInt(1 << 1)
+	queryBatchesTransferFieldProcessor            = big.NewInt(1 << 2)
+	queryBatchesTransferFieldTransferStatus       = big.NewInt(1 << 3)
+	queryBatchesTransferFieldGrossAmount          = big.NewInt(1 << 4)
+	queryBatchesTransferFieldChargeBackAmount     = big.NewInt(1 << 5)
+	queryBatchesTransferFieldReturnedAmount       = big.NewInt(1 << 6)
+	queryBatchesTransferFieldRefundAmount         = big.NewInt(1 << 7)
+	queryBatchesTransferFieldHoldAmount           = big.NewInt(1 << 8)
+	queryBatchesTransferFieldReleasedAmount       = big.NewInt(1 << 9)
+	queryBatchesTransferFieldBillingFeesAmount    = big.NewInt(1 << 10)
+	queryBatchesTransferFieldThirdPartyPaidAmount = big.NewInt(1 << 11)
+	queryBatchesTransferFieldAdjustmentsAmount    = big.NewInt(1 << 12)
+	queryBatchesTransferFieldNetFundedAmount      = big.NewInt(1 << 13)
+)
+
 type QueryBatchesTransfer struct {
 	// The transfer ID.
 	TransferId *int `json:"TransferId,omitempty" url:"TransferId,omitempty"`
@@ -1136,6 +2086,9 @@ type QueryBatchesTransfer struct {
 	AdjustmentsAmount *float64 `json:"AdjustmentsAmount,omitempty" url:"AdjustmentsAmount,omitempty"`
 	// The net funded amount.
 	NetFundedAmount *float64 `json:"NetFundedAmount,omitempty" url:"NetFundedAmount,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -1243,6 +2196,111 @@ func (q *QueryBatchesTransfer) GetExtraProperties() map[string]interface{} {
 	return q.extraProperties
 }
 
+func (q *QueryBatchesTransfer) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetTransferId sets the TransferId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesTransfer) SetTransferId(transferId *int) {
+	q.TransferId = transferId
+	q.require(queryBatchesTransferFieldTransferId)
+}
+
+// SetTransferDate sets the TransferDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesTransfer) SetTransferDate(transferDate *time.Time) {
+	q.TransferDate = transferDate
+	q.require(queryBatchesTransferFieldTransferDate)
+}
+
+// SetProcessor sets the Processor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesTransfer) SetProcessor(processor *string) {
+	q.Processor = processor
+	q.require(queryBatchesTransferFieldProcessor)
+}
+
+// SetTransferStatus sets the TransferStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesTransfer) SetTransferStatus(transferStatus *int) {
+	q.TransferStatus = transferStatus
+	q.require(queryBatchesTransferFieldTransferStatus)
+}
+
+// SetGrossAmount sets the GrossAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesTransfer) SetGrossAmount(grossAmount *float64) {
+	q.GrossAmount = grossAmount
+	q.require(queryBatchesTransferFieldGrossAmount)
+}
+
+// SetChargeBackAmount sets the ChargeBackAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesTransfer) SetChargeBackAmount(chargeBackAmount *float64) {
+	q.ChargeBackAmount = chargeBackAmount
+	q.require(queryBatchesTransferFieldChargeBackAmount)
+}
+
+// SetReturnedAmount sets the ReturnedAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesTransfer) SetReturnedAmount(returnedAmount *float64) {
+	q.ReturnedAmount = returnedAmount
+	q.require(queryBatchesTransferFieldReturnedAmount)
+}
+
+// SetRefundAmount sets the RefundAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesTransfer) SetRefundAmount(refundAmount *float64) {
+	q.RefundAmount = refundAmount
+	q.require(queryBatchesTransferFieldRefundAmount)
+}
+
+// SetHoldAmount sets the HoldAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesTransfer) SetHoldAmount(holdAmount *float64) {
+	q.HoldAmount = holdAmount
+	q.require(queryBatchesTransferFieldHoldAmount)
+}
+
+// SetReleasedAmount sets the ReleasedAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesTransfer) SetReleasedAmount(releasedAmount *float64) {
+	q.ReleasedAmount = releasedAmount
+	q.require(queryBatchesTransferFieldReleasedAmount)
+}
+
+// SetBillingFeesAmount sets the BillingFeesAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesTransfer) SetBillingFeesAmount(billingFeesAmount *float64) {
+	q.BillingFeesAmount = billingFeesAmount
+	q.require(queryBatchesTransferFieldBillingFeesAmount)
+}
+
+// SetThirdPartyPaidAmount sets the ThirdPartyPaidAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesTransfer) SetThirdPartyPaidAmount(thirdPartyPaidAmount *float64) {
+	q.ThirdPartyPaidAmount = thirdPartyPaidAmount
+	q.require(queryBatchesTransferFieldThirdPartyPaidAmount)
+}
+
+// SetAdjustmentsAmount sets the AdjustmentsAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesTransfer) SetAdjustmentsAmount(adjustmentsAmount *float64) {
+	q.AdjustmentsAmount = adjustmentsAmount
+	q.require(queryBatchesTransferFieldAdjustmentsAmount)
+}
+
+// SetNetFundedAmount sets the NetFundedAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesTransfer) SetNetFundedAmount(netFundedAmount *float64) {
+	q.NetFundedAmount = netFundedAmount
+	q.require(queryBatchesTransferFieldNetFundedAmount)
+}
+
 func (q *QueryBatchesTransfer) UnmarshalJSON(data []byte) error {
 	type embed QueryBatchesTransfer
 	var unmarshaler = struct {
@@ -1274,7 +2332,8 @@ func (q *QueryBatchesTransfer) MarshalJSON() ([]byte, error) {
 		embed:        embed(*q),
 		TransferDate: internal.NewOptionalDateTime(q.TransferDate),
 	}
-	return json.Marshal(marshaler)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (q *QueryBatchesTransfer) String() string {
@@ -1289,11 +2348,19 @@ func (q *QueryBatchesTransfer) String() string {
 	return fmt.Sprintf("%#v", q)
 }
 
+var (
+	queryTransferDetailResponseFieldRecords = big.NewInt(1 << 0)
+	queryTransferDetailResponseFieldSummary = big.NewInt(1 << 1)
+)
+
 type QueryTransferDetailResponse struct {
 	// List of transfer detail records
 	Records []*TransferDetailRecord `json:"Records" url:"Records"`
 	// Summary of the transfer details query
 	Summary *QueryTransferSummary `json:"Summary" url:"Summary"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -1317,6 +2384,27 @@ func (q *QueryTransferDetailResponse) GetExtraProperties() map[string]interface{
 	return q.extraProperties
 }
 
+func (q *QueryTransferDetailResponse) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransferDetailResponse) SetRecords(records []*TransferDetailRecord) {
+	q.Records = records
+	q.require(queryTransferDetailResponseFieldRecords)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransferDetailResponse) SetSummary(summary *QueryTransferSummary) {
+	q.Summary = summary
+	q.require(queryTransferDetailResponseFieldSummary)
+}
+
 func (q *QueryTransferDetailResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryTransferDetailResponse
 	var value unmarshaler
@@ -1333,6 +2421,17 @@ func (q *QueryTransferDetailResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (q *QueryTransferDetailResponse) MarshalJSON() ([]byte, error) {
+	type embed QueryTransferDetailResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QueryTransferDetailResponse) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -1345,11 +2444,19 @@ func (q *QueryTransferDetailResponse) String() string {
 	return fmt.Sprintf("%#v", q)
 }
 
+var (
+	queryTransferResponseFieldSummary = big.NewInt(1 << 0)
+	queryTransferResponseFieldRecords = big.NewInt(1 << 1)
+)
+
 type QueryTransferResponse struct {
 	// Summary information about the transfers.
 	Summary *QueryTransferSummary `json:"Summary" url:"Summary"`
 	// List of transfer transaction records.
 	Records []*TransactionQueryRecords `json:"Records" url:"Records"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -1373,6 +2480,27 @@ func (q *QueryTransferResponse) GetExtraProperties() map[string]interface{} {
 	return q.extraProperties
 }
 
+func (q *QueryTransferResponse) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransferResponse) SetSummary(summary *QueryTransferSummary) {
+	q.Summary = summary
+	q.require(queryTransferResponseFieldSummary)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransferResponse) SetRecords(records []*TransactionQueryRecords) {
+	q.Records = records
+	q.require(queryTransferResponseFieldRecords)
+}
+
 func (q *QueryTransferResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryTransferResponse
 	var value unmarshaler
@@ -1389,6 +2517,17 @@ func (q *QueryTransferResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (q *QueryTransferResponse) MarshalJSON() ([]byte, error) {
+	type embed QueryTransferResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QueryTransferResponse) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -1400,6 +2539,28 @@ func (q *QueryTransferResponse) String() string {
 	}
 	return fmt.Sprintf("%#v", q)
 }
+
+var (
+	queryTransferSummaryFieldAchReturns             = big.NewInt(1 << 0)
+	queryTransferSummaryFieldAdjustments            = big.NewInt(1 << 1)
+	queryTransferSummaryFieldBillingFees            = big.NewInt(1 << 2)
+	queryTransferSummaryFieldChargebacks            = big.NewInt(1 << 3)
+	queryTransferSummaryFieldGrossTransferAmount    = big.NewInt(1 << 4)
+	queryTransferSummaryFieldReleaseAmount          = big.NewInt(1 << 5)
+	queryTransferSummaryFieldThirdPartyPaid         = big.NewInt(1 << 6)
+	queryTransferSummaryFieldTotalNetAmountTransfer = big.NewInt(1 << 7)
+	queryTransferSummaryFieldServiceFees            = big.NewInt(1 << 8)
+	queryTransferSummaryFieldNetBatchAmount         = big.NewInt(1 << 9)
+	queryTransferSummaryFieldTransferAmount         = big.NewInt(1 << 10)
+	queryTransferSummaryFieldRefunds                = big.NewInt(1 << 11)
+	queryTransferSummaryFieldHeldAmount             = big.NewInt(1 << 12)
+	queryTransferSummaryFieldTotalRecords           = big.NewInt(1 << 13)
+	queryTransferSummaryFieldTotalAmount            = big.NewInt(1 << 14)
+	queryTransferSummaryFieldTotalNetAmount         = big.NewInt(1 << 15)
+	queryTransferSummaryFieldTotalPages             = big.NewInt(1 << 16)
+	queryTransferSummaryFieldPageSize               = big.NewInt(1 << 17)
+	queryTransferSummaryFieldPageidentifier         = big.NewInt(1 << 18)
+)
 
 type QueryTransferSummary struct {
 	// ACH returns deducted from the batch.
@@ -1441,6 +2602,9 @@ type QueryTransferSummary struct {
 	PageSize *Pagesize `json:"pageSize,omitempty" url:"pageSize,omitempty"`
 	// Auxiliary validation used internally by payment pages and components.
 	Pageidentifier *PageIdentifier `json:"pageidentifier,omitempty" url:"pageidentifier,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -1583,6 +2747,146 @@ func (q *QueryTransferSummary) GetExtraProperties() map[string]interface{} {
 	return q.extraProperties
 }
 
+func (q *QueryTransferSummary) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetAchReturns sets the AchReturns field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransferSummary) SetAchReturns(achReturns *float64) {
+	q.AchReturns = achReturns
+	q.require(queryTransferSummaryFieldAchReturns)
+}
+
+// SetAdjustments sets the Adjustments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransferSummary) SetAdjustments(adjustments *float64) {
+	q.Adjustments = adjustments
+	q.require(queryTransferSummaryFieldAdjustments)
+}
+
+// SetBillingFees sets the BillingFees field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransferSummary) SetBillingFees(billingFees *float64) {
+	q.BillingFees = billingFees
+	q.require(queryTransferSummaryFieldBillingFees)
+}
+
+// SetChargebacks sets the Chargebacks field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransferSummary) SetChargebacks(chargebacks *float64) {
+	q.Chargebacks = chargebacks
+	q.require(queryTransferSummaryFieldChargebacks)
+}
+
+// SetGrossTransferAmount sets the GrossTransferAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransferSummary) SetGrossTransferAmount(grossTransferAmount *float64) {
+	q.GrossTransferAmount = grossTransferAmount
+	q.require(queryTransferSummaryFieldGrossTransferAmount)
+}
+
+// SetReleaseAmount sets the ReleaseAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransferSummary) SetReleaseAmount(releaseAmount *float64) {
+	q.ReleaseAmount = releaseAmount
+	q.require(queryTransferSummaryFieldReleaseAmount)
+}
+
+// SetThirdPartyPaid sets the ThirdPartyPaid field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransferSummary) SetThirdPartyPaid(thirdPartyPaid *float64) {
+	q.ThirdPartyPaid = thirdPartyPaid
+	q.require(queryTransferSummaryFieldThirdPartyPaid)
+}
+
+// SetTotalNetAmountTransfer sets the TotalNetAmountTransfer field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransferSummary) SetTotalNetAmountTransfer(totalNetAmountTransfer *float64) {
+	q.TotalNetAmountTransfer = totalNetAmountTransfer
+	q.require(queryTransferSummaryFieldTotalNetAmountTransfer)
+}
+
+// SetServiceFees sets the ServiceFees field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransferSummary) SetServiceFees(serviceFees *float64) {
+	q.ServiceFees = serviceFees
+	q.require(queryTransferSummaryFieldServiceFees)
+}
+
+// SetNetBatchAmount sets the NetBatchAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransferSummary) SetNetBatchAmount(netBatchAmount *float64) {
+	q.NetBatchAmount = netBatchAmount
+	q.require(queryTransferSummaryFieldNetBatchAmount)
+}
+
+// SetTransferAmount sets the TransferAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransferSummary) SetTransferAmount(transferAmount *float64) {
+	q.TransferAmount = transferAmount
+	q.require(queryTransferSummaryFieldTransferAmount)
+}
+
+// SetRefunds sets the Refunds field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransferSummary) SetRefunds(refunds *float64) {
+	q.Refunds = refunds
+	q.require(queryTransferSummaryFieldRefunds)
+}
+
+// SetHeldAmount sets the HeldAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransferSummary) SetHeldAmount(heldAmount *float64) {
+	q.HeldAmount = heldAmount
+	q.require(queryTransferSummaryFieldHeldAmount)
+}
+
+// SetTotalRecords sets the TotalRecords field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransferSummary) SetTotalRecords(totalRecords *Totalrecords) {
+	q.TotalRecords = totalRecords
+	q.require(queryTransferSummaryFieldTotalRecords)
+}
+
+// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransferSummary) SetTotalAmount(totalAmount *float64) {
+	q.TotalAmount = totalAmount
+	q.require(queryTransferSummaryFieldTotalAmount)
+}
+
+// SetTotalNetAmount sets the TotalNetAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransferSummary) SetTotalNetAmount(totalNetAmount *float64) {
+	q.TotalNetAmount = totalNetAmount
+	q.require(queryTransferSummaryFieldTotalNetAmount)
+}
+
+// SetTotalPages sets the TotalPages field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransferSummary) SetTotalPages(totalPages *Totalpages) {
+	q.TotalPages = totalPages
+	q.require(queryTransferSummaryFieldTotalPages)
+}
+
+// SetPageSize sets the PageSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransferSummary) SetPageSize(pageSize *Pagesize) {
+	q.PageSize = pageSize
+	q.require(queryTransferSummaryFieldPageSize)
+}
+
+// SetPageidentifier sets the Pageidentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransferSummary) SetPageidentifier(pageidentifier *PageIdentifier) {
+	q.Pageidentifier = pageidentifier
+	q.require(queryTransferSummaryFieldPageidentifier)
+}
+
 func (q *QueryTransferSummary) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryTransferSummary
 	var value unmarshaler
@@ -1599,6 +2903,17 @@ func (q *QueryTransferSummary) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (q *QueryTransferSummary) MarshalJSON() ([]byte, error) {
+	type embed QueryTransferSummary
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QueryTransferSummary) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -1610,6 +2925,79 @@ func (q *QueryTransferSummary) String() string {
 	}
 	return fmt.Sprintf("%#v", q)
 }
+
+var (
+	transferDetailRecordFieldTransferDetailId             = big.NewInt(1 << 0)
+	transferDetailRecordFieldTransferId                   = big.NewInt(1 << 1)
+	transferDetailRecordFieldTransactionId                = big.NewInt(1 << 2)
+	transferDetailRecordFieldTransactionNumber            = big.NewInt(1 << 3)
+	transferDetailRecordFieldType                         = big.NewInt(1 << 4)
+	transferDetailRecordFieldCategory                     = big.NewInt(1 << 5)
+	transferDetailRecordFieldGrossAmount                  = big.NewInt(1 << 6)
+	transferDetailRecordFieldChargeBackAmount             = big.NewInt(1 << 7)
+	transferDetailRecordFieldReturnedAmount               = big.NewInt(1 << 8)
+	transferDetailRecordFieldRefundAmount                 = big.NewInt(1 << 9)
+	transferDetailRecordFieldHoldAmount                   = big.NewInt(1 << 10)
+	transferDetailRecordFieldReleasedAmount               = big.NewInt(1 << 11)
+	transferDetailRecordFieldBillingFeesAmount            = big.NewInt(1 << 12)
+	transferDetailRecordFieldThirdPartyPaidAmount         = big.NewInt(1 << 13)
+	transferDetailRecordFieldAdjustmentsAmount            = big.NewInt(1 << 14)
+	transferDetailRecordFieldNetTransferAmount            = big.NewInt(1 << 15)
+	transferDetailRecordFieldSplitFundingAmount           = big.NewInt(1 << 16)
+	transferDetailRecordFieldBillingFeesDetails           = big.NewInt(1 << 17)
+	transferDetailRecordFieldParentOrgName                = big.NewInt(1 << 18)
+	transferDetailRecordFieldPaypointDbaname              = big.NewInt(1 << 19)
+	transferDetailRecordFieldPaypointLegalname            = big.NewInt(1 << 20)
+	transferDetailRecordFieldPaypointEntryname            = big.NewInt(1 << 21)
+	transferDetailRecordFieldPaymentTransId               = big.NewInt(1 << 22)
+	transferDetailRecordFieldConnectorName                = big.NewInt(1 << 23)
+	transferDetailRecordFieldExternalProcessorInformation = big.NewInt(1 << 24)
+	transferDetailRecordFieldGatewayTransId               = big.NewInt(1 << 25)
+	transferDetailRecordFieldOrderId                      = big.NewInt(1 << 26)
+	transferDetailRecordFieldMethod                       = big.NewInt(1 << 27)
+	transferDetailRecordFieldBatchNumber                  = big.NewInt(1 << 28)
+	transferDetailRecordFieldBatchAmount                  = big.NewInt(1 << 29)
+	transferDetailRecordFieldPayorId                      = big.NewInt(1 << 30)
+	transferDetailRecordFieldPaymentData                  = big.NewInt(1 << 31)
+	transferDetailRecordFieldTransStatus                  = big.NewInt(1 << 32)
+	transferDetailRecordFieldPaypointId                   = big.NewInt(1 << 33)
+	transferDetailRecordFieldTotalAmount                  = big.NewInt(1 << 34)
+	transferDetailRecordFieldNetAmount                    = big.NewInt(1 << 35)
+	transferDetailRecordFieldFeeAmount                    = big.NewInt(1 << 36)
+	transferDetailRecordFieldSettlementStatus             = big.NewInt(1 << 37)
+	transferDetailRecordFieldOperation                    = big.NewInt(1 << 38)
+	transferDetailRecordFieldResponseData                 = big.NewInt(1 << 39)
+	transferDetailRecordFieldSource                       = big.NewInt(1 << 40)
+	transferDetailRecordFieldScheduleReference            = big.NewInt(1 << 41)
+	transferDetailRecordFieldOrgId                        = big.NewInt(1 << 42)
+	transferDetailRecordFieldRefundId                     = big.NewInt(1 << 43)
+	transferDetailRecordFieldReturnedId                   = big.NewInt(1 << 44)
+	transferDetailRecordFieldChargebackId                 = big.NewInt(1 << 45)
+	transferDetailRecordFieldRetrievalId                  = big.NewInt(1 << 46)
+	transferDetailRecordFieldTransAdditionalData          = big.NewInt(1 << 47)
+	transferDetailRecordFieldInvoiceData                  = big.NewInt(1 << 48)
+	transferDetailRecordFieldEntrypageId                  = big.NewInt(1 << 49)
+	transferDetailRecordFieldExternalPaypointId           = big.NewInt(1 << 50)
+	transferDetailRecordFieldIsValidatedAch               = big.NewInt(1 << 51)
+	transferDetailRecordFieldTransactionTime              = big.NewInt(1 << 52)
+	transferDetailRecordFieldCustomer                     = big.NewInt(1 << 53)
+	transferDetailRecordFieldSplitFundingInstructions     = big.NewInt(1 << 54)
+	transferDetailRecordFieldCfeeTransactions             = big.NewInt(1 << 55)
+	transferDetailRecordFieldTransactionEvents            = big.NewInt(1 << 56)
+	transferDetailRecordFieldPendingFeeAmount             = big.NewInt(1 << 57)
+	transferDetailRecordFieldRiskFlagged                  = big.NewInt(1 << 58)
+	transferDetailRecordFieldRiskFlaggedOn                = big.NewInt(1 << 59)
+	transferDetailRecordFieldRiskStatus                   = big.NewInt(1 << 60)
+	transferDetailRecordFieldRiskReason                   = big.NewInt(1 << 61)
+	transferDetailRecordFieldRiskAction                   = big.NewInt(1 << 62)
+	transferDetailRecordFieldRiskActionCode               = big.NewInt(1 << 63)
+	transferDetailRecordFieldDeviceId                     = big.NewInt(1 << 64)
+	transferDetailRecordFieldAchSecCode                   = big.NewInt(1 << 65)
+	transferDetailRecordFieldAchHolderType                = big.NewInt(1 << 66)
+	transferDetailRecordFieldIpAddress                    = big.NewInt(1 << 67)
+	transferDetailRecordFieldIsSameDayAch                 = big.NewInt(1 << 68)
+	transferDetailRecordFieldWalletType                   = big.NewInt(1 << 69)
+)
 
 type TransferDetailRecord struct {
 	// Unique identifier for the transfer detail record
@@ -1719,6 +3107,9 @@ type TransferDetailRecord struct {
 	IsSameDayAch *bool `json:"IsSameDayACH,omitempty" url:"IsSameDayACH,omitempty"`
 	// Type of wallet used for the transaction (if applicable)
 	WalletType *string `json:"WalletType,omitempty" url:"WalletType,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2218,6 +3609,503 @@ func (t *TransferDetailRecord) GetExtraProperties() map[string]interface{} {
 	return t.extraProperties
 }
 
+func (t *TransferDetailRecord) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetTransferDetailId sets the TransferDetailId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetTransferDetailId(transferDetailId *int) {
+	t.TransferDetailId = transferDetailId
+	t.require(transferDetailRecordFieldTransferDetailId)
+}
+
+// SetTransferId sets the TransferId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetTransferId(transferId *int) {
+	t.TransferId = transferId
+	t.require(transferDetailRecordFieldTransferId)
+}
+
+// SetTransactionId sets the TransactionId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetTransactionId(transactionId *string) {
+	t.TransactionId = transactionId
+	t.require(transferDetailRecordFieldTransactionId)
+}
+
+// SetTransactionNumber sets the TransactionNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetTransactionNumber(transactionNumber *string) {
+	t.TransactionNumber = transactionNumber
+	t.require(transferDetailRecordFieldTransactionNumber)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetType(type_ *string) {
+	t.Type = type_
+	t.require(transferDetailRecordFieldType)
+}
+
+// SetCategory sets the Category field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetCategory(category *string) {
+	t.Category = category
+	t.require(transferDetailRecordFieldCategory)
+}
+
+// SetGrossAmount sets the GrossAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetGrossAmount(grossAmount *float64) {
+	t.GrossAmount = grossAmount
+	t.require(transferDetailRecordFieldGrossAmount)
+}
+
+// SetChargeBackAmount sets the ChargeBackAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetChargeBackAmount(chargeBackAmount *float64) {
+	t.ChargeBackAmount = chargeBackAmount
+	t.require(transferDetailRecordFieldChargeBackAmount)
+}
+
+// SetReturnedAmount sets the ReturnedAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetReturnedAmount(returnedAmount *float64) {
+	t.ReturnedAmount = returnedAmount
+	t.require(transferDetailRecordFieldReturnedAmount)
+}
+
+// SetRefundAmount sets the RefundAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetRefundAmount(refundAmount *float64) {
+	t.RefundAmount = refundAmount
+	t.require(transferDetailRecordFieldRefundAmount)
+}
+
+// SetHoldAmount sets the HoldAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetHoldAmount(holdAmount *float64) {
+	t.HoldAmount = holdAmount
+	t.require(transferDetailRecordFieldHoldAmount)
+}
+
+// SetReleasedAmount sets the ReleasedAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetReleasedAmount(releasedAmount *float64) {
+	t.ReleasedAmount = releasedAmount
+	t.require(transferDetailRecordFieldReleasedAmount)
+}
+
+// SetBillingFeesAmount sets the BillingFeesAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetBillingFeesAmount(billingFeesAmount *float64) {
+	t.BillingFeesAmount = billingFeesAmount
+	t.require(transferDetailRecordFieldBillingFeesAmount)
+}
+
+// SetThirdPartyPaidAmount sets the ThirdPartyPaidAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetThirdPartyPaidAmount(thirdPartyPaidAmount *float64) {
+	t.ThirdPartyPaidAmount = thirdPartyPaidAmount
+	t.require(transferDetailRecordFieldThirdPartyPaidAmount)
+}
+
+// SetAdjustmentsAmount sets the AdjustmentsAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetAdjustmentsAmount(adjustmentsAmount *float64) {
+	t.AdjustmentsAmount = adjustmentsAmount
+	t.require(transferDetailRecordFieldAdjustmentsAmount)
+}
+
+// SetNetTransferAmount sets the NetTransferAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetNetTransferAmount(netTransferAmount *float64) {
+	t.NetTransferAmount = netTransferAmount
+	t.require(transferDetailRecordFieldNetTransferAmount)
+}
+
+// SetSplitFundingAmount sets the SplitFundingAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetSplitFundingAmount(splitFundingAmount *float64) {
+	t.SplitFundingAmount = splitFundingAmount
+	t.require(transferDetailRecordFieldSplitFundingAmount)
+}
+
+// SetBillingFeesDetails sets the BillingFeesDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetBillingFeesDetails(billingFeesDetails []*BillingFeeDetail) {
+	t.BillingFeesDetails = billingFeesDetails
+	t.require(transferDetailRecordFieldBillingFeesDetails)
+}
+
+// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetParentOrgName(parentOrgName *OrgParentName) {
+	t.ParentOrgName = parentOrgName
+	t.require(transferDetailRecordFieldParentOrgName)
+}
+
+// SetPaypointDbaname sets the PaypointDbaname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetPaypointDbaname(paypointDbaname *Dbaname) {
+	t.PaypointDbaname = paypointDbaname
+	t.require(transferDetailRecordFieldPaypointDbaname)
+}
+
+// SetPaypointLegalname sets the PaypointLegalname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetPaypointLegalname(paypointLegalname *Legalname) {
+	t.PaypointLegalname = paypointLegalname
+	t.require(transferDetailRecordFieldPaypointLegalname)
+}
+
+// SetPaypointEntryname sets the PaypointEntryname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetPaypointEntryname(paypointEntryname *string) {
+	t.PaypointEntryname = paypointEntryname
+	t.require(transferDetailRecordFieldPaypointEntryname)
+}
+
+// SetPaymentTransId sets the PaymentTransId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetPaymentTransId(paymentTransId *string) {
+	t.PaymentTransId = paymentTransId
+	t.require(transferDetailRecordFieldPaymentTransId)
+}
+
+// SetConnectorName sets the ConnectorName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetConnectorName(connectorName *string) {
+	t.ConnectorName = connectorName
+	t.require(transferDetailRecordFieldConnectorName)
+}
+
+// SetExternalProcessorInformation sets the ExternalProcessorInformation field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetExternalProcessorInformation(externalProcessorInformation *ExternalProcessorInformation) {
+	t.ExternalProcessorInformation = externalProcessorInformation
+	t.require(transferDetailRecordFieldExternalProcessorInformation)
+}
+
+// SetGatewayTransId sets the GatewayTransId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetGatewayTransId(gatewayTransId *string) {
+	t.GatewayTransId = gatewayTransId
+	t.require(transferDetailRecordFieldGatewayTransId)
+}
+
+// SetOrderId sets the OrderId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetOrderId(orderId *OrderId) {
+	t.OrderId = orderId
+	t.require(transferDetailRecordFieldOrderId)
+}
+
+// SetMethod sets the Method field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetMethod(method *string) {
+	t.Method = method
+	t.require(transferDetailRecordFieldMethod)
+}
+
+// SetBatchNumber sets the BatchNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetBatchNumber(batchNumber *BatchNumber) {
+	t.BatchNumber = batchNumber
+	t.require(transferDetailRecordFieldBatchNumber)
+}
+
+// SetBatchAmount sets the BatchAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetBatchAmount(batchAmount *float64) {
+	t.BatchAmount = batchAmount
+	t.require(transferDetailRecordFieldBatchAmount)
+}
+
+// SetPayorId sets the PayorId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetPayorId(payorId *PayorId) {
+	t.PayorId = payorId
+	t.require(transferDetailRecordFieldPayorId)
+}
+
+// SetPaymentData sets the PaymentData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetPaymentData(paymentData *QueryPaymentData) {
+	t.PaymentData = paymentData
+	t.require(transferDetailRecordFieldPaymentData)
+}
+
+// SetTransStatus sets the TransStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetTransStatus(transStatus *int) {
+	t.TransStatus = transStatus
+	t.require(transferDetailRecordFieldTransStatus)
+}
+
+// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetPaypointId(paypointId *PaypointId) {
+	t.PaypointId = paypointId
+	t.require(transferDetailRecordFieldPaypointId)
+}
+
+// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetTotalAmount(totalAmount *float64) {
+	t.TotalAmount = totalAmount
+	t.require(transferDetailRecordFieldTotalAmount)
+}
+
+// SetNetAmount sets the NetAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetNetAmount(netAmount *Netamountnullable) {
+	t.NetAmount = netAmount
+	t.require(transferDetailRecordFieldNetAmount)
+}
+
+// SetFeeAmount sets the FeeAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetFeeAmount(feeAmount *FeeAmount) {
+	t.FeeAmount = feeAmount
+	t.require(transferDetailRecordFieldFeeAmount)
+}
+
+// SetSettlementStatus sets the SettlementStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetSettlementStatus(settlementStatus *int) {
+	t.SettlementStatus = settlementStatus
+	t.require(transferDetailRecordFieldSettlementStatus)
+}
+
+// SetOperation sets the Operation field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetOperation(operation *Operation) {
+	t.Operation = operation
+	t.require(transferDetailRecordFieldOperation)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetResponseData(responseData *QueryResponseData) {
+	t.ResponseData = responseData
+	t.require(transferDetailRecordFieldResponseData)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetSource(source *Source) {
+	t.Source = source
+	t.require(transferDetailRecordFieldSource)
+}
+
+// SetScheduleReference sets the ScheduleReference field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetScheduleReference(scheduleReference *int) {
+	t.ScheduleReference = scheduleReference
+	t.require(transferDetailRecordFieldScheduleReference)
+}
+
+// SetOrgId sets the OrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetOrgId(orgId *Orgid) {
+	t.OrgId = orgId
+	t.require(transferDetailRecordFieldOrgId)
+}
+
+// SetRefundId sets the RefundId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetRefundId(refundId *RefundId) {
+	t.RefundId = refundId
+	t.require(transferDetailRecordFieldRefundId)
+}
+
+// SetReturnedId sets the ReturnedId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetReturnedId(returnedId *ReturnedId) {
+	t.ReturnedId = returnedId
+	t.require(transferDetailRecordFieldReturnedId)
+}
+
+// SetChargebackId sets the ChargebackId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetChargebackId(chargebackId *ChargebackId) {
+	t.ChargebackId = chargebackId
+	t.require(transferDetailRecordFieldChargebackId)
+}
+
+// SetRetrievalId sets the RetrievalId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetRetrievalId(retrievalId *RetrievalId) {
+	t.RetrievalId = retrievalId
+	t.require(transferDetailRecordFieldRetrievalId)
+}
+
+// SetTransAdditionalData sets the TransAdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetTransAdditionalData(transAdditionalData interface{}) {
+	t.TransAdditionalData = transAdditionalData
+	t.require(transferDetailRecordFieldTransAdditionalData)
+}
+
+// SetInvoiceData sets the InvoiceData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetInvoiceData(invoiceData *BillData) {
+	t.InvoiceData = invoiceData
+	t.require(transferDetailRecordFieldInvoiceData)
+}
+
+// SetEntrypageId sets the EntrypageId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetEntrypageId(entrypageId *EntrypageId) {
+	t.EntrypageId = entrypageId
+	t.require(transferDetailRecordFieldEntrypageId)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
+	t.ExternalPaypointId = externalPaypointId
+	t.require(transferDetailRecordFieldExternalPaypointId)
+}
+
+// SetIsValidatedAch sets the IsValidatedAch field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetIsValidatedAch(isValidatedAch *bool) {
+	t.IsValidatedAch = isValidatedAch
+	t.require(transferDetailRecordFieldIsValidatedAch)
+}
+
+// SetTransactionTime sets the TransactionTime field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetTransactionTime(transactionTime *DatetimeNullable) {
+	t.TransactionTime = transactionTime
+	t.require(transferDetailRecordFieldTransactionTime)
+}
+
+// SetCustomer sets the Customer field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetCustomer(customer *QueryTransactionPayorData) {
+	t.Customer = customer
+	t.require(transferDetailRecordFieldCustomer)
+}
+
+// SetSplitFundingInstructions sets the SplitFundingInstructions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetSplitFundingInstructions(splitFundingInstructions *SplitFunding) {
+	t.SplitFundingInstructions = splitFundingInstructions
+	t.require(transferDetailRecordFieldSplitFundingInstructions)
+}
+
+// SetCfeeTransactions sets the CfeeTransactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetCfeeTransactions(cfeeTransactions []*QueryCFeeTransaction) {
+	t.CfeeTransactions = cfeeTransactions
+	t.require(transferDetailRecordFieldCfeeTransactions)
+}
+
+// SetTransactionEvents sets the TransactionEvents field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetTransactionEvents(transactionEvents []*QueryTransactionEvents) {
+	t.TransactionEvents = transactionEvents
+	t.require(transferDetailRecordFieldTransactionEvents)
+}
+
+// SetPendingFeeAmount sets the PendingFeeAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetPendingFeeAmount(pendingFeeAmount *PendingFeeAmount) {
+	t.PendingFeeAmount = pendingFeeAmount
+	t.require(transferDetailRecordFieldPendingFeeAmount)
+}
+
+// SetRiskFlagged sets the RiskFlagged field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetRiskFlagged(riskFlagged *RiskFlagged) {
+	t.RiskFlagged = riskFlagged
+	t.require(transferDetailRecordFieldRiskFlagged)
+}
+
+// SetRiskFlaggedOn sets the RiskFlaggedOn field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetRiskFlaggedOn(riskFlaggedOn *RiskFlaggedOn) {
+	t.RiskFlaggedOn = riskFlaggedOn
+	t.require(transferDetailRecordFieldRiskFlaggedOn)
+}
+
+// SetRiskStatus sets the RiskStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetRiskStatus(riskStatus *RiskStatus) {
+	t.RiskStatus = riskStatus
+	t.require(transferDetailRecordFieldRiskStatus)
+}
+
+// SetRiskReason sets the RiskReason field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetRiskReason(riskReason *RiskReason) {
+	t.RiskReason = riskReason
+	t.require(transferDetailRecordFieldRiskReason)
+}
+
+// SetRiskAction sets the RiskAction field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetRiskAction(riskAction *RiskAction) {
+	t.RiskAction = riskAction
+	t.require(transferDetailRecordFieldRiskAction)
+}
+
+// SetRiskActionCode sets the RiskActionCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetRiskActionCode(riskActionCode *RiskActionCode) {
+	t.RiskActionCode = riskActionCode
+	t.require(transferDetailRecordFieldRiskActionCode)
+}
+
+// SetDeviceId sets the DeviceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetDeviceId(deviceId *DeviceId) {
+	t.DeviceId = deviceId
+	t.require(transferDetailRecordFieldDeviceId)
+}
+
+// SetAchSecCode sets the AchSecCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetAchSecCode(achSecCode *AchSecCode) {
+	t.AchSecCode = achSecCode
+	t.require(transferDetailRecordFieldAchSecCode)
+}
+
+// SetAchHolderType sets the AchHolderType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetAchHolderType(achHolderType *AchHolderType) {
+	t.AchHolderType = achHolderType
+	t.require(transferDetailRecordFieldAchHolderType)
+}
+
+// SetIpAddress sets the IpAddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetIpAddress(ipAddress *IpAddress) {
+	t.IpAddress = ipAddress
+	t.require(transferDetailRecordFieldIpAddress)
+}
+
+// SetIsSameDayAch sets the IsSameDayAch field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetIsSameDayAch(isSameDayAch *bool) {
+	t.IsSameDayAch = isSameDayAch
+	t.require(transferDetailRecordFieldIsSameDayAch)
+}
+
+// SetWalletType sets the WalletType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetWalletType(walletType *string) {
+	t.WalletType = walletType
+	t.require(transferDetailRecordFieldWalletType)
+}
+
 func (t *TransferDetailRecord) UnmarshalJSON(data []byte) error {
 	type unmarshaler TransferDetailRecord
 	var value unmarshaler
@@ -2232,6 +4120,17 @@ func (t *TransferDetailRecord) UnmarshalJSON(data []byte) error {
 	t.extraProperties = extraProperties
 	t.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (t *TransferDetailRecord) MarshalJSON() ([]byte, error) {
+	type embed TransferDetailRecord
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (t *TransferDetailRecord) String() string {

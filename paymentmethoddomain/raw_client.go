@@ -4,7 +4,7 @@ package paymentmethoddomain
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) AddPaymentMethodDomain(
 	ctx context.Context,
-	request *sdk.AddPaymentMethodDomainRequest,
+	request *sdkgo.AddPaymentMethodDomainRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.AddPaymentMethodDomainApiResponse], error) {
+) (*core.Response[*sdkgo.AddPaymentMethodDomainApiResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -49,27 +49,27 @@ func (r *RawClient) AddPaymentMethodDomain(
 	headers.Add("Content-Type", "application/json")
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.AddPaymentMethodDomainApiResponse
+	var response *sdkgo.AddPaymentMethodDomainApiResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -88,7 +88,7 @@ func (r *RawClient) AddPaymentMethodDomain(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.AddPaymentMethodDomainApiResponse]{
+	return &core.Response[*sdkgo.AddPaymentMethodDomainApiResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -100,7 +100,7 @@ func (r *RawClient) CascadePaymentMethodDomain(
 	// The payment method domain's ID in Payabli.
 	domainId string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PaymentMethodDomainGeneralResponse], error) {
+) (*core.Response[*sdkgo.PaymentMethodDomainGeneralResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -117,27 +117,27 @@ func (r *RawClient) CascadePaymentMethodDomain(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PaymentMethodDomainGeneralResponse
+	var response *sdkgo.PaymentMethodDomainGeneralResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -155,7 +155,7 @@ func (r *RawClient) CascadePaymentMethodDomain(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PaymentMethodDomainGeneralResponse]{
+	return &core.Response[*sdkgo.PaymentMethodDomainGeneralResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -167,7 +167,7 @@ func (r *RawClient) DeletePaymentMethodDomain(
 	// The payment method domain's ID in Payabli.
 	domainId string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.DeletePaymentMethodDomainResponse], error) {
+) (*core.Response[*sdkgo.DeletePaymentMethodDomainResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -184,27 +184,27 @@ func (r *RawClient) DeletePaymentMethodDomain(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.DeletePaymentMethodDomainResponse
+	var response *sdkgo.DeletePaymentMethodDomainResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -222,7 +222,7 @@ func (r *RawClient) DeletePaymentMethodDomain(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.DeletePaymentMethodDomainResponse]{
+	return &core.Response[*sdkgo.DeletePaymentMethodDomainResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -234,7 +234,7 @@ func (r *RawClient) GetPaymentMethodDomain(
 	// The payment method domain's ID in Payabli.
 	domainId string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PaymentMethodDomainApiResponse], error) {
+) (*core.Response[*sdkgo.PaymentMethodDomainApiResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -251,27 +251,27 @@ func (r *RawClient) GetPaymentMethodDomain(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PaymentMethodDomainApiResponse
+	var response *sdkgo.PaymentMethodDomainApiResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -289,7 +289,7 @@ func (r *RawClient) GetPaymentMethodDomain(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PaymentMethodDomainApiResponse]{
+	return &core.Response[*sdkgo.PaymentMethodDomainApiResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -298,9 +298,9 @@ func (r *RawClient) GetPaymentMethodDomain(
 
 func (r *RawClient) ListPaymentMethodDomains(
 	ctx context.Context,
-	request *sdk.ListPaymentMethodDomainsRequest,
+	request *sdkgo.ListPaymentMethodDomainsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ListPaymentMethodDomainsResponse], error) {
+) (*core.Response[*sdkgo.ListPaymentMethodDomainsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -321,27 +321,27 @@ func (r *RawClient) ListPaymentMethodDomains(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.ListPaymentMethodDomainsResponse
+	var response *sdkgo.ListPaymentMethodDomainsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -359,7 +359,7 @@ func (r *RawClient) ListPaymentMethodDomains(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ListPaymentMethodDomainsResponse]{
+	return &core.Response[*sdkgo.ListPaymentMethodDomainsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -370,9 +370,9 @@ func (r *RawClient) UpdatePaymentMethodDomain(
 	ctx context.Context,
 	// The payment method domain's ID in Payabli.
 	domainId string,
-	request *sdk.UpdatePaymentMethodDomainRequest,
+	request *sdkgo.UpdatePaymentMethodDomainRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PaymentMethodDomainGeneralResponse], error) {
+) (*core.Response[*sdkgo.PaymentMethodDomainGeneralResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -390,27 +390,27 @@ func (r *RawClient) UpdatePaymentMethodDomain(
 	headers.Add("Content-Type", "application/json")
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PaymentMethodDomainGeneralResponse
+	var response *sdkgo.PaymentMethodDomainGeneralResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -429,7 +429,7 @@ func (r *RawClient) UpdatePaymentMethodDomain(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PaymentMethodDomainGeneralResponse]{
+	return &core.Response[*sdkgo.PaymentMethodDomainGeneralResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -441,7 +441,7 @@ func (r *RawClient) VerifyPaymentMethodDomain(
 	// The payment method domain's ID in Payabli.
 	domainId string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PaymentMethodDomainGeneralResponse], error) {
+) (*core.Response[*sdkgo.PaymentMethodDomainGeneralResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -458,27 +458,27 @@ func (r *RawClient) VerifyPaymentMethodDomain(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PaymentMethodDomainGeneralResponse
+	var response *sdkgo.PaymentMethodDomainGeneralResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -496,7 +496,7 @@ func (r *RawClient) VerifyPaymentMethodDomain(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PaymentMethodDomainGeneralResponse]{
+	return &core.Response[*sdkgo.PaymentMethodDomainGeneralResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

@@ -4,11 +4,33 @@ package payabli
 
 import (
 	json "encoding/json"
+	big "math/big"
+)
+
+var (
+	newPageRequestFieldIdempotencyKey = big.NewInt(1 << 0)
 )
 
 type NewPageRequest struct {
 	IdempotencyKey *IdempotencyKey `json:"-" url:"-"`
 	Body           *PayabliPages   `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (n *NewPageRequest) require(field *big.Int) {
+	if n.explicitFields == nil {
+		n.explicitFields = big.NewInt(0)
+	}
+	n.explicitFields.Or(n.explicitFields, field)
+}
+
+// SetIdempotencyKey sets the IdempotencyKey field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NewPageRequest) SetIdempotencyKey(idempotencyKey *IdempotencyKey) {
+	n.IdempotencyKey = idempotencyKey
+	n.require(newPageRequestFieldIdempotencyKey)
 }
 
 func (n *NewPageRequest) UnmarshalJSON(data []byte) error {

@@ -4,7 +4,7 @@ package import_
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -37,9 +37,9 @@ func (c *Client) ImportBills(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdk.ImportBillsRequest,
+	request *sdkgo.ImportBillsRequest,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponseImport, error) {
+) (*sdkgo.PayabliApiResponseImport, error) {
 	response, err := c.WithRawResponse.ImportBills(
 		ctx,
 		entry,
@@ -55,10 +55,10 @@ func (c *Client) ImportBills(
 // Import a list of customers from a CSV file. See the [Import Guide](/developers/developer-guides/entities-customers#import-customers) for more help and example files.
 func (c *Client) ImportCustomer(
 	ctx context.Context,
-	entry sdk.Entrypointfield,
-	request *sdk.ImportCustomerRequest,
+	entry sdkgo.Entrypointfield,
+	request *sdkgo.ImportCustomerRequest,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponseImport, error) {
+) (*sdkgo.PayabliApiResponseImport, error) {
 	response, err := c.WithRawResponse.ImportCustomer(
 		ctx,
 		entry,
@@ -74,10 +74,10 @@ func (c *Client) ImportCustomer(
 // Import a list of vendors from a CSV file. See the [Import Guide](/developers/developer-guides/entities-vendors#import-vendors) for more help and example files.
 func (c *Client) ImportVendor(
 	ctx context.Context,
-	entry sdk.Entrypointfield,
-	request *sdk.ImportVendorRequest,
+	entry sdkgo.Entrypointfield,
+	request *sdkgo.ImportVendorRequest,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponseImport, error) {
+) (*sdkgo.PayabliApiResponseImport, error) {
 	response, err := c.WithRawResponse.ImportVendor(
 		ctx,
 		entry,

@@ -4,7 +4,7 @@ package customer
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -36,10 +36,10 @@ func NewClient(options *core.RequestOptions) *Client {
 // If you don't include an identifier, the record is rejected.
 func (c *Client) AddCustomer(
 	ctx context.Context,
-	entry sdk.Entrypointfield,
-	request *sdk.AddCustomerRequest,
+	entry sdkgo.Entrypointfield,
+	request *sdkgo.AddCustomerRequest,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponseCustomerQuery, error) {
+) (*sdkgo.PayabliApiResponseCustomerQuery, error) {
 	response, err := c.WithRawResponse.AddCustomer(
 		ctx,
 		entry,
@@ -58,7 +58,7 @@ func (c *Client) DeleteCustomer(
 	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
 	customerId int,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponse00Responsedatanonobject, error) {
+) (*sdkgo.PayabliApiResponse00Responsedatanonobject, error) {
 	response, err := c.WithRawResponse.DeleteCustomer(
 		ctx,
 		customerId,
@@ -76,7 +76,7 @@ func (c *Client) GetCustomer(
 	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
 	customerId int,
 	opts ...option.RequestOption,
-) (*sdk.CustomerQueryRecords, error) {
+) (*sdkgo.CustomerQueryRecords, error) {
 	response, err := c.WithRawResponse.GetCustomer(
 		ctx,
 		customerId,
@@ -96,7 +96,7 @@ func (c *Client) LinkCustomerTransaction(
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponse00Responsedatanonobject, error) {
+) (*sdkgo.PayabliApiResponse00Responsedatanonobject, error) {
 	response, err := c.WithRawResponse.LinkCustomerTransaction(
 		ctx,
 		customerId,
@@ -115,7 +115,7 @@ func (c *Client) RequestConsent(
 	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
 	customerId int,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponse00Responsedatanonobject, error) {
+) (*sdkgo.PayabliApiResponse00Responsedatanonobject, error) {
 	response, err := c.WithRawResponse.RequestConsent(
 		ctx,
 		customerId,
@@ -132,9 +132,9 @@ func (c *Client) UpdateCustomer(
 	ctx context.Context,
 	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
 	customerId int,
-	request *sdk.CustomerData,
+	request *sdkgo.CustomerData,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponse00Responsedatanonobject, error) {
+) (*sdkgo.PayabliApiResponse00Responsedatanonobject, error) {
 	response, err := c.WithRawResponse.UpdateCustomer(
 		ctx,
 		customerId,

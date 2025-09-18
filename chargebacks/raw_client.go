@@ -5,7 +5,7 @@ package chargebacks
 import (
 	bytes "bytes"
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -35,9 +35,9 @@ func (r *RawClient) AddResponse(
 	ctx context.Context,
 	// ID of the chargeback or return record.
 	id int64,
-	request *sdk.ResponseChargeBack,
+	request *sdkgo.ResponseChargeBack,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.AddResponseResponse], error) {
+) (*core.Response[*sdkgo.AddResponseResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -58,27 +58,27 @@ func (r *RawClient) AddResponse(
 	headers.Add("Content-Type", "application/json")
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.AddResponseResponse
+	var response *sdkgo.AddResponseResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -97,7 +97,7 @@ func (r *RawClient) AddResponse(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.AddResponseResponse]{
+	return &core.Response[*sdkgo.AddResponseResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -109,7 +109,7 @@ func (r *RawClient) GetChargeback(
 	// ID of the chargeback or return record. This is returned as `chargebackId` in the [RecievedChargeback](/developers/developer-guides/webhook-payloads#receivedChargeback) and [ReceivedAchReturn](/developers/developer-guides/webhook-payloads#receivedachreturn) webhook notifications.
 	id int64,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ChargebackQueryRecords], error) {
+) (*core.Response[*sdkgo.ChargebackQueryRecords], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -126,27 +126,27 @@ func (r *RawClient) GetChargeback(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.ChargebackQueryRecords
+	var response *sdkgo.ChargebackQueryRecords
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -164,7 +164,7 @@ func (r *RawClient) GetChargeback(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ChargebackQueryRecords]{
+	return &core.Response[*sdkgo.ChargebackQueryRecords]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -196,22 +196,22 @@ func (r *RawClient) GetChargebackAttachment(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},

@@ -4,7 +4,7 @@ package hostedpaymentpages
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -37,7 +37,7 @@ func (r *RawClient) LoadPage(
 	// Payment page identifier. The subdomain value is the last part of the payment page URL. For example, in`https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
 	subdomain string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliPages], error) {
+) (*core.Response[*sdkgo.PayabliPages], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -55,27 +55,27 @@ func (r *RawClient) LoadPage(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliPages
+	var response *sdkgo.PayabliPages
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -93,7 +93,7 @@ func (r *RawClient) LoadPage(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliPages]{
+	return &core.Response[*sdkgo.PayabliPages]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -104,9 +104,9 @@ func (r *RawClient) NewPage(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdk.NewPageRequest,
+	request *sdkgo.NewPageRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponse00Responsedatanonobject], error) {
+) (*core.Response[*sdkgo.PayabliApiResponse00Responsedatanonobject], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -127,27 +127,27 @@ func (r *RawClient) NewPage(
 	headers.Add("Content-Type", "application/json")
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponse00Responsedatanonobject
+	var response *sdkgo.PayabliApiResponse00Responsedatanonobject
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -166,7 +166,7 @@ func (r *RawClient) NewPage(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponse00Responsedatanonobject]{
+	return &core.Response[*sdkgo.PayabliApiResponse00Responsedatanonobject]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -179,9 +179,9 @@ func (r *RawClient) SavePage(
 	entry string,
 	// Payment page identifier. The subdomain value is the last part of the payment page URL. For example, in`https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
 	subdomain string,
-	request *sdk.PayabliPages,
+	request *sdkgo.PayabliPages,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponse00Responsedatanonobject], error) {
+) (*core.Response[*sdkgo.PayabliApiResponse00Responsedatanonobject], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -199,27 +199,27 @@ func (r *RawClient) SavePage(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponse00Responsedatanonobject
+	var response *sdkgo.PayabliApiResponse00Responsedatanonobject
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -238,7 +238,7 @@ func (r *RawClient) SavePage(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponse00Responsedatanonobject]{
+	return &core.Response[*sdkgo.PayabliApiResponse00Responsedatanonobject]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

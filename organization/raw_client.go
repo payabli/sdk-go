@@ -4,7 +4,7 @@ package organization
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) AddOrganization(
 	ctx context.Context,
-	request *sdk.AddOrganizationRequest,
+	request *sdkgo.AddOrganizationRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.AddOrganizationResponse], error) {
+) (*core.Response[*sdkgo.AddOrganizationResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -52,27 +52,27 @@ func (r *RawClient) AddOrganization(
 	headers.Add("Content-Type", "application/json")
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.AddOrganizationResponse
+	var response *sdkgo.AddOrganizationResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -91,7 +91,7 @@ func (r *RawClient) AddOrganization(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.AddOrganizationResponse]{
+	return &core.Response[*sdkgo.AddOrganizationResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -103,7 +103,7 @@ func (r *RawClient) DeleteOrganization(
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.DeleteOrganizationResponse], error) {
+) (*core.Response[*sdkgo.DeleteOrganizationResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -120,27 +120,27 @@ func (r *RawClient) DeleteOrganization(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.DeleteOrganizationResponse
+	var response *sdkgo.DeleteOrganizationResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -158,7 +158,7 @@ func (r *RawClient) DeleteOrganization(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.DeleteOrganizationResponse]{
+	return &core.Response[*sdkgo.DeleteOrganizationResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -169,9 +169,9 @@ func (r *RawClient) EditOrganization(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdk.OrganizationData,
+	request *sdkgo.OrganizationData,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.EditOrganizationResponse], error) {
+) (*core.Response[*sdkgo.EditOrganizationResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -189,27 +189,27 @@ func (r *RawClient) EditOrganization(
 	headers.Add("Content-Type", "application/json")
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.EditOrganizationResponse
+	var response *sdkgo.EditOrganizationResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -228,7 +228,7 @@ func (r *RawClient) EditOrganization(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.EditOrganizationResponse]{
+	return &core.Response[*sdkgo.EditOrganizationResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -240,7 +240,7 @@ func (r *RawClient) GetBasicOrganization(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.OrganizationQueryRecord], error) {
+) (*core.Response[*sdkgo.OrganizationQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -257,27 +257,27 @@ func (r *RawClient) GetBasicOrganization(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.OrganizationQueryRecord
+	var response *sdkgo.OrganizationQueryRecord
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -295,7 +295,7 @@ func (r *RawClient) GetBasicOrganization(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.OrganizationQueryRecord]{
+	return &core.Response[*sdkgo.OrganizationQueryRecord]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -307,7 +307,7 @@ func (r *RawClient) GetBasicOrganizationById(
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.OrganizationQueryRecord], error) {
+) (*core.Response[*sdkgo.OrganizationQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -324,27 +324,27 @@ func (r *RawClient) GetBasicOrganizationById(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.OrganizationQueryRecord
+	var response *sdkgo.OrganizationQueryRecord
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -362,7 +362,7 @@ func (r *RawClient) GetBasicOrganizationById(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.OrganizationQueryRecord]{
+	return &core.Response[*sdkgo.OrganizationQueryRecord]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -374,7 +374,7 @@ func (r *RawClient) GetOrganization(
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.OrganizationQueryRecord], error) {
+) (*core.Response[*sdkgo.OrganizationQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -391,27 +391,27 @@ func (r *RawClient) GetOrganization(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.OrganizationQueryRecord
+	var response *sdkgo.OrganizationQueryRecord
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -429,7 +429,7 @@ func (r *RawClient) GetOrganization(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.OrganizationQueryRecord]{
+	return &core.Response[*sdkgo.OrganizationQueryRecord]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -441,7 +441,7 @@ func (r *RawClient) GetSettingsOrganization(
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.SettingsQueryRecord], error) {
+) (*core.Response[*sdkgo.SettingsQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -458,27 +458,27 @@ func (r *RawClient) GetSettingsOrganization(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.SettingsQueryRecord
+	var response *sdkgo.SettingsQueryRecord
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -496,7 +496,7 @@ func (r *RawClient) GetSettingsOrganization(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.SettingsQueryRecord]{
+	return &core.Response[*sdkgo.SettingsQueryRecord]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

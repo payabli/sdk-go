@@ -6,13 +6,41 @@ import (
 	json "encoding/json"
 	fmt "fmt"
 	internal "github.com/payabli/sdk-go/internal"
+	big "math/big"
 	time "time"
+)
+
+var (
+	listDeviceRequestFieldForceRefresh = big.NewInt(1 << 0)
 )
 
 type ListDeviceRequest struct {
 	// When `true`, the request retrieves an updated list of devices from the processor instead of returning a cached list of devices.
 	ForceRefresh *bool `json:"-" url:"forceRefresh,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListDeviceRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetForceRefresh sets the ForceRefresh field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListDeviceRequest) SetForceRefresh(forceRefresh *bool) {
+	l.ForceRefresh = forceRefresh
+	l.require(listDeviceRequestFieldForceRefresh)
+}
+
+var (
+	deviceEntryFieldIdempotencyKey   = big.NewInt(1 << 0)
+	deviceEntryFieldDescription      = big.NewInt(1 << 1)
+	deviceEntryFieldRegistrationCode = big.NewInt(1 << 2)
+)
 
 type DeviceEntry struct {
 	IdempotencyKey *IdempotencyKey `json:"-" url:"-"`
@@ -24,14 +52,54 @@ type DeviceEntry struct {
 	//
 	// - PAX A920 device: This code is the serial number on the back of the device.
 	RegistrationCode *string `json:"registrationCode,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (d *DeviceEntry) require(field *big.Int) {
+	if d.explicitFields == nil {
+		d.explicitFields = big.NewInt(0)
+	}
+	d.explicitFields.Or(d.explicitFields, field)
+}
+
+// SetIdempotencyKey sets the IdempotencyKey field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceEntry) SetIdempotencyKey(idempotencyKey *IdempotencyKey) {
+	d.IdempotencyKey = idempotencyKey
+	d.require(deviceEntryFieldIdempotencyKey)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceEntry) SetDescription(description *string) {
+	d.Description = description
+	d.require(deviceEntryFieldDescription)
+}
+
+// SetRegistrationCode sets the RegistrationCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceEntry) SetRegistrationCode(registrationCode *string) {
+	d.RegistrationCode = registrationCode
+	d.require(deviceEntryFieldRegistrationCode)
 }
 
 // Object containing details about cloud devices and their registration history.
+var (
+	cloudQueryApiResponseFieldIsSuccess    = big.NewInt(1 << 0)
+	cloudQueryApiResponseFieldResponseList = big.NewInt(1 << 1)
+	cloudQueryApiResponseFieldResponseText = big.NewInt(1 << 2)
+)
+
 type CloudQueryApiResponse struct {
 	IsSuccess *IsSuccess `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	// List of devices and history of registration.
 	ResponseList []*PoiDevice `json:"responseList,omitempty" url:"responseList,omitempty"`
 	ResponseText ResponseText `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -62,6 +130,34 @@ func (c *CloudQueryApiResponse) GetExtraProperties() map[string]interface{} {
 	return c.extraProperties
 }
 
+func (c *CloudQueryApiResponse) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CloudQueryApiResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	c.IsSuccess = isSuccess
+	c.require(cloudQueryApiResponseFieldIsSuccess)
+}
+
+// SetResponseList sets the ResponseList field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CloudQueryApiResponse) SetResponseList(responseList []*PoiDevice) {
+	c.ResponseList = responseList
+	c.require(cloudQueryApiResponseFieldResponseList)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CloudQueryApiResponse) SetResponseText(responseText ResponseText) {
+	c.ResponseText = responseText
+	c.require(cloudQueryApiResponseFieldResponseText)
+}
+
 func (c *CloudQueryApiResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler CloudQueryApiResponse
 	var value unmarshaler
@@ -78,6 +174,17 @@ func (c *CloudQueryApiResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (c *CloudQueryApiResponse) MarshalJSON() ([]byte, error) {
+	type embed CloudQueryApiResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (c *CloudQueryApiResponse) String() string {
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
@@ -91,6 +198,22 @@ func (c *CloudQueryApiResponse) String() string {
 }
 
 // Information about the point of interaction device (also known as a terminal or cloud device) used to process the transaction.
+var (
+	poiDeviceFieldConnected            = big.NewInt(1 << 0)
+	poiDeviceFieldDateDeRegistered     = big.NewInt(1 << 1)
+	poiDeviceFieldDateRegistered       = big.NewInt(1 << 2)
+	poiDeviceFieldDeviceId             = big.NewInt(1 << 3)
+	poiDeviceFieldDeviceLicense        = big.NewInt(1 << 4)
+	poiDeviceFieldDeviceNickName       = big.NewInt(1 << 5)
+	poiDeviceFieldLastConnectedDate    = big.NewInt(1 << 6)
+	poiDeviceFieldLastDisconnectedDate = big.NewInt(1 << 7)
+	poiDeviceFieldLastTransactionDate  = big.NewInt(1 << 8)
+	poiDeviceFieldMake                 = big.NewInt(1 << 9)
+	poiDeviceFieldModel                = big.NewInt(1 << 10)
+	poiDeviceFieldRegistered           = big.NewInt(1 << 11)
+	poiDeviceFieldSerialNumber         = big.NewInt(1 << 12)
+)
+
 type PoiDevice struct {
 	// The device connection status.
 	Connected *bool `json:"connected,omitempty" url:"connected,omitempty"`
@@ -118,6 +241,9 @@ type PoiDevice struct {
 	Registered *bool `json:"registered,omitempty" url:"registered,omitempty"`
 	// The device serial number.
 	SerialNumber *string `json:"serialNumber,omitempty" url:"serialNumber,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -218,6 +344,104 @@ func (p *PoiDevice) GetExtraProperties() map[string]interface{} {
 	return p.extraProperties
 }
 
+func (p *PoiDevice) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetConnected sets the Connected field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PoiDevice) SetConnected(connected *bool) {
+	p.Connected = connected
+	p.require(poiDeviceFieldConnected)
+}
+
+// SetDateDeRegistered sets the DateDeRegistered field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PoiDevice) SetDateDeRegistered(dateDeRegistered *time.Time) {
+	p.DateDeRegistered = dateDeRegistered
+	p.require(poiDeviceFieldDateDeRegistered)
+}
+
+// SetDateRegistered sets the DateRegistered field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PoiDevice) SetDateRegistered(dateRegistered *time.Time) {
+	p.DateRegistered = dateRegistered
+	p.require(poiDeviceFieldDateRegistered)
+}
+
+// SetDeviceId sets the DeviceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PoiDevice) SetDeviceId(deviceId *string) {
+	p.DeviceId = deviceId
+	p.require(poiDeviceFieldDeviceId)
+}
+
+// SetDeviceLicense sets the DeviceLicense field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PoiDevice) SetDeviceLicense(deviceLicense *string) {
+	p.DeviceLicense = deviceLicense
+	p.require(poiDeviceFieldDeviceLicense)
+}
+
+// SetDeviceNickName sets the DeviceNickName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PoiDevice) SetDeviceNickName(deviceNickName *string) {
+	p.DeviceNickName = deviceNickName
+	p.require(poiDeviceFieldDeviceNickName)
+}
+
+// SetLastConnectedDate sets the LastConnectedDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PoiDevice) SetLastConnectedDate(lastConnectedDate *time.Time) {
+	p.LastConnectedDate = lastConnectedDate
+	p.require(poiDeviceFieldLastConnectedDate)
+}
+
+// SetLastDisconnectedDate sets the LastDisconnectedDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PoiDevice) SetLastDisconnectedDate(lastDisconnectedDate *time.Time) {
+	p.LastDisconnectedDate = lastDisconnectedDate
+	p.require(poiDeviceFieldLastDisconnectedDate)
+}
+
+// SetLastTransactionDate sets the LastTransactionDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PoiDevice) SetLastTransactionDate(lastTransactionDate *time.Time) {
+	p.LastTransactionDate = lastTransactionDate
+	p.require(poiDeviceFieldLastTransactionDate)
+}
+
+// SetMake sets the Make field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PoiDevice) SetMake(make_ *string) {
+	p.Make = make_
+	p.require(poiDeviceFieldMake)
+}
+
+// SetModel sets the Model field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PoiDevice) SetModel(model *string) {
+	p.Model = model
+	p.require(poiDeviceFieldModel)
+}
+
+// SetRegistered sets the Registered field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PoiDevice) SetRegistered(registered *bool) {
+	p.Registered = registered
+	p.require(poiDeviceFieldRegistered)
+}
+
+// SetSerialNumber sets the SerialNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PoiDevice) SetSerialNumber(serialNumber *string) {
+	p.SerialNumber = serialNumber
+	p.require(poiDeviceFieldSerialNumber)
+}
+
 func (p *PoiDevice) UnmarshalJSON(data []byte) error {
 	type embed PoiDevice
 	var unmarshaler = struct {
@@ -265,7 +489,8 @@ func (p *PoiDevice) MarshalJSON() ([]byte, error) {
 		LastDisconnectedDate: internal.NewOptionalDateTime(p.LastDisconnectedDate),
 		LastTransactionDate:  internal.NewOptionalDateTime(p.LastTransactionDate),
 	}
-	return json.Marshal(marshaler)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (p *PoiDevice) String() string {
@@ -280,6 +505,13 @@ func (p *PoiDevice) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+var (
+	addDeviceResponseFieldIsSuccess      = big.NewInt(1 << 0)
+	addDeviceResponseFieldResponseText   = big.NewInt(1 << 1)
+	addDeviceResponseFieldPageIdentifier = big.NewInt(1 << 2)
+	addDeviceResponseFieldResponseData   = big.NewInt(1 << 3)
+)
+
 type AddDeviceResponse struct {
 	IsSuccess      *IsSuccess      `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	ResponseText   ResponseText    `json:"responseText" url:"responseText"`
@@ -287,6 +519,9 @@ type AddDeviceResponse struct {
 	// If `isSuccess` = true, this contains the device identifier.
 	// If `isSuccess` = false, this contains the reason for the error.
 	ResponseData *string `json:"responseData,omitempty" url:"responseData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -324,6 +559,41 @@ func (a *AddDeviceResponse) GetExtraProperties() map[string]interface{} {
 	return a.extraProperties
 }
 
+func (a *AddDeviceResponse) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddDeviceResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	a.IsSuccess = isSuccess
+	a.require(addDeviceResponseFieldIsSuccess)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddDeviceResponse) SetResponseText(responseText ResponseText) {
+	a.ResponseText = responseText
+	a.require(addDeviceResponseFieldResponseText)
+}
+
+// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddDeviceResponse) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+	a.PageIdentifier = pageIdentifier
+	a.require(addDeviceResponseFieldPageIdentifier)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddDeviceResponse) SetResponseData(responseData *string) {
+	a.ResponseData = responseData
+	a.require(addDeviceResponseFieldResponseData)
+}
+
 func (a *AddDeviceResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler AddDeviceResponse
 	var value unmarshaler
@@ -340,6 +610,17 @@ func (a *AddDeviceResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (a *AddDeviceResponse) MarshalJSON() ([]byte, error) {
+	type embed AddDeviceResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (a *AddDeviceResponse) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
@@ -352,6 +633,13 @@ func (a *AddDeviceResponse) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+var (
+	removeDeviceResponseFieldIsSuccess      = big.NewInt(1 << 0)
+	removeDeviceResponseFieldResponseText   = big.NewInt(1 << 1)
+	removeDeviceResponseFieldPageIdentifier = big.NewInt(1 << 2)
+	removeDeviceResponseFieldResponseData   = big.NewInt(1 << 3)
+)
+
 type RemoveDeviceResponse struct {
 	IsSuccess      *IsSuccess      `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	ResponseText   ResponseText    `json:"responseText" url:"responseText"`
@@ -359,6 +647,9 @@ type RemoveDeviceResponse struct {
 	// If `isSuccess` = true, this contains the device identifier.
 	// If `isSuccess` = false, this contains the reason for the error.
 	ResponseData *string `json:"responseData,omitempty" url:"responseData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -396,6 +687,41 @@ func (r *RemoveDeviceResponse) GetExtraProperties() map[string]interface{} {
 	return r.extraProperties
 }
 
+func (r *RemoveDeviceResponse) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RemoveDeviceResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	r.IsSuccess = isSuccess
+	r.require(removeDeviceResponseFieldIsSuccess)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RemoveDeviceResponse) SetResponseText(responseText ResponseText) {
+	r.ResponseText = responseText
+	r.require(removeDeviceResponseFieldResponseText)
+}
+
+// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RemoveDeviceResponse) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+	r.PageIdentifier = pageIdentifier
+	r.require(removeDeviceResponseFieldPageIdentifier)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RemoveDeviceResponse) SetResponseData(responseData *string) {
+	r.ResponseData = responseData
+	r.require(removeDeviceResponseFieldResponseData)
+}
+
 func (r *RemoveDeviceResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler RemoveDeviceResponse
 	var value unmarshaler
@@ -410,6 +736,17 @@ func (r *RemoveDeviceResponse) UnmarshalJSON(data []byte) error {
 	r.extraProperties = extraProperties
 	r.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (r *RemoveDeviceResponse) MarshalJSON() ([]byte, error) {
+	type embed RemoveDeviceResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (r *RemoveDeviceResponse) String() string {

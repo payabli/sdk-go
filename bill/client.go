@@ -4,7 +4,7 @@ package bill
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -37,9 +37,9 @@ func (c *Client) AddBill(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdk.AddBillRequest,
+	request *sdkgo.AddBillRequest,
 	opts ...option.RequestOption,
-) (*sdk.BillResponse, error) {
+) (*sdkgo.BillResponse, error) {
 	response, err := c.WithRawResponse.AddBill(
 		ctx,
 		entry,
@@ -74,9 +74,9 @@ func (c *Client) DeleteAttachedFromBill(
 	filename string,
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
 	idBill int,
-	request *sdk.DeleteAttachedFromBillRequest,
+	request *sdkgo.DeleteAttachedFromBillRequest,
 	opts ...option.RequestOption,
-) (*sdk.BillResponse, error) {
+) (*sdkgo.BillResponse, error) {
 	response, err := c.WithRawResponse.DeleteAttachedFromBill(
 		ctx,
 		filename,
@@ -96,7 +96,7 @@ func (c *Client) DeleteBill(
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
 	idBill int,
 	opts ...option.RequestOption,
-) (*sdk.BillResponse, error) {
+) (*sdkgo.BillResponse, error) {
 	response, err := c.WithRawResponse.DeleteBill(
 		ctx,
 		idBill,
@@ -113,9 +113,9 @@ func (c *Client) EditBill(
 	ctx context.Context,
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
 	idBill int,
-	request *sdk.BillOutData,
+	request *sdkgo.BillOutData,
 	opts ...option.RequestOption,
-) (*sdk.EditBillResponse, error) {
+) (*sdkgo.EditBillResponse, error) {
 	response, err := c.WithRawResponse.EditBill(
 		ctx,
 		idBill,
@@ -145,9 +145,9 @@ func (c *Client) GetAttachedFromBill(
 	filename string,
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
 	idBill int,
-	request *sdk.GetAttachedFromBillRequest,
+	request *sdkgo.GetAttachedFromBillRequest,
 	opts ...option.RequestOption,
-) (*sdk.FileContent, error) {
+) (*sdkgo.FileContent, error) {
 	response, err := c.WithRawResponse.GetAttachedFromBill(
 		ctx,
 		filename,
@@ -167,7 +167,7 @@ func (c *Client) GetBill(
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
 	idBill int,
 	opts ...option.RequestOption,
-) (*sdk.GetBillResponse, error) {
+) (*sdkgo.GetBillResponse, error) {
 	response, err := c.WithRawResponse.GetBill(
 		ctx,
 		idBill,
@@ -184,9 +184,9 @@ func (c *Client) ListBills(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdk.ListBillsRequest,
+	request *sdkgo.ListBillsRequest,
 	opts ...option.RequestOption,
-) (*sdk.BillQueryResponse, error) {
+) (*sdkgo.BillQueryResponse, error) {
 	response, err := c.WithRawResponse.ListBills(
 		ctx,
 		entry,
@@ -204,9 +204,9 @@ func (c *Client) ListBillsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdk.ListBillsOrgRequest,
+	request *sdkgo.ListBillsOrgRequest,
 	opts ...option.RequestOption,
-) (*sdk.BillQueryResponse, error) {
+) (*sdkgo.BillQueryResponse, error) {
 	response, err := c.WithRawResponse.ListBillsOrg(
 		ctx,
 		orgId,
@@ -226,7 +226,7 @@ func (c *Client) ModifyApprovalBill(
 	idBill int,
 	request []string,
 	opts ...option.RequestOption,
-) (*sdk.ModifyApprovalBillResponse, error) {
+) (*sdkgo.ModifyApprovalBillResponse, error) {
 	response, err := c.WithRawResponse.ModifyApprovalBill(
 		ctx,
 		idBill,
@@ -244,9 +244,9 @@ func (c *Client) SendToApprovalBill(
 	ctx context.Context,
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
 	idBill int,
-	request *sdk.SendToApprovalBillRequest,
+	request *sdkgo.SendToApprovalBillRequest,
 	opts ...option.RequestOption,
-) (*sdk.BillResponse, error) {
+) (*sdkgo.BillResponse, error) {
 	response, err := c.WithRawResponse.SendToApprovalBill(
 		ctx,
 		idBill,
@@ -266,9 +266,9 @@ func (c *Client) SetApprovedBill(
 	approved string,
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
 	idBill int,
-	request *sdk.SetApprovedBillRequest,
+	request *sdkgo.SetApprovedBillRequest,
 	opts ...option.RequestOption,
-) (*sdk.SetApprovedBillResponse, error) {
+) (*sdkgo.SetApprovedBillResponse, error) {
 	response, err := c.WithRawResponse.SetApprovedBill(
 		ctx,
 		approved,

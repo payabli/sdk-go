@@ -4,7 +4,7 @@ package templates
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -34,9 +34,9 @@ func (r *RawClient) AddTemplate(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdk.TemplateData,
+	request *sdkgo.TemplateData,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponseTemplateId], error) {
+) (*core.Response[*sdkgo.PayabliApiResponseTemplateId], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,27 +53,27 @@ func (r *RawClient) AddTemplate(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponseTemplateId
+	var response *sdkgo.PayabliApiResponseTemplateId
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -92,7 +92,7 @@ func (r *RawClient) AddTemplate(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponseTemplateId]{
+	return &core.Response[*sdkgo.PayabliApiResponseTemplateId]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -104,7 +104,7 @@ func (r *RawClient) DeleteTemplate(
 	// The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
 	templateId float64,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponseTemplateId], error) {
+) (*core.Response[*sdkgo.PayabliApiResponseTemplateId], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -121,27 +121,27 @@ func (r *RawClient) DeleteTemplate(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponseTemplateId
+	var response *sdkgo.PayabliApiResponseTemplateId
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -159,7 +159,7 @@ func (r *RawClient) DeleteTemplate(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponseTemplateId]{
+	return &core.Response[*sdkgo.PayabliApiResponseTemplateId]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -173,7 +173,7 @@ func (r *RawClient) GetlinkTemplate(
 	// The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
 	templateId float64,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.BoardingLinkApiResponse], error) {
+) (*core.Response[*sdkgo.BoardingLinkApiResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -191,27 +191,27 @@ func (r *RawClient) GetlinkTemplate(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.BoardingLinkApiResponse
+	var response *sdkgo.BoardingLinkApiResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -229,7 +229,7 @@ func (r *RawClient) GetlinkTemplate(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.BoardingLinkApiResponse]{
+	return &core.Response[*sdkgo.BoardingLinkApiResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -241,7 +241,7 @@ func (r *RawClient) GetTemplate(
 	// The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
 	templateId float64,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.TemplateQueryRecord], error) {
+) (*core.Response[*sdkgo.TemplateQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -258,27 +258,27 @@ func (r *RawClient) GetTemplate(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.TemplateQueryRecord
+	var response *sdkgo.TemplateQueryRecord
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -296,7 +296,7 @@ func (r *RawClient) GetTemplate(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.TemplateQueryRecord]{
+	return &core.Response[*sdkgo.TemplateQueryRecord]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -307,9 +307,9 @@ func (r *RawClient) ListTemplates(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdk.ListTemplatesRequest,
+	request *sdkgo.ListTemplatesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.TemplateQueryResponse], error) {
+) (*core.Response[*sdkgo.TemplateQueryResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -333,27 +333,27 @@ func (r *RawClient) ListTemplates(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.TemplateQueryResponse
+	var response *sdkgo.TemplateQueryResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -371,7 +371,7 @@ func (r *RawClient) ListTemplates(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.TemplateQueryResponse]{
+	return &core.Response[*sdkgo.TemplateQueryResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -382,9 +382,9 @@ func (r *RawClient) UpdateTemplate(
 	ctx context.Context,
 	// The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
 	templateId float64,
-	request *sdk.TemplateData,
+	request *sdkgo.TemplateData,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponseTemplateId], error) {
+) (*core.Response[*sdkgo.PayabliApiResponseTemplateId], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -401,27 +401,27 @@ func (r *RawClient) UpdateTemplate(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponseTemplateId
+	var response *sdkgo.PayabliApiResponseTemplateId
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -440,7 +440,7 @@ func (r *RawClient) UpdateTemplate(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponseTemplateId]{
+	return &core.Response[*sdkgo.PayabliApiResponseTemplateId]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

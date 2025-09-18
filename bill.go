@@ -6,12 +6,34 @@ import (
 	json "encoding/json"
 	fmt "fmt"
 	internal "github.com/payabli/sdk-go/internal"
+	big "math/big"
 	time "time"
+)
+
+var (
+	addBillRequestFieldIdempotencyKey = big.NewInt(1 << 0)
 )
 
 type AddBillRequest struct {
 	IdempotencyKey *IdempotencyKey `json:"-" url:"-"`
 	Body           *BillOutData    `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (a *AddBillRequest) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetIdempotencyKey sets the IdempotencyKey field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddBillRequest) SetIdempotencyKey(idempotencyKey *IdempotencyKey) {
+	a.IdempotencyKey = idempotencyKey
+	a.require(addBillRequestFieldIdempotencyKey)
 }
 
 func (a *AddBillRequest) UnmarshalJSON(data []byte) error {
@@ -26,6 +48,14 @@ func (a *AddBillRequest) UnmarshalJSON(data []byte) error {
 func (a *AddBillRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(a.Body)
 }
+
+var (
+	listBillsRequestFieldExportFormat = big.NewInt(1 << 0)
+	listBillsRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listBillsRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listBillsRequestFieldParameters   = big.NewInt(1 << 3)
+	listBillsRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListBillsRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -81,7 +111,60 @@ type ListBillsRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListBillsRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillsRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listBillsRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillsRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listBillsRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillsRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listBillsRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillsRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listBillsRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillsRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listBillsRequestFieldSortBy)
+}
+
+var (
+	listBillsOrgRequestFieldExportFormat = big.NewInt(1 << 0)
+	listBillsOrgRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listBillsOrgRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listBillsOrgRequestFieldParameters   = big.NewInt(1 << 3)
+	listBillsOrgRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListBillsOrgRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -137,13 +220,87 @@ type ListBillsOrgRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListBillsOrgRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillsOrgRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listBillsOrgRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillsOrgRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listBillsOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillsOrgRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listBillsOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillsOrgRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listBillsOrgRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBillsOrgRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listBillsOrgRequestFieldSortBy)
+}
+
+var (
+	sendToApprovalBillRequestFieldIdempotencyKey = big.NewInt(1 << 0)
+	sendToApprovalBillRequestFieldAutocreateUser = big.NewInt(1 << 1)
+)
 
 type SendToApprovalBillRequest struct {
 	IdempotencyKey *IdempotencyKey `json:"-" url:"-"`
 	// Automatically create the target user for approval if they don't exist.
 	AutocreateUser *bool    `json:"-" url:"autocreateUser,omitempty"`
 	Body           []string `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (s *SendToApprovalBillRequest) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetIdempotencyKey sets the IdempotencyKey field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SendToApprovalBillRequest) SetIdempotencyKey(idempotencyKey *IdempotencyKey) {
+	s.IdempotencyKey = idempotencyKey
+	s.require(sendToApprovalBillRequestFieldIdempotencyKey)
+}
+
+// SetAutocreateUser sets the AutocreateUser field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SendToApprovalBillRequest) SetAutocreateUser(autocreateUser *bool) {
+	s.AutocreateUser = autocreateUser
+	s.require(sendToApprovalBillRequestFieldAutocreateUser)
 }
 
 func (s *SendToApprovalBillRequest) UnmarshalJSON(data []byte) error {
@@ -159,19 +316,82 @@ func (s *SendToApprovalBillRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(s.Body)
 }
 
+var (
+	setApprovedBillRequestFieldEmail = big.NewInt(1 << 0)
+)
+
 type SetApprovedBillRequest struct {
 	// Email or username of user modifying approval status.
 	Email *string `json:"-" url:"email,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (s *SetApprovedBillRequest) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetEmail sets the Email field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetApprovedBillRequest) SetEmail(email *string) {
+	s.Email = email
+	s.require(setApprovedBillRequestFieldEmail)
+}
+
+var (
+	deleteAttachedFromBillRequestFieldReturnObject = big.NewInt(1 << 0)
+)
 
 type DeleteAttachedFromBillRequest struct {
 	// When `true`, the request returns the file content as a Base64-encoded string.
 	ReturnObject *bool `json:"-" url:"returnObject,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (d *DeleteAttachedFromBillRequest) require(field *big.Int) {
+	if d.explicitFields == nil {
+		d.explicitFields = big.NewInt(0)
+	}
+	d.explicitFields.Or(d.explicitFields, field)
+}
+
+// SetReturnObject sets the ReturnObject field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeleteAttachedFromBillRequest) SetReturnObject(returnObject *bool) {
+	d.ReturnObject = returnObject
+	d.require(deleteAttachedFromBillRequestFieldReturnObject)
+}
+
+var (
+	getAttachedFromBillRequestFieldReturnObject = big.NewInt(1 << 0)
+)
 
 type GetAttachedFromBillRequest struct {
 	// When `true`, the request returns the file content as a Base64-encoded string.
 	ReturnObject *bool `json:"-" url:"returnObject,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (g *GetAttachedFromBillRequest) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetReturnObject sets the ReturnObject field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetAttachedFromBillRequest) SetReturnObject(returnObject *bool) {
+	g.ReturnObject = returnObject
+	g.require(getAttachedFromBillRequestFieldReturnObject)
 }
 
 // Custom dictionary of key:value pairs. You can use this field to store any data related to the object or for your system.
@@ -191,6 +411,46 @@ type AdditionalDataMap = map[string]string
 
 // Approvals associated with the bill.
 type BillApprovals = []*BillQueryRecord2BillApprovalsItem
+
+var (
+	billQueryRecord2FieldAccountingField1   = big.NewInt(1 << 0)
+	billQueryRecord2FieldAccountingField2   = big.NewInt(1 << 1)
+	billQueryRecord2FieldAdditionalData     = big.NewInt(1 << 2)
+	billQueryRecord2FieldBatchNumber        = big.NewInt(1 << 3)
+	billQueryRecord2FieldBillApprovals      = big.NewInt(1 << 4)
+	billQueryRecord2FieldBillDate           = big.NewInt(1 << 5)
+	billQueryRecord2FieldBillEvents         = big.NewInt(1 << 6)
+	billQueryRecord2FieldBillItems          = big.NewInt(1 << 7)
+	billQueryRecord2FieldBillNumber         = big.NewInt(1 << 8)
+	billQueryRecord2FieldComments           = big.NewInt(1 << 9)
+	billQueryRecord2FieldCreatedAt          = big.NewInt(1 << 10)
+	billQueryRecord2FieldDiscount           = big.NewInt(1 << 11)
+	billQueryRecord2FieldDocumentsRef       = big.NewInt(1 << 12)
+	billQueryRecord2FieldDueDate            = big.NewInt(1 << 13)
+	billQueryRecord2FieldEndDate            = big.NewInt(1 << 14)
+	billQueryRecord2FieldEntityId           = big.NewInt(1 << 15)
+	billQueryRecord2FieldExternalPaypointId = big.NewInt(1 << 16)
+	billQueryRecord2FieldFrequency          = big.NewInt(1 << 17)
+	billQueryRecord2FieldIdBill             = big.NewInt(1 << 18)
+	billQueryRecord2FieldLastUpdated        = big.NewInt(1 << 19)
+	billQueryRecord2FieldLotNumber          = big.NewInt(1 << 20)
+	billQueryRecord2FieldMode               = big.NewInt(1 << 21)
+	billQueryRecord2FieldNetAmount          = big.NewInt(1 << 22)
+	billQueryRecord2FieldParentOrgId        = big.NewInt(1 << 23)
+	billQueryRecord2FieldParentOrgName      = big.NewInt(1 << 24)
+	billQueryRecord2FieldPaymentId          = big.NewInt(1 << 25)
+	billQueryRecord2FieldPaymentMethod      = big.NewInt(1 << 26)
+	billQueryRecord2FieldPaylinkId          = big.NewInt(1 << 27)
+	billQueryRecord2FieldPaypointDbaname    = big.NewInt(1 << 28)
+	billQueryRecord2FieldPaypointEntryname  = big.NewInt(1 << 29)
+	billQueryRecord2FieldPaypointLegalname  = big.NewInt(1 << 30)
+	billQueryRecord2FieldSource             = big.NewInt(1 << 31)
+	billQueryRecord2FieldStatus             = big.NewInt(1 << 32)
+	billQueryRecord2FieldTerms              = big.NewInt(1 << 33)
+	billQueryRecord2FieldTotalAmount        = big.NewInt(1 << 34)
+	billQueryRecord2FieldTransaction        = big.NewInt(1 << 35)
+	billQueryRecord2FieldVendor             = big.NewInt(1 << 36)
+)
 
 type BillQueryRecord2 struct {
 	AccountingField1 *AccountingField `json:"AccountingField1,omitempty" url:"AccountingField1,omitempty"`
@@ -259,6 +519,9 @@ type BillQueryRecord2 struct {
 	// MoneyOut transaction associated to the bill.
 	Transaction *TransactionOutQueryRecord `json:"Transaction,omitempty" url:"Transaction,omitempty"`
 	Vendor      *VendorOutData             `json:"Vendor,omitempty" url:"Vendor,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -527,6 +790,272 @@ func (b *BillQueryRecord2) GetExtraProperties() map[string]interface{} {
 	return b.extraProperties
 }
 
+func (b *BillQueryRecord2) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetAccountingField1 sets the AccountingField1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetAccountingField1(accountingField1 *AccountingField) {
+	b.AccountingField1 = accountingField1
+	b.require(billQueryRecord2FieldAccountingField1)
+}
+
+// SetAccountingField2 sets the AccountingField2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetAccountingField2(accountingField2 *AccountingField) {
+	b.AccountingField2 = accountingField2
+	b.require(billQueryRecord2FieldAccountingField2)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetAdditionalData(additionalData map[string]string) {
+	b.AdditionalData = additionalData
+	b.require(billQueryRecord2FieldAdditionalData)
+}
+
+// SetBatchNumber sets the BatchNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetBatchNumber(batchNumber *string) {
+	b.BatchNumber = batchNumber
+	b.require(billQueryRecord2FieldBatchNumber)
+}
+
+// SetBillApprovals sets the BillApprovals field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetBillApprovals(billApprovals []*BillQueryRecord2BillApprovalsItem) {
+	b.BillApprovals = billApprovals
+	b.require(billQueryRecord2FieldBillApprovals)
+}
+
+// SetBillDate sets the BillDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetBillDate(billDate *Datenullable) {
+	b.BillDate = billDate
+	b.require(billQueryRecord2FieldBillDate)
+}
+
+// SetBillEvents sets the BillEvents field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetBillEvents(billEvents []*GeneralEvents) {
+	b.BillEvents = billEvents
+	b.require(billQueryRecord2FieldBillEvents)
+}
+
+// SetBillItems sets the BillItems field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetBillItems(billItems []*BillItem) {
+	b.BillItems = billItems
+	b.require(billQueryRecord2FieldBillItems)
+}
+
+// SetBillNumber sets the BillNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetBillNumber(billNumber *string) {
+	b.BillNumber = billNumber
+	b.require(billQueryRecord2FieldBillNumber)
+}
+
+// SetComments sets the Comments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetComments(comments *string) {
+	b.Comments = comments
+	b.require(billQueryRecord2FieldComments)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetCreatedAt(createdAt *CreatedAt) {
+	b.CreatedAt = createdAt
+	b.require(billQueryRecord2FieldCreatedAt)
+}
+
+// SetDiscount sets the Discount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetDiscount(discount *float64) {
+	b.Discount = discount
+	b.require(billQueryRecord2FieldDiscount)
+}
+
+// SetDocumentsRef sets the DocumentsRef field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetDocumentsRef(documentsRef *string) {
+	b.DocumentsRef = documentsRef
+	b.require(billQueryRecord2FieldDocumentsRef)
+}
+
+// SetDueDate sets the DueDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetDueDate(dueDate *Datenullable) {
+	b.DueDate = dueDate
+	b.require(billQueryRecord2FieldDueDate)
+}
+
+// SetEndDate sets the EndDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetEndDate(endDate *Datenullable) {
+	b.EndDate = endDate
+	b.require(billQueryRecord2FieldEndDate)
+}
+
+// SetEntityId sets the EntityId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetEntityId(entityId *string) {
+	b.EntityId = entityId
+	b.require(billQueryRecord2FieldEntityId)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
+	b.ExternalPaypointId = externalPaypointId
+	b.require(billQueryRecord2FieldExternalPaypointId)
+}
+
+// SetFrequency sets the Frequency field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetFrequency(frequency *Frequency) {
+	b.Frequency = frequency
+	b.require(billQueryRecord2FieldFrequency)
+}
+
+// SetIdBill sets the IdBill field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetIdBill(idBill *int64) {
+	b.IdBill = idBill
+	b.require(billQueryRecord2FieldIdBill)
+}
+
+// SetLastUpdated sets the LastUpdated field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetLastUpdated(lastUpdated *DatetimeNullable) {
+	b.LastUpdated = lastUpdated
+	b.require(billQueryRecord2FieldLastUpdated)
+}
+
+// SetLotNumber sets the LotNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetLotNumber(lotNumber *string) {
+	b.LotNumber = lotNumber
+	b.require(billQueryRecord2FieldLotNumber)
+}
+
+// SetMode sets the Mode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetMode(mode *int) {
+	b.Mode = mode
+	b.require(billQueryRecord2FieldMode)
+}
+
+// SetNetAmount sets the NetAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetNetAmount(netAmount *float64) {
+	b.NetAmount = netAmount
+	b.require(billQueryRecord2FieldNetAmount)
+}
+
+// SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetParentOrgId(parentOrgId *int64) {
+	b.ParentOrgId = parentOrgId
+	b.require(billQueryRecord2FieldParentOrgId)
+}
+
+// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetParentOrgName(parentOrgName *OrgParentName) {
+	b.ParentOrgName = parentOrgName
+	b.require(billQueryRecord2FieldParentOrgName)
+}
+
+// SetPaymentId sets the PaymentId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetPaymentId(paymentId *PaymentIdString) {
+	b.PaymentId = paymentId
+	b.require(billQueryRecord2FieldPaymentId)
+}
+
+// SetPaymentMethod sets the PaymentMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetPaymentMethod(paymentMethod *BillQueryRecord2PaymentMethod) {
+	b.PaymentMethod = paymentMethod
+	b.require(billQueryRecord2FieldPaymentMethod)
+}
+
+// SetPaylinkId sets the PaylinkId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetPaylinkId(paylinkId *string) {
+	b.PaylinkId = paylinkId
+	b.require(billQueryRecord2FieldPaylinkId)
+}
+
+// SetPaypointDbaname sets the PaypointDbaname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetPaypointDbaname(paypointDbaname *Dbaname) {
+	b.PaypointDbaname = paypointDbaname
+	b.require(billQueryRecord2FieldPaypointDbaname)
+}
+
+// SetPaypointEntryname sets the PaypointEntryname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetPaypointEntryname(paypointEntryname *string) {
+	b.PaypointEntryname = paypointEntryname
+	b.require(billQueryRecord2FieldPaypointEntryname)
+}
+
+// SetPaypointLegalname sets the PaypointLegalname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetPaypointLegalname(paypointLegalname *Legalname) {
+	b.PaypointLegalname = paypointLegalname
+	b.require(billQueryRecord2FieldPaypointLegalname)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetSource(source *string) {
+	b.Source = source
+	b.require(billQueryRecord2FieldSource)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetStatus(status *Billstatus) {
+	b.Status = status
+	b.require(billQueryRecord2FieldStatus)
+}
+
+// SetTerms sets the Terms field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetTerms(terms *Terms) {
+	b.Terms = terms
+	b.require(billQueryRecord2FieldTerms)
+}
+
+// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetTotalAmount(totalAmount *float64) {
+	b.TotalAmount = totalAmount
+	b.require(billQueryRecord2FieldTotalAmount)
+}
+
+// SetTransaction sets the Transaction field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetTransaction(transaction *TransactionOutQueryRecord) {
+	b.Transaction = transaction
+	b.require(billQueryRecord2FieldTransaction)
+}
+
+// SetVendor sets the Vendor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetVendor(vendor_ *VendorOutData) {
+	b.Vendor = vendor_
+	b.require(billQueryRecord2FieldVendor)
+}
+
 func (b *BillQueryRecord2) UnmarshalJSON(data []byte) error {
 	type unmarshaler BillQueryRecord2
 	var value unmarshaler
@@ -543,6 +1072,17 @@ func (b *BillQueryRecord2) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (b *BillQueryRecord2) MarshalJSON() ([]byte, error) {
+	type embed BillQueryRecord2
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (b *BillQueryRecord2) String() string {
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
@@ -555,6 +1095,14 @@ func (b *BillQueryRecord2) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+var (
+	billQueryRecord2BillApprovalsItemFieldApproved     = big.NewInt(1 << 0)
+	billQueryRecord2BillApprovalsItemFieldApprovedTime = big.NewInt(1 << 1)
+	billQueryRecord2BillApprovalsItemFieldComments     = big.NewInt(1 << 2)
+	billQueryRecord2BillApprovalsItemFieldEmail        = big.NewInt(1 << 3)
+	billQueryRecord2BillApprovalsItemFieldId           = big.NewInt(1 << 4)
+)
+
 type BillQueryRecord2BillApprovalsItem struct {
 	// Indicates whether the bill has been approved. `0` is false, and `1` is true.
 	Approved *int `json:"approved,omitempty" url:"approved,omitempty"`
@@ -566,6 +1114,9 @@ type BillQueryRecord2BillApprovalsItem struct {
 	Email *Email `json:"email,omitempty" url:"email,omitempty"`
 	// The approving user's ID.
 	Id *int64 `json:"Id,omitempty" url:"Id,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -610,6 +1161,48 @@ func (b *BillQueryRecord2BillApprovalsItem) GetExtraProperties() map[string]inte
 	return b.extraProperties
 }
 
+func (b *BillQueryRecord2BillApprovalsItem) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetApproved sets the Approved field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2BillApprovalsItem) SetApproved(approved *int) {
+	b.Approved = approved
+	b.require(billQueryRecord2BillApprovalsItemFieldApproved)
+}
+
+// SetApprovedTime sets the ApprovedTime field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2BillApprovalsItem) SetApprovedTime(approvedTime *DatetimeNullable) {
+	b.ApprovedTime = approvedTime
+	b.require(billQueryRecord2BillApprovalsItemFieldApprovedTime)
+}
+
+// SetComments sets the Comments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2BillApprovalsItem) SetComments(comments *string) {
+	b.Comments = comments
+	b.require(billQueryRecord2BillApprovalsItemFieldComments)
+}
+
+// SetEmail sets the Email field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2BillApprovalsItem) SetEmail(email *Email) {
+	b.Email = email
+	b.require(billQueryRecord2BillApprovalsItemFieldEmail)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2BillApprovalsItem) SetId(id *int64) {
+	b.Id = id
+	b.require(billQueryRecord2BillApprovalsItemFieldId)
+}
+
 func (b *BillQueryRecord2BillApprovalsItem) UnmarshalJSON(data []byte) error {
 	type unmarshaler BillQueryRecord2BillApprovalsItem
 	var value unmarshaler
@@ -624,6 +1217,17 @@ func (b *BillQueryRecord2BillApprovalsItem) UnmarshalJSON(data []byte) error {
 	b.extraProperties = extraProperties
 	b.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (b *BillQueryRecord2BillApprovalsItem) MarshalJSON() ([]byte, error) {
+	type embed BillQueryRecord2BillApprovalsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (b *BillQueryRecord2BillApprovalsItem) String() string {
@@ -670,11 +1274,19 @@ func (b BillQueryRecord2PaymentMethod) Ptr() *BillQueryRecord2PaymentMethod {
 	return &b
 }
 
+var (
+	billQueryResponseFieldSummary = big.NewInt(1 << 0)
+	billQueryResponseFieldRecords = big.NewInt(1 << 1)
+)
+
 type BillQueryResponse struct {
 	// Summary statistics for the bill query response.
 	Summary *BillQueryResponseSummary `json:"Summary,omitempty" url:"Summary,omitempty"`
 	// Array of bill records returned by the query.
 	Records []*BillQueryRecord2 `json:"Records,omitempty" url:"Records,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -698,6 +1310,27 @@ func (b *BillQueryResponse) GetExtraProperties() map[string]interface{} {
 	return b.extraProperties
 }
 
+func (b *BillQueryResponse) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryResponse) SetSummary(summary *BillQueryResponseSummary) {
+	b.Summary = summary
+	b.require(billQueryResponseFieldSummary)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryResponse) SetRecords(records []*BillQueryRecord2) {
+	b.Records = records
+	b.require(billQueryResponseFieldRecords)
+}
+
 func (b *BillQueryResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler BillQueryResponse
 	var value unmarshaler
@@ -714,6 +1347,17 @@ func (b *BillQueryResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (b *BillQueryResponse) MarshalJSON() ([]byte, error) {
+	type embed BillQueryResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (b *BillQueryResponse) String() string {
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
@@ -725,6 +1369,32 @@ func (b *BillQueryResponse) String() string {
 	}
 	return fmt.Sprintf("%#v", b)
 }
+
+var (
+	billQueryResponseSummaryFieldPageidentifier           = big.NewInt(1 << 0)
+	billQueryResponseSummaryFieldPageSize                 = big.NewInt(1 << 1)
+	billQueryResponseSummaryFieldTotal2Approval           = big.NewInt(1 << 2)
+	billQueryResponseSummaryFieldTotalactive              = big.NewInt(1 << 3)
+	billQueryResponseSummaryFieldTotalAmount              = big.NewInt(1 << 4)
+	billQueryResponseSummaryFieldTotalamount2Approval     = big.NewInt(1 << 5)
+	billQueryResponseSummaryFieldTotalamountactive        = big.NewInt(1 << 6)
+	billQueryResponseSummaryFieldTotalamountapproved      = big.NewInt(1 << 7)
+	billQueryResponseSummaryFieldTotalamountcancel        = big.NewInt(1 << 8)
+	billQueryResponseSummaryFieldTotalamountdisapproved   = big.NewInt(1 << 9)
+	billQueryResponseSummaryFieldTotalamountintransit     = big.NewInt(1 << 10)
+	billQueryResponseSummaryFieldTotalamountoverdue       = big.NewInt(1 << 11)
+	billQueryResponseSummaryFieldTotalamountpaid          = big.NewInt(1 << 12)
+	billQueryResponseSummaryFieldTotalamountsent2Approval = big.NewInt(1 << 13)
+	billQueryResponseSummaryFieldTotalapproved            = big.NewInt(1 << 14)
+	billQueryResponseSummaryFieldTotalcancel              = big.NewInt(1 << 15)
+	billQueryResponseSummaryFieldTotaldisapproved         = big.NewInt(1 << 16)
+	billQueryResponseSummaryFieldTotalintransit           = big.NewInt(1 << 17)
+	billQueryResponseSummaryFieldTotaloverdue             = big.NewInt(1 << 18)
+	billQueryResponseSummaryFieldTotalPages               = big.NewInt(1 << 19)
+	billQueryResponseSummaryFieldTotalpaid                = big.NewInt(1 << 20)
+	billQueryResponseSummaryFieldTotalRecords             = big.NewInt(1 << 21)
+	billQueryResponseSummaryFieldTotalsent2Approval       = big.NewInt(1 << 22)
+)
 
 type BillQueryResponseSummary struct {
 	Pageidentifier *PageIdentifier `json:"pageidentifier,omitempty" url:"pageidentifier,omitempty"`
@@ -759,6 +1429,9 @@ type BillQueryResponseSummary struct {
 	Totalpaid          *int          `json:"totalpaid,omitempty" url:"totalpaid,omitempty"`
 	TotalRecords       *Totalrecords `json:"totalRecords,omitempty" url:"totalRecords,omitempty"`
 	Totalsent2Approval *int          `json:"totalsent2approval,omitempty" url:"totalsent2approval,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -929,6 +1602,174 @@ func (b *BillQueryResponseSummary) GetExtraProperties() map[string]interface{} {
 	return b.extraProperties
 }
 
+func (b *BillQueryResponseSummary) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetPageidentifier sets the Pageidentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryResponseSummary) SetPageidentifier(pageidentifier *PageIdentifier) {
+	b.Pageidentifier = pageidentifier
+	b.require(billQueryResponseSummaryFieldPageidentifier)
+}
+
+// SetPageSize sets the PageSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryResponseSummary) SetPageSize(pageSize *Pagesize) {
+	b.PageSize = pageSize
+	b.require(billQueryResponseSummaryFieldPageSize)
+}
+
+// SetTotal2Approval sets the Total2Approval field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryResponseSummary) SetTotal2Approval(total2Approval *int) {
+	b.Total2Approval = total2Approval
+	b.require(billQueryResponseSummaryFieldTotal2Approval)
+}
+
+// SetTotalactive sets the Totalactive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryResponseSummary) SetTotalactive(totalactive *int) {
+	b.Totalactive = totalactive
+	b.require(billQueryResponseSummaryFieldTotalactive)
+}
+
+// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryResponseSummary) SetTotalAmount(totalAmount *float64) {
+	b.TotalAmount = totalAmount
+	b.require(billQueryResponseSummaryFieldTotalAmount)
+}
+
+// SetTotalamount2Approval sets the Totalamount2Approval field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryResponseSummary) SetTotalamount2Approval(totalamount2Approval *float64) {
+	b.Totalamount2Approval = totalamount2Approval
+	b.require(billQueryResponseSummaryFieldTotalamount2Approval)
+}
+
+// SetTotalamountactive sets the Totalamountactive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryResponseSummary) SetTotalamountactive(totalamountactive *float64) {
+	b.Totalamountactive = totalamountactive
+	b.require(billQueryResponseSummaryFieldTotalamountactive)
+}
+
+// SetTotalamountapproved sets the Totalamountapproved field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryResponseSummary) SetTotalamountapproved(totalamountapproved *float64) {
+	b.Totalamountapproved = totalamountapproved
+	b.require(billQueryResponseSummaryFieldTotalamountapproved)
+}
+
+// SetTotalamountcancel sets the Totalamountcancel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryResponseSummary) SetTotalamountcancel(totalamountcancel *float64) {
+	b.Totalamountcancel = totalamountcancel
+	b.require(billQueryResponseSummaryFieldTotalamountcancel)
+}
+
+// SetTotalamountdisapproved sets the Totalamountdisapproved field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryResponseSummary) SetTotalamountdisapproved(totalamountdisapproved *float64) {
+	b.Totalamountdisapproved = totalamountdisapproved
+	b.require(billQueryResponseSummaryFieldTotalamountdisapproved)
+}
+
+// SetTotalamountintransit sets the Totalamountintransit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryResponseSummary) SetTotalamountintransit(totalamountintransit *float64) {
+	b.Totalamountintransit = totalamountintransit
+	b.require(billQueryResponseSummaryFieldTotalamountintransit)
+}
+
+// SetTotalamountoverdue sets the Totalamountoverdue field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryResponseSummary) SetTotalamountoverdue(totalamountoverdue *float64) {
+	b.Totalamountoverdue = totalamountoverdue
+	b.require(billQueryResponseSummaryFieldTotalamountoverdue)
+}
+
+// SetTotalamountpaid sets the Totalamountpaid field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryResponseSummary) SetTotalamountpaid(totalamountpaid *float64) {
+	b.Totalamountpaid = totalamountpaid
+	b.require(billQueryResponseSummaryFieldTotalamountpaid)
+}
+
+// SetTotalamountsent2Approval sets the Totalamountsent2Approval field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryResponseSummary) SetTotalamountsent2Approval(totalamountsent2Approval *float64) {
+	b.Totalamountsent2Approval = totalamountsent2Approval
+	b.require(billQueryResponseSummaryFieldTotalamountsent2Approval)
+}
+
+// SetTotalapproved sets the Totalapproved field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryResponseSummary) SetTotalapproved(totalapproved *int) {
+	b.Totalapproved = totalapproved
+	b.require(billQueryResponseSummaryFieldTotalapproved)
+}
+
+// SetTotalcancel sets the Totalcancel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryResponseSummary) SetTotalcancel(totalcancel *int) {
+	b.Totalcancel = totalcancel
+	b.require(billQueryResponseSummaryFieldTotalcancel)
+}
+
+// SetTotaldisapproved sets the Totaldisapproved field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryResponseSummary) SetTotaldisapproved(totaldisapproved *int) {
+	b.Totaldisapproved = totaldisapproved
+	b.require(billQueryResponseSummaryFieldTotaldisapproved)
+}
+
+// SetTotalintransit sets the Totalintransit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryResponseSummary) SetTotalintransit(totalintransit *int) {
+	b.Totalintransit = totalintransit
+	b.require(billQueryResponseSummaryFieldTotalintransit)
+}
+
+// SetTotaloverdue sets the Totaloverdue field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryResponseSummary) SetTotaloverdue(totaloverdue *int) {
+	b.Totaloverdue = totaloverdue
+	b.require(billQueryResponseSummaryFieldTotaloverdue)
+}
+
+// SetTotalPages sets the TotalPages field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryResponseSummary) SetTotalPages(totalPages *Totalpages) {
+	b.TotalPages = totalPages
+	b.require(billQueryResponseSummaryFieldTotalPages)
+}
+
+// SetTotalpaid sets the Totalpaid field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryResponseSummary) SetTotalpaid(totalpaid *int) {
+	b.Totalpaid = totalpaid
+	b.require(billQueryResponseSummaryFieldTotalpaid)
+}
+
+// SetTotalRecords sets the TotalRecords field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryResponseSummary) SetTotalRecords(totalRecords *Totalrecords) {
+	b.TotalRecords = totalRecords
+	b.require(billQueryResponseSummaryFieldTotalRecords)
+}
+
+// SetTotalsent2Approval sets the Totalsent2Approval field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryResponseSummary) SetTotalsent2Approval(totalsent2Approval *int) {
+	b.Totalsent2Approval = totalsent2Approval
+	b.require(billQueryResponseSummaryFieldTotalsent2Approval)
+}
+
 func (b *BillQueryResponseSummary) UnmarshalJSON(data []byte) error {
 	type unmarshaler BillQueryResponseSummary
 	var value unmarshaler
@@ -943,6 +1784,17 @@ func (b *BillQueryResponseSummary) UnmarshalJSON(data []byte) error {
 	b.extraProperties = extraProperties
 	b.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (b *BillQueryResponseSummary) MarshalJSON() ([]byte, error) {
+	type embed BillQueryResponseSummary
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (b *BillQueryResponseSummary) String() string {
@@ -971,6 +1823,48 @@ type Billitems = []*BillItem
 // - `50`: Payment in transit
 // - `100`: Paid "
 type Billstatus = int
+
+var (
+	transactionOutQueryRecordFieldIdOut                = big.NewInt(1 << 0)
+	transactionOutQueryRecordFieldCreatedAt            = big.NewInt(1 << 1)
+	transactionOutQueryRecordFieldComments             = big.NewInt(1 << 2)
+	transactionOutQueryRecordFieldVendor               = big.NewInt(1 << 3)
+	transactionOutQueryRecordFieldPaypointDbaname      = big.NewInt(1 << 4)
+	transactionOutQueryRecordFieldPaypointLegalname    = big.NewInt(1 << 5)
+	transactionOutQueryRecordFieldStatus               = big.NewInt(1 << 6)
+	transactionOutQueryRecordFieldLastUpdated          = big.NewInt(1 << 7)
+	transactionOutQueryRecordFieldTotalAmount          = big.NewInt(1 << 8)
+	transactionOutQueryRecordFieldNetAmount            = big.NewInt(1 << 9)
+	transactionOutQueryRecordFieldFeeAmount            = big.NewInt(1 << 10)
+	transactionOutQueryRecordFieldSource               = big.NewInt(1 << 11)
+	transactionOutQueryRecordFieldParentOrgName        = big.NewInt(1 << 12)
+	transactionOutQueryRecordFieldParentOrgId          = big.NewInt(1 << 13)
+	transactionOutQueryRecordFieldBatchNumber          = big.NewInt(1 << 14)
+	transactionOutQueryRecordFieldPaymentStatus        = big.NewInt(1 << 15)
+	transactionOutQueryRecordFieldPaymentMethod        = big.NewInt(1 << 16)
+	transactionOutQueryRecordFieldCardToken            = big.NewInt(1 << 17)
+	transactionOutQueryRecordFieldCheckNumber          = big.NewInt(1 << 18)
+	transactionOutQueryRecordFieldCheckData            = big.NewInt(1 << 19)
+	transactionOutQueryRecordFieldPaymentId            = big.NewInt(1 << 20)
+	transactionOutQueryRecordFieldPaymentData          = big.NewInt(1 << 21)
+	transactionOutQueryRecordFieldBills                = big.NewInt(1 << 22)
+	transactionOutQueryRecordFieldEvents               = big.NewInt(1 << 23)
+	transactionOutQueryRecordFieldExternalPaypointId   = big.NewInt(1 << 24)
+	transactionOutQueryRecordFieldEntryName            = big.NewInt(1 << 25)
+	transactionOutQueryRecordFieldGateway              = big.NewInt(1 << 26)
+	transactionOutQueryRecordFieldBatchId              = big.NewInt(1 << 27)
+	transactionOutQueryRecordFieldHasVcardTransactions = big.NewInt(1 << 28)
+	transactionOutQueryRecordFieldIsSameDayAch         = big.NewInt(1 << 29)
+	transactionOutQueryRecordFieldScheduleId           = big.NewInt(1 << 30)
+	transactionOutQueryRecordFieldSettlementStatus     = big.NewInt(1 << 31)
+	transactionOutQueryRecordFieldRiskFlagged          = big.NewInt(1 << 32)
+	transactionOutQueryRecordFieldRiskFlaggedOn        = big.NewInt(1 << 33)
+	transactionOutQueryRecordFieldRiskStatus           = big.NewInt(1 << 34)
+	transactionOutQueryRecordFieldRiskReason           = big.NewInt(1 << 35)
+	transactionOutQueryRecordFieldRiskAction           = big.NewInt(1 << 36)
+	transactionOutQueryRecordFieldRiskActionCode       = big.NewInt(1 << 37)
+	transactionOutQueryRecordFieldPayoutProgram        = big.NewInt(1 << 38)
+)
 
 type TransactionOutQueryRecord struct {
 	// Identifier of payout transaction.
@@ -1026,6 +1920,9 @@ type TransactionOutQueryRecord struct {
 	RiskAction           *RiskAction             `json:"RiskAction,omitempty" url:"RiskAction,omitempty"`
 	RiskActionCode       *RiskActionCode         `json:"RiskActionCode,omitempty" url:"RiskActionCode,omitempty"`
 	PayoutProgram        *PayoutProgram          `json:"PayoutProgram,omitempty" url:"PayoutProgram,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -1308,6 +2205,286 @@ func (t *TransactionOutQueryRecord) GetExtraProperties() map[string]interface{} 
 	return t.extraProperties
 }
 
+func (t *TransactionOutQueryRecord) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetIdOut sets the IdOut field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetIdOut(idOut *int64) {
+	t.IdOut = idOut
+	t.require(transactionOutQueryRecordFieldIdOut)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetCreatedAt(createdAt *CreatedAt) {
+	t.CreatedAt = createdAt
+	t.require(transactionOutQueryRecordFieldCreatedAt)
+}
+
+// SetComments sets the Comments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetComments(comments *Comments) {
+	t.Comments = comments
+	t.require(transactionOutQueryRecordFieldComments)
+}
+
+// SetVendor sets the Vendor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetVendor(vendor_ *VendorQueryRecord) {
+	t.Vendor = vendor_
+	t.require(transactionOutQueryRecordFieldVendor)
+}
+
+// SetPaypointDbaname sets the PaypointDbaname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetPaypointDbaname(paypointDbaname *Dbaname) {
+	t.PaypointDbaname = paypointDbaname
+	t.require(transactionOutQueryRecordFieldPaypointDbaname)
+}
+
+// SetPaypointLegalname sets the PaypointLegalname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetPaypointLegalname(paypointLegalname *Legalname) {
+	t.PaypointLegalname = paypointLegalname
+	t.require(transactionOutQueryRecordFieldPaypointLegalname)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetStatus(status *int) {
+	t.Status = status
+	t.require(transactionOutQueryRecordFieldStatus)
+}
+
+// SetLastUpdated sets the LastUpdated field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetLastUpdated(lastUpdated *LastModified) {
+	t.LastUpdated = lastUpdated
+	t.require(transactionOutQueryRecordFieldLastUpdated)
+}
+
+// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetTotalAmount(totalAmount *float64) {
+	t.TotalAmount = totalAmount
+	t.require(transactionOutQueryRecordFieldTotalAmount)
+}
+
+// SetNetAmount sets the NetAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetNetAmount(netAmount *Netamountnullable) {
+	t.NetAmount = netAmount
+	t.require(transactionOutQueryRecordFieldNetAmount)
+}
+
+// SetFeeAmount sets the FeeAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetFeeAmount(feeAmount *FeeAmount) {
+	t.FeeAmount = feeAmount
+	t.require(transactionOutQueryRecordFieldFeeAmount)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetSource(source *Source) {
+	t.Source = source
+	t.require(transactionOutQueryRecordFieldSource)
+}
+
+// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetParentOrgName(parentOrgName *OrgParentName) {
+	t.ParentOrgName = parentOrgName
+	t.require(transactionOutQueryRecordFieldParentOrgName)
+}
+
+// SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetParentOrgId(parentOrgId *Orgid) {
+	t.ParentOrgId = parentOrgId
+	t.require(transactionOutQueryRecordFieldParentOrgId)
+}
+
+// SetBatchNumber sets the BatchNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetBatchNumber(batchNumber *string) {
+	t.BatchNumber = batchNumber
+	t.require(transactionOutQueryRecordFieldBatchNumber)
+}
+
+// SetPaymentStatus sets the PaymentStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetPaymentStatus(paymentStatus *string) {
+	t.PaymentStatus = paymentStatus
+	t.require(transactionOutQueryRecordFieldPaymentStatus)
+}
+
+// SetPaymentMethod sets the PaymentMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetPaymentMethod(paymentMethod *string) {
+	t.PaymentMethod = paymentMethod
+	t.require(transactionOutQueryRecordFieldPaymentMethod)
+}
+
+// SetCardToken sets the CardToken field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetCardToken(cardToken *string) {
+	t.CardToken = cardToken
+	t.require(transactionOutQueryRecordFieldCardToken)
+}
+
+// SetCheckNumber sets the CheckNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetCheckNumber(checkNumber *string) {
+	t.CheckNumber = checkNumber
+	t.require(transactionOutQueryRecordFieldCheckNumber)
+}
+
+// SetCheckData sets the CheckData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetCheckData(checkData *FileContent) {
+	t.CheckData = checkData
+	t.require(transactionOutQueryRecordFieldCheckData)
+}
+
+// SetPaymentId sets the PaymentId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetPaymentId(paymentId *PaymentIdString) {
+	t.PaymentId = paymentId
+	t.require(transactionOutQueryRecordFieldPaymentId)
+}
+
+// SetPaymentData sets the PaymentData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetPaymentData(paymentData *QueryPaymentData) {
+	t.PaymentData = paymentData
+	t.require(transactionOutQueryRecordFieldPaymentData)
+}
+
+// SetBills sets the Bills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetBills(bills []*BillPayOutData) {
+	t.Bills = bills
+	t.require(transactionOutQueryRecordFieldBills)
+}
+
+// SetEvents sets the Events field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetEvents(events []*QueryTransactionEvents) {
+	t.Events = events
+	t.require(transactionOutQueryRecordFieldEvents)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
+	t.ExternalPaypointId = externalPaypointId
+	t.require(transactionOutQueryRecordFieldExternalPaypointId)
+}
+
+// SetEntryName sets the EntryName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetEntryName(entryName *Entrypointfield) {
+	t.EntryName = entryName
+	t.require(transactionOutQueryRecordFieldEntryName)
+}
+
+// SetGateway sets the Gateway field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetGateway(gateway *Gatewayfield) {
+	t.Gateway = gateway
+	t.require(transactionOutQueryRecordFieldGateway)
+}
+
+// SetBatchId sets the BatchId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetBatchId(batchId *string) {
+	t.BatchId = batchId
+	t.require(transactionOutQueryRecordFieldBatchId)
+}
+
+// SetHasVcardTransactions sets the HasVcardTransactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetHasVcardTransactions(hasVcardTransactions *HasVcardTransactions) {
+	t.HasVcardTransactions = hasVcardTransactions
+	t.require(transactionOutQueryRecordFieldHasVcardTransactions)
+}
+
+// SetIsSameDayAch sets the IsSameDayAch field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetIsSameDayAch(isSameDayAch *IsSameDayAch) {
+	t.IsSameDayAch = isSameDayAch
+	t.require(transactionOutQueryRecordFieldIsSameDayAch)
+}
+
+// SetScheduleId sets the ScheduleId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetScheduleId(scheduleId *ScheduleId) {
+	t.ScheduleId = scheduleId
+	t.require(transactionOutQueryRecordFieldScheduleId)
+}
+
+// SetSettlementStatus sets the SettlementStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetSettlementStatus(settlementStatus *SettlementStatusPayout) {
+	t.SettlementStatus = settlementStatus
+	t.require(transactionOutQueryRecordFieldSettlementStatus)
+}
+
+// SetRiskFlagged sets the RiskFlagged field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetRiskFlagged(riskFlagged *RiskFlagged) {
+	t.RiskFlagged = riskFlagged
+	t.require(transactionOutQueryRecordFieldRiskFlagged)
+}
+
+// SetRiskFlaggedOn sets the RiskFlaggedOn field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetRiskFlaggedOn(riskFlaggedOn *RiskFlaggedOn) {
+	t.RiskFlaggedOn = riskFlaggedOn
+	t.require(transactionOutQueryRecordFieldRiskFlaggedOn)
+}
+
+// SetRiskStatus sets the RiskStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetRiskStatus(riskStatus *RiskStatus) {
+	t.RiskStatus = riskStatus
+	t.require(transactionOutQueryRecordFieldRiskStatus)
+}
+
+// SetRiskReason sets the RiskReason field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetRiskReason(riskReason *RiskReason) {
+	t.RiskReason = riskReason
+	t.require(transactionOutQueryRecordFieldRiskReason)
+}
+
+// SetRiskAction sets the RiskAction field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetRiskAction(riskAction *RiskAction) {
+	t.RiskAction = riskAction
+	t.require(transactionOutQueryRecordFieldRiskAction)
+}
+
+// SetRiskActionCode sets the RiskActionCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetRiskActionCode(riskActionCode *RiskActionCode) {
+	t.RiskActionCode = riskActionCode
+	t.require(transactionOutQueryRecordFieldRiskActionCode)
+}
+
+// SetPayoutProgram sets the PayoutProgram field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetPayoutProgram(payoutProgram *PayoutProgram) {
+	t.PayoutProgram = payoutProgram
+	t.require(transactionOutQueryRecordFieldPayoutProgram)
+}
+
 func (t *TransactionOutQueryRecord) UnmarshalJSON(data []byte) error {
 	type unmarshaler TransactionOutQueryRecord
 	var value unmarshaler
@@ -1324,6 +2501,17 @@ func (t *TransactionOutQueryRecord) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (t *TransactionOutQueryRecord) MarshalJSON() ([]byte, error) {
+	type embed TransactionOutQueryRecord
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (t *TransactionOutQueryRecord) String() string {
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
@@ -1335,6 +2523,53 @@ func (t *TransactionOutQueryRecord) String() string {
 	}
 	return fmt.Sprintf("%#v", t)
 }
+
+var (
+	vendorDataResponseFieldVendorNumber          = big.NewInt(1 << 0)
+	vendorDataResponseFieldName1                 = big.NewInt(1 << 1)
+	vendorDataResponseFieldName2                 = big.NewInt(1 << 2)
+	vendorDataResponseFieldEin                   = big.NewInt(1 << 3)
+	vendorDataResponseFieldPhone                 = big.NewInt(1 << 4)
+	vendorDataResponseFieldEmail                 = big.NewInt(1 << 5)
+	vendorDataResponseFieldRemitEmail            = big.NewInt(1 << 6)
+	vendorDataResponseFieldAddress1              = big.NewInt(1 << 7)
+	vendorDataResponseFieldAddress2              = big.NewInt(1 << 8)
+	vendorDataResponseFieldCity                  = big.NewInt(1 << 9)
+	vendorDataResponseFieldState                 = big.NewInt(1 << 10)
+	vendorDataResponseFieldZip                   = big.NewInt(1 << 11)
+	vendorDataResponseFieldCountry               = big.NewInt(1 << 12)
+	vendorDataResponseFieldMcc                   = big.NewInt(1 << 13)
+	vendorDataResponseFieldLocationCode          = big.NewInt(1 << 14)
+	vendorDataResponseFieldContacts              = big.NewInt(1 << 15)
+	vendorDataResponseFieldBillingData           = big.NewInt(1 << 16)
+	vendorDataResponseFieldPaymentMethod         = big.NewInt(1 << 17)
+	vendorDataResponseFieldVendorStatus          = big.NewInt(1 << 18)
+	vendorDataResponseFieldVendorId              = big.NewInt(1 << 19)
+	vendorDataResponseFieldEnrollmentStatus      = big.NewInt(1 << 20)
+	vendorDataResponseFieldSummary               = big.NewInt(1 << 21)
+	vendorDataResponseFieldPaypointLegalname     = big.NewInt(1 << 22)
+	vendorDataResponseFieldPaypointDbaname       = big.NewInt(1 << 23)
+	vendorDataResponseFieldPaypointEntryname     = big.NewInt(1 << 24)
+	vendorDataResponseFieldParentOrgName         = big.NewInt(1 << 25)
+	vendorDataResponseFieldParentOrgId           = big.NewInt(1 << 26)
+	vendorDataResponseFieldCreatedDate           = big.NewInt(1 << 27)
+	vendorDataResponseFieldLastUpdated           = big.NewInt(1 << 28)
+	vendorDataResponseFieldRemitAddress1         = big.NewInt(1 << 29)
+	vendorDataResponseFieldRemitAddress2         = big.NewInt(1 << 30)
+	vendorDataResponseFieldRemitCity             = big.NewInt(1 << 31)
+	vendorDataResponseFieldRemitState            = big.NewInt(1 << 32)
+	vendorDataResponseFieldRemitZip              = big.NewInt(1 << 33)
+	vendorDataResponseFieldRemitCountry          = big.NewInt(1 << 34)
+	vendorDataResponseFieldPayeeName1            = big.NewInt(1 << 35)
+	vendorDataResponseFieldPayeeName2            = big.NewInt(1 << 36)
+	vendorDataResponseFieldCustomField1          = big.NewInt(1 << 37)
+	vendorDataResponseFieldCustomField2          = big.NewInt(1 << 38)
+	vendorDataResponseFieldCustomerVendorAccount = big.NewInt(1 << 39)
+	vendorDataResponseFieldInternalReferenceId   = big.NewInt(1 << 40)
+	vendorDataResponseFieldAdditionalData        = big.NewInt(1 << 41)
+	vendorDataResponseFieldExternalPaypointId    = big.NewInt(1 << 42)
+	vendorDataResponseFieldStoredMethods         = big.NewInt(1 << 43)
+)
 
 type VendorDataResponse struct {
 	VendorNumber VendorNumber `json:"VendorNumber" url:"VendorNumber"`
@@ -1409,6 +2644,9 @@ type VendorDataResponse struct {
 	ExternalPaypointId string `json:"externalPaypointID" url:"externalPaypointID"`
 	// Array of stored payment methods for vendor
 	StoredMethods []*VendorResponseStoredMethod `json:"StoredMethods" url:"StoredMethods"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -1726,6 +2964,321 @@ func (v *VendorDataResponse) GetExtraProperties() map[string]interface{} {
 	return v.extraProperties
 }
 
+func (v *VendorDataResponse) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetVendorNumber sets the VendorNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetVendorNumber(vendorNumber VendorNumber) {
+	v.VendorNumber = vendorNumber
+	v.require(vendorDataResponseFieldVendorNumber)
+}
+
+// SetName1 sets the Name1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetName1(name1 string) {
+	v.Name1 = name1
+	v.require(vendorDataResponseFieldName1)
+}
+
+// SetName2 sets the Name2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetName2(name2 string) {
+	v.Name2 = name2
+	v.require(vendorDataResponseFieldName2)
+}
+
+// SetEin sets the Ein field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetEin(ein string) {
+	v.Ein = ein
+	v.require(vendorDataResponseFieldEin)
+}
+
+// SetPhone sets the Phone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetPhone(phone string) {
+	v.Phone = phone
+	v.require(vendorDataResponseFieldPhone)
+}
+
+// SetEmail sets the Email field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetEmail(email Email) {
+	v.Email = email
+	v.require(vendorDataResponseFieldEmail)
+}
+
+// SetRemitEmail sets the RemitEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetRemitEmail(remitEmail *string) {
+	v.RemitEmail = remitEmail
+	v.require(vendorDataResponseFieldRemitEmail)
+}
+
+// SetAddress1 sets the Address1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetAddress1(address1 string) {
+	v.Address1 = address1
+	v.require(vendorDataResponseFieldAddress1)
+}
+
+// SetAddress2 sets the Address2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetAddress2(address2 string) {
+	v.Address2 = address2
+	v.require(vendorDataResponseFieldAddress2)
+}
+
+// SetCity sets the City field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetCity(city string) {
+	v.City = city
+	v.require(vendorDataResponseFieldCity)
+}
+
+// SetState sets the State field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetState(state string) {
+	v.State = state
+	v.require(vendorDataResponseFieldState)
+}
+
+// SetZip sets the Zip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetZip(zip string) {
+	v.Zip = zip
+	v.require(vendorDataResponseFieldZip)
+}
+
+// SetCountry sets the Country field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetCountry(country string) {
+	v.Country = country
+	v.require(vendorDataResponseFieldCountry)
+}
+
+// SetMcc sets the Mcc field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetMcc(mcc Mcc) {
+	v.Mcc = mcc
+	v.require(vendorDataResponseFieldMcc)
+}
+
+// SetLocationCode sets the LocationCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetLocationCode(locationCode LocationCode) {
+	v.LocationCode = locationCode
+	v.require(vendorDataResponseFieldLocationCode)
+}
+
+// SetContacts sets the Contacts field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetContacts(contacts []*ContactsResponse) {
+	v.Contacts = contacts
+	v.require(vendorDataResponseFieldContacts)
+}
+
+// SetBillingData sets the BillingData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetBillingData(billingData *VendorResponseBillingData) {
+	v.BillingData = billingData
+	v.require(vendorDataResponseFieldBillingData)
+}
+
+// SetPaymentMethod sets the PaymentMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetPaymentMethod(paymentMethod VendorDataResponsePaymentMethod) {
+	v.PaymentMethod = paymentMethod
+	v.require(vendorDataResponseFieldPaymentMethod)
+}
+
+// SetVendorStatus sets the VendorStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetVendorStatus(vendorStatus Vendorstatus) {
+	v.VendorStatus = vendorStatus
+	v.require(vendorDataResponseFieldVendorStatus)
+}
+
+// SetVendorId sets the VendorId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetVendorId(vendorId Vendorid) {
+	v.VendorId = vendorId
+	v.require(vendorDataResponseFieldVendorId)
+}
+
+// SetEnrollmentStatus sets the EnrollmentStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetEnrollmentStatus(enrollmentStatus *string) {
+	v.EnrollmentStatus = enrollmentStatus
+	v.require(vendorDataResponseFieldEnrollmentStatus)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetSummary(summary *VendorResponseSummary) {
+	v.Summary = summary
+	v.require(vendorDataResponseFieldSummary)
+}
+
+// SetPaypointLegalname sets the PaypointLegalname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetPaypointLegalname(paypointLegalname string) {
+	v.PaypointLegalname = paypointLegalname
+	v.require(vendorDataResponseFieldPaypointLegalname)
+}
+
+// SetPaypointDbaname sets the PaypointDbaname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetPaypointDbaname(paypointDbaname string) {
+	v.PaypointDbaname = paypointDbaname
+	v.require(vendorDataResponseFieldPaypointDbaname)
+}
+
+// SetPaypointEntryname sets the PaypointEntryname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetPaypointEntryname(paypointEntryname string) {
+	v.PaypointEntryname = paypointEntryname
+	v.require(vendorDataResponseFieldPaypointEntryname)
+}
+
+// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetParentOrgName(parentOrgName string) {
+	v.ParentOrgName = parentOrgName
+	v.require(vendorDataResponseFieldParentOrgName)
+}
+
+// SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetParentOrgId(parentOrgId int) {
+	v.ParentOrgId = parentOrgId
+	v.require(vendorDataResponseFieldParentOrgId)
+}
+
+// SetCreatedDate sets the CreatedDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetCreatedDate(createdDate time.Time) {
+	v.CreatedDate = createdDate
+	v.require(vendorDataResponseFieldCreatedDate)
+}
+
+// SetLastUpdated sets the LastUpdated field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetLastUpdated(lastUpdated time.Time) {
+	v.LastUpdated = lastUpdated
+	v.require(vendorDataResponseFieldLastUpdated)
+}
+
+// SetRemitAddress1 sets the RemitAddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetRemitAddress1(remitAddress1 Remitaddress1) {
+	v.RemitAddress1 = remitAddress1
+	v.require(vendorDataResponseFieldRemitAddress1)
+}
+
+// SetRemitAddress2 sets the RemitAddress2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetRemitAddress2(remitAddress2 Remitaddress2) {
+	v.RemitAddress2 = remitAddress2
+	v.require(vendorDataResponseFieldRemitAddress2)
+}
+
+// SetRemitCity sets the RemitCity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetRemitCity(remitCity Remitcity) {
+	v.RemitCity = remitCity
+	v.require(vendorDataResponseFieldRemitCity)
+}
+
+// SetRemitState sets the RemitState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetRemitState(remitState Remitstate) {
+	v.RemitState = remitState
+	v.require(vendorDataResponseFieldRemitState)
+}
+
+// SetRemitZip sets the RemitZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetRemitZip(remitZip Remitzip) {
+	v.RemitZip = remitZip
+	v.require(vendorDataResponseFieldRemitZip)
+}
+
+// SetRemitCountry sets the RemitCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetRemitCountry(remitCountry Remitcountry) {
+	v.RemitCountry = remitCountry
+	v.require(vendorDataResponseFieldRemitCountry)
+}
+
+// SetPayeeName1 sets the PayeeName1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetPayeeName1(payeeName1 PayeeName) {
+	v.PayeeName1 = payeeName1
+	v.require(vendorDataResponseFieldPayeeName1)
+}
+
+// SetPayeeName2 sets the PayeeName2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetPayeeName2(payeeName2 PayeeName) {
+	v.PayeeName2 = payeeName2
+	v.require(vendorDataResponseFieldPayeeName2)
+}
+
+// SetCustomField1 sets the CustomField1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetCustomField1(customField1 string) {
+	v.CustomField1 = customField1
+	v.require(vendorDataResponseFieldCustomField1)
+}
+
+// SetCustomField2 sets the CustomField2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetCustomField2(customField2 string) {
+	v.CustomField2 = customField2
+	v.require(vendorDataResponseFieldCustomField2)
+}
+
+// SetCustomerVendorAccount sets the CustomerVendorAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetCustomerVendorAccount(customerVendorAccount *string) {
+	v.CustomerVendorAccount = customerVendorAccount
+	v.require(vendorDataResponseFieldCustomerVendorAccount)
+}
+
+// SetInternalReferenceId sets the InternalReferenceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetInternalReferenceId(internalReferenceId InternalReferenceId) {
+	v.InternalReferenceId = internalReferenceId
+	v.require(vendorDataResponseFieldInternalReferenceId)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetAdditionalData(additionalData AdditionalDataMap) {
+	v.AdditionalData = additionalData
+	v.require(vendorDataResponseFieldAdditionalData)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetExternalPaypointId(externalPaypointId string) {
+	v.ExternalPaypointId = externalPaypointId
+	v.require(vendorDataResponseFieldExternalPaypointId)
+}
+
+// SetStoredMethods sets the StoredMethods field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetStoredMethods(storedMethods []*VendorResponseStoredMethod) {
+	v.StoredMethods = storedMethods
+	v.require(vendorDataResponseFieldStoredMethods)
+}
+
 func (v *VendorDataResponse) UnmarshalJSON(data []byte) error {
 	type embed VendorDataResponse
 	var unmarshaler = struct {
@@ -1761,7 +3314,8 @@ func (v *VendorDataResponse) MarshalJSON() ([]byte, error) {
 		CreatedDate: internal.NewDateTime(v.CreatedDate),
 		LastUpdated: internal.NewDateTime(v.LastUpdated),
 	}
-	return json.Marshal(marshaler)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (v *VendorDataResponse) String() string {
@@ -1804,6 +3358,39 @@ func NewVendorDataResponsePaymentMethodFromString(s string) (VendorDataResponseP
 func (v VendorDataResponsePaymentMethod) Ptr() *VendorDataResponsePaymentMethod {
 	return &v
 }
+
+var (
+	vendorOutDataFieldAdditionalData        = big.NewInt(1 << 0)
+	vendorOutDataFieldAddress1              = big.NewInt(1 << 1)
+	vendorOutDataFieldAddress2              = big.NewInt(1 << 2)
+	vendorOutDataFieldBillingData           = big.NewInt(1 << 3)
+	vendorOutDataFieldCity                  = big.NewInt(1 << 4)
+	vendorOutDataFieldContacts              = big.NewInt(1 << 5)
+	vendorOutDataFieldCountry               = big.NewInt(1 << 6)
+	vendorOutDataFieldCustomerVendorAccount = big.NewInt(1 << 7)
+	vendorOutDataFieldEin                   = big.NewInt(1 << 8)
+	vendorOutDataFieldEmail                 = big.NewInt(1 << 9)
+	vendorOutDataFieldInternalReferenceId   = big.NewInt(1 << 10)
+	vendorOutDataFieldLocationCode          = big.NewInt(1 << 11)
+	vendorOutDataFieldMcc                   = big.NewInt(1 << 12)
+	vendorOutDataFieldName1                 = big.NewInt(1 << 13)
+	vendorOutDataFieldName2                 = big.NewInt(1 << 14)
+	vendorOutDataFieldPayeeName1            = big.NewInt(1 << 15)
+	vendorOutDataFieldPayeeName2            = big.NewInt(1 << 16)
+	vendorOutDataFieldPaymentMethod         = big.NewInt(1 << 17)
+	vendorOutDataFieldPhone                 = big.NewInt(1 << 18)
+	vendorOutDataFieldRemitAddress1         = big.NewInt(1 << 19)
+	vendorOutDataFieldRemitAddress2         = big.NewInt(1 << 20)
+	vendorOutDataFieldRemitCity             = big.NewInt(1 << 21)
+	vendorOutDataFieldRemitCountry          = big.NewInt(1 << 22)
+	vendorOutDataFieldRemitState            = big.NewInt(1 << 23)
+	vendorOutDataFieldRemitZip              = big.NewInt(1 << 24)
+	vendorOutDataFieldState                 = big.NewInt(1 << 25)
+	vendorOutDataFieldVendorId              = big.NewInt(1 << 26)
+	vendorOutDataFieldVendorNumber          = big.NewInt(1 << 27)
+	vendorOutDataFieldVendorStatus          = big.NewInt(1 << 28)
+	vendorOutDataFieldZip                   = big.NewInt(1 << 29)
+)
 
 type VendorOutData struct {
 	AdditionalData *AdditionalData `json:"additionalData,omitempty" url:"additionalData,omitempty"`
@@ -1852,6 +3439,9 @@ type VendorOutData struct {
 	VendorStatus *Vendorstatus `json:"VendorStatus,omitempty" url:"VendorStatus,omitempty"`
 	// Vendor's zip code.
 	Zip string `json:"Zip" url:"Zip"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2071,6 +3661,223 @@ func (v *VendorOutData) GetExtraProperties() map[string]interface{} {
 	return v.extraProperties
 }
 
+func (v *VendorOutData) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetAdditionalData(additionalData *AdditionalData) {
+	v.AdditionalData = additionalData
+	v.require(vendorOutDataFieldAdditionalData)
+}
+
+// SetAddress1 sets the Address1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetAddress1(address1 *AddressNullable) {
+	v.Address1 = address1
+	v.require(vendorOutDataFieldAddress1)
+}
+
+// SetAddress2 sets the Address2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetAddress2(address2 *AddressAddtlNullable) {
+	v.Address2 = address2
+	v.require(vendorOutDataFieldAddress2)
+}
+
+// SetBillingData sets the BillingData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetBillingData(billingData *BillingData) {
+	v.BillingData = billingData
+	v.require(vendorOutDataFieldBillingData)
+}
+
+// SetCity sets the City field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetCity(city string) {
+	v.City = city
+	v.require(vendorOutDataFieldCity)
+}
+
+// SetContacts sets the Contacts field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetContacts(contacts *ContactsField) {
+	v.Contacts = contacts
+	v.require(vendorOutDataFieldContacts)
+}
+
+// SetCountry sets the Country field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetCountry(country string) {
+	v.Country = country
+	v.require(vendorOutDataFieldCountry)
+}
+
+// SetCustomerVendorAccount sets the CustomerVendorAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetCustomerVendorAccount(customerVendorAccount *string) {
+	v.CustomerVendorAccount = customerVendorAccount
+	v.require(vendorOutDataFieldCustomerVendorAccount)
+}
+
+// SetEin sets the Ein field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetEin(ein string) {
+	v.Ein = ein
+	v.require(vendorOutDataFieldEin)
+}
+
+// SetEmail sets the Email field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetEmail(email *Email) {
+	v.Email = email
+	v.require(vendorOutDataFieldEmail)
+}
+
+// SetInternalReferenceId sets the InternalReferenceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetInternalReferenceId(internalReferenceId *int64) {
+	v.InternalReferenceId = internalReferenceId
+	v.require(vendorOutDataFieldInternalReferenceId)
+}
+
+// SetLocationCode sets the LocationCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetLocationCode(locationCode *LocationCode) {
+	v.LocationCode = locationCode
+	v.require(vendorOutDataFieldLocationCode)
+}
+
+// SetMcc sets the Mcc field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetMcc(mcc *Mcc) {
+	v.Mcc = mcc
+	v.require(vendorOutDataFieldMcc)
+}
+
+// SetName1 sets the Name1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetName1(name1 string) {
+	v.Name1 = name1
+	v.require(vendorOutDataFieldName1)
+}
+
+// SetName2 sets the Name2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetName2(name2 *string) {
+	v.Name2 = name2
+	v.require(vendorOutDataFieldName2)
+}
+
+// SetPayeeName1 sets the PayeeName1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetPayeeName1(payeeName1 *PayeeName) {
+	v.PayeeName1 = payeeName1
+	v.require(vendorOutDataFieldPayeeName1)
+}
+
+// SetPayeeName2 sets the PayeeName2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetPayeeName2(payeeName2 *PayeeName) {
+	v.PayeeName2 = payeeName2
+	v.require(vendorOutDataFieldPayeeName2)
+}
+
+// SetPaymentMethod sets the PaymentMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetPaymentMethod(paymentMethod *VendorPaymentMethod) {
+	v.PaymentMethod = paymentMethod
+	v.require(vendorOutDataFieldPaymentMethod)
+}
+
+// SetPhone sets the Phone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetPhone(phone string) {
+	v.Phone = phone
+	v.require(vendorOutDataFieldPhone)
+}
+
+// SetRemitAddress1 sets the RemitAddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetRemitAddress1(remitAddress1 *Remitaddress1) {
+	v.RemitAddress1 = remitAddress1
+	v.require(vendorOutDataFieldRemitAddress1)
+}
+
+// SetRemitAddress2 sets the RemitAddress2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetRemitAddress2(remitAddress2 *Remitaddress2) {
+	v.RemitAddress2 = remitAddress2
+	v.require(vendorOutDataFieldRemitAddress2)
+}
+
+// SetRemitCity sets the RemitCity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetRemitCity(remitCity *Remitcity) {
+	v.RemitCity = remitCity
+	v.require(vendorOutDataFieldRemitCity)
+}
+
+// SetRemitCountry sets the RemitCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetRemitCountry(remitCountry *Remitcountry) {
+	v.RemitCountry = remitCountry
+	v.require(vendorOutDataFieldRemitCountry)
+}
+
+// SetRemitState sets the RemitState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetRemitState(remitState *Remitstate) {
+	v.RemitState = remitState
+	v.require(vendorOutDataFieldRemitState)
+}
+
+// SetRemitZip sets the RemitZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetRemitZip(remitZip *Remitzip) {
+	v.RemitZip = remitZip
+	v.require(vendorOutDataFieldRemitZip)
+}
+
+// SetState sets the State field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetState(state string) {
+	v.State = state
+	v.require(vendorOutDataFieldState)
+}
+
+// SetVendorId sets the VendorId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetVendorId(vendorId *Vendorid) {
+	v.VendorId = vendorId
+	v.require(vendorOutDataFieldVendorId)
+}
+
+// SetVendorNumber sets the VendorNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetVendorNumber(vendorNumber *VendorNumber) {
+	v.VendorNumber = vendorNumber
+	v.require(vendorOutDataFieldVendorNumber)
+}
+
+// SetVendorStatus sets the VendorStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetVendorStatus(vendorStatus *Vendorstatus) {
+	v.VendorStatus = vendorStatus
+	v.require(vendorOutDataFieldVendorStatus)
+}
+
+// SetZip sets the Zip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetZip(zip string) {
+	v.Zip = zip
+	v.require(vendorOutDataFieldZip)
+}
+
 func (v *VendorOutData) UnmarshalJSON(data []byte) error {
 	type unmarshaler VendorOutData
 	var value unmarshaler
@@ -2087,6 +3894,17 @@ func (v *VendorOutData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (v *VendorOutData) MarshalJSON() ([]byte, error) {
+	type embed VendorOutData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (v *VendorOutData) String() string {
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
@@ -2100,6 +3918,23 @@ func (v *VendorOutData) String() string {
 }
 
 // Object containing vendor's bank information
+var (
+	vendorResponseBillingDataFieldId                    = big.NewInt(1 << 0)
+	vendorResponseBillingDataFieldAccountId             = big.NewInt(1 << 1)
+	vendorResponseBillingDataFieldNickname              = big.NewInt(1 << 2)
+	vendorResponseBillingDataFieldBankName              = big.NewInt(1 << 3)
+	vendorResponseBillingDataFieldRoutingAccount        = big.NewInt(1 << 4)
+	vendorResponseBillingDataFieldAccountNumber         = big.NewInt(1 << 5)
+	vendorResponseBillingDataFieldTypeAccount           = big.NewInt(1 << 6)
+	vendorResponseBillingDataFieldBankAccountHolderName = big.NewInt(1 << 7)
+	vendorResponseBillingDataFieldBankAccountHolderType = big.NewInt(1 << 8)
+	vendorResponseBillingDataFieldBankAccountFunction   = big.NewInt(1 << 9)
+	vendorResponseBillingDataFieldVerified              = big.NewInt(1 << 10)
+	vendorResponseBillingDataFieldStatus                = big.NewInt(1 << 11)
+	vendorResponseBillingDataFieldServices              = big.NewInt(1 << 12)
+	vendorResponseBillingDataFieldDefault               = big.NewInt(1 << 13)
+)
+
 type VendorResponseBillingData struct {
 	Id                    *int          `json:"id,omitempty" url:"id,omitempty"`
 	AccountId             *string       `json:"accountId,omitempty" url:"accountId,omitempty"`
@@ -2115,6 +3950,9 @@ type VendorResponseBillingData struct {
 	Status                *int          `json:"status,omitempty" url:"status,omitempty"`
 	Services              []interface{} `json:"services,omitempty" url:"services,omitempty"`
 	Default               *bool         `json:"default,omitempty" url:"default,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2222,6 +4060,111 @@ func (v *VendorResponseBillingData) GetExtraProperties() map[string]interface{} 
 	return v.extraProperties
 }
 
+func (v *VendorResponseBillingData) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetId(id *int) {
+	v.Id = id
+	v.require(vendorResponseBillingDataFieldId)
+}
+
+// SetAccountId sets the AccountId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetAccountId(accountId *string) {
+	v.AccountId = accountId
+	v.require(vendorResponseBillingDataFieldAccountId)
+}
+
+// SetNickname sets the Nickname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetNickname(nickname *string) {
+	v.Nickname = nickname
+	v.require(vendorResponseBillingDataFieldNickname)
+}
+
+// SetBankName sets the BankName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetBankName(bankName *string) {
+	v.BankName = bankName
+	v.require(vendorResponseBillingDataFieldBankName)
+}
+
+// SetRoutingAccount sets the RoutingAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetRoutingAccount(routingAccount *string) {
+	v.RoutingAccount = routingAccount
+	v.require(vendorResponseBillingDataFieldRoutingAccount)
+}
+
+// SetAccountNumber sets the AccountNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetAccountNumber(accountNumber *string) {
+	v.AccountNumber = accountNumber
+	v.require(vendorResponseBillingDataFieldAccountNumber)
+}
+
+// SetTypeAccount sets the TypeAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetTypeAccount(typeAccount *string) {
+	v.TypeAccount = typeAccount
+	v.require(vendorResponseBillingDataFieldTypeAccount)
+}
+
+// SetBankAccountHolderName sets the BankAccountHolderName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetBankAccountHolderName(bankAccountHolderName *string) {
+	v.BankAccountHolderName = bankAccountHolderName
+	v.require(vendorResponseBillingDataFieldBankAccountHolderName)
+}
+
+// SetBankAccountHolderType sets the BankAccountHolderType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetBankAccountHolderType(bankAccountHolderType *string) {
+	v.BankAccountHolderType = bankAccountHolderType
+	v.require(vendorResponseBillingDataFieldBankAccountHolderType)
+}
+
+// SetBankAccountFunction sets the BankAccountFunction field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetBankAccountFunction(bankAccountFunction *int) {
+	v.BankAccountFunction = bankAccountFunction
+	v.require(vendorResponseBillingDataFieldBankAccountFunction)
+}
+
+// SetVerified sets the Verified field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetVerified(verified *bool) {
+	v.Verified = verified
+	v.require(vendorResponseBillingDataFieldVerified)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetStatus(status *int) {
+	v.Status = status
+	v.require(vendorResponseBillingDataFieldStatus)
+}
+
+// SetServices sets the Services field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetServices(services []interface{}) {
+	v.Services = services
+	v.require(vendorResponseBillingDataFieldServices)
+}
+
+// SetDefault sets the Default field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetDefault(default_ *bool) {
+	v.Default = default_
+	v.require(vendorResponseBillingDataFieldDefault)
+}
+
 func (v *VendorResponseBillingData) UnmarshalJSON(data []byte) error {
 	type unmarshaler VendorResponseBillingData
 	var value unmarshaler
@@ -2238,6 +4181,17 @@ func (v *VendorResponseBillingData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (v *VendorResponseBillingData) MarshalJSON() ([]byte, error) {
+	type embed VendorResponseBillingData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (v *VendorResponseBillingData) String() string {
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
@@ -2251,6 +4205,25 @@ func (v *VendorResponseBillingData) String() string {
 }
 
 // Vendor bill summary statistics
+var (
+	vendorResponseSummaryFieldActiveBills            = big.NewInt(1 << 0)
+	vendorResponseSummaryFieldPendingBills           = big.NewInt(1 << 1)
+	vendorResponseSummaryFieldInTransitBills         = big.NewInt(1 << 2)
+	vendorResponseSummaryFieldPaidBills              = big.NewInt(1 << 3)
+	vendorResponseSummaryFieldOverdueBills           = big.NewInt(1 << 4)
+	vendorResponseSummaryFieldApprovedBills          = big.NewInt(1 << 5)
+	vendorResponseSummaryFieldDisapprovedBills       = big.NewInt(1 << 6)
+	vendorResponseSummaryFieldTotalBills             = big.NewInt(1 << 7)
+	vendorResponseSummaryFieldActiveBillsAmount      = big.NewInt(1 << 8)
+	vendorResponseSummaryFieldPendingBillsAmount     = big.NewInt(1 << 9)
+	vendorResponseSummaryFieldInTransitBillsAmount   = big.NewInt(1 << 10)
+	vendorResponseSummaryFieldPaidBillsAmount        = big.NewInt(1 << 11)
+	vendorResponseSummaryFieldOverdueBillsAmount     = big.NewInt(1 << 12)
+	vendorResponseSummaryFieldApprovedBillsAmount    = big.NewInt(1 << 13)
+	vendorResponseSummaryFieldDisapprovedBillsAmount = big.NewInt(1 << 14)
+	vendorResponseSummaryFieldTotalBillsAmount       = big.NewInt(1 << 15)
+)
+
 type VendorResponseSummary struct {
 	ActiveBills            *int     `json:"ActiveBills,omitempty" url:"ActiveBills,omitempty"`
 	PendingBills           *int     `json:"PendingBills,omitempty" url:"PendingBills,omitempty"`
@@ -2268,6 +4241,9 @@ type VendorResponseSummary struct {
 	ApprovedBillsAmount    *float64 `json:"ApprovedBillsAmount,omitempty" url:"ApprovedBillsAmount,omitempty"`
 	DisapprovedBillsAmount *float64 `json:"DisapprovedBillsAmount,omitempty" url:"DisapprovedBillsAmount,omitempty"`
 	TotalBillsAmount       *float64 `json:"TotalBillsAmount,omitempty" url:"TotalBillsAmount,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2389,6 +4365,125 @@ func (v *VendorResponseSummary) GetExtraProperties() map[string]interface{} {
 	return v.extraProperties
 }
 
+func (v *VendorResponseSummary) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetActiveBills sets the ActiveBills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetActiveBills(activeBills *int) {
+	v.ActiveBills = activeBills
+	v.require(vendorResponseSummaryFieldActiveBills)
+}
+
+// SetPendingBills sets the PendingBills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetPendingBills(pendingBills *int) {
+	v.PendingBills = pendingBills
+	v.require(vendorResponseSummaryFieldPendingBills)
+}
+
+// SetInTransitBills sets the InTransitBills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetInTransitBills(inTransitBills *int) {
+	v.InTransitBills = inTransitBills
+	v.require(vendorResponseSummaryFieldInTransitBills)
+}
+
+// SetPaidBills sets the PaidBills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetPaidBills(paidBills *int) {
+	v.PaidBills = paidBills
+	v.require(vendorResponseSummaryFieldPaidBills)
+}
+
+// SetOverdueBills sets the OverdueBills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetOverdueBills(overdueBills *int) {
+	v.OverdueBills = overdueBills
+	v.require(vendorResponseSummaryFieldOverdueBills)
+}
+
+// SetApprovedBills sets the ApprovedBills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetApprovedBills(approvedBills *int) {
+	v.ApprovedBills = approvedBills
+	v.require(vendorResponseSummaryFieldApprovedBills)
+}
+
+// SetDisapprovedBills sets the DisapprovedBills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetDisapprovedBills(disapprovedBills *int) {
+	v.DisapprovedBills = disapprovedBills
+	v.require(vendorResponseSummaryFieldDisapprovedBills)
+}
+
+// SetTotalBills sets the TotalBills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetTotalBills(totalBills *int) {
+	v.TotalBills = totalBills
+	v.require(vendorResponseSummaryFieldTotalBills)
+}
+
+// SetActiveBillsAmount sets the ActiveBillsAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetActiveBillsAmount(activeBillsAmount *float64) {
+	v.ActiveBillsAmount = activeBillsAmount
+	v.require(vendorResponseSummaryFieldActiveBillsAmount)
+}
+
+// SetPendingBillsAmount sets the PendingBillsAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetPendingBillsAmount(pendingBillsAmount *float64) {
+	v.PendingBillsAmount = pendingBillsAmount
+	v.require(vendorResponseSummaryFieldPendingBillsAmount)
+}
+
+// SetInTransitBillsAmount sets the InTransitBillsAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetInTransitBillsAmount(inTransitBillsAmount *float64) {
+	v.InTransitBillsAmount = inTransitBillsAmount
+	v.require(vendorResponseSummaryFieldInTransitBillsAmount)
+}
+
+// SetPaidBillsAmount sets the PaidBillsAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetPaidBillsAmount(paidBillsAmount *float64) {
+	v.PaidBillsAmount = paidBillsAmount
+	v.require(vendorResponseSummaryFieldPaidBillsAmount)
+}
+
+// SetOverdueBillsAmount sets the OverdueBillsAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetOverdueBillsAmount(overdueBillsAmount *float64) {
+	v.OverdueBillsAmount = overdueBillsAmount
+	v.require(vendorResponseSummaryFieldOverdueBillsAmount)
+}
+
+// SetApprovedBillsAmount sets the ApprovedBillsAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetApprovedBillsAmount(approvedBillsAmount *float64) {
+	v.ApprovedBillsAmount = approvedBillsAmount
+	v.require(vendorResponseSummaryFieldApprovedBillsAmount)
+}
+
+// SetDisapprovedBillsAmount sets the DisapprovedBillsAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetDisapprovedBillsAmount(disapprovedBillsAmount *float64) {
+	v.DisapprovedBillsAmount = disapprovedBillsAmount
+	v.require(vendorResponseSummaryFieldDisapprovedBillsAmount)
+}
+
+// SetTotalBillsAmount sets the TotalBillsAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetTotalBillsAmount(totalBillsAmount *float64) {
+	v.TotalBillsAmount = totalBillsAmount
+	v.require(vendorResponseSummaryFieldTotalBillsAmount)
+}
+
 func (v *VendorResponseSummary) UnmarshalJSON(data []byte) error {
 	type unmarshaler VendorResponseSummary
 	var value unmarshaler
@@ -2405,6 +4500,17 @@ func (v *VendorResponseSummary) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (v *VendorResponseSummary) MarshalJSON() ([]byte, error) {
+	type embed VendorResponseSummary
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (v *VendorResponseSummary) String() string {
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
@@ -2416,6 +4522,29 @@ func (v *VendorResponseSummary) String() string {
 	}
 	return fmt.Sprintf("%#v", v)
 }
+
+var (
+	billOutDataFieldAccountingField1 = big.NewInt(1 << 0)
+	billOutDataFieldAccountingField2 = big.NewInt(1 << 1)
+	billOutDataFieldAdditionalData   = big.NewInt(1 << 2)
+	billOutDataFieldAttachments      = big.NewInt(1 << 3)
+	billOutDataFieldBillDate         = big.NewInt(1 << 4)
+	billOutDataFieldBillItems        = big.NewInt(1 << 5)
+	billOutDataFieldBillNumber       = big.NewInt(1 << 6)
+	billOutDataFieldComments         = big.NewInt(1 << 7)
+	billOutDataFieldDiscount         = big.NewInt(1 << 8)
+	billOutDataFieldDueDate          = big.NewInt(1 << 9)
+	billOutDataFieldEndDate          = big.NewInt(1 << 10)
+	billOutDataFieldFrequency        = big.NewInt(1 << 11)
+	billOutDataFieldLotNumber        = big.NewInt(1 << 12)
+	billOutDataFieldMode             = big.NewInt(1 << 13)
+	billOutDataFieldNetAmount        = big.NewInt(1 << 14)
+	billOutDataFieldScheduledOptions = big.NewInt(1 << 15)
+	billOutDataFieldStatus           = big.NewInt(1 << 16)
+	billOutDataFieldTerms            = big.NewInt(1 << 17)
+	billOutDataFieldTotalAmount      = big.NewInt(1 << 18)
+	billOutDataFieldVendor           = big.NewInt(1 << 19)
+)
 
 type BillOutData struct {
 	AccountingField1 *AccountingField      `json:"accountingField1,omitempty" url:"accountingField1,omitempty"`
@@ -2451,6 +4580,9 @@ type BillOutData struct {
 	TotalAmount *float64 `json:"totalAmount,omitempty" url:"totalAmount,omitempty"`
 	// The vendor associated with the bill. Although you can create a vendor in a create bill request, Payabli recommends creating a vendor separately and passing a valid `vendorNumber` here. At minimum, the `vendorNumber` is required.
 	Vendor *VendorData `json:"vendor,omitempty" url:"vendor,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2600,6 +4732,153 @@ func (b *BillOutData) GetExtraProperties() map[string]interface{} {
 	return b.extraProperties
 }
 
+func (b *BillOutData) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetAccountingField1 sets the AccountingField1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillOutData) SetAccountingField1(accountingField1 *AccountingField) {
+	b.AccountingField1 = accountingField1
+	b.require(billOutDataFieldAccountingField1)
+}
+
+// SetAccountingField2 sets the AccountingField2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillOutData) SetAccountingField2(accountingField2 *AccountingField) {
+	b.AccountingField2 = accountingField2
+	b.require(billOutDataFieldAccountingField2)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillOutData) SetAdditionalData(additionalData *AdditionalDataString) {
+	b.AdditionalData = additionalData
+	b.require(billOutDataFieldAdditionalData)
+}
+
+// SetAttachments sets the Attachments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillOutData) SetAttachments(attachments *Attachments) {
+	b.Attachments = attachments
+	b.require(billOutDataFieldAttachments)
+}
+
+// SetBillDate sets the BillDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillOutData) SetBillDate(billDate *Datenullable) {
+	b.BillDate = billDate
+	b.require(billOutDataFieldBillDate)
+}
+
+// SetBillItems sets the BillItems field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillOutData) SetBillItems(billItems *Billitems) {
+	b.BillItems = billItems
+	b.require(billOutDataFieldBillItems)
+}
+
+// SetBillNumber sets the BillNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillOutData) SetBillNumber(billNumber *string) {
+	b.BillNumber = billNumber
+	b.require(billOutDataFieldBillNumber)
+}
+
+// SetComments sets the Comments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillOutData) SetComments(comments *Comments) {
+	b.Comments = comments
+	b.require(billOutDataFieldComments)
+}
+
+// SetDiscount sets the Discount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillOutData) SetDiscount(discount *float64) {
+	b.Discount = discount
+	b.require(billOutDataFieldDiscount)
+}
+
+// SetDueDate sets the DueDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillOutData) SetDueDate(dueDate *Datenullable) {
+	b.DueDate = dueDate
+	b.require(billOutDataFieldDueDate)
+}
+
+// SetEndDate sets the EndDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillOutData) SetEndDate(endDate *Datenullable) {
+	b.EndDate = endDate
+	b.require(billOutDataFieldEndDate)
+}
+
+// SetFrequency sets the Frequency field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillOutData) SetFrequency(frequency *Frequency) {
+	b.Frequency = frequency
+	b.require(billOutDataFieldFrequency)
+}
+
+// SetLotNumber sets the LotNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillOutData) SetLotNumber(lotNumber *string) {
+	b.LotNumber = lotNumber
+	b.require(billOutDataFieldLotNumber)
+}
+
+// SetMode sets the Mode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillOutData) SetMode(mode *int) {
+	b.Mode = mode
+	b.require(billOutDataFieldMode)
+}
+
+// SetNetAmount sets the NetAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillOutData) SetNetAmount(netAmount *float64) {
+	b.NetAmount = netAmount
+	b.require(billOutDataFieldNetAmount)
+}
+
+// SetScheduledOptions sets the ScheduledOptions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillOutData) SetScheduledOptions(scheduledOptions *BillOutDataScheduledOptions) {
+	b.ScheduledOptions = scheduledOptions
+	b.require(billOutDataFieldScheduledOptions)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillOutData) SetStatus(status *Billstatus) {
+	b.Status = status
+	b.require(billOutDataFieldStatus)
+}
+
+// SetTerms sets the Terms field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillOutData) SetTerms(terms *Terms) {
+	b.Terms = terms
+	b.require(billOutDataFieldTerms)
+}
+
+// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillOutData) SetTotalAmount(totalAmount *float64) {
+	b.TotalAmount = totalAmount
+	b.require(billOutDataFieldTotalAmount)
+}
+
+// SetVendor sets the Vendor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillOutData) SetVendor(vendor_ *VendorData) {
+	b.Vendor = vendor_
+	b.require(billOutDataFieldVendor)
+}
+
 func (b *BillOutData) UnmarshalJSON(data []byte) error {
 	type unmarshaler BillOutData
 	var value unmarshaler
@@ -2616,6 +4895,17 @@ func (b *BillOutData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (b *BillOutData) MarshalJSON() ([]byte, error) {
+	type embed BillOutData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (b *BillOutData) String() string {
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
@@ -2628,9 +4918,16 @@ func (b *BillOutData) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+var (
+	billOutDataScheduledOptionsFieldStoredMethodId = big.NewInt(1 << 0)
+)
+
 type BillOutDataScheduledOptions struct {
 	// The ID of the stored payment method to use for the bill.
 	StoredMethodId *string `json:"storedMethodId,omitempty" url:"storedMethodId,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2645,6 +4942,20 @@ func (b *BillOutDataScheduledOptions) GetStoredMethodId() *string {
 
 func (b *BillOutDataScheduledOptions) GetExtraProperties() map[string]interface{} {
 	return b.extraProperties
+}
+
+func (b *BillOutDataScheduledOptions) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetStoredMethodId sets the StoredMethodId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillOutDataScheduledOptions) SetStoredMethodId(storedMethodId *string) {
+	b.StoredMethodId = storedMethodId
+	b.require(billOutDataScheduledOptionsFieldStoredMethodId)
 }
 
 func (b *BillOutDataScheduledOptions) UnmarshalJSON(data []byte) error {
@@ -2663,6 +4974,17 @@ func (b *BillOutDataScheduledOptions) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (b *BillOutDataScheduledOptions) MarshalJSON() ([]byte, error) {
+	type embed BillOutDataScheduledOptions
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (b *BillOutDataScheduledOptions) String() string {
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
@@ -2675,6 +4997,15 @@ func (b *BillOutDataScheduledOptions) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+var (
+	billResponseFieldResponseCode   = big.NewInt(1 << 0)
+	billResponseFieldPageIdentifier = big.NewInt(1 << 1)
+	billResponseFieldRoomId         = big.NewInt(1 << 2)
+	billResponseFieldIsSuccess      = big.NewInt(1 << 3)
+	billResponseFieldResponseText   = big.NewInt(1 << 4)
+	billResponseFieldResponseData   = big.NewInt(1 << 5)
+)
+
 type BillResponse struct {
 	ResponseCode   *Responsecode   `json:"responseCode,omitempty" url:"responseCode,omitempty"`
 	PageIdentifier *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
@@ -2683,6 +5014,9 @@ type BillResponse struct {
 	ResponseText   ResponseText    `json:"responseText" url:"responseText"`
 	// If `isSuccess` = true, this contains the bill identifier. If `isSuccess` = false, this contains the reason for the error.
 	ResponseData *Responsedatanonobject `json:"responseData,omitempty" url:"responseData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2734,6 +5068,55 @@ func (b *BillResponse) GetExtraProperties() map[string]interface{} {
 	return b.extraProperties
 }
 
+func (b *BillResponse) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetResponseCode sets the ResponseCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponse) SetResponseCode(responseCode *Responsecode) {
+	b.ResponseCode = responseCode
+	b.require(billResponseFieldResponseCode)
+}
+
+// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponse) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+	b.PageIdentifier = pageIdentifier
+	b.require(billResponseFieldPageIdentifier)
+}
+
+// SetRoomId sets the RoomId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponse) SetRoomId(roomId *RoomIdNotInUse) {
+	b.RoomId = roomId
+	b.require(billResponseFieldRoomId)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	b.IsSuccess = isSuccess
+	b.require(billResponseFieldIsSuccess)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponse) SetResponseText(responseText ResponseText) {
+	b.ResponseText = responseText
+	b.require(billResponseFieldResponseText)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponse) SetResponseData(responseData *Responsedatanonobject) {
+	b.ResponseData = responseData
+	b.require(billResponseFieldResponseData)
+}
+
 func (b *BillResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler BillResponse
 	var value unmarshaler
@@ -2750,6 +5133,17 @@ func (b *BillResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (b *BillResponse) MarshalJSON() ([]byte, error) {
+	type embed BillResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (b *BillResponse) String() string {
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
@@ -2761,6 +5155,46 @@ func (b *BillResponse) String() string {
 	}
 	return fmt.Sprintf("%#v", b)
 }
+
+var (
+	billResponseDataFieldIdBill             = big.NewInt(1 << 0)
+	billResponseDataFieldBillNumber         = big.NewInt(1 << 1)
+	billResponseDataFieldNetAmount          = big.NewInt(1 << 2)
+	billResponseDataFieldDiscount           = big.NewInt(1 << 3)
+	billResponseDataFieldTotalAmount        = big.NewInt(1 << 4)
+	billResponseDataFieldBillDate           = big.NewInt(1 << 5)
+	billResponseDataFieldDueDate            = big.NewInt(1 << 6)
+	billResponseDataFieldComments           = big.NewInt(1 << 7)
+	billResponseDataFieldBatchNumber        = big.NewInt(1 << 8)
+	billResponseDataFieldBillItems          = big.NewInt(1 << 9)
+	billResponseDataFieldMode               = big.NewInt(1 << 10)
+	billResponseDataFieldPaymentMethod      = big.NewInt(1 << 11)
+	billResponseDataFieldPaymentId          = big.NewInt(1 << 12)
+	billResponseDataFieldAccountingField1   = big.NewInt(1 << 13)
+	billResponseDataFieldAccountingField2   = big.NewInt(1 << 14)
+	billResponseDataFieldTerms              = big.NewInt(1 << 15)
+	billResponseDataFieldSource             = big.NewInt(1 << 16)
+	billResponseDataFieldAdditionalData     = big.NewInt(1 << 17)
+	billResponseDataFieldVendor             = big.NewInt(1 << 18)
+	billResponseDataFieldStatus             = big.NewInt(1 << 19)
+	billResponseDataFieldCreatedAt          = big.NewInt(1 << 20)
+	billResponseDataFieldEndDate            = big.NewInt(1 << 21)
+	billResponseDataFieldLastUpdated        = big.NewInt(1 << 22)
+	billResponseDataFieldFrequency          = big.NewInt(1 << 23)
+	billResponseDataFieldTransaction        = big.NewInt(1 << 24)
+	billResponseDataFieldBillEvents         = big.NewInt(1 << 25)
+	billResponseDataFieldBillApprovals      = big.NewInt(1 << 26)
+	billResponseDataFieldPaypointLegalname  = big.NewInt(1 << 27)
+	billResponseDataFieldPaypointDbaname    = big.NewInt(1 << 28)
+	billResponseDataFieldParentOrgId        = big.NewInt(1 << 29)
+	billResponseDataFieldParentOrgName      = big.NewInt(1 << 30)
+	billResponseDataFieldPaypointEntryname  = big.NewInt(1 << 31)
+	billResponseDataFieldPaylinkId          = big.NewInt(1 << 32)
+	billResponseDataFieldDocumentsRef       = big.NewInt(1 << 33)
+	billResponseDataFieldExternalPaypointId = big.NewInt(1 << 34)
+	billResponseDataFieldLotNumber          = big.NewInt(1 << 35)
+	billResponseDataFieldEntityId           = big.NewInt(1 << 36)
+)
 
 type BillResponseData struct {
 	IdBill *BillId `json:"IdBill,omitempty" url:"IdBill,omitempty"`
@@ -2817,6 +5251,9 @@ type BillResponseData struct {
 	// Lot number of the bill.
 	LotNumber *string   `json:"LotNumber,omitempty" url:"LotNumber,omitempty"`
 	EntityId  *EntityId `json:"EntityID,omitempty" url:"EntityID,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -3085,6 +5522,272 @@ func (b *BillResponseData) GetExtraProperties() map[string]interface{} {
 	return b.extraProperties
 }
 
+func (b *BillResponseData) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetIdBill sets the IdBill field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetIdBill(idBill *BillId) {
+	b.IdBill = idBill
+	b.require(billResponseDataFieldIdBill)
+}
+
+// SetBillNumber sets the BillNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetBillNumber(billNumber *string) {
+	b.BillNumber = billNumber
+	b.require(billResponseDataFieldBillNumber)
+}
+
+// SetNetAmount sets the NetAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetNetAmount(netAmount *float64) {
+	b.NetAmount = netAmount
+	b.require(billResponseDataFieldNetAmount)
+}
+
+// SetDiscount sets the Discount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetDiscount(discount *float64) {
+	b.Discount = discount
+	b.require(billResponseDataFieldDiscount)
+}
+
+// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetTotalAmount(totalAmount *float64) {
+	b.TotalAmount = totalAmount
+	b.require(billResponseDataFieldTotalAmount)
+}
+
+// SetBillDate sets the BillDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetBillDate(billDate *Datenullable) {
+	b.BillDate = billDate
+	b.require(billResponseDataFieldBillDate)
+}
+
+// SetDueDate sets the DueDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetDueDate(dueDate *Datenullable) {
+	b.DueDate = dueDate
+	b.require(billResponseDataFieldDueDate)
+}
+
+// SetComments sets the Comments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetComments(comments *Comments) {
+	b.Comments = comments
+	b.require(billResponseDataFieldComments)
+}
+
+// SetBatchNumber sets the BatchNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetBatchNumber(batchNumber *string) {
+	b.BatchNumber = batchNumber
+	b.require(billResponseDataFieldBatchNumber)
+}
+
+// SetBillItems sets the BillItems field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetBillItems(billItems *Billitems) {
+	b.BillItems = billItems
+	b.require(billResponseDataFieldBillItems)
+}
+
+// SetMode sets the Mode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetMode(mode *int) {
+	b.Mode = mode
+	b.require(billResponseDataFieldMode)
+}
+
+// SetPaymentMethod sets the PaymentMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetPaymentMethod(paymentMethod *string) {
+	b.PaymentMethod = paymentMethod
+	b.require(billResponseDataFieldPaymentMethod)
+}
+
+// SetPaymentId sets the PaymentId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetPaymentId(paymentId *string) {
+	b.PaymentId = paymentId
+	b.require(billResponseDataFieldPaymentId)
+}
+
+// SetAccountingField1 sets the AccountingField1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetAccountingField1(accountingField1 *AccountingField) {
+	b.AccountingField1 = accountingField1
+	b.require(billResponseDataFieldAccountingField1)
+}
+
+// SetAccountingField2 sets the AccountingField2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetAccountingField2(accountingField2 *AccountingField) {
+	b.AccountingField2 = accountingField2
+	b.require(billResponseDataFieldAccountingField2)
+}
+
+// SetTerms sets the Terms field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetTerms(terms *Terms) {
+	b.Terms = terms
+	b.require(billResponseDataFieldTerms)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetSource(source *string) {
+	b.Source = source
+	b.require(billResponseDataFieldSource)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetAdditionalData(additionalData *AdditionalDataString) {
+	b.AdditionalData = additionalData
+	b.require(billResponseDataFieldAdditionalData)
+}
+
+// SetVendor sets the Vendor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetVendor(vendor_ *VendorDataResponse) {
+	b.Vendor = vendor_
+	b.require(billResponseDataFieldVendor)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetStatus(status *Billstatus) {
+	b.Status = status
+	b.require(billResponseDataFieldStatus)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetCreatedAt(createdAt *CreatedAt) {
+	b.CreatedAt = createdAt
+	b.require(billResponseDataFieldCreatedAt)
+}
+
+// SetEndDate sets the EndDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetEndDate(endDate *Datenullable) {
+	b.EndDate = endDate
+	b.require(billResponseDataFieldEndDate)
+}
+
+// SetLastUpdated sets the LastUpdated field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetLastUpdated(lastUpdated *LastModified) {
+	b.LastUpdated = lastUpdated
+	b.require(billResponseDataFieldLastUpdated)
+}
+
+// SetFrequency sets the Frequency field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetFrequency(frequency *Frequency) {
+	b.Frequency = frequency
+	b.require(billResponseDataFieldFrequency)
+}
+
+// SetTransaction sets the Transaction field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetTransaction(transaction *TransactionOutQueryRecord) {
+	b.Transaction = transaction
+	b.require(billResponseDataFieldTransaction)
+}
+
+// SetBillEvents sets the BillEvents field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetBillEvents(billEvents *BillEvents) {
+	b.BillEvents = billEvents
+	b.require(billResponseDataFieldBillEvents)
+}
+
+// SetBillApprovals sets the BillApprovals field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetBillApprovals(billApprovals *BillApprovals) {
+	b.BillApprovals = billApprovals
+	b.require(billResponseDataFieldBillApprovals)
+}
+
+// SetPaypointLegalname sets the PaypointLegalname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetPaypointLegalname(paypointLegalname *Legalname) {
+	b.PaypointLegalname = paypointLegalname
+	b.require(billResponseDataFieldPaypointLegalname)
+}
+
+// SetPaypointDbaname sets the PaypointDbaname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetPaypointDbaname(paypointDbaname *Dbaname) {
+	b.PaypointDbaname = paypointDbaname
+	b.require(billResponseDataFieldPaypointDbaname)
+}
+
+// SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetParentOrgId(parentOrgId *OrgParentId) {
+	b.ParentOrgId = parentOrgId
+	b.require(billResponseDataFieldParentOrgId)
+}
+
+// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetParentOrgName(parentOrgName *OrgParentName) {
+	b.ParentOrgName = parentOrgName
+	b.require(billResponseDataFieldParentOrgName)
+}
+
+// SetPaypointEntryname sets the PaypointEntryname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetPaypointEntryname(paypointEntryname *Entrypointfield) {
+	b.PaypointEntryname = paypointEntryname
+	b.require(billResponseDataFieldPaypointEntryname)
+}
+
+// SetPaylinkId sets the PaylinkId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetPaylinkId(paylinkId *PaylinkId) {
+	b.PaylinkId = paylinkId
+	b.require(billResponseDataFieldPaylinkId)
+}
+
+// SetDocumentsRef sets the DocumentsRef field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetDocumentsRef(documentsRef *DocumentsRef) {
+	b.DocumentsRef = documentsRef
+	b.require(billResponseDataFieldDocumentsRef)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
+	b.ExternalPaypointId = externalPaypointId
+	b.require(billResponseDataFieldExternalPaypointId)
+}
+
+// SetLotNumber sets the LotNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetLotNumber(lotNumber *string) {
+	b.LotNumber = lotNumber
+	b.require(billResponseDataFieldLotNumber)
+}
+
+// SetEntityId sets the EntityId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetEntityId(entityId *EntityId) {
+	b.EntityId = entityId
+	b.require(billResponseDataFieldEntityId)
+}
+
 func (b *BillResponseData) UnmarshalJSON(data []byte) error {
 	type unmarshaler BillResponseData
 	var value unmarshaler
@@ -3101,6 +5804,17 @@ func (b *BillResponseData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (b *BillResponseData) MarshalJSON() ([]byte, error) {
+	type embed BillResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (b *BillResponseData) String() string {
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
@@ -3113,6 +5827,15 @@ func (b *BillResponseData) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+var (
+	editBillResponseFieldResponseCode   = big.NewInt(1 << 0)
+	editBillResponseFieldPageIdentifier = big.NewInt(1 << 1)
+	editBillResponseFieldRoomId         = big.NewInt(1 << 2)
+	editBillResponseFieldIsSuccess      = big.NewInt(1 << 3)
+	editBillResponseFieldResponseText   = big.NewInt(1 << 4)
+	editBillResponseFieldResponseData   = big.NewInt(1 << 5)
+)
+
 type EditBillResponse struct {
 	ResponseCode   *Responsecode   `json:"responseCode,omitempty" url:"responseCode,omitempty"`
 	PageIdentifier *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
@@ -3121,6 +5844,9 @@ type EditBillResponse struct {
 	ResponseText   ResponseText    `json:"responseText" url:"responseText"`
 	// If `isSuccess` = true, this contains the bill identifier. If `isSuccess` = false, this contains the reason for the error.
 	ResponseData *int `json:"responseData,omitempty" url:"responseData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -3172,6 +5898,55 @@ func (e *EditBillResponse) GetExtraProperties() map[string]interface{} {
 	return e.extraProperties
 }
 
+func (e *EditBillResponse) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetResponseCode sets the ResponseCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EditBillResponse) SetResponseCode(responseCode *Responsecode) {
+	e.ResponseCode = responseCode
+	e.require(editBillResponseFieldResponseCode)
+}
+
+// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EditBillResponse) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+	e.PageIdentifier = pageIdentifier
+	e.require(editBillResponseFieldPageIdentifier)
+}
+
+// SetRoomId sets the RoomId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EditBillResponse) SetRoomId(roomId *RoomIdNotInUse) {
+	e.RoomId = roomId
+	e.require(editBillResponseFieldRoomId)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EditBillResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	e.IsSuccess = isSuccess
+	e.require(editBillResponseFieldIsSuccess)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EditBillResponse) SetResponseText(responseText ResponseText) {
+	e.ResponseText = responseText
+	e.require(editBillResponseFieldResponseText)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EditBillResponse) SetResponseData(responseData *int) {
+	e.ResponseData = responseData
+	e.require(editBillResponseFieldResponseData)
+}
+
 func (e *EditBillResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler EditBillResponse
 	var value unmarshaler
@@ -3188,6 +5963,17 @@ func (e *EditBillResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (e *EditBillResponse) MarshalJSON() ([]byte, error) {
+	type embed EditBillResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*e),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (e *EditBillResponse) String() string {
 	if len(e.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
@@ -3201,6 +5987,15 @@ func (e *EditBillResponse) String() string {
 }
 
 // A successful response returns a bill object with all its details. If the bill isn't found, the response will contain an error message.
+var (
+	getBillResponseFieldResponseCode   = big.NewInt(1 << 0)
+	getBillResponseFieldPageIdentifier = big.NewInt(1 << 1)
+	getBillResponseFieldRoomId         = big.NewInt(1 << 2)
+	getBillResponseFieldIsSuccess      = big.NewInt(1 << 3)
+	getBillResponseFieldResponseText   = big.NewInt(1 << 4)
+	getBillResponseFieldResponseData   = big.NewInt(1 << 5)
+)
+
 type GetBillResponse struct {
 	ResponseCode   *Responsecode     `json:"responseCode,omitempty" url:"responseCode,omitempty"`
 	PageIdentifier *PageIdentifier   `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
@@ -3208,6 +6003,9 @@ type GetBillResponse struct {
 	IsSuccess      *IsSuccess        `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	ResponseText   ResponseText      `json:"responseText" url:"responseText"`
 	ResponseData   *BillResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -3259,6 +6057,55 @@ func (g *GetBillResponse) GetExtraProperties() map[string]interface{} {
 	return g.extraProperties
 }
 
+func (g *GetBillResponse) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetResponseCode sets the ResponseCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillResponse) SetResponseCode(responseCode *Responsecode) {
+	g.ResponseCode = responseCode
+	g.require(getBillResponseFieldResponseCode)
+}
+
+// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillResponse) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+	g.PageIdentifier = pageIdentifier
+	g.require(getBillResponseFieldPageIdentifier)
+}
+
+// SetRoomId sets the RoomId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillResponse) SetRoomId(roomId *RoomIdNotInUse) {
+	g.RoomId = roomId
+	g.require(getBillResponseFieldRoomId)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	g.IsSuccess = isSuccess
+	g.require(getBillResponseFieldIsSuccess)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillResponse) SetResponseText(responseText ResponseText) {
+	g.ResponseText = responseText
+	g.require(getBillResponseFieldResponseText)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBillResponse) SetResponseData(responseData *BillResponseData) {
+	g.ResponseData = responseData
+	g.require(getBillResponseFieldResponseData)
+}
+
 func (g *GetBillResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler GetBillResponse
 	var value unmarshaler
@@ -3275,6 +6122,17 @@ func (g *GetBillResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (g *GetBillResponse) MarshalJSON() ([]byte, error) {
+	type embed GetBillResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (g *GetBillResponse) String() string {
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
@@ -3287,11 +6145,20 @@ func (g *GetBillResponse) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+var (
+	modifyApprovalBillResponseFieldIsSuccess    = big.NewInt(1 << 0)
+	modifyApprovalBillResponseFieldResponseText = big.NewInt(1 << 1)
+	modifyApprovalBillResponseFieldResponseData = big.NewInt(1 << 2)
+)
+
 type ModifyApprovalBillResponse struct {
 	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	ResponseText ResponseText `json:"responseText" url:"responseText"`
 	// If `isSuccess` = true, this contains the bill identifier. If `isSuccess` = false, this contains the reason for the error.
 	ResponseData *int `json:"responseData,omitempty" url:"responseData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -3322,6 +6189,34 @@ func (m *ModifyApprovalBillResponse) GetExtraProperties() map[string]interface{}
 	return m.extraProperties
 }
 
+func (m *ModifyApprovalBillResponse) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModifyApprovalBillResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	m.IsSuccess = isSuccess
+	m.require(modifyApprovalBillResponseFieldIsSuccess)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModifyApprovalBillResponse) SetResponseText(responseText ResponseText) {
+	m.ResponseText = responseText
+	m.require(modifyApprovalBillResponseFieldResponseText)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *ModifyApprovalBillResponse) SetResponseData(responseData *int) {
+	m.ResponseData = responseData
+	m.require(modifyApprovalBillResponseFieldResponseData)
+}
+
 func (m *ModifyApprovalBillResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler ModifyApprovalBillResponse
 	var value unmarshaler
@@ -3338,6 +6233,17 @@ func (m *ModifyApprovalBillResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (m *ModifyApprovalBillResponse) MarshalJSON() ([]byte, error) {
+	type embed ModifyApprovalBillResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (m *ModifyApprovalBillResponse) String() string {
 	if len(m.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
@@ -3350,11 +6256,20 @@ func (m *ModifyApprovalBillResponse) String() string {
 	return fmt.Sprintf("%#v", m)
 }
 
+var (
+	setApprovedBillResponseFieldIsSuccess    = big.NewInt(1 << 0)
+	setApprovedBillResponseFieldResponseText = big.NewInt(1 << 1)
+	setApprovedBillResponseFieldResponseData = big.NewInt(1 << 2)
+)
+
 type SetApprovedBillResponse struct {
 	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	ResponseText ResponseText `json:"responseText" url:"responseText"`
 	// If `isSuccess` = true, this contains the bill identifier. If `isSuccess` = false, this contains the reason for the error.
 	ResponseData *int `json:"responseData,omitempty" url:"responseData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -3385,6 +6300,34 @@ func (s *SetApprovedBillResponse) GetExtraProperties() map[string]interface{} {
 	return s.extraProperties
 }
 
+func (s *SetApprovedBillResponse) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetApprovedBillResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	s.IsSuccess = isSuccess
+	s.require(setApprovedBillResponseFieldIsSuccess)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetApprovedBillResponse) SetResponseText(responseText ResponseText) {
+	s.ResponseText = responseText
+	s.require(setApprovedBillResponseFieldResponseText)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SetApprovedBillResponse) SetResponseData(responseData *int) {
+	s.ResponseData = responseData
+	s.require(setApprovedBillResponseFieldResponseData)
+}
+
 func (s *SetApprovedBillResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler SetApprovedBillResponse
 	var value unmarshaler
@@ -3399,6 +6342,17 @@ func (s *SetApprovedBillResponse) UnmarshalJSON(data []byte) error {
 	s.extraProperties = extraProperties
 	s.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (s *SetApprovedBillResponse) MarshalJSON() ([]byte, error) {
+	type embed SetApprovedBillResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (s *SetApprovedBillResponse) String() string {

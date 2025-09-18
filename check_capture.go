@@ -6,6 +6,14 @@ import (
 	json "encoding/json"
 	fmt "fmt"
 	internal "github.com/payabli/sdk-go/internal"
+	big "math/big"
+)
+
+var (
+	checkCaptureRequestBodyFieldEntryPoint  = big.NewInt(1 << 0)
+	checkCaptureRequestBodyFieldFrontImage  = big.NewInt(1 << 1)
+	checkCaptureRequestBodyFieldRearImage   = big.NewInt(1 << 2)
+	checkCaptureRequestBodyFieldCheckAmount = big.NewInt(1 << 3)
 )
 
 type CheckCaptureRequestBody struct {
@@ -16,9 +24,54 @@ type CheckCaptureRequestBody struct {
 	RearImage string `json:"rearImage" url:"-"`
 	// Check amount in cents (maximum 32-bit integer value).
 	CheckAmount int `json:"checkAmount" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (c *CheckCaptureRequestBody) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetEntryPoint sets the EntryPoint field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureRequestBody) SetEntryPoint(entryPoint Entry) {
+	c.EntryPoint = entryPoint
+	c.require(checkCaptureRequestBodyFieldEntryPoint)
+}
+
+// SetFrontImage sets the FrontImage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureRequestBody) SetFrontImage(frontImage string) {
+	c.FrontImage = frontImage
+	c.require(checkCaptureRequestBodyFieldFrontImage)
+}
+
+// SetRearImage sets the RearImage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureRequestBody) SetRearImage(rearImage string) {
+	c.RearImage = rearImage
+	c.require(checkCaptureRequestBodyFieldRearImage)
+}
+
+// SetCheckAmount sets the CheckAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureRequestBody) SetCheckAmount(checkAmount int) {
+	c.CheckAmount = checkAmount
+	c.require(checkCaptureRequestBodyFieldCheckAmount)
 }
 
 // Request model for check capture processing.
+var (
+	checkCaptureRequestFieldEntryPoint  = big.NewInt(1 << 0)
+	checkCaptureRequestFieldFrontImage  = big.NewInt(1 << 1)
+	checkCaptureRequestFieldRearImage   = big.NewInt(1 << 2)
+	checkCaptureRequestFieldCheckAmount = big.NewInt(1 << 3)
+)
+
 type CheckCaptureRequest struct {
 	EntryPoint Entry `json:"entryPoint" url:"entryPoint"`
 	// Base64-encoded image of the front of the check. Must be JPEG or PNG format and less than 1MB. Image must show the entire check clearly with no partial, blurry, or illegible portions.
@@ -27,6 +80,9 @@ type CheckCaptureRequest struct {
 	RearImage string `json:"rearImage" url:"rearImage"`
 	// Check amount in cents (maximum 32-bit integer value). For example, $125.50 is represented as 12550.
 	CheckAmount int `json:"checkAmount" url:"checkAmount"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -64,6 +120,41 @@ func (c *CheckCaptureRequest) GetExtraProperties() map[string]interface{} {
 	return c.extraProperties
 }
 
+func (c *CheckCaptureRequest) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetEntryPoint sets the EntryPoint field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureRequest) SetEntryPoint(entryPoint Entry) {
+	c.EntryPoint = entryPoint
+	c.require(checkCaptureRequestFieldEntryPoint)
+}
+
+// SetFrontImage sets the FrontImage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureRequest) SetFrontImage(frontImage string) {
+	c.FrontImage = frontImage
+	c.require(checkCaptureRequestFieldFrontImage)
+}
+
+// SetRearImage sets the RearImage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureRequest) SetRearImage(rearImage string) {
+	c.RearImage = rearImage
+	c.require(checkCaptureRequestFieldRearImage)
+}
+
+// SetCheckAmount sets the CheckAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureRequest) SetCheckAmount(checkAmount int) {
+	c.CheckAmount = checkAmount
+	c.require(checkCaptureRequestFieldCheckAmount)
+}
+
 func (c *CheckCaptureRequest) UnmarshalJSON(data []byte) error {
 	type unmarshaler CheckCaptureRequest
 	var value unmarshaler
@@ -80,6 +171,17 @@ func (c *CheckCaptureRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (c *CheckCaptureRequest) MarshalJSON() ([]byte, error) {
+	type embed CheckCaptureRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (c *CheckCaptureRequest) String() string {
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
@@ -93,6 +195,33 @@ func (c *CheckCaptureRequest) String() string {
 }
 
 // Response model for check capture processing.
+var (
+	checkCaptureResponseFieldId                        = big.NewInt(1 << 0)
+	checkCaptureResponseFieldSuccess                   = big.NewInt(1 << 1)
+	checkCaptureResponseFieldProcessDate               = big.NewInt(1 << 2)
+	checkCaptureResponseFieldOcrMicr                   = big.NewInt(1 << 3)
+	checkCaptureResponseFieldOcrMicrStatus             = big.NewInt(1 << 4)
+	checkCaptureResponseFieldOcrMicrConfidence         = big.NewInt(1 << 5)
+	checkCaptureResponseFieldOcrAccountNumber          = big.NewInt(1 << 6)
+	checkCaptureResponseFieldOcrRoutingNumber          = big.NewInt(1 << 7)
+	checkCaptureResponseFieldOcrCheckNumber            = big.NewInt(1 << 8)
+	checkCaptureResponseFieldOcrCheckTranCode          = big.NewInt(1 << 9)
+	checkCaptureResponseFieldOcrAmount                 = big.NewInt(1 << 10)
+	checkCaptureResponseFieldOcrAmountStatus           = big.NewInt(1 << 11)
+	checkCaptureResponseFieldOcrAmountConfidence       = big.NewInt(1 << 12)
+	checkCaptureResponseFieldAmountDiscrepancyDetected = big.NewInt(1 << 13)
+	checkCaptureResponseFieldEndorsementDetected       = big.NewInt(1 << 14)
+	checkCaptureResponseFieldErrors                    = big.NewInt(1 << 15)
+	checkCaptureResponseFieldMessages                  = big.NewInt(1 << 16)
+	checkCaptureResponseFieldCarLarMatchConfidence     = big.NewInt(1 << 17)
+	checkCaptureResponseFieldCarLarMatchStatus         = big.NewInt(1 << 18)
+	checkCaptureResponseFieldFrontImage                = big.NewInt(1 << 19)
+	checkCaptureResponseFieldRearImage                 = big.NewInt(1 << 20)
+	checkCaptureResponseFieldCheckType                 = big.NewInt(1 << 21)
+	checkCaptureResponseFieldReferenceNumber           = big.NewInt(1 << 22)
+	checkCaptureResponseFieldPageIdentifier            = big.NewInt(1 << 23)
+)
+
 type CheckCaptureResponse struct {
 	// Unique ID for the check capture, to be used with the /api/MoneyIn/getpaid endpoint.
 	Id *string `json:"id,omitempty" url:"id,omitempty"`
@@ -144,6 +273,9 @@ type CheckCaptureResponse struct {
 	// Reference number for the transaction.
 	ReferenceNumber *string         `json:"referenceNumber,omitempty" url:"referenceNumber,omitempty"`
 	PageIdentifier  *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -321,6 +453,181 @@ func (c *CheckCaptureResponse) GetExtraProperties() map[string]interface{} {
 	return c.extraProperties
 }
 
+func (c *CheckCaptureResponse) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureResponse) SetId(id *string) {
+	c.Id = id
+	c.require(checkCaptureResponseFieldId)
+}
+
+// SetSuccess sets the Success field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureResponse) SetSuccess(success bool) {
+	c.Success = success
+	c.require(checkCaptureResponseFieldSuccess)
+}
+
+// SetProcessDate sets the ProcessDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureResponse) SetProcessDate(processDate string) {
+	c.ProcessDate = processDate
+	c.require(checkCaptureResponseFieldProcessDate)
+}
+
+// SetOcrMicr sets the OcrMicr field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureResponse) SetOcrMicr(ocrMicr *string) {
+	c.OcrMicr = ocrMicr
+	c.require(checkCaptureResponseFieldOcrMicr)
+}
+
+// SetOcrMicrStatus sets the OcrMicrStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureResponse) SetOcrMicrStatus(ocrMicrStatus *string) {
+	c.OcrMicrStatus = ocrMicrStatus
+	c.require(checkCaptureResponseFieldOcrMicrStatus)
+}
+
+// SetOcrMicrConfidence sets the OcrMicrConfidence field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureResponse) SetOcrMicrConfidence(ocrMicrConfidence *string) {
+	c.OcrMicrConfidence = ocrMicrConfidence
+	c.require(checkCaptureResponseFieldOcrMicrConfidence)
+}
+
+// SetOcrAccountNumber sets the OcrAccountNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureResponse) SetOcrAccountNumber(ocrAccountNumber *string) {
+	c.OcrAccountNumber = ocrAccountNumber
+	c.require(checkCaptureResponseFieldOcrAccountNumber)
+}
+
+// SetOcrRoutingNumber sets the OcrRoutingNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureResponse) SetOcrRoutingNumber(ocrRoutingNumber *string) {
+	c.OcrRoutingNumber = ocrRoutingNumber
+	c.require(checkCaptureResponseFieldOcrRoutingNumber)
+}
+
+// SetOcrCheckNumber sets the OcrCheckNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureResponse) SetOcrCheckNumber(ocrCheckNumber *string) {
+	c.OcrCheckNumber = ocrCheckNumber
+	c.require(checkCaptureResponseFieldOcrCheckNumber)
+}
+
+// SetOcrCheckTranCode sets the OcrCheckTranCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureResponse) SetOcrCheckTranCode(ocrCheckTranCode *string) {
+	c.OcrCheckTranCode = ocrCheckTranCode
+	c.require(checkCaptureResponseFieldOcrCheckTranCode)
+}
+
+// SetOcrAmount sets the OcrAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureResponse) SetOcrAmount(ocrAmount *string) {
+	c.OcrAmount = ocrAmount
+	c.require(checkCaptureResponseFieldOcrAmount)
+}
+
+// SetOcrAmountStatus sets the OcrAmountStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureResponse) SetOcrAmountStatus(ocrAmountStatus *string) {
+	c.OcrAmountStatus = ocrAmountStatus
+	c.require(checkCaptureResponseFieldOcrAmountStatus)
+}
+
+// SetOcrAmountConfidence sets the OcrAmountConfidence field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureResponse) SetOcrAmountConfidence(ocrAmountConfidence *string) {
+	c.OcrAmountConfidence = ocrAmountConfidence
+	c.require(checkCaptureResponseFieldOcrAmountConfidence)
+}
+
+// SetAmountDiscrepancyDetected sets the AmountDiscrepancyDetected field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureResponse) SetAmountDiscrepancyDetected(amountDiscrepancyDetected bool) {
+	c.AmountDiscrepancyDetected = amountDiscrepancyDetected
+	c.require(checkCaptureResponseFieldAmountDiscrepancyDetected)
+}
+
+// SetEndorsementDetected sets the EndorsementDetected field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureResponse) SetEndorsementDetected(endorsementDetected bool) {
+	c.EndorsementDetected = endorsementDetected
+	c.require(checkCaptureResponseFieldEndorsementDetected)
+}
+
+// SetErrors sets the Errors field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureResponse) SetErrors(errors []string) {
+	c.Errors = errors
+	c.require(checkCaptureResponseFieldErrors)
+}
+
+// SetMessages sets the Messages field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureResponse) SetMessages(messages []string) {
+	c.Messages = messages
+	c.require(checkCaptureResponseFieldMessages)
+}
+
+// SetCarLarMatchConfidence sets the CarLarMatchConfidence field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureResponse) SetCarLarMatchConfidence(carLarMatchConfidence *string) {
+	c.CarLarMatchConfidence = carLarMatchConfidence
+	c.require(checkCaptureResponseFieldCarLarMatchConfidence)
+}
+
+// SetCarLarMatchStatus sets the CarLarMatchStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureResponse) SetCarLarMatchStatus(carLarMatchStatus *string) {
+	c.CarLarMatchStatus = carLarMatchStatus
+	c.require(checkCaptureResponseFieldCarLarMatchStatus)
+}
+
+// SetFrontImage sets the FrontImage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureResponse) SetFrontImage(frontImage *string) {
+	c.FrontImage = frontImage
+	c.require(checkCaptureResponseFieldFrontImage)
+}
+
+// SetRearImage sets the RearImage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureResponse) SetRearImage(rearImage *string) {
+	c.RearImage = rearImage
+	c.require(checkCaptureResponseFieldRearImage)
+}
+
+// SetCheckType sets the CheckType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureResponse) SetCheckType(checkType float64) {
+	c.CheckType = checkType
+	c.require(checkCaptureResponseFieldCheckType)
+}
+
+// SetReferenceNumber sets the ReferenceNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureResponse) SetReferenceNumber(referenceNumber *string) {
+	c.ReferenceNumber = referenceNumber
+	c.require(checkCaptureResponseFieldReferenceNumber)
+}
+
+// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CheckCaptureResponse) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+	c.PageIdentifier = pageIdentifier
+	c.require(checkCaptureResponseFieldPageIdentifier)
+}
+
 func (c *CheckCaptureResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler CheckCaptureResponse
 	var value unmarshaler
@@ -335,6 +642,17 @@ func (c *CheckCaptureResponse) UnmarshalJSON(data []byte) error {
 	c.extraProperties = extraProperties
 	c.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (c *CheckCaptureResponse) MarshalJSON() ([]byte, error) {
+	type embed CheckCaptureResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (c *CheckCaptureResponse) String() string {

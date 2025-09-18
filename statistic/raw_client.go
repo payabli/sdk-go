@@ -4,7 +4,7 @@ package statistic
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -63,9 +63,9 @@ func (r *RawClient) BasicStats(
 	// - `yesterday` - Last Day
 	//
 	mode string,
-	request *sdk.BasicStatsRequest,
+	request *sdkgo.BasicStatsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*sdk.StatBasicQueryRecord], error) {
+) (*core.Response[[]*sdkgo.StatBasicQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -92,27 +92,27 @@ func (r *RawClient) BasicStats(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response []*sdk.StatBasicQueryRecord
+	var response []*sdkgo.StatBasicQueryRecord
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -130,7 +130,7 @@ func (r *RawClient) BasicStats(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*sdk.StatBasicQueryRecord]{
+	return &core.Response[[]*sdkgo.StatBasicQueryRecord]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -164,9 +164,9 @@ func (r *RawClient) CustomerBasicStats(
 	// - `lastw` - Last Week
 	// - `yesterday` - Last Day
 	mode string,
-	request *sdk.CustomerBasicStatsRequest,
+	request *sdkgo.CustomerBasicStatsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*sdk.SubscriptionStatsQueryRecord], error) {
+) (*core.Response[[]*sdkgo.SubscriptionStatsQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -192,27 +192,27 @@ func (r *RawClient) CustomerBasicStats(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response []*sdk.SubscriptionStatsQueryRecord
+	var response []*sdkgo.SubscriptionStatsQueryRecord
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -230,7 +230,7 @@ func (r *RawClient) CustomerBasicStats(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*sdk.SubscriptionStatsQueryRecord]{
+	return &core.Response[[]*sdkgo.SubscriptionStatsQueryRecord]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -253,9 +253,9 @@ func (r *RawClient) SubStats(
 	//   - 0 for Organization
 	//   - 2 for Paypoint
 	level int,
-	request *sdk.SubStatsRequest,
+	request *sdkgo.SubStatsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*sdk.StatBasicQueryRecord], error) {
+) (*core.Response[[]*sdkgo.StatBasicQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -281,27 +281,27 @@ func (r *RawClient) SubStats(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response []*sdk.StatBasicQueryRecord
+	var response []*sdkgo.StatBasicQueryRecord
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -319,7 +319,7 @@ func (r *RawClient) SubStats(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*sdk.StatBasicQueryRecord]{
+	return &core.Response[[]*sdkgo.StatBasicQueryRecord]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -353,9 +353,9 @@ func (r *RawClient) VendorBasicStats(
 	// - `lastw` - Last Week
 	// - `yesterday` - Last Day
 	mode string,
-	request *sdk.VendorBasicStatsRequest,
+	request *sdkgo.VendorBasicStatsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*sdk.StatisticsVendorQueryRecord], error) {
+) (*core.Response[[]*sdkgo.StatisticsVendorQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -381,27 +381,27 @@ func (r *RawClient) VendorBasicStats(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response []*sdk.StatisticsVendorQueryRecord
+	var response []*sdkgo.StatisticsVendorQueryRecord
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -419,7 +419,7 @@ func (r *RawClient) VendorBasicStats(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*sdk.StatisticsVendorQueryRecord]{
+	return &core.Response[[]*sdkgo.StatisticsVendorQueryRecord]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

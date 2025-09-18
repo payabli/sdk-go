@@ -4,7 +4,7 @@ package import_
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -34,9 +34,9 @@ func (r *RawClient) ImportBills(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdk.ImportBillsRequest,
+	request *sdkgo.ImportBillsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponseImport], error) {
+) (*core.Response[*sdkgo.PayabliApiResponseImport], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -53,22 +53,22 @@ func (r *RawClient) ImportBills(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
@@ -82,7 +82,7 @@ func (r *RawClient) ImportBills(
 	}
 	headers.Set("Content-Type", writer.ContentType())
 
-	var response *sdk.PayabliApiResponseImport
+	var response *sdkgo.PayabliApiResponseImport
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -101,7 +101,7 @@ func (r *RawClient) ImportBills(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponseImport]{
+	return &core.Response[*sdkgo.PayabliApiResponseImport]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -110,10 +110,10 @@ func (r *RawClient) ImportBills(
 
 func (r *RawClient) ImportCustomer(
 	ctx context.Context,
-	entry sdk.Entrypointfield,
-	request *sdk.ImportCustomerRequest,
+	entry sdkgo.Entrypointfield,
+	request *sdkgo.ImportCustomerRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponseImport], error) {
+) (*core.Response[*sdkgo.PayabliApiResponseImport], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -137,22 +137,22 @@ func (r *RawClient) ImportCustomer(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
@@ -166,7 +166,7 @@ func (r *RawClient) ImportCustomer(
 	}
 	headers.Set("Content-Type", writer.ContentType())
 
-	var response *sdk.PayabliApiResponseImport
+	var response *sdkgo.PayabliApiResponseImport
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -185,7 +185,7 @@ func (r *RawClient) ImportCustomer(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponseImport]{
+	return &core.Response[*sdkgo.PayabliApiResponseImport]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -194,10 +194,10 @@ func (r *RawClient) ImportCustomer(
 
 func (r *RawClient) ImportVendor(
 	ctx context.Context,
-	entry sdk.Entrypointfield,
-	request *sdk.ImportVendorRequest,
+	entry sdkgo.Entrypointfield,
+	request *sdkgo.ImportVendorRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponseImport], error) {
+) (*core.Response[*sdkgo.PayabliApiResponseImport], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -214,22 +214,22 @@ func (r *RawClient) ImportVendor(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
@@ -243,7 +243,7 @@ func (r *RawClient) ImportVendor(
 	}
 	headers.Set("Content-Type", writer.ContentType())
 
-	var response *sdk.PayabliApiResponseImport
+	var response *sdkgo.PayabliApiResponseImport
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -262,7 +262,7 @@ func (r *RawClient) ImportVendor(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponseImport]{
+	return &core.Response[*sdkgo.PayabliApiResponseImport]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

@@ -4,7 +4,7 @@ package checkcapture
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) CheckProcessing(
 	ctx context.Context,
-	request *sdk.CheckCaptureRequestBody,
+	request *sdkgo.CheckCaptureRequestBody,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.CheckCaptureResponse], error) {
+) (*core.Response[*sdkgo.CheckCaptureResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -49,27 +49,27 @@ func (r *RawClient) CheckProcessing(
 	headers.Add("Content-Type", "application/json")
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.CheckCaptureResponse
+	var response *sdkgo.CheckCaptureResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -88,7 +88,7 @@ func (r *RawClient) CheckProcessing(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.CheckCaptureResponse]{
+	return &core.Response[*sdkgo.CheckCaptureResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

@@ -4,7 +4,7 @@ package moneyin
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) Authorize(
 	ctx context.Context,
-	request *sdk.RequestPaymentAuthorize,
+	request *sdkgo.RequestPaymentAuthorize,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.AuthResponse], error) {
+) (*core.Response[*sdkgo.AuthResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -59,27 +59,27 @@ func (r *RawClient) Authorize(
 	headers.Add("Content-Type", "application/json")
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.AuthResponse
+	var response *sdkgo.AuthResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -98,7 +98,7 @@ func (r *RawClient) Authorize(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.AuthResponse]{
+	return &core.Response[*sdkgo.AuthResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -112,7 +112,7 @@ func (r *RawClient) Capture(
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.CaptureResponse], error) {
+) (*core.Response[*sdkgo.CaptureResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -130,27 +130,27 @@ func (r *RawClient) Capture(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.CaptureResponse
+	var response *sdkgo.CaptureResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -168,7 +168,7 @@ func (r *RawClient) Capture(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.CaptureResponse]{
+	return &core.Response[*sdkgo.CaptureResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -179,9 +179,9 @@ func (r *RawClient) CaptureAuth(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
-	request *sdk.CaptureRequest,
+	request *sdkgo.CaptureRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.CaptureResponse], error) {
+) (*core.Response[*sdkgo.CaptureResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -198,27 +198,27 @@ func (r *RawClient) CaptureAuth(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.CaptureResponse
+	var response *sdkgo.CaptureResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -237,7 +237,7 @@ func (r *RawClient) CaptureAuth(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.CaptureResponse]{
+	return &core.Response[*sdkgo.CaptureResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -246,9 +246,9 @@ func (r *RawClient) CaptureAuth(
 
 func (r *RawClient) Credit(
 	ctx context.Context,
-	request *sdk.RequestCredit,
+	request *sdkgo.RequestCredit,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponse0], error) {
+) (*core.Response[*sdkgo.PayabliApiResponse0], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -273,27 +273,27 @@ func (r *RawClient) Credit(
 	headers.Add("Content-Type", "application/json")
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponse0
+	var response *sdkgo.PayabliApiResponse0
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -312,7 +312,7 @@ func (r *RawClient) Credit(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponse0]{
+	return &core.Response[*sdkgo.PayabliApiResponse0]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -324,7 +324,7 @@ func (r *RawClient) Details(
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.TransactionQueryRecords], error) {
+) (*core.Response[*sdkgo.TransactionQueryRecords], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -341,27 +341,27 @@ func (r *RawClient) Details(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.TransactionQueryRecords
+	var response *sdkgo.TransactionQueryRecords
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -379,7 +379,7 @@ func (r *RawClient) Details(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.TransactionQueryRecords]{
+	return &core.Response[*sdkgo.TransactionQueryRecords]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -388,9 +388,9 @@ func (r *RawClient) Details(
 
 func (r *RawClient) Getpaid(
 	ctx context.Context,
-	request *sdk.RequestPayment,
+	request *sdkgo.RequestPayment,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponseGetPaid], error) {
+) (*core.Response[*sdkgo.PayabliApiResponseGetPaid], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -418,27 +418,27 @@ func (r *RawClient) Getpaid(
 	headers.Add("Content-Type", "application/json")
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponseGetPaid
+	var response *sdkgo.PayabliApiResponseGetPaid
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -457,7 +457,7 @@ func (r *RawClient) Getpaid(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponseGetPaid]{
+	return &core.Response[*sdkgo.PayabliApiResponseGetPaid]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -476,7 +476,7 @@ func (r *RawClient) Reverse(
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ReverseResponse], error) {
+) (*core.Response[*sdkgo.ReverseResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -494,27 +494,27 @@ func (r *RawClient) Reverse(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.ReverseResponse
+	var response *sdkgo.ReverseResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -532,7 +532,7 @@ func (r *RawClient) Reverse(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ReverseResponse]{
+	return &core.Response[*sdkgo.ReverseResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -551,7 +551,7 @@ func (r *RawClient) Refund(
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.RefundResponse], error) {
+) (*core.Response[*sdkgo.RefundResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -569,27 +569,27 @@ func (r *RawClient) Refund(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.RefundResponse
+	var response *sdkgo.RefundResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -607,7 +607,7 @@ func (r *RawClient) Refund(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.RefundResponse]{
+	return &core.Response[*sdkgo.RefundResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -618,9 +618,9 @@ func (r *RawClient) RefundWithInstructions(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
-	request *sdk.RequestRefund,
+	request *sdkgo.RequestRefund,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.RefundWithInstructionsResponse], error) {
+) (*core.Response[*sdkgo.RefundWithInstructionsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -641,27 +641,27 @@ func (r *RawClient) RefundWithInstructions(
 	headers.Add("Content-Type", "application/json")
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.RefundWithInstructionsResponse
+	var response *sdkgo.RefundWithInstructionsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -680,7 +680,7 @@ func (r *RawClient) RefundWithInstructions(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.RefundWithInstructionsResponse]{
+	return &core.Response[*sdkgo.RefundWithInstructionsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -692,7 +692,7 @@ func (r *RawClient) ReverseCredit(
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponse], error) {
+) (*core.Response[*sdkgo.PayabliApiResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -709,27 +709,27 @@ func (r *RawClient) ReverseCredit(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponse
+	var response *sdkgo.PayabliApiResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -747,7 +747,7 @@ func (r *RawClient) ReverseCredit(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponse]{
+	return &core.Response[*sdkgo.PayabliApiResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -758,9 +758,9 @@ func (r *RawClient) SendReceipt2Trans(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
-	request *sdk.SendReceipt2TransRequest,
+	request *sdkgo.SendReceipt2TransRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ReceiptResponse], error) {
+) (*core.Response[*sdkgo.ReceiptResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -784,27 +784,27 @@ func (r *RawClient) SendReceipt2Trans(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.ReceiptResponse
+	var response *sdkgo.ReceiptResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -822,7 +822,7 @@ func (r *RawClient) SendReceipt2Trans(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ReceiptResponse]{
+	return &core.Response[*sdkgo.ReceiptResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -831,9 +831,9 @@ func (r *RawClient) SendReceipt2Trans(
 
 func (r *RawClient) Validate(
 	ctx context.Context,
-	request *sdk.RequestPaymentValidate,
+	request *sdkgo.RequestPaymentValidate,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ValidateResponse], error) {
+) (*core.Response[*sdkgo.ValidateResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -851,27 +851,27 @@ func (r *RawClient) Validate(
 	headers.Add("Content-Type", "application/json")
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.ValidateResponse
+	var response *sdkgo.ValidateResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -890,7 +890,7 @@ func (r *RawClient) Validate(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ValidateResponse]{
+	return &core.Response[*sdkgo.ValidateResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -902,7 +902,7 @@ func (r *RawClient) Void(
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.VoidResponse], error) {
+) (*core.Response[*sdkgo.VoidResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -919,27 +919,27 @@ func (r *RawClient) Void(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.VoidResponse
+	var response *sdkgo.VoidResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -957,7 +957,7 @@ func (r *RawClient) Void(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.VoidResponse]{
+	return &core.Response[*sdkgo.VoidResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

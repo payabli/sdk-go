@@ -4,7 +4,7 @@ package boarding
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) AddApplication(
 	ctx context.Context,
-	request *sdk.AddApplicationRequest,
+	request *sdkgo.AddApplicationRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponse00Responsedatanonobject], error) {
+) (*core.Response[*sdkgo.PayabliApiResponse00Responsedatanonobject], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -48,27 +48,27 @@ func (r *RawClient) AddApplication(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponse00Responsedatanonobject
+	var response *sdkgo.PayabliApiResponse00Responsedatanonobject
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -87,7 +87,7 @@ func (r *RawClient) AddApplication(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponse00Responsedatanonobject]{
+	return &core.Response[*sdkgo.PayabliApiResponse00Responsedatanonobject]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -99,7 +99,7 @@ func (r *RawClient) DeleteApplication(
 	// Boarding application ID.
 	appId int,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponse00Responsedatanonobject], error) {
+) (*core.Response[*sdkgo.PayabliApiResponse00Responsedatanonobject], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -116,27 +116,27 @@ func (r *RawClient) DeleteApplication(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponse00Responsedatanonobject
+	var response *sdkgo.PayabliApiResponse00Responsedatanonobject
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -154,7 +154,7 @@ func (r *RawClient) DeleteApplication(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponse00Responsedatanonobject]{
+	return &core.Response[*sdkgo.PayabliApiResponse00Responsedatanonobject]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -166,7 +166,7 @@ func (r *RawClient) GetApplication(
 	// Boarding application ID.
 	appId int,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ApplicationDetailsRecord], error) {
+) (*core.Response[*sdkgo.ApplicationDetailsRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -183,27 +183,27 @@ func (r *RawClient) GetApplication(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.ApplicationDetailsRecord
+	var response *sdkgo.ApplicationDetailsRecord
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -221,7 +221,7 @@ func (r *RawClient) GetApplication(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ApplicationDetailsRecord]{
+	return &core.Response[*sdkgo.ApplicationDetailsRecord]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -232,9 +232,9 @@ func (r *RawClient) GetApplicationByAuth(
 	ctx context.Context,
 	// The application ID in Hex format. Find this at the end of the boarding link URL returned in a call to api/Boarding/applink/{appId}/{mail2}. For example in:  `https://boarding-sandbox.payabli.com/boarding/externalapp/load/17E`, the xId is `17E`.
 	xId string,
-	request *sdk.RequestAppByAuth,
+	request *sdkgo.RequestAppByAuth,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ApplicationQueryRecord], error) {
+) (*core.Response[*sdkgo.ApplicationQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -252,27 +252,27 @@ func (r *RawClient) GetApplicationByAuth(
 	headers.Add("Content-Type", "application/json")
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.ApplicationQueryRecord
+	var response *sdkgo.ApplicationQueryRecord
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -291,7 +291,7 @@ func (r *RawClient) GetApplicationByAuth(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ApplicationQueryRecord]{
+	return &core.Response[*sdkgo.ApplicationQueryRecord]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -303,7 +303,7 @@ func (r *RawClient) GetByIdLinkApplication(
 	// The boarding link ID. You can find this at the end of the boarding link reference name. For example `https://boarding.payabli.com/boarding/app/myorgaccountname-00091`. The ID is `91`.
 	boardingLinkId int,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.BoardingLinkQueryRecord], error) {
+) (*core.Response[*sdkgo.BoardingLinkQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -320,27 +320,27 @@ func (r *RawClient) GetByIdLinkApplication(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.BoardingLinkQueryRecord
+	var response *sdkgo.BoardingLinkQueryRecord
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -358,7 +358,7 @@ func (r *RawClient) GetByIdLinkApplication(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.BoardingLinkQueryRecord]{
+	return &core.Response[*sdkgo.BoardingLinkQueryRecord]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -370,7 +370,7 @@ func (r *RawClient) GetByTemplateIdLinkApplication(
 	// The boarding template ID. You can find this at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
 	templateId float64,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.BoardingLinkQueryRecord], error) {
+) (*core.Response[*sdkgo.BoardingLinkQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -387,27 +387,27 @@ func (r *RawClient) GetByTemplateIdLinkApplication(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.BoardingLinkQueryRecord
+	var response *sdkgo.BoardingLinkQueryRecord
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -425,7 +425,7 @@ func (r *RawClient) GetByTemplateIdLinkApplication(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.BoardingLinkQueryRecord]{
+	return &core.Response[*sdkgo.BoardingLinkQueryRecord]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -438,9 +438,9 @@ func (r *RawClient) GetExternalApplication(
 	appId int,
 	// Email address used to access the application. If `sendEmail` parameter is true, a link to the application is sent to this email address.
 	mail2 string,
-	request *sdk.GetExternalApplicationRequest,
+	request *sdkgo.GetExternalApplicationRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponse00], error) {
+) (*core.Response[*sdkgo.PayabliApiResponse00], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -465,27 +465,27 @@ func (r *RawClient) GetExternalApplication(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponse00
+	var response *sdkgo.PayabliApiResponse00
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -503,7 +503,7 @@ func (r *RawClient) GetExternalApplication(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponse00]{
+	return &core.Response[*sdkgo.PayabliApiResponse00]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -515,7 +515,7 @@ func (r *RawClient) GetLinkApplication(
 	// The boarding link reference name. You can find this at the end of the boarding link URL. For example `https://boarding.payabli.com/boarding/app/myorgaccountname-00091`
 	boardingLinkReference string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.BoardingLinkQueryRecord], error) {
+) (*core.Response[*sdkgo.BoardingLinkQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -532,27 +532,27 @@ func (r *RawClient) GetLinkApplication(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.BoardingLinkQueryRecord
+	var response *sdkgo.BoardingLinkQueryRecord
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -570,7 +570,7 @@ func (r *RawClient) GetLinkApplication(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.BoardingLinkQueryRecord]{
+	return &core.Response[*sdkgo.BoardingLinkQueryRecord]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -581,9 +581,9 @@ func (r *RawClient) ListApplications(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdk.ListApplicationsRequest,
+	request *sdkgo.ListApplicationsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.QueryBoardingAppsListResponse], error) {
+) (*core.Response[*sdkgo.QueryBoardingAppsListResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -607,27 +607,27 @@ func (r *RawClient) ListApplications(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.QueryBoardingAppsListResponse
+	var response *sdkgo.QueryBoardingAppsListResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -645,7 +645,7 @@ func (r *RawClient) ListApplications(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.QueryBoardingAppsListResponse]{
+	return &core.Response[*sdkgo.QueryBoardingAppsListResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -656,9 +656,9 @@ func (r *RawClient) ListBoardingLinks(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdk.ListBoardingLinksRequest,
+	request *sdkgo.ListBoardingLinksRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.QueryBoardingLinksResponse], error) {
+) (*core.Response[*sdkgo.QueryBoardingLinksResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -682,27 +682,27 @@ func (r *RawClient) ListBoardingLinks(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.QueryBoardingLinksResponse
+	var response *sdkgo.QueryBoardingLinksResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -720,7 +720,7 @@ func (r *RawClient) ListBoardingLinks(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.QueryBoardingLinksResponse]{
+	return &core.Response[*sdkgo.QueryBoardingLinksResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -731,9 +731,9 @@ func (r *RawClient) UpdateApplication(
 	ctx context.Context,
 	// Boarding application ID.
 	appId int,
-	request *sdk.ApplicationData,
+	request *sdkgo.ApplicationData,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponse00Responsedatanonobject], error) {
+) (*core.Response[*sdkgo.PayabliApiResponse00Responsedatanonobject], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -750,27 +750,27 @@ func (r *RawClient) UpdateApplication(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponse00Responsedatanonobject
+	var response *sdkgo.PayabliApiResponse00Responsedatanonobject
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -789,7 +789,7 @@ func (r *RawClient) UpdateApplication(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponse00Responsedatanonobject]{
+	return &core.Response[*sdkgo.PayabliApiResponse00Responsedatanonobject]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

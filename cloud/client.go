@@ -4,7 +4,7 @@ package cloud
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -37,9 +37,9 @@ func (c *Client) AddDevice(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdk.DeviceEntry,
+	request *sdkgo.DeviceEntry,
 	opts ...option.RequestOption,
-) (*sdk.AddDeviceResponse, error) {
+) (*sdkgo.AddDeviceResponse, error) {
 	response, err := c.WithRawResponse.AddDevice(
 		ctx,
 		entry,
@@ -60,7 +60,7 @@ func (c *Client) HistoryDevice(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	opts ...option.RequestOption,
-) (*sdk.CloudQueryApiResponse, error) {
+) (*sdkgo.CloudQueryApiResponse, error) {
 	response, err := c.WithRawResponse.HistoryDevice(
 		ctx,
 		deviceId,
@@ -78,9 +78,9 @@ func (c *Client) ListDevice(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdk.ListDeviceRequest,
+	request *sdkgo.ListDeviceRequest,
 	opts ...option.RequestOption,
-) (*sdk.CloudQueryApiResponse, error) {
+) (*sdkgo.CloudQueryApiResponse, error) {
 	response, err := c.WithRawResponse.ListDevice(
 		ctx,
 		entry,
@@ -101,7 +101,7 @@ func (c *Client) RemoveDevice(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	opts ...option.RequestOption,
-) (*sdk.RemoveDeviceResponse, error) {
+) (*sdkgo.RemoveDeviceResponse, error) {
 	response, err := c.WithRawResponse.RemoveDevice(
 		ctx,
 		deviceId,

@@ -4,7 +4,7 @@ package subscription
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -35,7 +35,7 @@ func (r *RawClient) GetSubscription(
 	// The subscription ID.
 	subId int,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.SubscriptionQueryRecords], error) {
+) (*core.Response[*sdkgo.SubscriptionQueryRecords], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -52,27 +52,27 @@ func (r *RawClient) GetSubscription(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.SubscriptionQueryRecords
+	var response *sdkgo.SubscriptionQueryRecords
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -90,7 +90,7 @@ func (r *RawClient) GetSubscription(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.SubscriptionQueryRecords]{
+	return &core.Response[*sdkgo.SubscriptionQueryRecords]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -99,9 +99,9 @@ func (r *RawClient) GetSubscription(
 
 func (r *RawClient) NewSubscription(
 	ctx context.Context,
-	request *sdk.RequestSchedule,
+	request *sdkgo.RequestSchedule,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.AddSubscriptionResponse], error) {
+) (*core.Response[*sdkgo.AddSubscriptionResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -126,27 +126,27 @@ func (r *RawClient) NewSubscription(
 	headers.Add("Content-Type", "application/json")
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.AddSubscriptionResponse
+	var response *sdkgo.AddSubscriptionResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -165,7 +165,7 @@ func (r *RawClient) NewSubscription(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.AddSubscriptionResponse]{
+	return &core.Response[*sdkgo.AddSubscriptionResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -177,7 +177,7 @@ func (r *RawClient) RemoveSubscription(
 	// The subscription ID.
 	subId int,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.RemoveSubscriptionResponse], error) {
+) (*core.Response[*sdkgo.RemoveSubscriptionResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -194,27 +194,27 @@ func (r *RawClient) RemoveSubscription(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.RemoveSubscriptionResponse
+	var response *sdkgo.RemoveSubscriptionResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -232,7 +232,7 @@ func (r *RawClient) RemoveSubscription(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.RemoveSubscriptionResponse]{
+	return &core.Response[*sdkgo.RemoveSubscriptionResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -243,9 +243,9 @@ func (r *RawClient) UpdateSubscription(
 	ctx context.Context,
 	// The subscription ID.
 	subId int,
-	request *sdk.RequestUpdateSchedule,
+	request *sdkgo.RequestUpdateSchedule,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.UpdateSubscriptionResponse], error) {
+) (*core.Response[*sdkgo.UpdateSubscriptionResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -263,27 +263,27 @@ func (r *RawClient) UpdateSubscription(
 	headers.Add("Content-Type", "application/json")
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.UpdateSubscriptionResponse
+	var response *sdkgo.UpdateSubscriptionResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -302,7 +302,7 @@ func (r *RawClient) UpdateSubscription(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.UpdateSubscriptionResponse]{
+	return &core.Response[*sdkgo.UpdateSubscriptionResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

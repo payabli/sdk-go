@@ -4,7 +4,7 @@ package moneyout
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Authorizes transaction for payout. Authorized transactions aren't flagged for settlement until captured. Use `referenceId` returned in the response to capture the transaction.
 func (c *Client) AuthorizeOut(
 	ctx context.Context,
-	request *sdk.MoneyOutTypesRequestOutAuthorize,
+	request *sdkgo.MoneyOutTypesRequestOutAuthorize,
 	opts ...option.RequestOption,
-) (*sdk.AuthCapturePayoutResponse, error) {
+) (*sdkgo.AuthCapturePayoutResponse, error) {
 	response, err := c.WithRawResponse.AuthorizeOut(
 		ctx,
 		request,
@@ -54,7 +54,7 @@ func (c *Client) CancelAllOut(
 	ctx context.Context,
 	request []string,
 	opts ...option.RequestOption,
-) (*sdk.CaptureAllOutResponse, error) {
+) (*sdkgo.CaptureAllOutResponse, error) {
 	response, err := c.WithRawResponse.CancelAllOut(
 		ctx,
 		request,
@@ -72,7 +72,7 @@ func (c *Client) CancelOut(
 	// The ID for the payout transaction.
 	referenceId string,
 	opts ...option.RequestOption,
-) (*sdk.PayabliApiResponse0000, error) {
+) (*sdkgo.PayabliApiResponse0000, error) {
 	response, err := c.WithRawResponse.CancelOut(
 		ctx,
 		referenceId,
@@ -87,9 +87,9 @@ func (c *Client) CancelOut(
 // Captures an array of authorized payout transactions for settlement.
 func (c *Client) CaptureAllOut(
 	ctx context.Context,
-	request *sdk.CaptureAllOutRequest,
+	request *sdkgo.CaptureAllOutRequest,
 	opts ...option.RequestOption,
-) (*sdk.CaptureAllOutResponse, error) {
+) (*sdkgo.CaptureAllOutResponse, error) {
 	response, err := c.WithRawResponse.CaptureAllOut(
 		ctx,
 		request,
@@ -106,9 +106,9 @@ func (c *Client) CaptureOut(
 	ctx context.Context,
 	// The ID for the payout transaction.
 	referenceId string,
-	request *sdk.CaptureOutRequest,
+	request *sdkgo.CaptureOutRequest,
 	opts ...option.RequestOption,
-) (*sdk.AuthCapturePayoutResponse, error) {
+) (*sdkgo.AuthCapturePayoutResponse, error) {
 	response, err := c.WithRawResponse.CaptureOut(
 		ctx,
 		referenceId,
@@ -127,7 +127,7 @@ func (c *Client) PayoutDetails(
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
 	opts ...option.RequestOption,
-) (*sdk.BillDetailResponse, error) {
+) (*sdkgo.BillDetailResponse, error) {
 	response, err := c.WithRawResponse.PayoutDetails(
 		ctx,
 		transId,
@@ -145,7 +145,7 @@ func (c *Client) VCardGet(
 	// ID for a virtual card.
 	cardToken string,
 	opts ...option.RequestOption,
-) (*sdk.VCardGetResponse, error) {
+) (*sdkgo.VCardGetResponse, error) {
 	response, err := c.WithRawResponse.VCardGet(
 		ctx,
 		cardToken,
@@ -160,9 +160,9 @@ func (c *Client) VCardGet(
 // Sends a virtual card link via email to the vendor associated with the `transId`.
 func (c *Client) SendVCardLink(
 	ctx context.Context,
-	request *sdk.SendVCardLinkRequest,
+	request *sdkgo.SendVCardLinkRequest,
 	opts ...option.RequestOption,
-) (*sdk.OperationResult, error) {
+) (*sdkgo.OperationResult, error) {
 	response, err := c.WithRawResponse.SendVCardLink(
 		ctx,
 		request,

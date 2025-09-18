@@ -4,7 +4,7 @@ package lineitem
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -34,9 +34,9 @@ func (r *RawClient) AddItem(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdk.AddItemRequest,
+	request *sdkgo.AddItemRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponse6], error) {
+) (*core.Response[*sdkgo.PayabliApiResponse6], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -57,27 +57,27 @@ func (r *RawClient) AddItem(
 	headers.Add("Content-Type", "application/json")
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponse6
+	var response *sdkgo.PayabliApiResponse6
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -96,7 +96,7 @@ func (r *RawClient) AddItem(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponse6]{
+	return &core.Response[*sdkgo.PayabliApiResponse6]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -108,7 +108,7 @@ func (r *RawClient) DeleteItem(
 	// ID for the line item (also known as a product, service, or item).
 	lineItemId int,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.DeleteItemResponse], error) {
+) (*core.Response[*sdkgo.DeleteItemResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -125,27 +125,27 @@ func (r *RawClient) DeleteItem(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.DeleteItemResponse
+	var response *sdkgo.DeleteItemResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -163,7 +163,7 @@ func (r *RawClient) DeleteItem(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.DeleteItemResponse]{
+	return &core.Response[*sdkgo.DeleteItemResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -175,7 +175,7 @@ func (r *RawClient) GetItem(
 	// ID for the line item (also known as a product, service, or item).
 	lineItemId int,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.LineItemQueryRecord], error) {
+) (*core.Response[*sdkgo.LineItemQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -192,27 +192,27 @@ func (r *RawClient) GetItem(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.LineItemQueryRecord
+	var response *sdkgo.LineItemQueryRecord
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -230,7 +230,7 @@ func (r *RawClient) GetItem(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.LineItemQueryRecord]{
+	return &core.Response[*sdkgo.LineItemQueryRecord]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -241,9 +241,9 @@ func (r *RawClient) ListLineItems(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdk.ListLineItemsRequest,
+	request *sdkgo.ListLineItemsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.QueryResponseItems], error) {
+) (*core.Response[*sdkgo.QueryResponseItems], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -267,27 +267,27 @@ func (r *RawClient) ListLineItems(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.QueryResponseItems
+	var response *sdkgo.QueryResponseItems
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -305,7 +305,7 @@ func (r *RawClient) ListLineItems(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.QueryResponseItems]{
+	return &core.Response[*sdkgo.QueryResponseItems]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -316,9 +316,9 @@ func (r *RawClient) UpdateItem(
 	ctx context.Context,
 	// ID for the line item (also known as a product, service, or item).
 	lineItemId int,
-	request *sdk.LineItem,
+	request *sdkgo.LineItem,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponse6], error) {
+) (*core.Response[*sdkgo.PayabliApiResponse6], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -335,27 +335,27 @@ func (r *RawClient) UpdateItem(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponse6
+	var response *sdkgo.PayabliApiResponse6
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -374,7 +374,7 @@ func (r *RawClient) UpdateItem(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponse6]{
+	return &core.Response[*sdkgo.PayabliApiResponse6]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

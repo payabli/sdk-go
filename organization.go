@@ -6,6 +6,30 @@ import (
 	json "encoding/json"
 	fmt "fmt"
 	internal "github.com/payabli/sdk-go/internal"
+	big "math/big"
+)
+
+var (
+	addOrganizationRequestFieldIdempotencyKey = big.NewInt(1 << 0)
+	addOrganizationRequestFieldServices       = big.NewInt(1 << 1)
+	addOrganizationRequestFieldBillingInfo    = big.NewInt(1 << 2)
+	addOrganizationRequestFieldContacts       = big.NewInt(1 << 3)
+	addOrganizationRequestFieldHasBilling     = big.NewInt(1 << 4)
+	addOrganizationRequestFieldHasResidual    = big.NewInt(1 << 5)
+	addOrganizationRequestFieldOrgAddress     = big.NewInt(1 << 6)
+	addOrganizationRequestFieldOrgCity        = big.NewInt(1 << 7)
+	addOrganizationRequestFieldOrgCountry     = big.NewInt(1 << 8)
+	addOrganizationRequestFieldOrgEntryName   = big.NewInt(1 << 9)
+	addOrganizationRequestFieldOrgId          = big.NewInt(1 << 10)
+	addOrganizationRequestFieldOrgLogo        = big.NewInt(1 << 11)
+	addOrganizationRequestFieldOrgName        = big.NewInt(1 << 12)
+	addOrganizationRequestFieldOrgParentId    = big.NewInt(1 << 13)
+	addOrganizationRequestFieldOrgState       = big.NewInt(1 << 14)
+	addOrganizationRequestFieldOrgTimezone    = big.NewInt(1 << 15)
+	addOrganizationRequestFieldOrgType        = big.NewInt(1 << 16)
+	addOrganizationRequestFieldOrgWebsite     = big.NewInt(1 << 17)
+	addOrganizationRequestFieldOrgZip         = big.NewInt(1 << 18)
+	addOrganizationRequestFieldReplyToEmail   = big.NewInt(1 << 19)
 )
 
 type AddOrganizationRequest struct {
@@ -29,7 +53,179 @@ type AddOrganizationRequest struct {
 	OrgWebsite     *Orgwebsite     `json:"orgWebsite,omitempty" url:"-"`
 	OrgZip         *Orgzip         `json:"orgZip,omitempty" url:"-"`
 	ReplyToEmail   ReplyToEmail    `json:"replyToEmail" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (a *AddOrganizationRequest) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetIdempotencyKey sets the IdempotencyKey field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddOrganizationRequest) SetIdempotencyKey(idempotencyKey *IdempotencyKey) {
+	a.IdempotencyKey = idempotencyKey
+	a.require(addOrganizationRequestFieldIdempotencyKey)
+}
+
+// SetServices sets the Services field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddOrganizationRequest) SetServices(services []*ServiceCost) {
+	a.Services = services
+	a.require(addOrganizationRequestFieldServices)
+}
+
+// SetBillingInfo sets the BillingInfo field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddOrganizationRequest) SetBillingInfo(billingInfo *Instrument) {
+	a.BillingInfo = billingInfo
+	a.require(addOrganizationRequestFieldBillingInfo)
+}
+
+// SetContacts sets the Contacts field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddOrganizationRequest) SetContacts(contacts *ContactsField) {
+	a.Contacts = contacts
+	a.require(addOrganizationRequestFieldContacts)
+}
+
+// SetHasBilling sets the HasBilling field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddOrganizationRequest) SetHasBilling(hasBilling *bool) {
+	a.HasBilling = hasBilling
+	a.require(addOrganizationRequestFieldHasBilling)
+}
+
+// SetHasResidual sets the HasResidual field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddOrganizationRequest) SetHasResidual(hasResidual *bool) {
+	a.HasResidual = hasResidual
+	a.require(addOrganizationRequestFieldHasResidual)
+}
+
+// SetOrgAddress sets the OrgAddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddOrganizationRequest) SetOrgAddress(orgAddress *Orgaddress) {
+	a.OrgAddress = orgAddress
+	a.require(addOrganizationRequestFieldOrgAddress)
+}
+
+// SetOrgCity sets the OrgCity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddOrganizationRequest) SetOrgCity(orgCity *Orgcity) {
+	a.OrgCity = orgCity
+	a.require(addOrganizationRequestFieldOrgCity)
+}
+
+// SetOrgCountry sets the OrgCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddOrganizationRequest) SetOrgCountry(orgCountry *Orgcountry) {
+	a.OrgCountry = orgCountry
+	a.require(addOrganizationRequestFieldOrgCountry)
+}
+
+// SetOrgEntryName sets the OrgEntryName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddOrganizationRequest) SetOrgEntryName(orgEntryName *Orgentryname) {
+	a.OrgEntryName = orgEntryName
+	a.require(addOrganizationRequestFieldOrgEntryName)
+}
+
+// SetOrgId sets the OrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddOrganizationRequest) SetOrgId(orgId *Orgidstring) {
+	a.OrgId = orgId
+	a.require(addOrganizationRequestFieldOrgId)
+}
+
+// SetOrgLogo sets the OrgLogo field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddOrganizationRequest) SetOrgLogo(orgLogo *FileContent) {
+	a.OrgLogo = orgLogo
+	a.require(addOrganizationRequestFieldOrgLogo)
+}
+
+// SetOrgName sets the OrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddOrganizationRequest) SetOrgName(orgName Orgname) {
+	a.OrgName = orgName
+	a.require(addOrganizationRequestFieldOrgName)
+}
+
+// SetOrgParentId sets the OrgParentId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddOrganizationRequest) SetOrgParentId(orgParentId *OrgParentId) {
+	a.OrgParentId = orgParentId
+	a.require(addOrganizationRequestFieldOrgParentId)
+}
+
+// SetOrgState sets the OrgState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddOrganizationRequest) SetOrgState(orgState *Orgstate) {
+	a.OrgState = orgState
+	a.require(addOrganizationRequestFieldOrgState)
+}
+
+// SetOrgTimezone sets the OrgTimezone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddOrganizationRequest) SetOrgTimezone(orgTimezone *Orgtimezone) {
+	a.OrgTimezone = orgTimezone
+	a.require(addOrganizationRequestFieldOrgTimezone)
+}
+
+// SetOrgType sets the OrgType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddOrganizationRequest) SetOrgType(orgType Orgtype) {
+	a.OrgType = orgType
+	a.require(addOrganizationRequestFieldOrgType)
+}
+
+// SetOrgWebsite sets the OrgWebsite field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddOrganizationRequest) SetOrgWebsite(orgWebsite *Orgwebsite) {
+	a.OrgWebsite = orgWebsite
+	a.require(addOrganizationRequestFieldOrgWebsite)
+}
+
+// SetOrgZip sets the OrgZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddOrganizationRequest) SetOrgZip(orgZip *Orgzip) {
+	a.OrgZip = orgZip
+	a.require(addOrganizationRequestFieldOrgZip)
+}
+
+// SetReplyToEmail sets the ReplyToEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddOrganizationRequest) SetReplyToEmail(replyToEmail ReplyToEmail) {
+	a.ReplyToEmail = replyToEmail
+	a.require(addOrganizationRequestFieldReplyToEmail)
+}
+
+var (
+	organizationDataFieldServices              = big.NewInt(1 << 0)
+	organizationDataFieldBillingInfo           = big.NewInt(1 << 1)
+	organizationDataFieldContacts              = big.NewInt(1 << 2)
+	organizationDataFieldHasBilling            = big.NewInt(1 << 3)
+	organizationDataFieldHasResidual           = big.NewInt(1 << 4)
+	organizationDataFieldOrgAddress            = big.NewInt(1 << 5)
+	organizationDataFieldOrgCity               = big.NewInt(1 << 6)
+	organizationDataFieldOrgCountry            = big.NewInt(1 << 7)
+	organizationDataFieldOrgEntryName          = big.NewInt(1 << 8)
+	organizationDataFieldOrganizationDataOrgId = big.NewInt(1 << 9)
+	organizationDataFieldOrgLogo               = big.NewInt(1 << 10)
+	organizationDataFieldOrgName               = big.NewInt(1 << 11)
+	organizationDataFieldOrgParentId           = big.NewInt(1 << 12)
+	organizationDataFieldOrgState              = big.NewInt(1 << 13)
+	organizationDataFieldOrgTimezone           = big.NewInt(1 << 14)
+	organizationDataFieldOrgType               = big.NewInt(1 << 15)
+	organizationDataFieldOrgWebsite            = big.NewInt(1 << 16)
+	organizationDataFieldOrgZip                = big.NewInt(1 << 17)
+	organizationDataFieldReplyToEmail          = big.NewInt(1 << 18)
+)
 
 type OrganizationData struct {
 	Services              []*ServiceCost `json:"services,omitempty" url:"-"`
@@ -51,7 +247,161 @@ type OrganizationData struct {
 	OrgWebsite            *Orgwebsite    `json:"orgWebsite,omitempty" url:"-"`
 	OrgZip                *Orgzip        `json:"orgZip,omitempty" url:"-"`
 	ReplyToEmail          *ReplyToEmail  `json:"replyToEmail,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (o *OrganizationData) require(field *big.Int) {
+	if o.explicitFields == nil {
+		o.explicitFields = big.NewInt(0)
+	}
+	o.explicitFields.Or(o.explicitFields, field)
+}
+
+// SetServices sets the Services field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OrganizationData) SetServices(services []*ServiceCost) {
+	o.Services = services
+	o.require(organizationDataFieldServices)
+}
+
+// SetBillingInfo sets the BillingInfo field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OrganizationData) SetBillingInfo(billingInfo *Instrument) {
+	o.BillingInfo = billingInfo
+	o.require(organizationDataFieldBillingInfo)
+}
+
+// SetContacts sets the Contacts field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OrganizationData) SetContacts(contacts *ContactsField) {
+	o.Contacts = contacts
+	o.require(organizationDataFieldContacts)
+}
+
+// SetHasBilling sets the HasBilling field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OrganizationData) SetHasBilling(hasBilling *bool) {
+	o.HasBilling = hasBilling
+	o.require(organizationDataFieldHasBilling)
+}
+
+// SetHasResidual sets the HasResidual field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OrganizationData) SetHasResidual(hasResidual *bool) {
+	o.HasResidual = hasResidual
+	o.require(organizationDataFieldHasResidual)
+}
+
+// SetOrgAddress sets the OrgAddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OrganizationData) SetOrgAddress(orgAddress *Orgaddress) {
+	o.OrgAddress = orgAddress
+	o.require(organizationDataFieldOrgAddress)
+}
+
+// SetOrgCity sets the OrgCity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OrganizationData) SetOrgCity(orgCity *Orgcity) {
+	o.OrgCity = orgCity
+	o.require(organizationDataFieldOrgCity)
+}
+
+// SetOrgCountry sets the OrgCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OrganizationData) SetOrgCountry(orgCountry *Orgcountry) {
+	o.OrgCountry = orgCountry
+	o.require(organizationDataFieldOrgCountry)
+}
+
+// SetOrgEntryName sets the OrgEntryName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OrganizationData) SetOrgEntryName(orgEntryName *Orgentryname) {
+	o.OrgEntryName = orgEntryName
+	o.require(organizationDataFieldOrgEntryName)
+}
+
+// SetOrganizationDataOrgId sets the OrganizationDataOrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OrganizationData) SetOrganizationDataOrgId(organizationDataOrgId *Orgidstring) {
+	o.OrganizationDataOrgId = organizationDataOrgId
+	o.require(organizationDataFieldOrganizationDataOrgId)
+}
+
+// SetOrgLogo sets the OrgLogo field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OrganizationData) SetOrgLogo(orgLogo *FileContent) {
+	o.OrgLogo = orgLogo
+	o.require(organizationDataFieldOrgLogo)
+}
+
+// SetOrgName sets the OrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OrganizationData) SetOrgName(orgName *Orgname) {
+	o.OrgName = orgName
+	o.require(organizationDataFieldOrgName)
+}
+
+// SetOrgParentId sets the OrgParentId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OrganizationData) SetOrgParentId(orgParentId *OrgParentId) {
+	o.OrgParentId = orgParentId
+	o.require(organizationDataFieldOrgParentId)
+}
+
+// SetOrgState sets the OrgState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OrganizationData) SetOrgState(orgState *Orgstate) {
+	o.OrgState = orgState
+	o.require(organizationDataFieldOrgState)
+}
+
+// SetOrgTimezone sets the OrgTimezone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OrganizationData) SetOrgTimezone(orgTimezone *Orgtimezone) {
+	o.OrgTimezone = orgTimezone
+	o.require(organizationDataFieldOrgTimezone)
+}
+
+// SetOrgType sets the OrgType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OrganizationData) SetOrgType(orgType *Orgtype) {
+	o.OrgType = orgType
+	o.require(organizationDataFieldOrgType)
+}
+
+// SetOrgWebsite sets the OrgWebsite field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OrganizationData) SetOrgWebsite(orgWebsite *Orgwebsite) {
+	o.OrgWebsite = orgWebsite
+	o.require(organizationDataFieldOrgWebsite)
+}
+
+// SetOrgZip sets the OrgZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OrganizationData) SetOrgZip(orgZip *Orgzip) {
+	o.OrgZip = orgZip
+	o.require(organizationDataFieldOrgZip)
+}
+
+// SetReplyToEmail sets the ReplyToEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OrganizationData) SetReplyToEmail(replyToEmail *ReplyToEmail) {
+	o.ReplyToEmail = replyToEmail
+	o.require(organizationDataFieldReplyToEmail)
+}
+
+var (
+	serviceCostFieldDescription   = big.NewInt(1 << 0)
+	serviceCostFieldEnabled       = big.NewInt(1 << 1)
+	serviceCostFieldMonthlyCost   = big.NewInt(1 << 2)
+	serviceCostFieldName          = big.NewInt(1 << 3)
+	serviceCostFieldReseller      = big.NewInt(1 << 4)
+	serviceCostFieldSetupCost     = big.NewInt(1 << 5)
+	serviceCostFieldTxCost        = big.NewInt(1 << 6)
+	serviceCostFieldTxPercentCost = big.NewInt(1 << 7)
+)
 
 type ServiceCost struct {
 	Description   *string  `json:"description,omitempty" url:"description,omitempty"`
@@ -62,6 +412,9 @@ type ServiceCost struct {
 	SetupCost     *float64 `json:"setupCost,omitempty" url:"setupCost,omitempty"`
 	TxCost        *float64 `json:"txCost,omitempty" url:"txCost,omitempty"`
 	TxPercentCost *float64 `json:"txPercentCost,omitempty" url:"txPercentCost,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -127,6 +480,69 @@ func (s *ServiceCost) GetExtraProperties() map[string]interface{} {
 	return s.extraProperties
 }
 
+func (s *ServiceCost) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ServiceCost) SetDescription(description *string) {
+	s.Description = description
+	s.require(serviceCostFieldDescription)
+}
+
+// SetEnabled sets the Enabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ServiceCost) SetEnabled(enabled *Enabled) {
+	s.Enabled = enabled
+	s.require(serviceCostFieldEnabled)
+}
+
+// SetMonthlyCost sets the MonthlyCost field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ServiceCost) SetMonthlyCost(monthlyCost *float64) {
+	s.MonthlyCost = monthlyCost
+	s.require(serviceCostFieldMonthlyCost)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ServiceCost) SetName(name *string) {
+	s.Name = name
+	s.require(serviceCostFieldName)
+}
+
+// SetReseller sets the Reseller field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ServiceCost) SetReseller(reseller *bool) {
+	s.Reseller = reseller
+	s.require(serviceCostFieldReseller)
+}
+
+// SetSetupCost sets the SetupCost field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ServiceCost) SetSetupCost(setupCost *float64) {
+	s.SetupCost = setupCost
+	s.require(serviceCostFieldSetupCost)
+}
+
+// SetTxCost sets the TxCost field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ServiceCost) SetTxCost(txCost *float64) {
+	s.TxCost = txCost
+	s.require(serviceCostFieldTxCost)
+}
+
+// SetTxPercentCost sets the TxPercentCost field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ServiceCost) SetTxPercentCost(txPercentCost *float64) {
+	s.TxPercentCost = txPercentCost
+	s.require(serviceCostFieldTxPercentCost)
+}
+
 func (s *ServiceCost) UnmarshalJSON(data []byte) error {
 	type unmarshaler ServiceCost
 	var value unmarshaler
@@ -143,6 +559,17 @@ func (s *ServiceCost) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (s *ServiceCost) MarshalJSON() ([]byte, error) {
+	type embed ServiceCost
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (s *ServiceCost) String() string {
 	if len(s.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
@@ -155,11 +582,20 @@ func (s *ServiceCost) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
+var (
+	addOrganizationResponseFieldIsSuccess    = big.NewInt(1 << 0)
+	addOrganizationResponseFieldResponseData = big.NewInt(1 << 1)
+	addOrganizationResponseFieldResponseText = big.NewInt(1 << 2)
+)
+
 type AddOrganizationResponse struct {
 	IsSuccess *IsSuccess `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	// Returns the organization ID.
 	ResponseData *Responsedatanonobject `json:"responseData,omitempty" url:"responseData,omitempty"`
 	ResponseText ResponseText           `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -190,6 +626,34 @@ func (a *AddOrganizationResponse) GetExtraProperties() map[string]interface{} {
 	return a.extraProperties
 }
 
+func (a *AddOrganizationResponse) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddOrganizationResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	a.IsSuccess = isSuccess
+	a.require(addOrganizationResponseFieldIsSuccess)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddOrganizationResponse) SetResponseData(responseData *Responsedatanonobject) {
+	a.ResponseData = responseData
+	a.require(addOrganizationResponseFieldResponseData)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddOrganizationResponse) SetResponseText(responseText ResponseText) {
+	a.ResponseText = responseText
+	a.require(addOrganizationResponseFieldResponseText)
+}
+
 func (a *AddOrganizationResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler AddOrganizationResponse
 	var value unmarshaler
@@ -206,6 +670,17 @@ func (a *AddOrganizationResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (a *AddOrganizationResponse) MarshalJSON() ([]byte, error) {
+	type embed AddOrganizationResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (a *AddOrganizationResponse) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
@@ -218,11 +693,20 @@ func (a *AddOrganizationResponse) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+var (
+	deleteOrganizationResponseFieldIsSuccess    = big.NewInt(1 << 0)
+	deleteOrganizationResponseFieldResponseData = big.NewInt(1 << 1)
+	deleteOrganizationResponseFieldResponseText = big.NewInt(1 << 2)
+)
+
 type DeleteOrganizationResponse struct {
 	IsSuccess *IsSuccess `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	// Returns the organization ID.
 	ResponseData *Responsedatanonobject `json:"responseData,omitempty" url:"responseData,omitempty"`
 	ResponseText ResponseText           `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -253,6 +737,34 @@ func (d *DeleteOrganizationResponse) GetExtraProperties() map[string]interface{}
 	return d.extraProperties
 }
 
+func (d *DeleteOrganizationResponse) require(field *big.Int) {
+	if d.explicitFields == nil {
+		d.explicitFields = big.NewInt(0)
+	}
+	d.explicitFields.Or(d.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeleteOrganizationResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	d.IsSuccess = isSuccess
+	d.require(deleteOrganizationResponseFieldIsSuccess)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeleteOrganizationResponse) SetResponseData(responseData *Responsedatanonobject) {
+	d.ResponseData = responseData
+	d.require(deleteOrganizationResponseFieldResponseData)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeleteOrganizationResponse) SetResponseText(responseText ResponseText) {
+	d.ResponseText = responseText
+	d.require(deleteOrganizationResponseFieldResponseText)
+}
+
 func (d *DeleteOrganizationResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler DeleteOrganizationResponse
 	var value unmarshaler
@@ -269,6 +781,17 @@ func (d *DeleteOrganizationResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (d *DeleteOrganizationResponse) MarshalJSON() ([]byte, error) {
+	type embed DeleteOrganizationResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*d),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (d *DeleteOrganizationResponse) String() string {
 	if len(d.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
@@ -281,6 +804,14 @@ func (d *DeleteOrganizationResponse) String() string {
 	return fmt.Sprintf("%#v", d)
 }
 
+var (
+	editOrganizationResponseFieldIsSuccess      = big.NewInt(1 << 0)
+	editOrganizationResponseFieldPageIdentifier = big.NewInt(1 << 1)
+	editOrganizationResponseFieldResponseCode   = big.NewInt(1 << 2)
+	editOrganizationResponseFieldResponseData   = big.NewInt(1 << 3)
+	editOrganizationResponseFieldResponseText   = big.NewInt(1 << 4)
+)
+
 type EditOrganizationResponse struct {
 	IsSuccess      *IsSuccess      `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	PageIdentifier *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
@@ -288,6 +819,9 @@ type EditOrganizationResponse struct {
 	// Returns the organization ID.
 	ResponseData *Responsedatanonobject `json:"responseData,omitempty" url:"responseData,omitempty"`
 	ResponseText ResponseText           `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -332,6 +866,48 @@ func (e *EditOrganizationResponse) GetExtraProperties() map[string]interface{} {
 	return e.extraProperties
 }
 
+func (e *EditOrganizationResponse) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EditOrganizationResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	e.IsSuccess = isSuccess
+	e.require(editOrganizationResponseFieldIsSuccess)
+}
+
+// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EditOrganizationResponse) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+	e.PageIdentifier = pageIdentifier
+	e.require(editOrganizationResponseFieldPageIdentifier)
+}
+
+// SetResponseCode sets the ResponseCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EditOrganizationResponse) SetResponseCode(responseCode Responsecode) {
+	e.ResponseCode = responseCode
+	e.require(editOrganizationResponseFieldResponseCode)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EditOrganizationResponse) SetResponseData(responseData *Responsedatanonobject) {
+	e.ResponseData = responseData
+	e.require(editOrganizationResponseFieldResponseData)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EditOrganizationResponse) SetResponseText(responseText ResponseText) {
+	e.ResponseText = responseText
+	e.require(editOrganizationResponseFieldResponseText)
+}
+
 func (e *EditOrganizationResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler EditOrganizationResponse
 	var value unmarshaler
@@ -346,6 +922,17 @@ func (e *EditOrganizationResponse) UnmarshalJSON(data []byte) error {
 	e.extraProperties = extraProperties
 	e.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (e *EditOrganizationResponse) MarshalJSON() ([]byte, error) {
+	type embed EditOrganizationResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*e),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (e *EditOrganizationResponse) String() string {

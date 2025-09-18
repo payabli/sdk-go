@@ -6,7 +6,16 @@ import (
 	json "encoding/json"
 	fmt "fmt"
 	internal "github.com/payabli/sdk-go/internal"
+	big "math/big"
 	time "time"
+)
+
+var (
+	responseChargeBackFieldIdempotencyKey = big.NewInt(1 << 0)
+	responseChargeBackFieldAttachments    = big.NewInt(1 << 1)
+	responseChargeBackFieldContactEmail   = big.NewInt(1 << 2)
+	responseChargeBackFieldContactName    = big.NewInt(1 << 3)
+	responseChargeBackFieldNotes          = big.NewInt(1 << 4)
 )
 
 type ResponseChargeBack struct {
@@ -19,13 +28,67 @@ type ResponseChargeBack struct {
 	ContactName *string `json:"contactName,omitempty" url:"-"`
 	// Response notes
 	Notes *string `json:"notes,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (r *ResponseChargeBack) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetIdempotencyKey sets the IdempotencyKey field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ResponseChargeBack) SetIdempotencyKey(idempotencyKey *IdempotencyKey) {
+	r.IdempotencyKey = idempotencyKey
+	r.require(responseChargeBackFieldIdempotencyKey)
+}
+
+// SetAttachments sets the Attachments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ResponseChargeBack) SetAttachments(attachments *Attachments) {
+	r.Attachments = attachments
+	r.require(responseChargeBackFieldAttachments)
+}
+
+// SetContactEmail sets the ContactEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ResponseChargeBack) SetContactEmail(contactEmail *Email) {
+	r.ContactEmail = contactEmail
+	r.require(responseChargeBackFieldContactEmail)
+}
+
+// SetContactName sets the ContactName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ResponseChargeBack) SetContactName(contactName *string) {
+	r.ContactName = contactName
+	r.require(responseChargeBackFieldContactName)
+}
+
+// SetNotes sets the Notes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ResponseChargeBack) SetNotes(notes *string) {
+	r.Notes = notes
+	r.require(responseChargeBackFieldNotes)
+}
+
+var (
+	addResponseResponseFieldIsSuccess    = big.NewInt(1 << 0)
+	addResponseResponseFieldResponseText = big.NewInt(1 << 1)
+	addResponseResponseFieldResponseData = big.NewInt(1 << 2)
+)
 
 type AddResponseResponse struct {
 	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	ResponseText ResponseText `json:"responseText" url:"responseText"`
 	// If `isSuccess` = true, this contains the chargeback identifier. If `isSuccess` = false, this contains the reason for the error.
 	ResponseData *int `json:"responseData,omitempty" url:"responseData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -56,6 +119,34 @@ func (a *AddResponseResponse) GetExtraProperties() map[string]interface{} {
 	return a.extraProperties
 }
 
+func (a *AddResponseResponse) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddResponseResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	a.IsSuccess = isSuccess
+	a.require(addResponseResponseFieldIsSuccess)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddResponseResponse) SetResponseText(responseText ResponseText) {
+	a.ResponseText = responseText
+	a.require(addResponseResponseFieldResponseText)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddResponseResponse) SetResponseData(responseData *int) {
+	a.ResponseData = responseData
+	a.require(addResponseResponseFieldResponseData)
+}
+
 func (a *AddResponseResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler AddResponseResponse
 	var value unmarshaler
@@ -72,6 +163,17 @@ func (a *AddResponseResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (a *AddResponseResponse) MarshalJSON() ([]byte, error) {
+	type embed AddResponseResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (a *AddResponseResponse) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
@@ -83,6 +185,15 @@ func (a *AddResponseResponse) String() string {
 	}
 	return fmt.Sprintf("%#v", a)
 }
+
+var (
+	chargeBackResponseFieldAttachments  = big.NewInt(1 << 0)
+	chargeBackResponseFieldContactEmail = big.NewInt(1 << 1)
+	chargeBackResponseFieldContactName  = big.NewInt(1 << 2)
+	chargeBackResponseFieldCreatedAt    = big.NewInt(1 << 3)
+	chargeBackResponseFieldId           = big.NewInt(1 << 4)
+	chargeBackResponseFieldNotes        = big.NewInt(1 << 5)
+)
 
 type ChargeBackResponse struct {
 	// Object with attached files to response
@@ -97,6 +208,9 @@ type ChargeBackResponse struct {
 	Id *int64 `json:"id,omitempty" url:"id,omitempty"`
 	// Response notes
 	Notes *string `json:"notes,omitempty" url:"notes,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -148,6 +262,55 @@ func (c *ChargeBackResponse) GetExtraProperties() map[string]interface{} {
 	return c.extraProperties
 }
 
+func (c *ChargeBackResponse) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetAttachments sets the Attachments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargeBackResponse) SetAttachments(attachments *BoardingApplicationAttachments) {
+	c.Attachments = attachments
+	c.require(chargeBackResponseFieldAttachments)
+}
+
+// SetContactEmail sets the ContactEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargeBackResponse) SetContactEmail(contactEmail *Email) {
+	c.ContactEmail = contactEmail
+	c.require(chargeBackResponseFieldContactEmail)
+}
+
+// SetContactName sets the ContactName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargeBackResponse) SetContactName(contactName *string) {
+	c.ContactName = contactName
+	c.require(chargeBackResponseFieldContactName)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargeBackResponse) SetCreatedAt(createdAt *CreatedAt) {
+	c.CreatedAt = createdAt
+	c.require(chargeBackResponseFieldCreatedAt)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargeBackResponse) SetId(id *int64) {
+	c.Id = id
+	c.require(chargeBackResponseFieldId)
+}
+
+// SetNotes sets the Notes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargeBackResponse) SetNotes(notes *string) {
+	c.Notes = notes
+	c.require(chargeBackResponseFieldNotes)
+}
+
 func (c *ChargeBackResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler ChargeBackResponse
 	var value unmarshaler
@@ -164,6 +327,17 @@ func (c *ChargeBackResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (c *ChargeBackResponse) MarshalJSON() ([]byte, error) {
+	type embed ChargeBackResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (c *ChargeBackResponse) String() string {
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
@@ -175,6 +349,17 @@ func (c *ChargeBackResponse) String() string {
 	}
 	return fmt.Sprintf("%#v", c)
 }
+
+var (
+	chargebackMessageFieldId                = big.NewInt(1 << 0)
+	chargebackMessageFieldRoomId            = big.NewInt(1 << 1)
+	chargebackMessageFieldUserId            = big.NewInt(1 << 2)
+	chargebackMessageFieldUserName          = big.NewInt(1 << 3)
+	chargebackMessageFieldContent           = big.NewInt(1 << 4)
+	chargebackMessageFieldCreatedAt         = big.NewInt(1 << 5)
+	chargebackMessageFieldMessageType       = big.NewInt(1 << 6)
+	chargebackMessageFieldMessageProperties = big.NewInt(1 << 7)
+)
 
 type ChargebackMessage struct {
 	// Message identifier.
@@ -193,6 +378,9 @@ type ChargebackMessage struct {
 	MessageType int `json:"MessageType" url:"MessageType"`
 	// Additional properties of the message.
 	MessageProperties map[string]string `json:"MessageProperties,omitempty" url:"MessageProperties,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -258,6 +446,69 @@ func (c *ChargebackMessage) GetExtraProperties() map[string]interface{} {
 	return c.extraProperties
 }
 
+func (c *ChargebackMessage) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackMessage) SetId(id int) {
+	c.Id = id
+	c.require(chargebackMessageFieldId)
+}
+
+// SetRoomId sets the RoomId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackMessage) SetRoomId(roomId int) {
+	c.RoomId = roomId
+	c.require(chargebackMessageFieldRoomId)
+}
+
+// SetUserId sets the UserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackMessage) SetUserId(userId int) {
+	c.UserId = userId
+	c.require(chargebackMessageFieldUserId)
+}
+
+// SetUserName sets the UserName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackMessage) SetUserName(userName string) {
+	c.UserName = userName
+	c.require(chargebackMessageFieldUserName)
+}
+
+// SetContent sets the Content field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackMessage) SetContent(content string) {
+	c.Content = content
+	c.require(chargebackMessageFieldContent)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackMessage) SetCreatedAt(createdAt time.Time) {
+	c.CreatedAt = createdAt
+	c.require(chargebackMessageFieldCreatedAt)
+}
+
+// SetMessageType sets the MessageType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackMessage) SetMessageType(messageType int) {
+	c.MessageType = messageType
+	c.require(chargebackMessageFieldMessageType)
+}
+
+// SetMessageProperties sets the MessageProperties field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackMessage) SetMessageProperties(messageProperties map[string]string) {
+	c.MessageProperties = messageProperties
+	c.require(chargebackMessageFieldMessageProperties)
+}
+
 func (c *ChargebackMessage) UnmarshalJSON(data []byte) error {
 	type embed ChargebackMessage
 	var unmarshaler = struct {
@@ -289,7 +540,8 @@ func (c *ChargebackMessage) MarshalJSON() ([]byte, error) {
 		embed:     embed(*c),
 		CreatedAt: internal.NewDateTime(c.CreatedAt),
 	}
-	return json.Marshal(marshaler)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (c *ChargebackMessage) String() string {
@@ -303,6 +555,41 @@ func (c *ChargebackMessage) String() string {
 	}
 	return fmt.Sprintf("%#v", c)
 }
+
+var (
+	chargebackQueryRecordsFieldId                 = big.NewInt(1 << 0)
+	chargebackQueryRecordsFieldChargebackDate     = big.NewInt(1 << 1)
+	chargebackQueryRecordsFieldCaseNumber         = big.NewInt(1 << 2)
+	chargebackQueryRecordsFieldReasonCode         = big.NewInt(1 << 3)
+	chargebackQueryRecordsFieldReason             = big.NewInt(1 << 4)
+	chargebackQueryRecordsFieldReferenceNumber    = big.NewInt(1 << 5)
+	chargebackQueryRecordsFieldLastFour           = big.NewInt(1 << 6)
+	chargebackQueryRecordsFieldAccountType        = big.NewInt(1 << 7)
+	chargebackQueryRecordsFieldStatus             = big.NewInt(1 << 8)
+	chargebackQueryRecordsFieldMethod             = big.NewInt(1 << 9)
+	chargebackQueryRecordsFieldCreatedAt          = big.NewInt(1 << 10)
+	chargebackQueryRecordsFieldReplyBy            = big.NewInt(1 << 11)
+	chargebackQueryRecordsFieldPaymentTransId     = big.NewInt(1 << 12)
+	chargebackQueryRecordsFieldScheduleReference  = big.NewInt(1 << 13)
+	chargebackQueryRecordsFieldOrderId            = big.NewInt(1 << 14)
+	chargebackQueryRecordsFieldNetAmount          = big.NewInt(1 << 15)
+	chargebackQueryRecordsFieldTransactionTime    = big.NewInt(1 << 16)
+	chargebackQueryRecordsFieldCustomer           = big.NewInt(1 << 17)
+	chargebackQueryRecordsFieldPaymentData        = big.NewInt(1 << 18)
+	chargebackQueryRecordsFieldPaypointLegalname  = big.NewInt(1 << 19)
+	chargebackQueryRecordsFieldPaypointDbaname    = big.NewInt(1 << 20)
+	chargebackQueryRecordsFieldParentOrgName      = big.NewInt(1 << 21)
+	chargebackQueryRecordsFieldParentOrgId        = big.NewInt(1 << 22)
+	chargebackQueryRecordsFieldPaypointEntryname  = big.NewInt(1 << 23)
+	chargebackQueryRecordsFieldResponses          = big.NewInt(1 << 24)
+	chargebackQueryRecordsFieldTransaction        = big.NewInt(1 << 25)
+	chargebackQueryRecordsFieldExternalPaypointId = big.NewInt(1 << 26)
+	chargebackQueryRecordsFieldPageidentifier     = big.NewInt(1 << 27)
+	chargebackQueryRecordsFieldMessages           = big.NewInt(1 << 28)
+	chargebackQueryRecordsFieldServiceGroup       = big.NewInt(1 << 29)
+	chargebackQueryRecordsFieldDisputeType        = big.NewInt(1 << 30)
+	chargebackQueryRecordsFieldProcessorName      = big.NewInt(1 << 31)
+)
 
 type ChargebackQueryRecords struct {
 	// Identifier of chargeback or return.
@@ -366,6 +653,9 @@ type ChargebackQueryRecords struct {
 	DisputeType string `json:"DisputeType" url:"DisputeType"`
 	// Name of the payment processor.
 	ProcessorName string `json:"ProcessorName" url:"ProcessorName"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -599,6 +889,237 @@ func (c *ChargebackQueryRecords) GetExtraProperties() map[string]interface{} {
 	return c.extraProperties
 }
 
+func (c *ChargebackQueryRecords) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetId(id int64) {
+	c.Id = id
+	c.require(chargebackQueryRecordsFieldId)
+}
+
+// SetChargebackDate sets the ChargebackDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetChargebackDate(chargebackDate time.Time) {
+	c.ChargebackDate = chargebackDate
+	c.require(chargebackQueryRecordsFieldChargebackDate)
+}
+
+// SetCaseNumber sets the CaseNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetCaseNumber(caseNumber string) {
+	c.CaseNumber = caseNumber
+	c.require(chargebackQueryRecordsFieldCaseNumber)
+}
+
+// SetReasonCode sets the ReasonCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetReasonCode(reasonCode string) {
+	c.ReasonCode = reasonCode
+	c.require(chargebackQueryRecordsFieldReasonCode)
+}
+
+// SetReason sets the Reason field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetReason(reason string) {
+	c.Reason = reason
+	c.require(chargebackQueryRecordsFieldReason)
+}
+
+// SetReferenceNumber sets the ReferenceNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetReferenceNumber(referenceNumber string) {
+	c.ReferenceNumber = referenceNumber
+	c.require(chargebackQueryRecordsFieldReferenceNumber)
+}
+
+// SetLastFour sets the LastFour field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetLastFour(lastFour string) {
+	c.LastFour = lastFour
+	c.require(chargebackQueryRecordsFieldLastFour)
+}
+
+// SetAccountType sets the AccountType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetAccountType(accountType Accounttype) {
+	c.AccountType = accountType
+	c.require(chargebackQueryRecordsFieldAccountType)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetStatus(status int) {
+	c.Status = status
+	c.require(chargebackQueryRecordsFieldStatus)
+}
+
+// SetMethod sets the Method field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetMethod(method string) {
+	c.Method = method
+	c.require(chargebackQueryRecordsFieldMethod)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetCreatedAt(createdAt CreatedAt) {
+	c.CreatedAt = createdAt
+	c.require(chargebackQueryRecordsFieldCreatedAt)
+}
+
+// SetReplyBy sets the ReplyBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetReplyBy(replyBy Replyby) {
+	c.ReplyBy = replyBy
+	c.require(chargebackQueryRecordsFieldReplyBy)
+}
+
+// SetPaymentTransId sets the PaymentTransId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetPaymentTransId(paymentTransId string) {
+	c.PaymentTransId = paymentTransId
+	c.require(chargebackQueryRecordsFieldPaymentTransId)
+}
+
+// SetScheduleReference sets the ScheduleReference field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetScheduleReference(scheduleReference *int64) {
+	c.ScheduleReference = scheduleReference
+	c.require(chargebackQueryRecordsFieldScheduleReference)
+}
+
+// SetOrderId sets the OrderId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetOrderId(orderId OrderId) {
+	c.OrderId = orderId
+	c.require(chargebackQueryRecordsFieldOrderId)
+}
+
+// SetNetAmount sets the NetAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetNetAmount(netAmount Netamountnullable) {
+	c.NetAmount = netAmount
+	c.require(chargebackQueryRecordsFieldNetAmount)
+}
+
+// SetTransactionTime sets the TransactionTime field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetTransactionTime(transactionTime TransactionTime) {
+	c.TransactionTime = transactionTime
+	c.require(chargebackQueryRecordsFieldTransactionTime)
+}
+
+// SetCustomer sets the Customer field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetCustomer(customer *QueryTransactionPayorData) {
+	c.Customer = customer
+	c.require(chargebackQueryRecordsFieldCustomer)
+}
+
+// SetPaymentData sets the PaymentData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetPaymentData(paymentData *QueryPaymentData) {
+	c.PaymentData = paymentData
+	c.require(chargebackQueryRecordsFieldPaymentData)
+}
+
+// SetPaypointLegalname sets the PaypointLegalname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetPaypointLegalname(paypointLegalname Legalname) {
+	c.PaypointLegalname = paypointLegalname
+	c.require(chargebackQueryRecordsFieldPaypointLegalname)
+}
+
+// SetPaypointDbaname sets the PaypointDbaname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetPaypointDbaname(paypointDbaname Dbaname) {
+	c.PaypointDbaname = paypointDbaname
+	c.require(chargebackQueryRecordsFieldPaypointDbaname)
+}
+
+// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetParentOrgName(parentOrgName OrgParentName) {
+	c.ParentOrgName = parentOrgName
+	c.require(chargebackQueryRecordsFieldParentOrgName)
+}
+
+// SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetParentOrgId(parentOrgId int64) {
+	c.ParentOrgId = parentOrgId
+	c.require(chargebackQueryRecordsFieldParentOrgId)
+}
+
+// SetPaypointEntryname sets the PaypointEntryname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetPaypointEntryname(paypointEntryname Entrypointfield) {
+	c.PaypointEntryname = paypointEntryname
+	c.require(chargebackQueryRecordsFieldPaypointEntryname)
+}
+
+// SetResponses sets the Responses field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetResponses(responses []*ChargeBackResponse) {
+	c.Responses = responses
+	c.require(chargebackQueryRecordsFieldResponses)
+}
+
+// SetTransaction sets the Transaction field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetTransaction(transaction *TransactionQueryRecords) {
+	c.Transaction = transaction
+	c.require(chargebackQueryRecordsFieldTransaction)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
+	c.ExternalPaypointId = externalPaypointId
+	c.require(chargebackQueryRecordsFieldExternalPaypointId)
+}
+
+// SetPageidentifier sets the Pageidentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetPageidentifier(pageidentifier *PageIdentifier) {
+	c.Pageidentifier = pageidentifier
+	c.require(chargebackQueryRecordsFieldPageidentifier)
+}
+
+// SetMessages sets the Messages field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetMessages(messages []*ChargebackMessage) {
+	c.Messages = messages
+	c.require(chargebackQueryRecordsFieldMessages)
+}
+
+// SetServiceGroup sets the ServiceGroup field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetServiceGroup(serviceGroup string) {
+	c.ServiceGroup = serviceGroup
+	c.require(chargebackQueryRecordsFieldServiceGroup)
+}
+
+// SetDisputeType sets the DisputeType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetDisputeType(disputeType string) {
+	c.DisputeType = disputeType
+	c.require(chargebackQueryRecordsFieldDisputeType)
+}
+
+// SetProcessorName sets the ProcessorName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChargebackQueryRecords) SetProcessorName(processorName string) {
+	c.ProcessorName = processorName
+	c.require(chargebackQueryRecordsFieldProcessorName)
+}
+
 func (c *ChargebackQueryRecords) UnmarshalJSON(data []byte) error {
 	type embed ChargebackQueryRecords
 	var unmarshaler = struct {
@@ -630,7 +1151,8 @@ func (c *ChargebackQueryRecords) MarshalJSON() ([]byte, error) {
 		embed:          embed(*c),
 		ChargebackDate: internal.NewDateTime(c.ChargebackDate),
 	}
-	return json.Marshal(marshaler)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (c *ChargebackQueryRecords) String() string {

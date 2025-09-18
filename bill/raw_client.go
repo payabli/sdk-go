@@ -4,7 +4,7 @@ package bill
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -34,9 +34,9 @@ func (r *RawClient) AddBill(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdk.AddBillRequest,
+	request *sdkgo.AddBillRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.BillResponse], error) {
+) (*core.Response[*sdkgo.BillResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -57,27 +57,27 @@ func (r *RawClient) AddBill(
 	headers.Add("Content-Type", "application/json")
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.BillResponse
+	var response *sdkgo.BillResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -96,7 +96,7 @@ func (r *RawClient) AddBill(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.BillResponse]{
+	return &core.Response[*sdkgo.BillResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -124,9 +124,9 @@ func (r *RawClient) DeleteAttachedFromBill(
 	filename string,
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
 	idBill int,
-	request *sdk.DeleteAttachedFromBillRequest,
+	request *sdkgo.DeleteAttachedFromBillRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.BillResponse], error) {
+) (*core.Response[*sdkgo.BillResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -151,27 +151,27 @@ func (r *RawClient) DeleteAttachedFromBill(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.BillResponse
+	var response *sdkgo.BillResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -189,7 +189,7 @@ func (r *RawClient) DeleteAttachedFromBill(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.BillResponse]{
+	return &core.Response[*sdkgo.BillResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -201,7 +201,7 @@ func (r *RawClient) DeleteBill(
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
 	idBill int,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.BillResponse], error) {
+) (*core.Response[*sdkgo.BillResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -218,27 +218,27 @@ func (r *RawClient) DeleteBill(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.BillResponse
+	var response *sdkgo.BillResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -256,7 +256,7 @@ func (r *RawClient) DeleteBill(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.BillResponse]{
+	return &core.Response[*sdkgo.BillResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -267,9 +267,9 @@ func (r *RawClient) EditBill(
 	ctx context.Context,
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
 	idBill int,
-	request *sdk.BillOutData,
+	request *sdkgo.BillOutData,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.EditBillResponse], error) {
+) (*core.Response[*sdkgo.EditBillResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -286,27 +286,27 @@ func (r *RawClient) EditBill(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.EditBillResponse
+	var response *sdkgo.EditBillResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -325,7 +325,7 @@ func (r *RawClient) EditBill(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.EditBillResponse]{
+	return &core.Response[*sdkgo.EditBillResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -348,9 +348,9 @@ func (r *RawClient) GetAttachedFromBill(
 	filename string,
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
 	idBill int,
-	request *sdk.GetAttachedFromBillRequest,
+	request *sdkgo.GetAttachedFromBillRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.FileContent], error) {
+) (*core.Response[*sdkgo.FileContent], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -375,27 +375,27 @@ func (r *RawClient) GetAttachedFromBill(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.FileContent
+	var response *sdkgo.FileContent
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -413,7 +413,7 @@ func (r *RawClient) GetAttachedFromBill(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.FileContent]{
+	return &core.Response[*sdkgo.FileContent]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -425,7 +425,7 @@ func (r *RawClient) GetBill(
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
 	idBill int,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.GetBillResponse], error) {
+) (*core.Response[*sdkgo.GetBillResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -442,27 +442,27 @@ func (r *RawClient) GetBill(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.GetBillResponse
+	var response *sdkgo.GetBillResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -480,7 +480,7 @@ func (r *RawClient) GetBill(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.GetBillResponse]{
+	return &core.Response[*sdkgo.GetBillResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -491,9 +491,9 @@ func (r *RawClient) ListBills(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdk.ListBillsRequest,
+	request *sdkgo.ListBillsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.BillQueryResponse], error) {
+) (*core.Response[*sdkgo.BillQueryResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -517,27 +517,27 @@ func (r *RawClient) ListBills(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.BillQueryResponse
+	var response *sdkgo.BillQueryResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -555,7 +555,7 @@ func (r *RawClient) ListBills(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.BillQueryResponse]{
+	return &core.Response[*sdkgo.BillQueryResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -566,9 +566,9 @@ func (r *RawClient) ListBillsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdk.ListBillsOrgRequest,
+	request *sdkgo.ListBillsOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.BillQueryResponse], error) {
+) (*core.Response[*sdkgo.BillQueryResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -592,27 +592,27 @@ func (r *RawClient) ListBillsOrg(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.BillQueryResponse
+	var response *sdkgo.BillQueryResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -630,7 +630,7 @@ func (r *RawClient) ListBillsOrg(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.BillQueryResponse]{
+	return &core.Response[*sdkgo.BillQueryResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -643,7 +643,7 @@ func (r *RawClient) ModifyApprovalBill(
 	idBill int,
 	request []string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.ModifyApprovalBillResponse], error) {
+) (*core.Response[*sdkgo.ModifyApprovalBillResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -660,27 +660,27 @@ func (r *RawClient) ModifyApprovalBill(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.ModifyApprovalBillResponse
+	var response *sdkgo.ModifyApprovalBillResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -699,7 +699,7 @@ func (r *RawClient) ModifyApprovalBill(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.ModifyApprovalBillResponse]{
+	return &core.Response[*sdkgo.ModifyApprovalBillResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -710,9 +710,9 @@ func (r *RawClient) SendToApprovalBill(
 	ctx context.Context,
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
 	idBill int,
-	request *sdk.SendToApprovalBillRequest,
+	request *sdkgo.SendToApprovalBillRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.BillResponse], error) {
+) (*core.Response[*sdkgo.BillResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -740,27 +740,27 @@ func (r *RawClient) SendToApprovalBill(
 	headers.Add("Content-Type", "application/json")
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.BillResponse
+	var response *sdkgo.BillResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -779,7 +779,7 @@ func (r *RawClient) SendToApprovalBill(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.BillResponse]{
+	return &core.Response[*sdkgo.BillResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -792,9 +792,9 @@ func (r *RawClient) SetApprovedBill(
 	approved string,
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
 	idBill int,
-	request *sdk.SetApprovedBillRequest,
+	request *sdkgo.SetApprovedBillRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.SetApprovedBillResponse], error) {
+) (*core.Response[*sdkgo.SetApprovedBillResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -819,27 +819,27 @@ func (r *RawClient) SetApprovedBill(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.SetApprovedBillResponse
+	var response *sdkgo.SetApprovedBillResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -857,7 +857,7 @@ func (r *RawClient) SetApprovedBill(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.SetApprovedBillResponse]{
+	return &core.Response[*sdkgo.SetApprovedBillResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

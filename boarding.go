@@ -6,6 +6,12 @@ import (
 	json "encoding/json"
 	fmt "fmt"
 	internal "github.com/payabli/sdk-go/internal"
+	big "math/big"
+)
+
+var (
+	requestAppByAuthFieldEmail       = big.NewInt(1 << 0)
+	requestAppByAuthFieldReferenceId = big.NewInt(1 << 1)
 )
 
 type RequestAppByAuth struct {
@@ -13,7 +19,39 @@ type RequestAppByAuth struct {
 	Email *Email `json:"email,omitempty" url:"-"`
 	// The referenceId is sent to the applicant via email when they save the application.
 	ReferenceId *string `json:"referenceId,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (r *RequestAppByAuth) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetEmail sets the Email field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RequestAppByAuth) SetEmail(email *Email) {
+	r.Email = email
+	r.require(requestAppByAuthFieldEmail)
+}
+
+// SetReferenceId sets the ReferenceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RequestAppByAuth) SetReferenceId(referenceId *string) {
+	r.ReferenceId = referenceId
+	r.require(requestAppByAuthFieldReferenceId)
+}
+
+var (
+	listApplicationsRequestFieldExportFormat = big.NewInt(1 << 0)
+	listApplicationsRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listApplicationsRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listApplicationsRequestFieldParameters   = big.NewInt(1 << 3)
+	listApplicationsRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListApplicationsRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -59,7 +97,59 @@ type ListApplicationsRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListApplicationsRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListApplicationsRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listApplicationsRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListApplicationsRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listApplicationsRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListApplicationsRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listApplicationsRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListApplicationsRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listApplicationsRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListApplicationsRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listApplicationsRequestFieldSortBy)
+}
+
+var (
+	listBoardingLinksRequestFieldFromRecord  = big.NewInt(1 << 0)
+	listBoardingLinksRequestFieldLimitRecord = big.NewInt(1 << 1)
+	listBoardingLinksRequestFieldParameters  = big.NewInt(1 << 2)
+	listBoardingLinksRequestFieldSortBy      = big.NewInt(1 << 3)
+)
 
 type ListBoardingLinksRequest struct {
 	// The number of records to skip before starting to collect the result set.
@@ -100,17 +190,85 @@ type ListBoardingLinksRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListBoardingLinksRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBoardingLinksRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listBoardingLinksRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBoardingLinksRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listBoardingLinksRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBoardingLinksRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listBoardingLinksRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBoardingLinksRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listBoardingLinksRequestFieldSortBy)
+}
+
+var (
+	getExternalApplicationRequestFieldSendEmail = big.NewInt(1 << 0)
+)
 
 type GetExternalApplicationRequest struct {
 	// If `true`, sends an email that includes the link to the application to the `mail2` address. Defaults to `false`.
 	SendEmail *bool `json:"-" url:"sendEmail,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (g *GetExternalApplicationRequest) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetSendEmail sets the SendEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetExternalApplicationRequest) SetSendEmail(sendEmail *bool) {
+	g.SendEmail = sendEmail
+	g.require(getExternalApplicationRequestFieldSendEmail)
+}
+
+var (
+	aSectionFieldMinimumDocuments = big.NewInt(1 << 0)
+	aSectionFieldMultipleContacts = big.NewInt(1 << 1)
+	aSectionFieldMultipleOwners   = big.NewInt(1 << 2)
+)
 
 type ASection struct {
 	MinimumDocuments *int  `json:"minimumDocuments,omitempty" url:"minimumDocuments,omitempty"`
 	MultipleContacts *bool `json:"multipleContacts,omitempty" url:"multipleContacts,omitempty"`
 	MultipleOwners   *bool `json:"multipleOwners,omitempty" url:"multipleOwners,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -141,6 +299,34 @@ func (a *ASection) GetExtraProperties() map[string]interface{} {
 	return a.extraProperties
 }
 
+func (a *ASection) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetMinimumDocuments sets the MinimumDocuments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ASection) SetMinimumDocuments(minimumDocuments *int) {
+	a.MinimumDocuments = minimumDocuments
+	a.require(aSectionFieldMinimumDocuments)
+}
+
+// SetMultipleContacts sets the MultipleContacts field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ASection) SetMultipleContacts(multipleContacts *bool) {
+	a.MultipleContacts = multipleContacts
+	a.require(aSectionFieldMultipleContacts)
+}
+
+// SetMultipleOwners sets the MultipleOwners field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ASection) SetMultipleOwners(multipleOwners *bool) {
+	a.MultipleOwners = multipleOwners
+	a.require(aSectionFieldMultipleOwners)
+}
+
 func (a *ASection) UnmarshalJSON(data []byte) error {
 	type unmarshaler ASection
 	var value unmarshaler
@@ -157,6 +343,17 @@ func (a *ASection) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (a *ASection) MarshalJSON() ([]byte, error) {
+	type embed ASection
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (a *ASection) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
@@ -169,10 +366,19 @@ func (a *ASection) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+var (
+	achLinkTypesFieldCcd = big.NewInt(1 << 0)
+	achLinkTypesFieldPpd = big.NewInt(1 << 1)
+	achLinkTypesFieldWeb = big.NewInt(1 << 2)
+)
+
 type AchLinkTypes struct {
 	Ccd *LinkData `json:"ccd,omitempty" url:"ccd,omitempty"`
 	Ppd *LinkData `json:"ppd,omitempty" url:"ppd,omitempty"`
 	Web *LinkData `json:"web,omitempty" url:"web,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -203,6 +409,34 @@ func (a *AchLinkTypes) GetExtraProperties() map[string]interface{} {
 	return a.extraProperties
 }
 
+func (a *AchLinkTypes) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetCcd sets the Ccd field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AchLinkTypes) SetCcd(ccd *LinkData) {
+	a.Ccd = ccd
+	a.require(achLinkTypesFieldCcd)
+}
+
+// SetPpd sets the Ppd field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AchLinkTypes) SetPpd(ppd *LinkData) {
+	a.Ppd = ppd
+	a.require(achLinkTypesFieldPpd)
+}
+
+// SetWeb sets the Web field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AchLinkTypes) SetWeb(web *LinkData) {
+	a.Web = web
+	a.require(achLinkTypesFieldWeb)
+}
+
 func (a *AchLinkTypes) UnmarshalJSON(data []byte) error {
 	type unmarshaler AchLinkTypes
 	var value unmarshaler
@@ -219,6 +453,17 @@ func (a *AchLinkTypes) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (a *AchLinkTypes) MarshalJSON() ([]byte, error) {
+	type embed AchLinkTypes
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (a *AchLinkTypes) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
@@ -231,10 +476,19 @@ func (a *AchLinkTypes) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+var (
+	achSectionFieldAcceptance = big.NewInt(1 << 0)
+	achSectionFieldFees       = big.NewInt(1 << 1)
+	achSectionFieldPrice      = big.NewInt(1 << 2)
+)
+
 type AchSection struct {
 	Acceptance *AchLinkTypes `json:"acceptance,omitempty" url:"acceptance,omitempty"`
 	Fees       *BasicTable   `json:"fees,omitempty" url:"fees,omitempty"`
 	Price      *BasicTable   `json:"price,omitempty" url:"price,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -265,6 +519,34 @@ func (a *AchSection) GetExtraProperties() map[string]interface{} {
 	return a.extraProperties
 }
 
+func (a *AchSection) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetAcceptance sets the Acceptance field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AchSection) SetAcceptance(acceptance *AchLinkTypes) {
+	a.Acceptance = acceptance
+	a.require(achSectionFieldAcceptance)
+}
+
+// SetFees sets the Fees field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AchSection) SetFees(fees *BasicTable) {
+	a.Fees = fees
+	a.require(achSectionFieldFees)
+}
+
+// SetPrice sets the Price field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AchSection) SetPrice(price *BasicTable) {
+	a.Price = price
+	a.require(achSectionFieldPrice)
+}
+
 func (a *AchSection) UnmarshalJSON(data []byte) error {
 	type unmarshaler AchSection
 	var value unmarshaler
@@ -279,6 +561,17 @@ func (a *AchSection) UnmarshalJSON(data []byte) error {
 	a.extraProperties = extraProperties
 	a.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (a *AchSection) MarshalJSON() ([]byte, error) {
+	type embed AchSection
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (a *AchSection) String() string {
@@ -298,6 +591,64 @@ type Annualrevenue = *float64
 
 // Boarding application ID.
 type AppId = int
+
+var (
+	applicationDataFieldServices                   = big.NewInt(1 << 0)
+	applicationDataFieldAnnualRevenue              = big.NewInt(1 << 1)
+	applicationDataFieldAttachments                = big.NewInt(1 << 2)
+	applicationDataFieldAvgmonthly                 = big.NewInt(1 << 3)
+	applicationDataFieldBaddress                   = big.NewInt(1 << 4)
+	applicationDataFieldBaddress1                  = big.NewInt(1 << 5)
+	applicationDataFieldBankData                   = big.NewInt(1 << 6)
+	applicationDataFieldBcity                      = big.NewInt(1 << 7)
+	applicationDataFieldBcountry                   = big.NewInt(1 << 8)
+	applicationDataFieldBinperson                  = big.NewInt(1 << 9)
+	applicationDataFieldBinphone                   = big.NewInt(1 << 10)
+	applicationDataFieldBinweb                     = big.NewInt(1 << 11)
+	applicationDataFieldBstate                     = big.NewInt(1 << 12)
+	applicationDataFieldBsummary                   = big.NewInt(1 << 13)
+	applicationDataFieldBtype                      = big.NewInt(1 << 14)
+	applicationDataFieldBzip                       = big.NewInt(1 << 15)
+	applicationDataFieldContacts                   = big.NewInt(1 << 16)
+	applicationDataFieldDbaname                    = big.NewInt(1 << 17)
+	applicationDataFieldEin                        = big.NewInt(1 << 18)
+	applicationDataFieldExternalPaypointId         = big.NewInt(1 << 19)
+	applicationDataFieldFaxnumber                  = big.NewInt(1 << 20)
+	applicationDataFieldHighticketamt              = big.NewInt(1 << 21)
+	applicationDataFieldLegalname                  = big.NewInt(1 << 22)
+	applicationDataFieldLicense                    = big.NewInt(1 << 23)
+	applicationDataFieldLicstate                   = big.NewInt(1 << 24)
+	applicationDataFieldMaddress                   = big.NewInt(1 << 25)
+	applicationDataFieldMaddress1                  = big.NewInt(1 << 26)
+	applicationDataFieldMcc                        = big.NewInt(1 << 27)
+	applicationDataFieldMcity                      = big.NewInt(1 << 28)
+	applicationDataFieldMcountry                   = big.NewInt(1 << 29)
+	applicationDataFieldMstate                     = big.NewInt(1 << 30)
+	applicationDataFieldMzip                       = big.NewInt(1 << 31)
+	applicationDataFieldOrgId                      = big.NewInt(1 << 32)
+	applicationDataFieldOwnership                  = big.NewInt(1 << 33)
+	applicationDataFieldPayoutAverageMonthlyVolume = big.NewInt(1 << 34)
+	applicationDataFieldPayoutAverageTicketLimit   = big.NewInt(1 << 35)
+	applicationDataFieldPayoutCreditLimit          = big.NewInt(1 << 36)
+	applicationDataFieldPayoutHighTicketAmount     = big.NewInt(1 << 37)
+	applicationDataFieldPhonenumber                = big.NewInt(1 << 38)
+	applicationDataFieldRecipientEmail             = big.NewInt(1 << 39)
+	applicationDataFieldRecipientEmailNotification = big.NewInt(1 << 40)
+	applicationDataFieldResumable                  = big.NewInt(1 << 41)
+	applicationDataFieldSigner                     = big.NewInt(1 << 42)
+	applicationDataFieldStartdate                  = big.NewInt(1 << 43)
+	applicationDataFieldTaxfillname                = big.NewInt(1 << 44)
+	applicationDataFieldTemplateId                 = big.NewInt(1 << 45)
+	applicationDataFieldTicketamt                  = big.NewInt(1 << 46)
+	applicationDataFieldWebsite                    = big.NewInt(1 << 47)
+	applicationDataFieldWhenCharged                = big.NewInt(1 << 48)
+	applicationDataFieldWhenDelivered              = big.NewInt(1 << 49)
+	applicationDataFieldWhenProvided               = big.NewInt(1 << 50)
+	applicationDataFieldWhenRefunded               = big.NewInt(1 << 51)
+	applicationDataFieldRepCode                    = big.NewInt(1 << 52)
+	applicationDataFieldRepName                    = big.NewInt(1 << 53)
+	applicationDataFieldRepOffice                  = big.NewInt(1 << 54)
+)
 
 type ApplicationData struct {
 	Services                   *Services                   `json:"services,omitempty" url:"services,omitempty"`
@@ -356,6 +707,9 @@ type ApplicationData struct {
 	RepCode                    *RepCode                    `json:"RepCode,omitempty" url:"RepCode,omitempty"`
 	RepName                    *RepName                    `json:"RepName,omitempty" url:"RepName,omitempty"`
 	RepOffice                  *RepOffice                  `json:"RepOffice,omitempty" url:"RepOffice,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -750,6 +1104,398 @@ func (a *ApplicationData) GetExtraProperties() map[string]interface{} {
 	return a.extraProperties
 }
 
+func (a *ApplicationData) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetServices sets the Services field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetServices(services *Services) {
+	a.Services = services
+	a.require(applicationDataFieldServices)
+}
+
+// SetAnnualRevenue sets the AnnualRevenue field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetAnnualRevenue(annualRevenue *Annualrevenue) {
+	a.AnnualRevenue = annualRevenue
+	a.require(applicationDataFieldAnnualRevenue)
+}
+
+// SetAttachments sets the Attachments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetAttachments(attachments *Attachments) {
+	a.Attachments = attachments
+	a.require(applicationDataFieldAttachments)
+}
+
+// SetAvgmonthly sets the Avgmonthly field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetAvgmonthly(avgmonthly *Avgmonthly) {
+	a.Avgmonthly = avgmonthly
+	a.require(applicationDataFieldAvgmonthly)
+}
+
+// SetBaddress sets the Baddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetBaddress(baddress *Baddress1) {
+	a.Baddress = baddress
+	a.require(applicationDataFieldBaddress)
+}
+
+// SetBaddress1 sets the Baddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetBaddress1(baddress1 *Baddress2) {
+	a.Baddress1 = baddress1
+	a.require(applicationDataFieldBaddress1)
+}
+
+// SetBankData sets the BankData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetBankData(bankData *Bank) {
+	a.BankData = bankData
+	a.require(applicationDataFieldBankData)
+}
+
+// SetBcity sets the Bcity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetBcity(bcity *Bcity) {
+	a.Bcity = bcity
+	a.require(applicationDataFieldBcity)
+}
+
+// SetBcountry sets the Bcountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetBcountry(bcountry *Bcountry) {
+	a.Bcountry = bcountry
+	a.require(applicationDataFieldBcountry)
+}
+
+// SetBinperson sets the Binperson field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetBinperson(binperson *Binperson) {
+	a.Binperson = binperson
+	a.require(applicationDataFieldBinperson)
+}
+
+// SetBinphone sets the Binphone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetBinphone(binphone *Binphone) {
+	a.Binphone = binphone
+	a.require(applicationDataFieldBinphone)
+}
+
+// SetBinweb sets the Binweb field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetBinweb(binweb *Binweb) {
+	a.Binweb = binweb
+	a.require(applicationDataFieldBinweb)
+}
+
+// SetBstate sets the Bstate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetBstate(bstate *Bstate) {
+	a.Bstate = bstate
+	a.require(applicationDataFieldBstate)
+}
+
+// SetBsummary sets the Bsummary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetBsummary(bsummary *Bsummary) {
+	a.Bsummary = bsummary
+	a.require(applicationDataFieldBsummary)
+}
+
+// SetBtype sets the Btype field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetBtype(btype *OwnType) {
+	a.Btype = btype
+	a.require(applicationDataFieldBtype)
+}
+
+// SetBzip sets the Bzip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetBzip(bzip *Bzip) {
+	a.Bzip = bzip
+	a.require(applicationDataFieldBzip)
+}
+
+// SetContacts sets the Contacts field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetContacts(contacts *ContactsField) {
+	a.Contacts = contacts
+	a.require(applicationDataFieldContacts)
+}
+
+// SetDbaname sets the Dbaname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetDbaname(dbaname *Dbaname) {
+	a.Dbaname = dbaname
+	a.require(applicationDataFieldDbaname)
+}
+
+// SetEin sets the Ein field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetEin(ein *Ein) {
+	a.Ein = ein
+	a.require(applicationDataFieldEin)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
+	a.ExternalPaypointId = externalPaypointId
+	a.require(applicationDataFieldExternalPaypointId)
+}
+
+// SetFaxnumber sets the Faxnumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetFaxnumber(faxnumber *BoardingBusinessFax) {
+	a.Faxnumber = faxnumber
+	a.require(applicationDataFieldFaxnumber)
+}
+
+// SetHighticketamt sets the Highticketamt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetHighticketamt(highticketamt *Highticketamt) {
+	a.Highticketamt = highticketamt
+	a.require(applicationDataFieldHighticketamt)
+}
+
+// SetLegalname sets the Legalname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetLegalname(legalname *Legalname) {
+	a.Legalname = legalname
+	a.require(applicationDataFieldLegalname)
+}
+
+// SetLicense sets the License field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetLicense(license *License) {
+	a.License = license
+	a.require(applicationDataFieldLicense)
+}
+
+// SetLicstate sets the Licstate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetLicstate(licstate *Licensestate) {
+	a.Licstate = licstate
+	a.require(applicationDataFieldLicstate)
+}
+
+// SetMaddress sets the Maddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetMaddress(maddress *Maddress) {
+	a.Maddress = maddress
+	a.require(applicationDataFieldMaddress)
+}
+
+// SetMaddress1 sets the Maddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetMaddress1(maddress1 *Maddress1) {
+	a.Maddress1 = maddress1
+	a.require(applicationDataFieldMaddress1)
+}
+
+// SetMcc sets the Mcc field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetMcc(mcc *Mcc) {
+	a.Mcc = mcc
+	a.require(applicationDataFieldMcc)
+}
+
+// SetMcity sets the Mcity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetMcity(mcity *Mcity) {
+	a.Mcity = mcity
+	a.require(applicationDataFieldMcity)
+}
+
+// SetMcountry sets the Mcountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetMcountry(mcountry *Mcountry) {
+	a.Mcountry = mcountry
+	a.require(applicationDataFieldMcountry)
+}
+
+// SetMstate sets the Mstate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetMstate(mstate *Mstate) {
+	a.Mstate = mstate
+	a.require(applicationDataFieldMstate)
+}
+
+// SetMzip sets the Mzip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetMzip(mzip *Mzip) {
+	a.Mzip = mzip
+	a.require(applicationDataFieldMzip)
+}
+
+// SetOrgId sets the OrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetOrgId(orgId *Orgid) {
+	a.OrgId = orgId
+	a.require(applicationDataFieldOrgId)
+}
+
+// SetOwnership sets the Ownership field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetOwnership(ownership *Ownership) {
+	a.Ownership = ownership
+	a.require(applicationDataFieldOwnership)
+}
+
+// SetPayoutAverageMonthlyVolume sets the PayoutAverageMonthlyVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetPayoutAverageMonthlyVolume(payoutAverageMonthlyVolume *PayoutAverageMonthlyVolume) {
+	a.PayoutAverageMonthlyVolume = payoutAverageMonthlyVolume
+	a.require(applicationDataFieldPayoutAverageMonthlyVolume)
+}
+
+// SetPayoutAverageTicketLimit sets the PayoutAverageTicketLimit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetPayoutAverageTicketLimit(payoutAverageTicketLimit *PayoutAverageTicketLimit) {
+	a.PayoutAverageTicketLimit = payoutAverageTicketLimit
+	a.require(applicationDataFieldPayoutAverageTicketLimit)
+}
+
+// SetPayoutCreditLimit sets the PayoutCreditLimit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetPayoutCreditLimit(payoutCreditLimit *PayoutCreditLimit) {
+	a.PayoutCreditLimit = payoutCreditLimit
+	a.require(applicationDataFieldPayoutCreditLimit)
+}
+
+// SetPayoutHighTicketAmount sets the PayoutHighTicketAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetPayoutHighTicketAmount(payoutHighTicketAmount *PayoutHighTicketAmount) {
+	a.PayoutHighTicketAmount = payoutHighTicketAmount
+	a.require(applicationDataFieldPayoutHighTicketAmount)
+}
+
+// SetPhonenumber sets the Phonenumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetPhonenumber(phonenumber *BoardingBusinessPhone) {
+	a.Phonenumber = phonenumber
+	a.require(applicationDataFieldPhonenumber)
+}
+
+// SetRecipientEmail sets the RecipientEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetRecipientEmail(recipientEmail *Email) {
+	a.RecipientEmail = recipientEmail
+	a.require(applicationDataFieldRecipientEmail)
+}
+
+// SetRecipientEmailNotification sets the RecipientEmailNotification field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetRecipientEmailNotification(recipientEmailNotification *RecipientEmailNotification) {
+	a.RecipientEmailNotification = recipientEmailNotification
+	a.require(applicationDataFieldRecipientEmailNotification)
+}
+
+// SetResumable sets the Resumable field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetResumable(resumable *Resumable) {
+	a.Resumable = resumable
+	a.require(applicationDataFieldResumable)
+}
+
+// SetSigner sets the Signer field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetSigner(signer *SignerDataRequest) {
+	a.Signer = signer
+	a.require(applicationDataFieldSigner)
+}
+
+// SetStartdate sets the Startdate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetStartdate(startdate *Busstartdate) {
+	a.Startdate = startdate
+	a.require(applicationDataFieldStartdate)
+}
+
+// SetTaxfillname sets the Taxfillname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetTaxfillname(taxfillname *Taxfillname) {
+	a.Taxfillname = taxfillname
+	a.require(applicationDataFieldTaxfillname)
+}
+
+// SetTemplateId sets the TemplateId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetTemplateId(templateId *TemplateId) {
+	a.TemplateId = templateId
+	a.require(applicationDataFieldTemplateId)
+}
+
+// SetTicketamt sets the Ticketamt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetTicketamt(ticketamt *Ticketamt) {
+	a.Ticketamt = ticketamt
+	a.require(applicationDataFieldTicketamt)
+}
+
+// SetWebsite sets the Website field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetWebsite(website *Website) {
+	a.Website = website
+	a.require(applicationDataFieldWebsite)
+}
+
+// SetWhenCharged sets the WhenCharged field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetWhenCharged(whenCharged *Whencharged) {
+	a.WhenCharged = whenCharged
+	a.require(applicationDataFieldWhenCharged)
+}
+
+// SetWhenDelivered sets the WhenDelivered field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetWhenDelivered(whenDelivered *Whendelivered) {
+	a.WhenDelivered = whenDelivered
+	a.require(applicationDataFieldWhenDelivered)
+}
+
+// SetWhenProvided sets the WhenProvided field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetWhenProvided(whenProvided *Whenprovided) {
+	a.WhenProvided = whenProvided
+	a.require(applicationDataFieldWhenProvided)
+}
+
+// SetWhenRefunded sets the WhenRefunded field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetWhenRefunded(whenRefunded *Whenrefunded) {
+	a.WhenRefunded = whenRefunded
+	a.require(applicationDataFieldWhenRefunded)
+}
+
+// SetRepCode sets the RepCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetRepCode(repCode *RepCode) {
+	a.RepCode = repCode
+	a.require(applicationDataFieldRepCode)
+}
+
+// SetRepName sets the RepName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetRepName(repName *RepName) {
+	a.RepName = repName
+	a.require(applicationDataFieldRepName)
+}
+
+// SetRepOffice sets the RepOffice field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetRepOffice(repOffice *RepOffice) {
+	a.RepOffice = repOffice
+	a.require(applicationDataFieldRepOffice)
+}
+
 func (a *ApplicationData) UnmarshalJSON(data []byte) error {
 	type unmarshaler ApplicationData
 	var value unmarshaler
@@ -766,6 +1512,17 @@ func (a *ApplicationData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (a *ApplicationData) MarshalJSON() ([]byte, error) {
+	type embed ApplicationData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (a *ApplicationData) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
@@ -777,6 +1534,49 @@ func (a *ApplicationData) String() string {
 	}
 	return fmt.Sprintf("%#v", a)
 }
+
+var (
+	applicationDataManagedFieldAnnualRevenue              = big.NewInt(1 << 0)
+	applicationDataManagedFieldAttachments                = big.NewInt(1 << 1)
+	applicationDataManagedFieldBaddress                   = big.NewInt(1 << 2)
+	applicationDataManagedFieldBaddress1                  = big.NewInt(1 << 3)
+	applicationDataManagedFieldBankData                   = big.NewInt(1 << 4)
+	applicationDataManagedFieldBcity                      = big.NewInt(1 << 5)
+	applicationDataManagedFieldBcountry                   = big.NewInt(1 << 6)
+	applicationDataManagedFieldBoardingLinkId             = big.NewInt(1 << 7)
+	applicationDataManagedFieldBstate                     = big.NewInt(1 << 8)
+	applicationDataManagedFieldBsummary                   = big.NewInt(1 << 9)
+	applicationDataManagedFieldBtype                      = big.NewInt(1 << 10)
+	applicationDataManagedFieldBzip                       = big.NewInt(1 << 11)
+	applicationDataManagedFieldContacts                   = big.NewInt(1 << 12)
+	applicationDataManagedFieldDbaname                    = big.NewInt(1 << 13)
+	applicationDataManagedFieldEin                        = big.NewInt(1 << 14)
+	applicationDataManagedFieldFaxnumber                  = big.NewInt(1 << 15)
+	applicationDataManagedFieldLegalname                  = big.NewInt(1 << 16)
+	applicationDataManagedFieldLicense                    = big.NewInt(1 << 17)
+	applicationDataManagedFieldLicstate                   = big.NewInt(1 << 18)
+	applicationDataManagedFieldMaddress                   = big.NewInt(1 << 19)
+	applicationDataManagedFieldMaddress1                  = big.NewInt(1 << 20)
+	applicationDataManagedFieldMcc                        = big.NewInt(1 << 21)
+	applicationDataManagedFieldMcity                      = big.NewInt(1 << 22)
+	applicationDataManagedFieldMcountry                   = big.NewInt(1 << 23)
+	applicationDataManagedFieldMstate                     = big.NewInt(1 << 24)
+	applicationDataManagedFieldMzip                       = big.NewInt(1 << 25)
+	applicationDataManagedFieldOrgId                      = big.NewInt(1 << 26)
+	applicationDataManagedFieldOwnership                  = big.NewInt(1 << 27)
+	applicationDataManagedFieldPhonenumber                = big.NewInt(1 << 28)
+	applicationDataManagedFieldRecipientEmail             = big.NewInt(1 << 29)
+	applicationDataManagedFieldRecipientEmailNotification = big.NewInt(1 << 30)
+	applicationDataManagedFieldResumable                  = big.NewInt(1 << 31)
+	applicationDataManagedFieldSigner                     = big.NewInt(1 << 32)
+	applicationDataManagedFieldStartdate                  = big.NewInt(1 << 33)
+	applicationDataManagedFieldTaxfillname                = big.NewInt(1 << 34)
+	applicationDataManagedFieldTemplateId                 = big.NewInt(1 << 35)
+	applicationDataManagedFieldWebsite                    = big.NewInt(1 << 36)
+	applicationDataManagedFieldRepCode                    = big.NewInt(1 << 37)
+	applicationDataManagedFieldRepName                    = big.NewInt(1 << 38)
+	applicationDataManagedFieldRepOffice                  = big.NewInt(1 << 39)
+)
 
 type ApplicationDataManaged struct {
 	// Annual revenue amount. We recommend including this value.
@@ -825,6 +1625,9 @@ type ApplicationDataManaged struct {
 	RepCode    *RepCode    `json:"RepCode,omitempty" url:"RepCode,omitempty"`
 	RepName    *RepName    `json:"RepName,omitempty" url:"RepName,omitempty"`
 	RepOffice  *RepOffice  `json:"RepOffice,omitempty" url:"RepOffice,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -1114,6 +1917,293 @@ func (a *ApplicationDataManaged) GetExtraProperties() map[string]interface{} {
 	return a.extraProperties
 }
 
+func (a *ApplicationDataManaged) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetAnnualRevenue sets the AnnualRevenue field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetAnnualRevenue(annualRevenue *Annualrevenue) {
+	a.AnnualRevenue = annualRevenue
+	a.require(applicationDataManagedFieldAnnualRevenue)
+}
+
+// SetAttachments sets the Attachments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetAttachments(attachments *Attachments) {
+	a.Attachments = attachments
+	a.require(applicationDataManagedFieldAttachments)
+}
+
+// SetBaddress sets the Baddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetBaddress(baddress *Baddress1) {
+	a.Baddress = baddress
+	a.require(applicationDataManagedFieldBaddress)
+}
+
+// SetBaddress1 sets the Baddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetBaddress1(baddress1 *Baddress2) {
+	a.Baddress1 = baddress1
+	a.require(applicationDataManagedFieldBaddress1)
+}
+
+// SetBankData sets the BankData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetBankData(bankData *BankData) {
+	a.BankData = bankData
+	a.require(applicationDataManagedFieldBankData)
+}
+
+// SetBcity sets the Bcity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetBcity(bcity *Bcity) {
+	a.Bcity = bcity
+	a.require(applicationDataManagedFieldBcity)
+}
+
+// SetBcountry sets the Bcountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetBcountry(bcountry *Bcountry) {
+	a.Bcountry = bcountry
+	a.require(applicationDataManagedFieldBcountry)
+}
+
+// SetBoardingLinkId sets the BoardingLinkId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetBoardingLinkId(boardingLinkId *string) {
+	a.BoardingLinkId = boardingLinkId
+	a.require(applicationDataManagedFieldBoardingLinkId)
+}
+
+// SetBstate sets the Bstate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetBstate(bstate *Bstate) {
+	a.Bstate = bstate
+	a.require(applicationDataManagedFieldBstate)
+}
+
+// SetBsummary sets the Bsummary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetBsummary(bsummary *Bsummary) {
+	a.Bsummary = bsummary
+	a.require(applicationDataManagedFieldBsummary)
+}
+
+// SetBtype sets the Btype field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetBtype(btype *OwnType) {
+	a.Btype = btype
+	a.require(applicationDataManagedFieldBtype)
+}
+
+// SetBzip sets the Bzip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetBzip(bzip *Bzip) {
+	a.Bzip = bzip
+	a.require(applicationDataManagedFieldBzip)
+}
+
+// SetContacts sets the Contacts field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetContacts(contacts []*ApplicationDataManagedContactsItem) {
+	a.Contacts = contacts
+	a.require(applicationDataManagedFieldContacts)
+}
+
+// SetDbaname sets the Dbaname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetDbaname(dbaname *Dbaname) {
+	a.Dbaname = dbaname
+	a.require(applicationDataManagedFieldDbaname)
+}
+
+// SetEin sets the Ein field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetEin(ein *Ein) {
+	a.Ein = ein
+	a.require(applicationDataManagedFieldEin)
+}
+
+// SetFaxnumber sets the Faxnumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetFaxnumber(faxnumber *BoardingBusinessFax) {
+	a.Faxnumber = faxnumber
+	a.require(applicationDataManagedFieldFaxnumber)
+}
+
+// SetLegalname sets the Legalname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetLegalname(legalname *Legalname) {
+	a.Legalname = legalname
+	a.require(applicationDataManagedFieldLegalname)
+}
+
+// SetLicense sets the License field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetLicense(license *License) {
+	a.License = license
+	a.require(applicationDataManagedFieldLicense)
+}
+
+// SetLicstate sets the Licstate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetLicstate(licstate *Licensestate) {
+	a.Licstate = licstate
+	a.require(applicationDataManagedFieldLicstate)
+}
+
+// SetMaddress sets the Maddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetMaddress(maddress *Maddress) {
+	a.Maddress = maddress
+	a.require(applicationDataManagedFieldMaddress)
+}
+
+// SetMaddress1 sets the Maddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetMaddress1(maddress1 *Maddress1) {
+	a.Maddress1 = maddress1
+	a.require(applicationDataManagedFieldMaddress1)
+}
+
+// SetMcc sets the Mcc field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetMcc(mcc *Mcc) {
+	a.Mcc = mcc
+	a.require(applicationDataManagedFieldMcc)
+}
+
+// SetMcity sets the Mcity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetMcity(mcity *Mcity) {
+	a.Mcity = mcity
+	a.require(applicationDataManagedFieldMcity)
+}
+
+// SetMcountry sets the Mcountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetMcountry(mcountry *Mcountry) {
+	a.Mcountry = mcountry
+	a.require(applicationDataManagedFieldMcountry)
+}
+
+// SetMstate sets the Mstate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetMstate(mstate *Mstate) {
+	a.Mstate = mstate
+	a.require(applicationDataManagedFieldMstate)
+}
+
+// SetMzip sets the Mzip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetMzip(mzip *Mzip) {
+	a.Mzip = mzip
+	a.require(applicationDataManagedFieldMzip)
+}
+
+// SetOrgId sets the OrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetOrgId(orgId *Orgid) {
+	a.OrgId = orgId
+	a.require(applicationDataManagedFieldOrgId)
+}
+
+// SetOwnership sets the Ownership field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetOwnership(ownership []*ApplicationDataManagedOwnershipItem) {
+	a.Ownership = ownership
+	a.require(applicationDataManagedFieldOwnership)
+}
+
+// SetPhonenumber sets the Phonenumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetPhonenumber(phonenumber *BoardingBusinessPhone) {
+	a.Phonenumber = phonenumber
+	a.require(applicationDataManagedFieldPhonenumber)
+}
+
+// SetRecipientEmail sets the RecipientEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetRecipientEmail(recipientEmail *Email) {
+	a.RecipientEmail = recipientEmail
+	a.require(applicationDataManagedFieldRecipientEmail)
+}
+
+// SetRecipientEmailNotification sets the RecipientEmailNotification field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetRecipientEmailNotification(recipientEmailNotification *RecipientEmailNotification) {
+	a.RecipientEmailNotification = recipientEmailNotification
+	a.require(applicationDataManagedFieldRecipientEmailNotification)
+}
+
+// SetResumable sets the Resumable field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetResumable(resumable *Resumable) {
+	a.Resumable = resumable
+	a.require(applicationDataManagedFieldResumable)
+}
+
+// SetSigner sets the Signer field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetSigner(signer *SignerDataRequest) {
+	a.Signer = signer
+	a.require(applicationDataManagedFieldSigner)
+}
+
+// SetStartdate sets the Startdate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetStartdate(startdate *Busstartdate) {
+	a.Startdate = startdate
+	a.require(applicationDataManagedFieldStartdate)
+}
+
+// SetTaxfillname sets the Taxfillname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetTaxfillname(taxfillname *Taxfillname) {
+	a.Taxfillname = taxfillname
+	a.require(applicationDataManagedFieldTaxfillname)
+}
+
+// SetTemplateId sets the TemplateId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetTemplateId(templateId *TemplateId) {
+	a.TemplateId = templateId
+	a.require(applicationDataManagedFieldTemplateId)
+}
+
+// SetWebsite sets the Website field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetWebsite(website *Website) {
+	a.Website = website
+	a.require(applicationDataManagedFieldWebsite)
+}
+
+// SetRepCode sets the RepCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetRepCode(repCode *RepCode) {
+	a.RepCode = repCode
+	a.require(applicationDataManagedFieldRepCode)
+}
+
+// SetRepName sets the RepName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetRepName(repName *RepName) {
+	a.RepName = repName
+	a.require(applicationDataManagedFieldRepName)
+}
+
+// SetRepOffice sets the RepOffice field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetRepOffice(repOffice *RepOffice) {
+	a.RepOffice = repOffice
+	a.require(applicationDataManagedFieldRepOffice)
+}
+
 func (a *ApplicationDataManaged) UnmarshalJSON(data []byte) error {
 	type unmarshaler ApplicationDataManaged
 	var value unmarshaler
@@ -1130,6 +2220,17 @@ func (a *ApplicationDataManaged) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (a *ApplicationDataManaged) MarshalJSON() ([]byte, error) {
+	type embed ApplicationDataManaged
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (a *ApplicationDataManaged) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
@@ -1142,6 +2243,14 @@ func (a *ApplicationDataManaged) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+var (
+	applicationDataManagedContactsItemFieldContactEmail   = big.NewInt(1 << 0)
+	applicationDataManagedContactsItemFieldContactName    = big.NewInt(1 << 1)
+	applicationDataManagedContactsItemFieldContactPhone   = big.NewInt(1 << 2)
+	applicationDataManagedContactsItemFieldContactTitle   = big.NewInt(1 << 3)
+	applicationDataManagedContactsItemFieldAdditionalData = big.NewInt(1 << 4)
+)
+
 type ApplicationDataManagedContactsItem struct {
 	// Contact email address.
 	ContactEmail *Email `json:"contactEmail,omitempty" url:"contactEmail,omitempty"`
@@ -1152,6 +2261,9 @@ type ApplicationDataManagedContactsItem struct {
 	// Contact title.
 	ContactTitle   *string               `json:"contactTitle,omitempty" url:"contactTitle,omitempty"`
 	AdditionalData *AdditionalDataString `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -1196,6 +2308,48 @@ func (a *ApplicationDataManagedContactsItem) GetExtraProperties() map[string]int
 	return a.extraProperties
 }
 
+func (a *ApplicationDataManagedContactsItem) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetContactEmail sets the ContactEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManagedContactsItem) SetContactEmail(contactEmail *Email) {
+	a.ContactEmail = contactEmail
+	a.require(applicationDataManagedContactsItemFieldContactEmail)
+}
+
+// SetContactName sets the ContactName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManagedContactsItem) SetContactName(contactName *string) {
+	a.ContactName = contactName
+	a.require(applicationDataManagedContactsItemFieldContactName)
+}
+
+// SetContactPhone sets the ContactPhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManagedContactsItem) SetContactPhone(contactPhone *string) {
+	a.ContactPhone = contactPhone
+	a.require(applicationDataManagedContactsItemFieldContactPhone)
+}
+
+// SetContactTitle sets the ContactTitle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManagedContactsItem) SetContactTitle(contactTitle *string) {
+	a.ContactTitle = contactTitle
+	a.require(applicationDataManagedContactsItemFieldContactTitle)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManagedContactsItem) SetAdditionalData(additionalData *AdditionalDataString) {
+	a.AdditionalData = additionalData
+	a.require(applicationDataManagedContactsItemFieldAdditionalData)
+}
+
 func (a *ApplicationDataManagedContactsItem) UnmarshalJSON(data []byte) error {
 	type unmarshaler ApplicationDataManagedContactsItem
 	var value unmarshaler
@@ -1212,6 +2366,17 @@ func (a *ApplicationDataManagedContactsItem) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (a *ApplicationDataManagedContactsItem) MarshalJSON() ([]byte, error) {
+	type embed ApplicationDataManagedContactsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (a *ApplicationDataManagedContactsItem) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
@@ -1223,6 +2388,25 @@ func (a *ApplicationDataManagedContactsItem) String() string {
 	}
 	return fmt.Sprintf("%#v", a)
 }
+
+var (
+	applicationDataManagedOwnershipItemFieldOwnername      = big.NewInt(1 << 0)
+	applicationDataManagedOwnershipItemFieldOwnertitle     = big.NewInt(1 << 1)
+	applicationDataManagedOwnershipItemFieldOwnerpercent   = big.NewInt(1 << 2)
+	applicationDataManagedOwnershipItemFieldOwnerssn       = big.NewInt(1 << 3)
+	applicationDataManagedOwnershipItemFieldOwnerdob       = big.NewInt(1 << 4)
+	applicationDataManagedOwnershipItemFieldOwnerphone1    = big.NewInt(1 << 5)
+	applicationDataManagedOwnershipItemFieldOwnerphone2    = big.NewInt(1 << 6)
+	applicationDataManagedOwnershipItemFieldOwneremail     = big.NewInt(1 << 7)
+	applicationDataManagedOwnershipItemFieldOwnerdriver    = big.NewInt(1 << 8)
+	applicationDataManagedOwnershipItemFieldOaddress       = big.NewInt(1 << 9)
+	applicationDataManagedOwnershipItemFieldOcity          = big.NewInt(1 << 10)
+	applicationDataManagedOwnershipItemFieldOcountry       = big.NewInt(1 << 11)
+	applicationDataManagedOwnershipItemFieldOdriverstate   = big.NewInt(1 << 12)
+	applicationDataManagedOwnershipItemFieldOstate         = big.NewInt(1 << 13)
+	applicationDataManagedOwnershipItemFieldOzip           = big.NewInt(1 << 14)
+	applicationDataManagedOwnershipItemFieldAdditionalData = big.NewInt(1 << 15)
+)
 
 type ApplicationDataManagedOwnershipItem struct {
 	// Person who is registered as the beneficial owner of the business. This is a combination of first and last name.
@@ -1256,6 +2440,9 @@ type ApplicationDataManagedOwnershipItem struct {
 	// Owner address ZIP.
 	Ozip           *string               `json:"ozip,omitempty" url:"ozip,omitempty"`
 	AdditionalData *AdditionalDataString `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -1377,6 +2564,125 @@ func (a *ApplicationDataManagedOwnershipItem) GetExtraProperties() map[string]in
 	return a.extraProperties
 }
 
+func (a *ApplicationDataManagedOwnershipItem) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetOwnername sets the Ownername field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManagedOwnershipItem) SetOwnername(ownername *string) {
+	a.Ownername = ownername
+	a.require(applicationDataManagedOwnershipItemFieldOwnername)
+}
+
+// SetOwnertitle sets the Ownertitle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManagedOwnershipItem) SetOwnertitle(ownertitle *string) {
+	a.Ownertitle = ownertitle
+	a.require(applicationDataManagedOwnershipItemFieldOwnertitle)
+}
+
+// SetOwnerpercent sets the Ownerpercent field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManagedOwnershipItem) SetOwnerpercent(ownerpercent *int) {
+	a.Ownerpercent = ownerpercent
+	a.require(applicationDataManagedOwnershipItemFieldOwnerpercent)
+}
+
+// SetOwnerssn sets the Ownerssn field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManagedOwnershipItem) SetOwnerssn(ownerssn *string) {
+	a.Ownerssn = ownerssn
+	a.require(applicationDataManagedOwnershipItemFieldOwnerssn)
+}
+
+// SetOwnerdob sets the Ownerdob field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManagedOwnershipItem) SetOwnerdob(ownerdob *string) {
+	a.Ownerdob = ownerdob
+	a.require(applicationDataManagedOwnershipItemFieldOwnerdob)
+}
+
+// SetOwnerphone1 sets the Ownerphone1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManagedOwnershipItem) SetOwnerphone1(ownerphone1 *string) {
+	a.Ownerphone1 = ownerphone1
+	a.require(applicationDataManagedOwnershipItemFieldOwnerphone1)
+}
+
+// SetOwnerphone2 sets the Ownerphone2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManagedOwnershipItem) SetOwnerphone2(ownerphone2 *string) {
+	a.Ownerphone2 = ownerphone2
+	a.require(applicationDataManagedOwnershipItemFieldOwnerphone2)
+}
+
+// SetOwneremail sets the Owneremail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManagedOwnershipItem) SetOwneremail(owneremail *Email) {
+	a.Owneremail = owneremail
+	a.require(applicationDataManagedOwnershipItemFieldOwneremail)
+}
+
+// SetOwnerdriver sets the Ownerdriver field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManagedOwnershipItem) SetOwnerdriver(ownerdriver *string) {
+	a.Ownerdriver = ownerdriver
+	a.require(applicationDataManagedOwnershipItemFieldOwnerdriver)
+}
+
+// SetOaddress sets the Oaddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManagedOwnershipItem) SetOaddress(oaddress *string) {
+	a.Oaddress = oaddress
+	a.require(applicationDataManagedOwnershipItemFieldOaddress)
+}
+
+// SetOcity sets the Ocity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManagedOwnershipItem) SetOcity(ocity *string) {
+	a.Ocity = ocity
+	a.require(applicationDataManagedOwnershipItemFieldOcity)
+}
+
+// SetOcountry sets the Ocountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManagedOwnershipItem) SetOcountry(ocountry *string) {
+	a.Ocountry = ocountry
+	a.require(applicationDataManagedOwnershipItemFieldOcountry)
+}
+
+// SetOdriverstate sets the Odriverstate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManagedOwnershipItem) SetOdriverstate(odriverstate *string) {
+	a.Odriverstate = odriverstate
+	a.require(applicationDataManagedOwnershipItemFieldOdriverstate)
+}
+
+// SetOstate sets the Ostate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManagedOwnershipItem) SetOstate(ostate *string) {
+	a.Ostate = ostate
+	a.require(applicationDataManagedOwnershipItemFieldOstate)
+}
+
+// SetOzip sets the Ozip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManagedOwnershipItem) SetOzip(ozip *string) {
+	a.Ozip = ozip
+	a.require(applicationDataManagedOwnershipItemFieldOzip)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManagedOwnershipItem) SetAdditionalData(additionalData *AdditionalDataString) {
+	a.AdditionalData = additionalData
+	a.require(applicationDataManagedOwnershipItemFieldAdditionalData)
+}
+
 func (a *ApplicationDataManagedOwnershipItem) UnmarshalJSON(data []byte) error {
 	type unmarshaler ApplicationDataManagedOwnershipItem
 	var value unmarshaler
@@ -1393,6 +2699,17 @@ func (a *ApplicationDataManagedOwnershipItem) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (a *ApplicationDataManagedOwnershipItem) MarshalJSON() ([]byte, error) {
+	type embed ApplicationDataManagedOwnershipItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (a *ApplicationDataManagedOwnershipItem) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
@@ -1404,6 +2721,55 @@ func (a *ApplicationDataManagedOwnershipItem) String() string {
 	}
 	return fmt.Sprintf("%#v", a)
 }
+
+var (
+	applicationDataOdpFieldServices                   = big.NewInt(1 << 0)
+	applicationDataOdpFieldAnnualRevenue              = big.NewInt(1 << 1)
+	applicationDataOdpFieldAttachments                = big.NewInt(1 << 2)
+	applicationDataOdpFieldBaddress                   = big.NewInt(1 << 3)
+	applicationDataOdpFieldBaddress1                  = big.NewInt(1 << 4)
+	applicationDataOdpFieldBankData                   = big.NewInt(1 << 5)
+	applicationDataOdpFieldBcity                      = big.NewInt(1 << 6)
+	applicationDataOdpFieldBcountry                   = big.NewInt(1 << 7)
+	applicationDataOdpFieldBoardingLinkId             = big.NewInt(1 << 8)
+	applicationDataOdpFieldBstate                     = big.NewInt(1 << 9)
+	applicationDataOdpFieldBsummary                   = big.NewInt(1 << 10)
+	applicationDataOdpFieldBtype                      = big.NewInt(1 << 11)
+	applicationDataOdpFieldBzip                       = big.NewInt(1 << 12)
+	applicationDataOdpFieldContacts                   = big.NewInt(1 << 13)
+	applicationDataOdpFieldDbaname                    = big.NewInt(1 << 14)
+	applicationDataOdpFieldEin                        = big.NewInt(1 << 15)
+	applicationDataOdpFieldFaxnumber                  = big.NewInt(1 << 16)
+	applicationDataOdpFieldHighticketamt              = big.NewInt(1 << 17)
+	applicationDataOdpFieldLegalname                  = big.NewInt(1 << 18)
+	applicationDataOdpFieldLicense                    = big.NewInt(1 << 19)
+	applicationDataOdpFieldLicstate                   = big.NewInt(1 << 20)
+	applicationDataOdpFieldMaddress                   = big.NewInt(1 << 21)
+	applicationDataOdpFieldMaddress1                  = big.NewInt(1 << 22)
+	applicationDataOdpFieldMcc                        = big.NewInt(1 << 23)
+	applicationDataOdpFieldMcity                      = big.NewInt(1 << 24)
+	applicationDataOdpFieldMcountry                   = big.NewInt(1 << 25)
+	applicationDataOdpFieldMstate                     = big.NewInt(1 << 26)
+	applicationDataOdpFieldMzip                       = big.NewInt(1 << 27)
+	applicationDataOdpFieldOrgId                      = big.NewInt(1 << 28)
+	applicationDataOdpFieldOwnership                  = big.NewInt(1 << 29)
+	applicationDataOdpFieldPayoutAverageMonthlyVolume = big.NewInt(1 << 30)
+	applicationDataOdpFieldPayoutAverageTicketAmount  = big.NewInt(1 << 31)
+	applicationDataOdpFieldPayoutCreditLimit          = big.NewInt(1 << 32)
+	applicationDataOdpFieldPayoutHighTicketAmount     = big.NewInt(1 << 33)
+	applicationDataOdpFieldPhonenumber                = big.NewInt(1 << 34)
+	applicationDataOdpFieldRecipientEmail             = big.NewInt(1 << 35)
+	applicationDataOdpFieldRecipientEmailNotification = big.NewInt(1 << 36)
+	applicationDataOdpFieldResumable                  = big.NewInt(1 << 37)
+	applicationDataOdpFieldSigner                     = big.NewInt(1 << 38)
+	applicationDataOdpFieldStartdate                  = big.NewInt(1 << 39)
+	applicationDataOdpFieldTaxfillname                = big.NewInt(1 << 40)
+	applicationDataOdpFieldTemplateId                 = big.NewInt(1 << 41)
+	applicationDataOdpFieldWebsite                    = big.NewInt(1 << 42)
+	applicationDataOdpFieldRepCode                    = big.NewInt(1 << 43)
+	applicationDataOdpFieldRepName                    = big.NewInt(1 << 44)
+	applicationDataOdpFieldRepOffice                  = big.NewInt(1 << 45)
+)
 
 type ApplicationDataOdp struct {
 	Services *Services `json:"services,omitempty" url:"services,omitempty"`
@@ -1458,6 +2824,9 @@ type ApplicationDataOdp struct {
 	RepCode    *RepCode    `json:"RepCode,omitempty" url:"RepCode,omitempty"`
 	RepName    *RepName    `json:"RepName,omitempty" url:"RepName,omitempty"`
 	RepOffice  *RepOffice  `json:"RepOffice,omitempty" url:"RepOffice,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -1789,6 +3158,335 @@ func (a *ApplicationDataOdp) GetExtraProperties() map[string]interface{} {
 	return a.extraProperties
 }
 
+func (a *ApplicationDataOdp) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetServices sets the Services field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetServices(services *Services) {
+	a.Services = services
+	a.require(applicationDataOdpFieldServices)
+}
+
+// SetAnnualRevenue sets the AnnualRevenue field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetAnnualRevenue(annualRevenue *Annualrevenue) {
+	a.AnnualRevenue = annualRevenue
+	a.require(applicationDataOdpFieldAnnualRevenue)
+}
+
+// SetAttachments sets the Attachments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetAttachments(attachments *Attachments) {
+	a.Attachments = attachments
+	a.require(applicationDataOdpFieldAttachments)
+}
+
+// SetBaddress sets the Baddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetBaddress(baddress *Baddress1) {
+	a.Baddress = baddress
+	a.require(applicationDataOdpFieldBaddress)
+}
+
+// SetBaddress1 sets the Baddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetBaddress1(baddress1 *Baddress2) {
+	a.Baddress1 = baddress1
+	a.require(applicationDataOdpFieldBaddress1)
+}
+
+// SetBankData sets the BankData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetBankData(bankData *BankData) {
+	a.BankData = bankData
+	a.require(applicationDataOdpFieldBankData)
+}
+
+// SetBcity sets the Bcity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetBcity(bcity *Bcity) {
+	a.Bcity = bcity
+	a.require(applicationDataOdpFieldBcity)
+}
+
+// SetBcountry sets the Bcountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetBcountry(bcountry *Bcountry) {
+	a.Bcountry = bcountry
+	a.require(applicationDataOdpFieldBcountry)
+}
+
+// SetBoardingLinkId sets the BoardingLinkId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetBoardingLinkId(boardingLinkId *string) {
+	a.BoardingLinkId = boardingLinkId
+	a.require(applicationDataOdpFieldBoardingLinkId)
+}
+
+// SetBstate sets the Bstate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetBstate(bstate *Bstate) {
+	a.Bstate = bstate
+	a.require(applicationDataOdpFieldBstate)
+}
+
+// SetBsummary sets the Bsummary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetBsummary(bsummary *Bsummary) {
+	a.Bsummary = bsummary
+	a.require(applicationDataOdpFieldBsummary)
+}
+
+// SetBtype sets the Btype field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetBtype(btype *OwnType) {
+	a.Btype = btype
+	a.require(applicationDataOdpFieldBtype)
+}
+
+// SetBzip sets the Bzip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetBzip(bzip *Bzip) {
+	a.Bzip = bzip
+	a.require(applicationDataOdpFieldBzip)
+}
+
+// SetContacts sets the Contacts field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetContacts(contacts []*ApplicationDataOdpContactsItem) {
+	a.Contacts = contacts
+	a.require(applicationDataOdpFieldContacts)
+}
+
+// SetDbaname sets the Dbaname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetDbaname(dbaname *Dbaname) {
+	a.Dbaname = dbaname
+	a.require(applicationDataOdpFieldDbaname)
+}
+
+// SetEin sets the Ein field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetEin(ein *Ein) {
+	a.Ein = ein
+	a.require(applicationDataOdpFieldEin)
+}
+
+// SetFaxnumber sets the Faxnumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetFaxnumber(faxnumber *BoardingBusinessFax) {
+	a.Faxnumber = faxnumber
+	a.require(applicationDataOdpFieldFaxnumber)
+}
+
+// SetHighticketamt sets the Highticketamt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetHighticketamt(highticketamt *Highticketamt) {
+	a.Highticketamt = highticketamt
+	a.require(applicationDataOdpFieldHighticketamt)
+}
+
+// SetLegalname sets the Legalname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetLegalname(legalname *Legalname) {
+	a.Legalname = legalname
+	a.require(applicationDataOdpFieldLegalname)
+}
+
+// SetLicense sets the License field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetLicense(license *License) {
+	a.License = license
+	a.require(applicationDataOdpFieldLicense)
+}
+
+// SetLicstate sets the Licstate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetLicstate(licstate *Licensestate) {
+	a.Licstate = licstate
+	a.require(applicationDataOdpFieldLicstate)
+}
+
+// SetMaddress sets the Maddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetMaddress(maddress *Maddress) {
+	a.Maddress = maddress
+	a.require(applicationDataOdpFieldMaddress)
+}
+
+// SetMaddress1 sets the Maddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetMaddress1(maddress1 *Maddress1) {
+	a.Maddress1 = maddress1
+	a.require(applicationDataOdpFieldMaddress1)
+}
+
+// SetMcc sets the Mcc field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetMcc(mcc *Mcc) {
+	a.Mcc = mcc
+	a.require(applicationDataOdpFieldMcc)
+}
+
+// SetMcity sets the Mcity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetMcity(mcity *Mcity) {
+	a.Mcity = mcity
+	a.require(applicationDataOdpFieldMcity)
+}
+
+// SetMcountry sets the Mcountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetMcountry(mcountry *Mcountry) {
+	a.Mcountry = mcountry
+	a.require(applicationDataOdpFieldMcountry)
+}
+
+// SetMstate sets the Mstate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetMstate(mstate *Mstate) {
+	a.Mstate = mstate
+	a.require(applicationDataOdpFieldMstate)
+}
+
+// SetMzip sets the Mzip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetMzip(mzip *Mzip) {
+	a.Mzip = mzip
+	a.require(applicationDataOdpFieldMzip)
+}
+
+// SetOrgId sets the OrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetOrgId(orgId *Orgid) {
+	a.OrgId = orgId
+	a.require(applicationDataOdpFieldOrgId)
+}
+
+// SetOwnership sets the Ownership field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetOwnership(ownership []*ApplicationDataOdpOwnershipItem) {
+	a.Ownership = ownership
+	a.require(applicationDataOdpFieldOwnership)
+}
+
+// SetPayoutAverageMonthlyVolume sets the PayoutAverageMonthlyVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetPayoutAverageMonthlyVolume(payoutAverageMonthlyVolume PayoutAverageMonthlyVolume) {
+	a.PayoutAverageMonthlyVolume = payoutAverageMonthlyVolume
+	a.require(applicationDataOdpFieldPayoutAverageMonthlyVolume)
+}
+
+// SetPayoutAverageTicketAmount sets the PayoutAverageTicketAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetPayoutAverageTicketAmount(payoutAverageTicketAmount PayoutAverageTicketLimit) {
+	a.PayoutAverageTicketAmount = payoutAverageTicketAmount
+	a.require(applicationDataOdpFieldPayoutAverageTicketAmount)
+}
+
+// SetPayoutCreditLimit sets the PayoutCreditLimit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetPayoutCreditLimit(payoutCreditLimit PayoutCreditLimit) {
+	a.PayoutCreditLimit = payoutCreditLimit
+	a.require(applicationDataOdpFieldPayoutCreditLimit)
+}
+
+// SetPayoutHighTicketAmount sets the PayoutHighTicketAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetPayoutHighTicketAmount(payoutHighTicketAmount PayoutHighTicketAmount) {
+	a.PayoutHighTicketAmount = payoutHighTicketAmount
+	a.require(applicationDataOdpFieldPayoutHighTicketAmount)
+}
+
+// SetPhonenumber sets the Phonenumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetPhonenumber(phonenumber *BoardingBusinessPhone) {
+	a.Phonenumber = phonenumber
+	a.require(applicationDataOdpFieldPhonenumber)
+}
+
+// SetRecipientEmail sets the RecipientEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetRecipientEmail(recipientEmail *Email) {
+	a.RecipientEmail = recipientEmail
+	a.require(applicationDataOdpFieldRecipientEmail)
+}
+
+// SetRecipientEmailNotification sets the RecipientEmailNotification field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetRecipientEmailNotification(recipientEmailNotification *RecipientEmailNotification) {
+	a.RecipientEmailNotification = recipientEmailNotification
+	a.require(applicationDataOdpFieldRecipientEmailNotification)
+}
+
+// SetResumable sets the Resumable field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetResumable(resumable *Resumable) {
+	a.Resumable = resumable
+	a.require(applicationDataOdpFieldResumable)
+}
+
+// SetSigner sets the Signer field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetSigner(signer *SignerDataRequest) {
+	a.Signer = signer
+	a.require(applicationDataOdpFieldSigner)
+}
+
+// SetStartdate sets the Startdate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetStartdate(startdate *Busstartdate) {
+	a.Startdate = startdate
+	a.require(applicationDataOdpFieldStartdate)
+}
+
+// SetTaxfillname sets the Taxfillname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetTaxfillname(taxfillname *Taxfillname) {
+	a.Taxfillname = taxfillname
+	a.require(applicationDataOdpFieldTaxfillname)
+}
+
+// SetTemplateId sets the TemplateId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetTemplateId(templateId *TemplateId) {
+	a.TemplateId = templateId
+	a.require(applicationDataOdpFieldTemplateId)
+}
+
+// SetWebsite sets the Website field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetWebsite(website *Website) {
+	a.Website = website
+	a.require(applicationDataOdpFieldWebsite)
+}
+
+// SetRepCode sets the RepCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetRepCode(repCode *RepCode) {
+	a.RepCode = repCode
+	a.require(applicationDataOdpFieldRepCode)
+}
+
+// SetRepName sets the RepName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetRepName(repName *RepName) {
+	a.RepName = repName
+	a.require(applicationDataOdpFieldRepName)
+}
+
+// SetRepOffice sets the RepOffice field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetRepOffice(repOffice *RepOffice) {
+	a.RepOffice = repOffice
+	a.require(applicationDataOdpFieldRepOffice)
+}
+
 func (a *ApplicationDataOdp) UnmarshalJSON(data []byte) error {
 	type unmarshaler ApplicationDataOdp
 	var value unmarshaler
@@ -1805,6 +3503,17 @@ func (a *ApplicationDataOdp) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (a *ApplicationDataOdp) MarshalJSON() ([]byte, error) {
+	type embed ApplicationDataOdp
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (a *ApplicationDataOdp) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
@@ -1817,6 +3526,14 @@ func (a *ApplicationDataOdp) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+var (
+	applicationDataOdpContactsItemFieldContactEmail   = big.NewInt(1 << 0)
+	applicationDataOdpContactsItemFieldContactName    = big.NewInt(1 << 1)
+	applicationDataOdpContactsItemFieldContactPhone   = big.NewInt(1 << 2)
+	applicationDataOdpContactsItemFieldContactTitle   = big.NewInt(1 << 3)
+	applicationDataOdpContactsItemFieldAdditionalData = big.NewInt(1 << 4)
+)
+
 type ApplicationDataOdpContactsItem struct {
 	// Contact email address.
 	ContactEmail *Email `json:"contactEmail,omitempty" url:"contactEmail,omitempty"`
@@ -1827,6 +3544,9 @@ type ApplicationDataOdpContactsItem struct {
 	// Contact title.
 	ContactTitle   *string               `json:"contactTitle,omitempty" url:"contactTitle,omitempty"`
 	AdditionalData *AdditionalDataString `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -1871,6 +3591,48 @@ func (a *ApplicationDataOdpContactsItem) GetExtraProperties() map[string]interfa
 	return a.extraProperties
 }
 
+func (a *ApplicationDataOdpContactsItem) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetContactEmail sets the ContactEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdpContactsItem) SetContactEmail(contactEmail *Email) {
+	a.ContactEmail = contactEmail
+	a.require(applicationDataOdpContactsItemFieldContactEmail)
+}
+
+// SetContactName sets the ContactName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdpContactsItem) SetContactName(contactName *string) {
+	a.ContactName = contactName
+	a.require(applicationDataOdpContactsItemFieldContactName)
+}
+
+// SetContactPhone sets the ContactPhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdpContactsItem) SetContactPhone(contactPhone *string) {
+	a.ContactPhone = contactPhone
+	a.require(applicationDataOdpContactsItemFieldContactPhone)
+}
+
+// SetContactTitle sets the ContactTitle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdpContactsItem) SetContactTitle(contactTitle *string) {
+	a.ContactTitle = contactTitle
+	a.require(applicationDataOdpContactsItemFieldContactTitle)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdpContactsItem) SetAdditionalData(additionalData *AdditionalDataString) {
+	a.AdditionalData = additionalData
+	a.require(applicationDataOdpContactsItemFieldAdditionalData)
+}
+
 func (a *ApplicationDataOdpContactsItem) UnmarshalJSON(data []byte) error {
 	type unmarshaler ApplicationDataOdpContactsItem
 	var value unmarshaler
@@ -1887,6 +3649,17 @@ func (a *ApplicationDataOdpContactsItem) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (a *ApplicationDataOdpContactsItem) MarshalJSON() ([]byte, error) {
+	type embed ApplicationDataOdpContactsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (a *ApplicationDataOdpContactsItem) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
@@ -1898,6 +3671,25 @@ func (a *ApplicationDataOdpContactsItem) String() string {
 	}
 	return fmt.Sprintf("%#v", a)
 }
+
+var (
+	applicationDataOdpOwnershipItemFieldOwnername      = big.NewInt(1 << 0)
+	applicationDataOdpOwnershipItemFieldOwnertitle     = big.NewInt(1 << 1)
+	applicationDataOdpOwnershipItemFieldOwnerpercent   = big.NewInt(1 << 2)
+	applicationDataOdpOwnershipItemFieldOwnerssn       = big.NewInt(1 << 3)
+	applicationDataOdpOwnershipItemFieldOwnerdob       = big.NewInt(1 << 4)
+	applicationDataOdpOwnershipItemFieldOwnerphone1    = big.NewInt(1 << 5)
+	applicationDataOdpOwnershipItemFieldOwnerphone2    = big.NewInt(1 << 6)
+	applicationDataOdpOwnershipItemFieldOwneremail     = big.NewInt(1 << 7)
+	applicationDataOdpOwnershipItemFieldOwnerdriver    = big.NewInt(1 << 8)
+	applicationDataOdpOwnershipItemFieldOaddress       = big.NewInt(1 << 9)
+	applicationDataOdpOwnershipItemFieldOcity          = big.NewInt(1 << 10)
+	applicationDataOdpOwnershipItemFieldOcountry       = big.NewInt(1 << 11)
+	applicationDataOdpOwnershipItemFieldOdriverstate   = big.NewInt(1 << 12)
+	applicationDataOdpOwnershipItemFieldOstate         = big.NewInt(1 << 13)
+	applicationDataOdpOwnershipItemFieldOzip           = big.NewInt(1 << 14)
+	applicationDataOdpOwnershipItemFieldAdditionalData = big.NewInt(1 << 15)
+)
 
 type ApplicationDataOdpOwnershipItem struct {
 	// Person who is registered as the beneficial owner of the business. This is a combination of first and last name.
@@ -1931,6 +3723,9 @@ type ApplicationDataOdpOwnershipItem struct {
 	// Owner address ZIP.
 	Ozip           *string               `json:"ozip,omitempty" url:"ozip,omitempty"`
 	AdditionalData *AdditionalDataString `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2052,6 +3847,125 @@ func (a *ApplicationDataOdpOwnershipItem) GetExtraProperties() map[string]interf
 	return a.extraProperties
 }
 
+func (a *ApplicationDataOdpOwnershipItem) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetOwnername sets the Ownername field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdpOwnershipItem) SetOwnername(ownername *string) {
+	a.Ownername = ownername
+	a.require(applicationDataOdpOwnershipItemFieldOwnername)
+}
+
+// SetOwnertitle sets the Ownertitle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdpOwnershipItem) SetOwnertitle(ownertitle *string) {
+	a.Ownertitle = ownertitle
+	a.require(applicationDataOdpOwnershipItemFieldOwnertitle)
+}
+
+// SetOwnerpercent sets the Ownerpercent field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdpOwnershipItem) SetOwnerpercent(ownerpercent *int) {
+	a.Ownerpercent = ownerpercent
+	a.require(applicationDataOdpOwnershipItemFieldOwnerpercent)
+}
+
+// SetOwnerssn sets the Ownerssn field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdpOwnershipItem) SetOwnerssn(ownerssn *string) {
+	a.Ownerssn = ownerssn
+	a.require(applicationDataOdpOwnershipItemFieldOwnerssn)
+}
+
+// SetOwnerdob sets the Ownerdob field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdpOwnershipItem) SetOwnerdob(ownerdob *string) {
+	a.Ownerdob = ownerdob
+	a.require(applicationDataOdpOwnershipItemFieldOwnerdob)
+}
+
+// SetOwnerphone1 sets the Ownerphone1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdpOwnershipItem) SetOwnerphone1(ownerphone1 *string) {
+	a.Ownerphone1 = ownerphone1
+	a.require(applicationDataOdpOwnershipItemFieldOwnerphone1)
+}
+
+// SetOwnerphone2 sets the Ownerphone2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdpOwnershipItem) SetOwnerphone2(ownerphone2 *string) {
+	a.Ownerphone2 = ownerphone2
+	a.require(applicationDataOdpOwnershipItemFieldOwnerphone2)
+}
+
+// SetOwneremail sets the Owneremail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdpOwnershipItem) SetOwneremail(owneremail *Email) {
+	a.Owneremail = owneremail
+	a.require(applicationDataOdpOwnershipItemFieldOwneremail)
+}
+
+// SetOwnerdriver sets the Ownerdriver field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdpOwnershipItem) SetOwnerdriver(ownerdriver *string) {
+	a.Ownerdriver = ownerdriver
+	a.require(applicationDataOdpOwnershipItemFieldOwnerdriver)
+}
+
+// SetOaddress sets the Oaddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdpOwnershipItem) SetOaddress(oaddress *string) {
+	a.Oaddress = oaddress
+	a.require(applicationDataOdpOwnershipItemFieldOaddress)
+}
+
+// SetOcity sets the Ocity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdpOwnershipItem) SetOcity(ocity *string) {
+	a.Ocity = ocity
+	a.require(applicationDataOdpOwnershipItemFieldOcity)
+}
+
+// SetOcountry sets the Ocountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdpOwnershipItem) SetOcountry(ocountry *string) {
+	a.Ocountry = ocountry
+	a.require(applicationDataOdpOwnershipItemFieldOcountry)
+}
+
+// SetOdriverstate sets the Odriverstate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdpOwnershipItem) SetOdriverstate(odriverstate *string) {
+	a.Odriverstate = odriverstate
+	a.require(applicationDataOdpOwnershipItemFieldOdriverstate)
+}
+
+// SetOstate sets the Ostate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdpOwnershipItem) SetOstate(ostate *string) {
+	a.Ostate = ostate
+	a.require(applicationDataOdpOwnershipItemFieldOstate)
+}
+
+// SetOzip sets the Ozip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdpOwnershipItem) SetOzip(ozip *string) {
+	a.Ozip = ozip
+	a.require(applicationDataOdpOwnershipItemFieldOzip)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdpOwnershipItem) SetAdditionalData(additionalData *AdditionalDataString) {
+	a.AdditionalData = additionalData
+	a.require(applicationDataOdpOwnershipItemFieldAdditionalData)
+}
+
 func (a *ApplicationDataOdpOwnershipItem) UnmarshalJSON(data []byte) error {
 	type unmarshaler ApplicationDataOdpOwnershipItem
 	var value unmarshaler
@@ -2068,6 +3982,17 @@ func (a *ApplicationDataOdpOwnershipItem) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (a *ApplicationDataOdpOwnershipItem) MarshalJSON() ([]byte, error) {
+	type embed ApplicationDataOdpOwnershipItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (a *ApplicationDataOdpOwnershipItem) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
@@ -2081,6 +4006,65 @@ func (a *ApplicationDataOdpOwnershipItem) String() string {
 }
 
 // Fields for Pay In boarding applications.
+var (
+	applicationDataPayInFieldServices                   = big.NewInt(1 << 0)
+	applicationDataPayInFieldAnnualRevenue              = big.NewInt(1 << 1)
+	applicationDataPayInFieldAverageBillSize            = big.NewInt(1 << 2)
+	applicationDataPayInFieldAverageMonthlyBill         = big.NewInt(1 << 3)
+	applicationDataPayInFieldAvgmonthly                 = big.NewInt(1 << 4)
+	applicationDataPayInFieldBaddress                   = big.NewInt(1 << 5)
+	applicationDataPayInFieldBaddress1                  = big.NewInt(1 << 6)
+	applicationDataPayInFieldBankData                   = big.NewInt(1 << 7)
+	applicationDataPayInFieldBcity                      = big.NewInt(1 << 8)
+	applicationDataPayInFieldBcountry                   = big.NewInt(1 << 9)
+	applicationDataPayInFieldBinperson                  = big.NewInt(1 << 10)
+	applicationDataPayInFieldBinphone                   = big.NewInt(1 << 11)
+	applicationDataPayInFieldBinweb                     = big.NewInt(1 << 12)
+	applicationDataPayInFieldBoardingLinkId             = big.NewInt(1 << 13)
+	applicationDataPayInFieldBstate                     = big.NewInt(1 << 14)
+	applicationDataPayInFieldBsummary                   = big.NewInt(1 << 15)
+	applicationDataPayInFieldBtype                      = big.NewInt(1 << 16)
+	applicationDataPayInFieldBzip                       = big.NewInt(1 << 17)
+	applicationDataPayInFieldContacts                   = big.NewInt(1 << 18)
+	applicationDataPayInFieldCreditLimit                = big.NewInt(1 << 19)
+	applicationDataPayInFieldDbaName                    = big.NewInt(1 << 20)
+	applicationDataPayInFieldEin                        = big.NewInt(1 << 21)
+	applicationDataPayInFieldExternalpaypointId         = big.NewInt(1 << 22)
+	applicationDataPayInFieldFaxnumber                  = big.NewInt(1 << 23)
+	applicationDataPayInFieldHighticketamt              = big.NewInt(1 << 24)
+	applicationDataPayInFieldLegalName                  = big.NewInt(1 << 25)
+	applicationDataPayInFieldLicense                    = big.NewInt(1 << 26)
+	applicationDataPayInFieldLicstate                   = big.NewInt(1 << 27)
+	applicationDataPayInFieldMaddress                   = big.NewInt(1 << 28)
+	applicationDataPayInFieldMaddress1                  = big.NewInt(1 << 29)
+	applicationDataPayInFieldMcc                        = big.NewInt(1 << 30)
+	applicationDataPayInFieldMcity                      = big.NewInt(1 << 31)
+	applicationDataPayInFieldMcountry                   = big.NewInt(1 << 32)
+	applicationDataPayInFieldMstate                     = big.NewInt(1 << 33)
+	applicationDataPayInFieldMzip                       = big.NewInt(1 << 34)
+	applicationDataPayInFieldOrgId                      = big.NewInt(1 << 35)
+	applicationDataPayInFieldOwnership                  = big.NewInt(1 << 36)
+	applicationDataPayInFieldPhonenumber                = big.NewInt(1 << 37)
+	applicationDataPayInFieldProcessingRegion           = big.NewInt(1 << 38)
+	applicationDataPayInFieldRecipientEmail             = big.NewInt(1 << 39)
+	applicationDataPayInFieldRecipientEmailNotification = big.NewInt(1 << 40)
+	applicationDataPayInFieldResumable                  = big.NewInt(1 << 41)
+	applicationDataPayInFieldSigner                     = big.NewInt(1 << 42)
+	applicationDataPayInFieldStartdate                  = big.NewInt(1 << 43)
+	applicationDataPayInFieldTaxFillName                = big.NewInt(1 << 44)
+	applicationDataPayInFieldTemplateId                 = big.NewInt(1 << 45)
+	applicationDataPayInFieldTicketamt                  = big.NewInt(1 << 46)
+	applicationDataPayInFieldWebsite                    = big.NewInt(1 << 47)
+	applicationDataPayInFieldWhenCharged                = big.NewInt(1 << 48)
+	applicationDataPayInFieldWhenDelivered              = big.NewInt(1 << 49)
+	applicationDataPayInFieldWhenProvided               = big.NewInt(1 << 50)
+	applicationDataPayInFieldWhenRefunded               = big.NewInt(1 << 51)
+	applicationDataPayInFieldAdditionalData             = big.NewInt(1 << 52)
+	applicationDataPayInFieldRepCode                    = big.NewInt(1 << 53)
+	applicationDataPayInFieldRepName                    = big.NewInt(1 << 54)
+	applicationDataPayInFieldRepOffice                  = big.NewInt(1 << 55)
+)
+
 type ApplicationDataPayIn struct {
 	Services           *ApplicationDataPayInServices `json:"services" url:"services"`
 	AnnualRevenue      *Annualrevenue                `json:"annualRevenue,omitempty" url:"annualRevenue,omitempty"`
@@ -2148,6 +4132,9 @@ type ApplicationDataPayIn struct {
 	RepCode        *RepCode              `json:"RepCode,omitempty" url:"RepCode,omitempty"`
 	RepName        *RepName              `json:"RepName,omitempty" url:"RepName,omitempty"`
 	RepOffice      *RepOffice            `json:"RepOffice,omitempty" url:"RepOffice,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2549,6 +4536,405 @@ func (a *ApplicationDataPayIn) GetExtraProperties() map[string]interface{} {
 	return a.extraProperties
 }
 
+func (a *ApplicationDataPayIn) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetServices sets the Services field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetServices(services *ApplicationDataPayInServices) {
+	a.Services = services
+	a.require(applicationDataPayInFieldServices)
+}
+
+// SetAnnualRevenue sets the AnnualRevenue field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetAnnualRevenue(annualRevenue *Annualrevenue) {
+	a.AnnualRevenue = annualRevenue
+	a.require(applicationDataPayInFieldAnnualRevenue)
+}
+
+// SetAverageBillSize sets the AverageBillSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetAverageBillSize(averageBillSize *BoardingAverageBillSize) {
+	a.AverageBillSize = averageBillSize
+	a.require(applicationDataPayInFieldAverageBillSize)
+}
+
+// SetAverageMonthlyBill sets the AverageMonthlyBill field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetAverageMonthlyBill(averageMonthlyBill *BoardingAvgMonthlyBill) {
+	a.AverageMonthlyBill = averageMonthlyBill
+	a.require(applicationDataPayInFieldAverageMonthlyBill)
+}
+
+// SetAvgmonthly sets the Avgmonthly field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetAvgmonthly(avgmonthly *Avgmonthly) {
+	a.Avgmonthly = avgmonthly
+	a.require(applicationDataPayInFieldAvgmonthly)
+}
+
+// SetBaddress sets the Baddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetBaddress(baddress *Baddress1) {
+	a.Baddress = baddress
+	a.require(applicationDataPayInFieldBaddress)
+}
+
+// SetBaddress1 sets the Baddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetBaddress1(baddress1 *Baddress2) {
+	a.Baddress1 = baddress1
+	a.require(applicationDataPayInFieldBaddress1)
+}
+
+// SetBankData sets the BankData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetBankData(bankData *ApplicationDataPayInBankData) {
+	a.BankData = bankData
+	a.require(applicationDataPayInFieldBankData)
+}
+
+// SetBcity sets the Bcity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetBcity(bcity *Bcity) {
+	a.Bcity = bcity
+	a.require(applicationDataPayInFieldBcity)
+}
+
+// SetBcountry sets the Bcountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetBcountry(bcountry *Bcountry) {
+	a.Bcountry = bcountry
+	a.require(applicationDataPayInFieldBcountry)
+}
+
+// SetBinperson sets the Binperson field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetBinperson(binperson *Binperson) {
+	a.Binperson = binperson
+	a.require(applicationDataPayInFieldBinperson)
+}
+
+// SetBinphone sets the Binphone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetBinphone(binphone *Binphone) {
+	a.Binphone = binphone
+	a.require(applicationDataPayInFieldBinphone)
+}
+
+// SetBinweb sets the Binweb field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetBinweb(binweb *Binweb) {
+	a.Binweb = binweb
+	a.require(applicationDataPayInFieldBinweb)
+}
+
+// SetBoardingLinkId sets the BoardingLinkId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetBoardingLinkId(boardingLinkId *string) {
+	a.BoardingLinkId = boardingLinkId
+	a.require(applicationDataPayInFieldBoardingLinkId)
+}
+
+// SetBstate sets the Bstate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetBstate(bstate *Bstate) {
+	a.Bstate = bstate
+	a.require(applicationDataPayInFieldBstate)
+}
+
+// SetBsummary sets the Bsummary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetBsummary(bsummary *Bsummary) {
+	a.Bsummary = bsummary
+	a.require(applicationDataPayInFieldBsummary)
+}
+
+// SetBtype sets the Btype field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetBtype(btype *OwnType) {
+	a.Btype = btype
+	a.require(applicationDataPayInFieldBtype)
+}
+
+// SetBzip sets the Bzip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetBzip(bzip *Bzip) {
+	a.Bzip = bzip
+	a.require(applicationDataPayInFieldBzip)
+}
+
+// SetContacts sets the Contacts field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetContacts(contacts []*ApplicationDataPayInContactsItem) {
+	a.Contacts = contacts
+	a.require(applicationDataPayInFieldContacts)
+}
+
+// SetCreditLimit sets the CreditLimit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetCreditLimit(creditLimit *string) {
+	a.CreditLimit = creditLimit
+	a.require(applicationDataPayInFieldCreditLimit)
+}
+
+// SetDbaName sets the DbaName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetDbaName(dbaName *Dbaname) {
+	a.DbaName = dbaName
+	a.require(applicationDataPayInFieldDbaName)
+}
+
+// SetEin sets the Ein field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetEin(ein *Ein) {
+	a.Ein = ein
+	a.require(applicationDataPayInFieldEin)
+}
+
+// SetExternalpaypointId sets the ExternalpaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetExternalpaypointId(externalpaypointId *ExternalPaypointId) {
+	a.ExternalpaypointId = externalpaypointId
+	a.require(applicationDataPayInFieldExternalpaypointId)
+}
+
+// SetFaxnumber sets the Faxnumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetFaxnumber(faxnumber *FaxNumber) {
+	a.Faxnumber = faxnumber
+	a.require(applicationDataPayInFieldFaxnumber)
+}
+
+// SetHighticketamt sets the Highticketamt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetHighticketamt(highticketamt *Highticketamt) {
+	a.Highticketamt = highticketamt
+	a.require(applicationDataPayInFieldHighticketamt)
+}
+
+// SetLegalName sets the LegalName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetLegalName(legalName *Legalname) {
+	a.LegalName = legalName
+	a.require(applicationDataPayInFieldLegalName)
+}
+
+// SetLicense sets the License field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetLicense(license *License) {
+	a.License = license
+	a.require(applicationDataPayInFieldLicense)
+}
+
+// SetLicstate sets the Licstate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetLicstate(licstate *Licensestate) {
+	a.Licstate = licstate
+	a.require(applicationDataPayInFieldLicstate)
+}
+
+// SetMaddress sets the Maddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetMaddress(maddress *Maddress) {
+	a.Maddress = maddress
+	a.require(applicationDataPayInFieldMaddress)
+}
+
+// SetMaddress1 sets the Maddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetMaddress1(maddress1 *Maddress1) {
+	a.Maddress1 = maddress1
+	a.require(applicationDataPayInFieldMaddress1)
+}
+
+// SetMcc sets the Mcc field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetMcc(mcc *Mcc) {
+	a.Mcc = mcc
+	a.require(applicationDataPayInFieldMcc)
+}
+
+// SetMcity sets the Mcity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetMcity(mcity *Mcity) {
+	a.Mcity = mcity
+	a.require(applicationDataPayInFieldMcity)
+}
+
+// SetMcountry sets the Mcountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetMcountry(mcountry *Mcountry) {
+	a.Mcountry = mcountry
+	a.require(applicationDataPayInFieldMcountry)
+}
+
+// SetMstate sets the Mstate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetMstate(mstate *Mstate) {
+	a.Mstate = mstate
+	a.require(applicationDataPayInFieldMstate)
+}
+
+// SetMzip sets the Mzip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetMzip(mzip *Mzip) {
+	a.Mzip = mzip
+	a.require(applicationDataPayInFieldMzip)
+}
+
+// SetOrgId sets the OrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetOrgId(orgId *Orgid) {
+	a.OrgId = orgId
+	a.require(applicationDataPayInFieldOrgId)
+}
+
+// SetOwnership sets the Ownership field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetOwnership(ownership []*ApplicationDataPayInOwnershipItem) {
+	a.Ownership = ownership
+	a.require(applicationDataPayInFieldOwnership)
+}
+
+// SetPhonenumber sets the Phonenumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetPhonenumber(phonenumber PhoneNumber) {
+	a.Phonenumber = phonenumber
+	a.require(applicationDataPayInFieldPhonenumber)
+}
+
+// SetProcessingRegion sets the ProcessingRegion field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetProcessingRegion(processingRegion string) {
+	a.ProcessingRegion = processingRegion
+	a.require(applicationDataPayInFieldProcessingRegion)
+}
+
+// SetRecipientEmail sets the RecipientEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetRecipientEmail(recipientEmail *Email) {
+	a.RecipientEmail = recipientEmail
+	a.require(applicationDataPayInFieldRecipientEmail)
+}
+
+// SetRecipientEmailNotification sets the RecipientEmailNotification field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetRecipientEmailNotification(recipientEmailNotification *RecipientEmailNotification) {
+	a.RecipientEmailNotification = recipientEmailNotification
+	a.require(applicationDataPayInFieldRecipientEmailNotification)
+}
+
+// SetResumable sets the Resumable field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetResumable(resumable *Resumable) {
+	a.Resumable = resumable
+	a.require(applicationDataPayInFieldResumable)
+}
+
+// SetSigner sets the Signer field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetSigner(signer *SignerDataRequest) {
+	a.Signer = signer
+	a.require(applicationDataPayInFieldSigner)
+}
+
+// SetStartdate sets the Startdate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetStartdate(startdate *Busstartdate) {
+	a.Startdate = startdate
+	a.require(applicationDataPayInFieldStartdate)
+}
+
+// SetTaxFillName sets the TaxFillName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetTaxFillName(taxFillName *Taxfillname) {
+	a.TaxFillName = taxFillName
+	a.require(applicationDataPayInFieldTaxFillName)
+}
+
+// SetTemplateId sets the TemplateId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetTemplateId(templateId *TemplateId) {
+	a.TemplateId = templateId
+	a.require(applicationDataPayInFieldTemplateId)
+}
+
+// SetTicketamt sets the Ticketamt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetTicketamt(ticketamt *Ticketamt) {
+	a.Ticketamt = ticketamt
+	a.require(applicationDataPayInFieldTicketamt)
+}
+
+// SetWebsite sets the Website field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetWebsite(website *Website) {
+	a.Website = website
+	a.require(applicationDataPayInFieldWebsite)
+}
+
+// SetWhenCharged sets the WhenCharged field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetWhenCharged(whenCharged Whencharged) {
+	a.WhenCharged = whenCharged
+	a.require(applicationDataPayInFieldWhenCharged)
+}
+
+// SetWhenDelivered sets the WhenDelivered field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetWhenDelivered(whenDelivered Whendelivered) {
+	a.WhenDelivered = whenDelivered
+	a.require(applicationDataPayInFieldWhenDelivered)
+}
+
+// SetWhenProvided sets the WhenProvided field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetWhenProvided(whenProvided Whenprovided) {
+	a.WhenProvided = whenProvided
+	a.require(applicationDataPayInFieldWhenProvided)
+}
+
+// SetWhenRefunded sets the WhenRefunded field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetWhenRefunded(whenRefunded Whenrefunded) {
+	a.WhenRefunded = whenRefunded
+	a.require(applicationDataPayInFieldWhenRefunded)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetAdditionalData(additionalData *AdditionalDataString) {
+	a.AdditionalData = additionalData
+	a.require(applicationDataPayInFieldAdditionalData)
+}
+
+// SetRepCode sets the RepCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetRepCode(repCode *RepCode) {
+	a.RepCode = repCode
+	a.require(applicationDataPayInFieldRepCode)
+}
+
+// SetRepName sets the RepName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetRepName(repName *RepName) {
+	a.RepName = repName
+	a.require(applicationDataPayInFieldRepName)
+}
+
+// SetRepOffice sets the RepOffice field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetRepOffice(repOffice *RepOffice) {
+	a.RepOffice = repOffice
+	a.require(applicationDataPayInFieldRepOffice)
+}
+
 func (a *ApplicationDataPayIn) UnmarshalJSON(data []byte) error {
 	type unmarshaler ApplicationDataPayIn
 	var value unmarshaler
@@ -2565,6 +4951,17 @@ func (a *ApplicationDataPayIn) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (a *ApplicationDataPayIn) MarshalJSON() ([]byte, error) {
+	type embed ApplicationDataPayIn
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (a *ApplicationDataPayIn) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
@@ -2576,6 +4973,22 @@ func (a *ApplicationDataPayIn) String() string {
 	}
 	return fmt.Sprintf("%#v", a)
 }
+
+var (
+	applicationDataPayInBankDataFieldId                    = big.NewInt(1 << 0)
+	applicationDataPayInBankDataFieldAccountId             = big.NewInt(1 << 1)
+	applicationDataPayInBankDataFieldNickname              = big.NewInt(1 << 2)
+	applicationDataPayInBankDataFieldBankName              = big.NewInt(1 << 3)
+	applicationDataPayInBankDataFieldRoutingAccount        = big.NewInt(1 << 4)
+	applicationDataPayInBankDataFieldAccountNumber         = big.NewInt(1 << 5)
+	applicationDataPayInBankDataFieldTypeAccount           = big.NewInt(1 << 6)
+	applicationDataPayInBankDataFieldBankAccountHolderName = big.NewInt(1 << 7)
+	applicationDataPayInBankDataFieldBankAccountHolderType = big.NewInt(1 << 8)
+	applicationDataPayInBankDataFieldBankAccountFunction   = big.NewInt(1 << 9)
+	applicationDataPayInBankDataFieldVerified              = big.NewInt(1 << 10)
+	applicationDataPayInBankDataFieldStatus                = big.NewInt(1 << 11)
+	applicationDataPayInBankDataFieldServices              = big.NewInt(1 << 12)
+)
 
 type ApplicationDataPayInBankData struct {
 	// The Payabli-assigned internal identifier for the bank account.
@@ -2596,6 +5009,9 @@ type ApplicationDataPayInBankData struct {
 	Status *int `json:"status,omitempty" url:"status,omitempty"`
 	// Array of services associated with this bank account
 	Services []string `json:"services,omitempty" url:"services,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2696,6 +5112,104 @@ func (a *ApplicationDataPayInBankData) GetExtraProperties() map[string]interface
 	return a.extraProperties
 }
 
+func (a *ApplicationDataPayInBankData) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInBankData) SetId(id *int) {
+	a.Id = id
+	a.require(applicationDataPayInBankDataFieldId)
+}
+
+// SetAccountId sets the AccountId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInBankData) SetAccountId(accountId *string) {
+	a.AccountId = accountId
+	a.require(applicationDataPayInBankDataFieldAccountId)
+}
+
+// SetNickname sets the Nickname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInBankData) SetNickname(nickname *BankNickname) {
+	a.Nickname = nickname
+	a.require(applicationDataPayInBankDataFieldNickname)
+}
+
+// SetBankName sets the BankName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInBankData) SetBankName(bankName *BankName) {
+	a.BankName = bankName
+	a.require(applicationDataPayInBankDataFieldBankName)
+}
+
+// SetRoutingAccount sets the RoutingAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInBankData) SetRoutingAccount(routingAccount *RoutingAccount) {
+	a.RoutingAccount = routingAccount
+	a.require(applicationDataPayInBankDataFieldRoutingAccount)
+}
+
+// SetAccountNumber sets the AccountNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInBankData) SetAccountNumber(accountNumber *AccountNumber) {
+	a.AccountNumber = accountNumber
+	a.require(applicationDataPayInBankDataFieldAccountNumber)
+}
+
+// SetTypeAccount sets the TypeAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInBankData) SetTypeAccount(typeAccount *TypeAccount) {
+	a.TypeAccount = typeAccount
+	a.require(applicationDataPayInBankDataFieldTypeAccount)
+}
+
+// SetBankAccountHolderName sets the BankAccountHolderName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInBankData) SetBankAccountHolderName(bankAccountHolderName *BankAccountHolderName) {
+	a.BankAccountHolderName = bankAccountHolderName
+	a.require(applicationDataPayInBankDataFieldBankAccountHolderName)
+}
+
+// SetBankAccountHolderType sets the BankAccountHolderType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInBankData) SetBankAccountHolderType(bankAccountHolderType *BankAccountHolderType) {
+	a.BankAccountHolderType = bankAccountHolderType
+	a.require(applicationDataPayInBankDataFieldBankAccountHolderType)
+}
+
+// SetBankAccountFunction sets the BankAccountFunction field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInBankData) SetBankAccountFunction(bankAccountFunction *BankAccountFunction) {
+	a.BankAccountFunction = bankAccountFunction
+	a.require(applicationDataPayInBankDataFieldBankAccountFunction)
+}
+
+// SetVerified sets the Verified field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInBankData) SetVerified(verified *bool) {
+	a.Verified = verified
+	a.require(applicationDataPayInBankDataFieldVerified)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInBankData) SetStatus(status *int) {
+	a.Status = status
+	a.require(applicationDataPayInBankDataFieldStatus)
+}
+
+// SetServices sets the Services field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInBankData) SetServices(services []string) {
+	a.Services = services
+	a.require(applicationDataPayInBankDataFieldServices)
+}
+
 func (a *ApplicationDataPayInBankData) UnmarshalJSON(data []byte) error {
 	type unmarshaler ApplicationDataPayInBankData
 	var value unmarshaler
@@ -2712,6 +5226,17 @@ func (a *ApplicationDataPayInBankData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (a *ApplicationDataPayInBankData) MarshalJSON() ([]byte, error) {
+	type embed ApplicationDataPayInBankData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (a *ApplicationDataPayInBankData) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
@@ -2724,6 +5249,14 @@ func (a *ApplicationDataPayInBankData) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+var (
+	applicationDataPayInContactsItemFieldContactEmail   = big.NewInt(1 << 0)
+	applicationDataPayInContactsItemFieldContactName    = big.NewInt(1 << 1)
+	applicationDataPayInContactsItemFieldContactPhone   = big.NewInt(1 << 2)
+	applicationDataPayInContactsItemFieldContactTitle   = big.NewInt(1 << 3)
+	applicationDataPayInContactsItemFieldAdditionalData = big.NewInt(1 << 4)
+)
+
 type ApplicationDataPayInContactsItem struct {
 	// Contact email address.
 	ContactEmail *Email `json:"contactEmail,omitempty" url:"contactEmail,omitempty"`
@@ -2734,6 +5267,9 @@ type ApplicationDataPayInContactsItem struct {
 	// Contact title.
 	ContactTitle   *string               `json:"contactTitle,omitempty" url:"contactTitle,omitempty"`
 	AdditionalData *AdditionalDataString `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2778,6 +5314,48 @@ func (a *ApplicationDataPayInContactsItem) GetExtraProperties() map[string]inter
 	return a.extraProperties
 }
 
+func (a *ApplicationDataPayInContactsItem) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetContactEmail sets the ContactEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInContactsItem) SetContactEmail(contactEmail *Email) {
+	a.ContactEmail = contactEmail
+	a.require(applicationDataPayInContactsItemFieldContactEmail)
+}
+
+// SetContactName sets the ContactName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInContactsItem) SetContactName(contactName *string) {
+	a.ContactName = contactName
+	a.require(applicationDataPayInContactsItemFieldContactName)
+}
+
+// SetContactPhone sets the ContactPhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInContactsItem) SetContactPhone(contactPhone *string) {
+	a.ContactPhone = contactPhone
+	a.require(applicationDataPayInContactsItemFieldContactPhone)
+}
+
+// SetContactTitle sets the ContactTitle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInContactsItem) SetContactTitle(contactTitle *string) {
+	a.ContactTitle = contactTitle
+	a.require(applicationDataPayInContactsItemFieldContactTitle)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInContactsItem) SetAdditionalData(additionalData *AdditionalDataString) {
+	a.AdditionalData = additionalData
+	a.require(applicationDataPayInContactsItemFieldAdditionalData)
+}
+
 func (a *ApplicationDataPayInContactsItem) UnmarshalJSON(data []byte) error {
 	type unmarshaler ApplicationDataPayInContactsItem
 	var value unmarshaler
@@ -2794,6 +5372,17 @@ func (a *ApplicationDataPayInContactsItem) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (a *ApplicationDataPayInContactsItem) MarshalJSON() ([]byte, error) {
+	type embed ApplicationDataPayInContactsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (a *ApplicationDataPayInContactsItem) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
@@ -2805,6 +5394,25 @@ func (a *ApplicationDataPayInContactsItem) String() string {
 	}
 	return fmt.Sprintf("%#v", a)
 }
+
+var (
+	applicationDataPayInOwnershipItemFieldOwnername      = big.NewInt(1 << 0)
+	applicationDataPayInOwnershipItemFieldOwnertitle     = big.NewInt(1 << 1)
+	applicationDataPayInOwnershipItemFieldOwnerpercent   = big.NewInt(1 << 2)
+	applicationDataPayInOwnershipItemFieldOwnerssn       = big.NewInt(1 << 3)
+	applicationDataPayInOwnershipItemFieldOwnerdob       = big.NewInt(1 << 4)
+	applicationDataPayInOwnershipItemFieldOwnerphone1    = big.NewInt(1 << 5)
+	applicationDataPayInOwnershipItemFieldOwnerphone2    = big.NewInt(1 << 6)
+	applicationDataPayInOwnershipItemFieldOwneremail     = big.NewInt(1 << 7)
+	applicationDataPayInOwnershipItemFieldOwnerdriver    = big.NewInt(1 << 8)
+	applicationDataPayInOwnershipItemFieldOaddress       = big.NewInt(1 << 9)
+	applicationDataPayInOwnershipItemFieldOcity          = big.NewInt(1 << 10)
+	applicationDataPayInOwnershipItemFieldOcountry       = big.NewInt(1 << 11)
+	applicationDataPayInOwnershipItemFieldOdriverstate   = big.NewInt(1 << 12)
+	applicationDataPayInOwnershipItemFieldOstate         = big.NewInt(1 << 13)
+	applicationDataPayInOwnershipItemFieldOzip           = big.NewInt(1 << 14)
+	applicationDataPayInOwnershipItemFieldAdditionalData = big.NewInt(1 << 15)
+)
 
 type ApplicationDataPayInOwnershipItem struct {
 	// Person who is registered as the beneficial owner of the business. This is a combination of first and last name.
@@ -2838,6 +5446,9 @@ type ApplicationDataPayInOwnershipItem struct {
 	// Owner address ZIP.
 	Ozip           *string               `json:"ozip,omitempty" url:"ozip,omitempty"`
 	AdditionalData *AdditionalDataString `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2959,6 +5570,125 @@ func (a *ApplicationDataPayInOwnershipItem) GetExtraProperties() map[string]inte
 	return a.extraProperties
 }
 
+func (a *ApplicationDataPayInOwnershipItem) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetOwnername sets the Ownername field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInOwnershipItem) SetOwnername(ownername *string) {
+	a.Ownername = ownername
+	a.require(applicationDataPayInOwnershipItemFieldOwnername)
+}
+
+// SetOwnertitle sets the Ownertitle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInOwnershipItem) SetOwnertitle(ownertitle *string) {
+	a.Ownertitle = ownertitle
+	a.require(applicationDataPayInOwnershipItemFieldOwnertitle)
+}
+
+// SetOwnerpercent sets the Ownerpercent field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInOwnershipItem) SetOwnerpercent(ownerpercent *int) {
+	a.Ownerpercent = ownerpercent
+	a.require(applicationDataPayInOwnershipItemFieldOwnerpercent)
+}
+
+// SetOwnerssn sets the Ownerssn field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInOwnershipItem) SetOwnerssn(ownerssn *string) {
+	a.Ownerssn = ownerssn
+	a.require(applicationDataPayInOwnershipItemFieldOwnerssn)
+}
+
+// SetOwnerdob sets the Ownerdob field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInOwnershipItem) SetOwnerdob(ownerdob *string) {
+	a.Ownerdob = ownerdob
+	a.require(applicationDataPayInOwnershipItemFieldOwnerdob)
+}
+
+// SetOwnerphone1 sets the Ownerphone1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInOwnershipItem) SetOwnerphone1(ownerphone1 *string) {
+	a.Ownerphone1 = ownerphone1
+	a.require(applicationDataPayInOwnershipItemFieldOwnerphone1)
+}
+
+// SetOwnerphone2 sets the Ownerphone2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInOwnershipItem) SetOwnerphone2(ownerphone2 *string) {
+	a.Ownerphone2 = ownerphone2
+	a.require(applicationDataPayInOwnershipItemFieldOwnerphone2)
+}
+
+// SetOwneremail sets the Owneremail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInOwnershipItem) SetOwneremail(owneremail *Email) {
+	a.Owneremail = owneremail
+	a.require(applicationDataPayInOwnershipItemFieldOwneremail)
+}
+
+// SetOwnerdriver sets the Ownerdriver field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInOwnershipItem) SetOwnerdriver(ownerdriver *string) {
+	a.Ownerdriver = ownerdriver
+	a.require(applicationDataPayInOwnershipItemFieldOwnerdriver)
+}
+
+// SetOaddress sets the Oaddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInOwnershipItem) SetOaddress(oaddress *string) {
+	a.Oaddress = oaddress
+	a.require(applicationDataPayInOwnershipItemFieldOaddress)
+}
+
+// SetOcity sets the Ocity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInOwnershipItem) SetOcity(ocity *string) {
+	a.Ocity = ocity
+	a.require(applicationDataPayInOwnershipItemFieldOcity)
+}
+
+// SetOcountry sets the Ocountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInOwnershipItem) SetOcountry(ocountry *string) {
+	a.Ocountry = ocountry
+	a.require(applicationDataPayInOwnershipItemFieldOcountry)
+}
+
+// SetOdriverstate sets the Odriverstate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInOwnershipItem) SetOdriverstate(odriverstate *string) {
+	a.Odriverstate = odriverstate
+	a.require(applicationDataPayInOwnershipItemFieldOdriverstate)
+}
+
+// SetOstate sets the Ostate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInOwnershipItem) SetOstate(ostate *string) {
+	a.Ostate = ostate
+	a.require(applicationDataPayInOwnershipItemFieldOstate)
+}
+
+// SetOzip sets the Ozip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInOwnershipItem) SetOzip(ozip *string) {
+	a.Ozip = ozip
+	a.require(applicationDataPayInOwnershipItemFieldOzip)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInOwnershipItem) SetAdditionalData(additionalData *AdditionalDataString) {
+	a.AdditionalData = additionalData
+	a.require(applicationDataPayInOwnershipItemFieldAdditionalData)
+}
+
 func (a *ApplicationDataPayInOwnershipItem) UnmarshalJSON(data []byte) error {
 	type unmarshaler ApplicationDataPayInOwnershipItem
 	var value unmarshaler
@@ -2975,6 +5705,17 @@ func (a *ApplicationDataPayInOwnershipItem) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (a *ApplicationDataPayInOwnershipItem) MarshalJSON() ([]byte, error) {
+	type embed ApplicationDataPayInOwnershipItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (a *ApplicationDataPayInOwnershipItem) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
@@ -2987,10 +5728,19 @@ func (a *ApplicationDataPayInOwnershipItem) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+var (
+	applicationDataPayInServicesFieldAch  = big.NewInt(1 << 0)
+	applicationDataPayInServicesFieldCard = big.NewInt(1 << 1)
+	applicationDataPayInServicesFieldOdp  = big.NewInt(1 << 2)
+)
+
 type ApplicationDataPayInServices struct {
 	Ach  *ApplicationDataPayInServicesAch  `json:"ach" url:"ach"`
 	Card *ApplicationDataPayInServicesCard `json:"card" url:"card"`
 	Odp  *OdpSetup                         `json:"odp,omitempty" url:"odp,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -3021,6 +5771,34 @@ func (a *ApplicationDataPayInServices) GetExtraProperties() map[string]interface
 	return a.extraProperties
 }
 
+func (a *ApplicationDataPayInServices) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetAch sets the Ach field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInServices) SetAch(ach *ApplicationDataPayInServicesAch) {
+	a.Ach = ach
+	a.require(applicationDataPayInServicesFieldAch)
+}
+
+// SetCard sets the Card field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInServices) SetCard(card *ApplicationDataPayInServicesCard) {
+	a.Card = card
+	a.require(applicationDataPayInServicesFieldCard)
+}
+
+// SetOdp sets the Odp field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInServices) SetOdp(odp *OdpSetup) {
+	a.Odp = odp
+	a.require(applicationDataPayInServicesFieldOdp)
+}
+
 func (a *ApplicationDataPayInServices) UnmarshalJSON(data []byte) error {
 	type unmarshaler ApplicationDataPayInServices
 	var value unmarshaler
@@ -3037,6 +5815,17 @@ func (a *ApplicationDataPayInServices) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (a *ApplicationDataPayInServices) MarshalJSON() ([]byte, error) {
+	type embed ApplicationDataPayInServices
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (a *ApplicationDataPayInServices) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
@@ -3049,6 +5838,12 @@ func (a *ApplicationDataPayInServices) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+var (
+	applicationDataPayInServicesAchFieldAcceptCcd = big.NewInt(1 << 0)
+	applicationDataPayInServicesAchFieldAcceptPpd = big.NewInt(1 << 1)
+	applicationDataPayInServicesAchFieldAcceptWeb = big.NewInt(1 << 2)
+)
+
 type ApplicationDataPayInServicesAch struct {
 	// CCD is an ACH SEC Code that can be used in ACH transactions by the user that indicates the transaction is a Corporate Credit or Debit Entry. Options are: `true` and `false`
 	AcceptCcd *bool `json:"acceptCCD,omitempty" url:"acceptCCD,omitempty"`
@@ -3056,6 +5851,9 @@ type ApplicationDataPayInServicesAch struct {
 	AcceptPpd *bool `json:"acceptPPD,omitempty" url:"acceptPPD,omitempty"`
 	// Web is an ACH SEC Code that can be used in ACH transactions by the user that indicates the transaction is a Internet Initiated/Mobile Entry Options are `true` and `false`.
 	AcceptWeb *bool `json:"acceptWeb,omitempty" url:"acceptWeb,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -3086,6 +5884,34 @@ func (a *ApplicationDataPayInServicesAch) GetExtraProperties() map[string]interf
 	return a.extraProperties
 }
 
+func (a *ApplicationDataPayInServicesAch) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetAcceptCcd sets the AcceptCcd field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInServicesAch) SetAcceptCcd(acceptCcd *bool) {
+	a.AcceptCcd = acceptCcd
+	a.require(applicationDataPayInServicesAchFieldAcceptCcd)
+}
+
+// SetAcceptPpd sets the AcceptPpd field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInServicesAch) SetAcceptPpd(acceptPpd *bool) {
+	a.AcceptPpd = acceptPpd
+	a.require(applicationDataPayInServicesAchFieldAcceptPpd)
+}
+
+// SetAcceptWeb sets the AcceptWeb field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInServicesAch) SetAcceptWeb(acceptWeb *bool) {
+	a.AcceptWeb = acceptWeb
+	a.require(applicationDataPayInServicesAchFieldAcceptWeb)
+}
+
 func (a *ApplicationDataPayInServicesAch) UnmarshalJSON(data []byte) error {
 	type unmarshaler ApplicationDataPayInServicesAch
 	var value unmarshaler
@@ -3102,6 +5928,17 @@ func (a *ApplicationDataPayInServicesAch) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (a *ApplicationDataPayInServicesAch) MarshalJSON() ([]byte, error) {
+	type embed ApplicationDataPayInServicesAch
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (a *ApplicationDataPayInServicesAch) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
@@ -3114,6 +5951,13 @@ func (a *ApplicationDataPayInServicesAch) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+var (
+	applicationDataPayInServicesCardFieldAcceptAmex       = big.NewInt(1 << 0)
+	applicationDataPayInServicesCardFieldAcceptDiscover   = big.NewInt(1 << 1)
+	applicationDataPayInServicesCardFieldAcceptMastercard = big.NewInt(1 << 2)
+	applicationDataPayInServicesCardFieldAcceptVisa       = big.NewInt(1 << 3)
+)
+
 type ApplicationDataPayInServicesCard struct {
 	// Determines whether American Express is accepted.
 	AcceptAmex *bool `json:"acceptAmex,omitempty" url:"acceptAmex,omitempty"`
@@ -3123,6 +5967,9 @@ type ApplicationDataPayInServicesCard struct {
 	AcceptMastercard *bool `json:"acceptMastercard,omitempty" url:"acceptMastercard,omitempty"`
 	// Determines whether Visa is accepted.
 	AcceptVisa *bool `json:"acceptVisa,omitempty" url:"acceptVisa,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -3160,6 +6007,41 @@ func (a *ApplicationDataPayInServicesCard) GetExtraProperties() map[string]inter
 	return a.extraProperties
 }
 
+func (a *ApplicationDataPayInServicesCard) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetAcceptAmex sets the AcceptAmex field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInServicesCard) SetAcceptAmex(acceptAmex *bool) {
+	a.AcceptAmex = acceptAmex
+	a.require(applicationDataPayInServicesCardFieldAcceptAmex)
+}
+
+// SetAcceptDiscover sets the AcceptDiscover field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInServicesCard) SetAcceptDiscover(acceptDiscover *bool) {
+	a.AcceptDiscover = acceptDiscover
+	a.require(applicationDataPayInServicesCardFieldAcceptDiscover)
+}
+
+// SetAcceptMastercard sets the AcceptMastercard field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInServicesCard) SetAcceptMastercard(acceptMastercard *bool) {
+	a.AcceptMastercard = acceptMastercard
+	a.require(applicationDataPayInServicesCardFieldAcceptMastercard)
+}
+
+// SetAcceptVisa sets the AcceptVisa field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayInServicesCard) SetAcceptVisa(acceptVisa *bool) {
+	a.AcceptVisa = acceptVisa
+	a.require(applicationDataPayInServicesCardFieldAcceptVisa)
+}
+
 func (a *ApplicationDataPayInServicesCard) UnmarshalJSON(data []byte) error {
 	type unmarshaler ApplicationDataPayInServicesCard
 	var value unmarshaler
@@ -3176,6 +6058,17 @@ func (a *ApplicationDataPayInServicesCard) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (a *ApplicationDataPayInServicesCard) MarshalJSON() ([]byte, error) {
+	type embed ApplicationDataPayInServicesCard
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (a *ApplicationDataPayInServicesCard) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
@@ -3187,6 +6080,70 @@ func (a *ApplicationDataPayInServicesCard) String() string {
 	}
 	return fmt.Sprintf("%#v", a)
 }
+
+var (
+	applicationDetailsRecordFieldAnnualRevenue              = big.NewInt(1 << 0)
+	applicationDetailsRecordFieldAverageMonthlyVolume       = big.NewInt(1 << 1)
+	applicationDetailsRecordFieldAverageTicketAmount        = big.NewInt(1 << 2)
+	applicationDetailsRecordFieldBAddress1                  = big.NewInt(1 << 3)
+	applicationDetailsRecordFieldBAddress2                  = big.NewInt(1 << 4)
+	applicationDetailsRecordFieldBankData                   = big.NewInt(1 << 5)
+	applicationDetailsRecordFieldBCity                      = big.NewInt(1 << 6)
+	applicationDetailsRecordFieldBCountry                   = big.NewInt(1 << 7)
+	applicationDetailsRecordFieldBFax                       = big.NewInt(1 << 8)
+	applicationDetailsRecordFieldBinPerson                  = big.NewInt(1 << 9)
+	applicationDetailsRecordFieldBinPhone                   = big.NewInt(1 << 10)
+	applicationDetailsRecordFieldBinWeb                     = big.NewInt(1 << 11)
+	applicationDetailsRecordFieldBoardingLinkId             = big.NewInt(1 << 12)
+	applicationDetailsRecordFieldBoardingStatus             = big.NewInt(1 << 13)
+	applicationDetailsRecordFieldBoardingSubStatus          = big.NewInt(1 << 14)
+	applicationDetailsRecordFieldBPhone                     = big.NewInt(1 << 15)
+	applicationDetailsRecordFieldBStartdate                 = big.NewInt(1 << 16)
+	applicationDetailsRecordFieldBState                     = big.NewInt(1 << 17)
+	applicationDetailsRecordFieldBSummary                   = big.NewInt(1 << 18)
+	applicationDetailsRecordFieldBuilderData                = big.NewInt(1 << 19)
+	applicationDetailsRecordFieldBZip                       = big.NewInt(1 << 20)
+	applicationDetailsRecordFieldContactData                = big.NewInt(1 << 21)
+	applicationDetailsRecordFieldCreatedAt                  = big.NewInt(1 << 22)
+	applicationDetailsRecordFieldDbaName                    = big.NewInt(1 << 23)
+	applicationDetailsRecordFieldDocumentsRef               = big.NewInt(1 << 24)
+	applicationDetailsRecordFieldEin                        = big.NewInt(1 << 25)
+	applicationDetailsRecordFieldExternalPaypointId         = big.NewInt(1 << 26)
+	applicationDetailsRecordFieldGeneralEvents              = big.NewInt(1 << 27)
+	applicationDetailsRecordFieldHighTicketAmount           = big.NewInt(1 << 28)
+	applicationDetailsRecordFieldIdApplication              = big.NewInt(1 << 29)
+	applicationDetailsRecordFieldLastModified               = big.NewInt(1 << 30)
+	applicationDetailsRecordFieldLegalName                  = big.NewInt(1 << 31)
+	applicationDetailsRecordFieldLicense                    = big.NewInt(1 << 32)
+	applicationDetailsRecordFieldLicenseState               = big.NewInt(1 << 33)
+	applicationDetailsRecordFieldLogo                       = big.NewInt(1 << 34)
+	applicationDetailsRecordFieldMAddress1                  = big.NewInt(1 << 35)
+	applicationDetailsRecordFieldMAddress2                  = big.NewInt(1 << 36)
+	applicationDetailsRecordFieldMccid                      = big.NewInt(1 << 37)
+	applicationDetailsRecordFieldMCity                      = big.NewInt(1 << 38)
+	applicationDetailsRecordFieldMCountry                   = big.NewInt(1 << 39)
+	applicationDetailsRecordFieldMessages                   = big.NewInt(1 << 40)
+	applicationDetailsRecordFieldMState                     = big.NewInt(1 << 41)
+	applicationDetailsRecordFieldMZip                       = big.NewInt(1 << 42)
+	applicationDetailsRecordFieldOrgId                      = big.NewInt(1 << 43)
+	applicationDetailsRecordFieldOrgParentName              = big.NewInt(1 << 44)
+	applicationDetailsRecordFieldOwnerData                  = big.NewInt(1 << 45)
+	applicationDetailsRecordFieldOwnType                    = big.NewInt(1 << 46)
+	applicationDetailsRecordFieldPageidentifier             = big.NewInt(1 << 47)
+	applicationDetailsRecordFieldRecipientEmailNotification = big.NewInt(1 << 48)
+	applicationDetailsRecordFieldResumable                  = big.NewInt(1 << 49)
+	applicationDetailsRecordFieldSalesCode                  = big.NewInt(1 << 50)
+	applicationDetailsRecordFieldServiceData                = big.NewInt(1 << 51)
+	applicationDetailsRecordFieldSigner                     = big.NewInt(1 << 52)
+	applicationDetailsRecordFieldTaxfillname                = big.NewInt(1 << 53)
+	applicationDetailsRecordFieldTemplateId                 = big.NewInt(1 << 54)
+	applicationDetailsRecordFieldWebsiteAddress             = big.NewInt(1 << 55)
+	applicationDetailsRecordFieldWhencharged                = big.NewInt(1 << 56)
+	applicationDetailsRecordFieldWhendelivered              = big.NewInt(1 << 57)
+	applicationDetailsRecordFieldWhenProvided               = big.NewInt(1 << 58)
+	applicationDetailsRecordFieldWhenrefund                 = big.NewInt(1 << 59)
+	applicationDetailsRecordFieldAdditionalData             = big.NewInt(1 << 60)
+)
 
 type ApplicationDetailsRecord struct {
 	AnnualRevenue        *Annualrevenue `json:"annualRevenue,omitempty" url:"annualRevenue,omitempty"`
@@ -3253,6 +6210,9 @@ type ApplicationDetailsRecord struct {
 	WhenProvided               *Whenprovided                           `json:"whenProvided,omitempty" url:"whenProvided,omitempty"`
 	Whenrefund                 *Whenrefunded                           `json:"whenrefund,omitempty" url:"whenrefund,omitempty"`
 	AdditionalData             *AdditionalDataString                   `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -3689,6 +6649,440 @@ func (a *ApplicationDetailsRecord) GetExtraProperties() map[string]interface{} {
 	return a.extraProperties
 }
 
+func (a *ApplicationDetailsRecord) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetAnnualRevenue sets the AnnualRevenue field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetAnnualRevenue(annualRevenue *Annualrevenue) {
+	a.AnnualRevenue = annualRevenue
+	a.require(applicationDetailsRecordFieldAnnualRevenue)
+}
+
+// SetAverageMonthlyVolume sets the AverageMonthlyVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetAverageMonthlyVolume(averageMonthlyVolume *Avgmonthly) {
+	a.AverageMonthlyVolume = averageMonthlyVolume
+	a.require(applicationDetailsRecordFieldAverageMonthlyVolume)
+}
+
+// SetAverageTicketAmount sets the AverageTicketAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetAverageTicketAmount(averageTicketAmount *Ticketamt) {
+	a.AverageTicketAmount = averageTicketAmount
+	a.require(applicationDetailsRecordFieldAverageTicketAmount)
+}
+
+// SetBAddress1 sets the BAddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetBAddress1(bAddress1 *Baddress1) {
+	a.BAddress1 = bAddress1
+	a.require(applicationDetailsRecordFieldBAddress1)
+}
+
+// SetBAddress2 sets the BAddress2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetBAddress2(bAddress2 *Baddress2) {
+	a.BAddress2 = bAddress2
+	a.require(applicationDetailsRecordFieldBAddress2)
+}
+
+// SetBankData sets the BankData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetBankData(bankData *BankData) {
+	a.BankData = bankData
+	a.require(applicationDetailsRecordFieldBankData)
+}
+
+// SetBCity sets the BCity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetBCity(bCity *Bcity) {
+	a.BCity = bCity
+	a.require(applicationDetailsRecordFieldBCity)
+}
+
+// SetBCountry sets the BCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetBCountry(bCountry *Bcountry) {
+	a.BCountry = bCountry
+	a.require(applicationDetailsRecordFieldBCountry)
+}
+
+// SetBFax sets the BFax field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetBFax(bFax *Bphone) {
+	a.BFax = bFax
+	a.require(applicationDetailsRecordFieldBFax)
+}
+
+// SetBinPerson sets the BinPerson field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetBinPerson(binPerson *Binperson) {
+	a.BinPerson = binPerson
+	a.require(applicationDetailsRecordFieldBinPerson)
+}
+
+// SetBinPhone sets the BinPhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetBinPhone(binPhone *Binphone) {
+	a.BinPhone = binPhone
+	a.require(applicationDetailsRecordFieldBinPhone)
+}
+
+// SetBinWeb sets the BinWeb field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetBinWeb(binWeb *Binweb) {
+	a.BinWeb = binWeb
+	a.require(applicationDetailsRecordFieldBinWeb)
+}
+
+// SetBoardingLinkId sets the BoardingLinkId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetBoardingLinkId(boardingLinkId *BoardingLinkId) {
+	a.BoardingLinkId = boardingLinkId
+	a.require(applicationDetailsRecordFieldBoardingLinkId)
+}
+
+// SetBoardingStatus sets the BoardingStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetBoardingStatus(boardingStatus *BoardingStatus) {
+	a.BoardingStatus = boardingStatus
+	a.require(applicationDetailsRecordFieldBoardingStatus)
+}
+
+// SetBoardingSubStatus sets the BoardingSubStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetBoardingSubStatus(boardingSubStatus *BoardingStatus) {
+	a.BoardingSubStatus = boardingSubStatus
+	a.require(applicationDetailsRecordFieldBoardingSubStatus)
+}
+
+// SetBPhone sets the BPhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetBPhone(bPhone *Bphone) {
+	a.BPhone = bPhone
+	a.require(applicationDetailsRecordFieldBPhone)
+}
+
+// SetBStartdate sets the BStartdate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetBStartdate(bStartdate *Busstartdate) {
+	a.BStartdate = bStartdate
+	a.require(applicationDetailsRecordFieldBStartdate)
+}
+
+// SetBState sets the BState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetBState(bState *Bstate) {
+	a.BState = bState
+	a.require(applicationDetailsRecordFieldBState)
+}
+
+// SetBSummary sets the BSummary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetBSummary(bSummary *Bsummary) {
+	a.BSummary = bSummary
+	a.require(applicationDetailsRecordFieldBSummary)
+}
+
+// SetBuilderData sets the BuilderData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetBuilderData(builderData *BuilderData) {
+	a.BuilderData = builderData
+	a.require(applicationDetailsRecordFieldBuilderData)
+}
+
+// SetBZip sets the BZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetBZip(bZip *Bzip) {
+	a.BZip = bZip
+	a.require(applicationDetailsRecordFieldBZip)
+}
+
+// SetContactData sets the ContactData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetContactData(contactData *ContactsField) {
+	a.ContactData = contactData
+	a.require(applicationDetailsRecordFieldContactData)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetCreatedAt(createdAt *CreatedAt) {
+	a.CreatedAt = createdAt
+	a.require(applicationDetailsRecordFieldCreatedAt)
+}
+
+// SetDbaName sets the DbaName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetDbaName(dbaName *Dbaname) {
+	a.DbaName = dbaName
+	a.require(applicationDetailsRecordFieldDbaName)
+}
+
+// SetDocumentsRef sets the DocumentsRef field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetDocumentsRef(documentsRef *BoardingApplicationAttachments) {
+	a.DocumentsRef = documentsRef
+	a.require(applicationDetailsRecordFieldDocumentsRef)
+}
+
+// SetEin sets the Ein field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetEin(ein *Ein) {
+	a.Ein = ein
+	a.require(applicationDetailsRecordFieldEin)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
+	a.ExternalPaypointId = externalPaypointId
+	a.require(applicationDetailsRecordFieldExternalPaypointId)
+}
+
+// SetGeneralEvents sets the GeneralEvents field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetGeneralEvents(generalEvents []*GeneralEvents) {
+	a.GeneralEvents = generalEvents
+	a.require(applicationDetailsRecordFieldGeneralEvents)
+}
+
+// SetHighTicketAmount sets the HighTicketAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetHighTicketAmount(highTicketAmount *Highticketamt) {
+	a.HighTicketAmount = highTicketAmount
+	a.require(applicationDetailsRecordFieldHighTicketAmount)
+}
+
+// SetIdApplication sets the IdApplication field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetIdApplication(idApplication *AppId) {
+	a.IdApplication = idApplication
+	a.require(applicationDetailsRecordFieldIdApplication)
+}
+
+// SetLastModified sets the LastModified field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetLastModified(lastModified *LastModified) {
+	a.LastModified = lastModified
+	a.require(applicationDetailsRecordFieldLastModified)
+}
+
+// SetLegalName sets the LegalName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetLegalName(legalName *Legalname) {
+	a.LegalName = legalName
+	a.require(applicationDetailsRecordFieldLegalName)
+}
+
+// SetLicense sets the License field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetLicense(license *License) {
+	a.License = license
+	a.require(applicationDetailsRecordFieldLicense)
+}
+
+// SetLicenseState sets the LicenseState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetLicenseState(licenseState *Licensestate) {
+	a.LicenseState = licenseState
+	a.require(applicationDetailsRecordFieldLicenseState)
+}
+
+// SetLogo sets the Logo field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetLogo(logo *FileContent) {
+	a.Logo = logo
+	a.require(applicationDetailsRecordFieldLogo)
+}
+
+// SetMAddress1 sets the MAddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetMAddress1(mAddress1 *Maddress) {
+	a.MAddress1 = mAddress1
+	a.require(applicationDetailsRecordFieldMAddress1)
+}
+
+// SetMAddress2 sets the MAddress2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetMAddress2(mAddress2 *Maddress1) {
+	a.MAddress2 = mAddress2
+	a.require(applicationDetailsRecordFieldMAddress2)
+}
+
+// SetMccid sets the Mccid field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetMccid(mccid *string) {
+	a.Mccid = mccid
+	a.require(applicationDetailsRecordFieldMccid)
+}
+
+// SetMCity sets the MCity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetMCity(mCity *Mstate) {
+	a.MCity = mCity
+	a.require(applicationDetailsRecordFieldMCity)
+}
+
+// SetMCountry sets the MCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetMCountry(mCountry *Mcountry) {
+	a.MCountry = mCountry
+	a.require(applicationDetailsRecordFieldMCountry)
+}
+
+// SetMessages sets the Messages field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetMessages(messages []*ApplicationDetailsRecordMessagesItem) {
+	a.Messages = messages
+	a.require(applicationDetailsRecordFieldMessages)
+}
+
+// SetMState sets the MState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetMState(mState *Mstate) {
+	a.MState = mState
+	a.require(applicationDetailsRecordFieldMState)
+}
+
+// SetMZip sets the MZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetMZip(mZip *Mzip) {
+	a.MZip = mZip
+	a.require(applicationDetailsRecordFieldMZip)
+}
+
+// SetOrgId sets the OrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetOrgId(orgId *Orgid) {
+	a.OrgId = orgId
+	a.require(applicationDetailsRecordFieldOrgId)
+}
+
+// SetOrgParentName sets the OrgParentName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetOrgParentName(orgParentName *OrgParentName) {
+	a.OrgParentName = orgParentName
+	a.require(applicationDetailsRecordFieldOrgParentName)
+}
+
+// SetOwnerData sets the OwnerData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetOwnerData(ownerData *Ownership) {
+	a.OwnerData = ownerData
+	a.require(applicationDetailsRecordFieldOwnerData)
+}
+
+// SetOwnType sets the OwnType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetOwnType(ownType *OwnType) {
+	a.OwnType = ownType
+	a.require(applicationDetailsRecordFieldOwnType)
+}
+
+// SetPageidentifier sets the Pageidentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetPageidentifier(pageidentifier *PageIdentifier) {
+	a.Pageidentifier = pageidentifier
+	a.require(applicationDetailsRecordFieldPageidentifier)
+}
+
+// SetRecipientEmailNotification sets the RecipientEmailNotification field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetRecipientEmailNotification(recipientEmailNotification *RecipientEmailNotification) {
+	a.RecipientEmailNotification = recipientEmailNotification
+	a.require(applicationDetailsRecordFieldRecipientEmailNotification)
+}
+
+// SetResumable sets the Resumable field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetResumable(resumable *Resumable) {
+	a.Resumable = resumable
+	a.require(applicationDetailsRecordFieldResumable)
+}
+
+// SetSalesCode sets the SalesCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetSalesCode(salesCode *SalesCode) {
+	a.SalesCode = salesCode
+	a.require(applicationDetailsRecordFieldSalesCode)
+}
+
+// SetServiceData sets the ServiceData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetServiceData(serviceData *Services) {
+	a.ServiceData = serviceData
+	a.require(applicationDetailsRecordFieldServiceData)
+}
+
+// SetSigner sets the Signer field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetSigner(signer *SignerData) {
+	a.Signer = signer
+	a.require(applicationDetailsRecordFieldSigner)
+}
+
+// SetTaxfillname sets the Taxfillname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetTaxfillname(taxfillname *Taxfillname) {
+	a.Taxfillname = taxfillname
+	a.require(applicationDetailsRecordFieldTaxfillname)
+}
+
+// SetTemplateId sets the TemplateId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetTemplateId(templateId *TemplateId) {
+	a.TemplateId = templateId
+	a.require(applicationDetailsRecordFieldTemplateId)
+}
+
+// SetWebsiteAddress sets the WebsiteAddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetWebsiteAddress(websiteAddress *Website) {
+	a.WebsiteAddress = websiteAddress
+	a.require(applicationDetailsRecordFieldWebsiteAddress)
+}
+
+// SetWhencharged sets the Whencharged field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetWhencharged(whencharged *Whencharged) {
+	a.Whencharged = whencharged
+	a.require(applicationDetailsRecordFieldWhencharged)
+}
+
+// SetWhendelivered sets the Whendelivered field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetWhendelivered(whendelivered *Whendelivered) {
+	a.Whendelivered = whendelivered
+	a.require(applicationDetailsRecordFieldWhendelivered)
+}
+
+// SetWhenProvided sets the WhenProvided field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetWhenProvided(whenProvided *Whenprovided) {
+	a.WhenProvided = whenProvided
+	a.require(applicationDetailsRecordFieldWhenProvided)
+}
+
+// SetWhenrefund sets the Whenrefund field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetWhenrefund(whenrefund *Whenrefunded) {
+	a.Whenrefund = whenrefund
+	a.require(applicationDetailsRecordFieldWhenrefund)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecord) SetAdditionalData(additionalData *AdditionalDataString) {
+	a.AdditionalData = additionalData
+	a.require(applicationDetailsRecordFieldAdditionalData)
+}
+
 func (a *ApplicationDetailsRecord) UnmarshalJSON(data []byte) error {
 	type unmarshaler ApplicationDetailsRecord
 	var value unmarshaler
@@ -3705,6 +7099,17 @@ func (a *ApplicationDetailsRecord) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (a *ApplicationDetailsRecord) MarshalJSON() ([]byte, error) {
+	type embed ApplicationDetailsRecord
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (a *ApplicationDetailsRecord) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
@@ -3716,6 +7121,20 @@ func (a *ApplicationDetailsRecord) String() string {
 	}
 	return fmt.Sprintf("%#v", a)
 }
+
+var (
+	applicationDetailsRecordMessagesItemFieldContent                      = big.NewInt(1 << 0)
+	applicationDetailsRecordMessagesItemFieldCreatedAt                    = big.NewInt(1 << 1)
+	applicationDetailsRecordMessagesItemFieldCurrentApplicationStatus     = big.NewInt(1 << 2)
+	applicationDetailsRecordMessagesItemFieldCurrentApplicationSubStatus  = big.NewInt(1 << 3)
+	applicationDetailsRecordMessagesItemFieldId                           = big.NewInt(1 << 4)
+	applicationDetailsRecordMessagesItemFieldMessageType                  = big.NewInt(1 << 5)
+	applicationDetailsRecordMessagesItemFieldOriginalApplicationStatus    = big.NewInt(1 << 6)
+	applicationDetailsRecordMessagesItemFieldOriginalApplicationSubStatus = big.NewInt(1 << 7)
+	applicationDetailsRecordMessagesItemFieldRoomId                       = big.NewInt(1 << 8)
+	applicationDetailsRecordMessagesItemFieldUserId                       = big.NewInt(1 << 9)
+	applicationDetailsRecordMessagesItemFieldUserName                     = big.NewInt(1 << 10)
+)
 
 type ApplicationDetailsRecordMessagesItem struct {
 	Content                      *string    `json:"content,omitempty" url:"content,omitempty"`
@@ -3729,6 +7148,9 @@ type ApplicationDetailsRecordMessagesItem struct {
 	RoomId                       *int       `json:"roomId,omitempty" url:"roomId,omitempty"`
 	UserId                       *int       `json:"userId,omitempty" url:"userId,omitempty"`
 	UserName                     *string    `json:"userName,omitempty" url:"userName,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -3815,6 +7237,90 @@ func (a *ApplicationDetailsRecordMessagesItem) GetExtraProperties() map[string]i
 	return a.extraProperties
 }
 
+func (a *ApplicationDetailsRecordMessagesItem) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetContent sets the Content field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecordMessagesItem) SetContent(content *string) {
+	a.Content = content
+	a.require(applicationDetailsRecordMessagesItemFieldContent)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecordMessagesItem) SetCreatedAt(createdAt *CreatedAt) {
+	a.CreatedAt = createdAt
+	a.require(applicationDetailsRecordMessagesItemFieldCreatedAt)
+}
+
+// SetCurrentApplicationStatus sets the CurrentApplicationStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecordMessagesItem) SetCurrentApplicationStatus(currentApplicationStatus *int) {
+	a.CurrentApplicationStatus = currentApplicationStatus
+	a.require(applicationDetailsRecordMessagesItemFieldCurrentApplicationStatus)
+}
+
+// SetCurrentApplicationSubStatus sets the CurrentApplicationSubStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecordMessagesItem) SetCurrentApplicationSubStatus(currentApplicationSubStatus *int) {
+	a.CurrentApplicationSubStatus = currentApplicationSubStatus
+	a.require(applicationDetailsRecordMessagesItemFieldCurrentApplicationSubStatus)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecordMessagesItem) SetId(id *int) {
+	a.Id = id
+	a.require(applicationDetailsRecordMessagesItemFieldId)
+}
+
+// SetMessageType sets the MessageType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecordMessagesItem) SetMessageType(messageType *int) {
+	a.MessageType = messageType
+	a.require(applicationDetailsRecordMessagesItemFieldMessageType)
+}
+
+// SetOriginalApplicationStatus sets the OriginalApplicationStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecordMessagesItem) SetOriginalApplicationStatus(originalApplicationStatus *int) {
+	a.OriginalApplicationStatus = originalApplicationStatus
+	a.require(applicationDetailsRecordMessagesItemFieldOriginalApplicationStatus)
+}
+
+// SetOriginalApplicationSubStatus sets the OriginalApplicationSubStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecordMessagesItem) SetOriginalApplicationSubStatus(originalApplicationSubStatus *int) {
+	a.OriginalApplicationSubStatus = originalApplicationSubStatus
+	a.require(applicationDetailsRecordMessagesItemFieldOriginalApplicationSubStatus)
+}
+
+// SetRoomId sets the RoomId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecordMessagesItem) SetRoomId(roomId *int) {
+	a.RoomId = roomId
+	a.require(applicationDetailsRecordMessagesItemFieldRoomId)
+}
+
+// SetUserId sets the UserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecordMessagesItem) SetUserId(userId *int) {
+	a.UserId = userId
+	a.require(applicationDetailsRecordMessagesItemFieldUserId)
+}
+
+// SetUserName sets the UserName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDetailsRecordMessagesItem) SetUserName(userName *string) {
+	a.UserName = userName
+	a.require(applicationDetailsRecordMessagesItemFieldUserName)
+}
+
 func (a *ApplicationDetailsRecordMessagesItem) UnmarshalJSON(data []byte) error {
 	type unmarshaler ApplicationDetailsRecordMessagesItem
 	var value unmarshaler
@@ -3831,6 +7337,17 @@ func (a *ApplicationDetailsRecordMessagesItem) UnmarshalJSON(data []byte) error 
 	return nil
 }
 
+func (a *ApplicationDetailsRecordMessagesItem) MarshalJSON() ([]byte, error) {
+	type embed ApplicationDetailsRecordMessagesItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (a *ApplicationDetailsRecordMessagesItem) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
@@ -3842,6 +7359,72 @@ func (a *ApplicationDetailsRecordMessagesItem) String() string {
 	}
 	return fmt.Sprintf("%#v", a)
 }
+
+var (
+	applicationQueryRecordFieldAnnualRevenue              = big.NewInt(1 << 0)
+	applicationQueryRecordFieldAverageMonthlyVolume       = big.NewInt(1 << 1)
+	applicationQueryRecordFieldAverageTicketAmount        = big.NewInt(1 << 2)
+	applicationQueryRecordFieldBAddress1                  = big.NewInt(1 << 3)
+	applicationQueryRecordFieldBAddress2                  = big.NewInt(1 << 4)
+	applicationQueryRecordFieldBankData                   = big.NewInt(1 << 5)
+	applicationQueryRecordFieldBCity                      = big.NewInt(1 << 6)
+	applicationQueryRecordFieldBCountry                   = big.NewInt(1 << 7)
+	applicationQueryRecordFieldBFax                       = big.NewInt(1 << 8)
+	applicationQueryRecordFieldBinPerson                  = big.NewInt(1 << 9)
+	applicationQueryRecordFieldBinPhone                   = big.NewInt(1 << 10)
+	applicationQueryRecordFieldBinWeb                     = big.NewInt(1 << 11)
+	applicationQueryRecordFieldBoardingLinkId             = big.NewInt(1 << 12)
+	applicationQueryRecordFieldBoardingStatus             = big.NewInt(1 << 13)
+	applicationQueryRecordFieldBoardingSubStatus          = big.NewInt(1 << 14)
+	applicationQueryRecordFieldBPhone                     = big.NewInt(1 << 15)
+	applicationQueryRecordFieldBStartdate                 = big.NewInt(1 << 16)
+	applicationQueryRecordFieldBState                     = big.NewInt(1 << 17)
+	applicationQueryRecordFieldBSummary                   = big.NewInt(1 << 18)
+	applicationQueryRecordFieldBuilderData                = big.NewInt(1 << 19)
+	applicationQueryRecordFieldBZip                       = big.NewInt(1 << 20)
+	applicationQueryRecordFieldContactData                = big.NewInt(1 << 21)
+	applicationQueryRecordFieldCreatedAt                  = big.NewInt(1 << 22)
+	applicationQueryRecordFieldDbaName                    = big.NewInt(1 << 23)
+	applicationQueryRecordFieldDocumentsRef               = big.NewInt(1 << 24)
+	applicationQueryRecordFieldEin                        = big.NewInt(1 << 25)
+	applicationQueryRecordFieldExternalPaypointId         = big.NewInt(1 << 26)
+	applicationQueryRecordFieldGeneralEvents              = big.NewInt(1 << 27)
+	applicationQueryRecordFieldHighTicketAmount           = big.NewInt(1 << 28)
+	applicationQueryRecordFieldIdApplication              = big.NewInt(1 << 29)
+	applicationQueryRecordFieldLastModified               = big.NewInt(1 << 30)
+	applicationQueryRecordFieldLegalName                  = big.NewInt(1 << 31)
+	applicationQueryRecordFieldLicense                    = big.NewInt(1 << 32)
+	applicationQueryRecordFieldLicenseState               = big.NewInt(1 << 33)
+	applicationQueryRecordFieldLogo                       = big.NewInt(1 << 34)
+	applicationQueryRecordFieldMAddress1                  = big.NewInt(1 << 35)
+	applicationQueryRecordFieldMAddress2                  = big.NewInt(1 << 36)
+	applicationQueryRecordFieldMccid                      = big.NewInt(1 << 37)
+	applicationQueryRecordFieldMCity                      = big.NewInt(1 << 38)
+	applicationQueryRecordFieldMCountry                   = big.NewInt(1 << 39)
+	applicationQueryRecordFieldMState                     = big.NewInt(1 << 40)
+	applicationQueryRecordFieldMZip                       = big.NewInt(1 << 41)
+	applicationQueryRecordFieldOrgId                      = big.NewInt(1 << 42)
+	applicationQueryRecordFieldOrgParentName              = big.NewInt(1 << 43)
+	applicationQueryRecordFieldOwnerData                  = big.NewInt(1 << 44)
+	applicationQueryRecordFieldOwnType                    = big.NewInt(1 << 45)
+	applicationQueryRecordFieldPageidentifier             = big.NewInt(1 << 46)
+	applicationQueryRecordFieldRecipientEmailNotification = big.NewInt(1 << 47)
+	applicationQueryRecordFieldResumable                  = big.NewInt(1 << 48)
+	applicationQueryRecordFieldSalesCode                  = big.NewInt(1 << 49)
+	applicationQueryRecordFieldServiceData                = big.NewInt(1 << 50)
+	applicationQueryRecordFieldSigner                     = big.NewInt(1 << 51)
+	applicationQueryRecordFieldTaxfillname                = big.NewInt(1 << 52)
+	applicationQueryRecordFieldTemplateId                 = big.NewInt(1 << 53)
+	applicationQueryRecordFieldWebsiteAddress             = big.NewInt(1 << 54)
+	applicationQueryRecordFieldWhencharged                = big.NewInt(1 << 55)
+	applicationQueryRecordFieldWhendelivered              = big.NewInt(1 << 56)
+	applicationQueryRecordFieldWhenProvided               = big.NewInt(1 << 57)
+	applicationQueryRecordFieldWhenrefund                 = big.NewInt(1 << 58)
+	applicationQueryRecordFieldAdditionalData             = big.NewInt(1 << 59)
+	applicationQueryRecordFieldRepCode                    = big.NewInt(1 << 60)
+	applicationQueryRecordFieldRepName                    = big.NewInt(1 << 61)
+	applicationQueryRecordFieldRepOffice                  = big.NewInt(1 << 62)
+)
 
 type ApplicationQueryRecord struct {
 	AnnualRevenue        *Annualrevenue `json:"annualRevenue,omitempty" url:"annualRevenue,omitempty"`
@@ -3910,6 +7493,9 @@ type ApplicationQueryRecord struct {
 	RepCode                    *RepCode                    `json:"RepCode,omitempty" url:"RepCode,omitempty"`
 	RepName                    *RepName                    `json:"RepName,omitempty" url:"RepName,omitempty"`
 	RepOffice                  *RepOffice                  `json:"RepOffice,omitempty" url:"RepOffice,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -4360,6 +7946,454 @@ func (a *ApplicationQueryRecord) GetExtraProperties() map[string]interface{} {
 	return a.extraProperties
 }
 
+func (a *ApplicationQueryRecord) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetAnnualRevenue sets the AnnualRevenue field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetAnnualRevenue(annualRevenue *Annualrevenue) {
+	a.AnnualRevenue = annualRevenue
+	a.require(applicationQueryRecordFieldAnnualRevenue)
+}
+
+// SetAverageMonthlyVolume sets the AverageMonthlyVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetAverageMonthlyVolume(averageMonthlyVolume *Avgmonthly) {
+	a.AverageMonthlyVolume = averageMonthlyVolume
+	a.require(applicationQueryRecordFieldAverageMonthlyVolume)
+}
+
+// SetAverageTicketAmount sets the AverageTicketAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetAverageTicketAmount(averageTicketAmount *Ticketamt) {
+	a.AverageTicketAmount = averageTicketAmount
+	a.require(applicationQueryRecordFieldAverageTicketAmount)
+}
+
+// SetBAddress1 sets the BAddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetBAddress1(bAddress1 *Baddress1) {
+	a.BAddress1 = bAddress1
+	a.require(applicationQueryRecordFieldBAddress1)
+}
+
+// SetBAddress2 sets the BAddress2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetBAddress2(bAddress2 *Baddress2) {
+	a.BAddress2 = bAddress2
+	a.require(applicationQueryRecordFieldBAddress2)
+}
+
+// SetBankData sets the BankData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetBankData(bankData *BankData) {
+	a.BankData = bankData
+	a.require(applicationQueryRecordFieldBankData)
+}
+
+// SetBCity sets the BCity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetBCity(bCity *Bcity) {
+	a.BCity = bCity
+	a.require(applicationQueryRecordFieldBCity)
+}
+
+// SetBCountry sets the BCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetBCountry(bCountry *Bcountry) {
+	a.BCountry = bCountry
+	a.require(applicationQueryRecordFieldBCountry)
+}
+
+// SetBFax sets the BFax field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetBFax(bFax *Bphone) {
+	a.BFax = bFax
+	a.require(applicationQueryRecordFieldBFax)
+}
+
+// SetBinPerson sets the BinPerson field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetBinPerson(binPerson *Binperson) {
+	a.BinPerson = binPerson
+	a.require(applicationQueryRecordFieldBinPerson)
+}
+
+// SetBinPhone sets the BinPhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetBinPhone(binPhone *Binphone) {
+	a.BinPhone = binPhone
+	a.require(applicationQueryRecordFieldBinPhone)
+}
+
+// SetBinWeb sets the BinWeb field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetBinWeb(binWeb *Binweb) {
+	a.BinWeb = binWeb
+	a.require(applicationQueryRecordFieldBinWeb)
+}
+
+// SetBoardingLinkId sets the BoardingLinkId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetBoardingLinkId(boardingLinkId *BoardingLinkId) {
+	a.BoardingLinkId = boardingLinkId
+	a.require(applicationQueryRecordFieldBoardingLinkId)
+}
+
+// SetBoardingStatus sets the BoardingStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetBoardingStatus(boardingStatus *BoardingStatus) {
+	a.BoardingStatus = boardingStatus
+	a.require(applicationQueryRecordFieldBoardingStatus)
+}
+
+// SetBoardingSubStatus sets the BoardingSubStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetBoardingSubStatus(boardingSubStatus *BoardingStatus) {
+	a.BoardingSubStatus = boardingSubStatus
+	a.require(applicationQueryRecordFieldBoardingSubStatus)
+}
+
+// SetBPhone sets the BPhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetBPhone(bPhone *Bphone) {
+	a.BPhone = bPhone
+	a.require(applicationQueryRecordFieldBPhone)
+}
+
+// SetBStartdate sets the BStartdate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetBStartdate(bStartdate *Busstartdate) {
+	a.BStartdate = bStartdate
+	a.require(applicationQueryRecordFieldBStartdate)
+}
+
+// SetBState sets the BState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetBState(bState *Bstate) {
+	a.BState = bState
+	a.require(applicationQueryRecordFieldBState)
+}
+
+// SetBSummary sets the BSummary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetBSummary(bSummary *Bsummary) {
+	a.BSummary = bSummary
+	a.require(applicationQueryRecordFieldBSummary)
+}
+
+// SetBuilderData sets the BuilderData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetBuilderData(builderData *BuilderData) {
+	a.BuilderData = builderData
+	a.require(applicationQueryRecordFieldBuilderData)
+}
+
+// SetBZip sets the BZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetBZip(bZip *Bzip) {
+	a.BZip = bZip
+	a.require(applicationQueryRecordFieldBZip)
+}
+
+// SetContactData sets the ContactData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetContactData(contactData *ContactsField) {
+	a.ContactData = contactData
+	a.require(applicationQueryRecordFieldContactData)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetCreatedAt(createdAt *CreatedAt) {
+	a.CreatedAt = createdAt
+	a.require(applicationQueryRecordFieldCreatedAt)
+}
+
+// SetDbaName sets the DbaName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetDbaName(dbaName *Dbaname) {
+	a.DbaName = dbaName
+	a.require(applicationQueryRecordFieldDbaName)
+}
+
+// SetDocumentsRef sets the DocumentsRef field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetDocumentsRef(documentsRef *BoardingApplicationAttachments) {
+	a.DocumentsRef = documentsRef
+	a.require(applicationQueryRecordFieldDocumentsRef)
+}
+
+// SetEin sets the Ein field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetEin(ein *Ein) {
+	a.Ein = ein
+	a.require(applicationQueryRecordFieldEin)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
+	a.ExternalPaypointId = externalPaypointId
+	a.require(applicationQueryRecordFieldExternalPaypointId)
+}
+
+// SetGeneralEvents sets the GeneralEvents field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetGeneralEvents(generalEvents []*GeneralEvents) {
+	a.GeneralEvents = generalEvents
+	a.require(applicationQueryRecordFieldGeneralEvents)
+}
+
+// SetHighTicketAmount sets the HighTicketAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetHighTicketAmount(highTicketAmount *Highticketamt) {
+	a.HighTicketAmount = highTicketAmount
+	a.require(applicationQueryRecordFieldHighTicketAmount)
+}
+
+// SetIdApplication sets the IdApplication field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetIdApplication(idApplication *AppId) {
+	a.IdApplication = idApplication
+	a.require(applicationQueryRecordFieldIdApplication)
+}
+
+// SetLastModified sets the LastModified field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetLastModified(lastModified *LastModified) {
+	a.LastModified = lastModified
+	a.require(applicationQueryRecordFieldLastModified)
+}
+
+// SetLegalName sets the LegalName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetLegalName(legalName *Legalname) {
+	a.LegalName = legalName
+	a.require(applicationQueryRecordFieldLegalName)
+}
+
+// SetLicense sets the License field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetLicense(license *License) {
+	a.License = license
+	a.require(applicationQueryRecordFieldLicense)
+}
+
+// SetLicenseState sets the LicenseState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetLicenseState(licenseState *Licensestate) {
+	a.LicenseState = licenseState
+	a.require(applicationQueryRecordFieldLicenseState)
+}
+
+// SetLogo sets the Logo field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetLogo(logo *FileContent) {
+	a.Logo = logo
+	a.require(applicationQueryRecordFieldLogo)
+}
+
+// SetMAddress1 sets the MAddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetMAddress1(mAddress1 *Maddress) {
+	a.MAddress1 = mAddress1
+	a.require(applicationQueryRecordFieldMAddress1)
+}
+
+// SetMAddress2 sets the MAddress2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetMAddress2(mAddress2 *Maddress1) {
+	a.MAddress2 = mAddress2
+	a.require(applicationQueryRecordFieldMAddress2)
+}
+
+// SetMccid sets the Mccid field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetMccid(mccid *string) {
+	a.Mccid = mccid
+	a.require(applicationQueryRecordFieldMccid)
+}
+
+// SetMCity sets the MCity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetMCity(mCity *Mstate) {
+	a.MCity = mCity
+	a.require(applicationQueryRecordFieldMCity)
+}
+
+// SetMCountry sets the MCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetMCountry(mCountry *Mcountry) {
+	a.MCountry = mCountry
+	a.require(applicationQueryRecordFieldMCountry)
+}
+
+// SetMState sets the MState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetMState(mState *Mstate) {
+	a.MState = mState
+	a.require(applicationQueryRecordFieldMState)
+}
+
+// SetMZip sets the MZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetMZip(mZip *Mzip) {
+	a.MZip = mZip
+	a.require(applicationQueryRecordFieldMZip)
+}
+
+// SetOrgId sets the OrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetOrgId(orgId *Orgid) {
+	a.OrgId = orgId
+	a.require(applicationQueryRecordFieldOrgId)
+}
+
+// SetOrgParentName sets the OrgParentName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetOrgParentName(orgParentName *OrgParentName) {
+	a.OrgParentName = orgParentName
+	a.require(applicationQueryRecordFieldOrgParentName)
+}
+
+// SetOwnerData sets the OwnerData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetOwnerData(ownerData *Ownership) {
+	a.OwnerData = ownerData
+	a.require(applicationQueryRecordFieldOwnerData)
+}
+
+// SetOwnType sets the OwnType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetOwnType(ownType *OwnType) {
+	a.OwnType = ownType
+	a.require(applicationQueryRecordFieldOwnType)
+}
+
+// SetPageidentifier sets the Pageidentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetPageidentifier(pageidentifier *PageIdentifier) {
+	a.Pageidentifier = pageidentifier
+	a.require(applicationQueryRecordFieldPageidentifier)
+}
+
+// SetRecipientEmailNotification sets the RecipientEmailNotification field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetRecipientEmailNotification(recipientEmailNotification *RecipientEmailNotification) {
+	a.RecipientEmailNotification = recipientEmailNotification
+	a.require(applicationQueryRecordFieldRecipientEmailNotification)
+}
+
+// SetResumable sets the Resumable field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetResumable(resumable *Resumable) {
+	a.Resumable = resumable
+	a.require(applicationQueryRecordFieldResumable)
+}
+
+// SetSalesCode sets the SalesCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetSalesCode(salesCode *SalesCode) {
+	a.SalesCode = salesCode
+	a.require(applicationQueryRecordFieldSalesCode)
+}
+
+// SetServiceData sets the ServiceData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetServiceData(serviceData *Services) {
+	a.ServiceData = serviceData
+	a.require(applicationQueryRecordFieldServiceData)
+}
+
+// SetSigner sets the Signer field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetSigner(signer *SignerData) {
+	a.Signer = signer
+	a.require(applicationQueryRecordFieldSigner)
+}
+
+// SetTaxfillname sets the Taxfillname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetTaxfillname(taxfillname *Taxfillname) {
+	a.Taxfillname = taxfillname
+	a.require(applicationQueryRecordFieldTaxfillname)
+}
+
+// SetTemplateId sets the TemplateId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetTemplateId(templateId *TemplateId) {
+	a.TemplateId = templateId
+	a.require(applicationQueryRecordFieldTemplateId)
+}
+
+// SetWebsiteAddress sets the WebsiteAddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetWebsiteAddress(websiteAddress *Website) {
+	a.WebsiteAddress = websiteAddress
+	a.require(applicationQueryRecordFieldWebsiteAddress)
+}
+
+// SetWhencharged sets the Whencharged field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetWhencharged(whencharged *Whencharged) {
+	a.Whencharged = whencharged
+	a.require(applicationQueryRecordFieldWhencharged)
+}
+
+// SetWhendelivered sets the Whendelivered field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetWhendelivered(whendelivered *Whendelivered) {
+	a.Whendelivered = whendelivered
+	a.require(applicationQueryRecordFieldWhendelivered)
+}
+
+// SetWhenProvided sets the WhenProvided field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetWhenProvided(whenProvided *Whenprovided) {
+	a.WhenProvided = whenProvided
+	a.require(applicationQueryRecordFieldWhenProvided)
+}
+
+// SetWhenrefund sets the Whenrefund field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetWhenrefund(whenrefund *Whenrefunded) {
+	a.Whenrefund = whenrefund
+	a.require(applicationQueryRecordFieldWhenrefund)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetAdditionalData(additionalData *AdditionalDataString) {
+	a.AdditionalData = additionalData
+	a.require(applicationQueryRecordFieldAdditionalData)
+}
+
+// SetRepCode sets the RepCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetRepCode(repCode *RepCode) {
+	a.RepCode = repCode
+	a.require(applicationQueryRecordFieldRepCode)
+}
+
+// SetRepName sets the RepName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetRepName(repName *RepName) {
+	a.RepName = repName
+	a.require(applicationQueryRecordFieldRepName)
+}
+
+// SetRepOffice sets the RepOffice field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationQueryRecord) SetRepOffice(repOffice *RepOffice) {
+	a.RepOffice = repOffice
+	a.require(applicationQueryRecordFieldRepOffice)
+}
+
 func (a *ApplicationQueryRecord) UnmarshalJSON(data []byte) error {
 	type unmarshaler ApplicationQueryRecord
 	var value unmarshaler
@@ -4374,6 +8408,17 @@ func (a *ApplicationQueryRecord) UnmarshalJSON(data []byte) error {
 	a.extraProperties = extraProperties
 	a.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (a *ApplicationQueryRecord) MarshalJSON() ([]byte, error) {
+	type embed ApplicationQueryRecord
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (a *ApplicationQueryRecord) String() string {
@@ -4391,6 +8436,21 @@ func (a *ApplicationQueryRecord) String() string {
 // Date the attestation was provided for PCI Compliance (`pciAttestation`), in MM/DD/YYYY format.
 type AttestationDate = string
 
+var (
+	bAddressFieldBaddress  = big.NewInt(1 << 0)
+	bAddressFieldBaddress1 = big.NewInt(1 << 1)
+	bAddressFieldBcity     = big.NewInt(1 << 2)
+	bAddressFieldBcountry  = big.NewInt(1 << 3)
+	bAddressFieldBstate    = big.NewInt(1 << 4)
+	bAddressFieldBzip      = big.NewInt(1 << 5)
+	bAddressFieldMaddress  = big.NewInt(1 << 6)
+	bAddressFieldMaddress1 = big.NewInt(1 << 7)
+	bAddressFieldMcity     = big.NewInt(1 << 8)
+	bAddressFieldMcountry  = big.NewInt(1 << 9)
+	bAddressFieldMstate    = big.NewInt(1 << 10)
+	bAddressFieldMzip      = big.NewInt(1 << 11)
+)
+
 type BAddress struct {
 	Baddress  *LinkData `json:"baddress,omitempty" url:"baddress,omitempty"`
 	Baddress1 *LinkData `json:"baddress1,omitempty" url:"baddress1,omitempty"`
@@ -4404,6 +8464,9 @@ type BAddress struct {
 	Mcountry  *LinkData `json:"mcountry,omitempty" url:"mcountry,omitempty"`
 	Mstate    *LinkData `json:"mstate,omitempty" url:"mstate,omitempty"`
 	Mzip      *LinkData `json:"mzip,omitempty" url:"mzip,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -4497,6 +8560,97 @@ func (b *BAddress) GetExtraProperties() map[string]interface{} {
 	return b.extraProperties
 }
 
+func (b *BAddress) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetBaddress sets the Baddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BAddress) SetBaddress(baddress *LinkData) {
+	b.Baddress = baddress
+	b.require(bAddressFieldBaddress)
+}
+
+// SetBaddress1 sets the Baddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BAddress) SetBaddress1(baddress1 *LinkData) {
+	b.Baddress1 = baddress1
+	b.require(bAddressFieldBaddress1)
+}
+
+// SetBcity sets the Bcity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BAddress) SetBcity(bcity *LinkData) {
+	b.Bcity = bcity
+	b.require(bAddressFieldBcity)
+}
+
+// SetBcountry sets the Bcountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BAddress) SetBcountry(bcountry *LinkData) {
+	b.Bcountry = bcountry
+	b.require(bAddressFieldBcountry)
+}
+
+// SetBstate sets the Bstate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BAddress) SetBstate(bstate *LinkData) {
+	b.Bstate = bstate
+	b.require(bAddressFieldBstate)
+}
+
+// SetBzip sets the Bzip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BAddress) SetBzip(bzip *LinkData) {
+	b.Bzip = bzip
+	b.require(bAddressFieldBzip)
+}
+
+// SetMaddress sets the Maddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BAddress) SetMaddress(maddress *LinkData) {
+	b.Maddress = maddress
+	b.require(bAddressFieldMaddress)
+}
+
+// SetMaddress1 sets the Maddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BAddress) SetMaddress1(maddress1 *LinkData) {
+	b.Maddress1 = maddress1
+	b.require(bAddressFieldMaddress1)
+}
+
+// SetMcity sets the Mcity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BAddress) SetMcity(mcity *LinkData) {
+	b.Mcity = mcity
+	b.require(bAddressFieldMcity)
+}
+
+// SetMcountry sets the Mcountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BAddress) SetMcountry(mcountry *LinkData) {
+	b.Mcountry = mcountry
+	b.require(bAddressFieldMcountry)
+}
+
+// SetMstate sets the Mstate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BAddress) SetMstate(mstate *LinkData) {
+	b.Mstate = mstate
+	b.require(bAddressFieldMstate)
+}
+
+// SetMzip sets the Mzip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BAddress) SetMzip(mzip *LinkData) {
+	b.Mzip = mzip
+	b.require(bAddressFieldMzip)
+}
+
 func (b *BAddress) UnmarshalJSON(data []byte) error {
 	type unmarshaler BAddress
 	var value unmarshaler
@@ -4513,6 +8667,17 @@ func (b *BAddress) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (b *BAddress) MarshalJSON() ([]byte, error) {
+	type embed BAddress
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (b *BAddress) String() string {
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
@@ -4524,6 +8689,20 @@ func (b *BAddress) String() string {
 	}
 	return fmt.Sprintf("%#v", b)
 }
+
+var (
+	bDetailsFieldBtype       = big.NewInt(1 << 0)
+	bDetailsFieldDbaname     = big.NewInt(1 << 1)
+	bDetailsFieldEin         = big.NewInt(1 << 2)
+	bDetailsFieldFaxnumber   = big.NewInt(1 << 3)
+	bDetailsFieldLegalname   = big.NewInt(1 << 4)
+	bDetailsFieldLicense     = big.NewInt(1 << 5)
+	bDetailsFieldLicstate    = big.NewInt(1 << 6)
+	bDetailsFieldPhonenumber = big.NewInt(1 << 7)
+	bDetailsFieldStartdate   = big.NewInt(1 << 8)
+	bDetailsFieldTaxfillname = big.NewInt(1 << 9)
+	bDetailsFieldWebsite     = big.NewInt(1 << 10)
+)
 
 type BDetails struct {
 	Btype       *LinkData `json:"btype,omitempty" url:"btype,omitempty"`
@@ -4537,6 +8716,9 @@ type BDetails struct {
 	Startdate   *LinkData `json:"startdate,omitempty" url:"startdate,omitempty"`
 	Taxfillname *LinkData `json:"taxfillname,omitempty" url:"taxfillname,omitempty"`
 	Website     *LinkData `json:"website,omitempty" url:"website,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -4623,6 +8805,90 @@ func (b *BDetails) GetExtraProperties() map[string]interface{} {
 	return b.extraProperties
 }
 
+func (b *BDetails) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetBtype sets the Btype field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BDetails) SetBtype(btype *LinkData) {
+	b.Btype = btype
+	b.require(bDetailsFieldBtype)
+}
+
+// SetDbaname sets the Dbaname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BDetails) SetDbaname(dbaname *LinkData) {
+	b.Dbaname = dbaname
+	b.require(bDetailsFieldDbaname)
+}
+
+// SetEin sets the Ein field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BDetails) SetEin(ein *LinkData) {
+	b.Ein = ein
+	b.require(bDetailsFieldEin)
+}
+
+// SetFaxnumber sets the Faxnumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BDetails) SetFaxnumber(faxnumber *LinkData) {
+	b.Faxnumber = faxnumber
+	b.require(bDetailsFieldFaxnumber)
+}
+
+// SetLegalname sets the Legalname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BDetails) SetLegalname(legalname *LinkData) {
+	b.Legalname = legalname
+	b.require(bDetailsFieldLegalname)
+}
+
+// SetLicense sets the License field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BDetails) SetLicense(license *LinkData) {
+	b.License = license
+	b.require(bDetailsFieldLicense)
+}
+
+// SetLicstate sets the Licstate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BDetails) SetLicstate(licstate *LinkData) {
+	b.Licstate = licstate
+	b.require(bDetailsFieldLicstate)
+}
+
+// SetPhonenumber sets the Phonenumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BDetails) SetPhonenumber(phonenumber *LinkData) {
+	b.Phonenumber = phonenumber
+	b.require(bDetailsFieldPhonenumber)
+}
+
+// SetStartdate sets the Startdate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BDetails) SetStartdate(startdate *LinkData) {
+	b.Startdate = startdate
+	b.require(bDetailsFieldStartdate)
+}
+
+// SetTaxfillname sets the Taxfillname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BDetails) SetTaxfillname(taxfillname *LinkData) {
+	b.Taxfillname = taxfillname
+	b.require(bDetailsFieldTaxfillname)
+}
+
+// SetWebsite sets the Website field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BDetails) SetWebsite(website *LinkData) {
+	b.Website = website
+	b.require(bDetailsFieldWebsite)
+}
+
 func (b *BDetails) UnmarshalJSON(data []byte) error {
 	type unmarshaler BDetails
 	var value unmarshaler
@@ -4639,6 +8905,17 @@ func (b *BDetails) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (b *BDetails) MarshalJSON() ([]byte, error) {
+	type embed BDetails
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (b *BDetails) String() string {
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
@@ -4651,9 +8928,17 @@ func (b *BDetails) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+var (
+	bSectionFieldAddress = big.NewInt(1 << 0)
+	bSectionFieldDetails = big.NewInt(1 << 1)
+)
+
 type BSection struct {
 	Address *BAddress `json:"address,omitempty" url:"address,omitempty"`
 	Details *BDetails `json:"details,omitempty" url:"details,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -4677,6 +8962,27 @@ func (b *BSection) GetExtraProperties() map[string]interface{} {
 	return b.extraProperties
 }
 
+func (b *BSection) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetAddress sets the Address field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BSection) SetAddress(address *BAddress) {
+	b.Address = address
+	b.require(bSectionFieldAddress)
+}
+
+// SetDetails sets the Details field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BSection) SetDetails(details *BDetails) {
+	b.Details = details
+	b.require(bSectionFieldDetails)
+}
+
 func (b *BSection) UnmarshalJSON(data []byte) error {
 	type unmarshaler BSection
 	var value unmarshaler
@@ -4693,6 +8999,17 @@ func (b *BSection) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (b *BSection) MarshalJSON() ([]byte, error) {
+	type embed BSection
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (b *BSection) String() string {
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
@@ -4705,9 +9022,17 @@ func (b *BSection) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+var (
+	basicTableFieldBody   = big.NewInt(1 << 0)
+	basicTableFieldHeader = big.NewInt(1 << 1)
+)
+
 type BasicTable struct {
 	Body   []*LinkRow `json:"body,omitempty" url:"body,omitempty"`
 	Header *LinkRow   `json:"header,omitempty" url:"header,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -4731,6 +9056,27 @@ func (b *BasicTable) GetExtraProperties() map[string]interface{} {
 	return b.extraProperties
 }
 
+func (b *BasicTable) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetBody sets the Body field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BasicTable) SetBody(body []*LinkRow) {
+	b.Body = body
+	b.require(basicTableFieldBody)
+}
+
+// SetHeader sets the Header field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BasicTable) SetHeader(header *LinkRow) {
+	b.Header = header
+	b.require(basicTableFieldHeader)
+}
+
 func (b *BasicTable) UnmarshalJSON(data []byte) error {
 	type unmarshaler BasicTable
 	var value unmarshaler
@@ -4747,6 +9093,17 @@ func (b *BasicTable) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (b *BasicTable) MarshalJSON() ([]byte, error) {
+	type embed BasicTable
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (b *BasicTable) String() string {
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
@@ -4759,11 +9116,21 @@ func (b *BasicTable) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+var (
+	bnkFieldAccountNumber  = big.NewInt(1 << 0)
+	bnkFieldBankName       = big.NewInt(1 << 1)
+	bnkFieldRoutingAccount = big.NewInt(1 << 2)
+	bnkFieldTypeAccount    = big.NewInt(1 << 3)
+)
+
 type Bnk struct {
 	AccountNumber  *LinkData `json:"accountNumber,omitempty" url:"accountNumber,omitempty"`
 	BankName       *LinkData `json:"bankName,omitempty" url:"bankName,omitempty"`
 	RoutingAccount *LinkData `json:"routingAccount,omitempty" url:"routingAccount,omitempty"`
 	TypeAccount    *LinkData `json:"typeAccount,omitempty" url:"typeAccount,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -4801,6 +9168,41 @@ func (b *Bnk) GetExtraProperties() map[string]interface{} {
 	return b.extraProperties
 }
 
+func (b *Bnk) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetAccountNumber sets the AccountNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *Bnk) SetAccountNumber(accountNumber *LinkData) {
+	b.AccountNumber = accountNumber
+	b.require(bnkFieldAccountNumber)
+}
+
+// SetBankName sets the BankName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *Bnk) SetBankName(bankName *LinkData) {
+	b.BankName = bankName
+	b.require(bnkFieldBankName)
+}
+
+// SetRoutingAccount sets the RoutingAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *Bnk) SetRoutingAccount(routingAccount *LinkData) {
+	b.RoutingAccount = routingAccount
+	b.require(bnkFieldRoutingAccount)
+}
+
+// SetTypeAccount sets the TypeAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *Bnk) SetTypeAccount(typeAccount *LinkData) {
+	b.TypeAccount = typeAccount
+	b.require(bnkFieldTypeAccount)
+}
+
 func (b *Bnk) UnmarshalJSON(data []byte) error {
 	type unmarshaler Bnk
 	var value unmarshaler
@@ -4815,6 +9217,17 @@ func (b *Bnk) UnmarshalJSON(data []byte) error {
 	b.extraProperties = extraProperties
 	b.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (b *Bnk) MarshalJSON() ([]byte, error) {
+	type embed Bnk
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (b *Bnk) String() string {
@@ -4841,6 +9254,21 @@ type BoardingBusinessFax = string
 // The business's phone number.
 type BoardingBusinessPhone = string
 
+var (
+	boardingLinkQueryRecordFieldAcceptOauth                = big.NewInt(1 << 0)
+	boardingLinkQueryRecordFieldAcceptRegister             = big.NewInt(1 << 1)
+	boardingLinkQueryRecordFieldBuilderData                = big.NewInt(1 << 2)
+	boardingLinkQueryRecordFieldEntryAttributes            = big.NewInt(1 << 3)
+	boardingLinkQueryRecordFieldId                         = big.NewInt(1 << 4)
+	boardingLinkQueryRecordFieldLogo                       = big.NewInt(1 << 5)
+	boardingLinkQueryRecordFieldOrgId                      = big.NewInt(1 << 6)
+	boardingLinkQueryRecordFieldPageIdentifier             = big.NewInt(1 << 7)
+	boardingLinkQueryRecordFieldRecipientEmailNotification = big.NewInt(1 << 8)
+	boardingLinkQueryRecordFieldReferenceName              = big.NewInt(1 << 9)
+	boardingLinkQueryRecordFieldReferenceTemplateId        = big.NewInt(1 << 10)
+	boardingLinkQueryRecordFieldResumable                  = big.NewInt(1 << 11)
+)
+
 type BoardingLinkQueryRecord struct {
 	AcceptOauth     *AcceptOauth     `json:"acceptOauth,omitempty" url:"acceptOauth,omitempty"`
 	AcceptRegister  *AcceptRegister  `json:"acceptRegister,omitempty" url:"acceptRegister,omitempty"`
@@ -4855,6 +9283,9 @@ type BoardingLinkQueryRecord struct {
 	ReferenceName              *ReferenceName              `json:"referenceName,omitempty" url:"referenceName,omitempty"`
 	ReferenceTemplateId        *ReferenceTemplateId        `json:"referenceTemplateId,omitempty" url:"referenceTemplateId,omitempty"`
 	Resumable                  *Resumable                  `json:"resumable,omitempty" url:"resumable,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -4948,6 +9379,97 @@ func (b *BoardingLinkQueryRecord) GetExtraProperties() map[string]interface{} {
 	return b.extraProperties
 }
 
+func (b *BoardingLinkQueryRecord) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetAcceptOauth sets the AcceptOauth field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BoardingLinkQueryRecord) SetAcceptOauth(acceptOauth *AcceptOauth) {
+	b.AcceptOauth = acceptOauth
+	b.require(boardingLinkQueryRecordFieldAcceptOauth)
+}
+
+// SetAcceptRegister sets the AcceptRegister field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BoardingLinkQueryRecord) SetAcceptRegister(acceptRegister *AcceptRegister) {
+	b.AcceptRegister = acceptRegister
+	b.require(boardingLinkQueryRecordFieldAcceptRegister)
+}
+
+// SetBuilderData sets the BuilderData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BoardingLinkQueryRecord) SetBuilderData(builderData *BuilderData) {
+	b.BuilderData = builderData
+	b.require(boardingLinkQueryRecordFieldBuilderData)
+}
+
+// SetEntryAttributes sets the EntryAttributes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BoardingLinkQueryRecord) SetEntryAttributes(entryAttributes *EntryAttributes) {
+	b.EntryAttributes = entryAttributes
+	b.require(boardingLinkQueryRecordFieldEntryAttributes)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BoardingLinkQueryRecord) SetId(id *int64) {
+	b.Id = id
+	b.require(boardingLinkQueryRecordFieldId)
+}
+
+// SetLogo sets the Logo field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BoardingLinkQueryRecord) SetLogo(logo *FileContent) {
+	b.Logo = logo
+	b.require(boardingLinkQueryRecordFieldLogo)
+}
+
+// SetOrgId sets the OrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BoardingLinkQueryRecord) SetOrgId(orgId *Orgid) {
+	b.OrgId = orgId
+	b.require(boardingLinkQueryRecordFieldOrgId)
+}
+
+// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BoardingLinkQueryRecord) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+	b.PageIdentifier = pageIdentifier
+	b.require(boardingLinkQueryRecordFieldPageIdentifier)
+}
+
+// SetRecipientEmailNotification sets the RecipientEmailNotification field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BoardingLinkQueryRecord) SetRecipientEmailNotification(recipientEmailNotification *RecipientEmailNotification) {
+	b.RecipientEmailNotification = recipientEmailNotification
+	b.require(boardingLinkQueryRecordFieldRecipientEmailNotification)
+}
+
+// SetReferenceName sets the ReferenceName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BoardingLinkQueryRecord) SetReferenceName(referenceName *ReferenceName) {
+	b.ReferenceName = referenceName
+	b.require(boardingLinkQueryRecordFieldReferenceName)
+}
+
+// SetReferenceTemplateId sets the ReferenceTemplateId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BoardingLinkQueryRecord) SetReferenceTemplateId(referenceTemplateId *ReferenceTemplateId) {
+	b.ReferenceTemplateId = referenceTemplateId
+	b.require(boardingLinkQueryRecordFieldReferenceTemplateId)
+}
+
+// SetResumable sets the Resumable field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BoardingLinkQueryRecord) SetResumable(resumable *Resumable) {
+	b.Resumable = resumable
+	b.require(boardingLinkQueryRecordFieldResumable)
+}
+
 func (b *BoardingLinkQueryRecord) UnmarshalJSON(data []byte) error {
 	type unmarshaler BoardingLinkQueryRecord
 	var value unmarshaler
@@ -4962,6 +9484,17 @@ func (b *BoardingLinkQueryRecord) UnmarshalJSON(data []byte) error {
 	b.extraProperties = extraProperties
 	b.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (b *BoardingLinkQueryRecord) MarshalJSON() ([]byte, error) {
+	type embed BoardingLinkQueryRecord
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (b *BoardingLinkQueryRecord) String() string {
@@ -4979,6 +9512,15 @@ func (b *BoardingLinkQueryRecord) String() string {
 // The application's status in the merchant boarding process. See [Boarding Status Reference](/developers/references/boarding-statuses) for more.
 type BoardingStatus = int
 
+var (
+	builderDataFieldServices   = big.NewInt(1 << 0)
+	builderDataFieldAttributes = big.NewInt(1 << 1)
+	builderDataFieldBanking    = big.NewInt(1 << 2)
+	builderDataFieldBusiness   = big.NewInt(1 << 3)
+	builderDataFieldOwners     = big.NewInt(1 << 4)
+	builderDataFieldProcessing = big.NewInt(1 << 5)
+)
+
 type BuilderData struct {
 	Services   *SSection `json:"services,omitempty" url:"services,omitempty"`
 	Attributes *ASection `json:"attributes,omitempty" url:"attributes,omitempty"`
@@ -4986,6 +9528,9 @@ type BuilderData struct {
 	Business   *BSection `json:"business,omitempty" url:"business,omitempty"`
 	Owners     *OSection `json:"owners,omitempty" url:"owners,omitempty"`
 	Processing *PSection `json:"processing,omitempty" url:"processing,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5037,6 +9582,55 @@ func (b *BuilderData) GetExtraProperties() map[string]interface{} {
 	return b.extraProperties
 }
 
+func (b *BuilderData) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetServices sets the Services field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BuilderData) SetServices(services *SSection) {
+	b.Services = services
+	b.require(builderDataFieldServices)
+}
+
+// SetAttributes sets the Attributes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BuilderData) SetAttributes(attributes *ASection) {
+	b.Attributes = attributes
+	b.require(builderDataFieldAttributes)
+}
+
+// SetBanking sets the Banking field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BuilderData) SetBanking(banking *DSection) {
+	b.Banking = banking
+	b.require(builderDataFieldBanking)
+}
+
+// SetBusiness sets the Business field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BuilderData) SetBusiness(business *BSection) {
+	b.Business = business
+	b.require(builderDataFieldBusiness)
+}
+
+// SetOwners sets the Owners field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BuilderData) SetOwners(owners *OSection) {
+	b.Owners = owners
+	b.require(builderDataFieldOwners)
+}
+
+// SetProcessing sets the Processing field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BuilderData) SetProcessing(processing *PSection) {
+	b.Processing = processing
+	b.require(builderDataFieldProcessing)
+}
+
 func (b *BuilderData) UnmarshalJSON(data []byte) error {
 	type unmarshaler BuilderData
 	var value unmarshaler
@@ -5053,6 +9647,17 @@ func (b *BuilderData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (b *BuilderData) MarshalJSON() ([]byte, error) {
+	type embed BuilderData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (b *BuilderData) String() string {
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
@@ -5065,11 +9670,21 @@ func (b *BuilderData) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+var (
+	cListFieldContactEmail = big.NewInt(1 << 0)
+	cListFieldContactName  = big.NewInt(1 << 1)
+	cListFieldContactPhone = big.NewInt(1 << 2)
+	cListFieldContactTitle = big.NewInt(1 << 3)
+)
+
 type CList struct {
 	ContactEmail *LinkData `json:"contactEmail,omitempty" url:"contactEmail,omitempty"`
 	ContactName  *LinkData `json:"contactName,omitempty" url:"contactName,omitempty"`
 	ContactPhone *LinkData `json:"contactPhone,omitempty" url:"contactPhone,omitempty"`
 	ContactTitle *LinkData `json:"contactTitle,omitempty" url:"contactTitle,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5107,6 +9722,41 @@ func (c *CList) GetExtraProperties() map[string]interface{} {
 	return c.extraProperties
 }
 
+func (c *CList) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetContactEmail sets the ContactEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CList) SetContactEmail(contactEmail *LinkData) {
+	c.ContactEmail = contactEmail
+	c.require(cListFieldContactEmail)
+}
+
+// SetContactName sets the ContactName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CList) SetContactName(contactName *LinkData) {
+	c.ContactName = contactName
+	c.require(cListFieldContactName)
+}
+
+// SetContactPhone sets the ContactPhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CList) SetContactPhone(contactPhone *LinkData) {
+	c.ContactPhone = contactPhone
+	c.require(cListFieldContactPhone)
+}
+
+// SetContactTitle sets the ContactTitle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CList) SetContactTitle(contactTitle *LinkData) {
+	c.ContactTitle = contactTitle
+	c.require(cListFieldContactTitle)
+}
+
 func (c *CList) UnmarshalJSON(data []byte) error {
 	type unmarshaler CList
 	var value unmarshaler
@@ -5123,6 +9773,17 @@ func (c *CList) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (c *CList) MarshalJSON() ([]byte, error) {
+	type embed CList
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (c *CList) String() string {
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
@@ -5135,11 +9796,21 @@ func (c *CList) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+var (
+	cardLinkTypesFieldAmex       = big.NewInt(1 << 0)
+	cardLinkTypesFieldDiscover   = big.NewInt(1 << 1)
+	cardLinkTypesFieldMastercard = big.NewInt(1 << 2)
+	cardLinkTypesFieldVisa       = big.NewInt(1 << 3)
+)
+
 type CardLinkTypes struct {
 	Amex       *LinkData `json:"amex,omitempty" url:"amex,omitempty"`
 	Discover   *LinkData `json:"discover,omitempty" url:"discover,omitempty"`
 	Mastercard *LinkData `json:"mastercard,omitempty" url:"mastercard,omitempty"`
 	Visa       *LinkData `json:"visa,omitempty" url:"visa,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5177,6 +9848,41 @@ func (c *CardLinkTypes) GetExtraProperties() map[string]interface{} {
 	return c.extraProperties
 }
 
+func (c *CardLinkTypes) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetAmex sets the Amex field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CardLinkTypes) SetAmex(amex *LinkData) {
+	c.Amex = amex
+	c.require(cardLinkTypesFieldAmex)
+}
+
+// SetDiscover sets the Discover field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CardLinkTypes) SetDiscover(discover *LinkData) {
+	c.Discover = discover
+	c.require(cardLinkTypesFieldDiscover)
+}
+
+// SetMastercard sets the Mastercard field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CardLinkTypes) SetMastercard(mastercard *LinkData) {
+	c.Mastercard = mastercard
+	c.require(cardLinkTypesFieldMastercard)
+}
+
+// SetVisa sets the Visa field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CardLinkTypes) SetVisa(visa *LinkData) {
+	c.Visa = visa
+	c.require(cardLinkTypesFieldVisa)
+}
+
 func (c *CardLinkTypes) UnmarshalJSON(data []byte) error {
 	type unmarshaler CardLinkTypes
 	var value unmarshaler
@@ -5193,6 +9899,17 @@ func (c *CardLinkTypes) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (c *CardLinkTypes) MarshalJSON() ([]byte, error) {
+	type embed CardLinkTypes
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (c *CardLinkTypes) String() string {
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
@@ -5205,10 +9922,19 @@ func (c *CardLinkTypes) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+var (
+	cardSectionFieldAcceptance = big.NewInt(1 << 0)
+	cardSectionFieldFees       = big.NewInt(1 << 1)
+	cardSectionFieldPrice      = big.NewInt(1 << 2)
+)
+
 type CardSection struct {
 	Acceptance *CardLinkTypes `json:"acceptance,omitempty" url:"acceptance,omitempty"`
 	Fees       *BasicTable    `json:"fees,omitempty" url:"fees,omitempty"`
 	Price      *BasicTable    `json:"price,omitempty" url:"price,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5239,6 +9965,34 @@ func (c *CardSection) GetExtraProperties() map[string]interface{} {
 	return c.extraProperties
 }
 
+func (c *CardSection) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetAcceptance sets the Acceptance field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CardSection) SetAcceptance(acceptance *CardLinkTypes) {
+	c.Acceptance = acceptance
+	c.require(cardSectionFieldAcceptance)
+}
+
+// SetFees sets the Fees field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CardSection) SetFees(fees *BasicTable) {
+	c.Fees = fees
+	c.require(cardSectionFieldFees)
+}
+
+// SetPrice sets the Price field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CardSection) SetPrice(price *BasicTable) {
+	c.Price = price
+	c.require(cardSectionFieldPrice)
+}
+
 func (c *CardSection) UnmarshalJSON(data []byte) error {
 	type unmarshaler CardSection
 	var value unmarshaler
@@ -5255,6 +10009,17 @@ func (c *CardSection) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (c *CardSection) MarshalJSON() ([]byte, error) {
+	type embed CardSection
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (c *CardSection) String() string {
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
@@ -5267,9 +10032,17 @@ func (c *CardSection) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+var (
+	dSectionFieldDepositAccount    = big.NewInt(1 << 0)
+	dSectionFieldWithdrawalAccount = big.NewInt(1 << 1)
+)
+
 type DSection struct {
 	DepositAccount    *Bnk `json:"depositAccount,omitempty" url:"depositAccount,omitempty"`
 	WithdrawalAccount *Bnk `json:"withdrawalAccount,omitempty" url:"withdrawalAccount,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5293,6 +10066,27 @@ func (d *DSection) GetExtraProperties() map[string]interface{} {
 	return d.extraProperties
 }
 
+func (d *DSection) require(field *big.Int) {
+	if d.explicitFields == nil {
+		d.explicitFields = big.NewInt(0)
+	}
+	d.explicitFields.Or(d.explicitFields, field)
+}
+
+// SetDepositAccount sets the DepositAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DSection) SetDepositAccount(depositAccount *Bnk) {
+	d.DepositAccount = depositAccount
+	d.require(dSectionFieldDepositAccount)
+}
+
+// SetWithdrawalAccount sets the WithdrawalAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DSection) SetWithdrawalAccount(withdrawalAccount *Bnk) {
+	d.WithdrawalAccount = withdrawalAccount
+	d.require(dSectionFieldWithdrawalAccount)
+}
+
 func (d *DSection) UnmarshalJSON(data []byte) error {
 	type unmarshaler DSection
 	var value unmarshaler
@@ -5309,6 +10103,17 @@ func (d *DSection) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (d *DSection) MarshalJSON() ([]byte, error) {
+	type embed DSection
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*d),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (d *DSection) String() string {
 	if len(d.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
@@ -5323,6 +10128,13 @@ func (d *DSection) String() string {
 
 // Fax number.
 type FaxNumber = string
+
+var (
+	linkDataFieldRo        = big.NewInt(1 << 0)
+	linkDataFieldRq        = big.NewInt(1 << 1)
+	linkDataFieldValidator = big.NewInt(1 << 2)
+	linkDataFieldValue     = big.NewInt(1 << 3)
+)
 
 type LinkData struct {
 	Ro *ReadOnly        `json:"ro,omitempty" url:"ro,omitempty"`
@@ -5342,6 +10154,9 @@ type LinkData struct {
 	// - routing
 	Validator *string         `json:"validator,omitempty" url:"validator,omitempty"`
 	Value     *ValueTemplates `json:"value,omitempty" url:"value,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5379,6 +10194,41 @@ func (l *LinkData) GetExtraProperties() map[string]interface{} {
 	return l.extraProperties
 }
 
+func (l *LinkData) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetRo sets the Ro field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LinkData) SetRo(ro *ReadOnly) {
+	l.Ro = ro
+	l.require(linkDataFieldRo)
+}
+
+// SetRq sets the Rq field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LinkData) SetRq(rq *RequiredElement) {
+	l.Rq = rq
+	l.require(linkDataFieldRq)
+}
+
+// SetValidator sets the Validator field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LinkData) SetValidator(validator *string) {
+	l.Validator = validator
+	l.require(linkDataFieldValidator)
+}
+
+// SetValue sets the Value field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LinkData) SetValue(value *ValueTemplates) {
+	l.Value = value
+	l.require(linkDataFieldValue)
+}
+
 func (l *LinkData) UnmarshalJSON(data []byte) error {
 	type unmarshaler LinkData
 	var value unmarshaler
@@ -5395,6 +10245,17 @@ func (l *LinkData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (l *LinkData) MarshalJSON() ([]byte, error) {
+	type embed LinkData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (l *LinkData) String() string {
 	if len(l.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
@@ -5407,8 +10268,15 @@ func (l *LinkData) String() string {
 	return fmt.Sprintf("%#v", l)
 }
 
+var (
+	linkRowFieldColumns = big.NewInt(1 << 0)
+)
+
 type LinkRow struct {
 	Columns []*LinkData `json:"columns,omitempty" url:"columns,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5423,6 +10291,20 @@ func (l *LinkRow) GetColumns() []*LinkData {
 
 func (l *LinkRow) GetExtraProperties() map[string]interface{} {
 	return l.extraProperties
+}
+
+func (l *LinkRow) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetColumns sets the Columns field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LinkRow) SetColumns(columns []*LinkData) {
+	l.Columns = columns
+	l.require(linkRowFieldColumns)
 }
 
 func (l *LinkRow) UnmarshalJSON(data []byte) error {
@@ -5441,6 +10323,17 @@ func (l *LinkRow) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (l *LinkRow) MarshalJSON() ([]byte, error) {
+	type embed LinkRow
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (l *LinkRow) String() string {
 	if len(l.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
@@ -5452,6 +10345,24 @@ func (l *LinkRow) String() string {
 	}
 	return fmt.Sprintf("%#v", l)
 }
+
+var (
+	oListFieldOaddress     = big.NewInt(1 << 0)
+	oListFieldOcity        = big.NewInt(1 << 1)
+	oListFieldOcountry     = big.NewInt(1 << 2)
+	oListFieldOdriverstate = big.NewInt(1 << 3)
+	oListFieldOstate       = big.NewInt(1 << 4)
+	oListFieldOwnerdob     = big.NewInt(1 << 5)
+	oListFieldOwnerdriver  = big.NewInt(1 << 6)
+	oListFieldOwneremail   = big.NewInt(1 << 7)
+	oListFieldOwnername    = big.NewInt(1 << 8)
+	oListFieldOwnerpercent = big.NewInt(1 << 9)
+	oListFieldOwnerphone1  = big.NewInt(1 << 10)
+	oListFieldOwnerphone2  = big.NewInt(1 << 11)
+	oListFieldOwnerssn     = big.NewInt(1 << 12)
+	oListFieldOwnertitle   = big.NewInt(1 << 13)
+	oListFieldOzip         = big.NewInt(1 << 14)
+)
 
 type OList struct {
 	Oaddress     *LinkData `json:"oaddress,omitempty" url:"oaddress,omitempty"`
@@ -5469,6 +10380,9 @@ type OList struct {
 	Ownerssn     *LinkData `json:"ownerssn,omitempty" url:"ownerssn,omitempty"`
 	Ownertitle   *LinkData `json:"ownertitle,omitempty" url:"ownertitle,omitempty"`
 	Ozip         *LinkData `json:"ozip,omitempty" url:"ozip,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5583,6 +10497,118 @@ func (o *OList) GetExtraProperties() map[string]interface{} {
 	return o.extraProperties
 }
 
+func (o *OList) require(field *big.Int) {
+	if o.explicitFields == nil {
+		o.explicitFields = big.NewInt(0)
+	}
+	o.explicitFields.Or(o.explicitFields, field)
+}
+
+// SetOaddress sets the Oaddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OList) SetOaddress(oaddress *LinkData) {
+	o.Oaddress = oaddress
+	o.require(oListFieldOaddress)
+}
+
+// SetOcity sets the Ocity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OList) SetOcity(ocity *LinkData) {
+	o.Ocity = ocity
+	o.require(oListFieldOcity)
+}
+
+// SetOcountry sets the Ocountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OList) SetOcountry(ocountry *LinkData) {
+	o.Ocountry = ocountry
+	o.require(oListFieldOcountry)
+}
+
+// SetOdriverstate sets the Odriverstate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OList) SetOdriverstate(odriverstate *LinkData) {
+	o.Odriverstate = odriverstate
+	o.require(oListFieldOdriverstate)
+}
+
+// SetOstate sets the Ostate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OList) SetOstate(ostate *LinkData) {
+	o.Ostate = ostate
+	o.require(oListFieldOstate)
+}
+
+// SetOwnerdob sets the Ownerdob field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OList) SetOwnerdob(ownerdob *LinkData) {
+	o.Ownerdob = ownerdob
+	o.require(oListFieldOwnerdob)
+}
+
+// SetOwnerdriver sets the Ownerdriver field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OList) SetOwnerdriver(ownerdriver *LinkData) {
+	o.Ownerdriver = ownerdriver
+	o.require(oListFieldOwnerdriver)
+}
+
+// SetOwneremail sets the Owneremail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OList) SetOwneremail(owneremail *LinkData) {
+	o.Owneremail = owneremail
+	o.require(oListFieldOwneremail)
+}
+
+// SetOwnername sets the Ownername field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OList) SetOwnername(ownername *LinkData) {
+	o.Ownername = ownername
+	o.require(oListFieldOwnername)
+}
+
+// SetOwnerpercent sets the Ownerpercent field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OList) SetOwnerpercent(ownerpercent *LinkData) {
+	o.Ownerpercent = ownerpercent
+	o.require(oListFieldOwnerpercent)
+}
+
+// SetOwnerphone1 sets the Ownerphone1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OList) SetOwnerphone1(ownerphone1 *LinkData) {
+	o.Ownerphone1 = ownerphone1
+	o.require(oListFieldOwnerphone1)
+}
+
+// SetOwnerphone2 sets the Ownerphone2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OList) SetOwnerphone2(ownerphone2 *LinkData) {
+	o.Ownerphone2 = ownerphone2
+	o.require(oListFieldOwnerphone2)
+}
+
+// SetOwnerssn sets the Ownerssn field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OList) SetOwnerssn(ownerssn *LinkData) {
+	o.Ownerssn = ownerssn
+	o.require(oListFieldOwnerssn)
+}
+
+// SetOwnertitle sets the Ownertitle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OList) SetOwnertitle(ownertitle *LinkData) {
+	o.Ownertitle = ownertitle
+	o.require(oListFieldOwnertitle)
+}
+
+// SetOzip sets the Ozip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OList) SetOzip(ozip *LinkData) {
+	o.Ozip = ozip
+	o.require(oListFieldOzip)
+}
+
 func (o *OList) UnmarshalJSON(data []byte) error {
 	type unmarshaler OList
 	var value unmarshaler
@@ -5599,6 +10625,17 @@ func (o *OList) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *OList) MarshalJSON() ([]byte, error) {
+	type embed OList
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*o),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, o.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (o *OList) String() string {
 	if len(o.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
@@ -5611,9 +10648,17 @@ func (o *OList) String() string {
 	return fmt.Sprintf("%#v", o)
 }
 
+var (
+	oSectionFieldContactList = big.NewInt(1 << 0)
+	oSectionFieldOwnList     = big.NewInt(1 << 1)
+)
+
 type OSection struct {
 	ContactList *CList `json:"contact_list,omitempty" url:"contact_list,omitempty"`
 	OwnList     *OList `json:"own_list,omitempty" url:"own_list,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5637,6 +10682,27 @@ func (o *OSection) GetExtraProperties() map[string]interface{} {
 	return o.extraProperties
 }
 
+func (o *OSection) require(field *big.Int) {
+	if o.explicitFields == nil {
+		o.explicitFields = big.NewInt(0)
+	}
+	o.explicitFields.Or(o.explicitFields, field)
+}
+
+// SetContactList sets the ContactList field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OSection) SetContactList(contactList *CList) {
+	o.ContactList = contactList
+	o.require(oSectionFieldContactList)
+}
+
+// SetOwnList sets the OwnList field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OSection) SetOwnList(ownList *OList) {
+	o.OwnList = ownList
+	o.require(oSectionFieldOwnList)
+}
+
 func (o *OSection) UnmarshalJSON(data []byte) error {
 	type unmarshaler OSection
 	var value unmarshaler
@@ -5653,6 +10719,17 @@ func (o *OSection) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *OSection) MarshalJSON() ([]byte, error) {
+	type embed OSection
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*o),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, o.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (o *OSection) String() string {
 	if len(o.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
@@ -5664,6 +10741,21 @@ func (o *OSection) String() string {
 	}
 	return fmt.Sprintf("%#v", o)
 }
+
+var (
+	pSectionFieldAvgmonthly    = big.NewInt(1 << 0)
+	pSectionFieldBinperson     = big.NewInt(1 << 1)
+	pSectionFieldBinphone      = big.NewInt(1 << 2)
+	pSectionFieldBinweb        = big.NewInt(1 << 3)
+	pSectionFieldBsummary      = big.NewInt(1 << 4)
+	pSectionFieldHighticketamt = big.NewInt(1 << 5)
+	pSectionFieldMcc           = big.NewInt(1 << 6)
+	pSectionFieldTicketamt     = big.NewInt(1 << 7)
+	pSectionFieldWhenCharged   = big.NewInt(1 << 8)
+	pSectionFieldWhenDelivered = big.NewInt(1 << 9)
+	pSectionFieldWhenProvided  = big.NewInt(1 << 10)
+	pSectionFieldWhenRefunded  = big.NewInt(1 << 11)
+)
 
 type PSection struct {
 	Avgmonthly    *LinkData `json:"avgmonthly,omitempty" url:"avgmonthly,omitempty"`
@@ -5678,6 +10770,9 @@ type PSection struct {
 	WhenDelivered *LinkData `json:"whenDelivered,omitempty" url:"whenDelivered,omitempty"`
 	WhenProvided  *LinkData `json:"whenProvided,omitempty" url:"whenProvided,omitempty"`
 	WhenRefunded  *LinkData `json:"whenRefunded,omitempty" url:"whenRefunded,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5771,6 +10866,97 @@ func (p *PSection) GetExtraProperties() map[string]interface{} {
 	return p.extraProperties
 }
 
+func (p *PSection) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetAvgmonthly sets the Avgmonthly field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PSection) SetAvgmonthly(avgmonthly *LinkData) {
+	p.Avgmonthly = avgmonthly
+	p.require(pSectionFieldAvgmonthly)
+}
+
+// SetBinperson sets the Binperson field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PSection) SetBinperson(binperson *LinkData) {
+	p.Binperson = binperson
+	p.require(pSectionFieldBinperson)
+}
+
+// SetBinphone sets the Binphone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PSection) SetBinphone(binphone *LinkData) {
+	p.Binphone = binphone
+	p.require(pSectionFieldBinphone)
+}
+
+// SetBinweb sets the Binweb field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PSection) SetBinweb(binweb *LinkData) {
+	p.Binweb = binweb
+	p.require(pSectionFieldBinweb)
+}
+
+// SetBsummary sets the Bsummary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PSection) SetBsummary(bsummary *LinkData) {
+	p.Bsummary = bsummary
+	p.require(pSectionFieldBsummary)
+}
+
+// SetHighticketamt sets the Highticketamt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PSection) SetHighticketamt(highticketamt *LinkData) {
+	p.Highticketamt = highticketamt
+	p.require(pSectionFieldHighticketamt)
+}
+
+// SetMcc sets the Mcc field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PSection) SetMcc(mcc *LinkData) {
+	p.Mcc = mcc
+	p.require(pSectionFieldMcc)
+}
+
+// SetTicketamt sets the Ticketamt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PSection) SetTicketamt(ticketamt *LinkData) {
+	p.Ticketamt = ticketamt
+	p.require(pSectionFieldTicketamt)
+}
+
+// SetWhenCharged sets the WhenCharged field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PSection) SetWhenCharged(whenCharged *LinkData) {
+	p.WhenCharged = whenCharged
+	p.require(pSectionFieldWhenCharged)
+}
+
+// SetWhenDelivered sets the WhenDelivered field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PSection) SetWhenDelivered(whenDelivered *LinkData) {
+	p.WhenDelivered = whenDelivered
+	p.require(pSectionFieldWhenDelivered)
+}
+
+// SetWhenProvided sets the WhenProvided field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PSection) SetWhenProvided(whenProvided *LinkData) {
+	p.WhenProvided = whenProvided
+	p.require(pSectionFieldWhenProvided)
+}
+
+// SetWhenRefunded sets the WhenRefunded field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PSection) SetWhenRefunded(whenRefunded *LinkData) {
+	p.WhenRefunded = whenRefunded
+	p.require(pSectionFieldWhenRefunded)
+}
+
 func (p *PSection) UnmarshalJSON(data []byte) error {
 	type unmarshaler PSection
 	var value unmarshaler
@@ -5787,6 +10973,17 @@ func (p *PSection) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (p *PSection) MarshalJSON() ([]byte, error) {
+	type embed PSection
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (p *PSection) String() string {
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
@@ -5799,12 +10996,23 @@ func (p *PSection) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+var (
+	payabliApiResponse00FieldIsSuccess      = big.NewInt(1 << 0)
+	payabliApiResponse00FieldPageIdentifier = big.NewInt(1 << 1)
+	payabliApiResponse00FieldResponseCode   = big.NewInt(1 << 2)
+	payabliApiResponse00FieldResponseData   = big.NewInt(1 << 3)
+	payabliApiResponse00FieldResponseText   = big.NewInt(1 << 4)
+)
+
 type PayabliApiResponse00 struct {
 	IsSuccess      *IsSuccess      `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	PageIdentifier *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 	ResponseCode   *Responsecode   `json:"responseCode,omitempty" url:"responseCode,omitempty"`
 	ResponseData   *Responsedata   `json:"responseData,omitempty" url:"responseData,omitempty"`
 	ResponseText   ResponseText    `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5849,6 +11057,48 @@ func (p *PayabliApiResponse00) GetExtraProperties() map[string]interface{} {
 	return p.extraProperties
 }
 
+func (p *PayabliApiResponse00) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponse00) SetIsSuccess(isSuccess *IsSuccess) {
+	p.IsSuccess = isSuccess
+	p.require(payabliApiResponse00FieldIsSuccess)
+}
+
+// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponse00) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+	p.PageIdentifier = pageIdentifier
+	p.require(payabliApiResponse00FieldPageIdentifier)
+}
+
+// SetResponseCode sets the ResponseCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponse00) SetResponseCode(responseCode *Responsecode) {
+	p.ResponseCode = responseCode
+	p.require(payabliApiResponse00FieldResponseCode)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponse00) SetResponseData(responseData *Responsedata) {
+	p.ResponseData = responseData
+	p.require(payabliApiResponse00FieldResponseData)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponse00) SetResponseText(responseText ResponseText) {
+	p.ResponseText = responseText
+	p.require(payabliApiResponse00FieldResponseText)
+}
+
 func (p *PayabliApiResponse00) UnmarshalJSON(data []byte) error {
 	type unmarshaler PayabliApiResponse00
 	var value unmarshaler
@@ -5863,6 +11113,17 @@ func (p *PayabliApiResponse00) UnmarshalJSON(data []byte) error {
 	p.extraProperties = extraProperties
 	p.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (p *PayabliApiResponse00) MarshalJSON() ([]byte, error) {
+	type embed PayabliApiResponse00
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (p *PayabliApiResponse00) String() string {
@@ -5892,9 +11153,17 @@ type PayoutHighTicketAmount = float64
 // When `true`, indicates that the merchant acknowledges PCI responsibilities and can be enrolled in the PCI program for breach insurance
 type PciAttestation = *bool
 
+var (
+	queryBoardingAppsListResponseFieldRecords = big.NewInt(1 << 0)
+	queryBoardingAppsListResponseFieldSummary = big.NewInt(1 << 1)
+)
+
 type QueryBoardingAppsListResponse struct {
 	Records []*ApplicationQueryRecord `json:"Records,omitempty" url:"Records,omitempty"`
 	Summary *QuerySummary             `json:"Summary,omitempty" url:"Summary,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5918,6 +11187,27 @@ func (q *QueryBoardingAppsListResponse) GetExtraProperties() map[string]interfac
 	return q.extraProperties
 }
 
+func (q *QueryBoardingAppsListResponse) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBoardingAppsListResponse) SetRecords(records []*ApplicationQueryRecord) {
+	q.Records = records
+	q.require(queryBoardingAppsListResponseFieldRecords)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBoardingAppsListResponse) SetSummary(summary *QuerySummary) {
+	q.Summary = summary
+	q.require(queryBoardingAppsListResponseFieldSummary)
+}
+
 func (q *QueryBoardingAppsListResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryBoardingAppsListResponse
 	var value unmarshaler
@@ -5934,6 +11224,17 @@ func (q *QueryBoardingAppsListResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (q *QueryBoardingAppsListResponse) MarshalJSON() ([]byte, error) {
+	type embed QueryBoardingAppsListResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QueryBoardingAppsListResponse) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -5946,9 +11247,17 @@ func (q *QueryBoardingAppsListResponse) String() string {
 	return fmt.Sprintf("%#v", q)
 }
 
+var (
+	queryBoardingLinksResponseFieldRecords = big.NewInt(1 << 0)
+	queryBoardingLinksResponseFieldSummary = big.NewInt(1 << 1)
+)
+
 type QueryBoardingLinksResponse struct {
 	Records []*QueryBoardingLinksResponseRecordsItem `json:"Records,omitempty" url:"Records,omitempty"`
 	Summary *QuerySummary                            `json:"Summary,omitempty" url:"Summary,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5972,6 +11281,27 @@ func (q *QueryBoardingLinksResponse) GetExtraProperties() map[string]interface{}
 	return q.extraProperties
 }
 
+func (q *QueryBoardingLinksResponse) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBoardingLinksResponse) SetRecords(records []*QueryBoardingLinksResponseRecordsItem) {
+	q.Records = records
+	q.require(queryBoardingLinksResponseFieldRecords)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBoardingLinksResponse) SetSummary(summary *QuerySummary) {
+	q.Summary = summary
+	q.require(queryBoardingLinksResponseFieldSummary)
+}
+
 func (q *QueryBoardingLinksResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryBoardingLinksResponse
 	var value unmarshaler
@@ -5988,6 +11318,17 @@ func (q *QueryBoardingLinksResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (q *QueryBoardingLinksResponse) MarshalJSON() ([]byte, error) {
+	type embed QueryBoardingLinksResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QueryBoardingLinksResponse) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -5999,6 +11340,19 @@ func (q *QueryBoardingLinksResponse) String() string {
 	}
 	return fmt.Sprintf("%#v", q)
 }
+
+var (
+	queryBoardingLinksResponseRecordsItemFieldAcceptOauth         = big.NewInt(1 << 0)
+	queryBoardingLinksResponseRecordsItemFieldAcceptRegister      = big.NewInt(1 << 1)
+	queryBoardingLinksResponseRecordsItemFieldEntryAttributes     = big.NewInt(1 << 2)
+	queryBoardingLinksResponseRecordsItemFieldId                  = big.NewInt(1 << 3)
+	queryBoardingLinksResponseRecordsItemFieldLastUpdated         = big.NewInt(1 << 4)
+	queryBoardingLinksResponseRecordsItemFieldOrgParentName       = big.NewInt(1 << 5)
+	queryBoardingLinksResponseRecordsItemFieldReferenceName       = big.NewInt(1 << 6)
+	queryBoardingLinksResponseRecordsItemFieldReferenceTemplateId = big.NewInt(1 << 7)
+	queryBoardingLinksResponseRecordsItemFieldTemplateCode        = big.NewInt(1 << 8)
+	queryBoardingLinksResponseRecordsItemFieldTemplateName        = big.NewInt(1 << 9)
+)
 
 type QueryBoardingLinksResponseRecordsItem struct {
 	AcceptOauth     *AcceptOauth     `json:"AcceptOauth,omitempty" url:"AcceptOauth,omitempty"`
@@ -6012,6 +11366,9 @@ type QueryBoardingLinksResponseRecordsItem struct {
 	ReferenceTemplateId *ReferenceTemplateId `json:"ReferenceTemplateId,omitempty" url:"ReferenceTemplateId,omitempty"`
 	TemplateCode        *TemplateCode        `json:"TemplateCode,omitempty" url:"TemplateCode,omitempty"`
 	TemplateName        *TemplateName        `json:"TemplateName,omitempty" url:"TemplateName,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -6091,6 +11448,83 @@ func (q *QueryBoardingLinksResponseRecordsItem) GetExtraProperties() map[string]
 	return q.extraProperties
 }
 
+func (q *QueryBoardingLinksResponseRecordsItem) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetAcceptOauth sets the AcceptOauth field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBoardingLinksResponseRecordsItem) SetAcceptOauth(acceptOauth *AcceptOauth) {
+	q.AcceptOauth = acceptOauth
+	q.require(queryBoardingLinksResponseRecordsItemFieldAcceptOauth)
+}
+
+// SetAcceptRegister sets the AcceptRegister field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBoardingLinksResponseRecordsItem) SetAcceptRegister(acceptRegister *AcceptRegister) {
+	q.AcceptRegister = acceptRegister
+	q.require(queryBoardingLinksResponseRecordsItemFieldAcceptRegister)
+}
+
+// SetEntryAttributes sets the EntryAttributes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBoardingLinksResponseRecordsItem) SetEntryAttributes(entryAttributes *EntryAttributes) {
+	q.EntryAttributes = entryAttributes
+	q.require(queryBoardingLinksResponseRecordsItemFieldEntryAttributes)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBoardingLinksResponseRecordsItem) SetId(id *int) {
+	q.Id = id
+	q.require(queryBoardingLinksResponseRecordsItemFieldId)
+}
+
+// SetLastUpdated sets the LastUpdated field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBoardingLinksResponseRecordsItem) SetLastUpdated(lastUpdated *LastModified) {
+	q.LastUpdated = lastUpdated
+	q.require(queryBoardingLinksResponseRecordsItemFieldLastUpdated)
+}
+
+// SetOrgParentName sets the OrgParentName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBoardingLinksResponseRecordsItem) SetOrgParentName(orgParentName *OrgParentName) {
+	q.OrgParentName = orgParentName
+	q.require(queryBoardingLinksResponseRecordsItemFieldOrgParentName)
+}
+
+// SetReferenceName sets the ReferenceName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBoardingLinksResponseRecordsItem) SetReferenceName(referenceName *ReferenceName) {
+	q.ReferenceName = referenceName
+	q.require(queryBoardingLinksResponseRecordsItemFieldReferenceName)
+}
+
+// SetReferenceTemplateId sets the ReferenceTemplateId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBoardingLinksResponseRecordsItem) SetReferenceTemplateId(referenceTemplateId *ReferenceTemplateId) {
+	q.ReferenceTemplateId = referenceTemplateId
+	q.require(queryBoardingLinksResponseRecordsItemFieldReferenceTemplateId)
+}
+
+// SetTemplateCode sets the TemplateCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBoardingLinksResponseRecordsItem) SetTemplateCode(templateCode *TemplateCode) {
+	q.TemplateCode = templateCode
+	q.require(queryBoardingLinksResponseRecordsItemFieldTemplateCode)
+}
+
+// SetTemplateName sets the TemplateName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBoardingLinksResponseRecordsItem) SetTemplateName(templateName *TemplateName) {
+	q.TemplateName = templateName
+	q.require(queryBoardingLinksResponseRecordsItemFieldTemplateName)
+}
+
 func (q *QueryBoardingLinksResponseRecordsItem) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryBoardingLinksResponseRecordsItem
 	var value unmarshaler
@@ -6105,6 +11539,17 @@ func (q *QueryBoardingLinksResponseRecordsItem) UnmarshalJSON(data []byte) error
 	q.extraProperties = extraProperties
 	q.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (q *QueryBoardingLinksResponseRecordsItem) MarshalJSON() ([]byte, error) {
+	type embed QueryBoardingLinksResponseRecordsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (q *QueryBoardingLinksResponseRecordsItem) String() string {
@@ -6128,9 +11573,17 @@ type RepName = string
 // Sales representative office location. This is an optional field that can be used to track the sales representative office associated with the application.
 type RepOffice = string
 
+var (
+	sSectionFieldAch  = big.NewInt(1 << 0)
+	sSectionFieldCard = big.NewInt(1 << 1)
+)
+
 type SSection struct {
 	Ach  *AchSection  `json:"ach,omitempty" url:"ach,omitempty"`
 	Card *CardSection `json:"card,omitempty" url:"card,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -6154,6 +11607,27 @@ func (s *SSection) GetExtraProperties() map[string]interface{} {
 	return s.extraProperties
 }
 
+func (s *SSection) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetAch sets the Ach field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SSection) SetAch(ach *AchSection) {
+	s.Ach = ach
+	s.require(sSectionFieldAch)
+}
+
+// SetCard sets the Card field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SSection) SetCard(card *CardSection) {
+	s.Card = card
+	s.require(sSectionFieldCard)
+}
+
 func (s *SSection) UnmarshalJSON(data []byte) error {
 	type unmarshaler SSection
 	var value unmarshaler
@@ -6168,6 +11642,17 @@ func (s *SSection) UnmarshalJSON(data []byte) error {
 	s.extraProperties = extraProperties
 	s.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (s *SSection) MarshalJSON() ([]byte, error) {
+	type embed SSection
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (s *SSection) String() string {
@@ -6202,6 +11687,27 @@ type SignerCity = string
 type SignerCountry = string
 
 // Information about the application's signer.
+var (
+	signerDataFieldSignerUuid              = big.NewInt(1 << 0)
+	signerDataFieldName                    = big.NewInt(1 << 1)
+	signerDataFieldSsn                     = big.NewInt(1 << 2)
+	signerDataFieldDob                     = big.NewInt(1 << 3)
+	signerDataFieldPhone                   = big.NewInt(1 << 4)
+	signerDataFieldEmail                   = big.NewInt(1 << 5)
+	signerDataFieldAddress                 = big.NewInt(1 << 6)
+	signerDataFieldAddress1                = big.NewInt(1 << 7)
+	signerDataFieldCity                    = big.NewInt(1 << 8)
+	signerDataFieldState                   = big.NewInt(1 << 9)
+	signerDataFieldZip                     = big.NewInt(1 << 10)
+	signerDataFieldCountry                 = big.NewInt(1 << 11)
+	signerDataFieldAcceptance              = big.NewInt(1 << 12)
+	signerDataFieldSignedDocumentReference = big.NewInt(1 << 13)
+	signerDataFieldPciAttestation          = big.NewInt(1 << 14)
+	signerDataFieldAttestationDate         = big.NewInt(1 << 15)
+	signerDataFieldSignDate                = big.NewInt(1 << 16)
+	signerDataFieldAdditionalData          = big.NewInt(1 << 17)
+)
+
 type SignerData struct {
 	// The signer's ID. This is automatically generated by Payabli.
 	SignerUuid *string      `json:"signerUuid,omitempty" url:"signerUuid,omitempty"`
@@ -6224,6 +11730,9 @@ type SignerData struct {
 	AttestationDate         *AttestationDate      `json:"attestationDate,omitempty" url:"attestationDate,omitempty"`
 	SignDate                *SignDate             `json:"signDate,omitempty" url:"signDate,omitempty"`
 	AdditionalData          *AdditionalDataString `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -6359,6 +11868,139 @@ func (s *SignerData) GetExtraProperties() map[string]interface{} {
 	return s.extraProperties
 }
 
+func (s *SignerData) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetSignerUuid sets the SignerUuid field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerData) SetSignerUuid(signerUuid *string) {
+	s.SignerUuid = signerUuid
+	s.require(signerDataFieldSignerUuid)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerData) SetName(name *SignerName) {
+	s.Name = name
+	s.require(signerDataFieldName)
+}
+
+// SetSsn sets the Ssn field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerData) SetSsn(ssn *SignerSsn) {
+	s.Ssn = ssn
+	s.require(signerDataFieldSsn)
+}
+
+// SetDob sets the Dob field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerData) SetDob(dob *SignerDob) {
+	s.Dob = dob
+	s.require(signerDataFieldDob)
+}
+
+// SetPhone sets the Phone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerData) SetPhone(phone *SignerPhone) {
+	s.Phone = phone
+	s.require(signerDataFieldPhone)
+}
+
+// SetEmail sets the Email field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerData) SetEmail(email *Email) {
+	s.Email = email
+	s.require(signerDataFieldEmail)
+}
+
+// SetAddress sets the Address field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerData) SetAddress(address *Signeraddress) {
+	s.Address = address
+	s.require(signerDataFieldAddress)
+}
+
+// SetAddress1 sets the Address1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerData) SetAddress1(address1 *SignerAddress1) {
+	s.Address1 = address1
+	s.require(signerDataFieldAddress1)
+}
+
+// SetCity sets the City field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerData) SetCity(city *SignerCity) {
+	s.City = city
+	s.require(signerDataFieldCity)
+}
+
+// SetState sets the State field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerData) SetState(state *SignerState) {
+	s.State = state
+	s.require(signerDataFieldState)
+}
+
+// SetZip sets the Zip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerData) SetZip(zip *SignerZip) {
+	s.Zip = zip
+	s.require(signerDataFieldZip)
+}
+
+// SetCountry sets the Country field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerData) SetCountry(country *SignerCountry) {
+	s.Country = country
+	s.require(signerDataFieldCountry)
+}
+
+// SetAcceptance sets the Acceptance field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerData) SetAcceptance(acceptance *SignerAcceptance) {
+	s.Acceptance = acceptance
+	s.require(signerDataFieldAcceptance)
+}
+
+// SetSignedDocumentReference sets the SignedDocumentReference field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerData) SetSignedDocumentReference(signedDocumentReference *string) {
+	s.SignedDocumentReference = signedDocumentReference
+	s.require(signerDataFieldSignedDocumentReference)
+}
+
+// SetPciAttestation sets the PciAttestation field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerData) SetPciAttestation(pciAttestation *PciAttestation) {
+	s.PciAttestation = pciAttestation
+	s.require(signerDataFieldPciAttestation)
+}
+
+// SetAttestationDate sets the AttestationDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerData) SetAttestationDate(attestationDate *AttestationDate) {
+	s.AttestationDate = attestationDate
+	s.require(signerDataFieldAttestationDate)
+}
+
+// SetSignDate sets the SignDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerData) SetSignDate(signDate *SignDate) {
+	s.SignDate = signDate
+	s.require(signerDataFieldSignDate)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerData) SetAdditionalData(additionalData *AdditionalDataString) {
+	s.AdditionalData = additionalData
+	s.require(signerDataFieldAdditionalData)
+}
+
 func (s *SignerData) UnmarshalJSON(data []byte) error {
 	type unmarshaler SignerData
 	var value unmarshaler
@@ -6375,6 +12017,17 @@ func (s *SignerData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (s *SignerData) MarshalJSON() ([]byte, error) {
+	type embed SignerData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (s *SignerData) String() string {
 	if len(s.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
@@ -6388,6 +12041,26 @@ func (s *SignerData) String() string {
 }
 
 // Information about the application's signer.
+var (
+	signerDataRequestFieldName                    = big.NewInt(1 << 0)
+	signerDataRequestFieldSsn                     = big.NewInt(1 << 1)
+	signerDataRequestFieldDob                     = big.NewInt(1 << 2)
+	signerDataRequestFieldPhone                   = big.NewInt(1 << 3)
+	signerDataRequestFieldEmail                   = big.NewInt(1 << 4)
+	signerDataRequestFieldAddress                 = big.NewInt(1 << 5)
+	signerDataRequestFieldAddress1                = big.NewInt(1 << 6)
+	signerDataRequestFieldCity                    = big.NewInt(1 << 7)
+	signerDataRequestFieldCountry                 = big.NewInt(1 << 8)
+	signerDataRequestFieldState                   = big.NewInt(1 << 9)
+	signerDataRequestFieldZip                     = big.NewInt(1 << 10)
+	signerDataRequestFieldAcceptance              = big.NewInt(1 << 11)
+	signerDataRequestFieldSignedDocumentReference = big.NewInt(1 << 12)
+	signerDataRequestFieldPciAttestation          = big.NewInt(1 << 13)
+	signerDataRequestFieldAttestationDate         = big.NewInt(1 << 14)
+	signerDataRequestFieldAdditionalData          = big.NewInt(1 << 15)
+	signerDataRequestFieldSignDate                = big.NewInt(1 << 16)
+)
+
 type SignerDataRequest struct {
 	Name  *SignerName  `json:"name,omitempty" url:"name,omitempty"`
 	Ssn   *SignerSsn   `json:"ssn,omitempty" url:"ssn,omitempty"`
@@ -6407,6 +12080,9 @@ type SignerDataRequest struct {
 	AttestationDate         *AttestationDate         `json:"attestationDate,omitempty" url:"attestationDate,omitempty"`
 	AdditionalData          *AdditionalDataString    `json:"additionalData,omitempty" url:"additionalData,omitempty"`
 	SignDate                *SignDate                `json:"signDate,omitempty" url:"signDate,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -6535,6 +12211,132 @@ func (s *SignerDataRequest) GetExtraProperties() map[string]interface{} {
 	return s.extraProperties
 }
 
+func (s *SignerDataRequest) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerDataRequest) SetName(name *SignerName) {
+	s.Name = name
+	s.require(signerDataRequestFieldName)
+}
+
+// SetSsn sets the Ssn field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerDataRequest) SetSsn(ssn *SignerSsn) {
+	s.Ssn = ssn
+	s.require(signerDataRequestFieldSsn)
+}
+
+// SetDob sets the Dob field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerDataRequest) SetDob(dob *SignerDob) {
+	s.Dob = dob
+	s.require(signerDataRequestFieldDob)
+}
+
+// SetPhone sets the Phone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerDataRequest) SetPhone(phone *SignerPhone) {
+	s.Phone = phone
+	s.require(signerDataRequestFieldPhone)
+}
+
+// SetEmail sets the Email field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerDataRequest) SetEmail(email *Email) {
+	s.Email = email
+	s.require(signerDataRequestFieldEmail)
+}
+
+// SetAddress sets the Address field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerDataRequest) SetAddress(address *Signeraddress) {
+	s.Address = address
+	s.require(signerDataRequestFieldAddress)
+}
+
+// SetAddress1 sets the Address1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerDataRequest) SetAddress1(address1 *SignerAddress1) {
+	s.Address1 = address1
+	s.require(signerDataRequestFieldAddress1)
+}
+
+// SetCity sets the City field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerDataRequest) SetCity(city *SignerCity) {
+	s.City = city
+	s.require(signerDataRequestFieldCity)
+}
+
+// SetCountry sets the Country field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerDataRequest) SetCountry(country *SignerCountry) {
+	s.Country = country
+	s.require(signerDataRequestFieldCountry)
+}
+
+// SetState sets the State field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerDataRequest) SetState(state *SignerState) {
+	s.State = state
+	s.require(signerDataRequestFieldState)
+}
+
+// SetZip sets the Zip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerDataRequest) SetZip(zip *SignerZip) {
+	s.Zip = zip
+	s.require(signerDataRequestFieldZip)
+}
+
+// SetAcceptance sets the Acceptance field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerDataRequest) SetAcceptance(acceptance *SignerAcceptance) {
+	s.Acceptance = acceptance
+	s.require(signerDataRequestFieldAcceptance)
+}
+
+// SetSignedDocumentReference sets the SignedDocumentReference field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerDataRequest) SetSignedDocumentReference(signedDocumentReference *SignedDocumentReference) {
+	s.SignedDocumentReference = signedDocumentReference
+	s.require(signerDataRequestFieldSignedDocumentReference)
+}
+
+// SetPciAttestation sets the PciAttestation field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerDataRequest) SetPciAttestation(pciAttestation *PciAttestation) {
+	s.PciAttestation = pciAttestation
+	s.require(signerDataRequestFieldPciAttestation)
+}
+
+// SetAttestationDate sets the AttestationDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerDataRequest) SetAttestationDate(attestationDate *AttestationDate) {
+	s.AttestationDate = attestationDate
+	s.require(signerDataRequestFieldAttestationDate)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerDataRequest) SetAdditionalData(additionalData *AdditionalDataString) {
+	s.AdditionalData = additionalData
+	s.require(signerDataRequestFieldAdditionalData)
+}
+
+// SetSignDate sets the SignDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SignerDataRequest) SetSignDate(signDate *SignDate) {
+	s.SignDate = signDate
+	s.require(signerDataRequestFieldSignDate)
+}
+
 func (s *SignerDataRequest) UnmarshalJSON(data []byte) error {
 	type unmarshaler SignerDataRequest
 	var value unmarshaler
@@ -6549,6 +12351,17 @@ func (s *SignerDataRequest) UnmarshalJSON(data []byte) error {
 	s.extraProperties = extraProperties
 	s.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (s *SignerDataRequest) MarshalJSON() ([]byte, error) {
+	type embed SignerDataRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (s *SignerDataRequest) String() string {

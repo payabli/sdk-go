@@ -6,12 +6,34 @@ import (
 	json "encoding/json"
 	fmt "fmt"
 	internal "github.com/payabli/sdk-go/internal"
+	big "math/big"
+)
+
+var (
+	addItemRequestFieldIdempotencyKey = big.NewInt(1 << 0)
 )
 
 type AddItemRequest struct {
 	// A unique ID you can include to prevent duplicating objects or transactions if a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself.
 	IdempotencyKey *string   `json:"-" url:"-"`
 	Body           *LineItem `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (a *AddItemRequest) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetIdempotencyKey sets the IdempotencyKey field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddItemRequest) SetIdempotencyKey(idempotencyKey *string) {
+	a.IdempotencyKey = idempotencyKey
+	a.require(addItemRequestFieldIdempotencyKey)
 }
 
 func (a *AddItemRequest) UnmarshalJSON(data []byte) error {
@@ -26,6 +48,13 @@ func (a *AddItemRequest) UnmarshalJSON(data []byte) error {
 func (a *AddItemRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(a.Body)
 }
+
+var (
+	listLineItemsRequestFieldFromRecord  = big.NewInt(1 << 0)
+	listLineItemsRequestFieldLimitRecord = big.NewInt(1 << 1)
+	listLineItemsRequestFieldParameters  = big.NewInt(1 << 2)
+	listLineItemsRequestFieldSortBy      = big.NewInt(1 << 3)
+)
 
 type ListLineItemsRequest struct {
 	// The number of records to skip before starting to collect the result set.
@@ -90,7 +119,57 @@ type ListLineItemsRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListLineItemsRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListLineItemsRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listLineItemsRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListLineItemsRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listLineItemsRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListLineItemsRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listLineItemsRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListLineItemsRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listLineItemsRequestFieldSortBy)
+}
+
+var (
+	lineItemFieldItemCategories    = big.NewInt(1 << 0)
+	lineItemFieldItemCommodityCode = big.NewInt(1 << 1)
+	lineItemFieldItemCost          = big.NewInt(1 << 2)
+	lineItemFieldItemDescription   = big.NewInt(1 << 3)
+	lineItemFieldItemMode          = big.NewInt(1 << 4)
+	lineItemFieldItemProductCode   = big.NewInt(1 << 5)
+	lineItemFieldItemProductName   = big.NewInt(1 << 6)
+	lineItemFieldItemQty           = big.NewInt(1 << 7)
+	lineItemFieldItemUnitOfMeasure = big.NewInt(1 << 8)
+)
 
 type LineItem struct {
 	// Array of tags classifying item or product.
@@ -106,6 +185,9 @@ type LineItem struct {
 	// Quantity of item or product.
 	ItemQty           int                `json:"itemQty" url:"itemQty"`
 	ItemUnitOfMeasure *ItemUnitofMeasure `json:"itemUnitOfMeasure,omitempty" url:"itemUnitOfMeasure,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -178,6 +260,76 @@ func (l *LineItem) GetExtraProperties() map[string]interface{} {
 	return l.extraProperties
 }
 
+func (l *LineItem) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetItemCategories sets the ItemCategories field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LineItem) SetItemCategories(itemCategories []*string) {
+	l.ItemCategories = itemCategories
+	l.require(lineItemFieldItemCategories)
+}
+
+// SetItemCommodityCode sets the ItemCommodityCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LineItem) SetItemCommodityCode(itemCommodityCode *ItemCommodityCode) {
+	l.ItemCommodityCode = itemCommodityCode
+	l.require(lineItemFieldItemCommodityCode)
+}
+
+// SetItemCost sets the ItemCost field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LineItem) SetItemCost(itemCost float64) {
+	l.ItemCost = itemCost
+	l.require(lineItemFieldItemCost)
+}
+
+// SetItemDescription sets the ItemDescription field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LineItem) SetItemDescription(itemDescription *ItemDescription) {
+	l.ItemDescription = itemDescription
+	l.require(lineItemFieldItemDescription)
+}
+
+// SetItemMode sets the ItemMode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LineItem) SetItemMode(itemMode *int) {
+	l.ItemMode = itemMode
+	l.require(lineItemFieldItemMode)
+}
+
+// SetItemProductCode sets the ItemProductCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LineItem) SetItemProductCode(itemProductCode *ItemProductCode) {
+	l.ItemProductCode = itemProductCode
+	l.require(lineItemFieldItemProductCode)
+}
+
+// SetItemProductName sets the ItemProductName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LineItem) SetItemProductName(itemProductName *ItemProductName) {
+	l.ItemProductName = itemProductName
+	l.require(lineItemFieldItemProductName)
+}
+
+// SetItemQty sets the ItemQty field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LineItem) SetItemQty(itemQty int) {
+	l.ItemQty = itemQty
+	l.require(lineItemFieldItemQty)
+}
+
+// SetItemUnitOfMeasure sets the ItemUnitOfMeasure field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LineItem) SetItemUnitOfMeasure(itemUnitOfMeasure *ItemUnitofMeasure) {
+	l.ItemUnitOfMeasure = itemUnitOfMeasure
+	l.require(lineItemFieldItemUnitOfMeasure)
+}
+
 func (l *LineItem) UnmarshalJSON(data []byte) error {
 	type unmarshaler LineItem
 	var value unmarshaler
@@ -194,6 +346,17 @@ func (l *LineItem) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (l *LineItem) MarshalJSON() ([]byte, error) {
+	type embed LineItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (l *LineItem) String() string {
 	if len(l.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
@@ -205,6 +368,26 @@ func (l *LineItem) String() string {
 	}
 	return fmt.Sprintf("%#v", l)
 }
+
+var (
+	lineItemQueryRecordFieldCreatedAt         = big.NewInt(1 << 0)
+	lineItemQueryRecordFieldId                = big.NewInt(1 << 1)
+	lineItemQueryRecordFieldItemCategories    = big.NewInt(1 << 2)
+	lineItemQueryRecordFieldItemCommodityCode = big.NewInt(1 << 3)
+	lineItemQueryRecordFieldItemCost          = big.NewInt(1 << 4)
+	lineItemQueryRecordFieldItemDescription   = big.NewInt(1 << 5)
+	lineItemQueryRecordFieldItemMode          = big.NewInt(1 << 6)
+	lineItemQueryRecordFieldItemProductCode   = big.NewInt(1 << 7)
+	lineItemQueryRecordFieldItemProductName   = big.NewInt(1 << 8)
+	lineItemQueryRecordFieldItemQty           = big.NewInt(1 << 9)
+	lineItemQueryRecordFieldItemUnitOfMeasure = big.NewInt(1 << 10)
+	lineItemQueryRecordFieldLastUpdated       = big.NewInt(1 << 11)
+	lineItemQueryRecordFieldPageidentifier    = big.NewInt(1 << 12)
+	lineItemQueryRecordFieldParentOrgName     = big.NewInt(1 << 13)
+	lineItemQueryRecordFieldPaypointDbaname   = big.NewInt(1 << 14)
+	lineItemQueryRecordFieldPaypointEntryname = big.NewInt(1 << 15)
+	lineItemQueryRecordFieldPaypointLegalname = big.NewInt(1 << 16)
+)
 
 type LineItemQueryRecord struct {
 	// Timestamp of when line item was created, in UTC.
@@ -235,6 +418,9 @@ type LineItemQueryRecord struct {
 	PaypointEntryname *Entrypointfield `json:"PaypointEntryname,omitempty" url:"PaypointEntryname,omitempty"`
 	// The paypoint's legal name.
 	PaypointLegalname *Legalname `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -363,6 +549,132 @@ func (l *LineItemQueryRecord) GetExtraProperties() map[string]interface{} {
 	return l.extraProperties
 }
 
+func (l *LineItemQueryRecord) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LineItemQueryRecord) SetCreatedAt(createdAt *CreatedAt) {
+	l.CreatedAt = createdAt
+	l.require(lineItemQueryRecordFieldCreatedAt)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LineItemQueryRecord) SetId(id *int64) {
+	l.Id = id
+	l.require(lineItemQueryRecordFieldId)
+}
+
+// SetItemCategories sets the ItemCategories field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LineItemQueryRecord) SetItemCategories(itemCategories []*string) {
+	l.ItemCategories = itemCategories
+	l.require(lineItemQueryRecordFieldItemCategories)
+}
+
+// SetItemCommodityCode sets the ItemCommodityCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LineItemQueryRecord) SetItemCommodityCode(itemCommodityCode *ItemCommodityCode) {
+	l.ItemCommodityCode = itemCommodityCode
+	l.require(lineItemQueryRecordFieldItemCommodityCode)
+}
+
+// SetItemCost sets the ItemCost field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LineItemQueryRecord) SetItemCost(itemCost float64) {
+	l.ItemCost = itemCost
+	l.require(lineItemQueryRecordFieldItemCost)
+}
+
+// SetItemDescription sets the ItemDescription field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LineItemQueryRecord) SetItemDescription(itemDescription *ItemDescription) {
+	l.ItemDescription = itemDescription
+	l.require(lineItemQueryRecordFieldItemDescription)
+}
+
+// SetItemMode sets the ItemMode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LineItemQueryRecord) SetItemMode(itemMode *int) {
+	l.ItemMode = itemMode
+	l.require(lineItemQueryRecordFieldItemMode)
+}
+
+// SetItemProductCode sets the ItemProductCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LineItemQueryRecord) SetItemProductCode(itemProductCode *ItemProductCode) {
+	l.ItemProductCode = itemProductCode
+	l.require(lineItemQueryRecordFieldItemProductCode)
+}
+
+// SetItemProductName sets the ItemProductName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LineItemQueryRecord) SetItemProductName(itemProductName *ItemProductName) {
+	l.ItemProductName = itemProductName
+	l.require(lineItemQueryRecordFieldItemProductName)
+}
+
+// SetItemQty sets the ItemQty field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LineItemQueryRecord) SetItemQty(itemQty int) {
+	l.ItemQty = itemQty
+	l.require(lineItemQueryRecordFieldItemQty)
+}
+
+// SetItemUnitOfMeasure sets the ItemUnitOfMeasure field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LineItemQueryRecord) SetItemUnitOfMeasure(itemUnitOfMeasure *ItemUnitofMeasure) {
+	l.ItemUnitOfMeasure = itemUnitOfMeasure
+	l.require(lineItemQueryRecordFieldItemUnitOfMeasure)
+}
+
+// SetLastUpdated sets the LastUpdated field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LineItemQueryRecord) SetLastUpdated(lastUpdated *LastModified) {
+	l.LastUpdated = lastUpdated
+	l.require(lineItemQueryRecordFieldLastUpdated)
+}
+
+// SetPageidentifier sets the Pageidentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LineItemQueryRecord) SetPageidentifier(pageidentifier *PageIdentifier) {
+	l.Pageidentifier = pageidentifier
+	l.require(lineItemQueryRecordFieldPageidentifier)
+}
+
+// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LineItemQueryRecord) SetParentOrgName(parentOrgName *OrgParentName) {
+	l.ParentOrgName = parentOrgName
+	l.require(lineItemQueryRecordFieldParentOrgName)
+}
+
+// SetPaypointDbaname sets the PaypointDbaname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LineItemQueryRecord) SetPaypointDbaname(paypointDbaname *Dbaname) {
+	l.PaypointDbaname = paypointDbaname
+	l.require(lineItemQueryRecordFieldPaypointDbaname)
+}
+
+// SetPaypointEntryname sets the PaypointEntryname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LineItemQueryRecord) SetPaypointEntryname(paypointEntryname *Entrypointfield) {
+	l.PaypointEntryname = paypointEntryname
+	l.require(lineItemQueryRecordFieldPaypointEntryname)
+}
+
+// SetPaypointLegalname sets the PaypointLegalname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LineItemQueryRecord) SetPaypointLegalname(paypointLegalname *Legalname) {
+	l.PaypointLegalname = paypointLegalname
+	l.require(lineItemQueryRecordFieldPaypointLegalname)
+}
+
 func (l *LineItemQueryRecord) UnmarshalJSON(data []byte) error {
 	type unmarshaler LineItemQueryRecord
 	var value unmarshaler
@@ -379,6 +691,17 @@ func (l *LineItemQueryRecord) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (l *LineItemQueryRecord) MarshalJSON() ([]byte, error) {
+	type embed LineItemQueryRecord
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (l *LineItemQueryRecord) String() string {
 	if len(l.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
@@ -392,12 +715,22 @@ func (l *LineItemQueryRecord) String() string {
 }
 
 // Response schema for line item operations.
+var (
+	payabliApiResponse6FieldIsSuccess      = big.NewInt(1 << 0)
+	payabliApiResponse6FieldPageIdentifier = big.NewInt(1 << 1)
+	payabliApiResponse6FieldResponseData   = big.NewInt(1 << 2)
+	payabliApiResponse6FieldResponseText   = big.NewInt(1 << 3)
+)
+
 type PayabliApiResponse6 struct {
 	IsSuccess      *IsSuccess      `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	PageIdentifier *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 	// If `isSuccess` = true, this contains the line item identifier. If `isSuccess` = false, this contains the reason of the error.
 	ResponseData *Responsedatanonobject `json:"responseData,omitempty" url:"responseData,omitempty"`
 	ResponseText ResponseText           `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -435,6 +768,41 @@ func (p *PayabliApiResponse6) GetExtraProperties() map[string]interface{} {
 	return p.extraProperties
 }
 
+func (p *PayabliApiResponse6) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponse6) SetIsSuccess(isSuccess *IsSuccess) {
+	p.IsSuccess = isSuccess
+	p.require(payabliApiResponse6FieldIsSuccess)
+}
+
+// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponse6) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+	p.PageIdentifier = pageIdentifier
+	p.require(payabliApiResponse6FieldPageIdentifier)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponse6) SetResponseData(responseData *Responsedatanonobject) {
+	p.ResponseData = responseData
+	p.require(payabliApiResponse6FieldResponseData)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponse6) SetResponseText(responseText ResponseText) {
+	p.ResponseText = responseText
+	p.require(payabliApiResponse6FieldResponseText)
+}
+
 func (p *PayabliApiResponse6) UnmarshalJSON(data []byte) error {
 	type unmarshaler PayabliApiResponse6
 	var value unmarshaler
@@ -451,6 +819,17 @@ func (p *PayabliApiResponse6) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (p *PayabliApiResponse6) MarshalJSON() ([]byte, error) {
+	type embed PayabliApiResponse6
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (p *PayabliApiResponse6) String() string {
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
@@ -464,9 +843,17 @@ func (p *PayabliApiResponse6) String() string {
 }
 
 // Response for line item queries
+var (
+	queryResponseItemsFieldRecords = big.NewInt(1 << 0)
+	queryResponseItemsFieldSummary = big.NewInt(1 << 1)
+)
+
 type QueryResponseItems struct {
 	Records []*QueryResponseItemsRecordsItem `json:"Records,omitempty" url:"Records,omitempty"`
 	Summary *QuerySummary                    `json:"Summary,omitempty" url:"Summary,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -490,6 +877,27 @@ func (q *QueryResponseItems) GetExtraProperties() map[string]interface{} {
 	return q.extraProperties
 }
 
+func (q *QueryResponseItems) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseItems) SetRecords(records []*QueryResponseItemsRecordsItem) {
+	q.Records = records
+	q.require(queryResponseItemsFieldRecords)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseItems) SetSummary(summary *QuerySummary) {
+	q.Summary = summary
+	q.require(queryResponseItemsFieldSummary)
+}
+
 func (q *QueryResponseItems) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryResponseItems
 	var value unmarshaler
@@ -506,6 +914,17 @@ func (q *QueryResponseItems) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (q *QueryResponseItems) MarshalJSON() ([]byte, error) {
+	type embed QueryResponseItems
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QueryResponseItems) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -518,6 +937,14 @@ func (q *QueryResponseItems) String() string {
 	return fmt.Sprintf("%#v", q)
 }
 
+var (
+	queryResponseItemsRecordsItemFieldLineItem          = big.NewInt(1 << 0)
+	queryResponseItemsRecordsItemFieldParentOrgName     = big.NewInt(1 << 1)
+	queryResponseItemsRecordsItemFieldPaypointDbaname   = big.NewInt(1 << 2)
+	queryResponseItemsRecordsItemFieldPaypointEntryname = big.NewInt(1 << 3)
+	queryResponseItemsRecordsItemFieldPaypointLegalname = big.NewInt(1 << 4)
+)
+
 type QueryResponseItemsRecordsItem struct {
 	LineItem      *LineItem      `json:"LineItem,omitempty" url:"LineItem,omitempty"`
 	ParentOrgName *OrgParentName `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
@@ -527,6 +954,9 @@ type QueryResponseItemsRecordsItem struct {
 	PaypointEntryname *Entrypointfield `json:"PaypointEntryname,omitempty" url:"PaypointEntryname,omitempty"`
 	// the Paypoint's legal name.
 	PaypointLegalname *Legalname `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -571,6 +1001,48 @@ func (q *QueryResponseItemsRecordsItem) GetExtraProperties() map[string]interfac
 	return q.extraProperties
 }
 
+func (q *QueryResponseItemsRecordsItem) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetLineItem sets the LineItem field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseItemsRecordsItem) SetLineItem(lineItem *LineItem) {
+	q.LineItem = lineItem
+	q.require(queryResponseItemsRecordsItemFieldLineItem)
+}
+
+// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseItemsRecordsItem) SetParentOrgName(parentOrgName *OrgParentName) {
+	q.ParentOrgName = parentOrgName
+	q.require(queryResponseItemsRecordsItemFieldParentOrgName)
+}
+
+// SetPaypointDbaname sets the PaypointDbaname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseItemsRecordsItem) SetPaypointDbaname(paypointDbaname *Dbaname) {
+	q.PaypointDbaname = paypointDbaname
+	q.require(queryResponseItemsRecordsItemFieldPaypointDbaname)
+}
+
+// SetPaypointEntryname sets the PaypointEntryname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseItemsRecordsItem) SetPaypointEntryname(paypointEntryname *Entrypointfield) {
+	q.PaypointEntryname = paypointEntryname
+	q.require(queryResponseItemsRecordsItemFieldPaypointEntryname)
+}
+
+// SetPaypointLegalname sets the PaypointLegalname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseItemsRecordsItem) SetPaypointLegalname(paypointLegalname *Legalname) {
+	q.PaypointLegalname = paypointLegalname
+	q.require(queryResponseItemsRecordsItemFieldPaypointLegalname)
+}
+
 func (q *QueryResponseItemsRecordsItem) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryResponseItemsRecordsItem
 	var value unmarshaler
@@ -587,6 +1059,17 @@ func (q *QueryResponseItemsRecordsItem) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (q *QueryResponseItemsRecordsItem) MarshalJSON() ([]byte, error) {
+	type embed QueryResponseItemsRecordsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QueryResponseItemsRecordsItem) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -599,9 +1082,17 @@ func (q *QueryResponseItemsRecordsItem) String() string {
 	return fmt.Sprintf("%#v", q)
 }
 
+var (
+	deleteItemResponseFieldIsSuccess    = big.NewInt(1 << 0)
+	deleteItemResponseFieldResponseText = big.NewInt(1 << 1)
+)
+
 type DeleteItemResponse struct {
 	IsSuccess    IsSuccess    `json:"isSuccess" url:"isSuccess"`
 	ResponseText ResponseText `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -625,6 +1116,27 @@ func (d *DeleteItemResponse) GetExtraProperties() map[string]interface{} {
 	return d.extraProperties
 }
 
+func (d *DeleteItemResponse) require(field *big.Int) {
+	if d.explicitFields == nil {
+		d.explicitFields = big.NewInt(0)
+	}
+	d.explicitFields.Or(d.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeleteItemResponse) SetIsSuccess(isSuccess IsSuccess) {
+	d.IsSuccess = isSuccess
+	d.require(deleteItemResponseFieldIsSuccess)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeleteItemResponse) SetResponseText(responseText ResponseText) {
+	d.ResponseText = responseText
+	d.require(deleteItemResponseFieldResponseText)
+}
+
 func (d *DeleteItemResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler DeleteItemResponse
 	var value unmarshaler
@@ -639,6 +1151,17 @@ func (d *DeleteItemResponse) UnmarshalJSON(data []byte) error {
 	d.extraProperties = extraProperties
 	d.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (d *DeleteItemResponse) MarshalJSON() ([]byte, error) {
+	type embed DeleteItemResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*d),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (d *DeleteItemResponse) String() string {

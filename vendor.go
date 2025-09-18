@@ -6,6 +6,15 @@ import (
 	json "encoding/json"
 	fmt "fmt"
 	internal "github.com/payabli/sdk-go/internal"
+	big "math/big"
+)
+
+var (
+	payabliApiResponseVendorsFieldIsSuccess      = big.NewInt(1 << 0)
+	payabliApiResponseVendorsFieldPageIdentifier = big.NewInt(1 << 1)
+	payabliApiResponseVendorsFieldResponseCode   = big.NewInt(1 << 2)
+	payabliApiResponseVendorsFieldResponseData   = big.NewInt(1 << 3)
+	payabliApiResponseVendorsFieldResponseText   = big.NewInt(1 << 4)
 )
 
 type PayabliApiResponseVendors struct {
@@ -15,6 +24,9 @@ type PayabliApiResponseVendors struct {
 	// If the request was successful, this field contains the identifier for the vendor.
 	ResponseData *int         `json:"responseData,omitempty" url:"responseData,omitempty"`
 	ResponseText ResponseText `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -59,6 +71,48 @@ func (p *PayabliApiResponseVendors) GetExtraProperties() map[string]interface{} 
 	return p.extraProperties
 }
 
+func (p *PayabliApiResponseVendors) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseVendors) SetIsSuccess(isSuccess *IsSuccess) {
+	p.IsSuccess = isSuccess
+	p.require(payabliApiResponseVendorsFieldIsSuccess)
+}
+
+// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseVendors) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+	p.PageIdentifier = pageIdentifier
+	p.require(payabliApiResponseVendorsFieldPageIdentifier)
+}
+
+// SetResponseCode sets the ResponseCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseVendors) SetResponseCode(responseCode *Responsecode) {
+	p.ResponseCode = responseCode
+	p.require(payabliApiResponseVendorsFieldResponseCode)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseVendors) SetResponseData(responseData *int) {
+	p.ResponseData = responseData
+	p.require(payabliApiResponseVendorsFieldResponseData)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseVendors) SetResponseText(responseText ResponseText) {
+	p.ResponseText = responseText
+	p.require(payabliApiResponseVendorsFieldResponseText)
+}
+
 func (p *PayabliApiResponseVendors) UnmarshalJSON(data []byte) error {
 	type unmarshaler PayabliApiResponseVendors
 	var value unmarshaler
@@ -73,6 +127,17 @@ func (p *PayabliApiResponseVendors) UnmarshalJSON(data []byte) error {
 	p.extraProperties = extraProperties
 	p.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (p *PayabliApiResponseVendors) MarshalJSON() ([]byte, error) {
+	type embed PayabliApiResponseVendors
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (p *PayabliApiResponseVendors) String() string {

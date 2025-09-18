@@ -4,7 +4,7 @@ package customer
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -32,10 +32,10 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) AddCustomer(
 	ctx context.Context,
-	entry sdk.Entrypointfield,
-	request *sdk.AddCustomerRequest,
+	entry sdkgo.Entrypointfield,
+	request *sdkgo.AddCustomerRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponseCustomerQuery], error) {
+) (*core.Response[*sdkgo.PayabliApiResponseCustomerQuery], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -63,27 +63,27 @@ func (r *RawClient) AddCustomer(
 	headers.Add("Content-Type", "application/json")
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponseCustomerQuery
+	var response *sdkgo.PayabliApiResponseCustomerQuery
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -102,7 +102,7 @@ func (r *RawClient) AddCustomer(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponseCustomerQuery]{
+	return &core.Response[*sdkgo.PayabliApiResponseCustomerQuery]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -114,7 +114,7 @@ func (r *RawClient) DeleteCustomer(
 	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
 	customerId int,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponse00Responsedatanonobject], error) {
+) (*core.Response[*sdkgo.PayabliApiResponse00Responsedatanonobject], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -131,27 +131,27 @@ func (r *RawClient) DeleteCustomer(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponse00Responsedatanonobject
+	var response *sdkgo.PayabliApiResponse00Responsedatanonobject
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -169,7 +169,7 @@ func (r *RawClient) DeleteCustomer(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponse00Responsedatanonobject]{
+	return &core.Response[*sdkgo.PayabliApiResponse00Responsedatanonobject]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -181,7 +181,7 @@ func (r *RawClient) GetCustomer(
 	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
 	customerId int,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.CustomerQueryRecords], error) {
+) (*core.Response[*sdkgo.CustomerQueryRecords], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -198,27 +198,27 @@ func (r *RawClient) GetCustomer(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.CustomerQueryRecords
+	var response *sdkgo.CustomerQueryRecords
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -236,7 +236,7 @@ func (r *RawClient) GetCustomer(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.CustomerQueryRecords]{
+	return &core.Response[*sdkgo.CustomerQueryRecords]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -250,7 +250,7 @@ func (r *RawClient) LinkCustomerTransaction(
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponse00Responsedatanonobject], error) {
+) (*core.Response[*sdkgo.PayabliApiResponse00Responsedatanonobject], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -268,27 +268,27 @@ func (r *RawClient) LinkCustomerTransaction(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponse00Responsedatanonobject
+	var response *sdkgo.PayabliApiResponse00Responsedatanonobject
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -306,7 +306,7 @@ func (r *RawClient) LinkCustomerTransaction(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponse00Responsedatanonobject]{
+	return &core.Response[*sdkgo.PayabliApiResponse00Responsedatanonobject]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -318,7 +318,7 @@ func (r *RawClient) RequestConsent(
 	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
 	customerId int,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponse00Responsedatanonobject], error) {
+) (*core.Response[*sdkgo.PayabliApiResponse00Responsedatanonobject], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -335,27 +335,27 @@ func (r *RawClient) RequestConsent(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponse00Responsedatanonobject
+	var response *sdkgo.PayabliApiResponse00Responsedatanonobject
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -373,7 +373,7 @@ func (r *RawClient) RequestConsent(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponse00Responsedatanonobject]{
+	return &core.Response[*sdkgo.PayabliApiResponse00Responsedatanonobject]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -384,9 +384,9 @@ func (r *RawClient) UpdateCustomer(
 	ctx context.Context,
 	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
 	customerId int,
-	request *sdk.CustomerData,
+	request *sdkgo.CustomerData,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponse00Responsedatanonobject], error) {
+) (*core.Response[*sdkgo.PayabliApiResponse00Responsedatanonobject], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -403,27 +403,27 @@ func (r *RawClient) UpdateCustomer(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponse00Responsedatanonobject
+	var response *sdkgo.PayabliApiResponse00Responsedatanonobject
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -442,7 +442,7 @@ func (r *RawClient) UpdateCustomer(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponse00Responsedatanonobject]{
+	return &core.Response[*sdkgo.PayabliApiResponse00Responsedatanonobject]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

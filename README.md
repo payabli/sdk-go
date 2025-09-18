@@ -15,7 +15,7 @@ import (
     client "github.com/payabli/sdk-go/client"
     option "github.com/payabli/sdk-go/option"
     context "context"
-    sdk "github.com/payabli/sdk-go"
+    sdkgo "github.com/payabli/sdk-go"
 )
 
 func do() {
@@ -26,15 +26,41 @@ func do() {
     )
     client.MoneyIn.Getpaid(
         context.TODO(),
-        &sdk.RequestPayment{
-            Body: &sdk.TransRequestBody{
-                PaymentDetails: &sdk.PaymentDetail{
-                    TotalAmount: 1.1,
+        &sdkgo.RequestPayment{
+            Body: &sdkgo.TransRequestBody{
+                CustomerData: &sdkgo.PayorDataRequest{
+                    CustomerId: sdkgo.Int64(
+                        4440,
+                    ),
                 },
-                PaymentMethod: &sdk.PaymentMethod{
-                    PayMethodCredit: &sdk.PayMethodCredit{
-                        Cardexp: "alpha",
-                        Cardnumber: "cardnumber",
+                EntryPoint: sdkgo.String(
+                    "f743aed24a",
+                ),
+                Ipaddress: sdkgo.String(
+                    "255.255.255.255",
+                ),
+                PaymentDetails: &sdkgo.PaymentDetail{
+                    ServiceFee: sdkgo.Float64(
+                        0,
+                    ),
+                    TotalAmount: 100,
+                },
+                PaymentMethod: &sdkgo.PaymentMethod{
+                    PayMethodCredit: &sdkgo.PayMethodCredit{
+                        Cardcvv: sdkgo.String(
+                            "999",
+                        ),
+                        Cardexp: "02/27",
+                        CardHolder: sdkgo.String(
+                            "John Cassian",
+                        ),
+                        Cardnumber: "4111111111111111",
+                        Cardzip: sdkgo.String(
+                            "12345",
+                        ),
+                        Initiator: sdkgo.String(
+                            "payor",
+                        ),
                     },
                 },
             },

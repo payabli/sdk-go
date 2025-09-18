@@ -6,6 +6,13 @@ import (
 	json "encoding/json"
 	fmt "fmt"
 	internal "github.com/payabli/sdk-go/internal"
+	big "math/big"
+)
+
+var (
+	basicStatsRequestFieldEndDate    = big.NewInt(1 << 0)
+	basicStatsRequestFieldParameters = big.NewInt(1 << 1)
+	basicStatsRequestFieldStartDate  = big.NewInt(1 << 2)
 )
 
 type BasicStatsRequest struct {
@@ -25,22 +32,122 @@ type BasicStatsRequest struct {
 	//   - mm-dd-YYYY
 	//   - mm/dd/YYYY
 	StartDate *string `json:"-" url:"startDate,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (b *BasicStatsRequest) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetEndDate sets the EndDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BasicStatsRequest) SetEndDate(endDate *string) {
+	b.EndDate = endDate
+	b.require(basicStatsRequestFieldEndDate)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BasicStatsRequest) SetParameters(parameters map[string]*string) {
+	b.Parameters = parameters
+	b.require(basicStatsRequestFieldParameters)
+}
+
+// SetStartDate sets the StartDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BasicStatsRequest) SetStartDate(startDate *string) {
+	b.StartDate = startDate
+	b.require(basicStatsRequestFieldStartDate)
+}
+
+var (
+	customerBasicStatsRequestFieldParameters = big.NewInt(1 << 0)
+)
 
 type CustomerBasicStatsRequest struct {
 	// List of parameters.
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (c *CustomerBasicStatsRequest) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CustomerBasicStatsRequest) SetParameters(parameters map[string]*string) {
+	c.Parameters = parameters
+	c.require(customerBasicStatsRequestFieldParameters)
+}
+
+var (
+	subStatsRequestFieldParameters = big.NewInt(1 << 0)
+)
 
 type SubStatsRequest struct {
 	// List of parameters
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (s *SubStatsRequest) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SubStatsRequest) SetParameters(parameters map[string]*string) {
+	s.Parameters = parameters
+	s.require(subStatsRequestFieldParameters)
+}
+
+var (
+	vendorBasicStatsRequestFieldParameters = big.NewInt(1 << 0)
+)
 
 type VendorBasicStatsRequest struct {
 	// List of parameters
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (v *VendorBasicStatsRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorBasicStatsRequest) SetParameters(parameters map[string]*string) {
+	v.Parameters = parameters
+	v.require(vendorBasicStatsRequestFieldParameters)
+}
+
+var (
+	statBasicQueryRecordFieldStatX                = big.NewInt(1 << 0)
+	statBasicQueryRecordFieldInTransactions       = big.NewInt(1 << 1)
+	statBasicQueryRecordFieldInTransactionsVolume = big.NewInt(1 << 2)
+)
 
 type StatBasicQueryRecord struct {
 	// Statistical grouping identifier
@@ -49,6 +156,9 @@ type StatBasicQueryRecord struct {
 	InTransactions int `json:"inTransactions" url:"inTransactions"`
 	// Volume of incoming transactions
 	InTransactionsVolume float64 `json:"inTransactionsVolume" url:"inTransactionsVolume"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -79,6 +189,34 @@ func (s *StatBasicQueryRecord) GetExtraProperties() map[string]interface{} {
 	return s.extraProperties
 }
 
+func (s *StatBasicQueryRecord) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetStatX sets the StatX field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicQueryRecord) SetStatX(statX string) {
+	s.StatX = statX
+	s.require(statBasicQueryRecordFieldStatX)
+}
+
+// SetInTransactions sets the InTransactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicQueryRecord) SetInTransactions(inTransactions int) {
+	s.InTransactions = inTransactions
+	s.require(statBasicQueryRecordFieldInTransactions)
+}
+
+// SetInTransactionsVolume sets the InTransactionsVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicQueryRecord) SetInTransactionsVolume(inTransactionsVolume float64) {
+	s.InTransactionsVolume = inTransactionsVolume
+	s.require(statBasicQueryRecordFieldInTransactionsVolume)
+}
+
 func (s *StatBasicQueryRecord) UnmarshalJSON(data []byte) error {
 	type unmarshaler StatBasicQueryRecord
 	var value unmarshaler
@@ -95,6 +233,17 @@ func (s *StatBasicQueryRecord) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (s *StatBasicQueryRecord) MarshalJSON() ([]byte, error) {
+	type embed StatBasicQueryRecord
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (s *StatBasicQueryRecord) String() string {
 	if len(s.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
@@ -106,6 +255,26 @@ func (s *StatBasicQueryRecord) String() string {
 	}
 	return fmt.Sprintf("%#v", s)
 }
+
+var (
+	statisticsVendorQueryRecordFieldStatX                = big.NewInt(1 << 0)
+	statisticsVendorQueryRecordFieldActive               = big.NewInt(1 << 1)
+	statisticsVendorQueryRecordFieldActiveVolume         = big.NewInt(1 << 2)
+	statisticsVendorQueryRecordFieldSentToApproval       = big.NewInt(1 << 3)
+	statisticsVendorQueryRecordFieldSentToApprovalVolume = big.NewInt(1 << 4)
+	statisticsVendorQueryRecordFieldToApproval           = big.NewInt(1 << 5)
+	statisticsVendorQueryRecordFieldToApprovalVolume     = big.NewInt(1 << 6)
+	statisticsVendorQueryRecordFieldApproved             = big.NewInt(1 << 7)
+	statisticsVendorQueryRecordFieldApprovedVolume       = big.NewInt(1 << 8)
+	statisticsVendorQueryRecordFieldDisapproved          = big.NewInt(1 << 9)
+	statisticsVendorQueryRecordFieldDisapprovedVolume    = big.NewInt(1 << 10)
+	statisticsVendorQueryRecordFieldCancelled            = big.NewInt(1 << 11)
+	statisticsVendorQueryRecordFieldCancelledVolume      = big.NewInt(1 << 12)
+	statisticsVendorQueryRecordFieldInTransit            = big.NewInt(1 << 13)
+	statisticsVendorQueryRecordFieldInTransitVolume      = big.NewInt(1 << 14)
+	statisticsVendorQueryRecordFieldPaid                 = big.NewInt(1 << 15)
+	statisticsVendorQueryRecordFieldPaidVolume           = big.NewInt(1 << 16)
+)
 
 type StatisticsVendorQueryRecord struct {
 	// Statistical grouping identifier
@@ -142,6 +311,9 @@ type StatisticsVendorQueryRecord struct {
 	Paid int `json:"paid" url:"paid"`
 	// Volume of paid transactions
 	PaidVolume float64 `json:"paidVolume" url:"paidVolume"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -270,6 +442,132 @@ func (s *StatisticsVendorQueryRecord) GetExtraProperties() map[string]interface{
 	return s.extraProperties
 }
 
+func (s *StatisticsVendorQueryRecord) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetStatX sets the StatX field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatisticsVendorQueryRecord) SetStatX(statX string) {
+	s.StatX = statX
+	s.require(statisticsVendorQueryRecordFieldStatX)
+}
+
+// SetActive sets the Active field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatisticsVendorQueryRecord) SetActive(active int) {
+	s.Active = active
+	s.require(statisticsVendorQueryRecordFieldActive)
+}
+
+// SetActiveVolume sets the ActiveVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatisticsVendorQueryRecord) SetActiveVolume(activeVolume float64) {
+	s.ActiveVolume = activeVolume
+	s.require(statisticsVendorQueryRecordFieldActiveVolume)
+}
+
+// SetSentToApproval sets the SentToApproval field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatisticsVendorQueryRecord) SetSentToApproval(sentToApproval int) {
+	s.SentToApproval = sentToApproval
+	s.require(statisticsVendorQueryRecordFieldSentToApproval)
+}
+
+// SetSentToApprovalVolume sets the SentToApprovalVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatisticsVendorQueryRecord) SetSentToApprovalVolume(sentToApprovalVolume float64) {
+	s.SentToApprovalVolume = sentToApprovalVolume
+	s.require(statisticsVendorQueryRecordFieldSentToApprovalVolume)
+}
+
+// SetToApproval sets the ToApproval field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatisticsVendorQueryRecord) SetToApproval(toApproval int) {
+	s.ToApproval = toApproval
+	s.require(statisticsVendorQueryRecordFieldToApproval)
+}
+
+// SetToApprovalVolume sets the ToApprovalVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatisticsVendorQueryRecord) SetToApprovalVolume(toApprovalVolume float64) {
+	s.ToApprovalVolume = toApprovalVolume
+	s.require(statisticsVendorQueryRecordFieldToApprovalVolume)
+}
+
+// SetApproved sets the Approved field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatisticsVendorQueryRecord) SetApproved(approved int) {
+	s.Approved = approved
+	s.require(statisticsVendorQueryRecordFieldApproved)
+}
+
+// SetApprovedVolume sets the ApprovedVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatisticsVendorQueryRecord) SetApprovedVolume(approvedVolume float64) {
+	s.ApprovedVolume = approvedVolume
+	s.require(statisticsVendorQueryRecordFieldApprovedVolume)
+}
+
+// SetDisapproved sets the Disapproved field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatisticsVendorQueryRecord) SetDisapproved(disapproved int) {
+	s.Disapproved = disapproved
+	s.require(statisticsVendorQueryRecordFieldDisapproved)
+}
+
+// SetDisapprovedVolume sets the DisapprovedVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatisticsVendorQueryRecord) SetDisapprovedVolume(disapprovedVolume float64) {
+	s.DisapprovedVolume = disapprovedVolume
+	s.require(statisticsVendorQueryRecordFieldDisapprovedVolume)
+}
+
+// SetCancelled sets the Cancelled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatisticsVendorQueryRecord) SetCancelled(cancelled int) {
+	s.Cancelled = cancelled
+	s.require(statisticsVendorQueryRecordFieldCancelled)
+}
+
+// SetCancelledVolume sets the CancelledVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatisticsVendorQueryRecord) SetCancelledVolume(cancelledVolume float64) {
+	s.CancelledVolume = cancelledVolume
+	s.require(statisticsVendorQueryRecordFieldCancelledVolume)
+}
+
+// SetInTransit sets the InTransit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatisticsVendorQueryRecord) SetInTransit(inTransit int) {
+	s.InTransit = inTransit
+	s.require(statisticsVendorQueryRecordFieldInTransit)
+}
+
+// SetInTransitVolume sets the InTransitVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatisticsVendorQueryRecord) SetInTransitVolume(inTransitVolume float64) {
+	s.InTransitVolume = inTransitVolume
+	s.require(statisticsVendorQueryRecordFieldInTransitVolume)
+}
+
+// SetPaid sets the Paid field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatisticsVendorQueryRecord) SetPaid(paid int) {
+	s.Paid = paid
+	s.require(statisticsVendorQueryRecordFieldPaid)
+}
+
+// SetPaidVolume sets the PaidVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatisticsVendorQueryRecord) SetPaidVolume(paidVolume float64) {
+	s.PaidVolume = paidVolume
+	s.require(statisticsVendorQueryRecordFieldPaidVolume)
+}
+
 func (s *StatisticsVendorQueryRecord) UnmarshalJSON(data []byte) error {
 	type unmarshaler StatisticsVendorQueryRecord
 	var value unmarshaler
@@ -286,6 +584,17 @@ func (s *StatisticsVendorQueryRecord) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (s *StatisticsVendorQueryRecord) MarshalJSON() ([]byte, error) {
+	type embed StatisticsVendorQueryRecord
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (s *StatisticsVendorQueryRecord) String() string {
 	if len(s.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
@@ -298,6 +607,12 @@ func (s *StatisticsVendorQueryRecord) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
+var (
+	subscriptionStatsQueryRecordFieldInterval = big.NewInt(1 << 0)
+	subscriptionStatsQueryRecordFieldCount    = big.NewInt(1 << 1)
+	subscriptionStatsQueryRecordFieldVolume   = big.NewInt(1 << 2)
+)
+
 type SubscriptionStatsQueryRecord struct {
 	// Time interval identifier
 	Interval string `json:"interval" url:"interval"`
@@ -305,6 +620,9 @@ type SubscriptionStatsQueryRecord struct {
 	Count int `json:"count" url:"count"`
 	// Subscription volume
 	Volume float64 `json:"volume" url:"volume"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -335,6 +653,34 @@ func (s *SubscriptionStatsQueryRecord) GetExtraProperties() map[string]interface
 	return s.extraProperties
 }
 
+func (s *SubscriptionStatsQueryRecord) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetInterval sets the Interval field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SubscriptionStatsQueryRecord) SetInterval(interval string) {
+	s.Interval = interval
+	s.require(subscriptionStatsQueryRecordFieldInterval)
+}
+
+// SetCount sets the Count field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SubscriptionStatsQueryRecord) SetCount(count int) {
+	s.Count = count
+	s.require(subscriptionStatsQueryRecordFieldCount)
+}
+
+// SetVolume sets the Volume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SubscriptionStatsQueryRecord) SetVolume(volume float64) {
+	s.Volume = volume
+	s.require(subscriptionStatsQueryRecordFieldVolume)
+}
+
 func (s *SubscriptionStatsQueryRecord) UnmarshalJSON(data []byte) error {
 	type unmarshaler SubscriptionStatsQueryRecord
 	var value unmarshaler
@@ -349,6 +695,17 @@ func (s *SubscriptionStatsQueryRecord) UnmarshalJSON(data []byte) error {
 	s.extraProperties = extraProperties
 	s.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (s *SubscriptionStatsQueryRecord) MarshalJSON() ([]byte, error) {
+	type embed SubscriptionStatsQueryRecord
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (s *SubscriptionStatsQueryRecord) String() string {

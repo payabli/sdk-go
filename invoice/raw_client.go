@@ -4,7 +4,7 @@ package invoice
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -34,9 +34,9 @@ func (r *RawClient) AddInvoice(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdk.AddInvoiceRequest,
+	request *sdkgo.AddInvoiceRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.InvoiceResponseWithoutData], error) {
+) (*core.Response[*sdkgo.InvoiceResponseWithoutData], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -64,27 +64,27 @@ func (r *RawClient) AddInvoice(
 	headers.Add("Content-Type", "application/json")
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.InvoiceResponseWithoutData
+	var response *sdkgo.InvoiceResponseWithoutData
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -103,7 +103,7 @@ func (r *RawClient) AddInvoice(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.InvoiceResponseWithoutData]{
+	return &core.Response[*sdkgo.InvoiceResponseWithoutData]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -127,7 +127,7 @@ func (r *RawClient) DeleteAttachedFromInvoice(
 	// Invoice ID
 	idInvoice int,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.InvoiceResponseWithoutData], error) {
+) (*core.Response[*sdkgo.InvoiceResponseWithoutData], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -145,27 +145,27 @@ func (r *RawClient) DeleteAttachedFromInvoice(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.InvoiceResponseWithoutData
+	var response *sdkgo.InvoiceResponseWithoutData
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -183,7 +183,7 @@ func (r *RawClient) DeleteAttachedFromInvoice(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.InvoiceResponseWithoutData]{
+	return &core.Response[*sdkgo.InvoiceResponseWithoutData]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -195,7 +195,7 @@ func (r *RawClient) DeleteInvoice(
 	// Invoice ID
 	idInvoice int,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.InvoiceResponseWithoutData], error) {
+) (*core.Response[*sdkgo.InvoiceResponseWithoutData], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -212,27 +212,27 @@ func (r *RawClient) DeleteInvoice(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.InvoiceResponseWithoutData
+	var response *sdkgo.InvoiceResponseWithoutData
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -250,7 +250,7 @@ func (r *RawClient) DeleteInvoice(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.InvoiceResponseWithoutData]{
+	return &core.Response[*sdkgo.InvoiceResponseWithoutData]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -261,9 +261,9 @@ func (r *RawClient) EditInvoice(
 	ctx context.Context,
 	// Invoice ID
 	idInvoice int,
-	request *sdk.EditInvoiceRequest,
+	request *sdkgo.EditInvoiceRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.InvoiceResponseWithoutData], error) {
+) (*core.Response[*sdkgo.InvoiceResponseWithoutData], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -288,27 +288,27 @@ func (r *RawClient) EditInvoice(
 	headers.Add("Content-Type", "application/json")
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.InvoiceResponseWithoutData
+	var response *sdkgo.InvoiceResponseWithoutData
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -327,7 +327,7 @@ func (r *RawClient) EditInvoice(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.InvoiceResponseWithoutData]{
+	return &core.Response[*sdkgo.InvoiceResponseWithoutData]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -352,9 +352,9 @@ func (r *RawClient) GetAttachedFileFromInvoice(
 	filename string,
 	// Invoice ID
 	idInvoice int,
-	request *sdk.GetAttachedFileFromInvoiceRequest,
+	request *sdkgo.GetAttachedFileFromInvoiceRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.FileContent], error) {
+) (*core.Response[*sdkgo.FileContent], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -379,27 +379,27 @@ func (r *RawClient) GetAttachedFileFromInvoice(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.FileContent
+	var response *sdkgo.FileContent
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -417,7 +417,7 @@ func (r *RawClient) GetAttachedFileFromInvoice(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.FileContent]{
+	return &core.Response[*sdkgo.FileContent]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -429,7 +429,7 @@ func (r *RawClient) GetInvoice(
 	// Invoice ID
 	idInvoice int,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.GetInvoiceRecord], error) {
+) (*core.Response[*sdkgo.GetInvoiceRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -446,27 +446,27 @@ func (r *RawClient) GetInvoice(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.GetInvoiceRecord
+	var response *sdkgo.GetInvoiceRecord
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -484,7 +484,7 @@ func (r *RawClient) GetInvoice(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.GetInvoiceRecord]{
+	return &core.Response[*sdkgo.GetInvoiceRecord]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -496,7 +496,7 @@ func (r *RawClient) GetInvoiceNumber(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.InvoiceNumberResponse], error) {
+) (*core.Response[*sdkgo.InvoiceNumberResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -513,27 +513,27 @@ func (r *RawClient) GetInvoiceNumber(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.InvoiceNumberResponse
+	var response *sdkgo.InvoiceNumberResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -551,7 +551,7 @@ func (r *RawClient) GetInvoiceNumber(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.InvoiceNumberResponse]{
+	return &core.Response[*sdkgo.InvoiceNumberResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -562,9 +562,9 @@ func (r *RawClient) ListInvoices(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdk.ListInvoicesRequest,
+	request *sdkgo.ListInvoicesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.QueryInvoiceResponse], error) {
+) (*core.Response[*sdkgo.QueryInvoiceResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -588,27 +588,27 @@ func (r *RawClient) ListInvoices(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.QueryInvoiceResponse
+	var response *sdkgo.QueryInvoiceResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -626,7 +626,7 @@ func (r *RawClient) ListInvoices(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.QueryInvoiceResponse]{
+	return &core.Response[*sdkgo.QueryInvoiceResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -637,9 +637,9 @@ func (r *RawClient) ListInvoicesOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdk.ListInvoicesOrgRequest,
+	request *sdkgo.ListInvoicesOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.QueryInvoiceResponse], error) {
+) (*core.Response[*sdkgo.QueryInvoiceResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -663,27 +663,27 @@ func (r *RawClient) ListInvoicesOrg(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.QueryInvoiceResponse
+	var response *sdkgo.QueryInvoiceResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -701,7 +701,7 @@ func (r *RawClient) ListInvoicesOrg(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.QueryInvoiceResponse]{
+	return &core.Response[*sdkgo.QueryInvoiceResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -712,9 +712,9 @@ func (r *RawClient) SendInvoice(
 	ctx context.Context,
 	// Invoice ID
 	idInvoice int,
-	request *sdk.SendInvoiceRequest,
+	request *sdkgo.SendInvoiceRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.SendInvoiceResponse], error) {
+) (*core.Response[*sdkgo.SendInvoiceResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -738,27 +738,27 @@ func (r *RawClient) SendInvoice(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.SendInvoiceResponse
+	var response *sdkgo.SendInvoiceResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -776,7 +776,7 @@ func (r *RawClient) SendInvoice(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.SendInvoiceResponse]{
+	return &core.Response[*sdkgo.SendInvoiceResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -788,7 +788,7 @@ func (r *RawClient) GetInvoicePdf(
 	// Invoice ID
 	idInvoice int,
 	opts ...option.RequestOption,
-) (*core.Response[sdk.File], error) {
+) (*core.Response[sdkgo.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -805,27 +805,27 @@ func (r *RawClient) GetInvoicePdf(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response sdk.File
+	var response sdkgo.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -843,7 +843,7 @@ func (r *RawClient) GetInvoicePdf(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdk.File]{
+	return &core.Response[sdkgo.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

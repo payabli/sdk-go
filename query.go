@@ -6,7 +6,16 @@ import (
 	json "encoding/json"
 	fmt "fmt"
 	internal "github.com/payabli/sdk-go/internal"
+	big "math/big"
 	time "time"
+)
+
+var (
+	listBatchDetailsRequestFieldExportFormat = big.NewInt(1 << 0)
+	listBatchDetailsRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listBatchDetailsRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listBatchDetailsRequestFieldParameters   = big.NewInt(1 << 3)
+	listBatchDetailsRequestFieldSortBy       = big.NewInt(1 << 4)
 )
 
 type ListBatchDetailsRequest struct {
@@ -95,7 +104,60 @@ type ListBatchDetailsRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListBatchDetailsRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchDetailsRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listBatchDetailsRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchDetailsRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listBatchDetailsRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchDetailsRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listBatchDetailsRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchDetailsRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listBatchDetailsRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchDetailsRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listBatchDetailsRequestFieldSortBy)
+}
+
+var (
+	listBatchDetailsOrgRequestFieldExportFormat = big.NewInt(1 << 0)
+	listBatchDetailsOrgRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listBatchDetailsOrgRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listBatchDetailsOrgRequestFieldParameters   = big.NewInt(1 << 3)
+	listBatchDetailsOrgRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListBatchDetailsOrgRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -182,7 +244,60 @@ type ListBatchDetailsOrgRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListBatchDetailsOrgRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchDetailsOrgRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listBatchDetailsOrgRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchDetailsOrgRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listBatchDetailsOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchDetailsOrgRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listBatchDetailsOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchDetailsOrgRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listBatchDetailsOrgRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchDetailsOrgRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listBatchDetailsOrgRequestFieldSortBy)
+}
+
+var (
+	listBatchesRequestFieldExportFormat = big.NewInt(1 << 0)
+	listBatchesRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listBatchesRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listBatchesRequestFieldParameters   = big.NewInt(1 << 3)
+	listBatchesRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListBatchesRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -249,7 +364,60 @@ type ListBatchesRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListBatchesRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchesRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listBatchesRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchesRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listBatchesRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchesRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listBatchesRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchesRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listBatchesRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchesRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listBatchesRequestFieldSortBy)
+}
+
+var (
+	listBatchesOrgRequestFieldExportFormat = big.NewInt(1 << 0)
+	listBatchesOrgRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listBatchesOrgRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listBatchesOrgRequestFieldParameters   = big.NewInt(1 << 3)
+	listBatchesOrgRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListBatchesOrgRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -316,7 +484,60 @@ type ListBatchesOrgRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListBatchesOrgRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchesOrgRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listBatchesOrgRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchesOrgRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listBatchesOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchesOrgRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listBatchesOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchesOrgRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listBatchesOrgRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchesOrgRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listBatchesOrgRequestFieldSortBy)
+}
+
+var (
+	listBatchesOutRequestFieldExportFormat = big.NewInt(1 << 0)
+	listBatchesOutRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listBatchesOutRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listBatchesOutRequestFieldParameters   = big.NewInt(1 << 3)
+	listBatchesOutRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListBatchesOutRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -342,7 +563,60 @@ type ListBatchesOutRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListBatchesOutRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchesOutRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listBatchesOutRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchesOutRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listBatchesOutRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchesOutRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listBatchesOutRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchesOutRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listBatchesOutRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchesOutRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listBatchesOutRequestFieldSortBy)
+}
+
+var (
+	listBatchesOutOrgRequestFieldExportFormat = big.NewInt(1 << 0)
+	listBatchesOutOrgRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listBatchesOutOrgRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listBatchesOutOrgRequestFieldParameters   = big.NewInt(1 << 3)
+	listBatchesOutOrgRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListBatchesOutOrgRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -385,7 +659,60 @@ type ListBatchesOutOrgRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListBatchesOutOrgRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchesOutOrgRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listBatchesOutOrgRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchesOutOrgRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listBatchesOutOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchesOutOrgRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listBatchesOutOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchesOutOrgRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listBatchesOutOrgRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListBatchesOutOrgRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listBatchesOutOrgRequestFieldSortBy)
+}
+
+var (
+	listChargebacksRequestFieldExportFormat = big.NewInt(1 << 0)
+	listChargebacksRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listChargebacksRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listChargebacksRequestFieldParameters   = big.NewInt(1 << 3)
+	listChargebacksRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListChargebacksRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -469,7 +796,60 @@ type ListChargebacksRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListChargebacksRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListChargebacksRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listChargebacksRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListChargebacksRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listChargebacksRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListChargebacksRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listChargebacksRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListChargebacksRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listChargebacksRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListChargebacksRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listChargebacksRequestFieldSortBy)
+}
+
+var (
+	listChargebacksOrgRequestFieldExportFormat = big.NewInt(1 << 0)
+	listChargebacksOrgRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listChargebacksOrgRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listChargebacksOrgRequestFieldParameters   = big.NewInt(1 << 3)
+	listChargebacksOrgRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListChargebacksOrgRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -555,7 +935,60 @@ type ListChargebacksOrgRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListChargebacksOrgRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListChargebacksOrgRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listChargebacksOrgRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListChargebacksOrgRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listChargebacksOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListChargebacksOrgRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listChargebacksOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListChargebacksOrgRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listChargebacksOrgRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListChargebacksOrgRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listChargebacksOrgRequestFieldSortBy)
+}
+
+var (
+	listCustomersRequestFieldExportFormat = big.NewInt(1 << 0)
+	listCustomersRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listCustomersRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listCustomersRequestFieldParameters   = big.NewInt(1 << 3)
+	listCustomersRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListCustomersRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -633,7 +1066,60 @@ type ListCustomersRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListCustomersRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCustomersRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listCustomersRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCustomersRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listCustomersRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCustomersRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listCustomersRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCustomersRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listCustomersRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCustomersRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listCustomersRequestFieldSortBy)
+}
+
+var (
+	listCustomersOrgRequestFieldExportFormat = big.NewInt(1 << 0)
+	listCustomersOrgRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listCustomersOrgRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listCustomersOrgRequestFieldParameters   = big.NewInt(1 << 3)
+	listCustomersOrgRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListCustomersOrgRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -711,7 +1197,59 @@ type ListCustomersOrgRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListCustomersOrgRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCustomersOrgRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listCustomersOrgRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCustomersOrgRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listCustomersOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCustomersOrgRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listCustomersOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCustomersOrgRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listCustomersOrgRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListCustomersOrgRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listCustomersOrgRequestFieldSortBy)
+}
+
+var (
+	listNotificationReportsRequestFieldFromRecord  = big.NewInt(1 << 0)
+	listNotificationReportsRequestFieldLimitRecord = big.NewInt(1 << 1)
+	listNotificationReportsRequestFieldParameters  = big.NewInt(1 << 2)
+	listNotificationReportsRequestFieldSortBy      = big.NewInt(1 << 3)
+)
 
 type ListNotificationReportsRequest struct {
 	// The number of records to skip before starting to collect the result set.
@@ -761,7 +1299,52 @@ type ListNotificationReportsRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListNotificationReportsRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListNotificationReportsRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listNotificationReportsRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListNotificationReportsRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listNotificationReportsRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListNotificationReportsRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listNotificationReportsRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListNotificationReportsRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listNotificationReportsRequestFieldSortBy)
+}
+
+var (
+	listNotificationReportsOrgRequestFieldFromRecord  = big.NewInt(1 << 0)
+	listNotificationReportsOrgRequestFieldLimitRecord = big.NewInt(1 << 1)
+	listNotificationReportsOrgRequestFieldParameters  = big.NewInt(1 << 2)
+	listNotificationReportsOrgRequestFieldSortBy      = big.NewInt(1 << 3)
+)
 
 type ListNotificationReportsOrgRequest struct {
 	// The number of records to skip before starting to collect the result set.
@@ -809,7 +1392,52 @@ type ListNotificationReportsOrgRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListNotificationReportsOrgRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListNotificationReportsOrgRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listNotificationReportsOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListNotificationReportsOrgRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listNotificationReportsOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListNotificationReportsOrgRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listNotificationReportsOrgRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListNotificationReportsOrgRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listNotificationReportsOrgRequestFieldSortBy)
+}
+
+var (
+	listNotificationsRequestFieldFromRecord  = big.NewInt(1 << 0)
+	listNotificationsRequestFieldLimitRecord = big.NewInt(1 << 1)
+	listNotificationsRequestFieldParameters  = big.NewInt(1 << 2)
+	listNotificationsRequestFieldSortBy      = big.NewInt(1 << 3)
+)
 
 type ListNotificationsRequest struct {
 	// The number of records to skip before starting to collect the result set.
@@ -861,7 +1489,52 @@ type ListNotificationsRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListNotificationsRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListNotificationsRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listNotificationsRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListNotificationsRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listNotificationsRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListNotificationsRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listNotificationsRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListNotificationsRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listNotificationsRequestFieldSortBy)
+}
+
+var (
+	listNotificationsOrgRequestFieldFromRecord  = big.NewInt(1 << 0)
+	listNotificationsOrgRequestFieldLimitRecord = big.NewInt(1 << 1)
+	listNotificationsOrgRequestFieldParameters  = big.NewInt(1 << 2)
+	listNotificationsOrgRequestFieldSortBy      = big.NewInt(1 << 3)
+)
 
 type ListNotificationsOrgRequest struct {
 	// The number of records to skip before starting to collect the result set.
@@ -913,7 +1586,53 @@ type ListNotificationsOrgRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListNotificationsOrgRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListNotificationsOrgRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listNotificationsOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListNotificationsOrgRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listNotificationsOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListNotificationsOrgRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listNotificationsOrgRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListNotificationsOrgRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listNotificationsOrgRequestFieldSortBy)
+}
+
+var (
+	listOrganizationsRequestFieldExportFormat = big.NewInt(1 << 0)
+	listOrganizationsRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listOrganizationsRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listOrganizationsRequestFieldParameters   = big.NewInt(1 << 3)
+	listOrganizationsRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListOrganizationsRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -978,7 +1697,60 @@ type ListOrganizationsRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListOrganizationsRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListOrganizationsRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listOrganizationsRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListOrganizationsRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listOrganizationsRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListOrganizationsRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listOrganizationsRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListOrganizationsRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listOrganizationsRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListOrganizationsRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listOrganizationsRequestFieldSortBy)
+}
+
+var (
+	listPayoutRequestFieldExportFormat = big.NewInt(1 << 0)
+	listPayoutRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listPayoutRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listPayoutRequestFieldParameters   = big.NewInt(1 << 3)
+	listPayoutRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListPayoutRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -1119,7 +1891,60 @@ type ListPayoutRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListPayoutRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPayoutRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listPayoutRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPayoutRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listPayoutRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPayoutRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listPayoutRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPayoutRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listPayoutRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPayoutRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listPayoutRequestFieldSortBy)
+}
+
+var (
+	listPayoutOrgRequestFieldExportFormat = big.NewInt(1 << 0)
+	listPayoutOrgRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listPayoutOrgRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listPayoutOrgRequestFieldParameters   = big.NewInt(1 << 3)
+	listPayoutOrgRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListPayoutOrgRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -1259,7 +2084,60 @@ type ListPayoutOrgRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListPayoutOrgRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPayoutOrgRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listPayoutOrgRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPayoutOrgRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listPayoutOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPayoutOrgRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listPayoutOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPayoutOrgRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listPayoutOrgRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPayoutOrgRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listPayoutOrgRequestFieldSortBy)
+}
+
+var (
+	listPaypointsRequestFieldExportFormat = big.NewInt(1 << 0)
+	listPaypointsRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listPaypointsRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listPaypointsRequestFieldParameters   = big.NewInt(1 << 3)
+	listPaypointsRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListPaypointsRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -1329,7 +2207,60 @@ type ListPaypointsRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListPaypointsRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPaypointsRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listPaypointsRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPaypointsRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listPaypointsRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPaypointsRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listPaypointsRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPaypointsRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listPaypointsRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPaypointsRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listPaypointsRequestFieldSortBy)
+}
+
+var (
+	listSettlementsRequestFieldExportFormat = big.NewInt(1 << 0)
+	listSettlementsRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listSettlementsRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listSettlementsRequestFieldParameters   = big.NewInt(1 << 3)
+	listSettlementsRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListSettlementsRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -1417,7 +2348,60 @@ type ListSettlementsRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListSettlementsRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSettlementsRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listSettlementsRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSettlementsRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listSettlementsRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSettlementsRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listSettlementsRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSettlementsRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listSettlementsRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSettlementsRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listSettlementsRequestFieldSortBy)
+}
+
+var (
+	listSettlementsOrgRequestFieldExportFormat = big.NewInt(1 << 0)
+	listSettlementsOrgRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listSettlementsOrgRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listSettlementsOrgRequestFieldParameters   = big.NewInt(1 << 3)
+	listSettlementsOrgRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListSettlementsOrgRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -1505,7 +2489,60 @@ type ListSettlementsOrgRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListSettlementsOrgRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSettlementsOrgRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listSettlementsOrgRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSettlementsOrgRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listSettlementsOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSettlementsOrgRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listSettlementsOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSettlementsOrgRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listSettlementsOrgRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSettlementsOrgRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listSettlementsOrgRequestFieldSortBy)
+}
+
+var (
+	listSubscriptionsRequestFieldExportFormat = big.NewInt(1 << 0)
+	listSubscriptionsRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listSubscriptionsRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listSubscriptionsRequestFieldParameters   = big.NewInt(1 << 3)
+	listSubscriptionsRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListSubscriptionsRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -1593,7 +2630,60 @@ type ListSubscriptionsRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListSubscriptionsRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSubscriptionsRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listSubscriptionsRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSubscriptionsRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listSubscriptionsRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSubscriptionsRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listSubscriptionsRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSubscriptionsRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listSubscriptionsRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSubscriptionsRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listSubscriptionsRequestFieldSortBy)
+}
+
+var (
+	listSubscriptionsOrgRequestFieldExportFormat = big.NewInt(1 << 0)
+	listSubscriptionsOrgRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listSubscriptionsOrgRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listSubscriptionsOrgRequestFieldParameters   = big.NewInt(1 << 3)
+	listSubscriptionsOrgRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListSubscriptionsOrgRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -1681,7 +2771,60 @@ type ListSubscriptionsOrgRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListSubscriptionsOrgRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSubscriptionsOrgRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listSubscriptionsOrgRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSubscriptionsOrgRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listSubscriptionsOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSubscriptionsOrgRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listSubscriptionsOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSubscriptionsOrgRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listSubscriptionsOrgRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListSubscriptionsOrgRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listSubscriptionsOrgRequestFieldSortBy)
+}
+
+var (
+	listTransactionsRequestFieldExportFormat = big.NewInt(1 << 0)
+	listTransactionsRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listTransactionsRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listTransactionsRequestFieldParameters   = big.NewInt(1 << 3)
+	listTransactionsRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListTransactionsRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -1775,7 +2918,60 @@ type ListTransactionsRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListTransactionsRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransactionsRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listTransactionsRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransactionsRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listTransactionsRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransactionsRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listTransactionsRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransactionsRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listTransactionsRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransactionsRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listTransactionsRequestFieldSortBy)
+}
+
+var (
+	listTransactionsOrgRequestFieldExportFormat = big.NewInt(1 << 0)
+	listTransactionsOrgRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listTransactionsOrgRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listTransactionsOrgRequestFieldParameters   = big.NewInt(1 << 3)
+	listTransactionsOrgRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListTransactionsOrgRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -1870,7 +3066,60 @@ type ListTransactionsOrgRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListTransactionsOrgRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransactionsOrgRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listTransactionsOrgRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransactionsOrgRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listTransactionsOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransactionsOrgRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listTransactionsOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransactionsOrgRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listTransactionsOrgRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransactionsOrgRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listTransactionsOrgRequestFieldSortBy)
+}
+
+var (
+	listTransfersPaypointRequestFieldExportFormat = big.NewInt(1 << 0)
+	listTransfersPaypointRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listTransfersPaypointRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listTransfersPaypointRequestFieldParameters   = big.NewInt(1 << 3)
+	listTransfersPaypointRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListTransfersPaypointRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -1918,7 +3167,60 @@ type ListTransfersPaypointRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListTransfersPaypointRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransfersPaypointRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listTransfersPaypointRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransfersPaypointRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listTransfersPaypointRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransfersPaypointRequest) SetLimitRecord(limitRecord *LimitRecord) {
+	l.LimitRecord = limitRecord
+	l.require(listTransfersPaypointRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransfersPaypointRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listTransfersPaypointRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransfersPaypointRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listTransfersPaypointRequestFieldSortBy)
+}
+
+var (
+	listTransfersRequestFieldExportFormat = big.NewInt(1 << 0)
+	listTransfersRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listTransfersRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listTransfersRequestFieldParameters   = big.NewInt(1 << 3)
+	listTransfersRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListTransfersRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -1966,7 +3268,61 @@ type ListTransfersRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListTransfersRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransfersRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listTransfersRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransfersRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listTransfersRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransfersRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listTransfersRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransfersRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listTransfersRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransfersRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listTransfersRequestFieldSortBy)
+}
+
+var (
+	listTransfersRequestOrgFieldOrgId        = big.NewInt(1 << 0)
+	listTransfersRequestOrgFieldExportFormat = big.NewInt(1 << 1)
+	listTransfersRequestOrgFieldFromRecord   = big.NewInt(1 << 2)
+	listTransfersRequestOrgFieldLimitRecord  = big.NewInt(1 << 3)
+	listTransfersRequestOrgFieldParameters   = big.NewInt(1 << 4)
+	listTransfersRequestOrgFieldSortBy       = big.NewInt(1 << 5)
+)
 
 type ListTransfersRequestOrg struct {
 	OrgId        Orgid         `json:"-" url:"-"`
@@ -2012,7 +3368,66 @@ type ListTransfersRequestOrg struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListTransfersRequestOrg) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetOrgId sets the OrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransfersRequestOrg) SetOrgId(orgId Orgid) {
+	l.OrgId = orgId
+	l.require(listTransfersRequestOrgFieldOrgId)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransfersRequestOrg) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listTransfersRequestOrgFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransfersRequestOrg) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listTransfersRequestOrgFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransfersRequestOrg) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listTransfersRequestOrgFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransfersRequestOrg) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listTransfersRequestOrgFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransfersRequestOrg) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listTransfersRequestOrgFieldSortBy)
+}
+
+var (
+	listUsersOrgRequestFieldFromRecord  = big.NewInt(1 << 0)
+	listUsersOrgRequestFieldLimitRecord = big.NewInt(1 << 1)
+	listUsersOrgRequestFieldParameters  = big.NewInt(1 << 2)
+	listUsersOrgRequestFieldSortBy      = big.NewInt(1 << 3)
+)
 
 type ListUsersOrgRequest struct {
 	// The number of records to skip before starting to collect the result set.
@@ -2066,7 +3481,52 @@ type ListUsersOrgRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListUsersOrgRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListUsersOrgRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listUsersOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListUsersOrgRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listUsersOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListUsersOrgRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listUsersOrgRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListUsersOrgRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listUsersOrgRequestFieldSortBy)
+}
+
+var (
+	listUsersPaypointRequestFieldFromRecord  = big.NewInt(1 << 0)
+	listUsersPaypointRequestFieldLimitRecord = big.NewInt(1 << 1)
+	listUsersPaypointRequestFieldParameters  = big.NewInt(1 << 2)
+	listUsersPaypointRequestFieldSortBy      = big.NewInt(1 << 3)
+)
 
 type ListUsersPaypointRequest struct {
 	// The number of records to skip before starting to collect the result set.
@@ -2120,7 +3580,53 @@ type ListUsersPaypointRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListUsersPaypointRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListUsersPaypointRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listUsersPaypointRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListUsersPaypointRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listUsersPaypointRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListUsersPaypointRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listUsersPaypointRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListUsersPaypointRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listUsersPaypointRequestFieldSortBy)
+}
+
+var (
+	listVcardsRequestFieldExportFormat = big.NewInt(1 << 0)
+	listVcardsRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listVcardsRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listVcardsRequestFieldParameters   = big.NewInt(1 << 3)
+	listVcardsRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListVcardsRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -2179,7 +3685,60 @@ type ListVcardsRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListVcardsRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVcardsRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listVcardsRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVcardsRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listVcardsRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVcardsRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listVcardsRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVcardsRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listVcardsRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVcardsRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listVcardsRequestFieldSortBy)
+}
+
+var (
+	listVcardsOrgRequestFieldExportFormat = big.NewInt(1 << 0)
+	listVcardsOrgRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listVcardsOrgRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listVcardsOrgRequestFieldParameters   = big.NewInt(1 << 3)
+	listVcardsOrgRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListVcardsOrgRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -2238,7 +3797,60 @@ type ListVcardsOrgRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListVcardsOrgRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVcardsOrgRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listVcardsOrgRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVcardsOrgRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listVcardsOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVcardsOrgRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listVcardsOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVcardsOrgRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listVcardsOrgRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVcardsOrgRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listVcardsOrgRequestFieldSortBy)
+}
+
+var (
+	listVendorsRequestFieldExportFormat = big.NewInt(1 << 0)
+	listVendorsRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listVendorsRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listVendorsRequestFieldParameters   = big.NewInt(1 << 3)
+	listVendorsRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListVendorsRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -2305,7 +3917,60 @@ type ListVendorsRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListVendorsRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVendorsRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listVendorsRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVendorsRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listVendorsRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVendorsRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listVendorsRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVendorsRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listVendorsRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVendorsRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listVendorsRequestFieldSortBy)
+}
+
+var (
+	listVendorsOrgRequestFieldExportFormat = big.NewInt(1 << 0)
+	listVendorsOrgRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listVendorsOrgRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listVendorsOrgRequestFieldParameters   = big.NewInt(1 << 3)
+	listVendorsOrgRequestFieldSortBy       = big.NewInt(1 << 4)
+)
 
 type ListVendorsOrgRequest struct {
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
@@ -2372,7 +4037,96 @@ type ListVendorsOrgRequest struct {
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (l *ListVendorsOrgRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVendorsOrgRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listVendorsOrgRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVendorsOrgRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listVendorsOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVendorsOrgRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listVendorsOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVendorsOrgRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listVendorsOrgRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVendorsOrgRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listVendorsOrgRequestFieldSortBy)
+}
+
+var (
+	associatedVendorFieldVendorNumber          = big.NewInt(1 << 0)
+	associatedVendorFieldName1                 = big.NewInt(1 << 1)
+	associatedVendorFieldName2                 = big.NewInt(1 << 2)
+	associatedVendorFieldEin                   = big.NewInt(1 << 3)
+	associatedVendorFieldPhone                 = big.NewInt(1 << 4)
+	associatedVendorFieldEmail                 = big.NewInt(1 << 5)
+	associatedVendorFieldAddress1              = big.NewInt(1 << 6)
+	associatedVendorFieldAddress2              = big.NewInt(1 << 7)
+	associatedVendorFieldCity                  = big.NewInt(1 << 8)
+	associatedVendorFieldState                 = big.NewInt(1 << 9)
+	associatedVendorFieldZip                   = big.NewInt(1 << 10)
+	associatedVendorFieldCountry               = big.NewInt(1 << 11)
+	associatedVendorFieldMcc                   = big.NewInt(1 << 12)
+	associatedVendorFieldLocationCode          = big.NewInt(1 << 13)
+	associatedVendorFieldContacts              = big.NewInt(1 << 14)
+	associatedVendorFieldBillingData           = big.NewInt(1 << 15)
+	associatedVendorFieldPaymentMethod         = big.NewInt(1 << 16)
+	associatedVendorFieldVendorStatus          = big.NewInt(1 << 17)
+	associatedVendorFieldVendorId              = big.NewInt(1 << 18)
+	associatedVendorFieldEnrollmentStatus      = big.NewInt(1 << 19)
+	associatedVendorFieldSummary               = big.NewInt(1 << 20)
+	associatedVendorFieldPaypointLegalname     = big.NewInt(1 << 21)
+	associatedVendorFieldPaypointDbaname       = big.NewInt(1 << 22)
+	associatedVendorFieldPaypointEntryname     = big.NewInt(1 << 23)
+	associatedVendorFieldParentOrgName         = big.NewInt(1 << 24)
+	associatedVendorFieldCreatedDate           = big.NewInt(1 << 25)
+	associatedVendorFieldLastUpdated           = big.NewInt(1 << 26)
+	associatedVendorFieldRemitAddress1         = big.NewInt(1 << 27)
+	associatedVendorFieldRemitAddress2         = big.NewInt(1 << 28)
+	associatedVendorFieldRemitCity             = big.NewInt(1 << 29)
+	associatedVendorFieldRemitState            = big.NewInt(1 << 30)
+	associatedVendorFieldRemitZip              = big.NewInt(1 << 31)
+	associatedVendorFieldRemitCountry          = big.NewInt(1 << 32)
+	associatedVendorFieldPayeeName1            = big.NewInt(1 << 33)
+	associatedVendorFieldPayeeName2            = big.NewInt(1 << 34)
+	associatedVendorFieldCustomField1          = big.NewInt(1 << 35)
+	associatedVendorFieldCustomField2          = big.NewInt(1 << 36)
+	associatedVendorFieldCustomerVendorAccount = big.NewInt(1 << 37)
+	associatedVendorFieldInternalReferenceId   = big.NewInt(1 << 38)
+	associatedVendorFieldAdditionalData        = big.NewInt(1 << 39)
+	associatedVendorFieldExternalPaypointId    = big.NewInt(1 << 40)
+)
 
 type AssociatedVendor struct {
 	VendorNumber *VendorNumber `json:"VendorNumber,omitempty" url:"VendorNumber,omitempty"`
@@ -2430,6 +4184,9 @@ type AssociatedVendor struct {
 	InternalReferenceId   *InternalReferenceId `json:"InternalReferenceId,omitempty" url:"InternalReferenceId,omitempty"`
 	AdditionalData        *AdditionalData      `json:"additionalData,omitempty" url:"additionalData,omitempty"`
 	ExternalPaypointId    *string              `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2726,6 +4483,300 @@ func (a *AssociatedVendor) GetExtraProperties() map[string]interface{} {
 	return a.extraProperties
 }
 
+func (a *AssociatedVendor) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetVendorNumber sets the VendorNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetVendorNumber(vendorNumber *VendorNumber) {
+	a.VendorNumber = vendorNumber
+	a.require(associatedVendorFieldVendorNumber)
+}
+
+// SetName1 sets the Name1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetName1(name1 *string) {
+	a.Name1 = name1
+	a.require(associatedVendorFieldName1)
+}
+
+// SetName2 sets the Name2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetName2(name2 *string) {
+	a.Name2 = name2
+	a.require(associatedVendorFieldName2)
+}
+
+// SetEin sets the Ein field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetEin(ein *Ein) {
+	a.Ein = ein
+	a.require(associatedVendorFieldEin)
+}
+
+// SetPhone sets the Phone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetPhone(phone *string) {
+	a.Phone = phone
+	a.require(associatedVendorFieldPhone)
+}
+
+// SetEmail sets the Email field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetEmail(email *Email) {
+	a.Email = email
+	a.require(associatedVendorFieldEmail)
+}
+
+// SetAddress1 sets the Address1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetAddress1(address1 *string) {
+	a.Address1 = address1
+	a.require(associatedVendorFieldAddress1)
+}
+
+// SetAddress2 sets the Address2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetAddress2(address2 *string) {
+	a.Address2 = address2
+	a.require(associatedVendorFieldAddress2)
+}
+
+// SetCity sets the City field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetCity(city *string) {
+	a.City = city
+	a.require(associatedVendorFieldCity)
+}
+
+// SetState sets the State field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetState(state *string) {
+	a.State = state
+	a.require(associatedVendorFieldState)
+}
+
+// SetZip sets the Zip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetZip(zip *string) {
+	a.Zip = zip
+	a.require(associatedVendorFieldZip)
+}
+
+// SetCountry sets the Country field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetCountry(country *string) {
+	a.Country = country
+	a.require(associatedVendorFieldCountry)
+}
+
+// SetMcc sets the Mcc field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetMcc(mcc *Mcc) {
+	a.Mcc = mcc
+	a.require(associatedVendorFieldMcc)
+}
+
+// SetLocationCode sets the LocationCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetLocationCode(locationCode *LocationCode) {
+	a.LocationCode = locationCode
+	a.require(associatedVendorFieldLocationCode)
+}
+
+// SetContacts sets the Contacts field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetContacts(contacts []*Contacts) {
+	a.Contacts = contacts
+	a.require(associatedVendorFieldContacts)
+}
+
+// SetBillingData sets the BillingData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetBillingData(billingData *BillingDataResponse) {
+	a.BillingData = billingData
+	a.require(associatedVendorFieldBillingData)
+}
+
+// SetPaymentMethod sets the PaymentMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetPaymentMethod(paymentMethod *string) {
+	a.PaymentMethod = paymentMethod
+	a.require(associatedVendorFieldPaymentMethod)
+}
+
+// SetVendorStatus sets the VendorStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetVendorStatus(vendorStatus *Vendorstatus) {
+	a.VendorStatus = vendorStatus
+	a.require(associatedVendorFieldVendorStatus)
+}
+
+// SetVendorId sets the VendorId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetVendorId(vendorId *int) {
+	a.VendorId = vendorId
+	a.require(associatedVendorFieldVendorId)
+}
+
+// SetEnrollmentStatus sets the EnrollmentStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetEnrollmentStatus(enrollmentStatus *EnrollmentStatus) {
+	a.EnrollmentStatus = enrollmentStatus
+	a.require(associatedVendorFieldEnrollmentStatus)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetSummary(summary *VendorSummary) {
+	a.Summary = summary
+	a.require(associatedVendorFieldSummary)
+}
+
+// SetPaypointLegalname sets the PaypointLegalname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetPaypointLegalname(paypointLegalname *Legalname) {
+	a.PaypointLegalname = paypointLegalname
+	a.require(associatedVendorFieldPaypointLegalname)
+}
+
+// SetPaypointDbaname sets the PaypointDbaname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetPaypointDbaname(paypointDbaname *Dbaname) {
+	a.PaypointDbaname = paypointDbaname
+	a.require(associatedVendorFieldPaypointDbaname)
+}
+
+// SetPaypointEntryname sets the PaypointEntryname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetPaypointEntryname(paypointEntryname *Entrypointfield) {
+	a.PaypointEntryname = paypointEntryname
+	a.require(associatedVendorFieldPaypointEntryname)
+}
+
+// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetParentOrgName(parentOrgName *OrgParentName) {
+	a.ParentOrgName = parentOrgName
+	a.require(associatedVendorFieldParentOrgName)
+}
+
+// SetCreatedDate sets the CreatedDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetCreatedDate(createdDate *CreatedAt) {
+	a.CreatedDate = createdDate
+	a.require(associatedVendorFieldCreatedDate)
+}
+
+// SetLastUpdated sets the LastUpdated field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetLastUpdated(lastUpdated *LastModified) {
+	a.LastUpdated = lastUpdated
+	a.require(associatedVendorFieldLastUpdated)
+}
+
+// SetRemitAddress1 sets the RemitAddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetRemitAddress1(remitAddress1 *Remitaddress1) {
+	a.RemitAddress1 = remitAddress1
+	a.require(associatedVendorFieldRemitAddress1)
+}
+
+// SetRemitAddress2 sets the RemitAddress2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetRemitAddress2(remitAddress2 *Remitaddress2) {
+	a.RemitAddress2 = remitAddress2
+	a.require(associatedVendorFieldRemitAddress2)
+}
+
+// SetRemitCity sets the RemitCity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetRemitCity(remitCity *Remitcity) {
+	a.RemitCity = remitCity
+	a.require(associatedVendorFieldRemitCity)
+}
+
+// SetRemitState sets the RemitState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetRemitState(remitState *Remitstate) {
+	a.RemitState = remitState
+	a.require(associatedVendorFieldRemitState)
+}
+
+// SetRemitZip sets the RemitZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetRemitZip(remitZip *Remitzip) {
+	a.RemitZip = remitZip
+	a.require(associatedVendorFieldRemitZip)
+}
+
+// SetRemitCountry sets the RemitCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetRemitCountry(remitCountry *Remitcountry) {
+	a.RemitCountry = remitCountry
+	a.require(associatedVendorFieldRemitCountry)
+}
+
+// SetPayeeName1 sets the PayeeName1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetPayeeName1(payeeName1 *PayeeName) {
+	a.PayeeName1 = payeeName1
+	a.require(associatedVendorFieldPayeeName1)
+}
+
+// SetPayeeName2 sets the PayeeName2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetPayeeName2(payeeName2 *PayeeName) {
+	a.PayeeName2 = payeeName2
+	a.require(associatedVendorFieldPayeeName2)
+}
+
+// SetCustomField1 sets the CustomField1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetCustomField1(customField1 *string) {
+	a.CustomField1 = customField1
+	a.require(associatedVendorFieldCustomField1)
+}
+
+// SetCustomField2 sets the CustomField2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetCustomField2(customField2 *string) {
+	a.CustomField2 = customField2
+	a.require(associatedVendorFieldCustomField2)
+}
+
+// SetCustomerVendorAccount sets the CustomerVendorAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetCustomerVendorAccount(customerVendorAccount *string) {
+	a.CustomerVendorAccount = customerVendorAccount
+	a.require(associatedVendorFieldCustomerVendorAccount)
+}
+
+// SetInternalReferenceId sets the InternalReferenceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetInternalReferenceId(internalReferenceId *InternalReferenceId) {
+	a.InternalReferenceId = internalReferenceId
+	a.require(associatedVendorFieldInternalReferenceId)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetAdditionalData(additionalData *AdditionalData) {
+	a.AdditionalData = additionalData
+	a.require(associatedVendorFieldAdditionalData)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetExternalPaypointId(externalPaypointId *string) {
+	a.ExternalPaypointId = externalPaypointId
+	a.require(associatedVendorFieldExternalPaypointId)
+}
+
 func (a *AssociatedVendor) UnmarshalJSON(data []byte) error {
 	type unmarshaler AssociatedVendor
 	var value unmarshaler
@@ -2740,6 +4791,17 @@ func (a *AssociatedVendor) UnmarshalJSON(data []byte) error {
 	a.extraProperties = extraProperties
 	a.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (a *AssociatedVendor) MarshalJSON() ([]byte, error) {
+	type embed AssociatedVendor
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (a *AssociatedVendor) String() string {
@@ -2757,6 +4819,15 @@ func (a *AssociatedVendor) String() string {
 // Average ticket amount.
 type Avgticketamt = *float64
 
+var (
+	batchSummaryFieldPageidentifier = big.NewInt(1 << 0)
+	batchSummaryFieldPageSize       = big.NewInt(1 << 1)
+	batchSummaryFieldTotalAmount    = big.NewInt(1 << 2)
+	batchSummaryFieldTotalNetAmount = big.NewInt(1 << 3)
+	batchSummaryFieldTotalPages     = big.NewInt(1 << 4)
+	batchSummaryFieldTotalRecords   = big.NewInt(1 << 5)
+)
+
 type BatchSummary struct {
 	Pageidentifier *PageIdentifier `json:"pageidentifier,omitempty" url:"pageidentifier,omitempty"`
 	// Number of records on each response page.
@@ -2769,6 +4840,9 @@ type BatchSummary struct {
 	TotalPages *int `json:"totalPages,omitempty" url:"totalPages,omitempty"`
 	// Total number of records in response.
 	TotalRecords *int `json:"totalRecords,omitempty" url:"totalRecords,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2820,6 +4894,55 @@ func (b *BatchSummary) GetExtraProperties() map[string]interface{} {
 	return b.extraProperties
 }
 
+func (b *BatchSummary) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetPageidentifier sets the Pageidentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchSummary) SetPageidentifier(pageidentifier *PageIdentifier) {
+	b.Pageidentifier = pageidentifier
+	b.require(batchSummaryFieldPageidentifier)
+}
+
+// SetPageSize sets the PageSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchSummary) SetPageSize(pageSize *int) {
+	b.PageSize = pageSize
+	b.require(batchSummaryFieldPageSize)
+}
+
+// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchSummary) SetTotalAmount(totalAmount *float64) {
+	b.TotalAmount = totalAmount
+	b.require(batchSummaryFieldTotalAmount)
+}
+
+// SetTotalNetAmount sets the TotalNetAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchSummary) SetTotalNetAmount(totalNetAmount *float64) {
+	b.TotalNetAmount = totalNetAmount
+	b.require(batchSummaryFieldTotalNetAmount)
+}
+
+// SetTotalPages sets the TotalPages field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchSummary) SetTotalPages(totalPages *int) {
+	b.TotalPages = totalPages
+	b.require(batchSummaryFieldTotalPages)
+}
+
+// SetTotalRecords sets the TotalRecords field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BatchSummary) SetTotalRecords(totalRecords *int) {
+	b.TotalRecords = totalRecords
+	b.require(batchSummaryFieldTotalRecords)
+}
+
 func (b *BatchSummary) UnmarshalJSON(data []byte) error {
 	type unmarshaler BatchSummary
 	var value unmarshaler
@@ -2836,6 +4959,17 @@ func (b *BatchSummary) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (b *BatchSummary) MarshalJSON() ([]byte, error) {
+	type embed BatchSummary
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (b *BatchSummary) String() string {
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
@@ -2847,6 +4981,20 @@ func (b *BatchSummary) String() string {
 	}
 	return fmt.Sprintf("%#v", b)
 }
+
+var (
+	billingFeeDetailFieldBillableEvent  = big.NewInt(1 << 0)
+	billingFeeDetailFieldService        = big.NewInt(1 << 1)
+	billingFeeDetailFieldEventId        = big.NewInt(1 << 2)
+	billingFeeDetailFieldDescription    = big.NewInt(1 << 3)
+	billingFeeDetailFieldCategory       = big.NewInt(1 << 4)
+	billingFeeDetailFieldFixPrice       = big.NewInt(1 << 5)
+	billingFeeDetailFieldFloatPrice     = big.NewInt(1 << 6)
+	billingFeeDetailFieldBillableAmount = big.NewInt(1 << 7)
+	billingFeeDetailFieldBillAmount     = big.NewInt(1 << 8)
+	billingFeeDetailFieldFrequency      = big.NewInt(1 << 9)
+	billingFeeDetailFieldServiceGroup   = big.NewInt(1 << 10)
+)
 
 type BillingFeeDetail struct {
 	BillableEvent *string `json:"billableEvent,omitempty" url:"billableEvent,omitempty"`
@@ -2866,6 +5014,9 @@ type BillingFeeDetail struct {
 	BillAmount   *float64 `json:"billAmount,omitempty" url:"billAmount,omitempty"`
 	Frequency    *string  `json:"frequency,omitempty" url:"frequency,omitempty"`
 	ServiceGroup *string  `json:"serviceGroup,omitempty" url:"serviceGroup,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2952,6 +5103,90 @@ func (b *BillingFeeDetail) GetExtraProperties() map[string]interface{} {
 	return b.extraProperties
 }
 
+func (b *BillingFeeDetail) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetBillableEvent sets the BillableEvent field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillingFeeDetail) SetBillableEvent(billableEvent *string) {
+	b.BillableEvent = billableEvent
+	b.require(billingFeeDetailFieldBillableEvent)
+}
+
+// SetService sets the Service field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillingFeeDetail) SetService(service *string) {
+	b.Service = service
+	b.require(billingFeeDetailFieldService)
+}
+
+// SetEventId sets the EventId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillingFeeDetail) SetEventId(eventId *string) {
+	b.EventId = eventId
+	b.require(billingFeeDetailFieldEventId)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillingFeeDetail) SetDescription(description *string) {
+	b.Description = description
+	b.require(billingFeeDetailFieldDescription)
+}
+
+// SetCategory sets the Category field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillingFeeDetail) SetCategory(category *string) {
+	b.Category = category
+	b.require(billingFeeDetailFieldCategory)
+}
+
+// SetFixPrice sets the FixPrice field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillingFeeDetail) SetFixPrice(fixPrice *float64) {
+	b.FixPrice = fixPrice
+	b.require(billingFeeDetailFieldFixPrice)
+}
+
+// SetFloatPrice sets the FloatPrice field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillingFeeDetail) SetFloatPrice(floatPrice *float64) {
+	b.FloatPrice = floatPrice
+	b.require(billingFeeDetailFieldFloatPrice)
+}
+
+// SetBillableAmount sets the BillableAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillingFeeDetail) SetBillableAmount(billableAmount *float64) {
+	b.BillableAmount = billableAmount
+	b.require(billingFeeDetailFieldBillableAmount)
+}
+
+// SetBillAmount sets the BillAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillingFeeDetail) SetBillAmount(billAmount *float64) {
+	b.BillAmount = billAmount
+	b.require(billingFeeDetailFieldBillAmount)
+}
+
+// SetFrequency sets the Frequency field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillingFeeDetail) SetFrequency(frequency *string) {
+	b.Frequency = frequency
+	b.require(billingFeeDetailFieldFrequency)
+}
+
+// SetServiceGroup sets the ServiceGroup field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillingFeeDetail) SetServiceGroup(serviceGroup *string) {
+	b.ServiceGroup = serviceGroup
+	b.require(billingFeeDetailFieldServiceGroup)
+}
+
 func (b *BillingFeeDetail) UnmarshalJSON(data []byte) error {
 	type unmarshaler BillingFeeDetail
 	var value unmarshaler
@@ -2966,6 +5201,17 @@ func (b *BillingFeeDetail) UnmarshalJSON(data []byte) error {
 	b.extraProperties = extraProperties
 	b.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (b *BillingFeeDetail) MarshalJSON() ([]byte, error) {
+	type embed BillingFeeDetail
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (b *BillingFeeDetail) String() string {
@@ -3000,6 +5246,18 @@ type DeviceId = *Device
 // The date the funds are expected to be deposited.
 type ExpectedDepositDate = time.Time
 
+var (
+	payoutGatewayConnectorFieldConfiguration       = big.NewInt(1 << 0)
+	payoutGatewayConnectorFieldName                = big.NewInt(1 << 1)
+	payoutGatewayConnectorFieldMode                = big.NewInt(1 << 2)
+	payoutGatewayConnectorFieldBank                = big.NewInt(1 << 3)
+	payoutGatewayConnectorFieldDescriptor          = big.NewInt(1 << 4)
+	payoutGatewayConnectorFieldGatewayId           = big.NewInt(1 << 5)
+	payoutGatewayConnectorFieldEnabled             = big.NewInt(1 << 6)
+	payoutGatewayConnectorFieldEnableAchValidation = big.NewInt(1 << 7)
+	payoutGatewayConnectorFieldTestMode            = big.NewInt(1 << 8)
+)
+
 type PayoutGatewayConnector struct {
 	Configuration       *string `json:"configuration,omitempty" url:"configuration,omitempty"`
 	Name                *string `json:"Name,omitempty" url:"Name,omitempty"`
@@ -3010,6 +5268,9 @@ type PayoutGatewayConnector struct {
 	Enabled             *bool   `json:"Enabled,omitempty" url:"Enabled,omitempty"`
 	EnableAchValidation *bool   `json:"EnableACHValidation,omitempty" url:"EnableACHValidation,omitempty"`
 	TestMode            *bool   `json:"TestMode,omitempty" url:"TestMode,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -3082,6 +5343,76 @@ func (p *PayoutGatewayConnector) GetExtraProperties() map[string]interface{} {
 	return p.extraProperties
 }
 
+func (p *PayoutGatewayConnector) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetConfiguration sets the Configuration field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutGatewayConnector) SetConfiguration(configuration *string) {
+	p.Configuration = configuration
+	p.require(payoutGatewayConnectorFieldConfiguration)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutGatewayConnector) SetName(name *string) {
+	p.Name = name
+	p.require(payoutGatewayConnectorFieldName)
+}
+
+// SetMode sets the Mode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutGatewayConnector) SetMode(mode *int) {
+	p.Mode = mode
+	p.require(payoutGatewayConnectorFieldMode)
+}
+
+// SetBank sets the Bank field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutGatewayConnector) SetBank(bank *string) {
+	p.Bank = bank
+	p.require(payoutGatewayConnectorFieldBank)
+}
+
+// SetDescriptor sets the Descriptor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutGatewayConnector) SetDescriptor(descriptor *string) {
+	p.Descriptor = descriptor
+	p.require(payoutGatewayConnectorFieldDescriptor)
+}
+
+// SetGatewayId sets the GatewayId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutGatewayConnector) SetGatewayId(gatewayId *int) {
+	p.GatewayId = gatewayId
+	p.require(payoutGatewayConnectorFieldGatewayId)
+}
+
+// SetEnabled sets the Enabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutGatewayConnector) SetEnabled(enabled *bool) {
+	p.Enabled = enabled
+	p.require(payoutGatewayConnectorFieldEnabled)
+}
+
+// SetEnableAchValidation sets the EnableAchValidation field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutGatewayConnector) SetEnableAchValidation(enableAchValidation *bool) {
+	p.EnableAchValidation = enableAchValidation
+	p.require(payoutGatewayConnectorFieldEnableAchValidation)
+}
+
+// SetTestMode sets the TestMode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutGatewayConnector) SetTestMode(testMode *bool) {
+	p.TestMode = testMode
+	p.require(payoutGatewayConnectorFieldTestMode)
+}
+
 func (p *PayoutGatewayConnector) UnmarshalJSON(data []byte) error {
 	type unmarshaler PayoutGatewayConnector
 	var value unmarshaler
@@ -3098,6 +5429,17 @@ func (p *PayoutGatewayConnector) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (p *PayoutGatewayConnector) MarshalJSON() ([]byte, error) {
+	type embed PayoutGatewayConnector
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (p *PayoutGatewayConnector) String() string {
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
@@ -3111,9 +5453,17 @@ func (p *PayoutGatewayConnector) String() string {
 }
 
 // Response body for queries about money out batches.
+var (
+	queryBatchesOutResponseFieldRecords = big.NewInt(1 << 0)
+	queryBatchesOutResponseFieldSummary = big.NewInt(1 << 1)
+)
+
 type QueryBatchesOutResponse struct {
 	Records []*QueryBatchesOutResponseRecordsItem `json:"Records" url:"Records"`
 	Summary *BatchSummary                         `json:"Summary" url:"Summary"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -3137,6 +5487,27 @@ func (q *QueryBatchesOutResponse) GetExtraProperties() map[string]interface{} {
 	return q.extraProperties
 }
 
+func (q *QueryBatchesOutResponse) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponse) SetRecords(records []*QueryBatchesOutResponseRecordsItem) {
+	q.Records = records
+	q.require(queryBatchesOutResponseFieldRecords)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponse) SetSummary(summary *BatchSummary) {
+	q.Summary = summary
+	q.require(queryBatchesOutResponseFieldSummary)
+}
+
 func (q *QueryBatchesOutResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryBatchesOutResponse
 	var value unmarshaler
@@ -3153,6 +5524,17 @@ func (q *QueryBatchesOutResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (q *QueryBatchesOutResponse) MarshalJSON() ([]byte, error) {
+	type embed QueryBatchesOutResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QueryBatchesOutResponse) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -3164,6 +5546,50 @@ func (q *QueryBatchesOutResponse) String() string {
 	}
 	return fmt.Sprintf("%#v", q)
 }
+
+var (
+	queryBatchesOutResponseRecordsItemFieldAchAmount              = big.NewInt(1 << 0)
+	queryBatchesOutResponseRecordsItemFieldAchRecords             = big.NewInt(1 << 1)
+	queryBatchesOutResponseRecordsItemFieldAchStatus              = big.NewInt(1 << 2)
+	queryBatchesOutResponseRecordsItemFieldAchStatusText          = big.NewInt(1 << 3)
+	queryBatchesOutResponseRecordsItemFieldBatchAmount            = big.NewInt(1 << 4)
+	queryBatchesOutResponseRecordsItemFieldBatchCancelledAmount   = big.NewInt(1 << 5)
+	queryBatchesOutResponseRecordsItemFieldBatchCancelledRecords  = big.NewInt(1 << 6)
+	queryBatchesOutResponseRecordsItemFieldBatchDate              = big.NewInt(1 << 7)
+	queryBatchesOutResponseRecordsItemFieldBatchNumber            = big.NewInt(1 << 8)
+	queryBatchesOutResponseRecordsItemFieldBatchPaidAmount        = big.NewInt(1 << 9)
+	queryBatchesOutResponseRecordsItemFieldBatchPaidRecords       = big.NewInt(1 << 10)
+	queryBatchesOutResponseRecordsItemFieldBatchProcessedAmount   = big.NewInt(1 << 11)
+	queryBatchesOutResponseRecordsItemFieldBatchProcessedRecords  = big.NewInt(1 << 12)
+	queryBatchesOutResponseRecordsItemFieldBatchProcessingAmount  = big.NewInt(1 << 13)
+	queryBatchesOutResponseRecordsItemFieldBatchProcessingRecords = big.NewInt(1 << 14)
+	queryBatchesOutResponseRecordsItemFieldBatchRecords           = big.NewInt(1 << 15)
+	queryBatchesOutResponseRecordsItemFieldBatchStatus            = big.NewInt(1 << 16)
+	queryBatchesOutResponseRecordsItemFieldBatchStatusText        = big.NewInt(1 << 17)
+	queryBatchesOutResponseRecordsItemFieldCardAmount             = big.NewInt(1 << 18)
+	queryBatchesOutResponseRecordsItemFieldCardRecords            = big.NewInt(1 << 19)
+	queryBatchesOutResponseRecordsItemFieldCardStatus             = big.NewInt(1 << 20)
+	queryBatchesOutResponseRecordsItemFieldCardStatusText         = big.NewInt(1 << 21)
+	queryBatchesOutResponseRecordsItemFieldCheckAmount            = big.NewInt(1 << 22)
+	queryBatchesOutResponseRecordsItemFieldCheckRecords           = big.NewInt(1 << 23)
+	queryBatchesOutResponseRecordsItemFieldCheckStatus            = big.NewInt(1 << 24)
+	queryBatchesOutResponseRecordsItemFieldCheckStatusText        = big.NewInt(1 << 25)
+	queryBatchesOutResponseRecordsItemFieldEntryName              = big.NewInt(1 << 26)
+	queryBatchesOutResponseRecordsItemFieldExternalPaypointId     = big.NewInt(1 << 27)
+	queryBatchesOutResponseRecordsItemFieldIdBatch                = big.NewInt(1 << 28)
+	queryBatchesOutResponseRecordsItemFieldParentOrgName          = big.NewInt(1 << 29)
+	queryBatchesOutResponseRecordsItemFieldPaypointDba            = big.NewInt(1 << 30)
+	queryBatchesOutResponseRecordsItemFieldPaypointId             = big.NewInt(1 << 31)
+	queryBatchesOutResponseRecordsItemFieldPaypointName           = big.NewInt(1 << 32)
+	queryBatchesOutResponseRecordsItemFieldVcardAmount            = big.NewInt(1 << 33)
+	queryBatchesOutResponseRecordsItemFieldVcardRecords           = big.NewInt(1 << 34)
+	queryBatchesOutResponseRecordsItemFieldVcardStatus            = big.NewInt(1 << 35)
+	queryBatchesOutResponseRecordsItemFieldVcardStatusText        = big.NewInt(1 << 36)
+	queryBatchesOutResponseRecordsItemFieldWireAmount             = big.NewInt(1 << 37)
+	queryBatchesOutResponseRecordsItemFieldWireRecords            = big.NewInt(1 << 38)
+	queryBatchesOutResponseRecordsItemFieldWireStatus             = big.NewInt(1 << 39)
+	queryBatchesOutResponseRecordsItemFieldWireStatusText         = big.NewInt(1 << 40)
+)
 
 type QueryBatchesOutResponseRecordsItem struct {
 	AchAmount     *float64 `json:"AchAmount,omitempty" url:"AchAmount,omitempty"`
@@ -3217,6 +5643,9 @@ type QueryBatchesOutResponseRecordsItem struct {
 	WireRecords     *int     `json:"WireRecords,omitempty" url:"WireRecords,omitempty"`
 	WireStatus      *int     `json:"WireStatus,omitempty" url:"WireStatus,omitempty"`
 	WireStatusText  *string  `json:"WireStatusText,omitempty" url:"WireStatusText,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -3513,6 +5942,300 @@ func (q *QueryBatchesOutResponseRecordsItem) GetExtraProperties() map[string]int
 	return q.extraProperties
 }
 
+func (q *QueryBatchesOutResponseRecordsItem) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetAchAmount sets the AchAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetAchAmount(achAmount *float64) {
+	q.AchAmount = achAmount
+	q.require(queryBatchesOutResponseRecordsItemFieldAchAmount)
+}
+
+// SetAchRecords sets the AchRecords field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetAchRecords(achRecords *int) {
+	q.AchRecords = achRecords
+	q.require(queryBatchesOutResponseRecordsItemFieldAchRecords)
+}
+
+// SetAchStatus sets the AchStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetAchStatus(achStatus *int) {
+	q.AchStatus = achStatus
+	q.require(queryBatchesOutResponseRecordsItemFieldAchStatus)
+}
+
+// SetAchStatusText sets the AchStatusText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetAchStatusText(achStatusText *string) {
+	q.AchStatusText = achStatusText
+	q.require(queryBatchesOutResponseRecordsItemFieldAchStatusText)
+}
+
+// SetBatchAmount sets the BatchAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetBatchAmount(batchAmount *float64) {
+	q.BatchAmount = batchAmount
+	q.require(queryBatchesOutResponseRecordsItemFieldBatchAmount)
+}
+
+// SetBatchCancelledAmount sets the BatchCancelledAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetBatchCancelledAmount(batchCancelledAmount *float64) {
+	q.BatchCancelledAmount = batchCancelledAmount
+	q.require(queryBatchesOutResponseRecordsItemFieldBatchCancelledAmount)
+}
+
+// SetBatchCancelledRecords sets the BatchCancelledRecords field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetBatchCancelledRecords(batchCancelledRecords *int) {
+	q.BatchCancelledRecords = batchCancelledRecords
+	q.require(queryBatchesOutResponseRecordsItemFieldBatchCancelledRecords)
+}
+
+// SetBatchDate sets the BatchDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetBatchDate(batchDate *time.Time) {
+	q.BatchDate = batchDate
+	q.require(queryBatchesOutResponseRecordsItemFieldBatchDate)
+}
+
+// SetBatchNumber sets the BatchNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetBatchNumber(batchNumber *BatchNumber) {
+	q.BatchNumber = batchNumber
+	q.require(queryBatchesOutResponseRecordsItemFieldBatchNumber)
+}
+
+// SetBatchPaidAmount sets the BatchPaidAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetBatchPaidAmount(batchPaidAmount *float64) {
+	q.BatchPaidAmount = batchPaidAmount
+	q.require(queryBatchesOutResponseRecordsItemFieldBatchPaidAmount)
+}
+
+// SetBatchPaidRecords sets the BatchPaidRecords field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetBatchPaidRecords(batchPaidRecords *int) {
+	q.BatchPaidRecords = batchPaidRecords
+	q.require(queryBatchesOutResponseRecordsItemFieldBatchPaidRecords)
+}
+
+// SetBatchProcessedAmount sets the BatchProcessedAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetBatchProcessedAmount(batchProcessedAmount *float64) {
+	q.BatchProcessedAmount = batchProcessedAmount
+	q.require(queryBatchesOutResponseRecordsItemFieldBatchProcessedAmount)
+}
+
+// SetBatchProcessedRecords sets the BatchProcessedRecords field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetBatchProcessedRecords(batchProcessedRecords *int) {
+	q.BatchProcessedRecords = batchProcessedRecords
+	q.require(queryBatchesOutResponseRecordsItemFieldBatchProcessedRecords)
+}
+
+// SetBatchProcessingAmount sets the BatchProcessingAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetBatchProcessingAmount(batchProcessingAmount *float64) {
+	q.BatchProcessingAmount = batchProcessingAmount
+	q.require(queryBatchesOutResponseRecordsItemFieldBatchProcessingAmount)
+}
+
+// SetBatchProcessingRecords sets the BatchProcessingRecords field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetBatchProcessingRecords(batchProcessingRecords *int) {
+	q.BatchProcessingRecords = batchProcessingRecords
+	q.require(queryBatchesOutResponseRecordsItemFieldBatchProcessingRecords)
+}
+
+// SetBatchRecords sets the BatchRecords field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetBatchRecords(batchRecords *int) {
+	q.BatchRecords = batchRecords
+	q.require(queryBatchesOutResponseRecordsItemFieldBatchRecords)
+}
+
+// SetBatchStatus sets the BatchStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetBatchStatus(batchStatus *int) {
+	q.BatchStatus = batchStatus
+	q.require(queryBatchesOutResponseRecordsItemFieldBatchStatus)
+}
+
+// SetBatchStatusText sets the BatchStatusText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetBatchStatusText(batchStatusText *string) {
+	q.BatchStatusText = batchStatusText
+	q.require(queryBatchesOutResponseRecordsItemFieldBatchStatusText)
+}
+
+// SetCardAmount sets the CardAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetCardAmount(cardAmount *float64) {
+	q.CardAmount = cardAmount
+	q.require(queryBatchesOutResponseRecordsItemFieldCardAmount)
+}
+
+// SetCardRecords sets the CardRecords field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetCardRecords(cardRecords *int) {
+	q.CardRecords = cardRecords
+	q.require(queryBatchesOutResponseRecordsItemFieldCardRecords)
+}
+
+// SetCardStatus sets the CardStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetCardStatus(cardStatus *int) {
+	q.CardStatus = cardStatus
+	q.require(queryBatchesOutResponseRecordsItemFieldCardStatus)
+}
+
+// SetCardStatusText sets the CardStatusText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetCardStatusText(cardStatusText *string) {
+	q.CardStatusText = cardStatusText
+	q.require(queryBatchesOutResponseRecordsItemFieldCardStatusText)
+}
+
+// SetCheckAmount sets the CheckAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetCheckAmount(checkAmount *float64) {
+	q.CheckAmount = checkAmount
+	q.require(queryBatchesOutResponseRecordsItemFieldCheckAmount)
+}
+
+// SetCheckRecords sets the CheckRecords field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetCheckRecords(checkRecords *int) {
+	q.CheckRecords = checkRecords
+	q.require(queryBatchesOutResponseRecordsItemFieldCheckRecords)
+}
+
+// SetCheckStatus sets the CheckStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetCheckStatus(checkStatus *int) {
+	q.CheckStatus = checkStatus
+	q.require(queryBatchesOutResponseRecordsItemFieldCheckStatus)
+}
+
+// SetCheckStatusText sets the CheckStatusText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetCheckStatusText(checkStatusText *string) {
+	q.CheckStatusText = checkStatusText
+	q.require(queryBatchesOutResponseRecordsItemFieldCheckStatusText)
+}
+
+// SetEntryName sets the EntryName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetEntryName(entryName *Entrypointfield) {
+	q.EntryName = entryName
+	q.require(queryBatchesOutResponseRecordsItemFieldEntryName)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
+	q.ExternalPaypointId = externalPaypointId
+	q.require(queryBatchesOutResponseRecordsItemFieldExternalPaypointId)
+}
+
+// SetIdBatch sets the IdBatch field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetIdBatch(idBatch *int) {
+	q.IdBatch = idBatch
+	q.require(queryBatchesOutResponseRecordsItemFieldIdBatch)
+}
+
+// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetParentOrgName(parentOrgName *string) {
+	q.ParentOrgName = parentOrgName
+	q.require(queryBatchesOutResponseRecordsItemFieldParentOrgName)
+}
+
+// SetPaypointDba sets the PaypointDba field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetPaypointDba(paypointDba *string) {
+	q.PaypointDba = paypointDba
+	q.require(queryBatchesOutResponseRecordsItemFieldPaypointDba)
+}
+
+// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetPaypointId(paypointId *int) {
+	q.PaypointId = paypointId
+	q.require(queryBatchesOutResponseRecordsItemFieldPaypointId)
+}
+
+// SetPaypointName sets the PaypointName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetPaypointName(paypointName *string) {
+	q.PaypointName = paypointName
+	q.require(queryBatchesOutResponseRecordsItemFieldPaypointName)
+}
+
+// SetVcardAmount sets the VcardAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetVcardAmount(vcardAmount *float64) {
+	q.VcardAmount = vcardAmount
+	q.require(queryBatchesOutResponseRecordsItemFieldVcardAmount)
+}
+
+// SetVcardRecords sets the VcardRecords field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetVcardRecords(vcardRecords *int) {
+	q.VcardRecords = vcardRecords
+	q.require(queryBatchesOutResponseRecordsItemFieldVcardRecords)
+}
+
+// SetVcardStatus sets the VcardStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetVcardStatus(vcardStatus *int) {
+	q.VcardStatus = vcardStatus
+	q.require(queryBatchesOutResponseRecordsItemFieldVcardStatus)
+}
+
+// SetVcardStatusText sets the VcardStatusText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetVcardStatusText(vcardStatusText *string) {
+	q.VcardStatusText = vcardStatusText
+	q.require(queryBatchesOutResponseRecordsItemFieldVcardStatusText)
+}
+
+// SetWireAmount sets the WireAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetWireAmount(wireAmount *float64) {
+	q.WireAmount = wireAmount
+	q.require(queryBatchesOutResponseRecordsItemFieldWireAmount)
+}
+
+// SetWireRecords sets the WireRecords field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetWireRecords(wireRecords *int) {
+	q.WireRecords = wireRecords
+	q.require(queryBatchesOutResponseRecordsItemFieldWireRecords)
+}
+
+// SetWireStatus sets the WireStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetWireStatus(wireStatus *int) {
+	q.WireStatus = wireStatus
+	q.require(queryBatchesOutResponseRecordsItemFieldWireStatus)
+}
+
+// SetWireStatusText sets the WireStatusText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetWireStatusText(wireStatusText *string) {
+	q.WireStatusText = wireStatusText
+	q.require(queryBatchesOutResponseRecordsItemFieldWireStatusText)
+}
+
 func (q *QueryBatchesOutResponseRecordsItem) UnmarshalJSON(data []byte) error {
 	type embed QueryBatchesOutResponseRecordsItem
 	var unmarshaler = struct {
@@ -3544,7 +6267,8 @@ func (q *QueryBatchesOutResponseRecordsItem) MarshalJSON() ([]byte, error) {
 		embed:     embed(*q),
 		BatchDate: internal.NewOptionalDateTime(q.BatchDate),
 	}
-	return json.Marshal(marshaler)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (q *QueryBatchesOutResponseRecordsItem) String() string {
@@ -3560,9 +6284,17 @@ func (q *QueryBatchesOutResponseRecordsItem) String() string {
 }
 
 // Response body for queries about chargebacks.
+var (
+	queryChargebacksResponseFieldRecords = big.NewInt(1 << 0)
+	queryChargebacksResponseFieldSummary = big.NewInt(1 << 1)
+)
+
 type QueryChargebacksResponse struct {
 	Records []*QueryChargebacksResponseRecordsItem `json:"Records,omitempty" url:"Records,omitempty"`
 	Summary *QuerySummary                          `json:"Summary,omitempty" url:"Summary,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -3586,6 +6318,27 @@ func (q *QueryChargebacksResponse) GetExtraProperties() map[string]interface{} {
 	return q.extraProperties
 }
 
+func (q *QueryChargebacksResponse) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponse) SetRecords(records []*QueryChargebacksResponseRecordsItem) {
+	q.Records = records
+	q.require(queryChargebacksResponseFieldRecords)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponse) SetSummary(summary *QuerySummary) {
+	q.Summary = summary
+	q.require(queryChargebacksResponseFieldSummary)
+}
+
 func (q *QueryChargebacksResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryChargebacksResponse
 	var value unmarshaler
@@ -3602,6 +6355,17 @@ func (q *QueryChargebacksResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (q *QueryChargebacksResponse) MarshalJSON() ([]byte, error) {
+	type embed QueryChargebacksResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QueryChargebacksResponse) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -3613,6 +6377,36 @@ func (q *QueryChargebacksResponse) String() string {
 	}
 	return fmt.Sprintf("%#v", q)
 }
+
+var (
+	queryChargebacksResponseRecordsItemFieldAccountType        = big.NewInt(1 << 0)
+	queryChargebacksResponseRecordsItemFieldCaseNumber         = big.NewInt(1 << 1)
+	queryChargebacksResponseRecordsItemFieldChargebackDate     = big.NewInt(1 << 2)
+	queryChargebacksResponseRecordsItemFieldCreatedAt          = big.NewInt(1 << 3)
+	queryChargebacksResponseRecordsItemFieldCustomer           = big.NewInt(1 << 4)
+	queryChargebacksResponseRecordsItemFieldExternalPaypointId = big.NewInt(1 << 5)
+	queryChargebacksResponseRecordsItemFieldId                 = big.NewInt(1 << 6)
+	queryChargebacksResponseRecordsItemFieldLastFour           = big.NewInt(1 << 7)
+	queryChargebacksResponseRecordsItemFieldMethod             = big.NewInt(1 << 8)
+	queryChargebacksResponseRecordsItemFieldNetAmount          = big.NewInt(1 << 9)
+	queryChargebacksResponseRecordsItemFieldOrderId            = big.NewInt(1 << 10)
+	queryChargebacksResponseRecordsItemFieldPageidentifier     = big.NewInt(1 << 11)
+	queryChargebacksResponseRecordsItemFieldParentOrgName      = big.NewInt(1 << 12)
+	queryChargebacksResponseRecordsItemFieldPaymentData        = big.NewInt(1 << 13)
+	queryChargebacksResponseRecordsItemFieldPaymentTransId     = big.NewInt(1 << 14)
+	queryChargebacksResponseRecordsItemFieldPaypointDbaname    = big.NewInt(1 << 15)
+	queryChargebacksResponseRecordsItemFieldPaypointEntryname  = big.NewInt(1 << 16)
+	queryChargebacksResponseRecordsItemFieldPaypointLegalname  = big.NewInt(1 << 17)
+	queryChargebacksResponseRecordsItemFieldReason             = big.NewInt(1 << 18)
+	queryChargebacksResponseRecordsItemFieldReasonCode         = big.NewInt(1 << 19)
+	queryChargebacksResponseRecordsItemFieldReferenceNumber    = big.NewInt(1 << 20)
+	queryChargebacksResponseRecordsItemFieldReplyBy            = big.NewInt(1 << 21)
+	queryChargebacksResponseRecordsItemFieldResponses          = big.NewInt(1 << 22)
+	queryChargebacksResponseRecordsItemFieldScheduleReference  = big.NewInt(1 << 23)
+	queryChargebacksResponseRecordsItemFieldStatus             = big.NewInt(1 << 24)
+	queryChargebacksResponseRecordsItemFieldTransaction        = big.NewInt(1 << 25)
+	queryChargebacksResponseRecordsItemFieldTransactionTime    = big.NewInt(1 << 26)
+)
 
 type QueryChargebacksResponseRecordsItem struct {
 	// Type of account.
@@ -3660,6 +6454,9 @@ type QueryChargebacksResponseRecordsItem struct {
 	Status          *int                     `json:"Status,omitempty" url:"Status,omitempty"`
 	Transaction     *TransactionQueryRecords `json:"Transaction,omitempty" url:"Transaction,omitempty"`
 	TransactionTime *TransactionTime         `json:"TransactionTime,omitempty" url:"TransactionTime,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -3858,6 +6655,202 @@ func (q *QueryChargebacksResponseRecordsItem) GetExtraProperties() map[string]in
 	return q.extraProperties
 }
 
+func (q *QueryChargebacksResponseRecordsItem) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetAccountType sets the AccountType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetAccountType(accountType *string) {
+	q.AccountType = accountType
+	q.require(queryChargebacksResponseRecordsItemFieldAccountType)
+}
+
+// SetCaseNumber sets the CaseNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetCaseNumber(caseNumber *string) {
+	q.CaseNumber = caseNumber
+	q.require(queryChargebacksResponseRecordsItemFieldCaseNumber)
+}
+
+// SetChargebackDate sets the ChargebackDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetChargebackDate(chargebackDate *time.Time) {
+	q.ChargebackDate = chargebackDate
+	q.require(queryChargebacksResponseRecordsItemFieldChargebackDate)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetCreatedAt(createdAt *CreatedAt) {
+	q.CreatedAt = createdAt
+	q.require(queryChargebacksResponseRecordsItemFieldCreatedAt)
+}
+
+// SetCustomer sets the Customer field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetCustomer(customer *QueryTransactionPayorData) {
+	q.Customer = customer
+	q.require(queryChargebacksResponseRecordsItemFieldCustomer)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
+	q.ExternalPaypointId = externalPaypointId
+	q.require(queryChargebacksResponseRecordsItemFieldExternalPaypointId)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetId(id *int) {
+	q.Id = id
+	q.require(queryChargebacksResponseRecordsItemFieldId)
+}
+
+// SetLastFour sets the LastFour field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetLastFour(lastFour *string) {
+	q.LastFour = lastFour
+	q.require(queryChargebacksResponseRecordsItemFieldLastFour)
+}
+
+// SetMethod sets the Method field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetMethod(method *string) {
+	q.Method = method
+	q.require(queryChargebacksResponseRecordsItemFieldMethod)
+}
+
+// SetNetAmount sets the NetAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetNetAmount(netAmount *float64) {
+	q.NetAmount = netAmount
+	q.require(queryChargebacksResponseRecordsItemFieldNetAmount)
+}
+
+// SetOrderId sets the OrderId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetOrderId(orderId *OrderId) {
+	q.OrderId = orderId
+	q.require(queryChargebacksResponseRecordsItemFieldOrderId)
+}
+
+// SetPageidentifier sets the Pageidentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetPageidentifier(pageidentifier *PageIdentifier) {
+	q.Pageidentifier = pageidentifier
+	q.require(queryChargebacksResponseRecordsItemFieldPageidentifier)
+}
+
+// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetParentOrgName(parentOrgName *OrgParentName) {
+	q.ParentOrgName = parentOrgName
+	q.require(queryChargebacksResponseRecordsItemFieldParentOrgName)
+}
+
+// SetPaymentData sets the PaymentData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetPaymentData(paymentData *QueryPaymentData) {
+	q.PaymentData = paymentData
+	q.require(queryChargebacksResponseRecordsItemFieldPaymentData)
+}
+
+// SetPaymentTransId sets the PaymentTransId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetPaymentTransId(paymentTransId *string) {
+	q.PaymentTransId = paymentTransId
+	q.require(queryChargebacksResponseRecordsItemFieldPaymentTransId)
+}
+
+// SetPaypointDbaname sets the PaypointDbaname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetPaypointDbaname(paypointDbaname *Dbaname) {
+	q.PaypointDbaname = paypointDbaname
+	q.require(queryChargebacksResponseRecordsItemFieldPaypointDbaname)
+}
+
+// SetPaypointEntryname sets the PaypointEntryname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetPaypointEntryname(paypointEntryname *Entrypointfield) {
+	q.PaypointEntryname = paypointEntryname
+	q.require(queryChargebacksResponseRecordsItemFieldPaypointEntryname)
+}
+
+// SetPaypointLegalname sets the PaypointLegalname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetPaypointLegalname(paypointLegalname *Legalname) {
+	q.PaypointLegalname = paypointLegalname
+	q.require(queryChargebacksResponseRecordsItemFieldPaypointLegalname)
+}
+
+// SetReason sets the Reason field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetReason(reason *string) {
+	q.Reason = reason
+	q.require(queryChargebacksResponseRecordsItemFieldReason)
+}
+
+// SetReasonCode sets the ReasonCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetReasonCode(reasonCode *string) {
+	q.ReasonCode = reasonCode
+	q.require(queryChargebacksResponseRecordsItemFieldReasonCode)
+}
+
+// SetReferenceNumber sets the ReferenceNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetReferenceNumber(referenceNumber *string) {
+	q.ReferenceNumber = referenceNumber
+	q.require(queryChargebacksResponseRecordsItemFieldReferenceNumber)
+}
+
+// SetReplyBy sets the ReplyBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetReplyBy(replyBy *Replyby) {
+	q.ReplyBy = replyBy
+	q.require(queryChargebacksResponseRecordsItemFieldReplyBy)
+}
+
+// SetResponses sets the Responses field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetResponses(responses *string) {
+	q.Responses = responses
+	q.require(queryChargebacksResponseRecordsItemFieldResponses)
+}
+
+// SetScheduleReference sets the ScheduleReference field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetScheduleReference(scheduleReference *int) {
+	q.ScheduleReference = scheduleReference
+	q.require(queryChargebacksResponseRecordsItemFieldScheduleReference)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetStatus(status *int) {
+	q.Status = status
+	q.require(queryChargebacksResponseRecordsItemFieldStatus)
+}
+
+// SetTransaction sets the Transaction field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetTransaction(transaction *TransactionQueryRecords) {
+	q.Transaction = transaction
+	q.require(queryChargebacksResponseRecordsItemFieldTransaction)
+}
+
+// SetTransactionTime sets the TransactionTime field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryChargebacksResponseRecordsItem) SetTransactionTime(transactionTime *TransactionTime) {
+	q.TransactionTime = transactionTime
+	q.require(queryChargebacksResponseRecordsItemFieldTransactionTime)
+}
+
 func (q *QueryChargebacksResponseRecordsItem) UnmarshalJSON(data []byte) error {
 	type embed QueryChargebacksResponseRecordsItem
 	var unmarshaler = struct {
@@ -3889,7 +6882,8 @@ func (q *QueryChargebacksResponseRecordsItem) MarshalJSON() ([]byte, error) {
 		embed:          embed(*q),
 		ChargebackDate: internal.NewOptionalDateTime(q.ChargebackDate),
 	}
-	return json.Marshal(marshaler)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (q *QueryChargebacksResponseRecordsItem) String() string {
@@ -3904,9 +6898,17 @@ func (q *QueryChargebacksResponseRecordsItem) String() string {
 	return fmt.Sprintf("%#v", q)
 }
 
+var (
+	queryCustomerResponseFieldRecords = big.NewInt(1 << 0)
+	queryCustomerResponseFieldSummary = big.NewInt(1 << 1)
+)
+
 type QueryCustomerResponse struct {
 	Records []*CustomerQueryRecords `json:"Records,omitempty" url:"Records,omitempty"`
 	Summary *QuerySummary           `json:"Summary,omitempty" url:"Summary,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -3930,6 +6932,27 @@ func (q *QueryCustomerResponse) GetExtraProperties() map[string]interface{} {
 	return q.extraProperties
 }
 
+func (q *QueryCustomerResponse) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryCustomerResponse) SetRecords(records []*CustomerQueryRecords) {
+	q.Records = records
+	q.require(queryCustomerResponseFieldRecords)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryCustomerResponse) SetSummary(summary *QuerySummary) {
+	q.Summary = summary
+	q.require(queryCustomerResponseFieldSummary)
+}
+
 func (q *QueryCustomerResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryCustomerResponse
 	var value unmarshaler
@@ -3946,6 +6969,17 @@ func (q *QueryCustomerResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (q *QueryCustomerResponse) MarshalJSON() ([]byte, error) {
+	type embed QueryCustomerResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QueryCustomerResponse) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -3958,9 +6992,17 @@ func (q *QueryCustomerResponse) String() string {
 	return fmt.Sprintf("%#v", q)
 }
 
+var (
+	queryEntrypointResponseFieldRecords = big.NewInt(1 << 0)
+	queryEntrypointResponseFieldSummary = big.NewInt(1 << 1)
+)
+
 type QueryEntrypointResponse struct {
 	Records []*QueryEntrypointResponseRecordsItem `json:"Records,omitempty" url:"Records,omitempty"`
 	Summary *QuerySummary                         `json:"Summary,omitempty" url:"Summary,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -3984,6 +7026,27 @@ func (q *QueryEntrypointResponse) GetExtraProperties() map[string]interface{} {
 	return q.extraProperties
 }
 
+func (q *QueryEntrypointResponse) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponse) SetRecords(records []*QueryEntrypointResponseRecordsItem) {
+	q.Records = records
+	q.require(queryEntrypointResponseFieldRecords)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponse) SetSummary(summary *QuerySummary) {
+	q.Summary = summary
+	q.require(queryEntrypointResponseFieldSummary)
+}
+
 func (q *QueryEntrypointResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryEntrypointResponse
 	var value unmarshaler
@@ -4000,6 +7063,17 @@ func (q *QueryEntrypointResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (q *QueryEntrypointResponse) MarshalJSON() ([]byte, error) {
+	type embed QueryEntrypointResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QueryEntrypointResponse) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -4011,6 +7085,63 @@ func (q *QueryEntrypointResponse) String() string {
 	}
 	return fmt.Sprintf("%#v", q)
 }
+
+var (
+	queryEntrypointResponseRecordsItemFieldAverageMonthlyVolume         = big.NewInt(1 << 0)
+	queryEntrypointResponseRecordsItemFieldAverageTicketAmount          = big.NewInt(1 << 1)
+	queryEntrypointResponseRecordsItemFieldBAddress1                    = big.NewInt(1 << 2)
+	queryEntrypointResponseRecordsItemFieldBAddress2                    = big.NewInt(1 << 3)
+	queryEntrypointResponseRecordsItemFieldBankData                     = big.NewInt(1 << 4)
+	queryEntrypointResponseRecordsItemFieldBCity                        = big.NewInt(1 << 5)
+	queryEntrypointResponseRecordsItemFieldBCountry                     = big.NewInt(1 << 6)
+	queryEntrypointResponseRecordsItemFieldBFax                         = big.NewInt(1 << 7)
+	queryEntrypointResponseRecordsItemFieldBinPerson                    = big.NewInt(1 << 8)
+	queryEntrypointResponseRecordsItemFieldBinPhone                     = big.NewInt(1 << 9)
+	queryEntrypointResponseRecordsItemFieldBinWeb                       = big.NewInt(1 << 10)
+	queryEntrypointResponseRecordsItemFieldBoardingId                   = big.NewInt(1 << 11)
+	queryEntrypointResponseRecordsItemFieldBPhone                       = big.NewInt(1 << 12)
+	queryEntrypointResponseRecordsItemFieldBStartdate                   = big.NewInt(1 << 13)
+	queryEntrypointResponseRecordsItemFieldBState                       = big.NewInt(1 << 14)
+	queryEntrypointResponseRecordsItemFieldBSummary                     = big.NewInt(1 << 15)
+	queryEntrypointResponseRecordsItemFieldBTimeZone                    = big.NewInt(1 << 16)
+	queryEntrypointResponseRecordsItemFieldBZip                         = big.NewInt(1 << 17)
+	queryEntrypointResponseRecordsItemFieldContactData                  = big.NewInt(1 << 18)
+	queryEntrypointResponseRecordsItemFieldCreatedAt                    = big.NewInt(1 << 19)
+	queryEntrypointResponseRecordsItemFieldDbaName                      = big.NewInt(1 << 20)
+	queryEntrypointResponseRecordsItemFieldDocumentsRef                 = big.NewInt(1 << 21)
+	queryEntrypointResponseRecordsItemFieldEin                          = big.NewInt(1 << 22)
+	queryEntrypointResponseRecordsItemFieldEntryPoints                  = big.NewInt(1 << 23)
+	queryEntrypointResponseRecordsItemFieldExternalPaypointId           = big.NewInt(1 << 24)
+	queryEntrypointResponseRecordsItemFieldExternalProcessorInformation = big.NewInt(1 << 25)
+	queryEntrypointResponseRecordsItemFieldHighTicketAmount             = big.NewInt(1 << 26)
+	queryEntrypointResponseRecordsItemFieldIdPaypoint                   = big.NewInt(1 << 27)
+	queryEntrypointResponseRecordsItemFieldLastModified                 = big.NewInt(1 << 28)
+	queryEntrypointResponseRecordsItemFieldLegalName                    = big.NewInt(1 << 29)
+	queryEntrypointResponseRecordsItemFieldLicense                      = big.NewInt(1 << 30)
+	queryEntrypointResponseRecordsItemFieldLicenseState                 = big.NewInt(1 << 31)
+	queryEntrypointResponseRecordsItemFieldMAddress1                    = big.NewInt(1 << 32)
+	queryEntrypointResponseRecordsItemFieldMAddress2                    = big.NewInt(1 << 33)
+	queryEntrypointResponseRecordsItemFieldMccid                        = big.NewInt(1 << 34)
+	queryEntrypointResponseRecordsItemFieldMCity                        = big.NewInt(1 << 35)
+	queryEntrypointResponseRecordsItemFieldMCountry                     = big.NewInt(1 << 36)
+	queryEntrypointResponseRecordsItemFieldMState                       = big.NewInt(1 << 37)
+	queryEntrypointResponseRecordsItemFieldMZip                         = big.NewInt(1 << 38)
+	queryEntrypointResponseRecordsItemFieldOrgId                        = big.NewInt(1 << 39)
+	queryEntrypointResponseRecordsItemFieldOrgParentName                = big.NewInt(1 << 40)
+	queryEntrypointResponseRecordsItemFieldOwnerData                    = big.NewInt(1 << 41)
+	queryEntrypointResponseRecordsItemFieldOwnType                      = big.NewInt(1 << 42)
+	queryEntrypointResponseRecordsItemFieldPaypointStatus               = big.NewInt(1 << 43)
+	queryEntrypointResponseRecordsItemFieldSalesCode                    = big.NewInt(1 << 44)
+	queryEntrypointResponseRecordsItemFieldServiceData                  = big.NewInt(1 << 45)
+	queryEntrypointResponseRecordsItemFieldSummary                      = big.NewInt(1 << 46)
+	queryEntrypointResponseRecordsItemFieldTaxfillname                  = big.NewInt(1 << 47)
+	queryEntrypointResponseRecordsItemFieldTemplateId                   = big.NewInt(1 << 48)
+	queryEntrypointResponseRecordsItemFieldWebsiteAddress               = big.NewInt(1 << 49)
+	queryEntrypointResponseRecordsItemFieldWhencharged                  = big.NewInt(1 << 50)
+	queryEntrypointResponseRecordsItemFieldWhendelivered                = big.NewInt(1 << 51)
+	queryEntrypointResponseRecordsItemFieldWhenprovided                 = big.NewInt(1 << 52)
+	queryEntrypointResponseRecordsItemFieldWhenrefund                   = big.NewInt(1 << 53)
+)
 
 type QueryEntrypointResponseRecordsItem struct {
 	AverageMonthlyVolume *Avgmonthly   `json:"AverageMonthlyVolume,omitempty" url:"AverageMonthlyVolume,omitempty"`
@@ -4069,6 +7200,9 @@ type QueryEntrypointResponseRecordsItem struct {
 	Whendelivered  *Whendelivered `json:"Whendelivered,omitempty" url:"Whendelivered,omitempty"`
 	Whenprovided   *Whenprovided  `json:"Whenprovided,omitempty" url:"Whenprovided,omitempty"`
 	Whenrefund     *Whenrefunded  `json:"Whenrefund,omitempty" url:"Whenrefund,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -4456,6 +7590,391 @@ func (q *QueryEntrypointResponseRecordsItem) GetExtraProperties() map[string]int
 	return q.extraProperties
 }
 
+func (q *QueryEntrypointResponseRecordsItem) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetAverageMonthlyVolume sets the AverageMonthlyVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetAverageMonthlyVolume(averageMonthlyVolume *Avgmonthly) {
+	q.AverageMonthlyVolume = averageMonthlyVolume
+	q.require(queryEntrypointResponseRecordsItemFieldAverageMonthlyVolume)
+}
+
+// SetAverageTicketAmount sets the AverageTicketAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetAverageTicketAmount(averageTicketAmount *Avgticketamt) {
+	q.AverageTicketAmount = averageTicketAmount
+	q.require(queryEntrypointResponseRecordsItemFieldAverageTicketAmount)
+}
+
+// SetBAddress1 sets the BAddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetBAddress1(bAddress1 *Baddress1) {
+	q.BAddress1 = bAddress1
+	q.require(queryEntrypointResponseRecordsItemFieldBAddress1)
+}
+
+// SetBAddress2 sets the BAddress2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetBAddress2(bAddress2 *Baddress2) {
+	q.BAddress2 = bAddress2
+	q.require(queryEntrypointResponseRecordsItemFieldBAddress2)
+}
+
+// SetBankData sets the BankData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetBankData(bankData *BankData) {
+	q.BankData = bankData
+	q.require(queryEntrypointResponseRecordsItemFieldBankData)
+}
+
+// SetBCity sets the BCity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetBCity(bCity *Bcity) {
+	q.BCity = bCity
+	q.require(queryEntrypointResponseRecordsItemFieldBCity)
+}
+
+// SetBCountry sets the BCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetBCountry(bCountry *Bcountry) {
+	q.BCountry = bCountry
+	q.require(queryEntrypointResponseRecordsItemFieldBCountry)
+}
+
+// SetBFax sets the BFax field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetBFax(bFax *Bphone) {
+	q.BFax = bFax
+	q.require(queryEntrypointResponseRecordsItemFieldBFax)
+}
+
+// SetBinPerson sets the BinPerson field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetBinPerson(binPerson *Binperson) {
+	q.BinPerson = binPerson
+	q.require(queryEntrypointResponseRecordsItemFieldBinPerson)
+}
+
+// SetBinPhone sets the BinPhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetBinPhone(binPhone *Binphone) {
+	q.BinPhone = binPhone
+	q.require(queryEntrypointResponseRecordsItemFieldBinPhone)
+}
+
+// SetBinWeb sets the BinWeb field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetBinWeb(binWeb *Binweb) {
+	q.BinWeb = binWeb
+	q.require(queryEntrypointResponseRecordsItemFieldBinWeb)
+}
+
+// SetBoardingId sets the BoardingId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetBoardingId(boardingId *BoardingId) {
+	q.BoardingId = boardingId
+	q.require(queryEntrypointResponseRecordsItemFieldBoardingId)
+}
+
+// SetBPhone sets the BPhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetBPhone(bPhone *Bphone) {
+	q.BPhone = bPhone
+	q.require(queryEntrypointResponseRecordsItemFieldBPhone)
+}
+
+// SetBStartdate sets the BStartdate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetBStartdate(bStartdate *Busstartdate) {
+	q.BStartdate = bStartdate
+	q.require(queryEntrypointResponseRecordsItemFieldBStartdate)
+}
+
+// SetBState sets the BState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetBState(bState *Bstate) {
+	q.BState = bState
+	q.require(queryEntrypointResponseRecordsItemFieldBState)
+}
+
+// SetBSummary sets the BSummary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetBSummary(bSummary *Bsummary) {
+	q.BSummary = bSummary
+	q.require(queryEntrypointResponseRecordsItemFieldBSummary)
+}
+
+// SetBTimeZone sets the BTimeZone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetBTimeZone(bTimeZone *Timezone) {
+	q.BTimeZone = bTimeZone
+	q.require(queryEntrypointResponseRecordsItemFieldBTimeZone)
+}
+
+// SetBZip sets the BZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetBZip(bZip *Bzip) {
+	q.BZip = bZip
+	q.require(queryEntrypointResponseRecordsItemFieldBZip)
+}
+
+// SetContactData sets the ContactData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetContactData(contactData *ContactsField) {
+	q.ContactData = contactData
+	q.require(queryEntrypointResponseRecordsItemFieldContactData)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetCreatedAt(createdAt *CreatedAt) {
+	q.CreatedAt = createdAt
+	q.require(queryEntrypointResponseRecordsItemFieldCreatedAt)
+}
+
+// SetDbaName sets the DbaName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetDbaName(dbaName *Dbaname) {
+	q.DbaName = dbaName
+	q.require(queryEntrypointResponseRecordsItemFieldDbaName)
+}
+
+// SetDocumentsRef sets the DocumentsRef field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetDocumentsRef(documentsRef *string) {
+	q.DocumentsRef = documentsRef
+	q.require(queryEntrypointResponseRecordsItemFieldDocumentsRef)
+}
+
+// SetEin sets the Ein field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetEin(ein *Ein) {
+	q.Ein = ein
+	q.require(queryEntrypointResponseRecordsItemFieldEin)
+}
+
+// SetEntryPoints sets the EntryPoints field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetEntryPoints(entryPoints []*PaypointEntryConfig) {
+	q.EntryPoints = entryPoints
+	q.require(queryEntrypointResponseRecordsItemFieldEntryPoints)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
+	q.ExternalPaypointId = externalPaypointId
+	q.require(queryEntrypointResponseRecordsItemFieldExternalPaypointId)
+}
+
+// SetExternalProcessorInformation sets the ExternalProcessorInformation field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetExternalProcessorInformation(externalProcessorInformation *ExternalProcessorInformation) {
+	q.ExternalProcessorInformation = externalProcessorInformation
+	q.require(queryEntrypointResponseRecordsItemFieldExternalProcessorInformation)
+}
+
+// SetHighTicketAmount sets the HighTicketAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetHighTicketAmount(highTicketAmount *Highticketamt) {
+	q.HighTicketAmount = highTicketAmount
+	q.require(queryEntrypointResponseRecordsItemFieldHighTicketAmount)
+}
+
+// SetIdPaypoint sets the IdPaypoint field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetIdPaypoint(idPaypoint *Idpaypoint) {
+	q.IdPaypoint = idPaypoint
+	q.require(queryEntrypointResponseRecordsItemFieldIdPaypoint)
+}
+
+// SetLastModified sets the LastModified field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetLastModified(lastModified *LastModified) {
+	q.LastModified = lastModified
+	q.require(queryEntrypointResponseRecordsItemFieldLastModified)
+}
+
+// SetLegalName sets the LegalName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetLegalName(legalName *Legalname) {
+	q.LegalName = legalName
+	q.require(queryEntrypointResponseRecordsItemFieldLegalName)
+}
+
+// SetLicense sets the License field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetLicense(license *License) {
+	q.License = license
+	q.require(queryEntrypointResponseRecordsItemFieldLicense)
+}
+
+// SetLicenseState sets the LicenseState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetLicenseState(licenseState *Licensestate) {
+	q.LicenseState = licenseState
+	q.require(queryEntrypointResponseRecordsItemFieldLicenseState)
+}
+
+// SetMAddress1 sets the MAddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetMAddress1(mAddress1 *Maddress) {
+	q.MAddress1 = mAddress1
+	q.require(queryEntrypointResponseRecordsItemFieldMAddress1)
+}
+
+// SetMAddress2 sets the MAddress2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetMAddress2(mAddress2 *Maddress1) {
+	q.MAddress2 = mAddress2
+	q.require(queryEntrypointResponseRecordsItemFieldMAddress2)
+}
+
+// SetMccid sets the Mccid field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetMccid(mccid *string) {
+	q.Mccid = mccid
+	q.require(queryEntrypointResponseRecordsItemFieldMccid)
+}
+
+// SetMCity sets the MCity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetMCity(mCity *Mcity) {
+	q.MCity = mCity
+	q.require(queryEntrypointResponseRecordsItemFieldMCity)
+}
+
+// SetMCountry sets the MCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetMCountry(mCountry *Mcountry) {
+	q.MCountry = mCountry
+	q.require(queryEntrypointResponseRecordsItemFieldMCountry)
+}
+
+// SetMState sets the MState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetMState(mState *Mstate) {
+	q.MState = mState
+	q.require(queryEntrypointResponseRecordsItemFieldMState)
+}
+
+// SetMZip sets the MZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetMZip(mZip *Mzip) {
+	q.MZip = mZip
+	q.require(queryEntrypointResponseRecordsItemFieldMZip)
+}
+
+// SetOrgId sets the OrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetOrgId(orgId *Orgid) {
+	q.OrgId = orgId
+	q.require(queryEntrypointResponseRecordsItemFieldOrgId)
+}
+
+// SetOrgParentName sets the OrgParentName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetOrgParentName(orgParentName *OrgParentName) {
+	q.OrgParentName = orgParentName
+	q.require(queryEntrypointResponseRecordsItemFieldOrgParentName)
+}
+
+// SetOwnerData sets the OwnerData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetOwnerData(ownerData *Ownership) {
+	q.OwnerData = ownerData
+	q.require(queryEntrypointResponseRecordsItemFieldOwnerData)
+}
+
+// SetOwnType sets the OwnType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetOwnType(ownType *OwnType) {
+	q.OwnType = ownType
+	q.require(queryEntrypointResponseRecordsItemFieldOwnType)
+}
+
+// SetPaypointStatus sets the PaypointStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetPaypointStatus(paypointStatus *Paypointstatus) {
+	q.PaypointStatus = paypointStatus
+	q.require(queryEntrypointResponseRecordsItemFieldPaypointStatus)
+}
+
+// SetSalesCode sets the SalesCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetSalesCode(salesCode *SalesCode) {
+	q.SalesCode = salesCode
+	q.require(queryEntrypointResponseRecordsItemFieldSalesCode)
+}
+
+// SetServiceData sets the ServiceData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetServiceData(serviceData *Services) {
+	q.ServiceData = serviceData
+	q.require(queryEntrypointResponseRecordsItemFieldServiceData)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetSummary(summary *PaypointSummary) {
+	q.Summary = summary
+	q.require(queryEntrypointResponseRecordsItemFieldSummary)
+}
+
+// SetTaxfillname sets the Taxfillname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetTaxfillname(taxfillname *Taxfillname) {
+	q.Taxfillname = taxfillname
+	q.require(queryEntrypointResponseRecordsItemFieldTaxfillname)
+}
+
+// SetTemplateId sets the TemplateId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetTemplateId(templateId *TemplateId) {
+	q.TemplateId = templateId
+	q.require(queryEntrypointResponseRecordsItemFieldTemplateId)
+}
+
+// SetWebsiteAddress sets the WebsiteAddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetWebsiteAddress(websiteAddress *Website) {
+	q.WebsiteAddress = websiteAddress
+	q.require(queryEntrypointResponseRecordsItemFieldWebsiteAddress)
+}
+
+// SetWhencharged sets the Whencharged field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetWhencharged(whencharged *Whencharged) {
+	q.Whencharged = whencharged
+	q.require(queryEntrypointResponseRecordsItemFieldWhencharged)
+}
+
+// SetWhendelivered sets the Whendelivered field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetWhendelivered(whendelivered *Whendelivered) {
+	q.Whendelivered = whendelivered
+	q.require(queryEntrypointResponseRecordsItemFieldWhendelivered)
+}
+
+// SetWhenprovided sets the Whenprovided field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetWhenprovided(whenprovided *Whenprovided) {
+	q.Whenprovided = whenprovided
+	q.require(queryEntrypointResponseRecordsItemFieldWhenprovided)
+}
+
+// SetWhenrefund sets the Whenrefund field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryEntrypointResponseRecordsItem) SetWhenrefund(whenrefund *Whenrefunded) {
+	q.Whenrefund = whenrefund
+	q.require(queryEntrypointResponseRecordsItemFieldWhenrefund)
+}
+
 func (q *QueryEntrypointResponseRecordsItem) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryEntrypointResponseRecordsItem
 	var value unmarshaler
@@ -4472,6 +7991,17 @@ func (q *QueryEntrypointResponseRecordsItem) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (q *QueryEntrypointResponseRecordsItem) MarshalJSON() ([]byte, error) {
+	type embed QueryEntrypointResponseRecordsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QueryEntrypointResponseRecordsItem) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -4484,9 +8014,17 @@ func (q *QueryEntrypointResponseRecordsItem) String() string {
 	return fmt.Sprintf("%#v", q)
 }
 
+var (
+	queryPayoutTransactionFieldRecords = big.NewInt(1 << 0)
+	queryPayoutTransactionFieldSummary = big.NewInt(1 << 1)
+)
+
 type QueryPayoutTransaction struct {
 	Records []*QueryPayoutTransactionRecordsItem `json:"Records,omitempty" url:"Records,omitempty"`
 	Summary *QueryPayoutTransactionSummary       `json:"Summary,omitempty" url:"Summary,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -4510,6 +8048,27 @@ func (q *QueryPayoutTransaction) GetExtraProperties() map[string]interface{} {
 	return q.extraProperties
 }
 
+func (q *QueryPayoutTransaction) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransaction) SetRecords(records []*QueryPayoutTransactionRecordsItem) {
+	q.Records = records
+	q.require(queryPayoutTransactionFieldRecords)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransaction) SetSummary(summary *QueryPayoutTransactionSummary) {
+	q.Summary = summary
+	q.require(queryPayoutTransactionFieldSummary)
+}
+
 func (q *QueryPayoutTransaction) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryPayoutTransaction
 	var value unmarshaler
@@ -4526,6 +8085,17 @@ func (q *QueryPayoutTransaction) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (q *QueryPayoutTransaction) MarshalJSON() ([]byte, error) {
+	type embed QueryPayoutTransaction
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QueryPayoutTransaction) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -4537,6 +8107,48 @@ func (q *QueryPayoutTransaction) String() string {
 	}
 	return fmt.Sprintf("%#v", q)
 }
+
+var (
+	queryPayoutTransactionRecordsItemFieldBatchNumber          = big.NewInt(1 << 0)
+	queryPayoutTransactionRecordsItemFieldBatchId              = big.NewInt(1 << 1)
+	queryPayoutTransactionRecordsItemFieldBills                = big.NewInt(1 << 2)
+	queryPayoutTransactionRecordsItemFieldCardToken            = big.NewInt(1 << 3)
+	queryPayoutTransactionRecordsItemFieldCheckData            = big.NewInt(1 << 4)
+	queryPayoutTransactionRecordsItemFieldCheckNumber          = big.NewInt(1 << 5)
+	queryPayoutTransactionRecordsItemFieldComments             = big.NewInt(1 << 6)
+	queryPayoutTransactionRecordsItemFieldCreatedAt            = big.NewInt(1 << 7)
+	queryPayoutTransactionRecordsItemFieldEntryName            = big.NewInt(1 << 8)
+	queryPayoutTransactionRecordsItemFieldEvents               = big.NewInt(1 << 9)
+	queryPayoutTransactionRecordsItemFieldExternalPaypointId   = big.NewInt(1 << 10)
+	queryPayoutTransactionRecordsItemFieldFeeAmount            = big.NewInt(1 << 11)
+	queryPayoutTransactionRecordsItemFieldGateway              = big.NewInt(1 << 12)
+	queryPayoutTransactionRecordsItemFieldHasVcardTransactions = big.NewInt(1 << 13)
+	queryPayoutTransactionRecordsItemFieldIdOut                = big.NewInt(1 << 14)
+	queryPayoutTransactionRecordsItemFieldIsSameDayAch         = big.NewInt(1 << 15)
+	queryPayoutTransactionRecordsItemFieldLastUpdated          = big.NewInt(1 << 16)
+	queryPayoutTransactionRecordsItemFieldNetAmount            = big.NewInt(1 << 17)
+	queryPayoutTransactionRecordsItemFieldParentOrgName        = big.NewInt(1 << 18)
+	queryPayoutTransactionRecordsItemFieldParentOrgId          = big.NewInt(1 << 19)
+	queryPayoutTransactionRecordsItemFieldPaymentData          = big.NewInt(1 << 20)
+	queryPayoutTransactionRecordsItemFieldPaymentId            = big.NewInt(1 << 21)
+	queryPayoutTransactionRecordsItemFieldPaymentMethod        = big.NewInt(1 << 22)
+	queryPayoutTransactionRecordsItemFieldPaymentStatus        = big.NewInt(1 << 23)
+	queryPayoutTransactionRecordsItemFieldPayoutProgram        = big.NewInt(1 << 24)
+	queryPayoutTransactionRecordsItemFieldPaypointDbaname      = big.NewInt(1 << 25)
+	queryPayoutTransactionRecordsItemFieldPaypointLegalname    = big.NewInt(1 << 26)
+	queryPayoutTransactionRecordsItemFieldRiskAction           = big.NewInt(1 << 27)
+	queryPayoutTransactionRecordsItemFieldRiskActionCode       = big.NewInt(1 << 28)
+	queryPayoutTransactionRecordsItemFieldRiskFlagged          = big.NewInt(1 << 29)
+	queryPayoutTransactionRecordsItemFieldRiskFlaggedOn        = big.NewInt(1 << 30)
+	queryPayoutTransactionRecordsItemFieldRiskReason           = big.NewInt(1 << 31)
+	queryPayoutTransactionRecordsItemFieldRiskStatus           = big.NewInt(1 << 32)
+	queryPayoutTransactionRecordsItemFieldScheduleId           = big.NewInt(1 << 33)
+	queryPayoutTransactionRecordsItemFieldSettlementStatus     = big.NewInt(1 << 34)
+	queryPayoutTransactionRecordsItemFieldSource               = big.NewInt(1 << 35)
+	queryPayoutTransactionRecordsItemFieldStatus               = big.NewInt(1 << 36)
+	queryPayoutTransactionRecordsItemFieldTotalAmount          = big.NewInt(1 << 37)
+	queryPayoutTransactionRecordsItemFieldVendor               = big.NewInt(1 << 38)
+)
 
 type QueryPayoutTransactionRecordsItem struct {
 	BatchNumber *BatchNumber `json:"BatchNumber,omitempty" url:"BatchNumber,omitempty"`
@@ -4594,6 +8206,9 @@ type QueryPayoutTransactionRecordsItem struct {
 	TotalAmount *float64 `json:"TotalAmount,omitempty" url:"TotalAmount,omitempty"`
 	// Vendor related to the payout transaction.
 	Vendor *VendorQueryRecord `json:"Vendor,omitempty" url:"Vendor,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -4876,6 +8491,286 @@ func (q *QueryPayoutTransactionRecordsItem) GetExtraProperties() map[string]inte
 	return q.extraProperties
 }
 
+func (q *QueryPayoutTransactionRecordsItem) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetBatchNumber sets the BatchNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetBatchNumber(batchNumber *BatchNumber) {
+	q.BatchNumber = batchNumber
+	q.require(queryPayoutTransactionRecordsItemFieldBatchNumber)
+}
+
+// SetBatchId sets the BatchId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetBatchId(batchId *int) {
+	q.BatchId = batchId
+	q.require(queryPayoutTransactionRecordsItemFieldBatchId)
+}
+
+// SetBills sets the Bills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetBills(bills []*BillPayOutData) {
+	q.Bills = bills
+	q.require(queryPayoutTransactionRecordsItemFieldBills)
+}
+
+// SetCardToken sets the CardToken field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetCardToken(cardToken *string) {
+	q.CardToken = cardToken
+	q.require(queryPayoutTransactionRecordsItemFieldCardToken)
+}
+
+// SetCheckData sets the CheckData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetCheckData(checkData *FileContent) {
+	q.CheckData = checkData
+	q.require(queryPayoutTransactionRecordsItemFieldCheckData)
+}
+
+// SetCheckNumber sets the CheckNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetCheckNumber(checkNumber *string) {
+	q.CheckNumber = checkNumber
+	q.require(queryPayoutTransactionRecordsItemFieldCheckNumber)
+}
+
+// SetComments sets the Comments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetComments(comments *Comments) {
+	q.Comments = comments
+	q.require(queryPayoutTransactionRecordsItemFieldComments)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetCreatedAt(createdAt *CreatedAt) {
+	q.CreatedAt = createdAt
+	q.require(queryPayoutTransactionRecordsItemFieldCreatedAt)
+}
+
+// SetEntryName sets the EntryName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetEntryName(entryName *Entrypointfield) {
+	q.EntryName = entryName
+	q.require(queryPayoutTransactionRecordsItemFieldEntryName)
+}
+
+// SetEvents sets the Events field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetEvents(events []*QueryTransactionEvents) {
+	q.Events = events
+	q.require(queryPayoutTransactionRecordsItemFieldEvents)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
+	q.ExternalPaypointId = externalPaypointId
+	q.require(queryPayoutTransactionRecordsItemFieldExternalPaypointId)
+}
+
+// SetFeeAmount sets the FeeAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetFeeAmount(feeAmount *FeeAmount) {
+	q.FeeAmount = feeAmount
+	q.require(queryPayoutTransactionRecordsItemFieldFeeAmount)
+}
+
+// SetGateway sets the Gateway field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetGateway(gateway *Gatewayfield) {
+	q.Gateway = gateway
+	q.require(queryPayoutTransactionRecordsItemFieldGateway)
+}
+
+// SetHasVcardTransactions sets the HasVcardTransactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetHasVcardTransactions(hasVcardTransactions *HasVcardTransactions) {
+	q.HasVcardTransactions = hasVcardTransactions
+	q.require(queryPayoutTransactionRecordsItemFieldHasVcardTransactions)
+}
+
+// SetIdOut sets the IdOut field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetIdOut(idOut *int64) {
+	q.IdOut = idOut
+	q.require(queryPayoutTransactionRecordsItemFieldIdOut)
+}
+
+// SetIsSameDayAch sets the IsSameDayAch field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetIsSameDayAch(isSameDayAch *IsSameDayAch) {
+	q.IsSameDayAch = isSameDayAch
+	q.require(queryPayoutTransactionRecordsItemFieldIsSameDayAch)
+}
+
+// SetLastUpdated sets the LastUpdated field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetLastUpdated(lastUpdated *LastModified) {
+	q.LastUpdated = lastUpdated
+	q.require(queryPayoutTransactionRecordsItemFieldLastUpdated)
+}
+
+// SetNetAmount sets the NetAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetNetAmount(netAmount *Netamountnullable) {
+	q.NetAmount = netAmount
+	q.require(queryPayoutTransactionRecordsItemFieldNetAmount)
+}
+
+// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetParentOrgName(parentOrgName *OrgParentName) {
+	q.ParentOrgName = parentOrgName
+	q.require(queryPayoutTransactionRecordsItemFieldParentOrgName)
+}
+
+// SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetParentOrgId(parentOrgId *OrgParentId) {
+	q.ParentOrgId = parentOrgId
+	q.require(queryPayoutTransactionRecordsItemFieldParentOrgId)
+}
+
+// SetPaymentData sets the PaymentData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetPaymentData(paymentData *QueryPayoutTransactionRecordsItemPaymentData) {
+	q.PaymentData = paymentData
+	q.require(queryPayoutTransactionRecordsItemFieldPaymentData)
+}
+
+// SetPaymentId sets the PaymentId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetPaymentId(paymentId *PaymentIdString) {
+	q.PaymentId = paymentId
+	q.require(queryPayoutTransactionRecordsItemFieldPaymentId)
+}
+
+// SetPaymentMethod sets the PaymentMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetPaymentMethod(paymentMethod *string) {
+	q.PaymentMethod = paymentMethod
+	q.require(queryPayoutTransactionRecordsItemFieldPaymentMethod)
+}
+
+// SetPaymentStatus sets the PaymentStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetPaymentStatus(paymentStatus *string) {
+	q.PaymentStatus = paymentStatus
+	q.require(queryPayoutTransactionRecordsItemFieldPaymentStatus)
+}
+
+// SetPayoutProgram sets the PayoutProgram field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetPayoutProgram(payoutProgram *PayoutProgram) {
+	q.PayoutProgram = payoutProgram
+	q.require(queryPayoutTransactionRecordsItemFieldPayoutProgram)
+}
+
+// SetPaypointDbaname sets the PaypointDbaname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetPaypointDbaname(paypointDbaname *Dbaname) {
+	q.PaypointDbaname = paypointDbaname
+	q.require(queryPayoutTransactionRecordsItemFieldPaypointDbaname)
+}
+
+// SetPaypointLegalname sets the PaypointLegalname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetPaypointLegalname(paypointLegalname *Legalname) {
+	q.PaypointLegalname = paypointLegalname
+	q.require(queryPayoutTransactionRecordsItemFieldPaypointLegalname)
+}
+
+// SetRiskAction sets the RiskAction field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetRiskAction(riskAction *RiskAction) {
+	q.RiskAction = riskAction
+	q.require(queryPayoutTransactionRecordsItemFieldRiskAction)
+}
+
+// SetRiskActionCode sets the RiskActionCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetRiskActionCode(riskActionCode *RiskActionCode) {
+	q.RiskActionCode = riskActionCode
+	q.require(queryPayoutTransactionRecordsItemFieldRiskActionCode)
+}
+
+// SetRiskFlagged sets the RiskFlagged field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetRiskFlagged(riskFlagged *RiskFlagged) {
+	q.RiskFlagged = riskFlagged
+	q.require(queryPayoutTransactionRecordsItemFieldRiskFlagged)
+}
+
+// SetRiskFlaggedOn sets the RiskFlaggedOn field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetRiskFlaggedOn(riskFlaggedOn *RiskFlaggedOn) {
+	q.RiskFlaggedOn = riskFlaggedOn
+	q.require(queryPayoutTransactionRecordsItemFieldRiskFlaggedOn)
+}
+
+// SetRiskReason sets the RiskReason field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetRiskReason(riskReason *RiskReason) {
+	q.RiskReason = riskReason
+	q.require(queryPayoutTransactionRecordsItemFieldRiskReason)
+}
+
+// SetRiskStatus sets the RiskStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetRiskStatus(riskStatus *RiskStatus) {
+	q.RiskStatus = riskStatus
+	q.require(queryPayoutTransactionRecordsItemFieldRiskStatus)
+}
+
+// SetScheduleId sets the ScheduleId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetScheduleId(scheduleId *ScheduleId) {
+	q.ScheduleId = scheduleId
+	q.require(queryPayoutTransactionRecordsItemFieldScheduleId)
+}
+
+// SetSettlementStatus sets the SettlementStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetSettlementStatus(settlementStatus *SettlementStatusPayout) {
+	q.SettlementStatus = settlementStatus
+	q.require(queryPayoutTransactionRecordsItemFieldSettlementStatus)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetSource(source *Source) {
+	q.Source = source
+	q.require(queryPayoutTransactionRecordsItemFieldSource)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetStatus(status *int) {
+	q.Status = status
+	q.require(queryPayoutTransactionRecordsItemFieldStatus)
+}
+
+// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetTotalAmount(totalAmount *float64) {
+	q.TotalAmount = totalAmount
+	q.require(queryPayoutTransactionRecordsItemFieldTotalAmount)
+}
+
+// SetVendor sets the Vendor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetVendor(vendor_ *VendorQueryRecord) {
+	q.Vendor = vendor_
+	q.require(queryPayoutTransactionRecordsItemFieldVendor)
+}
+
 func (q *QueryPayoutTransactionRecordsItem) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryPayoutTransactionRecordsItem
 	var value unmarshaler
@@ -4892,6 +8787,17 @@ func (q *QueryPayoutTransactionRecordsItem) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (q *QueryPayoutTransactionRecordsItem) MarshalJSON() ([]byte, error) {
+	type embed QueryPayoutTransactionRecordsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QueryPayoutTransactionRecordsItem) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -4903,6 +8809,27 @@ func (q *QueryPayoutTransactionRecordsItem) String() string {
 	}
 	return fmt.Sprintf("%#v", q)
 }
+
+var (
+	queryPayoutTransactionRecordsItemPaymentDataFieldAccountExp            = big.NewInt(1 << 0)
+	queryPayoutTransactionRecordsItemPaymentDataFieldAccountId             = big.NewInt(1 << 1)
+	queryPayoutTransactionRecordsItemPaymentDataFieldAccountType           = big.NewInt(1 << 2)
+	queryPayoutTransactionRecordsItemPaymentDataFieldAccountZip            = big.NewInt(1 << 3)
+	queryPayoutTransactionRecordsItemPaymentDataFieldBankAccount           = big.NewInt(1 << 4)
+	queryPayoutTransactionRecordsItemPaymentDataFieldBinData               = big.NewInt(1 << 5)
+	queryPayoutTransactionRecordsItemPaymentDataFieldCloudSignatureData    = big.NewInt(1 << 6)
+	queryPayoutTransactionRecordsItemPaymentDataFieldCloudSignatureFormat  = big.NewInt(1 << 7)
+	queryPayoutTransactionRecordsItemPaymentDataFieldGatewayConnector      = big.NewInt(1 << 8)
+	queryPayoutTransactionRecordsItemPaymentDataFieldHolderName            = big.NewInt(1 << 9)
+	queryPayoutTransactionRecordsItemPaymentDataFieldInitiator             = big.NewInt(1 << 10)
+	queryPayoutTransactionRecordsItemPaymentDataFieldMaskedAccount         = big.NewInt(1 << 11)
+	queryPayoutTransactionRecordsItemPaymentDataFieldOrderDescription      = big.NewInt(1 << 12)
+	queryPayoutTransactionRecordsItemPaymentDataFieldPaymentDetails        = big.NewInt(1 << 13)
+	queryPayoutTransactionRecordsItemPaymentDataFieldPayorData             = big.NewInt(1 << 14)
+	queryPayoutTransactionRecordsItemPaymentDataFieldSequence              = big.NewInt(1 << 15)
+	queryPayoutTransactionRecordsItemPaymentDataFieldStoredId              = big.NewInt(1 << 16)
+	queryPayoutTransactionRecordsItemPaymentDataFieldStoredMethodUsageType = big.NewInt(1 << 17)
+)
 
 type QueryPayoutTransactionRecordsItemPaymentData struct {
 	AccountExp           *Accountexp             `json:"AccountExp,omitempty" url:"AccountExp,omitempty"`
@@ -4925,6 +8852,9 @@ type QueryPayoutTransactionRecordsItemPaymentData struct {
 	// Identifier of stored payment method used in transaction.
 	StoredId              *Storedmethodid        `json:"StoredId,omitempty" url:"StoredId,omitempty"`
 	StoredMethodUsageType *StoredMethodUsageType `json:"StoredMethodUsageType,omitempty" url:"StoredMethodUsageType,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5060,6 +8990,139 @@ func (q *QueryPayoutTransactionRecordsItemPaymentData) GetExtraProperties() map[
 	return q.extraProperties
 }
 
+func (q *QueryPayoutTransactionRecordsItemPaymentData) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetAccountExp sets the AccountExp field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetAccountExp(accountExp *Accountexp) {
+	q.AccountExp = accountExp
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldAccountExp)
+}
+
+// SetAccountId sets the AccountId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetAccountId(accountId *Accountid) {
+	q.AccountId = accountId
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldAccountId)
+}
+
+// SetAccountType sets the AccountType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetAccountType(accountType *Accounttype) {
+	q.AccountType = accountType
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldAccountType)
+}
+
+// SetAccountZip sets the AccountZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetAccountZip(accountZip *Accountzip) {
+	q.AccountZip = accountZip
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldAccountZip)
+}
+
+// SetBankAccount sets the BankAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetBankAccount(bankAccount *string) {
+	q.BankAccount = bankAccount
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldBankAccount)
+}
+
+// SetBinData sets the BinData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetBinData(binData *BinData) {
+	q.BinData = binData
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldBinData)
+}
+
+// SetCloudSignatureData sets the CloudSignatureData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetCloudSignatureData(cloudSignatureData *string) {
+	q.CloudSignatureData = cloudSignatureData
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldCloudSignatureData)
+}
+
+// SetCloudSignatureFormat sets the CloudSignatureFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetCloudSignatureFormat(cloudSignatureFormat *string) {
+	q.CloudSignatureFormat = cloudSignatureFormat
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldCloudSignatureFormat)
+}
+
+// SetGatewayConnector sets the GatewayConnector field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetGatewayConnector(gatewayConnector *PayoutGatewayConnector) {
+	q.GatewayConnector = gatewayConnector
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldGatewayConnector)
+}
+
+// SetHolderName sets the HolderName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetHolderName(holderName *Holdername) {
+	q.HolderName = holderName
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldHolderName)
+}
+
+// SetInitiator sets the Initiator field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetInitiator(initiator *Initiator) {
+	q.Initiator = initiator
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldInitiator)
+}
+
+// SetMaskedAccount sets the MaskedAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetMaskedAccount(maskedAccount *Maskedaccount) {
+	q.MaskedAccount = maskedAccount
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldMaskedAccount)
+}
+
+// SetOrderDescription sets the OrderDescription field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetOrderDescription(orderDescription *Orderdescription) {
+	q.OrderDescription = orderDescription
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldOrderDescription)
+}
+
+// SetPaymentDetails sets the PaymentDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetPaymentDetails(paymentDetails *PaymentDetail) {
+	q.PaymentDetails = paymentDetails
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldPaymentDetails)
+}
+
+// SetPayorData sets the PayorData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetPayorData(payorData *string) {
+	q.PayorData = payorData
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldPayorData)
+}
+
+// SetSequence sets the Sequence field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetSequence(sequence *Sequence) {
+	q.Sequence = sequence
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldSequence)
+}
+
+// SetStoredId sets the StoredId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetStoredId(storedId *Storedmethodid) {
+	q.StoredId = storedId
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldStoredId)
+}
+
+// SetStoredMethodUsageType sets the StoredMethodUsageType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetStoredMethodUsageType(storedMethodUsageType *StoredMethodUsageType) {
+	q.StoredMethodUsageType = storedMethodUsageType
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldStoredMethodUsageType)
+}
+
 func (q *QueryPayoutTransactionRecordsItemPaymentData) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryPayoutTransactionRecordsItemPaymentData
 	var value unmarshaler
@@ -5076,6 +9139,17 @@ func (q *QueryPayoutTransactionRecordsItemPaymentData) UnmarshalJSON(data []byte
 	return nil
 }
 
+func (q *QueryPayoutTransactionRecordsItemPaymentData) MarshalJSON() ([]byte, error) {
+	type embed QueryPayoutTransactionRecordsItemPaymentData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QueryPayoutTransactionRecordsItemPaymentData) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -5087,6 +9161,29 @@ func (q *QueryPayoutTransactionRecordsItemPaymentData) String() string {
 	}
 	return fmt.Sprintf("%#v", q)
 }
+
+var (
+	queryPayoutTransactionSummaryFieldPageIdentifier        = big.NewInt(1 << 0)
+	queryPayoutTransactionSummaryFieldPageSize              = big.NewInt(1 << 1)
+	queryPayoutTransactionSummaryFieldTotalAmount           = big.NewInt(1 << 2)
+	queryPayoutTransactionSummaryFieldTotalAuthorized       = big.NewInt(1 << 3)
+	queryPayoutTransactionSummaryFieldTotalAuthorizedAmount = big.NewInt(1 << 4)
+	queryPayoutTransactionSummaryFieldTotalCanceled         = big.NewInt(1 << 5)
+	queryPayoutTransactionSummaryFieldTotalCanceledAmount   = big.NewInt(1 << 6)
+	queryPayoutTransactionSummaryFieldTotalCaptured         = big.NewInt(1 << 7)
+	queryPayoutTransactionSummaryFieldTotalCapturedAmount   = big.NewInt(1 << 8)
+	queryPayoutTransactionSummaryFieldTotalNetAmount        = big.NewInt(1 << 9)
+	queryPayoutTransactionSummaryFieldTotalOpen             = big.NewInt(1 << 10)
+	queryPayoutTransactionSummaryFieldTotalOpenAmount       = big.NewInt(1 << 11)
+	queryPayoutTransactionSummaryFieldTotalPages            = big.NewInt(1 << 12)
+	queryPayoutTransactionSummaryFieldTotalPaid             = big.NewInt(1 << 13)
+	queryPayoutTransactionSummaryFieldTotalPaidAmount       = big.NewInt(1 << 14)
+	queryPayoutTransactionSummaryFieldTotalOnHold           = big.NewInt(1 << 15)
+	queryPayoutTransactionSummaryFieldTotalOnHoldAmount     = big.NewInt(1 << 16)
+	queryPayoutTransactionSummaryFieldTotalProcessing       = big.NewInt(1 << 17)
+	queryPayoutTransactionSummaryFieldTotalProcessingAmount = big.NewInt(1 << 18)
+	queryPayoutTransactionSummaryFieldTotalRecords          = big.NewInt(1 << 19)
+)
 
 type QueryPayoutTransactionSummary struct {
 	PageIdentifier        *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
@@ -5111,6 +9208,9 @@ type QueryPayoutTransactionSummary struct {
 	TotalProcessing       *int     `json:"totalProcessing,omitempty" url:"totalProcessing,omitempty"`
 	TotalProcessingAmount *float64 `json:"totalProcessingAmount,omitempty" url:"totalProcessingAmount,omitempty"`
 	TotalRecords          *int     `json:"totalRecords,omitempty" url:"totalRecords,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5260,6 +9360,153 @@ func (q *QueryPayoutTransactionSummary) GetExtraProperties() map[string]interfac
 	return q.extraProperties
 }
 
+func (q *QueryPayoutTransactionSummary) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+	q.PageIdentifier = pageIdentifier
+	q.require(queryPayoutTransactionSummaryFieldPageIdentifier)
+}
+
+// SetPageSize sets the PageSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetPageSize(pageSize *Pagesize) {
+	q.PageSize = pageSize
+	q.require(queryPayoutTransactionSummaryFieldPageSize)
+}
+
+// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetTotalAmount(totalAmount *float64) {
+	q.TotalAmount = totalAmount
+	q.require(queryPayoutTransactionSummaryFieldTotalAmount)
+}
+
+// SetTotalAuthorized sets the TotalAuthorized field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetTotalAuthorized(totalAuthorized *int) {
+	q.TotalAuthorized = totalAuthorized
+	q.require(queryPayoutTransactionSummaryFieldTotalAuthorized)
+}
+
+// SetTotalAuthorizedAmount sets the TotalAuthorizedAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetTotalAuthorizedAmount(totalAuthorizedAmount *float64) {
+	q.TotalAuthorizedAmount = totalAuthorizedAmount
+	q.require(queryPayoutTransactionSummaryFieldTotalAuthorizedAmount)
+}
+
+// SetTotalCanceled sets the TotalCanceled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetTotalCanceled(totalCanceled *int) {
+	q.TotalCanceled = totalCanceled
+	q.require(queryPayoutTransactionSummaryFieldTotalCanceled)
+}
+
+// SetTotalCanceledAmount sets the TotalCanceledAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetTotalCanceledAmount(totalCanceledAmount *float64) {
+	q.TotalCanceledAmount = totalCanceledAmount
+	q.require(queryPayoutTransactionSummaryFieldTotalCanceledAmount)
+}
+
+// SetTotalCaptured sets the TotalCaptured field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetTotalCaptured(totalCaptured *int) {
+	q.TotalCaptured = totalCaptured
+	q.require(queryPayoutTransactionSummaryFieldTotalCaptured)
+}
+
+// SetTotalCapturedAmount sets the TotalCapturedAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetTotalCapturedAmount(totalCapturedAmount *float64) {
+	q.TotalCapturedAmount = totalCapturedAmount
+	q.require(queryPayoutTransactionSummaryFieldTotalCapturedAmount)
+}
+
+// SetTotalNetAmount sets the TotalNetAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetTotalNetAmount(totalNetAmount *float64) {
+	q.TotalNetAmount = totalNetAmount
+	q.require(queryPayoutTransactionSummaryFieldTotalNetAmount)
+}
+
+// SetTotalOpen sets the TotalOpen field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetTotalOpen(totalOpen *int) {
+	q.TotalOpen = totalOpen
+	q.require(queryPayoutTransactionSummaryFieldTotalOpen)
+}
+
+// SetTotalOpenAmount sets the TotalOpenAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetTotalOpenAmount(totalOpenAmount *float64) {
+	q.TotalOpenAmount = totalOpenAmount
+	q.require(queryPayoutTransactionSummaryFieldTotalOpenAmount)
+}
+
+// SetTotalPages sets the TotalPages field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetTotalPages(totalPages *int) {
+	q.TotalPages = totalPages
+	q.require(queryPayoutTransactionSummaryFieldTotalPages)
+}
+
+// SetTotalPaid sets the TotalPaid field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetTotalPaid(totalPaid *int) {
+	q.TotalPaid = totalPaid
+	q.require(queryPayoutTransactionSummaryFieldTotalPaid)
+}
+
+// SetTotalPaidAmount sets the TotalPaidAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetTotalPaidAmount(totalPaidAmount *float64) {
+	q.TotalPaidAmount = totalPaidAmount
+	q.require(queryPayoutTransactionSummaryFieldTotalPaidAmount)
+}
+
+// SetTotalOnHold sets the TotalOnHold field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetTotalOnHold(totalOnHold *int) {
+	q.TotalOnHold = totalOnHold
+	q.require(queryPayoutTransactionSummaryFieldTotalOnHold)
+}
+
+// SetTotalOnHoldAmount sets the TotalOnHoldAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetTotalOnHoldAmount(totalOnHoldAmount *float64) {
+	q.TotalOnHoldAmount = totalOnHoldAmount
+	q.require(queryPayoutTransactionSummaryFieldTotalOnHoldAmount)
+}
+
+// SetTotalProcessing sets the TotalProcessing field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetTotalProcessing(totalProcessing *int) {
+	q.TotalProcessing = totalProcessing
+	q.require(queryPayoutTransactionSummaryFieldTotalProcessing)
+}
+
+// SetTotalProcessingAmount sets the TotalProcessingAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetTotalProcessingAmount(totalProcessingAmount *float64) {
+	q.TotalProcessingAmount = totalProcessingAmount
+	q.require(queryPayoutTransactionSummaryFieldTotalProcessingAmount)
+}
+
+// SetTotalRecords sets the TotalRecords field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetTotalRecords(totalRecords *int) {
+	q.TotalRecords = totalRecords
+	q.require(queryPayoutTransactionSummaryFieldTotalRecords)
+}
+
 func (q *QueryPayoutTransactionSummary) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryPayoutTransactionSummary
 	var value unmarshaler
@@ -5276,6 +9523,17 @@ func (q *QueryPayoutTransactionSummary) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (q *QueryPayoutTransactionSummary) MarshalJSON() ([]byte, error) {
+	type embed QueryPayoutTransactionSummary
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QueryPayoutTransactionSummary) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -5288,9 +9546,17 @@ func (q *QueryPayoutTransactionSummary) String() string {
 	return fmt.Sprintf("%#v", q)
 }
 
+var (
+	queryResponseNotificationReportsFieldRecords = big.NewInt(1 << 0)
+	queryResponseNotificationReportsFieldSummary = big.NewInt(1 << 1)
+)
+
 type QueryResponseNotificationReports struct {
 	Records []*QueryResponseNotificationReportsRecordsItem `json:"Records,omitempty" url:"Records,omitempty"`
 	Summary *QuerySummary                                  `json:"Summary,omitempty" url:"Summary,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5314,6 +9580,27 @@ func (q *QueryResponseNotificationReports) GetExtraProperties() map[string]inter
 	return q.extraProperties
 }
 
+func (q *QueryResponseNotificationReports) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseNotificationReports) SetRecords(records []*QueryResponseNotificationReportsRecordsItem) {
+	q.Records = records
+	q.require(queryResponseNotificationReportsFieldRecords)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseNotificationReports) SetSummary(summary *QuerySummary) {
+	q.Summary = summary
+	q.require(queryResponseNotificationReportsFieldSummary)
+}
+
 func (q *QueryResponseNotificationReports) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryResponseNotificationReports
 	var value unmarshaler
@@ -5330,6 +9617,17 @@ func (q *QueryResponseNotificationReports) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (q *QueryResponseNotificationReports) MarshalJSON() ([]byte, error) {
+	type embed QueryResponseNotificationReports
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QueryResponseNotificationReports) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -5342,6 +9640,13 @@ func (q *QueryResponseNotificationReports) String() string {
 	return fmt.Sprintf("%#v", q)
 }
 
+var (
+	queryResponseNotificationReportsRecordsItemFieldCreatedAt      = big.NewInt(1 << 0)
+	queryResponseNotificationReportsRecordsItemFieldId             = big.NewInt(1 << 1)
+	queryResponseNotificationReportsRecordsItemFieldIsDownloadable = big.NewInt(1 << 2)
+	queryResponseNotificationReportsRecordsItemFieldReportName     = big.NewInt(1 << 3)
+)
+
 type QueryResponseNotificationReportsRecordsItem struct {
 	CreatedAt *CreatedAt `json:"createdAt,omitempty" url:"createdAt,omitempty"`
 	// Unique identifier for the report.
@@ -5350,6 +9655,9 @@ type QueryResponseNotificationReportsRecordsItem struct {
 	IsDownloadable *bool `json:"isDownloadable,omitempty" url:"isDownloadable,omitempty"`
 	// Name of the report.
 	ReportName *string `json:"reportName,omitempty" url:"reportName,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5387,6 +9695,41 @@ func (q *QueryResponseNotificationReportsRecordsItem) GetExtraProperties() map[s
 	return q.extraProperties
 }
 
+func (q *QueryResponseNotificationReportsRecordsItem) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseNotificationReportsRecordsItem) SetCreatedAt(createdAt *CreatedAt) {
+	q.CreatedAt = createdAt
+	q.require(queryResponseNotificationReportsRecordsItemFieldCreatedAt)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseNotificationReportsRecordsItem) SetId(id *int) {
+	q.Id = id
+	q.require(queryResponseNotificationReportsRecordsItemFieldId)
+}
+
+// SetIsDownloadable sets the IsDownloadable field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseNotificationReportsRecordsItem) SetIsDownloadable(isDownloadable *bool) {
+	q.IsDownloadable = isDownloadable
+	q.require(queryResponseNotificationReportsRecordsItemFieldIsDownloadable)
+}
+
+// SetReportName sets the ReportName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseNotificationReportsRecordsItem) SetReportName(reportName *string) {
+	q.ReportName = reportName
+	q.require(queryResponseNotificationReportsRecordsItemFieldReportName)
+}
+
 func (q *QueryResponseNotificationReportsRecordsItem) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryResponseNotificationReportsRecordsItem
 	var value unmarshaler
@@ -5403,6 +9746,17 @@ func (q *QueryResponseNotificationReportsRecordsItem) UnmarshalJSON(data []byte)
 	return nil
 }
 
+func (q *QueryResponseNotificationReportsRecordsItem) MarshalJSON() ([]byte, error) {
+	type embed QueryResponseNotificationReportsRecordsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QueryResponseNotificationReportsRecordsItem) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -5416,9 +9770,17 @@ func (q *QueryResponseNotificationReportsRecordsItem) String() string {
 }
 
 // Response payload for queries related to notifications
+var (
+	queryResponseNotificationsFieldRecords = big.NewInt(1 << 0)
+	queryResponseNotificationsFieldSummary = big.NewInt(1 << 1)
+)
+
 type QueryResponseNotifications struct {
 	Records []*QueryResponseNotificationsRecordsItem `json:"Records,omitempty" url:"Records,omitempty"`
 	Summary *QuerySummary                            `json:"Summary,omitempty" url:"Summary,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5442,6 +9804,27 @@ func (q *QueryResponseNotifications) GetExtraProperties() map[string]interface{}
 	return q.extraProperties
 }
 
+func (q *QueryResponseNotifications) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseNotifications) SetRecords(records []*QueryResponseNotificationsRecordsItem) {
+	q.Records = records
+	q.require(queryResponseNotificationsFieldRecords)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseNotifications) SetSummary(summary *QuerySummary) {
+	q.Summary = summary
+	q.require(queryResponseNotificationsFieldSummary)
+}
+
 func (q *QueryResponseNotifications) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryResponseNotifications
 	var value unmarshaler
@@ -5458,6 +9841,17 @@ func (q *QueryResponseNotifications) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (q *QueryResponseNotifications) MarshalJSON() ([]byte, error) {
+	type embed QueryResponseNotifications
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QueryResponseNotifications) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -5469,6 +9863,21 @@ func (q *QueryResponseNotifications) String() string {
 	}
 	return fmt.Sprintf("%#v", q)
 }
+
+var (
+	queryResponseNotificationsRecordsItemFieldContent        = big.NewInt(1 << 0)
+	queryResponseNotificationsRecordsItemFieldCreatedAt      = big.NewInt(1 << 1)
+	queryResponseNotificationsRecordsItemFieldFrequency      = big.NewInt(1 << 2)
+	queryResponseNotificationsRecordsItemFieldLastUpdated    = big.NewInt(1 << 3)
+	queryResponseNotificationsRecordsItemFieldMethod         = big.NewInt(1 << 4)
+	queryResponseNotificationsRecordsItemFieldNotificationId = big.NewInt(1 << 5)
+	queryResponseNotificationsRecordsItemFieldOwnerId        = big.NewInt(1 << 6)
+	queryResponseNotificationsRecordsItemFieldOwnerName      = big.NewInt(1 << 7)
+	queryResponseNotificationsRecordsItemFieldOwnerType      = big.NewInt(1 << 8)
+	queryResponseNotificationsRecordsItemFieldSource         = big.NewInt(1 << 9)
+	queryResponseNotificationsRecordsItemFieldStatus         = big.NewInt(1 << 10)
+	queryResponseNotificationsRecordsItemFieldTarget         = big.NewInt(1 << 11)
+)
 
 type QueryResponseNotificationsRecordsItem struct {
 	// Notification content.
@@ -5488,6 +9897,9 @@ type QueryResponseNotificationsRecordsItem struct {
 	Source *Source             `json:"source,omitempty" url:"source,omitempty"`
 	Status *Statusnotification `json:"status,omitempty" url:"status,omitempty"`
 	Target *Target             `json:"target,omitempty" url:"target,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5581,6 +9993,97 @@ func (q *QueryResponseNotificationsRecordsItem) GetExtraProperties() map[string]
 	return q.extraProperties
 }
 
+func (q *QueryResponseNotificationsRecordsItem) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetContent sets the Content field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseNotificationsRecordsItem) SetContent(content *NotificationContent) {
+	q.Content = content
+	q.require(queryResponseNotificationsRecordsItemFieldContent)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseNotificationsRecordsItem) SetCreatedAt(createdAt *CreatedAt) {
+	q.CreatedAt = createdAt
+	q.require(queryResponseNotificationsRecordsItemFieldCreatedAt)
+}
+
+// SetFrequency sets the Frequency field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseNotificationsRecordsItem) SetFrequency(frequency *Frequencynotification) {
+	q.Frequency = frequency
+	q.require(queryResponseNotificationsRecordsItemFieldFrequency)
+}
+
+// SetLastUpdated sets the LastUpdated field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseNotificationsRecordsItem) SetLastUpdated(lastUpdated *LastModified) {
+	q.LastUpdated = lastUpdated
+	q.require(queryResponseNotificationsRecordsItemFieldLastUpdated)
+}
+
+// SetMethod sets the Method field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseNotificationsRecordsItem) SetMethod(method *Methodnotification) {
+	q.Method = method
+	q.require(queryResponseNotificationsRecordsItemFieldMethod)
+}
+
+// SetNotificationId sets the NotificationId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseNotificationsRecordsItem) SetNotificationId(notificationId *NotificationId) {
+	q.NotificationId = notificationId
+	q.require(queryResponseNotificationsRecordsItemFieldNotificationId)
+}
+
+// SetOwnerId sets the OwnerId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseNotificationsRecordsItem) SetOwnerId(ownerId *Ownerid) {
+	q.OwnerId = ownerId
+	q.require(queryResponseNotificationsRecordsItemFieldOwnerId)
+}
+
+// SetOwnerName sets the OwnerName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseNotificationsRecordsItem) SetOwnerName(ownerName *string) {
+	q.OwnerName = ownerName
+	q.require(queryResponseNotificationsRecordsItemFieldOwnerName)
+}
+
+// SetOwnerType sets the OwnerType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseNotificationsRecordsItem) SetOwnerType(ownerType *Ownertype) {
+	q.OwnerType = ownerType
+	q.require(queryResponseNotificationsRecordsItemFieldOwnerType)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseNotificationsRecordsItem) SetSource(source *Source) {
+	q.Source = source
+	q.require(queryResponseNotificationsRecordsItemFieldSource)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseNotificationsRecordsItem) SetStatus(status *Statusnotification) {
+	q.Status = status
+	q.require(queryResponseNotificationsRecordsItemFieldStatus)
+}
+
+// SetTarget sets the Target field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseNotificationsRecordsItem) SetTarget(target *Target) {
+	q.Target = target
+	q.require(queryResponseNotificationsRecordsItemFieldTarget)
+}
+
 func (q *QueryResponseNotificationsRecordsItem) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryResponseNotificationsRecordsItem
 	var value unmarshaler
@@ -5597,6 +10100,17 @@ func (q *QueryResponseNotificationsRecordsItem) UnmarshalJSON(data []byte) error
 	return nil
 }
 
+func (q *QueryResponseNotificationsRecordsItem) MarshalJSON() ([]byte, error) {
+	type embed QueryResponseNotificationsRecordsItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QueryResponseNotificationsRecordsItem) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -5610,9 +10124,17 @@ func (q *QueryResponseNotificationsRecordsItem) String() string {
 }
 
 // Describes the response for settlement queries.
+var (
+	queryResponseSettlementsFieldRecords = big.NewInt(1 << 0)
+	queryResponseSettlementsFieldSummary = big.NewInt(1 << 1)
+)
+
 type QueryResponseSettlements struct {
 	Records []*QueryResponseSettlementsRecordsItem `json:"Records,omitempty" url:"Records,omitempty"`
 	Summary *QueryResponseSettlementsSummary       `json:"Summary,omitempty" url:"Summary,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5636,6 +10158,27 @@ func (q *QueryResponseSettlements) GetExtraProperties() map[string]interface{} {
 	return q.extraProperties
 }
 
+func (q *QueryResponseSettlements) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlements) SetRecords(records []*QueryResponseSettlementsRecordsItem) {
+	q.Records = records
+	q.require(queryResponseSettlementsFieldRecords)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlements) SetSummary(summary *QueryResponseSettlementsSummary) {
+	q.Summary = summary
+	q.require(queryResponseSettlementsFieldSummary)
+}
+
 func (q *QueryResponseSettlements) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryResponseSettlements
 	var value unmarshaler
@@ -5652,6 +10195,17 @@ func (q *QueryResponseSettlements) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (q *QueryResponseSettlements) MarshalJSON() ([]byte, error) {
+	type embed QueryResponseSettlements
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QueryResponseSettlements) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -5663,6 +10217,43 @@ func (q *QueryResponseSettlements) String() string {
 	}
 	return fmt.Sprintf("%#v", q)
 }
+
+var (
+	queryResponseSettlementsRecordsItemFieldBatchAmount         = big.NewInt(1 << 0)
+	queryResponseSettlementsRecordsItemFieldBatchNumber         = big.NewInt(1 << 1)
+	queryResponseSettlementsRecordsItemFieldCategory            = big.NewInt(1 << 2)
+	queryResponseSettlementsRecordsItemFieldCreatedAt           = big.NewInt(1 << 3)
+	queryResponseSettlementsRecordsItemFieldCustomer            = big.NewInt(1 << 4)
+	queryResponseSettlementsRecordsItemFieldDepositDate         = big.NewInt(1 << 5)
+	queryResponseSettlementsRecordsItemFieldExpectedDepositDate = big.NewInt(1 << 6)
+	queryResponseSettlementsRecordsItemFieldExternalPaypointId  = big.NewInt(1 << 7)
+	queryResponseSettlementsRecordsItemFieldGatewayTransId      = big.NewInt(1 << 8)
+	queryResponseSettlementsRecordsItemFieldId                  = big.NewInt(1 << 9)
+	queryResponseSettlementsRecordsItemFieldInvoiceData         = big.NewInt(1 << 10)
+	queryResponseSettlementsRecordsItemFieldIsHold              = big.NewInt(1 << 11)
+	queryResponseSettlementsRecordsItemFieldMaskedAccount       = big.NewInt(1 << 12)
+	queryResponseSettlementsRecordsItemFieldMethod              = big.NewInt(1 << 13)
+	queryResponseSettlementsRecordsItemFieldNetAmount           = big.NewInt(1 << 14)
+	queryResponseSettlementsRecordsItemFieldOperation           = big.NewInt(1 << 15)
+	queryResponseSettlementsRecordsItemFieldOrderId             = big.NewInt(1 << 16)
+	queryResponseSettlementsRecordsItemFieldParentOrgName       = big.NewInt(1 << 17)
+	queryResponseSettlementsRecordsItemFieldPaymentData         = big.NewInt(1 << 18)
+	queryResponseSettlementsRecordsItemFieldPaymentTransId      = big.NewInt(1 << 19)
+	queryResponseSettlementsRecordsItemFieldPaymentTransStatus  = big.NewInt(1 << 20)
+	queryResponseSettlementsRecordsItemFieldPaypointDbaname     = big.NewInt(1 << 21)
+	queryResponseSettlementsRecordsItemFieldPaypointEntryname   = big.NewInt(1 << 22)
+	queryResponseSettlementsRecordsItemFieldPaypointLegalname   = big.NewInt(1 << 23)
+	queryResponseSettlementsRecordsItemFieldResponseData        = big.NewInt(1 << 24)
+	queryResponseSettlementsRecordsItemFieldScheduleReference   = big.NewInt(1 << 25)
+	queryResponseSettlementsRecordsItemFieldSettledAmount       = big.NewInt(1 << 26)
+	queryResponseSettlementsRecordsItemFieldSettlementDate      = big.NewInt(1 << 27)
+	queryResponseSettlementsRecordsItemFieldSource              = big.NewInt(1 << 28)
+	queryResponseSettlementsRecordsItemFieldStatus              = big.NewInt(1 << 29)
+	queryResponseSettlementsRecordsItemFieldTransactionEvents   = big.NewInt(1 << 30)
+	queryResponseSettlementsRecordsItemFieldTransactionTime     = big.NewInt(1 << 31)
+	queryResponseSettlementsRecordsItemFieldTransMethod         = big.NewInt(1 << 32)
+	queryResponseSettlementsRecordsItemFieldType                = big.NewInt(1 << 33)
+)
 
 type QueryResponseSettlementsRecordsItem struct {
 	// The batch amount.
@@ -5718,6 +10309,9 @@ type QueryResponseSettlementsRecordsItem struct {
 	TransMethod *string `json:"TransMethod,omitempty" url:"TransMethod,omitempty"`
 	// The transaction type: credit or debit.
 	Type *string `json:"Type,omitempty" url:"Type,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -5965,6 +10559,251 @@ func (q *QueryResponseSettlementsRecordsItem) GetExtraProperties() map[string]in
 	return q.extraProperties
 }
 
+func (q *QueryResponseSettlementsRecordsItem) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetBatchAmount sets the BatchAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetBatchAmount(batchAmount *float64) {
+	q.BatchAmount = batchAmount
+	q.require(queryResponseSettlementsRecordsItemFieldBatchAmount)
+}
+
+// SetBatchNumber sets the BatchNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetBatchNumber(batchNumber *BatchNumber) {
+	q.BatchNumber = batchNumber
+	q.require(queryResponseSettlementsRecordsItemFieldBatchNumber)
+}
+
+// SetCategory sets the Category field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetCategory(category *Category) {
+	q.Category = category
+	q.require(queryResponseSettlementsRecordsItemFieldCategory)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetCreatedAt(createdAt *CreatedAt) {
+	q.CreatedAt = createdAt
+	q.require(queryResponseSettlementsRecordsItemFieldCreatedAt)
+}
+
+// SetCustomer sets the Customer field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetCustomer(customer *QueryTransactionPayorData) {
+	q.Customer = customer
+	q.require(queryResponseSettlementsRecordsItemFieldCustomer)
+}
+
+// SetDepositDate sets the DepositDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetDepositDate(depositDate *DepositDate) {
+	q.DepositDate = depositDate
+	q.require(queryResponseSettlementsRecordsItemFieldDepositDate)
+}
+
+// SetExpectedDepositDate sets the ExpectedDepositDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetExpectedDepositDate(expectedDepositDate *ExpectedDepositDate) {
+	q.ExpectedDepositDate = expectedDepositDate
+	q.require(queryResponseSettlementsRecordsItemFieldExpectedDepositDate)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
+	q.ExternalPaypointId = externalPaypointId
+	q.require(queryResponseSettlementsRecordsItemFieldExternalPaypointId)
+}
+
+// SetGatewayTransId sets the GatewayTransId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetGatewayTransId(gatewayTransId *string) {
+	q.GatewayTransId = gatewayTransId
+	q.require(queryResponseSettlementsRecordsItemFieldGatewayTransId)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetId(id *int) {
+	q.Id = id
+	q.require(queryResponseSettlementsRecordsItemFieldId)
+}
+
+// SetInvoiceData sets the InvoiceData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetInvoiceData(invoiceData *BillData) {
+	q.InvoiceData = invoiceData
+	q.require(queryResponseSettlementsRecordsItemFieldInvoiceData)
+}
+
+// SetIsHold sets the IsHold field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetIsHold(isHold *int) {
+	q.IsHold = isHold
+	q.require(queryResponseSettlementsRecordsItemFieldIsHold)
+}
+
+// SetMaskedAccount sets the MaskedAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetMaskedAccount(maskedAccount *Maskedaccount) {
+	q.MaskedAccount = maskedAccount
+	q.require(queryResponseSettlementsRecordsItemFieldMaskedAccount)
+}
+
+// SetMethod sets the Method field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetMethod(method *string) {
+	q.Method = method
+	q.require(queryResponseSettlementsRecordsItemFieldMethod)
+}
+
+// SetNetAmount sets the NetAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetNetAmount(netAmount *Netamountnullable) {
+	q.NetAmount = netAmount
+	q.require(queryResponseSettlementsRecordsItemFieldNetAmount)
+}
+
+// SetOperation sets the Operation field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetOperation(operation *string) {
+	q.Operation = operation
+	q.require(queryResponseSettlementsRecordsItemFieldOperation)
+}
+
+// SetOrderId sets the OrderId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetOrderId(orderId *OrderId) {
+	q.OrderId = orderId
+	q.require(queryResponseSettlementsRecordsItemFieldOrderId)
+}
+
+// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetParentOrgName(parentOrgName *OrgParentName) {
+	q.ParentOrgName = parentOrgName
+	q.require(queryResponseSettlementsRecordsItemFieldParentOrgName)
+}
+
+// SetPaymentData sets the PaymentData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetPaymentData(paymentData *QueryPaymentData) {
+	q.PaymentData = paymentData
+	q.require(queryResponseSettlementsRecordsItemFieldPaymentData)
+}
+
+// SetPaymentTransId sets the PaymentTransId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetPaymentTransId(paymentTransId *string) {
+	q.PaymentTransId = paymentTransId
+	q.require(queryResponseSettlementsRecordsItemFieldPaymentTransId)
+}
+
+// SetPaymentTransStatus sets the PaymentTransStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetPaymentTransStatus(paymentTransStatus *TransStatus) {
+	q.PaymentTransStatus = paymentTransStatus
+	q.require(queryResponseSettlementsRecordsItemFieldPaymentTransStatus)
+}
+
+// SetPaypointDbaname sets the PaypointDbaname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetPaypointDbaname(paypointDbaname *string) {
+	q.PaypointDbaname = paypointDbaname
+	q.require(queryResponseSettlementsRecordsItemFieldPaypointDbaname)
+}
+
+// SetPaypointEntryname sets the PaypointEntryname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetPaypointEntryname(paypointEntryname *string) {
+	q.PaypointEntryname = paypointEntryname
+	q.require(queryResponseSettlementsRecordsItemFieldPaypointEntryname)
+}
+
+// SetPaypointLegalname sets the PaypointLegalname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetPaypointLegalname(paypointLegalname *string) {
+	q.PaypointLegalname = paypointLegalname
+	q.require(queryResponseSettlementsRecordsItemFieldPaypointLegalname)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetResponseData(responseData *QueryResponseData) {
+	q.ResponseData = responseData
+	q.require(queryResponseSettlementsRecordsItemFieldResponseData)
+}
+
+// SetScheduleReference sets the ScheduleReference field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetScheduleReference(scheduleReference *int) {
+	q.ScheduleReference = scheduleReference
+	q.require(queryResponseSettlementsRecordsItemFieldScheduleReference)
+}
+
+// SetSettledAmount sets the SettledAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetSettledAmount(settledAmount *float64) {
+	q.SettledAmount = settledAmount
+	q.require(queryResponseSettlementsRecordsItemFieldSettledAmount)
+}
+
+// SetSettlementDate sets the SettlementDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetSettlementDate(settlementDate *time.Time) {
+	q.SettlementDate = settlementDate
+	q.require(queryResponseSettlementsRecordsItemFieldSettlementDate)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetSource(source *Source) {
+	q.Source = source
+	q.require(queryResponseSettlementsRecordsItemFieldSource)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetStatus(status *SettlementStatus) {
+	q.Status = status
+	q.require(queryResponseSettlementsRecordsItemFieldStatus)
+}
+
+// SetTransactionEvents sets the TransactionEvents field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetTransactionEvents(transactionEvents []*QueryTransactionEvents) {
+	q.TransactionEvents = transactionEvents
+	q.require(queryResponseSettlementsRecordsItemFieldTransactionEvents)
+}
+
+// SetTransactionTime sets the TransactionTime field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetTransactionTime(transactionTime *TransactionTime) {
+	q.TransactionTime = transactionTime
+	q.require(queryResponseSettlementsRecordsItemFieldTransactionTime)
+}
+
+// SetTransMethod sets the TransMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetTransMethod(transMethod *string) {
+	q.TransMethod = transMethod
+	q.require(queryResponseSettlementsRecordsItemFieldTransMethod)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetType(type_ *string) {
+	q.Type = type_
+	q.require(queryResponseSettlementsRecordsItemFieldType)
+}
+
 func (q *QueryResponseSettlementsRecordsItem) UnmarshalJSON(data []byte) error {
 	type embed QueryResponseSettlementsRecordsItem
 	var unmarshaler = struct {
@@ -5996,7 +10835,8 @@ func (q *QueryResponseSettlementsRecordsItem) MarshalJSON() ([]byte, error) {
 		embed:          embed(*q),
 		SettlementDate: internal.NewOptionalDateTime(q.SettlementDate),
 	}
-	return json.Marshal(marshaler)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (q *QueryResponseSettlementsRecordsItem) String() string {
@@ -6010,6 +10850,19 @@ func (q *QueryResponseSettlementsRecordsItem) String() string {
 	}
 	return fmt.Sprintf("%#v", q)
 }
+
+var (
+	queryResponseSettlementsSummaryFieldHeldAmount     = big.NewInt(1 << 0)
+	queryResponseSettlementsSummaryFieldPageidentifier = big.NewInt(1 << 1)
+	queryResponseSettlementsSummaryFieldPageSize       = big.NewInt(1 << 2)
+	queryResponseSettlementsSummaryFieldRefunds        = big.NewInt(1 << 3)
+	queryResponseSettlementsSummaryFieldServiceFees    = big.NewInt(1 << 4)
+	queryResponseSettlementsSummaryFieldTotalAmount    = big.NewInt(1 << 5)
+	queryResponseSettlementsSummaryFieldTotalNetAmount = big.NewInt(1 << 6)
+	queryResponseSettlementsSummaryFieldTotalPages     = big.NewInt(1 << 7)
+	queryResponseSettlementsSummaryFieldTotalRecords   = big.NewInt(1 << 8)
+	queryResponseSettlementsSummaryFieldTransferAmount = big.NewInt(1 << 9)
+)
 
 type QueryResponseSettlementsSummary struct {
 	// Funds being held for fraud or risk concerns.
@@ -6031,6 +10884,9 @@ type QueryResponseSettlementsSummary struct {
 	TotalRecords *int `json:"totalRecords,omitempty" url:"totalRecords,omitempty"`
 	// The transfer amount is the net batch amount plus or minus any returns, refunds, billing and fees items, chargebacks, adjustments, and third party payments. This is the amount from the batch that's transferred to the merchant bank account.
 	TransferAmount *float64 `json:"transferAmount,omitempty" url:"transferAmount,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -6110,6 +10966,83 @@ func (q *QueryResponseSettlementsSummary) GetExtraProperties() map[string]interf
 	return q.extraProperties
 }
 
+func (q *QueryResponseSettlementsSummary) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetHeldAmount sets the HeldAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsSummary) SetHeldAmount(heldAmount *float64) {
+	q.HeldAmount = heldAmount
+	q.require(queryResponseSettlementsSummaryFieldHeldAmount)
+}
+
+// SetPageidentifier sets the Pageidentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsSummary) SetPageidentifier(pageidentifier *PageIdentifier) {
+	q.Pageidentifier = pageidentifier
+	q.require(queryResponseSettlementsSummaryFieldPageidentifier)
+}
+
+// SetPageSize sets the PageSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsSummary) SetPageSize(pageSize *int) {
+	q.PageSize = pageSize
+	q.require(queryResponseSettlementsSummaryFieldPageSize)
+}
+
+// SetRefunds sets the Refunds field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsSummary) SetRefunds(refunds *float64) {
+	q.Refunds = refunds
+	q.require(queryResponseSettlementsSummaryFieldRefunds)
+}
+
+// SetServiceFees sets the ServiceFees field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsSummary) SetServiceFees(serviceFees *float64) {
+	q.ServiceFees = serviceFees
+	q.require(queryResponseSettlementsSummaryFieldServiceFees)
+}
+
+// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsSummary) SetTotalAmount(totalAmount *float64) {
+	q.TotalAmount = totalAmount
+	q.require(queryResponseSettlementsSummaryFieldTotalAmount)
+}
+
+// SetTotalNetAmount sets the TotalNetAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsSummary) SetTotalNetAmount(totalNetAmount *float64) {
+	q.TotalNetAmount = totalNetAmount
+	q.require(queryResponseSettlementsSummaryFieldTotalNetAmount)
+}
+
+// SetTotalPages sets the TotalPages field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsSummary) SetTotalPages(totalPages *int) {
+	q.TotalPages = totalPages
+	q.require(queryResponseSettlementsSummaryFieldTotalPages)
+}
+
+// SetTotalRecords sets the TotalRecords field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsSummary) SetTotalRecords(totalRecords *int) {
+	q.TotalRecords = totalRecords
+	q.require(queryResponseSettlementsSummaryFieldTotalRecords)
+}
+
+// SetTransferAmount sets the TransferAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsSummary) SetTransferAmount(transferAmount *float64) {
+	q.TransferAmount = transferAmount
+	q.require(queryResponseSettlementsSummaryFieldTransferAmount)
+}
+
 func (q *QueryResponseSettlementsSummary) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryResponseSettlementsSummary
 	var value unmarshaler
@@ -6126,6 +11059,17 @@ func (q *QueryResponseSettlementsSummary) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (q *QueryResponseSettlementsSummary) MarshalJSON() ([]byte, error) {
+	type embed QueryResponseSettlementsSummary
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QueryResponseSettlementsSummary) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -6139,9 +11083,17 @@ func (q *QueryResponseSettlementsSummary) String() string {
 }
 
 // Response payload for queries related to transactions
+var (
+	queryResponseTransactionsFieldRecords = big.NewInt(1 << 0)
+	queryResponseTransactionsFieldSummary = big.NewInt(1 << 1)
+)
+
 type QueryResponseTransactions struct {
 	Records []*TransactionQueryRecords `json:"Records,omitempty" url:"Records,omitempty"`
 	Summary *QuerySummary              `json:"Summary,omitempty" url:"Summary,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -6165,6 +11117,27 @@ func (q *QueryResponseTransactions) GetExtraProperties() map[string]interface{} 
 	return q.extraProperties
 }
 
+func (q *QueryResponseTransactions) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseTransactions) SetRecords(records []*TransactionQueryRecords) {
+	q.Records = records
+	q.require(queryResponseTransactionsFieldRecords)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseTransactions) SetSummary(summary *QuerySummary) {
+	q.Summary = summary
+	q.require(queryResponseTransactionsFieldSummary)
+}
+
 func (q *QueryResponseTransactions) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryResponseTransactions
 	var value unmarshaler
@@ -6181,6 +11154,17 @@ func (q *QueryResponseTransactions) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (q *QueryResponseTransactions) MarshalJSON() ([]byte, error) {
+	type embed QueryResponseTransactions
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QueryResponseTransactions) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -6194,9 +11178,17 @@ func (q *QueryResponseTransactions) String() string {
 }
 
 // Response payload for queries related to vendors.
+var (
+	queryResponseVendorsFieldRecords = big.NewInt(1 << 0)
+	queryResponseVendorsFieldSummary = big.NewInt(1 << 1)
+)
+
 type QueryResponseVendors struct {
 	Records []*VendorQueryRecord `json:"Records,omitempty" url:"Records,omitempty"`
 	Summary *QuerySummary        `json:"Summary,omitempty" url:"Summary,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -6220,6 +11212,27 @@ func (q *QueryResponseVendors) GetExtraProperties() map[string]interface{} {
 	return q.extraProperties
 }
 
+func (q *QueryResponseVendors) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseVendors) SetRecords(records []*VendorQueryRecord) {
+	q.Records = records
+	q.require(queryResponseVendorsFieldRecords)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseVendors) SetSummary(summary *QuerySummary) {
+	q.Summary = summary
+	q.require(queryResponseVendorsFieldSummary)
+}
+
 func (q *QueryResponseVendors) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryResponseVendors
 	var value unmarshaler
@@ -6236,6 +11249,17 @@ func (q *QueryResponseVendors) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (q *QueryResponseVendors) MarshalJSON() ([]byte, error) {
+	type embed QueryResponseVendors
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QueryResponseVendors) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -6249,9 +11273,17 @@ func (q *QueryResponseVendors) String() string {
 }
 
 // Subscription query response body.
+var (
+	querySubscriptionResponseFieldRecords = big.NewInt(1 << 0)
+	querySubscriptionResponseFieldSummary = big.NewInt(1 << 1)
+)
+
 type QuerySubscriptionResponse struct {
 	Records *SubscriptionQueryRecords `json:"Records,omitempty" url:"Records,omitempty"`
 	Summary *QuerySummary             `json:"Summary,omitempty" url:"Summary,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -6275,6 +11307,27 @@ func (q *QuerySubscriptionResponse) GetExtraProperties() map[string]interface{} 
 	return q.extraProperties
 }
 
+func (q *QuerySubscriptionResponse) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QuerySubscriptionResponse) SetRecords(records *SubscriptionQueryRecords) {
+	q.Records = records
+	q.require(querySubscriptionResponseFieldRecords)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QuerySubscriptionResponse) SetSummary(summary *QuerySummary) {
+	q.Summary = summary
+	q.require(querySubscriptionResponseFieldSummary)
+}
+
 func (q *QuerySubscriptionResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler QuerySubscriptionResponse
 	var value unmarshaler
@@ -6291,6 +11344,17 @@ func (q *QuerySubscriptionResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (q *QuerySubscriptionResponse) MarshalJSON() ([]byte, error) {
+	type embed QuerySubscriptionResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (q *QuerySubscriptionResponse) String() string {
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
@@ -6303,9 +11367,17 @@ func (q *QuerySubscriptionResponse) String() string {
 	return fmt.Sprintf("%#v", q)
 }
 
+var (
+	queryUserResponseFieldRecords = big.NewInt(1 << 0)
+	queryUserResponseFieldSummary = big.NewInt(1 << 1)
+)
+
 type QueryUserResponse struct {
 	Records []*UserQueryRecord `json:"Records,omitempty" url:"Records,omitempty"`
 	Summary *QuerySummary      `json:"Summary,omitempty" url:"Summary,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -6329,6 +11401,27 @@ func (q *QueryUserResponse) GetExtraProperties() map[string]interface{} {
 	return q.extraProperties
 }
 
+func (q *QueryUserResponse) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryUserResponse) SetRecords(records []*UserQueryRecord) {
+	q.Records = records
+	q.require(queryUserResponseFieldRecords)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryUserResponse) SetSummary(summary *QuerySummary) {
+	q.Summary = summary
+	q.require(queryUserResponseFieldSummary)
+}
+
 func (q *QueryUserResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler QueryUserResponse
 	var value unmarshaler
@@ -6343,6 +11436,17 @@ func (q *QueryUserResponse) UnmarshalJSON(data []byte) error {
 	q.extraProperties = extraProperties
 	q.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (q *QueryUserResponse) MarshalJSON() ([]byte, error) {
+	type embed QueryUserResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (q *QueryUserResponse) String() string {
@@ -6362,6 +11466,40 @@ type RetrievalId = int64
 
 // Status of transaction. See [the docs](/developers/references/money-in-statuses#money-in-transaction-status) for a full reference.
 type TransStatus = int
+
+var (
+	transferFieldTransferId           = big.NewInt(1 << 0)
+	transferFieldPaypointId           = big.NewInt(1 << 1)
+	transferFieldBatchNumber          = big.NewInt(1 << 2)
+	transferFieldBatchCurrency        = big.NewInt(1 << 3)
+	transferFieldBatchRecords         = big.NewInt(1 << 4)
+	transferFieldTransferIdentifier   = big.NewInt(1 << 5)
+	transferFieldBatchId              = big.NewInt(1 << 6)
+	transferFieldPaypointEntryName    = big.NewInt(1 << 7)
+	transferFieldPaypointLegalName    = big.NewInt(1 << 8)
+	transferFieldPaypointDbaName      = big.NewInt(1 << 9)
+	transferFieldPaypointLogo         = big.NewInt(1 << 10)
+	transferFieldParentOrgName        = big.NewInt(1 << 11)
+	transferFieldParentOrgId          = big.NewInt(1 << 12)
+	transferFieldParentOrgEntryName   = big.NewInt(1 << 13)
+	transferFieldParentOrgLogo        = big.NewInt(1 << 14)
+	transferFieldExternalPaypointId   = big.NewInt(1 << 15)
+	transferFieldBankAccount          = big.NewInt(1 << 16)
+	transferFieldTransferDate         = big.NewInt(1 << 17)
+	transferFieldProcessor            = big.NewInt(1 << 18)
+	transferFieldTransferStatus       = big.NewInt(1 << 19)
+	transferFieldGrossAmount          = big.NewInt(1 << 20)
+	transferFieldChargeBackAmount     = big.NewInt(1 << 21)
+	transferFieldReturnedAmount       = big.NewInt(1 << 22)
+	transferFieldHoldAmount           = big.NewInt(1 << 23)
+	transferFieldReleasedAmount       = big.NewInt(1 << 24)
+	transferFieldBillingFeesAmount    = big.NewInt(1 << 25)
+	transferFieldThirdPartyPaidAmount = big.NewInt(1 << 26)
+	transferFieldAdjustmentsAmount    = big.NewInt(1 << 27)
+	transferFieldNetTransferAmount    = big.NewInt(1 << 28)
+	transferFieldEventsData           = big.NewInt(1 << 29)
+	transferFieldMessages             = big.NewInt(1 << 30)
+)
 
 type Transfer struct {
 	// The transfer ID.
@@ -6423,6 +11561,9 @@ type Transfer struct {
 	EventsData []*GeneralEvents `json:"eventsData,omitempty" url:"eventsData,omitempty"`
 	// List of messages related to the transfer.
 	Messages []*TransferMessage `json:"messages,omitempty" url:"messages,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -6649,6 +11790,230 @@ func (t *Transfer) GetExtraProperties() map[string]interface{} {
 	return t.extraProperties
 }
 
+func (t *Transfer) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetTransferId sets the TransferId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetTransferId(transferId int) {
+	t.TransferId = transferId
+	t.require(transferFieldTransferId)
+}
+
+// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetPaypointId(paypointId PaypointId) {
+	t.PaypointId = paypointId
+	t.require(transferFieldPaypointId)
+}
+
+// SetBatchNumber sets the BatchNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetBatchNumber(batchNumber BatchNumber) {
+	t.BatchNumber = batchNumber
+	t.require(transferFieldBatchNumber)
+}
+
+// SetBatchCurrency sets the BatchCurrency field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetBatchCurrency(batchCurrency *string) {
+	t.BatchCurrency = batchCurrency
+	t.require(transferFieldBatchCurrency)
+}
+
+// SetBatchRecords sets the BatchRecords field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetBatchRecords(batchRecords *int) {
+	t.BatchRecords = batchRecords
+	t.require(transferFieldBatchRecords)
+}
+
+// SetTransferIdentifier sets the TransferIdentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetTransferIdentifier(transferIdentifier TransferIdentifier) {
+	t.TransferIdentifier = transferIdentifier
+	t.require(transferFieldTransferIdentifier)
+}
+
+// SetBatchId sets the BatchId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetBatchId(batchId int) {
+	t.BatchId = batchId
+	t.require(transferFieldBatchId)
+}
+
+// SetPaypointEntryName sets the PaypointEntryName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetPaypointEntryName(paypointEntryName *string) {
+	t.PaypointEntryName = paypointEntryName
+	t.require(transferFieldPaypointEntryName)
+}
+
+// SetPaypointLegalName sets the PaypointLegalName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetPaypointLegalName(paypointLegalName *Legalname) {
+	t.PaypointLegalName = paypointLegalName
+	t.require(transferFieldPaypointLegalName)
+}
+
+// SetPaypointDbaName sets the PaypointDbaName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetPaypointDbaName(paypointDbaName *Dbaname) {
+	t.PaypointDbaName = paypointDbaName
+	t.require(transferFieldPaypointDbaName)
+}
+
+// SetPaypointLogo sets the PaypointLogo field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetPaypointLogo(paypointLogo *string) {
+	t.PaypointLogo = paypointLogo
+	t.require(transferFieldPaypointLogo)
+}
+
+// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetParentOrgName(parentOrgName *string) {
+	t.ParentOrgName = parentOrgName
+	t.require(transferFieldParentOrgName)
+}
+
+// SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetParentOrgId(parentOrgId *int) {
+	t.ParentOrgId = parentOrgId
+	t.require(transferFieldParentOrgId)
+}
+
+// SetParentOrgEntryName sets the ParentOrgEntryName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetParentOrgEntryName(parentOrgEntryName *string) {
+	t.ParentOrgEntryName = parentOrgEntryName
+	t.require(transferFieldParentOrgEntryName)
+}
+
+// SetParentOrgLogo sets the ParentOrgLogo field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetParentOrgLogo(parentOrgLogo *string) {
+	t.ParentOrgLogo = parentOrgLogo
+	t.require(transferFieldParentOrgLogo)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetExternalPaypointId(externalPaypointId *string) {
+	t.ExternalPaypointId = externalPaypointId
+	t.require(transferFieldExternalPaypointId)
+}
+
+// SetBankAccount sets the BankAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetBankAccount(bankAccount *TransferBankAccount) {
+	t.BankAccount = bankAccount
+	t.require(transferFieldBankAccount)
+}
+
+// SetTransferDate sets the TransferDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetTransferDate(transferDate string) {
+	t.TransferDate = transferDate
+	t.require(transferFieldTransferDate)
+}
+
+// SetProcessor sets the Processor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetProcessor(processor string) {
+	t.Processor = processor
+	t.require(transferFieldProcessor)
+}
+
+// SetTransferStatus sets the TransferStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetTransferStatus(transferStatus int) {
+	t.TransferStatus = transferStatus
+	t.require(transferFieldTransferStatus)
+}
+
+// SetGrossAmount sets the GrossAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetGrossAmount(grossAmount float64) {
+	t.GrossAmount = grossAmount
+	t.require(transferFieldGrossAmount)
+}
+
+// SetChargeBackAmount sets the ChargeBackAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetChargeBackAmount(chargeBackAmount float64) {
+	t.ChargeBackAmount = chargeBackAmount
+	t.require(transferFieldChargeBackAmount)
+}
+
+// SetReturnedAmount sets the ReturnedAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetReturnedAmount(returnedAmount float64) {
+	t.ReturnedAmount = returnedAmount
+	t.require(transferFieldReturnedAmount)
+}
+
+// SetHoldAmount sets the HoldAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetHoldAmount(holdAmount float64) {
+	t.HoldAmount = holdAmount
+	t.require(transferFieldHoldAmount)
+}
+
+// SetReleasedAmount sets the ReleasedAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetReleasedAmount(releasedAmount float64) {
+	t.ReleasedAmount = releasedAmount
+	t.require(transferFieldReleasedAmount)
+}
+
+// SetBillingFeesAmount sets the BillingFeesAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetBillingFeesAmount(billingFeesAmount float64) {
+	t.BillingFeesAmount = billingFeesAmount
+	t.require(transferFieldBillingFeesAmount)
+}
+
+// SetThirdPartyPaidAmount sets the ThirdPartyPaidAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetThirdPartyPaidAmount(thirdPartyPaidAmount float64) {
+	t.ThirdPartyPaidAmount = thirdPartyPaidAmount
+	t.require(transferFieldThirdPartyPaidAmount)
+}
+
+// SetAdjustmentsAmount sets the AdjustmentsAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetAdjustmentsAmount(adjustmentsAmount float64) {
+	t.AdjustmentsAmount = adjustmentsAmount
+	t.require(transferFieldAdjustmentsAmount)
+}
+
+// SetNetTransferAmount sets the NetTransferAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetNetTransferAmount(netTransferAmount float64) {
+	t.NetTransferAmount = netTransferAmount
+	t.require(transferFieldNetTransferAmount)
+}
+
+// SetEventsData sets the EventsData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetEventsData(eventsData []*GeneralEvents) {
+	t.EventsData = eventsData
+	t.require(transferFieldEventsData)
+}
+
+// SetMessages sets the Messages field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetMessages(messages []*TransferMessage) {
+	t.Messages = messages
+	t.require(transferFieldMessages)
+}
+
 func (t *Transfer) UnmarshalJSON(data []byte) error {
 	type unmarshaler Transfer
 	var value unmarshaler
@@ -6665,6 +12030,17 @@ func (t *Transfer) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (t *Transfer) MarshalJSON() ([]byte, error) {
+	type embed Transfer
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (t *Transfer) String() string {
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
@@ -6677,9 +12053,17 @@ func (t *Transfer) String() string {
 	return fmt.Sprintf("%#v", t)
 }
 
+var (
+	transferBankAccountFieldAccountNumber = big.NewInt(1 << 0)
+	transferBankAccountFieldRoutingNumber = big.NewInt(1 << 1)
+)
+
 type TransferBankAccount struct {
 	AccountNumber AccountNumber  `json:"accountNumber" url:"accountNumber"`
 	RoutingNumber RoutingAccount `json:"routingNumber" url:"routingNumber"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -6703,6 +12087,27 @@ func (t *TransferBankAccount) GetExtraProperties() map[string]interface{} {
 	return t.extraProperties
 }
 
+func (t *TransferBankAccount) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetAccountNumber sets the AccountNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferBankAccount) SetAccountNumber(accountNumber AccountNumber) {
+	t.AccountNumber = accountNumber
+	t.require(transferBankAccountFieldAccountNumber)
+}
+
+// SetRoutingNumber sets the RoutingNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferBankAccount) SetRoutingNumber(routingNumber RoutingAccount) {
+	t.RoutingNumber = routingNumber
+	t.require(transferBankAccountFieldRoutingNumber)
+}
+
 func (t *TransferBankAccount) UnmarshalJSON(data []byte) error {
 	type unmarshaler TransferBankAccount
 	var value unmarshaler
@@ -6717,6 +12122,17 @@ func (t *TransferBankAccount) UnmarshalJSON(data []byte) error {
 	t.extraProperties = extraProperties
 	t.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (t *TransferBankAccount) MarshalJSON() ([]byte, error) {
+	type embed TransferBankAccount
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (t *TransferBankAccount) String() string {
@@ -6734,6 +12150,17 @@ func (t *TransferBankAccount) String() string {
 // Unique identifier for the transfer.
 type TransferIdentifier = string
 
+var (
+	transferMessageFieldId                = big.NewInt(1 << 0)
+	transferMessageFieldRoomId            = big.NewInt(1 << 1)
+	transferMessageFieldUserId            = big.NewInt(1 << 2)
+	transferMessageFieldUserName          = big.NewInt(1 << 3)
+	transferMessageFieldContent           = big.NewInt(1 << 4)
+	transferMessageFieldCreatedAt         = big.NewInt(1 << 5)
+	transferMessageFieldMessageType       = big.NewInt(1 << 6)
+	transferMessageFieldMessageProperties = big.NewInt(1 << 7)
+)
+
 type TransferMessage struct {
 	Id                *int                       `json:"Id,omitempty" url:"Id,omitempty"`
 	RoomId            *int                       `json:"RoomId,omitempty" url:"RoomId,omitempty"`
@@ -6743,6 +12170,9 @@ type TransferMessage struct {
 	CreatedAt         *string                    `json:"CreatedAt,omitempty" url:"CreatedAt,omitempty"`
 	MessageType       *int                       `json:"MessageType,omitempty" url:"MessageType,omitempty"`
 	MessageProperties *TransferMessageProperties `json:"MessageProperties,omitempty" url:"MessageProperties,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -6808,6 +12238,69 @@ func (t *TransferMessage) GetExtraProperties() map[string]interface{} {
 	return t.extraProperties
 }
 
+func (t *TransferMessage) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferMessage) SetId(id *int) {
+	t.Id = id
+	t.require(transferMessageFieldId)
+}
+
+// SetRoomId sets the RoomId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferMessage) SetRoomId(roomId *int) {
+	t.RoomId = roomId
+	t.require(transferMessageFieldRoomId)
+}
+
+// SetUserId sets the UserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferMessage) SetUserId(userId *int) {
+	t.UserId = userId
+	t.require(transferMessageFieldUserId)
+}
+
+// SetUserName sets the UserName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferMessage) SetUserName(userName *string) {
+	t.UserName = userName
+	t.require(transferMessageFieldUserName)
+}
+
+// SetContent sets the Content field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferMessage) SetContent(content *string) {
+	t.Content = content
+	t.require(transferMessageFieldContent)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferMessage) SetCreatedAt(createdAt *string) {
+	t.CreatedAt = createdAt
+	t.require(transferMessageFieldCreatedAt)
+}
+
+// SetMessageType sets the MessageType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferMessage) SetMessageType(messageType *int) {
+	t.MessageType = messageType
+	t.require(transferMessageFieldMessageType)
+}
+
+// SetMessageProperties sets the MessageProperties field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferMessage) SetMessageProperties(messageProperties *TransferMessageProperties) {
+	t.MessageProperties = messageProperties
+	t.require(transferMessageFieldMessageProperties)
+}
+
 func (t *TransferMessage) UnmarshalJSON(data []byte) error {
 	type unmarshaler TransferMessage
 	var value unmarshaler
@@ -6824,6 +12317,17 @@ func (t *TransferMessage) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (t *TransferMessage) MarshalJSON() ([]byte, error) {
+	type embed TransferMessage
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (t *TransferMessage) String() string {
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
@@ -6836,9 +12340,17 @@ func (t *TransferMessage) String() string {
 	return fmt.Sprintf("%#v", t)
 }
 
+var (
+	transferMessagePropertiesFieldOriginalTransferStatus = big.NewInt(1 << 0)
+	transferMessagePropertiesFieldCurrentTransferStatus  = big.NewInt(1 << 1)
+)
+
 type TransferMessageProperties struct {
 	OriginalTransferStatus *string `json:"originalTransferStatus,omitempty" url:"originalTransferStatus,omitempty"`
 	CurrentTransferStatus  *string `json:"currentTransferStatus,omitempty" url:"currentTransferStatus,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -6862,6 +12374,27 @@ func (t *TransferMessageProperties) GetExtraProperties() map[string]interface{} 
 	return t.extraProperties
 }
 
+func (t *TransferMessageProperties) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetOriginalTransferStatus sets the OriginalTransferStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferMessageProperties) SetOriginalTransferStatus(originalTransferStatus *string) {
+	t.OriginalTransferStatus = originalTransferStatus
+	t.require(transferMessagePropertiesFieldOriginalTransferStatus)
+}
+
+// SetCurrentTransferStatus sets the CurrentTransferStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferMessageProperties) SetCurrentTransferStatus(currentTransferStatus *string) {
+	t.CurrentTransferStatus = currentTransferStatus
+	t.require(transferMessagePropertiesFieldCurrentTransferStatus)
+}
+
 func (t *TransferMessageProperties) UnmarshalJSON(data []byte) error {
 	type unmarshaler TransferMessageProperties
 	var value unmarshaler
@@ -6878,6 +12411,17 @@ func (t *TransferMessageProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (t *TransferMessageProperties) MarshalJSON() ([]byte, error) {
+	type embed TransferMessageProperties
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (t *TransferMessageProperties) String() string {
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
@@ -6890,9 +12434,17 @@ func (t *TransferMessageProperties) String() string {
 	return fmt.Sprintf("%#v", t)
 }
 
+var (
+	transferQueryResponseFieldRecords = big.NewInt(1 << 0)
+	transferQueryResponseFieldSummary = big.NewInt(1 << 1)
+)
+
 type TransferQueryResponse struct {
 	Records []*Transfer      `json:"Records" url:"Records"`
 	Summary *TransferSummary `json:"Summary" url:"Summary"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -6916,6 +12468,27 @@ func (t *TransferQueryResponse) GetExtraProperties() map[string]interface{} {
 	return t.extraProperties
 }
 
+func (t *TransferQueryResponse) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferQueryResponse) SetRecords(records []*Transfer) {
+	t.Records = records
+	t.require(transferQueryResponseFieldRecords)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferQueryResponse) SetSummary(summary *TransferSummary) {
+	t.Summary = summary
+	t.require(transferQueryResponseFieldSummary)
+}
+
 func (t *TransferQueryResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler TransferQueryResponse
 	var value unmarshaler
@@ -6932,6 +12505,17 @@ func (t *TransferQueryResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (t *TransferQueryResponse) MarshalJSON() ([]byte, error) {
+	type embed TransferQueryResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (t *TransferQueryResponse) String() string {
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
@@ -6944,10 +12528,19 @@ func (t *TransferQueryResponse) String() string {
 	return fmt.Sprintf("%#v", t)
 }
 
+var (
+	transferSummaryFieldTotalPages   = big.NewInt(1 << 0)
+	transferSummaryFieldTotalRecords = big.NewInt(1 << 1)
+	transferSummaryFieldPageSize     = big.NewInt(1 << 2)
+)
+
 type TransferSummary struct {
 	TotalPages   Totalpages   `json:"totalPages" url:"totalPages"`
 	TotalRecords Totalrecords `json:"totalRecords" url:"totalRecords"`
 	PageSize     Pagesize     `json:"pageSize" url:"pageSize"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -6978,6 +12571,34 @@ func (t *TransferSummary) GetExtraProperties() map[string]interface{} {
 	return t.extraProperties
 }
 
+func (t *TransferSummary) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetTotalPages sets the TotalPages field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferSummary) SetTotalPages(totalPages Totalpages) {
+	t.TotalPages = totalPages
+	t.require(transferSummaryFieldTotalPages)
+}
+
+// SetTotalRecords sets the TotalRecords field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferSummary) SetTotalRecords(totalRecords Totalrecords) {
+	t.TotalRecords = totalRecords
+	t.require(transferSummaryFieldTotalRecords)
+}
+
+// SetPageSize sets the PageSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferSummary) SetPageSize(pageSize Pagesize) {
+	t.PageSize = pageSize
+	t.require(transferSummaryFieldPageSize)
+}
+
 func (t *TransferSummary) UnmarshalJSON(data []byte) error {
 	type unmarshaler TransferSummary
 	var value unmarshaler
@@ -6994,6 +12615,17 @@ func (t *TransferSummary) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (t *TransferSummary) MarshalJSON() ([]byte, error) {
+	type embed TransferSummary
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (t *TransferSummary) String() string {
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
@@ -7006,9 +12638,17 @@ func (t *TransferSummary) String() string {
 	return fmt.Sprintf("%#v", t)
 }
 
+var (
+	vCardQueryResponseFieldSummary = big.NewInt(1 << 0)
+	vCardQueryResponseFieldRecords = big.NewInt(1 << 1)
+)
+
 type VCardQueryResponse struct {
 	Summary *VCardSummary  `json:"Summary,omitempty" url:"Summary,omitempty"`
 	Records []*VCardRecord `json:"Records,omitempty" url:"Records,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -7032,6 +12672,27 @@ func (v *VCardQueryResponse) GetExtraProperties() map[string]interface{} {
 	return v.extraProperties
 }
 
+func (v *VCardQueryResponse) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardQueryResponse) SetSummary(summary *VCardSummary) {
+	v.Summary = summary
+	v.require(vCardQueryResponseFieldSummary)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardQueryResponse) SetRecords(records []*VCardRecord) {
+	v.Records = records
+	v.require(vCardQueryResponseFieldRecords)
+}
+
 func (v *VCardQueryResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler VCardQueryResponse
 	var value unmarshaler
@@ -7048,6 +12709,17 @@ func (v *VCardQueryResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (v *VCardQueryResponse) MarshalJSON() ([]byte, error) {
+	type embed VCardQueryResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (v *VCardQueryResponse) String() string {
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
@@ -7059,6 +12731,36 @@ func (v *VCardQueryResponse) String() string {
 	}
 	return fmt.Sprintf("%#v", v)
 }
+
+var (
+	vCardRecordFieldVcardSent           = big.NewInt(1 << 0)
+	vCardRecordFieldCardToken           = big.NewInt(1 << 1)
+	vCardRecordFieldCardNumber          = big.NewInt(1 << 2)
+	vCardRecordFieldCvc                 = big.NewInt(1 << 3)
+	vCardRecordFieldExpirationDate      = big.NewInt(1 << 4)
+	vCardRecordFieldStatus              = big.NewInt(1 << 5)
+	vCardRecordFieldAmount              = big.NewInt(1 << 6)
+	vCardRecordFieldCurrentBalance      = big.NewInt(1 << 7)
+	vCardRecordFieldExpenseLimit        = big.NewInt(1 << 8)
+	vCardRecordFieldExpenseLimitPeriod  = big.NewInt(1 << 9)
+	vCardRecordFieldMaxNumberOfUses     = big.NewInt(1 << 10)
+	vCardRecordFieldCurrentNumberOfUses = big.NewInt(1 << 11)
+	vCardRecordFieldExactAmount         = big.NewInt(1 << 12)
+	vCardRecordFieldMcc                 = big.NewInt(1 << 13)
+	vCardRecordFieldTcc                 = big.NewInt(1 << 14)
+	vCardRecordFieldMisc1               = big.NewInt(1 << 15)
+	vCardRecordFieldMisc2               = big.NewInt(1 << 16)
+	vCardRecordFieldDateCreated         = big.NewInt(1 << 17)
+	vCardRecordFieldDateModified        = big.NewInt(1 << 18)
+	vCardRecordFieldAssociatedVendor    = big.NewInt(1 << 19)
+	vCardRecordFieldAssociatedCustomer  = big.NewInt(1 << 20)
+	vCardRecordFieldParentOrgName       = big.NewInt(1 << 21)
+	vCardRecordFieldPaypointDbaname     = big.NewInt(1 << 22)
+	vCardRecordFieldPaypointLegalname   = big.NewInt(1 << 23)
+	vCardRecordFieldPaypointEntryname   = big.NewInt(1 << 24)
+	vCardRecordFieldExternalPaypointId  = big.NewInt(1 << 25)
+	vCardRecordFieldPaypointId          = big.NewInt(1 << 26)
+)
 
 type VCardRecord struct {
 	// When `true`, the vCard has been sent.
@@ -7102,6 +12804,9 @@ type VCardRecord struct {
 	ExternalPaypointId *ExternalPaypointId `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
 	// The paypoint's unique identifier.
 	PaypointId *int `json:"paypointId,omitempty" url:"paypointId,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -7300,6 +13005,202 @@ func (v *VCardRecord) GetExtraProperties() map[string]interface{} {
 	return v.extraProperties
 }
 
+func (v *VCardRecord) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetVcardSent sets the VcardSent field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetVcardSent(vcardSent *bool) {
+	v.VcardSent = vcardSent
+	v.require(vCardRecordFieldVcardSent)
+}
+
+// SetCardToken sets the CardToken field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetCardToken(cardToken *string) {
+	v.CardToken = cardToken
+	v.require(vCardRecordFieldCardToken)
+}
+
+// SetCardNumber sets the CardNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetCardNumber(cardNumber *string) {
+	v.CardNumber = cardNumber
+	v.require(vCardRecordFieldCardNumber)
+}
+
+// SetCvc sets the Cvc field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetCvc(cvc *string) {
+	v.Cvc = cvc
+	v.require(vCardRecordFieldCvc)
+}
+
+// SetExpirationDate sets the ExpirationDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetExpirationDate(expirationDate *string) {
+	v.ExpirationDate = expirationDate
+	v.require(vCardRecordFieldExpirationDate)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetStatus(status *string) {
+	v.Status = status
+	v.require(vCardRecordFieldStatus)
+}
+
+// SetAmount sets the Amount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetAmount(amount *float64) {
+	v.Amount = amount
+	v.require(vCardRecordFieldAmount)
+}
+
+// SetCurrentBalance sets the CurrentBalance field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetCurrentBalance(currentBalance *float64) {
+	v.CurrentBalance = currentBalance
+	v.require(vCardRecordFieldCurrentBalance)
+}
+
+// SetExpenseLimit sets the ExpenseLimit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetExpenseLimit(expenseLimit *float64) {
+	v.ExpenseLimit = expenseLimit
+	v.require(vCardRecordFieldExpenseLimit)
+}
+
+// SetExpenseLimitPeriod sets the ExpenseLimitPeriod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetExpenseLimitPeriod(expenseLimitPeriod *string) {
+	v.ExpenseLimitPeriod = expenseLimitPeriod
+	v.require(vCardRecordFieldExpenseLimitPeriod)
+}
+
+// SetMaxNumberOfUses sets the MaxNumberOfUses field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetMaxNumberOfUses(maxNumberOfUses *int) {
+	v.MaxNumberOfUses = maxNumberOfUses
+	v.require(vCardRecordFieldMaxNumberOfUses)
+}
+
+// SetCurrentNumberOfUses sets the CurrentNumberOfUses field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetCurrentNumberOfUses(currentNumberOfUses *int) {
+	v.CurrentNumberOfUses = currentNumberOfUses
+	v.require(vCardRecordFieldCurrentNumberOfUses)
+}
+
+// SetExactAmount sets the ExactAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetExactAmount(exactAmount *bool) {
+	v.ExactAmount = exactAmount
+	v.require(vCardRecordFieldExactAmount)
+}
+
+// SetMcc sets the Mcc field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetMcc(mcc *string) {
+	v.Mcc = mcc
+	v.require(vCardRecordFieldMcc)
+}
+
+// SetTcc sets the Tcc field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetTcc(tcc *string) {
+	v.Tcc = tcc
+	v.require(vCardRecordFieldTcc)
+}
+
+// SetMisc1 sets the Misc1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetMisc1(misc1 *string) {
+	v.Misc1 = misc1
+	v.require(vCardRecordFieldMisc1)
+}
+
+// SetMisc2 sets the Misc2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetMisc2(misc2 *string) {
+	v.Misc2 = misc2
+	v.require(vCardRecordFieldMisc2)
+}
+
+// SetDateCreated sets the DateCreated field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetDateCreated(dateCreated *CreatedAt) {
+	v.DateCreated = dateCreated
+	v.require(vCardRecordFieldDateCreated)
+}
+
+// SetDateModified sets the DateModified field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetDateModified(dateModified *LastModified) {
+	v.DateModified = dateModified
+	v.require(vCardRecordFieldDateModified)
+}
+
+// SetAssociatedVendor sets the AssociatedVendor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetAssociatedVendor(associatedVendor *AssociatedVendor) {
+	v.AssociatedVendor = associatedVendor
+	v.require(vCardRecordFieldAssociatedVendor)
+}
+
+// SetAssociatedCustomer sets the AssociatedCustomer field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetAssociatedCustomer(associatedCustomer *CustomerData) {
+	v.AssociatedCustomer = associatedCustomer
+	v.require(vCardRecordFieldAssociatedCustomer)
+}
+
+// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetParentOrgName(parentOrgName *OrgParentName) {
+	v.ParentOrgName = parentOrgName
+	v.require(vCardRecordFieldParentOrgName)
+}
+
+// SetPaypointDbaname sets the PaypointDbaname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetPaypointDbaname(paypointDbaname *Dbaname) {
+	v.PaypointDbaname = paypointDbaname
+	v.require(vCardRecordFieldPaypointDbaname)
+}
+
+// SetPaypointLegalname sets the PaypointLegalname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetPaypointLegalname(paypointLegalname *Legalname) {
+	v.PaypointLegalname = paypointLegalname
+	v.require(vCardRecordFieldPaypointLegalname)
+}
+
+// SetPaypointEntryname sets the PaypointEntryname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetPaypointEntryname(paypointEntryname *Entrypointfield) {
+	v.PaypointEntryname = paypointEntryname
+	v.require(vCardRecordFieldPaypointEntryname)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
+	v.ExternalPaypointId = externalPaypointId
+	v.require(vCardRecordFieldExternalPaypointId)
+}
+
+// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetPaypointId(paypointId *int) {
+	v.PaypointId = paypointId
+	v.require(vCardRecordFieldPaypointId)
+}
+
 func (v *VCardRecord) UnmarshalJSON(data []byte) error {
 	type unmarshaler VCardRecord
 	var value unmarshaler
@@ -7316,6 +13217,17 @@ func (v *VCardRecord) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (v *VCardRecord) MarshalJSON() ([]byte, error) {
+	type embed VCardRecord
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (v *VCardRecord) String() string {
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
@@ -7327,6 +13239,17 @@ func (v *VCardRecord) String() string {
 	}
 	return fmt.Sprintf("%#v", v)
 }
+
+var (
+	vCardSummaryFieldTotalPages         = big.NewInt(1 << 0)
+	vCardSummaryFieldTotalRecords       = big.NewInt(1 << 1)
+	vCardSummaryFieldTotalAmount        = big.NewInt(1 << 2)
+	vCardSummaryFieldTotalactive        = big.NewInt(1 << 3)
+	vCardSummaryFieldTotalamounteactive = big.NewInt(1 << 4)
+	vCardSummaryFieldTotalbalanceactive = big.NewInt(1 << 5)
+	vCardSummaryFieldPageIdentifier     = big.NewInt(1 << 6)
+	vCardSummaryFieldPageSize           = big.NewInt(1 << 7)
+)
 
 type VCardSummary struct {
 	TotalPages   Totalpages   `json:"totalPages" url:"totalPages"`
@@ -7341,6 +13264,9 @@ type VCardSummary struct {
 	Totalbalanceactive float64         `json:"totalbalanceactive" url:"totalbalanceactive"`
 	PageIdentifier     *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 	PageSize           *Pagesize       `json:"pageSize,omitempty" url:"pageSize,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -7406,6 +13332,69 @@ func (v *VCardSummary) GetExtraProperties() map[string]interface{} {
 	return v.extraProperties
 }
 
+func (v *VCardSummary) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetTotalPages sets the TotalPages field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardSummary) SetTotalPages(totalPages Totalpages) {
+	v.TotalPages = totalPages
+	v.require(vCardSummaryFieldTotalPages)
+}
+
+// SetTotalRecords sets the TotalRecords field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardSummary) SetTotalRecords(totalRecords Totalrecords) {
+	v.TotalRecords = totalRecords
+	v.require(vCardSummaryFieldTotalRecords)
+}
+
+// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardSummary) SetTotalAmount(totalAmount float64) {
+	v.TotalAmount = totalAmount
+	v.require(vCardSummaryFieldTotalAmount)
+}
+
+// SetTotalactive sets the Totalactive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardSummary) SetTotalactive(totalactive int) {
+	v.Totalactive = totalactive
+	v.require(vCardSummaryFieldTotalactive)
+}
+
+// SetTotalamounteactive sets the Totalamounteactive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardSummary) SetTotalamounteactive(totalamounteactive float64) {
+	v.Totalamounteactive = totalamounteactive
+	v.require(vCardSummaryFieldTotalamounteactive)
+}
+
+// SetTotalbalanceactive sets the Totalbalanceactive field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardSummary) SetTotalbalanceactive(totalbalanceactive float64) {
+	v.Totalbalanceactive = totalbalanceactive
+	v.require(vCardSummaryFieldTotalbalanceactive)
+}
+
+// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardSummary) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+	v.PageIdentifier = pageIdentifier
+	v.require(vCardSummaryFieldPageIdentifier)
+}
+
+// SetPageSize sets the PageSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardSummary) SetPageSize(pageSize *Pagesize) {
+	v.PageSize = pageSize
+	v.require(vCardSummaryFieldPageSize)
+}
+
 func (v *VCardSummary) UnmarshalJSON(data []byte) error {
 	type unmarshaler VCardSummary
 	var value unmarshaler
@@ -7420,6 +13409,17 @@ func (v *VCardSummary) UnmarshalJSON(data []byte) error {
 	v.extraProperties = extraProperties
 	v.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (v *VCardSummary) MarshalJSON() ([]byte, error) {
+	type embed VCardSummary
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (v *VCardSummary) String() string {

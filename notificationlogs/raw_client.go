@@ -5,7 +5,7 @@ package notificationlogs
 import (
 	context "context"
 	uuid "github.com/google/uuid"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -33,9 +33,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) SearchNotificationLogs(
 	ctx context.Context,
-	request *sdk.SearchNotificationLogsRequest,
+	request *sdkgo.SearchNotificationLogsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*sdk.NotificationLog], error) {
+) (*core.Response[[]*sdkgo.NotificationLog], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -56,27 +56,27 @@ func (r *RawClient) SearchNotificationLogs(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response []*sdk.NotificationLog
+	var response []*sdkgo.NotificationLog
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -95,7 +95,7 @@ func (r *RawClient) SearchNotificationLogs(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*sdk.NotificationLog]{
+	return &core.Response[[]*sdkgo.NotificationLog]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -107,7 +107,7 @@ func (r *RawClient) GetNotificationLog(
 	// The notification log entry.
 	uuid uuid.UUID,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.NotificationLogDetail], error) {
+) (*core.Response[*sdkgo.NotificationLogDetail], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -124,27 +124,27 @@ func (r *RawClient) GetNotificationLog(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.NotificationLogDetail
+	var response *sdkgo.NotificationLogDetail
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -162,7 +162,7 @@ func (r *RawClient) GetNotificationLog(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.NotificationLogDetail]{
+	return &core.Response[*sdkgo.NotificationLogDetail]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -174,7 +174,7 @@ func (r *RawClient) RetryNotificationLog(
 	// Unique id
 	uuid uuid.UUID,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.NotificationLogDetail], error) {
+) (*core.Response[*sdkgo.NotificationLogDetail], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -191,27 +191,27 @@ func (r *RawClient) RetryNotificationLog(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.NotificationLogDetail
+	var response *sdkgo.NotificationLogDetail
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -229,7 +229,7 @@ func (r *RawClient) RetryNotificationLog(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.NotificationLogDetail]{
+	return &core.Response[*sdkgo.NotificationLogDetail]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -238,7 +238,7 @@ func (r *RawClient) RetryNotificationLog(
 
 func (r *RawClient) BulkRetryNotificationLogs(
 	ctx context.Context,
-	request sdk.BulkRetryRequest,
+	request sdkgo.BulkRetryRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[any], error) {
 	options := core.NewRequestOptions(opts...)
@@ -254,22 +254,22 @@ func (r *RawClient) BulkRetryNotificationLogs(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},

@@ -4,7 +4,7 @@ package paypoint
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -35,7 +35,7 @@ func (r *RawClient) GetBasicEntry(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.GetBasicEntryResponse], error) {
+) (*core.Response[*sdkgo.GetBasicEntryResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -52,27 +52,27 @@ func (r *RawClient) GetBasicEntry(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.GetBasicEntryResponse
+	var response *sdkgo.GetBasicEntryResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -90,7 +90,7 @@ func (r *RawClient) GetBasicEntry(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.GetBasicEntryResponse]{
+	return &core.Response[*sdkgo.GetBasicEntryResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -102,7 +102,7 @@ func (r *RawClient) GetBasicEntryById(
 	// Paypoint ID. You can find this value by querying `/api/Query/paypoints/{orgId}`
 	idPaypoint string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.GetBasicEntryByIdResponse], error) {
+) (*core.Response[*sdkgo.GetBasicEntryByIdResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -119,27 +119,27 @@ func (r *RawClient) GetBasicEntryById(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.GetBasicEntryByIdResponse
+	var response *sdkgo.GetBasicEntryByIdResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -157,7 +157,7 @@ func (r *RawClient) GetBasicEntryById(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.GetBasicEntryByIdResponse]{
+	return &core.Response[*sdkgo.GetBasicEntryByIdResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -168,9 +168,9 @@ func (r *RawClient) GetEntryConfig(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdk.GetEntryConfigRequest,
+	request *sdkgo.GetEntryConfigRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.GetEntryConfigResponse], error) {
+) (*core.Response[*sdkgo.GetEntryConfigResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -194,27 +194,27 @@ func (r *RawClient) GetEntryConfig(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.GetEntryConfigResponse
+	var response *sdkgo.GetEntryConfigResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -232,7 +232,7 @@ func (r *RawClient) GetEntryConfig(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.GetEntryConfigResponse]{
+	return &core.Response[*sdkgo.GetEntryConfigResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -246,7 +246,7 @@ func (r *RawClient) GetPage(
 	// Payment page identifier. The subdomain value is the last portion of the payment page URL. For example, in`https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
 	subdomain string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliPages], error) {
+) (*core.Response[*sdkgo.PayabliPages], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -264,27 +264,27 @@ func (r *RawClient) GetPage(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliPages
+	var response *sdkgo.PayabliPages
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -302,7 +302,7 @@ func (r *RawClient) GetPage(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliPages]{
+	return &core.Response[*sdkgo.PayabliPages]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -316,7 +316,7 @@ func (r *RawClient) RemovePage(
 	// Payment page identifier. The subdomain value is the last portion of the payment page URL. For example, in`https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
 	subdomain string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponseGeneric2Part], error) {
+) (*core.Response[*sdkgo.PayabliApiResponseGeneric2Part], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -334,27 +334,27 @@ func (r *RawClient) RemovePage(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponseGeneric2Part
+	var response *sdkgo.PayabliApiResponseGeneric2Part
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -372,7 +372,7 @@ func (r *RawClient) RemovePage(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponseGeneric2Part]{
+	return &core.Response[*sdkgo.PayabliApiResponseGeneric2Part]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -383,9 +383,9 @@ func (r *RawClient) SaveLogo(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdk.FileContent,
+	request *sdkgo.FileContent,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponse00Responsedatanonobject], error) {
+) (*core.Response[*sdkgo.PayabliApiResponse00Responsedatanonobject], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -402,27 +402,27 @@ func (r *RawClient) SaveLogo(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponse00Responsedatanonobject
+	var response *sdkgo.PayabliApiResponse00Responsedatanonobject
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -441,7 +441,7 @@ func (r *RawClient) SaveLogo(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponse00Responsedatanonobject]{
+	return &core.Response[*sdkgo.PayabliApiResponse00Responsedatanonobject]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -453,7 +453,7 @@ func (r *RawClient) SettingsPage(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.SettingsQueryRecord], error) {
+) (*core.Response[*sdkgo.SettingsQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -470,27 +470,27 @@ func (r *RawClient) SettingsPage(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.SettingsQueryRecord
+	var response *sdkgo.SettingsQueryRecord
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -508,7 +508,7 @@ func (r *RawClient) SettingsPage(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.SettingsQueryRecord]{
+	return &core.Response[*sdkgo.SettingsQueryRecord]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -517,9 +517,9 @@ func (r *RawClient) SettingsPage(
 
 func (r *RawClient) Migrate(
 	ctx context.Context,
-	request *sdk.PaypointMoveRequest,
+	request *sdkgo.PaypointMoveRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.MigratePaypointResponse], error) {
+) (*core.Response[*sdkgo.MigratePaypointResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -533,27 +533,27 @@ func (r *RawClient) Migrate(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.MigratePaypointResponse
+	var response *sdkgo.MigratePaypointResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -572,7 +572,7 @@ func (r *RawClient) Migrate(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.MigratePaypointResponse]{
+	return &core.Response[*sdkgo.MigratePaypointResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

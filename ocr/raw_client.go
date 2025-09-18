@@ -4,7 +4,7 @@ package ocr
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -32,10 +32,10 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) OcrDocumentForm(
 	ctx context.Context,
-	typeResult sdk.TypeResult,
-	request *sdk.FileContentImageOnly,
+	typeResult sdkgo.TypeResult,
+	request *sdkgo.FileContentImageOnly,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponseOcr], error) {
+) (*core.Response[*sdkgo.PayabliApiResponseOcr], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -52,27 +52,27 @@ func (r *RawClient) OcrDocumentForm(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponseOcr
+	var response *sdkgo.PayabliApiResponseOcr
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -91,7 +91,7 @@ func (r *RawClient) OcrDocumentForm(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponseOcr]{
+	return &core.Response[*sdkgo.PayabliApiResponseOcr]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -100,10 +100,10 @@ func (r *RawClient) OcrDocumentForm(
 
 func (r *RawClient) OcrDocumentJson(
 	ctx context.Context,
-	typeResult sdk.TypeResult,
-	request *sdk.FileContentImageOnly,
+	typeResult sdkgo.TypeResult,
+	request *sdkgo.FileContentImageOnly,
 	opts ...option.RequestOption,
-) (*core.Response[*sdk.PayabliApiResponseOcr], error) {
+) (*core.Response[*sdkgo.PayabliApiResponseOcr], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -120,27 +120,27 @@ func (r *RawClient) OcrDocumentJson(
 	)
 	errorCodes := internal.ErrorCodes{
 		400: func(apiError *core.APIError) error {
-			return &sdk.BadRequestError{
+			return &sdkgo.BadRequestError{
 				APIError: apiError,
 			}
 		},
 		401: func(apiError *core.APIError) error {
-			return &sdk.UnauthorizedError{
+			return &sdkgo.UnauthorizedError{
 				APIError: apiError,
 			}
 		},
 		500: func(apiError *core.APIError) error {
-			return &sdk.InternalServerError{
+			return &sdkgo.InternalServerError{
 				APIError: apiError,
 			}
 		},
 		503: func(apiError *core.APIError) error {
-			return &sdk.ServiceUnavailableError{
+			return &sdkgo.ServiceUnavailableError{
 				APIError: apiError,
 			}
 		},
 	}
-	var response *sdk.PayabliApiResponseOcr
+	var response *sdkgo.PayabliApiResponseOcr
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -159,7 +159,7 @@ func (r *RawClient) OcrDocumentJson(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdk.PayabliApiResponseOcr]{
+	return &core.Response[*sdkgo.PayabliApiResponseOcr]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

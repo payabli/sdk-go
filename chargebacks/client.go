@@ -4,7 +4,7 @@ package chargebacks
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -37,9 +37,9 @@ func (c *Client) AddResponse(
 	ctx context.Context,
 	// ID of the chargeback or return record.
 	id int64,
-	request *sdk.ResponseChargeBack,
+	request *sdkgo.ResponseChargeBack,
 	opts ...option.RequestOption,
-) (*sdk.AddResponseResponse, error) {
+) (*sdkgo.AddResponseResponse, error) {
 	response, err := c.WithRawResponse.AddResponse(
 		ctx,
 		id,
@@ -58,7 +58,7 @@ func (c *Client) GetChargeback(
 	// ID of the chargeback or return record. This is returned as `chargebackId` in the [RecievedChargeback](/developers/developer-guides/webhook-payloads#receivedChargeback) and [ReceivedAchReturn](/developers/developer-guides/webhook-payloads#receivedachreturn) webhook notifications.
 	id int64,
 	opts ...option.RequestOption,
-) (*sdk.ChargebackQueryRecords, error) {
+) (*sdkgo.ChargebackQueryRecords, error) {
 	response, err := c.WithRawResponse.GetChargeback(
 		ctx,
 		id,

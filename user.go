@@ -6,6 +6,13 @@ import (
 	json "encoding/json"
 	fmt "fmt"
 	internal "github.com/payabli/sdk-go/internal"
+	big "math/big"
+)
+
+var (
+	userAuthResetRequestFieldEmail     = big.NewInt(1 << 0)
+	userAuthResetRequestFieldEntry     = big.NewInt(1 << 1)
+	userAuthResetRequestFieldEntryType = big.NewInt(1 << 2)
 )
 
 type UserAuthResetRequest struct {
@@ -15,7 +22,47 @@ type UserAuthResetRequest struct {
 	Entry *string `json:"entry,omitempty" url:"-"`
 	// Type of entry identifier: 0 - partner, 2 - paypoint. This is used by front-end apps, required if an Entry is indicated.
 	EntryType *int `json:"entryType,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (u *UserAuthResetRequest) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
+	}
+	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetEmail sets the Email field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserAuthResetRequest) SetEmail(email *Email) {
+	u.Email = email
+	u.require(userAuthResetRequestFieldEmail)
+}
+
+// SetEntry sets the Entry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserAuthResetRequest) SetEntry(entry *string) {
+	u.Entry = entry
+	u.require(userAuthResetRequestFieldEntry)
+}
+
+// SetEntryType sets the EntryType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserAuthResetRequest) SetEntryType(entryType *int) {
+	u.EntryType = entryType
+	u.require(userAuthResetRequestFieldEntryType)
+}
+
+var (
+	userAuthRequestFieldEmail       = big.NewInt(1 << 0)
+	userAuthRequestFieldEntry       = big.NewInt(1 << 1)
+	userAuthRequestFieldEntryType   = big.NewInt(1 << 2)
+	userAuthRequestFieldPsw         = big.NewInt(1 << 3)
+	userAuthRequestFieldUserId      = big.NewInt(1 << 4)
+	userAuthRequestFieldUserTokenId = big.NewInt(1 << 5)
+)
 
 type UserAuthRequest struct {
 	Email *Email `json:"email,omitempty" url:"-"`
@@ -26,28 +73,167 @@ type UserAuthRequest struct {
 	Psw         *string `json:"psw,omitempty" url:"-"`
 	UserId      *int64  `json:"userId,omitempty" url:"-"`
 	UserTokenId *string `json:"userTokenId,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (u *UserAuthRequest) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
+	}
+	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetEmail sets the Email field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserAuthRequest) SetEmail(email *Email) {
+	u.Email = email
+	u.require(userAuthRequestFieldEmail)
+}
+
+// SetEntry sets the Entry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserAuthRequest) SetEntry(entry *string) {
+	u.Entry = entry
+	u.require(userAuthRequestFieldEntry)
+}
+
+// SetEntryType sets the EntryType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserAuthRequest) SetEntryType(entryType *int) {
+	u.EntryType = entryType
+	u.require(userAuthRequestFieldEntryType)
+}
+
+// SetPsw sets the Psw field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserAuthRequest) SetPsw(psw *string) {
+	u.Psw = psw
+	u.require(userAuthRequestFieldPsw)
+}
+
+// SetUserId sets the UserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserAuthRequest) SetUserId(userId *int64) {
+	u.UserId = userId
+	u.require(userAuthRequestFieldUserId)
+}
+
+// SetUserTokenId sets the UserTokenId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserAuthRequest) SetUserTokenId(userTokenId *string) {
+	u.UserTokenId = userTokenId
+	u.require(userAuthRequestFieldUserTokenId)
+}
+
+var (
+	userAuthPswResetRequestFieldPsw = big.NewInt(1 << 0)
+)
 
 type UserAuthPswResetRequest struct {
 	// New User password
 	Psw *string `json:"psw,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (u *UserAuthPswResetRequest) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
+	}
+	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetPsw sets the Psw field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserAuthPswResetRequest) SetPsw(psw *string) {
+	u.Psw = psw
+	u.require(userAuthPswResetRequestFieldPsw)
+}
+
+var (
+	getUserRequestFieldEntry = big.NewInt(1 << 0)
+	getUserRequestFieldLevel = big.NewInt(1 << 1)
+)
 
 type GetUserRequest struct {
 	// The entrypoint identifier.
 	Entry *string `json:"-" url:"entry,omitempty"`
 	// Entry level: 0 - partner, 2 - paypoint
 	Level *int `json:"-" url:"level,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (g *GetUserRequest) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetEntry sets the Entry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetUserRequest) SetEntry(entry *string) {
+	g.Entry = entry
+	g.require(getUserRequestFieldEntry)
+}
+
+// SetLevel sets the Level field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetUserRequest) SetLevel(level *int) {
+	g.Level = level
+	g.require(getUserRequestFieldLevel)
+}
+
+var (
+	mfaValidationDataFieldMfaCode           = big.NewInt(1 << 0)
+	mfaValidationDataFieldMfaValidationCode = big.NewInt(1 << 1)
+)
 
 type MfaValidationData struct {
 	MfaCode           *string            `json:"mfaCode,omitempty" url:"-"`
 	MfaValidationCode *MfaValidationCode `json:"mfaValidationCode,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
+
+func (m *MfaValidationData) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetMfaCode sets the MfaCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MfaValidationData) SetMfaCode(mfaCode *string) {
+	m.MfaCode = mfaCode
+	m.require(mfaValidationDataFieldMfaCode)
+}
+
+// SetMfaValidationCode sets the MfaValidationCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MfaValidationData) SetMfaValidationCode(mfaValidationCode *MfaValidationCode) {
+	m.MfaValidationCode = mfaValidationCode
+	m.require(mfaValidationDataFieldMfaValidationCode)
+}
+
+var (
+	mfaDataFieldMfa     = big.NewInt(1 << 0)
+	mfaDataFieldMfaMode = big.NewInt(1 << 1)
+)
 
 type MfaData struct {
 	Mfa     *bool    `json:"mfa,omitempty" url:"mfa,omitempty"`
 	MfaMode *MfaMode `json:"mfaMode,omitempty" url:"mfaMode,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -71,6 +257,27 @@ func (m *MfaData) GetExtraProperties() map[string]interface{} {
 	return m.extraProperties
 }
 
+func (m *MfaData) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetMfa sets the Mfa field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MfaData) SetMfa(mfa *bool) {
+	m.Mfa = mfa
+	m.require(mfaDataFieldMfa)
+}
+
+// SetMfaMode sets the MfaMode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MfaData) SetMfaMode(mfaMode *MfaMode) {
+	m.MfaMode = mfaMode
+	m.require(mfaDataFieldMfaMode)
+}
+
 func (m *MfaData) UnmarshalJSON(data []byte) error {
 	type unmarshaler MfaData
 	var value unmarshaler
@@ -85,6 +292,17 @@ func (m *MfaData) UnmarshalJSON(data []byte) error {
 	m.extraProperties = extraProperties
 	m.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (m *MfaData) MarshalJSON() ([]byte, error) {
+	type embed MfaData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (m *MfaData) String() string {
@@ -102,9 +320,17 @@ func (m *MfaData) String() string {
 // The validation code for multi-factor authentication, typically a hash or similar encrypted format.
 type MfaValidationCode = string
 
+var (
+	orgScopeFieldOrgId   = big.NewInt(1 << 0)
+	orgScopeFieldOrgType = big.NewInt(1 << 1)
+)
+
 type OrgScope struct {
 	OrgId   *Orgid   `json:"orgId,omitempty" url:"orgId,omitempty"`
 	OrgType *Orgtype `json:"orgType,omitempty" url:"orgType,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -128,6 +354,27 @@ func (o *OrgScope) GetExtraProperties() map[string]interface{} {
 	return o.extraProperties
 }
 
+func (o *OrgScope) require(field *big.Int) {
+	if o.explicitFields == nil {
+		o.explicitFields = big.NewInt(0)
+	}
+	o.explicitFields.Or(o.explicitFields, field)
+}
+
+// SetOrgId sets the OrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OrgScope) SetOrgId(orgId *Orgid) {
+	o.OrgId = orgId
+	o.require(orgScopeFieldOrgId)
+}
+
+// SetOrgType sets the OrgType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OrgScope) SetOrgType(orgType *Orgtype) {
+	o.OrgType = orgType
+	o.require(orgScopeFieldOrgType)
+}
+
 func (o *OrgScope) UnmarshalJSON(data []byte) error {
 	type unmarshaler OrgScope
 	var value unmarshaler
@@ -144,6 +391,17 @@ func (o *OrgScope) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *OrgScope) MarshalJSON() ([]byte, error) {
+	type embed OrgScope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*o),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, o.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (o *OrgScope) String() string {
 	if len(o.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
@@ -156,6 +414,15 @@ func (o *OrgScope) String() string {
 	return fmt.Sprintf("%#v", o)
 }
 
+var (
+	payabliApiResponseMfaBasicFieldIsSuccess         = big.NewInt(1 << 0)
+	payabliApiResponseMfaBasicFieldMfa               = big.NewInt(1 << 1)
+	payabliApiResponseMfaBasicFieldMfaMode           = big.NewInt(1 << 2)
+	payabliApiResponseMfaBasicFieldMfaValidationCode = big.NewInt(1 << 3)
+	payabliApiResponseMfaBasicFieldResponseData      = big.NewInt(1 << 4)
+	payabliApiResponseMfaBasicFieldResponseText      = big.NewInt(1 << 5)
+)
+
 type PayabliApiResponseMfaBasic struct {
 	IsSuccess *IsSuccess `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	Mfa       *Mfa       `json:"mfa,omitempty" url:"mfa,omitempty"`
@@ -165,6 +432,9 @@ type PayabliApiResponseMfaBasic struct {
 	// Data returned by the response, masked for security.
 	ResponseData *string      `json:"responseData,omitempty" url:"responseData,omitempty"`
 	ResponseText ResponseText `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -216,6 +486,55 @@ func (p *PayabliApiResponseMfaBasic) GetExtraProperties() map[string]interface{}
 	return p.extraProperties
 }
 
+func (p *PayabliApiResponseMfaBasic) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseMfaBasic) SetIsSuccess(isSuccess *IsSuccess) {
+	p.IsSuccess = isSuccess
+	p.require(payabliApiResponseMfaBasicFieldIsSuccess)
+}
+
+// SetMfa sets the Mfa field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseMfaBasic) SetMfa(mfa *Mfa) {
+	p.Mfa = mfa
+	p.require(payabliApiResponseMfaBasicFieldMfa)
+}
+
+// SetMfaMode sets the MfaMode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseMfaBasic) SetMfaMode(mfaMode *string) {
+	p.MfaMode = mfaMode
+	p.require(payabliApiResponseMfaBasicFieldMfaMode)
+}
+
+// SetMfaValidationCode sets the MfaValidationCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseMfaBasic) SetMfaValidationCode(mfaValidationCode *MfaValidationCode) {
+	p.MfaValidationCode = mfaValidationCode
+	p.require(payabliApiResponseMfaBasicFieldMfaValidationCode)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseMfaBasic) SetResponseData(responseData *string) {
+	p.ResponseData = responseData
+	p.require(payabliApiResponseMfaBasicFieldResponseData)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseMfaBasic) SetResponseText(responseText ResponseText) {
+	p.ResponseText = responseText
+	p.require(payabliApiResponseMfaBasicFieldResponseText)
+}
+
 func (p *PayabliApiResponseMfaBasic) UnmarshalJSON(data []byte) error {
 	type unmarshaler PayabliApiResponseMfaBasic
 	var value unmarshaler
@@ -232,6 +551,17 @@ func (p *PayabliApiResponseMfaBasic) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (p *PayabliApiResponseMfaBasic) MarshalJSON() ([]byte, error) {
+	type embed PayabliApiResponseMfaBasic
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (p *PayabliApiResponseMfaBasic) String() string {
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
@@ -244,12 +574,23 @@ func (p *PayabliApiResponseMfaBasic) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+var (
+	payabliApiResponseUserMfaFieldInactiveTokenTime = big.NewInt(1 << 0)
+	payabliApiResponseUserMfaFieldIsSuccess         = big.NewInt(1 << 1)
+	payabliApiResponseUserMfaFieldRemaining         = big.NewInt(1 << 2)
+	payabliApiResponseUserMfaFieldResponseData      = big.NewInt(1 << 3)
+	payabliApiResponseUserMfaFieldResponseText      = big.NewInt(1 << 4)
+)
+
 type PayabliApiResponseUserMfa struct {
 	InactiveTokenTime *int                   `json:"inactiveTokenTime,omitempty" url:"inactiveTokenTime,omitempty"`
 	IsSuccess         *IsSuccess             `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	Remaining         *int                   `json:"remaining,omitempty" url:"remaining,omitempty"`
 	ResponseData      *Responsedatanonobject `json:"responseData,omitempty" url:"responseData,omitempty"`
 	ResponseText      ResponseText           `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -294,6 +635,48 @@ func (p *PayabliApiResponseUserMfa) GetExtraProperties() map[string]interface{} 
 	return p.extraProperties
 }
 
+func (p *PayabliApiResponseUserMfa) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetInactiveTokenTime sets the InactiveTokenTime field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseUserMfa) SetInactiveTokenTime(inactiveTokenTime *int) {
+	p.InactiveTokenTime = inactiveTokenTime
+	p.require(payabliApiResponseUserMfaFieldInactiveTokenTime)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseUserMfa) SetIsSuccess(isSuccess *IsSuccess) {
+	p.IsSuccess = isSuccess
+	p.require(payabliApiResponseUserMfaFieldIsSuccess)
+}
+
+// SetRemaining sets the Remaining field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseUserMfa) SetRemaining(remaining *int) {
+	p.Remaining = remaining
+	p.require(payabliApiResponseUserMfaFieldRemaining)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseUserMfa) SetResponseData(responseData *Responsedatanonobject) {
+	p.ResponseData = responseData
+	p.require(payabliApiResponseUserMfaFieldResponseData)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponseUserMfa) SetResponseText(responseText ResponseText) {
+	p.ResponseText = responseText
+	p.require(payabliApiResponseUserMfaFieldResponseText)
+}
+
 func (p *PayabliApiResponseUserMfa) UnmarshalJSON(data []byte) error {
 	type unmarshaler PayabliApiResponseUserMfa
 	var value unmarshaler
@@ -310,6 +693,17 @@ func (p *PayabliApiResponseUserMfa) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (p *PayabliApiResponseUserMfa) MarshalJSON() ([]byte, error) {
+	type embed PayabliApiResponseUserMfa
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (p *PayabliApiResponseUserMfa) String() string {
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
@@ -321,6 +715,20 @@ func (p *PayabliApiResponseUserMfa) String() string {
 	}
 	return fmt.Sprintf("%#v", p)
 }
+
+var (
+	userDataFieldAccess         = big.NewInt(1 << 0)
+	userDataFieldAdditionalData = big.NewInt(1 << 1)
+	userDataFieldEmail          = big.NewInt(1 << 2)
+	userDataFieldLanguage       = big.NewInt(1 << 3)
+	userDataFieldMfaData        = big.NewInt(1 << 4)
+	userDataFieldName           = big.NewInt(1 << 5)
+	userDataFieldPhone          = big.NewInt(1 << 6)
+	userDataFieldPwd            = big.NewInt(1 << 7)
+	userDataFieldScope          = big.NewInt(1 << 8)
+	userDataFieldTimeZone       = big.NewInt(1 << 9)
+	userDataFieldUsrStatus      = big.NewInt(1 << 10)
+)
 
 type UserData struct {
 	Access         []*UsrAccess    `json:"access,omitempty" url:"access,omitempty"`
@@ -336,6 +744,9 @@ type UserData struct {
 	Scope     []*OrgScope  `json:"scope,omitempty" url:"scope,omitempty"`
 	TimeZone  *Timezone    `json:"timeZone,omitempty" url:"timeZone,omitempty"`
 	UsrStatus *UsrStatus   `json:"usrStatus,omitempty" url:"usrStatus,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -422,6 +833,90 @@ func (u *UserData) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
 
+func (u *UserData) require(field *big.Int) {
+	if u.explicitFields == nil {
+		u.explicitFields = big.NewInt(0)
+	}
+	u.explicitFields.Or(u.explicitFields, field)
+}
+
+// SetAccess sets the Access field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserData) SetAccess(access []*UsrAccess) {
+	u.Access = access
+	u.require(userDataFieldAccess)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserData) SetAdditionalData(additionalData *AdditionalData) {
+	u.AdditionalData = additionalData
+	u.require(userDataFieldAdditionalData)
+}
+
+// SetEmail sets the Email field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserData) SetEmail(email *Email) {
+	u.Email = email
+	u.require(userDataFieldEmail)
+}
+
+// SetLanguage sets the Language field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserData) SetLanguage(language *Language) {
+	u.Language = language
+	u.require(userDataFieldLanguage)
+}
+
+// SetMfaData sets the MfaData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserData) SetMfaData(mfaData *MfaData) {
+	u.MfaData = mfaData
+	u.require(userDataFieldMfaData)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserData) SetName(name *NameUser) {
+	u.Name = name
+	u.require(userDataFieldName)
+}
+
+// SetPhone sets the Phone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserData) SetPhone(phone *PhoneNumber) {
+	u.Phone = phone
+	u.require(userDataFieldPhone)
+}
+
+// SetPwd sets the Pwd field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserData) SetPwd(pwd *string) {
+	u.Pwd = pwd
+	u.require(userDataFieldPwd)
+}
+
+// SetScope sets the Scope field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserData) SetScope(scope []*OrgScope) {
+	u.Scope = scope
+	u.require(userDataFieldScope)
+}
+
+// SetTimeZone sets the TimeZone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserData) SetTimeZone(timeZone *Timezone) {
+	u.TimeZone = timeZone
+	u.require(userDataFieldTimeZone)
+}
+
+// SetUsrStatus sets the UsrStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (u *UserData) SetUsrStatus(usrStatus *UsrStatus) {
+	u.UsrStatus = usrStatus
+	u.require(userDataFieldUsrStatus)
+}
+
 func (u *UserData) UnmarshalJSON(data []byte) error {
 	type unmarshaler UserData
 	var value unmarshaler
@@ -438,6 +933,17 @@ func (u *UserData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (u *UserData) MarshalJSON() ([]byte, error) {
+	type embed UserData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (u *UserData) String() string {
 	if len(u.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
@@ -450,11 +956,20 @@ func (u *UserData) String() string {
 	return fmt.Sprintf("%#v", u)
 }
 
+var (
+	addUserResponseFieldIsSuccess    = big.NewInt(1 << 0)
+	addUserResponseFieldResponseData = big.NewInt(1 << 1)
+	addUserResponseFieldResponseText = big.NewInt(1 << 2)
+)
+
 type AddUserResponse struct {
 	IsSuccess *IsSuccess `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	// The response data.
 	ResponseData *string      `json:"responseData,omitempty" url:"responseData,omitempty"`
 	ResponseText ResponseText `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -485,6 +1000,34 @@ func (a *AddUserResponse) GetExtraProperties() map[string]interface{} {
 	return a.extraProperties
 }
 
+func (a *AddUserResponse) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddUserResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	a.IsSuccess = isSuccess
+	a.require(addUserResponseFieldIsSuccess)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddUserResponse) SetResponseData(responseData *string) {
+	a.ResponseData = responseData
+	a.require(addUserResponseFieldResponseData)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddUserResponse) SetResponseText(responseText ResponseText) {
+	a.ResponseText = responseText
+	a.require(addUserResponseFieldResponseText)
+}
+
 func (a *AddUserResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler AddUserResponse
 	var value unmarshaler
@@ -501,6 +1044,17 @@ func (a *AddUserResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (a *AddUserResponse) MarshalJSON() ([]byte, error) {
+	type embed AddUserResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (a *AddUserResponse) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
@@ -513,9 +1067,17 @@ func (a *AddUserResponse) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+var (
+	authResetUserResponseFieldIsSuccess    = big.NewInt(1 << 0)
+	authResetUserResponseFieldResponseText = big.NewInt(1 << 1)
+)
+
 type AuthResetUserResponse struct {
 	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	ResponseText ResponseText `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -539,6 +1101,27 @@ func (a *AuthResetUserResponse) GetExtraProperties() map[string]interface{} {
 	return a.extraProperties
 }
 
+func (a *AuthResetUserResponse) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AuthResetUserResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	a.IsSuccess = isSuccess
+	a.require(authResetUserResponseFieldIsSuccess)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AuthResetUserResponse) SetResponseText(responseText ResponseText) {
+	a.ResponseText = responseText
+	a.require(authResetUserResponseFieldResponseText)
+}
+
 func (a *AuthResetUserResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler AuthResetUserResponse
 	var value unmarshaler
@@ -555,6 +1138,17 @@ func (a *AuthResetUserResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (a *AuthResetUserResponse) MarshalJSON() ([]byte, error) {
+	type embed AuthResetUserResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (a *AuthResetUserResponse) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
@@ -567,9 +1161,17 @@ func (a *AuthResetUserResponse) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+var (
+	changePswUserResponseFieldIsSuccess    = big.NewInt(1 << 0)
+	changePswUserResponseFieldResponseText = big.NewInt(1 << 1)
+)
+
 type ChangePswUserResponse struct {
 	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	ResponseText ResponseText `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -593,6 +1195,27 @@ func (c *ChangePswUserResponse) GetExtraProperties() map[string]interface{} {
 	return c.extraProperties
 }
 
+func (c *ChangePswUserResponse) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChangePswUserResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	c.IsSuccess = isSuccess
+	c.require(changePswUserResponseFieldIsSuccess)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChangePswUserResponse) SetResponseText(responseText ResponseText) {
+	c.ResponseText = responseText
+	c.require(changePswUserResponseFieldResponseText)
+}
+
 func (c *ChangePswUserResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler ChangePswUserResponse
 	var value unmarshaler
@@ -609,6 +1232,17 @@ func (c *ChangePswUserResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (c *ChangePswUserResponse) MarshalJSON() ([]byte, error) {
+	type embed ChangePswUserResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (c *ChangePswUserResponse) String() string {
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
@@ -621,8 +1255,15 @@ func (c *ChangePswUserResponse) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+var (
+	deleteUserResponseFieldResponseText = big.NewInt(1 << 0)
+)
+
 type DeleteUserResponse struct {
 	ResponseText ResponseText `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -637,6 +1278,20 @@ func (d *DeleteUserResponse) GetResponseText() ResponseText {
 
 func (d *DeleteUserResponse) GetExtraProperties() map[string]interface{} {
 	return d.extraProperties
+}
+
+func (d *DeleteUserResponse) require(field *big.Int) {
+	if d.explicitFields == nil {
+		d.explicitFields = big.NewInt(0)
+	}
+	d.explicitFields.Or(d.explicitFields, field)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeleteUserResponse) SetResponseText(responseText ResponseText) {
+	d.ResponseText = responseText
+	d.require(deleteUserResponseFieldResponseText)
 }
 
 func (d *DeleteUserResponse) UnmarshalJSON(data []byte) error {
@@ -655,6 +1310,17 @@ func (d *DeleteUserResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (d *DeleteUserResponse) MarshalJSON() ([]byte, error) {
+	type embed DeleteUserResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*d),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (d *DeleteUserResponse) String() string {
 	if len(d.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
@@ -667,9 +1333,17 @@ func (d *DeleteUserResponse) String() string {
 	return fmt.Sprintf("%#v", d)
 }
 
+var (
+	editMfaUserResponseFieldIsSuccess    = big.NewInt(1 << 0)
+	editMfaUserResponseFieldResponseText = big.NewInt(1 << 1)
+)
+
 type EditMfaUserResponse struct {
 	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	ResponseText ResponseText `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -693,6 +1367,27 @@ func (e *EditMfaUserResponse) GetExtraProperties() map[string]interface{} {
 	return e.extraProperties
 }
 
+func (e *EditMfaUserResponse) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EditMfaUserResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	e.IsSuccess = isSuccess
+	e.require(editMfaUserResponseFieldIsSuccess)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EditMfaUserResponse) SetResponseText(responseText ResponseText) {
+	e.ResponseText = responseText
+	e.require(editMfaUserResponseFieldResponseText)
+}
+
 func (e *EditMfaUserResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler EditMfaUserResponse
 	var value unmarshaler
@@ -709,6 +1404,17 @@ func (e *EditMfaUserResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (e *EditMfaUserResponse) MarshalJSON() ([]byte, error) {
+	type embed EditMfaUserResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*e),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 func (e *EditMfaUserResponse) String() string {
 	if len(e.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
@@ -721,9 +1427,17 @@ func (e *EditMfaUserResponse) String() string {
 	return fmt.Sprintf("%#v", e)
 }
 
+var (
+	logoutUserResponseFieldIsSuccess    = big.NewInt(1 << 0)
+	logoutUserResponseFieldResponseText = big.NewInt(1 << 1)
+)
+
 type LogoutUserResponse struct {
 	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	ResponseText ResponseText `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -747,6 +1461,27 @@ func (l *LogoutUserResponse) GetExtraProperties() map[string]interface{} {
 	return l.extraProperties
 }
 
+func (l *LogoutUserResponse) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LogoutUserResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	l.IsSuccess = isSuccess
+	l.require(logoutUserResponseFieldIsSuccess)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LogoutUserResponse) SetResponseText(responseText ResponseText) {
+	l.ResponseText = responseText
+	l.require(logoutUserResponseFieldResponseText)
+}
+
 func (l *LogoutUserResponse) UnmarshalJSON(data []byte) error {
 	type unmarshaler LogoutUserResponse
 	var value unmarshaler
@@ -761,6 +1496,17 @@ func (l *LogoutUserResponse) UnmarshalJSON(data []byte) error {
 	l.extraProperties = extraProperties
 	l.rawJSON = json.RawMessage(data)
 	return nil
+}
+
+func (l *LogoutUserResponse) MarshalJSON() ([]byte, error) {
+	type embed LogoutUserResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 func (l *LogoutUserResponse) String() string {

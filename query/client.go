@@ -4,7 +4,7 @@ package query
 
 import (
 	context "context"
-	sdk "github.com/payabli/sdk-go"
+	sdkgo "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -36,10 +36,10 @@ func NewClient(options *core.RequestOptions) *Client {
 // unsettled transactions for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListBatchDetails(
 	ctx context.Context,
-	entry sdk.Entry,
-	request *sdk.ListBatchDetailsRequest,
+	entry sdkgo.Entry,
+	request *sdkgo.ListBatchDetailsRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryBatchesDetailResponse, error) {
+) (*sdkgo.QueryBatchesDetailResponse, error) {
 	response, err := c.WithRawResponse.ListBatchDetails(
 		ctx,
 		entry,
@@ -57,9 +57,9 @@ func (c *Client) ListBatchDetailsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdk.ListBatchDetailsOrgRequest,
+	request *sdkgo.ListBatchDetailsOrgRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryResponseSettlements, error) {
+) (*sdkgo.QueryResponseSettlements, error) {
 	response, err := c.WithRawResponse.ListBatchDetailsOrg(
 		ctx,
 		orgId,
@@ -75,10 +75,10 @@ func (c *Client) ListBatchDetailsOrg(
 // Retrieve a list of batches for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListBatches(
 	ctx context.Context,
-	entry sdk.Entry,
-	request *sdk.ListBatchesRequest,
+	entry sdkgo.Entry,
+	request *sdkgo.ListBatchesRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryBatchesResponse, error) {
+) (*sdkgo.QueryBatchesResponse, error) {
 	response, err := c.WithRawResponse.ListBatches(
 		ctx,
 		entry,
@@ -96,9 +96,9 @@ func (c *Client) ListBatchesOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdk.ListBatchesOrgRequest,
+	request *sdkgo.ListBatchesOrgRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryBatchesResponse, error) {
+) (*sdkgo.QueryBatchesResponse, error) {
 	response, err := c.WithRawResponse.ListBatchesOrg(
 		ctx,
 		orgId,
@@ -114,10 +114,10 @@ func (c *Client) ListBatchesOrg(
 // Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListBatchesOut(
 	ctx context.Context,
-	entry sdk.Entry,
-	request *sdk.ListBatchesOutRequest,
+	entry sdkgo.Entry,
+	request *sdkgo.ListBatchesOutRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryBatchesOutResponse, error) {
+) (*sdkgo.QueryBatchesOutResponse, error) {
 	response, err := c.WithRawResponse.ListBatchesOut(
 		ctx,
 		entry,
@@ -135,9 +135,9 @@ func (c *Client) ListBatchesOutOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdk.ListBatchesOutOrgRequest,
+	request *sdkgo.ListBatchesOutOrgRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryBatchesOutResponse, error) {
+) (*sdkgo.QueryBatchesOutResponse, error) {
 	response, err := c.WithRawResponse.ListBatchesOutOrg(
 		ctx,
 		orgId,
@@ -153,10 +153,10 @@ func (c *Client) ListBatchesOutOrg(
 // Retrieves a list of chargebacks and returned transactions for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListChargebacks(
 	ctx context.Context,
-	entry sdk.Entry,
-	request *sdk.ListChargebacksRequest,
+	entry sdkgo.Entry,
+	request *sdkgo.ListChargebacksRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryChargebacksResponse, error) {
+) (*sdkgo.QueryChargebacksResponse, error) {
 	response, err := c.WithRawResponse.ListChargebacks(
 		ctx,
 		entry,
@@ -174,9 +174,9 @@ func (c *Client) ListChargebacksOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdk.ListChargebacksOrgRequest,
+	request *sdkgo.ListChargebacksOrgRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryChargebacksResponse, error) {
+) (*sdkgo.QueryChargebacksResponse, error) {
 	response, err := c.WithRawResponse.ListChargebacksOrg(
 		ctx,
 		orgId,
@@ -192,10 +192,10 @@ func (c *Client) ListChargebacksOrg(
 // Retrieves a list of customers for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListCustomers(
 	ctx context.Context,
-	entry sdk.Entry,
-	request *sdk.ListCustomersRequest,
+	entry sdkgo.Entry,
+	request *sdkgo.ListCustomersRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryCustomerResponse, error) {
+) (*sdkgo.QueryCustomerResponse, error) {
 	response, err := c.WithRawResponse.ListCustomers(
 		ctx,
 		entry,
@@ -213,9 +213,9 @@ func (c *Client) ListCustomersOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdk.ListCustomersOrgRequest,
+	request *sdkgo.ListCustomersOrgRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryCustomerResponse, error) {
+) (*sdkgo.QueryCustomerResponse, error) {
 	response, err := c.WithRawResponse.ListCustomersOrg(
 		ctx,
 		orgId,
@@ -231,10 +231,10 @@ func (c *Client) ListCustomersOrg(
 // Returns a list of all reports generated in the last 60 days for a single entrypoint. Use filters to limit results.
 func (c *Client) ListNotificationReports(
 	ctx context.Context,
-	entry sdk.Entry,
-	request *sdk.ListNotificationReportsRequest,
+	entry sdkgo.Entry,
+	request *sdkgo.ListNotificationReportsRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryResponseNotificationReports, error) {
+) (*sdkgo.QueryResponseNotificationReports, error) {
 	response, err := c.WithRawResponse.ListNotificationReports(
 		ctx,
 		entry,
@@ -252,9 +252,9 @@ func (c *Client) ListNotificationReportsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdk.ListNotificationReportsOrgRequest,
+	request *sdkgo.ListNotificationReportsOrgRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryResponseNotificationReports, error) {
+) (*sdkgo.QueryResponseNotificationReports, error) {
 	response, err := c.WithRawResponse.ListNotificationReportsOrg(
 		ctx,
 		orgId,
@@ -270,10 +270,10 @@ func (c *Client) ListNotificationReportsOrg(
 // Returns a list of notifications for an entrypoint. Use filters to limit results.
 func (c *Client) ListNotifications(
 	ctx context.Context,
-	entry sdk.Entry,
-	request *sdk.ListNotificationsRequest,
+	entry sdkgo.Entry,
+	request *sdkgo.ListNotificationsRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryResponseNotifications, error) {
+) (*sdkgo.QueryResponseNotifications, error) {
 	response, err := c.WithRawResponse.ListNotifications(
 		ctx,
 		entry,
@@ -291,9 +291,9 @@ func (c *Client) ListNotificationsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdk.ListNotificationsOrgRequest,
+	request *sdkgo.ListNotificationsOrgRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryResponseNotifications, error) {
+) (*sdkgo.QueryResponseNotifications, error) {
 	response, err := c.WithRawResponse.ListNotificationsOrg(
 		ctx,
 		orgId,
@@ -311,9 +311,9 @@ func (c *Client) ListOrganizations(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdk.ListOrganizationsRequest,
+	request *sdkgo.ListOrganizationsRequest,
 	opts ...option.RequestOption,
-) (*sdk.ListOrganizationsResponse, error) {
+) (*sdkgo.ListOrganizationsResponse, error) {
 	response, err := c.WithRawResponse.ListOrganizations(
 		ctx,
 		orgId,
@@ -329,10 +329,10 @@ func (c *Client) ListOrganizations(
 // Retrieves a list of money out transactions (payouts) for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListPayout(
 	ctx context.Context,
-	entry sdk.Entry,
-	request *sdk.ListPayoutRequest,
+	entry sdkgo.Entry,
+	request *sdkgo.ListPayoutRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryPayoutTransaction, error) {
+) (*sdkgo.QueryPayoutTransaction, error) {
 	response, err := c.WithRawResponse.ListPayout(
 		ctx,
 		entry,
@@ -350,9 +350,9 @@ func (c *Client) ListPayoutOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdk.ListPayoutOrgRequest,
+	request *sdkgo.ListPayoutOrgRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryPayoutTransaction, error) {
+) (*sdkgo.QueryPayoutTransaction, error) {
 	response, err := c.WithRawResponse.ListPayoutOrg(
 		ctx,
 		orgId,
@@ -370,9 +370,9 @@ func (c *Client) ListPaypoints(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdk.ListPaypointsRequest,
+	request *sdkgo.ListPaypointsRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryEntrypointResponse, error) {
+) (*sdkgo.QueryEntrypointResponse, error) {
 	response, err := c.WithRawResponse.ListPaypoints(
 		ctx,
 		orgId,
@@ -388,10 +388,10 @@ func (c *Client) ListPaypoints(
 // Retrieve a list of settled transactions for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListSettlements(
 	ctx context.Context,
-	entry sdk.Entry,
-	request *sdk.ListSettlementsRequest,
+	entry sdkgo.Entry,
+	request *sdkgo.ListSettlementsRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryResponseSettlements, error) {
+) (*sdkgo.QueryResponseSettlements, error) {
 	response, err := c.WithRawResponse.ListSettlements(
 		ctx,
 		entry,
@@ -409,9 +409,9 @@ func (c *Client) ListSettlementsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdk.ListSettlementsOrgRequest,
+	request *sdkgo.ListSettlementsOrgRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryResponseSettlements, error) {
+) (*sdkgo.QueryResponseSettlements, error) {
 	response, err := c.WithRawResponse.ListSettlementsOrg(
 		ctx,
 		orgId,
@@ -427,10 +427,10 @@ func (c *Client) ListSettlementsOrg(
 // Returns a list of subscriptions for a single paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListSubscriptions(
 	ctx context.Context,
-	entry sdk.Entry,
-	request *sdk.ListSubscriptionsRequest,
+	entry sdkgo.Entry,
+	request *sdkgo.ListSubscriptionsRequest,
 	opts ...option.RequestOption,
-) (*sdk.QuerySubscriptionResponse, error) {
+) (*sdkgo.QuerySubscriptionResponse, error) {
 	response, err := c.WithRawResponse.ListSubscriptions(
 		ctx,
 		entry,
@@ -448,9 +448,9 @@ func (c *Client) ListSubscriptionsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdk.ListSubscriptionsOrgRequest,
+	request *sdkgo.ListSubscriptionsOrgRequest,
 	opts ...option.RequestOption,
-) (*sdk.QuerySubscriptionResponse, error) {
+) (*sdkgo.QuerySubscriptionResponse, error) {
 	response, err := c.WithRawResponse.ListSubscriptionsOrg(
 		ctx,
 		orgId,
@@ -474,10 +474,10 @@ func (c *Client) ListSubscriptionsOrg(
 //	  ```
 func (c *Client) ListTransactions(
 	ctx context.Context,
-	entry sdk.Entry,
-	request *sdk.ListTransactionsRequest,
+	entry sdkgo.Entry,
+	request *sdkgo.ListTransactionsRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryResponseTransactions, error) {
+) (*sdkgo.QueryResponseTransactions, error) {
 	response, err := c.WithRawResponse.ListTransactions(
 		ctx,
 		entry,
@@ -508,9 +508,9 @@ func (c *Client) ListTransactionsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdk.ListTransactionsOrgRequest,
+	request *sdkgo.ListTransactionsOrgRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryResponseTransactions, error) {
+) (*sdkgo.QueryResponseTransactions, error) {
 	response, err := c.WithRawResponse.ListTransactionsOrg(
 		ctx,
 		orgId,
@@ -526,12 +526,12 @@ func (c *Client) ListTransactionsOrg(
 // Retrieve a list of transfer details records for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListTransferDetails(
 	ctx context.Context,
-	entry sdk.Entry,
+	entry sdkgo.Entry,
 	// The numeric identifier for the transfer, assigned by Payabli.
 	transferId int,
-	request *sdk.ListTransfersPaypointRequest,
+	request *sdkgo.ListTransfersPaypointRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryTransferDetailResponse, error) {
+) (*sdkgo.QueryTransferDetailResponse, error) {
 	response, err := c.WithRawResponse.ListTransferDetails(
 		ctx,
 		entry,
@@ -548,10 +548,10 @@ func (c *Client) ListTransferDetails(
 // Retrieve a list of transfers for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListTransfers(
 	ctx context.Context,
-	entry sdk.Entry,
-	request *sdk.ListTransfersRequest,
+	entry sdkgo.Entry,
+	request *sdkgo.ListTransfersRequest,
 	opts ...option.RequestOption,
-) (*sdk.TransferQueryResponse, error) {
+) (*sdkgo.TransferQueryResponse, error) {
 	response, err := c.WithRawResponse.ListTransfers(
 		ctx,
 		entry,
@@ -567,9 +567,9 @@ func (c *Client) ListTransfers(
 // Retrieve a list of transfers for an org. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListTransfersOrg(
 	ctx context.Context,
-	request *sdk.ListTransfersRequestOrg,
+	request *sdkgo.ListTransfersRequestOrg,
 	opts ...option.RequestOption,
-) (*sdk.TransferQueryResponse, error) {
+) (*sdkgo.TransferQueryResponse, error) {
 	response, err := c.WithRawResponse.ListTransfersOrg(
 		ctx,
 		request,
@@ -586,9 +586,9 @@ func (c *Client) ListUsersOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdk.ListUsersOrgRequest,
+	request *sdkgo.ListUsersOrgRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryUserResponse, error) {
+) (*sdkgo.QueryUserResponse, error) {
 	response, err := c.WithRawResponse.ListUsersOrg(
 		ctx,
 		orgId,
@@ -606,9 +606,9 @@ func (c *Client) ListUsersPaypoint(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdk.ListUsersPaypointRequest,
+	request *sdkgo.ListUsersPaypointRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryUserResponse, error) {
+) (*sdkgo.QueryUserResponse, error) {
 	response, err := c.WithRawResponse.ListUsersPaypoint(
 		ctx,
 		entry,
@@ -626,9 +626,9 @@ func (c *Client) ListVendors(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdk.ListVendorsRequest,
+	request *sdkgo.ListVendorsRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryResponseVendors, error) {
+) (*sdkgo.QueryResponseVendors, error) {
 	response, err := c.WithRawResponse.ListVendors(
 		ctx,
 		entry,
@@ -646,9 +646,9 @@ func (c *Client) ListVendorsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdk.ListVendorsOrgRequest,
+	request *sdkgo.ListVendorsOrgRequest,
 	opts ...option.RequestOption,
-) (*sdk.QueryResponseVendors, error) {
+) (*sdkgo.QueryResponseVendors, error) {
 	response, err := c.WithRawResponse.ListVendorsOrg(
 		ctx,
 		orgId,
@@ -664,10 +664,10 @@ func (c *Client) ListVendorsOrg(
 // Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListVcards(
 	ctx context.Context,
-	entry sdk.Entry,
-	request *sdk.ListVcardsRequest,
+	entry sdkgo.Entry,
+	request *sdkgo.ListVcardsRequest,
 	opts ...option.RequestOption,
-) (*sdk.VCardQueryResponse, error) {
+) (*sdkgo.VCardQueryResponse, error) {
 	response, err := c.WithRawResponse.ListVcards(
 		ctx,
 		entry,
@@ -685,9 +685,9 @@ func (c *Client) ListVcardsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdk.ListVcardsOrgRequest,
+	request *sdkgo.ListVcardsOrgRequest,
 	opts ...option.RequestOption,
-) (*sdk.VCardQueryResponse, error) {
+) (*sdkgo.VCardQueryResponse, error) {
 	response, err := c.WithRawResponse.ListVcardsOrg(
 		ctx,
 		orgId,
