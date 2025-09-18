@@ -188,7 +188,7 @@ an issue first to discuss with us!
 On the other hand, contributions to the README are always very welcome!
 ## Documentation
 
-API reference documentation is available [here](https://docs.payabli.com/).
+API reference documentation is available [here](https://docs.payabli.com).
 
 ## Reference
 
