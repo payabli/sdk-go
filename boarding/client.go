@@ -4,7 +4,7 @@ package boarding
 
 import (
 	context "context"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Creates a boarding application in an organization. This endpoint requires an application API token.
 func (c *Client) AddApplication(
 	ctx context.Context,
-	request *sdkgo.AddApplicationRequest,
+	request *payabli.AddApplicationRequest,
 	opts ...option.RequestOption,
-) (*sdkgo.PayabliApiResponse00Responsedatanonobject, error) {
+) (*payabli.PayabliApiResponse00Responsedatanonobject, error) {
 	response, err := c.WithRawResponse.AddApplication(
 		ctx,
 		request,
@@ -55,7 +55,7 @@ func (c *Client) DeleteApplication(
 	// Boarding application ID.
 	appId int,
 	opts ...option.RequestOption,
-) (*sdkgo.PayabliApiResponse00Responsedatanonobject, error) {
+) (*payabli.PayabliApiResponse00Responsedatanonobject, error) {
 	response, err := c.WithRawResponse.DeleteApplication(
 		ctx,
 		appId,
@@ -73,7 +73,7 @@ func (c *Client) GetApplication(
 	// Boarding application ID.
 	appId int,
 	opts ...option.RequestOption,
-) (*sdkgo.ApplicationDetailsRecord, error) {
+) (*payabli.ApplicationDetailsRecord, error) {
 	response, err := c.WithRawResponse.GetApplication(
 		ctx,
 		appId,
@@ -90,9 +90,9 @@ func (c *Client) GetApplicationByAuth(
 	ctx context.Context,
 	// The application ID in Hex format. Find this at the end of the boarding link URL returned in a call to api/Boarding/applink/{appId}/{mail2}. For example in:  `https://boarding-sandbox.payabli.com/boarding/externalapp/load/17E`, the xId is `17E`.
 	xId string,
-	request *sdkgo.RequestAppByAuth,
+	request *payabli.RequestAppByAuth,
 	opts ...option.RequestOption,
-) (*sdkgo.ApplicationQueryRecord, error) {
+) (*payabli.ApplicationQueryRecord, error) {
 	response, err := c.WithRawResponse.GetApplicationByAuth(
 		ctx,
 		xId,
@@ -111,7 +111,7 @@ func (c *Client) GetByIdLinkApplication(
 	// The boarding link ID. You can find this at the end of the boarding link reference name. For example `https://boarding.payabli.com/boarding/app/myorgaccountname-00091`. The ID is `91`.
 	boardingLinkId int,
 	opts ...option.RequestOption,
-) (*sdkgo.BoardingLinkQueryRecord, error) {
+) (*payabli.BoardingLinkQueryRecord, error) {
 	response, err := c.WithRawResponse.GetByIdLinkApplication(
 		ctx,
 		boardingLinkId,
@@ -129,7 +129,7 @@ func (c *Client) GetByTemplateIdLinkApplication(
 	// The boarding template ID. You can find this at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
 	templateId float64,
 	opts ...option.RequestOption,
-) (*sdkgo.BoardingLinkQueryRecord, error) {
+) (*payabli.BoardingLinkQueryRecord, error) {
 	response, err := c.WithRawResponse.GetByTemplateIdLinkApplication(
 		ctx,
 		templateId,
@@ -148,9 +148,9 @@ func (c *Client) GetExternalApplication(
 	appId int,
 	// Email address used to access the application. If `sendEmail` parameter is true, a link to the application is sent to this email address.
 	mail2 string,
-	request *sdkgo.GetExternalApplicationRequest,
+	request *payabli.GetExternalApplicationRequest,
 	opts ...option.RequestOption,
-) (*sdkgo.PayabliApiResponse00, error) {
+) (*payabli.PayabliApiResponse00, error) {
 	response, err := c.WithRawResponse.GetExternalApplication(
 		ctx,
 		appId,
@@ -170,7 +170,7 @@ func (c *Client) GetLinkApplication(
 	// The boarding link reference name. You can find this at the end of the boarding link URL. For example `https://boarding.payabli.com/boarding/app/myorgaccountname-00091`
 	boardingLinkReference string,
 	opts ...option.RequestOption,
-) (*sdkgo.BoardingLinkQueryRecord, error) {
+) (*payabli.BoardingLinkQueryRecord, error) {
 	response, err := c.WithRawResponse.GetLinkApplication(
 		ctx,
 		boardingLinkReference,
@@ -187,9 +187,9 @@ func (c *Client) ListApplications(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ListApplicationsRequest,
+	request *payabli.ListApplicationsRequest,
 	opts ...option.RequestOption,
-) (*sdkgo.QueryBoardingAppsListResponse, error) {
+) (*payabli.QueryBoardingAppsListResponse, error) {
 	response, err := c.WithRawResponse.ListApplications(
 		ctx,
 		orgId,
@@ -207,9 +207,9 @@ func (c *Client) ListBoardingLinks(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ListBoardingLinksRequest,
+	request *payabli.ListBoardingLinksRequest,
 	opts ...option.RequestOption,
-) (*sdkgo.QueryBoardingLinksResponse, error) {
+) (*payabli.QueryBoardingLinksResponse, error) {
 	response, err := c.WithRawResponse.ListBoardingLinks(
 		ctx,
 		orgId,
@@ -227,9 +227,9 @@ func (c *Client) UpdateApplication(
 	ctx context.Context,
 	// Boarding application ID.
 	appId int,
-	request *sdkgo.ApplicationData,
+	request *payabli.ApplicationData,
 	opts ...option.RequestOption,
-) (*sdkgo.PayabliApiResponse00Responsedatanonobject, error) {
+) (*payabli.PayabliApiResponse00Responsedatanonobject, error) {
 	response, err := c.WithRawResponse.UpdateApplication(
 		ctx,
 		appId,

@@ -4,7 +4,7 @@ package export
 
 import (
 	context "context"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -33,12 +33,12 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 func (r *RawClient) ExportApplications(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportApplicationsRequest,
+	request *payabli.ExportApplicationsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -61,29 +61,7 @@ func (r *RawClient) ExportApplications(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -95,13 +73,13 @@ func (r *RawClient) ExportApplications(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -113,10 +91,10 @@ func (r *RawClient) ExportBatchDetails(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
-	request *sdkgo.ExportBatchDetailsRequest,
+	format *payabli.ExportFormat1,
+	request *payabli.ExportBatchDetailsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -139,29 +117,7 @@ func (r *RawClient) ExportBatchDetails(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -173,13 +129,13 @@ func (r *RawClient) ExportBatchDetails(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -189,12 +145,12 @@ func (r *RawClient) ExportBatchDetails(
 func (r *RawClient) ExportBatchDetailsOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportBatchDetailsOrgRequest,
+	request *payabli.ExportBatchDetailsOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -217,29 +173,7 @@ func (r *RawClient) ExportBatchDetailsOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -251,13 +185,13 @@ func (r *RawClient) ExportBatchDetailsOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -269,10 +203,10 @@ func (r *RawClient) ExportBatches(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
-	request *sdkgo.ExportBatchesRequest,
+	format *payabli.ExportFormat1,
+	request *payabli.ExportBatchesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -295,29 +229,7 @@ func (r *RawClient) ExportBatches(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -329,13 +241,13 @@ func (r *RawClient) ExportBatches(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -345,12 +257,12 @@ func (r *RawClient) ExportBatches(
 func (r *RawClient) ExportBatchesOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportBatchesOrgRequest,
+	request *payabli.ExportBatchesOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -373,29 +285,7 @@ func (r *RawClient) ExportBatchesOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -407,13 +297,13 @@ func (r *RawClient) ExportBatchesOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -425,10 +315,10 @@ func (r *RawClient) ExportBatchesOut(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
-	request *sdkgo.ExportBatchesOutRequest,
+	format *payabli.ExportFormat1,
+	request *payabli.ExportBatchesOutRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -451,29 +341,7 @@ func (r *RawClient) ExportBatchesOut(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -485,13 +353,13 @@ func (r *RawClient) ExportBatchesOut(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -501,12 +369,12 @@ func (r *RawClient) ExportBatchesOut(
 func (r *RawClient) ExportBatchesOutOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportBatchesOutOrgRequest,
+	request *payabli.ExportBatchesOutOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -529,29 +397,7 @@ func (r *RawClient) ExportBatchesOutOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -563,13 +409,13 @@ func (r *RawClient) ExportBatchesOutOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -581,10 +427,10 @@ func (r *RawClient) ExportBills(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
-	request *sdkgo.ExportBillsRequest,
+	format *payabli.ExportFormat1,
+	request *payabli.ExportBillsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -607,29 +453,7 @@ func (r *RawClient) ExportBills(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -641,13 +465,13 @@ func (r *RawClient) ExportBills(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -657,12 +481,12 @@ func (r *RawClient) ExportBills(
 func (r *RawClient) ExportBillsOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportBillsOrgRequest,
+	request *payabli.ExportBillsOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -685,29 +509,7 @@ func (r *RawClient) ExportBillsOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -719,13 +521,13 @@ func (r *RawClient) ExportBillsOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -737,10 +539,10 @@ func (r *RawClient) ExportChargebacks(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
-	request *sdkgo.ExportChargebacksRequest,
+	format *payabli.ExportFormat1,
+	request *payabli.ExportChargebacksRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -763,29 +565,7 @@ func (r *RawClient) ExportChargebacks(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -797,13 +577,13 @@ func (r *RawClient) ExportChargebacks(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -813,12 +593,12 @@ func (r *RawClient) ExportChargebacks(
 func (r *RawClient) ExportChargebacksOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportChargebacksOrgRequest,
+	request *payabli.ExportChargebacksOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -841,29 +621,7 @@ func (r *RawClient) ExportChargebacksOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -875,13 +633,13 @@ func (r *RawClient) ExportChargebacksOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -893,10 +651,10 @@ func (r *RawClient) ExportCustomers(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
-	request *sdkgo.ExportCustomersRequest,
+	format *payabli.ExportFormat1,
+	request *payabli.ExportCustomersRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -919,29 +677,7 @@ func (r *RawClient) ExportCustomers(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -953,13 +689,13 @@ func (r *RawClient) ExportCustomers(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -969,12 +705,12 @@ func (r *RawClient) ExportCustomers(
 func (r *RawClient) ExportCustomersOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportCustomersOrgRequest,
+	request *payabli.ExportCustomersOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -997,29 +733,7 @@ func (r *RawClient) ExportCustomersOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1031,13 +745,13 @@ func (r *RawClient) ExportCustomersOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1049,10 +763,10 @@ func (r *RawClient) ExportInvoices(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
-	request *sdkgo.ExportInvoicesRequest,
+	format *payabli.ExportFormat1,
+	request *payabli.ExportInvoicesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1075,29 +789,7 @@ func (r *RawClient) ExportInvoices(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1109,13 +801,13 @@ func (r *RawClient) ExportInvoices(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1125,12 +817,12 @@ func (r *RawClient) ExportInvoices(
 func (r *RawClient) ExportInvoicesOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportInvoicesOrgRequest,
+	request *payabli.ExportInvoicesOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1153,29 +845,7 @@ func (r *RawClient) ExportInvoicesOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1187,13 +857,13 @@ func (r *RawClient) ExportInvoicesOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1203,12 +873,12 @@ func (r *RawClient) ExportInvoicesOrg(
 func (r *RawClient) ExportOrganizations(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportOrganizationsRequest,
+	request *payabli.ExportOrganizationsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1231,29 +901,7 @@ func (r *RawClient) ExportOrganizations(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1265,13 +913,13 @@ func (r *RawClient) ExportOrganizations(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1283,10 +931,10 @@ func (r *RawClient) ExportPayout(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
-	request *sdkgo.ExportPayoutRequest,
+	format *payabli.ExportFormat1,
+	request *payabli.ExportPayoutRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1309,29 +957,7 @@ func (r *RawClient) ExportPayout(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1343,13 +969,13 @@ func (r *RawClient) ExportPayout(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1359,12 +985,12 @@ func (r *RawClient) ExportPayout(
 func (r *RawClient) ExportPayoutOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportPayoutOrgRequest,
+	request *payabli.ExportPayoutOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1387,29 +1013,7 @@ func (r *RawClient) ExportPayoutOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1421,13 +1025,13 @@ func (r *RawClient) ExportPayoutOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1437,12 +1041,12 @@ func (r *RawClient) ExportPayoutOrg(
 func (r *RawClient) ExportPaypoints(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportPaypointsRequest,
+	request *payabli.ExportPaypointsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1465,29 +1069,7 @@ func (r *RawClient) ExportPaypoints(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1499,13 +1081,13 @@ func (r *RawClient) ExportPaypoints(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1517,10 +1099,10 @@ func (r *RawClient) ExportSettlements(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
-	request *sdkgo.ExportSettlementsRequest,
+	format *payabli.ExportFormat1,
+	request *payabli.ExportSettlementsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1543,29 +1125,7 @@ func (r *RawClient) ExportSettlements(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1577,13 +1137,13 @@ func (r *RawClient) ExportSettlements(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1593,12 +1153,12 @@ func (r *RawClient) ExportSettlements(
 func (r *RawClient) ExportSettlementsOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportSettlementsOrgRequest,
+	request *payabli.ExportSettlementsOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1621,29 +1181,7 @@ func (r *RawClient) ExportSettlementsOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1655,13 +1193,13 @@ func (r *RawClient) ExportSettlementsOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1673,10 +1211,10 @@ func (r *RawClient) ExportSubscriptions(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
-	request *sdkgo.ExportSubscriptionsRequest,
+	format *payabli.ExportFormat1,
+	request *payabli.ExportSubscriptionsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1699,29 +1237,7 @@ func (r *RawClient) ExportSubscriptions(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1733,13 +1249,13 @@ func (r *RawClient) ExportSubscriptions(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1749,12 +1265,12 @@ func (r *RawClient) ExportSubscriptions(
 func (r *RawClient) ExportSubscriptionsOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportSubscriptionsOrgRequest,
+	request *payabli.ExportSubscriptionsOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1777,29 +1293,7 @@ func (r *RawClient) ExportSubscriptionsOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1811,13 +1305,13 @@ func (r *RawClient) ExportSubscriptionsOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1829,10 +1323,10 @@ func (r *RawClient) ExportTransactions(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
-	request *sdkgo.ExportTransactionsRequest,
+	format *payabli.ExportFormat1,
+	request *payabli.ExportTransactionsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1855,29 +1349,7 @@ func (r *RawClient) ExportTransactions(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1889,13 +1361,13 @@ func (r *RawClient) ExportTransactions(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1905,12 +1377,12 @@ func (r *RawClient) ExportTransactions(
 func (r *RawClient) ExportTransactionsOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportTransactionsOrgRequest,
+	request *payabli.ExportTransactionsOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1933,29 +1405,7 @@ func (r *RawClient) ExportTransactionsOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1967,13 +1417,13 @@ func (r *RawClient) ExportTransactionsOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1985,12 +1435,12 @@ func (r *RawClient) ExportTransferDetails(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// Transfer identifier.
 	transferId int64,
-	request *sdkgo.ExportTransferDetailsRequest,
+	request *payabli.ExportTransferDetailsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2014,29 +1464,7 @@ func (r *RawClient) ExportTransferDetails(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2048,13 +1476,13 @@ func (r *RawClient) ExportTransferDetails(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2065,9 +1493,9 @@ func (r *RawClient) ExportTransfers(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdkgo.ExportTransfersRequest,
+	request *payabli.ExportTransfersRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2089,29 +1517,7 @@ func (r *RawClient) ExportTransfers(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2123,13 +1529,13 @@ func (r *RawClient) ExportTransfers(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2141,10 +1547,10 @@ func (r *RawClient) ExportVendors(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
-	request *sdkgo.ExportVendorsRequest,
+	format *payabli.ExportFormat1,
+	request *payabli.ExportVendorsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2167,29 +1573,7 @@ func (r *RawClient) ExportVendors(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2201,13 +1585,13 @@ func (r *RawClient) ExportVendors(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2217,12 +1601,12 @@ func (r *RawClient) ExportVendors(
 func (r *RawClient) ExportVendorsOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportVendorsOrgRequest,
+	request *payabli.ExportVendorsOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[sdkgo.File], error) {
+) (*core.Response[payabli.File], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2245,29 +1629,7 @@ func (r *RawClient) ExportVendorsOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response sdkgo.File
+	var response payabli.File
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2279,13 +1641,13 @@ func (r *RawClient) ExportVendorsOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[sdkgo.File]{
+	return &core.Response[payabli.File]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

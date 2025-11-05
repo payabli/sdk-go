@@ -4,7 +4,7 @@ package statistic
 
 import (
 	context "context"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -63,9 +63,9 @@ func (r *RawClient) BasicStats(
 	// - `yesterday` - Last Day
 	//
 	mode string,
-	request *sdkgo.BasicStatsRequest,
+	request *payabli.BasicStatsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*sdkgo.StatBasicQueryRecord], error) {
+) (*core.Response[[]*payabli.StatBasicQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -90,29 +90,7 @@ func (r *RawClient) BasicStats(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response []*sdkgo.StatBasicQueryRecord
+	var response []*payabli.StatBasicQueryRecord
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -124,13 +102,13 @@ func (r *RawClient) BasicStats(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*sdkgo.StatBasicQueryRecord]{
+	return &core.Response[[]*payabli.StatBasicQueryRecord]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -164,9 +142,9 @@ func (r *RawClient) CustomerBasicStats(
 	// - `lastw` - Last Week
 	// - `yesterday` - Last Day
 	mode string,
-	request *sdkgo.CustomerBasicStatsRequest,
+	request *payabli.CustomerBasicStatsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*sdkgo.SubscriptionStatsQueryRecord], error) {
+) (*core.Response[[]*payabli.SubscriptionStatsQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -190,29 +168,7 @@ func (r *RawClient) CustomerBasicStats(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response []*sdkgo.SubscriptionStatsQueryRecord
+	var response []*payabli.SubscriptionStatsQueryRecord
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -224,13 +180,13 @@ func (r *RawClient) CustomerBasicStats(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*sdkgo.SubscriptionStatsQueryRecord]{
+	return &core.Response[[]*payabli.SubscriptionStatsQueryRecord]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -253,9 +209,9 @@ func (r *RawClient) SubStats(
 	//   - 0 for Organization
 	//   - 2 for Paypoint
 	level int,
-	request *sdkgo.SubStatsRequest,
+	request *payabli.SubStatsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*sdkgo.StatBasicQueryRecord], error) {
+) (*core.Response[[]*payabli.StatBasicQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -279,29 +235,7 @@ func (r *RawClient) SubStats(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response []*sdkgo.StatBasicQueryRecord
+	var response []*payabli.StatBasicQueryRecord
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -313,13 +247,13 @@ func (r *RawClient) SubStats(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*sdkgo.StatBasicQueryRecord]{
+	return &core.Response[[]*payabli.StatBasicQueryRecord]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -353,9 +287,9 @@ func (r *RawClient) VendorBasicStats(
 	// - `lastw` - Last Week
 	// - `yesterday` - Last Day
 	mode string,
-	request *sdkgo.VendorBasicStatsRequest,
+	request *payabli.VendorBasicStatsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*sdkgo.StatisticsVendorQueryRecord], error) {
+) (*core.Response[[]*payabli.StatisticsVendorQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -379,29 +313,7 @@ func (r *RawClient) VendorBasicStats(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response []*sdkgo.StatisticsVendorQueryRecord
+	var response []*payabli.StatisticsVendorQueryRecord
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -413,13 +325,13 @@ func (r *RawClient) VendorBasicStats(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*sdkgo.StatisticsVendorQueryRecord]{
+	return &core.Response[[]*payabli.StatisticsVendorQueryRecord]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

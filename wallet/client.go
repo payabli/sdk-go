@@ -4,7 +4,7 @@ package wallet
 
 import (
 	context "context"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Configure and activate Apple Pay for a Payabli organization
 func (c *Client) ConfigureApplePayOrganization(
 	ctx context.Context,
-	request *sdkgo.ConfigureOrganizationRequestApplePay,
+	request *payabli.ConfigureOrganizationRequestApplePay,
 	opts ...option.RequestOption,
-) (*sdkgo.ConfigureApplePayOrganizationApiResponse, error) {
+) (*payabli.ConfigureApplePayOrganizationApiResponse, error) {
 	response, err := c.WithRawResponse.ConfigureApplePayOrganization(
 		ctx,
 		request,
@@ -52,9 +52,9 @@ func (c *Client) ConfigureApplePayOrganization(
 // Configure and activate Apple Pay for a Payabli paypoint
 func (c *Client) ConfigureApplePayPaypoint(
 	ctx context.Context,
-	request *sdkgo.ConfigurePaypointRequestApplePay,
+	request *payabli.ConfigurePaypointRequestApplePay,
 	opts ...option.RequestOption,
-) (*sdkgo.ConfigureApplePaypointApiResponse, error) {
+) (*payabli.ConfigureApplePaypointApiResponse, error) {
 	response, err := c.WithRawResponse.ConfigureApplePayPaypoint(
 		ctx,
 		request,
@@ -69,9 +69,9 @@ func (c *Client) ConfigureApplePayPaypoint(
 // Configure and activate Google Pay for a Payabli organization
 func (c *Client) ConfigureGooglePayOrganization(
 	ctx context.Context,
-	request *sdkgo.ConfigureOrganizationRequestGooglePay,
+	request *payabli.ConfigureOrganizationRequestGooglePay,
 	opts ...option.RequestOption,
-) (*sdkgo.ConfigureApplePayOrganizationApiResponse, error) {
+) (*payabli.ConfigureApplePayOrganizationApiResponse, error) {
 	response, err := c.WithRawResponse.ConfigureGooglePayOrganization(
 		ctx,
 		request,
@@ -86,9 +86,9 @@ func (c *Client) ConfigureGooglePayOrganization(
 // Configure and activate Google Pay for a Payabli paypoint
 func (c *Client) ConfigureGooglePayPaypoint(
 	ctx context.Context,
-	request *sdkgo.ConfigurePaypointRequestGooglePay,
+	request *payabli.ConfigurePaypointRequestGooglePay,
 	opts ...option.RequestOption,
-) (*sdkgo.ConfigureGooglePaypointApiResponse, error) {
+) (*payabli.ConfigureGooglePaypointApiResponse, error) {
 	response, err := c.WithRawResponse.ConfigureGooglePayPaypoint(
 		ctx,
 		request,

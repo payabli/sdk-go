@@ -4,7 +4,7 @@ package wallet
 
 import (
 	context "context"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) ConfigureApplePayOrganization(
 	ctx context.Context,
-	request *sdkgo.ConfigureOrganizationRequestApplePay,
+	request *payabli.ConfigureOrganizationRequestApplePay,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.ConfigureApplePayOrganizationApiResponse], error) {
+) (*core.Response[*payabli.ConfigureApplePayOrganizationApiResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -47,29 +47,7 @@ func (r *RawClient) ConfigureApplePayOrganization(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.ConfigureApplePayOrganizationApiResponse
+	var response *payabli.ConfigureApplePayOrganizationApiResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -82,13 +60,13 @@ func (r *RawClient) ConfigureApplePayOrganization(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.ConfigureApplePayOrganizationApiResponse]{
+	return &core.Response[*payabli.ConfigureApplePayOrganizationApiResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -97,9 +75,9 @@ func (r *RawClient) ConfigureApplePayOrganization(
 
 func (r *RawClient) ConfigureApplePayPaypoint(
 	ctx context.Context,
-	request *sdkgo.ConfigurePaypointRequestApplePay,
+	request *payabli.ConfigurePaypointRequestApplePay,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.ConfigureApplePaypointApiResponse], error) {
+) (*core.Response[*payabli.ConfigureApplePaypointApiResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -112,29 +90,7 @@ func (r *RawClient) ConfigureApplePayPaypoint(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.ConfigureApplePaypointApiResponse
+	var response *payabli.ConfigureApplePaypointApiResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -147,13 +103,13 @@ func (r *RawClient) ConfigureApplePayPaypoint(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.ConfigureApplePaypointApiResponse]{
+	return &core.Response[*payabli.ConfigureApplePaypointApiResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -162,9 +118,9 @@ func (r *RawClient) ConfigureApplePayPaypoint(
 
 func (r *RawClient) ConfigureGooglePayOrganization(
 	ctx context.Context,
-	request *sdkgo.ConfigureOrganizationRequestGooglePay,
+	request *payabli.ConfigureOrganizationRequestGooglePay,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.ConfigureApplePayOrganizationApiResponse], error) {
+) (*core.Response[*payabli.ConfigureApplePayOrganizationApiResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -177,29 +133,7 @@ func (r *RawClient) ConfigureGooglePayOrganization(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.ConfigureApplePayOrganizationApiResponse
+	var response *payabli.ConfigureApplePayOrganizationApiResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -212,13 +146,13 @@ func (r *RawClient) ConfigureGooglePayOrganization(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.ConfigureApplePayOrganizationApiResponse]{
+	return &core.Response[*payabli.ConfigureApplePayOrganizationApiResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -227,9 +161,9 @@ func (r *RawClient) ConfigureGooglePayOrganization(
 
 func (r *RawClient) ConfigureGooglePayPaypoint(
 	ctx context.Context,
-	request *sdkgo.ConfigurePaypointRequestGooglePay,
+	request *payabli.ConfigurePaypointRequestGooglePay,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.ConfigureGooglePaypointApiResponse], error) {
+) (*core.Response[*payabli.ConfigureGooglePaypointApiResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -242,29 +176,7 @@ func (r *RawClient) ConfigureGooglePayPaypoint(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.ConfigureGooglePaypointApiResponse
+	var response *payabli.ConfigureGooglePaypointApiResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -277,13 +189,13 @@ func (r *RawClient) ConfigureGooglePayPaypoint(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.ConfigureGooglePaypointApiResponse]{
+	return &core.Response[*payabli.ConfigureGooglePaypointApiResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

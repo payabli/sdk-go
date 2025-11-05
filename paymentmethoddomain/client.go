@@ -4,7 +4,7 @@ package paymentmethoddomain
 
 import (
 	context "context"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Add a payment method domain to an organization or paypoint.
 func (c *Client) AddPaymentMethodDomain(
 	ctx context.Context,
-	request *sdkgo.AddPaymentMethodDomainRequest,
+	request *payabli.AddPaymentMethodDomainRequest,
 	opts ...option.RequestOption,
-) (*sdkgo.AddPaymentMethodDomainApiResponse, error) {
+) (*payabli.AddPaymentMethodDomainApiResponse, error) {
 	response, err := c.WithRawResponse.AddPaymentMethodDomain(
 		ctx,
 		request,
@@ -55,7 +55,7 @@ func (c *Client) CascadePaymentMethodDomain(
 	// The payment method domain's ID in Payabli.
 	domainId string,
 	opts ...option.RequestOption,
-) (*sdkgo.PaymentMethodDomainGeneralResponse, error) {
+) (*payabli.PaymentMethodDomainGeneralResponse, error) {
 	response, err := c.WithRawResponse.CascadePaymentMethodDomain(
 		ctx,
 		domainId,
@@ -73,7 +73,7 @@ func (c *Client) DeletePaymentMethodDomain(
 	// The payment method domain's ID in Payabli.
 	domainId string,
 	opts ...option.RequestOption,
-) (*sdkgo.DeletePaymentMethodDomainResponse, error) {
+) (*payabli.DeletePaymentMethodDomainResponse, error) {
 	response, err := c.WithRawResponse.DeletePaymentMethodDomain(
 		ctx,
 		domainId,
@@ -91,7 +91,7 @@ func (c *Client) GetPaymentMethodDomain(
 	// The payment method domain's ID in Payabli.
 	domainId string,
 	opts ...option.RequestOption,
-) (*sdkgo.PaymentMethodDomainApiResponse, error) {
+) (*payabli.PaymentMethodDomainApiResponse, error) {
 	response, err := c.WithRawResponse.GetPaymentMethodDomain(
 		ctx,
 		domainId,
@@ -106,9 +106,9 @@ func (c *Client) GetPaymentMethodDomain(
 // Get a list of payment method domains that belong to a PSP, organization, or paypoint.
 func (c *Client) ListPaymentMethodDomains(
 	ctx context.Context,
-	request *sdkgo.ListPaymentMethodDomainsRequest,
+	request *payabli.ListPaymentMethodDomainsRequest,
 	opts ...option.RequestOption,
-) (*sdkgo.ListPaymentMethodDomainsResponse, error) {
+) (*payabli.ListPaymentMethodDomainsResponse, error) {
 	response, err := c.WithRawResponse.ListPaymentMethodDomains(
 		ctx,
 		request,
@@ -125,9 +125,9 @@ func (c *Client) UpdatePaymentMethodDomain(
 	ctx context.Context,
 	// The payment method domain's ID in Payabli.
 	domainId string,
-	request *sdkgo.UpdatePaymentMethodDomainRequest,
+	request *payabli.UpdatePaymentMethodDomainRequest,
 	opts ...option.RequestOption,
-) (*sdkgo.PaymentMethodDomainGeneralResponse, error) {
+) (*payabli.PaymentMethodDomainGeneralResponse, error) {
 	response, err := c.WithRawResponse.UpdatePaymentMethodDomain(
 		ctx,
 		domainId,
@@ -146,7 +146,7 @@ func (c *Client) VerifyPaymentMethodDomain(
 	// The payment method domain's ID in Payabli.
 	domainId string,
 	opts ...option.RequestOption,
-) (*sdkgo.PaymentMethodDomainGeneralResponse, error) {
+) (*payabli.PaymentMethodDomainGeneralResponse, error) {
 	response, err := c.WithRawResponse.VerifyPaymentMethodDomain(
 		ctx,
 		domainId,

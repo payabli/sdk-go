@@ -394,21 +394,6 @@ func (g *GetAttachedFromBillRequest) SetReturnObject(returnObject *bool) {
 	g.require(getAttachedFromBillRequestFieldReturnObject)
 }
 
-// Custom dictionary of key:value pairs. You can use this field to store any data related to the object or for your system.
-//
-// ```json
-//
-//	{
-//	  "additionalData": {
-//	    "key1": "value1",
-//	    "key2": "value2",
-//	    "key3": "value3"
-//	  }
-//	}
-//
-// ```
-type AdditionalDataMap = map[string]string
-
 // Approvals associated with the bill.
 type BillApprovals = []*BillQueryRecord2BillApprovalsItem
 

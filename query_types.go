@@ -2549,17 +2549,18 @@ var (
 	queryTransferSummaryFieldReleaseAmount          = big.NewInt(1 << 5)
 	queryTransferSummaryFieldThirdPartyPaid         = big.NewInt(1 << 6)
 	queryTransferSummaryFieldTotalNetAmountTransfer = big.NewInt(1 << 7)
-	queryTransferSummaryFieldServiceFees            = big.NewInt(1 << 8)
-	queryTransferSummaryFieldNetBatchAmount         = big.NewInt(1 << 9)
-	queryTransferSummaryFieldTransferAmount         = big.NewInt(1 << 10)
-	queryTransferSummaryFieldRefunds                = big.NewInt(1 << 11)
-	queryTransferSummaryFieldHeldAmount             = big.NewInt(1 << 12)
-	queryTransferSummaryFieldTotalRecords           = big.NewInt(1 << 13)
-	queryTransferSummaryFieldTotalAmount            = big.NewInt(1 << 14)
-	queryTransferSummaryFieldTotalNetAmount         = big.NewInt(1 << 15)
-	queryTransferSummaryFieldTotalPages             = big.NewInt(1 << 16)
-	queryTransferSummaryFieldPageSize               = big.NewInt(1 << 17)
-	queryTransferSummaryFieldPageidentifier         = big.NewInt(1 << 18)
+	queryTransferSummaryFieldSplitAmount            = big.NewInt(1 << 8)
+	queryTransferSummaryFieldServiceFees            = big.NewInt(1 << 9)
+	queryTransferSummaryFieldNetBatchAmount         = big.NewInt(1 << 10)
+	queryTransferSummaryFieldTransferAmount         = big.NewInt(1 << 11)
+	queryTransferSummaryFieldRefunds                = big.NewInt(1 << 12)
+	queryTransferSummaryFieldHeldAmount             = big.NewInt(1 << 13)
+	queryTransferSummaryFieldTotalRecords           = big.NewInt(1 << 14)
+	queryTransferSummaryFieldTotalAmount            = big.NewInt(1 << 15)
+	queryTransferSummaryFieldTotalNetAmount         = big.NewInt(1 << 16)
+	queryTransferSummaryFieldTotalPages             = big.NewInt(1 << 17)
+	queryTransferSummaryFieldPageSize               = big.NewInt(1 << 18)
+	queryTransferSummaryFieldPageidentifier         = big.NewInt(1 << 19)
 )
 
 type QueryTransferSummary struct {
@@ -2579,6 +2580,8 @@ type QueryTransferSummary struct {
 	ThirdPartyPaid *float64 `json:"thirdPartyPaid,omitempty" url:"thirdPartyPaid,omitempty"`
 	// The gross batch amount minus service fees.
 	TotalNetAmountTransfer *float64 `json:"totalNetAmountTransfer,omitempty" url:"totalNetAmountTransfer,omitempty"`
+	// The sum of each splitFundingAmount of each record in the transfer.
+	SplitAmount *float64 `json:"splitAmount,omitempty" url:"splitAmount,omitempty"`
 	// Service fees are any pass-through fees charged to the customer at the time of payment.  These aren't transferred to the merchant when the batch is transferred and funded.
 	ServiceFees *float64 `json:"serviceFees,omitempty" url:"serviceFees,omitempty"`
 	// The net batch amount is the gross batch amount minus any returns, refunds,
@@ -2664,6 +2667,13 @@ func (q *QueryTransferSummary) GetTotalNetAmountTransfer() *float64 {
 		return nil
 	}
 	return q.TotalNetAmountTransfer
+}
+
+func (q *QueryTransferSummary) GetSplitAmount() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.SplitAmount
 }
 
 func (q *QueryTransferSummary) GetServiceFees() *float64 {
@@ -2808,6 +2818,13 @@ func (q *QueryTransferSummary) SetThirdPartyPaid(thirdPartyPaid *float64) {
 func (q *QueryTransferSummary) SetTotalNetAmountTransfer(totalNetAmountTransfer *float64) {
 	q.TotalNetAmountTransfer = totalNetAmountTransfer
 	q.require(queryTransferSummaryFieldTotalNetAmountTransfer)
+}
+
+// SetSplitAmount sets the SplitAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransferSummary) SetSplitAmount(splitAmount *float64) {
+	q.SplitAmount = splitAmount
+	q.require(queryTransferSummaryFieldSplitAmount)
 }
 
 // SetServiceFees sets the ServiceFees field and marks it as non-optional;

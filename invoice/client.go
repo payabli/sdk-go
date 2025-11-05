@@ -4,7 +4,7 @@ package invoice
 
 import (
 	context "context"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -37,9 +37,9 @@ func (c *Client) AddInvoice(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdkgo.AddInvoiceRequest,
+	request *payabli.AddInvoiceRequest,
 	opts ...option.RequestOption,
-) (*sdkgo.InvoiceResponseWithoutData, error) {
+) (*payabli.InvoiceResponseWithoutData, error) {
 	response, err := c.WithRawResponse.AddInvoice(
 		ctx,
 		entry,
@@ -70,7 +70,7 @@ func (c *Client) DeleteAttachedFromInvoice(
 	// Invoice ID
 	idInvoice int,
 	opts ...option.RequestOption,
-) (*sdkgo.InvoiceResponseWithoutData, error) {
+) (*payabli.InvoiceResponseWithoutData, error) {
 	response, err := c.WithRawResponse.DeleteAttachedFromInvoice(
 		ctx,
 		filename,
@@ -89,7 +89,7 @@ func (c *Client) DeleteInvoice(
 	// Invoice ID
 	idInvoice int,
 	opts ...option.RequestOption,
-) (*sdkgo.InvoiceResponseWithoutData, error) {
+) (*payabli.InvoiceResponseWithoutData, error) {
 	response, err := c.WithRawResponse.DeleteInvoice(
 		ctx,
 		idInvoice,
@@ -106,9 +106,9 @@ func (c *Client) EditInvoice(
 	ctx context.Context,
 	// Invoice ID
 	idInvoice int,
-	request *sdkgo.EditInvoiceRequest,
+	request *payabli.EditInvoiceRequest,
 	opts ...option.RequestOption,
-) (*sdkgo.InvoiceResponseWithoutData, error) {
+) (*payabli.InvoiceResponseWithoutData, error) {
 	response, err := c.WithRawResponse.EditInvoice(
 		ctx,
 		idInvoice,
@@ -140,9 +140,9 @@ func (c *Client) GetAttachedFileFromInvoice(
 	filename string,
 	// Invoice ID
 	idInvoice int,
-	request *sdkgo.GetAttachedFileFromInvoiceRequest,
+	request *payabli.GetAttachedFileFromInvoiceRequest,
 	opts ...option.RequestOption,
-) (*sdkgo.FileContent, error) {
+) (*payabli.FileContent, error) {
 	response, err := c.WithRawResponse.GetAttachedFileFromInvoice(
 		ctx,
 		filename,
@@ -162,7 +162,7 @@ func (c *Client) GetInvoice(
 	// Invoice ID
 	idInvoice int,
 	opts ...option.RequestOption,
-) (*sdkgo.GetInvoiceRecord, error) {
+) (*payabli.GetInvoiceRecord, error) {
 	response, err := c.WithRawResponse.GetInvoice(
 		ctx,
 		idInvoice,
@@ -180,7 +180,7 @@ func (c *Client) GetInvoiceNumber(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	opts ...option.RequestOption,
-) (*sdkgo.InvoiceNumberResponse, error) {
+) (*payabli.InvoiceNumberResponse, error) {
 	response, err := c.WithRawResponse.GetInvoiceNumber(
 		ctx,
 		entry,
@@ -197,9 +197,9 @@ func (c *Client) ListInvoices(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdkgo.ListInvoicesRequest,
+	request *payabli.ListInvoicesRequest,
 	opts ...option.RequestOption,
-) (*sdkgo.QueryInvoiceResponse, error) {
+) (*payabli.QueryInvoiceResponse, error) {
 	response, err := c.WithRawResponse.ListInvoices(
 		ctx,
 		entry,
@@ -217,9 +217,9 @@ func (c *Client) ListInvoicesOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ListInvoicesOrgRequest,
+	request *payabli.ListInvoicesOrgRequest,
 	opts ...option.RequestOption,
-) (*sdkgo.QueryInvoiceResponse, error) {
+) (*payabli.QueryInvoiceResponse, error) {
 	response, err := c.WithRawResponse.ListInvoicesOrg(
 		ctx,
 		orgId,
@@ -237,9 +237,9 @@ func (c *Client) SendInvoice(
 	ctx context.Context,
 	// Invoice ID
 	idInvoice int,
-	request *sdkgo.SendInvoiceRequest,
+	request *payabli.SendInvoiceRequest,
 	opts ...option.RequestOption,
-) (*sdkgo.SendInvoiceResponse, error) {
+) (*payabli.SendInvoiceResponse, error) {
 	response, err := c.WithRawResponse.SendInvoice(
 		ctx,
 		idInvoice,
@@ -258,7 +258,7 @@ func (c *Client) GetInvoicePdf(
 	// Invoice ID
 	idInvoice int,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.GetInvoicePdf(
 		ctx,
 		idInvoice,

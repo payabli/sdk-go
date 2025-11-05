@@ -363,6 +363,7 @@ var (
 	requestPaymentFieldValidationCode        = big.NewInt(1 << 1)
 	requestPaymentFieldAchValidation         = big.NewInt(1 << 2)
 	requestPaymentFieldForceCustomerCreation = big.NewInt(1 << 3)
+	requestPaymentFieldIncludeDetails        = big.NewInt(1 << 4)
 )
 
 type RequestPayment struct {
@@ -371,7 +372,9 @@ type RequestPayment struct {
 	ValidationCode        *string                `json:"-" url:"-"`
 	AchValidation         *AchValidation         `json:"-" url:"achValidation,omitempty"`
 	ForceCustomerCreation *ForceCustomerCreation `json:"-" url:"forceCustomerCreation,omitempty"`
-	Body                  *TransRequestBody      `json:"-" url:"-"`
+	// When `true`, transactionDetails object is returned in the response. See a full example of the `transactionDetails` object in the [Transaction integration guide](/developers/developer-guides/money-in-transaction-add#includedetailstrue-response).
+	IncludeDetails *bool             `json:"-" url:"includeDetails,omitempty"`
+	Body           *TransRequestBody `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -410,6 +413,13 @@ func (r *RequestPayment) SetAchValidation(achValidation *AchValidation) {
 func (r *RequestPayment) SetForceCustomerCreation(forceCustomerCreation *ForceCustomerCreation) {
 	r.ForceCustomerCreation = forceCustomerCreation
 	r.require(requestPaymentFieldForceCustomerCreation)
+}
+
+// SetIncludeDetails sets the IncludeDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RequestPayment) SetIncludeDetails(includeDetails *bool) {
+	r.IncludeDetails = includeDetails
+	r.require(requestPaymentFieldIncludeDetails)
 }
 
 func (r *RequestPayment) UnmarshalJSON(data []byte) error {
@@ -1625,6 +1635,432 @@ func (p *PaymentMethod) Accept(visitor PaymentMethodVisitor) error {
 	return fmt.Errorf("type %T does not include a non-empty union type", p)
 }
 
+var (
+	queryTransactionPayorDataCustomerFieldIdentifiers      = big.NewInt(1 << 0)
+	queryTransactionPayorDataCustomerFieldFirstName        = big.NewInt(1 << 1)
+	queryTransactionPayorDataCustomerFieldLastName         = big.NewInt(1 << 2)
+	queryTransactionPayorDataCustomerFieldCompanyName      = big.NewInt(1 << 3)
+	queryTransactionPayorDataCustomerFieldBillingAddress1  = big.NewInt(1 << 4)
+	queryTransactionPayorDataCustomerFieldBillingAddress2  = big.NewInt(1 << 5)
+	queryTransactionPayorDataCustomerFieldBillingCity      = big.NewInt(1 << 6)
+	queryTransactionPayorDataCustomerFieldBillingState     = big.NewInt(1 << 7)
+	queryTransactionPayorDataCustomerFieldBillingZip       = big.NewInt(1 << 8)
+	queryTransactionPayorDataCustomerFieldBillingCountry   = big.NewInt(1 << 9)
+	queryTransactionPayorDataCustomerFieldBillingPhone     = big.NewInt(1 << 10)
+	queryTransactionPayorDataCustomerFieldBillingEmail     = big.NewInt(1 << 11)
+	queryTransactionPayorDataCustomerFieldCustomerNumber   = big.NewInt(1 << 12)
+	queryTransactionPayorDataCustomerFieldShippingAddress1 = big.NewInt(1 << 13)
+	queryTransactionPayorDataCustomerFieldShippingAddress2 = big.NewInt(1 << 14)
+	queryTransactionPayorDataCustomerFieldShippingCity     = big.NewInt(1 << 15)
+	queryTransactionPayorDataCustomerFieldShippingState    = big.NewInt(1 << 16)
+	queryTransactionPayorDataCustomerFieldShippingZip      = big.NewInt(1 << 17)
+	queryTransactionPayorDataCustomerFieldShippingCountry  = big.NewInt(1 << 18)
+	queryTransactionPayorDataCustomerFieldCustomerId       = big.NewInt(1 << 19)
+	queryTransactionPayorDataCustomerFieldCustomerStatus   = big.NewInt(1 << 20)
+	queryTransactionPayorDataCustomerFieldAdditionalData   = big.NewInt(1 << 21)
+)
+
+type QueryTransactionPayorDataCustomer struct {
+	// Array of field names to be used as identifiers.
+	Identifiers []interface{} `json:"Identifiers,omitempty" url:"Identifiers,omitempty"`
+	// Customer/Payor first name.
+	FirstName *string `json:"FirstName,omitempty" url:"FirstName,omitempty"`
+	// Customer/Payor last name.
+	LastName *string `json:"LastName,omitempty" url:"LastName,omitempty"`
+	// Customer's company name.
+	CompanyName *string `json:"CompanyName,omitempty" url:"CompanyName,omitempty"`
+	// Customer's billing address.
+	BillingAddress1 *string `json:"BillingAddress1,omitempty" url:"BillingAddress1,omitempty"`
+	// Additional line for Customer's billing address.
+	BillingAddress2 *string `json:"BillingAddress2,omitempty" url:"BillingAddress2,omitempty"`
+	// Customer's billing city.
+	BillingCity *string `json:"BillingCity,omitempty" url:"BillingCity,omitempty"`
+	// Customer's billing state. Must be 2-letter state code for address in US.
+	BillingState *string `json:"BillingState,omitempty" url:"BillingState,omitempty"`
+	// Customer's billing ZIP code.
+	BillingZip *BillingZip `json:"BillingZip,omitempty" url:"BillingZip,omitempty"`
+	// Customer's billing country.
+	BillingCountry *string `json:"BillingCountry,omitempty" url:"BillingCountry,omitempty"`
+	// Customer's phone number.
+	BillingPhone *string `json:"BillingPhone,omitempty" url:"BillingPhone,omitempty"`
+	// Customer's email address.
+	BillingEmail     *Email                     `json:"BillingEmail,omitempty" url:"BillingEmail,omitempty"`
+	CustomerNumber   *CustomerNumberNullable    `json:"CustomerNumber,omitempty" url:"CustomerNumber,omitempty"`
+	ShippingAddress1 *Shippingaddress           `json:"ShippingAddress1,omitempty" url:"ShippingAddress1,omitempty"`
+	ShippingAddress2 *Shippingaddressadditional `json:"ShippingAddress2,omitempty" url:"ShippingAddress2,omitempty"`
+	ShippingCity     *Shippingcity              `json:"ShippingCity,omitempty" url:"ShippingCity,omitempty"`
+	ShippingState    *Shippingstate             `json:"ShippingState,omitempty" url:"ShippingState,omitempty"`
+	ShippingZip      *Shippingzip               `json:"ShippingZip,omitempty" url:"ShippingZip,omitempty"`
+	ShippingCountry  *Shippingcountry           `json:"ShippingCountry,omitempty" url:"ShippingCountry,omitempty"`
+	CustomerId       *CustomerId                `json:"customerId,omitempty" url:"customerId,omitempty"`
+	CustomerStatus   *CustomerStatus            `json:"customerStatus,omitempty" url:"customerStatus,omitempty"`
+	AdditionalData   *AdditionalDataMap         `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (q *QueryTransactionPayorDataCustomer) GetIdentifiers() []interface{} {
+	if q == nil {
+		return nil
+	}
+	return q.Identifiers
+}
+
+func (q *QueryTransactionPayorDataCustomer) GetFirstName() *string {
+	if q == nil {
+		return nil
+	}
+	return q.FirstName
+}
+
+func (q *QueryTransactionPayorDataCustomer) GetLastName() *string {
+	if q == nil {
+		return nil
+	}
+	return q.LastName
+}
+
+func (q *QueryTransactionPayorDataCustomer) GetCompanyName() *string {
+	if q == nil {
+		return nil
+	}
+	return q.CompanyName
+}
+
+func (q *QueryTransactionPayorDataCustomer) GetBillingAddress1() *string {
+	if q == nil {
+		return nil
+	}
+	return q.BillingAddress1
+}
+
+func (q *QueryTransactionPayorDataCustomer) GetBillingAddress2() *string {
+	if q == nil {
+		return nil
+	}
+	return q.BillingAddress2
+}
+
+func (q *QueryTransactionPayorDataCustomer) GetBillingCity() *string {
+	if q == nil {
+		return nil
+	}
+	return q.BillingCity
+}
+
+func (q *QueryTransactionPayorDataCustomer) GetBillingState() *string {
+	if q == nil {
+		return nil
+	}
+	return q.BillingState
+}
+
+func (q *QueryTransactionPayorDataCustomer) GetBillingZip() *BillingZip {
+	if q == nil {
+		return nil
+	}
+	return q.BillingZip
+}
+
+func (q *QueryTransactionPayorDataCustomer) GetBillingCountry() *string {
+	if q == nil {
+		return nil
+	}
+	return q.BillingCountry
+}
+
+func (q *QueryTransactionPayorDataCustomer) GetBillingPhone() *string {
+	if q == nil {
+		return nil
+	}
+	return q.BillingPhone
+}
+
+func (q *QueryTransactionPayorDataCustomer) GetBillingEmail() *Email {
+	if q == nil {
+		return nil
+	}
+	return q.BillingEmail
+}
+
+func (q *QueryTransactionPayorDataCustomer) GetCustomerNumber() *CustomerNumberNullable {
+	if q == nil {
+		return nil
+	}
+	return q.CustomerNumber
+}
+
+func (q *QueryTransactionPayorDataCustomer) GetShippingAddress1() *Shippingaddress {
+	if q == nil {
+		return nil
+	}
+	return q.ShippingAddress1
+}
+
+func (q *QueryTransactionPayorDataCustomer) GetShippingAddress2() *Shippingaddressadditional {
+	if q == nil {
+		return nil
+	}
+	return q.ShippingAddress2
+}
+
+func (q *QueryTransactionPayorDataCustomer) GetShippingCity() *Shippingcity {
+	if q == nil {
+		return nil
+	}
+	return q.ShippingCity
+}
+
+func (q *QueryTransactionPayorDataCustomer) GetShippingState() *Shippingstate {
+	if q == nil {
+		return nil
+	}
+	return q.ShippingState
+}
+
+func (q *QueryTransactionPayorDataCustomer) GetShippingZip() *Shippingzip {
+	if q == nil {
+		return nil
+	}
+	return q.ShippingZip
+}
+
+func (q *QueryTransactionPayorDataCustomer) GetShippingCountry() *Shippingcountry {
+	if q == nil {
+		return nil
+	}
+	return q.ShippingCountry
+}
+
+func (q *QueryTransactionPayorDataCustomer) GetCustomerId() *CustomerId {
+	if q == nil {
+		return nil
+	}
+	return q.CustomerId
+}
+
+func (q *QueryTransactionPayorDataCustomer) GetCustomerStatus() *CustomerStatus {
+	if q == nil {
+		return nil
+	}
+	return q.CustomerStatus
+}
+
+func (q *QueryTransactionPayorDataCustomer) GetAdditionalData() *AdditionalDataMap {
+	if q == nil {
+		return nil
+	}
+	return q.AdditionalData
+}
+
+func (q *QueryTransactionPayorDataCustomer) GetExtraProperties() map[string]interface{} {
+	return q.extraProperties
+}
+
+func (q *QueryTransactionPayorDataCustomer) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetIdentifiers sets the Identifiers field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransactionPayorDataCustomer) SetIdentifiers(identifiers []interface{}) {
+	q.Identifiers = identifiers
+	q.require(queryTransactionPayorDataCustomerFieldIdentifiers)
+}
+
+// SetFirstName sets the FirstName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransactionPayorDataCustomer) SetFirstName(firstName *string) {
+	q.FirstName = firstName
+	q.require(queryTransactionPayorDataCustomerFieldFirstName)
+}
+
+// SetLastName sets the LastName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransactionPayorDataCustomer) SetLastName(lastName *string) {
+	q.LastName = lastName
+	q.require(queryTransactionPayorDataCustomerFieldLastName)
+}
+
+// SetCompanyName sets the CompanyName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransactionPayorDataCustomer) SetCompanyName(companyName *string) {
+	q.CompanyName = companyName
+	q.require(queryTransactionPayorDataCustomerFieldCompanyName)
+}
+
+// SetBillingAddress1 sets the BillingAddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransactionPayorDataCustomer) SetBillingAddress1(billingAddress1 *string) {
+	q.BillingAddress1 = billingAddress1
+	q.require(queryTransactionPayorDataCustomerFieldBillingAddress1)
+}
+
+// SetBillingAddress2 sets the BillingAddress2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransactionPayorDataCustomer) SetBillingAddress2(billingAddress2 *string) {
+	q.BillingAddress2 = billingAddress2
+	q.require(queryTransactionPayorDataCustomerFieldBillingAddress2)
+}
+
+// SetBillingCity sets the BillingCity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransactionPayorDataCustomer) SetBillingCity(billingCity *string) {
+	q.BillingCity = billingCity
+	q.require(queryTransactionPayorDataCustomerFieldBillingCity)
+}
+
+// SetBillingState sets the BillingState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransactionPayorDataCustomer) SetBillingState(billingState *string) {
+	q.BillingState = billingState
+	q.require(queryTransactionPayorDataCustomerFieldBillingState)
+}
+
+// SetBillingZip sets the BillingZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransactionPayorDataCustomer) SetBillingZip(billingZip *BillingZip) {
+	q.BillingZip = billingZip
+	q.require(queryTransactionPayorDataCustomerFieldBillingZip)
+}
+
+// SetBillingCountry sets the BillingCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransactionPayorDataCustomer) SetBillingCountry(billingCountry *string) {
+	q.BillingCountry = billingCountry
+	q.require(queryTransactionPayorDataCustomerFieldBillingCountry)
+}
+
+// SetBillingPhone sets the BillingPhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransactionPayorDataCustomer) SetBillingPhone(billingPhone *string) {
+	q.BillingPhone = billingPhone
+	q.require(queryTransactionPayorDataCustomerFieldBillingPhone)
+}
+
+// SetBillingEmail sets the BillingEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransactionPayorDataCustomer) SetBillingEmail(billingEmail *Email) {
+	q.BillingEmail = billingEmail
+	q.require(queryTransactionPayorDataCustomerFieldBillingEmail)
+}
+
+// SetCustomerNumber sets the CustomerNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransactionPayorDataCustomer) SetCustomerNumber(customerNumber *CustomerNumberNullable) {
+	q.CustomerNumber = customerNumber
+	q.require(queryTransactionPayorDataCustomerFieldCustomerNumber)
+}
+
+// SetShippingAddress1 sets the ShippingAddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransactionPayorDataCustomer) SetShippingAddress1(shippingAddress1 *Shippingaddress) {
+	q.ShippingAddress1 = shippingAddress1
+	q.require(queryTransactionPayorDataCustomerFieldShippingAddress1)
+}
+
+// SetShippingAddress2 sets the ShippingAddress2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransactionPayorDataCustomer) SetShippingAddress2(shippingAddress2 *Shippingaddressadditional) {
+	q.ShippingAddress2 = shippingAddress2
+	q.require(queryTransactionPayorDataCustomerFieldShippingAddress2)
+}
+
+// SetShippingCity sets the ShippingCity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransactionPayorDataCustomer) SetShippingCity(shippingCity *Shippingcity) {
+	q.ShippingCity = shippingCity
+	q.require(queryTransactionPayorDataCustomerFieldShippingCity)
+}
+
+// SetShippingState sets the ShippingState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransactionPayorDataCustomer) SetShippingState(shippingState *Shippingstate) {
+	q.ShippingState = shippingState
+	q.require(queryTransactionPayorDataCustomerFieldShippingState)
+}
+
+// SetShippingZip sets the ShippingZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransactionPayorDataCustomer) SetShippingZip(shippingZip *Shippingzip) {
+	q.ShippingZip = shippingZip
+	q.require(queryTransactionPayorDataCustomerFieldShippingZip)
+}
+
+// SetShippingCountry sets the ShippingCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransactionPayorDataCustomer) SetShippingCountry(shippingCountry *Shippingcountry) {
+	q.ShippingCountry = shippingCountry
+	q.require(queryTransactionPayorDataCustomerFieldShippingCountry)
+}
+
+// SetCustomerId sets the CustomerId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransactionPayorDataCustomer) SetCustomerId(customerId *CustomerId) {
+	q.CustomerId = customerId
+	q.require(queryTransactionPayorDataCustomerFieldCustomerId)
+}
+
+// SetCustomerStatus sets the CustomerStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransactionPayorDataCustomer) SetCustomerStatus(customerStatus *CustomerStatus) {
+	q.CustomerStatus = customerStatus
+	q.require(queryTransactionPayorDataCustomerFieldCustomerStatus)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransactionPayorDataCustomer) SetAdditionalData(additionalData *AdditionalDataMap) {
+	q.AdditionalData = additionalData
+	q.require(queryTransactionPayorDataCustomerFieldAdditionalData)
+}
+
+func (q *QueryTransactionPayorDataCustomer) UnmarshalJSON(data []byte) error {
+	type unmarshaler QueryTransactionPayorDataCustomer
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*q = QueryTransactionPayorDataCustomer(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *q)
+	if err != nil {
+		return err
+	}
+	q.extraProperties = extraProperties
+	q.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (q *QueryTransactionPayorDataCustomer) MarshalJSON() ([]byte, error) {
+	type embed QueryTransactionPayorDataCustomer
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (q *QueryTransactionPayorDataCustomer) String() string {
+	if len(q.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(q); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", q)
+}
+
 // Object containing details about the refund, including line items and optional split instructions.
 var (
 	refundDetailFieldCategories     = big.NewInt(1 << 0)
@@ -1850,6 +2286,710 @@ func (s *SplitFundingRefundContent) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", s)
+}
+
+var (
+	transactionQueryRecordsCustomerFieldAchHolderType                = big.NewInt(1 << 0)
+	transactionQueryRecordsCustomerFieldAchSecCode                   = big.NewInt(1 << 1)
+	transactionQueryRecordsCustomerFieldBatchAmount                  = big.NewInt(1 << 2)
+	transactionQueryRecordsCustomerFieldBatchNumber                  = big.NewInt(1 << 3)
+	transactionQueryRecordsCustomerFieldCfeeTransactions             = big.NewInt(1 << 4)
+	transactionQueryRecordsCustomerFieldConnectorName                = big.NewInt(1 << 5)
+	transactionQueryRecordsCustomerFieldCustomer                     = big.NewInt(1 << 6)
+	transactionQueryRecordsCustomerFieldDeviceId                     = big.NewInt(1 << 7)
+	transactionQueryRecordsCustomerFieldEntrypageId                  = big.NewInt(1 << 8)
+	transactionQueryRecordsCustomerFieldExternalProcessorInformation = big.NewInt(1 << 9)
+	transactionQueryRecordsCustomerFieldFeeAmount                    = big.NewInt(1 << 10)
+	transactionQueryRecordsCustomerFieldGatewayTransId               = big.NewInt(1 << 11)
+	transactionQueryRecordsCustomerFieldInvoiceData                  = big.NewInt(1 << 12)
+	transactionQueryRecordsCustomerFieldMethod                       = big.NewInt(1 << 13)
+	transactionQueryRecordsCustomerFieldNetAmount                    = big.NewInt(1 << 14)
+	transactionQueryRecordsCustomerFieldOperation                    = big.NewInt(1 << 15)
+	transactionQueryRecordsCustomerFieldOrderId                      = big.NewInt(1 << 16)
+	transactionQueryRecordsCustomerFieldOrgId                        = big.NewInt(1 << 17)
+	transactionQueryRecordsCustomerFieldParentOrgName                = big.NewInt(1 << 18)
+	transactionQueryRecordsCustomerFieldPaymentData                  = big.NewInt(1 << 19)
+	transactionQueryRecordsCustomerFieldPaymentTransId               = big.NewInt(1 << 20)
+	transactionQueryRecordsCustomerFieldPayorId                      = big.NewInt(1 << 21)
+	transactionQueryRecordsCustomerFieldPaypointDbaname              = big.NewInt(1 << 22)
+	transactionQueryRecordsCustomerFieldPaypointEntryname            = big.NewInt(1 << 23)
+	transactionQueryRecordsCustomerFieldPaypointId                   = big.NewInt(1 << 24)
+	transactionQueryRecordsCustomerFieldPaypointLegalname            = big.NewInt(1 << 25)
+	transactionQueryRecordsCustomerFieldPendingFeeAmount             = big.NewInt(1 << 26)
+	transactionQueryRecordsCustomerFieldRefundId                     = big.NewInt(1 << 27)
+	transactionQueryRecordsCustomerFieldResponseData                 = big.NewInt(1 << 28)
+	transactionQueryRecordsCustomerFieldReturnedId                   = big.NewInt(1 << 29)
+	transactionQueryRecordsCustomerFieldScheduleReference            = big.NewInt(1 << 30)
+	transactionQueryRecordsCustomerFieldSettlementStatus             = big.NewInt(1 << 31)
+	transactionQueryRecordsCustomerFieldSource                       = big.NewInt(1 << 32)
+	transactionQueryRecordsCustomerFieldSplitFundingInstructions     = big.NewInt(1 << 33)
+	transactionQueryRecordsCustomerFieldTotalAmount                  = big.NewInt(1 << 34)
+	transactionQueryRecordsCustomerFieldTransactionEvents            = big.NewInt(1 << 35)
+	transactionQueryRecordsCustomerFieldTransactionTime              = big.NewInt(1 << 36)
+	transactionQueryRecordsCustomerFieldTransAdditionalData          = big.NewInt(1 << 37)
+	transactionQueryRecordsCustomerFieldTransStatus                  = big.NewInt(1 << 38)
+)
+
+type TransactionQueryRecordsCustomer struct {
+	AchHolderType *AchHolderType `json:"AchHolderType,omitempty" url:"AchHolderType,omitempty"`
+	AchSecCode    *AchSecCode    `json:"AchSecCode,omitempty" url:"AchSecCode,omitempty"`
+	// Batch amount.
+	BatchAmount *float64     `json:"BatchAmount,omitempty" url:"BatchAmount,omitempty"`
+	BatchNumber *BatchNumber `json:"BatchNumber,omitempty" url:"BatchNumber,omitempty"`
+	// Service Fee or sub-charge transaction associated to the main transaction.
+	CfeeTransactions []*QueryCFeeTransaction `json:"CfeeTransactions,omitempty" url:"CfeeTransactions,omitempty"`
+	// Connector used for transaction.
+	ConnectorName                *string                            `json:"ConnectorName,omitempty" url:"ConnectorName,omitempty"`
+	Customer                     *QueryTransactionPayorDataCustomer `json:"Customer,omitempty" url:"Customer,omitempty"`
+	DeviceId                     *Device                            `json:"DeviceId,omitempty" url:"DeviceId,omitempty"`
+	EntrypageId                  *EntrypageId                       `json:"EntrypageId,omitempty" url:"EntrypageId,omitempty"`
+	ExternalProcessorInformation *ExternalProcessorInformation      `json:"ExternalProcessorInformation,omitempty" url:"ExternalProcessorInformation,omitempty"`
+	FeeAmount                    *FeeAmount                         `json:"FeeAmount,omitempty" url:"FeeAmount,omitempty"`
+	// Internal identifier used for processing.
+	GatewayTransId *string   `json:"GatewayTransId,omitempty" url:"GatewayTransId,omitempty"`
+	InvoiceData    *BillData `json:"InvoiceData,omitempty" url:"InvoiceData,omitempty"`
+	// Payment method used: card, ach, or wallet.
+	Method *string `json:"Method,omitempty" url:"Method,omitempty"`
+	// Net amount paid.
+	NetAmount *Netamountnullable `json:"NetAmount,omitempty" url:"NetAmount,omitempty"`
+	Operation *Operation         `json:"Operation,omitempty" url:"Operation,omitempty"`
+	OrderId   *OrderId           `json:"OrderId,omitempty" url:"OrderId,omitempty"`
+	// ID of immediate parent organization.
+	OrgId         *Orgid            `json:"OrgId,omitempty" url:"OrgId,omitempty"`
+	ParentOrgName *OrgParentName    `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
+	PaymentData   *QueryPaymentData `json:"PaymentData,omitempty" url:"PaymentData,omitempty"`
+	// Unique Transaction ID.
+	PaymentTransId *string  `json:"PaymentTransId,omitempty" url:"PaymentTransId,omitempty"`
+	PayorId        *PayorId `json:"PayorId,omitempty" url:"PayorId,omitempty"`
+	// Paypoint's DBA name.
+	PaypointDbaname *Dbaname `json:"PaypointDbaname,omitempty" url:"PaypointDbaname,omitempty"`
+	// Paypoint's entryname.
+	PaypointEntryname *Entrypointfield `json:"PaypointEntryname,omitempty" url:"PaypointEntryname,omitempty"`
+	// InternalId for paypoint.
+	PaypointId *int64 `json:"PaypointId,omitempty" url:"PaypointId,omitempty"`
+	// Paypoint's legal name.
+	PaypointLegalname *Legalname         `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
+	PendingFeeAmount  *PendingFeeAmount  `json:"PendingFeeAmount,omitempty" url:"PendingFeeAmount,omitempty"`
+	RefundId          *RefundId          `json:"RefundId,omitempty" url:"RefundId,omitempty"`
+	ResponseData      *QueryResponseData `json:"ResponseData,omitempty" url:"ResponseData,omitempty"`
+	ReturnedId        *ReturnedId        `json:"ReturnedId,omitempty" url:"ReturnedId,omitempty"`
+	// Reference to the subscription that originated the transaction.
+	ScheduleReference *int64 `json:"ScheduleReference,omitempty" url:"ScheduleReference,omitempty"`
+	// Settlement status for transaction. See [the docs](/developers/references/money-in-statuses#payment-funding-status) for a full reference.
+	SettlementStatus         *int          `json:"SettlementStatus,omitempty" url:"SettlementStatus,omitempty"`
+	Source                   *Source       `json:"Source,omitempty" url:"Source,omitempty"`
+	SplitFundingInstructions *SplitFunding `json:"splitFundingInstructions,omitempty" url:"splitFundingInstructions,omitempty"`
+	// Transaction total amount (including service fee or sub-charge)
+	TotalAmount *float64 `json:"TotalAmount,omitempty" url:"TotalAmount,omitempty"`
+	// Events associated with this transaction.
+	TransactionEvents []*QueryTransactionEvents `json:"TransactionEvents,omitempty" url:"TransactionEvents,omitempty"`
+	// Transaction date and time, in UTC.
+	TransactionTime     *DatetimeNullable `json:"TransactionTime,omitempty" url:"TransactionTime,omitempty"`
+	TransAdditionalData interface{}       `json:"TransAdditionalData,omitempty" url:"TransAdditionalData,omitempty"`
+	// Status of transaction. See [the docs](/developers/references/money-in-statuses#money-in-transaction-status) for a full reference.
+	TransStatus *int `json:"TransStatus,omitempty" url:"TransStatus,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransactionQueryRecordsCustomer) GetAchHolderType() *AchHolderType {
+	if t == nil {
+		return nil
+	}
+	return t.AchHolderType
+}
+
+func (t *TransactionQueryRecordsCustomer) GetAchSecCode() *AchSecCode {
+	if t == nil {
+		return nil
+	}
+	return t.AchSecCode
+}
+
+func (t *TransactionQueryRecordsCustomer) GetBatchAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.BatchAmount
+}
+
+func (t *TransactionQueryRecordsCustomer) GetBatchNumber() *BatchNumber {
+	if t == nil {
+		return nil
+	}
+	return t.BatchNumber
+}
+
+func (t *TransactionQueryRecordsCustomer) GetCfeeTransactions() []*QueryCFeeTransaction {
+	if t == nil {
+		return nil
+	}
+	return t.CfeeTransactions
+}
+
+func (t *TransactionQueryRecordsCustomer) GetConnectorName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ConnectorName
+}
+
+func (t *TransactionQueryRecordsCustomer) GetCustomer() *QueryTransactionPayorDataCustomer {
+	if t == nil {
+		return nil
+	}
+	return t.Customer
+}
+
+func (t *TransactionQueryRecordsCustomer) GetDeviceId() *Device {
+	if t == nil {
+		return nil
+	}
+	return t.DeviceId
+}
+
+func (t *TransactionQueryRecordsCustomer) GetEntrypageId() *EntrypageId {
+	if t == nil {
+		return nil
+	}
+	return t.EntrypageId
+}
+
+func (t *TransactionQueryRecordsCustomer) GetExternalProcessorInformation() *ExternalProcessorInformation {
+	if t == nil {
+		return nil
+	}
+	return t.ExternalProcessorInformation
+}
+
+func (t *TransactionQueryRecordsCustomer) GetFeeAmount() *FeeAmount {
+	if t == nil {
+		return nil
+	}
+	return t.FeeAmount
+}
+
+func (t *TransactionQueryRecordsCustomer) GetGatewayTransId() *string {
+	if t == nil {
+		return nil
+	}
+	return t.GatewayTransId
+}
+
+func (t *TransactionQueryRecordsCustomer) GetInvoiceData() *BillData {
+	if t == nil {
+		return nil
+	}
+	return t.InvoiceData
+}
+
+func (t *TransactionQueryRecordsCustomer) GetMethod() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Method
+}
+
+func (t *TransactionQueryRecordsCustomer) GetNetAmount() *Netamountnullable {
+	if t == nil {
+		return nil
+	}
+	return t.NetAmount
+}
+
+func (t *TransactionQueryRecordsCustomer) GetOperation() *Operation {
+	if t == nil {
+		return nil
+	}
+	return t.Operation
+}
+
+func (t *TransactionQueryRecordsCustomer) GetOrderId() *OrderId {
+	if t == nil {
+		return nil
+	}
+	return t.OrderId
+}
+
+func (t *TransactionQueryRecordsCustomer) GetOrgId() *Orgid {
+	if t == nil {
+		return nil
+	}
+	return t.OrgId
+}
+
+func (t *TransactionQueryRecordsCustomer) GetParentOrgName() *OrgParentName {
+	if t == nil {
+		return nil
+	}
+	return t.ParentOrgName
+}
+
+func (t *TransactionQueryRecordsCustomer) GetPaymentData() *QueryPaymentData {
+	if t == nil {
+		return nil
+	}
+	return t.PaymentData
+}
+
+func (t *TransactionQueryRecordsCustomer) GetPaymentTransId() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PaymentTransId
+}
+
+func (t *TransactionQueryRecordsCustomer) GetPayorId() *PayorId {
+	if t == nil {
+		return nil
+	}
+	return t.PayorId
+}
+
+func (t *TransactionQueryRecordsCustomer) GetPaypointDbaname() *Dbaname {
+	if t == nil {
+		return nil
+	}
+	return t.PaypointDbaname
+}
+
+func (t *TransactionQueryRecordsCustomer) GetPaypointEntryname() *Entrypointfield {
+	if t == nil {
+		return nil
+	}
+	return t.PaypointEntryname
+}
+
+func (t *TransactionQueryRecordsCustomer) GetPaypointId() *int64 {
+	if t == nil {
+		return nil
+	}
+	return t.PaypointId
+}
+
+func (t *TransactionQueryRecordsCustomer) GetPaypointLegalname() *Legalname {
+	if t == nil {
+		return nil
+	}
+	return t.PaypointLegalname
+}
+
+func (t *TransactionQueryRecordsCustomer) GetPendingFeeAmount() *PendingFeeAmount {
+	if t == nil {
+		return nil
+	}
+	return t.PendingFeeAmount
+}
+
+func (t *TransactionQueryRecordsCustomer) GetRefundId() *RefundId {
+	if t == nil {
+		return nil
+	}
+	return t.RefundId
+}
+
+func (t *TransactionQueryRecordsCustomer) GetResponseData() *QueryResponseData {
+	if t == nil {
+		return nil
+	}
+	return t.ResponseData
+}
+
+func (t *TransactionQueryRecordsCustomer) GetReturnedId() *ReturnedId {
+	if t == nil {
+		return nil
+	}
+	return t.ReturnedId
+}
+
+func (t *TransactionQueryRecordsCustomer) GetScheduleReference() *int64 {
+	if t == nil {
+		return nil
+	}
+	return t.ScheduleReference
+}
+
+func (t *TransactionQueryRecordsCustomer) GetSettlementStatus() *int {
+	if t == nil {
+		return nil
+	}
+	return t.SettlementStatus
+}
+
+func (t *TransactionQueryRecordsCustomer) GetSource() *Source {
+	if t == nil {
+		return nil
+	}
+	return t.Source
+}
+
+func (t *TransactionQueryRecordsCustomer) GetSplitFundingInstructions() *SplitFunding {
+	if t == nil {
+		return nil
+	}
+	return t.SplitFundingInstructions
+}
+
+func (t *TransactionQueryRecordsCustomer) GetTotalAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.TotalAmount
+}
+
+func (t *TransactionQueryRecordsCustomer) GetTransactionEvents() []*QueryTransactionEvents {
+	if t == nil {
+		return nil
+	}
+	return t.TransactionEvents
+}
+
+func (t *TransactionQueryRecordsCustomer) GetTransactionTime() *DatetimeNullable {
+	if t == nil {
+		return nil
+	}
+	return t.TransactionTime
+}
+
+func (t *TransactionQueryRecordsCustomer) GetTransAdditionalData() interface{} {
+	if t == nil {
+		return nil
+	}
+	return t.TransAdditionalData
+}
+
+func (t *TransactionQueryRecordsCustomer) GetTransStatus() *int {
+	if t == nil {
+		return nil
+	}
+	return t.TransStatus
+}
+
+func (t *TransactionQueryRecordsCustomer) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransactionQueryRecordsCustomer) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetAchHolderType sets the AchHolderType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetAchHolderType(achHolderType *AchHolderType) {
+	t.AchHolderType = achHolderType
+	t.require(transactionQueryRecordsCustomerFieldAchHolderType)
+}
+
+// SetAchSecCode sets the AchSecCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetAchSecCode(achSecCode *AchSecCode) {
+	t.AchSecCode = achSecCode
+	t.require(transactionQueryRecordsCustomerFieldAchSecCode)
+}
+
+// SetBatchAmount sets the BatchAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetBatchAmount(batchAmount *float64) {
+	t.BatchAmount = batchAmount
+	t.require(transactionQueryRecordsCustomerFieldBatchAmount)
+}
+
+// SetBatchNumber sets the BatchNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetBatchNumber(batchNumber *BatchNumber) {
+	t.BatchNumber = batchNumber
+	t.require(transactionQueryRecordsCustomerFieldBatchNumber)
+}
+
+// SetCfeeTransactions sets the CfeeTransactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetCfeeTransactions(cfeeTransactions []*QueryCFeeTransaction) {
+	t.CfeeTransactions = cfeeTransactions
+	t.require(transactionQueryRecordsCustomerFieldCfeeTransactions)
+}
+
+// SetConnectorName sets the ConnectorName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetConnectorName(connectorName *string) {
+	t.ConnectorName = connectorName
+	t.require(transactionQueryRecordsCustomerFieldConnectorName)
+}
+
+// SetCustomer sets the Customer field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetCustomer(customer *QueryTransactionPayorDataCustomer) {
+	t.Customer = customer
+	t.require(transactionQueryRecordsCustomerFieldCustomer)
+}
+
+// SetDeviceId sets the DeviceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetDeviceId(deviceId *Device) {
+	t.DeviceId = deviceId
+	t.require(transactionQueryRecordsCustomerFieldDeviceId)
+}
+
+// SetEntrypageId sets the EntrypageId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetEntrypageId(entrypageId *EntrypageId) {
+	t.EntrypageId = entrypageId
+	t.require(transactionQueryRecordsCustomerFieldEntrypageId)
+}
+
+// SetExternalProcessorInformation sets the ExternalProcessorInformation field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetExternalProcessorInformation(externalProcessorInformation *ExternalProcessorInformation) {
+	t.ExternalProcessorInformation = externalProcessorInformation
+	t.require(transactionQueryRecordsCustomerFieldExternalProcessorInformation)
+}
+
+// SetFeeAmount sets the FeeAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetFeeAmount(feeAmount *FeeAmount) {
+	t.FeeAmount = feeAmount
+	t.require(transactionQueryRecordsCustomerFieldFeeAmount)
+}
+
+// SetGatewayTransId sets the GatewayTransId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetGatewayTransId(gatewayTransId *string) {
+	t.GatewayTransId = gatewayTransId
+	t.require(transactionQueryRecordsCustomerFieldGatewayTransId)
+}
+
+// SetInvoiceData sets the InvoiceData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetInvoiceData(invoiceData *BillData) {
+	t.InvoiceData = invoiceData
+	t.require(transactionQueryRecordsCustomerFieldInvoiceData)
+}
+
+// SetMethod sets the Method field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetMethod(method *string) {
+	t.Method = method
+	t.require(transactionQueryRecordsCustomerFieldMethod)
+}
+
+// SetNetAmount sets the NetAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetNetAmount(netAmount *Netamountnullable) {
+	t.NetAmount = netAmount
+	t.require(transactionQueryRecordsCustomerFieldNetAmount)
+}
+
+// SetOperation sets the Operation field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetOperation(operation *Operation) {
+	t.Operation = operation
+	t.require(transactionQueryRecordsCustomerFieldOperation)
+}
+
+// SetOrderId sets the OrderId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetOrderId(orderId *OrderId) {
+	t.OrderId = orderId
+	t.require(transactionQueryRecordsCustomerFieldOrderId)
+}
+
+// SetOrgId sets the OrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetOrgId(orgId *Orgid) {
+	t.OrgId = orgId
+	t.require(transactionQueryRecordsCustomerFieldOrgId)
+}
+
+// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetParentOrgName(parentOrgName *OrgParentName) {
+	t.ParentOrgName = parentOrgName
+	t.require(transactionQueryRecordsCustomerFieldParentOrgName)
+}
+
+// SetPaymentData sets the PaymentData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetPaymentData(paymentData *QueryPaymentData) {
+	t.PaymentData = paymentData
+	t.require(transactionQueryRecordsCustomerFieldPaymentData)
+}
+
+// SetPaymentTransId sets the PaymentTransId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetPaymentTransId(paymentTransId *string) {
+	t.PaymentTransId = paymentTransId
+	t.require(transactionQueryRecordsCustomerFieldPaymentTransId)
+}
+
+// SetPayorId sets the PayorId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetPayorId(payorId *PayorId) {
+	t.PayorId = payorId
+	t.require(transactionQueryRecordsCustomerFieldPayorId)
+}
+
+// SetPaypointDbaname sets the PaypointDbaname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetPaypointDbaname(paypointDbaname *Dbaname) {
+	t.PaypointDbaname = paypointDbaname
+	t.require(transactionQueryRecordsCustomerFieldPaypointDbaname)
+}
+
+// SetPaypointEntryname sets the PaypointEntryname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetPaypointEntryname(paypointEntryname *Entrypointfield) {
+	t.PaypointEntryname = paypointEntryname
+	t.require(transactionQueryRecordsCustomerFieldPaypointEntryname)
+}
+
+// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetPaypointId(paypointId *int64) {
+	t.PaypointId = paypointId
+	t.require(transactionQueryRecordsCustomerFieldPaypointId)
+}
+
+// SetPaypointLegalname sets the PaypointLegalname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetPaypointLegalname(paypointLegalname *Legalname) {
+	t.PaypointLegalname = paypointLegalname
+	t.require(transactionQueryRecordsCustomerFieldPaypointLegalname)
+}
+
+// SetPendingFeeAmount sets the PendingFeeAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetPendingFeeAmount(pendingFeeAmount *PendingFeeAmount) {
+	t.PendingFeeAmount = pendingFeeAmount
+	t.require(transactionQueryRecordsCustomerFieldPendingFeeAmount)
+}
+
+// SetRefundId sets the RefundId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetRefundId(refundId *RefundId) {
+	t.RefundId = refundId
+	t.require(transactionQueryRecordsCustomerFieldRefundId)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetResponseData(responseData *QueryResponseData) {
+	t.ResponseData = responseData
+	t.require(transactionQueryRecordsCustomerFieldResponseData)
+}
+
+// SetReturnedId sets the ReturnedId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetReturnedId(returnedId *ReturnedId) {
+	t.ReturnedId = returnedId
+	t.require(transactionQueryRecordsCustomerFieldReturnedId)
+}
+
+// SetScheduleReference sets the ScheduleReference field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetScheduleReference(scheduleReference *int64) {
+	t.ScheduleReference = scheduleReference
+	t.require(transactionQueryRecordsCustomerFieldScheduleReference)
+}
+
+// SetSettlementStatus sets the SettlementStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetSettlementStatus(settlementStatus *int) {
+	t.SettlementStatus = settlementStatus
+	t.require(transactionQueryRecordsCustomerFieldSettlementStatus)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetSource(source *Source) {
+	t.Source = source
+	t.require(transactionQueryRecordsCustomerFieldSource)
+}
+
+// SetSplitFundingInstructions sets the SplitFundingInstructions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetSplitFundingInstructions(splitFundingInstructions *SplitFunding) {
+	t.SplitFundingInstructions = splitFundingInstructions
+	t.require(transactionQueryRecordsCustomerFieldSplitFundingInstructions)
+}
+
+// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetTotalAmount(totalAmount *float64) {
+	t.TotalAmount = totalAmount
+	t.require(transactionQueryRecordsCustomerFieldTotalAmount)
+}
+
+// SetTransactionEvents sets the TransactionEvents field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetTransactionEvents(transactionEvents []*QueryTransactionEvents) {
+	t.TransactionEvents = transactionEvents
+	t.require(transactionQueryRecordsCustomerFieldTransactionEvents)
+}
+
+// SetTransactionTime sets the TransactionTime field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetTransactionTime(transactionTime *DatetimeNullable) {
+	t.TransactionTime = transactionTime
+	t.require(transactionQueryRecordsCustomerFieldTransactionTime)
+}
+
+// SetTransAdditionalData sets the TransAdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetTransAdditionalData(transAdditionalData interface{}) {
+	t.TransAdditionalData = transAdditionalData
+	t.require(transactionQueryRecordsCustomerFieldTransAdditionalData)
+}
+
+// SetTransStatus sets the TransStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetTransStatus(transStatus *int) {
+	t.TransStatus = transStatus
+	t.require(transactionQueryRecordsCustomerFieldTransStatus)
+}
+
+func (t *TransactionQueryRecordsCustomer) UnmarshalJSON(data []byte) error {
+	type unmarshaler TransactionQueryRecordsCustomer
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TransactionQueryRecordsCustomer(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransactionQueryRecordsCustomer) MarshalJSON() ([]byte, error) {
+	type embed TransactionQueryRecordsCustomer
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TransactionQueryRecordsCustomer) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
 }
 
 // Response for MoneyIn/authorize.
@@ -2696,31 +3836,41 @@ func (c *CaptureResponseData) String() string {
 
 // Response data for GetPaid transactions
 var (
-	getPaidResponseDataFieldAuthCode          = big.NewInt(1 << 0)
-	getPaidResponseDataFieldReferenceId       = big.NewInt(1 << 1)
-	getPaidResponseDataFieldResultCode        = big.NewInt(1 << 2)
-	getPaidResponseDataFieldResultText        = big.NewInt(1 << 3)
-	getPaidResponseDataFieldAvsResponseText   = big.NewInt(1 << 4)
-	getPaidResponseDataFieldCvvResponseText   = big.NewInt(1 << 5)
-	getPaidResponseDataFieldCustomerId        = big.NewInt(1 << 6)
-	getPaidResponseDataFieldMethodReferenceId = big.NewInt(1 << 7)
+	getPaidResponseDataFieldTransactionDetails = big.NewInt(1 << 0)
+	getPaidResponseDataFieldAuthCode           = big.NewInt(1 << 1)
+	getPaidResponseDataFieldReferenceId        = big.NewInt(1 << 2)
+	getPaidResponseDataFieldResultCode         = big.NewInt(1 << 3)
+	getPaidResponseDataFieldResultText         = big.NewInt(1 << 4)
+	getPaidResponseDataFieldAvsResponseText    = big.NewInt(1 << 5)
+	getPaidResponseDataFieldCvvResponseText    = big.NewInt(1 << 6)
+	getPaidResponseDataFieldCustomerId         = big.NewInt(1 << 7)
+	getPaidResponseDataFieldMethodReferenceId  = big.NewInt(1 << 8)
 )
 
 type GetPaidResponseData struct {
-	AuthCode          *Authcode          `json:"authCode,omitempty" url:"authCode,omitempty"`
-	ReferenceId       Referenceidtrans   `json:"referenceId" url:"referenceId"`
-	ResultCode        ResultCode         `json:"resultCode" url:"resultCode"`
-	ResultText        Resulttext         `json:"resultText" url:"resultText"`
-	AvsResponseText   Avsresponsetext    `json:"avsResponseText" url:"avsResponseText"`
-	CvvResponseText   Cvvresponsetext    `json:"cvvResponseText" url:"cvvResponseText"`
-	CustomerId        Customeridtrans    `json:"customerId" url:"customerId"`
-	MethodReferenceId *MethodReferenceId `json:"methodReferenceId,omitempty" url:"methodReferenceId,omitempty"`
+	// Details of the transaction. Present only if `includeDetails` query parameter is set to `true` in the request.
+	TransactionDetails *TransactionDetailRecord `json:"transactionDetails,omitempty" url:"transactionDetails,omitempty"`
+	AuthCode           *Authcode                `json:"authCode,omitempty" url:"authCode,omitempty"`
+	ReferenceId        Referenceidtrans         `json:"referenceId" url:"referenceId"`
+	ResultCode         ResultCode               `json:"resultCode" url:"resultCode"`
+	ResultText         Resulttext               `json:"resultText" url:"resultText"`
+	AvsResponseText    Avsresponsetext          `json:"avsResponseText" url:"avsResponseText"`
+	CvvResponseText    Cvvresponsetext          `json:"cvvResponseText" url:"cvvResponseText"`
+	CustomerId         Customeridtrans          `json:"customerId" url:"customerId"`
+	MethodReferenceId  *MethodReferenceId       `json:"methodReferenceId,omitempty" url:"methodReferenceId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
+}
+
+func (g *GetPaidResponseData) GetTransactionDetails() *TransactionDetailRecord {
+	if g == nil {
+		return nil
+	}
+	return g.TransactionDetails
 }
 
 func (g *GetPaidResponseData) GetAuthCode() *Authcode {
@@ -2788,6 +3938,13 @@ func (g *GetPaidResponseData) require(field *big.Int) {
 		g.explicitFields = big.NewInt(0)
 	}
 	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetTransactionDetails sets the TransactionDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPaidResponseData) SetTransactionDetails(transactionDetails *TransactionDetailRecord) {
+	g.TransactionDetails = transactionDetails
+	g.require(getPaidResponseDataFieldTransactionDetails)
 }
 
 // SetAuthCode sets the AuthCode field and marks it as non-optional;
@@ -4483,6 +5640,2902 @@ func (t *TransRequestBody) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransRequestBody) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+// Customer information associated with the transaction
+var (
+	transactionDetailCustomerFieldIdentifiers      = big.NewInt(1 << 0)
+	transactionDetailCustomerFieldFirstName        = big.NewInt(1 << 1)
+	transactionDetailCustomerFieldLastName         = big.NewInt(1 << 2)
+	transactionDetailCustomerFieldCompanyName      = big.NewInt(1 << 3)
+	transactionDetailCustomerFieldBillingAddress1  = big.NewInt(1 << 4)
+	transactionDetailCustomerFieldBillingAddress2  = big.NewInt(1 << 5)
+	transactionDetailCustomerFieldBillingCity      = big.NewInt(1 << 6)
+	transactionDetailCustomerFieldBillingState     = big.NewInt(1 << 7)
+	transactionDetailCustomerFieldBillingZip       = big.NewInt(1 << 8)
+	transactionDetailCustomerFieldBillingCountry   = big.NewInt(1 << 9)
+	transactionDetailCustomerFieldBillingPhone     = big.NewInt(1 << 10)
+	transactionDetailCustomerFieldBillingEmail     = big.NewInt(1 << 11)
+	transactionDetailCustomerFieldCustomerNumber   = big.NewInt(1 << 12)
+	transactionDetailCustomerFieldShippingAddress1 = big.NewInt(1 << 13)
+	transactionDetailCustomerFieldShippingAddress2 = big.NewInt(1 << 14)
+	transactionDetailCustomerFieldShippingCity     = big.NewInt(1 << 15)
+	transactionDetailCustomerFieldShippingState    = big.NewInt(1 << 16)
+	transactionDetailCustomerFieldShippingZip      = big.NewInt(1 << 17)
+	transactionDetailCustomerFieldShippingCountry  = big.NewInt(1 << 18)
+	transactionDetailCustomerFieldCustomerId       = big.NewInt(1 << 19)
+	transactionDetailCustomerFieldCustomerStatus   = big.NewInt(1 << 20)
+	transactionDetailCustomerFieldAdditionalData   = big.NewInt(1 << 21)
+)
+
+type TransactionDetailCustomer struct {
+	Identifiers      *Identifierfields           `json:"identifiers,omitempty" url:"identifiers,omitempty"`
+	FirstName        string                      `json:"firstName" url:"firstName"`
+	LastName         string                      `json:"lastName" url:"lastName"`
+	CompanyName      string                      `json:"companyName" url:"companyName"`
+	BillingAddress1  BillingAddressNullable      `json:"billingAddress1" url:"billingAddress1"`
+	BillingAddress2  BillingAddressAddtlNullable `json:"billingAddress2" url:"billingAddress2"`
+	BillingCity      BillingCityNullable         `json:"billingCity" url:"billingCity"`
+	BillingState     BillingStateNullable        `json:"billingState" url:"billingState"`
+	BillingZip       BillingZip                  `json:"billingZip" url:"billingZip"`
+	BillingCountry   BillingCountryNullable      `json:"billingCountry" url:"billingCountry"`
+	BillingPhone     PhoneNumber                 `json:"billingPhone" url:"billingPhone"`
+	BillingEmail     Email                       `json:"billingEmail" url:"billingEmail"`
+	CustomerNumber   CustomerNumberNullable      `json:"customerNumber" url:"customerNumber"`
+	ShippingAddress1 Shippingaddress             `json:"shippingAddress1" url:"shippingAddress1"`
+	ShippingAddress2 Shippingaddressadditional   `json:"shippingAddress2" url:"shippingAddress2"`
+	ShippingCity     Shippingcity                `json:"shippingCity" url:"shippingCity"`
+	ShippingState    Shippingstate               `json:"shippingState" url:"shippingState"`
+	ShippingZip      Shippingzip                 `json:"shippingZip" url:"shippingZip"`
+	ShippingCountry  Shippingcountry             `json:"shippingCountry" url:"shippingCountry"`
+	CustomerId       CustomerId                  `json:"customerId" url:"customerId"`
+	CustomerStatus   CustomerStatus              `json:"customerStatus" url:"customerStatus"`
+	AdditionalData   *AdditionalDataString       `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransactionDetailCustomer) GetIdentifiers() *Identifierfields {
+	if t == nil {
+		return nil
+	}
+	return t.Identifiers
+}
+
+func (t *TransactionDetailCustomer) GetFirstName() string {
+	if t == nil {
+		return ""
+	}
+	return t.FirstName
+}
+
+func (t *TransactionDetailCustomer) GetLastName() string {
+	if t == nil {
+		return ""
+	}
+	return t.LastName
+}
+
+func (t *TransactionDetailCustomer) GetCompanyName() string {
+	if t == nil {
+		return ""
+	}
+	return t.CompanyName
+}
+
+func (t *TransactionDetailCustomer) GetBillingAddress1() BillingAddressNullable {
+	if t == nil {
+		return ""
+	}
+	return t.BillingAddress1
+}
+
+func (t *TransactionDetailCustomer) GetBillingAddress2() BillingAddressAddtlNullable {
+	if t == nil {
+		return ""
+	}
+	return t.BillingAddress2
+}
+
+func (t *TransactionDetailCustomer) GetBillingCity() BillingCityNullable {
+	if t == nil {
+		return ""
+	}
+	return t.BillingCity
+}
+
+func (t *TransactionDetailCustomer) GetBillingState() BillingStateNullable {
+	if t == nil {
+		return ""
+	}
+	return t.BillingState
+}
+
+func (t *TransactionDetailCustomer) GetBillingZip() BillingZip {
+	if t == nil {
+		return ""
+	}
+	return t.BillingZip
+}
+
+func (t *TransactionDetailCustomer) GetBillingCountry() BillingCountryNullable {
+	if t == nil {
+		return ""
+	}
+	return t.BillingCountry
+}
+
+func (t *TransactionDetailCustomer) GetBillingPhone() PhoneNumber {
+	if t == nil {
+		return ""
+	}
+	return t.BillingPhone
+}
+
+func (t *TransactionDetailCustomer) GetBillingEmail() Email {
+	if t == nil {
+		return ""
+	}
+	return t.BillingEmail
+}
+
+func (t *TransactionDetailCustomer) GetCustomerNumber() CustomerNumberNullable {
+	if t == nil {
+		return ""
+	}
+	return t.CustomerNumber
+}
+
+func (t *TransactionDetailCustomer) GetShippingAddress1() Shippingaddress {
+	if t == nil {
+		return ""
+	}
+	return t.ShippingAddress1
+}
+
+func (t *TransactionDetailCustomer) GetShippingAddress2() Shippingaddressadditional {
+	if t == nil {
+		return ""
+	}
+	return t.ShippingAddress2
+}
+
+func (t *TransactionDetailCustomer) GetShippingCity() Shippingcity {
+	if t == nil {
+		return ""
+	}
+	return t.ShippingCity
+}
+
+func (t *TransactionDetailCustomer) GetShippingState() Shippingstate {
+	if t == nil {
+		return ""
+	}
+	return t.ShippingState
+}
+
+func (t *TransactionDetailCustomer) GetShippingZip() Shippingzip {
+	if t == nil {
+		return ""
+	}
+	return t.ShippingZip
+}
+
+func (t *TransactionDetailCustomer) GetShippingCountry() Shippingcountry {
+	if t == nil {
+		return ""
+	}
+	return t.ShippingCountry
+}
+
+func (t *TransactionDetailCustomer) GetCustomerId() CustomerId {
+	if t == nil {
+		return 0
+	}
+	return t.CustomerId
+}
+
+func (t *TransactionDetailCustomer) GetCustomerStatus() CustomerStatus {
+	if t == nil {
+		return 0
+	}
+	return t.CustomerStatus
+}
+
+func (t *TransactionDetailCustomer) GetAdditionalData() *AdditionalDataString {
+	if t == nil {
+		return nil
+	}
+	return t.AdditionalData
+}
+
+func (t *TransactionDetailCustomer) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransactionDetailCustomer) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetIdentifiers sets the Identifiers field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailCustomer) SetIdentifiers(identifiers *Identifierfields) {
+	t.Identifiers = identifiers
+	t.require(transactionDetailCustomerFieldIdentifiers)
+}
+
+// SetFirstName sets the FirstName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailCustomer) SetFirstName(firstName string) {
+	t.FirstName = firstName
+	t.require(transactionDetailCustomerFieldFirstName)
+}
+
+// SetLastName sets the LastName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailCustomer) SetLastName(lastName string) {
+	t.LastName = lastName
+	t.require(transactionDetailCustomerFieldLastName)
+}
+
+// SetCompanyName sets the CompanyName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailCustomer) SetCompanyName(companyName string) {
+	t.CompanyName = companyName
+	t.require(transactionDetailCustomerFieldCompanyName)
+}
+
+// SetBillingAddress1 sets the BillingAddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailCustomer) SetBillingAddress1(billingAddress1 BillingAddressNullable) {
+	t.BillingAddress1 = billingAddress1
+	t.require(transactionDetailCustomerFieldBillingAddress1)
+}
+
+// SetBillingAddress2 sets the BillingAddress2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailCustomer) SetBillingAddress2(billingAddress2 BillingAddressAddtlNullable) {
+	t.BillingAddress2 = billingAddress2
+	t.require(transactionDetailCustomerFieldBillingAddress2)
+}
+
+// SetBillingCity sets the BillingCity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailCustomer) SetBillingCity(billingCity BillingCityNullable) {
+	t.BillingCity = billingCity
+	t.require(transactionDetailCustomerFieldBillingCity)
+}
+
+// SetBillingState sets the BillingState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailCustomer) SetBillingState(billingState BillingStateNullable) {
+	t.BillingState = billingState
+	t.require(transactionDetailCustomerFieldBillingState)
+}
+
+// SetBillingZip sets the BillingZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailCustomer) SetBillingZip(billingZip BillingZip) {
+	t.BillingZip = billingZip
+	t.require(transactionDetailCustomerFieldBillingZip)
+}
+
+// SetBillingCountry sets the BillingCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailCustomer) SetBillingCountry(billingCountry BillingCountryNullable) {
+	t.BillingCountry = billingCountry
+	t.require(transactionDetailCustomerFieldBillingCountry)
+}
+
+// SetBillingPhone sets the BillingPhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailCustomer) SetBillingPhone(billingPhone PhoneNumber) {
+	t.BillingPhone = billingPhone
+	t.require(transactionDetailCustomerFieldBillingPhone)
+}
+
+// SetBillingEmail sets the BillingEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailCustomer) SetBillingEmail(billingEmail Email) {
+	t.BillingEmail = billingEmail
+	t.require(transactionDetailCustomerFieldBillingEmail)
+}
+
+// SetCustomerNumber sets the CustomerNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailCustomer) SetCustomerNumber(customerNumber CustomerNumberNullable) {
+	t.CustomerNumber = customerNumber
+	t.require(transactionDetailCustomerFieldCustomerNumber)
+}
+
+// SetShippingAddress1 sets the ShippingAddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailCustomer) SetShippingAddress1(shippingAddress1 Shippingaddress) {
+	t.ShippingAddress1 = shippingAddress1
+	t.require(transactionDetailCustomerFieldShippingAddress1)
+}
+
+// SetShippingAddress2 sets the ShippingAddress2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailCustomer) SetShippingAddress2(shippingAddress2 Shippingaddressadditional) {
+	t.ShippingAddress2 = shippingAddress2
+	t.require(transactionDetailCustomerFieldShippingAddress2)
+}
+
+// SetShippingCity sets the ShippingCity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailCustomer) SetShippingCity(shippingCity Shippingcity) {
+	t.ShippingCity = shippingCity
+	t.require(transactionDetailCustomerFieldShippingCity)
+}
+
+// SetShippingState sets the ShippingState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailCustomer) SetShippingState(shippingState Shippingstate) {
+	t.ShippingState = shippingState
+	t.require(transactionDetailCustomerFieldShippingState)
+}
+
+// SetShippingZip sets the ShippingZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailCustomer) SetShippingZip(shippingZip Shippingzip) {
+	t.ShippingZip = shippingZip
+	t.require(transactionDetailCustomerFieldShippingZip)
+}
+
+// SetShippingCountry sets the ShippingCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailCustomer) SetShippingCountry(shippingCountry Shippingcountry) {
+	t.ShippingCountry = shippingCountry
+	t.require(transactionDetailCustomerFieldShippingCountry)
+}
+
+// SetCustomerId sets the CustomerId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailCustomer) SetCustomerId(customerId CustomerId) {
+	t.CustomerId = customerId
+	t.require(transactionDetailCustomerFieldCustomerId)
+}
+
+// SetCustomerStatus sets the CustomerStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailCustomer) SetCustomerStatus(customerStatus CustomerStatus) {
+	t.CustomerStatus = customerStatus
+	t.require(transactionDetailCustomerFieldCustomerStatus)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailCustomer) SetAdditionalData(additionalData *AdditionalDataString) {
+	t.AdditionalData = additionalData
+	t.require(transactionDetailCustomerFieldAdditionalData)
+}
+
+func (t *TransactionDetailCustomer) UnmarshalJSON(data []byte) error {
+	type unmarshaler TransactionDetailCustomer
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TransactionDetailCustomer(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransactionDetailCustomer) MarshalJSON() ([]byte, error) {
+	type embed TransactionDetailCustomer
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TransactionDetailCustomer) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+// Event associated with transaction processing
+var (
+	transactionDetailEventFieldTransEvent = big.NewInt(1 << 0)
+	transactionDetailEventFieldEventData  = big.NewInt(1 << 1)
+	transactionDetailEventFieldEventTime  = big.NewInt(1 << 2)
+)
+
+type TransactionDetailEvent struct {
+	TransEvent string `json:"transEvent" url:"transEvent"`
+	EventData  string `json:"eventData" url:"eventData"`
+	EventTime  string `json:"eventTime" url:"eventTime"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransactionDetailEvent) GetTransEvent() string {
+	if t == nil {
+		return ""
+	}
+	return t.TransEvent
+}
+
+func (t *TransactionDetailEvent) GetEventData() string {
+	if t == nil {
+		return ""
+	}
+	return t.EventData
+}
+
+func (t *TransactionDetailEvent) GetEventTime() string {
+	if t == nil {
+		return ""
+	}
+	return t.EventTime
+}
+
+func (t *TransactionDetailEvent) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransactionDetailEvent) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetTransEvent sets the TransEvent field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailEvent) SetTransEvent(transEvent string) {
+	t.TransEvent = transEvent
+	t.require(transactionDetailEventFieldTransEvent)
+}
+
+// SetEventData sets the EventData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailEvent) SetEventData(eventData string) {
+	t.EventData = eventData
+	t.require(transactionDetailEventFieldEventData)
+}
+
+// SetEventTime sets the EventTime field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailEvent) SetEventTime(eventTime string) {
+	t.EventTime = eventTime
+	t.require(transactionDetailEventFieldEventTime)
+}
+
+func (t *TransactionDetailEvent) UnmarshalJSON(data []byte) error {
+	type unmarshaler TransactionDetailEvent
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TransactionDetailEvent(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransactionDetailEvent) MarshalJSON() ([]byte, error) {
+	type embed TransactionDetailEvent
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TransactionDetailEvent) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+// Invoice information if transaction is associated with an invoice
+var (
+	transactionDetailInvoiceDataFieldInvoiceNumber        = big.NewInt(1 << 0)
+	transactionDetailInvoiceDataFieldInvoiceDate          = big.NewInt(1 << 1)
+	transactionDetailInvoiceDataFieldInvoiceDueDate       = big.NewInt(1 << 2)
+	transactionDetailInvoiceDataFieldInvoiceEndDate       = big.NewInt(1 << 3)
+	transactionDetailInvoiceDataFieldInvoiceStatus        = big.NewInt(1 << 4)
+	transactionDetailInvoiceDataFieldInvoiceType          = big.NewInt(1 << 5)
+	transactionDetailInvoiceDataFieldFrequency            = big.NewInt(1 << 6)
+	transactionDetailInvoiceDataFieldPaymentTerms         = big.NewInt(1 << 7)
+	transactionDetailInvoiceDataFieldTermsConditions      = big.NewInt(1 << 8)
+	transactionDetailInvoiceDataFieldNotes                = big.NewInt(1 << 9)
+	transactionDetailInvoiceDataFieldTax                  = big.NewInt(1 << 10)
+	transactionDetailInvoiceDataFieldDiscount             = big.NewInt(1 << 11)
+	transactionDetailInvoiceDataFieldInvoiceAmount        = big.NewInt(1 << 12)
+	transactionDetailInvoiceDataFieldFreightAmount        = big.NewInt(1 << 13)
+	transactionDetailInvoiceDataFieldDutyAmount           = big.NewInt(1 << 14)
+	transactionDetailInvoiceDataFieldPurchaseOrder        = big.NewInt(1 << 15)
+	transactionDetailInvoiceDataFieldFirstName            = big.NewInt(1 << 16)
+	transactionDetailInvoiceDataFieldLastName             = big.NewInt(1 << 17)
+	transactionDetailInvoiceDataFieldCompany              = big.NewInt(1 << 18)
+	transactionDetailInvoiceDataFieldShippingAddress1     = big.NewInt(1 << 19)
+	transactionDetailInvoiceDataFieldShippingAddress2     = big.NewInt(1 << 20)
+	transactionDetailInvoiceDataFieldShippingCity         = big.NewInt(1 << 21)
+	transactionDetailInvoiceDataFieldShippingState        = big.NewInt(1 << 22)
+	transactionDetailInvoiceDataFieldShippingZip          = big.NewInt(1 << 23)
+	transactionDetailInvoiceDataFieldShippingCountry      = big.NewInt(1 << 24)
+	transactionDetailInvoiceDataFieldShippingEmail        = big.NewInt(1 << 25)
+	transactionDetailInvoiceDataFieldShippingPhone        = big.NewInt(1 << 26)
+	transactionDetailInvoiceDataFieldShippingFromZip      = big.NewInt(1 << 27)
+	transactionDetailInvoiceDataFieldSummaryCommodityCode = big.NewInt(1 << 28)
+	transactionDetailInvoiceDataFieldItems                = big.NewInt(1 << 29)
+	transactionDetailInvoiceDataFieldAttachments          = big.NewInt(1 << 30)
+	transactionDetailInvoiceDataFieldAdditionalData       = big.NewInt(1 << 31)
+)
+
+type TransactionDetailInvoiceData struct {
+	InvoiceNumber        *InvoiceNumber             `json:"invoiceNumber,omitempty" url:"invoiceNumber,omitempty"`
+	InvoiceDate          *Datenullable              `json:"invoiceDate,omitempty" url:"invoiceDate,omitempty"`
+	InvoiceDueDate       *Datenullable              `json:"invoiceDueDate,omitempty" url:"invoiceDueDate,omitempty"`
+	InvoiceEndDate       *Datenullable              `json:"invoiceEndDate,omitempty" url:"invoiceEndDate,omitempty"`
+	InvoiceStatus        *Invoicestatus             `json:"invoiceStatus,omitempty" url:"invoiceStatus,omitempty"`
+	InvoiceType          *InvoiceType               `json:"invoiceType,omitempty" url:"invoiceType,omitempty"`
+	Frequency            *Frequency                 `json:"frequency,omitempty" url:"frequency,omitempty"`
+	PaymentTerms         *string                    `json:"paymentTerms,omitempty" url:"paymentTerms,omitempty"`
+	TermsConditions      *TermsConditions           `json:"termsConditions,omitempty" url:"termsConditions,omitempty"`
+	Notes                *string                    `json:"notes,omitempty" url:"notes,omitempty"`
+	Tax                  *Tax                       `json:"tax,omitempty" url:"tax,omitempty"`
+	Discount             *Discount                  `json:"discount,omitempty" url:"discount,omitempty"`
+	InvoiceAmount        *InvoiceAmount             `json:"invoiceAmount,omitempty" url:"invoiceAmount,omitempty"`
+	FreightAmount        *FreightAmount             `json:"freightAmount,omitempty" url:"freightAmount,omitempty"`
+	DutyAmount           *DutyAmount                `json:"dutyAmount,omitempty" url:"dutyAmount,omitempty"`
+	PurchaseOrder        *PurchaseOrder             `json:"purchaseOrder,omitempty" url:"purchaseOrder,omitempty"`
+	FirstName            *string                    `json:"firstName,omitempty" url:"firstName,omitempty"`
+	LastName             *string                    `json:"lastName,omitempty" url:"lastName,omitempty"`
+	Company              *string                    `json:"company,omitempty" url:"company,omitempty"`
+	ShippingAddress1     *Shippingaddress           `json:"shippingAddress1,omitempty" url:"shippingAddress1,omitempty"`
+	ShippingAddress2     *Shippingaddressadditional `json:"shippingAddress2,omitempty" url:"shippingAddress2,omitempty"`
+	ShippingCity         *Shippingcity              `json:"shippingCity,omitempty" url:"shippingCity,omitempty"`
+	ShippingState        *Shippingstate             `json:"shippingState,omitempty" url:"shippingState,omitempty"`
+	ShippingZip          *Shippingzip               `json:"shippingZip,omitempty" url:"shippingZip,omitempty"`
+	ShippingCountry      *Shippingcountry           `json:"shippingCountry,omitempty" url:"shippingCountry,omitempty"`
+	ShippingEmail        *Email                     `json:"shippingEmail,omitempty" url:"shippingEmail,omitempty"`
+	ShippingPhone        *string                    `json:"shippingPhone,omitempty" url:"shippingPhone,omitempty"`
+	ShippingFromZip      *ShippingFromZip           `json:"shippingFromZip,omitempty" url:"shippingFromZip,omitempty"`
+	SummaryCommodityCode *SummaryCommodityCode      `json:"summaryCommodityCode,omitempty" url:"summaryCommodityCode,omitempty"`
+	Items                []*BillItem                `json:"items,omitempty" url:"items,omitempty"`
+	Attachments          *Attachments               `json:"attachments,omitempty" url:"attachments,omitempty"`
+	AdditionalData       *AdditionalDataString      `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransactionDetailInvoiceData) GetInvoiceNumber() *InvoiceNumber {
+	if t == nil {
+		return nil
+	}
+	return t.InvoiceNumber
+}
+
+func (t *TransactionDetailInvoiceData) GetInvoiceDate() *Datenullable {
+	if t == nil {
+		return nil
+	}
+	return t.InvoiceDate
+}
+
+func (t *TransactionDetailInvoiceData) GetInvoiceDueDate() *Datenullable {
+	if t == nil {
+		return nil
+	}
+	return t.InvoiceDueDate
+}
+
+func (t *TransactionDetailInvoiceData) GetInvoiceEndDate() *Datenullable {
+	if t == nil {
+		return nil
+	}
+	return t.InvoiceEndDate
+}
+
+func (t *TransactionDetailInvoiceData) GetInvoiceStatus() *Invoicestatus {
+	if t == nil {
+		return nil
+	}
+	return t.InvoiceStatus
+}
+
+func (t *TransactionDetailInvoiceData) GetInvoiceType() *InvoiceType {
+	if t == nil {
+		return nil
+	}
+	return t.InvoiceType
+}
+
+func (t *TransactionDetailInvoiceData) GetFrequency() *Frequency {
+	if t == nil {
+		return nil
+	}
+	return t.Frequency
+}
+
+func (t *TransactionDetailInvoiceData) GetPaymentTerms() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PaymentTerms
+}
+
+func (t *TransactionDetailInvoiceData) GetTermsConditions() *TermsConditions {
+	if t == nil {
+		return nil
+	}
+	return t.TermsConditions
+}
+
+func (t *TransactionDetailInvoiceData) GetNotes() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Notes
+}
+
+func (t *TransactionDetailInvoiceData) GetTax() *Tax {
+	if t == nil {
+		return nil
+	}
+	return t.Tax
+}
+
+func (t *TransactionDetailInvoiceData) GetDiscount() *Discount {
+	if t == nil {
+		return nil
+	}
+	return t.Discount
+}
+
+func (t *TransactionDetailInvoiceData) GetInvoiceAmount() *InvoiceAmount {
+	if t == nil {
+		return nil
+	}
+	return t.InvoiceAmount
+}
+
+func (t *TransactionDetailInvoiceData) GetFreightAmount() *FreightAmount {
+	if t == nil {
+		return nil
+	}
+	return t.FreightAmount
+}
+
+func (t *TransactionDetailInvoiceData) GetDutyAmount() *DutyAmount {
+	if t == nil {
+		return nil
+	}
+	return t.DutyAmount
+}
+
+func (t *TransactionDetailInvoiceData) GetPurchaseOrder() *PurchaseOrder {
+	if t == nil {
+		return nil
+	}
+	return t.PurchaseOrder
+}
+
+func (t *TransactionDetailInvoiceData) GetFirstName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.FirstName
+}
+
+func (t *TransactionDetailInvoiceData) GetLastName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.LastName
+}
+
+func (t *TransactionDetailInvoiceData) GetCompany() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Company
+}
+
+func (t *TransactionDetailInvoiceData) GetShippingAddress1() *Shippingaddress {
+	if t == nil {
+		return nil
+	}
+	return t.ShippingAddress1
+}
+
+func (t *TransactionDetailInvoiceData) GetShippingAddress2() *Shippingaddressadditional {
+	if t == nil {
+		return nil
+	}
+	return t.ShippingAddress2
+}
+
+func (t *TransactionDetailInvoiceData) GetShippingCity() *Shippingcity {
+	if t == nil {
+		return nil
+	}
+	return t.ShippingCity
+}
+
+func (t *TransactionDetailInvoiceData) GetShippingState() *Shippingstate {
+	if t == nil {
+		return nil
+	}
+	return t.ShippingState
+}
+
+func (t *TransactionDetailInvoiceData) GetShippingZip() *Shippingzip {
+	if t == nil {
+		return nil
+	}
+	return t.ShippingZip
+}
+
+func (t *TransactionDetailInvoiceData) GetShippingCountry() *Shippingcountry {
+	if t == nil {
+		return nil
+	}
+	return t.ShippingCountry
+}
+
+func (t *TransactionDetailInvoiceData) GetShippingEmail() *Email {
+	if t == nil {
+		return nil
+	}
+	return t.ShippingEmail
+}
+
+func (t *TransactionDetailInvoiceData) GetShippingPhone() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ShippingPhone
+}
+
+func (t *TransactionDetailInvoiceData) GetShippingFromZip() *ShippingFromZip {
+	if t == nil {
+		return nil
+	}
+	return t.ShippingFromZip
+}
+
+func (t *TransactionDetailInvoiceData) GetSummaryCommodityCode() *SummaryCommodityCode {
+	if t == nil {
+		return nil
+	}
+	return t.SummaryCommodityCode
+}
+
+func (t *TransactionDetailInvoiceData) GetItems() []*BillItem {
+	if t == nil {
+		return nil
+	}
+	return t.Items
+}
+
+func (t *TransactionDetailInvoiceData) GetAttachments() *Attachments {
+	if t == nil {
+		return nil
+	}
+	return t.Attachments
+}
+
+func (t *TransactionDetailInvoiceData) GetAdditionalData() *AdditionalDataString {
+	if t == nil {
+		return nil
+	}
+	return t.AdditionalData
+}
+
+func (t *TransactionDetailInvoiceData) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransactionDetailInvoiceData) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetInvoiceNumber sets the InvoiceNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetInvoiceNumber(invoiceNumber *InvoiceNumber) {
+	t.InvoiceNumber = invoiceNumber
+	t.require(transactionDetailInvoiceDataFieldInvoiceNumber)
+}
+
+// SetInvoiceDate sets the InvoiceDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetInvoiceDate(invoiceDate *Datenullable) {
+	t.InvoiceDate = invoiceDate
+	t.require(transactionDetailInvoiceDataFieldInvoiceDate)
+}
+
+// SetInvoiceDueDate sets the InvoiceDueDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetInvoiceDueDate(invoiceDueDate *Datenullable) {
+	t.InvoiceDueDate = invoiceDueDate
+	t.require(transactionDetailInvoiceDataFieldInvoiceDueDate)
+}
+
+// SetInvoiceEndDate sets the InvoiceEndDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetInvoiceEndDate(invoiceEndDate *Datenullable) {
+	t.InvoiceEndDate = invoiceEndDate
+	t.require(transactionDetailInvoiceDataFieldInvoiceEndDate)
+}
+
+// SetInvoiceStatus sets the InvoiceStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetInvoiceStatus(invoiceStatus *Invoicestatus) {
+	t.InvoiceStatus = invoiceStatus
+	t.require(transactionDetailInvoiceDataFieldInvoiceStatus)
+}
+
+// SetInvoiceType sets the InvoiceType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetInvoiceType(invoiceType *InvoiceType) {
+	t.InvoiceType = invoiceType
+	t.require(transactionDetailInvoiceDataFieldInvoiceType)
+}
+
+// SetFrequency sets the Frequency field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetFrequency(frequency *Frequency) {
+	t.Frequency = frequency
+	t.require(transactionDetailInvoiceDataFieldFrequency)
+}
+
+// SetPaymentTerms sets the PaymentTerms field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetPaymentTerms(paymentTerms *string) {
+	t.PaymentTerms = paymentTerms
+	t.require(transactionDetailInvoiceDataFieldPaymentTerms)
+}
+
+// SetTermsConditions sets the TermsConditions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetTermsConditions(termsConditions *TermsConditions) {
+	t.TermsConditions = termsConditions
+	t.require(transactionDetailInvoiceDataFieldTermsConditions)
+}
+
+// SetNotes sets the Notes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetNotes(notes *string) {
+	t.Notes = notes
+	t.require(transactionDetailInvoiceDataFieldNotes)
+}
+
+// SetTax sets the Tax field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetTax(tax *Tax) {
+	t.Tax = tax
+	t.require(transactionDetailInvoiceDataFieldTax)
+}
+
+// SetDiscount sets the Discount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetDiscount(discount *Discount) {
+	t.Discount = discount
+	t.require(transactionDetailInvoiceDataFieldDiscount)
+}
+
+// SetInvoiceAmount sets the InvoiceAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetInvoiceAmount(invoiceAmount *InvoiceAmount) {
+	t.InvoiceAmount = invoiceAmount
+	t.require(transactionDetailInvoiceDataFieldInvoiceAmount)
+}
+
+// SetFreightAmount sets the FreightAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetFreightAmount(freightAmount *FreightAmount) {
+	t.FreightAmount = freightAmount
+	t.require(transactionDetailInvoiceDataFieldFreightAmount)
+}
+
+// SetDutyAmount sets the DutyAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetDutyAmount(dutyAmount *DutyAmount) {
+	t.DutyAmount = dutyAmount
+	t.require(transactionDetailInvoiceDataFieldDutyAmount)
+}
+
+// SetPurchaseOrder sets the PurchaseOrder field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetPurchaseOrder(purchaseOrder *PurchaseOrder) {
+	t.PurchaseOrder = purchaseOrder
+	t.require(transactionDetailInvoiceDataFieldPurchaseOrder)
+}
+
+// SetFirstName sets the FirstName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetFirstName(firstName *string) {
+	t.FirstName = firstName
+	t.require(transactionDetailInvoiceDataFieldFirstName)
+}
+
+// SetLastName sets the LastName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetLastName(lastName *string) {
+	t.LastName = lastName
+	t.require(transactionDetailInvoiceDataFieldLastName)
+}
+
+// SetCompany sets the Company field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetCompany(company *string) {
+	t.Company = company
+	t.require(transactionDetailInvoiceDataFieldCompany)
+}
+
+// SetShippingAddress1 sets the ShippingAddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetShippingAddress1(shippingAddress1 *Shippingaddress) {
+	t.ShippingAddress1 = shippingAddress1
+	t.require(transactionDetailInvoiceDataFieldShippingAddress1)
+}
+
+// SetShippingAddress2 sets the ShippingAddress2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetShippingAddress2(shippingAddress2 *Shippingaddressadditional) {
+	t.ShippingAddress2 = shippingAddress2
+	t.require(transactionDetailInvoiceDataFieldShippingAddress2)
+}
+
+// SetShippingCity sets the ShippingCity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetShippingCity(shippingCity *Shippingcity) {
+	t.ShippingCity = shippingCity
+	t.require(transactionDetailInvoiceDataFieldShippingCity)
+}
+
+// SetShippingState sets the ShippingState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetShippingState(shippingState *Shippingstate) {
+	t.ShippingState = shippingState
+	t.require(transactionDetailInvoiceDataFieldShippingState)
+}
+
+// SetShippingZip sets the ShippingZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetShippingZip(shippingZip *Shippingzip) {
+	t.ShippingZip = shippingZip
+	t.require(transactionDetailInvoiceDataFieldShippingZip)
+}
+
+// SetShippingCountry sets the ShippingCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetShippingCountry(shippingCountry *Shippingcountry) {
+	t.ShippingCountry = shippingCountry
+	t.require(transactionDetailInvoiceDataFieldShippingCountry)
+}
+
+// SetShippingEmail sets the ShippingEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetShippingEmail(shippingEmail *Email) {
+	t.ShippingEmail = shippingEmail
+	t.require(transactionDetailInvoiceDataFieldShippingEmail)
+}
+
+// SetShippingPhone sets the ShippingPhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetShippingPhone(shippingPhone *string) {
+	t.ShippingPhone = shippingPhone
+	t.require(transactionDetailInvoiceDataFieldShippingPhone)
+}
+
+// SetShippingFromZip sets the ShippingFromZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetShippingFromZip(shippingFromZip *ShippingFromZip) {
+	t.ShippingFromZip = shippingFromZip
+	t.require(transactionDetailInvoiceDataFieldShippingFromZip)
+}
+
+// SetSummaryCommodityCode sets the SummaryCommodityCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetSummaryCommodityCode(summaryCommodityCode *SummaryCommodityCode) {
+	t.SummaryCommodityCode = summaryCommodityCode
+	t.require(transactionDetailInvoiceDataFieldSummaryCommodityCode)
+}
+
+// SetItems sets the Items field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetItems(items []*BillItem) {
+	t.Items = items
+	t.require(transactionDetailInvoiceDataFieldItems)
+}
+
+// SetAttachments sets the Attachments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetAttachments(attachments *Attachments) {
+	t.Attachments = attachments
+	t.require(transactionDetailInvoiceDataFieldAttachments)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailInvoiceData) SetAdditionalData(additionalData *AdditionalDataString) {
+	t.AdditionalData = additionalData
+	t.require(transactionDetailInvoiceDataFieldAdditionalData)
+}
+
+func (t *TransactionDetailInvoiceData) UnmarshalJSON(data []byte) error {
+	type unmarshaler TransactionDetailInvoiceData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TransactionDetailInvoiceData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransactionDetailInvoiceData) MarshalJSON() ([]byte, error) {
+	type embed TransactionDetailInvoiceData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TransactionDetailInvoiceData) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+// Payment method and transaction details
+var (
+	transactionDetailPaymentDataFieldMaskedAccount         = big.NewInt(1 << 0)
+	transactionDetailPaymentDataFieldAccountType           = big.NewInt(1 << 1)
+	transactionDetailPaymentDataFieldAccountExp            = big.NewInt(1 << 2)
+	transactionDetailPaymentDataFieldHolderName            = big.NewInt(1 << 3)
+	transactionDetailPaymentDataFieldStoredId              = big.NewInt(1 << 4)
+	transactionDetailPaymentDataFieldInitiator             = big.NewInt(1 << 5)
+	transactionDetailPaymentDataFieldStoredMethodUsageType = big.NewInt(1 << 6)
+	transactionDetailPaymentDataFieldSequence              = big.NewInt(1 << 7)
+	transactionDetailPaymentDataFieldOrderDescription      = big.NewInt(1 << 8)
+	transactionDetailPaymentDataFieldAccountId             = big.NewInt(1 << 9)
+	transactionDetailPaymentDataFieldSignatureData         = big.NewInt(1 << 10)
+	transactionDetailPaymentDataFieldBinData               = big.NewInt(1 << 11)
+	transactionDetailPaymentDataFieldPaymentDetails        = big.NewInt(1 << 12)
+)
+
+type TransactionDetailPaymentData struct {
+	MaskedAccount         Maskedaccount                    `json:"maskedAccount" url:"maskedAccount"`
+	AccountType           Accounttype                      `json:"accountType" url:"accountType"`
+	AccountExp            *Accountexp                      `json:"accountExp,omitempty" url:"accountExp,omitempty"`
+	HolderName            Holdername                       `json:"holderName" url:"holderName"`
+	StoredId              *Storedmethodid                  `json:"storedId,omitempty" url:"storedId,omitempty"`
+	Initiator             *Initiator                       `json:"initiator,omitempty" url:"initiator,omitempty"`
+	StoredMethodUsageType *StoredMethodUsageType           `json:"storedMethodUsageType,omitempty" url:"storedMethodUsageType,omitempty"`
+	Sequence              *Sequence                        `json:"sequence,omitempty" url:"sequence,omitempty"`
+	OrderDescription      Orderdescription                 `json:"orderDescription" url:"orderDescription"`
+	AccountId             *Accountid                       `json:"accountId,omitempty" url:"accountId,omitempty"`
+	SignatureData         *Signaturedata                   `json:"signatureData,omitempty" url:"signatureData,omitempty"`
+	BinData               *BinData                         `json:"binData,omitempty" url:"binData,omitempty"`
+	PaymentDetails        *TransactionDetailPaymentDetails `json:"paymentDetails" url:"paymentDetails"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransactionDetailPaymentData) GetMaskedAccount() Maskedaccount {
+	if t == nil {
+		return ""
+	}
+	return t.MaskedAccount
+}
+
+func (t *TransactionDetailPaymentData) GetAccountType() Accounttype {
+	if t == nil {
+		return ""
+	}
+	return t.AccountType
+}
+
+func (t *TransactionDetailPaymentData) GetAccountExp() *Accountexp {
+	if t == nil {
+		return nil
+	}
+	return t.AccountExp
+}
+
+func (t *TransactionDetailPaymentData) GetHolderName() Holdername {
+	if t == nil {
+		return ""
+	}
+	return t.HolderName
+}
+
+func (t *TransactionDetailPaymentData) GetStoredId() *Storedmethodid {
+	if t == nil {
+		return nil
+	}
+	return t.StoredId
+}
+
+func (t *TransactionDetailPaymentData) GetInitiator() *Initiator {
+	if t == nil {
+		return nil
+	}
+	return t.Initiator
+}
+
+func (t *TransactionDetailPaymentData) GetStoredMethodUsageType() *StoredMethodUsageType {
+	if t == nil {
+		return nil
+	}
+	return t.StoredMethodUsageType
+}
+
+func (t *TransactionDetailPaymentData) GetSequence() *Sequence {
+	if t == nil {
+		return nil
+	}
+	return t.Sequence
+}
+
+func (t *TransactionDetailPaymentData) GetOrderDescription() Orderdescription {
+	if t == nil {
+		return ""
+	}
+	return t.OrderDescription
+}
+
+func (t *TransactionDetailPaymentData) GetAccountId() *Accountid {
+	if t == nil {
+		return nil
+	}
+	return t.AccountId
+}
+
+func (t *TransactionDetailPaymentData) GetSignatureData() *Signaturedata {
+	if t == nil {
+		return nil
+	}
+	return t.SignatureData
+}
+
+func (t *TransactionDetailPaymentData) GetBinData() *BinData {
+	if t == nil {
+		return nil
+	}
+	return t.BinData
+}
+
+func (t *TransactionDetailPaymentData) GetPaymentDetails() *TransactionDetailPaymentDetails {
+	if t == nil {
+		return nil
+	}
+	return t.PaymentDetails
+}
+
+func (t *TransactionDetailPaymentData) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransactionDetailPaymentData) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetMaskedAccount sets the MaskedAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentData) SetMaskedAccount(maskedAccount Maskedaccount) {
+	t.MaskedAccount = maskedAccount
+	t.require(transactionDetailPaymentDataFieldMaskedAccount)
+}
+
+// SetAccountType sets the AccountType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentData) SetAccountType(accountType Accounttype) {
+	t.AccountType = accountType
+	t.require(transactionDetailPaymentDataFieldAccountType)
+}
+
+// SetAccountExp sets the AccountExp field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentData) SetAccountExp(accountExp *Accountexp) {
+	t.AccountExp = accountExp
+	t.require(transactionDetailPaymentDataFieldAccountExp)
+}
+
+// SetHolderName sets the HolderName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentData) SetHolderName(holderName Holdername) {
+	t.HolderName = holderName
+	t.require(transactionDetailPaymentDataFieldHolderName)
+}
+
+// SetStoredId sets the StoredId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentData) SetStoredId(storedId *Storedmethodid) {
+	t.StoredId = storedId
+	t.require(transactionDetailPaymentDataFieldStoredId)
+}
+
+// SetInitiator sets the Initiator field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentData) SetInitiator(initiator *Initiator) {
+	t.Initiator = initiator
+	t.require(transactionDetailPaymentDataFieldInitiator)
+}
+
+// SetStoredMethodUsageType sets the StoredMethodUsageType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentData) SetStoredMethodUsageType(storedMethodUsageType *StoredMethodUsageType) {
+	t.StoredMethodUsageType = storedMethodUsageType
+	t.require(transactionDetailPaymentDataFieldStoredMethodUsageType)
+}
+
+// SetSequence sets the Sequence field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentData) SetSequence(sequence *Sequence) {
+	t.Sequence = sequence
+	t.require(transactionDetailPaymentDataFieldSequence)
+}
+
+// SetOrderDescription sets the OrderDescription field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentData) SetOrderDescription(orderDescription Orderdescription) {
+	t.OrderDescription = orderDescription
+	t.require(transactionDetailPaymentDataFieldOrderDescription)
+}
+
+// SetAccountId sets the AccountId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentData) SetAccountId(accountId *Accountid) {
+	t.AccountId = accountId
+	t.require(transactionDetailPaymentDataFieldAccountId)
+}
+
+// SetSignatureData sets the SignatureData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentData) SetSignatureData(signatureData *Signaturedata) {
+	t.SignatureData = signatureData
+	t.require(transactionDetailPaymentDataFieldSignatureData)
+}
+
+// SetBinData sets the BinData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentData) SetBinData(binData *BinData) {
+	t.BinData = binData
+	t.require(transactionDetailPaymentDataFieldBinData)
+}
+
+// SetPaymentDetails sets the PaymentDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentData) SetPaymentDetails(paymentDetails *TransactionDetailPaymentDetails) {
+	t.PaymentDetails = paymentDetails
+	t.require(transactionDetailPaymentDataFieldPaymentDetails)
+}
+
+func (t *TransactionDetailPaymentData) UnmarshalJSON(data []byte) error {
+	type unmarshaler TransactionDetailPaymentData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TransactionDetailPaymentData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransactionDetailPaymentData) MarshalJSON() ([]byte, error) {
+	type embed TransactionDetailPaymentData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TransactionDetailPaymentData) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+// Detailed breakdown of payment amounts and identifiers
+var (
+	transactionDetailPaymentDetailsFieldTotalAmount        = big.NewInt(1 << 0)
+	transactionDetailPaymentDetailsFieldServiceFee         = big.NewInt(1 << 1)
+	transactionDetailPaymentDetailsFieldCheckNumber        = big.NewInt(1 << 2)
+	transactionDetailPaymentDetailsFieldCheckImage         = big.NewInt(1 << 3)
+	transactionDetailPaymentDetailsFieldCheckUniqueId      = big.NewInt(1 << 4)
+	transactionDetailPaymentDetailsFieldCurrency           = big.NewInt(1 << 5)
+	transactionDetailPaymentDetailsFieldOrderDescription   = big.NewInt(1 << 6)
+	transactionDetailPaymentDetailsFieldOrderId            = big.NewInt(1 << 7)
+	transactionDetailPaymentDetailsFieldOrderIdAlternative = big.NewInt(1 << 8)
+	transactionDetailPaymentDetailsFieldPaymentDescription = big.NewInt(1 << 9)
+	transactionDetailPaymentDetailsFieldGroupNumber        = big.NewInt(1 << 10)
+	transactionDetailPaymentDetailsFieldSource             = big.NewInt(1 << 11)
+	transactionDetailPaymentDetailsFieldPayabliTransId     = big.NewInt(1 << 12)
+	transactionDetailPaymentDetailsFieldUnbundled          = big.NewInt(1 << 13)
+	transactionDetailPaymentDetailsFieldCategories         = big.NewInt(1 << 14)
+	transactionDetailPaymentDetailsFieldSplitFunding       = big.NewInt(1 << 15)
+)
+
+type TransactionDetailPaymentDetails struct {
+	TotalAmount        float64           `json:"totalAmount" url:"totalAmount"`
+	ServiceFee         float64           `json:"serviceFee" url:"serviceFee"`
+	CheckNumber        *string           `json:"checkNumber,omitempty" url:"checkNumber,omitempty"`
+	CheckImage         interface{}       `json:"checkImage,omitempty" url:"checkImage,omitempty"`
+	CheckUniqueId      string            `json:"checkUniqueId" url:"checkUniqueId"`
+	Currency           string            `json:"currency" url:"currency"`
+	OrderDescription   *Orderdescription `json:"orderDescription,omitempty" url:"orderDescription,omitempty"`
+	OrderId            *OrderId          `json:"orderId,omitempty" url:"orderId,omitempty"`
+	OrderIdAlternative *string           `json:"orderIdAlternative,omitempty" url:"orderIdAlternative,omitempty"`
+	PaymentDescription *string           `json:"paymentDescription,omitempty" url:"paymentDescription,omitempty"`
+	GroupNumber        *string           `json:"groupNumber,omitempty" url:"groupNumber,omitempty"`
+	Source             *Source           `json:"source,omitempty" url:"source,omitempty"`
+	PayabliTransId     *string           `json:"payabliTransId,omitempty" url:"payabliTransId,omitempty"`
+	Unbundled          interface{}       `json:"unbundled,omitempty" url:"unbundled,omitempty"`
+	Categories         []interface{}     `json:"categories" url:"categories"`
+	SplitFunding       []interface{}     `json:"splitFunding" url:"splitFunding"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransactionDetailPaymentDetails) GetTotalAmount() float64 {
+	if t == nil {
+		return 0
+	}
+	return t.TotalAmount
+}
+
+func (t *TransactionDetailPaymentDetails) GetServiceFee() float64 {
+	if t == nil {
+		return 0
+	}
+	return t.ServiceFee
+}
+
+func (t *TransactionDetailPaymentDetails) GetCheckNumber() *string {
+	if t == nil {
+		return nil
+	}
+	return t.CheckNumber
+}
+
+func (t *TransactionDetailPaymentDetails) GetCheckImage() interface{} {
+	if t == nil {
+		return nil
+	}
+	return t.CheckImage
+}
+
+func (t *TransactionDetailPaymentDetails) GetCheckUniqueId() string {
+	if t == nil {
+		return ""
+	}
+	return t.CheckUniqueId
+}
+
+func (t *TransactionDetailPaymentDetails) GetCurrency() string {
+	if t == nil {
+		return ""
+	}
+	return t.Currency
+}
+
+func (t *TransactionDetailPaymentDetails) GetOrderDescription() *Orderdescription {
+	if t == nil {
+		return nil
+	}
+	return t.OrderDescription
+}
+
+func (t *TransactionDetailPaymentDetails) GetOrderId() *OrderId {
+	if t == nil {
+		return nil
+	}
+	return t.OrderId
+}
+
+func (t *TransactionDetailPaymentDetails) GetOrderIdAlternative() *string {
+	if t == nil {
+		return nil
+	}
+	return t.OrderIdAlternative
+}
+
+func (t *TransactionDetailPaymentDetails) GetPaymentDescription() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PaymentDescription
+}
+
+func (t *TransactionDetailPaymentDetails) GetGroupNumber() *string {
+	if t == nil {
+		return nil
+	}
+	return t.GroupNumber
+}
+
+func (t *TransactionDetailPaymentDetails) GetSource() *Source {
+	if t == nil {
+		return nil
+	}
+	return t.Source
+}
+
+func (t *TransactionDetailPaymentDetails) GetPayabliTransId() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PayabliTransId
+}
+
+func (t *TransactionDetailPaymentDetails) GetUnbundled() interface{} {
+	if t == nil {
+		return nil
+	}
+	return t.Unbundled
+}
+
+func (t *TransactionDetailPaymentDetails) GetCategories() []interface{} {
+	if t == nil {
+		return nil
+	}
+	return t.Categories
+}
+
+func (t *TransactionDetailPaymentDetails) GetSplitFunding() []interface{} {
+	if t == nil {
+		return nil
+	}
+	return t.SplitFunding
+}
+
+func (t *TransactionDetailPaymentDetails) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransactionDetailPaymentDetails) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentDetails) SetTotalAmount(totalAmount float64) {
+	t.TotalAmount = totalAmount
+	t.require(transactionDetailPaymentDetailsFieldTotalAmount)
+}
+
+// SetServiceFee sets the ServiceFee field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentDetails) SetServiceFee(serviceFee float64) {
+	t.ServiceFee = serviceFee
+	t.require(transactionDetailPaymentDetailsFieldServiceFee)
+}
+
+// SetCheckNumber sets the CheckNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentDetails) SetCheckNumber(checkNumber *string) {
+	t.CheckNumber = checkNumber
+	t.require(transactionDetailPaymentDetailsFieldCheckNumber)
+}
+
+// SetCheckImage sets the CheckImage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentDetails) SetCheckImage(checkImage interface{}) {
+	t.CheckImage = checkImage
+	t.require(transactionDetailPaymentDetailsFieldCheckImage)
+}
+
+// SetCheckUniqueId sets the CheckUniqueId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentDetails) SetCheckUniqueId(checkUniqueId string) {
+	t.CheckUniqueId = checkUniqueId
+	t.require(transactionDetailPaymentDetailsFieldCheckUniqueId)
+}
+
+// SetCurrency sets the Currency field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentDetails) SetCurrency(currency string) {
+	t.Currency = currency
+	t.require(transactionDetailPaymentDetailsFieldCurrency)
+}
+
+// SetOrderDescription sets the OrderDescription field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentDetails) SetOrderDescription(orderDescription *Orderdescription) {
+	t.OrderDescription = orderDescription
+	t.require(transactionDetailPaymentDetailsFieldOrderDescription)
+}
+
+// SetOrderId sets the OrderId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentDetails) SetOrderId(orderId *OrderId) {
+	t.OrderId = orderId
+	t.require(transactionDetailPaymentDetailsFieldOrderId)
+}
+
+// SetOrderIdAlternative sets the OrderIdAlternative field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentDetails) SetOrderIdAlternative(orderIdAlternative *string) {
+	t.OrderIdAlternative = orderIdAlternative
+	t.require(transactionDetailPaymentDetailsFieldOrderIdAlternative)
+}
+
+// SetPaymentDescription sets the PaymentDescription field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentDetails) SetPaymentDescription(paymentDescription *string) {
+	t.PaymentDescription = paymentDescription
+	t.require(transactionDetailPaymentDetailsFieldPaymentDescription)
+}
+
+// SetGroupNumber sets the GroupNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentDetails) SetGroupNumber(groupNumber *string) {
+	t.GroupNumber = groupNumber
+	t.require(transactionDetailPaymentDetailsFieldGroupNumber)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentDetails) SetSource(source *Source) {
+	t.Source = source
+	t.require(transactionDetailPaymentDetailsFieldSource)
+}
+
+// SetPayabliTransId sets the PayabliTransId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentDetails) SetPayabliTransId(payabliTransId *string) {
+	t.PayabliTransId = payabliTransId
+	t.require(transactionDetailPaymentDetailsFieldPayabliTransId)
+}
+
+// SetUnbundled sets the Unbundled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentDetails) SetUnbundled(unbundled interface{}) {
+	t.Unbundled = unbundled
+	t.require(transactionDetailPaymentDetailsFieldUnbundled)
+}
+
+// SetCategories sets the Categories field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentDetails) SetCategories(categories []interface{}) {
+	t.Categories = categories
+	t.require(transactionDetailPaymentDetailsFieldCategories)
+}
+
+// SetSplitFunding sets the SplitFunding field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailPaymentDetails) SetSplitFunding(splitFunding []interface{}) {
+	t.SplitFunding = splitFunding
+	t.require(transactionDetailPaymentDetailsFieldSplitFunding)
+}
+
+func (t *TransactionDetailPaymentDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler TransactionDetailPaymentDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TransactionDetailPaymentDetails(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransactionDetailPaymentDetails) MarshalJSON() ([]byte, error) {
+	type embed TransactionDetailPaymentDetails
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TransactionDetailPaymentDetails) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+// Complete transaction details including payment information, customer data, and processing metadata. This is returned when includeDetails=true.
+var (
+	transactionDetailRecordFieldParentOrgName                = big.NewInt(1 << 0)
+	transactionDetailRecordFieldPaypointDbaname              = big.NewInt(1 << 1)
+	transactionDetailRecordFieldPaypointLegalname            = big.NewInt(1 << 2)
+	transactionDetailRecordFieldPaypointEntryname            = big.NewInt(1 << 3)
+	transactionDetailRecordFieldPaymentTransId               = big.NewInt(1 << 4)
+	transactionDetailRecordFieldConnectorName                = big.NewInt(1 << 5)
+	transactionDetailRecordFieldExternalProcessorInformation = big.NewInt(1 << 6)
+	transactionDetailRecordFieldGatewayTransId               = big.NewInt(1 << 7)
+	transactionDetailRecordFieldOrderId                      = big.NewInt(1 << 8)
+	transactionDetailRecordFieldMethod                       = big.NewInt(1 << 9)
+	transactionDetailRecordFieldBatchNumber                  = big.NewInt(1 << 10)
+	transactionDetailRecordFieldBatchAmount                  = big.NewInt(1 << 11)
+	transactionDetailRecordFieldPayorId                      = big.NewInt(1 << 12)
+	transactionDetailRecordFieldPaymentData                  = big.NewInt(1 << 13)
+	transactionDetailRecordFieldTransStatus                  = big.NewInt(1 << 14)
+	transactionDetailRecordFieldPaypointId                   = big.NewInt(1 << 15)
+	transactionDetailRecordFieldTotalAmount                  = big.NewInt(1 << 16)
+	transactionDetailRecordFieldNetAmount                    = big.NewInt(1 << 17)
+	transactionDetailRecordFieldFeeAmount                    = big.NewInt(1 << 18)
+	transactionDetailRecordFieldSettlementStatus             = big.NewInt(1 << 19)
+	transactionDetailRecordFieldOperation                    = big.NewInt(1 << 20)
+	transactionDetailRecordFieldResponseData                 = big.NewInt(1 << 21)
+	transactionDetailRecordFieldSource                       = big.NewInt(1 << 22)
+	transactionDetailRecordFieldScheduleReference            = big.NewInt(1 << 23)
+	transactionDetailRecordFieldOrgId                        = big.NewInt(1 << 24)
+	transactionDetailRecordFieldRefundId                     = big.NewInt(1 << 25)
+	transactionDetailRecordFieldReturnedId                   = big.NewInt(1 << 26)
+	transactionDetailRecordFieldChargebackId                 = big.NewInt(1 << 27)
+	transactionDetailRecordFieldRetrievalId                  = big.NewInt(1 << 28)
+	transactionDetailRecordFieldTransAdditionalData          = big.NewInt(1 << 29)
+	transactionDetailRecordFieldInvoiceData                  = big.NewInt(1 << 30)
+	transactionDetailRecordFieldEntrypageId                  = big.NewInt(1 << 31)
+	transactionDetailRecordFieldExternalPaypointId           = big.NewInt(1 << 32)
+	transactionDetailRecordFieldIsValidatedAch               = big.NewInt(1 << 33)
+	transactionDetailRecordFieldTransactionTime              = big.NewInt(1 << 34)
+	transactionDetailRecordFieldCustomer                     = big.NewInt(1 << 35)
+	transactionDetailRecordFieldSplitFundingInstructions     = big.NewInt(1 << 36)
+	transactionDetailRecordFieldCfeeTransactions             = big.NewInt(1 << 37)
+	transactionDetailRecordFieldTransactionEvents            = big.NewInt(1 << 38)
+	transactionDetailRecordFieldPendingFeeAmount             = big.NewInt(1 << 39)
+	transactionDetailRecordFieldRiskFlagged                  = big.NewInt(1 << 40)
+	transactionDetailRecordFieldRiskFlaggedOn                = big.NewInt(1 << 41)
+	transactionDetailRecordFieldRiskStatus                   = big.NewInt(1 << 42)
+	transactionDetailRecordFieldRiskReason                   = big.NewInt(1 << 43)
+	transactionDetailRecordFieldRiskAction                   = big.NewInt(1 << 44)
+	transactionDetailRecordFieldRiskActionCode               = big.NewInt(1 << 45)
+	transactionDetailRecordFieldDeviceId                     = big.NewInt(1 << 46)
+	transactionDetailRecordFieldAchSecCode                   = big.NewInt(1 << 47)
+	transactionDetailRecordFieldAchHolderType                = big.NewInt(1 << 48)
+	transactionDetailRecordFieldIpAddress                    = big.NewInt(1 << 49)
+	transactionDetailRecordFieldIsSameDayAch                 = big.NewInt(1 << 50)
+	transactionDetailRecordFieldWalletType                   = big.NewInt(1 << 51)
+)
+
+type TransactionDetailRecord struct {
+	ParentOrgName                OrgParentName                  `json:"parentOrgName" url:"parentOrgName"`
+	PaypointDbaname              Dbaname                        `json:"paypointDbaname" url:"paypointDbaname"`
+	PaypointLegalname            Legalname                      `json:"paypointLegalname" url:"paypointLegalname"`
+	PaypointEntryname            Entrypointfield                `json:"paypointEntryname" url:"paypointEntryname"`
+	PaymentTransId               string                         `json:"paymentTransId" url:"paymentTransId"`
+	ConnectorName                string                         `json:"connectorName" url:"connectorName"`
+	ExternalProcessorInformation ExternalProcessorInformation   `json:"externalProcessorInformation" url:"externalProcessorInformation"`
+	GatewayTransId               string                         `json:"gatewayTransId" url:"gatewayTransId"`
+	OrderId                      *OrderId                       `json:"orderId,omitempty" url:"orderId,omitempty"`
+	Method                       TransactionDetailRecordMethod  `json:"method" url:"method"`
+	BatchNumber                  BatchNumber                    `json:"batchNumber" url:"batchNumber"`
+	BatchAmount                  float64                        `json:"batchAmount" url:"batchAmount"`
+	PayorId                      PayorId                        `json:"payorId" url:"payorId"`
+	PaymentData                  *TransactionDetailPaymentData  `json:"paymentData" url:"paymentData"`
+	TransStatus                  TransStatus                    `json:"transStatus" url:"transStatus"`
+	PaypointId                   PaypointId                     `json:"paypointId" url:"paypointId"`
+	TotalAmount                  float64                        `json:"totalAmount" url:"totalAmount"`
+	NetAmount                    float64                        `json:"netAmount" url:"netAmount"`
+	FeeAmount                    FeeAmount                      `json:"feeAmount" url:"feeAmount"`
+	SettlementStatus             SettlementStatus               `json:"settlementStatus" url:"settlementStatus"`
+	Operation                    Operation                      `json:"operation" url:"operation"`
+	ResponseData                 *TransactionDetailResponseData `json:"responseData" url:"responseData"`
+	Source                       Source                         `json:"source" url:"source"`
+	ScheduleReference            int64                          `json:"scheduleReference" url:"scheduleReference"`
+	OrgId                        Orgid                          `json:"orgId" url:"orgId"`
+	RefundId                     RefundId                       `json:"refundId" url:"refundId"`
+	ReturnedId                   ReturnedId                     `json:"returnedId" url:"returnedId"`
+	ChargebackId                 ChargebackId                   `json:"chargebackId" url:"chargebackId"`
+	RetrievalId                  RetrievalId                    `json:"retrievalId" url:"retrievalId"`
+	TransAdditionalData          interface{}                    `json:"transAdditionalData,omitempty" url:"transAdditionalData,omitempty"`
+	InvoiceData                  *TransactionDetailInvoiceData  `json:"invoiceData" url:"invoiceData"`
+	EntrypageId                  EntrypageId                    `json:"entrypageId" url:"entrypageId"`
+	ExternalPaypointId           ExternalPaypointId             `json:"externalPaypointID" url:"externalPaypointID"`
+	IsValidatedAch               bool                           `json:"isValidatedACH" url:"isValidatedACH"`
+	TransactionTime              string                         `json:"transactionTime" url:"transactionTime"`
+	Customer                     *TransactionDetailCustomer     `json:"customer" url:"customer"`
+	SplitFundingInstructions     *SplitFunding                  `json:"splitFundingInstructions,omitempty" url:"splitFundingInstructions,omitempty"`
+	CfeeTransactions             []*QueryCFeeTransaction        `json:"cfeeTransactions" url:"cfeeTransactions"`
+	TransactionEvents            []*TransactionDetailEvent      `json:"transactionEvents" url:"transactionEvents"`
+	PendingFeeAmount             PendingFeeAmount               `json:"pendingFeeAmount,omitempty" url:"pendingFeeAmount,omitempty"`
+	RiskFlagged                  RiskFlagged                    `json:"riskFlagged,omitempty" url:"riskFlagged,omitempty"`
+	RiskFlaggedOn                RiskFlaggedOn                  `json:"riskFlaggedOn,omitempty" url:"riskFlaggedOn,omitempty"`
+	RiskStatus                   RiskStatus                     `json:"riskStatus" url:"riskStatus"`
+	RiskReason                   RiskReason                     `json:"riskReason" url:"riskReason"`
+	RiskAction                   RiskAction                     `json:"riskAction" url:"riskAction"`
+	RiskActionCode               RiskActionCode                 `json:"riskActionCode,omitempty" url:"riskActionCode,omitempty"`
+	DeviceId                     Device                         `json:"deviceId" url:"deviceId"`
+	AchSecCode                   AchSecCode                     `json:"achSecCode" url:"achSecCode"`
+	AchHolderType                AchHolderType                  `json:"achHolderType" url:"achHolderType"`
+	IpAddress                    IpAddress                      `json:"ipAddress" url:"ipAddress"`
+	IsSameDayAch                 bool                           `json:"isSameDayACH" url:"isSameDayACH"`
+	WalletType                   *string                        `json:"walletType,omitempty" url:"walletType,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransactionDetailRecord) GetParentOrgName() OrgParentName {
+	if t == nil {
+		return ""
+	}
+	return t.ParentOrgName
+}
+
+func (t *TransactionDetailRecord) GetPaypointDbaname() Dbaname {
+	if t == nil {
+		return ""
+	}
+	return t.PaypointDbaname
+}
+
+func (t *TransactionDetailRecord) GetPaypointLegalname() Legalname {
+	if t == nil {
+		return ""
+	}
+	return t.PaypointLegalname
+}
+
+func (t *TransactionDetailRecord) GetPaypointEntryname() Entrypointfield {
+	if t == nil {
+		return ""
+	}
+	return t.PaypointEntryname
+}
+
+func (t *TransactionDetailRecord) GetPaymentTransId() string {
+	if t == nil {
+		return ""
+	}
+	return t.PaymentTransId
+}
+
+func (t *TransactionDetailRecord) GetConnectorName() string {
+	if t == nil {
+		return ""
+	}
+	return t.ConnectorName
+}
+
+func (t *TransactionDetailRecord) GetExternalProcessorInformation() ExternalProcessorInformation {
+	if t == nil {
+		return ""
+	}
+	return t.ExternalProcessorInformation
+}
+
+func (t *TransactionDetailRecord) GetGatewayTransId() string {
+	if t == nil {
+		return ""
+	}
+	return t.GatewayTransId
+}
+
+func (t *TransactionDetailRecord) GetOrderId() *OrderId {
+	if t == nil {
+		return nil
+	}
+	return t.OrderId
+}
+
+func (t *TransactionDetailRecord) GetMethod() TransactionDetailRecordMethod {
+	if t == nil {
+		return ""
+	}
+	return t.Method
+}
+
+func (t *TransactionDetailRecord) GetBatchNumber() BatchNumber {
+	if t == nil {
+		return ""
+	}
+	return t.BatchNumber
+}
+
+func (t *TransactionDetailRecord) GetBatchAmount() float64 {
+	if t == nil {
+		return 0
+	}
+	return t.BatchAmount
+}
+
+func (t *TransactionDetailRecord) GetPayorId() PayorId {
+	if t == nil {
+		return 0
+	}
+	return t.PayorId
+}
+
+func (t *TransactionDetailRecord) GetPaymentData() *TransactionDetailPaymentData {
+	if t == nil {
+		return nil
+	}
+	return t.PaymentData
+}
+
+func (t *TransactionDetailRecord) GetTransStatus() TransStatus {
+	if t == nil {
+		return 0
+	}
+	return t.TransStatus
+}
+
+func (t *TransactionDetailRecord) GetPaypointId() PaypointId {
+	if t == nil {
+		return 0
+	}
+	return t.PaypointId
+}
+
+func (t *TransactionDetailRecord) GetTotalAmount() float64 {
+	if t == nil {
+		return 0
+	}
+	return t.TotalAmount
+}
+
+func (t *TransactionDetailRecord) GetNetAmount() float64 {
+	if t == nil {
+		return 0
+	}
+	return t.NetAmount
+}
+
+func (t *TransactionDetailRecord) GetFeeAmount() FeeAmount {
+	if t == nil {
+		return 0
+	}
+	return t.FeeAmount
+}
+
+func (t *TransactionDetailRecord) GetSettlementStatus() SettlementStatus {
+	if t == nil {
+		return 0
+	}
+	return t.SettlementStatus
+}
+
+func (t *TransactionDetailRecord) GetOperation() Operation {
+	if t == nil {
+		return ""
+	}
+	return t.Operation
+}
+
+func (t *TransactionDetailRecord) GetResponseData() *TransactionDetailResponseData {
+	if t == nil {
+		return nil
+	}
+	return t.ResponseData
+}
+
+func (t *TransactionDetailRecord) GetSource() Source {
+	if t == nil {
+		return ""
+	}
+	return t.Source
+}
+
+func (t *TransactionDetailRecord) GetScheduleReference() int64 {
+	if t == nil {
+		return 0
+	}
+	return t.ScheduleReference
+}
+
+func (t *TransactionDetailRecord) GetOrgId() Orgid {
+	if t == nil {
+		return 0
+	}
+	return t.OrgId
+}
+
+func (t *TransactionDetailRecord) GetRefundId() RefundId {
+	if t == nil {
+		return 0
+	}
+	return t.RefundId
+}
+
+func (t *TransactionDetailRecord) GetReturnedId() ReturnedId {
+	if t == nil {
+		return 0
+	}
+	return t.ReturnedId
+}
+
+func (t *TransactionDetailRecord) GetChargebackId() ChargebackId {
+	if t == nil {
+		return 0
+	}
+	return t.ChargebackId
+}
+
+func (t *TransactionDetailRecord) GetRetrievalId() RetrievalId {
+	if t == nil {
+		return 0
+	}
+	return t.RetrievalId
+}
+
+func (t *TransactionDetailRecord) GetTransAdditionalData() interface{} {
+	if t == nil {
+		return nil
+	}
+	return t.TransAdditionalData
+}
+
+func (t *TransactionDetailRecord) GetInvoiceData() *TransactionDetailInvoiceData {
+	if t == nil {
+		return nil
+	}
+	return t.InvoiceData
+}
+
+func (t *TransactionDetailRecord) GetEntrypageId() EntrypageId {
+	if t == nil {
+		return 0
+	}
+	return t.EntrypageId
+}
+
+func (t *TransactionDetailRecord) GetExternalPaypointId() ExternalPaypointId {
+	if t == nil {
+		return ""
+	}
+	return t.ExternalPaypointId
+}
+
+func (t *TransactionDetailRecord) GetIsValidatedAch() bool {
+	if t == nil {
+		return false
+	}
+	return t.IsValidatedAch
+}
+
+func (t *TransactionDetailRecord) GetTransactionTime() string {
+	if t == nil {
+		return ""
+	}
+	return t.TransactionTime
+}
+
+func (t *TransactionDetailRecord) GetCustomer() *TransactionDetailCustomer {
+	if t == nil {
+		return nil
+	}
+	return t.Customer
+}
+
+func (t *TransactionDetailRecord) GetSplitFundingInstructions() *SplitFunding {
+	if t == nil {
+		return nil
+	}
+	return t.SplitFundingInstructions
+}
+
+func (t *TransactionDetailRecord) GetCfeeTransactions() []*QueryCFeeTransaction {
+	if t == nil {
+		return nil
+	}
+	return t.CfeeTransactions
+}
+
+func (t *TransactionDetailRecord) GetTransactionEvents() []*TransactionDetailEvent {
+	if t == nil {
+		return nil
+	}
+	return t.TransactionEvents
+}
+
+func (t *TransactionDetailRecord) GetPendingFeeAmount() PendingFeeAmount {
+	if t == nil {
+		return nil
+	}
+	return t.PendingFeeAmount
+}
+
+func (t *TransactionDetailRecord) GetRiskFlagged() RiskFlagged {
+	if t == nil {
+		return nil
+	}
+	return t.RiskFlagged
+}
+
+func (t *TransactionDetailRecord) GetRiskFlaggedOn() RiskFlaggedOn {
+	if t == nil {
+		return nil
+	}
+	return t.RiskFlaggedOn
+}
+
+func (t *TransactionDetailRecord) GetRiskStatus() RiskStatus {
+	if t == nil {
+		return ""
+	}
+	return t.RiskStatus
+}
+
+func (t *TransactionDetailRecord) GetRiskReason() RiskReason {
+	if t == nil {
+		return ""
+	}
+	return t.RiskReason
+}
+
+func (t *TransactionDetailRecord) GetRiskAction() RiskAction {
+	if t == nil {
+		return ""
+	}
+	return t.RiskAction
+}
+
+func (t *TransactionDetailRecord) GetRiskActionCode() RiskActionCode {
+	if t == nil {
+		return nil
+	}
+	return t.RiskActionCode
+}
+
+func (t *TransactionDetailRecord) GetDeviceId() Device {
+	if t == nil {
+		return ""
+	}
+	return t.DeviceId
+}
+
+func (t *TransactionDetailRecord) GetAchSecCode() AchSecCode {
+	if t == nil {
+		return ""
+	}
+	return t.AchSecCode
+}
+
+func (t *TransactionDetailRecord) GetAchHolderType() AchHolderType {
+	if t == nil {
+		return ""
+	}
+	return t.AchHolderType
+}
+
+func (t *TransactionDetailRecord) GetIpAddress() IpAddress {
+	if t == nil {
+		return ""
+	}
+	return t.IpAddress
+}
+
+func (t *TransactionDetailRecord) GetIsSameDayAch() bool {
+	if t == nil {
+		return false
+	}
+	return t.IsSameDayAch
+}
+
+func (t *TransactionDetailRecord) GetWalletType() *string {
+	if t == nil {
+		return nil
+	}
+	return t.WalletType
+}
+
+func (t *TransactionDetailRecord) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransactionDetailRecord) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetParentOrgName(parentOrgName OrgParentName) {
+	t.ParentOrgName = parentOrgName
+	t.require(transactionDetailRecordFieldParentOrgName)
+}
+
+// SetPaypointDbaname sets the PaypointDbaname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetPaypointDbaname(paypointDbaname Dbaname) {
+	t.PaypointDbaname = paypointDbaname
+	t.require(transactionDetailRecordFieldPaypointDbaname)
+}
+
+// SetPaypointLegalname sets the PaypointLegalname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetPaypointLegalname(paypointLegalname Legalname) {
+	t.PaypointLegalname = paypointLegalname
+	t.require(transactionDetailRecordFieldPaypointLegalname)
+}
+
+// SetPaypointEntryname sets the PaypointEntryname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetPaypointEntryname(paypointEntryname Entrypointfield) {
+	t.PaypointEntryname = paypointEntryname
+	t.require(transactionDetailRecordFieldPaypointEntryname)
+}
+
+// SetPaymentTransId sets the PaymentTransId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetPaymentTransId(paymentTransId string) {
+	t.PaymentTransId = paymentTransId
+	t.require(transactionDetailRecordFieldPaymentTransId)
+}
+
+// SetConnectorName sets the ConnectorName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetConnectorName(connectorName string) {
+	t.ConnectorName = connectorName
+	t.require(transactionDetailRecordFieldConnectorName)
+}
+
+// SetExternalProcessorInformation sets the ExternalProcessorInformation field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetExternalProcessorInformation(externalProcessorInformation ExternalProcessorInformation) {
+	t.ExternalProcessorInformation = externalProcessorInformation
+	t.require(transactionDetailRecordFieldExternalProcessorInformation)
+}
+
+// SetGatewayTransId sets the GatewayTransId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetGatewayTransId(gatewayTransId string) {
+	t.GatewayTransId = gatewayTransId
+	t.require(transactionDetailRecordFieldGatewayTransId)
+}
+
+// SetOrderId sets the OrderId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetOrderId(orderId *OrderId) {
+	t.OrderId = orderId
+	t.require(transactionDetailRecordFieldOrderId)
+}
+
+// SetMethod sets the Method field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetMethod(method TransactionDetailRecordMethod) {
+	t.Method = method
+	t.require(transactionDetailRecordFieldMethod)
+}
+
+// SetBatchNumber sets the BatchNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetBatchNumber(batchNumber BatchNumber) {
+	t.BatchNumber = batchNumber
+	t.require(transactionDetailRecordFieldBatchNumber)
+}
+
+// SetBatchAmount sets the BatchAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetBatchAmount(batchAmount float64) {
+	t.BatchAmount = batchAmount
+	t.require(transactionDetailRecordFieldBatchAmount)
+}
+
+// SetPayorId sets the PayorId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetPayorId(payorId PayorId) {
+	t.PayorId = payorId
+	t.require(transactionDetailRecordFieldPayorId)
+}
+
+// SetPaymentData sets the PaymentData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetPaymentData(paymentData *TransactionDetailPaymentData) {
+	t.PaymentData = paymentData
+	t.require(transactionDetailRecordFieldPaymentData)
+}
+
+// SetTransStatus sets the TransStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetTransStatus(transStatus TransStatus) {
+	t.TransStatus = transStatus
+	t.require(transactionDetailRecordFieldTransStatus)
+}
+
+// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetPaypointId(paypointId PaypointId) {
+	t.PaypointId = paypointId
+	t.require(transactionDetailRecordFieldPaypointId)
+}
+
+// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetTotalAmount(totalAmount float64) {
+	t.TotalAmount = totalAmount
+	t.require(transactionDetailRecordFieldTotalAmount)
+}
+
+// SetNetAmount sets the NetAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetNetAmount(netAmount float64) {
+	t.NetAmount = netAmount
+	t.require(transactionDetailRecordFieldNetAmount)
+}
+
+// SetFeeAmount sets the FeeAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetFeeAmount(feeAmount FeeAmount) {
+	t.FeeAmount = feeAmount
+	t.require(transactionDetailRecordFieldFeeAmount)
+}
+
+// SetSettlementStatus sets the SettlementStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetSettlementStatus(settlementStatus SettlementStatus) {
+	t.SettlementStatus = settlementStatus
+	t.require(transactionDetailRecordFieldSettlementStatus)
+}
+
+// SetOperation sets the Operation field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetOperation(operation Operation) {
+	t.Operation = operation
+	t.require(transactionDetailRecordFieldOperation)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetResponseData(responseData *TransactionDetailResponseData) {
+	t.ResponseData = responseData
+	t.require(transactionDetailRecordFieldResponseData)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetSource(source Source) {
+	t.Source = source
+	t.require(transactionDetailRecordFieldSource)
+}
+
+// SetScheduleReference sets the ScheduleReference field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetScheduleReference(scheduleReference int64) {
+	t.ScheduleReference = scheduleReference
+	t.require(transactionDetailRecordFieldScheduleReference)
+}
+
+// SetOrgId sets the OrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetOrgId(orgId Orgid) {
+	t.OrgId = orgId
+	t.require(transactionDetailRecordFieldOrgId)
+}
+
+// SetRefundId sets the RefundId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetRefundId(refundId RefundId) {
+	t.RefundId = refundId
+	t.require(transactionDetailRecordFieldRefundId)
+}
+
+// SetReturnedId sets the ReturnedId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetReturnedId(returnedId ReturnedId) {
+	t.ReturnedId = returnedId
+	t.require(transactionDetailRecordFieldReturnedId)
+}
+
+// SetChargebackId sets the ChargebackId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetChargebackId(chargebackId ChargebackId) {
+	t.ChargebackId = chargebackId
+	t.require(transactionDetailRecordFieldChargebackId)
+}
+
+// SetRetrievalId sets the RetrievalId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetRetrievalId(retrievalId RetrievalId) {
+	t.RetrievalId = retrievalId
+	t.require(transactionDetailRecordFieldRetrievalId)
+}
+
+// SetTransAdditionalData sets the TransAdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetTransAdditionalData(transAdditionalData interface{}) {
+	t.TransAdditionalData = transAdditionalData
+	t.require(transactionDetailRecordFieldTransAdditionalData)
+}
+
+// SetInvoiceData sets the InvoiceData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetInvoiceData(invoiceData *TransactionDetailInvoiceData) {
+	t.InvoiceData = invoiceData
+	t.require(transactionDetailRecordFieldInvoiceData)
+}
+
+// SetEntrypageId sets the EntrypageId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetEntrypageId(entrypageId EntrypageId) {
+	t.EntrypageId = entrypageId
+	t.require(transactionDetailRecordFieldEntrypageId)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetExternalPaypointId(externalPaypointId ExternalPaypointId) {
+	t.ExternalPaypointId = externalPaypointId
+	t.require(transactionDetailRecordFieldExternalPaypointId)
+}
+
+// SetIsValidatedAch sets the IsValidatedAch field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetIsValidatedAch(isValidatedAch bool) {
+	t.IsValidatedAch = isValidatedAch
+	t.require(transactionDetailRecordFieldIsValidatedAch)
+}
+
+// SetTransactionTime sets the TransactionTime field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetTransactionTime(transactionTime string) {
+	t.TransactionTime = transactionTime
+	t.require(transactionDetailRecordFieldTransactionTime)
+}
+
+// SetCustomer sets the Customer field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetCustomer(customer *TransactionDetailCustomer) {
+	t.Customer = customer
+	t.require(transactionDetailRecordFieldCustomer)
+}
+
+// SetSplitFundingInstructions sets the SplitFundingInstructions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetSplitFundingInstructions(splitFundingInstructions *SplitFunding) {
+	t.SplitFundingInstructions = splitFundingInstructions
+	t.require(transactionDetailRecordFieldSplitFundingInstructions)
+}
+
+// SetCfeeTransactions sets the CfeeTransactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetCfeeTransactions(cfeeTransactions []*QueryCFeeTransaction) {
+	t.CfeeTransactions = cfeeTransactions
+	t.require(transactionDetailRecordFieldCfeeTransactions)
+}
+
+// SetTransactionEvents sets the TransactionEvents field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetTransactionEvents(transactionEvents []*TransactionDetailEvent) {
+	t.TransactionEvents = transactionEvents
+	t.require(transactionDetailRecordFieldTransactionEvents)
+}
+
+// SetPendingFeeAmount sets the PendingFeeAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetPendingFeeAmount(pendingFeeAmount PendingFeeAmount) {
+	t.PendingFeeAmount = pendingFeeAmount
+	t.require(transactionDetailRecordFieldPendingFeeAmount)
+}
+
+// SetRiskFlagged sets the RiskFlagged field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetRiskFlagged(riskFlagged RiskFlagged) {
+	t.RiskFlagged = riskFlagged
+	t.require(transactionDetailRecordFieldRiskFlagged)
+}
+
+// SetRiskFlaggedOn sets the RiskFlaggedOn field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetRiskFlaggedOn(riskFlaggedOn RiskFlaggedOn) {
+	t.RiskFlaggedOn = riskFlaggedOn
+	t.require(transactionDetailRecordFieldRiskFlaggedOn)
+}
+
+// SetRiskStatus sets the RiskStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetRiskStatus(riskStatus RiskStatus) {
+	t.RiskStatus = riskStatus
+	t.require(transactionDetailRecordFieldRiskStatus)
+}
+
+// SetRiskReason sets the RiskReason field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetRiskReason(riskReason RiskReason) {
+	t.RiskReason = riskReason
+	t.require(transactionDetailRecordFieldRiskReason)
+}
+
+// SetRiskAction sets the RiskAction field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetRiskAction(riskAction RiskAction) {
+	t.RiskAction = riskAction
+	t.require(transactionDetailRecordFieldRiskAction)
+}
+
+// SetRiskActionCode sets the RiskActionCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetRiskActionCode(riskActionCode RiskActionCode) {
+	t.RiskActionCode = riskActionCode
+	t.require(transactionDetailRecordFieldRiskActionCode)
+}
+
+// SetDeviceId sets the DeviceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetDeviceId(deviceId Device) {
+	t.DeviceId = deviceId
+	t.require(transactionDetailRecordFieldDeviceId)
+}
+
+// SetAchSecCode sets the AchSecCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetAchSecCode(achSecCode AchSecCode) {
+	t.AchSecCode = achSecCode
+	t.require(transactionDetailRecordFieldAchSecCode)
+}
+
+// SetAchHolderType sets the AchHolderType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetAchHolderType(achHolderType AchHolderType) {
+	t.AchHolderType = achHolderType
+	t.require(transactionDetailRecordFieldAchHolderType)
+}
+
+// SetIpAddress sets the IpAddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetIpAddress(ipAddress IpAddress) {
+	t.IpAddress = ipAddress
+	t.require(transactionDetailRecordFieldIpAddress)
+}
+
+// SetIsSameDayAch sets the IsSameDayAch field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetIsSameDayAch(isSameDayAch bool) {
+	t.IsSameDayAch = isSameDayAch
+	t.require(transactionDetailRecordFieldIsSameDayAch)
+}
+
+// SetWalletType sets the WalletType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailRecord) SetWalletType(walletType *string) {
+	t.WalletType = walletType
+	t.require(transactionDetailRecordFieldWalletType)
+}
+
+func (t *TransactionDetailRecord) UnmarshalJSON(data []byte) error {
+	type unmarshaler TransactionDetailRecord
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TransactionDetailRecord(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransactionDetailRecord) MarshalJSON() ([]byte, error) {
+	type embed TransactionDetailRecord
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TransactionDetailRecord) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+// Payment method used for the transaction
+type TransactionDetailRecordMethod string
+
+const (
+	TransactionDetailRecordMethodAch  TransactionDetailRecordMethod = "ach"
+	TransactionDetailRecordMethodCard TransactionDetailRecordMethod = "card"
+)
+
+func NewTransactionDetailRecordMethodFromString(s string) (TransactionDetailRecordMethod, error) {
+	switch s {
+	case "ach":
+		return TransactionDetailRecordMethodAch, nil
+	case "card":
+		return TransactionDetailRecordMethodCard, nil
+	}
+	var t TransactionDetailRecordMethod
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (t TransactionDetailRecordMethod) Ptr() *TransactionDetailRecordMethod {
+	return &t
+}
+
+// Response data from payment processor
+var (
+	transactionDetailResponseDataFieldResponse            = big.NewInt(1 << 0)
+	transactionDetailResponseDataFieldResponsetext        = big.NewInt(1 << 1)
+	transactionDetailResponseDataFieldAuthcode            = big.NewInt(1 << 2)
+	transactionDetailResponseDataFieldTransactionid       = big.NewInt(1 << 3)
+	transactionDetailResponseDataFieldAvsresponse         = big.NewInt(1 << 4)
+	transactionDetailResponseDataFieldAvsresponseText     = big.NewInt(1 << 5)
+	transactionDetailResponseDataFieldCvvresponse         = big.NewInt(1 << 6)
+	transactionDetailResponseDataFieldCvvresponseText     = big.NewInt(1 << 7)
+	transactionDetailResponseDataFieldOrderid             = big.NewInt(1 << 8)
+	transactionDetailResponseDataFieldType                = big.NewInt(1 << 9)
+	transactionDetailResponseDataFieldResponseCode        = big.NewInt(1 << 10)
+	transactionDetailResponseDataFieldResponseCodeText    = big.NewInt(1 << 11)
+	transactionDetailResponseDataFieldCustomerVaultId     = big.NewInt(1 << 12)
+	transactionDetailResponseDataFieldEmvAuthResponseData = big.NewInt(1 << 13)
+)
+
+type TransactionDetailResponseData struct {
+	Response            *string          `json:"response,omitempty" url:"response,omitempty"`
+	Responsetext        Resulttext       `json:"responsetext" url:"responsetext"`
+	Authcode            *Authcode        `json:"authcode,omitempty" url:"authcode,omitempty"`
+	Transactionid       string           `json:"transactionid" url:"transactionid"`
+	Avsresponse         *string          `json:"avsresponse,omitempty" url:"avsresponse,omitempty"`
+	AvsresponseText     *Avsresponsetext `json:"avsresponse_text,omitempty" url:"avsresponse_text,omitempty"`
+	Cvvresponse         *string          `json:"cvvresponse,omitempty" url:"cvvresponse,omitempty"`
+	CvvresponseText     *Cvvresponsetext `json:"cvvresponse_text,omitempty" url:"cvvresponse_text,omitempty"`
+	Orderid             *OrderId         `json:"orderid,omitempty" url:"orderid,omitempty"`
+	Type                *string          `json:"type,omitempty" url:"type,omitempty"`
+	ResponseCode        string           `json:"response_code" url:"response_code"`
+	ResponseCodeText    string           `json:"response_code_text" url:"response_code_text"`
+	CustomerVaultId     *string          `json:"customer_vault_id,omitempty" url:"customer_vault_id,omitempty"`
+	EmvAuthResponseData *string          `json:"emv_auth_response_data,omitempty" url:"emv_auth_response_data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransactionDetailResponseData) GetResponse() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Response
+}
+
+func (t *TransactionDetailResponseData) GetResponsetext() Resulttext {
+	if t == nil {
+		return ""
+	}
+	return t.Responsetext
+}
+
+func (t *TransactionDetailResponseData) GetAuthcode() *Authcode {
+	if t == nil {
+		return nil
+	}
+	return t.Authcode
+}
+
+func (t *TransactionDetailResponseData) GetTransactionid() string {
+	if t == nil {
+		return ""
+	}
+	return t.Transactionid
+}
+
+func (t *TransactionDetailResponseData) GetAvsresponse() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Avsresponse
+}
+
+func (t *TransactionDetailResponseData) GetAvsresponseText() *Avsresponsetext {
+	if t == nil {
+		return nil
+	}
+	return t.AvsresponseText
+}
+
+func (t *TransactionDetailResponseData) GetCvvresponse() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Cvvresponse
+}
+
+func (t *TransactionDetailResponseData) GetCvvresponseText() *Cvvresponsetext {
+	if t == nil {
+		return nil
+	}
+	return t.CvvresponseText
+}
+
+func (t *TransactionDetailResponseData) GetOrderid() *OrderId {
+	if t == nil {
+		return nil
+	}
+	return t.Orderid
+}
+
+func (t *TransactionDetailResponseData) GetType() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Type
+}
+
+func (t *TransactionDetailResponseData) GetResponseCode() string {
+	if t == nil {
+		return ""
+	}
+	return t.ResponseCode
+}
+
+func (t *TransactionDetailResponseData) GetResponseCodeText() string {
+	if t == nil {
+		return ""
+	}
+	return t.ResponseCodeText
+}
+
+func (t *TransactionDetailResponseData) GetCustomerVaultId() *string {
+	if t == nil {
+		return nil
+	}
+	return t.CustomerVaultId
+}
+
+func (t *TransactionDetailResponseData) GetEmvAuthResponseData() *string {
+	if t == nil {
+		return nil
+	}
+	return t.EmvAuthResponseData
+}
+
+func (t *TransactionDetailResponseData) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransactionDetailResponseData) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetResponse sets the Response field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailResponseData) SetResponse(response *string) {
+	t.Response = response
+	t.require(transactionDetailResponseDataFieldResponse)
+}
+
+// SetResponsetext sets the Responsetext field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailResponseData) SetResponsetext(responsetext Resulttext) {
+	t.Responsetext = responsetext
+	t.require(transactionDetailResponseDataFieldResponsetext)
+}
+
+// SetAuthcode sets the Authcode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailResponseData) SetAuthcode(authcode *Authcode) {
+	t.Authcode = authcode
+	t.require(transactionDetailResponseDataFieldAuthcode)
+}
+
+// SetTransactionid sets the Transactionid field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailResponseData) SetTransactionid(transactionid string) {
+	t.Transactionid = transactionid
+	t.require(transactionDetailResponseDataFieldTransactionid)
+}
+
+// SetAvsresponse sets the Avsresponse field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailResponseData) SetAvsresponse(avsresponse *string) {
+	t.Avsresponse = avsresponse
+	t.require(transactionDetailResponseDataFieldAvsresponse)
+}
+
+// SetAvsresponseText sets the AvsresponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailResponseData) SetAvsresponseText(avsresponseText *Avsresponsetext) {
+	t.AvsresponseText = avsresponseText
+	t.require(transactionDetailResponseDataFieldAvsresponseText)
+}
+
+// SetCvvresponse sets the Cvvresponse field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailResponseData) SetCvvresponse(cvvresponse *string) {
+	t.Cvvresponse = cvvresponse
+	t.require(transactionDetailResponseDataFieldCvvresponse)
+}
+
+// SetCvvresponseText sets the CvvresponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailResponseData) SetCvvresponseText(cvvresponseText *Cvvresponsetext) {
+	t.CvvresponseText = cvvresponseText
+	t.require(transactionDetailResponseDataFieldCvvresponseText)
+}
+
+// SetOrderid sets the Orderid field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailResponseData) SetOrderid(orderid *OrderId) {
+	t.Orderid = orderid
+	t.require(transactionDetailResponseDataFieldOrderid)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailResponseData) SetType(type_ *string) {
+	t.Type = type_
+	t.require(transactionDetailResponseDataFieldType)
+}
+
+// SetResponseCode sets the ResponseCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailResponseData) SetResponseCode(responseCode string) {
+	t.ResponseCode = responseCode
+	t.require(transactionDetailResponseDataFieldResponseCode)
+}
+
+// SetResponseCodeText sets the ResponseCodeText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailResponseData) SetResponseCodeText(responseCodeText string) {
+	t.ResponseCodeText = responseCodeText
+	t.require(transactionDetailResponseDataFieldResponseCodeText)
+}
+
+// SetCustomerVaultId sets the CustomerVaultId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailResponseData) SetCustomerVaultId(customerVaultId *string) {
+	t.CustomerVaultId = customerVaultId
+	t.require(transactionDetailResponseDataFieldCustomerVaultId)
+}
+
+// SetEmvAuthResponseData sets the EmvAuthResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailResponseData) SetEmvAuthResponseData(emvAuthResponseData *string) {
+	t.EmvAuthResponseData = emvAuthResponseData
+	t.require(transactionDetailResponseDataFieldEmvAuthResponseData)
+}
+
+func (t *TransactionDetailResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler TransactionDetailResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TransactionDetailResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransactionDetailResponseData) MarshalJSON() ([]byte, error) {
+	type embed TransactionDetailResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TransactionDetailResponseData) String() string {
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value

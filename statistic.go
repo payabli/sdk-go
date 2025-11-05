@@ -147,6 +147,8 @@ var (
 	statBasicQueryRecordFieldStatX                = big.NewInt(1 << 0)
 	statBasicQueryRecordFieldInTransactions       = big.NewInt(1 << 1)
 	statBasicQueryRecordFieldInTransactionsVolume = big.NewInt(1 << 2)
+	statBasicQueryRecordFieldInWalletTransactions = big.NewInt(1 << 3)
+	statBasicQueryRecordFieldInWalletVolume       = big.NewInt(1 << 4)
 )
 
 type StatBasicQueryRecord struct {
@@ -156,6 +158,10 @@ type StatBasicQueryRecord struct {
 	InTransactions int `json:"inTransactions" url:"inTransactions"`
 	// Volume of incoming transactions
 	InTransactionsVolume float64 `json:"inTransactionsVolume" url:"inTransactionsVolume"`
+	// Number of incoming wallet transactions
+	InWalletTransactions int `json:"inWalletTransactions" url:"inWalletTransactions"`
+	// Volume of incoming wallet transactions
+	InWalletVolume float64 `json:"inWalletVolume" url:"inWalletVolume"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -183,6 +189,20 @@ func (s *StatBasicQueryRecord) GetInTransactionsVolume() float64 {
 		return 0
 	}
 	return s.InTransactionsVolume
+}
+
+func (s *StatBasicQueryRecord) GetInWalletTransactions() int {
+	if s == nil {
+		return 0
+	}
+	return s.InWalletTransactions
+}
+
+func (s *StatBasicQueryRecord) GetInWalletVolume() float64 {
+	if s == nil {
+		return 0
+	}
+	return s.InWalletVolume
 }
 
 func (s *StatBasicQueryRecord) GetExtraProperties() map[string]interface{} {
@@ -215,6 +235,20 @@ func (s *StatBasicQueryRecord) SetInTransactions(inTransactions int) {
 func (s *StatBasicQueryRecord) SetInTransactionsVolume(inTransactionsVolume float64) {
 	s.InTransactionsVolume = inTransactionsVolume
 	s.require(statBasicQueryRecordFieldInTransactionsVolume)
+}
+
+// SetInWalletTransactions sets the InWalletTransactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicQueryRecord) SetInWalletTransactions(inWalletTransactions int) {
+	s.InWalletTransactions = inWalletTransactions
+	s.require(statBasicQueryRecordFieldInWalletTransactions)
+}
+
+// SetInWalletVolume sets the InWalletVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicQueryRecord) SetInWalletVolume(inWalletVolume float64) {
+	s.InWalletVolume = inWalletVolume
+	s.require(statBasicQueryRecordFieldInWalletVolume)
 }
 
 func (s *StatBasicQueryRecord) UnmarshalJSON(data []byte) error {

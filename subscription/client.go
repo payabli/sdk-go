@@ -4,7 +4,7 @@ package subscription
 
 import (
 	context "context"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -38,7 +38,7 @@ func (c *Client) GetSubscription(
 	// The subscription ID.
 	subId int,
 	opts ...option.RequestOption,
-) (*sdkgo.SubscriptionQueryRecords, error) {
+) (*payabli.SubscriptionQueryRecords, error) {
 	response, err := c.WithRawResponse.GetSubscription(
 		ctx,
 		subId,
@@ -53,9 +53,9 @@ func (c *Client) GetSubscription(
 // Creates a subscription or scheduled payment to run at a specified time and frequency.
 func (c *Client) NewSubscription(
 	ctx context.Context,
-	request *sdkgo.RequestSchedule,
+	request *payabli.RequestSchedule,
 	opts ...option.RequestOption,
-) (*sdkgo.AddSubscriptionResponse, error) {
+) (*payabli.AddSubscriptionResponse, error) {
 	response, err := c.WithRawResponse.NewSubscription(
 		ctx,
 		request,
@@ -73,7 +73,7 @@ func (c *Client) RemoveSubscription(
 	// The subscription ID.
 	subId int,
 	opts ...option.RequestOption,
-) (*sdkgo.RemoveSubscriptionResponse, error) {
+) (*payabli.RemoveSubscriptionResponse, error) {
 	response, err := c.WithRawResponse.RemoveSubscription(
 		ctx,
 		subId,
@@ -90,9 +90,9 @@ func (c *Client) UpdateSubscription(
 	ctx context.Context,
 	// The subscription ID.
 	subId int,
-	request *sdkgo.RequestUpdateSchedule,
+	request *payabli.RequestUpdateSchedule,
 	opts ...option.RequestOption,
-) (*sdkgo.UpdateSubscriptionResponse, error) {
+) (*payabli.UpdateSubscriptionResponse, error) {
 	response, err := c.WithRawResponse.UpdateSubscription(
 		ctx,
 		subId,

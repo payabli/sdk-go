@@ -1,6 +1,6 @@
 # Reference
 ## Bill
-<details><summary><code>client.Bill.AddBill(Entry, request) -> *sdkgo.BillResponse</code></summary>
+<details><summary><code>client.Bill.AddBill(Entry, request) -> *payabli.BillResponse</code></summary>
 <dl>
 <dd>
 
@@ -27,106 +27,107 @@ Creates a bill in an entrypoint.
 <dd>
 
 ```go
-client.Bill.AddBill(
-        context.TODO(),
-        "8cfec329267",
-        &sdkgo.AddBillRequest{
-            Body: &sdkgo.BillOutData{
-                BillNumber: sdkgo.String(
-                    "ABC-123",
+request := &payabli.AddBillRequest{
+        Body: &payabli.BillOutData{
+            BillNumber: payabli.String(
+                "ABC-123",
+            ),
+            NetAmount: payabli.Float64(
+                3762.87,
+            ),
+            BillDate: payabli.Time(
+                payabli.MustParseDateTime(
+                    "2024-07-01",
                 ),
-                NetAmount: sdkgo.Float64(
-                    3762.87,
+            ),
+            DueDate: payabli.Time(
+                payabli.MustParseDateTime(
+                    "2024-07-01",
                 ),
-                BillDate: sdkgo.Time(
-                    sdkgo.MustParseDateTime(
-                        "2024-07-01",
+            ),
+            Comments: payabli.String(
+                "Deposit for materials",
+            ),
+            BillItems: []*payabli.BillItem{
+                &payabli.BillItem{
+                    ItemProductCode: payabli.String(
+                        "M-DEPOSIT",
                     ),
-                ),
-                DueDate: sdkgo.Time(
-                    sdkgo.MustParseDateTime(
-                        "2024-07-01",
+                    ItemProductName: payabli.String(
+                        "Materials deposit",
                     ),
-                ),
-                Comments: sdkgo.String(
-                    "Deposit for materials",
-                ),
-                BillItems: []*sdkgo.BillItem{
-                    &sdkgo.BillItem{
-                        ItemProductCode: sdkgo.String(
-                            "M-DEPOSIT",
-                        ),
-                        ItemProductName: sdkgo.String(
-                            "Materials deposit",
-                        ),
-                        ItemDescription: sdkgo.String(
-                            "Deposit for materials",
-                        ),
-                        ItemCommodityCode: sdkgo.String(
-                            "010",
-                        ),
-                        ItemUnitOfMeasure: sdkgo.String(
-                            "SqFt",
-                        ),
-                        ItemCost: 5,
-                        ItemQty: sdkgo.Int(
-                            1,
-                        ),
-                        ItemMode: sdkgo.Int(
-                            0,
-                        ),
-                        ItemCategories: []*string{
-                            sdkgo.String(
-                                "deposits",
-                            ),
-                        },
-                        ItemTotalAmount: sdkgo.Float64(
-                            123,
-                        ),
-                        ItemTaxAmount: sdkgo.Float64(
-                            7,
-                        ),
-                        ItemTaxRate: sdkgo.Float64(
-                            0.075,
+                    ItemDescription: payabli.String(
+                        "Deposit for materials",
+                    ),
+                    ItemCommodityCode: payabli.String(
+                        "010",
+                    ),
+                    ItemUnitOfMeasure: payabli.String(
+                        "SqFt",
+                    ),
+                    ItemCost: 5,
+                    ItemQty: payabli.Int(
+                        1,
+                    ),
+                    ItemMode: payabli.Int(
+                        0,
+                    ),
+                    ItemCategories: []*string{
+                        payabli.String(
+                            "deposits",
                         ),
                     },
-                },
-                Mode: sdkgo.Int(
-                    0,
-                ),
-                AccountingField1: sdkgo.String(
-                    "MyInternalId",
-                ),
-                Vendor: &sdkgo.VendorData{
-                    VendorNumber: sdkgo.String(
-                        "1234-A",
+                    ItemTotalAmount: payabli.Float64(
+                        123,
+                    ),
+                    ItemTaxAmount: payabli.Float64(
+                        7,
+                    ),
+                    ItemTaxRate: payabli.Float64(
+                        0.075,
                     ),
                 },
-                EndDate: sdkgo.Time(
-                    sdkgo.MustParseDateTime(
-                        "2024-07-01",
+            },
+            Mode: payabli.Int(
+                0,
+            ),
+            AccountingField1: payabli.String(
+                "MyInternalId",
+            ),
+            Vendor: &payabli.VendorData{
+                VendorNumber: payabli.String(
+                    "1234-A",
+                ),
+            },
+            EndDate: payabli.Time(
+                payabli.MustParseDateTime(
+                    "2024-07-01",
+                ),
+            ),
+            Frequency: payabli.FrequencyMonthly.Ptr(),
+            Terms: payabli.String(
+                "NET30",
+            ),
+            Status: payabli.Int(
+                -99,
+            ),
+            Attachments: []*payabli.FileContent{
+                &payabli.FileContent{
+                    Ftype: payabli.FileContentFtypePdf.Ptr(),
+                    Filename: payabli.String(
+                        "my-doc.pdf",
                     ),
-                ),
-                Frequency: sdkgo.FrequencyMonthly.Ptr(),
-                Terms: sdkgo.String(
-                    "NET30",
-                ),
-                Status: sdkgo.Int(
-                    -99,
-                ),
-                Attachments: []*sdkgo.FileContent{
-                    &sdkgo.FileContent{
-                        Ftype: sdkgo.FileContentFtypePdf.Ptr(),
-                        Filename: sdkgo.String(
-                            "my-doc.pdf",
-                        ),
-                        Furl: sdkgo.String(
-                            "https://mysite.com/my-doc.pdf",
-                        ),
-                    },
+                    Furl: payabli.String(
+                        "https://mysite.com/my-doc.pdf",
+                    ),
                 },
             },
         },
+    }
+client.Bill.AddBill(
+        context.TODO(),
+        "8cfec329267",
+        request,
     )
 }
 ```
@@ -151,7 +152,7 @@ client.Bill.AddBill(
 <dl>
 <dd>
 
-**idempotencyKey:** `*sdkgo.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` 
     
 </dd>
 </dl>
@@ -159,7 +160,7 @@ client.Bill.AddBill(
 <dl>
 <dd>
 
-**request:** `*sdkgo.BillOutData` 
+**request:** `*payabli.BillOutData` 
     
 </dd>
 </dl>
@@ -171,7 +172,7 @@ client.Bill.AddBill(
 </dl>
 </details>
 
-<details><summary><code>client.Bill.DeleteAttachedFromBill(Filename, IdBill) -> *sdkgo.BillResponse</code></summary>
+<details><summary><code>client.Bill.DeleteAttachedFromBill(Filename, IdBill) -> *payabli.BillResponse</code></summary>
 <dl>
 <dd>
 
@@ -198,11 +199,12 @@ Delete a file attached to a bill.
 <dd>
 
 ```go
+request := &payabli.DeleteAttachedFromBillRequest{}
 client.Bill.DeleteAttachedFromBill(
         context.TODO(),
         "0_Bill.pdf",
         285,
-        &sdkgo.DeleteAttachedFromBillRequest{},
+        request,
     )
 }
 ```
@@ -264,7 +266,7 @@ request to `/api/Invoice/{idInvoice}`. Here, the filename is
 </dl>
 </details>
 
-<details><summary><code>client.Bill.DeleteBill(IdBill) -> *sdkgo.BillResponse</code></summary>
+<details><summary><code>client.Bill.DeleteBill(IdBill) -> *payabli.BillResponse</code></summary>
 <dl>
 <dd>
 
@@ -322,7 +324,7 @@ client.Bill.DeleteBill(
 </dl>
 </details>
 
-<details><summary><code>client.Bill.EditBill(IdBill, request) -> *sdkgo.EditBillResponse</code></summary>
+<details><summary><code>client.Bill.EditBill(IdBill, request) -> *payabli.EditBillResponse</code></summary>
 <dl>
 <dd>
 
@@ -349,19 +351,20 @@ Updates a bill by ID.
 <dd>
 
 ```go
+request := &payabli.BillOutData{
+        NetAmount: payabli.Float64(
+            3762.87,
+        ),
+        BillDate: payabli.Time(
+            payabli.MustParseDateTime(
+                "2025-07-01",
+            ),
+        ),
+    }
 client.Bill.EditBill(
         context.TODO(),
         285,
-        &sdkgo.BillOutData{
-            NetAmount: sdkgo.Float64(
-                3762.87,
-            ),
-            BillDate: sdkgo.Time(
-                sdkgo.MustParseDateTime(
-                    "2025-07-01",
-                ),
-            ),
-        },
+        request,
     )
 }
 ```
@@ -386,7 +389,7 @@ client.Bill.EditBill(
 <dl>
 <dd>
 
-**request:** `*sdkgo.BillOutData` 
+**request:** `*payabli.BillOutData` 
     
 </dd>
 </dl>
@@ -398,7 +401,7 @@ client.Bill.EditBill(
 </dl>
 </details>
 
-<details><summary><code>client.Bill.GetAttachedFromBill(Filename, IdBill) -> *sdkgo.FileContent</code></summary>
+<details><summary><code>client.Bill.GetAttachedFromBill(Filename, IdBill) -> *payabli.FileContent</code></summary>
 <dl>
 <dd>
 
@@ -425,15 +428,16 @@ Retrieves a file attached to a bill, either as a binary file or as a Base64-enco
 <dd>
 
 ```go
+request := &payabli.GetAttachedFromBillRequest{
+        ReturnObject: payabli.Bool(
+            true,
+        ),
+    }
 client.Bill.GetAttachedFromBill(
         context.TODO(),
         "0_Bill.pdf",
         285,
-        &sdkgo.GetAttachedFromBillRequest{
-            ReturnObject: sdkgo.Bool(
-                true,
-            ),
-        },
+        request,
     )
 }
 ```
@@ -490,7 +494,7 @@ The filename in Payabli. Filename is `zipName` in response to a request to `/api
 </dl>
 </details>
 
-<details><summary><code>client.Bill.GetBill(IdBill) -> *sdkgo.GetBillResponse</code></summary>
+<details><summary><code>client.Bill.GetBill(IdBill) -> *payabli.GetBillResponse</code></summary>
 <dl>
 <dd>
 
@@ -548,7 +552,7 @@ client.Bill.GetBill(
 </dl>
 </details>
 
-<details><summary><code>client.Bill.ListBills(Entry) -> *sdkgo.BillQueryResponse</code></summary>
+<details><summary><code>client.Bill.ListBills(Entry) -> *payabli.BillQueryResponse</code></summary>
 <dl>
 <dd>
 
@@ -575,20 +579,21 @@ Retrieve a list of bills for an entrypoint. Use filters to limit results. Includ
 <dd>
 
 ```go
+request := &payabli.ListBillsRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Bill.ListBills(
         context.TODO(),
         "8cfec329267",
-        &sdkgo.ListBillsRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -613,7 +618,7 @@ client.Bill.ListBills(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -701,7 +706,7 @@ Example: `totalAmount(gt)=20` returns all records with a `totalAmount` that's gr
 </dl>
 </details>
 
-<details><summary><code>client.Bill.ListBillsOrg(OrgId) -> *sdkgo.BillQueryResponse</code></summary>
+<details><summary><code>client.Bill.ListBillsOrg(OrgId) -> *payabli.BillQueryResponse</code></summary>
 <dl>
 <dd>
 
@@ -728,20 +733,21 @@ Retrieve a list of bills for an organization. Use filters to limit results. Incl
 <dd>
 
 ```go
+request := &payabli.ListBillsOrgRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Bill.ListBillsOrg(
         context.TODO(),
         123,
-        &sdkgo.ListBillsOrgRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -766,7 +772,7 @@ client.Bill.ListBillsOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -854,7 +860,7 @@ Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.
 </dl>
 </details>
 
-<details><summary><code>client.Bill.ModifyApprovalBill(IdBill, request) -> *sdkgo.ModifyApprovalBillResponse</code></summary>
+<details><summary><code>client.Bill.ModifyApprovalBill(IdBill, request) -> *payabli.ModifyApprovalBillResponse</code></summary>
 <dl>
 <dd>
 
@@ -881,12 +887,13 @@ Modify the list of users the bill is sent to for approval.
 <dd>
 
 ```go
+request := []string{
+        "string",
+    }
 client.Bill.ModifyApprovalBill(
         context.TODO(),
         285,
-        []string{
-            "string",
-        },
+        request,
     )
 }
 ```
@@ -923,7 +930,7 @@ client.Bill.ModifyApprovalBill(
 </dl>
 </details>
 
-<details><summary><code>client.Bill.SendToApprovalBill(IdBill, request) -> *sdkgo.BillResponse</code></summary>
+<details><summary><code>client.Bill.SendToApprovalBill(IdBill, request) -> *payabli.BillResponse</code></summary>
 <dl>
 <dd>
 
@@ -950,17 +957,18 @@ Send a bill to a user or list of users to approve.
 <dd>
 
 ```go
+request := &payabli.SendToApprovalBillRequest{
+        IdempotencyKey: payabli.String(
+            "6B29FC40-CA47-1067-B31D-00DD010662DA",
+        ),
+        Body: []string{
+            "string",
+        },
+    }
 client.Bill.SendToApprovalBill(
         context.TODO(),
         285,
-        &sdkgo.SendToApprovalBillRequest{
-            IdempotencyKey: sdkgo.String(
-                "6B29FC40-CA47-1067-B31D-00DD010662DA",
-            ),
-            Body: []string{
-                "string",
-            },
-        },
+        request,
     )
 }
 ```
@@ -993,7 +1001,7 @@ client.Bill.SendToApprovalBill(
 <dl>
 <dd>
 
-**idempotencyKey:** `*sdkgo.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` 
     
 </dd>
 </dl>
@@ -1013,7 +1021,7 @@ client.Bill.SendToApprovalBill(
 </dl>
 </details>
 
-<details><summary><code>client.Bill.SetApprovedBill(Approved, IdBill) -> *sdkgo.SetApprovedBillResponse</code></summary>
+<details><summary><code>client.Bill.SetApprovedBill(Approved, IdBill) -> *payabli.SetApprovedBillResponse</code></summary>
 <dl>
 <dd>
 
@@ -1040,11 +1048,12 @@ Approve or disapprove a bill by ID.
 <dd>
 
 ```go
+request := &payabli.SetApprovedBillRequest{}
 client.Bill.SetApprovedBill(
         context.TODO(),
         "true",
         285,
-        &sdkgo.SetApprovedBillRequest{},
+        request,
     )
 }
 ```
@@ -1090,7 +1099,7 @@ client.Bill.SetApprovedBill(
 </details>
 
 ## Boarding
-<details><summary><code>client.Boarding.AddApplication(request) -> *sdkgo.PayabliApiResponse00Responsedatanonobject</code></summary>
+<details><summary><code>client.Boarding.AddApplication(request) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
 <dl>
 <dd>
 
@@ -1117,266 +1126,267 @@ Creates a boarding application in an organization. This endpoint requires an app
 <dd>
 
 ```go
-client.Boarding.AddApplication(
-        context.TODO(),
-        &sdkgo.AddApplicationRequest{
-            ApplicationDataPayIn: &sdkgo.ApplicationDataPayIn{
-                Services: &sdkgo.ApplicationDataPayInServices{
-                    Ach: &sdkgo.ApplicationDataPayInServicesAch{},
-                    Card: &sdkgo.ApplicationDataPayInServicesCard{
-                        AcceptAmex: sdkgo.Bool(
-                            true,
-                        ),
-                        AcceptDiscover: sdkgo.Bool(
-                            true,
-                        ),
-                        AcceptMastercard: sdkgo.Bool(
-                            true,
-                        ),
-                        AcceptVisa: sdkgo.Bool(
-                            true,
-                        ),
-                    },
-                },
-                AnnualRevenue: sdkgo.Float64(
-                    1000,
-                ),
-                AverageBillSize: sdkgo.String(
-                    "500",
-                ),
-                AverageMonthlyBill: sdkgo.String(
-                    "5650",
-                ),
-                Avgmonthly: sdkgo.Float64(
-                    1000,
-                ),
-                Baddress: sdkgo.String(
-                    "123 Walnut Street",
-                ),
-                Baddress1: sdkgo.String(
-                    "Suite 103",
-                ),
-                BankData: &sdkgo.ApplicationDataPayInBankData{},
-                Bcity: sdkgo.String(
-                    "New Vegas",
-                ),
-                Bcountry: sdkgo.String(
-                    "US",
-                ),
-                Binperson: sdkgo.Int(
-                    60,
-                ),
-                Binphone: sdkgo.Int(
-                    20,
-                ),
-                Binweb: sdkgo.Int(
-                    20,
-                ),
-                Bstate: sdkgo.String(
-                    "FL",
-                ),
-                Bsummary: sdkgo.String(
-                    "Brick and mortar store that sells office supplies",
-                ),
-                Btype: sdkgo.OwnTypeLimitedLiabilityCompany.Ptr(),
-                Bzip: sdkgo.String(
-                    "33000",
-                ),
-                Contacts: []*sdkgo.ApplicationDataPayInContactsItem{
-                    &sdkgo.ApplicationDataPayInContactsItem{
-                        ContactEmail: sdkgo.String(
-                            "herman@hermanscoatings.com",
-                        ),
-                        ContactName: sdkgo.String(
-                            "Herman Martinez",
-                        ),
-                        ContactPhone: sdkgo.String(
-                            "3055550000",
-                        ),
-                        ContactTitle: sdkgo.String(
-                            "Owner",
-                        ),
-                    },
-                },
-                CreditLimit: sdkgo.String(
-                    "creditLimit",
-                ),
-                DbaName: sdkgo.String(
-                    "Sunshine Gutters",
-                ),
-                Ein: sdkgo.String(
-                    "123456789",
-                ),
-                Faxnumber: sdkgo.String(
-                    "1234567890",
-                ),
-                Highticketamt: sdkgo.Float64(
-                    1000,
-                ),
-                LegalName: sdkgo.String(
-                    "Sunshine Services, LLC",
-                ),
-                License: sdkgo.String(
-                    "2222222FFG",
-                ),
-                Licstate: sdkgo.String(
-                    "CA",
-                ),
-                Maddress: sdkgo.String(
-                    "123 Walnut Street",
-                ),
-                Maddress1: sdkgo.String(
-                    "STE 900",
-                ),
-                Mcc: sdkgo.String(
-                    "7777",
-                ),
-                Mcity: sdkgo.String(
-                    "Johnson City",
-                ),
-                Mcountry: sdkgo.String(
-                    "US",
-                ),
-                Mstate: sdkgo.String(
-                    "TN",
-                ),
-                Mzip: sdkgo.String(
-                    "37615",
-                ),
-                OrgId: sdkgo.Int64(
-                    123,
-                ),
-                Ownership: []*sdkgo.ApplicationDataPayInOwnershipItem{
-                    &sdkgo.ApplicationDataPayInOwnershipItem{
-                        Oaddress: sdkgo.String(
-                            "33 North St",
-                        ),
-                        Ocity: sdkgo.String(
-                            "Any City",
-                        ),
-                        Ocountry: sdkgo.String(
-                            "US",
-                        ),
-                        Odriverstate: sdkgo.String(
-                            "CA",
-                        ),
-                        Ostate: sdkgo.String(
-                            "CA",
-                        ),
-                        Ownerdob: sdkgo.String(
-                            "01/01/1990",
-                        ),
-                        Ownerdriver: sdkgo.String(
-                            "CA6677778",
-                        ),
-                        Owneremail: sdkgo.String(
-                            "test@email.com",
-                        ),
-                        Ownername: sdkgo.String(
-                            "John Smith",
-                        ),
-                        Ownerpercent: sdkgo.Int(
-                            100,
-                        ),
-                        Ownerphone1: sdkgo.String(
-                            "555888111",
-                        ),
-                        Ownerphone2: sdkgo.String(
-                            "555888111",
-                        ),
-                        Ownerssn: sdkgo.String(
-                            "123456789",
-                        ),
-                        Ownertitle: sdkgo.String(
-                            "CEO",
-                        ),
-                        Ozip: sdkgo.String(
-                            "55555",
-                        ),
-                    },
-                },
-                Phonenumber: "1234567890",
-                ProcessingRegion: "US",
-                RecipientEmail: sdkgo.String(
-                    "josephray@example.com",
-                ),
-                RecipientEmailNotification: sdkgo.Bool(
-                    true,
-                ),
-                Resumable: sdkgo.Bool(
-                    true,
-                ),
-                Signer: &sdkgo.SignerDataRequest{
-                    Address: sdkgo.String(
-                        "33 North St",
-                    ),
-                    Address1: sdkgo.String(
-                        "STE 900",
-                    ),
-                    City: sdkgo.String(
-                        "Bristol",
-                    ),
-                    Country: sdkgo.String(
-                        "US",
-                    ),
-                    Dob: sdkgo.String(
-                        "01/01/1976",
-                    ),
-                    Email: sdkgo.String(
-                        "test@email.com",
-                    ),
-                    Name: sdkgo.String(
-                        "John Smith",
-                    ),
-                    Phone: sdkgo.String(
-                        "555888111",
-                    ),
-                    Ssn: sdkgo.String(
-                        "123456789",
-                    ),
-                    State: sdkgo.String(
-                        "TN",
-                    ),
-                    Zip: sdkgo.String(
-                        "55555",
-                    ),
-                    PciAttestation: sdkgo.Bool(
+request := &payabli.AddApplicationRequest{
+        ApplicationDataPayIn: &payabli.ApplicationDataPayIn{
+            Services: &payabli.ApplicationDataPayInServices{
+                Ach: &payabli.ApplicationDataPayInServicesAch{},
+                Card: &payabli.ApplicationDataPayInServicesCard{
+                    AcceptAmex: payabli.Bool(
                         true,
                     ),
-                    SignedDocumentReference: sdkgo.String(
-                        "https://example.com/signed-document.pdf",
+                    AcceptDiscover: payabli.Bool(
+                        true,
                     ),
-                    AttestationDate: sdkgo.String(
-                        "04/20/2025",
+                    AcceptMastercard: payabli.Bool(
+                        true,
                     ),
-                    SignDate: sdkgo.String(
-                        "04/20/2025",
-                    ),
-                    AdditionalData: sdkgo.String(
-                        `{"deviceId":"499585-389fj484-3jcj8hj3","session":"fifji4-fiu443-fn4843","timeWithCompany":"6 Years"}`,
+                    AcceptVisa: payabli.Bool(
+                        true,
                     ),
                 },
-                Startdate: sdkgo.String(
-                    "01/01/1990",
-                ),
-                TaxFillName: sdkgo.String(
-                    "Sunshine LLC",
-                ),
-                TemplateId: sdkgo.Int64(
-                    22,
-                ),
-                Ticketamt: sdkgo.Float64(
-                    1000,
-                ),
-                Website: sdkgo.String(
-                    "www.example.com",
-                ),
-                WhenCharged: sdkgo.WhenchargedWhenServiceProvided,
-                WhenDelivered: sdkgo.WhendeliveredOver30Days,
-                WhenProvided: sdkgo.WhenprovidedThirtyDaysOrLess,
-                WhenRefunded: sdkgo.WhenrefundedThirtyDaysOrLess,
             },
+            AnnualRevenue: payabli.Float64(
+                1000,
+            ),
+            AverageBillSize: payabli.String(
+                "500",
+            ),
+            AverageMonthlyBill: payabli.String(
+                "5650",
+            ),
+            Avgmonthly: payabli.Float64(
+                1000,
+            ),
+            Baddress: payabli.String(
+                "123 Walnut Street",
+            ),
+            Baddress1: payabli.String(
+                "Suite 103",
+            ),
+            BankData: &payabli.ApplicationDataPayInBankData{},
+            Bcity: payabli.String(
+                "New Vegas",
+            ),
+            Bcountry: payabli.String(
+                "US",
+            ),
+            Binperson: payabli.Int(
+                60,
+            ),
+            Binphone: payabli.Int(
+                20,
+            ),
+            Binweb: payabli.Int(
+                20,
+            ),
+            Bstate: payabli.String(
+                "FL",
+            ),
+            Bsummary: payabli.String(
+                "Brick and mortar store that sells office supplies",
+            ),
+            Btype: payabli.OwnTypeLimitedLiabilityCompany.Ptr(),
+            Bzip: payabli.String(
+                "33000",
+            ),
+            Contacts: []*payabli.ApplicationDataPayInContactsItem{
+                &payabli.ApplicationDataPayInContactsItem{
+                    ContactEmail: payabli.String(
+                        "herman@hermanscoatings.com",
+                    ),
+                    ContactName: payabli.String(
+                        "Herman Martinez",
+                    ),
+                    ContactPhone: payabli.String(
+                        "3055550000",
+                    ),
+                    ContactTitle: payabli.String(
+                        "Owner",
+                    ),
+                },
+            },
+            CreditLimit: payabli.String(
+                "creditLimit",
+            ),
+            DbaName: payabli.String(
+                "Sunshine Gutters",
+            ),
+            Ein: payabli.String(
+                "123456789",
+            ),
+            Faxnumber: payabli.String(
+                "1234567890",
+            ),
+            Highticketamt: payabli.Float64(
+                1000,
+            ),
+            LegalName: payabli.String(
+                "Sunshine Services, LLC",
+            ),
+            License: payabli.String(
+                "2222222FFG",
+            ),
+            Licstate: payabli.String(
+                "CA",
+            ),
+            Maddress: payabli.String(
+                "123 Walnut Street",
+            ),
+            Maddress1: payabli.String(
+                "STE 900",
+            ),
+            Mcc: payabli.String(
+                "7777",
+            ),
+            Mcity: payabli.String(
+                "Johnson City",
+            ),
+            Mcountry: payabli.String(
+                "US",
+            ),
+            Mstate: payabli.String(
+                "TN",
+            ),
+            Mzip: payabli.String(
+                "37615",
+            ),
+            OrgId: payabli.Int64(
+                123,
+            ),
+            Ownership: []*payabli.ApplicationDataPayInOwnershipItem{
+                &payabli.ApplicationDataPayInOwnershipItem{
+                    Oaddress: payabli.String(
+                        "33 North St",
+                    ),
+                    Ocity: payabli.String(
+                        "Any City",
+                    ),
+                    Ocountry: payabli.String(
+                        "US",
+                    ),
+                    Odriverstate: payabli.String(
+                        "CA",
+                    ),
+                    Ostate: payabli.String(
+                        "CA",
+                    ),
+                    Ownerdob: payabli.String(
+                        "01/01/1990",
+                    ),
+                    Ownerdriver: payabli.String(
+                        "CA6677778",
+                    ),
+                    Owneremail: payabli.String(
+                        "test@email.com",
+                    ),
+                    Ownername: payabli.String(
+                        "John Smith",
+                    ),
+                    Ownerpercent: payabli.Int(
+                        100,
+                    ),
+                    Ownerphone1: payabli.String(
+                        "555888111",
+                    ),
+                    Ownerphone2: payabli.String(
+                        "555888111",
+                    ),
+                    Ownerssn: payabli.String(
+                        "123456789",
+                    ),
+                    Ownertitle: payabli.String(
+                        "CEO",
+                    ),
+                    Ozip: payabli.String(
+                        "55555",
+                    ),
+                },
+            },
+            Phonenumber: "1234567890",
+            ProcessingRegion: "US",
+            RecipientEmail: payabli.String(
+                "josephray@example.com",
+            ),
+            RecipientEmailNotification: payabli.Bool(
+                true,
+            ),
+            Resumable: payabli.Bool(
+                true,
+            ),
+            Signer: &payabli.SignerDataRequest{
+                Address: payabli.String(
+                    "33 North St",
+                ),
+                Address1: payabli.String(
+                    "STE 900",
+                ),
+                City: payabli.String(
+                    "Bristol",
+                ),
+                Country: payabli.String(
+                    "US",
+                ),
+                Dob: payabli.String(
+                    "01/01/1976",
+                ),
+                Email: payabli.String(
+                    "test@email.com",
+                ),
+                Name: payabli.String(
+                    "John Smith",
+                ),
+                Phone: payabli.String(
+                    "555888111",
+                ),
+                Ssn: payabli.String(
+                    "123456789",
+                ),
+                State: payabli.String(
+                    "TN",
+                ),
+                Zip: payabli.String(
+                    "55555",
+                ),
+                PciAttestation: payabli.Bool(
+                    true,
+                ),
+                SignedDocumentReference: payabli.String(
+                    "https://example.com/signed-document.pdf",
+                ),
+                AttestationDate: payabli.String(
+                    "04/20/2025",
+                ),
+                SignDate: payabli.String(
+                    "04/20/2025",
+                ),
+                AdditionalData: payabli.String(
+                    `{"deviceId":"499585-389fj484-3jcj8hj3","session":"fifji4-fiu443-fn4843","timeWithCompany":"6 Years"}`,
+                ),
+            },
+            Startdate: payabli.String(
+                "01/01/1990",
+            ),
+            TaxFillName: payabli.String(
+                "Sunshine LLC",
+            ),
+            TemplateId: payabli.Int64(
+                22,
+            ),
+            Ticketamt: payabli.Float64(
+                1000,
+            ),
+            Website: payabli.String(
+                "www.example.com",
+            ),
+            WhenCharged: payabli.WhenchargedWhenServiceProvided,
+            WhenDelivered: payabli.WhendeliveredOver30Days,
+            WhenProvided: payabli.WhenprovidedThirtyDaysOrLess,
+            WhenRefunded: payabli.WhenrefundedThirtyDaysOrLess,
         },
+    }
+client.Boarding.AddApplication(
+        context.TODO(),
+        request,
     )
 }
 ```
@@ -1393,7 +1403,7 @@ client.Boarding.AddApplication(
 <dl>
 <dd>
 
-**request:** `*sdkgo.AddApplicationRequest` 
+**request:** `*payabli.AddApplicationRequest` 
     
 </dd>
 </dl>
@@ -1405,7 +1415,7 @@ client.Boarding.AddApplication(
 </dl>
 </details>
 
-<details><summary><code>client.Boarding.DeleteApplication(AppId) -> *sdkgo.PayabliApiResponse00Responsedatanonobject</code></summary>
+<details><summary><code>client.Boarding.DeleteApplication(AppId) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
 <dl>
 <dd>
 
@@ -1463,7 +1473,7 @@ client.Boarding.DeleteApplication(
 </dl>
 </details>
 
-<details><summary><code>client.Boarding.GetApplication(AppId) -> *sdkgo.ApplicationDetailsRecord</code></summary>
+<details><summary><code>client.Boarding.GetApplication(AppId) -> *payabli.ApplicationDetailsRecord</code></summary>
 <dl>
 <dd>
 
@@ -1521,7 +1531,7 @@ client.Boarding.GetApplication(
 </dl>
 </details>
 
-<details><summary><code>client.Boarding.GetApplicationByAuth(XId, request) -> *sdkgo.ApplicationQueryRecord</code></summary>
+<details><summary><code>client.Boarding.GetApplicationByAuth(XId, request) -> *payabli.ApplicationQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -1548,17 +1558,18 @@ Gets a boarding application by authentication information. This endpoint require
 <dd>
 
 ```go
+request := &payabli.RequestAppByAuth{
+        Email: payabli.String(
+            "admin@email.com",
+        ),
+        ReferenceId: payabli.String(
+            "n6UCd1f1ygG7",
+        ),
+    }
 client.Boarding.GetApplicationByAuth(
         context.TODO(),
         "17E",
-        &sdkgo.RequestAppByAuth{
-            Email: sdkgo.String(
-                "admin@email.com",
-            ),
-            ReferenceId: sdkgo.String(
-                "n6UCd1f1ygG7",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -1583,7 +1594,7 @@ client.Boarding.GetApplicationByAuth(
 <dl>
 <dd>
 
-**email:** `*sdkgo.Email` — The email address the applicant used to save the application.
+**email:** `*payabli.Email` — The email address the applicant used to save the application.
     
 </dd>
 </dl>
@@ -1603,7 +1614,7 @@ client.Boarding.GetApplicationByAuth(
 </dl>
 </details>
 
-<details><summary><code>client.Boarding.GetByIdLinkApplication(BoardingLinkId) -> *sdkgo.BoardingLinkQueryRecord</code></summary>
+<details><summary><code>client.Boarding.GetByIdLinkApplication(BoardingLinkId) -> *payabli.BoardingLinkQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -1661,7 +1672,7 @@ client.Boarding.GetByIdLinkApplication(
 </dl>
 </details>
 
-<details><summary><code>client.Boarding.GetByTemplateIdLinkApplication(TemplateId) -> *sdkgo.BoardingLinkQueryRecord</code></summary>
+<details><summary><code>client.Boarding.GetByTemplateIdLinkApplication(TemplateId) -> *payabli.BoardingLinkQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -1719,7 +1730,7 @@ client.Boarding.GetByTemplateIdLinkApplication(
 </dl>
 </details>
 
-<details><summary><code>client.Boarding.GetExternalApplication(AppId, Mail2) -> *sdkgo.PayabliApiResponse00</code></summary>
+<details><summary><code>client.Boarding.GetExternalApplication(AppId, Mail2) -> *payabli.PayabliApiResponse00</code></summary>
 <dl>
 <dd>
 
@@ -1746,11 +1757,12 @@ Retrieves a link and the verification code used to log into an existing boarding
 <dd>
 
 ```go
+request := &payabli.GetExternalApplicationRequest{}
 client.Boarding.GetExternalApplication(
         context.TODO(),
         352,
         "mail2",
-        &sdkgo.GetExternalApplicationRequest{},
+        request,
     )
 }
 ```
@@ -1795,7 +1807,7 @@ client.Boarding.GetExternalApplication(
 </dl>
 </details>
 
-<details><summary><code>client.Boarding.GetLinkApplication(BoardingLinkReference) -> *sdkgo.BoardingLinkQueryRecord</code></summary>
+<details><summary><code>client.Boarding.GetLinkApplication(BoardingLinkReference) -> *payabli.BoardingLinkQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -1853,7 +1865,7 @@ client.Boarding.GetLinkApplication(
 </dl>
 </details>
 
-<details><summary><code>client.Boarding.ListApplications(OrgId) -> *sdkgo.QueryBoardingAppsListResponse</code></summary>
+<details><summary><code>client.Boarding.ListApplications(OrgId) -> *payabli.QueryBoardingAppsListResponse</code></summary>
 <dl>
 <dd>
 
@@ -1880,20 +1892,21 @@ Returns a list of boarding applications for an organization. Use filters to limi
 <dd>
 
 ```go
+request := &payabli.ListApplicationsRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Boarding.ListApplications(
         context.TODO(),
         123,
-        &sdkgo.ListApplicationsRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -1918,7 +1931,7 @@ client.Boarding.ListApplications(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -1998,7 +2011,7 @@ List of comparison accepted - enclosed between parentheses:
 </dl>
 </details>
 
-<details><summary><code>client.Boarding.ListBoardingLinks(OrgId) -> *sdkgo.QueryBoardingLinksResponse</code></summary>
+<details><summary><code>client.Boarding.ListBoardingLinks(OrgId) -> *payabli.QueryBoardingLinksResponse</code></summary>
 <dl>
 <dd>
 
@@ -2025,20 +2038,21 @@ Return a list of boarding links for an organization. Use filters to limit result
 <dd>
 
 ```go
+request := &payabli.ListBoardingLinksRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Boarding.ListBoardingLinks(
         context.TODO(),
         123,
-        &sdkgo.ListBoardingLinksRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -2131,7 +2145,7 @@ Example: templateName(ct)=hoa return all records with template title containing 
 </dl>
 </details>
 
-<details><summary><code>client.Boarding.UpdateApplication(AppId, request) -> *sdkgo.PayabliApiResponse00Responsedatanonobject</code></summary>
+<details><summary><code>client.Boarding.UpdateApplication(AppId, request) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
 <dl>
 <dd>
 
@@ -2158,10 +2172,11 @@ Updates a boarding application by ID. This endpoint requires an application API 
 <dd>
 
 ```go
+request := &payabli.ApplicationData{}
 client.Boarding.UpdateApplication(
         context.TODO(),
         352,
-        &sdkgo.ApplicationData{},
+        request,
     )
 }
 ```
@@ -2186,7 +2201,7 @@ client.Boarding.UpdateApplication(
 <dl>
 <dd>
 
-**request:** `*sdkgo.ApplicationData` 
+**request:** `*payabli.ApplicationData` 
     
 </dd>
 </dl>
@@ -2199,7 +2214,7 @@ client.Boarding.UpdateApplication(
 </details>
 
 ## ChargeBacks
-<details><summary><code>client.ChargeBacks.AddResponse(Id, request) -> *sdkgo.AddResponseResponse</code></summary>
+<details><summary><code>client.ChargeBacks.AddResponse(Id, request) -> *payabli.AddResponseResponse</code></summary>
 <dl>
 <dd>
 
@@ -2226,14 +2241,15 @@ Add a response to a chargeback or ACH return.
 <dd>
 
 ```go
+request := &payabli.ResponseChargeBack{
+        IdempotencyKey: payabli.String(
+            "6B29FC40-CA47-1067-B31D-00DD010662DA",
+        ),
+    }
 client.ChargeBacks.AddResponse(
         context.TODO(),
         1000000,
-        &sdkgo.ResponseChargeBack{
-            IdempotencyKey: sdkgo.String(
-                "6B29FC40-CA47-1067-B31D-00DD010662DA",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -2258,7 +2274,7 @@ client.ChargeBacks.AddResponse(
 <dl>
 <dd>
 
-**idempotencyKey:** `*sdkgo.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` 
     
 </dd>
 </dl>
@@ -2266,7 +2282,7 @@ client.ChargeBacks.AddResponse(
 <dl>
 <dd>
 
-**attachments:** `*sdkgo.Attachments` — Array of attached files to response.
+**attachments:** `*payabli.Attachments` — Array of attached files to response.
     
 </dd>
 </dl>
@@ -2274,7 +2290,7 @@ client.ChargeBacks.AddResponse(
 <dl>
 <dd>
 
-**contactEmail:** `*sdkgo.Email` — Email of response submitter.
+**contactEmail:** `*payabli.Email` — Email of response submitter.
     
 </dd>
 </dl>
@@ -2302,7 +2318,7 @@ client.ChargeBacks.AddResponse(
 </dl>
 </details>
 
-<details><summary><code>client.ChargeBacks.GetChargeback(Id) -> *sdkgo.ChargebackQueryRecords</code></summary>
+<details><summary><code>client.ChargeBacks.GetChargeback(Id) -> *payabli.ChargebackQueryRecords</code></summary>
 <dl>
 <dd>
 
@@ -2414,7 +2430,7 @@ client.ChargeBacks.GetChargebackAttachment(
 </details>
 
 ## CheckCapture
-<details><summary><code>client.CheckCapture.CheckProcessing(request) -> *sdkgo.CheckCaptureResponse</code></summary>
+<details><summary><code>client.CheckCapture.CheckProcessing(request) -> *payabli.CheckCaptureResponse</code></summary>
 <dl>
 <dd>
 
@@ -2441,14 +2457,15 @@ Captures a check for Remote Deposit Capture (RDC) using the provided check image
 <dd>
 
 ```go
+request := &payabli.CheckCaptureRequestBody{
+        EntryPoint: "47abcfea12",
+        FrontImage: "/9j/4AAQSkZJRgABAQEASABIAAD...",
+        RearImage: "/9j/4AAQSkZJRgABAQEASABIAAD...",
+        CheckAmount: 12550,
+    }
 client.CheckCapture.CheckProcessing(
         context.TODO(),
-        &sdkgo.CheckCaptureRequestBody{
-            EntryPoint: "47abcfea12",
-            FrontImage: "/9j/4AAQSkZJRgABAQEASABIAAD...",
-            RearImage: "/9j/4AAQSkZJRgABAQEASABIAAD...",
-            CheckAmount: 12550,
-        },
+        request,
     )
 }
 ```
@@ -2465,7 +2482,7 @@ client.CheckCapture.CheckProcessing(
 <dl>
 <dd>
 
-**entryPoint:** `sdkgo.Entry` 
+**entryPoint:** `payabli.Entry` 
     
 </dd>
 </dl>
@@ -2502,7 +2519,7 @@ client.CheckCapture.CheckProcessing(
 </details>
 
 ## Cloud
-<details><summary><code>client.Cloud.AddDevice(Entry, request) -> *sdkgo.AddDeviceResponse</code></summary>
+<details><summary><code>client.Cloud.AddDevice(Entry, request) -> *payabli.AddDeviceResponse</code></summary>
 <dl>
 <dd>
 
@@ -2529,17 +2546,18 @@ Register a cloud device to an entrypoint. See [Devices Quickstart](/developers/d
 <dd>
 
 ```go
+request := &payabli.DeviceEntry{
+        RegistrationCode: payabli.String(
+            "YS7DS5",
+        ),
+        Description: payabli.String(
+            "Front Desk POS",
+        ),
+    }
 client.Cloud.AddDevice(
         context.TODO(),
         "8cfec329267",
-        &sdkgo.DeviceEntry{
-            RegistrationCode: sdkgo.String(
-                "YS7DS5",
-            ),
-            Description: sdkgo.String(
-                "Front Desk POS",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -2564,7 +2582,7 @@ client.Cloud.AddDevice(
 <dl>
 <dd>
 
-**idempotencyKey:** `*sdkgo.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` 
     
 </dd>
 </dl>
@@ -2598,7 +2616,7 @@ The device registration code or serial number, depending on the model.
 </dl>
 </details>
 
-<details><summary><code>client.Cloud.HistoryDevice(DeviceId, Entry) -> *sdkgo.CloudQueryApiResponse</code></summary>
+<details><summary><code>client.Cloud.HistoryDevice(DeviceId, Entry) -> *payabli.CloudQueryApiResponse</code></summary>
 <dl>
 <dd>
 
@@ -2665,7 +2683,7 @@ client.Cloud.HistoryDevice(
 </dl>
 </details>
 
-<details><summary><code>client.Cloud.ListDevice(Entry) -> *sdkgo.CloudQueryApiResponse</code></summary>
+<details><summary><code>client.Cloud.ListDevice(Entry) -> *payabli.CloudQueryApiResponse</code></summary>
 <dl>
 <dd>
 
@@ -2692,10 +2710,11 @@ Get a list of cloud devices registered to an entrypoint.
 <dd>
 
 ```go
+request := &payabli.ListDeviceRequest{}
 client.Cloud.ListDevice(
         context.TODO(),
         "8cfec329267",
-        &sdkgo.ListDeviceRequest{},
+        request,
     )
 }
 ```
@@ -2732,7 +2751,7 @@ client.Cloud.ListDevice(
 </dl>
 </details>
 
-<details><summary><code>client.Cloud.RemoveDevice(DeviceId, Entry) -> *sdkgo.RemoveDeviceResponse</code></summary>
+<details><summary><code>client.Cloud.RemoveDevice(DeviceId, Entry) -> *payabli.RemoveDeviceResponse</code></summary>
 <dl>
 <dd>
 
@@ -2800,7 +2819,7 @@ client.Cloud.RemoveDevice(
 </details>
 
 ## Customer
-<details><summary><code>client.Customer.AddCustomer(Entry, request) -> *sdkgo.PayabliApiResponseCustomerQuery</code></summary>
+<details><summary><code>client.Customer.AddCustomer(Entry, request) -> *payabli.PayabliApiResponseCustomerQuery</code></summary>
 <dl>
 <dd>
 
@@ -2828,48 +2847,49 @@ If you don't include an identifier, the record is rejected.
 <dd>
 
 ```go
+request := &payabli.AddCustomerRequest{
+        Body: &payabli.CustomerData{
+            CustomerNumber: payabli.String(
+                "12356ACB",
+            ),
+            Firstname: payabli.String(
+                "Irene",
+            ),
+            Lastname: payabli.String(
+                "Canizales",
+            ),
+            Address1: payabli.String(
+                "123 Bishop's Trail",
+            ),
+            City: payabli.String(
+                "Mountain City",
+            ),
+            State: payabli.String(
+                "TN",
+            ),
+            Zip: payabli.String(
+                "37612",
+            ),
+            Country: payabli.String(
+                "US",
+            ),
+            Email: payabli.String(
+                "irene@canizalesconcrete.com",
+            ),
+            IdentifierFields: []*string{
+                payabli.String(
+                    "email",
+                ),
+            },
+            TimeZone: payabli.Int(
+                -5,
+            ),
+        },
+    }
 client.Customer.AddCustomer(
         context.TODO(),
         "8cfec329267",
-        &sdkgo.AddCustomerRequest{
-            Body: &sdkgo.CustomerData{
-                CustomerNumber: sdkgo.String(
-                    "12356ACB",
-                ),
-                Firstname: sdkgo.String(
-                    "Irene",
-                ),
-                Lastname: sdkgo.String(
-                    "Canizales",
-                ),
-                Address1: sdkgo.String(
-                    "123 Bishop's Trail",
-                ),
-                City: sdkgo.String(
-                    "Mountain City",
-                ),
-                State: sdkgo.String(
-                    "TN",
-                ),
-                Zip: sdkgo.String(
-                    "37612",
-                ),
-                Country: sdkgo.String(
-                    "US",
-                ),
-                Email: sdkgo.String(
-                    "irene@canizalesconcrete.com",
-                ),
-                IdentifierFields: []*string{
-                    sdkgo.String(
-                        "email",
-                    ),
-                },
-                TimeZone: sdkgo.Int(
-                    -5,
-                ),
-            },
-        },
+        request,
     )
 }
 ```
@@ -2886,7 +2906,7 @@ client.Customer.AddCustomer(
 <dl>
 <dd>
 
-**entry:** `sdkgo.Entrypointfield` 
+**entry:** `payabli.Entrypointfield` 
     
 </dd>
 </dl>
@@ -2910,7 +2930,7 @@ client.Customer.AddCustomer(
 <dl>
 <dd>
 
-**idempotencyKey:** `*sdkgo.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` 
     
 </dd>
 </dl>
@@ -2918,7 +2938,7 @@ client.Customer.AddCustomer(
 <dl>
 <dd>
 
-**request:** `*sdkgo.CustomerData` 
+**request:** `*payabli.CustomerData` 
     
 </dd>
 </dl>
@@ -2930,7 +2950,7 @@ client.Customer.AddCustomer(
 </dl>
 </details>
 
-<details><summary><code>client.Customer.DeleteCustomer(CustomerId) -> *sdkgo.PayabliApiResponse00Responsedatanonobject</code></summary>
+<details><summary><code>client.Customer.DeleteCustomer(CustomerId) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
 <dl>
 <dd>
 
@@ -2988,7 +3008,7 @@ client.Customer.DeleteCustomer(
 </dl>
 </details>
 
-<details><summary><code>client.Customer.GetCustomer(CustomerId) -> *sdkgo.CustomerQueryRecords</code></summary>
+<details><summary><code>client.Customer.GetCustomer(CustomerId) -> *payabli.CustomerQueryRecords</code></summary>
 <dl>
 <dd>
 
@@ -3046,7 +3066,7 @@ client.Customer.GetCustomer(
 </dl>
 </details>
 
-<details><summary><code>client.Customer.LinkCustomerTransaction(CustomerId, TransId) -> *sdkgo.PayabliApiResponse00Responsedatanonobject</code></summary>
+<details><summary><code>client.Customer.LinkCustomerTransaction(CustomerId, TransId) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
 <dl>
 <dd>
 
@@ -3113,7 +3133,7 @@ client.Customer.LinkCustomerTransaction(
 </dl>
 </details>
 
-<details><summary><code>client.Customer.RequestConsent(CustomerId) -> *sdkgo.PayabliApiResponse00Responsedatanonobject</code></summary>
+<details><summary><code>client.Customer.RequestConsent(CustomerId) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
 <dl>
 <dd>
 
@@ -3171,7 +3191,7 @@ client.Customer.RequestConsent(
 </dl>
 </details>
 
-<details><summary><code>client.Customer.UpdateCustomer(CustomerId, request) -> *sdkgo.PayabliApiResponse00Responsedatanonobject</code></summary>
+<details><summary><code>client.Customer.UpdateCustomer(CustomerId, request) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
 <dl>
 <dd>
 
@@ -3198,32 +3218,33 @@ Update a customer record. Include only the fields you want to change.
 <dd>
 
 ```go
+request := &payabli.CustomerData{
+        Firstname: payabli.String(
+            "Irene",
+        ),
+        Lastname: payabli.String(
+            "Canizales",
+        ),
+        Address1: payabli.String(
+            "145 Bishop's Trail",
+        ),
+        City: payabli.String(
+            "Mountain City",
+        ),
+        State: payabli.String(
+            "TN",
+        ),
+        Zip: payabli.String(
+            "37612",
+        ),
+        Country: payabli.String(
+            "US",
+        ),
+    }
 client.Customer.UpdateCustomer(
         context.TODO(),
         998,
-        &sdkgo.CustomerData{
-            Firstname: sdkgo.String(
-                "Irene",
-            ),
-            Lastname: sdkgo.String(
-                "Canizales",
-            ),
-            Address1: sdkgo.String(
-                "145 Bishop's Trail",
-            ),
-            City: sdkgo.String(
-                "Mountain City",
-            ),
-            State: sdkgo.String(
-                "TN",
-            ),
-            Zip: sdkgo.String(
-                "37612",
-            ),
-            Country: sdkgo.String(
-                "US",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -3248,7 +3269,7 @@ client.Customer.UpdateCustomer(
 <dl>
 <dd>
 
-**request:** `*sdkgo.CustomerData` 
+**request:** `*payabli.CustomerData` 
     
 </dd>
 </dl>
@@ -3261,7 +3282,7 @@ client.Customer.UpdateCustomer(
 </details>
 
 ## Export
-<details><summary><code>client.Export.ExportApplications(Format, OrgId) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportApplications(Format, OrgId) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -3288,21 +3309,22 @@ Export a list of boarding applications for an organization. Use filters to limit
 <dd>
 
 ```go
+request := &payabli.ExportApplicationsRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportApplications(
         context.TODO(),
-        sdkgo.ExportFormat1Csv,
+        payabli.ExportFormat1Csv.Ptr(),
         123,
-        &sdkgo.ExportApplicationsRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        request,
     )
 }
 ```
@@ -3319,7 +3341,7 @@ client.Export.ExportApplications(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -3424,7 +3446,7 @@ Example: `dbaname(ct)=hoa` returns all records with a `dbaname` containing "hoa"
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportBatchDetails(Entry, Format) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportBatchDetails(Entry, Format) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -3437,21 +3459,22 @@ Example: `dbaname(ct)=hoa` returns all records with a `dbaname` containing "hoa"
 <dd>
 
 ```go
+request := &payabli.ExportBatchDetailsRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportBatchDetails(
         context.TODO(),
         "8cfec329267",
-        sdkgo.ExportFormat1Csv,
-        &sdkgo.ExportBatchDetailsRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        payabli.ExportFormat1Csv.Ptr(),
+        request,
     )
 }
 ```
@@ -3476,7 +3499,7 @@ client.Export.ExportBatchDetails(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -3584,7 +3607,7 @@ Example: `amount(gt)=20` return all records with amount greater than 20.00
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportBatchDetailsOrg(Format, OrgId) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportBatchDetailsOrg(Format, OrgId) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -3597,21 +3620,22 @@ Example: `amount(gt)=20` return all records with amount greater than 20.00
 <dd>
 
 ```go
+request := &payabli.ExportBatchDetailsOrgRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportBatchDetailsOrg(
         context.TODO(),
-        sdkgo.ExportFormat1Csv,
+        payabli.ExportFormat1Csv.Ptr(),
         123,
-        &sdkgo.ExportBatchDetailsOrgRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        request,
     )
 }
 ```
@@ -3628,7 +3652,7 @@ client.Export.ExportBatchDetailsOrg(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -3744,7 +3768,7 @@ Example: `amount(gt)=20` return all records with amount greater than 20.00
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportBatches(Entry, Format) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportBatches(Entry, Format) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -3771,21 +3795,22 @@ Export a list of batches for an entrypoint. Use filters to limit results.
 <dd>
 
 ```go
+request := &payabli.ExportBatchesRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportBatches(
         context.TODO(),
         "8cfec329267",
-        sdkgo.ExportFormat1Csv,
-        &sdkgo.ExportBatchesRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        payabli.ExportFormat1Csv.Ptr(),
+        request,
     )
 }
 ```
@@ -3810,7 +3835,7 @@ client.Export.ExportBatches(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -3908,7 +3933,7 @@ Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater t
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportBatchesOrg(Format, OrgId) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportBatchesOrg(Format, OrgId) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -3935,21 +3960,22 @@ Export a list of batches for an organization. Use filters to limit results.
 <dd>
 
 ```go
+request := &payabli.ExportBatchesOrgRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportBatchesOrg(
         context.TODO(),
-        sdkgo.ExportFormat1Csv,
+        payabli.ExportFormat1Csv.Ptr(),
         123,
-        &sdkgo.ExportBatchesOrgRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        request,
     )
 }
 ```
@@ -3966,7 +3992,7 @@ client.Export.ExportBatchesOrg(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -4070,7 +4096,7 @@ Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater t
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportBatchesOut(Entry, Format) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportBatchesOut(Entry, Format) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -4097,21 +4123,22 @@ Export a list of money out batches for a paypoint. Use filters to limit results.
 <dd>
 
 ```go
+request := &payabli.ExportBatchesOutRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportBatchesOut(
         context.TODO(),
         "8cfec329267",
-        sdkgo.ExportFormat1Csv,
-        &sdkgo.ExportBatchesOutRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        payabli.ExportFormat1Csv.Ptr(),
+        request,
     )
 }
 ```
@@ -4136,7 +4163,7 @@ client.Export.ExportBatchesOut(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -4214,7 +4241,7 @@ Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater t
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportBatchesOutOrg(Format, OrgId) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportBatchesOutOrg(Format, OrgId) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -4241,21 +4268,22 @@ Export a list of money out batches for an organization. Use filters to limit res
 <dd>
 
 ```go
+request := &payabli.ExportBatchesOutOrgRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportBatchesOutOrg(
         context.TODO(),
-        sdkgo.ExportFormat1Csv,
+        payabli.ExportFormat1Csv.Ptr(),
         123,
-        &sdkgo.ExportBatchesOutOrgRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        request,
     )
 }
 ```
@@ -4272,7 +4300,7 @@ client.Export.ExportBatchesOutOrg(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -4358,7 +4386,7 @@ Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater t
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportBills(Entry, Format) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportBills(Entry, Format) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -4385,21 +4413,22 @@ Export a list of bills for an entrypoint. Use filters to limit results.
 <dd>
 
 ```go
+request := &payabli.ExportBillsRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportBills(
         context.TODO(),
         "8cfec329267",
-        sdkgo.ExportFormat1Csv,
-        &sdkgo.ExportBillsRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        payabli.ExportFormat1Csv.Ptr(),
+        request,
     )
 }
 ```
@@ -4424,7 +4453,7 @@ client.Export.ExportBills(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -4520,7 +4549,7 @@ Example: totalAmount(gt)=20  return all records with totalAmount greater than 20
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportBillsOrg(Format, OrgId) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportBillsOrg(Format, OrgId) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -4547,21 +4576,22 @@ Export a list of bills for an organization. Use filters to limit results.
 <dd>
 
 ```go
+request := &payabli.ExportBillsOrgRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportBillsOrg(
         context.TODO(),
-        sdkgo.ExportFormat1Csv,
+        payabli.ExportFormat1Csv.Ptr(),
         123,
-        &sdkgo.ExportBillsOrgRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        request,
     )
 }
 ```
@@ -4578,7 +4608,7 @@ client.Export.ExportBillsOrg(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -4682,7 +4712,7 @@ Example: totalAmount(gt)=20  return all records with totalAmount greater than 20
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportChargebacks(Entry, Format) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportChargebacks(Entry, Format) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -4709,21 +4739,22 @@ Export a list of chargebacks and ACH returns for an entrypoint. Use filters to l
 <dd>
 
 ```go
+request := &payabli.ExportChargebacksRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportChargebacks(
         context.TODO(),
         "8cfec329267",
-        sdkgo.ExportFormat1Csv,
-        &sdkgo.ExportChargebacksRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        payabli.ExportFormat1Csv.Ptr(),
+        request,
     )
 }
 ```
@@ -4748,7 +4779,7 @@ client.Export.ExportChargebacks(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -4865,7 +4896,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportChargebacksOrg(Format, OrgId) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportChargebacksOrg(Format, OrgId) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -4892,21 +4923,22 @@ Export a list of chargebacks and ACH returns for an organization. Use filters to
 <dd>
 
 ```go
+request := &payabli.ExportChargebacksOrgRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportChargebacksOrg(
         context.TODO(),
-        sdkgo.ExportFormat1Csv,
+        payabli.ExportFormat1Csv.Ptr(),
         123,
-        &sdkgo.ExportChargebacksOrgRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        request,
     )
 }
 ```
@@ -4923,7 +4955,7 @@ client.Export.ExportChargebacksOrg(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -5048,7 +5080,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportCustomers(Entry, Format) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportCustomers(Entry, Format) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -5075,21 +5107,22 @@ Export a list of customers for an entrypoint. Use filters to limit results.
 <dd>
 
 ```go
+request := &payabli.ExportCustomersRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportCustomers(
         context.TODO(),
         "8cfec329267",
-        sdkgo.ExportFormat1Csv,
-        &sdkgo.ExportCustomersRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        payabli.ExportFormat1Csv.Ptr(),
+        request,
     )
 }
 ```
@@ -5114,7 +5147,7 @@ client.Export.ExportCustomers(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -5224,7 +5257,7 @@ balance(gt)=20 return all records with balance greater than 20.00
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportCustomersOrg(Format, OrgId) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportCustomersOrg(Format, OrgId) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -5251,21 +5284,22 @@ Exports a list of customers for an organization. Use filters to limit results.
 <dd>
 
 ```go
+request := &payabli.ExportCustomersOrgRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportCustomersOrg(
         context.TODO(),
-        sdkgo.ExportFormat1Csv,
+        payabli.ExportFormat1Csv.Ptr(),
         123,
-        &sdkgo.ExportCustomersOrgRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        request,
     )
 }
 ```
@@ -5282,7 +5316,7 @@ client.Export.ExportCustomersOrg(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -5400,7 +5434,7 @@ balance(gt)=20 return all records with balance greater than 20.00
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportInvoices(Entry, Format) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportInvoices(Entry, Format) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -5427,21 +5461,22 @@ Export list of invoices for an entrypoint. Use filters to limit results.
 <dd>
 
 ```go
+request := &payabli.ExportInvoicesRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportInvoices(
         context.TODO(),
         "8cfec329267",
-        sdkgo.ExportFormat1Csv,
-        &sdkgo.ExportInvoicesRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        payabli.ExportFormat1Csv.Ptr(),
+        request,
     )
 }
 ```
@@ -5466,7 +5501,7 @@ client.Export.ExportInvoices(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -5586,7 +5621,7 @@ Example: `totalAmount(gt)=20` returns all records with `totalAmount` greater tha
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportInvoicesOrg(Format, OrgId) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportInvoicesOrg(Format, OrgId) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -5613,21 +5648,22 @@ Export a list of invoices for an organization. Use filters to limit results.
 <dd>
 
 ```go
+request := &payabli.ExportInvoicesOrgRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportInvoicesOrg(
         context.TODO(),
-        sdkgo.ExportFormat1Csv,
+        payabli.ExportFormat1Csv.Ptr(),
         123,
-        &sdkgo.ExportInvoicesOrgRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        request,
     )
 }
 ```
@@ -5644,7 +5680,7 @@ client.Export.ExportInvoicesOrg(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -5772,7 +5808,7 @@ Example: totalAmount(gt)=20  return all records with totalAmount greater than 20
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportOrganizations(Format, OrgId) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportOrganizations(Format, OrgId) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -5799,21 +5835,22 @@ Export a list of child organizations (suborganizations) for a parent organizatio
 <dd>
 
 ```go
+request := &payabli.ExportOrganizationsRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportOrganizations(
         context.TODO(),
-        sdkgo.ExportFormat1Csv,
+        payabli.ExportFormat1Csv.Ptr(),
         123,
-        &sdkgo.ExportOrganizationsRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        request,
     )
 }
 ```
@@ -5830,7 +5867,7 @@ client.Export.ExportOrganizations(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -5933,7 +5970,7 @@ Example: name(ct)=hoa  return all records where name contains "hoa"
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportPayout(Entry, Format) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportPayout(Entry, Format) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -5960,21 +5997,22 @@ Export a list of payouts and their statuses for an entrypoint. Use filters to li
 <dd>
 
 ```go
+request := &payabli.ExportPayoutRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportPayout(
         context.TODO(),
         "8cfec329267",
-        sdkgo.ExportFormat1Csv,
-        &sdkgo.ExportPayoutRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        payabli.ExportFormat1Csv.Ptr(),
+        request,
     )
 }
 ```
@@ -5999,7 +6037,7 @@ client.Export.ExportPayout(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -6093,7 +6131,7 @@ Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportPayoutOrg(Format, OrgId) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportPayoutOrg(Format, OrgId) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -6120,21 +6158,22 @@ Export a list of payouts and their details for an organization. Use filters to l
 <dd>
 
 ```go
+request := &payabli.ExportPayoutOrgRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportPayoutOrg(
         context.TODO(),
-        sdkgo.ExportFormat1Csv,
+        payabli.ExportFormat1Csv.Ptr(),
         123,
-        &sdkgo.ExportPayoutOrgRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        request,
     )
 }
 ```
@@ -6151,7 +6190,7 @@ client.Export.ExportPayoutOrg(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -6253,7 +6292,7 @@ Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportPaypoints(Format, OrgId) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportPaypoints(Format, OrgId) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -6280,21 +6319,22 @@ Export a list of paypoints in an organization. Use filters to limit results.
 <dd>
 
 ```go
+request := &payabli.ExportPaypointsRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportPaypoints(
         context.TODO(),
-        sdkgo.ExportFormat1Csv,
+        payabli.ExportFormat1Csv.Ptr(),
         123,
-        &sdkgo.ExportPaypointsRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        request,
     )
 }
 ```
@@ -6311,7 +6351,7 @@ client.Export.ExportPaypoints(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -6415,7 +6455,7 @@ Example: `dbaname(ct)=hoa` returns all records with `dbaname` containing "hoa"
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportSettlements(Entry, Format) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportSettlements(Entry, Format) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -6442,21 +6482,22 @@ Export a list of settled transactions for an entrypoint. Use filters to limit re
 <dd>
 
 ```go
+request := &payabli.ExportSettlementsRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportSettlements(
         context.TODO(),
         "8cfec329267",
-        sdkgo.ExportFormat1Csv,
-        &sdkgo.ExportSettlementsRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        payabli.ExportFormat1Csv.Ptr(),
+        request,
     )
 }
 ```
@@ -6481,7 +6522,7 @@ client.Export.ExportSettlements(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -6597,7 +6638,7 @@ Example: `settledAmount(gt)=20` returns all records with a `settledAmount` great
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportSettlementsOrg(Format, OrgId) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportSettlementsOrg(Format, OrgId) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -6624,21 +6665,22 @@ Export a list of settled transactions for an organization. Use filters to limit 
 <dd>
 
 ```go
+request := &payabli.ExportSettlementsOrgRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportSettlementsOrg(
         context.TODO(),
-        sdkgo.ExportFormat1Csv,
+        payabli.ExportFormat1Csv.Ptr(),
         123,
-        &sdkgo.ExportSettlementsOrgRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        request,
     )
 }
 ```
@@ -6655,7 +6697,7 @@ client.Export.ExportSettlementsOrg(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -6779,7 +6821,7 @@ Example: `settledAmount(gt)=20` returns all records with a `settledAmount` great
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportSubscriptions(Entry, Format) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportSubscriptions(Entry, Format) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -6806,21 +6848,22 @@ Export a list of subscriptions for an entrypoint. Use filters to limit results.
 <dd>
 
 ```go
+request := &payabli.ExportSubscriptionsRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportSubscriptions(
         context.TODO(),
         "8cfec329267",
-        sdkgo.ExportFormat1Csv,
-        &sdkgo.ExportSubscriptionsRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        payabli.ExportFormat1Csv.Ptr(),
+        request,
     )
 }
 ```
@@ -6845,7 +6888,7 @@ client.Export.ExportSubscriptions(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -6963,7 +7006,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportSubscriptionsOrg(Format, OrgId) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportSubscriptionsOrg(Format, OrgId) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -6990,21 +7033,22 @@ Export a list of subscriptions for an organization. Use filters to limit results
 <dd>
 
 ```go
+request := &payabli.ExportSubscriptionsOrgRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportSubscriptionsOrg(
         context.TODO(),
-        sdkgo.ExportFormat1Csv,
+        payabli.ExportFormat1Csv.Ptr(),
         123,
-        &sdkgo.ExportSubscriptionsOrgRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        request,
     )
 }
 ```
@@ -7021,7 +7065,7 @@ client.Export.ExportSubscriptionsOrg(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -7147,7 +7191,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportTransactions(Entry, Format) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportTransactions(Entry, Format) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -7174,21 +7218,22 @@ Export a list of transactions for an entrypoint in a file in XLXS or CSV format.
 <dd>
 
 ```go
+request := &payabli.ExportTransactionsRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportTransactions(
         context.TODO(),
         "8cfec329267",
-        sdkgo.ExportFormat1Csv,
-        &sdkgo.ExportTransactionsRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        payabli.ExportFormat1Csv.Ptr(),
+        request,
     )
 }
 ```
@@ -7213,7 +7258,7 @@ client.Export.ExportTransactions(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -7335,7 +7380,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportTransactionsOrg(Format, OrgId) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportTransactionsOrg(Format, OrgId) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -7362,21 +7407,22 @@ Export a list of transactions for an org in a file in XLSX or CSV format. Use fi
 <dd>
 
 ```go
+request := &payabli.ExportTransactionsOrgRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportTransactionsOrg(
         context.TODO(),
-        sdkgo.ExportFormat1Csv,
+        payabli.ExportFormat1Csv.Ptr(),
         123,
-        &sdkgo.ExportTransactionsOrgRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        request,
     )
 }
 ```
@@ -7393,7 +7439,7 @@ client.Export.ExportTransactionsOrg(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -7523,7 +7569,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportTransferDetails(Entry, Format, TransferId) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportTransferDetails(Entry, Format, TransferId) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -7550,25 +7596,26 @@ Export a list of transfer details for an entrypoint. Use filters to limit result
 <dd>
 
 ```go
+request := &payabli.ExportTransferDetailsRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Export.ExportTransferDetails(
         context.TODO(),
         "8cfec329267",
-        sdkgo.ExportFormat1Csv,
+        payabli.ExportFormat1Csv.Ptr(),
         1000000,
-        &sdkgo.ExportTransferDetailsRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -7593,7 +7640,7 @@ client.Export.ExportTransferDetails(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -7695,7 +7742,7 @@ List of field names accepted:
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportTransfers(Entry) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportTransfers(Entry) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -7722,23 +7769,24 @@ Get a list of transfers for an entrypoint. Use filters to limit results.
 <dd>
 
 ```go
+request := &payabli.ExportTransfersRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Export.ExportTransfers(
         context.TODO(),
         "8cfec329267",
-        &sdkgo.ExportTransfersRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -7850,7 +7898,7 @@ List of field names accepted:
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportVendors(Entry, Format) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportVendors(Entry, Format) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -7877,21 +7925,22 @@ Export a list of vendors for an entrypoint. Use filters to limit results.
 <dd>
 
 ```go
+request := &payabli.ExportVendorsRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportVendors(
         context.TODO(),
         "8cfec329267",
-        sdkgo.ExportFormat1Csv,
-        &sdkgo.ExportVendorsRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        payabli.ExportFormat1Csv.Ptr(),
+        request,
     )
 }
 ```
@@ -7916,7 +7965,7 @@ client.Export.ExportVendors(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -8016,7 +8065,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportVendorsOrg(Format, OrgId) -> sdkgo.File</code></summary>
+<details><summary><code>client.Export.ExportVendorsOrg(Format, OrgId) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -8043,21 +8092,22 @@ Export a list of vendors for an organization. Use filters to limit results.
 <dd>
 
 ```go
+request := &payabli.ExportVendorsOrgRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
 client.Export.ExportVendorsOrg(
         context.TODO(),
-        sdkgo.ExportFormat1Csv,
+        payabli.ExportFormat1Csv.Ptr(),
         123,
-        &sdkgo.ExportVendorsOrgRequest{
-            ColumnsExport: sdkgo.String(
-                "BatchDate:Batch_Date,PaypointName:Legal_name",
-            ),
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                1000,
-            ),
-        },
+        request,
     )
 }
 ```
@@ -8074,7 +8124,7 @@ client.Export.ExportVendorsOrg(
 <dl>
 <dd>
 
-**format:** `*sdkgo.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -8183,7 +8233,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </details>
 
 ## HostedPaymentPages
-<details><summary><code>client.HostedPaymentPages.LoadPage(Entry, Subdomain) -> *sdkgo.PayabliPages</code></summary>
+<details><summary><code>client.HostedPaymentPages.LoadPage(Entry, Subdomain) -> *payabli.PayabliPages</code></summary>
 <dl>
 <dd>
 
@@ -8250,7 +8300,7 @@ client.HostedPaymentPages.LoadPage(
 </dl>
 </details>
 
-<details><summary><code>client.HostedPaymentPages.NewPage(Entry, request) -> *sdkgo.PayabliApiResponse00Responsedatanonobject</code></summary>
+<details><summary><code>client.HostedPaymentPages.NewPage(Entry, request) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
 <dl>
 <dd>
 
@@ -8279,15 +8329,16 @@ Note: this operation doesn't create a new paypoint, just a payment page for an e
 <dd>
 
 ```go
+request := &payabli.NewPageRequest{
+        IdempotencyKey: payabli.String(
+            "6B29FC40-CA47-1067-B31D-00DD010662DA",
+        ),
+        Body: &payabli.PayabliPages{},
+    }
 client.HostedPaymentPages.NewPage(
         context.TODO(),
         "8cfec329267",
-        &sdkgo.NewPageRequest{
-            IdempotencyKey: sdkgo.String(
-                "6B29FC40-CA47-1067-B31D-00DD010662DA",
-            ),
-            Body: &sdkgo.PayabliPages{},
-        },
+        request,
     )
 }
 ```
@@ -8312,7 +8363,7 @@ client.HostedPaymentPages.NewPage(
 <dl>
 <dd>
 
-**idempotencyKey:** `*sdkgo.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` 
     
 </dd>
 </dl>
@@ -8320,7 +8371,7 @@ client.HostedPaymentPages.NewPage(
 <dl>
 <dd>
 
-**request:** `*sdkgo.PayabliPages` 
+**request:** `*payabli.PayabliPages` 
     
 </dd>
 </dl>
@@ -8332,7 +8383,7 @@ client.HostedPaymentPages.NewPage(
 </dl>
 </details>
 
-<details><summary><code>client.HostedPaymentPages.SavePage(Entry, Subdomain, request) -> *sdkgo.PayabliApiResponse00Responsedatanonobject</code></summary>
+<details><summary><code>client.HostedPaymentPages.SavePage(Entry, Subdomain, request) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
 <dl>
 <dd>
 
@@ -8359,11 +8410,12 @@ Updates a payment page in a paypoint.
 <dd>
 
 ```go
+request := &payabli.PayabliPages{}
 client.HostedPaymentPages.SavePage(
         context.TODO(),
         "8cfec329267",
         "pay-your-fees-1",
-        &sdkgo.PayabliPages{},
+        request,
     )
 }
 ```
@@ -8396,7 +8448,7 @@ client.HostedPaymentPages.SavePage(
 <dl>
 <dd>
 
-**request:** `*sdkgo.PayabliPages` 
+**request:** `*payabli.PayabliPages` 
     
 </dd>
 </dl>
@@ -8409,7 +8461,7 @@ client.HostedPaymentPages.SavePage(
 </details>
 
 ## Import
-<details><summary><code>client.Import.ImportBills(Entry, request) -> *sdkgo.PayabliApiResponseImport</code></summary>
+<details><summary><code>client.Import.ImportBills(Entry, request) -> *payabli.PayabliApiResponseImport</code></summary>
 <dl>
 <dd>
 
@@ -8439,7 +8491,9 @@ Import a list of bills from a CSV file. See the [Import Guide](/developers/devel
 client.Import.ImportBills(
         context.TODO(),
         "8cfec329267",
-        nil,
+        strings.NewReader(
+            "",
+        ),
     )
 }
 ```
@@ -8468,7 +8522,7 @@ client.Import.ImportBills(
 </dl>
 </details>
 
-<details><summary><code>client.Import.ImportCustomer(Entry, request) -> *sdkgo.PayabliApiResponseImport</code></summary>
+<details><summary><code>client.Import.ImportCustomer(Entry, request) -> *payabli.PayabliApiResponseImport</code></summary>
 <dl>
 <dd>
 
@@ -8495,11 +8549,14 @@ Import a list of customers from a CSV file. See the [Import Guide](/developers/d
 <dd>
 
 ```go
+request := &payabli.ImportCustomerRequest{}
 client.Import.ImportCustomer(
         context.TODO(),
         "8cfec329267",
-        nil,
-        &sdkgo.ImportCustomerRequest{},
+        strings.NewReader(
+            "",
+        ),
+        request,
     )
 }
 ```
@@ -8516,7 +8573,7 @@ client.Import.ImportCustomer(
 <dl>
 <dd>
 
-**entry:** `sdkgo.Entrypointfield` 
+**entry:** `payabli.Entrypointfield` 
     
 </dd>
 </dl>
@@ -8536,7 +8593,7 @@ client.Import.ImportCustomer(
 </dl>
 </details>
 
-<details><summary><code>client.Import.ImportVendor(Entry, request) -> *sdkgo.PayabliApiResponseImport</code></summary>
+<details><summary><code>client.Import.ImportVendor(Entry, request) -> *payabli.PayabliApiResponseImport</code></summary>
 <dl>
 <dd>
 
@@ -8566,7 +8623,9 @@ Import a list of vendors from a CSV file. See the [Import Guide](/developers/dev
 client.Import.ImportVendor(
         context.TODO(),
         "8cfec329267",
-        nil,
+        strings.NewReader(
+            "",
+        ),
     )
 }
 ```
@@ -8583,7 +8642,7 @@ client.Import.ImportVendor(
 <dl>
 <dd>
 
-**entry:** `sdkgo.Entrypointfield` 
+**entry:** `payabli.Entrypointfield` 
     
 </dd>
 </dl>
@@ -8596,7 +8655,7 @@ client.Import.ImportVendor(
 </details>
 
 ## Invoice
-<details><summary><code>client.Invoice.AddInvoice(Entry, request) -> *sdkgo.InvoiceResponseWithoutData</code></summary>
+<details><summary><code>client.Invoice.AddInvoice(Entry, request) -> *payabli.InvoiceResponseWithoutData</code></summary>
 <dl>
 <dd>
 
@@ -8623,76 +8682,77 @@ Creates an invoice in an entrypoint.
 <dd>
 
 ```go
+request := &payabli.AddInvoiceRequest{
+        Body: &payabli.InvoiceDataRequest{
+            CustomerData: &payabli.PayorDataRequest{
+                FirstName: payabli.String(
+                    "Tamara",
+                ),
+                LastName: payabli.String(
+                    "Bagratoni",
+                ),
+                CustomerNumber: payabli.String(
+                    "3",
+                ),
+            },
+            InvoiceData: &payabli.BillData{
+                Items: []*payabli.BillItem{
+                    &payabli.BillItem{
+                        ItemProductName: payabli.String(
+                            "Adventure Consult",
+                        ),
+                        ItemDescription: payabli.String(
+                            "Consultation for Georgian tours",
+                        ),
+                        ItemCost: 100,
+                        ItemQty: payabli.Int(
+                            1,
+                        ),
+                        ItemMode: payabli.Int(
+                            1,
+                        ),
+                    },
+                    &payabli.BillItem{
+                        ItemProductName: payabli.String(
+                            "Deposit ",
+                        ),
+                        ItemDescription: payabli.String(
+                            "Deposit for trip planning",
+                        ),
+                        ItemCost: 882.37,
+                        ItemQty: payabli.Int(
+                            1,
+                        ),
+                    },
+                },
+                InvoiceDate: payabli.Time(
+                    payabli.MustParseDateTime(
+                        "2025-10-19",
+                    ),
+                ),
+                InvoiceType: payabli.Int(
+                    0,
+                ),
+                InvoiceStatus: payabli.Int(
+                    1,
+                ),
+                Frequency: payabli.FrequencyOneTime.Ptr(),
+                InvoiceAmount: payabli.Float64(
+                    982.37,
+                ),
+                Discount: payabli.Float64(
+                    10,
+                ),
+                InvoiceNumber: payabli.String(
+                    "INV-3",
+                ),
+            },
+        },
+    }
 client.Invoice.AddInvoice(
         context.TODO(),
         "8cfec329267",
-        &sdkgo.AddInvoiceRequest{
-            Body: &sdkgo.InvoiceDataRequest{
-                CustomerData: &sdkgo.PayorDataRequest{
-                    FirstName: sdkgo.String(
-                        "Tamara",
-                    ),
-                    LastName: sdkgo.String(
-                        "Bagratoni",
-                    ),
-                    CustomerNumber: sdkgo.String(
-                        "3",
-                    ),
-                },
-                InvoiceData: &sdkgo.BillData{
-                    Items: []*sdkgo.BillItem{
-                        &sdkgo.BillItem{
-                            ItemProductName: sdkgo.String(
-                                "Adventure Consult",
-                            ),
-                            ItemDescription: sdkgo.String(
-                                "Consultation for Georgian tours",
-                            ),
-                            ItemCost: 100,
-                            ItemQty: sdkgo.Int(
-                                1,
-                            ),
-                            ItemMode: sdkgo.Int(
-                                1,
-                            ),
-                        },
-                        &sdkgo.BillItem{
-                            ItemProductName: sdkgo.String(
-                                "Deposit ",
-                            ),
-                            ItemDescription: sdkgo.String(
-                                "Deposit for trip planning",
-                            ),
-                            ItemCost: 882.37,
-                            ItemQty: sdkgo.Int(
-                                1,
-                            ),
-                        },
-                    },
-                    InvoiceDate: sdkgo.Time(
-                        sdkgo.MustParseDateTime(
-                            "2025-10-19",
-                        ),
-                    ),
-                    InvoiceType: sdkgo.Int(
-                        0,
-                    ),
-                    InvoiceStatus: sdkgo.Int(
-                        1,
-                    ),
-                    Frequency: sdkgo.FrequencyOneTime.Ptr(),
-                    InvoiceAmount: sdkgo.Float64(
-                        982.37,
-                    ),
-                    Discount: sdkgo.Float64(
-                        10,
-                    ),
-                    InvoiceNumber: sdkgo.String(
-                        "INV-3",
-                    ),
-                },
-            },
-        },
+        request,
     )
 }
 ```
@@ -8717,7 +8777,7 @@ client.Invoice.AddInvoice(
 <dl>
 <dd>
 
-**forceCustomerCreation:** `*sdkgo.ForceCustomerCreation` 
+**forceCustomerCreation:** `*payabli.ForceCustomerCreation` 
     
 </dd>
 </dl>
@@ -8725,7 +8785,7 @@ client.Invoice.AddInvoice(
 <dl>
 <dd>
 
-**idempotencyKey:** `*sdkgo.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` 
     
 </dd>
 </dl>
@@ -8733,7 +8793,7 @@ client.Invoice.AddInvoice(
 <dl>
 <dd>
 
-**request:** `*sdkgo.InvoiceDataRequest` 
+**request:** `*payabli.InvoiceDataRequest` 
     
 </dd>
 </dl>
@@ -8745,7 +8805,7 @@ client.Invoice.AddInvoice(
 </dl>
 </details>
 
-<details><summary><code>client.Invoice.DeleteAttachedFromInvoice(Filename, IdInvoice) -> *sdkgo.InvoiceResponseWithoutData</code></summary>
+<details><summary><code>client.Invoice.DeleteAttachedFromInvoice(Filename, IdInvoice) -> *payabli.InvoiceResponseWithoutData</code></summary>
 <dl>
 <dd>
 
@@ -8824,7 +8884,7 @@ The filename in Payabli. Filename is `zipName` in response to a request to `/api
 </dl>
 </details>
 
-<details><summary><code>client.Invoice.DeleteInvoice(IdInvoice) -> *sdkgo.InvoiceResponseWithoutData</code></summary>
+<details><summary><code>client.Invoice.DeleteInvoice(IdInvoice) -> *payabli.InvoiceResponseWithoutData</code></summary>
 <dl>
 <dd>
 
@@ -8882,7 +8942,7 @@ client.Invoice.DeleteInvoice(
 </dl>
 </details>
 
-<details><summary><code>client.Invoice.EditInvoice(IdInvoice, request) -> *sdkgo.InvoiceResponseWithoutData</code></summary>
+<details><summary><code>client.Invoice.EditInvoice(IdInvoice, request) -> *payabli.InvoiceResponseWithoutData</code></summary>
 <dl>
 <dd>
 
@@ -8909,40 +8969,41 @@ Updates details for a single invoice in an entrypoint.
 <dd>
 
 ```go
+request := &payabli.EditInvoiceRequest{
+        Body: &payabli.InvoiceDataRequest{
+            InvoiceData: &payabli.BillData{
+                Items: []*payabli.BillItem{
+                    &payabli.BillItem{
+                        ItemProductName: payabli.String(
+                            "Deposit",
+                        ),
+                        ItemDescription: payabli.String(
+                            "Deposit for trip planning",
+                        ),
+                        ItemCost: 882.37,
+                        ItemQty: payabli.Int(
+                            1,
+                        ),
+                    },
+                },
+                InvoiceDate: payabli.Time(
+                    payabli.MustParseDateTime(
+                        "2025-10-19",
+                    ),
+                ),
+                InvoiceAmount: payabli.Float64(
+                    982.37,
+                ),
+                InvoiceNumber: payabli.String(
+                    "INV-6",
+                ),
+            },
+        },
+    }
 client.Invoice.EditInvoice(
         context.TODO(),
         332,
-        &sdkgo.EditInvoiceRequest{
-            Body: &sdkgo.InvoiceDataRequest{
-                InvoiceData: &sdkgo.BillData{
-                    Items: []*sdkgo.BillItem{
-                        &sdkgo.BillItem{
-                            ItemProductName: sdkgo.String(
-                                "Deposit",
-                            ),
-                            ItemDescription: sdkgo.String(
-                                "Deposit for trip planning",
-                            ),
-                            ItemCost: 882.37,
-                            ItemQty: sdkgo.Int(
-                                1,
-                            ),
-                        },
-                    },
-                    InvoiceDate: sdkgo.Time(
-                        sdkgo.MustParseDateTime(
-                            "2025-10-19",
-                        ),
-                    ),
-                    InvoiceAmount: sdkgo.Float64(
-                        982.37,
-                    ),
-                    InvoiceNumber: sdkgo.String(
-                        "INV-6",
-                    ),
-                },
-            },
-        },
+        request,
     )
 }
 ```
@@ -8975,7 +9036,7 @@ client.Invoice.EditInvoice(
 <dl>
 <dd>
 
-**request:** `*sdkgo.InvoiceDataRequest` 
+**request:** `*payabli.InvoiceDataRequest` 
     
 </dd>
 </dl>
@@ -8987,7 +9048,7 @@ client.Invoice.EditInvoice(
 </dl>
 </details>
 
-<details><summary><code>client.Invoice.GetAttachedFileFromInvoice(Filename, IdInvoice) -> *sdkgo.FileContent</code></summary>
+<details><summary><code>client.Invoice.GetAttachedFileFromInvoice(Filename, IdInvoice) -> *payabli.FileContent</code></summary>
 <dl>
 <dd>
 
@@ -9014,11 +9075,12 @@ Retrieves a file attached to an invoice.
 <dd>
 
 ```go
+request := &payabli.GetAttachedFileFromInvoiceRequest{}
 client.Invoice.GetAttachedFileFromInvoice(
         context.TODO(),
         "filename",
         1,
-        &sdkgo.GetAttachedFileFromInvoiceRequest{},
+        request,
     )
 }
 ```
@@ -9077,7 +9139,7 @@ The filename in Payabli. Filename is `zipName` in the response to a request to `
 </dl>
 </details>
 
-<details><summary><code>client.Invoice.GetInvoice(IdInvoice) -> *sdkgo.GetInvoiceRecord</code></summary>
+<details><summary><code>client.Invoice.GetInvoice(IdInvoice) -> *payabli.GetInvoiceRecord</code></summary>
 <dl>
 <dd>
 
@@ -9135,7 +9197,7 @@ client.Invoice.GetInvoice(
 </dl>
 </details>
 
-<details><summary><code>client.Invoice.GetInvoiceNumber(Entry) -> *sdkgo.InvoiceNumberResponse</code></summary>
+<details><summary><code>client.Invoice.GetInvoiceNumber(Entry) -> *payabli.InvoiceNumberResponse</code></summary>
 <dl>
 <dd>
 
@@ -9193,7 +9255,7 @@ client.Invoice.GetInvoiceNumber(
 </dl>
 </details>
 
-<details><summary><code>client.Invoice.ListInvoices(Entry) -> *sdkgo.QueryInvoiceResponse</code></summary>
+<details><summary><code>client.Invoice.ListInvoices(Entry) -> *payabli.QueryInvoiceResponse</code></summary>
 <dl>
 <dd>
 
@@ -9220,20 +9282,21 @@ Returns a list of invoices for an entrypoint. Use filters to limit results. Incl
 <dd>
 
 ```go
+request := &payabli.ListInvoicesRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Invoice.ListInvoices(
         context.TODO(),
         "8cfec329267",
-        &sdkgo.ListInvoicesRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -9258,7 +9321,7 @@ client.Invoice.ListInvoices(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -9366,7 +9429,7 @@ Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.
 </dl>
 </details>
 
-<details><summary><code>client.Invoice.ListInvoicesOrg(OrgId) -> *sdkgo.QueryInvoiceResponse</code></summary>
+<details><summary><code>client.Invoice.ListInvoicesOrg(OrgId) -> *payabli.QueryInvoiceResponse</code></summary>
 <dl>
 <dd>
 
@@ -9393,20 +9456,21 @@ Returns a list of invoices for an org. Use filters to limit results. Include the
 <dd>
 
 ```go
+request := &payabli.ListInvoicesOrgRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Invoice.ListInvoicesOrg(
         context.TODO(),
         123,
-        &sdkgo.ListInvoicesOrgRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -9431,7 +9495,7 @@ client.Invoice.ListInvoicesOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -9539,7 +9603,7 @@ Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.
 </dl>
 </details>
 
-<details><summary><code>client.Invoice.SendInvoice(IdInvoice) -> *sdkgo.SendInvoiceResponse</code></summary>
+<details><summary><code>client.Invoice.SendInvoice(IdInvoice) -> *payabli.SendInvoiceResponse</code></summary>
 <dl>
 <dd>
 
@@ -9566,17 +9630,18 @@ Sends an invoice from an entrypoint via email.
 <dd>
 
 ```go
+request := &payabli.SendInvoiceRequest{
+        Attachfile: payabli.Bool(
+            true,
+        ),
+        Mail2: payabli.String(
+            "tamara@example.com",
+        ),
+    }
 client.Invoice.SendInvoice(
         context.TODO(),
         23548884,
-        &sdkgo.SendInvoiceRequest{
-            Attachfile: sdkgo.Bool(
-                true,
-            ),
-            Mail2: sdkgo.String(
-                "tamara@example.com",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -9621,7 +9686,7 @@ client.Invoice.SendInvoice(
 </dl>
 </details>
 
-<details><summary><code>client.Invoice.GetInvoicePdf(IdInvoice) -> sdkgo.File</code></summary>
+<details><summary><code>client.Invoice.GetInvoicePdf(IdInvoice) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -9680,7 +9745,7 @@ client.Invoice.GetInvoicePdf(
 </details>
 
 ## LineItem
-<details><summary><code>client.LineItem.AddItem(Entry, request) -> *sdkgo.PayabliApiResponse6</code></summary>
+<details><summary><code>client.LineItem.AddItem(Entry, request) -> *payabli.PayabliApiResponse6</code></summary>
 <dl>
 <dd>
 
@@ -9707,33 +9772,34 @@ Adds products and services to an entrypoint's catalog. These are used as line it
 <dd>
 
 ```go
+request := &payabli.AddItemRequest{
+        Body: &payabli.LineItem{
+            ItemProductCode: payabli.String(
+                "M-DEPOSIT",
+            ),
+            ItemProductName: payabli.String(
+                "Materials deposit",
+            ),
+            ItemDescription: payabli.String(
+                "Deposit for materials",
+            ),
+            ItemCommodityCode: payabli.String(
+                "010",
+            ),
+            ItemUnitOfMeasure: payabli.String(
+                "SqFt",
+            ),
+            ItemCost: 12.45,
+            ItemQty: 1,
+            ItemMode: payabli.Int(
+                0,
+            ),
+        },
+    }
 client.LineItem.AddItem(
         context.TODO(),
         "47cae3d74",
-        &sdkgo.AddItemRequest{
-            Body: &sdkgo.LineItem{
-                ItemProductCode: sdkgo.String(
-                    "M-DEPOSIT",
-                ),
-                ItemProductName: sdkgo.String(
-                    "Materials deposit",
-                ),
-                ItemDescription: sdkgo.String(
-                    "Deposit for materials",
-                ),
-                ItemCommodityCode: sdkgo.String(
-                    "010",
-                ),
-                ItemUnitOfMeasure: sdkgo.String(
-                    "SqFt",
-                ),
-                ItemCost: 12.45,
-                ItemQty: 1,
-                ItemMode: sdkgo.Int(
-                    0,
-                ),
-            },
-        },
+        request,
     )
 }
 ```
@@ -9766,7 +9832,7 @@ client.LineItem.AddItem(
 <dl>
 <dd>
 
-**request:** `*sdkgo.LineItem` 
+**request:** `*payabli.LineItem` 
     
 </dd>
 </dl>
@@ -9778,7 +9844,7 @@ client.LineItem.AddItem(
 </dl>
 </details>
 
-<details><summary><code>client.LineItem.DeleteItem(LineItemId) -> *sdkgo.DeleteItemResponse</code></summary>
+<details><summary><code>client.LineItem.DeleteItem(LineItemId) -> *payabli.DeleteItemResponse</code></summary>
 <dl>
 <dd>
 
@@ -9836,7 +9902,7 @@ client.LineItem.DeleteItem(
 </dl>
 </details>
 
-<details><summary><code>client.LineItem.GetItem(LineItemId) -> *sdkgo.LineItemQueryRecord</code></summary>
+<details><summary><code>client.LineItem.GetItem(LineItemId) -> *payabli.LineItemQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -9894,7 +9960,7 @@ client.LineItem.GetItem(
 </dl>
 </details>
 
-<details><summary><code>client.LineItem.ListLineItems(Entry) -> *sdkgo.QueryResponseItems</code></summary>
+<details><summary><code>client.LineItem.ListLineItems(Entry) -> *payabli.QueryResponseItems</code></summary>
 <dl>
 <dd>
 
@@ -9921,20 +9987,21 @@ Retrieves a list of line items and their details from an entrypoint. Line items 
 <dd>
 
 ```go
+request := &payabli.ListLineItemsRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.LineItem.ListLineItems(
         context.TODO(),
         "8cfec329267",
-        &sdkgo.ListLineItemsRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -10051,7 +10118,7 @@ Example: name(ct)=john return all records with name containing john
 </dl>
 </details>
 
-<details><summary><code>client.LineItem.UpdateItem(LineItemId, request) -> *sdkgo.PayabliApiResponse6</code></summary>
+<details><summary><code>client.LineItem.UpdateItem(LineItemId, request) -> *payabli.PayabliApiResponse6</code></summary>
 <dl>
 <dd>
 
@@ -10078,13 +10145,14 @@ Updates an item.
 <dd>
 
 ```go
+request := &payabli.LineItem{
+        ItemCost: 12.45,
+        ItemQty: 1,
+    }
 client.LineItem.UpdateItem(
         context.TODO(),
         700,
-        &sdkgo.LineItem{
-            ItemCost: 12.45,
-            ItemQty: 1,
-        },
+        request,
     )
 }
 ```
@@ -10109,7 +10177,7 @@ client.LineItem.UpdateItem(
 <dl>
 <dd>
 
-**request:** `*sdkgo.LineItem` 
+**request:** `*payabli.LineItem` 
     
 </dd>
 </dl>
@@ -10122,7 +10190,7 @@ client.LineItem.UpdateItem(
 </details>
 
 ## MoneyIn
-<details><summary><code>client.MoneyIn.Authorize(request) -> *sdkgo.AuthResponse</code></summary>
+<details><summary><code>client.MoneyIn.Authorize(request) -> *payabli.AuthResponse</code></summary>
 <dl>
 <dd>
 
@@ -10151,47 +10219,48 @@ Authorize a card transaction. This returns an authorization code and reserves fu
 <dd>
 
 ```go
-client.MoneyIn.Authorize(
-        context.TODO(),
-        &sdkgo.RequestPaymentAuthorize{
-            Body: &sdkgo.TransRequestBody{
-                CustomerData: &sdkgo.PayorDataRequest{
-                    CustomerId: sdkgo.Int64(
-                        4440,
-                    ),
-                },
-                EntryPoint: sdkgo.String(
-                    "f743aed24a",
+request := &payabli.RequestPaymentAuthorize{
+        Body: &payabli.TransRequestBody{
+            CustomerData: &payabli.PayorDataRequest{
+                CustomerId: payabli.Int64(
+                    4440,
                 ),
-                Ipaddress: sdkgo.String(
-                    "255.255.255.255",
+            },
+            EntryPoint: payabli.String(
+                "f743aed24a",
+            ),
+            Ipaddress: payabli.String(
+                "255.255.255.255",
+            ),
+            PaymentDetails: &payabli.PaymentDetail{
+                ServiceFee: payabli.Float64(
+                    0,
                 ),
-                PaymentDetails: &sdkgo.PaymentDetail{
-                    ServiceFee: sdkgo.Float64(
-                        0,
+                TotalAmount: 100,
+            },
+            PaymentMethod: &payabli.PaymentMethod{
+                PayMethodCredit: &payabli.PayMethodCredit{
+                    Cardcvv: payabli.String(
+                        "999",
                     ),
-                    TotalAmount: 100,
-                },
-                PaymentMethod: &sdkgo.PaymentMethod{
-                    PayMethodCredit: &sdkgo.PayMethodCredit{
-                        Cardcvv: sdkgo.String(
-                            "999",
-                        ),
-                        Cardexp: "02/27",
-                        CardHolder: sdkgo.String(
-                            "John Cassian",
-                        ),
-                        Cardnumber: "4111111111111111",
-                        Cardzip: sdkgo.String(
-                            "12345",
-                        ),
-                        Initiator: sdkgo.String(
-                            "payor",
-                        ),
-                    },
+                    Cardexp: "02/27",
+                    CardHolder: payabli.String(
+                        "John Cassian",
+                    ),
+                    Cardnumber: "4111111111111111",
+                    Cardzip: payabli.String(
+                        "12345",
+                    ),
+                    Initiator: payabli.String(
+                        "payor",
+                    ),
                 },
             },
         },
+    }
+client.MoneyIn.Authorize(
+        context.TODO(),
+        request,
     )
 }
 ```
@@ -10208,7 +10277,7 @@ client.MoneyIn.Authorize(
 <dl>
 <dd>
 
-**forceCustomerCreation:** `*sdkgo.ForceCustomerCreation` 
+**forceCustomerCreation:** `*payabli.ForceCustomerCreation` 
     
 </dd>
 </dl>
@@ -10216,7 +10285,7 @@ client.MoneyIn.Authorize(
 <dl>
 <dd>
 
-**idempotencyKey:** `*sdkgo.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` 
     
 </dd>
 </dl>
@@ -10224,7 +10293,7 @@ client.MoneyIn.Authorize(
 <dl>
 <dd>
 
-**request:** `*sdkgo.TransRequestBody` 
+**request:** `*payabli.TransRequestBody` 
     
 </dd>
 </dl>
@@ -10236,7 +10305,7 @@ client.MoneyIn.Authorize(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.Capture(Amount, TransId) -> *sdkgo.CaptureResponse</code></summary>
+<details><summary><code>client.MoneyIn.Capture(Amount, TransId) -> *payabli.CaptureResponse</code></summary>
 <dl>
 <dd>
 
@@ -10308,7 +10377,7 @@ client.MoneyIn.Capture(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.CaptureAuth(TransId, request) -> *sdkgo.CaptureResponse</code></summary>
+<details><summary><code>client.MoneyIn.CaptureAuth(TransId, request) -> *payabli.CaptureResponse</code></summary>
 <dl>
 <dd>
 
@@ -10337,17 +10406,18 @@ You can use this endpoint to capture both full and partial amounts of the origin
 <dd>
 
 ```go
+request := &payabli.CaptureRequest{
+        PaymentDetails: &payabli.CapturePaymentDetails{
+            TotalAmount: 105,
+            ServiceFee: payabli.Float64(
+                5,
+            ),
+        },
+    }
 client.MoneyIn.CaptureAuth(
         context.TODO(),
         "10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13",
-        &sdkgo.CaptureRequest{
-            PaymentDetails: &sdkgo.CapturePaymentDetails{
-                TotalAmount: 105,
-                ServiceFee: sdkgo.Float64(
-                    5,
-                ),
-            },
-        },
+        request,
     )
 }
 ```
@@ -10372,7 +10442,7 @@ client.MoneyIn.CaptureAuth(
 <dl>
 <dd>
 
-**request:** `*sdkgo.CaptureRequest` 
+**request:** `*payabli.CaptureRequest` 
     
 </dd>
 </dl>
@@ -10384,7 +10454,7 @@ client.MoneyIn.CaptureAuth(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.Credit(request) -> *sdkgo.PayabliApiResponse0</code></summary>
+<details><summary><code>client.MoneyIn.Credit(request) -> *payabli.PayabliApiResponse0</code></summary>
 <dl>
 <dd>
 
@@ -10413,42 +10483,43 @@ This feature must be enabled by Payabli on a per-merchant basis. Contact support
 <dd>
 
 ```go
+request := &payabli.RequestCredit{
+        IdempotencyKey: payabli.String(
+            "6B29FC40-CA47-1067-B31D-00DD010662DA",
+        ),
+        CustomerData: &payabli.PayorDataRequest{
+            BillingAddress1: payabli.String(
+                "5127 Linkwood ave",
+            ),
+            CustomerNumber: payabli.String(
+                "100",
+            ),
+        },
+        Entrypoint: payabli.String(
+            "my-entrypoint",
+        ),
+        PaymentDetails: &payabli.PaymentDetailCredit{
+            ServiceFee: payabli.Float64(
+                0,
+            ),
+            TotalAmount: 1,
+        },
+        PaymentMethod: &payabli.RequestCreditPaymentMethod{
+            AchAccount: payabli.String(
+                "88354454",
+            ),
+            AchAccountType: payabli.AchaccounttypeChecking.Ptr(),
+            AchHolder: payabli.String(
+                "John Smith",
+            ),
+            AchRouting: payabli.String(
+                "021000021",
+            ),
+        },
+    }
 client.MoneyIn.Credit(
         context.TODO(),
-        &sdkgo.RequestCredit{
-            IdempotencyKey: sdkgo.String(
-                "6B29FC40-CA47-1067-B31D-00DD010662DA",
-            ),
-            CustomerData: &sdkgo.PayorDataRequest{
-                BillingAddress1: sdkgo.String(
-                    "5127 Linkwood ave",
-                ),
-                CustomerNumber: sdkgo.String(
-                    "100",
-                ),
-            },
-            Entrypoint: sdkgo.String(
-                "my-entrypoint",
-            ),
-            PaymentDetails: &sdkgo.PaymentDetailCredit{
-                ServiceFee: sdkgo.Float64(
-                    0,
-                ),
-                TotalAmount: 1,
-            },
-            PaymentMethod: &sdkgo.RequestCreditPaymentMethod{
-                AchAccount: sdkgo.String(
-                    "88354454",
-                ),
-                AchAccountType: sdkgo.AchaccounttypeChecking.Ptr(),
-                AchHolder: sdkgo.String(
-                    "John Smith",
-                ),
-                AchRouting: sdkgo.String(
-                    "021000021",
-                ),
-            },
-        },
+        request,
     )
 }
 ```
@@ -10465,7 +10536,7 @@ client.MoneyIn.Credit(
 <dl>
 <dd>
 
-**forceCustomerCreation:** `*sdkgo.ForceCustomerCreation` 
+**forceCustomerCreation:** `*payabli.ForceCustomerCreation` 
     
 </dd>
 </dl>
@@ -10473,7 +10544,7 @@ client.MoneyIn.Credit(
 <dl>
 <dd>
 
-**idempotencyKey:** `*sdkgo.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` 
     
 </dd>
 </dl>
@@ -10481,7 +10552,7 @@ client.MoneyIn.Credit(
 <dl>
 <dd>
 
-**accountId:** `*sdkgo.Accountid` 
+**accountId:** `*payabli.Accountid` 
     
 </dd>
 </dl>
@@ -10489,7 +10560,7 @@ client.MoneyIn.Credit(
 <dl>
 <dd>
 
-**customerData:** `*sdkgo.PayorDataRequest` — Object describing the customer/payor.
+**customerData:** `*payabli.PayorDataRequest` — Object describing the customer/payor.
     
 </dd>
 </dl>
@@ -10497,7 +10568,7 @@ client.MoneyIn.Credit(
 <dl>
 <dd>
 
-**entrypoint:** `*sdkgo.Entrypointfield` 
+**entrypoint:** `*payabli.Entrypointfield` 
     
 </dd>
 </dl>
@@ -10505,7 +10576,7 @@ client.MoneyIn.Credit(
 <dl>
 <dd>
 
-**orderDescription:** `*sdkgo.Orderdescription` 
+**orderDescription:** `*payabli.Orderdescription` 
     
 </dd>
 </dl>
@@ -10513,7 +10584,7 @@ client.MoneyIn.Credit(
 <dl>
 <dd>
 
-**orderId:** `*sdkgo.OrderId` 
+**orderId:** `*payabli.OrderId` 
     
 </dd>
 </dl>
@@ -10521,7 +10592,7 @@ client.MoneyIn.Credit(
 <dl>
 <dd>
 
-**paymentDetails:** `*sdkgo.PaymentDetailCredit` 
+**paymentDetails:** `*payabli.PaymentDetailCredit` 
     
 </dd>
 </dl>
@@ -10529,7 +10600,7 @@ client.MoneyIn.Credit(
 <dl>
 <dd>
 
-**paymentMethod:** `*sdkgo.RequestCreditPaymentMethod` — Object describing the ACH payment method to use for transaction.
+**paymentMethod:** `*payabli.RequestCreditPaymentMethod` — Object describing the ACH payment method to use for transaction.
     
 </dd>
 </dl>
@@ -10537,7 +10608,7 @@ client.MoneyIn.Credit(
 <dl>
 <dd>
 
-**source:** `*sdkgo.Source` 
+**source:** `*payabli.Source` 
     
 </dd>
 </dl>
@@ -10545,7 +10616,7 @@ client.MoneyIn.Credit(
 <dl>
 <dd>
 
-**subdomain:** `*sdkgo.Subdomain` 
+**subdomain:** `*payabli.Subdomain` 
     
 </dd>
 </dl>
@@ -10557,7 +10628,7 @@ client.MoneyIn.Credit(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.Details(TransId) -> *sdkgo.TransactionQueryRecords</code></summary>
+<details><summary><code>client.MoneyIn.Details(TransId) -> *payabli.TransactionQueryRecordsCustomer</code></summary>
 <dl>
 <dd>
 
@@ -10615,7 +10686,7 @@ client.MoneyIn.Details(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.Getpaid(request) -> *sdkgo.PayabliApiResponseGetPaid</code></summary>
+<details><summary><code>client.MoneyIn.Getpaid(request) -> *payabli.PayabliApiResponseGetPaid</code></summary>
 <dl>
 <dd>
 
@@ -10642,47 +10713,48 @@ Make a single transaction. This method authorizes and captures a payment in one 
 <dd>
 
 ```go
-client.MoneyIn.Getpaid(
-        context.TODO(),
-        &sdkgo.RequestPayment{
-            Body: &sdkgo.TransRequestBody{
-                CustomerData: &sdkgo.PayorDataRequest{
-                    CustomerId: sdkgo.Int64(
-                        4440,
-                    ),
-                },
-                EntryPoint: sdkgo.String(
-                    "f743aed24a",
+request := &payabli.RequestPayment{
+        Body: &payabli.TransRequestBody{
+            CustomerData: &payabli.PayorDataRequest{
+                CustomerId: payabli.Int64(
+                    4440,
                 ),
-                Ipaddress: sdkgo.String(
-                    "255.255.255.255",
+            },
+            EntryPoint: payabli.String(
+                "f743aed24a",
+            ),
+            Ipaddress: payabli.String(
+                "255.255.255.255",
+            ),
+            PaymentDetails: &payabli.PaymentDetail{
+                ServiceFee: payabli.Float64(
+                    0,
                 ),
-                PaymentDetails: &sdkgo.PaymentDetail{
-                    ServiceFee: sdkgo.Float64(
-                        0,
+                TotalAmount: 100,
+            },
+            PaymentMethod: &payabli.PaymentMethod{
+                PayMethodCredit: &payabli.PayMethodCredit{
+                    Cardcvv: payabli.String(
+                        "999",
                     ),
-                    TotalAmount: 100,
-                },
-                PaymentMethod: &sdkgo.PaymentMethod{
-                    PayMethodCredit: &sdkgo.PayMethodCredit{
-                        Cardcvv: sdkgo.String(
-                            "999",
-                        ),
-                        Cardexp: "02/27",
-                        CardHolder: sdkgo.String(
-                            "John Cassian",
-                        ),
-                        Cardnumber: "4111111111111111",
-                        Cardzip: sdkgo.String(
-                            "12345",
-                        ),
-                        Initiator: sdkgo.String(
-                            "payor",
-                        ),
-                    },
+                    Cardexp: "02/27",
+                    CardHolder: payabli.String(
+                        "John Cassian",
+                    ),
+                    Cardnumber: "4111111111111111",
+                    Cardzip: payabli.String(
+                        "12345",
+                    ),
+                    Initiator: payabli.String(
+                        "payor",
+                    ),
                 },
             },
         },
+    }
+client.MoneyIn.Getpaid(
+        context.TODO(),
+        request,
     )
 }
 ```
@@ -10699,7 +10771,7 @@ client.MoneyIn.Getpaid(
 <dl>
 <dd>
 
-**achValidation:** `*sdkgo.AchValidation` 
+**achValidation:** `*payabli.AchValidation` 
     
 </dd>
 </dl>
@@ -10707,7 +10779,7 @@ client.MoneyIn.Getpaid(
 <dl>
 <dd>
 
-**forceCustomerCreation:** `*sdkgo.ForceCustomerCreation` 
+**forceCustomerCreation:** `*payabli.ForceCustomerCreation` 
     
 </dd>
 </dl>
@@ -10715,7 +10787,15 @@ client.MoneyIn.Getpaid(
 <dl>
 <dd>
 
-**idempotencyKey:** `*sdkgo.IdempotencyKey` 
+**includeDetails:** `*bool` — When `true`, transactionDetails object is returned in the response. See a full example of the `transactionDetails` object in the [Transaction integration guide](/developers/developer-guides/money-in-transaction-add#includedetailstrue-response).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `*payabli.IdempotencyKey` 
     
 </dd>
 </dl>
@@ -10731,7 +10811,7 @@ client.MoneyIn.Getpaid(
 <dl>
 <dd>
 
-**request:** `*sdkgo.TransRequestBody` 
+**request:** `*payabli.TransRequestBody` 
     
 </dd>
 </dl>
@@ -10743,7 +10823,7 @@ client.MoneyIn.Getpaid(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.Reverse(Amount, TransId) -> *sdkgo.ReverseResponse</code></summary>
+<details><summary><code>client.MoneyIn.Reverse(Amount, TransId) -> *payabli.ReverseResponse</code></summary>
 <dl>
 <dd>
 
@@ -10817,7 +10897,7 @@ An amount equal to zero will refunds the total amount authorized minus any servi
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.Refund(Amount, TransId) -> *sdkgo.RefundResponse</code></summary>
+<details><summary><code>client.MoneyIn.Refund(Amount, TransId) -> *payabli.RefundResponse</code></summary>
 <dl>
 <dd>
 
@@ -10869,7 +10949,7 @@ client.MoneyIn.Refund(
 
 Amount to refund from original transaction, minus any service fees charged on the original transaction. 
 
-The amount provided can't be greater than the original total amount of the transaction, minus service fees. For example, if a transaction was $90 plus a $10 service fee, you can refund up to $90. 
+The amount provided can't be greater than the original total amount of the transaction, minus service fees. For example, if a transaction was \$90 plus a \$10 service fee, you can refund up to \$90.
 
 An amount equal to zero will refund the total amount authorized minus any service fee.
     
@@ -10891,7 +10971,7 @@ An amount equal to zero will refund the total amount authorized minus any servic
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.RefundWithInstructions(TransId, request) -> *sdkgo.RefundWithInstructionsResponse</code></summary>
+<details><summary><code>client.MoneyIn.RefundWithInstructions(TransId, request) -> *payabli.RefundWithInstructionsResponse</code></summary>
 <dl>
 <dd>
 
@@ -10918,55 +10998,56 @@ Refunds a settled transaction with split instructions.
 <dd>
 
 ```go
-client.MoneyIn.RefundWithInstructions(
-        context.TODO(),
-        "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
-        &sdkgo.RequestRefund{
-            IdempotencyKey: sdkgo.String(
-                "8A29FC40-CA47-1067-B31D-00DD010662DB",
-            ),
-            Source: sdkgo.String(
-                "api",
-            ),
-            OrderDescription: sdkgo.String(
-                "Materials deposit",
-            ),
-            Amount: sdkgo.Float64(
-                100,
-            ),
-            RefundDetails: &sdkgo.RefundDetail{
-                SplitRefunding: []*sdkgo.SplitFundingRefundContent{
-                    &sdkgo.SplitFundingRefundContent{
-                        OriginationEntryPoint: sdkgo.String(
-                            "7f1a381696",
-                        ),
-                        AccountId: sdkgo.String(
-                            "187-342",
-                        ),
-                        Description: sdkgo.String(
-                            "Refunding undelivered materials",
-                        ),
-                        Amount: sdkgo.Float64(
-                            60,
-                        ),
-                    },
-                    &sdkgo.SplitFundingRefundContent{
-                        OriginationEntryPoint: sdkgo.String(
-                            "7f1a381696",
-                        ),
-                        AccountId: sdkgo.String(
-                            "187-343",
-                        ),
-                        Description: sdkgo.String(
-                            "Refunding deposit for undelivered materials",
-                        ),
-                        Amount: sdkgo.Float64(
-                            40,
-                        ),
-                    },
+request := &payabli.RequestRefund{
+        IdempotencyKey: payabli.String(
+            "8A29FC40-CA47-1067-B31D-00DD010662DB",
+        ),
+        Source: payabli.String(
+            "api",
+        ),
+        OrderDescription: payabli.String(
+            "Materials deposit",
+        ),
+        Amount: payabli.Float64(
+            100,
+        ),
+        RefundDetails: &payabli.RefundDetail{
+            SplitRefunding: []*payabli.SplitFundingRefundContent{
+                &payabli.SplitFundingRefundContent{
+                    OriginationEntryPoint: payabli.String(
+                        "7f1a381696",
+                    ),
+                    AccountId: payabli.String(
+                        "187-342",
+                    ),
+                    Description: payabli.String(
+                        "Refunding undelivered materials",
+                    ),
+                    Amount: payabli.Float64(
+                        60,
+                    ),
+                },
+                &payabli.SplitFundingRefundContent{
+                    OriginationEntryPoint: payabli.String(
+                        "7f1a381696",
+                    ),
+                    AccountId: payabli.String(
+                        "187-343",
+                    ),
+                    Description: payabli.String(
+                        "Refunding deposit for undelivered materials",
+                    ),
+                    Amount: payabli.Float64(
+                        40,
+                    ),
                 },
             },
         },
+    }
+client.MoneyIn.RefundWithInstructions(
+        context.TODO(),
+        "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
+        request,
     )
 }
 ```
@@ -10991,7 +11072,7 @@ client.MoneyIn.RefundWithInstructions(
 <dl>
 <dd>
 
-**idempotencyKey:** `*sdkgo.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` 
     
 </dd>
 </dl>
@@ -11014,7 +11095,7 @@ An amount equal to zero will refund the total amount authorized minus any servic
 <dl>
 <dd>
 
-**ipaddress:** `*sdkgo.IpAddress` 
+**ipaddress:** `*payabli.IpAddress` 
     
 </dd>
 </dl>
@@ -11022,7 +11103,7 @@ An amount equal to zero will refund the total amount authorized minus any servic
 <dl>
 <dd>
 
-**orderDescription:** `*sdkgo.Orderdescription` 
+**orderDescription:** `*payabli.Orderdescription` 
     
 </dd>
 </dl>
@@ -11030,7 +11111,7 @@ An amount equal to zero will refund the total amount authorized minus any servic
 <dl>
 <dd>
 
-**orderId:** `*sdkgo.OrderId` 
+**orderId:** `*payabli.OrderId` 
     
 </dd>
 </dl>
@@ -11038,7 +11119,7 @@ An amount equal to zero will refund the total amount authorized minus any servic
 <dl>
 <dd>
 
-**refundDetails:** `*sdkgo.RefundDetail` 
+**refundDetails:** `*payabli.RefundDetail` 
     
 </dd>
 </dl>
@@ -11046,7 +11127,7 @@ An amount equal to zero will refund the total amount authorized minus any servic
 <dl>
 <dd>
 
-**source:** `*sdkgo.Source` 
+**source:** `*payabli.Source` 
     
 </dd>
 </dl>
@@ -11058,7 +11139,7 @@ An amount equal to zero will refund the total amount authorized minus any servic
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.ReverseCredit(TransId) -> *sdkgo.PayabliApiResponse</code></summary>
+<details><summary><code>client.MoneyIn.ReverseCredit(TransId) -> *payabli.PayabliApiResponse</code></summary>
 <dl>
 <dd>
 
@@ -11116,7 +11197,7 @@ client.MoneyIn.ReverseCredit(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.SendReceipt2Trans(TransId) -> *sdkgo.ReceiptResponse</code></summary>
+<details><summary><code>client.MoneyIn.SendReceipt2Trans(TransId) -> *payabli.ReceiptResponse</code></summary>
 <dl>
 <dd>
 
@@ -11143,14 +11224,15 @@ Send a payment receipt for a transaction.
 <dd>
 
 ```go
+request := &payabli.SendReceipt2TransRequest{
+        Email: payabli.String(
+            "example@email.com",
+        ),
+    }
 client.MoneyIn.SendReceipt2Trans(
         context.TODO(),
         "45-as456777hhhhhhhhhh77777777-324",
-        &sdkgo.SendReceipt2TransRequest{
-            Email: sdkgo.String(
-                "example@email.com",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -11191,7 +11273,7 @@ If not provided, the email address on file for the user owner of the transaction
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.Validate(request) -> *sdkgo.ValidateResponse</code></summary>
+<details><summary><code>client.MoneyIn.Validate(request) -> *payabli.ValidateResponse</code></summary>
 <dl>
 <dd>
 
@@ -11218,21 +11300,22 @@ Validates a card number without running a transaction or authorizing a charge.
 <dd>
 
 ```go
+request := &payabli.RequestPaymentValidate{
+        IdempotencyKey: payabli.String(
+            "6B29FC40-CA47-1067-B31D-00DD010662DA",
+        ),
+        EntryPoint: "entry132",
+        PaymentMethod: &payabli.RequestPaymentValidatePaymentMethod{
+            Method: payabli.RequestPaymentValidatePaymentMethodMethodCard,
+            Cardnumber: "4360000001000005",
+            Cardexp: "12/29",
+            Cardzip: "14602-8328",
+            CardHolder: "Dianne Becker-Smith",
+        },
+    }
 client.MoneyIn.Validate(
         context.TODO(),
-        &sdkgo.RequestPaymentValidate{
-            IdempotencyKey: sdkgo.String(
-                "6B29FC40-CA47-1067-B31D-00DD010662DA",
-            ),
-            EntryPoint: "entry132",
-            PaymentMethod: &sdkgo.RequestPaymentValidatePaymentMethod{
-                Method: sdkgo.RequestPaymentValidatePaymentMethodMethodCard,
-                Cardnumber: "4360000001000005",
-                Cardexp: "12/29",
-                Cardzip: "14602-8328",
-                CardHolder: "Dianne Becker-Smith",
-            },
-        },
+        request,
     )
 }
 ```
@@ -11249,7 +11332,7 @@ client.MoneyIn.Validate(
 <dl>
 <dd>
 
-**idempotencyKey:** `*sdkgo.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` 
     
 </dd>
 </dl>
@@ -11257,7 +11340,7 @@ client.MoneyIn.Validate(
 <dl>
 <dd>
 
-**accountId:** `*sdkgo.Accountid` 
+**accountId:** `*payabli.Accountid` 
     
 </dd>
 </dl>
@@ -11265,7 +11348,7 @@ client.MoneyIn.Validate(
 <dl>
 <dd>
 
-**entryPoint:** `sdkgo.Entrypointfield` 
+**entryPoint:** `payabli.Entrypointfield` 
     
 </dd>
 </dl>
@@ -11273,7 +11356,7 @@ client.MoneyIn.Validate(
 <dl>
 <dd>
 
-**orderDescription:** `*sdkgo.Orderdescription` 
+**orderDescription:** `*payabli.Orderdescription` 
     
 </dd>
 </dl>
@@ -11281,7 +11364,7 @@ client.MoneyIn.Validate(
 <dl>
 <dd>
 
-**orderId:** `*sdkgo.OrderId` 
+**orderId:** `*payabli.OrderId` 
     
 </dd>
 </dl>
@@ -11289,7 +11372,7 @@ client.MoneyIn.Validate(
 <dl>
 <dd>
 
-**paymentMethod:** `*sdkgo.RequestPaymentValidatePaymentMethod` — Object describing payment method to use for transaction.
+**paymentMethod:** `*payabli.RequestPaymentValidatePaymentMethod` — Object describing payment method to use for transaction.
     
 </dd>
 </dl>
@@ -11301,7 +11384,7 @@ client.MoneyIn.Validate(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.Void(TransId) -> *sdkgo.VoidResponse</code></summary>
+<details><summary><code>client.MoneyIn.Void(TransId) -> *payabli.VoidResponse</code></summary>
 <dl>
 <dd>
 
@@ -11360,7 +11443,7 @@ client.MoneyIn.Void(
 </details>
 
 ## MoneyOut
-<details><summary><code>client.MoneyOut.AuthorizeOut(request) -> *sdkgo.AuthCapturePayoutResponse</code></summary>
+<details><summary><code>client.MoneyOut.AuthorizeOut(request) -> *payabli.AuthCapturePayoutResponse</code></summary>
 <dl>
 <dd>
 
@@ -11387,36 +11470,37 @@ Authorizes transaction for payout. Authorized transactions aren't flagged for se
 <dd>
 
 ```go
-client.MoneyOut.AuthorizeOut(
-        context.TODO(),
-        &sdkgo.MoneyOutTypesRequestOutAuthorize{
-            Body: &sdkgo.AuthorizePayoutBody{
-                EntryPoint: "48acde49",
-                InvoiceData: []*sdkgo.RequestOutAuthorizeInvoiceData{
-                    &sdkgo.RequestOutAuthorizeInvoiceData{
-                        BillId: sdkgo.Int64(
-                            54323,
-                        ),
-                    },
-                },
-                OrderDescription: sdkgo.String(
-                    "Window Painting",
-                ),
-                PaymentDetails: &sdkgo.RequestOutAuthorizePaymentDetails{
-                    TotalAmount: sdkgo.Float64(
-                        47,
-                    ),
-                },
-                PaymentMethod: &sdkgo.AuthorizePaymentMethod{
-                    Method: "managed",
-                },
-                VendorData: &sdkgo.RequestOutAuthorizeVendorData{
-                    VendorNumber: sdkgo.String(
-                        "7895433",
+request := &payabli.MoneyOutTypesRequestOutAuthorize{
+        Body: &payabli.AuthorizePayoutBody{
+            EntryPoint: "48acde49",
+            InvoiceData: []*payabli.RequestOutAuthorizeInvoiceData{
+                &payabli.RequestOutAuthorizeInvoiceData{
+                    BillId: payabli.Int64(
+                        54323,
                     ),
                 },
             },
+            OrderDescription: payabli.String(
+                "Window Painting",
+            ),
+            PaymentDetails: &payabli.RequestOutAuthorizePaymentDetails{
+                TotalAmount: payabli.Float64(
+                    47,
+                ),
+            },
+            PaymentMethod: &payabli.AuthorizePaymentMethod{
+                Method: "managed",
+            },
+            VendorData: &payabli.RequestOutAuthorizeVendorData{
+                VendorNumber: payabli.String(
+                    "7895433",
+                ),
+            },
         },
+    }
+client.MoneyOut.AuthorizeOut(
+        context.TODO(),
+        request,
     )
 }
 ```
@@ -11457,7 +11541,7 @@ client.MoneyOut.AuthorizeOut(
 <dl>
 <dd>
 
-**idempotencyKey:** `*sdkgo.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` 
     
 </dd>
 </dl>
@@ -11465,7 +11549,7 @@ client.MoneyOut.AuthorizeOut(
 <dl>
 <dd>
 
-**request:** `*sdkgo.AuthorizePayoutBody` 
+**request:** `*payabli.AuthorizePayoutBody` 
     
 </dd>
 </dl>
@@ -11477,7 +11561,7 @@ client.MoneyOut.AuthorizeOut(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyOut.CancelAllOut(request) -> *sdkgo.CaptureAllOutResponse</code></summary>
+<details><summary><code>client.MoneyOut.CancelAllOut(request) -> *payabli.CaptureAllOutResponse</code></summary>
 <dl>
 <dd>
 
@@ -11504,13 +11588,14 @@ Cancels an array of payout transactions.
 <dd>
 
 ```go
+request := []string{
+        "2-29",
+        "2-28",
+        "2-27",
+    }
 client.MoneyOut.CancelAllOut(
         context.TODO(),
-        []string{
-            "2-29",
-            "2-28",
-            "2-27",
-        },
+        request,
     )
 }
 ```
@@ -11539,7 +11624,7 @@ client.MoneyOut.CancelAllOut(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyOut.CancelOut(ReferenceId) -> *sdkgo.PayabliApiResponse0000</code></summary>
+<details><summary><code>client.MoneyOut.CancelOut(ReferenceId) -> *payabli.PayabliApiResponse0000</code></summary>
 <dl>
 <dd>
 
@@ -11597,7 +11682,7 @@ client.MoneyOut.CancelOut(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyOut.CaptureAllOut(request) -> *sdkgo.CaptureAllOutResponse</code></summary>
+<details><summary><code>client.MoneyOut.CaptureAllOut(request) -> *payabli.CaptureAllOutResponse</code></summary>
 <dl>
 <dd>
 
@@ -11609,7 +11694,7 @@ client.MoneyOut.CancelOut(
 <dl>
 <dd>
 
-Captures an array of authorized payout transactions for settlement.
+Captures an array of authorized payout transactions for settlement. The maximum number of transactions that can be captured in a single request is 500.
 </dd>
 </dl>
 </dd>
@@ -11624,15 +11709,16 @@ Captures an array of authorized payout transactions for settlement.
 <dd>
 
 ```go
+request := &payabli.CaptureAllOutRequest{
+        Body: []string{
+            "2-29",
+            "2-28",
+            "2-27",
+        },
+    }
 client.MoneyOut.CaptureAllOut(
         context.TODO(),
-        &sdkgo.CaptureAllOutRequest{
-            Body: []string{
-                "2-29",
-                "2-28",
-                "2-27",
-            },
-        },
+        request,
     )
 }
 ```
@@ -11649,7 +11735,7 @@ client.MoneyOut.CaptureAllOut(
 <dl>
 <dd>
 
-**idempotencyKey:** `*sdkgo.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` 
     
 </dd>
 </dl>
@@ -11669,7 +11755,7 @@ client.MoneyOut.CaptureAllOut(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyOut.CaptureOut(ReferenceId) -> *sdkgo.AuthCapturePayoutResponse</code></summary>
+<details><summary><code>client.MoneyOut.CaptureOut(ReferenceId) -> *payabli.AuthCapturePayoutResponse</code></summary>
 <dl>
 <dd>
 
@@ -11696,10 +11782,11 @@ Captures a single authorized payout transaction by ID.
 <dd>
 
 ```go
+request := &payabli.CaptureOutRequest{}
 client.MoneyOut.CaptureOut(
         context.TODO(),
         "129-219",
-        &sdkgo.CaptureOutRequest{},
+        request,
     )
 }
 ```
@@ -11724,7 +11811,7 @@ client.MoneyOut.CaptureOut(
 <dl>
 <dd>
 
-**idempotencyKey:** `*sdkgo.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` 
     
 </dd>
 </dl>
@@ -11736,7 +11823,7 @@ client.MoneyOut.CaptureOut(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyOut.PayoutDetails(TransId) -> *sdkgo.BillDetailResponse</code></summary>
+<details><summary><code>client.MoneyOut.PayoutDetails(TransId) -> *payabli.BillDetailResponse</code></summary>
 <dl>
 <dd>
 
@@ -11794,7 +11881,7 @@ client.MoneyOut.PayoutDetails(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyOut.VCardGet(CardToken) -> *sdkgo.VCardGetResponse</code></summary>
+<details><summary><code>client.MoneyOut.VCardGet(CardToken) -> *payabli.VCardGetResponse</code></summary>
 <dl>
 <dd>
 
@@ -11852,7 +11939,7 @@ client.MoneyOut.VCardGet(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyOut.SendVCardLink(request) -> *sdkgo.OperationResult</code></summary>
+<details><summary><code>client.MoneyOut.SendVCardLink(request) -> *payabli.OperationResult</code></summary>
 <dl>
 <dd>
 
@@ -11879,11 +11966,12 @@ Sends a virtual card link via email to the vendor associated with the `transId`.
 <dd>
 
 ```go
+request := &payabli.SendVCardLinkRequest{
+        TransId: "01K33Z6YQZ6GD5QVKZ856MJBSC",
+    }
 client.MoneyOut.SendVCardLink(
         context.TODO(),
-        &sdkgo.SendVCardLinkRequest{
-            TransId: "01K33Z6YQZ6GD5QVKZ856MJBSC",
-        },
+        request,
     )
 }
 ```
@@ -11984,7 +12072,7 @@ in the response when you make a GET request to `/MoneyOut/details/{transId}`.
 </details>
 
 ## Notification
-<details><summary><code>client.Notification.AddNotification(request) -> *sdkgo.PayabliApiResponseNotifications</code></summary>
+<details><summary><code>client.Notification.AddNotification(request) -> *payabli.PayabliApiResponseNotifications</code></summary>
 <dl>
 <dd>
 
@@ -12011,25 +12099,26 @@ Create a new notification or autogenerated report.
 <dd>
 
 ```go
+request := &payabli.AddNotificationRequest{
+        NotificationStandardRequest: &payabli.NotificationStandardRequest{
+            Content: &payabli.NotificationStandardRequestContent{
+                EventType: payabli.NotificationStandardRequestContentEventTypeCreatedApplication.Ptr(),
+            },
+            Frequency: payabli.NotificationStandardRequestFrequencyUntilcancelled,
+            Method: payabli.NotificationStandardRequestMethodWeb,
+            OwnerId: payabli.String(
+                "236",
+            ),
+            OwnerType: 0,
+            Status: payabli.Int(
+                1,
+            ),
+            Target: "https://webhook.site/2871b8f8-edc7-441a-b376-98d8c8e33275",
+        },
+    }
 client.Notification.AddNotification(
         context.TODO(),
-        &sdkgo.AddNotificationRequest{
-            NotificationStandardRequest: &sdkgo.NotificationStandardRequest{
-                Content: &sdkgo.NotificationStandardRequestContent{
-                    EventType: sdkgo.NotificationStandardRequestContentEventTypeCreatedApplication.Ptr(),
-                },
-                Frequency: sdkgo.NotificationStandardRequestFrequencyUntilcancelled,
-                Method: sdkgo.NotificationStandardRequestMethodWeb,
-                OwnerId: sdkgo.String(
-                    "236",
-                ),
-                OwnerType: 0,
-                Status: sdkgo.Int(
-                    1,
-                ),
-                Target: "https://webhook.site/2871b8f8-edc7-441a-b376-98d8c8e33275",
-            },
-        },
+        request,
     )
 }
 ```
@@ -12046,7 +12135,7 @@ client.Notification.AddNotification(
 <dl>
 <dd>
 
-**request:** `*sdkgo.AddNotificationRequest` 
+**request:** `*payabli.AddNotificationRequest` 
     
 </dd>
 </dl>
@@ -12058,7 +12147,7 @@ client.Notification.AddNotification(
 </dl>
 </details>
 
-<details><summary><code>client.Notification.DeleteNotification(NId) -> *sdkgo.PayabliApiResponseNotifications</code></summary>
+<details><summary><code>client.Notification.DeleteNotification(NId) -> *payabli.PayabliApiResponseNotifications</code></summary>
 <dl>
 <dd>
 
@@ -12116,7 +12205,7 @@ client.Notification.DeleteNotification(
 </dl>
 </details>
 
-<details><summary><code>client.Notification.GetNotification(NId) -> *sdkgo.NotificationQueryRecord</code></summary>
+<details><summary><code>client.Notification.GetNotification(NId) -> *payabli.NotificationQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -12174,7 +12263,7 @@ client.Notification.GetNotification(
 </dl>
 </details>
 
-<details><summary><code>client.Notification.UpdateNotification(NId, request) -> *sdkgo.PayabliApiResponseNotifications</code></summary>
+<details><summary><code>client.Notification.UpdateNotification(NId, request) -> *payabli.PayabliApiResponseNotifications</code></summary>
 <dl>
 <dd>
 
@@ -12201,26 +12290,27 @@ Update a notification or autogenerated report.
 <dd>
 
 ```go
+request := &payabli.UpdateNotificationRequest{
+        NotificationStandardRequest: &payabli.NotificationStandardRequest{
+            Content: &payabli.NotificationStandardRequestContent{
+                EventType: payabli.NotificationStandardRequestContentEventTypeApprovedPayment.Ptr(),
+            },
+            Frequency: payabli.NotificationStandardRequestFrequencyUntilcancelled,
+            Method: payabli.NotificationStandardRequestMethodEmail,
+            OwnerId: payabli.String(
+                "136",
+            ),
+            OwnerType: 0,
+            Status: payabli.Int(
+                1,
+            ),
+            Target: "newemail@email.com",
+        },
+    }
 client.Notification.UpdateNotification(
         context.TODO(),
         "1717",
-        &sdkgo.UpdateNotificationRequest{
-            NotificationStandardRequest: &sdkgo.NotificationStandardRequest{
-                Content: &sdkgo.NotificationStandardRequestContent{
-                    EventType: sdkgo.NotificationStandardRequestContentEventTypeApprovedPayment.Ptr(),
-                },
-                Frequency: sdkgo.NotificationStandardRequestFrequencyUntilcancelled,
-                Method: sdkgo.NotificationStandardRequestMethodEmail,
-                OwnerId: sdkgo.String(
-                    "136",
-                ),
-                OwnerType: 0,
-                Status: sdkgo.Int(
-                    1,
-                ),
-                Target: "newemail@email.com",
-            },
-        },
+        request,
     )
 }
 ```
@@ -12245,7 +12335,7 @@ client.Notification.UpdateNotification(
 <dl>
 <dd>
 
-**request:** `*sdkgo.UpdateNotificationRequest` 
+**request:** `*payabli.UpdateNotificationRequest` 
     
 </dd>
 </dl>
@@ -12257,7 +12347,7 @@ client.Notification.UpdateNotification(
 </dl>
 </details>
 
-<details><summary><code>client.Notification.GetReportFile(Id) -> sdkgo.File</code></summary>
+<details><summary><code>client.Notification.GetReportFile(Id) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -12316,7 +12406,7 @@ client.Notification.GetReportFile(
 </details>
 
 ## Notificationlogs
-<details><summary><code>client.Notificationlogs.SearchNotificationLogs(request) -> []*sdkgo.NotificationLog</code></summary>
+<details><summary><code>client.Notificationlogs.SearchNotificationLogs(request) -> []*payabli.NotificationLog</code></summary>
 <dl>
 <dd>
 
@@ -12347,30 +12437,31 @@ This endpoint requires the `notifications_create` OR `notifications_read` permis
 <dd>
 
 ```go
+request := &payabli.SearchNotificationLogsRequest{
+        PageSize: payabli.Int(
+            20,
+        ),
+        Body: &payabli.NotificationLogSearchRequest{
+            StartDate: payabli.MustParseDateTime(
+                "2024-01-01T00:00:00Z",
+            ),
+            EndDate: payabli.MustParseDateTime(
+                "2024-01-31T23:59:59Z",
+            ),
+            OrgId: payabli.Int64(
+                12345,
+            ),
+            NotificationEvent: payabli.String(
+                "ActivatedMerchant",
+            ),
+            Succeeded: payabli.Bool(
+                true,
+            ),
+        },
+    }
 client.Notificationlogs.SearchNotificationLogs(
         context.TODO(),
-        &sdkgo.SearchNotificationLogsRequest{
-            PageSize: sdkgo.Int(
-                20,
-            ),
-            Body: &sdkgo.NotificationLogSearchRequest{
-                StartDate: sdkgo.MustParseDateTime(
-                    "2024-01-01T00:00:00Z",
-                ),
-                EndDate: sdkgo.MustParseDateTime(
-                    "2024-01-31T23:59:59Z",
-                ),
-                OrgId: sdkgo.Int64(
-                    12345,
-                ),
-                NotificationEvent: sdkgo.String(
-                    "ActivatedMerchant",
-                ),
-                Succeeded: sdkgo.Bool(
-                    true,
-                ),
-            },
-        },
+        request,
     )
 }
 ```
@@ -12387,7 +12478,7 @@ client.Notificationlogs.SearchNotificationLogs(
 <dl>
 <dd>
 
-**pageSize:** `*sdkgo.Pagesize` 
+**pageSize:** `*payabli.Pagesize` 
     
 </dd>
 </dl>
@@ -12395,7 +12486,7 @@ client.Notificationlogs.SearchNotificationLogs(
 <dl>
 <dd>
 
-**skip:** `*int` — The number of records to skip before starting to collect the result set. 
+**page:** `*int` — The page number to retrieve. Defaults to 1 if not provided.
     
 </dd>
 </dl>
@@ -12403,7 +12494,7 @@ client.Notificationlogs.SearchNotificationLogs(
 <dl>
 <dd>
 
-**request:** `*sdkgo.NotificationLogSearchRequest` 
+**request:** `*payabli.NotificationLogSearchRequest` 
     
 </dd>
 </dl>
@@ -12415,7 +12506,7 @@ client.Notificationlogs.SearchNotificationLogs(
 </dl>
 </details>
 
-<details><summary><code>client.Notificationlogs.GetNotificationLog(Uuid) -> *sdkgo.NotificationLogDetail</code></summary>
+<details><summary><code>client.Notificationlogs.GetNotificationLog(Uuid) -> *payabli.NotificationLogDetail</code></summary>
 <dl>
 <dd>
 
@@ -12476,7 +12567,7 @@ client.Notificationlogs.GetNotificationLog(
 </dl>
 </details>
 
-<details><summary><code>client.Notificationlogs.RetryNotificationLog(Uuid) -> *sdkgo.NotificationLogDetail</code></summary>
+<details><summary><code>client.Notificationlogs.RetryNotificationLog(Uuid) -> *payabli.NotificationLogDetail</code></summary>
 <dl>
 <dd>
 
@@ -12568,19 +12659,20 @@ This endpoint requires the `notifications_create` permission.
 <dd>
 
 ```go
+request := []uuid.UUID{
+        uuid.MustParse(
+            "550e8400-e29b-41d4-a716-446655440000",
+        ),
+        uuid.MustParse(
+            "550e8400-e29b-41d4-a716-446655440001",
+        ),
+        uuid.MustParse(
+            "550e8400-e29b-41d4-a716-446655440002",
+        ),
+    }
 client.Notificationlogs.BulkRetryNotificationLogs(
         context.TODO(),
-        []uuid.UUID{
-            uuid.MustParse(
-                "550e8400-e29b-41d4-a716-446655440000",
-            ),
-            uuid.MustParse(
-                "550e8400-e29b-41d4-a716-446655440001",
-            ),
-            uuid.MustParse(
-                "550e8400-e29b-41d4-a716-446655440002",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -12597,7 +12689,7 @@ client.Notificationlogs.BulkRetryNotificationLogs(
 <dl>
 <dd>
 
-**request:** `sdkgo.BulkRetryRequest` 
+**request:** `payabli.BulkRetryRequest` 
     
 </dd>
 </dl>
@@ -12610,7 +12702,7 @@ client.Notificationlogs.BulkRetryNotificationLogs(
 </details>
 
 ## Ocr
-<details><summary><code>client.Ocr.OcrDocumentForm(TypeResult, request) -> *sdkgo.PayabliApiResponseOcr</code></summary>
+<details><summary><code>client.Ocr.OcrDocumentForm(TypeResult, request) -> *payabli.PayabliApiResponseOcr</code></summary>
 <dl>
 <dd>
 
@@ -12623,10 +12715,11 @@ client.Notificationlogs.BulkRetryNotificationLogs(
 <dd>
 
 ```go
+request := &payabli.FileContentImageOnly{}
 client.Ocr.OcrDocumentForm(
         context.TODO(),
         "typeResult",
-        &sdkgo.FileContentImageOnly{},
+        request,
     )
 }
 ```
@@ -12643,7 +12736,7 @@ client.Ocr.OcrDocumentForm(
 <dl>
 <dd>
 
-**typeResult:** `sdkgo.TypeResult` 
+**typeResult:** `payabli.TypeResult` 
     
 </dd>
 </dl>
@@ -12651,7 +12744,7 @@ client.Ocr.OcrDocumentForm(
 <dl>
 <dd>
 
-**request:** `*sdkgo.FileContentImageOnly` — The image file to OCR. Accepted formats include PDF, JPG, JPEG, PNG, GIF.
+**request:** `*payabli.FileContentImageOnly` — The image file to OCR. Accepted formats include PDF, JPG, JPEG, PNG, GIF.
     
 </dd>
 </dl>
@@ -12663,7 +12756,7 @@ client.Ocr.OcrDocumentForm(
 </dl>
 </details>
 
-<details><summary><code>client.Ocr.OcrDocumentJson(TypeResult, request) -> *sdkgo.PayabliApiResponseOcr</code></summary>
+<details><summary><code>client.Ocr.OcrDocumentJson(TypeResult, request) -> *payabli.PayabliApiResponseOcr</code></summary>
 <dl>
 <dd>
 
@@ -12676,10 +12769,11 @@ client.Ocr.OcrDocumentForm(
 <dd>
 
 ```go
+request := &payabli.FileContentImageOnly{}
 client.Ocr.OcrDocumentJson(
         context.TODO(),
         "typeResult",
-        &sdkgo.FileContentImageOnly{},
+        request,
     )
 }
 ```
@@ -12696,7 +12790,7 @@ client.Ocr.OcrDocumentJson(
 <dl>
 <dd>
 
-**typeResult:** `sdkgo.TypeResult` 
+**typeResult:** `payabli.TypeResult` 
     
 </dd>
 </dl>
@@ -12704,7 +12798,7 @@ client.Ocr.OcrDocumentJson(
 <dl>
 <dd>
 
-**request:** `*sdkgo.FileContentImageOnly` — Base64-encoded file content for OCR processing
+**request:** `*payabli.FileContentImageOnly` — Base64-encoded file content for OCR processing
     
 </dd>
 </dl>
@@ -12717,7 +12811,7 @@ client.Ocr.OcrDocumentJson(
 </details>
 
 ## Organization
-<details><summary><code>client.Organization.AddOrganization(request) -> *sdkgo.AddOrganizationResponse</code></summary>
+<details><summary><code>client.Organization.AddOrganization(request) -> *payabli.AddOrganizationResponse</code></summary>
 <dl>
 <dd>
 
@@ -12744,99 +12838,100 @@ Creates an organization under a parent organization. This is also referred to as
 <dd>
 
 ```go
-client.Organization.AddOrganization(
-        context.TODO(),
-        &sdkgo.AddOrganizationRequest{
-            IdempotencyKey: sdkgo.String(
-                "6B29FC40-CA47-1067-B31D-00DD010662DA",
-            ),
-            BillingInfo: &sdkgo.Instrument{
-                AchAccount: "123123123",
-                AchRouting: "123123123",
-                BillingAddress: sdkgo.String(
-                    "123 Walnut Street",
-                ),
-                BillingCity: sdkgo.String(
-                    "Johnson City",
-                ),
-                BillingCountry: sdkgo.String(
-                    "US",
-                ),
-                BillingState: sdkgo.String(
-                    "TN",
-                ),
-                BillingZip: sdkgo.String(
-                    "37615",
-                ),
-            },
-            Contacts: []*sdkgo.Contacts{
-                &sdkgo.Contacts{
-                    ContactEmail: sdkgo.String(
-                        "herman@hermanscoatings.com",
-                    ),
-                    ContactName: sdkgo.String(
-                        "Herman Martinez",
-                    ),
-                    ContactPhone: sdkgo.String(
-                        "3055550000",
-                    ),
-                    ContactTitle: sdkgo.String(
-                        "Owner",
-                    ),
-                },
-            },
-            HasBilling: sdkgo.Bool(
-                true,
-            ),
-            HasResidual: sdkgo.Bool(
-                true,
-            ),
-            OrgAddress: sdkgo.String(
+request := &payabli.AddOrganizationRequest{
+        IdempotencyKey: payabli.String(
+            "6B29FC40-CA47-1067-B31D-00DD010662DA",
+        ),
+        BillingInfo: &payabli.Instrument{
+            AchAccount: "123123123",
+            AchRouting: "123123123",
+            BillingAddress: payabli.String(
                 "123 Walnut Street",
             ),
-            OrgCity: sdkgo.String(
+            BillingCity: payabli.String(
                 "Johnson City",
             ),
-            OrgCountry: sdkgo.String(
+            BillingCountry: payabli.String(
                 "US",
             ),
-            OrgEntryName: sdkgo.String(
-                "pilgrim-planner",
-            ),
-            OrgId: sdkgo.String(
-                "123",
-            ),
-            OrgLogo: &sdkgo.FileContent{
-                FContent: sdkgo.String(
-                    "TXkgdGVzdCBmaWxlHJ==...",
-                ),
-                Filename: sdkgo.String(
-                    "my-doc.pdf",
-                ),
-                Ftype: sdkgo.FileContentFtypePdf.Ptr(),
-                Furl: sdkgo.String(
-                    "https://mysite.com/my-doc.pdf",
-                ),
-            },
-            OrgName: "Pilgrim Planner",
-            OrgParentId: sdkgo.Int64(
-                236,
-            ),
-            OrgState: sdkgo.String(
+            BillingState: payabli.String(
                 "TN",
             ),
-            OrgTimezone: sdkgo.Int(
-                -5,
-            ),
-            OrgType: 0,
-            OrgWebsite: sdkgo.String(
-                "www.pilgrimageplanner.com",
-            ),
-            OrgZip: sdkgo.String(
+            BillingZip: payabli.String(
                 "37615",
             ),
-            ReplyToEmail: "email@example.com",
         },
+        Contacts: []*payabli.Contacts{
+            &payabli.Contacts{
+                ContactEmail: payabli.String(
+                    "herman@hermanscoatings.com",
+                ),
+                ContactName: payabli.String(
+                    "Herman Martinez",
+                ),
+                ContactPhone: payabli.String(
+                    "3055550000",
+                ),
+                ContactTitle: payabli.String(
+                    "Owner",
+                ),
+            },
+        },
+        HasBilling: payabli.Bool(
+            true,
+        ),
+        HasResidual: payabli.Bool(
+            true,
+        ),
+        OrgAddress: payabli.String(
+            "123 Walnut Street",
+        ),
+        OrgCity: payabli.String(
+            "Johnson City",
+        ),
+        OrgCountry: payabli.String(
+            "US",
+        ),
+        OrgEntryName: payabli.String(
+            "pilgrim-planner",
+        ),
+        OrgId: payabli.String(
+            "123",
+        ),
+        OrgLogo: &payabli.FileContent{
+            FContent: payabli.String(
+                "TXkgdGVzdCBmaWxlHJ==...",
+            ),
+            Filename: payabli.String(
+                "my-doc.pdf",
+            ),
+            Ftype: payabli.FileContentFtypePdf.Ptr(),
+            Furl: payabli.String(
+                "https://mysite.com/my-doc.pdf",
+            ),
+        },
+        OrgName: "Pilgrim Planner",
+        OrgParentId: payabli.Int64(
+            236,
+        ),
+        OrgState: payabli.String(
+            "TN",
+        ),
+        OrgTimezone: payabli.Int(
+            -5,
+        ),
+        OrgType: 0,
+        OrgWebsite: payabli.String(
+            "www.pilgrimageplanner.com",
+        ),
+        OrgZip: payabli.String(
+            "37615",
+        ),
+        ReplyToEmail: "email@example.com",
+    }
+client.Organization.AddOrganization(
+        context.TODO(),
+        request,
     )
 }
 ```
@@ -12853,7 +12948,7 @@ client.Organization.AddOrganization(
 <dl>
 <dd>
 
-**idempotencyKey:** `*sdkgo.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` 
     
 </dd>
 </dl>
@@ -12861,7 +12956,7 @@ client.Organization.AddOrganization(
 <dl>
 <dd>
 
-**services:** `[]*sdkgo.ServiceCost` 
+**services:** `[]*payabli.ServiceCost` 
     
 </dd>
 </dl>
@@ -12869,7 +12964,7 @@ client.Organization.AddOrganization(
 <dl>
 <dd>
 
-**billingInfo:** `*sdkgo.Instrument` 
+**billingInfo:** `*payabli.Instrument` 
     
 </dd>
 </dl>
@@ -12877,7 +12972,7 @@ client.Organization.AddOrganization(
 <dl>
 <dd>
 
-**contacts:** `*sdkgo.ContactsField` 
+**contacts:** `*payabli.ContactsField` 
     
 </dd>
 </dl>
@@ -12901,7 +12996,7 @@ client.Organization.AddOrganization(
 <dl>
 <dd>
 
-**orgAddress:** `*sdkgo.Orgaddress` 
+**orgAddress:** `*payabli.Orgaddress` 
     
 </dd>
 </dl>
@@ -12909,7 +13004,7 @@ client.Organization.AddOrganization(
 <dl>
 <dd>
 
-**orgCity:** `*sdkgo.Orgcity` 
+**orgCity:** `*payabli.Orgcity` 
     
 </dd>
 </dl>
@@ -12917,7 +13012,7 @@ client.Organization.AddOrganization(
 <dl>
 <dd>
 
-**orgCountry:** `*sdkgo.Orgcountry` 
+**orgCountry:** `*payabli.Orgcountry` 
     
 </dd>
 </dl>
@@ -12925,7 +13020,7 @@ client.Organization.AddOrganization(
 <dl>
 <dd>
 
-**orgEntryName:** `*sdkgo.Orgentryname` 
+**orgEntryName:** `*payabli.Orgentryname` 
     
 </dd>
 </dl>
@@ -12933,7 +13028,7 @@ client.Organization.AddOrganization(
 <dl>
 <dd>
 
-**orgId:** `*sdkgo.Orgidstring` 
+**orgId:** `*payabli.Orgidstring` 
     
 </dd>
 </dl>
@@ -12941,7 +13036,7 @@ client.Organization.AddOrganization(
 <dl>
 <dd>
 
-**orgLogo:** `*sdkgo.FileContent` 
+**orgLogo:** `*payabli.FileContent` 
     
 </dd>
 </dl>
@@ -12949,7 +13044,7 @@ client.Organization.AddOrganization(
 <dl>
 <dd>
 
-**orgName:** `sdkgo.Orgname` 
+**orgName:** `payabli.Orgname` 
     
 </dd>
 </dl>
@@ -12957,7 +13052,7 @@ client.Organization.AddOrganization(
 <dl>
 <dd>
 
-**orgParentId:** `*sdkgo.OrgParentId` 
+**orgParentId:** `*payabli.OrgParentId` 
     
 </dd>
 </dl>
@@ -12965,7 +13060,7 @@ client.Organization.AddOrganization(
 <dl>
 <dd>
 
-**orgState:** `*sdkgo.Orgstate` 
+**orgState:** `*payabli.Orgstate` 
     
 </dd>
 </dl>
@@ -12973,7 +13068,7 @@ client.Organization.AddOrganization(
 <dl>
 <dd>
 
-**orgTimezone:** `*sdkgo.Orgtimezone` 
+**orgTimezone:** `*payabli.Orgtimezone` 
     
 </dd>
 </dl>
@@ -12981,7 +13076,7 @@ client.Organization.AddOrganization(
 <dl>
 <dd>
 
-**orgType:** `sdkgo.Orgtype` 
+**orgType:** `payabli.Orgtype` 
     
 </dd>
 </dl>
@@ -12989,7 +13084,7 @@ client.Organization.AddOrganization(
 <dl>
 <dd>
 
-**orgWebsite:** `*sdkgo.Orgwebsite` 
+**orgWebsite:** `*payabli.Orgwebsite` 
     
 </dd>
 </dl>
@@ -12997,7 +13092,7 @@ client.Organization.AddOrganization(
 <dl>
 <dd>
 
-**orgZip:** `*sdkgo.Orgzip` 
+**orgZip:** `*payabli.Orgzip` 
     
 </dd>
 </dl>
@@ -13005,7 +13100,7 @@ client.Organization.AddOrganization(
 <dl>
 <dd>
 
-**replyToEmail:** `sdkgo.ReplyToEmail` 
+**replyToEmail:** `payabli.ReplyToEmail` 
     
 </dd>
 </dl>
@@ -13017,7 +13112,7 @@ client.Organization.AddOrganization(
 </dl>
 </details>
 
-<details><summary><code>client.Organization.DeleteOrganization(OrgId) -> *sdkgo.DeleteOrganizationResponse</code></summary>
+<details><summary><code>client.Organization.DeleteOrganization(OrgId) -> *payabli.DeleteOrganizationResponse</code></summary>
 <dl>
 <dd>
 
@@ -13075,7 +13170,7 @@ client.Organization.DeleteOrganization(
 </dl>
 </details>
 
-<details><summary><code>client.Organization.EditOrganization(OrgId, request) -> *sdkgo.EditOrganizationResponse</code></summary>
+<details><summary><code>client.Organization.EditOrganization(OrgId, request) -> *payabli.EditOrganizationResponse</code></summary>
 <dl>
 <dd>
 
@@ -13102,60 +13197,61 @@ Updates an organization's details by ID.
 <dd>
 
 ```go
+request := &payabli.OrganizationData{
+        Contacts: []*payabli.Contacts{
+            &payabli.Contacts{
+                ContactEmail: payabli.String(
+                    "herman@hermanscoatings.com",
+                ),
+                ContactName: payabli.String(
+                    "Herman Martinez",
+                ),
+                ContactPhone: payabli.String(
+                    "3055550000",
+                ),
+                ContactTitle: payabli.String(
+                    "Owner",
+                ),
+            },
+        },
+        OrgAddress: payabli.String(
+            "123 Walnut Street",
+        ),
+        OrgCity: payabli.String(
+            "Johnson City",
+        ),
+        OrgCountry: payabli.String(
+            "US",
+        ),
+        OrgEntryName: payabli.String(
+            "pilgrim-planner",
+        ),
+        OrganizationDataOrgId: payabli.String(
+            "123",
+        ),
+        OrgName: payabli.String(
+            "Pilgrim Planner",
+        ),
+        OrgState: payabli.String(
+            "TN",
+        ),
+        OrgTimezone: payabli.Int(
+            -5,
+        ),
+        OrgType: payabli.Int(
+            0,
+        ),
+        OrgWebsite: payabli.String(
+            "www.pilgrimageplanner.com",
+        ),
+        OrgZip: payabli.String(
+            "37615",
+        ),
+    }
 client.Organization.EditOrganization(
         context.TODO(),
         123,
-        &sdkgo.OrganizationData{
-            Contacts: []*sdkgo.Contacts{
-                &sdkgo.Contacts{
-                    ContactEmail: sdkgo.String(
-                        "herman@hermanscoatings.com",
-                    ),
-                    ContactName: sdkgo.String(
-                        "Herman Martinez",
-                    ),
-                    ContactPhone: sdkgo.String(
-                        "3055550000",
-                    ),
-                    ContactTitle: sdkgo.String(
-                        "Owner",
-                    ),
-                },
-            },
-            OrgAddress: sdkgo.String(
-                "123 Walnut Street",
-            ),
-            OrgCity: sdkgo.String(
-                "Johnson City",
-            ),
-            OrgCountry: sdkgo.String(
-                "US",
-            ),
-            OrgEntryName: sdkgo.String(
-                "pilgrim-planner",
-            ),
-            OrganizationDataOrgId: sdkgo.String(
-                "123",
-            ),
-            OrgName: sdkgo.String(
-                "Pilgrim Planner",
-            ),
-            OrgState: sdkgo.String(
-                "TN",
-            ),
-            OrgTimezone: sdkgo.Int(
-                -5,
-            ),
-            OrgType: sdkgo.Int(
-                0,
-            ),
-            OrgWebsite: sdkgo.String(
-                "www.pilgrimageplanner.com",
-            ),
-            OrgZip: sdkgo.String(
-                "37615",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -13180,7 +13276,7 @@ client.Organization.EditOrganization(
 <dl>
 <dd>
 
-**services:** `[]*sdkgo.ServiceCost` 
+**services:** `[]*payabli.ServiceCost` 
     
 </dd>
 </dl>
@@ -13188,7 +13284,7 @@ client.Organization.EditOrganization(
 <dl>
 <dd>
 
-**billingInfo:** `*sdkgo.Instrument` 
+**billingInfo:** `*payabli.Instrument` 
     
 </dd>
 </dl>
@@ -13196,7 +13292,7 @@ client.Organization.EditOrganization(
 <dl>
 <dd>
 
-**contacts:** `*sdkgo.ContactsField` 
+**contacts:** `*payabli.ContactsField` 
     
 </dd>
 </dl>
@@ -13220,7 +13316,7 @@ client.Organization.EditOrganization(
 <dl>
 <dd>
 
-**orgAddress:** `*sdkgo.Orgaddress` 
+**orgAddress:** `*payabli.Orgaddress` 
     
 </dd>
 </dl>
@@ -13228,7 +13324,7 @@ client.Organization.EditOrganization(
 <dl>
 <dd>
 
-**orgCity:** `*sdkgo.Orgcity` 
+**orgCity:** `*payabli.Orgcity` 
     
 </dd>
 </dl>
@@ -13236,7 +13332,7 @@ client.Organization.EditOrganization(
 <dl>
 <dd>
 
-**orgCountry:** `*sdkgo.Orgcountry` 
+**orgCountry:** `*payabli.Orgcountry` 
     
 </dd>
 </dl>
@@ -13244,7 +13340,7 @@ client.Organization.EditOrganization(
 <dl>
 <dd>
 
-**orgEntryName:** `*sdkgo.Orgentryname` 
+**orgEntryName:** `*payabli.Orgentryname` 
     
 </dd>
 </dl>
@@ -13252,7 +13348,7 @@ client.Organization.EditOrganization(
 <dl>
 <dd>
 
-**organizationDataOrgId:** `*sdkgo.Orgidstring` 
+**organizationDataOrgId:** `*payabli.Orgidstring` 
     
 </dd>
 </dl>
@@ -13260,7 +13356,7 @@ client.Organization.EditOrganization(
 <dl>
 <dd>
 
-**orgLogo:** `*sdkgo.FileContent` 
+**orgLogo:** `*payabli.FileContent` 
     
 </dd>
 </dl>
@@ -13268,7 +13364,7 @@ client.Organization.EditOrganization(
 <dl>
 <dd>
 
-**orgName:** `*sdkgo.Orgname` 
+**orgName:** `*payabli.Orgname` 
     
 </dd>
 </dl>
@@ -13276,7 +13372,7 @@ client.Organization.EditOrganization(
 <dl>
 <dd>
 
-**orgParentId:** `*sdkgo.OrgParentId` 
+**orgParentId:** `*payabli.OrgParentId` 
     
 </dd>
 </dl>
@@ -13284,7 +13380,7 @@ client.Organization.EditOrganization(
 <dl>
 <dd>
 
-**orgState:** `*sdkgo.Orgstate` 
+**orgState:** `*payabli.Orgstate` 
     
 </dd>
 </dl>
@@ -13292,7 +13388,7 @@ client.Organization.EditOrganization(
 <dl>
 <dd>
 
-**orgTimezone:** `*sdkgo.Orgtimezone` 
+**orgTimezone:** `*payabli.Orgtimezone` 
     
 </dd>
 </dl>
@@ -13300,7 +13396,7 @@ client.Organization.EditOrganization(
 <dl>
 <dd>
 
-**orgType:** `*sdkgo.Orgtype` 
+**orgType:** `*payabli.Orgtype` 
     
 </dd>
 </dl>
@@ -13308,7 +13404,7 @@ client.Organization.EditOrganization(
 <dl>
 <dd>
 
-**orgWebsite:** `*sdkgo.Orgwebsite` 
+**orgWebsite:** `*payabli.Orgwebsite` 
     
 </dd>
 </dl>
@@ -13316,7 +13412,7 @@ client.Organization.EditOrganization(
 <dl>
 <dd>
 
-**orgZip:** `*sdkgo.Orgzip` 
+**orgZip:** `*payabli.Orgzip` 
     
 </dd>
 </dl>
@@ -13324,7 +13420,7 @@ client.Organization.EditOrganization(
 <dl>
 <dd>
 
-**replyToEmail:** `*sdkgo.ReplyToEmail` 
+**replyToEmail:** `*payabli.ReplyToEmail` 
     
 </dd>
 </dl>
@@ -13336,7 +13432,7 @@ client.Organization.EditOrganization(
 </dl>
 </details>
 
-<details><summary><code>client.Organization.GetBasicOrganization(Entry) -> *sdkgo.OrganizationQueryRecord</code></summary>
+<details><summary><code>client.Organization.GetBasicOrganization(Entry) -> *payabli.OrganizationQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -13394,7 +13490,7 @@ client.Organization.GetBasicOrganization(
 </dl>
 </details>
 
-<details><summary><code>client.Organization.GetBasicOrganizationById(OrgId) -> *sdkgo.OrganizationQueryRecord</code></summary>
+<details><summary><code>client.Organization.GetBasicOrganizationById(OrgId) -> *payabli.OrganizationQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -13452,7 +13548,7 @@ client.Organization.GetBasicOrganizationById(
 </dl>
 </details>
 
-<details><summary><code>client.Organization.GetOrganization(OrgId) -> *sdkgo.OrganizationQueryRecord</code></summary>
+<details><summary><code>client.Organization.GetOrganization(OrgId) -> *payabli.OrganizationQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -13510,7 +13606,7 @@ client.Organization.GetOrganization(
 </dl>
 </details>
 
-<details><summary><code>client.Organization.GetSettingsOrganization(OrgId) -> *sdkgo.SettingsQueryRecord</code></summary>
+<details><summary><code>client.Organization.GetSettingsOrganization(OrgId) -> *payabli.SettingsQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -13569,7 +13665,7 @@ client.Organization.GetSettingsOrganization(
 </details>
 
 ## PaymentLink
-<details><summary><code>client.PaymentLink.AddPayLinkFromInvoice(IdInvoice, request) -> *sdkgo.PayabliApiResponsePaymentLinks</code></summary>
+<details><summary><code>client.PaymentLink.AddPayLinkFromInvoice(IdInvoice, request) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
 <dl>
 <dd>
 
@@ -13596,253 +13692,254 @@ Generates a payment link for an invoice from the invoice ID.
 <dd>
 
 ```go
-client.PaymentLink.AddPayLinkFromInvoice(
-        context.TODO(),
-        23548884,
-        &sdkgo.PayLinkDataInvoice{
-            Mail2: sdkgo.String(
-                "jo@example.com; ceo@example.com",
-            ),
-            Body: &sdkgo.PaymentPageRequestBody{
-                ContactUs: &sdkgo.ContactElement{
-                    EmailLabel: sdkgo.String(
-                        "Email",
-                    ),
-                    Enabled: sdkgo.Bool(
+request := &payabli.PayLinkDataInvoice{
+        Mail2: payabli.String(
+            "jo@example.com; ceo@example.com",
+        ),
+        Body: &payabli.PaymentPageRequestBody{
+            ContactUs: &payabli.ContactElement{
+                EmailLabel: payabli.String(
+                    "Email",
+                ),
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Header: payabli.String(
+                    "Contact Us",
+                ),
+                Order: payabli.Int(
+                    0,
+                ),
+                PaymentIcons: payabli.Bool(
+                    true,
+                ),
+                PhoneLabel: payabli.String(
+                    "Phone",
+                ),
+            },
+            Invoices: &payabli.InvoiceElement{
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                InvoiceLink: &payabli.LabelElement{
+                    Enabled: payabli.Bool(
                         true,
                     ),
-                    Header: sdkgo.String(
-                        "Contact Us",
+                    Label: payabli.String(
+                        "View Invoice",
                     ),
-                    Order: sdkgo.Int(
-                        0,
-                    ),
-                    PaymentIcons: sdkgo.Bool(
-                        true,
-                    ),
-                    PhoneLabel: sdkgo.String(
-                        "Phone",
-                    ),
-                },
-                Invoices: &sdkgo.InvoiceElement{
-                    Enabled: sdkgo.Bool(
-                        true,
-                    ),
-                    InvoiceLink: &sdkgo.LabelElement{
-                        Enabled: sdkgo.Bool(
-                            true,
-                        ),
-                        Label: sdkgo.String(
-                            "View Invoice",
-                        ),
-                        Order: sdkgo.Int(
-                            0,
-                        ),
-                    },
-                    Order: sdkgo.Int(
-                        0,
-                    ),
-                    ViewInvoiceDetails: &sdkgo.LabelElement{
-                        Enabled: sdkgo.Bool(
-                            true,
-                        ),
-                        Label: sdkgo.String(
-                            "Invoice Details",
-                        ),
-                        Order: sdkgo.Int(
-                            0,
-                        ),
-                    },
-                },
-                Logo: &sdkgo.Element{
-                    Enabled: sdkgo.Bool(
-                        true,
-                    ),
-                    Order: sdkgo.Int(
+                    Order: payabli.Int(
                         0,
                     ),
                 },
-                MessageBeforePaying: &sdkgo.LabelElement{
-                    Enabled: sdkgo.Bool(
+                Order: payabli.Int(
+                    0,
+                ),
+                ViewInvoiceDetails: &payabli.LabelElement{
+                    Enabled: payabli.Bool(
                         true,
                     ),
-                    Label: sdkgo.String(
-                        "Please review your payment details",
+                    Label: payabli.String(
+                        "Invoice Details",
                     ),
-                    Order: sdkgo.Int(
+                    Order: payabli.Int(
                         0,
-                    ),
-                },
-                Notes: &sdkgo.NoteElement{
-                    Enabled: sdkgo.Bool(
-                        true,
-                    ),
-                    Header: sdkgo.String(
-                        "Additional Notes",
-                    ),
-                    Order: sdkgo.Int(
-                        0,
-                    ),
-                    Placeholder: sdkgo.String(
-                        "Enter any additional notes here",
-                    ),
-                    Value: sdkgo.String(
-                        "",
-                    ),
-                },
-                Page: &sdkgo.PageElement{
-                    Description: sdkgo.String(
-                        "Complete your payment securely",
-                    ),
-                    Enabled: sdkgo.Bool(
-                        true,
-                    ),
-                    Header: sdkgo.String(
-                        "Payment Page",
-                    ),
-                    Order: sdkgo.Int(
-                        0,
-                    ),
-                },
-                PaymentButton: &sdkgo.LabelElement{
-                    Enabled: sdkgo.Bool(
-                        true,
-                    ),
-                    Label: sdkgo.String(
-                        "Pay Now",
-                    ),
-                    Order: sdkgo.Int(
-                        0,
-                    ),
-                },
-                PaymentMethods: &sdkgo.MethodElement{
-                    AllMethodsChecked: sdkgo.Bool(
-                        true,
-                    ),
-                    Enabled: sdkgo.Bool(
-                        true,
-                    ),
-                    Header: sdkgo.String(
-                        "Payment Methods",
-                    ),
-                    Methods: &sdkgo.MethodsList{
-                        Amex: sdkgo.Bool(
-                            true,
-                        ),
-                        ApplePay: sdkgo.Bool(
-                            true,
-                        ),
-                        Discover: sdkgo.Bool(
-                            true,
-                        ),
-                        ECheck: sdkgo.Bool(
-                            true,
-                        ),
-                        Mastercard: sdkgo.Bool(
-                            true,
-                        ),
-                        Visa: sdkgo.Bool(
-                            true,
-                        ),
-                    },
-                    Order: sdkgo.Int(
-                        0,
-                    ),
-                    Settings: &sdkgo.MethodElementSettings{
-                        ApplePay: &sdkgo.MethodElementSettingsApplePay{
-                            ButtonStyle: sdkgo.MethodElementSettingsApplePayButtonStyleBlack.Ptr(),
-                            ButtonType: sdkgo.MethodElementSettingsApplePayButtonTypePay.Ptr(),
-                            Language: sdkgo.MethodElementSettingsApplePayLanguageEnUs.Ptr(),
-                        },
-                    },
-                },
-                Payor: &sdkgo.PayorElement{
-                    Enabled: sdkgo.Bool(
-                        true,
-                    ),
-                    Fields: []*sdkgo.PayorFields{
-                        &sdkgo.PayorFields{
-                            Display: sdkgo.Bool(
-                                true,
-                            ),
-                            Fixed: sdkgo.Bool(
-                                true,
-                            ),
-                            Identifier: sdkgo.Bool(
-                                true,
-                            ),
-                            Label: sdkgo.String(
-                                "Full Name",
-                            ),
-                            Name: sdkgo.String(
-                                "fullName",
-                            ),
-                            Order: sdkgo.Int(
-                                0,
-                            ),
-                            Required: sdkgo.Bool(
-                                true,
-                            ),
-                            Validation: sdkgo.String(
-                                "^[a-zA-Z ]+$",
-                            ),
-                            Value: sdkgo.String(
-                                "",
-                            ),
-                            Width: sdkgo.Int(
-                                0,
-                            ),
-                        },
-                    },
-                    Header: sdkgo.String(
-                        "Payor Information",
-                    ),
-                    Order: sdkgo.Int(
-                        0,
-                    ),
-                },
-                Review: &sdkgo.HeaderElement{
-                    Enabled: sdkgo.Bool(
-                        true,
-                    ),
-                    Header: sdkgo.String(
-                        "Review Payment",
-                    ),
-                    Order: sdkgo.Int(
-                        0,
-                    ),
-                },
-                Settings: &sdkgo.PagelinkSetting{
-                    Color: sdkgo.String(
-                        "#000000",
-                    ),
-                    CustomCssUrl: sdkgo.String(
-                        "https://example.com/custom.css",
-                    ),
-                    Language: sdkgo.String(
-                        "en",
-                    ),
-                    PageLogo: &sdkgo.FileContent{
-                        FContent: sdkgo.String(
-                            "PHN2ZyB2aWV3Qm94PSIwIDAgODAwIDEwMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPCEtLSBCYWNrZ3JvdW5kIC0tPgogIDxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iMTAwMCIgZmlsbD0id2hpdGUiLz4KICAKICA8IS0tIENvbXBhbnkgSGVhZGVyIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI2MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+R3J1enlhIEFkdmVudHVyZSBPdXRmaXR0ZXJzPC90ZXh0PgogIDxsaW5lIHgxPSI0MCIgeTE9IjgwIiB4Mj0iNzYwIiB5Mj0iODAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgCiAgPCEtLSBDb21wYW55IERldGFpbHMgLS0+CiAgPHRleHQgeD0iNDAiIHk9IjExMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4xMjMgTW91bnRhaW4gVmlldyBSb2FkPC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+VGJpbGlzaSwgR2VvcmdpYSAwMTA1PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxNTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+VGVsOiArOTk1IDMyIDEyMyA0NTY3PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxNzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+RW1haWw6IGluZm9AZ3J1enlhYWR2ZW50dXJlcy5jb208L3RleHQ+CgogIDwhLS0gSW52b2ljZSBUaXRsZSAtLT4KICA8dGV4dCB4PSI2MDAiIHk9IjExMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+SU5WT0lDRTwvdGV4dD4KICA8dGV4dCB4PSI2MDAiIHk9IjE0MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5EYXRlOiAxMi8xMS8yMDI0PC90ZXh0PgogIDx0ZXh0IHg9IjYwMCIgeT0iMTYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPkludm9pY2UgIzogR1JaLTIwMjQtMTEyMzwvdGV4dD4KCiAgPCEtLSBCaWxsIFRvIFNlY3Rpb24gLS0+CiAgPHRleHQgeD0iNDAiIHk9IjIyMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+QklMTCBUTzo8L3RleHQ+CiAgPHJlY3QgeD0iNDAiIHk9IjIzNSIgd2lkdGg9IjMwMCIgaGVpZ2h0PSI4MCIgZmlsbD0iI2Y3ZjlmYSIvPgogIDx0ZXh0IHg9IjUwIiB5PSIyNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+W0N1c3RvbWVyIE5hbWVdPC90ZXh0PgogIDx0ZXh0IHg9IjUwIiB5PSIyODAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+W0FkZHJlc3MgTGluZSAxXTwvdGV4dD4KICA8dGV4dCB4PSI1MCIgeT0iMzAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPltDaXR5LCBDb3VudHJ5XTwvdGV4dD4KCiAgPCEtLSBUYWJsZSBIZWFkZXJzIC0tPgogIDxyZWN0IHg9IjQwIiB5PSIzNDAiIHdpZHRoPSI3MjAiIGhlaWdodD0iMzAiIGZpbGw9IiMyYzNlNTAiLz4KICA8dGV4dCB4PSI1MCIgeT0iMzYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSI+RGVzY3JpcHRpb248L3RleHQ+CiAgPHRleHQgeD0iNDUwIiB5PSIzNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIj5RdWFudGl0eTwvdGV4dD4KICA8dGV4dCB4PSI1NTAiIHk9IjM2MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiPlJhdGU8L3RleHQ+CiAgPHRleHQgeD0iNjgwIiB5PSIzNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIj5BbW91bnQ8L3RleHQ+CgogIDwhLS0gVGFibGUgUm93cyAtLT4KICA8cmVjdCB4PSI0MCIgeT0iMzcwIiB3aWR0aD0iNzIwIiBoZWlnaHQ9IjMwIiBmaWxsPSIjZjdmOWZhIi8+CiAgPHRleHQgeD0iNTAiIHk9IjM5MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5Nb3VudGFpbiBDbGltYmluZyBFcXVpcG1lbnQgUmVudGFsPC90ZXh0PgogIDx0ZXh0IHg9IjQ1MCIgeT0iMzkwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPjE8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSIzOTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDI1MC4wMDwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjM5MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kMjUwLjAwPC90ZXh0PgoKICA8cmVjdCB4PSI0MCIgeT0iNDAwIiB3aWR0aD0iNzIwIiBoZWlnaHQ9IjMwIiBmaWxsPSJ3aGl0ZSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI0MjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+R3VpZGVkIFRyZWsgUGFja2FnZSAtIDIgRGF5czwvdGV4dD4KICA8dGV4dCB4PSI0NTAiIHk9IjQyMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4xPC90ZXh0PgogIDx0ZXh0IHg9IjU1MCIgeT0iNDIwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPiQ0MDAuMDA8L3RleHQ+CiAgPHRleHQgeD0iNjgwIiB5PSI0MjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDQwMC4wMDwvdGV4dD4KCiAgPHJlY3QgeD0iNDAiIHk9IjQzMCIgd2lkdGg9IjcyMCIgaGVpZ2h0PSIzMCIgZmlsbD0iI2Y3ZjlmYSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI0NTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+U2FmZXR5IEVxdWlwbWVudCBQYWNrYWdlPC90ZXh0PgogIDx0ZXh0IHg9IjQ1MCIgeT0iNDUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPjE8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSI0NTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDE1MC4wMDwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjQ1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kMTUwLjAwPC90ZXh0PgoKICA8IS0tIFRvdGFscyAtLT4KICA8bGluZSB4MT0iNDAiIHkxPSI0ODAiIHgyPSI3NjAiIHkyPSI0ODAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgPHRleHQgeD0iNTUwIiB5PSI1MTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMzNDQ5NWUiPlN1YnRvdGFsOjwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjUxMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kODAwLjAwPC90ZXh0PgogIDx0ZXh0IHg9IjU1MCIgeT0iNTM1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjMzQ0OTVlIj5UYXggKDE4JSk6PC90ZXh0PgogIDx0ZXh0IHg9IjY4MCIgeT0iNTM1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPiQxNDQuMDA8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSI1NzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPlRvdGFsOjwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjU3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+JDk0NC4wMDwvdGV4dD4KCiAgPCEtLSBQYXltZW50IFRlcm1zIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI2NDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPlBheW1lbnQgVGVybXM8L3RleHQ+CiAgPHRleHQgeD0iNDAiIHk9IjY3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5QYXltZW50IGlzIGR1ZSB3aXRoaW4gMzAgZGF5czwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNjkwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPlBsZWFzZSBpbmNsdWRlIGludm9pY2UgbnVtYmVyIG9uIHBheW1lbnQ8L3RleHQ+CgogIDwhLS0gQmFuayBEZXRhaWxzIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI3MzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPkJhbmsgRGV0YWlsczwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNzYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPkJhbms6IEJhbmsgb2YgR2VvcmdpYTwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNzgwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPklCQU46IEdFMTIzNDU2Nzg5MDEyMzQ1Njc4PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSI4MDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+U1dJRlQ6IEJBR0FHRTIyPC90ZXh0PgoKICA8IS0tIEZvb3RlciAtLT4KICA8bGluZSB4MT0iNDAiIHkxPSI5MDAiIHgyPSI3NjAiIHkyPSI5MDAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgPHRleHQgeD0iNDAiIHk9IjkzMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjN2Y4YzhkIj5UaGFuayB5b3UgZm9yIGNob29zaW5nIEdydXp5YSBBZHZlbnR1cmUgT3V0Zml0dGVyczwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iOTUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM3ZjhjOGQiPnd3dy5ncnV6eWFhZHZlbnR1cmVzLmNvbTwvdGV4dD4KPC9zdmc+Cg==",
-                        ),
-                        Filename: sdkgo.String(
-                            "logo.jpg",
-                        ),
-                        Ftype: sdkgo.FileContentFtypeJpg.Ptr(),
-                        Furl: sdkgo.String(
-                            "",
-                        ),
-                    },
-                    RedirectAfterApprove: sdkgo.Bool(
-                        true,
-                    ),
-                    RedirectAfterApproveUrl: sdkgo.String(
-                        "https://example.com/success",
                     ),
                 },
             },
+            Logo: &payabli.Element{
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Order: payabli.Int(
+                    0,
+                ),
+            },
+            MessageBeforePaying: &payabli.LabelElement{
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Label: payabli.String(
+                    "Please review your payment details",
+                ),
+                Order: payabli.Int(
+                    0,
+                ),
+            },
+            Notes: &payabli.NoteElement{
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Header: payabli.String(
+                    "Additional Notes",
+                ),
+                Order: payabli.Int(
+                    0,
+                ),
+                Placeholder: payabli.String(
+                    "Enter any additional notes here",
+                ),
+                Value: payabli.String(
+                    "",
+                ),
+            },
+            Page: &payabli.PageElement{
+                Description: payabli.String(
+                    "Complete your payment securely",
+                ),
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Header: payabli.String(
+                    "Payment Page",
+                ),
+                Order: payabli.Int(
+                    0,
+                ),
+            },
+            PaymentButton: &payabli.LabelElement{
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Label: payabli.String(
+                    "Pay Now",
+                ),
+                Order: payabli.Int(
+                    0,
+                ),
+            },
+            PaymentMethods: &payabli.MethodElement{
+                AllMethodsChecked: payabli.Bool(
+                    true,
+                ),
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Header: payabli.String(
+                    "Payment Methods",
+                ),
+                Methods: &payabli.MethodsList{
+                    Amex: payabli.Bool(
+                        true,
+                    ),
+                    ApplePay: payabli.Bool(
+                        true,
+                    ),
+                    Discover: payabli.Bool(
+                        true,
+                    ),
+                    ECheck: payabli.Bool(
+                        true,
+                    ),
+                    Mastercard: payabli.Bool(
+                        true,
+                    ),
+                    Visa: payabli.Bool(
+                        true,
+                    ),
+                },
+                Order: payabli.Int(
+                    0,
+                ),
+                Settings: &payabli.MethodElementSettings{
+                    ApplePay: &payabli.MethodElementSettingsApplePay{
+                        ButtonStyle: payabli.MethodElementSettingsApplePayButtonStyleBlack.Ptr(),
+                        ButtonType: payabli.MethodElementSettingsApplePayButtonTypePay.Ptr(),
+                        Language: payabli.MethodElementSettingsApplePayLanguageEnUs.Ptr(),
+                    },
+                },
+            },
+            Payor: &payabli.PayorElement{
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Fields: []*payabli.PayorFields{
+                    &payabli.PayorFields{
+                        Display: payabli.Bool(
+                            true,
+                        ),
+                        Fixed: payabli.Bool(
+                            true,
+                        ),
+                        Identifier: payabli.Bool(
+                            true,
+                        ),
+                        Label: payabli.String(
+                            "Full Name",
+                        ),
+                        Name: payabli.String(
+                            "fullName",
+                        ),
+                        Order: payabli.Int(
+                            0,
+                        ),
+                        Required: payabli.Bool(
+                            true,
+                        ),
+                        Validation: payabli.String(
+                            "^[a-zA-Z ]+$",
+                        ),
+                        Value: payabli.String(
+                            "",
+                        ),
+                        Width: payabli.Int(
+                            0,
+                        ),
+                    },
+                },
+                Header: payabli.String(
+                    "Payor Information",
+                ),
+                Order: payabli.Int(
+                    0,
+                ),
+            },
+            Review: &payabli.HeaderElement{
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Header: payabli.String(
+                    "Review Payment",
+                ),
+                Order: payabli.Int(
+                    0,
+                ),
+            },
+            Settings: &payabli.PagelinkSetting{
+                Color: payabli.String(
+                    "#000000",
+                ),
+                CustomCssUrl: payabli.String(
+                    "https://example.com/custom.css",
+                ),
+                Language: payabli.String(
+                    "en",
+                ),
+                PageLogo: &payabli.FileContent{
+                    FContent: payabli.String(
+                        "PHN2ZyB2aWV3Qm94PSIwIDAgODAwIDEwMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPCEtLSBCYWNrZ3JvdW5kIC0tPgogIDxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iMTAwMCIgZmlsbD0id2hpdGUiLz4KICAKICA8IS0tIENvbXBhbnkgSGVhZGVyIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI2MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+R3J1enlhIEFkdmVudHVyZSBPdXRmaXR0ZXJzPC90ZXh0PgogIDxsaW5lIHgxPSI0MCIgeTE9IjgwIiB4Mj0iNzYwIiB5Mj0iODAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgCiAgPCEtLSBDb21wYW55IERldGFpbHMgLS0+CiAgPHRleHQgeD0iNDAiIHk9IjExMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4xMjMgTW91bnRhaW4gVmlldyBSb2FkPC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+VGJpbGlzaSwgR2VvcmdpYSAwMTA1PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxNTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+VGVsOiArOTk1IDMyIDEyMyA0NTY3PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxNzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+RW1haWw6IGluZm9AZ3J1enlhYWR2ZW50dXJlcy5jb208L3RleHQ+CgogIDwhLS0gSW52b2ljZSBUaXRsZSAtLT4KICA8dGV4dCB4PSI2MDAiIHk9IjExMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+SU5WT0lDRTwvdGV4dD4KICA8dGV4dCB4PSI2MDAiIHk9IjE0MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5EYXRlOiAxMi8xMS8yMDI0PC90ZXh0PgogIDx0ZXh0IHg9IjYwMCIgeT0iMTYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPkludm9pY2UgIzogR1JaLTIwMjQtMTEyMzwvdGV4dD4KCiAgPCEtLSBCaWxsIFRvIFNlY3Rpb24gLS0+CiAgPHRleHQgeD0iNDAiIHk9IjIyMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+QklMTCBUTzo8L3RleHQ+CiAgPHJlY3QgeD0iNDAiIHk9IjIzNSIgd2lkdGg9IjMwMCIgaGVpZ2h0PSI4MCIgZmlsbD0iI2Y3ZjlmYSIvPgogIDx0ZXh0IHg9IjUwIiB5PSIyNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+W0N1c3RvbWVyIE5hbWVdPC90ZXh0PgogIDx0ZXh0IHg9IjUwIiB5PSIyODAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+W0FkZHJlc3MgTGluZSAxXTwvdGV4dD4KICA8dGV4dCB4PSI1MCIgeT0iMzAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPltDaXR5LCBDb3VudHJ5XTwvdGV4dD4KCiAgPCEtLSBUYWJsZSBIZWFkZXJzIC0tPgogIDxyZWN0IHg9IjQwIiB5PSIzNDAiIHdpZHRoPSI3MjAiIGhlaWdodD0iMzAiIGZpbGw9IiMyYzNlNTAiLz4KICA8dGV4dCB4PSI1MCIgeT0iMzYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSI+RGVzY3JpcHRpb248L3RleHQ+CiAgPHRleHQgeD0iNDUwIiB5PSIzNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIj5RdWFudGl0eTwvdGV4dD4KICA8dGV4dCB4PSI1NTAiIHk9IjM2MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiPlJhdGU8L3RleHQ+CiAgPHRleHQgeD0iNjgwIiB5PSIzNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIj5BbW91bnQ8L3RleHQ+CgogIDwhLS0gVGFibGUgUm93cyAtLT4KICA8cmVjdCB4PSI0MCIgeT0iMzcwIiB3aWR0aD0iNzIwIiBoZWlnaHQ9IjMwIiBmaWxsPSIjZjdmOWZhIi8+CiAgPHRleHQgeD0iNTAiIHk9IjM5MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5Nb3VudGFpbiBDbGltYmluZyBFcXVpcG1lbnQgUmVudGFsPC90ZXh0PgogIDx0ZXh0IHg9IjQ1MCIgeT0iMzkwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPjE8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSIzOTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDI1MC4wMDwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjM5MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kMjUwLjAwPC90ZXh0PgoKICA8cmVjdCB4PSI0MCIgeT0iNDAwIiB3aWR0aD0iNzIwIiBoZWlnaHQ9IjMwIiBmaWxsPSJ3aGl0ZSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI0MjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+R3VpZGVkIFRyZWsgUGFja2FnZSAtIDIgRGF5czwvdGV4dD4KICA8dGV4dCB4PSI0NTAiIHk9IjQyMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4xPC90ZXh0PgogIDx0ZXh0IHg9IjU1MCIgeT0iNDIwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPiQ0MDAuMDA8L3RleHQ+CiAgPHRleHQgeD0iNjgwIiB5PSI0MjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDQwMC4wMDwvdGV4dD4KCiAgPHJlY3QgeD0iNDAiIHk9IjQzMCIgd2lkdGg9IjcyMCIgaGVpZ2h0PSIzMCIgZmlsbD0iI2Y3ZjlmYSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI0NTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+U2FmZXR5IEVxdWlwbWVudCBQYWNrYWdlPC90ZXh0PgogIDx0ZXh0IHg9IjQ1MCIgeT0iNDUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPjE8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSI0NTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDE1MC4wMDwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjQ1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kMTUwLjAwPC90ZXh0PgoKICA8IS0tIFRvdGFscyAtLT4KICA8bGluZSB4MT0iNDAiIHkxPSI0ODAiIHgyPSI3NjAiIHkyPSI0ODAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgPHRleHQgeD0iNTUwIiB5PSI1MTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMzNDQ5NWUiPlN1YnRvdGFsOjwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjUxMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kODAwLjAwPC90ZXh0PgogIDx0ZXh0IHg9IjU1MCIgeT0iNTM1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjMzQ0OTVlIj5UYXggKDE4JSk6PC90ZXh0PgogIDx0ZXh0IHg9IjY4MCIgeT0iNTM1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPiQxNDQuMDA8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSI1NzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPlRvdGFsOjwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjU3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+JDk0NC4wMDwvdGV4dD4KCiAgPCEtLSBQYXltZW50IFRlcm1zIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI2NDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPlBheW1lbnQgVGVybXM8L3RleHQ+CiAgPHRleHQgeD0iNDAiIHk9IjY3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5QYXltZW50IGlzIGR1ZSB3aXRoaW4gMzAgZGF5czwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNjkwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPlBsZWFzZSBpbmNsdWRlIGludm9pY2UgbnVtYmVyIG9uIHBheW1lbnQ8L3RleHQ+CgogIDwhLS0gQmFuayBEZXRhaWxzIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI3MzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPkJhbmsgRGV0YWlsczwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNzYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPkJhbms6IEJhbmsgb2YgR2VvcmdpYTwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNzgwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPklCQU46IEdFMTIzNDU2Nzg5MDEyMzQ1Njc4PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSI4MDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+U1dJRlQ6IEJBR0FHRTIyPC90ZXh0PgoKICA8IS0tIEZvb3RlciAtLT4KICA8bGluZSB4MT0iNDAiIHkxPSI5MDAiIHgyPSI3NjAiIHkyPSI5MDAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgPHRleHQgeD0iNDAiIHk9IjkzMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjN2Y4YzhkIj5UaGFuayB5b3UgZm9yIGNob29zaW5nIEdydXp5YSBBZHZlbnR1cmUgT3V0Zml0dGVyczwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iOTUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM3ZjhjOGQiPnd3dy5ncnV6eWFhZHZlbnR1cmVzLmNvbTwvdGV4dD4KPC9zdmc+Cg==",
+                    ),
+                    Filename: payabli.String(
+                        "logo.jpg",
+                    ),
+                    Ftype: payabli.FileContentFtypeJpg.Ptr(),
+                    Furl: payabli.String(
+                        "",
+                    ),
+                },
+                RedirectAfterApprove: payabli.Bool(
+                    true,
+                ),
+                RedirectAfterApproveUrl: payabli.String(
+                    "https://example.com/success",
+                ),
+            },
         },
+    }
+client.PaymentLink.AddPayLinkFromInvoice(
+        context.TODO(),
+        23548884,
+        request,
     )
 }
 ```
@@ -13883,7 +13980,7 @@ client.PaymentLink.AddPayLinkFromInvoice(
 <dl>
 <dd>
 
-**idempotencyKey:** `*sdkgo.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` 
     
 </dd>
 </dl>
@@ -13891,7 +13988,7 @@ client.PaymentLink.AddPayLinkFromInvoice(
 <dl>
 <dd>
 
-**request:** `*sdkgo.PaymentPageRequestBody` 
+**request:** `*payabli.PaymentPageRequestBody` 
     
 </dd>
 </dl>
@@ -13903,7 +14000,7 @@ client.PaymentLink.AddPayLinkFromInvoice(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentLink.AddPayLinkFromBill(BillId, request) -> *sdkgo.PayabliApiResponsePaymentLinks</code></summary>
+<details><summary><code>client.PaymentLink.AddPayLinkFromBill(BillId, request) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
 <dl>
 <dd>
 
@@ -13930,195 +14027,196 @@ Generates a payment link for a bill from the bill ID.
 <dd>
 
 ```go
+request := &payabli.PayLinkDataBill{
+        Mail2: payabli.String(
+            "jo@example.com; ceo@example.com",
+        ),
+        Body: &payabli.PaymentPageRequestBody{
+            ContactUs: &payabli.ContactElement{
+                EmailLabel: payabli.String(
+                    "Email",
+                ),
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Header: payabli.String(
+                    "Contact Us",
+                ),
+                Order: payabli.Int(
+                    0,
+                ),
+                PaymentIcons: payabli.Bool(
+                    true,
+                ),
+                PhoneLabel: payabli.String(
+                    "Phone",
+                ),
+            },
+            Logo: &payabli.Element{
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Order: payabli.Int(
+                    0,
+                ),
+            },
+            MessageBeforePaying: &payabli.LabelElement{
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Label: payabli.String(
+                    "Please review your payment details",
+                ),
+                Order: payabli.Int(
+                    0,
+                ),
+            },
+            Notes: &payabli.NoteElement{
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Header: payabli.String(
+                    "Additional Notes",
+                ),
+                Order: payabli.Int(
+                    0,
+                ),
+                Placeholder: payabli.String(
+                    "Enter any additional notes here",
+                ),
+                Value: payabli.String(
+                    "",
+                ),
+            },
+            Page: &payabli.PageElement{
+                Description: payabli.String(
+                    "Get paid securely",
+                ),
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Header: payabli.String(
+                    "Payment Page",
+                ),
+                Order: payabli.Int(
+                    0,
+                ),
+            },
+            PaymentButton: &payabli.LabelElement{
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Label: payabli.String(
+                    "Pay Now",
+                ),
+                Order: payabli.Int(
+                    0,
+                ),
+            },
+            PaymentMethods: &payabli.MethodElement{
+                AllMethodsChecked: payabli.Bool(
+                    true,
+                ),
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Header: payabli.String(
+                    "Payment Methods",
+                ),
+                Methods: &payabli.MethodsList{
+                    Amex: payabli.Bool(
+                        true,
+                    ),
+                    ApplePay: payabli.Bool(
+                        true,
+                    ),
+                    Discover: payabli.Bool(
+                        true,
+                    ),
+                    ECheck: payabli.Bool(
+                        true,
+                    ),
+                    Mastercard: payabli.Bool(
+                        true,
+                    ),
+                    Visa: payabli.Bool(
+                        true,
+                    ),
+                },
+                Order: payabli.Int(
+                    0,
+                ),
+            },
+            Payor: &payabli.PayorElement{
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Fields: []*payabli.PayorFields{
+                    &payabli.PayorFields{
+                        Display: payabli.Bool(
+                            true,
+                        ),
+                        Fixed: payabli.Bool(
+                            true,
+                        ),
+                        Identifier: payabli.Bool(
+                            true,
+                        ),
+                        Label: payabli.String(
+                            "Full Name",
+                        ),
+                        Name: payabli.String(
+                            "fullName",
+                        ),
+                        Order: payabli.Int(
+                            0,
+                        ),
+                        Required: payabli.Bool(
+                            true,
+                        ),
+                        Validation: payabli.String(
+                            "^[a-zA-Z ]+$",
+                        ),
+                        Value: payabli.String(
+                            "",
+                        ),
+                        Width: payabli.Int(
+                            0,
+                        ),
+                    },
+                },
+                Header: payabli.String(
+                    "Payor Information",
+                ),
+                Order: payabli.Int(
+                    0,
+                ),
+            },
+            Review: &payabli.HeaderElement{
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Header: payabli.String(
+                    "Review Payment",
+                ),
+                Order: payabli.Int(
+                    0,
+                ),
+            },
+            Settings: &payabli.PagelinkSetting{
+                Color: payabli.String(
+                    "#000000",
+                ),
+                Language: payabli.String(
+                    "en",
+                ),
+            },
+        },
+    }
 client.PaymentLink.AddPayLinkFromBill(
         context.TODO(),
         23548884,
-        &sdkgo.PayLinkDataBill{
-            Mail2: sdkgo.String(
-                "jo@example.com; ceo@example.com",
-            ),
-            Body: &sdkgo.PaymentPageRequestBody{
-                ContactUs: &sdkgo.ContactElement{
-                    EmailLabel: sdkgo.String(
-                        "Email",
-                    ),
-                    Enabled: sdkgo.Bool(
-                        true,
-                    ),
-                    Header: sdkgo.String(
-                        "Contact Us",
-                    ),
-                    Order: sdkgo.Int(
-                        0,
-                    ),
-                    PaymentIcons: sdkgo.Bool(
-                        true,
-                    ),
-                    PhoneLabel: sdkgo.String(
-                        "Phone",
-                    ),
-                },
-                Logo: &sdkgo.Element{
-                    Enabled: sdkgo.Bool(
-                        true,
-                    ),
-                    Order: sdkgo.Int(
-                        0,
-                    ),
-                },
-                MessageBeforePaying: &sdkgo.LabelElement{
-                    Enabled: sdkgo.Bool(
-                        true,
-                    ),
-                    Label: sdkgo.String(
-                        "Please review your payment details",
-                    ),
-                    Order: sdkgo.Int(
-                        0,
-                    ),
-                },
-                Notes: &sdkgo.NoteElement{
-                    Enabled: sdkgo.Bool(
-                        true,
-                    ),
-                    Header: sdkgo.String(
-                        "Additional Notes",
-                    ),
-                    Order: sdkgo.Int(
-                        0,
-                    ),
-                    Placeholder: sdkgo.String(
-                        "Enter any additional notes here",
-                    ),
-                    Value: sdkgo.String(
-                        "",
-                    ),
-                },
-                Page: &sdkgo.PageElement{
-                    Description: sdkgo.String(
-                        "Get paid securely",
-                    ),
-                    Enabled: sdkgo.Bool(
-                        true,
-                    ),
-                    Header: sdkgo.String(
-                        "Payment Page",
-                    ),
-                    Order: sdkgo.Int(
-                        0,
-                    ),
-                },
-                PaymentButton: &sdkgo.LabelElement{
-                    Enabled: sdkgo.Bool(
-                        true,
-                    ),
-                    Label: sdkgo.String(
-                        "Pay Now",
-                    ),
-                    Order: sdkgo.Int(
-                        0,
-                    ),
-                },
-                PaymentMethods: &sdkgo.MethodElement{
-                    AllMethodsChecked: sdkgo.Bool(
-                        true,
-                    ),
-                    Enabled: sdkgo.Bool(
-                        true,
-                    ),
-                    Header: sdkgo.String(
-                        "Payment Methods",
-                    ),
-                    Methods: &sdkgo.MethodsList{
-                        Amex: sdkgo.Bool(
-                            true,
-                        ),
-                        ApplePay: sdkgo.Bool(
-                            true,
-                        ),
-                        Discover: sdkgo.Bool(
-                            true,
-                        ),
-                        ECheck: sdkgo.Bool(
-                            true,
-                        ),
-                        Mastercard: sdkgo.Bool(
-                            true,
-                        ),
-                        Visa: sdkgo.Bool(
-                            true,
-                        ),
-                    },
-                    Order: sdkgo.Int(
-                        0,
-                    ),
-                },
-                Payor: &sdkgo.PayorElement{
-                    Enabled: sdkgo.Bool(
-                        true,
-                    ),
-                    Fields: []*sdkgo.PayorFields{
-                        &sdkgo.PayorFields{
-                            Display: sdkgo.Bool(
-                                true,
-                            ),
-                            Fixed: sdkgo.Bool(
-                                true,
-                            ),
-                            Identifier: sdkgo.Bool(
-                                true,
-                            ),
-                            Label: sdkgo.String(
-                                "Full Name",
-                            ),
-                            Name: sdkgo.String(
-                                "fullName",
-                            ),
-                            Order: sdkgo.Int(
-                                0,
-                            ),
-                            Required: sdkgo.Bool(
-                                true,
-                            ),
-                            Validation: sdkgo.String(
-                                "^[a-zA-Z ]+$",
-                            ),
-                            Value: sdkgo.String(
-                                "",
-                            ),
-                            Width: sdkgo.Int(
-                                0,
-                            ),
-                        },
-                    },
-                    Header: sdkgo.String(
-                        "Payor Information",
-                    ),
-                    Order: sdkgo.Int(
-                        0,
-                    ),
-                },
-                Review: &sdkgo.HeaderElement{
-                    Enabled: sdkgo.Bool(
-                        true,
-                    ),
-                    Header: sdkgo.String(
-                        "Review Payment",
-                    ),
-                    Order: sdkgo.Int(
-                        0,
-                    ),
-                },
-                Settings: &sdkgo.PagelinkSetting{
-                    Color: sdkgo.String(
-                        "#000000",
-                    ),
-                    Language: sdkgo.String(
-                        "en",
-                    ),
-                },
-            },
-        },
+        request,
     )
 }
 ```
@@ -14159,7 +14257,7 @@ client.PaymentLink.AddPayLinkFromBill(
 <dl>
 <dd>
 
-**idempotencyKey:** `*sdkgo.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` 
     
 </dd>
 </dl>
@@ -14167,7 +14265,7 @@ client.PaymentLink.AddPayLinkFromBill(
 <dl>
 <dd>
 
-**request:** `*sdkgo.PaymentPageRequestBody` 
+**request:** `*payabli.PaymentPageRequestBody` 
     
 </dd>
 </dl>
@@ -14179,7 +14277,7 @@ client.PaymentLink.AddPayLinkFromBill(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentLink.DeletePayLinkFromId(PayLinkId) -> *sdkgo.PayabliApiResponsePaymentLinks</code></summary>
+<details><summary><code>client.PaymentLink.DeletePayLinkFromId(PayLinkId) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
 <dl>
 <dd>
 
@@ -14237,7 +14335,7 @@ client.PaymentLink.DeletePayLinkFromId(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentLink.GetPayLinkFromId(PaylinkId) -> *sdkgo.GetPayLinkFromIdResponse</code></summary>
+<details><summary><code>client.PaymentLink.GetPayLinkFromId(PaylinkId) -> *payabli.GetPayLinkFromIdResponse</code></summary>
 <dl>
 <dd>
 
@@ -14295,7 +14393,7 @@ client.PaymentLink.GetPayLinkFromId(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentLink.PushPayLinkFromId(PayLinkId, request) -> *sdkgo.PayabliApiResponsePaymentLinks</code></summary>
+<details><summary><code>client.PaymentLink.PushPayLinkFromId(PayLinkId, request) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
 <dl>
 <dd>
 
@@ -14322,12 +14420,13 @@ Send a payment link to the specified email addresses or phone numbers.
 <dd>
 
 ```go
+request := &payabli.PushPayLinkRequest{
+        Sms: &payabli.PushPayLinkRequestSms{},
+    }
 client.PaymentLink.PushPayLinkFromId(
         context.TODO(),
         "payLinkId",
-        &sdkgo.PushPayLinkRequest{
-            Sms: &sdkgo.PushPayLinkRequestSms{},
-        },
+        request,
     )
 }
 ```
@@ -14352,7 +14451,7 @@ client.PaymentLink.PushPayLinkFromId(
 <dl>
 <dd>
 
-**request:** `*sdkgo.PushPayLinkRequest` 
+**request:** `*payabli.PushPayLinkRequest` 
     
 </dd>
 </dl>
@@ -14364,7 +14463,7 @@ client.PaymentLink.PushPayLinkFromId(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentLink.RefreshPayLinkFromId(PayLinkId) -> *sdkgo.PayabliApiResponsePaymentLinks</code></summary>
+<details><summary><code>client.PaymentLink.RefreshPayLinkFromId(PayLinkId) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
 <dl>
 <dd>
 
@@ -14391,10 +14490,11 @@ Refresh a payment link's content after an update.
 <dd>
 
 ```go
+request := &payabli.RefreshPayLinkFromIdRequest{}
 client.PaymentLink.RefreshPayLinkFromId(
         context.TODO(),
         "payLinkId",
-        &sdkgo.RefreshPayLinkFromIdRequest{},
+        request,
     )
 }
 ```
@@ -14431,7 +14531,7 @@ client.PaymentLink.RefreshPayLinkFromId(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentLink.SendPayLinkFromId(PayLinkId) -> *sdkgo.PayabliApiResponsePaymentLinks</code></summary>
+<details><summary><code>client.PaymentLink.SendPayLinkFromId(PayLinkId) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
 <dl>
 <dd>
 
@@ -14458,14 +14558,15 @@ Sends a payment link to the specified email addresses.
 <dd>
 
 ```go
+request := &payabli.SendPayLinkFromIdRequest{
+        Mail2: payabli.String(
+            "jo@example.com; ceo@example.com",
+        ),
+    }
 client.PaymentLink.SendPayLinkFromId(
         context.TODO(),
         "payLinkId",
-        &sdkgo.SendPayLinkFromIdRequest{
-            Mail2: sdkgo.String(
-                "jo@example.com; ceo@example.com",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -14510,7 +14611,7 @@ client.PaymentLink.SendPayLinkFromId(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentLink.UpdatePayLinkFromId(PayLinkId, request) -> *sdkgo.PayabliApiResponsePaymentLinks</code></summary>
+<details><summary><code>client.PaymentLink.UpdatePayLinkFromId(PayLinkId, request) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
 <dl>
 <dd>
 
@@ -14537,39 +14638,40 @@ Updates a payment link's details.
 <dd>
 
 ```go
+request := &payabli.PayLinkUpdateData{
+        Notes: &payabli.NoteElement{
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Header: payabli.String(
+                "Additional Notes",
+            ),
+            Order: payabli.Int(
+                0,
+            ),
+            Placeholder: payabli.String(
+                "Enter any additional notes here",
+            ),
+            Value: payabli.String(
+                "",
+            ),
+        },
+        PaymentButton: &payabli.LabelElement{
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Label: payabli.String(
+                "Pay Now",
+            ),
+            Order: payabli.Int(
+                0,
+            ),
+        },
+    }
 client.PaymentLink.UpdatePayLinkFromId(
         context.TODO(),
         "332-c277b704-1301",
-        &sdkgo.PayLinkUpdateData{
-            Notes: &sdkgo.NoteElement{
-                Enabled: sdkgo.Bool(
-                    true,
-                ),
-                Header: sdkgo.String(
-                    "Additional Notes",
-                ),
-                Order: sdkgo.Int(
-                    0,
-                ),
-                Placeholder: sdkgo.String(
-                    "Enter any additional notes here",
-                ),
-                Value: sdkgo.String(
-                    "",
-                ),
-            },
-            PaymentButton: &sdkgo.LabelElement{
-                Enabled: sdkgo.Bool(
-                    true,
-                ),
-                Label: sdkgo.String(
-                    "Pay Now",
-                ),
-                Order: sdkgo.Int(
-                    0,
-                ),
-            },
-        },
+        request,
     )
 }
 ```
@@ -14594,7 +14696,7 @@ client.PaymentLink.UpdatePayLinkFromId(
 <dl>
 <dd>
 
-**contactUs:** `*sdkgo.ContactElement` — ContactUs section of payment link page
+**contactUs:** `*payabli.ContactElement` — ContactUs section of payment link page
     
 </dd>
 </dl>
@@ -14602,7 +14704,7 @@ client.PaymentLink.UpdatePayLinkFromId(
 <dl>
 <dd>
 
-**logo:** `*sdkgo.Element` — Logo section of payment link page
+**logo:** `*payabli.Element` — Logo section of payment link page
     
 </dd>
 </dl>
@@ -14610,7 +14712,7 @@ client.PaymentLink.UpdatePayLinkFromId(
 <dl>
 <dd>
 
-**messageBeforePaying:** `*sdkgo.LabelElement` — Message section of payment link page
+**messageBeforePaying:** `*payabli.LabelElement` — Message section of payment link page
     
 </dd>
 </dl>
@@ -14618,7 +14720,7 @@ client.PaymentLink.UpdatePayLinkFromId(
 <dl>
 <dd>
 
-**notes:** `*sdkgo.NoteElement` — Notes section of payment link page
+**notes:** `*payabli.NoteElement` — Notes section of payment link page
     
 </dd>
 </dl>
@@ -14626,7 +14728,7 @@ client.PaymentLink.UpdatePayLinkFromId(
 <dl>
 <dd>
 
-**page:** `*sdkgo.PageElement` — Page header section of payment link page
+**page:** `*payabli.PageElement` — Page header section of payment link page
     
 </dd>
 </dl>
@@ -14634,7 +14736,7 @@ client.PaymentLink.UpdatePayLinkFromId(
 <dl>
 <dd>
 
-**paymentButton:** `*sdkgo.LabelElement` — Payment button section of payment link page
+**paymentButton:** `*payabli.LabelElement` — Payment button section of payment link page
     
 </dd>
 </dl>
@@ -14642,7 +14744,7 @@ client.PaymentLink.UpdatePayLinkFromId(
 <dl>
 <dd>
 
-**paymentMethods:** `*sdkgo.MethodElement` — Payment methods section of payment link page
+**paymentMethods:** `*payabli.MethodElement` — Payment methods section of payment link page
     
 </dd>
 </dl>
@@ -14650,7 +14752,7 @@ client.PaymentLink.UpdatePayLinkFromId(
 <dl>
 <dd>
 
-**review:** `*sdkgo.HeaderElement` — Review section of payment link page
+**review:** `*payabli.HeaderElement` — Review section of payment link page
     
 </dd>
 </dl>
@@ -14658,7 +14760,7 @@ client.PaymentLink.UpdatePayLinkFromId(
 <dl>
 <dd>
 
-**settings:** `*sdkgo.PagelinkSetting` — Settings section of payment link page
+**settings:** `*payabli.PagelinkSetting` — Settings section of payment link page
     
 </dd>
 </dl>
@@ -14670,7 +14772,7 @@ client.PaymentLink.UpdatePayLinkFromId(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentLink.AddPayLinkFromBillLotNumber(LotNumber, request) -> *sdkgo.PayabliApiResponsePaymentLinks</code></summary>
+<details><summary><code>client.PaymentLink.AddPayLinkFromBillLotNumber(LotNumber, request) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
 <dl>
 <dd>
 
@@ -14697,200 +14799,201 @@ Generates a vendor payment link for a specific bill lot number. This allows you 
 <dd>
 
 ```go
+request := &payabli.PayLinkDataOut{
+        EntryPoint: "billing",
+        VendorNumber: "VENDOR-123",
+        Mail2: payabli.String(
+            "customer@example.com; billing@example.com",
+        ),
+        AmountFixed: payabli.String(
+            "true",
+        ),
+        Body: &payabli.PaymentPageRequestBody{
+            ContactUs: &payabli.ContactElement{
+                EmailLabel: payabli.String(
+                    "Email",
+                ),
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Header: payabli.String(
+                    "Contact Us",
+                ),
+                Order: payabli.Int(
+                    0,
+                ),
+                PaymentIcons: payabli.Bool(
+                    true,
+                ),
+                PhoneLabel: payabli.String(
+                    "Phone",
+                ),
+            },
+            Logo: &payabli.Element{
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Order: payabli.Int(
+                    0,
+                ),
+            },
+            MessageBeforePaying: &payabli.LabelElement{
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Label: payabli.String(
+                    "Please review your payment details",
+                ),
+                Order: payabli.Int(
+                    0,
+                ),
+            },
+            Notes: &payabli.NoteElement{
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Header: payabli.String(
+                    "Additional Notes",
+                ),
+                Order: payabli.Int(
+                    0,
+                ),
+                Placeholder: payabli.String(
+                    "Enter any additional notes here",
+                ),
+                Value: payabli.String(
+                    "",
+                ),
+            },
+            Page: &payabli.PageElement{
+                Description: payabli.String(
+                    "Get paid securely",
+                ),
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Header: payabli.String(
+                    "Payment Page",
+                ),
+                Order: payabli.Int(
+                    0,
+                ),
+            },
+            PaymentButton: &payabli.LabelElement{
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Label: payabli.String(
+                    "Pay Now",
+                ),
+                Order: payabli.Int(
+                    0,
+                ),
+            },
+            PaymentMethods: &payabli.MethodElement{
+                AllMethodsChecked: payabli.Bool(
+                    true,
+                ),
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Header: payabli.String(
+                    "Payment Methods",
+                ),
+                Methods: &payabli.MethodsList{
+                    Amex: payabli.Bool(
+                        true,
+                    ),
+                    ApplePay: payabli.Bool(
+                        true,
+                    ),
+                    Discover: payabli.Bool(
+                        true,
+                    ),
+                    ECheck: payabli.Bool(
+                        true,
+                    ),
+                    Mastercard: payabli.Bool(
+                        true,
+                    ),
+                    Visa: payabli.Bool(
+                        true,
+                    ),
+                },
+                Order: payabli.Int(
+                    0,
+                ),
+            },
+            Payor: &payabli.PayorElement{
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Fields: []*payabli.PayorFields{
+                    &payabli.PayorFields{
+                        Display: payabli.Bool(
+                            true,
+                        ),
+                        Fixed: payabli.Bool(
+                            true,
+                        ),
+                        Identifier: payabli.Bool(
+                            true,
+                        ),
+                        Label: payabli.String(
+                            "Full Name",
+                        ),
+                        Name: payabli.String(
+                            "fullName",
+                        ),
+                        Order: payabli.Int(
+                            0,
+                        ),
+                        Required: payabli.Bool(
+                            true,
+                        ),
+                        Validation: payabli.String(
+                            "^[a-zA-Z ]+$",
+                        ),
+                        Value: payabli.String(
+                            "",
+                        ),
+                        Width: payabli.Int(
+                            0,
+                        ),
+                    },
+                },
+                Header: payabli.String(
+                    "Payor Information",
+                ),
+                Order: payabli.Int(
+                    0,
+                ),
+            },
+            Review: &payabli.HeaderElement{
+                Enabled: payabli.Bool(
+                    true,
+                ),
+                Header: payabli.String(
+                    "Review Payment",
+                ),
+                Order: payabli.Int(
+                    0,
+                ),
+            },
+            Settings: &payabli.PagelinkSetting{
+                Color: payabli.String(
+                    "#000000",
+                ),
+                Language: payabli.String(
+                    "en",
+                ),
+            },
+        },
+    }
 client.PaymentLink.AddPayLinkFromBillLotNumber(
         context.TODO(),
         "LOT-2024-001",
-        &sdkgo.PayLinkDataOut{
-            EntryPoint: "billing",
-            VendorNumber: "VENDOR-123",
-            Mail2: sdkgo.String(
-                "customer@example.com; billing@example.com",
-            ),
-            AmountFixed: sdkgo.String(
-                "true",
-            ),
-            Body: &sdkgo.PaymentPageRequestBody{
-                ContactUs: &sdkgo.ContactElement{
-                    EmailLabel: sdkgo.String(
-                        "Email",
-                    ),
-                    Enabled: sdkgo.Bool(
-                        true,
-                    ),
-                    Header: sdkgo.String(
-                        "Contact Us",
-                    ),
-                    Order: sdkgo.Int(
-                        0,
-                    ),
-                    PaymentIcons: sdkgo.Bool(
-                        true,
-                    ),
-                    PhoneLabel: sdkgo.String(
-                        "Phone",
-                    ),
-                },
-                Logo: &sdkgo.Element{
-                    Enabled: sdkgo.Bool(
-                        true,
-                    ),
-                    Order: sdkgo.Int(
-                        0,
-                    ),
-                },
-                MessageBeforePaying: &sdkgo.LabelElement{
-                    Enabled: sdkgo.Bool(
-                        true,
-                    ),
-                    Label: sdkgo.String(
-                        "Please review your payment details",
-                    ),
-                    Order: sdkgo.Int(
-                        0,
-                    ),
-                },
-                Notes: &sdkgo.NoteElement{
-                    Enabled: sdkgo.Bool(
-                        true,
-                    ),
-                    Header: sdkgo.String(
-                        "Additional Notes",
-                    ),
-                    Order: sdkgo.Int(
-                        0,
-                    ),
-                    Placeholder: sdkgo.String(
-                        "Enter any additional notes here",
-                    ),
-                    Value: sdkgo.String(
-                        "",
-                    ),
-                },
-                Page: &sdkgo.PageElement{
-                    Description: sdkgo.String(
-                        "Get paid securely",
-                    ),
-                    Enabled: sdkgo.Bool(
-                        true,
-                    ),
-                    Header: sdkgo.String(
-                        "Payment Page",
-                    ),
-                    Order: sdkgo.Int(
-                        0,
-                    ),
-                },
-                PaymentButton: &sdkgo.LabelElement{
-                    Enabled: sdkgo.Bool(
-                        true,
-                    ),
-                    Label: sdkgo.String(
-                        "Pay Now",
-                    ),
-                    Order: sdkgo.Int(
-                        0,
-                    ),
-                },
-                PaymentMethods: &sdkgo.MethodElement{
-                    AllMethodsChecked: sdkgo.Bool(
-                        true,
-                    ),
-                    Enabled: sdkgo.Bool(
-                        true,
-                    ),
-                    Header: sdkgo.String(
-                        "Payment Methods",
-                    ),
-                    Methods: &sdkgo.MethodsList{
-                        Amex: sdkgo.Bool(
-                            true,
-                        ),
-                        ApplePay: sdkgo.Bool(
-                            true,
-                        ),
-                        Discover: sdkgo.Bool(
-                            true,
-                        ),
-                        ECheck: sdkgo.Bool(
-                            true,
-                        ),
-                        Mastercard: sdkgo.Bool(
-                            true,
-                        ),
-                        Visa: sdkgo.Bool(
-                            true,
-                        ),
-                    },
-                    Order: sdkgo.Int(
-                        0,
-                    ),
-                },
-                Payor: &sdkgo.PayorElement{
-                    Enabled: sdkgo.Bool(
-                        true,
-                    ),
-                    Fields: []*sdkgo.PayorFields{
-                        &sdkgo.PayorFields{
-                            Display: sdkgo.Bool(
-                                true,
-                            ),
-                            Fixed: sdkgo.Bool(
-                                true,
-                            ),
-                            Identifier: sdkgo.Bool(
-                                true,
-                            ),
-                            Label: sdkgo.String(
-                                "Full Name",
-                            ),
-                            Name: sdkgo.String(
-                                "fullName",
-                            ),
-                            Order: sdkgo.Int(
-                                0,
-                            ),
-                            Required: sdkgo.Bool(
-                                true,
-                            ),
-                            Validation: sdkgo.String(
-                                "^[a-zA-Z ]+$",
-                            ),
-                            Value: sdkgo.String(
-                                "",
-                            ),
-                            Width: sdkgo.Int(
-                                0,
-                            ),
-                        },
-                    },
-                    Header: sdkgo.String(
-                        "Payor Information",
-                    ),
-                    Order: sdkgo.Int(
-                        0,
-                    ),
-                },
-                Review: &sdkgo.HeaderElement{
-                    Enabled: sdkgo.Bool(
-                        true,
-                    ),
-                    Header: sdkgo.String(
-                        "Review Payment",
-                    ),
-                    Order: sdkgo.Int(
-                        0,
-                    ),
-                },
-                Settings: &sdkgo.PagelinkSetting{
-                    Color: sdkgo.String(
-                        "#000000",
-                    ),
-                    Language: sdkgo.String(
-                        "en",
-                    ),
-                },
-            },
-        },
+        request,
     )
 }
 ```
@@ -14915,7 +15018,7 @@ client.PaymentLink.AddPayLinkFromBillLotNumber(
 <dl>
 <dd>
 
-**entryPoint:** `sdkgo.Entry` 
+**entryPoint:** `payabli.Entry` 
     
 </dd>
 </dl>
@@ -14947,7 +15050,7 @@ client.PaymentLink.AddPayLinkFromBillLotNumber(
 <dl>
 <dd>
 
-**request:** `*sdkgo.PaymentPageRequestBody` 
+**request:** `*payabli.PaymentPageRequestBody` 
     
 </dd>
 </dl>
@@ -14960,7 +15063,7 @@ client.PaymentLink.AddPayLinkFromBillLotNumber(
 </details>
 
 ## PaymentMethodDomain
-<details><summary><code>client.PaymentMethodDomain.AddPaymentMethodDomain(request) -> *sdkgo.AddPaymentMethodDomainApiResponse</code></summary>
+<details><summary><code>client.PaymentMethodDomain.AddPaymentMethodDomain(request) -> *payabli.AddPaymentMethodDomainApiResponse</code></summary>
 <dl>
 <dd>
 
@@ -14987,29 +15090,30 @@ Add a payment method domain to an organization or paypoint.
 <dd>
 
 ```go
+request := &payabli.AddPaymentMethodDomainRequest{
+        DomainName: payabli.String(
+            "checkout.example.com",
+        ),
+        EntityId: payabli.Int64(
+            109,
+        ),
+        EntityType: payabli.String(
+            "paypoint",
+        ),
+        ApplePay: &payabli.AddPaymentMethodDomainRequestApplePay{
+            IsEnabled: payabli.Bool(
+                true,
+            ),
+        },
+        GooglePay: &payabli.AddPaymentMethodDomainRequestGooglePay{
+            IsEnabled: payabli.Bool(
+                true,
+            ),
+        },
+    }
 client.PaymentMethodDomain.AddPaymentMethodDomain(
         context.TODO(),
-        &sdkgo.AddPaymentMethodDomainRequest{
-            DomainName: sdkgo.String(
-                "checkout.example.com",
-            ),
-            EntityId: sdkgo.Int64(
-                109,
-            ),
-            EntityType: sdkgo.String(
-                "paypoint",
-            ),
-            ApplePay: &sdkgo.AddPaymentMethodDomainRequestApplePay{
-                IsEnabled: sdkgo.Bool(
-                    true,
-                ),
-            },
-            GooglePay: &sdkgo.AddPaymentMethodDomainRequestGooglePay{
-                IsEnabled: sdkgo.Bool(
-                    true,
-                ),
-            },
-        },
+        request,
     )
 }
 ```
@@ -15026,7 +15130,7 @@ client.PaymentMethodDomain.AddPaymentMethodDomain(
 <dl>
 <dd>
 
-**applePay:** `*sdkgo.AddPaymentMethodDomainRequestApplePay` — Apple Pay configuration information.
+**applePay:** `*payabli.AddPaymentMethodDomainRequestApplePay` — Apple Pay configuration information.
     
 </dd>
 </dl>
@@ -15034,7 +15138,7 @@ client.PaymentMethodDomain.AddPaymentMethodDomain(
 <dl>
 <dd>
 
-**googlePay:** `*sdkgo.AddPaymentMethodDomainRequestGooglePay` — Google Pay configuration information.
+**googlePay:** `*payabli.AddPaymentMethodDomainRequestGooglePay` — Google Pay configuration information.
     
 </dd>
 </dl>
@@ -15042,7 +15146,7 @@ client.PaymentMethodDomain.AddPaymentMethodDomain(
 <dl>
 <dd>
 
-**domainName:** `*sdkgo.DomainName` 
+**domainName:** `*payabli.DomainName` 
     
 </dd>
 </dl>
@@ -15050,7 +15154,7 @@ client.PaymentMethodDomain.AddPaymentMethodDomain(
 <dl>
 <dd>
 
-**entityId:** `*sdkgo.EntityId` 
+**entityId:** `*payabli.EntityId` 
     
 </dd>
 </dl>
@@ -15058,7 +15162,7 @@ client.PaymentMethodDomain.AddPaymentMethodDomain(
 <dl>
 <dd>
 
-**entityType:** `*sdkgo.EntityType` 
+**entityType:** `*payabli.EntityType` 
     
 </dd>
 </dl>
@@ -15070,7 +15174,7 @@ client.PaymentMethodDomain.AddPaymentMethodDomain(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentMethodDomain.CascadePaymentMethodDomain(DomainId) -> *sdkgo.PaymentMethodDomainGeneralResponse</code></summary>
+<details><summary><code>client.PaymentMethodDomain.CascadePaymentMethodDomain(DomainId) -> *payabli.PaymentMethodDomainGeneralResponse</code></summary>
 <dl>
 <dd>
 
@@ -15128,7 +15232,7 @@ client.PaymentMethodDomain.CascadePaymentMethodDomain(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentMethodDomain.DeletePaymentMethodDomain(DomainId) -> *sdkgo.DeletePaymentMethodDomainResponse</code></summary>
+<details><summary><code>client.PaymentMethodDomain.DeletePaymentMethodDomain(DomainId) -> *payabli.DeletePaymentMethodDomainResponse</code></summary>
 <dl>
 <dd>
 
@@ -15186,7 +15290,7 @@ client.PaymentMethodDomain.DeletePaymentMethodDomain(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentMethodDomain.GetPaymentMethodDomain(DomainId) -> *sdkgo.PaymentMethodDomainApiResponse</code></summary>
+<details><summary><code>client.PaymentMethodDomain.GetPaymentMethodDomain(DomainId) -> *payabli.PaymentMethodDomainApiResponse</code></summary>
 <dl>
 <dd>
 
@@ -15244,7 +15348,7 @@ client.PaymentMethodDomain.GetPaymentMethodDomain(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentMethodDomain.ListPaymentMethodDomains() -> *sdkgo.ListPaymentMethodDomainsResponse</code></summary>
+<details><summary><code>client.PaymentMethodDomain.ListPaymentMethodDomains() -> *payabli.ListPaymentMethodDomainsResponse</code></summary>
 <dl>
 <dd>
 
@@ -15271,16 +15375,17 @@ Get a list of payment method domains that belong to a PSP, organization, or payp
 <dd>
 
 ```go
+request := &payabli.ListPaymentMethodDomainsRequest{
+        EntityId: payabli.Int64(
+            1147,
+        ),
+        EntityType: payabli.String(
+            "paypoint",
+        ),
+    }
 client.PaymentMethodDomain.ListPaymentMethodDomains(
         context.TODO(),
-        &sdkgo.ListPaymentMethodDomainsRequest{
-            EntityId: sdkgo.Int64(
-                1147,
-            ),
-            EntityType: sdkgo.String(
-                "paypoint",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -15341,7 +15446,7 @@ The type of entity. Valid values:
 </dl>
 </details>
 
-<details><summary><code>client.PaymentMethodDomain.UpdatePaymentMethodDomain(DomainId, request) -> *sdkgo.PaymentMethodDomainGeneralResponse</code></summary>
+<details><summary><code>client.PaymentMethodDomain.UpdatePaymentMethodDomain(DomainId, request) -> *payabli.PaymentMethodDomainGeneralResponse</code></summary>
 <dl>
 <dd>
 
@@ -15368,21 +15473,22 @@ Update a payment method domain's configuration values.
 <dd>
 
 ```go
+request := &payabli.UpdatePaymentMethodDomainRequest{
+        ApplePay: &payabli.UpdatePaymentMethodDomainRequestWallet{
+            IsEnabled: payabli.Bool(
+                false,
+            ),
+        },
+        GooglePay: &payabli.UpdatePaymentMethodDomainRequestWallet{
+            IsEnabled: payabli.Bool(
+                false,
+            ),
+        },
+    }
 client.PaymentMethodDomain.UpdatePaymentMethodDomain(
         context.TODO(),
         "pmd_b8237fa45c964d8a9ef27160cd42b8c5",
-        &sdkgo.UpdatePaymentMethodDomainRequest{
-            ApplePay: &sdkgo.UpdatePaymentMethodDomainRequestWallet{
-                IsEnabled: sdkgo.Bool(
-                    false,
-                ),
-            },
-            GooglePay: &sdkgo.UpdatePaymentMethodDomainRequestWallet{
-                IsEnabled: sdkgo.Bool(
-                    false,
-                ),
-            },
-        },
+        request,
     )
 }
 ```
@@ -15407,7 +15513,7 @@ client.PaymentMethodDomain.UpdatePaymentMethodDomain(
 <dl>
 <dd>
 
-**applePay:** `*sdkgo.UpdatePaymentMethodDomainRequestWallet` 
+**applePay:** `*payabli.UpdatePaymentMethodDomainRequestWallet` 
     
 </dd>
 </dl>
@@ -15415,7 +15521,7 @@ client.PaymentMethodDomain.UpdatePaymentMethodDomain(
 <dl>
 <dd>
 
-**googlePay:** `*sdkgo.UpdatePaymentMethodDomainRequestWallet` 
+**googlePay:** `*payabli.UpdatePaymentMethodDomainRequestWallet` 
     
 </dd>
 </dl>
@@ -15427,7 +15533,7 @@ client.PaymentMethodDomain.UpdatePaymentMethodDomain(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentMethodDomain.VerifyPaymentMethodDomain(DomainId) -> *sdkgo.PaymentMethodDomainGeneralResponse</code></summary>
+<details><summary><code>client.PaymentMethodDomain.VerifyPaymentMethodDomain(DomainId) -> *payabli.PaymentMethodDomainGeneralResponse</code></summary>
 <dl>
 <dd>
 
@@ -15486,7 +15592,7 @@ client.PaymentMethodDomain.VerifyPaymentMethodDomain(
 </details>
 
 ## Paypoint
-<details><summary><code>client.Paypoint.GetBasicEntry(Entry) -> *sdkgo.GetBasicEntryResponse</code></summary>
+<details><summary><code>client.Paypoint.GetBasicEntry(Entry) -> *payabli.GetBasicEntryResponse</code></summary>
 <dl>
 <dd>
 
@@ -15544,7 +15650,7 @@ client.Paypoint.GetBasicEntry(
 </dl>
 </details>
 
-<details><summary><code>client.Paypoint.GetBasicEntryById(IdPaypoint) -> *sdkgo.GetBasicEntryByIdResponse</code></summary>
+<details><summary><code>client.Paypoint.GetBasicEntryById(IdPaypoint) -> *payabli.GetBasicEntryByIdResponse</code></summary>
 <dl>
 <dd>
 
@@ -15602,7 +15708,7 @@ client.Paypoint.GetBasicEntryById(
 </dl>
 </details>
 
-<details><summary><code>client.Paypoint.GetEntryConfig(Entry) -> *sdkgo.GetEntryConfigResponse</code></summary>
+<details><summary><code>client.Paypoint.GetEntryConfig(Entry) -> *payabli.GetEntryConfigResponse</code></summary>
 <dl>
 <dd>
 
@@ -15629,10 +15735,11 @@ Gets the details for a single paypoint.
 <dd>
 
 ```go
+request := &payabli.GetEntryConfigRequest{}
 client.Paypoint.GetEntryConfig(
         context.TODO(),
         "8cfec329267",
-        &sdkgo.GetEntryConfigRequest{},
+        request,
     )
 }
 ```
@@ -15669,7 +15776,7 @@ client.Paypoint.GetEntryConfig(
 </dl>
 </details>
 
-<details><summary><code>client.Paypoint.GetPage(Entry, Subdomain) -> *sdkgo.PayabliPages</code></summary>
+<details><summary><code>client.Paypoint.GetPage(Entry, Subdomain) -> *payabli.PayabliPages</code></summary>
 <dl>
 <dd>
 
@@ -15736,7 +15843,7 @@ client.Paypoint.GetPage(
 </dl>
 </details>
 
-<details><summary><code>client.Paypoint.RemovePage(Entry, Subdomain) -> *sdkgo.PayabliApiResponseGeneric2Part</code></summary>
+<details><summary><code>client.Paypoint.RemovePage(Entry, Subdomain) -> *payabli.PayabliApiResponseGeneric2Part</code></summary>
 <dl>
 <dd>
 
@@ -15803,7 +15910,7 @@ client.Paypoint.RemovePage(
 </dl>
 </details>
 
-<details><summary><code>client.Paypoint.SaveLogo(Entry, request) -> *sdkgo.PayabliApiResponse00Responsedatanonobject</code></summary>
+<details><summary><code>client.Paypoint.SaveLogo(Entry, request) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
 <dl>
 <dd>
 
@@ -15830,10 +15937,11 @@ Updates a paypoint logo.
 <dd>
 
 ```go
+request := &payabli.FileContent{}
 client.Paypoint.SaveLogo(
         context.TODO(),
         "8cfec329267",
-        &sdkgo.FileContent{},
+        request,
     )
 }
 ```
@@ -15858,7 +15966,7 @@ client.Paypoint.SaveLogo(
 <dl>
 <dd>
 
-**request:** `*sdkgo.FileContent` 
+**request:** `*payabli.FileContent` 
     
 </dd>
 </dl>
@@ -15870,7 +15978,7 @@ client.Paypoint.SaveLogo(
 </dl>
 </details>
 
-<details><summary><code>client.Paypoint.SettingsPage(Entry) -> *sdkgo.SettingsQueryRecord</code></summary>
+<details><summary><code>client.Paypoint.SettingsPage(Entry) -> *payabli.SettingsQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -15928,7 +16036,7 @@ client.Paypoint.SettingsPage(
 </dl>
 </details>
 
-<details><summary><code>client.Paypoint.Migrate(request) -> *sdkgo.MigratePaypointResponse</code></summary>
+<details><summary><code>client.Paypoint.Migrate(request) -> *payabli.MigratePaypointResponse</code></summary>
 <dl>
 <dd>
 
@@ -15955,21 +16063,22 @@ Migrates a paypoint to a new parent organization.
 <dd>
 
 ```go
-client.Paypoint.Migrate(
-        context.TODO(),
-        &sdkgo.PaypointMoveRequest{
-            EntryPoint: "473abc123def",
-            NewParentOrganizationId: 123,
-            NotificationRequest: &sdkgo.NotificationRequest{
-                NotificationUrl: "https://webhook-test.yoursie.com",
-                WebHeaderParameters: []*sdkgo.WebHeaderParameter{
-                    &sdkgo.WebHeaderParameter{
-                        Key: "testheader",
-                        Value: "1234567890",
-                    },
+request := &payabli.PaypointMoveRequest{
+        EntryPoint: "473abc123def",
+        NewParentOrganizationId: 123,
+        NotificationRequest: &payabli.NotificationRequest{
+            NotificationUrl: "https://webhook-test.yoursie.com",
+            WebHeaderParameters: []*payabli.WebHeaderParameter{
+                &payabli.WebHeaderParameter{
+                    Key: "testheader",
+                    Value: "1234567890",
                 },
             },
         },
+    }
+client.Paypoint.Migrate(
+        context.TODO(),
+        request,
     )
 }
 ```
@@ -15986,7 +16095,7 @@ client.Paypoint.Migrate(
 <dl>
 <dd>
 
-**request:** `*sdkgo.PaypointMoveRequest` 
+**request:** `*payabli.PaypointMoveRequest` 
     
 </dd>
 </dl>
@@ -15999,7 +16108,7 @@ client.Paypoint.Migrate(
 </details>
 
 ## Query
-<details><summary><code>client.Query.ListBatchDetails(Entry) -> *sdkgo.QueryBatchesDetailResponse</code></summary>
+<details><summary><code>client.Query.ListBatchDetails(Entry) -> *payabli.QueryBatchesDetailResponse</code></summary>
 <dl>
 <dd>
 
@@ -16027,20 +16136,21 @@ unsettled transactions for a paypoint. Use filters to limit results. Include the
 <dd>
 
 ```go
+request := &payabli.ListBatchDetailsRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListBatchDetails(
         context.TODO(),
         "8cfec329267",
-        &sdkgo.ListBatchDetailsRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -16057,7 +16167,7 @@ client.Query.ListBatchDetails(
 <dl>
 <dd>
 
-**entry:** `sdkgo.Entry` 
+**entry:** `payabli.Entry` 
     
 </dd>
 </dl>
@@ -16065,7 +16175,7 @@ client.Query.ListBatchDetails(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -16186,7 +16296,7 @@ Example: `settledAmount(gt)=20` returns all records with a `settledAmount` great
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListBatchDetailsOrg(OrgId) -> *sdkgo.QueryResponseSettlements</code></summary>
+<details><summary><code>client.Query.ListBatchDetailsOrg(OrgId) -> *payabli.QueryResponseSettlements</code></summary>
 <dl>
 <dd>
 
@@ -16213,20 +16323,21 @@ Retrieve a list of batches and their details, including settled and unsettled tr
 <dd>
 
 ```go
+request := &payabli.ListBatchDetailsOrgRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListBatchDetailsOrg(
         context.TODO(),
         123,
-        &sdkgo.ListBatchDetailsOrgRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -16251,7 +16362,7 @@ client.Query.ListBatchDetailsOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -16371,7 +16482,7 @@ Example: `settledAmount(gt)=20` returns all records with a `settledAmount` great
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListBatches(Entry) -> *sdkgo.QueryBatchesResponse</code></summary>
+<details><summary><code>client.Query.ListBatches(Entry) -> *payabli.QueryBatchesResponse</code></summary>
 <dl>
 <dd>
 
@@ -16398,20 +16509,21 @@ Retrieve a list of batches for a paypoint. Use filters to limit results. Include
 <dd>
 
 ```go
+request := &payabli.ListBatchesRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListBatches(
         context.TODO(),
         "8cfec329267",
-        &sdkgo.ListBatchesRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -16428,7 +16540,7 @@ client.Query.ListBatches(
 <dl>
 <dd>
 
-**entry:** `sdkgo.Entry` 
+**entry:** `payabli.Entry` 
     
 </dd>
 </dl>
@@ -16436,7 +16548,7 @@ client.Query.ListBatches(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -16535,7 +16647,7 @@ Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater t
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListBatchesOrg(OrgId) -> *sdkgo.QueryBatchesResponse</code></summary>
+<details><summary><code>client.Query.ListBatchesOrg(OrgId) -> *payabli.QueryBatchesResponse</code></summary>
 <dl>
 <dd>
 
@@ -16562,20 +16674,21 @@ Retrieve a list of batches for an org. Use filters to limit results. Include the
 <dd>
 
 ```go
+request := &payabli.ListBatchesOrgRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListBatchesOrg(
         context.TODO(),
         123,
-        &sdkgo.ListBatchesOrgRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -16600,7 +16713,7 @@ client.Query.ListBatchesOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -16699,7 +16812,7 @@ Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater t
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListBatchesOut(Entry) -> *sdkgo.QueryBatchesOutResponse</code></summary>
+<details><summary><code>client.Query.ListBatchesOut(Entry) -> *payabli.QueryBatchesOutResponse</code></summary>
 <dl>
 <dd>
 
@@ -16726,20 +16839,21 @@ Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results
 <dd>
 
 ```go
+request := &payabli.ListBatchesOutRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListBatchesOut(
         context.TODO(),
         "8cfec329267",
-        &sdkgo.ListBatchesOutRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -16756,7 +16870,7 @@ client.Query.ListBatchesOut(
 <dl>
 <dd>
 
-**entry:** `sdkgo.Entry` 
+**entry:** `payabli.Entry` 
     
 </dd>
 </dl>
@@ -16764,7 +16878,7 @@ client.Query.ListBatchesOut(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -16825,7 +16939,7 @@ Collection of field names, conditions, and values used to filter the query. See 
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListBatchesOutOrg(OrgId) -> *sdkgo.QueryBatchesOutResponse</code></summary>
+<details><summary><code>client.Query.ListBatchesOutOrg(OrgId) -> *payabli.QueryBatchesOutResponse</code></summary>
 <dl>
 <dd>
 
@@ -16852,20 +16966,21 @@ Retrieve a list of MoneyOut batches for an org. Use filters to limit results. In
 <dd>
 
 ```go
+request := &payabli.ListBatchesOutOrgRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListBatchesOutOrg(
         context.TODO(),
         123,
-        &sdkgo.ListBatchesOutOrgRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -16890,7 +17005,7 @@ client.Query.ListBatchesOutOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -16966,7 +17081,7 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListChargebacks(Entry) -> *sdkgo.QueryChargebacksResponse</code></summary>
+<details><summary><code>client.Query.ListChargebacks(Entry) -> *payabli.QueryChargebacksResponse</code></summary>
 <dl>
 <dd>
 
@@ -16993,20 +17108,21 @@ Retrieves a list of chargebacks and returned transactions for a paypoint. Use fi
 <dd>
 
 ```go
+request := &payabli.ListChargebacksRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListChargebacks(
         context.TODO(),
         "8cfec329267",
-        &sdkgo.ListChargebacksRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -17023,7 +17139,7 @@ client.Query.ListChargebacks(
 <dl>
 <dd>
 
-**entry:** `sdkgo.Entry` 
+**entry:** `payabli.Entry` 
     
 </dd>
 </dl>
@@ -17031,7 +17147,7 @@ client.Query.ListChargebacks(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -17147,7 +17263,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListChargebacksOrg(OrgId) -> *sdkgo.QueryChargebacksResponse</code></summary>
+<details><summary><code>client.Query.ListChargebacksOrg(OrgId) -> *payabli.QueryChargebacksResponse</code></summary>
 <dl>
 <dd>
 
@@ -17174,20 +17290,21 @@ Retrieve a list of chargebacks and returned transactions for an org. Use filters
 <dd>
 
 ```go
+request := &payabli.ListChargebacksOrgRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListChargebacksOrg(
         context.TODO(),
         123,
-        &sdkgo.ListChargebacksOrgRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -17212,7 +17329,7 @@ client.Query.ListChargebacksOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -17330,7 +17447,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListCustomers(Entry) -> *sdkgo.QueryCustomerResponse</code></summary>
+<details><summary><code>client.Query.ListCustomers(Entry) -> *payabli.QueryCustomerResponse</code></summary>
 <dl>
 <dd>
 
@@ -17357,20 +17474,21 @@ Retrieves a list of customers for a paypoint. Use filters to limit results. Incl
 <dd>
 
 ```go
+request := &payabli.ListCustomersRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListCustomers(
         context.TODO(),
         "8cfec329267",
-        &sdkgo.ListCustomersRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -17387,7 +17505,7 @@ client.Query.ListCustomers(
 <dl>
 <dd>
 
-**entry:** `sdkgo.Entry` 
+**entry:** `payabli.Entry` 
     
 </dd>
 </dl>
@@ -17395,7 +17513,7 @@ client.Query.ListCustomers(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -17505,7 +17623,7 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListCustomersOrg(OrgId) -> *sdkgo.QueryCustomerResponse</code></summary>
+<details><summary><code>client.Query.ListCustomersOrg(OrgId) -> *payabli.QueryCustomerResponse</code></summary>
 <dl>
 <dd>
 
@@ -17532,20 +17650,21 @@ Retrieves a list of customers for an org. Use filters to limit results. Include 
 <dd>
 
 ```go
+request := &payabli.ListCustomersOrgRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListCustomersOrg(
         context.TODO(),
         123,
-        &sdkgo.ListCustomersOrgRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -17570,7 +17689,7 @@ client.Query.ListCustomersOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -17680,7 +17799,7 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListNotificationReports(Entry) -> *sdkgo.QueryResponseNotificationReports</code></summary>
+<details><summary><code>client.Query.ListNotificationReports(Entry) -> *payabli.QueryResponseNotificationReports</code></summary>
 <dl>
 <dd>
 
@@ -17707,20 +17826,21 @@ Returns a list of all reports generated in the last 60 days for a single entrypo
 <dd>
 
 ```go
+request := &payabli.ListNotificationReportsRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListNotificationReports(
         context.TODO(),
         "8cfec329267",
-        &sdkgo.ListNotificationReportsRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -17737,7 +17857,7 @@ client.Query.ListNotificationReports(
 <dl>
 <dd>
 
-**entry:** `sdkgo.Entry` 
+**entry:** `payabli.Entry` 
     
 </dd>
 </dl>
@@ -17820,7 +17940,7 @@ Example: reportName(ct)=tr  return all records containing the string "tr"
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListNotificationReportsOrg(OrgId) -> *sdkgo.QueryResponseNotificationReports</code></summary>
+<details><summary><code>client.Query.ListNotificationReportsOrg(OrgId) -> *payabli.QueryResponseNotificationReports</code></summary>
 <dl>
 <dd>
 
@@ -17847,20 +17967,21 @@ Returns a list of all reports generated in the last 60 days for an organization.
 <dd>
 
 ```go
+request := &payabli.ListNotificationReportsOrgRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListNotificationReportsOrg(
         context.TODO(),
         123,
-        &sdkgo.ListNotificationReportsOrgRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -17958,7 +18079,7 @@ Example: reportName(ct)=tr  return all records containing the string "tr"
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListNotifications(Entry) -> *sdkgo.QueryResponseNotifications</code></summary>
+<details><summary><code>client.Query.ListNotifications(Entry) -> *payabli.QueryResponseNotifications</code></summary>
 <dl>
 <dd>
 
@@ -17985,20 +18106,21 @@ Returns a list of notifications for an entrypoint. Use filters to limit results.
 <dd>
 
 ```go
+request := &payabli.ListNotificationsRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListNotifications(
         context.TODO(),
         "8cfec329267",
-        &sdkgo.ListNotificationsRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -18015,7 +18137,7 @@ client.Query.ListNotifications(
 <dl>
 <dd>
 
-**entry:** `sdkgo.Entry` 
+**entry:** `payabli.Entry` 
     
 </dd>
 </dl>
@@ -18100,7 +18222,7 @@ Example: totalAmount(gt)=20  return all records with totalAmount greater than 20
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListNotificationsOrg(OrgId) -> *sdkgo.QueryResponseNotifications</code></summary>
+<details><summary><code>client.Query.ListNotificationsOrg(OrgId) -> *payabli.QueryResponseNotifications</code></summary>
 <dl>
 <dd>
 
@@ -18127,20 +18249,21 @@ Return a list of notifications for an organization. Use filters to limit results
 <dd>
 
 ```go
+request := &payabli.ListNotificationsOrgRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListNotificationsOrg(
         context.TODO(),
         123,
-        &sdkgo.ListNotificationsOrgRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -18242,7 +18365,7 @@ Example: totalAmount(gt)=20  return all records with totalAmount greater than 20
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListOrganizations(OrgId) -> *sdkgo.ListOrganizationsResponse</code></summary>
+<details><summary><code>client.Query.ListOrganizations(OrgId) -> *payabli.ListOrganizationsResponse</code></summary>
 <dl>
 <dd>
 
@@ -18269,20 +18392,21 @@ Retrieves a list of an organization's suborganizations and their full details su
 <dd>
 
 ```go
+request := &payabli.ListOrganizationsRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListOrganizations(
         context.TODO(),
         123,
-        &sdkgo.ListOrganizationsRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -18307,7 +18431,7 @@ client.Query.ListOrganizations(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -18404,7 +18528,7 @@ Example: `dbaname(ct)=hoa` returns all records with a `dbaname` containing "hoa"
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListPayout(Entry) -> *sdkgo.QueryPayoutTransaction</code></summary>
+<details><summary><code>client.Query.ListPayout(Entry) -> *payabli.QueryPayoutTransaction</code></summary>
 <dl>
 <dd>
 
@@ -18431,20 +18555,21 @@ Retrieves a list of money out transactions (payouts) for a paypoint. Use filters
 <dd>
 
 ```go
+request := &payabli.ListPayoutRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListPayout(
         context.TODO(),
         "8cfec329267",
-        &sdkgo.ListPayoutRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -18461,7 +18586,7 @@ client.Query.ListPayout(
 <dl>
 <dd>
 
-**entry:** `sdkgo.Entry` 
+**entry:** `payabli.Entry` 
     
 </dd>
 </dl>
@@ -18469,7 +18594,7 @@ client.Query.ListPayout(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -18592,7 +18717,7 @@ List of field names accepted:
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListPayoutOrg(OrgId) -> *sdkgo.QueryPayoutTransaction</code></summary>
+<details><summary><code>client.Query.ListPayoutOrg(OrgId) -> *payabli.QueryPayoutTransaction</code></summary>
 <dl>
 <dd>
 
@@ -18619,20 +18744,21 @@ Retrieves a list of money out transactions (payouts) for an organization. Use fi
 <dd>
 
 ```go
+request := &payabli.ListPayoutOrgRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListPayoutOrg(
         context.TODO(),
         123,
-        &sdkgo.ListPayoutOrgRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -18657,7 +18783,7 @@ client.Query.ListPayoutOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -18779,7 +18905,7 @@ List of field names accepted:
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListPaypoints(OrgId) -> *sdkgo.QueryEntrypointResponse</code></summary>
+<details><summary><code>client.Query.ListPaypoints(OrgId) -> *payabli.QueryEntrypointResponse</code></summary>
 <dl>
 <dd>
 
@@ -18806,20 +18932,21 @@ Returns a list of paypoints in an organization. Use filters to limit results. In
 <dd>
 
 ```go
+request := &payabli.ListPaypointsRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListPaypoints(
         context.TODO(),
         123,
-        &sdkgo.ListPaypointsRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -18844,7 +18971,7 @@ client.Query.ListPaypoints(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -18946,7 +19073,7 @@ Example: `dbaname(ct)=hoa` returns all records with a `dbaname` containing "hoa"
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListSettlements(Entry) -> *sdkgo.QueryResponseSettlements</code></summary>
+<details><summary><code>client.Query.ListSettlements(Entry) -> *payabli.QueryResponseSettlements</code></summary>
 <dl>
 <dd>
 
@@ -18973,20 +19100,21 @@ Retrieve a list of settled transactions for a paypoint. Use filters to limit res
 <dd>
 
 ```go
+request := &payabli.ListSettlementsRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListSettlements(
         context.TODO(),
         "8cfec329267",
-        &sdkgo.ListSettlementsRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -19003,7 +19131,7 @@ client.Query.ListSettlements(
 <dl>
 <dd>
 
-**entry:** `sdkgo.Entry` 
+**entry:** `payabli.Entry` 
     
 </dd>
 </dl>
@@ -19011,7 +19139,7 @@ client.Query.ListSettlements(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -19132,7 +19260,7 @@ Example: `settledAmount(gt)=20` returns all records with a `settledAmount` great
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListSettlementsOrg(OrgId) -> *sdkgo.QueryResponseSettlements</code></summary>
+<details><summary><code>client.Query.ListSettlementsOrg(OrgId) -> *payabli.QueryResponseSettlements</code></summary>
 <dl>
 <dd>
 
@@ -19159,20 +19287,21 @@ Retrieve a list of settled transactions for an organization. Include the `export
 <dd>
 
 ```go
+request := &payabli.ListSettlementsOrgRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListSettlementsOrg(
         context.TODO(),
         123,
-        &sdkgo.ListSettlementsOrgRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -19197,7 +19326,7 @@ client.Query.ListSettlementsOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -19318,7 +19447,7 @@ Example: `settledAmount(gt)=20` returns all records with a `settledAmount` great
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListSubscriptions(Entry) -> *sdkgo.QuerySubscriptionResponse</code></summary>
+<details><summary><code>client.Query.ListSubscriptions(Entry) -> *payabli.QuerySubscriptionResponse</code></summary>
 <dl>
 <dd>
 
@@ -19345,20 +19474,21 @@ Returns a list of subscriptions for a single paypoint. Use filters to limit resu
 <dd>
 
 ```go
+request := &payabli.ListSubscriptionsRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListSubscriptions(
         context.TODO(),
         "8cfec329267",
-        &sdkgo.ListSubscriptionsRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -19375,7 +19505,7 @@ client.Query.ListSubscriptions(
 <dl>
 <dd>
 
-**entry:** `sdkgo.Entry` 
+**entry:** `payabli.Entry` 
     
 </dd>
 </dl>
@@ -19383,7 +19513,7 @@ client.Query.ListSubscriptions(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -19504,7 +19634,7 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListSubscriptionsOrg(OrgId) -> *sdkgo.QuerySubscriptionResponse</code></summary>
+<details><summary><code>client.Query.ListSubscriptionsOrg(OrgId) -> *payabli.QuerySubscriptionResponse</code></summary>
 <dl>
 <dd>
 
@@ -19531,20 +19661,21 @@ Returns a list of subscriptions for a single org. Use filters to limit results. 
 <dd>
 
 ```go
+request := &payabli.ListSubscriptionsOrgRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListSubscriptionsOrg(
         context.TODO(),
         123,
-        &sdkgo.ListSubscriptionsOrgRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -19569,7 +19700,7 @@ client.Query.ListSubscriptionsOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -19690,7 +19821,7 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListTransactions(Entry) -> *sdkgo.QueryResponseTransactions</code></summary>
+<details><summary><code>client.Query.ListTransactions(Entry) -> *payabli.QueryResponseTransactions</code></summary>
 <dl>
 <dd>
 
@@ -19724,20 +19855,21 @@ For example, this request parameters filter for transactions between April 01, 2
 <dd>
 
 ```go
+request := &payabli.ListTransactionsRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListTransactions(
         context.TODO(),
         "8cfec329267",
-        &sdkgo.ListTransactionsRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -19754,7 +19886,7 @@ client.Query.ListTransactions(
 <dl>
 <dd>
 
-**entry:** `sdkgo.Entry` 
+**entry:** `payabli.Entry` 
     
 </dd>
 </dl>
@@ -19762,7 +19894,7 @@ client.Query.ListTransactions(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -19857,7 +19989,8 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 - `deviceId` (ct, nct, in, nin, eq, ne)
 - `AchSecCode` ( ct, nct, in, nin, eq, ne)
 - `AchHolderType` (ct, nct, in, nin, eq, and ne)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name related to customer data - 'invoiceAdditional-xxx' (ne, eq, ct, nct) where xxx is the additional field name related to invoice data
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name related to customer data
+- 'invoiceAdditional-xxx' (ne, eq, ct, nct) where xxx is the additional field name related to invoice data
 
 **List of comparison operators accepted:**
 - `eq` or empty => equal
@@ -19889,7 +20022,7 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListTransactionsOrg(OrgId) -> *sdkgo.QueryResponseTransactions</code></summary>
+<details><summary><code>client.Query.ListTransactionsOrg(OrgId) -> *payabli.QueryResponseTransactions</code></summary>
 <dl>
 <dd>
 
@@ -19930,20 +20063,21 @@ curl --request GET \
 <dd>
 
 ```go
+request := &payabli.ListTransactionsOrgRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListTransactionsOrg(
         context.TODO(),
         123,
-        &sdkgo.ListTransactionsOrgRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -19968,7 +20102,7 @@ client.Query.ListTransactionsOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -20097,7 +20231,7 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListTransferDetails(Entry, TransferId) -> *sdkgo.QueryTransferDetailResponse</code></summary>
+<details><summary><code>client.Query.ListTransferDetails(Entry, TransferId) -> *payabli.QueryTransferDetailResponse</code></summary>
 <dl>
 <dd>
 
@@ -20124,11 +20258,12 @@ Retrieve a list of transfer details records for a paypoint. Use filters to limit
 <dd>
 
 ```go
+request := &payabli.ListTransfersPaypointRequest{}
 client.Query.ListTransferDetails(
         context.TODO(),
         "47862acd",
         123456,
-        &sdkgo.ListTransfersPaypointRequest{},
+        request,
     )
 }
 ```
@@ -20145,7 +20280,7 @@ client.Query.ListTransferDetails(
 <dl>
 <dd>
 
-**entry:** `sdkgo.Entry` 
+**entry:** `payabli.Entry` 
     
 </dd>
 </dl>
@@ -20161,7 +20296,7 @@ client.Query.ListTransferDetails(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -20177,7 +20312,7 @@ client.Query.ListTransferDetails(
 <dl>
 <dd>
 
-**limitRecord:** `*sdkgo.LimitRecord` 
+**limitRecord:** `*payabli.LimitRecord` 
     
 </dd>
 </dl>
@@ -20245,7 +20380,7 @@ for more information.
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListTransfers(Entry) -> *sdkgo.TransferQueryResponse</code></summary>
+<details><summary><code>client.Query.ListTransfers(Entry) -> *payabli.TransferQueryResponse</code></summary>
 <dl>
 <dd>
 
@@ -20272,17 +20407,18 @@ Retrieve a list of transfers for a paypoint. Use filters to limit results. Inclu
 <dd>
 
 ```go
+request := &payabli.ListTransfersRequest{
+        FromRecord: payabli.Int(
+            0,
+        ),
+        LimitRecord: payabli.Int(
+            20,
+        ),
+    }
 client.Query.ListTransfers(
         context.TODO(),
         "47862acd",
-        &sdkgo.ListTransfersRequest{
-            FromRecord: sdkgo.Int(
-                0,
-            ),
-            LimitRecord: sdkgo.Int(
-                20,
-            ),
-        },
+        request,
     )
 }
 ```
@@ -20299,7 +20435,7 @@ client.Query.ListTransfers(
 <dl>
 <dd>
 
-**entry:** `sdkgo.Entry` 
+**entry:** `payabli.Entry` 
     
 </dd>
 </dl>
@@ -20307,7 +20443,7 @@ client.Query.ListTransfers(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -20387,7 +20523,7 @@ List of field names accepted:
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListTransfersOrg(OrgId) -> *sdkgo.TransferQueryResponse</code></summary>
+<details><summary><code>client.Query.ListTransfersOrg(OrgId) -> *payabli.TransferQueryResponse</code></summary>
 <dl>
 <dd>
 
@@ -20414,17 +20550,18 @@ Retrieve a list of transfers for an org. Use filters to limit results. Include t
 <dd>
 
 ```go
+request := &payabli.ListTransfersRequestOrg{
+        FromRecord: payabli.Int(
+            0,
+        ),
+        LimitRecord: payabli.Int(
+            20,
+        ),
+    }
 client.Query.ListTransfersOrg(
         context.TODO(),
         123,
-        &sdkgo.ListTransfersRequestOrg{
-            FromRecord: sdkgo.Int(
-                0,
-            ),
-            LimitRecord: sdkgo.Int(
-                20,
-            ),
-        },
+        request,
     )
 }
 ```
@@ -20441,7 +20578,7 @@ client.Query.ListTransfersOrg(
 <dl>
 <dd>
 
-**orgId:** `sdkgo.Orgid` 
+**orgId:** `payabli.Orgid` 
     
 </dd>
 </dl>
@@ -20449,7 +20586,7 @@ client.Query.ListTransfersOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -20526,7 +20663,7 @@ List of field names accepted:
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListUsersOrg(OrgId) -> *sdkgo.QueryUserResponse</code></summary>
+<details><summary><code>client.Query.ListUsersOrg(OrgId) -> *payabli.QueryUserResponse</code></summary>
 <dl>
 <dd>
 
@@ -20553,20 +20690,21 @@ Get list of users for an org. Use filters to limit results.
 <dd>
 
 ```go
+request := &payabli.ListUsersOrgRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListUsersOrg(
         context.TODO(),
         123,
-        &sdkgo.ListUsersOrgRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -20670,7 +20808,7 @@ Example: `name(ct)=john`  return all records with name containing 'john'.
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListUsersPaypoint(Entry) -> *sdkgo.QueryUserResponse</code></summary>
+<details><summary><code>client.Query.ListUsersPaypoint(Entry) -> *payabli.QueryUserResponse</code></summary>
 <dl>
 <dd>
 
@@ -20697,20 +20835,21 @@ Get list of users for a paypoint. Use filters to limit results.
 <dd>
 
 ```go
+request := &payabli.ListUsersPaypointRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListUsersPaypoint(
         context.TODO(),
         "8cfec329267",
-        &sdkgo.ListUsersPaypointRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -20814,7 +20953,7 @@ Example: `name(ct)=john`  return all records with name containing 'john'
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListVendors(Entry) -> *sdkgo.QueryResponseVendors</code></summary>
+<details><summary><code>client.Query.ListVendors(Entry) -> *payabli.QueryResponseVendors</code></summary>
 <dl>
 <dd>
 
@@ -20841,20 +20980,21 @@ Retrieve a list of vendors for an entrypoint. Use filters to limit results. Incl
 <dd>
 
 ```go
+request := &payabli.ListVendorsRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListVendors(
         context.TODO(),
         "8cfec329267",
-        &sdkgo.ListVendorsRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -20879,7 +21019,7 @@ client.Query.ListVendors(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -20978,7 +21118,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListVendorsOrg(OrgId) -> *sdkgo.QueryResponseVendors</code></summary>
+<details><summary><code>client.Query.ListVendorsOrg(OrgId) -> *payabli.QueryResponseVendors</code></summary>
 <dl>
 <dd>
 
@@ -21005,20 +21145,21 @@ Retrieve a list of vendors for an organization. Use filters to limit results. In
 <dd>
 
 ```go
+request := &payabli.ListVendorsOrgRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListVendorsOrg(
         context.TODO(),
         123,
-        &sdkgo.ListVendorsOrgRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -21043,7 +21184,7 @@ client.Query.ListVendorsOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -21142,7 +21283,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListVcards(Entry) -> *sdkgo.VCardQueryResponse</code></summary>
+<details><summary><code>client.Query.ListVcards(Entry) -> *payabli.VCardQueryResponse</code></summary>
 <dl>
 <dd>
 
@@ -21169,20 +21310,21 @@ Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use f
 <dd>
 
 ```go
+request := &payabli.ListVcardsRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListVcards(
         context.TODO(),
         "8cfec329267",
-        &sdkgo.ListVcardsRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -21199,7 +21341,7 @@ client.Query.ListVcards(
 <dl>
 <dd>
 
-**entry:** `sdkgo.Entry` 
+**entry:** `payabli.Entry` 
     
 </dd>
 </dl>
@@ -21207,7 +21349,7 @@ client.Query.ListVcards(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -21298,7 +21440,7 @@ List of comparison accepted - enclosed between parentheses:
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListVcardsOrg(OrgId) -> *sdkgo.VCardQueryResponse</code></summary>
+<details><summary><code>client.Query.ListVcardsOrg(OrgId) -> *payabli.VCardQueryResponse</code></summary>
 <dl>
 <dd>
 
@@ -21325,20 +21467,21 @@ Retrieve a list of vcards (virtual credit cards) issued for an organization. Use
 <dd>
 
 ```go
+request := &payabli.ListVcardsOrgRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Query.ListVcardsOrg(
         context.TODO(),
         123,
-        &sdkgo.ListVcardsOrgRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -21363,7 +21506,7 @@ client.Query.ListVcardsOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*sdkgo.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` 
     
 </dd>
 </dl>
@@ -21455,7 +21598,7 @@ List of comparison accepted - enclosed between parentheses:
 </details>
 
 ## Statistic
-<details><summary><code>client.Statistic.BasicStats(EntryId, Freq, Level, Mode) -> []*sdkgo.StatBasicQueryRecord</code></summary>
+<details><summary><code>client.Statistic.BasicStats(EntryId, Freq, Level, Mode) -> []*payabli.StatBasicQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -21482,20 +21625,21 @@ Retrieves the basic statistics for an organization or a paypoint, for a given ti
 <dd>
 
 ```go
+request := &payabli.BasicStatsRequest{
+        EndDate: payabli.String(
+            "2023-05-23",
+        ),
+        StartDate: payabli.String(
+            "2023-03-23",
+        ),
+    }
 client.Statistic.BasicStats(
         context.TODO(),
         1000000,
         "m",
         1,
         "ytd",
-        &sdkgo.BasicStatsRequest{
-            EndDate: sdkgo.String(
-                "2023-05-23",
-            ),
-            StartDate: sdkgo.String(
-                "2023-03-23",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -21615,7 +21759,7 @@ Valid formats:
 </dl>
 </details>
 
-<details><summary><code>client.Statistic.CustomerBasicStats(CustomerId, Freq, Mode) -> []*sdkgo.SubscriptionStatsQueryRecord</code></summary>
+<details><summary><code>client.Statistic.CustomerBasicStats(CustomerId, Freq, Mode) -> []*payabli.SubscriptionStatsQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -21642,12 +21786,13 @@ Retrieves the basic statistics for a customer for a specific time period, groupe
 <dd>
 
 ```go
+request := &payabli.CustomerBasicStatsRequest{}
 client.Statistic.CustomerBasicStats(
         context.TODO(),
         998,
         "m",
         "ytd",
-        &sdkgo.CustomerBasicStatsRequest{},
+        request,
     )
 }
 ```
@@ -21723,7 +21868,7 @@ Mode for request. Allowed values:
 </dl>
 </details>
 
-<details><summary><code>client.Statistic.SubStats(EntryId, Interval, Level) -> []*sdkgo.StatBasicQueryRecord</code></summary>
+<details><summary><code>client.Statistic.SubStats(EntryId, Interval, Level) -> []*payabli.StatBasicQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -21750,12 +21895,13 @@ Retrieves the subscription statistics for a given interval for a paypoint or org
 <dd>
 
 ```go
+request := &payabli.SubStatsRequest{}
 client.Statistic.SubStats(
         context.TODO(),
         1000000,
         "30",
         1,
-        &sdkgo.SubStatsRequest{},
+        request,
     )
 }
 ```
@@ -21820,7 +21966,7 @@ The entry level for the request:
 </dl>
 </details>
 
-<details><summary><code>client.Statistic.VendorBasicStats(Freq, IdVendor, Mode) -> []*sdkgo.StatisticsVendorQueryRecord</code></summary>
+<details><summary><code>client.Statistic.VendorBasicStats(Freq, IdVendor, Mode) -> []*payabli.StatisticsVendorQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -21847,12 +21993,13 @@ Retrieve the basic statistics about a vendor for a given time period, grouped by
 <dd>
 
 ```go
+request := &payabli.VendorBasicStatsRequest{}
 client.Statistic.VendorBasicStats(
         context.TODO(),
         "m",
         1,
         "ytd",
-        &sdkgo.VendorBasicStatsRequest{},
+        request,
     )
 }
 ```
@@ -21929,7 +22076,7 @@ Mode for request. Allowed values:
 </details>
 
 ## Subscription
-<details><summary><code>client.Subscription.GetSubscription(SubId) -> *sdkgo.SubscriptionQueryRecords</code></summary>
+<details><summary><code>client.Subscription.GetSubscription(SubId) -> *payabli.SubscriptionQueryRecords</code></summary>
 <dl>
 <dd>
 
@@ -21987,7 +22134,7 @@ client.Subscription.GetSubscription(
 </dl>
 </details>
 
-<details><summary><code>client.Subscription.NewSubscription(request) -> *sdkgo.AddSubscriptionResponse</code></summary>
+<details><summary><code>client.Subscription.NewSubscription(request) -> *payabli.AddSubscriptionResponse</code></summary>
 <dl>
 <dd>
 
@@ -22014,56 +22161,57 @@ Creates a subscription or scheduled payment to run at a specified time and frequ
 <dd>
 
 ```go
-client.Subscription.NewSubscription(
-        context.TODO(),
-        &sdkgo.RequestSchedule{
-            Body: &sdkgo.SubscriptionRequestBody{
-                CustomerData: &sdkgo.PayorDataRequest{
-                    CustomerId: sdkgo.Int64(
-                        4440,
-                    ),
-                },
-                EntryPoint: sdkgo.String(
-                    "f743aed24a",
+request := &payabli.RequestSchedule{
+        Body: &payabli.SubscriptionRequestBody{
+            CustomerData: &payabli.PayorDataRequest{
+                CustomerId: payabli.Int64(
+                    4440,
                 ),
-                PaymentDetails: &sdkgo.PaymentDetail{
-                    ServiceFee: sdkgo.Float64(
-                        0,
+            },
+            EntryPoint: payabli.String(
+                "f743aed24a",
+            ),
+            PaymentDetails: &payabli.PaymentDetail{
+                ServiceFee: payabli.Float64(
+                    0,
+                ),
+                TotalAmount: 100,
+            },
+            PaymentMethod: &payabli.RequestSchedulePaymentMethod{
+                PayMethodCredit: &payabli.PayMethodCredit{
+                    Cardcvv: payabli.String(
+                        "123",
                     ),
-                    TotalAmount: 100,
-                },
-                PaymentMethod: &sdkgo.RequestSchedulePaymentMethod{
-                    PayMethodCredit: &sdkgo.PayMethodCredit{
-                        Cardcvv: sdkgo.String(
-                            "123",
-                        ),
-                        Cardexp: "02/25",
-                        CardHolder: sdkgo.String(
-                            "John Cassian",
-                        ),
-                        Cardnumber: "4111111111111111",
-                        Cardzip: sdkgo.String(
-                            "37615",
-                        ),
-                        Initiator: sdkgo.String(
-                            "payor",
-                        ),
-                    },
-                },
-                ScheduleDetails: &sdkgo.ScheduleDetail{
-                    EndDate: sdkgo.String(
-                        "03-20-2025",
+                    Cardexp: "02/25",
+                    CardHolder: payabli.String(
+                        "John Cassian",
                     ),
-                    Frequency: sdkgo.FrequencyWeekly.Ptr(),
-                    PlanId: sdkgo.Int(
-                        1,
+                    Cardnumber: "4111111111111111",
+                    Cardzip: payabli.String(
+                        "37615",
                     ),
-                    StartDate: sdkgo.String(
-                        "09-20-2024",
+                    Initiator: payabli.String(
+                        "payor",
                     ),
                 },
             },
+            ScheduleDetails: &payabli.ScheduleDetail{
+                EndDate: payabli.String(
+                    "03-20-2025",
+                ),
+                Frequency: payabli.FrequencyWeekly.Ptr(),
+                PlanId: payabli.Int(
+                    1,
+                ),
+                StartDate: payabli.String(
+                    "09-20-2024",
+                ),
+            },
         },
+    }
+client.Subscription.NewSubscription(
+        context.TODO(),
+        request,
     )
 }
 ```
@@ -22080,7 +22228,7 @@ client.Subscription.NewSubscription(
 <dl>
 <dd>
 
-**forceCustomerCreation:** `*sdkgo.ForceCustomerCreation` 
+**forceCustomerCreation:** `*payabli.ForceCustomerCreation` 
     
 </dd>
 </dl>
@@ -22088,7 +22236,7 @@ client.Subscription.NewSubscription(
 <dl>
 <dd>
 
-**idempotencyKey:** `*sdkgo.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` 
     
 </dd>
 </dl>
@@ -22096,7 +22244,7 @@ client.Subscription.NewSubscription(
 <dl>
 <dd>
 
-**request:** `*sdkgo.SubscriptionRequestBody` 
+**request:** `*payabli.SubscriptionRequestBody` 
     
 </dd>
 </dl>
@@ -22108,7 +22256,7 @@ client.Subscription.NewSubscription(
 </dl>
 </details>
 
-<details><summary><code>client.Subscription.RemoveSubscription(SubId) -> *sdkgo.RemoveSubscriptionResponse</code></summary>
+<details><summary><code>client.Subscription.RemoveSubscription(SubId) -> *payabli.RemoveSubscriptionResponse</code></summary>
 <dl>
 <dd>
 
@@ -22166,7 +22314,7 @@ client.Subscription.RemoveSubscription(
 </dl>
 </details>
 
-<details><summary><code>client.Subscription.UpdateSubscription(SubId, request) -> *sdkgo.UpdateSubscriptionResponse</code></summary>
+<details><summary><code>client.Subscription.UpdateSubscription(SubId, request) -> *payabli.UpdateSubscriptionResponse</code></summary>
 <dl>
 <dd>
 
@@ -22193,14 +22341,15 @@ Updates a subscription's details.
 <dd>
 
 ```go
+request := &payabli.RequestUpdateSchedule{
+        SetPause: payabli.Bool(
+            true,
+        ),
+    }
 client.Subscription.UpdateSubscription(
         context.TODO(),
         231,
-        &sdkgo.RequestUpdateSchedule{
-            SetPause: sdkgo.Bool(
-                true,
-            ),
-        },
+        request,
     )
 }
 ```
@@ -22225,7 +22374,7 @@ client.Subscription.UpdateSubscription(
 <dl>
 <dd>
 
-**paymentDetails:** `*sdkgo.PaymentDetail` — Object describing details of the payment. To skip the payment, set the `totalAmount` to 0. Payments will be paused until the amount is updated to a non-zero value. When `totalAmount` is set to 0, the `serviceFee` must also be set to 0.
+**paymentDetails:** `*payabli.PaymentDetail` — Object describing details of the payment. To skip the payment, set the `totalAmount` to 0. Payments will be paused until the amount is updated to a non-zero value. When `totalAmount` is set to 0, the `serviceFee` must also be set to 0.
     
 </dd>
 </dl>
@@ -22233,7 +22382,7 @@ client.Subscription.UpdateSubscription(
 <dl>
 <dd>
 
-**scheduleDetails:** `*sdkgo.ScheduleDetail` — Object describing the schedule for subscription
+**scheduleDetails:** `*payabli.ScheduleDetail` — Object describing the schedule for subscription
     
 </dd>
 </dl>
@@ -22241,7 +22390,7 @@ client.Subscription.UpdateSubscription(
 <dl>
 <dd>
 
-**setPause:** `*sdkgo.SetPause` 
+**setPause:** `*payabli.SetPause` 
     
 </dd>
 </dl>
@@ -22254,74 +22403,7 @@ client.Subscription.UpdateSubscription(
 </details>
 
 ## Templates
-<details><summary><code>client.Templates.AddTemplate(OrgId, request) -> *sdkgo.PayabliApiResponseTemplateId</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Creates a boarding template in an organization.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Templates.AddTemplate(
-        context.TODO(),
-        123,
-        &sdkgo.TemplateData{},
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `*sdkgo.TemplateData` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Templates.DeleteTemplate(TemplateId) -> *sdkgo.PayabliApiResponseTemplateId</code></summary>
+<details><summary><code>client.Templates.DeleteTemplate(TemplateId) -> *payabli.PayabliApiResponseTemplateId</code></summary>
 <dl>
 <dd>
 
@@ -22379,7 +22461,7 @@ client.Templates.DeleteTemplate(
 </dl>
 </details>
 
-<details><summary><code>client.Templates.GetlinkTemplate(IgnoreEmpty, TemplateId) -> *sdkgo.BoardingLinkApiResponse</code></summary>
+<details><summary><code>client.Templates.GetlinkTemplate(IgnoreEmpty, TemplateId) -> *payabli.BoardingLinkApiResponse</code></summary>
 <dl>
 <dd>
 
@@ -22446,7 +22528,7 @@ client.Templates.GetlinkTemplate(
 </dl>
 </details>
 
-<details><summary><code>client.Templates.GetTemplate(TemplateId) -> *sdkgo.TemplateQueryRecord</code></summary>
+<details><summary><code>client.Templates.GetTemplate(TemplateId) -> *payabli.TemplateQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -22504,7 +22586,7 @@ client.Templates.GetTemplate(
 </dl>
 </details>
 
-<details><summary><code>client.Templates.ListTemplates(OrgId) -> *sdkgo.TemplateQueryResponse</code></summary>
+<details><summary><code>client.Templates.ListTemplates(OrgId) -> *payabli.TemplateQueryResponse</code></summary>
 <dl>
 <dd>
 
@@ -22531,20 +22613,21 @@ Retrieves a list of boarding templates for an organization. Use filters to limit
 <dd>
 
 ```go
+request := &payabli.ListTemplatesRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
 client.Templates.ListTemplates(
         context.TODO(),
         123,
-        &sdkgo.ListTemplatesRequest{
-            FromRecord: sdkgo.Int(
-                251,
-            ),
-            LimitRecord: sdkgo.Int(
-                0,
-            ),
-            SortBy: sdkgo.String(
-                "desc(field_name)",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -22650,75 +22733,8 @@ Example: title(ct)=hoa return all records with title containing "hoa"
 </dl>
 </details>
 
-<details><summary><code>client.Templates.UpdateTemplate(TemplateId, request) -> *sdkgo.PayabliApiResponseTemplateId</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates a boarding template by ID.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Templates.UpdateTemplate(
-        context.TODO(),
-        80,
-        &sdkgo.TemplateData{},
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**templateId:** `float64` — The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `*sdkgo.TemplateData` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 ## TokenStorage
-<details><summary><code>client.TokenStorage.AddMethod(request) -> *sdkgo.AddMethodResponse</code></summary>
+<details><summary><code>client.TokenStorage.AddMethod(request) -> *payabli.AddMethodResponse</code></summary>
 <dl>
 <dd>
 
@@ -22745,37 +22761,38 @@ Saves a payment method for reuse. This call exchanges sensitive payment informat
 <dd>
 
 ```go
-client.TokenStorage.AddMethod(
-        context.TODO(),
-        &sdkgo.AddMethodRequest{
-            Body: &sdkgo.RequestTokenStorage{
-                CustomerData: &sdkgo.PayorDataRequest{
-                    CustomerId: sdkgo.Int64(
-                        4440,
+request := &payabli.AddMethodRequest{
+        Body: &payabli.RequestTokenStorage{
+            CustomerData: &payabli.PayorDataRequest{
+                CustomerId: payabli.Int64(
+                    4440,
+                ),
+            },
+            EntryPoint: payabli.String(
+                "f743aed24a",
+            ),
+            FallbackAuth: payabli.Bool(
+                true,
+            ),
+            PaymentMethod: &payabli.RequestTokenStoragePaymentMethod{
+                TokenizeCard: &payabli.TokenizeCard{
+                    Cardcvv: payabli.String(
+                        "123",
                     ),
-                },
-                EntryPoint: sdkgo.String(
-                    "f743aed24a",
-                ),
-                FallbackAuth: sdkgo.Bool(
-                    true,
-                ),
-                PaymentMethod: &sdkgo.RequestTokenStoragePaymentMethod{
-                    TokenizeCard: &sdkgo.TokenizeCard{
-                        Cardcvv: sdkgo.String(
-                            "123",
-                        ),
-                        Cardexp: "02/25",
-                        CardHolder: "John Doe",
-                        Cardnumber: "4111111111111111",
-                        Cardzip: sdkgo.String(
-                            "12345",
-                        ),
-                        Method: "card",
-                    },
+                    Cardexp: "02/25",
+                    CardHolder: "John Doe",
+                    Cardnumber: "4111111111111111",
+                    Cardzip: payabli.String(
+                        "12345",
+                    ),
+                    Method: "card",
                 },
             },
         },
+    }
+client.TokenStorage.AddMethod(
+        context.TODO(),
+        request,
     )
 }
 ```
@@ -22792,7 +22809,7 @@ client.TokenStorage.AddMethod(
 <dl>
 <dd>
 
-**achValidation:** `*sdkgo.AchValidation` 
+**achValidation:** `*payabli.AchValidation` 
     
 </dd>
 </dl>
@@ -22800,7 +22817,7 @@ client.TokenStorage.AddMethod(
 <dl>
 <dd>
 
-**createAnonymous:** `sdkgo.CreateAnonymous` 
+**createAnonymous:** `payabli.CreateAnonymous` 
     
 </dd>
 </dl>
@@ -22808,7 +22825,7 @@ client.TokenStorage.AddMethod(
 <dl>
 <dd>
 
-**forceCustomerCreation:** `*sdkgo.ForceCustomerCreation` 
+**forceCustomerCreation:** `*payabli.ForceCustomerCreation` 
     
 </dd>
 </dl>
@@ -22816,7 +22833,7 @@ client.TokenStorage.AddMethod(
 <dl>
 <dd>
 
-**temporary:** `sdkgo.Temporary` 
+**temporary:** `payabli.Temporary` 
     
 </dd>
 </dl>
@@ -22824,7 +22841,7 @@ client.TokenStorage.AddMethod(
 <dl>
 <dd>
 
-**idempotencyKey:** `*sdkgo.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` 
     
 </dd>
 </dl>
@@ -22832,7 +22849,7 @@ client.TokenStorage.AddMethod(
 <dl>
 <dd>
 
-**request:** `*sdkgo.RequestTokenStorage` 
+**request:** `*payabli.RequestTokenStorage` 
     
 </dd>
 </dl>
@@ -22844,7 +22861,7 @@ client.TokenStorage.AddMethod(
 </dl>
 </details>
 
-<details><summary><code>client.TokenStorage.GetMethod(MethodId) -> *sdkgo.GetMethodResponse</code></summary>
+<details><summary><code>client.TokenStorage.GetMethod(MethodId) -> *payabli.GetMethodResponse</code></summary>
 <dl>
 <dd>
 
@@ -22871,17 +22888,18 @@ Retrieves details for a saved payment method.
 <dd>
 
 ```go
+request := &payabli.GetMethodRequest{
+        CardExpirationFormat: payabli.Int(
+            1,
+        ),
+        IncludeTemporary: payabli.Bool(
+            false,
+        ),
+    }
 client.TokenStorage.GetMethod(
         context.TODO(),
         "32-8877drt00045632-678",
-        &sdkgo.GetMethodRequest{
-            CardExpirationFormat: sdkgo.Int(
-                1,
-            ),
-            IncludeTemporary: sdkgo.Bool(
-                false,
-            ),
-        },
+        request,
     )
 }
 ```
@@ -22936,7 +22954,7 @@ Accepted values:
 </dl>
 </details>
 
-<details><summary><code>client.TokenStorage.RemoveMethod(MethodId) -> *sdkgo.PayabliApiResponsePaymethodDelete</code></summary>
+<details><summary><code>client.TokenStorage.RemoveMethod(MethodId) -> *payabli.PayabliApiResponsePaymethodDelete</code></summary>
 <dl>
 <dd>
 
@@ -22994,7 +23012,7 @@ client.TokenStorage.RemoveMethod(
 </dl>
 </details>
 
-<details><summary><code>client.TokenStorage.UpdateMethod(MethodId, request) -> *sdkgo.PayabliApiResponsePaymethodDelete</code></summary>
+<details><summary><code>client.TokenStorage.UpdateMethod(MethodId, request) -> *payabli.PayabliApiResponsePaymethodDelete</code></summary>
 <dl>
 <dd>
 
@@ -23021,38 +23039,39 @@ Updates a saved payment method.
 <dd>
 
 ```go
-client.TokenStorage.UpdateMethod(
-        context.TODO(),
-        "32-8877drt00045632-678",
-        &sdkgo.UpdateMethodRequest{
-            Body: &sdkgo.RequestTokenStorage{
-                CustomerData: &sdkgo.PayorDataRequest{
-                    CustomerId: sdkgo.Int64(
-                        4440,
+request := &payabli.UpdateMethodRequest{
+        Body: &payabli.RequestTokenStorage{
+            CustomerData: &payabli.PayorDataRequest{
+                CustomerId: payabli.Int64(
+                    4440,
+                ),
+            },
+            EntryPoint: payabli.String(
+                "f743aed24a",
+            ),
+            FallbackAuth: payabli.Bool(
+                true,
+            ),
+            PaymentMethod: &payabli.RequestTokenStoragePaymentMethod{
+                TokenizeCard: &payabli.TokenizeCard{
+                    Cardcvv: payabli.String(
+                        "123",
                     ),
-                },
-                EntryPoint: sdkgo.String(
-                    "f743aed24a",
-                ),
-                FallbackAuth: sdkgo.Bool(
-                    true,
-                ),
-                PaymentMethod: &sdkgo.RequestTokenStoragePaymentMethod{
-                    TokenizeCard: &sdkgo.TokenizeCard{
-                        Cardcvv: sdkgo.String(
-                            "123",
-                        ),
-                        Cardexp: "02/25",
-                        CardHolder: "John Doe",
-                        Cardnumber: "4111111111111111",
-                        Cardzip: sdkgo.String(
-                            "12345",
-                        ),
-                        Method: "card",
-                    },
+                    Cardexp: "02/25",
+                    CardHolder: "John Doe",
+                    Cardnumber: "4111111111111111",
+                    Cardzip: payabli.String(
+                        "12345",
+                    ),
+                    Method: "card",
                 },
             },
         },
+    }
+client.TokenStorage.UpdateMethod(
+        context.TODO(),
+        "32-8877drt00045632-678",
+        request,
     )
 }
 ```
@@ -23077,7 +23096,7 @@ client.TokenStorage.UpdateMethod(
 <dl>
 <dd>
 
-**achValidation:** `*sdkgo.AchValidation` 
+**achValidation:** `*payabli.AchValidation` 
     
 </dd>
 </dl>
@@ -23085,7 +23104,7 @@ client.TokenStorage.UpdateMethod(
 <dl>
 <dd>
 
-**request:** `*sdkgo.RequestTokenStorage` 
+**request:** `*payabli.RequestTokenStorage` 
     
 </dd>
 </dl>
@@ -23098,7 +23117,7 @@ client.TokenStorage.UpdateMethod(
 </details>
 
 ## User
-<details><summary><code>client.User.AddUser(request) -> *sdkgo.AddUserResponse</code></summary>
+<details><summary><code>client.User.AddUser(request) -> *payabli.AddUserResponse</code></summary>
 <dl>
 <dd>
 
@@ -23111,9 +23130,10 @@ client.TokenStorage.UpdateMethod(
 <dd>
 
 ```go
+request := &payabli.UserData{}
 client.User.AddUser(
         context.TODO(),
-        &sdkgo.UserData{},
+        request,
     )
 }
 ```
@@ -23130,7 +23150,7 @@ client.User.AddUser(
 <dl>
 <dd>
 
-**request:** `*sdkgo.UserData` 
+**request:** `*payabli.UserData` 
     
 </dd>
 </dl>
@@ -23142,7 +23162,7 @@ client.User.AddUser(
 </dl>
 </details>
 
-<details><summary><code>client.User.AuthRefreshUser() -> *sdkgo.PayabliApiResponseUserMfa</code></summary>
+<details><summary><code>client.User.AuthRefreshUser() -> *payabli.PayabliApiResponseUserMfa</code></summary>
 <dl>
 <dd>
 
@@ -23170,7 +23190,7 @@ client.User.AuthRefreshUser(
 </dl>
 </details>
 
-<details><summary><code>client.User.AuthResetUser(request) -> *sdkgo.AuthResetUserResponse</code></summary>
+<details><summary><code>client.User.AuthResetUser(request) -> *payabli.AuthResetUserResponse</code></summary>
 <dl>
 <dd>
 
@@ -23183,9 +23203,10 @@ client.User.AuthRefreshUser(
 <dd>
 
 ```go
+request := &payabli.UserAuthResetRequest{}
 client.User.AuthResetUser(
         context.TODO(),
-        &sdkgo.UserAuthResetRequest{},
+        request,
     )
 }
 ```
@@ -23202,7 +23223,7 @@ client.User.AuthResetUser(
 <dl>
 <dd>
 
-**email:** `*sdkgo.Email` — The user's email address.
+**email:** `*payabli.Email` — The user's email address.
     
 </dd>
 </dl>
@@ -23230,7 +23251,7 @@ client.User.AuthResetUser(
 </dl>
 </details>
 
-<details><summary><code>client.User.AuthUser(Provider, request) -> *sdkgo.PayabliApiResponseMfaBasic</code></summary>
+<details><summary><code>client.User.AuthUser(Provider, request) -> *payabli.PayabliApiResponseMfaBasic</code></summary>
 <dl>
 <dd>
 
@@ -23257,10 +23278,11 @@ This endpoint requires an application API token.
 <dd>
 
 ```go
+request := &payabli.UserAuthRequest{}
 client.User.AuthUser(
         context.TODO(),
         "provider",
-        &sdkgo.UserAuthRequest{},
+        request,
     )
 }
 ```
@@ -23285,7 +23307,7 @@ client.User.AuthUser(
 <dl>
 <dd>
 
-**email:** `*sdkgo.Email` 
+**email:** `*payabli.Email` 
     
 </dd>
 </dl>
@@ -23337,7 +23359,7 @@ client.User.AuthUser(
 </dl>
 </details>
 
-<details><summary><code>client.User.ChangePswUser(request) -> *sdkgo.ChangePswUserResponse</code></summary>
+<details><summary><code>client.User.ChangePswUser(request) -> *payabli.ChangePswUserResponse</code></summary>
 <dl>
 <dd>
 
@@ -23350,9 +23372,10 @@ client.User.AuthUser(
 <dd>
 
 ```go
+request := &payabli.UserAuthPswResetRequest{}
 client.User.ChangePswUser(
         context.TODO(),
-        &sdkgo.UserAuthPswResetRequest{},
+        request,
     )
 }
 ```
@@ -23381,7 +23404,7 @@ client.User.ChangePswUser(
 </dl>
 </details>
 
-<details><summary><code>client.User.DeleteUser(UserId) -> *sdkgo.DeleteUserResponse</code></summary>
+<details><summary><code>client.User.DeleteUser(UserId) -> *payabli.DeleteUserResponse</code></summary>
 <dl>
 <dd>
 
@@ -23425,7 +23448,7 @@ client.User.DeleteUser(
 </dl>
 </details>
 
-<details><summary><code>client.User.EditMfaUser(UserId, request) -> *sdkgo.EditMfaUserResponse</code></summary>
+<details><summary><code>client.User.EditMfaUser(UserId, request) -> *payabli.EditMfaUserResponse</code></summary>
 <dl>
 <dd>
 
@@ -23438,10 +23461,11 @@ client.User.DeleteUser(
 <dd>
 
 ```go
+request := &payabli.MfaData{}
 client.User.EditMfaUser(
         context.TODO(),
         1000000,
-        &sdkgo.MfaData{},
+        request,
     )
 }
 ```
@@ -23466,7 +23490,7 @@ client.User.EditMfaUser(
 <dl>
 <dd>
 
-**request:** `*sdkgo.MfaData` 
+**request:** `*payabli.MfaData` 
     
 </dd>
 </dl>
@@ -23478,7 +23502,7 @@ client.User.EditMfaUser(
 </dl>
 </details>
 
-<details><summary><code>client.User.EditUser(UserId, request) -> *sdkgo.PayabliApiResponse</code></summary>
+<details><summary><code>client.User.EditUser(UserId, request) -> *payabli.PayabliApiResponse</code></summary>
 <dl>
 <dd>
 
@@ -23491,10 +23515,11 @@ client.User.EditMfaUser(
 <dd>
 
 ```go
+request := &payabli.UserData{}
 client.User.EditUser(
         context.TODO(),
         1000000,
-        &sdkgo.UserData{},
+        request,
     )
 }
 ```
@@ -23519,7 +23544,7 @@ client.User.EditUser(
 <dl>
 <dd>
 
-**request:** `*sdkgo.UserData` 
+**request:** `*payabli.UserData` 
     
 </dd>
 </dl>
@@ -23531,7 +23556,7 @@ client.User.EditUser(
 </dl>
 </details>
 
-<details><summary><code>client.User.GetUser(UserId) -> *sdkgo.UserQueryRecord</code></summary>
+<details><summary><code>client.User.GetUser(UserId) -> *payabli.UserQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -23544,14 +23569,15 @@ client.User.EditUser(
 <dd>
 
 ```go
+request := &payabli.GetUserRequest{
+        Entry: payabli.String(
+            "478ae1234",
+        ),
+    }
 client.User.GetUser(
         context.TODO(),
         1000000,
-        &sdkgo.GetUserRequest{
-            Entry: sdkgo.String(
-                "478ae1234",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -23596,7 +23622,7 @@ client.User.GetUser(
 </dl>
 </details>
 
-<details><summary><code>client.User.LogoutUser() -> *sdkgo.LogoutUserResponse</code></summary>
+<details><summary><code>client.User.LogoutUser() -> *payabli.LogoutUserResponse</code></summary>
 <dl>
 <dd>
 
@@ -23624,7 +23650,7 @@ client.User.LogoutUser(
 </dl>
 </details>
 
-<details><summary><code>client.User.ResendMfaCode(Entry, EntryType, Usrname) -> *sdkgo.PayabliApiResponseMfaBasic</code></summary>
+<details><summary><code>client.User.ResendMfaCode(Entry, EntryType, Usrname) -> *payabli.PayabliApiResponseMfaBasic</code></summary>
 <dl>
 <dd>
 
@@ -23686,7 +23712,7 @@ client.User.ResendMfaCode(
 </dl>
 </details>
 
-<details><summary><code>client.User.ValidateMfaUser(request) -> *sdkgo.PayabliApiResponseUserMfa</code></summary>
+<details><summary><code>client.User.ValidateMfaUser(request) -> *payabli.PayabliApiResponseUserMfa</code></summary>
 <dl>
 <dd>
 
@@ -23699,9 +23725,10 @@ client.User.ResendMfaCode(
 <dd>
 
 ```go
+request := &payabli.MfaValidationData{}
 client.User.ValidateMfaUser(
         context.TODO(),
-        &sdkgo.MfaValidationData{},
+        request,
     )
 }
 ```
@@ -23726,7 +23753,7 @@ client.User.ValidateMfaUser(
 <dl>
 <dd>
 
-**mfaValidationCode:** `*sdkgo.MfaValidationCode` 
+**mfaValidationCode:** `*payabli.MfaValidationCode` 
     
 </dd>
 </dl>
@@ -23739,7 +23766,7 @@ client.User.ValidateMfaUser(
 </details>
 
 ## Vendor
-<details><summary><code>client.Vendor.AddVendor(Entry, request) -> *sdkgo.PayabliApiResponseVendors</code></summary>
+<details><summary><code>client.Vendor.AddVendor(Entry, request) -> *payabli.PayabliApiResponseVendors</code></summary>
 <dl>
 <dd>
 
@@ -23766,127 +23793,128 @@ Creates a vendor in an entrypoint.
 <dd>
 
 ```go
+request := &payabli.VendorData{
+        VendorNumber: payabli.String(
+            "1234",
+        ),
+        Name1: payabli.String(
+            "Herman's Coatings and Masonry",
+        ),
+        Name2: payabli.String(
+            "<string>",
+        ),
+        Ein: payabli.String(
+            "12-3456789",
+        ),
+        Phone: payabli.String(
+            "5555555555",
+        ),
+        Email: payabli.String(
+            "example@email.com",
+        ),
+        Address1: payabli.String(
+            "123 Ocean Drive",
+        ),
+        Address2: payabli.String(
+            "Suite 400",
+        ),
+        City: payabli.String(
+            "Miami",
+        ),
+        State: payabli.String(
+            "FL",
+        ),
+        Zip: payabli.String(
+            "33139",
+        ),
+        Country: payabli.String(
+            "US",
+        ),
+        Mcc: payabli.String(
+            "7777",
+        ),
+        LocationCode: payabli.String(
+            "MIA123",
+        ),
+        Contacts: []*payabli.Contacts{
+            &payabli.Contacts{
+                ContactName: payabli.String(
+                    "Herman Martinez",
+                ),
+                ContactEmail: payabli.String(
+                    "example@email.com",
+                ),
+                ContactTitle: payabli.String(
+                    "Owner",
+                ),
+                ContactPhone: payabli.String(
+                    "3055550000",
+                ),
+            },
+        },
+        BillingData: &payabli.BillingData{
+            Id: payabli.Int(
+                123,
+            ),
+            BankName: payabli.String(
+                "Country Bank",
+            ),
+            RoutingAccount: payabli.String(
+                "123123123",
+            ),
+            AccountNumber: payabli.String(
+                "123123123",
+            ),
+            TypeAccount: payabli.TypeAccountChecking.Ptr(),
+            BankAccountHolderName: payabli.String(
+                "Gruzya Adventure Outfitters LLC",
+            ),
+            BankAccountHolderType: payabli.BankAccountHolderTypeBusiness.Ptr(),
+            BankAccountFunction: payabli.Int(
+                0,
+            ),
+        },
+        PaymentMethod: payabli.String(
+            "managed",
+        ),
+        VendorStatus: payabli.Int(
+            1,
+        ),
+        RemitAddress1: payabli.String(
+            "123 Walnut Street",
+        ),
+        RemitAddress2: payabli.String(
+            "Suite 900",
+        ),
+        RemitCity: payabli.String(
+            "Miami",
+        ),
+        RemitState: payabli.String(
+            "FL",
+        ),
+        RemitZip: payabli.String(
+            "31113",
+        ),
+        RemitCountry: payabli.String(
+            "US",
+        ),
+        PayeeName1: payabli.String(
+            "<string>",
+        ),
+        PayeeName2: payabli.String(
+            "<string>",
+        ),
+        CustomerVendorAccount: payabli.String(
+            "A-37622",
+        ),
+        InternalReferenceId: payabli.Int64(
+            123,
+        ),
+    }
 client.Vendor.AddVendor(
         context.TODO(),
         "8cfec329267",
-        &sdkgo.VendorData{
-            VendorNumber: sdkgo.String(
-                "1234",
-            ),
-            Name1: sdkgo.String(
-                "Herman's Coatings and Masonry",
-            ),
-            Name2: sdkgo.String(
-                "<string>",
-            ),
-            Ein: sdkgo.String(
-                "12-3456789",
-            ),
-            Phone: sdkgo.String(
-                "5555555555",
-            ),
-            Email: sdkgo.String(
-                "example@email.com",
-            ),
-            Address1: sdkgo.String(
-                "123 Ocean Drive",
-            ),
-            Address2: sdkgo.String(
-                "Suite 400",
-            ),
-            City: sdkgo.String(
-                "Miami",
-            ),
-            State: sdkgo.String(
-                "FL",
-            ),
-            Zip: sdkgo.String(
-                "33139",
-            ),
-            Country: sdkgo.String(
-                "US",
-            ),
-            Mcc: sdkgo.String(
-                "7777",
-            ),
-            LocationCode: sdkgo.String(
-                "MIA123",
-            ),
-            Contacts: []*sdkgo.Contacts{
-                &sdkgo.Contacts{
-                    ContactName: sdkgo.String(
-                        "Herman Martinez",
-                    ),
-                    ContactEmail: sdkgo.String(
-                        "example@email.com",
-                    ),
-                    ContactTitle: sdkgo.String(
-                        "Owner",
-                    ),
-                    ContactPhone: sdkgo.String(
-                        "3055550000",
-                    ),
-                },
-            },
-            BillingData: &sdkgo.BillingData{
-                Id: sdkgo.Int(
-                    123,
-                ),
-                BankName: sdkgo.String(
-                    "Country Bank",
-                ),
-                RoutingAccount: sdkgo.String(
-                    "123123123",
-                ),
-                AccountNumber: sdkgo.String(
-                    "123123123",
-                ),
-                TypeAccount: sdkgo.TypeAccountChecking.Ptr(),
-                BankAccountHolderName: sdkgo.String(
-                    "Gruzya Adventure Outfitters LLC",
-                ),
-                BankAccountHolderType: sdkgo.BankAccountHolderTypeBusiness.Ptr(),
-                BankAccountFunction: sdkgo.Int(
-                    0,
-                ),
-            },
-            PaymentMethod: sdkgo.String(
-                "managed",
-            ),
-            VendorStatus: sdkgo.Int(
-                1,
-            ),
-            RemitAddress1: sdkgo.String(
-                "123 Walnut Street",
-            ),
-            RemitAddress2: sdkgo.String(
-                "Suite 900",
-            ),
-            RemitCity: sdkgo.String(
-                "Miami",
-            ),
-            RemitState: sdkgo.String(
-                "FL",
-            ),
-            RemitZip: sdkgo.String(
-                "31113",
-            ),
-            RemitCountry: sdkgo.String(
-                "US",
-            ),
-            PayeeName1: sdkgo.String(
-                "<string>",
-            ),
-            PayeeName2: sdkgo.String(
-                "<string>",
-            ),
-            CustomerVendorAccount: sdkgo.String(
-                "A-37622",
-            ),
-            InternalReferenceId: sdkgo.Int64(
-                123,
-            ),
-        },
+        request,
     )
 }
 ```
@@ -23911,7 +23939,7 @@ client.Vendor.AddVendor(
 <dl>
 <dd>
 
-**request:** `*sdkgo.VendorData` 
+**request:** `*payabli.VendorData` 
     
 </dd>
 </dl>
@@ -23923,7 +23951,7 @@ client.Vendor.AddVendor(
 </dl>
 </details>
 
-<details><summary><code>client.Vendor.DeleteVendor(IdVendor) -> *sdkgo.PayabliApiResponseVendors</code></summary>
+<details><summary><code>client.Vendor.DeleteVendor(IdVendor) -> *payabli.PayabliApiResponseVendors</code></summary>
 <dl>
 <dd>
 
@@ -23981,7 +24009,7 @@ client.Vendor.DeleteVendor(
 </dl>
 </details>
 
-<details><summary><code>client.Vendor.EditVendor(IdVendor, request) -> *sdkgo.PayabliApiResponseVendors</code></summary>
+<details><summary><code>client.Vendor.EditVendor(IdVendor, request) -> *payabli.PayabliApiResponseVendors</code></summary>
 <dl>
 <dd>
 
@@ -24008,14 +24036,15 @@ Updates a vendor's information. Send only the fields you need to update.
 <dd>
 
 ```go
+request := &payabli.VendorData{
+        Name1: payabli.String(
+            "Theodore's Janitorial",
+        ),
+    }
 client.Vendor.EditVendor(
         context.TODO(),
         1,
-        &sdkgo.VendorData{
-            Name1: sdkgo.String(
-                "Theodore's Janitorial",
-            ),
-        },
+        request,
     )
 }
 ```
@@ -24040,7 +24069,7 @@ client.Vendor.EditVendor(
 <dl>
 <dd>
 
-**request:** `*sdkgo.VendorData` 
+**request:** `*payabli.VendorData` 
     
 </dd>
 </dl>
@@ -24052,7 +24081,7 @@ client.Vendor.EditVendor(
 </dl>
 </details>
 
-<details><summary><code>client.Vendor.GetVendor(IdVendor) -> *sdkgo.VendorQueryRecord</code></summary>
+<details><summary><code>client.Vendor.GetVendor(IdVendor) -> *payabli.VendorQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -24111,7 +24140,7 @@ client.Vendor.GetVendor(
 </details>
 
 ## Wallet
-<details><summary><code>client.Wallet.ConfigureApplePayOrganization(request) -> *sdkgo.ConfigureApplePayOrganizationApiResponse</code></summary>
+<details><summary><code>client.Wallet.ConfigureApplePayOrganization(request) -> *payabli.ConfigureApplePayOrganizationApiResponse</code></summary>
 <dl>
 <dd>
 
@@ -24138,19 +24167,20 @@ Configure and activate Apple Pay for a Payabli organization
 <dd>
 
 ```go
+request := &payabli.ConfigureOrganizationRequestApplePay{
+        Cascade: payabli.Bool(
+            true,
+        ),
+        IsEnabled: payabli.Bool(
+            true,
+        ),
+        OrgId: payabli.Int64(
+            901,
+        ),
+    }
 client.Wallet.ConfigureApplePayOrganization(
         context.TODO(),
-        &sdkgo.ConfigureOrganizationRequestApplePay{
-            Cascade: sdkgo.Bool(
-                true,
-            ),
-            IsEnabled: sdkgo.Bool(
-                true,
-            ),
-            OrgId: sdkgo.Int64(
-                901,
-            ),
-        },
+        request,
     )
 }
 ```
@@ -24167,7 +24197,7 @@ client.Wallet.ConfigureApplePayOrganization(
 <dl>
 <dd>
 
-**cascade:** `*sdkgo.Cascade` 
+**cascade:** `*payabli.Cascade` 
     
 </dd>
 </dl>
@@ -24175,7 +24205,7 @@ client.Wallet.ConfigureApplePayOrganization(
 <dl>
 <dd>
 
-**isEnabled:** `*sdkgo.IsEnabled` 
+**isEnabled:** `*payabli.IsEnabled` 
     
 </dd>
 </dl>
@@ -24183,7 +24213,7 @@ client.Wallet.ConfigureApplePayOrganization(
 <dl>
 <dd>
 
-**orgId:** `*sdkgo.OrganizationId` 
+**orgId:** `*payabli.OrganizationId` 
     
 </dd>
 </dl>
@@ -24195,7 +24225,7 @@ client.Wallet.ConfigureApplePayOrganization(
 </dl>
 </details>
 
-<details><summary><code>client.Wallet.ConfigureApplePayPaypoint(request) -> *sdkgo.ConfigureApplePaypointApiResponse</code></summary>
+<details><summary><code>client.Wallet.ConfigureApplePayPaypoint(request) -> *payabli.ConfigureApplePaypointApiResponse</code></summary>
 <dl>
 <dd>
 
@@ -24222,16 +24252,17 @@ Configure and activate Apple Pay for a Payabli paypoint
 <dd>
 
 ```go
+request := &payabli.ConfigurePaypointRequestApplePay{
+        Entry: payabli.String(
+            "8cfec329267",
+        ),
+        IsEnabled: payabli.Bool(
+            true,
+        ),
+    }
 client.Wallet.ConfigureApplePayPaypoint(
         context.TODO(),
-        &sdkgo.ConfigurePaypointRequestApplePay{
-            Entry: sdkgo.String(
-                "8cfec329267",
-            ),
-            IsEnabled: sdkgo.Bool(
-                true,
-            ),
-        },
+        request,
     )
 }
 ```
@@ -24248,7 +24279,7 @@ client.Wallet.ConfigureApplePayPaypoint(
 <dl>
 <dd>
 
-**entry:** `*sdkgo.Entry` 
+**entry:** `*payabli.Entry` 
     
 </dd>
 </dl>
@@ -24256,7 +24287,7 @@ client.Wallet.ConfigureApplePayPaypoint(
 <dl>
 <dd>
 
-**isEnabled:** `*sdkgo.IsEnabled` — When `true`, Apple Pay is enabled.
+**isEnabled:** `*payabli.IsEnabled` — When `true`, Apple Pay is enabled.
     
 </dd>
 </dl>
@@ -24268,7 +24299,7 @@ client.Wallet.ConfigureApplePayPaypoint(
 </dl>
 </details>
 
-<details><summary><code>client.Wallet.ConfigureGooglePayOrganization(request) -> *sdkgo.ConfigureApplePayOrganizationApiResponse</code></summary>
+<details><summary><code>client.Wallet.ConfigureGooglePayOrganization(request) -> *payabli.ConfigureApplePayOrganizationApiResponse</code></summary>
 <dl>
 <dd>
 
@@ -24295,19 +24326,20 @@ Configure and activate Google Pay for a Payabli organization
 <dd>
 
 ```go
+request := &payabli.ConfigureOrganizationRequestGooglePay{
+        Cascade: payabli.Bool(
+            true,
+        ),
+        IsEnabled: payabli.Bool(
+            true,
+        ),
+        OrgId: payabli.Int64(
+            901,
+        ),
+    }
 client.Wallet.ConfigureGooglePayOrganization(
         context.TODO(),
-        &sdkgo.ConfigureOrganizationRequestGooglePay{
-            Cascade: sdkgo.Bool(
-                true,
-            ),
-            IsEnabled: sdkgo.Bool(
-                true,
-            ),
-            OrgId: sdkgo.Int64(
-                901,
-            ),
-        },
+        request,
     )
 }
 ```
@@ -24324,7 +24356,7 @@ client.Wallet.ConfigureGooglePayOrganization(
 <dl>
 <dd>
 
-**cascade:** `*sdkgo.Cascade` 
+**cascade:** `*payabli.Cascade` 
     
 </dd>
 </dl>
@@ -24332,7 +24364,7 @@ client.Wallet.ConfigureGooglePayOrganization(
 <dl>
 <dd>
 
-**isEnabled:** `*sdkgo.IsEnabled` 
+**isEnabled:** `*payabli.IsEnabled` 
     
 </dd>
 </dl>
@@ -24340,7 +24372,7 @@ client.Wallet.ConfigureGooglePayOrganization(
 <dl>
 <dd>
 
-**orgId:** `*sdkgo.OrganizationId` 
+**orgId:** `*payabli.OrganizationId` 
     
 </dd>
 </dl>
@@ -24352,7 +24384,7 @@ client.Wallet.ConfigureGooglePayOrganization(
 </dl>
 </details>
 
-<details><summary><code>client.Wallet.ConfigureGooglePayPaypoint(request) -> *sdkgo.ConfigureGooglePaypointApiResponse</code></summary>
+<details><summary><code>client.Wallet.ConfigureGooglePayPaypoint(request) -> *payabli.ConfigureGooglePaypointApiResponse</code></summary>
 <dl>
 <dd>
 
@@ -24379,16 +24411,17 @@ Configure and activate Google Pay for a Payabli paypoint
 <dd>
 
 ```go
+request := &payabli.ConfigurePaypointRequestGooglePay{
+        Entry: payabli.String(
+            "8cfec329267",
+        ),
+        IsEnabled: payabli.Bool(
+            true,
+        ),
+    }
 client.Wallet.ConfigureGooglePayPaypoint(
         context.TODO(),
-        &sdkgo.ConfigurePaypointRequestGooglePay{
-            Entry: sdkgo.String(
-                "8cfec329267",
-            ),
-            IsEnabled: sdkgo.Bool(
-                true,
-            ),
-        },
+        request,
     )
 }
 ```
@@ -24405,7 +24438,7 @@ client.Wallet.ConfigureGooglePayPaypoint(
 <dl>
 <dd>
 
-**entry:** `*sdkgo.Entry` 
+**entry:** `*payabli.Entry` 
     
 </dd>
 </dl>
@@ -24413,7 +24446,7 @@ client.Wallet.ConfigureGooglePayPaypoint(
 <dl>
 <dd>
 
-**isEnabled:** `*sdkgo.IsEnabled` — When `true`, Google Pay is enabled.
+**isEnabled:** `*payabli.IsEnabled` — When `true`, Google Pay is enabled.
     
 </dd>
 </dl>

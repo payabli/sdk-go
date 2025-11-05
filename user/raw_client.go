@@ -4,7 +4,7 @@ package user
 
 import (
 	context "context"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -32,9 +32,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) AddUser(
 	ctx context.Context,
-	request *sdkgo.UserData,
+	request *payabli.UserData,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.AddUserResponse], error) {
+) (*core.Response[*payabli.AddUserResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -46,29 +46,7 @@ func (r *RawClient) AddUser(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.AddUserResponse
+	var response *payabli.AddUserResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -81,13 +59,13 @@ func (r *RawClient) AddUser(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.AddUserResponse]{
+	return &core.Response[*payabli.AddUserResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -97,7 +75,7 @@ func (r *RawClient) AddUser(
 func (r *RawClient) AuthRefreshUser(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.PayabliApiResponseUserMfa], error) {
+) (*core.Response[*payabli.PayabliApiResponseUserMfa], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -109,29 +87,7 @@ func (r *RawClient) AuthRefreshUser(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.PayabliApiResponseUserMfa
+	var response *payabli.PayabliApiResponseUserMfa
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -143,13 +99,13 @@ func (r *RawClient) AuthRefreshUser(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.PayabliApiResponseUserMfa]{
+	return &core.Response[*payabli.PayabliApiResponseUserMfa]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -158,9 +114,9 @@ func (r *RawClient) AuthRefreshUser(
 
 func (r *RawClient) AuthResetUser(
 	ctx context.Context,
-	request *sdkgo.UserAuthResetRequest,
+	request *payabli.UserAuthResetRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.AuthResetUserResponse], error) {
+) (*core.Response[*payabli.AuthResetUserResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -173,29 +129,7 @@ func (r *RawClient) AuthResetUser(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.AuthResetUserResponse
+	var response *payabli.AuthResetUserResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -208,13 +142,13 @@ func (r *RawClient) AuthResetUser(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.AuthResetUserResponse]{
+	return &core.Response[*payabli.AuthResetUserResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -225,9 +159,9 @@ func (r *RawClient) AuthUser(
 	ctx context.Context,
 	// Auth provider. This fields is optional and defaults to null for the built-in provider.
 	provider string,
-	request *sdkgo.UserAuthRequest,
+	request *payabli.UserAuthRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.PayabliApiResponseMfaBasic], error) {
+) (*core.Response[*payabli.PayabliApiResponseMfaBasic], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -243,29 +177,7 @@ func (r *RawClient) AuthUser(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.PayabliApiResponseMfaBasic
+	var response *payabli.PayabliApiResponseMfaBasic
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -278,13 +190,13 @@ func (r *RawClient) AuthUser(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.PayabliApiResponseMfaBasic]{
+	return &core.Response[*payabli.PayabliApiResponseMfaBasic]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -293,9 +205,9 @@ func (r *RawClient) AuthUser(
 
 func (r *RawClient) ChangePswUser(
 	ctx context.Context,
-	request *sdkgo.UserAuthPswResetRequest,
+	request *payabli.UserAuthPswResetRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.ChangePswUserResponse], error) {
+) (*core.Response[*payabli.ChangePswUserResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -308,29 +220,7 @@ func (r *RawClient) ChangePswUser(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.ChangePswUserResponse
+	var response *payabli.ChangePswUserResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -343,13 +233,13 @@ func (r *RawClient) ChangePswUser(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.ChangePswUserResponse]{
+	return &core.Response[*payabli.ChangePswUserResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -361,7 +251,7 @@ func (r *RawClient) DeleteUser(
 	// The Payabli-generated `userId` value.
 	userId int64,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.DeleteUserResponse], error) {
+) (*core.Response[*payabli.DeleteUserResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -376,29 +266,7 @@ func (r *RawClient) DeleteUser(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.DeleteUserResponse
+	var response *payabli.DeleteUserResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -410,13 +278,13 @@ func (r *RawClient) DeleteUser(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.DeleteUserResponse]{
+	return &core.Response[*payabli.DeleteUserResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -427,9 +295,9 @@ func (r *RawClient) EditMfaUser(
 	ctx context.Context,
 	// User Identifier
 	userId int64,
-	request *sdkgo.MfaData,
+	request *payabli.MfaData,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.EditMfaUserResponse], error) {
+) (*core.Response[*payabli.EditMfaUserResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -444,29 +312,7 @@ func (r *RawClient) EditMfaUser(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.EditMfaUserResponse
+	var response *payabli.EditMfaUserResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -479,13 +325,13 @@ func (r *RawClient) EditMfaUser(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.EditMfaUserResponse]{
+	return &core.Response[*payabli.EditMfaUserResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -496,9 +342,9 @@ func (r *RawClient) EditUser(
 	ctx context.Context,
 	// User Identifier
 	userId int64,
-	request *sdkgo.UserData,
+	request *payabli.UserData,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.PayabliApiResponse], error) {
+) (*core.Response[*payabli.PayabliApiResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -513,29 +359,7 @@ func (r *RawClient) EditUser(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.PayabliApiResponse
+	var response *payabli.PayabliApiResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -548,13 +372,13 @@ func (r *RawClient) EditUser(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.PayabliApiResponse]{
+	return &core.Response[*payabli.PayabliApiResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -565,9 +389,9 @@ func (r *RawClient) GetUser(
 	ctx context.Context,
 	// The Payabli-generated `userId` value.
 	userId int64,
-	request *sdkgo.GetUserRequest,
+	request *payabli.GetUserRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.UserQueryRecord], error) {
+) (*core.Response[*payabli.UserQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -589,29 +413,7 @@ func (r *RawClient) GetUser(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.UserQueryRecord
+	var response *payabli.UserQueryRecord
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -623,13 +425,13 @@ func (r *RawClient) GetUser(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.UserQueryRecord]{
+	return &core.Response[*payabli.UserQueryRecord]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -639,7 +441,7 @@ func (r *RawClient) GetUser(
 func (r *RawClient) LogoutUser(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.LogoutUserResponse], error) {
+) (*core.Response[*payabli.LogoutUserResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -651,29 +453,7 @@ func (r *RawClient) LogoutUser(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.LogoutUserResponse
+	var response *payabli.LogoutUserResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -685,13 +465,13 @@ func (r *RawClient) LogoutUser(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.LogoutUserResponse]{
+	return &core.Response[*payabli.LogoutUserResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -707,7 +487,7 @@ func (r *RawClient) ResendMfaCode(
 	//
 	usrname string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.PayabliApiResponseMfaBasic], error) {
+) (*core.Response[*payabli.PayabliApiResponseMfaBasic], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -724,29 +504,7 @@ func (r *RawClient) ResendMfaCode(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.PayabliApiResponseMfaBasic
+	var response *payabli.PayabliApiResponseMfaBasic
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -758,13 +516,13 @@ func (r *RawClient) ResendMfaCode(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.PayabliApiResponseMfaBasic]{
+	return &core.Response[*payabli.PayabliApiResponseMfaBasic]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -773,9 +531,9 @@ func (r *RawClient) ResendMfaCode(
 
 func (r *RawClient) ValidateMfaUser(
 	ctx context.Context,
-	request *sdkgo.MfaValidationData,
+	request *payabli.MfaValidationData,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.PayabliApiResponseUserMfa], error) {
+) (*core.Response[*payabli.PayabliApiResponseUserMfa], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -788,29 +546,7 @@ func (r *RawClient) ValidateMfaUser(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.PayabliApiResponseUserMfa
+	var response *payabli.PayabliApiResponseUserMfa
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -823,13 +559,13 @@ func (r *RawClient) ValidateMfaUser(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.PayabliApiResponseUserMfa]{
+	return &core.Response[*payabli.PayabliApiResponseUserMfa]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

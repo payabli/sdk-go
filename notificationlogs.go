@@ -13,13 +13,13 @@ import (
 
 var (
 	searchNotificationLogsRequestFieldPageSize = big.NewInt(1 << 0)
-	searchNotificationLogsRequestFieldSkip     = big.NewInt(1 << 1)
+	searchNotificationLogsRequestFieldPage     = big.NewInt(1 << 1)
 )
 
 type SearchNotificationLogsRequest struct {
 	PageSize *Pagesize `json:"-" url:"PageSize,omitempty"`
-	// The number of records to skip before starting to collect the result set.
-	Skip *int                          `json:"-" url:"Skip,omitempty"`
+	// The page number to retrieve. Defaults to 1 if not provided.
+	Page *int                          `json:"-" url:"Page,omitempty"`
 	Body *NotificationLogSearchRequest `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -40,11 +40,11 @@ func (s *SearchNotificationLogsRequest) SetPageSize(pageSize *Pagesize) {
 	s.require(searchNotificationLogsRequestFieldPageSize)
 }
 
-// SetSkip sets the Skip field and marks it as non-optional;
+// SetPage sets the Page field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SearchNotificationLogsRequest) SetSkip(skip *int) {
-	s.Skip = skip
-	s.require(searchNotificationLogsRequestFieldSkip)
+func (s *SearchNotificationLogsRequest) SetPage(page *int) {
+	s.Page = page
+	s.require(searchNotificationLogsRequestFieldPage)
 }
 
 func (s *SearchNotificationLogsRequest) UnmarshalJSON(data []byte) error {

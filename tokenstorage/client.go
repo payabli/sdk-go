@@ -4,7 +4,7 @@ package tokenstorage
 
 import (
 	context "context"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -35,9 +35,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // Saves a payment method for reuse. This call exchanges sensitive payment information for a token that can be used to process future transactions. The `ReferenceId` value in the response is the `storedMethodId` to use with transactions.
 func (c *Client) AddMethod(
 	ctx context.Context,
-	request *sdkgo.AddMethodRequest,
+	request *payabli.AddMethodRequest,
 	opts ...option.RequestOption,
-) (*sdkgo.AddMethodResponse, error) {
+) (*payabli.AddMethodResponse, error) {
 	response, err := c.WithRawResponse.AddMethod(
 		ctx,
 		request,
@@ -54,9 +54,9 @@ func (c *Client) GetMethod(
 	ctx context.Context,
 	// The saved payment method ID.
 	methodId string,
-	request *sdkgo.GetMethodRequest,
+	request *payabli.GetMethodRequest,
 	opts ...option.RequestOption,
-) (*sdkgo.GetMethodResponse, error) {
+) (*payabli.GetMethodResponse, error) {
 	response, err := c.WithRawResponse.GetMethod(
 		ctx,
 		methodId,
@@ -75,7 +75,7 @@ func (c *Client) RemoveMethod(
 	// The saved payment method ID.
 	methodId string,
 	opts ...option.RequestOption,
-) (*sdkgo.PayabliApiResponsePaymethodDelete, error) {
+) (*payabli.PayabliApiResponsePaymethodDelete, error) {
 	response, err := c.WithRawResponse.RemoveMethod(
 		ctx,
 		methodId,
@@ -92,9 +92,9 @@ func (c *Client) UpdateMethod(
 	ctx context.Context,
 	// The saved payment method ID.
 	methodId string,
-	request *sdkgo.UpdateMethodRequest,
+	request *payabli.UpdateMethodRequest,
 	opts ...option.RequestOption,
-) (*sdkgo.PayabliApiResponsePaymethodDelete, error) {
+) (*payabli.PayabliApiResponsePaymethodDelete, error) {
 	response, err := c.WithRawResponse.UpdateMethod(
 		ctx,
 		methodId,

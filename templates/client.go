@@ -4,7 +4,7 @@ package templates
 
 import (
 	context "context"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -32,33 +32,13 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
-// Creates a boarding template in an organization.
-func (c *Client) AddTemplate(
-	ctx context.Context,
-	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
-	request *sdkgo.TemplateData,
-	opts ...option.RequestOption,
-) (*sdkgo.PayabliApiResponseTemplateId, error) {
-	response, err := c.WithRawResponse.AddTemplate(
-		ctx,
-		orgId,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
 // Deletes a template by ID.
 func (c *Client) DeleteTemplate(
 	ctx context.Context,
 	// The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
 	templateId float64,
 	opts ...option.RequestOption,
-) (*sdkgo.PayabliApiResponseTemplateId, error) {
+) (*payabli.PayabliApiResponseTemplateId, error) {
 	response, err := c.WithRawResponse.DeleteTemplate(
 		ctx,
 		templateId,
@@ -78,7 +58,7 @@ func (c *Client) GetlinkTemplate(
 	// The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
 	templateId float64,
 	opts ...option.RequestOption,
-) (*sdkgo.BoardingLinkApiResponse, error) {
+) (*payabli.BoardingLinkApiResponse, error) {
 	response, err := c.WithRawResponse.GetlinkTemplate(
 		ctx,
 		ignoreEmpty,
@@ -97,7 +77,7 @@ func (c *Client) GetTemplate(
 	// The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
 	templateId float64,
 	opts ...option.RequestOption,
-) (*sdkgo.TemplateQueryRecord, error) {
+) (*payabli.TemplateQueryRecord, error) {
 	response, err := c.WithRawResponse.GetTemplate(
 		ctx,
 		templateId,
@@ -114,32 +94,12 @@ func (c *Client) ListTemplates(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ListTemplatesRequest,
+	request *payabli.ListTemplatesRequest,
 	opts ...option.RequestOption,
-) (*sdkgo.TemplateQueryResponse, error) {
+) (*payabli.TemplateQueryResponse, error) {
 	response, err := c.WithRawResponse.ListTemplates(
 		ctx,
 		orgId,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// Updates a boarding template by ID.
-func (c *Client) UpdateTemplate(
-	ctx context.Context,
-	// The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
-	templateId float64,
-	request *sdkgo.TemplateData,
-	opts ...option.RequestOption,
-) (*sdkgo.PayabliApiResponseTemplateId, error) {
-	response, err := c.WithRawResponse.UpdateTemplate(
-		ctx,
-		templateId,
 		request,
 		opts...,
 	)

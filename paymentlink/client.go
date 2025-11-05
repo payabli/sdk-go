@@ -4,7 +4,7 @@ package paymentlink
 
 import (
 	context "context"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -37,9 +37,9 @@ func (c *Client) AddPayLinkFromInvoice(
 	ctx context.Context,
 	// Invoice ID
 	idInvoice int,
-	request *sdkgo.PayLinkDataInvoice,
+	request *payabli.PayLinkDataInvoice,
 	opts ...option.RequestOption,
-) (*sdkgo.PayabliApiResponsePaymentLinks, error) {
+) (*payabli.PayabliApiResponsePaymentLinks, error) {
 	response, err := c.WithRawResponse.AddPayLinkFromInvoice(
 		ctx,
 		idInvoice,
@@ -57,9 +57,9 @@ func (c *Client) AddPayLinkFromBill(
 	ctx context.Context,
 	// The Payabli ID for the bill.
 	billId int,
-	request *sdkgo.PayLinkDataBill,
+	request *payabli.PayLinkDataBill,
 	opts ...option.RequestOption,
-) (*sdkgo.PayabliApiResponsePaymentLinks, error) {
+) (*payabli.PayabliApiResponsePaymentLinks, error) {
 	response, err := c.WithRawResponse.AddPayLinkFromBill(
 		ctx,
 		billId,
@@ -78,7 +78,7 @@ func (c *Client) DeletePayLinkFromId(
 	// ID for the payment link.
 	payLinkId string,
 	opts ...option.RequestOption,
-) (*sdkgo.PayabliApiResponsePaymentLinks, error) {
+) (*payabli.PayabliApiResponsePaymentLinks, error) {
 	response, err := c.WithRawResponse.DeletePayLinkFromId(
 		ctx,
 		payLinkId,
@@ -96,7 +96,7 @@ func (c *Client) GetPayLinkFromId(
 	// ID for payment link
 	paylinkId string,
 	opts ...option.RequestOption,
-) (*sdkgo.GetPayLinkFromIdResponse, error) {
+) (*payabli.GetPayLinkFromIdResponse, error) {
 	response, err := c.WithRawResponse.GetPayLinkFromId(
 		ctx,
 		paylinkId,
@@ -113,9 +113,9 @@ func (c *Client) PushPayLinkFromId(
 	ctx context.Context,
 	// ID for the payment link.
 	payLinkId string,
-	request *sdkgo.PushPayLinkRequest,
+	request *payabli.PushPayLinkRequest,
 	opts ...option.RequestOption,
-) (*sdkgo.PayabliApiResponsePaymentLinks, error) {
+) (*payabli.PayabliApiResponsePaymentLinks, error) {
 	response, err := c.WithRawResponse.PushPayLinkFromId(
 		ctx,
 		payLinkId,
@@ -133,9 +133,9 @@ func (c *Client) RefreshPayLinkFromId(
 	ctx context.Context,
 	// ID for the payment link.
 	payLinkId string,
-	request *sdkgo.RefreshPayLinkFromIdRequest,
+	request *payabli.RefreshPayLinkFromIdRequest,
 	opts ...option.RequestOption,
-) (*sdkgo.PayabliApiResponsePaymentLinks, error) {
+) (*payabli.PayabliApiResponsePaymentLinks, error) {
 	response, err := c.WithRawResponse.RefreshPayLinkFromId(
 		ctx,
 		payLinkId,
@@ -153,9 +153,9 @@ func (c *Client) SendPayLinkFromId(
 	ctx context.Context,
 	// ID for the payment link.
 	payLinkId string,
-	request *sdkgo.SendPayLinkFromIdRequest,
+	request *payabli.SendPayLinkFromIdRequest,
 	opts ...option.RequestOption,
-) (*sdkgo.PayabliApiResponsePaymentLinks, error) {
+) (*payabli.PayabliApiResponsePaymentLinks, error) {
 	response, err := c.WithRawResponse.SendPayLinkFromId(
 		ctx,
 		payLinkId,
@@ -173,9 +173,9 @@ func (c *Client) UpdatePayLinkFromId(
 	ctx context.Context,
 	// ID for the payment link.
 	payLinkId string,
-	request *sdkgo.PayLinkUpdateData,
+	request *payabli.PayLinkUpdateData,
 	opts ...option.RequestOption,
-) (*sdkgo.PayabliApiResponsePaymentLinks, error) {
+) (*payabli.PayabliApiResponsePaymentLinks, error) {
 	response, err := c.WithRawResponse.UpdatePayLinkFromId(
 		ctx,
 		payLinkId,
@@ -193,9 +193,9 @@ func (c *Client) AddPayLinkFromBillLotNumber(
 	ctx context.Context,
 	// Lot number of the bills to pay. All bills with this lot number will be included.
 	lotNumber string,
-	request *sdkgo.PayLinkDataOut,
+	request *payabli.PayLinkDataOut,
 	opts ...option.RequestOption,
-) (*sdkgo.PayabliApiResponsePaymentLinks, error) {
+) (*payabli.PayabliApiResponsePaymentLinks, error) {
 	response, err := c.WithRawResponse.AddPayLinkFromBillLotNumber(
 		ctx,
 		lotNumber,

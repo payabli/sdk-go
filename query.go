@@ -2902,7 +2902,8 @@ type ListTransactionsRequest struct {
 	// - `deviceId` (ct, nct, in, nin, eq, ne)
 	// - `AchSecCode` ( ct, nct, in, nin, eq, ne)
 	// - `AchHolderType` (ct, nct, in, nin, eq, and ne)
-	// - `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name related to customer data - 'invoiceAdditional-xxx' (ne, eq, ct, nct) where xxx is the additional field name related to invoice data
+	// - `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name related to customer data
+	// - 'invoiceAdditional-xxx' (ne, eq, ct, nct) where xxx is the additional field name related to invoice data
 	//
 	// **List of comparison operators accepted:**
 	// - `eq` or empty => equal
@@ -5233,9 +5234,6 @@ func (b *BillingFeeDetail) String() string {
 //   - `cb`: Chargeback
 //   - `split`: Split amount
 type Category = string
-
-// Identifier of chargeback transaction
-type ChargebackId = int64
 
 // The date the funds were deposited.
 type DepositDate = time.Time
@@ -11461,12 +11459,6 @@ func (q *QueryUserResponse) String() string {
 	return fmt.Sprintf("%#v", q)
 }
 
-// Identifier of retrieval request
-type RetrievalId = int64
-
-// Status of transaction. See [the docs](/developers/references/money-in-statuses#money-in-transaction-status) for a full reference.
-type TransStatus = int
-
 var (
 	transferFieldTransferId           = big.NewInt(1 << 0)
 	transferFieldPaypointId           = big.NewInt(1 << 1)
@@ -11497,8 +11489,9 @@ var (
 	transferFieldThirdPartyPaidAmount = big.NewInt(1 << 26)
 	transferFieldAdjustmentsAmount    = big.NewInt(1 << 27)
 	transferFieldNetTransferAmount    = big.NewInt(1 << 28)
-	transferFieldEventsData           = big.NewInt(1 << 29)
-	transferFieldMessages             = big.NewInt(1 << 30)
+	transferFieldSplitAmount          = big.NewInt(1 << 29)
+	transferFieldEventsData           = big.NewInt(1 << 30)
+	transferFieldMessages             = big.NewInt(1 << 31)
 )
 
 type Transfer struct {
@@ -11557,6 +11550,8 @@ type Transfer struct {
 	AdjustmentsAmount float64 `json:"adjustmentsAmount" url:"adjustmentsAmount"`
 	// The net transfer amount after all deductions and additions.
 	NetTransferAmount float64 `json:"netTransferAmount" url:"netTransferAmount"`
+	// The sum of each splitFundingAmount of each record in the transfer.
+	SplitAmount *float64 `json:"splitAmount,omitempty" url:"splitAmount,omitempty"`
 	// List of events associated with the transfer.
 	EventsData []*GeneralEvents `json:"eventsData,omitempty" url:"eventsData,omitempty"`
 	// List of messages related to the transfer.
@@ -11770,6 +11765,13 @@ func (t *Transfer) GetNetTransferAmount() float64 {
 		return 0
 	}
 	return t.NetTransferAmount
+}
+
+func (t *Transfer) GetSplitAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.SplitAmount
 }
 
 func (t *Transfer) GetEventsData() []*GeneralEvents {
@@ -11998,6 +12000,13 @@ func (t *Transfer) SetAdjustmentsAmount(adjustmentsAmount float64) {
 func (t *Transfer) SetNetTransferAmount(netTransferAmount float64) {
 	t.NetTransferAmount = netTransferAmount
 	t.require(transferFieldNetTransferAmount)
+}
+
+// SetSplitAmount sets the SplitAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *Transfer) SetSplitAmount(splitAmount *float64) {
+	t.SplitAmount = splitAmount
+	t.require(transferFieldSplitAmount)
 }
 
 // SetEventsData sets the EventsData field and marks it as non-optional;

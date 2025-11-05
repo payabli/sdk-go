@@ -4,7 +4,7 @@ package query
 
 import (
 	context "context"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -32,10 +32,10 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) ListBatchDetails(
 	ctx context.Context,
-	entry sdkgo.Entry,
-	request *sdkgo.ListBatchDetailsRequest,
+	entry payabli.Entry,
+	request *payabli.ListBatchDetailsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QueryBatchesDetailResponse], error) {
+) (*core.Response[*payabli.QueryBatchesDetailResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -57,29 +57,7 @@ func (r *RawClient) ListBatchDetails(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QueryBatchesDetailResponse
+	var response *payabli.QueryBatchesDetailResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -91,13 +69,13 @@ func (r *RawClient) ListBatchDetails(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QueryBatchesDetailResponse]{
+	return &core.Response[*payabli.QueryBatchesDetailResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -108,9 +86,9 @@ func (r *RawClient) ListBatchDetailsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ListBatchDetailsOrgRequest,
+	request *payabli.ListBatchDetailsOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QueryResponseSettlements], error) {
+) (*core.Response[*payabli.QueryResponseSettlements], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -132,29 +110,7 @@ func (r *RawClient) ListBatchDetailsOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QueryResponseSettlements
+	var response *payabli.QueryResponseSettlements
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -166,13 +122,13 @@ func (r *RawClient) ListBatchDetailsOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QueryResponseSettlements]{
+	return &core.Response[*payabli.QueryResponseSettlements]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -181,10 +137,10 @@ func (r *RawClient) ListBatchDetailsOrg(
 
 func (r *RawClient) ListBatches(
 	ctx context.Context,
-	entry sdkgo.Entry,
-	request *sdkgo.ListBatchesRequest,
+	entry payabli.Entry,
+	request *payabli.ListBatchesRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QueryBatchesResponse], error) {
+) (*core.Response[*payabli.QueryBatchesResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -206,29 +162,7 @@ func (r *RawClient) ListBatches(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QueryBatchesResponse
+	var response *payabli.QueryBatchesResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -240,13 +174,13 @@ func (r *RawClient) ListBatches(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QueryBatchesResponse]{
+	return &core.Response[*payabli.QueryBatchesResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -257,9 +191,9 @@ func (r *RawClient) ListBatchesOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ListBatchesOrgRequest,
+	request *payabli.ListBatchesOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QueryBatchesResponse], error) {
+) (*core.Response[*payabli.QueryBatchesResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -281,29 +215,7 @@ func (r *RawClient) ListBatchesOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QueryBatchesResponse
+	var response *payabli.QueryBatchesResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -315,13 +227,13 @@ func (r *RawClient) ListBatchesOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QueryBatchesResponse]{
+	return &core.Response[*payabli.QueryBatchesResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -330,10 +242,10 @@ func (r *RawClient) ListBatchesOrg(
 
 func (r *RawClient) ListBatchesOut(
 	ctx context.Context,
-	entry sdkgo.Entry,
-	request *sdkgo.ListBatchesOutRequest,
+	entry payabli.Entry,
+	request *payabli.ListBatchesOutRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QueryBatchesOutResponse], error) {
+) (*core.Response[*payabli.QueryBatchesOutResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -355,29 +267,7 @@ func (r *RawClient) ListBatchesOut(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QueryBatchesOutResponse
+	var response *payabli.QueryBatchesOutResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -389,13 +279,13 @@ func (r *RawClient) ListBatchesOut(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QueryBatchesOutResponse]{
+	return &core.Response[*payabli.QueryBatchesOutResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -406,9 +296,9 @@ func (r *RawClient) ListBatchesOutOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ListBatchesOutOrgRequest,
+	request *payabli.ListBatchesOutOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QueryBatchesOutResponse], error) {
+) (*core.Response[*payabli.QueryBatchesOutResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -430,29 +320,7 @@ func (r *RawClient) ListBatchesOutOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QueryBatchesOutResponse
+	var response *payabli.QueryBatchesOutResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -464,13 +332,13 @@ func (r *RawClient) ListBatchesOutOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QueryBatchesOutResponse]{
+	return &core.Response[*payabli.QueryBatchesOutResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -479,10 +347,10 @@ func (r *RawClient) ListBatchesOutOrg(
 
 func (r *RawClient) ListChargebacks(
 	ctx context.Context,
-	entry sdkgo.Entry,
-	request *sdkgo.ListChargebacksRequest,
+	entry payabli.Entry,
+	request *payabli.ListChargebacksRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QueryChargebacksResponse], error) {
+) (*core.Response[*payabli.QueryChargebacksResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -504,29 +372,7 @@ func (r *RawClient) ListChargebacks(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QueryChargebacksResponse
+	var response *payabli.QueryChargebacksResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -538,13 +384,13 @@ func (r *RawClient) ListChargebacks(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QueryChargebacksResponse]{
+	return &core.Response[*payabli.QueryChargebacksResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -555,9 +401,9 @@ func (r *RawClient) ListChargebacksOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ListChargebacksOrgRequest,
+	request *payabli.ListChargebacksOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QueryChargebacksResponse], error) {
+) (*core.Response[*payabli.QueryChargebacksResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -579,29 +425,7 @@ func (r *RawClient) ListChargebacksOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QueryChargebacksResponse
+	var response *payabli.QueryChargebacksResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -613,13 +437,13 @@ func (r *RawClient) ListChargebacksOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QueryChargebacksResponse]{
+	return &core.Response[*payabli.QueryChargebacksResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -628,10 +452,10 @@ func (r *RawClient) ListChargebacksOrg(
 
 func (r *RawClient) ListCustomers(
 	ctx context.Context,
-	entry sdkgo.Entry,
-	request *sdkgo.ListCustomersRequest,
+	entry payabli.Entry,
+	request *payabli.ListCustomersRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QueryCustomerResponse], error) {
+) (*core.Response[*payabli.QueryCustomerResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -653,29 +477,7 @@ func (r *RawClient) ListCustomers(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QueryCustomerResponse
+	var response *payabli.QueryCustomerResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -687,13 +489,13 @@ func (r *RawClient) ListCustomers(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QueryCustomerResponse]{
+	return &core.Response[*payabli.QueryCustomerResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -704,9 +506,9 @@ func (r *RawClient) ListCustomersOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ListCustomersOrgRequest,
+	request *payabli.ListCustomersOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QueryCustomerResponse], error) {
+) (*core.Response[*payabli.QueryCustomerResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -728,29 +530,7 @@ func (r *RawClient) ListCustomersOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QueryCustomerResponse
+	var response *payabli.QueryCustomerResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -762,13 +542,13 @@ func (r *RawClient) ListCustomersOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QueryCustomerResponse]{
+	return &core.Response[*payabli.QueryCustomerResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -777,10 +557,10 @@ func (r *RawClient) ListCustomersOrg(
 
 func (r *RawClient) ListNotificationReports(
 	ctx context.Context,
-	entry sdkgo.Entry,
-	request *sdkgo.ListNotificationReportsRequest,
+	entry payabli.Entry,
+	request *payabli.ListNotificationReportsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QueryResponseNotificationReports], error) {
+) (*core.Response[*payabli.QueryResponseNotificationReports], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -802,29 +582,7 @@ func (r *RawClient) ListNotificationReports(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QueryResponseNotificationReports
+	var response *payabli.QueryResponseNotificationReports
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -836,13 +594,13 @@ func (r *RawClient) ListNotificationReports(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QueryResponseNotificationReports]{
+	return &core.Response[*payabli.QueryResponseNotificationReports]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -853,9 +611,9 @@ func (r *RawClient) ListNotificationReportsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ListNotificationReportsOrgRequest,
+	request *payabli.ListNotificationReportsOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QueryResponseNotificationReports], error) {
+) (*core.Response[*payabli.QueryResponseNotificationReports], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -877,29 +635,7 @@ func (r *RawClient) ListNotificationReportsOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QueryResponseNotificationReports
+	var response *payabli.QueryResponseNotificationReports
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -911,13 +647,13 @@ func (r *RawClient) ListNotificationReportsOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QueryResponseNotificationReports]{
+	return &core.Response[*payabli.QueryResponseNotificationReports]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -926,10 +662,10 @@ func (r *RawClient) ListNotificationReportsOrg(
 
 func (r *RawClient) ListNotifications(
 	ctx context.Context,
-	entry sdkgo.Entry,
-	request *sdkgo.ListNotificationsRequest,
+	entry payabli.Entry,
+	request *payabli.ListNotificationsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QueryResponseNotifications], error) {
+) (*core.Response[*payabli.QueryResponseNotifications], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -951,29 +687,7 @@ func (r *RawClient) ListNotifications(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QueryResponseNotifications
+	var response *payabli.QueryResponseNotifications
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -985,13 +699,13 @@ func (r *RawClient) ListNotifications(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QueryResponseNotifications]{
+	return &core.Response[*payabli.QueryResponseNotifications]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1002,9 +716,9 @@ func (r *RawClient) ListNotificationsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ListNotificationsOrgRequest,
+	request *payabli.ListNotificationsOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QueryResponseNotifications], error) {
+) (*core.Response[*payabli.QueryResponseNotifications], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1026,29 +740,7 @@ func (r *RawClient) ListNotificationsOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QueryResponseNotifications
+	var response *payabli.QueryResponseNotifications
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1060,13 +752,13 @@ func (r *RawClient) ListNotificationsOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QueryResponseNotifications]{
+	return &core.Response[*payabli.QueryResponseNotifications]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1077,9 +769,9 @@ func (r *RawClient) ListOrganizations(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ListOrganizationsRequest,
+	request *payabli.ListOrganizationsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.ListOrganizationsResponse], error) {
+) (*core.Response[*payabli.ListOrganizationsResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1101,29 +793,7 @@ func (r *RawClient) ListOrganizations(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.ListOrganizationsResponse
+	var response *payabli.ListOrganizationsResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1135,13 +805,13 @@ func (r *RawClient) ListOrganizations(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.ListOrganizationsResponse]{
+	return &core.Response[*payabli.ListOrganizationsResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1150,10 +820,10 @@ func (r *RawClient) ListOrganizations(
 
 func (r *RawClient) ListPayout(
 	ctx context.Context,
-	entry sdkgo.Entry,
-	request *sdkgo.ListPayoutRequest,
+	entry payabli.Entry,
+	request *payabli.ListPayoutRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QueryPayoutTransaction], error) {
+) (*core.Response[*payabli.QueryPayoutTransaction], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1175,29 +845,7 @@ func (r *RawClient) ListPayout(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QueryPayoutTransaction
+	var response *payabli.QueryPayoutTransaction
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1209,13 +857,13 @@ func (r *RawClient) ListPayout(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QueryPayoutTransaction]{
+	return &core.Response[*payabli.QueryPayoutTransaction]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1226,9 +874,9 @@ func (r *RawClient) ListPayoutOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ListPayoutOrgRequest,
+	request *payabli.ListPayoutOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QueryPayoutTransaction], error) {
+) (*core.Response[*payabli.QueryPayoutTransaction], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1250,29 +898,7 @@ func (r *RawClient) ListPayoutOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QueryPayoutTransaction
+	var response *payabli.QueryPayoutTransaction
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1284,13 +910,13 @@ func (r *RawClient) ListPayoutOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QueryPayoutTransaction]{
+	return &core.Response[*payabli.QueryPayoutTransaction]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1301,9 +927,9 @@ func (r *RawClient) ListPaypoints(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ListPaypointsRequest,
+	request *payabli.ListPaypointsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QueryEntrypointResponse], error) {
+) (*core.Response[*payabli.QueryEntrypointResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1325,29 +951,7 @@ func (r *RawClient) ListPaypoints(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QueryEntrypointResponse
+	var response *payabli.QueryEntrypointResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1359,13 +963,13 @@ func (r *RawClient) ListPaypoints(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QueryEntrypointResponse]{
+	return &core.Response[*payabli.QueryEntrypointResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1374,10 +978,10 @@ func (r *RawClient) ListPaypoints(
 
 func (r *RawClient) ListSettlements(
 	ctx context.Context,
-	entry sdkgo.Entry,
-	request *sdkgo.ListSettlementsRequest,
+	entry payabli.Entry,
+	request *payabli.ListSettlementsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QueryResponseSettlements], error) {
+) (*core.Response[*payabli.QueryResponseSettlements], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1399,29 +1003,7 @@ func (r *RawClient) ListSettlements(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QueryResponseSettlements
+	var response *payabli.QueryResponseSettlements
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1433,13 +1015,13 @@ func (r *RawClient) ListSettlements(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QueryResponseSettlements]{
+	return &core.Response[*payabli.QueryResponseSettlements]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1450,9 +1032,9 @@ func (r *RawClient) ListSettlementsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ListSettlementsOrgRequest,
+	request *payabli.ListSettlementsOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QueryResponseSettlements], error) {
+) (*core.Response[*payabli.QueryResponseSettlements], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1474,29 +1056,7 @@ func (r *RawClient) ListSettlementsOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QueryResponseSettlements
+	var response *payabli.QueryResponseSettlements
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1508,13 +1068,13 @@ func (r *RawClient) ListSettlementsOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QueryResponseSettlements]{
+	return &core.Response[*payabli.QueryResponseSettlements]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1523,10 +1083,10 @@ func (r *RawClient) ListSettlementsOrg(
 
 func (r *RawClient) ListSubscriptions(
 	ctx context.Context,
-	entry sdkgo.Entry,
-	request *sdkgo.ListSubscriptionsRequest,
+	entry payabli.Entry,
+	request *payabli.ListSubscriptionsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QuerySubscriptionResponse], error) {
+) (*core.Response[*payabli.QuerySubscriptionResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1548,29 +1108,7 @@ func (r *RawClient) ListSubscriptions(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QuerySubscriptionResponse
+	var response *payabli.QuerySubscriptionResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1582,13 +1120,13 @@ func (r *RawClient) ListSubscriptions(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QuerySubscriptionResponse]{
+	return &core.Response[*payabli.QuerySubscriptionResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1599,9 +1137,9 @@ func (r *RawClient) ListSubscriptionsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ListSubscriptionsOrgRequest,
+	request *payabli.ListSubscriptionsOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QuerySubscriptionResponse], error) {
+) (*core.Response[*payabli.QuerySubscriptionResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1623,29 +1161,7 @@ func (r *RawClient) ListSubscriptionsOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QuerySubscriptionResponse
+	var response *payabli.QuerySubscriptionResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1657,13 +1173,13 @@ func (r *RawClient) ListSubscriptionsOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QuerySubscriptionResponse]{
+	return &core.Response[*payabli.QuerySubscriptionResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1672,10 +1188,10 @@ func (r *RawClient) ListSubscriptionsOrg(
 
 func (r *RawClient) ListTransactions(
 	ctx context.Context,
-	entry sdkgo.Entry,
-	request *sdkgo.ListTransactionsRequest,
+	entry payabli.Entry,
+	request *payabli.ListTransactionsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QueryResponseTransactions], error) {
+) (*core.Response[*payabli.QueryResponseTransactions], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1697,29 +1213,7 @@ func (r *RawClient) ListTransactions(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QueryResponseTransactions
+	var response *payabli.QueryResponseTransactions
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1731,13 +1225,13 @@ func (r *RawClient) ListTransactions(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QueryResponseTransactions]{
+	return &core.Response[*payabli.QueryResponseTransactions]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1748,9 +1242,9 @@ func (r *RawClient) ListTransactionsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ListTransactionsOrgRequest,
+	request *payabli.ListTransactionsOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QueryResponseTransactions], error) {
+) (*core.Response[*payabli.QueryResponseTransactions], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1772,29 +1266,7 @@ func (r *RawClient) ListTransactionsOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QueryResponseTransactions
+	var response *payabli.QueryResponseTransactions
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1806,13 +1278,13 @@ func (r *RawClient) ListTransactionsOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QueryResponseTransactions]{
+	return &core.Response[*payabli.QueryResponseTransactions]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1821,12 +1293,12 @@ func (r *RawClient) ListTransactionsOrg(
 
 func (r *RawClient) ListTransferDetails(
 	ctx context.Context,
-	entry sdkgo.Entry,
+	entry payabli.Entry,
 	// The numeric identifier for the transfer, assigned by Payabli.
 	transferId int,
-	request *sdkgo.ListTransfersPaypointRequest,
+	request *payabli.ListTransfersPaypointRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QueryTransferDetailResponse], error) {
+) (*core.Response[*payabli.QueryTransferDetailResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1849,29 +1321,7 @@ func (r *RawClient) ListTransferDetails(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QueryTransferDetailResponse
+	var response *payabli.QueryTransferDetailResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1883,13 +1333,13 @@ func (r *RawClient) ListTransferDetails(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QueryTransferDetailResponse]{
+	return &core.Response[*payabli.QueryTransferDetailResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1898,10 +1348,10 @@ func (r *RawClient) ListTransferDetails(
 
 func (r *RawClient) ListTransfers(
 	ctx context.Context,
-	entry sdkgo.Entry,
-	request *sdkgo.ListTransfersRequest,
+	entry payabli.Entry,
+	request *payabli.ListTransfersRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.TransferQueryResponse], error) {
+) (*core.Response[*payabli.TransferQueryResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1923,29 +1373,7 @@ func (r *RawClient) ListTransfers(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.TransferQueryResponse
+	var response *payabli.TransferQueryResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -1957,13 +1385,13 @@ func (r *RawClient) ListTransfers(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.TransferQueryResponse]{
+	return &core.Response[*payabli.TransferQueryResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -1972,9 +1400,9 @@ func (r *RawClient) ListTransfers(
 
 func (r *RawClient) ListTransfersOrg(
 	ctx context.Context,
-	request *sdkgo.ListTransfersRequestOrg,
+	request *payabli.ListTransfersRequestOrg,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.TransferQueryResponse], error) {
+) (*core.Response[*payabli.TransferQueryResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -1996,29 +1424,7 @@ func (r *RawClient) ListTransfersOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.TransferQueryResponse
+	var response *payabli.TransferQueryResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2030,13 +1436,13 @@ func (r *RawClient) ListTransfersOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.TransferQueryResponse]{
+	return &core.Response[*payabli.TransferQueryResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2047,9 +1453,9 @@ func (r *RawClient) ListUsersOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ListUsersOrgRequest,
+	request *payabli.ListUsersOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QueryUserResponse], error) {
+) (*core.Response[*payabli.QueryUserResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2071,29 +1477,7 @@ func (r *RawClient) ListUsersOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QueryUserResponse
+	var response *payabli.QueryUserResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2105,13 +1489,13 @@ func (r *RawClient) ListUsersOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QueryUserResponse]{
+	return &core.Response[*payabli.QueryUserResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2122,9 +1506,9 @@ func (r *RawClient) ListUsersPaypoint(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdkgo.ListUsersPaypointRequest,
+	request *payabli.ListUsersPaypointRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QueryUserResponse], error) {
+) (*core.Response[*payabli.QueryUserResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2146,29 +1530,7 @@ func (r *RawClient) ListUsersPaypoint(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QueryUserResponse
+	var response *payabli.QueryUserResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2180,13 +1542,13 @@ func (r *RawClient) ListUsersPaypoint(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QueryUserResponse]{
+	return &core.Response[*payabli.QueryUserResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2197,9 +1559,9 @@ func (r *RawClient) ListVendors(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdkgo.ListVendorsRequest,
+	request *payabli.ListVendorsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QueryResponseVendors], error) {
+) (*core.Response[*payabli.QueryResponseVendors], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2221,29 +1583,7 @@ func (r *RawClient) ListVendors(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QueryResponseVendors
+	var response *payabli.QueryResponseVendors
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2255,13 +1595,13 @@ func (r *RawClient) ListVendors(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QueryResponseVendors]{
+	return &core.Response[*payabli.QueryResponseVendors]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2272,9 +1612,9 @@ func (r *RawClient) ListVendorsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ListVendorsOrgRequest,
+	request *payabli.ListVendorsOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.QueryResponseVendors], error) {
+) (*core.Response[*payabli.QueryResponseVendors], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2296,29 +1636,7 @@ func (r *RawClient) ListVendorsOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.QueryResponseVendors
+	var response *payabli.QueryResponseVendors
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2330,13 +1648,13 @@ func (r *RawClient) ListVendorsOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.QueryResponseVendors]{
+	return &core.Response[*payabli.QueryResponseVendors]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2345,10 +1663,10 @@ func (r *RawClient) ListVendorsOrg(
 
 func (r *RawClient) ListVcards(
 	ctx context.Context,
-	entry sdkgo.Entry,
-	request *sdkgo.ListVcardsRequest,
+	entry payabli.Entry,
+	request *payabli.ListVcardsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.VCardQueryResponse], error) {
+) (*core.Response[*payabli.VCardQueryResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2370,29 +1688,7 @@ func (r *RawClient) ListVcards(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.VCardQueryResponse
+	var response *payabli.VCardQueryResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2404,13 +1700,13 @@ func (r *RawClient) ListVcards(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.VCardQueryResponse]{
+	return &core.Response[*payabli.VCardQueryResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -2421,9 +1717,9 @@ func (r *RawClient) ListVcardsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ListVcardsOrgRequest,
+	request *payabli.ListVcardsOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.VCardQueryResponse], error) {
+) (*core.Response[*payabli.VCardQueryResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -2445,29 +1741,7 @@ func (r *RawClient) ListVcardsOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.VCardQueryResponse
+	var response *payabli.VCardQueryResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -2479,13 +1753,13 @@ func (r *RawClient) ListVcardsOrg(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.VCardQueryResponse]{
+	return &core.Response[*payabli.VCardQueryResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

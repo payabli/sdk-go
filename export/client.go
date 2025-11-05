@@ -4,7 +4,7 @@ package export
 
 import (
 	context "context"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -36,12 +36,12 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) ExportApplications(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportApplicationsRequest,
+	request *payabli.ExportApplicationsRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportApplications(
 		ctx,
 		format,
@@ -60,10 +60,10 @@ func (c *Client) ExportBatchDetails(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
-	request *sdkgo.ExportBatchDetailsRequest,
+	format *payabli.ExportFormat1,
+	request *payabli.ExportBatchDetailsRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportBatchDetails(
 		ctx,
 		entry,
@@ -80,12 +80,12 @@ func (c *Client) ExportBatchDetails(
 func (c *Client) ExportBatchDetailsOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportBatchDetailsOrgRequest,
+	request *payabli.ExportBatchDetailsOrgRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportBatchDetailsOrg(
 		ctx,
 		format,
@@ -105,10 +105,10 @@ func (c *Client) ExportBatches(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
-	request *sdkgo.ExportBatchesRequest,
+	format *payabli.ExportFormat1,
+	request *payabli.ExportBatchesRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportBatches(
 		ctx,
 		entry,
@@ -126,12 +126,12 @@ func (c *Client) ExportBatches(
 func (c *Client) ExportBatchesOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportBatchesOrgRequest,
+	request *payabli.ExportBatchesOrgRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportBatchesOrg(
 		ctx,
 		format,
@@ -151,10 +151,10 @@ func (c *Client) ExportBatchesOut(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
-	request *sdkgo.ExportBatchesOutRequest,
+	format *payabli.ExportFormat1,
+	request *payabli.ExportBatchesOutRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportBatchesOut(
 		ctx,
 		entry,
@@ -172,12 +172,12 @@ func (c *Client) ExportBatchesOut(
 func (c *Client) ExportBatchesOutOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportBatchesOutOrgRequest,
+	request *payabli.ExportBatchesOutOrgRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportBatchesOutOrg(
 		ctx,
 		format,
@@ -197,10 +197,10 @@ func (c *Client) ExportBills(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
-	request *sdkgo.ExportBillsRequest,
+	format *payabli.ExportFormat1,
+	request *payabli.ExportBillsRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportBills(
 		ctx,
 		entry,
@@ -218,12 +218,12 @@ func (c *Client) ExportBills(
 func (c *Client) ExportBillsOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportBillsOrgRequest,
+	request *payabli.ExportBillsOrgRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportBillsOrg(
 		ctx,
 		format,
@@ -243,10 +243,10 @@ func (c *Client) ExportChargebacks(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
-	request *sdkgo.ExportChargebacksRequest,
+	format *payabli.ExportFormat1,
+	request *payabli.ExportChargebacksRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportChargebacks(
 		ctx,
 		entry,
@@ -264,12 +264,12 @@ func (c *Client) ExportChargebacks(
 func (c *Client) ExportChargebacksOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportChargebacksOrgRequest,
+	request *payabli.ExportChargebacksOrgRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportChargebacksOrg(
 		ctx,
 		format,
@@ -289,10 +289,10 @@ func (c *Client) ExportCustomers(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
-	request *sdkgo.ExportCustomersRequest,
+	format *payabli.ExportFormat1,
+	request *payabli.ExportCustomersRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportCustomers(
 		ctx,
 		entry,
@@ -310,12 +310,12 @@ func (c *Client) ExportCustomers(
 func (c *Client) ExportCustomersOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportCustomersOrgRequest,
+	request *payabli.ExportCustomersOrgRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportCustomersOrg(
 		ctx,
 		format,
@@ -335,10 +335,10 @@ func (c *Client) ExportInvoices(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
-	request *sdkgo.ExportInvoicesRequest,
+	format *payabli.ExportFormat1,
+	request *payabli.ExportInvoicesRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportInvoices(
 		ctx,
 		entry,
@@ -356,12 +356,12 @@ func (c *Client) ExportInvoices(
 func (c *Client) ExportInvoicesOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportInvoicesOrgRequest,
+	request *payabli.ExportInvoicesOrgRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportInvoicesOrg(
 		ctx,
 		format,
@@ -379,12 +379,12 @@ func (c *Client) ExportInvoicesOrg(
 func (c *Client) ExportOrganizations(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportOrganizationsRequest,
+	request *payabli.ExportOrganizationsRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportOrganizations(
 		ctx,
 		format,
@@ -404,10 +404,10 @@ func (c *Client) ExportPayout(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
-	request *sdkgo.ExportPayoutRequest,
+	format *payabli.ExportFormat1,
+	request *payabli.ExportPayoutRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportPayout(
 		ctx,
 		entry,
@@ -425,12 +425,12 @@ func (c *Client) ExportPayout(
 func (c *Client) ExportPayoutOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportPayoutOrgRequest,
+	request *payabli.ExportPayoutOrgRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportPayoutOrg(
 		ctx,
 		format,
@@ -448,12 +448,12 @@ func (c *Client) ExportPayoutOrg(
 func (c *Client) ExportPaypoints(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportPaypointsRequest,
+	request *payabli.ExportPaypointsRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportPaypoints(
 		ctx,
 		format,
@@ -473,10 +473,10 @@ func (c *Client) ExportSettlements(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
-	request *sdkgo.ExportSettlementsRequest,
+	format *payabli.ExportFormat1,
+	request *payabli.ExportSettlementsRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportSettlements(
 		ctx,
 		entry,
@@ -494,12 +494,12 @@ func (c *Client) ExportSettlements(
 func (c *Client) ExportSettlementsOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportSettlementsOrgRequest,
+	request *payabli.ExportSettlementsOrgRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportSettlementsOrg(
 		ctx,
 		format,
@@ -519,10 +519,10 @@ func (c *Client) ExportSubscriptions(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
-	request *sdkgo.ExportSubscriptionsRequest,
+	format *payabli.ExportFormat1,
+	request *payabli.ExportSubscriptionsRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportSubscriptions(
 		ctx,
 		entry,
@@ -540,12 +540,12 @@ func (c *Client) ExportSubscriptions(
 func (c *Client) ExportSubscriptionsOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportSubscriptionsOrgRequest,
+	request *payabli.ExportSubscriptionsOrgRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportSubscriptionsOrg(
 		ctx,
 		format,
@@ -565,10 +565,10 @@ func (c *Client) ExportTransactions(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
-	request *sdkgo.ExportTransactionsRequest,
+	format *payabli.ExportFormat1,
+	request *payabli.ExportTransactionsRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportTransactions(
 		ctx,
 		entry,
@@ -586,12 +586,12 @@ func (c *Client) ExportTransactions(
 func (c *Client) ExportTransactionsOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportTransactionsOrgRequest,
+	request *payabli.ExportTransactionsOrgRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportTransactionsOrg(
 		ctx,
 		format,
@@ -611,12 +611,12 @@ func (c *Client) ExportTransferDetails(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// Transfer identifier.
 	transferId int64,
-	request *sdkgo.ExportTransferDetailsRequest,
+	request *payabli.ExportTransferDetailsRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportTransferDetails(
 		ctx,
 		entry,
@@ -636,9 +636,9 @@ func (c *Client) ExportTransfers(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdkgo.ExportTransfersRequest,
+	request *payabli.ExportTransfersRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportTransfers(
 		ctx,
 		entry,
@@ -657,10 +657,10 @@ func (c *Client) ExportVendors(
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
-	request *sdkgo.ExportVendorsRequest,
+	format *payabli.ExportFormat1,
+	request *payabli.ExportVendorsRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportVendors(
 		ctx,
 		entry,
@@ -678,12 +678,12 @@ func (c *Client) ExportVendors(
 func (c *Client) ExportVendorsOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
-	format *sdkgo.ExportFormat1,
+	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
-	request *sdkgo.ExportVendorsOrgRequest,
+	request *payabli.ExportVendorsOrgRequest,
 	opts ...option.RequestOption,
-) (sdkgo.File, error) {
+) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportVendorsOrg(
 		ctx,
 		format,

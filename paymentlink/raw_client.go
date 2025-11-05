@@ -4,7 +4,7 @@ package paymentlink
 
 import (
 	context "context"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -34,9 +34,9 @@ func (r *RawClient) AddPayLinkFromInvoice(
 	ctx context.Context,
 	// Invoice ID
 	idInvoice int,
-	request *sdkgo.PayLinkDataInvoice,
+	request *payabli.PayLinkDataInvoice,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.PayabliApiResponsePaymentLinks], error) {
+) (*core.Response[*payabli.PayabliApiResponsePaymentLinks], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -62,29 +62,7 @@ func (r *RawClient) AddPayLinkFromInvoice(
 		headers.Add("idempotencyKey", *request.IdempotencyKey)
 	}
 	headers.Add("Content-Type", "application/json")
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.PayabliApiResponsePaymentLinks
+	var response *payabli.PayabliApiResponsePaymentLinks
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -97,13 +75,13 @@ func (r *RawClient) AddPayLinkFromInvoice(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.PayabliApiResponsePaymentLinks]{
+	return &core.Response[*payabli.PayabliApiResponsePaymentLinks]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -114,9 +92,9 @@ func (r *RawClient) AddPayLinkFromBill(
 	ctx context.Context,
 	// The Payabli ID for the bill.
 	billId int,
-	request *sdkgo.PayLinkDataBill,
+	request *payabli.PayLinkDataBill,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.PayabliApiResponsePaymentLinks], error) {
+) (*core.Response[*payabli.PayabliApiResponsePaymentLinks], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -142,29 +120,7 @@ func (r *RawClient) AddPayLinkFromBill(
 		headers.Add("idempotencyKey", *request.IdempotencyKey)
 	}
 	headers.Add("Content-Type", "application/json")
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.PayabliApiResponsePaymentLinks
+	var response *payabli.PayabliApiResponsePaymentLinks
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -177,13 +133,13 @@ func (r *RawClient) AddPayLinkFromBill(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.PayabliApiResponsePaymentLinks]{
+	return &core.Response[*payabli.PayabliApiResponsePaymentLinks]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -195,7 +151,7 @@ func (r *RawClient) DeletePayLinkFromId(
 	// ID for the payment link.
 	payLinkId string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.PayabliApiResponsePaymentLinks], error) {
+) (*core.Response[*payabli.PayabliApiResponsePaymentLinks], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -210,29 +166,7 @@ func (r *RawClient) DeletePayLinkFromId(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.PayabliApiResponsePaymentLinks
+	var response *payabli.PayabliApiResponsePaymentLinks
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -244,13 +178,13 @@ func (r *RawClient) DeletePayLinkFromId(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.PayabliApiResponsePaymentLinks]{
+	return &core.Response[*payabli.PayabliApiResponsePaymentLinks]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -262,7 +196,7 @@ func (r *RawClient) GetPayLinkFromId(
 	// ID for payment link
 	paylinkId string,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.GetPayLinkFromIdResponse], error) {
+) (*core.Response[*payabli.GetPayLinkFromIdResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -277,29 +211,7 @@ func (r *RawClient) GetPayLinkFromId(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.GetPayLinkFromIdResponse
+	var response *payabli.GetPayLinkFromIdResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -311,13 +223,13 @@ func (r *RawClient) GetPayLinkFromId(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.GetPayLinkFromIdResponse]{
+	return &core.Response[*payabli.GetPayLinkFromIdResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -328,9 +240,9 @@ func (r *RawClient) PushPayLinkFromId(
 	ctx context.Context,
 	// ID for the payment link.
 	payLinkId string,
-	request *sdkgo.PushPayLinkRequest,
+	request *payabli.PushPayLinkRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.PayabliApiResponsePaymentLinks], error) {
+) (*core.Response[*payabli.PayabliApiResponsePaymentLinks], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -345,29 +257,7 @@ func (r *RawClient) PushPayLinkFromId(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.PayabliApiResponsePaymentLinks
+	var response *payabli.PayabliApiResponsePaymentLinks
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -380,13 +270,13 @@ func (r *RawClient) PushPayLinkFromId(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.PayabliApiResponsePaymentLinks]{
+	return &core.Response[*payabli.PayabliApiResponsePaymentLinks]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -397,9 +287,9 @@ func (r *RawClient) RefreshPayLinkFromId(
 	ctx context.Context,
 	// ID for the payment link.
 	payLinkId string,
-	request *sdkgo.RefreshPayLinkFromIdRequest,
+	request *payabli.RefreshPayLinkFromIdRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.PayabliApiResponsePaymentLinks], error) {
+) (*core.Response[*payabli.PayabliApiResponsePaymentLinks], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -421,29 +311,7 @@ func (r *RawClient) RefreshPayLinkFromId(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.PayabliApiResponsePaymentLinks
+	var response *payabli.PayabliApiResponsePaymentLinks
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -455,13 +323,13 @@ func (r *RawClient) RefreshPayLinkFromId(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.PayabliApiResponsePaymentLinks]{
+	return &core.Response[*payabli.PayabliApiResponsePaymentLinks]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -472,9 +340,9 @@ func (r *RawClient) SendPayLinkFromId(
 	ctx context.Context,
 	// ID for the payment link.
 	payLinkId string,
-	request *sdkgo.SendPayLinkFromIdRequest,
+	request *payabli.SendPayLinkFromIdRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.PayabliApiResponsePaymentLinks], error) {
+) (*core.Response[*payabli.PayabliApiResponsePaymentLinks], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -496,29 +364,7 @@ func (r *RawClient) SendPayLinkFromId(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.PayabliApiResponsePaymentLinks
+	var response *payabli.PayabliApiResponsePaymentLinks
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -530,13 +376,13 @@ func (r *RawClient) SendPayLinkFromId(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.PayabliApiResponsePaymentLinks]{
+	return &core.Response[*payabli.PayabliApiResponsePaymentLinks]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -547,9 +393,9 @@ func (r *RawClient) UpdatePayLinkFromId(
 	ctx context.Context,
 	// ID for the payment link.
 	payLinkId string,
-	request *sdkgo.PayLinkUpdateData,
+	request *payabli.PayLinkUpdateData,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.PayabliApiResponsePaymentLinks], error) {
+) (*core.Response[*payabli.PayabliApiResponsePaymentLinks], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -565,29 +411,7 @@ func (r *RawClient) UpdatePayLinkFromId(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.PayabliApiResponsePaymentLinks
+	var response *payabli.PayabliApiResponsePaymentLinks
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -600,13 +424,13 @@ func (r *RawClient) UpdatePayLinkFromId(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.PayabliApiResponsePaymentLinks]{
+	return &core.Response[*payabli.PayabliApiResponsePaymentLinks]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -617,9 +441,9 @@ func (r *RawClient) AddPayLinkFromBillLotNumber(
 	ctx context.Context,
 	// Lot number of the bills to pay. All bills with this lot number will be included.
 	lotNumber string,
-	request *sdkgo.PayLinkDataOut,
+	request *payabli.PayLinkDataOut,
 	opts ...option.RequestOption,
-) (*core.Response[*sdkgo.PayabliApiResponsePaymentLinks], error) {
+) (*core.Response[*payabli.PayabliApiResponsePaymentLinks], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -642,29 +466,7 @@ func (r *RawClient) AddPayLinkFromBillLotNumber(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	errorCodes := internal.ErrorCodes{
-		400: func(apiError *core.APIError) error {
-			return &sdkgo.BadRequestError{
-				APIError: apiError,
-			}
-		},
-		401: func(apiError *core.APIError) error {
-			return &sdkgo.UnauthorizedError{
-				APIError: apiError,
-			}
-		},
-		500: func(apiError *core.APIError) error {
-			return &sdkgo.InternalServerError{
-				APIError: apiError,
-			}
-		},
-		503: func(apiError *core.APIError) error {
-			return &sdkgo.ServiceUnavailableError{
-				APIError: apiError,
-			}
-		},
-	}
-	var response *sdkgo.PayabliApiResponsePaymentLinks
+	var response *payabli.PayabliApiResponsePaymentLinks
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -677,13 +479,13 @@ func (r *RawClient) AddPayLinkFromBillLotNumber(
 			Client:          options.HTTPClient,
 			Request:         request,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(errorCodes),
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*sdkgo.PayabliApiResponsePaymentLinks]{
+	return &core.Response[*payabli.PayabliApiResponsePaymentLinks]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

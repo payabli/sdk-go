@@ -4,7 +4,7 @@ package lineitem
 
 import (
 	context "context"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -37,9 +37,9 @@ func (c *Client) AddItem(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdkgo.AddItemRequest,
+	request *payabli.AddItemRequest,
 	opts ...option.RequestOption,
-) (*sdkgo.PayabliApiResponse6, error) {
+) (*payabli.PayabliApiResponse6, error) {
 	response, err := c.WithRawResponse.AddItem(
 		ctx,
 		entry,
@@ -58,7 +58,7 @@ func (c *Client) DeleteItem(
 	// ID for the line item (also known as a product, service, or item).
 	lineItemId int,
 	opts ...option.RequestOption,
-) (*sdkgo.DeleteItemResponse, error) {
+) (*payabli.DeleteItemResponse, error) {
 	response, err := c.WithRawResponse.DeleteItem(
 		ctx,
 		lineItemId,
@@ -76,7 +76,7 @@ func (c *Client) GetItem(
 	// ID for the line item (also known as a product, service, or item).
 	lineItemId int,
 	opts ...option.RequestOption,
-) (*sdkgo.LineItemQueryRecord, error) {
+) (*payabli.LineItemQueryRecord, error) {
 	response, err := c.WithRawResponse.GetItem(
 		ctx,
 		lineItemId,
@@ -93,9 +93,9 @@ func (c *Client) ListLineItems(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
-	request *sdkgo.ListLineItemsRequest,
+	request *payabli.ListLineItemsRequest,
 	opts ...option.RequestOption,
-) (*sdkgo.QueryResponseItems, error) {
+) (*payabli.QueryResponseItems, error) {
 	response, err := c.WithRawResponse.ListLineItems(
 		ctx,
 		entry,
@@ -113,9 +113,9 @@ func (c *Client) UpdateItem(
 	ctx context.Context,
 	// ID for the line item (also known as a product, service, or item).
 	lineItemId int,
-	request *sdkgo.LineItem,
+	request *payabli.LineItem,
 	opts ...option.RequestOption,
-) (*sdkgo.PayabliApiResponse6, error) {
+) (*payabli.PayabliApiResponse6, error) {
 	response, err := c.WithRawResponse.UpdateItem(
 		ctx,
 		lineItemId,

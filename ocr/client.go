@@ -4,7 +4,7 @@ package ocr
 
 import (
 	context "context"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -34,10 +34,10 @@ func NewClient(options *core.RequestOptions) *Client {
 
 func (c *Client) OcrDocumentForm(
 	ctx context.Context,
-	typeResult sdkgo.TypeResult,
-	request *sdkgo.FileContentImageOnly,
+	typeResult payabli.TypeResult,
+	request *payabli.FileContentImageOnly,
 	opts ...option.RequestOption,
-) (*sdkgo.PayabliApiResponseOcr, error) {
+) (*payabli.PayabliApiResponseOcr, error) {
 	response, err := c.WithRawResponse.OcrDocumentForm(
 		ctx,
 		typeResult,
@@ -52,10 +52,10 @@ func (c *Client) OcrDocumentForm(
 
 func (c *Client) OcrDocumentJson(
 	ctx context.Context,
-	typeResult sdkgo.TypeResult,
-	request *sdkgo.FileContentImageOnly,
+	typeResult payabli.TypeResult,
+	request *payabli.FileContentImageOnly,
 	opts ...option.RequestOption,
-) (*sdkgo.PayabliApiResponseOcr, error) {
+) (*payabli.PayabliApiResponseOcr, error) {
 	response, err := c.WithRawResponse.OcrDocumentJson(
 		ctx,
 		typeResult,

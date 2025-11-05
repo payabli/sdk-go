@@ -5,7 +5,7 @@ package notificationlogs
 import (
 	context "context"
 	uuid "github.com/google/uuid"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -40,9 +40,9 @@ func NewClient(options *core.RequestOptions) *Client {
 // This endpoint requires the `notifications_create` OR `notifications_read` permission.
 func (c *Client) SearchNotificationLogs(
 	ctx context.Context,
-	request *sdkgo.SearchNotificationLogsRequest,
+	request *payabli.SearchNotificationLogsRequest,
 	opts ...option.RequestOption,
-) ([]*sdkgo.NotificationLog, error) {
+) ([]*payabli.NotificationLog, error) {
 	response, err := c.WithRawResponse.SearchNotificationLogs(
 		ctx,
 		request,
@@ -61,7 +61,7 @@ func (c *Client) GetNotificationLog(
 	// The notification log entry.
 	uuid uuid.UUID,
 	opts ...option.RequestOption,
-) (*sdkgo.NotificationLogDetail, error) {
+) (*payabli.NotificationLogDetail, error) {
 	response, err := c.WithRawResponse.GetNotificationLog(
 		ctx,
 		uuid,
@@ -81,7 +81,7 @@ func (c *Client) RetryNotificationLog(
 	// Unique id
 	uuid uuid.UUID,
 	opts ...option.RequestOption,
-) (*sdkgo.NotificationLogDetail, error) {
+) (*payabli.NotificationLogDetail, error) {
 	response, err := c.WithRawResponse.RetryNotificationLog(
 		ctx,
 		uuid,
@@ -99,7 +99,7 @@ func (c *Client) RetryNotificationLog(
 // This endpoint requires the `notifications_create` permission.
 func (c *Client) BulkRetryNotificationLogs(
 	ctx context.Context,
-	request sdkgo.BulkRetryRequest,
+	request payabli.BulkRetryRequest,
 	opts ...option.RequestOption,
 ) error {
 	_, err := c.WithRawResponse.BulkRetryNotificationLogs(

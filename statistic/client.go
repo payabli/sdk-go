@@ -4,7 +4,7 @@ package statistic
 
 import (
 	context "context"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
@@ -66,9 +66,9 @@ func (c *Client) BasicStats(
 	// - `yesterday` - Last Day
 	//
 	mode string,
-	request *sdkgo.BasicStatsRequest,
+	request *payabli.BasicStatsRequest,
 	opts ...option.RequestOption,
-) ([]*sdkgo.StatBasicQueryRecord, error) {
+) ([]*payabli.StatBasicQueryRecord, error) {
 	response, err := c.WithRawResponse.BasicStats(
 		ctx,
 		entryId,
@@ -112,9 +112,9 @@ func (c *Client) CustomerBasicStats(
 	// - `lastw` - Last Week
 	// - `yesterday` - Last Day
 	mode string,
-	request *sdkgo.CustomerBasicStatsRequest,
+	request *payabli.CustomerBasicStatsRequest,
 	opts ...option.RequestOption,
-) ([]*sdkgo.SubscriptionStatsQueryRecord, error) {
+) ([]*payabli.SubscriptionStatsQueryRecord, error) {
 	response, err := c.WithRawResponse.CustomerBasicStats(
 		ctx,
 		customerId,
@@ -146,9 +146,9 @@ func (c *Client) SubStats(
 	//   - 0 for Organization
 	//   - 2 for Paypoint
 	level int,
-	request *sdkgo.SubStatsRequest,
+	request *payabli.SubStatsRequest,
 	opts ...option.RequestOption,
-) ([]*sdkgo.StatBasicQueryRecord, error) {
+) ([]*payabli.StatBasicQueryRecord, error) {
 	response, err := c.WithRawResponse.SubStats(
 		ctx,
 		entryId,
@@ -191,9 +191,9 @@ func (c *Client) VendorBasicStats(
 	// - `lastw` - Last Week
 	// - `yesterday` - Last Day
 	mode string,
-	request *sdkgo.VendorBasicStatsRequest,
+	request *payabli.VendorBasicStatsRequest,
 	opts ...option.RequestOption,
-) ([]*sdkgo.StatisticsVendorQueryRecord, error) {
+) ([]*payabli.StatisticsVendorQueryRecord, error) {
 	response, err := c.WithRawResponse.VendorBasicStats(
 		ctx,
 		freq,
