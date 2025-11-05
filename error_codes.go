@@ -38,14 +38,4 @@ var ErrorCodes internal.ErrorCodes = internal.ErrorCodes{
 			APIError: apiError,
 		}
 	},
-	400: func(apiError *core.APIError) error {
-		return &InvalidTransStatusError{
-			APIError: apiError,
-		}
-	},
-	400: func(apiError *core.APIError) error {
-		return &CaptureError{
-			APIError: apiError,
-		}
-	},
 }
