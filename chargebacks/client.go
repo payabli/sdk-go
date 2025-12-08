@@ -70,18 +70,19 @@ func (c *Client) GetChargeback(
 	return response.Body, nil
 }
 
+// Retrieves a chargeback attachment file by its file name.
 func (c *Client) GetChargebackAttachment(
 	ctx context.Context,
-	// The chargeback attachment's file name.
-	fileName string,
 	// The ID of chargeback or return record.
 	id int64,
+	// The chargeback attachment's file name.
+	fileName string,
 	opts ...option.RequestOption,
 ) (string, error) {
 	response, err := c.WithRawResponse.GetChargebackAttachment(
 		ctx,
-		fileName,
 		id,
+		fileName,
 		opts...,
 	)
 	if err != nil {

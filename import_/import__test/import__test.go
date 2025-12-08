@@ -6,12 +6,11 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
 	http "net/http"
-	strings "strings"
 	testing "testing"
 )
 
@@ -72,12 +71,11 @@ func TestImportImportBillsWithWireMock(
 			WireMockBaseURL,
 		),
 	)
+	request := &payabli.ImportBillsRequest{}
 	_, invocationErr := client.Import.ImportBills(
 		context.TODO(),
 		"8cfec329267",
-		strings.NewReader(
-			"",
-		),
+		request,
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
@@ -98,9 +96,6 @@ func TestImportImportCustomerWithWireMock(
 	_, invocationErr := client.Import.ImportCustomer(
 		context.TODO(),
 		"8cfec329267",
-		strings.NewReader(
-			"",
-		),
 		request,
 	)
 
@@ -118,12 +113,11 @@ func TestImportImportVendorWithWireMock(
 			WireMockBaseURL,
 		),
 	)
+	request := &payabli.ImportVendorRequest{}
 	_, invocationErr := client.Import.ImportVendor(
 		context.TODO(),
 		"8cfec329267",
-		strings.NewReader(
-			"",
-		),
+		request,
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")

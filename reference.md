@@ -36,12 +36,12 @@ request := &payabli.AddBillRequest{
                 3762.87,
             ),
             BillDate: payabli.Time(
-                payabli.MustParseDateTime(
+                payabli.MustParseDate(
                     "2024-07-01",
                 ),
             ),
             DueDate: payabli.Time(
-                payabli.MustParseDateTime(
+                payabli.MustParseDate(
                     "2024-07-01",
                 ),
             ),
@@ -100,7 +100,7 @@ request := &payabli.AddBillRequest{
                 ),
             },
             EndDate: payabli.Time(
-                payabli.MustParseDateTime(
+                payabli.MustParseDate(
                     "2024-07-01",
                 ),
             ),
@@ -172,7 +172,7 @@ client.Bill.AddBill(
 </dl>
 </details>
 
-<details><summary><code>client.Bill.DeleteAttachedFromBill(Filename, IdBill) -> *payabli.BillResponse</code></summary>
+<details><summary><code>client.Bill.DeleteAttachedFromBill(IdBill, Filename) -> *payabli.BillResponse</code></summary>
 <dl>
 <dd>
 
@@ -221,6 +221,14 @@ client.Bill.DeleteAttachedFromBill(
 <dl>
 <dd>
 
+**idBill:** `int` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **filename:** `string` 
 
 The filename in Payabli. Filename is `zipName` in response to a
@@ -239,14 +247,6 @@ request to `/api/Invoice/{idInvoice}`. Here, the filename is
     ]
   }
   ```
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idBill:** `int` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
     
 </dd>
 </dl>
@@ -356,7 +356,7 @@ request := &payabli.BillOutData{
             3762.87,
         ),
         BillDate: payabli.Time(
-            payabli.MustParseDateTime(
+            payabli.MustParseDate(
                 "2025-07-01",
             ),
         ),
@@ -401,7 +401,7 @@ client.Bill.EditBill(
 </dl>
 </details>
 
-<details><summary><code>client.Bill.GetAttachedFromBill(Filename, IdBill) -> *payabli.FileContent</code></summary>
+<details><summary><code>client.Bill.GetAttachedFromBill(IdBill, Filename) -> *payabli.FileContent</code></summary>
 <dl>
 <dd>
 
@@ -454,6 +454,14 @@ client.Bill.GetAttachedFromBill(
 <dl>
 <dd>
 
+**idBill:** `int` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **filename:** `string` 
 
 The filename in Payabli. Filename is `zipName` in response to a request to `/api/Invoice/{idInvoice}`. Here, the filename is `0_Bill.pdf``. 
@@ -467,14 +475,6 @@ The filename in Payabli. Filename is `zipName` in response to a request to `/api
     }
   ]
 }
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idBill:** `int` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
     
 </dd>
 </dl>
@@ -1021,7 +1021,7 @@ client.Bill.SendToApprovalBill(
 </dl>
 </details>
 
-<details><summary><code>client.Bill.SetApprovedBill(Approved, IdBill) -> *payabli.SetApprovedBillResponse</code></summary>
+<details><summary><code>client.Bill.SetApprovedBill(IdBill, Approved) -> *payabli.SetApprovedBillResponse</code></summary>
 <dl>
 <dd>
 
@@ -1070,7 +1070,7 @@ client.Bill.SetApprovedBill(
 <dl>
 <dd>
 
-**approved:** `string` — String representing the approved status. Accepted values: 'true' or 'false'.
+**idBill:** `int` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
     
 </dd>
 </dl>
@@ -1078,7 +1078,7 @@ client.Bill.SetApprovedBill(
 <dl>
 <dd>
 
-**idBill:** `int` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+**approved:** `string` — String representing the approved status. Accepted values: 'true' or 'false'.
     
 </dd>
 </dl>
@@ -2376,9 +2376,23 @@ client.ChargeBacks.GetChargeback(
 </dl>
 </details>
 
-<details><summary><code>client.ChargeBacks.GetChargebackAttachment(FileName, Id) -> string</code></summary>
+<details><summary><code>client.ChargeBacks.GetChargebackAttachment(Id, FileName) -> string</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a chargeback attachment file by its file name.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -2391,8 +2405,8 @@ client.ChargeBacks.GetChargeback(
 ```go
 client.ChargeBacks.GetChargebackAttachment(
         context.TODO(),
-        "fileName",
         1000000,
+        "fileName",
     )
 }
 ```
@@ -2409,7 +2423,7 @@ client.ChargeBacks.GetChargebackAttachment(
 <dl>
 <dd>
 
-**fileName:** `string` — The chargeback attachment's file name.
+**id:** `int64` — The ID of chargeback or return record.
     
 </dd>
 </dl>
@@ -2417,7 +2431,7 @@ client.ChargeBacks.GetChargebackAttachment(
 <dl>
 <dd>
 
-**id:** `int64` — The ID of chargeback or return record.
+**fileName:** `string` — The chargeback attachment's file name.
     
 </dd>
 </dl>
@@ -2616,7 +2630,7 @@ The device registration code or serial number, depending on the model.
 </dl>
 </details>
 
-<details><summary><code>client.Cloud.HistoryDevice(DeviceId, Entry) -> *payabli.CloudQueryApiResponse</code></summary>
+<details><summary><code>client.Cloud.HistoryDevice(Entry, DeviceId) -> *payabli.CloudQueryApiResponse</code></summary>
 <dl>
 <dd>
 
@@ -2663,7 +2677,7 @@ client.Cloud.HistoryDevice(
 <dl>
 <dd>
 
-**deviceId:** `string` — ID of the cloud device. 
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -2671,7 +2685,7 @@ client.Cloud.HistoryDevice(
 <dl>
 <dd>
 
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**deviceId:** `string` — ID of the cloud device. 
     
 </dd>
 </dl>
@@ -2751,7 +2765,7 @@ client.Cloud.ListDevice(
 </dl>
 </details>
 
-<details><summary><code>client.Cloud.RemoveDevice(DeviceId, Entry) -> *payabli.RemoveDeviceResponse</code></summary>
+<details><summary><code>client.Cloud.RemoveDevice(Entry, DeviceId) -> *payabli.RemoveDeviceResponse</code></summary>
 <dl>
 <dd>
 
@@ -2798,7 +2812,7 @@ client.Cloud.RemoveDevice(
 <dl>
 <dd>
 
-**deviceId:** `string` — ID of the cloud device. 
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -2806,7 +2820,7 @@ client.Cloud.RemoveDevice(
 <dl>
 <dd>
 
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**deviceId:** `string` — ID of the cloud device. 
     
 </dd>
 </dl>
@@ -2876,7 +2890,7 @@ request := &payabli.AddCustomerRequest{
             Email: payabli.String(
                 "irene@canizalesconcrete.com",
             ),
-            IdentifierFields: []*string{
+            IdentifierFields: &payabli.Identifierfields{
                 payabli.String(
                     "email",
                 ),
@@ -3446,9 +3460,23 @@ Example: `dbaname(ct)=hoa` returns all records with a `dbaname` containing "hoa"
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportBatchDetails(Entry, Format) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportBatchDetails(Format, Entry) -> payabli.File</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This endpoint is deprecated. Export batch details for a paypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -3491,7 +3519,7 @@ client.Export.ExportBatchDetails(
 <dl>
 <dd>
 
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -3499,7 +3527,7 @@ client.Export.ExportBatchDetails(
 <dl>
 <dd>
 
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -3610,6 +3638,20 @@ Example: `amount(gt)=20` return all records with amount greater than 20.00
 <details><summary><code>client.Export.ExportBatchDetailsOrg(Format, OrgId) -> payabli.File</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This endpoint is deprecated. Export batch details for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -3768,7 +3810,7 @@ Example: `amount(gt)=20` return all records with amount greater than 20.00
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportBatches(Entry, Format) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportBatches(Format, Entry) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -3827,7 +3869,7 @@ client.Export.ExportBatches(
 <dl>
 <dd>
 
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -3835,7 +3877,7 @@ client.Export.ExportBatches(
 <dl>
 <dd>
 
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -4096,7 +4138,7 @@ Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater t
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportBatchesOut(Entry, Format) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportBatchesOut(Format, Entry) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -4155,7 +4197,7 @@ client.Export.ExportBatchesOut(
 <dl>
 <dd>
 
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -4163,7 +4205,7 @@ client.Export.ExportBatchesOut(
 <dl>
 <dd>
 
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -4386,7 +4428,7 @@ Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater t
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportBills(Entry, Format) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportBills(Format, Entry) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -4445,7 +4487,7 @@ client.Export.ExportBills(
 <dl>
 <dd>
 
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -4453,7 +4495,7 @@ client.Export.ExportBills(
 <dl>
 <dd>
 
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -4712,7 +4754,7 @@ Example: totalAmount(gt)=20  return all records with totalAmount greater than 20
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportChargebacks(Entry, Format) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportChargebacks(Format, Entry) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -4771,7 +4813,7 @@ client.Export.ExportChargebacks(
 <dl>
 <dd>
 
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -4779,7 +4821,7 @@ client.Export.ExportChargebacks(
 <dl>
 <dd>
 
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -5080,7 +5122,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportCustomers(Entry, Format) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportCustomers(Format, Entry) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -5139,7 +5181,7 @@ client.Export.ExportCustomers(
 <dl>
 <dd>
 
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -5147,7 +5189,7 @@ client.Export.ExportCustomers(
 <dl>
 <dd>
 
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -5434,7 +5476,7 @@ balance(gt)=20 return all records with balance greater than 20.00
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportInvoices(Entry, Format) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportInvoices(Format, Entry) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -5493,7 +5535,7 @@ client.Export.ExportInvoices(
 <dl>
 <dd>
 
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -5501,7 +5543,7 @@ client.Export.ExportInvoices(
 <dl>
 <dd>
 
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -5970,7 +6012,7 @@ Example: name(ct)=hoa  return all records where name contains "hoa"
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportPayout(Entry, Format) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportPayout(Format, Entry) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -6029,7 +6071,7 @@ client.Export.ExportPayout(
 <dl>
 <dd>
 
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -6037,7 +6079,7 @@ client.Export.ExportPayout(
 <dl>
 <dd>
 
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -6455,7 +6497,7 @@ Example: `dbaname(ct)=hoa` returns all records with `dbaname` containing "hoa"
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportSettlements(Entry, Format) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportSettlements(Format, Entry) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -6514,7 +6556,7 @@ client.Export.ExportSettlements(
 <dl>
 <dd>
 
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -6522,7 +6564,7 @@ client.Export.ExportSettlements(
 <dl>
 <dd>
 
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -6821,7 +6863,7 @@ Example: `settledAmount(gt)=20` returns all records with a `settledAmount` great
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportSubscriptions(Entry, Format) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportSubscriptions(Format, Entry) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -6880,7 +6922,7 @@ client.Export.ExportSubscriptions(
 <dl>
 <dd>
 
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -6888,7 +6930,7 @@ client.Export.ExportSubscriptions(
 <dl>
 <dd>
 
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -7191,7 +7233,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportTransactions(Entry, Format) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportTransactions(Format, Entry) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -7250,7 +7292,7 @@ client.Export.ExportTransactions(
 <dl>
 <dd>
 
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -7258,7 +7300,7 @@ client.Export.ExportTransactions(
 <dl>
 <dd>
 
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -7569,7 +7611,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportTransferDetails(Entry, Format, TransferId) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportTransferDetails(Format, Entry, TransferId) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -7632,7 +7674,7 @@ client.Export.ExportTransferDetails(
 <dl>
 <dd>
 
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -7640,7 +7682,7 @@ client.Export.ExportTransferDetails(
 <dl>
 <dd>
 
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -7898,7 +7940,7 @@ List of field names accepted:
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportVendors(Entry, Format) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportVendors(Format, Entry) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -7957,7 +7999,7 @@ client.Export.ExportVendors(
 <dl>
 <dd>
 
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
     
 </dd>
 </dl>
@@ -7965,7 +8007,7 @@ client.Export.ExportVendors(
 <dl>
 <dd>
 
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -8488,12 +8530,11 @@ Import a list of bills from a CSV file. See the [Import Guide](/developers/devel
 <dd>
 
 ```go
+request := &payabli.ImportBillsRequest{}
 client.Import.ImportBills(
         context.TODO(),
         "8cfec329267",
-        strings.NewReader(
-            "",
-        ),
+        request,
     )
 }
 ```
@@ -8553,9 +8594,6 @@ request := &payabli.ImportCustomerRequest{}
 client.Import.ImportCustomer(
         context.TODO(),
         "8cfec329267",
-        strings.NewReader(
-            "",
-        ),
         request,
     )
 }
@@ -8620,12 +8658,11 @@ Import a list of vendors from a CSV file. See the [Import Guide](/developers/dev
 <dd>
 
 ```go
+request := &payabli.ImportVendorRequest{}
 client.Import.ImportVendor(
         context.TODO(),
         "8cfec329267",
-        strings.NewReader(
-            "",
-        ),
+        request,
     )
 }
 ```
@@ -8726,7 +8763,7 @@ request := &payabli.AddInvoiceRequest{
                     },
                 },
                 InvoiceDate: payabli.Time(
-                    payabli.MustParseDateTime(
+                    payabli.MustParseDate(
                         "2025-10-19",
                     ),
                 ),
@@ -8805,7 +8842,7 @@ client.Invoice.AddInvoice(
 </dl>
 </details>
 
-<details><summary><code>client.Invoice.DeleteAttachedFromInvoice(Filename, IdInvoice) -> *payabli.InvoiceResponseWithoutData</code></summary>
+<details><summary><code>client.Invoice.DeleteAttachedFromInvoice(IdInvoice, Filename) -> *payabli.InvoiceResponseWithoutData</code></summary>
 <dl>
 <dd>
 
@@ -8852,6 +8889,14 @@ client.Invoice.DeleteAttachedFromInvoice(
 <dl>
 <dd>
 
+**idInvoice:** `int` — Invoice ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **filename:** `string` 
 
 The filename in Payabli. Filename is `zipName` in response to a request to `/api/Invoice/{idInvoice}`. Here, the filename is `0_Bill.pdf``. 
@@ -8865,14 +8910,6 @@ The filename in Payabli. Filename is `zipName` in response to a request to `/api
     }
   ]
 }
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idInvoice:** `int` — Invoice ID
     
 </dd>
 </dl>
@@ -8987,7 +9024,7 @@ request := &payabli.EditInvoiceRequest{
                     },
                 },
                 InvoiceDate: payabli.Time(
-                    payabli.MustParseDateTime(
+                    payabli.MustParseDate(
                         "2025-10-19",
                     ),
                 ),
@@ -9048,7 +9085,7 @@ client.Invoice.EditInvoice(
 </dl>
 </details>
 
-<details><summary><code>client.Invoice.GetAttachedFileFromInvoice(Filename, IdInvoice) -> *payabli.FileContent</code></summary>
+<details><summary><code>client.Invoice.GetAttachedFileFromInvoice(IdInvoice, Filename) -> *payabli.FileContent</code></summary>
 <dl>
 <dd>
 
@@ -9078,8 +9115,8 @@ Retrieves a file attached to an invoice.
 request := &payabli.GetAttachedFileFromInvoiceRequest{}
 client.Invoice.GetAttachedFileFromInvoice(
         context.TODO(),
-        "filename",
         1,
+        "filename",
         request,
     )
 }
@@ -9093,6 +9130,14 @@ client.Invoice.GetAttachedFileFromInvoice(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**idInvoice:** `int` — Invoice ID
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -9112,14 +9157,6 @@ The filename in Payabli. Filename is `zipName` in the response to a request to `
     ]
   }
   ```
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idInvoice:** `int` — Invoice ID
     
 </dd>
 </dl>
@@ -10305,7 +10342,7 @@ client.MoneyIn.Authorize(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.Capture(Amount, TransId) -> *payabli.CaptureResponse</code></summary>
+<details><summary><code>client.MoneyIn.Capture(TransId, Amount) -> *payabli.CaptureResponse</code></summary>
 <dl>
 <dd>
 
@@ -10357,7 +10394,7 @@ client.MoneyIn.Capture(
 <dl>
 <dd>
 
-**amount:** `float64` — Amount to be captured. The amount can't be greater the original total amount of the transaction. `0` captures the total amount authorized in the transaction. Partial captures aren't supported.
+**transId:** `string` — ReferenceId for the transaction (PaymentId).
     
 </dd>
 </dl>
@@ -10365,7 +10402,7 @@ client.MoneyIn.Capture(
 <dl>
 <dd>
 
-**transId:** `string` — ReferenceId for the transaction (PaymentId).
+**amount:** `float64` — Amount to be captured. The amount can't be greater the original total amount of the transaction. `0` captures the total amount authorized in the transaction. Partial captures aren't supported.
     
 </dd>
 </dl>
@@ -10823,7 +10860,7 @@ client.MoneyIn.Getpaid(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.Reverse(Amount, TransId) -> *payabli.ReverseResponse</code></summary>
+<details><summary><code>client.MoneyIn.Reverse(TransId, Amount) -> *payabli.ReverseResponse</code></summary>
 <dl>
 <dd>
 
@@ -10870,6 +10907,14 @@ client.MoneyIn.Reverse(
 <dl>
 <dd>
 
+**transId:** `string` — ReferenceId for the transaction (PaymentId).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **amount:** `float64` 
 
 
@@ -10881,14 +10926,6 @@ An amount equal to zero will refunds the total amount authorized minus any servi
     
 </dd>
 </dl>
-
-<dl>
-<dd>
-
-**transId:** `string` — ReferenceId for the transaction (PaymentId).
-    
-</dd>
-</dl>
 </dd>
 </dl>
 
@@ -10897,7 +10934,7 @@ An amount equal to zero will refunds the total amount authorized minus any servi
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.Refund(Amount, TransId) -> *payabli.RefundResponse</code></summary>
+<details><summary><code>client.MoneyIn.Refund(TransId, Amount) -> *payabli.RefundResponse</code></summary>
 <dl>
 <dd>
 
@@ -10944,6 +10981,14 @@ client.MoneyIn.Refund(
 <dl>
 <dd>
 
+**transId:** `string` — ReferenceId for the transaction (PaymentId).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **amount:** `float64` 
 
 
@@ -10952,14 +10997,6 @@ Amount to refund from original transaction, minus any service fees charged on th
 The amount provided can't be greater than the original total amount of the transaction, minus service fees. For example, if a transaction was \$90 plus a \$10 service fee, you can refund up to \$90.
 
 An amount equal to zero will refund the total amount authorized minus any service fee.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**transId:** `string` — ReferenceId for the transaction (PaymentId).
     
 </dd>
 </dl>
@@ -11487,6 +11524,9 @@ request := &payabli.MoneyOutTypesRequestOutAuthorize{
                 TotalAmount: payabli.Float64(
                     47,
                 ),
+                Unbundled: payabli.Bool(
+                    false,
+                ),
             },
             PaymentMethod: &payabli.AuthorizePaymentMethod{
                 Method: "managed",
@@ -11624,7 +11664,7 @@ client.MoneyOut.CancelAllOut(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyOut.CancelOut(ReferenceId) -> *payabli.PayabliApiResponse0000</code></summary>
+<details><summary><code>client.MoneyOut.CancelOutGet(ReferenceId) -> *payabli.PayabliApiResponse0000</code></summary>
 <dl>
 <dd>
 
@@ -11651,7 +11691,65 @@ Cancel a payout transaction by ID.
 <dd>
 
 ```go
-client.MoneyOut.CancelOut(
+client.MoneyOut.CancelOutGet(
+        context.TODO(),
+        "129-219",
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**referenceId:** `string` — The ID for the payout transaction. 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MoneyOut.CancelOutDelete(ReferenceId) -> *payabli.PayabliApiResponse0000</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Cancel a payout transaction by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.MoneyOut.CancelOutDelete(
         context.TODO(),
         "129-219",
     )
@@ -12706,6 +12804,20 @@ client.Notificationlogs.BulkRetryNotificationLogs(
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to upload an image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter `typeResult`. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -12759,6 +12871,20 @@ client.Ocr.OcrDocumentForm(
 <details><summary><code>client.Ocr.OcrDocumentJson(TypeResult, request) -> *payabli.PayabliApiResponseOcr</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to submit a Base64-encoded image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter `typeResult`. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -18675,6 +18801,7 @@ List of field names accepted:
   - `lotNumber` (ct, nct)
   - `customerVendorAccount` (ct, nct, eq, ne)
   - `batchId` (eq, ne)
+  - `AchTraceNumber` (eq, ne)
   - `payoutProgram`(eq, ne) the options are `managed` or `odp`. For example, `payoutProgram(eq)=managed` returns all records with a `payoutProgram` equal to `managed`. 
 
   List of comparison accepted - enclosed between parentheses:
@@ -18863,6 +18990,7 @@ List of field names accepted:
   - `lotNumber` (ct, nct)
   - `customerVendorAccount` (ct, nct, eq, ne)
   - `batchId` (eq, ne)
+  - `AchTraceNumber` (eq, ne)
   - `payoutProgram`(eq, ne) the options are `managed` or `odp`. For example, `payoutProgram(eq)=managed` returns all records with a `payoutProgram` equal to `managed`.
 
   List of comparison accepted - enclosed between parentheses:
@@ -19963,6 +20091,7 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 - `settlementStatus` (in, nin, eq, ne)
 - `batchNumber` (nct, ct)
 - `invoiceNumber` (ct, nct)
+- `ipAddress` (eq, ne)
 - `authCode` (ct, nct)
 - `orderDescription` (ct, nct)
 - `payaccountLastfour` (nct, ct)
@@ -20551,6 +20680,7 @@ Retrieve a list of transfers for an org. Use filters to limit results. Include t
 
 ```go
 request := &payabli.ListTransfersRequestOrg{
+        OrgId: 123,
         FromRecord: payabli.Int(
             0,
         ),
@@ -20560,7 +20690,6 @@ request := &payabli.ListTransfersRequestOrg{
     }
 client.Query.ListTransfersOrg(
         context.TODO(),
-        123,
         request,
     )
 }
@@ -21598,7 +21727,7 @@ List of comparison accepted - enclosed between parentheses:
 </details>
 
 ## Statistic
-<details><summary><code>client.Statistic.BasicStats(EntryId, Freq, Level, Mode) -> []*payabli.StatBasicQueryRecord</code></summary>
+<details><summary><code>client.Statistic.BasicStats(Mode, Freq, Level, EntryId) -> []*payabli.StatBasicExtendedQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -21627,10 +21756,10 @@ Retrieves the basic statistics for an organization or a paypoint, for a given ti
 ```go
 request := &payabli.BasicStatsRequest{
         EndDate: payabli.String(
-            "2023-05-23",
+            "2025-11-01",
         ),
         StartDate: payabli.String(
-            "2023-03-23",
+            "2025-11-30",
         ),
     }
 client.Statistic.BasicStats(
@@ -21656,7 +21785,23 @@ client.Statistic.BasicStats(
 <dl>
 <dd>
 
-**entryId:** `int64` — Identifier in Payabli for the entity.
+**mode:** `string` 
+
+Mode for the request. Allowed values:
+
+- `custom` - Allows you to set a custom date range
+- `ytd` - Year To Date
+- `mtd` - Month To Date
+- `wtd` - Week To Date
+- `today` - All current day
+- `m12` - Last 12 months
+- `d30` - Last 30 days
+- `h24` - Last 24 hours
+- `lasty` - Last Year
+- `lastm` - Last Month
+- `lastw` - Last Week
+- `yesterday` - Last Day
+  
     
 </dd>
 </dl>
@@ -21693,23 +21838,7 @@ The entry level for the request:
 <dl>
 <dd>
 
-**mode:** `string` 
-
-Mode for the request. Allowed values:
-
-- `custom` - Allows you to set a custom date range
-- `ytd` - Year To Date
-- `mtd` - Month To Date
-- `wtd` - Week To Date
-- `today` - All current day
-- `m12` - Last 12 months
-- `d30` - Last 30 days
-- `h24` - Last 24 hours
-- `lasty` - Last Year
-- `lastm` - Last Month
-- `lastw` - Last Week
-- `yesterday` - Last Day
-  
+**entryId:** `int64` — Identifier in Payabli for the entity.
     
 </dd>
 </dl>
@@ -21759,7 +21888,7 @@ Valid formats:
 </dl>
 </details>
 
-<details><summary><code>client.Statistic.CustomerBasicStats(CustomerId, Freq, Mode) -> []*payabli.SubscriptionStatsQueryRecord</code></summary>
+<details><summary><code>client.Statistic.CustomerBasicStats(Mode, Freq, CustomerId) -> []*payabli.SubscriptionStatsQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -21809,7 +21938,21 @@ client.Statistic.CustomerBasicStats(
 <dl>
 <dd>
 
-**customerId:** `int` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
+**mode:** `string` 
+
+Mode for request. Allowed values:
+
+- `ytd` - Year To Date
+- `mtd` - Month To Date
+- `wtd` - Week To Date
+- `today` - All current day
+- `m12` - Last 12 months
+- `d30` - Last 30 days
+- `h24` - Last 24 hours
+- `lasty` - Last Year
+- `lastm` - Last Month
+- `lastw` - Last Week
+- `yesterday` - Last Day
     
 </dd>
 </dl>
@@ -21834,21 +21977,7 @@ For example, `w` groups the results by week.
 <dl>
 <dd>
 
-**mode:** `string` 
-
-Mode for request. Allowed values:
-
-- `ytd` - Year To Date
-- `mtd` - Month To Date
-- `wtd` - Week To Date
-- `today` - All current day
-- `m12` - Last 12 months
-- `d30` - Last 30 days
-- `h24` - Last 24 hours
-- `lasty` - Last Year
-- `lastm` - Last Month
-- `lastw` - Last Week
-- `yesterday` - Last Day
+**customerId:** `int` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
     
 </dd>
 </dl>
@@ -21868,7 +21997,7 @@ Mode for request. Allowed values:
 </dl>
 </details>
 
-<details><summary><code>client.Statistic.SubStats(EntryId, Interval, Level) -> []*payabli.StatBasicQueryRecord</code></summary>
+<details><summary><code>client.Statistic.SubStats(Interval, Level, EntryId) -> []*payabli.StatBasicQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -21918,14 +22047,6 @@ client.Statistic.SubStats(
 <dl>
 <dd>
 
-**entryId:** `int64` — Identifier in Payabli for the entity.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **interval:** `string` 
 
 Interval to get the data. Allowed values:
@@ -21954,6 +22075,14 @@ The entry level for the request:
 <dl>
 <dd>
 
+**entryId:** `int64` — Identifier in Payabli for the entity.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **parameters:** `map[string]*string` — List of parameters
     
 </dd>
@@ -21966,7 +22095,7 @@ The entry level for the request:
 </dl>
 </details>
 
-<details><summary><code>client.Statistic.VendorBasicStats(Freq, IdVendor, Mode) -> []*payabli.StatisticsVendorQueryRecord</code></summary>
+<details><summary><code>client.Statistic.VendorBasicStats(Mode, Freq, IdVendor) -> []*payabli.StatisticsVendorQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -22016,6 +22145,28 @@ client.Statistic.VendorBasicStats(
 <dl>
 <dd>
 
+**mode:** `string` 
+
+Mode for request. Allowed values:
+
+- `ytd` - Year To Date
+- `mtd` - Month To Date
+- `wtd` - Week To Date
+- `today` - All current day
+- `m12` - Last 12 months
+- `d30` - Last 30 days
+- `h24` - Last 24 hours
+- `lasty` - Last Year
+- `lastm` - Last Month
+- `lastw` - Last Week
+- `yesterday` - Last Day
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **freq:** `string` 
 
 Frequency to group series. Allowed values:
@@ -22034,28 +22185,6 @@ For example, `w` groups the results by week.
 <dd>
 
 **idVendor:** `int` — Vendor ID.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**mode:** `string` 
-
-Mode for request. Allowed values:
-
-- `ytd` - Year To Date
-- `mtd` - Month To Date
-- `wtd` - Week To Date
-- `today` - All current day
-- `m12` - Last 12 months
-- `d30` - Last 30 days
-- `h24` - Last 24 hours
-- `lasty` - Last Year
-- `lastm` - Last Month
-- `lastw` - Last Week
-- `yesterday` - Last Day
     
 </dd>
 </dl>
@@ -22461,7 +22590,7 @@ client.Templates.DeleteTemplate(
 </dl>
 </details>
 
-<details><summary><code>client.Templates.GetlinkTemplate(IgnoreEmpty, TemplateId) -> *payabli.BoardingLinkApiResponse</code></summary>
+<details><summary><code>client.Templates.GetlinkTemplate(TemplateId, IgnoreEmpty) -> *payabli.BoardingLinkApiResponse</code></summary>
 <dl>
 <dd>
 
@@ -22508,7 +22637,7 @@ client.Templates.GetlinkTemplate(
 <dl>
 <dd>
 
-**ignoreEmpty:** `bool` — Ignore read-only and empty fields Default is `false`. If `ignoreEmpty` = `false` and any field is empty, then the request returns a failure response. If `ignoreEmpty` = `true`, the request returns the boarding link name regardless of whether fields are empty.
+**templateId:** `float64` — The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
     
 </dd>
 </dl>
@@ -22516,7 +22645,7 @@ client.Templates.GetlinkTemplate(
 <dl>
 <dd>
 
-**templateId:** `float64` — The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
+**ignoreEmpty:** `bool` — Ignore read-only and empty fields Default is `false`. If `ignoreEmpty` = `false` and any field is empty, then the request returns a failure response. If `ignoreEmpty` = `true`, the request returns the boarding link name regardless of whether fields are empty.
     
 </dd>
 </dl>
@@ -23121,6 +23250,20 @@ client.TokenStorage.UpdateMethod(
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to add a new user to an organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -23166,6 +23309,20 @@ client.User.AddUser(
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to refresh the authentication token for a user within an organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -23193,6 +23350,20 @@ client.User.AuthRefreshUser(
 <details><summary><code>client.User.AuthResetUser(request) -> *payabli.AuthResetUserResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to initiate a password reset for a user within an organization.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -23363,6 +23534,20 @@ client.User.AuthUser(
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to change the password for a user within an organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -23408,6 +23593,20 @@ client.User.ChangePswUser(
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to delete a specific user within an organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -23451,6 +23650,20 @@ client.User.DeleteUser(
 <details><summary><code>client.User.EditMfaUser(UserId, request) -> *payabli.EditMfaUserResponse</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to enable or disable multi-factor authentication (MFA) for a user within an organization.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -23506,6 +23719,20 @@ client.User.EditMfaUser(
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to modify the details of a specific user within an organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -23559,6 +23786,20 @@ client.User.EditUser(
 <details><summary><code>client.User.GetUser(UserId) -> *payabli.UserQueryRecord</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to retrieve information about a specific user within an organization.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -23626,6 +23867,20 @@ client.User.GetUser(
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to log a user out from the system.
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -23650,9 +23905,23 @@ client.User.LogoutUser(
 </dl>
 </details>
 
-<details><summary><code>client.User.ResendMfaCode(Entry, EntryType, Usrname) -> *payabli.PayabliApiResponseMfaBasic</code></summary>
+<details><summary><code>client.User.ResendMfaCode(Usrname, Entry, EntryType) -> *payabli.PayabliApiResponseMfaBasic</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Resends the MFA code to the user via the selected MFA mode (email or SMS).
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -23684,6 +23953,14 @@ client.User.ResendMfaCode(
 <dl>
 <dd>
 
+**usrname:** `string` —  
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **entry:** `string` —  
     
 </dd>
@@ -23693,14 +23970,6 @@ client.User.ResendMfaCode(
 <dd>
 
 **entryType:** `int` —  
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**usrname:** `string` —  
     
 </dd>
 </dl>
@@ -23715,6 +23984,20 @@ client.User.ResendMfaCode(
 <details><summary><code>client.User.ValidateMfaUser(request) -> *payabli.PayabliApiResponseUserMfa</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 

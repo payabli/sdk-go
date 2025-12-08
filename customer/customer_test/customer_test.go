@@ -6,7 +6,7 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
@@ -100,7 +100,7 @@ func TestCustomerAddCustomerWithWireMock(
 			Email: payabli.String(
 				"irene@canizalesconcrete.com",
 			),
-			IdentifierFields: []*string{
+			IdentifierFields: &payabli.Identifierfields{
 				payabli.String(
 					"email",
 				),

@@ -55,6 +55,8 @@ func (c *Client) AddInvoice(
 // Deletes an invoice that's attached to a file.
 func (c *Client) DeleteAttachedFromInvoice(
 	ctx context.Context,
+	// Invoice ID
+	idInvoice int,
 	// The filename in Payabli. Filename is `zipName` in response to a request to `/api/Invoice/{idInvoice}`. Here, the filename is `0_Bill.pdf``.
 	// "DocumentsRef": {
 	//   "zipfile": "inva_269.zip",
@@ -67,14 +69,12 @@ func (c *Client) DeleteAttachedFromInvoice(
 	//   ]
 	// }
 	filename string,
-	// Invoice ID
-	idInvoice int,
 	opts ...option.RequestOption,
 ) (*payabli.InvoiceResponseWithoutData, error) {
 	response, err := c.WithRawResponse.DeleteAttachedFromInvoice(
 		ctx,
-		filename,
 		idInvoice,
+		filename,
 		opts...,
 	)
 	if err != nil {
@@ -124,6 +124,8 @@ func (c *Client) EditInvoice(
 // Retrieves a file attached to an invoice.
 func (c *Client) GetAttachedFileFromInvoice(
 	ctx context.Context,
+	// Invoice ID
+	idInvoice int,
 	// The filename in Payabli. Filename is `zipName` in the response to a request to `/api/Invoice/{idInvoice}`. Here, the filename is `0_Bill.pdf``.
 	// ```
 	//   "DocumentsRef": {
@@ -138,15 +140,13 @@ func (c *Client) GetAttachedFileFromInvoice(
 	//   }
 	//   ```
 	filename string,
-	// Invoice ID
-	idInvoice int,
 	request *payabli.GetAttachedFileFromInvoiceRequest,
 	opts ...option.RequestOption,
 ) (*payabli.FileContent, error) {
 	response, err := c.WithRawResponse.GetAttachedFileFromInvoice(
 		ctx,
-		filename,
 		idInvoice,
+		filename,
 		request,
 		opts...,
 	)

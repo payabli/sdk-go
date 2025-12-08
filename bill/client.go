@@ -55,6 +55,8 @@ func (c *Client) AddBill(
 // Delete a file attached to a bill.
 func (c *Client) DeleteAttachedFromBill(
 	ctx context.Context,
+	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+	idBill int,
 	// The filename in Payabli. Filename is `zipName` in response to a
 	// request to `/api/Invoice/{idInvoice}`. Here, the filename is
 	// `0_Bill.pdf`.
@@ -72,15 +74,13 @@ func (c *Client) DeleteAttachedFromBill(
 	//   }
 	//   ```
 	filename string,
-	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
-	idBill int,
 	request *payabli.DeleteAttachedFromBillRequest,
 	opts ...option.RequestOption,
 ) (*payabli.BillResponse, error) {
 	response, err := c.WithRawResponse.DeleteAttachedFromBill(
 		ctx,
-		filename,
 		idBill,
+		filename,
 		request,
 		opts...,
 	)
@@ -131,6 +131,8 @@ func (c *Client) EditBill(
 // Retrieves a file attached to a bill, either as a binary file or as a Base64-encoded string.
 func (c *Client) GetAttachedFromBill(
 	ctx context.Context,
+	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+	idBill int,
 	// The filename in Payabli. Filename is `zipName` in response to a request to `/api/Invoice/{idInvoice}`. Here, the filename is `0_Bill.pdf``.
 	// "DocumentsRef": {
 	//   "zipfile": "inva_269.zip",
@@ -143,15 +145,13 @@ func (c *Client) GetAttachedFromBill(
 	//   ]
 	// }
 	filename string,
-	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
-	idBill int,
 	request *payabli.GetAttachedFromBillRequest,
 	opts ...option.RequestOption,
 ) (*payabli.FileContent, error) {
 	response, err := c.WithRawResponse.GetAttachedFromBill(
 		ctx,
-		filename,
 		idBill,
+		filename,
 		request,
 		opts...,
 	)
@@ -262,17 +262,17 @@ func (c *Client) SendToApprovalBill(
 // Approve or disapprove a bill by ID.
 func (c *Client) SetApprovedBill(
 	ctx context.Context,
-	// String representing the approved status. Accepted values: 'true' or 'false'.
-	approved string,
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
 	idBill int,
+	// String representing the approved status. Accepted values: 'true' or 'false'.
+	approved string,
 	request *payabli.SetApprovedBillRequest,
 	opts ...option.RequestOption,
 ) (*payabli.SetApprovedBillResponse, error) {
 	response, err := c.WithRawResponse.SetApprovedBill(
 		ctx,
-		approved,
 		idBill,
+		approved,
 		request,
 		opts...,
 	)

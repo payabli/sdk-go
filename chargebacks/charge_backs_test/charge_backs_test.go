@@ -6,7 +6,7 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
@@ -117,8 +117,8 @@ func TestChargeBacksGetChargebackAttachmentWithWireMock(
 	)
 	_, invocationErr := client.ChargeBacks.GetChargebackAttachment(
 		context.TODO(),
-		"fileName",
 		1000000,
+		"fileName",
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")

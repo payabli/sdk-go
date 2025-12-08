@@ -77,10 +77,10 @@ func (r *RawClient) DeleteTemplate(
 
 func (r *RawClient) GetlinkTemplate(
 	ctx context.Context,
-	// Ignore read-only and empty fields Default is `false`. If `ignoreEmpty` = `false` and any field is empty, then the request returns a failure response. If `ignoreEmpty` = `true`, the request returns the boarding link name regardless of whether fields are empty.
-	ignoreEmpty bool,
 	// The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
 	templateId float64,
+	// Ignore read-only and empty fields Default is `false`. If `ignoreEmpty` = `false` and any field is empty, then the request returns a failure response. If `ignoreEmpty` = `true`, the request returns the boarding link name regardless of whether fields are empty.
+	ignoreEmpty bool,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.BoardingLinkApiResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -91,8 +91,8 @@ func (r *RawClient) GetlinkTemplate(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Templates/getlink/%v/%v",
-		ignoreEmpty,
 		templateId,
+		ignoreEmpty,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),

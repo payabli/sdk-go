@@ -1853,6 +1853,8 @@ type ListPayoutRequest struct {
 	//
 	//   - `batchId` (eq, ne)
 	//
+	//   - `AchTraceNumber` (eq, ne)
+	//
 	//   - `payoutProgram`(eq, ne) the options are `managed` or `odp`. For example, `payoutProgram(eq)=managed` returns all records with a `payoutProgram` equal to `managed`.
 	//
 	//     List of comparison accepted - enclosed between parentheses:
@@ -2045,6 +2047,8 @@ type ListPayoutOrgRequest struct {
 	//   - `customerVendorAccount` (ct, nct, eq, ne)
 	//
 	//   - `batchId` (eq, ne)
+	//
+	//   - `AchTraceNumber` (eq, ne)
 	//
 	//   - `payoutProgram`(eq, ne) the options are `managed` or `odp`. For example, `payoutProgram(eq)=managed` returns all records with a `payoutProgram` equal to `managed`.
 	//
@@ -2876,6 +2880,7 @@ type ListTransactionsRequest struct {
 	// - `settlementStatus` (in, nin, eq, ne)
 	// - `batchNumber` (nct, ct)
 	// - `invoiceNumber` (ct, nct)
+	// - `ipAddress` (eq, ne)
 	// - `authCode` (ct, nct)
 	// - `orderDescription` (ct, nct)
 	// - `payaccountLastfour` (nct, ct)
@@ -10296,7 +10301,8 @@ type QueryResponseSettlementsRecordsItem struct {
 	// Reference to the subscription originating the transaction.
 	ScheduleReference *int `json:"ScheduleReference,omitempty" url:"ScheduleReference,omitempty"`
 	// The transaction amount.
-	SettledAmount  *float64          `json:"SettledAmount,omitempty" url:"SettledAmount,omitempty"`
+	SettledAmount *float64 `json:"SettledAmount,omitempty" url:"SettledAmount,omitempty"`
+	// The date and time when the transaction was settled. This field is null when the transaction's `SettlementStatus` is -1, -5, or -6 (Exception, Held, or Released).
 	SettlementDate *time.Time        `json:"SettlementDate,omitempty" url:"SettlementDate,omitempty"`
 	Source         *Source           `json:"Source,omitempty" url:"Source,omitempty"`
 	Status         *SettlementStatus `json:"Status,omitempty" url:"Status,omitempty"`

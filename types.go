@@ -9376,6 +9376,7 @@ const (
 	NotificationContentEventTypeApprovedApplication         NotificationContentEventType = "ApprovedApplication"
 	NotificationContentEventTypeFailedBoardingApplication   NotificationContentEventType = "FailedBoardingApplication"
 	NotificationContentEventTypeSubmittedApplication        NotificationContentEventType = "SubmittedApplication"
+	NotificationContentEventTypeUnderWritingApplication     NotificationContentEventType = "UnderWritingApplication"
 	NotificationContentEventTypeActivatedMerchant           NotificationContentEventType = "ActivatedMerchant"
 	NotificationContentEventTypeReceivedChargeBack          NotificationContentEventType = "ReceivedChargeBack"
 	NotificationContentEventTypeChargebackUpdated           NotificationContentEventType = "ChargebackUpdated"
@@ -9487,6 +9488,8 @@ func NewNotificationContentEventTypeFromString(s string) (NotificationContentEve
 		return NotificationContentEventTypeFailedBoardingApplication, nil
 	case "SubmittedApplication":
 		return NotificationContentEventTypeSubmittedApplication, nil
+	case "UnderWritingApplication":
+		return NotificationContentEventTypeUnderWritingApplication, nil
 	case "ActivatedMerchant":
 		return NotificationContentEventTypeActivatedMerchant, nil
 	case "ReceivedChargeBack":

@@ -6,7 +6,7 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
@@ -866,6 +866,7 @@ func TestQueryListTransfersOrgWithWireMock(
 		),
 	)
 	request := &payabli.ListTransfersRequestOrg{
+		OrgId: 123,
 		FromRecord: payabli.Int(
 			0,
 		),
@@ -875,7 +876,6 @@ func TestQueryListTransfersOrgWithWireMock(
 	}
 	_, invocationErr := client.Query.ListTransfersOrg(
 		context.TODO(),
-		123,
 		request,
 	)
 

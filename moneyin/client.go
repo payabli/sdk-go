@@ -62,16 +62,16 @@ func (c *Client) Authorize(
 // transaction](/api-reference/moneyin/authorize-a-transaction) to complete the transaction and move funds from the customer to merchant account.
 func (c *Client) Capture(
 	ctx context.Context,
-	// Amount to be captured. The amount can't be greater the original total amount of the transaction. `0` captures the total amount authorized in the transaction. Partial captures aren't supported.
-	amount float64,
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
+	// Amount to be captured. The amount can't be greater the original total amount of the transaction. `0` captures the total amount authorized in the transaction. Partial captures aren't supported.
+	amount float64,
 	opts ...option.RequestOption,
 ) (*payabli.CaptureResponse, error) {
 	response, err := c.WithRawResponse.Capture(
 		ctx,
-		amount,
 		transId,
+		amount,
 		opts...,
 	)
 	if err != nil {
@@ -159,6 +159,8 @@ func (c *Client) Getpaid(
 // A reversal either refunds or voids a transaction independent of the transaction's settlement status. Send a reversal request for a transaction, and Payabli automatically determines whether it's a refund or void. You don't need to know whether the transaction is settled or not.
 func (c *Client) Reverse(
 	ctx context.Context,
+	// ReferenceId for the transaction (PaymentId).
+	transId string,
 	//
 	// Amount to reverse from original transaction, minus any service fees charged on the original transaction.
 	//
@@ -166,14 +168,12 @@ func (c *Client) Reverse(
 	//
 	// An amount equal to zero will refunds the total amount authorized minus any service fee.
 	amount float64,
-	// ReferenceId for the transaction (PaymentId).
-	transId string,
 	opts ...option.RequestOption,
 ) (*payabli.ReverseResponse, error) {
 	response, err := c.WithRawResponse.Reverse(
 		ctx,
-		amount,
 		transId,
+		amount,
 		opts...,
 	)
 	if err != nil {
@@ -185,6 +185,8 @@ func (c *Client) Reverse(
 // Refund a transaction that has settled and send money back to the account holder. If a transaction hasn't been settled, void it instead.
 func (c *Client) Refund(
 	ctx context.Context,
+	// ReferenceId for the transaction (PaymentId).
+	transId string,
 	//
 	// Amount to refund from original transaction, minus any service fees charged on the original transaction.
 	//
@@ -192,14 +194,12 @@ func (c *Client) Refund(
 	//
 	// An amount equal to zero will refund the total amount authorized minus any service fee.
 	amount float64,
-	// ReferenceId for the transaction (PaymentId).
-	transId string,
 	opts ...option.RequestOption,
 ) (*payabli.RefundResponse, error) {
 	response, err := c.WithRawResponse.Refund(
 		ctx,
-		amount,
 		transId,
+		amount,
 		opts...,
 	)
 	if err != nil {

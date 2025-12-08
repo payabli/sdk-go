@@ -85,10 +85,10 @@ func (r *RawClient) Authorize(
 
 func (r *RawClient) Capture(
 	ctx context.Context,
-	// Amount to be captured. The amount can't be greater the original total amount of the transaction. `0` captures the total amount authorized in the transaction. Partial captures aren't supported.
-	amount float64,
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
+	// Amount to be captured. The amount can't be greater the original total amount of the transaction. `0` captures the total amount authorized in the transaction. Partial captures aren't supported.
+	amount float64,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.CaptureResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -99,8 +99,8 @@ func (r *RawClient) Capture(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/MoneyIn/capture/%v/%v",
-		amount,
 		transId,
+		amount,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -334,6 +334,8 @@ func (r *RawClient) Getpaid(
 
 func (r *RawClient) Reverse(
 	ctx context.Context,
+	// ReferenceId for the transaction (PaymentId).
+	transId string,
 	//
 	// Amount to reverse from original transaction, minus any service fees charged on the original transaction.
 	//
@@ -341,8 +343,6 @@ func (r *RawClient) Reverse(
 	//
 	// An amount equal to zero will refunds the total amount authorized minus any service fee.
 	amount float64,
-	// ReferenceId for the transaction (PaymentId).
-	transId string,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.ReverseResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -353,8 +353,8 @@ func (r *RawClient) Reverse(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/MoneyIn/reverse/%v/%v",
-		amount,
 		transId,
+		amount,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -387,6 +387,8 @@ func (r *RawClient) Reverse(
 
 func (r *RawClient) Refund(
 	ctx context.Context,
+	// ReferenceId for the transaction (PaymentId).
+	transId string,
 	//
 	// Amount to refund from original transaction, minus any service fees charged on the original transaction.
 	//
@@ -394,8 +396,6 @@ func (r *RawClient) Refund(
 	//
 	// An amount equal to zero will refund the total amount authorized minus any service fee.
 	amount float64,
-	// ReferenceId for the transaction (PaymentId).
-	transId string,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.RefundResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -406,8 +406,8 @@ func (r *RawClient) Refund(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/MoneyIn/refund/%v/%v",
-		amount,
 		transId,
+		amount,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),

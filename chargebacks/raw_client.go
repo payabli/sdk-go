@@ -129,10 +129,10 @@ func (r *RawClient) GetChargeback(
 
 func (r *RawClient) GetChargebackAttachment(
 	ctx context.Context,
-	// The chargeback attachment's file name.
-	fileName string,
 	// The ID of chargeback or return record.
 	id int64,
+	// The chargeback attachment's file name.
+	fileName string,
 	opts ...option.RequestOption,
 ) (*core.Response[string], error) {
 	options := core.NewRequestOptions(opts...)
@@ -143,8 +143,8 @@ func (r *RawClient) GetChargebackAttachment(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/ChargeBacks/getChargebackAttachments/%v/%v",
-		fileName,
 		id,
+		fileName,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),

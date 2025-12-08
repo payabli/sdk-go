@@ -55,16 +55,16 @@ func (c *Client) AddDevice(
 // Retrieve the registration history for a device.
 func (c *Client) HistoryDevice(
 	ctx context.Context,
-	// ID of the cloud device.
-	deviceId string,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
+	// ID of the cloud device.
+	deviceId string,
 	opts ...option.RequestOption,
 ) (*payabli.CloudQueryApiResponse, error) {
 	response, err := c.WithRawResponse.HistoryDevice(
 		ctx,
-		deviceId,
 		entry,
+		deviceId,
 		opts...,
 	)
 	if err != nil {
@@ -96,16 +96,16 @@ func (c *Client) ListDevice(
 // Remove a cloud device from an entrypoint.
 func (c *Client) RemoveDevice(
 	ctx context.Context,
-	// ID of the cloud device.
-	deviceId string,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
+	// ID of the cloud device.
+	deviceId string,
 	opts ...option.RequestOption,
 ) (*payabli.RemoveDeviceResponse, error) {
 	response, err := c.WithRawResponse.RemoveDevice(
 		ctx,
-		deviceId,
 		entry,
+		deviceId,
 		opts...,
 	)
 	if err != nil {

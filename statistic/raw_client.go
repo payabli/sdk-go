@@ -32,21 +32,6 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) BasicStats(
 	ctx context.Context,
-	// Identifier in Payabli for the entity.
-	entryId int64,
-	// Frequency to group series. Allowed values:
-	//
-	// - `m` - monthly
-	// - `w` - weekly
-	// - `d` - daily
-	// - `h` - hourly
-	//
-	// For example, `w` groups the results by week.
-	freq string,
-	// The entry level for the request:
-	//   - 0 for Organization
-	//   - 2 for Paypoint
-	level int,
 	// Mode for the request. Allowed values:
 	//
 	// - `custom` - Allows you to set a custom date range
@@ -63,9 +48,24 @@ func (r *RawClient) BasicStats(
 	// - `yesterday` - Last Day
 	//
 	mode string,
+	// Frequency to group series. Allowed values:
+	//
+	// - `m` - monthly
+	// - `w` - weekly
+	// - `d` - daily
+	// - `h` - hourly
+	//
+	// For example, `w` groups the results by week.
+	freq string,
+	// The entry level for the request:
+	//   - 0 for Organization
+	//   - 2 for Paypoint
+	level int,
+	// Identifier in Payabli for the entity.
+	entryId int64,
 	request *payabli.BasicStatsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*payabli.StatBasicQueryRecord], error) {
+) (*core.Response[[]*payabli.StatBasicExtendedQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -74,10 +74,10 @@ func (r *RawClient) BasicStats(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Statistic/basic/%v/%v/%v/%v",
-		entryId,
+		mode,
 		freq,
 		level,
-		mode,
+		entryId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -90,7 +90,7 @@ func (r *RawClient) BasicStats(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response []*payabli.StatBasicQueryRecord
+	var response []*payabli.StatBasicExtendedQueryRecord
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -108,7 +108,7 @@ func (r *RawClient) BasicStats(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[[]*payabli.StatBasicQueryRecord]{
+	return &core.Response[[]*payabli.StatBasicExtendedQueryRecord]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -117,17 +117,6 @@ func (r *RawClient) BasicStats(
 
 func (r *RawClient) CustomerBasicStats(
 	ctx context.Context,
-	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
-	customerId int,
-	// Frequency to group series. Allowed values:
-	//
-	// - `m` - monthly
-	// - `w` - weekly
-	// - `d` - daily
-	// - `h` - hourly
-	//
-	// For example, `w` groups the results by week.
-	freq string,
 	// Mode for request. Allowed values:
 	//
 	// - `ytd` - Year To Date
@@ -142,6 +131,17 @@ func (r *RawClient) CustomerBasicStats(
 	// - `lastw` - Last Week
 	// - `yesterday` - Last Day
 	mode string,
+	// Frequency to group series. Allowed values:
+	//
+	// - `m` - monthly
+	// - `w` - weekly
+	// - `d` - daily
+	// - `h` - hourly
+	//
+	// For example, `w` groups the results by week.
+	freq string,
+	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
+	customerId int,
 	request *payabli.CustomerBasicStatsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*payabli.SubscriptionStatsQueryRecord], error) {
@@ -153,9 +153,9 @@ func (r *RawClient) CustomerBasicStats(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Statistic/customerbasic/%v/%v/%v",
-		customerId,
-		freq,
 		mode,
+		freq,
+		customerId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -195,8 +195,6 @@ func (r *RawClient) CustomerBasicStats(
 
 func (r *RawClient) SubStats(
 	ctx context.Context,
-	// Identifier in Payabli for the entity.
-	entryId int64,
 	// Interval to get the data. Allowed values:
 	//
 	// - `all` - all intervals
@@ -209,6 +207,8 @@ func (r *RawClient) SubStats(
 	//   - 0 for Organization
 	//   - 2 for Paypoint
 	level int,
+	// Identifier in Payabli for the entity.
+	entryId int64,
 	request *payabli.SubStatsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*payabli.StatBasicQueryRecord], error) {
@@ -220,9 +220,9 @@ func (r *RawClient) SubStats(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Statistic/subscriptions/%v/%v/%v",
-		entryId,
 		interval,
 		level,
+		entryId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -262,17 +262,6 @@ func (r *RawClient) SubStats(
 
 func (r *RawClient) VendorBasicStats(
 	ctx context.Context,
-	// Frequency to group series. Allowed values:
-	//
-	// - `m` - monthly
-	// - `w` - weekly
-	// - `d` - daily
-	// - `h` - hourly
-	//
-	// For example, `w` groups the results by week.
-	freq string,
-	// Vendor ID.
-	idVendor int,
 	// Mode for request. Allowed values:
 	//
 	// - `ytd` - Year To Date
@@ -287,6 +276,17 @@ func (r *RawClient) VendorBasicStats(
 	// - `lastw` - Last Week
 	// - `yesterday` - Last Day
 	mode string,
+	// Frequency to group series. Allowed values:
+	//
+	// - `m` - monthly
+	// - `w` - weekly
+	// - `d` - daily
+	// - `h` - hourly
+	//
+	// For example, `w` groups the results by week.
+	freq string,
+	// Vendor ID.
+	idVendor int,
 	request *payabli.VendorBasicStatsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*payabli.StatisticsVendorQueryRecord], error) {
@@ -298,9 +298,9 @@ func (r *RawClient) VendorBasicStats(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Statistic/vendorbasic/%v/%v/%v",
+		mode,
 		freq,
 		idVendor,
-		mode,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {

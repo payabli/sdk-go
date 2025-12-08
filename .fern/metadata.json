@@ -1,0 +1,11 @@
+{
+  "cliVersion": "3.4.3",
+  "generatorName": "fernapi/fern-go-sdk",
+  "generatorVersion": "1.18.4",
+  "generatorConfig": {
+    "packageName": "payabli",
+    "module": {
+      "path": "github.com/payabli/sdk-go"
+    }
+  }
+}

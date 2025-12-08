@@ -67,13 +67,31 @@ func (c *Client) CancelAllOut(
 }
 
 // Cancel a payout transaction by ID.
-func (c *Client) CancelOut(
+func (c *Client) CancelOutGet(
 	ctx context.Context,
 	// The ID for the payout transaction.
 	referenceId string,
 	opts ...option.RequestOption,
 ) (*payabli.PayabliApiResponse0000, error) {
-	response, err := c.WithRawResponse.CancelOut(
+	response, err := c.WithRawResponse.CancelOutGet(
+		ctx,
+		referenceId,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Cancel a payout transaction by ID.
+func (c *Client) CancelOutDelete(
+	ctx context.Context,
+	// The ID for the payout transaction.
+	referenceId string,
+	opts ...option.RequestOption,
+) (*payabli.PayabliApiResponse0000, error) {
+	response, err := c.WithRawResponse.CancelOutDelete(
 		ctx,
 		referenceId,
 		opts...,

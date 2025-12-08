@@ -35,21 +35,6 @@ func NewClient(options *core.RequestOptions) *Client {
 // Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
 func (c *Client) BasicStats(
 	ctx context.Context,
-	// Identifier in Payabli for the entity.
-	entryId int64,
-	// Frequency to group series. Allowed values:
-	//
-	// - `m` - monthly
-	// - `w` - weekly
-	// - `d` - daily
-	// - `h` - hourly
-	//
-	// For example, `w` groups the results by week.
-	freq string,
-	// The entry level for the request:
-	//   - 0 for Organization
-	//   - 2 for Paypoint
-	level int,
 	// Mode for the request. Allowed values:
 	//
 	// - `custom` - Allows you to set a custom date range
@@ -66,15 +51,30 @@ func (c *Client) BasicStats(
 	// - `yesterday` - Last Day
 	//
 	mode string,
+	// Frequency to group series. Allowed values:
+	//
+	// - `m` - monthly
+	// - `w` - weekly
+	// - `d` - daily
+	// - `h` - hourly
+	//
+	// For example, `w` groups the results by week.
+	freq string,
+	// The entry level for the request:
+	//   - 0 for Organization
+	//   - 2 for Paypoint
+	level int,
+	// Identifier in Payabli for the entity.
+	entryId int64,
 	request *payabli.BasicStatsRequest,
 	opts ...option.RequestOption,
-) ([]*payabli.StatBasicQueryRecord, error) {
+) ([]*payabli.StatBasicExtendedQueryRecord, error) {
 	response, err := c.WithRawResponse.BasicStats(
 		ctx,
-		entryId,
+		mode,
 		freq,
 		level,
-		mode,
+		entryId,
 		request,
 		opts...,
 	)
@@ -87,17 +87,6 @@ func (c *Client) BasicStats(
 // Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
 func (c *Client) CustomerBasicStats(
 	ctx context.Context,
-	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
-	customerId int,
-	// Frequency to group series. Allowed values:
-	//
-	// - `m` - monthly
-	// - `w` - weekly
-	// - `d` - daily
-	// - `h` - hourly
-	//
-	// For example, `w` groups the results by week.
-	freq string,
 	// Mode for request. Allowed values:
 	//
 	// - `ytd` - Year To Date
@@ -112,14 +101,25 @@ func (c *Client) CustomerBasicStats(
 	// - `lastw` - Last Week
 	// - `yesterday` - Last Day
 	mode string,
+	// Frequency to group series. Allowed values:
+	//
+	// - `m` - monthly
+	// - `w` - weekly
+	// - `d` - daily
+	// - `h` - hourly
+	//
+	// For example, `w` groups the results by week.
+	freq string,
+	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
+	customerId int,
 	request *payabli.CustomerBasicStatsRequest,
 	opts ...option.RequestOption,
 ) ([]*payabli.SubscriptionStatsQueryRecord, error) {
 	response, err := c.WithRawResponse.CustomerBasicStats(
 		ctx,
-		customerId,
-		freq,
 		mode,
+		freq,
+		customerId,
 		request,
 		opts...,
 	)
@@ -132,8 +132,6 @@ func (c *Client) CustomerBasicStats(
 // Retrieves the subscription statistics for a given interval for a paypoint or organization.
 func (c *Client) SubStats(
 	ctx context.Context,
-	// Identifier in Payabli for the entity.
-	entryId int64,
 	// Interval to get the data. Allowed values:
 	//
 	// - `all` - all intervals
@@ -146,14 +144,16 @@ func (c *Client) SubStats(
 	//   - 0 for Organization
 	//   - 2 for Paypoint
 	level int,
+	// Identifier in Payabli for the entity.
+	entryId int64,
 	request *payabli.SubStatsRequest,
 	opts ...option.RequestOption,
 ) ([]*payabli.StatBasicQueryRecord, error) {
 	response, err := c.WithRawResponse.SubStats(
 		ctx,
-		entryId,
 		interval,
 		level,
+		entryId,
 		request,
 		opts...,
 	)
@@ -166,17 +166,6 @@ func (c *Client) SubStats(
 // Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
 func (c *Client) VendorBasicStats(
 	ctx context.Context,
-	// Frequency to group series. Allowed values:
-	//
-	// - `m` - monthly
-	// - `w` - weekly
-	// - `d` - daily
-	// - `h` - hourly
-	//
-	// For example, `w` groups the results by week.
-	freq string,
-	// Vendor ID.
-	idVendor int,
 	// Mode for request. Allowed values:
 	//
 	// - `ytd` - Year To Date
@@ -191,14 +180,25 @@ func (c *Client) VendorBasicStats(
 	// - `lastw` - Last Week
 	// - `yesterday` - Last Day
 	mode string,
+	// Frequency to group series. Allowed values:
+	//
+	// - `m` - monthly
+	// - `w` - weekly
+	// - `d` - daily
+	// - `h` - hourly
+	//
+	// For example, `w` groups the results by week.
+	freq string,
+	// Vendor ID.
+	idVendor int,
 	request *payabli.VendorBasicStatsRequest,
 	opts ...option.RequestOption,
 ) ([]*payabli.StatisticsVendorQueryRecord, error) {
 	response, err := c.WithRawResponse.VendorBasicStats(
 		ctx,
+		mode,
 		freq,
 		idVendor,
-		mode,
 		request,
 		opts...,
 	)

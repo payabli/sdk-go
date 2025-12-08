@@ -32,6 +32,7 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
+// Use this endpoint to upload an image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter `typeResult`. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
 func (c *Client) OcrDocumentForm(
 	ctx context.Context,
 	typeResult payabli.TypeResult,
@@ -50,6 +51,7 @@ func (c *Client) OcrDocumentForm(
 	return response.Body, nil
 }
 
+// Use this endpoint to submit a Base64-encoded image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter `typeResult`. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
 func (c *Client) OcrDocumentJson(
 	ctx context.Context,
 	typeResult payabli.TypeResult,

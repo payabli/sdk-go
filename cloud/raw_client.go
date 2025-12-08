@@ -83,10 +83,10 @@ func (r *RawClient) AddDevice(
 
 func (r *RawClient) HistoryDevice(
 	ctx context.Context,
-	// ID of the cloud device.
-	deviceId string,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
+	// ID of the cloud device.
+	deviceId string,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.CloudQueryApiResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -97,8 +97,8 @@ func (r *RawClient) HistoryDevice(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Cloud/history/%v/%v",
-		deviceId,
 		entry,
+		deviceId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -184,10 +184,10 @@ func (r *RawClient) ListDevice(
 
 func (r *RawClient) RemoveDevice(
 	ctx context.Context,
-	// ID of the cloud device.
-	deviceId string,
 	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
+	// ID of the cloud device.
+	deviceId string,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.RemoveDeviceResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -198,8 +198,8 @@ func (r *RawClient) RemoveDevice(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Cloud/register/%v/%v",
-		deviceId,
 		entry,
+		deviceId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),

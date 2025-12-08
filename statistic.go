@@ -144,6 +144,697 @@ func (v *VendorBasicStatsRequest) SetParameters(parameters map[string]*string) {
 }
 
 var (
+	statBasicExtendedQueryRecordFieldStatX                        = big.NewInt(1 << 0)
+	statBasicExtendedQueryRecordFieldOutCustomers                 = big.NewInt(1 << 1)
+	statBasicExtendedQueryRecordFieldOutNewCustomers              = big.NewInt(1 << 2)
+	statBasicExtendedQueryRecordFieldOutTransactions              = big.NewInt(1 << 3)
+	statBasicExtendedQueryRecordFieldOutSubscriptionsPaid         = big.NewInt(1 << 4)
+	statBasicExtendedQueryRecordFieldOutCardTransactions          = big.NewInt(1 << 5)
+	statBasicExtendedQueryRecordFieldOutVCardTransactions         = big.NewInt(1 << 6)
+	statBasicExtendedQueryRecordFieldOutAchTransactions           = big.NewInt(1 << 7)
+	statBasicExtendedQueryRecordFieldOutCheckTransactions         = big.NewInt(1 << 8)
+	statBasicExtendedQueryRecordFieldOutPendingMethodTransactions = big.NewInt(1 << 9)
+	statBasicExtendedQueryRecordFieldOutTransactionsVolume        = big.NewInt(1 << 10)
+	statBasicExtendedQueryRecordFieldOutSubscriptionsPaidVolume   = big.NewInt(1 << 11)
+	statBasicExtendedQueryRecordFieldOutCardVolume                = big.NewInt(1 << 12)
+	statBasicExtendedQueryRecordFieldOutVCardVolume               = big.NewInt(1 << 13)
+	statBasicExtendedQueryRecordFieldOutAchVolume                 = big.NewInt(1 << 14)
+	statBasicExtendedQueryRecordFieldOutCheckVolume               = big.NewInt(1 << 15)
+	statBasicExtendedQueryRecordFieldOutPendingMethodVolume       = big.NewInt(1 << 16)
+	statBasicExtendedQueryRecordFieldInTransactions               = big.NewInt(1 << 17)
+	statBasicExtendedQueryRecordFieldInSubscriptionsPaid          = big.NewInt(1 << 18)
+	statBasicExtendedQueryRecordFieldInCustomers                  = big.NewInt(1 << 19)
+	statBasicExtendedQueryRecordFieldInNewCustomers               = big.NewInt(1 << 20)
+	statBasicExtendedQueryRecordFieldInCardTransactions           = big.NewInt(1 << 21)
+	statBasicExtendedQueryRecordFieldInAchTransactions            = big.NewInt(1 << 22)
+	statBasicExtendedQueryRecordFieldInCheckTransactions          = big.NewInt(1 << 23)
+	statBasicExtendedQueryRecordFieldInCashTransactions           = big.NewInt(1 << 24)
+	statBasicExtendedQueryRecordFieldInWalletTransactions         = big.NewInt(1 << 25)
+	statBasicExtendedQueryRecordFieldInCardChargeBacks            = big.NewInt(1 << 26)
+	statBasicExtendedQueryRecordFieldInAchReturns                 = big.NewInt(1 << 27)
+	statBasicExtendedQueryRecordFieldInTransactionsVolume         = big.NewInt(1 << 28)
+	statBasicExtendedQueryRecordFieldInSubscriptionsPaidVolume    = big.NewInt(1 << 29)
+	statBasicExtendedQueryRecordFieldInCardVolume                 = big.NewInt(1 << 30)
+	statBasicExtendedQueryRecordFieldInAchVolume                  = big.NewInt(1 << 31)
+	statBasicExtendedQueryRecordFieldInCheckVolume                = big.NewInt(1 << 32)
+	statBasicExtendedQueryRecordFieldInCashVolume                 = big.NewInt(1 << 33)
+	statBasicExtendedQueryRecordFieldInWalletVolume               = big.NewInt(1 << 34)
+	statBasicExtendedQueryRecordFieldInCardChargeBackVolume       = big.NewInt(1 << 35)
+	statBasicExtendedQueryRecordFieldInAchReturnsVolume           = big.NewInt(1 << 36)
+)
+
+type StatBasicExtendedQueryRecord struct {
+	// The time window based on the mode and frequency used for the query.
+	StatX string `json:"statX" url:"statX"`
+	// Number of active vendors.
+	OutCustomers int `json:"outCustomers" url:"outCustomers"`
+	// Number of new vendors.
+	OutNewCustomers int `json:"outNewCustomers" url:"outNewCustomers"`
+	// Outbound (payout) transactions count.
+	OutTransactions int `json:"outTransactions" url:"outTransactions"`
+	// Recurring outbound (payout) transactions count.
+	OutSubscriptionsPaid int `json:"outSubscriptionsPaid" url:"outSubscriptionsPaid"`
+	// Outbound (payout) pCard transactions count.
+	OutCardTransactions int `json:"outCardTransactions" url:"outCardTransactions"`
+	// Outbound (payout) vCard transactions count.
+	OutVCardTransactions int `json:"outVCardTransactions" url:"outVCardTransactions"`
+	// Outbound (payout) ACH transactions count.
+	OutAchTransactions int `json:"outACHTransactions" url:"outACHTransactions"`
+	// Outbound (payout) check transactions count.
+	OutCheckTransactions int `json:"outCheckTransactions" url:"outCheckTransactions"`
+	// Outbound (payout) Managed Payables transactions count.
+	OutPendingMethodTransactions int `json:"outPendingMethodTransactions" url:"outPendingMethodTransactions"`
+	// Outbound (payout) volume.
+	OutTransactionsVolume float64 `json:"outTransactionsVolume" url:"outTransactionsVolume"`
+	// Recurring outbound (payout) volume.
+	OutSubscriptionsPaidVolume float64 `json:"outSubscriptionsPaidVolume" url:"outSubscriptionsPaidVolume"`
+	// Outbound (payout) pCard transactions volume.
+	OutCardVolume float64 `json:"outCardVolume" url:"outCardVolume"`
+	// Outbound (payout) vCard transactions volume.
+	OutVCardVolume float64 `json:"outVCardVolume" url:"outVCardVolume"`
+	// Outbound (payout) ACH transactions volume.
+	OutAchVolume float64 `json:"outACHVolume" url:"outACHVolume"`
+	// Outbound (payout) check transactions volume.
+	OutCheckVolume float64 `json:"outCheckVolume" url:"outCheckVolume"`
+	// Outbound (payout) Managed Payables volume.
+	OutPendingMethodVolume float64 `json:"outPendingMethodVolume" url:"outPendingMethodVolume"`
+	// Inbound transactions count.
+	InTransactions int `json:"inTransactions" url:"inTransactions"`
+	// Inbound recurring transactions count.
+	InSubscriptionsPaid int `json:"inSubscriptionsPaid" url:"inSubscriptionsPaid"`
+	// Number of active customers.
+	InCustomers int `json:"inCustomers" url:"inCustomers"`
+	// Number of new customers.
+	InNewCustomers int `json:"inNewCustomers" url:"inNewCustomers"`
+	// Inbound card transactions count.
+	InCardTransactions int `json:"inCardTransactions" url:"inCardTransactions"`
+	// Inbound ACH transactions count.
+	InAchTransactions int `json:"inACHTransactions" url:"inACHTransactions"`
+	// Inbound check transactions count.
+	InCheckTransactions int `json:"inCheckTransactions" url:"inCheckTransactions"`
+	// Inbound cash transactions count.
+	InCashTransactions int `json:"inCashTransactions" url:"inCashTransactions"`
+	// Inbound wallet transactions count.
+	InWalletTransactions int `json:"inWalletTransactions" url:"inWalletTransactions"`
+	// Inbound card chargebacks and returns count.
+	InCardChargeBacks int `json:"inCardChargeBacks" url:"inCardChargeBacks"`
+	// Inbound ACH returns count.
+	InAchReturns int `json:"inACHReturns" url:"inACHReturns"`
+	// Inbound volume.
+	InTransactionsVolume float64 `json:"inTransactionsVolume" url:"inTransactionsVolume"`
+	// Inbound recurring payments volume.
+	InSubscriptionsPaidVolume float64 `json:"inSubscriptionsPaidVolume" url:"inSubscriptionsPaidVolume"`
+	// Inbound card volume.
+	InCardVolume float64 `json:"inCardVolume" url:"inCardVolume"`
+	// Inbound ACH volume.
+	InAchVolume float64 `json:"inACHVolume" url:"inACHVolume"`
+	// Inbound check volume.
+	InCheckVolume float64 `json:"inCheckVolume" url:"inCheckVolume"`
+	// Inbound cash volume recognized.
+	InCashVolume float64 `json:"inCashVolume" url:"inCashVolume"`
+	// Inbound wallet transactions.
+	InWalletVolume float64 `json:"inWalletVolume" url:"inWalletVolume"`
+	// Inbound Card chargebacks and returns volume.
+	InCardChargeBackVolume float64 `json:"inCardChargeBackVolume" url:"inCardChargeBackVolume"`
+	// Inbound ACH returns volume.
+	InAchReturnsVolume float64 `json:"inACHReturnsVolume" url:"inACHReturnsVolume"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *StatBasicExtendedQueryRecord) GetStatX() string {
+	if s == nil {
+		return ""
+	}
+	return s.StatX
+}
+
+func (s *StatBasicExtendedQueryRecord) GetOutCustomers() int {
+	if s == nil {
+		return 0
+	}
+	return s.OutCustomers
+}
+
+func (s *StatBasicExtendedQueryRecord) GetOutNewCustomers() int {
+	if s == nil {
+		return 0
+	}
+	return s.OutNewCustomers
+}
+
+func (s *StatBasicExtendedQueryRecord) GetOutTransactions() int {
+	if s == nil {
+		return 0
+	}
+	return s.OutTransactions
+}
+
+func (s *StatBasicExtendedQueryRecord) GetOutSubscriptionsPaid() int {
+	if s == nil {
+		return 0
+	}
+	return s.OutSubscriptionsPaid
+}
+
+func (s *StatBasicExtendedQueryRecord) GetOutCardTransactions() int {
+	if s == nil {
+		return 0
+	}
+	return s.OutCardTransactions
+}
+
+func (s *StatBasicExtendedQueryRecord) GetOutVCardTransactions() int {
+	if s == nil {
+		return 0
+	}
+	return s.OutVCardTransactions
+}
+
+func (s *StatBasicExtendedQueryRecord) GetOutAchTransactions() int {
+	if s == nil {
+		return 0
+	}
+	return s.OutAchTransactions
+}
+
+func (s *StatBasicExtendedQueryRecord) GetOutCheckTransactions() int {
+	if s == nil {
+		return 0
+	}
+	return s.OutCheckTransactions
+}
+
+func (s *StatBasicExtendedQueryRecord) GetOutPendingMethodTransactions() int {
+	if s == nil {
+		return 0
+	}
+	return s.OutPendingMethodTransactions
+}
+
+func (s *StatBasicExtendedQueryRecord) GetOutTransactionsVolume() float64 {
+	if s == nil {
+		return 0
+	}
+	return s.OutTransactionsVolume
+}
+
+func (s *StatBasicExtendedQueryRecord) GetOutSubscriptionsPaidVolume() float64 {
+	if s == nil {
+		return 0
+	}
+	return s.OutSubscriptionsPaidVolume
+}
+
+func (s *StatBasicExtendedQueryRecord) GetOutCardVolume() float64 {
+	if s == nil {
+		return 0
+	}
+	return s.OutCardVolume
+}
+
+func (s *StatBasicExtendedQueryRecord) GetOutVCardVolume() float64 {
+	if s == nil {
+		return 0
+	}
+	return s.OutVCardVolume
+}
+
+func (s *StatBasicExtendedQueryRecord) GetOutAchVolume() float64 {
+	if s == nil {
+		return 0
+	}
+	return s.OutAchVolume
+}
+
+func (s *StatBasicExtendedQueryRecord) GetOutCheckVolume() float64 {
+	if s == nil {
+		return 0
+	}
+	return s.OutCheckVolume
+}
+
+func (s *StatBasicExtendedQueryRecord) GetOutPendingMethodVolume() float64 {
+	if s == nil {
+		return 0
+	}
+	return s.OutPendingMethodVolume
+}
+
+func (s *StatBasicExtendedQueryRecord) GetInTransactions() int {
+	if s == nil {
+		return 0
+	}
+	return s.InTransactions
+}
+
+func (s *StatBasicExtendedQueryRecord) GetInSubscriptionsPaid() int {
+	if s == nil {
+		return 0
+	}
+	return s.InSubscriptionsPaid
+}
+
+func (s *StatBasicExtendedQueryRecord) GetInCustomers() int {
+	if s == nil {
+		return 0
+	}
+	return s.InCustomers
+}
+
+func (s *StatBasicExtendedQueryRecord) GetInNewCustomers() int {
+	if s == nil {
+		return 0
+	}
+	return s.InNewCustomers
+}
+
+func (s *StatBasicExtendedQueryRecord) GetInCardTransactions() int {
+	if s == nil {
+		return 0
+	}
+	return s.InCardTransactions
+}
+
+func (s *StatBasicExtendedQueryRecord) GetInAchTransactions() int {
+	if s == nil {
+		return 0
+	}
+	return s.InAchTransactions
+}
+
+func (s *StatBasicExtendedQueryRecord) GetInCheckTransactions() int {
+	if s == nil {
+		return 0
+	}
+	return s.InCheckTransactions
+}
+
+func (s *StatBasicExtendedQueryRecord) GetInCashTransactions() int {
+	if s == nil {
+		return 0
+	}
+	return s.InCashTransactions
+}
+
+func (s *StatBasicExtendedQueryRecord) GetInWalletTransactions() int {
+	if s == nil {
+		return 0
+	}
+	return s.InWalletTransactions
+}
+
+func (s *StatBasicExtendedQueryRecord) GetInCardChargeBacks() int {
+	if s == nil {
+		return 0
+	}
+	return s.InCardChargeBacks
+}
+
+func (s *StatBasicExtendedQueryRecord) GetInAchReturns() int {
+	if s == nil {
+		return 0
+	}
+	return s.InAchReturns
+}
+
+func (s *StatBasicExtendedQueryRecord) GetInTransactionsVolume() float64 {
+	if s == nil {
+		return 0
+	}
+	return s.InTransactionsVolume
+}
+
+func (s *StatBasicExtendedQueryRecord) GetInSubscriptionsPaidVolume() float64 {
+	if s == nil {
+		return 0
+	}
+	return s.InSubscriptionsPaidVolume
+}
+
+func (s *StatBasicExtendedQueryRecord) GetInCardVolume() float64 {
+	if s == nil {
+		return 0
+	}
+	return s.InCardVolume
+}
+
+func (s *StatBasicExtendedQueryRecord) GetInAchVolume() float64 {
+	if s == nil {
+		return 0
+	}
+	return s.InAchVolume
+}
+
+func (s *StatBasicExtendedQueryRecord) GetInCheckVolume() float64 {
+	if s == nil {
+		return 0
+	}
+	return s.InCheckVolume
+}
+
+func (s *StatBasicExtendedQueryRecord) GetInCashVolume() float64 {
+	if s == nil {
+		return 0
+	}
+	return s.InCashVolume
+}
+
+func (s *StatBasicExtendedQueryRecord) GetInWalletVolume() float64 {
+	if s == nil {
+		return 0
+	}
+	return s.InWalletVolume
+}
+
+func (s *StatBasicExtendedQueryRecord) GetInCardChargeBackVolume() float64 {
+	if s == nil {
+		return 0
+	}
+	return s.InCardChargeBackVolume
+}
+
+func (s *StatBasicExtendedQueryRecord) GetInAchReturnsVolume() float64 {
+	if s == nil {
+		return 0
+	}
+	return s.InAchReturnsVolume
+}
+
+func (s *StatBasicExtendedQueryRecord) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *StatBasicExtendedQueryRecord) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetStatX sets the StatX field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetStatX(statX string) {
+	s.StatX = statX
+	s.require(statBasicExtendedQueryRecordFieldStatX)
+}
+
+// SetOutCustomers sets the OutCustomers field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetOutCustomers(outCustomers int) {
+	s.OutCustomers = outCustomers
+	s.require(statBasicExtendedQueryRecordFieldOutCustomers)
+}
+
+// SetOutNewCustomers sets the OutNewCustomers field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetOutNewCustomers(outNewCustomers int) {
+	s.OutNewCustomers = outNewCustomers
+	s.require(statBasicExtendedQueryRecordFieldOutNewCustomers)
+}
+
+// SetOutTransactions sets the OutTransactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetOutTransactions(outTransactions int) {
+	s.OutTransactions = outTransactions
+	s.require(statBasicExtendedQueryRecordFieldOutTransactions)
+}
+
+// SetOutSubscriptionsPaid sets the OutSubscriptionsPaid field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetOutSubscriptionsPaid(outSubscriptionsPaid int) {
+	s.OutSubscriptionsPaid = outSubscriptionsPaid
+	s.require(statBasicExtendedQueryRecordFieldOutSubscriptionsPaid)
+}
+
+// SetOutCardTransactions sets the OutCardTransactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetOutCardTransactions(outCardTransactions int) {
+	s.OutCardTransactions = outCardTransactions
+	s.require(statBasicExtendedQueryRecordFieldOutCardTransactions)
+}
+
+// SetOutVCardTransactions sets the OutVCardTransactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetOutVCardTransactions(outVCardTransactions int) {
+	s.OutVCardTransactions = outVCardTransactions
+	s.require(statBasicExtendedQueryRecordFieldOutVCardTransactions)
+}
+
+// SetOutAchTransactions sets the OutAchTransactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetOutAchTransactions(outAchTransactions int) {
+	s.OutAchTransactions = outAchTransactions
+	s.require(statBasicExtendedQueryRecordFieldOutAchTransactions)
+}
+
+// SetOutCheckTransactions sets the OutCheckTransactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetOutCheckTransactions(outCheckTransactions int) {
+	s.OutCheckTransactions = outCheckTransactions
+	s.require(statBasicExtendedQueryRecordFieldOutCheckTransactions)
+}
+
+// SetOutPendingMethodTransactions sets the OutPendingMethodTransactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetOutPendingMethodTransactions(outPendingMethodTransactions int) {
+	s.OutPendingMethodTransactions = outPendingMethodTransactions
+	s.require(statBasicExtendedQueryRecordFieldOutPendingMethodTransactions)
+}
+
+// SetOutTransactionsVolume sets the OutTransactionsVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetOutTransactionsVolume(outTransactionsVolume float64) {
+	s.OutTransactionsVolume = outTransactionsVolume
+	s.require(statBasicExtendedQueryRecordFieldOutTransactionsVolume)
+}
+
+// SetOutSubscriptionsPaidVolume sets the OutSubscriptionsPaidVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetOutSubscriptionsPaidVolume(outSubscriptionsPaidVolume float64) {
+	s.OutSubscriptionsPaidVolume = outSubscriptionsPaidVolume
+	s.require(statBasicExtendedQueryRecordFieldOutSubscriptionsPaidVolume)
+}
+
+// SetOutCardVolume sets the OutCardVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetOutCardVolume(outCardVolume float64) {
+	s.OutCardVolume = outCardVolume
+	s.require(statBasicExtendedQueryRecordFieldOutCardVolume)
+}
+
+// SetOutVCardVolume sets the OutVCardVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetOutVCardVolume(outVCardVolume float64) {
+	s.OutVCardVolume = outVCardVolume
+	s.require(statBasicExtendedQueryRecordFieldOutVCardVolume)
+}
+
+// SetOutAchVolume sets the OutAchVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetOutAchVolume(outAchVolume float64) {
+	s.OutAchVolume = outAchVolume
+	s.require(statBasicExtendedQueryRecordFieldOutAchVolume)
+}
+
+// SetOutCheckVolume sets the OutCheckVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetOutCheckVolume(outCheckVolume float64) {
+	s.OutCheckVolume = outCheckVolume
+	s.require(statBasicExtendedQueryRecordFieldOutCheckVolume)
+}
+
+// SetOutPendingMethodVolume sets the OutPendingMethodVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetOutPendingMethodVolume(outPendingMethodVolume float64) {
+	s.OutPendingMethodVolume = outPendingMethodVolume
+	s.require(statBasicExtendedQueryRecordFieldOutPendingMethodVolume)
+}
+
+// SetInTransactions sets the InTransactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetInTransactions(inTransactions int) {
+	s.InTransactions = inTransactions
+	s.require(statBasicExtendedQueryRecordFieldInTransactions)
+}
+
+// SetInSubscriptionsPaid sets the InSubscriptionsPaid field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetInSubscriptionsPaid(inSubscriptionsPaid int) {
+	s.InSubscriptionsPaid = inSubscriptionsPaid
+	s.require(statBasicExtendedQueryRecordFieldInSubscriptionsPaid)
+}
+
+// SetInCustomers sets the InCustomers field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetInCustomers(inCustomers int) {
+	s.InCustomers = inCustomers
+	s.require(statBasicExtendedQueryRecordFieldInCustomers)
+}
+
+// SetInNewCustomers sets the InNewCustomers field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetInNewCustomers(inNewCustomers int) {
+	s.InNewCustomers = inNewCustomers
+	s.require(statBasicExtendedQueryRecordFieldInNewCustomers)
+}
+
+// SetInCardTransactions sets the InCardTransactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetInCardTransactions(inCardTransactions int) {
+	s.InCardTransactions = inCardTransactions
+	s.require(statBasicExtendedQueryRecordFieldInCardTransactions)
+}
+
+// SetInAchTransactions sets the InAchTransactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetInAchTransactions(inAchTransactions int) {
+	s.InAchTransactions = inAchTransactions
+	s.require(statBasicExtendedQueryRecordFieldInAchTransactions)
+}
+
+// SetInCheckTransactions sets the InCheckTransactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetInCheckTransactions(inCheckTransactions int) {
+	s.InCheckTransactions = inCheckTransactions
+	s.require(statBasicExtendedQueryRecordFieldInCheckTransactions)
+}
+
+// SetInCashTransactions sets the InCashTransactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetInCashTransactions(inCashTransactions int) {
+	s.InCashTransactions = inCashTransactions
+	s.require(statBasicExtendedQueryRecordFieldInCashTransactions)
+}
+
+// SetInWalletTransactions sets the InWalletTransactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetInWalletTransactions(inWalletTransactions int) {
+	s.InWalletTransactions = inWalletTransactions
+	s.require(statBasicExtendedQueryRecordFieldInWalletTransactions)
+}
+
+// SetInCardChargeBacks sets the InCardChargeBacks field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetInCardChargeBacks(inCardChargeBacks int) {
+	s.InCardChargeBacks = inCardChargeBacks
+	s.require(statBasicExtendedQueryRecordFieldInCardChargeBacks)
+}
+
+// SetInAchReturns sets the InAchReturns field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetInAchReturns(inAchReturns int) {
+	s.InAchReturns = inAchReturns
+	s.require(statBasicExtendedQueryRecordFieldInAchReturns)
+}
+
+// SetInTransactionsVolume sets the InTransactionsVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetInTransactionsVolume(inTransactionsVolume float64) {
+	s.InTransactionsVolume = inTransactionsVolume
+	s.require(statBasicExtendedQueryRecordFieldInTransactionsVolume)
+}
+
+// SetInSubscriptionsPaidVolume sets the InSubscriptionsPaidVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetInSubscriptionsPaidVolume(inSubscriptionsPaidVolume float64) {
+	s.InSubscriptionsPaidVolume = inSubscriptionsPaidVolume
+	s.require(statBasicExtendedQueryRecordFieldInSubscriptionsPaidVolume)
+}
+
+// SetInCardVolume sets the InCardVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetInCardVolume(inCardVolume float64) {
+	s.InCardVolume = inCardVolume
+	s.require(statBasicExtendedQueryRecordFieldInCardVolume)
+}
+
+// SetInAchVolume sets the InAchVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetInAchVolume(inAchVolume float64) {
+	s.InAchVolume = inAchVolume
+	s.require(statBasicExtendedQueryRecordFieldInAchVolume)
+}
+
+// SetInCheckVolume sets the InCheckVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetInCheckVolume(inCheckVolume float64) {
+	s.InCheckVolume = inCheckVolume
+	s.require(statBasicExtendedQueryRecordFieldInCheckVolume)
+}
+
+// SetInCashVolume sets the InCashVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetInCashVolume(inCashVolume float64) {
+	s.InCashVolume = inCashVolume
+	s.require(statBasicExtendedQueryRecordFieldInCashVolume)
+}
+
+// SetInWalletVolume sets the InWalletVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetInWalletVolume(inWalletVolume float64) {
+	s.InWalletVolume = inWalletVolume
+	s.require(statBasicExtendedQueryRecordFieldInWalletVolume)
+}
+
+// SetInCardChargeBackVolume sets the InCardChargeBackVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetInCardChargeBackVolume(inCardChargeBackVolume float64) {
+	s.InCardChargeBackVolume = inCardChargeBackVolume
+	s.require(statBasicExtendedQueryRecordFieldInCardChargeBackVolume)
+}
+
+// SetInAchReturnsVolume sets the InAchReturnsVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetInAchReturnsVolume(inAchReturnsVolume float64) {
+	s.InAchReturnsVolume = inAchReturnsVolume
+	s.require(statBasicExtendedQueryRecordFieldInAchReturnsVolume)
+}
+
+func (s *StatBasicExtendedQueryRecord) UnmarshalJSON(data []byte) error {
+	type unmarshaler StatBasicExtendedQueryRecord
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = StatBasicExtendedQueryRecord(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *StatBasicExtendedQueryRecord) MarshalJSON() ([]byte, error) {
+	type embed StatBasicExtendedQueryRecord
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *StatBasicExtendedQueryRecord) String() string {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+var (
 	statBasicQueryRecordFieldStatX                = big.NewInt(1 << 0)
 	statBasicQueryRecordFieldInTransactions       = big.NewInt(1 << 1)
 	statBasicQueryRecordFieldInTransactionsVolume = big.NewInt(1 << 2)

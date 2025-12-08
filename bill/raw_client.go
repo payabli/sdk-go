@@ -83,6 +83,8 @@ func (r *RawClient) AddBill(
 
 func (r *RawClient) DeleteAttachedFromBill(
 	ctx context.Context,
+	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+	idBill int,
 	// The filename in Payabli. Filename is `zipName` in response to a
 	// request to `/api/Invoice/{idInvoice}`. Here, the filename is
 	// `0_Bill.pdf`.
@@ -100,8 +102,6 @@ func (r *RawClient) DeleteAttachedFromBill(
 	//   }
 	//   ```
 	filename string,
-	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
-	idBill int,
 	request *payabli.DeleteAttachedFromBillRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.BillResponse], error) {
@@ -113,8 +113,8 @@ func (r *RawClient) DeleteAttachedFromBill(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Bill/attachedFileFromBill/%v/%v",
-		filename,
 		idBill,
+		filename,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -246,6 +246,8 @@ func (r *RawClient) EditBill(
 
 func (r *RawClient) GetAttachedFromBill(
 	ctx context.Context,
+	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+	idBill int,
 	// The filename in Payabli. Filename is `zipName` in response to a request to `/api/Invoice/{idInvoice}`. Here, the filename is `0_Bill.pdf``.
 	// "DocumentsRef": {
 	//   "zipfile": "inva_269.zip",
@@ -258,8 +260,6 @@ func (r *RawClient) GetAttachedFromBill(
 	//   ]
 	// }
 	filename string,
-	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
-	idBill int,
 	request *payabli.GetAttachedFromBillRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.FileContent], error) {
@@ -271,8 +271,8 @@ func (r *RawClient) GetAttachedFromBill(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Bill/attachedFileFromBill/%v/%v",
-		filename,
 		idBill,
+		filename,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -568,10 +568,10 @@ func (r *RawClient) SendToApprovalBill(
 
 func (r *RawClient) SetApprovedBill(
 	ctx context.Context,
-	// String representing the approved status. Accepted values: 'true' or 'false'.
-	approved string,
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
 	idBill int,
+	// String representing the approved status. Accepted values: 'true' or 'false'.
+	approved string,
 	request *payabli.SetApprovedBillRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.SetApprovedBillResponse], error) {
@@ -583,8 +583,8 @@ func (r *RawClient) SetApprovedBill(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Bill/approval/%v/%v",
-		approved,
 		idBill,
+		approved,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {

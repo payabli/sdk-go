@@ -125,7 +125,7 @@ func (r *RawClient) CancelAllOut(
 	}, nil
 }
 
-func (r *RawClient) CancelOut(
+func (r *RawClient) CancelOutGet(
 	ctx context.Context,
 	// The ID for the payout transaction.
 	referenceId string,
@@ -151,6 +151,51 @@ func (r *RawClient) CancelOut(
 		&internal.CallParams{
 			URL:             endpointURL,
 			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*payabli.PayabliApiResponse0000]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) CancelOutDelete(
+	ctx context.Context,
+	// The ID for the payout transaction.
+	referenceId string,
+	opts ...option.RequestOption,
+) (*core.Response[*payabli.PayabliApiResponse0000], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://api-sandbox.payabli.com/api",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/MoneyOut/cancel/%v",
+		referenceId,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *payabli.PayabliApiResponse0000
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodDelete,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
 			BodyProperties:  options.BodyProperties,

@@ -32,6 +32,7 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
+// Use this endpoint to add a new user to an organization.
 func (c *Client) AddUser(
 	ctx context.Context,
 	request *payabli.UserData,
@@ -48,6 +49,7 @@ func (c *Client) AddUser(
 	return response.Body, nil
 }
 
+// Use this endpoint to refresh the authentication token for a user within an organization.
 func (c *Client) AuthRefreshUser(
 	ctx context.Context,
 	opts ...option.RequestOption,
@@ -62,6 +64,7 @@ func (c *Client) AuthRefreshUser(
 	return response.Body, nil
 }
 
+// Use this endpoint to initiate a password reset for a user within an organization.
 func (c *Client) AuthResetUser(
 	ctx context.Context,
 	request *payabli.UserAuthResetRequest,
@@ -98,6 +101,7 @@ func (c *Client) AuthUser(
 	return response.Body, nil
 }
 
+// Use this endpoint to change the password for a user within an organization.
 func (c *Client) ChangePswUser(
 	ctx context.Context,
 	request *payabli.UserAuthPswResetRequest,
@@ -114,6 +118,7 @@ func (c *Client) ChangePswUser(
 	return response.Body, nil
 }
 
+// Use this endpoint to delete a specific user within an organization.
 func (c *Client) DeleteUser(
 	ctx context.Context,
 	// The Payabli-generated `userId` value.
@@ -131,6 +136,7 @@ func (c *Client) DeleteUser(
 	return response.Body, nil
 }
 
+// Use this endpoint to enable or disable multi-factor authentication (MFA) for a user within an organization.
 func (c *Client) EditMfaUser(
 	ctx context.Context,
 	// User Identifier
@@ -150,6 +156,7 @@ func (c *Client) EditMfaUser(
 	return response.Body, nil
 }
 
+// Use this endpoint to modify the details of a specific user within an organization.
 func (c *Client) EditUser(
 	ctx context.Context,
 	// User Identifier
@@ -169,6 +176,7 @@ func (c *Client) EditUser(
 	return response.Body, nil
 }
 
+// Use this endpoint to retrieve information about a specific user within an organization.
 func (c *Client) GetUser(
 	ctx context.Context,
 	// The Payabli-generated `userId` value.
@@ -188,6 +196,7 @@ func (c *Client) GetUser(
 	return response.Body, nil
 }
 
+// Use this endpoint to log a user out from the system.
 func (c *Client) LogoutUser(
 	ctx context.Context,
 	opts ...option.RequestOption,
@@ -202,21 +211,22 @@ func (c *Client) LogoutUser(
 	return response.Body, nil
 }
 
+// Resends the MFA code to the user via the selected MFA mode (email or SMS).
 func (c *Client) ResendMfaCode(
 	ctx context.Context,
+	//
+	usrname string,
 	//
 	entry string,
 	//
 	entryType int,
-	//
-	usrname string,
 	opts ...option.RequestOption,
 ) (*payabli.PayabliApiResponseMfaBasic, error) {
 	response, err := c.WithRawResponse.ResendMfaCode(
 		ctx,
+		usrname,
 		entry,
 		entryType,
-		usrname,
 		opts...,
 	)
 	if err != nil {
@@ -225,6 +235,7 @@ func (c *Client) ResendMfaCode(
 	return response.Body, nil
 }
 
+// Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
 func (c *Client) ValidateMfaUser(
 	ctx context.Context,
 	request *payabli.MfaValidationData,

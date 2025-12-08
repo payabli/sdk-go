@@ -55,19 +55,20 @@ func (c *Client) ExportApplications(
 	return response.Body, nil
 }
 
+// This endpoint is deprecated. Export batch details for a paypoint. Use filters to limit results.
 func (c *Client) ExportBatchDetails(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
+	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
 	request *payabli.ExportBatchDetailsRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportBatchDetails(
 		ctx,
-		entry,
 		format,
+		entry,
 		request,
 		opts...,
 	)
@@ -77,6 +78,7 @@ func (c *Client) ExportBatchDetails(
 	return response.Body, nil
 }
 
+// This endpoint is deprecated. Export batch details for an organization. Use filters to limit results.
 func (c *Client) ExportBatchDetailsOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -102,17 +104,17 @@ func (c *Client) ExportBatchDetailsOrg(
 // Export a list of batches for an entrypoint. Use filters to limit results.
 func (c *Client) ExportBatches(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
+	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
 	request *payabli.ExportBatchesRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportBatches(
 		ctx,
-		entry,
 		format,
+		entry,
 		request,
 		opts...,
 	)
@@ -148,17 +150,17 @@ func (c *Client) ExportBatchesOrg(
 // Export a list of money out batches for a paypoint. Use filters to limit results.
 func (c *Client) ExportBatchesOut(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
+	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
 	request *payabli.ExportBatchesOutRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportBatchesOut(
 		ctx,
-		entry,
 		format,
+		entry,
 		request,
 		opts...,
 	)
@@ -194,17 +196,17 @@ func (c *Client) ExportBatchesOutOrg(
 // Export a list of bills for an entrypoint. Use filters to limit results.
 func (c *Client) ExportBills(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
+	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
 	request *payabli.ExportBillsRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportBills(
 		ctx,
-		entry,
 		format,
+		entry,
 		request,
 		opts...,
 	)
@@ -240,17 +242,17 @@ func (c *Client) ExportBillsOrg(
 // Export a list of chargebacks and ACH returns for an entrypoint. Use filters to limit results.
 func (c *Client) ExportChargebacks(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
+	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
 	request *payabli.ExportChargebacksRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportChargebacks(
 		ctx,
-		entry,
 		format,
+		entry,
 		request,
 		opts...,
 	)
@@ -286,17 +288,17 @@ func (c *Client) ExportChargebacksOrg(
 // Export a list of customers for an entrypoint. Use filters to limit results.
 func (c *Client) ExportCustomers(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
+	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
 	request *payabli.ExportCustomersRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportCustomers(
 		ctx,
-		entry,
 		format,
+		entry,
 		request,
 		opts...,
 	)
@@ -332,17 +334,17 @@ func (c *Client) ExportCustomersOrg(
 // Export list of invoices for an entrypoint. Use filters to limit results.
 func (c *Client) ExportInvoices(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
+	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
 	request *payabli.ExportInvoicesRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportInvoices(
 		ctx,
-		entry,
 		format,
+		entry,
 		request,
 		opts...,
 	)
@@ -401,17 +403,17 @@ func (c *Client) ExportOrganizations(
 // Export a list of payouts and their statuses for an entrypoint. Use filters to limit results.
 func (c *Client) ExportPayout(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
+	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
 	request *payabli.ExportPayoutRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportPayout(
 		ctx,
-		entry,
 		format,
+		entry,
 		request,
 		opts...,
 	)
@@ -470,17 +472,17 @@ func (c *Client) ExportPaypoints(
 // Export a list of settled transactions for an entrypoint. Use filters to limit results.
 func (c *Client) ExportSettlements(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
+	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
 	request *payabli.ExportSettlementsRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportSettlements(
 		ctx,
-		entry,
 		format,
+		entry,
 		request,
 		opts...,
 	)
@@ -516,17 +518,17 @@ func (c *Client) ExportSettlementsOrg(
 // Export a list of subscriptions for an entrypoint. Use filters to limit results.
 func (c *Client) ExportSubscriptions(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
+	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
 	request *payabli.ExportSubscriptionsRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportSubscriptions(
 		ctx,
-		entry,
 		format,
+		entry,
 		request,
 		opts...,
 	)
@@ -562,17 +564,17 @@ func (c *Client) ExportSubscriptionsOrg(
 // Export a list of transactions for an entrypoint in a file in XLXS or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
 func (c *Client) ExportTransactions(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
+	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
 	request *payabli.ExportTransactionsRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportTransactions(
 		ctx,
-		entry,
 		format,
+		entry,
 		request,
 		opts...,
 	)
@@ -608,10 +610,10 @@ func (c *Client) ExportTransactionsOrg(
 // Export a list of transfer details for an entrypoint. Use filters to limit results.
 func (c *Client) ExportTransferDetails(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
+	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
 	// Transfer identifier.
 	transferId int64,
 	request *payabli.ExportTransferDetailsRequest,
@@ -619,8 +621,8 @@ func (c *Client) ExportTransferDetails(
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportTransferDetails(
 		ctx,
-		entry,
 		format,
+		entry,
 		transferId,
 		request,
 		opts...,
@@ -654,17 +656,17 @@ func (c *Client) ExportTransfers(
 // Export a list of vendors for an entrypoint. Use filters to limit results.
 func (c *Client) ExportVendors(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
+	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
 	request *payabli.ExportVendorsRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportVendors(
 		ctx,
-		entry,
 		format,
+		entry,
 		request,
 		opts...,
 	)

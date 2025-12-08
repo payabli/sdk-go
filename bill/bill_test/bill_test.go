@@ -6,7 +6,7 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
@@ -80,12 +80,12 @@ func TestBillAddBillWithWireMock(
 				3762.87,
 			),
 			BillDate: payabli.Time(
-				payabli.MustParseDateTime(
+				payabli.MustParseDate(
 					"2024-07-01",
 				),
 			),
 			DueDate: payabli.Time(
-				payabli.MustParseDateTime(
+				payabli.MustParseDate(
 					"2024-07-01",
 				),
 			),
@@ -144,7 +144,7 @@ func TestBillAddBillWithWireMock(
 				),
 			},
 			EndDate: payabli.Time(
-				payabli.MustParseDateTime(
+				payabli.MustParseDate(
 					"2024-07-01",
 				),
 			),
@@ -234,7 +234,7 @@ func TestBillEditBillWithWireMock(
 			3762.87,
 		),
 		BillDate: payabli.Time(
-			payabli.MustParseDateTime(
+			payabli.MustParseDate(
 				"2025-07-01",
 			),
 		),

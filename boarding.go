@@ -6182,8 +6182,8 @@ type ApplicationDetailsRecord struct {
 	LegalName        *Legalname       `json:"legalName,omitempty" url:"legalName,omitempty"`
 	License          *License         `json:"license,omitempty" url:"license,omitempty"`
 	LicenseState     *Licensestate    `json:"licenseState,omitempty" url:"licenseState,omitempty"`
-	// Object containing logo file.
-	Logo                       *FileContent                            `json:"logo,omitempty" url:"logo,omitempty"`
+	// A URL pointing to a logo file.
+	Logo                       *string                                 `json:"logo,omitempty" url:"logo,omitempty"`
 	MAddress1                  *Maddress                               `json:"mAddress1,omitempty" url:"mAddress1,omitempty"`
 	MAddress2                  *Maddress1                              `json:"mAddress2,omitempty" url:"mAddress2,omitempty"`
 	Mccid                      *string                                 `json:"mccid,omitempty" url:"mccid,omitempty"`
@@ -6456,7 +6456,7 @@ func (a *ApplicationDetailsRecord) GetLicenseState() *Licensestate {
 	return a.LicenseState
 }
 
-func (a *ApplicationDetailsRecord) GetLogo() *FileContent {
+func (a *ApplicationDetailsRecord) GetLogo() *string {
 	if a == nil {
 		return nil
 	}
@@ -6896,7 +6896,7 @@ func (a *ApplicationDetailsRecord) SetLicenseState(licenseState *Licensestate) {
 
 // SetLogo sets the Logo field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDetailsRecord) SetLogo(logo *FileContent) {
+func (a *ApplicationDetailsRecord) SetLogo(logo *string) {
 	a.Logo = logo
 	a.require(applicationDetailsRecordFieldLogo)
 }

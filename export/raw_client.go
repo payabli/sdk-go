@@ -88,10 +88,10 @@ func (r *RawClient) ExportApplications(
 
 func (r *RawClient) ExportBatchDetails(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
+	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
 	request *payabli.ExportBatchDetailsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -103,8 +103,8 @@ func (r *RawClient) ExportBatchDetails(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/batchDetails/%v/%v",
-		entry,
 		format,
+		entry,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -200,10 +200,10 @@ func (r *RawClient) ExportBatchDetailsOrg(
 
 func (r *RawClient) ExportBatches(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
+	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
 	request *payabli.ExportBatchesRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -215,8 +215,8 @@ func (r *RawClient) ExportBatches(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/batches/%v/%v",
-		entry,
 		format,
+		entry,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -312,10 +312,10 @@ func (r *RawClient) ExportBatchesOrg(
 
 func (r *RawClient) ExportBatchesOut(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
+	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
 	request *payabli.ExportBatchesOutRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -327,8 +327,8 @@ func (r *RawClient) ExportBatchesOut(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/batchesOut/%v/%v",
-		entry,
 		format,
+		entry,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -424,10 +424,10 @@ func (r *RawClient) ExportBatchesOutOrg(
 
 func (r *RawClient) ExportBills(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
+	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
 	request *payabli.ExportBillsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -439,8 +439,8 @@ func (r *RawClient) ExportBills(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/bills/%v/%v",
-		entry,
 		format,
+		entry,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -536,10 +536,10 @@ func (r *RawClient) ExportBillsOrg(
 
 func (r *RawClient) ExportChargebacks(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
+	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
 	request *payabli.ExportChargebacksRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -551,8 +551,8 @@ func (r *RawClient) ExportChargebacks(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/chargebacks/%v/%v",
-		entry,
 		format,
+		entry,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -648,10 +648,10 @@ func (r *RawClient) ExportChargebacksOrg(
 
 func (r *RawClient) ExportCustomers(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
+	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
 	request *payabli.ExportCustomersRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -663,8 +663,8 @@ func (r *RawClient) ExportCustomers(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/customers/%v/%v",
-		entry,
 		format,
+		entry,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -760,10 +760,10 @@ func (r *RawClient) ExportCustomersOrg(
 
 func (r *RawClient) ExportInvoices(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
+	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
 	request *payabli.ExportInvoicesRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -775,8 +775,8 @@ func (r *RawClient) ExportInvoices(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/invoices/%v/%v",
-		entry,
 		format,
+		entry,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -928,10 +928,10 @@ func (r *RawClient) ExportOrganizations(
 
 func (r *RawClient) ExportPayout(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
+	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
 	request *payabli.ExportPayoutRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -943,8 +943,8 @@ func (r *RawClient) ExportPayout(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/payouts/%v/%v",
-		entry,
 		format,
+		entry,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1096,10 +1096,10 @@ func (r *RawClient) ExportPaypoints(
 
 func (r *RawClient) ExportSettlements(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
+	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
 	request *payabli.ExportSettlementsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -1111,8 +1111,8 @@ func (r *RawClient) ExportSettlements(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/settlements/%v/%v",
-		entry,
 		format,
+		entry,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1208,10 +1208,10 @@ func (r *RawClient) ExportSettlementsOrg(
 
 func (r *RawClient) ExportSubscriptions(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
+	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
 	request *payabli.ExportSubscriptionsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -1223,8 +1223,8 @@ func (r *RawClient) ExportSubscriptions(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/subscriptions/%v/%v",
-		entry,
 		format,
+		entry,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1320,10 +1320,10 @@ func (r *RawClient) ExportSubscriptionsOrg(
 
 func (r *RawClient) ExportTransactions(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
+	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
 	request *payabli.ExportTransactionsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -1335,8 +1335,8 @@ func (r *RawClient) ExportTransactions(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/transactions/%v/%v",
-		entry,
 		format,
+		entry,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1432,10 +1432,10 @@ func (r *RawClient) ExportTransactionsOrg(
 
 func (r *RawClient) ExportTransferDetails(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
+	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
 	// Transfer identifier.
 	transferId int64,
 	request *payabli.ExportTransferDetailsRequest,
@@ -1449,8 +1449,8 @@ func (r *RawClient) ExportTransferDetails(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/transferDetails/%v/%v/%v",
-		entry,
 		format,
+		entry,
 		transferId,
 	)
 	queryParams, err := internal.QueryValues(request)
@@ -1544,10 +1544,10 @@ func (r *RawClient) ExportTransfers(
 
 func (r *RawClient) ExportVendors(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
+	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
 	request *payabli.ExportVendorsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -1559,8 +1559,8 @@ func (r *RawClient) ExportVendors(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/vendors/%v/%v",
-		entry,
 		format,
+		entry,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {

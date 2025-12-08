@@ -6,7 +6,7 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
@@ -88,6 +88,9 @@ func TestMoneyOutAuthorizeOutWithWireMock(
 				TotalAmount: payabli.Float64(
 					47,
 				),
+				Unbundled: payabli.Bool(
+					false,
+				),
 			},
 			PaymentMethod: &payabli.AuthorizePaymentMethod{
 				Method: "managed",
@@ -132,7 +135,7 @@ func TestMoneyOutCancelAllOutWithWireMock(
 	VerifyRequestCount(t, "POST", "/MoneyOut/cancelAll", nil, 1)
 }
 
-func TestMoneyOutCancelOutWithWireMock(
+func TestMoneyOutCancelOutGetWithWireMock(
 	t *testing.T,
 ) {
 	ResetWireMockRequests(t)
@@ -142,13 +145,32 @@ func TestMoneyOutCancelOutWithWireMock(
 			WireMockBaseURL,
 		),
 	)
-	_, invocationErr := client.MoneyOut.CancelOut(
+	_, invocationErr := client.MoneyOut.CancelOutGet(
 		context.TODO(),
 		"129-219",
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "GET", "/MoneyOut/cancel/129-219", nil, 1)
+}
+
+func TestMoneyOutCancelOutDeleteWithWireMock(
+	t *testing.T,
+) {
+	ResetWireMockRequests(t)
+	WireMockBaseURL := "http://localhost:8080"
+	client := client.NewClient(
+		option.WithBaseURL(
+			WireMockBaseURL,
+		),
+	)
+	_, invocationErr := client.MoneyOut.CancelOutDelete(
+		context.TODO(),
+		"129-219",
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "DELETE", "/MoneyOut/cancel/129-219", nil, 1)
 }
 
 func TestMoneyOutCaptureAllOutWithWireMock(

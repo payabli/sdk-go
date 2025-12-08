@@ -481,11 +481,11 @@ func (r *RawClient) LogoutUser(
 func (r *RawClient) ResendMfaCode(
 	ctx context.Context,
 	//
+	usrname string,
+	//
 	entry string,
 	//
 	entryType int,
-	//
-	usrname string,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.PayabliApiResponseMfaBasic], error) {
 	options := core.NewRequestOptions(opts...)
@@ -496,9 +496,9 @@ func (r *RawClient) ResendMfaCode(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/User/resendmfa/%v/%v/%v",
+		usrname,
 		entry,
 		entryType,
-		usrname,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),

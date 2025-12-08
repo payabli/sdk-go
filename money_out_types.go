@@ -1482,16 +1482,19 @@ var (
 	requestOutAuthorizePaymentDetailsFieldCurrency    = big.NewInt(1 << 1)
 	requestOutAuthorizePaymentDetailsFieldServiceFee  = big.NewInt(1 << 2)
 	requestOutAuthorizePaymentDetailsFieldTotalAmount = big.NewInt(1 << 3)
+	requestOutAuthorizePaymentDetailsFieldUnbundled   = big.NewInt(1 << 4)
 )
 
 type RequestOutAuthorizePaymentDetails struct {
 	CheckNumber *VendorCheckNumber `json:"checkNumber,omitempty" url:"checkNumber,omitempty"`
-	// Currency code ISO-4217. If not code is provided the currency in the paypoint setting is taken. Default is **USD**.
+	// Currency code ISO-4217. If no code is provided, then the currency in the paypoint setting is used. Default is **USD**.
 	Currency *string `json:"currency,omitempty" url:"currency,omitempty"`
 	// Service fee to be deducted from the total amount. This amount must be a number, percentages aren't accepted. If you are using a percentage-based fee schedule, you must calculate the value manually.
 	ServiceFee *float64 `json:"serviceFee,omitempty" url:"serviceFee,omitempty"`
 	// Total amount to be charged. If a service fee is included, then this amount should include the service fee.
 	TotalAmount *float64 `json:"totalAmount,omitempty" url:"totalAmount,omitempty"`
+	// Indicates whether the payout should be bundled into a single transaction or processed separately. If set to `true`, each bill will be processed as a separate payout. If `false` or not provided, then multiple bills will be paid with a single payout.
+	Unbundled *bool `json:"unbundled,omitempty" url:"unbundled,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1526,6 +1529,13 @@ func (r *RequestOutAuthorizePaymentDetails) GetTotalAmount() *float64 {
 		return nil
 	}
 	return r.TotalAmount
+}
+
+func (r *RequestOutAuthorizePaymentDetails) GetUnbundled() *bool {
+	if r == nil {
+		return nil
+	}
+	return r.Unbundled
 }
 
 func (r *RequestOutAuthorizePaymentDetails) GetExtraProperties() map[string]interface{} {
@@ -1565,6 +1575,13 @@ func (r *RequestOutAuthorizePaymentDetails) SetServiceFee(serviceFee *float64) {
 func (r *RequestOutAuthorizePaymentDetails) SetTotalAmount(totalAmount *float64) {
 	r.TotalAmount = totalAmount
 	r.require(requestOutAuthorizePaymentDetailsFieldTotalAmount)
+}
+
+// SetUnbundled sets the Unbundled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RequestOutAuthorizePaymentDetails) SetUnbundled(unbundled *bool) {
+	r.Unbundled = unbundled
+	r.require(requestOutAuthorizePaymentDetailsFieldUnbundled)
 }
 
 func (r *RequestOutAuthorizePaymentDetails) UnmarshalJSON(data []byte) error {

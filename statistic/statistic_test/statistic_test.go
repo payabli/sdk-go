@@ -6,7 +6,7 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
@@ -73,10 +73,10 @@ func TestStatisticBasicStatsWithWireMock(
 	)
 	request := &payabli.BasicStatsRequest{
 		EndDate: payabli.String(
-			"2023-05-23",
+			"2025-11-01",
 		),
 		StartDate: payabli.String(
-			"2023-03-23",
+			"2025-11-30",
 		),
 	}
 	_, invocationErr := client.Statistic.BasicStats(
@@ -89,7 +89,7 @@ func TestStatisticBasicStatsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "GET", "/Statistic/basic/ytd/m/1/1000000", map[string]string{"endDate": "2023-05-23", "startDate": "2023-03-23"}, 1)
+	VerifyRequestCount(t, "GET", "/Statistic/basic/ytd/m/1/1000000", map[string]string{"endDate": "2025-11-01", "startDate": "2025-11-30"}, 1)
 }
 
 func TestStatisticCustomerBasicStatsWithWireMock(

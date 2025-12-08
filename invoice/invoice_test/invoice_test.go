@@ -6,7 +6,7 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	sdkgo "github.com/payabli/sdk-go"
+	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
@@ -115,7 +115,7 @@ func TestInvoiceAddInvoiceWithWireMock(
 					},
 				},
 				InvoiceDate: payabli.Time(
-					payabli.MustParseDateTime(
+					payabli.MustParseDate(
 						"2025-10-19",
 					),
 				),
@@ -215,7 +215,7 @@ func TestInvoiceEditInvoiceWithWireMock(
 					},
 				},
 				InvoiceDate: payabli.Time(
-					payabli.MustParseDateTime(
+					payabli.MustParseDate(
 						"2025-10-19",
 					),
 				),
@@ -251,8 +251,8 @@ func TestInvoiceGetAttachedFileFromInvoiceWithWireMock(
 	request := &payabli.GetAttachedFileFromInvoiceRequest{}
 	_, invocationErr := client.Invoice.GetAttachedFileFromInvoice(
 		context.TODO(),
-		"filename",
 		1,
+		"filename",
 		request,
 	)
 
