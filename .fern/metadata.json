@@ -4,6 +4,7 @@
   "generatorVersion": "1.18.4",
   "generatorConfig": {
     "packageName": "payabli",
+    "enableWireTests": false,
     "module": {
       "path": "github.com/payabli/sdk-go"
     }
