@@ -8748,6 +8748,9 @@ request := &payabli.AddInvoiceRequest{
                         ItemMode: payabli.Int(
                             1,
                         ),
+                        ItemTotalAmount: payabli.Float64(
+                            1,
+                        ),
                     },
                     &payabli.BillItem{
                         ItemProductName: payabli.String(
@@ -8758,6 +8761,9 @@ request := &payabli.AddInvoiceRequest{
                         ),
                         ItemCost: 882.37,
                         ItemQty: payabli.Int(
+                            1,
+                        ),
+                        ItemTotalAmount: payabli.Float64(
                             1,
                         ),
                     },
@@ -14003,7 +14009,7 @@ request := &payabli.PayLinkDataInvoice{
                             true,
                         ),
                         Validation: payabli.String(
-                            "^[a-zA-Z ]+$",
+                            "alpha",
                         ),
                         Value: payabli.String(
                             "",
@@ -14301,7 +14307,7 @@ request := &payabli.PayLinkDataBill{
                             true,
                         ),
                         Validation: payabli.String(
-                            "^[a-zA-Z ]+$",
+                            "alpha",
                         ),
                         Value: payabli.String(
                             "",
@@ -15078,7 +15084,7 @@ request := &payabli.PayLinkDataOut{
                             true,
                         ),
                         Validation: payabli.String(
-                            "^[a-zA-Z ]+$",
+                            "alpha",
                         ),
                         Value: payabli.String(
                             "",

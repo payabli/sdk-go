@@ -891,7 +891,7 @@ type GetMethodResponseResponseData struct {
 	// The stored payment method's identifier in Payabli
 	IdPmethod *string `json:"idPmethod,omitempty" url:"idPmethod,omitempty"`
 	// Timestamp for last update of stored method, in UTC
-	LastUpdated   *LastModified  `json:"lastUpdated,omitempty" url:"lastUpdated,omitempty"`
+	LastUpdated   *time.Time     `json:"lastUpdated,omitempty" url:"lastUpdated,omitempty"`
 	MaskedAccount *Maskedaccount `json:"maskedAccount,omitempty" url:"maskedAccount,omitempty"`
 	// The saved method's type: `card` or `ach`.
 	Method *string `json:"method,omitempty" url:"method,omitempty"`
@@ -977,7 +977,7 @@ func (g *GetMethodResponseResponseData) GetIdPmethod() *string {
 	return g.IdPmethod
 }
 
-func (g *GetMethodResponseResponseData) GetLastUpdated() *LastModified {
+func (g *GetMethodResponseResponseData) GetLastUpdated() *time.Time {
 	if g == nil {
 		return nil
 	}
@@ -1095,7 +1095,7 @@ func (g *GetMethodResponseResponseData) SetIdPmethod(idPmethod *string) {
 
 // SetLastUpdated sets the LastUpdated field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMethodResponseResponseData) SetLastUpdated(lastUpdated *LastModified) {
+func (g *GetMethodResponseResponseData) SetLastUpdated(lastUpdated *time.Time) {
 	g.LastUpdated = lastUpdated
 	g.require(getMethodResponseResponseDataFieldLastUpdated)
 }
@@ -1129,12 +1129,18 @@ func (g *GetMethodResponseResponseData) SetPostalCode(postalCode *string) {
 }
 
 func (g *GetMethodResponseResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetMethodResponseResponseData
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed GetMethodResponseResponseData
+	var unmarshaler = struct {
+		embed
+		LastUpdated *internal.DateTime `json:"lastUpdated,omitempty"`
+	}{
+		embed: embed(*g),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*g = GetMethodResponseResponseData(value)
+	*g = GetMethodResponseResponseData(unmarshaler.embed)
+	g.LastUpdated = unmarshaler.LastUpdated.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *g)
 	if err != nil {
 		return err
@@ -1148,8 +1154,10 @@ func (g *GetMethodResponseResponseData) MarshalJSON() ([]byte, error) {
 	type embed GetMethodResponseResponseData
 	var marshaler = struct {
 		embed
+		LastUpdated *internal.DateTime `json:"lastUpdated,omitempty"`
 	}{
-		embed: embed(*g),
+		embed:       embed(*g),
+		LastUpdated: internal.NewOptionalDateTime(g.LastUpdated),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
 	return json.Marshal(explicitMarshaler)
