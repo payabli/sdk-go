@@ -537,7 +537,7 @@ var (
 )
 
 type PayorDataResponse struct {
-	AdditionalData  *AdditionalData              `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
+	AdditionalData  *AdditionalDataMap           `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
 	BillingAddress1 *BillingAddressNullable      `json:"BillingAddress1,omitempty" url:"BillingAddress1,omitempty"`
 	BillingAddress2 *BillingAddressAddtlNullable `json:"BillingAddress2,omitempty" url:"BillingAddress2,omitempty"`
 	BillingCity     *BillingCityNullable         `json:"BillingCity,omitempty" url:"BillingCity,omitempty"`
@@ -572,7 +572,7 @@ type PayorDataResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PayorDataResponse) GetAdditionalData() *AdditionalData {
+func (p *PayorDataResponse) GetAdditionalData() *AdditionalDataMap {
 	if p == nil {
 		return nil
 	}
@@ -739,7 +739,7 @@ func (p *PayorDataResponse) require(field *big.Int) {
 
 // SetAdditionalData sets the AdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayorDataResponse) SetAdditionalData(additionalData *AdditionalData) {
+func (p *PayorDataResponse) SetAdditionalData(additionalData *AdditionalDataMap) {
 	p.AdditionalData = additionalData
 	p.require(payorDataResponseFieldAdditionalData)
 }

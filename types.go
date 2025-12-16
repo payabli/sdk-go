@@ -6711,7 +6711,7 @@ type FreightAmount = *float64
 type Frequency string
 
 const (
-	FrequencyOneTime      Frequency = "one-time"
+	FrequencyOneTime      Frequency = "onetime"
 	FrequencyWeekly       Frequency = "weekly"
 	FrequencyEvery2Weeks  Frequency = "every2weeks"
 	FrequencyEvery6Months Frequency = "every6months"
@@ -6722,7 +6722,7 @@ const (
 
 func NewFrequencyFromString(s string) (Frequency, error) {
 	switch s {
-	case "one-time":
+	case "onetime":
 		return FrequencyOneTime, nil
 	case "weekly":
 		return FrequencyWeekly, nil
@@ -6751,7 +6751,7 @@ var (
 	frequencyListFieldEvery3Months = big.NewInt(1 << 2)
 	frequencyListFieldEvery6Months = big.NewInt(1 << 3)
 	frequencyListFieldMonthly      = big.NewInt(1 << 4)
-	frequencyListFieldOneTime      = big.NewInt(1 << 5)
+	frequencyListFieldOnetime      = big.NewInt(1 << 5)
 	frequencyListFieldWeekly       = big.NewInt(1 << 6)
 )
 
@@ -6767,7 +6767,7 @@ type FrequencyList struct {
 	// Enable or disable frequency
 	Monthly *bool `json:"monthly,omitempty" url:"monthly,omitempty"`
 	// Enable or disable frequency
-	OneTime *bool `json:"one-time,omitempty" url:"one-time,omitempty"`
+	Onetime *bool `json:"onetime,omitempty" url:"onetime,omitempty"`
 	// Enable or disable frequency
 	Weekly *bool `json:"weekly,omitempty" url:"weekly,omitempty"`
 
@@ -6813,11 +6813,11 @@ func (f *FrequencyList) GetMonthly() *bool {
 	return f.Monthly
 }
 
-func (f *FrequencyList) GetOneTime() *bool {
+func (f *FrequencyList) GetOnetime() *bool {
 	if f == nil {
 		return nil
 	}
-	return f.OneTime
+	return f.Onetime
 }
 
 func (f *FrequencyList) GetWeekly() *bool {
@@ -6873,11 +6873,11 @@ func (f *FrequencyList) SetMonthly(monthly *bool) {
 	f.require(frequencyListFieldMonthly)
 }
 
-// SetOneTime sets the OneTime field and marks it as non-optional;
+// SetOnetime sets the Onetime field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *FrequencyList) SetOneTime(oneTime *bool) {
-	f.OneTime = oneTime
-	f.require(frequencyListFieldOneTime)
+func (f *FrequencyList) SetOnetime(onetime *bool) {
+	f.Onetime = onetime
+	f.require(frequencyListFieldOnetime)
 }
 
 // SetWeekly sets the Weekly field and marks it as non-optional;
