@@ -336,7 +336,6 @@ func (r *RawClient) VerifyPaymentMethodDomain(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
 	if err != nil {

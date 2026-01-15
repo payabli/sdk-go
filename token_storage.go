@@ -857,21 +857,24 @@ func (g *GetMethodResponse) String() string {
 }
 
 var (
-	getMethodResponseResponseDataFieldAba           = big.NewInt(1 << 0)
-	getMethodResponseResponseDataFieldAchHolderType = big.NewInt(1 << 1)
-	getMethodResponseResponseDataFieldAchSecCode    = big.NewInt(1 << 2)
-	getMethodResponseResponseDataFieldBin           = big.NewInt(1 << 3)
-	getMethodResponseResponseDataFieldBinData       = big.NewInt(1 << 4)
-	getMethodResponseResponseDataFieldCustomers     = big.NewInt(1 << 5)
-	getMethodResponseResponseDataFieldDescriptor    = big.NewInt(1 << 6)
-	getMethodResponseResponseDataFieldExpDate       = big.NewInt(1 << 7)
-	getMethodResponseResponseDataFieldHolderName    = big.NewInt(1 << 8)
-	getMethodResponseResponseDataFieldIdPmethod     = big.NewInt(1 << 9)
-	getMethodResponseResponseDataFieldLastUpdated   = big.NewInt(1 << 10)
-	getMethodResponseResponseDataFieldMaskedAccount = big.NewInt(1 << 11)
-	getMethodResponseResponseDataFieldMethod        = big.NewInt(1 << 12)
-	getMethodResponseResponseDataFieldMethodType    = big.NewInt(1 << 13)
-	getMethodResponseResponseDataFieldPostalCode    = big.NewInt(1 << 14)
+	getMethodResponseResponseDataFieldAba            = big.NewInt(1 << 0)
+	getMethodResponseResponseDataFieldAchHolderType  = big.NewInt(1 << 1)
+	getMethodResponseResponseDataFieldAchSecCode     = big.NewInt(1 << 2)
+	getMethodResponseResponseDataFieldBin            = big.NewInt(1 << 3)
+	getMethodResponseResponseDataFieldBinData        = big.NewInt(1 << 4)
+	getMethodResponseResponseDataFieldCardUpdatedOn  = big.NewInt(1 << 5)
+	getMethodResponseResponseDataFieldCustomers      = big.NewInt(1 << 6)
+	getMethodResponseResponseDataFieldDescriptor     = big.NewInt(1 << 7)
+	getMethodResponseResponseDataFieldExpDate        = big.NewInt(1 << 8)
+	getMethodResponseResponseDataFieldHolderName     = big.NewInt(1 << 9)
+	getMethodResponseResponseDataFieldIdPmethod      = big.NewInt(1 << 10)
+	getMethodResponseResponseDataFieldIsValidatedAch = big.NewInt(1 << 11)
+	getMethodResponseResponseDataFieldLastUpdated    = big.NewInt(1 << 12)
+	getMethodResponseResponseDataFieldMaskedAccount  = big.NewInt(1 << 13)
+	getMethodResponseResponseDataFieldMethod         = big.NewInt(1 << 14)
+	getMethodResponseResponseDataFieldMethodType     = big.NewInt(1 << 15)
+	getMethodResponseResponseDataFieldPostalCode     = big.NewInt(1 << 16)
+	getMethodResponseResponseDataFieldVendors        = big.NewInt(1 << 17)
 )
 
 type GetMethodResponseResponseData struct {
@@ -880,16 +883,20 @@ type GetMethodResponseResponseData struct {
 	AchHolderType *AchHolderType `json:"achHolderType,omitempty" url:"achHolderType,omitempty"`
 	AchSecCode    *AchSecCode    `json:"achSecCode,omitempty" url:"achSecCode,omitempty"`
 	// The bank identification number (BIN)
-	Bin        *string                                       `json:"bin,omitempty" url:"bin,omitempty"`
-	BinData    *BinData                                      `json:"binData,omitempty" url:"binData,omitempty"`
-	Customers  []*GetMethodResponseResponseDataCustomersItem `json:"customers,omitempty" url:"customers,omitempty"`
-	Descriptor *Descriptor                                   `json:"descriptor,omitempty" url:"descriptor,omitempty"`
+	Bin     *string  `json:"bin,omitempty" url:"bin,omitempty"`
+	BinData *BinData `json:"binData,omitempty" url:"binData,omitempty"`
+	// Timestamp for when card was last updated
+	CardUpdatedOn *time.Time                                    `json:"cardUpdatedOn,omitempty" url:"cardUpdatedOn,omitempty"`
+	Customers     []*GetMethodResponseResponseDataCustomersItem `json:"customers,omitempty" url:"customers,omitempty"`
+	Descriptor    *Descriptor                                   `json:"descriptor,omitempty" url:"descriptor,omitempty"`
 	// Expiration date for card in stored method in format MM/YY
 	ExpDate *string `json:"expDate,omitempty" url:"expDate,omitempty"`
 	// Account holder name in stored method
 	HolderName *Holdername `json:"holderName,omitempty" url:"holderName,omitempty"`
 	// The stored payment method's identifier in Payabli
 	IdPmethod *string `json:"idPmethod,omitempty" url:"idPmethod,omitempty"`
+	// Whether the ACH account has been validated
+	IsValidatedAch *bool `json:"isValidatedACH,omitempty" url:"isValidatedACH,omitempty"`
 	// Timestamp for last update of stored method, in UTC
 	LastUpdated   *time.Time     `json:"lastUpdated,omitempty" url:"lastUpdated,omitempty"`
 	MaskedAccount *Maskedaccount `json:"maskedAccount,omitempty" url:"maskedAccount,omitempty"`
@@ -898,7 +905,8 @@ type GetMethodResponseResponseData struct {
 	// The payment method's token type
 	MethodType *string `json:"methodType,omitempty" url:"methodType,omitempty"`
 	// The payment method postal code
-	PostalCode *string `json:"postalCode,omitempty" url:"postalCode,omitempty"`
+	PostalCode *string                                     `json:"postalCode,omitempty" url:"postalCode,omitempty"`
+	Vendors    []*GetMethodResponseResponseDataVendorsItem `json:"vendors,omitempty" url:"vendors,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -942,6 +950,13 @@ func (g *GetMethodResponseResponseData) GetBinData() *BinData {
 	return g.BinData
 }
 
+func (g *GetMethodResponseResponseData) GetCardUpdatedOn() *time.Time {
+	if g == nil {
+		return nil
+	}
+	return g.CardUpdatedOn
+}
+
 func (g *GetMethodResponseResponseData) GetCustomers() []*GetMethodResponseResponseDataCustomersItem {
 	if g == nil {
 		return nil
@@ -977,6 +992,13 @@ func (g *GetMethodResponseResponseData) GetIdPmethod() *string {
 	return g.IdPmethod
 }
 
+func (g *GetMethodResponseResponseData) GetIsValidatedAch() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.IsValidatedAch
+}
+
 func (g *GetMethodResponseResponseData) GetLastUpdated() *time.Time {
 	if g == nil {
 		return nil
@@ -1010,6 +1032,13 @@ func (g *GetMethodResponseResponseData) GetPostalCode() *string {
 		return nil
 	}
 	return g.PostalCode
+}
+
+func (g *GetMethodResponseResponseData) GetVendors() []*GetMethodResponseResponseDataVendorsItem {
+	if g == nil {
+		return nil
+	}
+	return g.Vendors
 }
 
 func (g *GetMethodResponseResponseData) GetExtraProperties() map[string]interface{} {
@@ -1058,6 +1087,13 @@ func (g *GetMethodResponseResponseData) SetBinData(binData *BinData) {
 	g.require(getMethodResponseResponseDataFieldBinData)
 }
 
+// SetCardUpdatedOn sets the CardUpdatedOn field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseData) SetCardUpdatedOn(cardUpdatedOn *time.Time) {
+	g.CardUpdatedOn = cardUpdatedOn
+	g.require(getMethodResponseResponseDataFieldCardUpdatedOn)
+}
+
 // SetCustomers sets the Customers field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (g *GetMethodResponseResponseData) SetCustomers(customers []*GetMethodResponseResponseDataCustomersItem) {
@@ -1091,6 +1127,13 @@ func (g *GetMethodResponseResponseData) SetHolderName(holderName *Holdername) {
 func (g *GetMethodResponseResponseData) SetIdPmethod(idPmethod *string) {
 	g.IdPmethod = idPmethod
 	g.require(getMethodResponseResponseDataFieldIdPmethod)
+}
+
+// SetIsValidatedAch sets the IsValidatedAch field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseData) SetIsValidatedAch(isValidatedAch *bool) {
+	g.IsValidatedAch = isValidatedAch
+	g.require(getMethodResponseResponseDataFieldIsValidatedAch)
 }
 
 // SetLastUpdated sets the LastUpdated field and marks it as non-optional;
@@ -1128,11 +1171,19 @@ func (g *GetMethodResponseResponseData) SetPostalCode(postalCode *string) {
 	g.require(getMethodResponseResponseDataFieldPostalCode)
 }
 
+// SetVendors sets the Vendors field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseData) SetVendors(vendors []*GetMethodResponseResponseDataVendorsItem) {
+	g.Vendors = vendors
+	g.require(getMethodResponseResponseDataFieldVendors)
+}
+
 func (g *GetMethodResponseResponseData) UnmarshalJSON(data []byte) error {
 	type embed GetMethodResponseResponseData
 	var unmarshaler = struct {
 		embed
-		LastUpdated *internal.DateTime `json:"lastUpdated,omitempty"`
+		CardUpdatedOn *internal.DateTime `json:"cardUpdatedOn,omitempty"`
+		LastUpdated   *internal.DateTime `json:"lastUpdated,omitempty"`
 	}{
 		embed: embed(*g),
 	}
@@ -1140,6 +1191,7 @@ func (g *GetMethodResponseResponseData) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*g = GetMethodResponseResponseData(unmarshaler.embed)
+	g.CardUpdatedOn = unmarshaler.CardUpdatedOn.TimePtr()
 	g.LastUpdated = unmarshaler.LastUpdated.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *g)
 	if err != nil {
@@ -1154,10 +1206,12 @@ func (g *GetMethodResponseResponseData) MarshalJSON() ([]byte, error) {
 	type embed GetMethodResponseResponseData
 	var marshaler = struct {
 		embed
-		LastUpdated *internal.DateTime `json:"lastUpdated,omitempty"`
+		CardUpdatedOn *internal.DateTime `json:"cardUpdatedOn,omitempty"`
+		LastUpdated   *internal.DateTime `json:"lastUpdated,omitempty"`
 	}{
-		embed:       embed(*g),
-		LastUpdated: internal.NewOptionalDateTime(g.LastUpdated),
+		embed:         embed(*g),
+		CardUpdatedOn: internal.NewOptionalDateTime(g.CardUpdatedOn),
+		LastUpdated:   internal.NewOptionalDateTime(g.LastUpdated),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -1958,14 +2012,854 @@ func (g *GetMethodResponseResponseDataCustomersItem) String() string {
 }
 
 var (
+	getMethodResponseResponseDataVendorsItemFieldAdditionalData        = big.NewInt(1 << 0)
+	getMethodResponseResponseDataVendorsItemFieldAddress1              = big.NewInt(1 << 1)
+	getMethodResponseResponseDataVendorsItemFieldAddress2              = big.NewInt(1 << 2)
+	getMethodResponseResponseDataVendorsItemFieldBillingData           = big.NewInt(1 << 3)
+	getMethodResponseResponseDataVendorsItemFieldCity                  = big.NewInt(1 << 4)
+	getMethodResponseResponseDataVendorsItemFieldContacts              = big.NewInt(1 << 5)
+	getMethodResponseResponseDataVendorsItemFieldCountry               = big.NewInt(1 << 6)
+	getMethodResponseResponseDataVendorsItemFieldCreatedDate           = big.NewInt(1 << 7)
+	getMethodResponseResponseDataVendorsItemFieldCustomField1          = big.NewInt(1 << 8)
+	getMethodResponseResponseDataVendorsItemFieldCustomField2          = big.NewInt(1 << 9)
+	getMethodResponseResponseDataVendorsItemFieldCustomerVendorAccount = big.NewInt(1 << 10)
+	getMethodResponseResponseDataVendorsItemFieldEin                   = big.NewInt(1 << 11)
+	getMethodResponseResponseDataVendorsItemFieldEmail                 = big.NewInt(1 << 12)
+	getMethodResponseResponseDataVendorsItemFieldEnrollmentStatus      = big.NewInt(1 << 13)
+	getMethodResponseResponseDataVendorsItemFieldExternalPaypointId    = big.NewInt(1 << 14)
+	getMethodResponseResponseDataVendorsItemFieldInternalReferenceId   = big.NewInt(1 << 15)
+	getMethodResponseResponseDataVendorsItemFieldLastUpdated           = big.NewInt(1 << 16)
+	getMethodResponseResponseDataVendorsItemFieldLocationCode          = big.NewInt(1 << 17)
+	getMethodResponseResponseDataVendorsItemFieldMcc                   = big.NewInt(1 << 18)
+	getMethodResponseResponseDataVendorsItemFieldName1                 = big.NewInt(1 << 19)
+	getMethodResponseResponseDataVendorsItemFieldName2                 = big.NewInt(1 << 20)
+	getMethodResponseResponseDataVendorsItemFieldParentOrgId           = big.NewInt(1 << 21)
+	getMethodResponseResponseDataVendorsItemFieldParentOrgName         = big.NewInt(1 << 22)
+	getMethodResponseResponseDataVendorsItemFieldPayeeName1            = big.NewInt(1 << 23)
+	getMethodResponseResponseDataVendorsItemFieldPayeeName2            = big.NewInt(1 << 24)
+	getMethodResponseResponseDataVendorsItemFieldPaymentMethod         = big.NewInt(1 << 25)
+	getMethodResponseResponseDataVendorsItemFieldPaypointDbaname       = big.NewInt(1 << 26)
+	getMethodResponseResponseDataVendorsItemFieldPaypointEntryname     = big.NewInt(1 << 27)
+	getMethodResponseResponseDataVendorsItemFieldPaypointId            = big.NewInt(1 << 28)
+	getMethodResponseResponseDataVendorsItemFieldPaypointLegalname     = big.NewInt(1 << 29)
+	getMethodResponseResponseDataVendorsItemFieldPhone                 = big.NewInt(1 << 30)
+	getMethodResponseResponseDataVendorsItemFieldRemitAddress1         = big.NewInt(1 << 31)
+	getMethodResponseResponseDataVendorsItemFieldRemitAddress2         = big.NewInt(1 << 32)
+	getMethodResponseResponseDataVendorsItemFieldRemitCity             = big.NewInt(1 << 33)
+	getMethodResponseResponseDataVendorsItemFieldRemitCountry          = big.NewInt(1 << 34)
+	getMethodResponseResponseDataVendorsItemFieldRemitEmail            = big.NewInt(1 << 35)
+	getMethodResponseResponseDataVendorsItemFieldRemitState            = big.NewInt(1 << 36)
+	getMethodResponseResponseDataVendorsItemFieldRemitZip              = big.NewInt(1 << 37)
+	getMethodResponseResponseDataVendorsItemFieldState                 = big.NewInt(1 << 38)
+	getMethodResponseResponseDataVendorsItemFieldStoredMethods         = big.NewInt(1 << 39)
+	getMethodResponseResponseDataVendorsItemFieldSummary               = big.NewInt(1 << 40)
+	getMethodResponseResponseDataVendorsItemFieldVendorId              = big.NewInt(1 << 41)
+	getMethodResponseResponseDataVendorsItemFieldVendorNumber          = big.NewInt(1 << 42)
+	getMethodResponseResponseDataVendorsItemFieldVendorStatus          = big.NewInt(1 << 43)
+	getMethodResponseResponseDataVendorsItemFieldZip                   = big.NewInt(1 << 44)
+)
+
+type GetMethodResponseResponseDataVendorsItem struct {
+	// Additional data for vendor
+	AdditionalData *AdditionalDataMap `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	// Vendor's address
+	Address1 *string `json:"address1,omitempty" url:"address1,omitempty"`
+	// Additional line for vendor's address
+	Address2 *string `json:"address2,omitempty" url:"address2,omitempty"`
+	// Object containing vendor's bank information
+	BillingData *VendorResponseBillingData `json:"billingData,omitempty" url:"billingData,omitempty"`
+	// Vendor's city
+	City *string `json:"city,omitempty" url:"city,omitempty"`
+	// Array of objects describing the vendor's contacts
+	Contacts []*Contacts `json:"contacts,omitempty" url:"contacts,omitempty"`
+	// Vendor's country
+	Country *string `json:"country,omitempty" url:"country,omitempty"`
+	// Date when vendor was created
+	CreatedDate *time.Time `json:"createdDate,omitempty" url:"createdDate,omitempty"`
+	// Custom field 1 for vendor
+	CustomField1 *string `json:"customField1,omitempty" url:"customField1,omitempty"`
+	// Custom field 2 for vendor
+	CustomField2 *string `json:"customField2,omitempty" url:"customField2,omitempty"`
+	// Account number of paypoint in the vendor's side
+	CustomerVendorAccount *string `json:"customerVendorAccount,omitempty" url:"customerVendorAccount,omitempty"`
+	// EIN/Tax ID for vendor. In responses, this field is masked.
+	Ein *string `json:"ein,omitempty" url:"ein,omitempty"`
+	// Vendor's email address
+	Email *Email `json:"email,omitempty" url:"email,omitempty"`
+	// Vendor enrollment status
+	EnrollmentStatus *string `json:"enrollmentStatus,omitempty" url:"enrollmentStatus,omitempty"`
+	// External paypoint identifier
+	ExternalPaypointId *string `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	// Internal reference ID for vendor
+	InternalReferenceId *InternalReferenceId `json:"internalReferenceId,omitempty" url:"internalReferenceId,omitempty"`
+	// Date when vendor was last updated
+	LastUpdated *time.Time `json:"lastUpdated,omitempty" url:"lastUpdated,omitempty"`
+	// Location code for vendor
+	LocationCode *LocationCode `json:"locationCode,omitempty" url:"locationCode,omitempty"`
+	// Merchant category code
+	Mcc *Mcc `json:"mcc,omitempty" url:"mcc,omitempty"`
+	// Primary name for vendor
+	Name1 *string `json:"name1,omitempty" url:"name1,omitempty"`
+	// Secondary name for vendor
+	Name2 *string `json:"name2,omitempty" url:"name2,omitempty"`
+	// ID of the parent organization
+	ParentOrgId *int `json:"parentOrgId,omitempty" url:"parentOrgId,omitempty"`
+	// Name of the parent organization
+	ParentOrgName *string `json:"parentOrgName,omitempty" url:"parentOrgName,omitempty"`
+	// Primary payee name
+	PayeeName1 *PayeeName `json:"payeeName1,omitempty" url:"payeeName1,omitempty"`
+	// Secondary payee name
+	PayeeName2 *PayeeName `json:"payeeName2,omitempty" url:"payeeName2,omitempty"`
+	// Preferred payment method for vendor
+	PaymentMethod *string `json:"paymentMethod,omitempty" url:"paymentMethod,omitempty"`
+	// DBA name of the paypoint
+	PaypointDbaname *string `json:"paypointDbaname,omitempty" url:"paypointDbaname,omitempty"`
+	// Entry name of the paypoint
+	PaypointEntryname *string `json:"paypointEntryname,omitempty" url:"paypointEntryname,omitempty"`
+	// Paypoint ID
+	PaypointId *string `json:"paypointId,omitempty" url:"paypointId,omitempty"`
+	// Legal name of the paypoint
+	PaypointLegalname *string `json:"paypointLegalname,omitempty" url:"paypointLegalname,omitempty"`
+	// Vendor's phone number
+	Phone *string `json:"phone,omitempty" url:"phone,omitempty"`
+	// Remittance address line 1
+	RemitAddress1 *Remitaddress1 `json:"remitAddress1,omitempty" url:"remitAddress1,omitempty"`
+	// Remittance address line 2
+	RemitAddress2 *Remitaddress2 `json:"remitAddress2,omitempty" url:"remitAddress2,omitempty"`
+	// Remittance city
+	RemitCity *Remitcity `json:"remitCity,omitempty" url:"remitCity,omitempty"`
+	// Remittance country
+	RemitCountry *Remitcountry `json:"remitCountry,omitempty" url:"remitCountry,omitempty"`
+	// Email address for remittance
+	RemitEmail *string `json:"remitEmail,omitempty" url:"remitEmail,omitempty"`
+	// Remittance state
+	RemitState *Remitstate `json:"remitState,omitempty" url:"remitState,omitempty"`
+	// Remittance ZIP code
+	RemitZip *Remitzip `json:"remitZip,omitempty" url:"remitZip,omitempty"`
+	// Vendor's state
+	State *string `json:"state,omitempty" url:"state,omitempty"`
+	// Array of stored payment methods for vendor
+	StoredMethods []*VendorResponseStoredMethod `json:"storedMethods,omitempty" url:"storedMethods,omitempty"`
+	// Vendor bill summary statistics
+	Summary *VendorResponseSummary `json:"summary,omitempty" url:"summary,omitempty"`
+	// The unique numeric ID assigned to the vendor in Payabli
+	VendorId *Vendorid `json:"vendorId,omitempty" url:"vendorId,omitempty"`
+	// Custom vendor number assigned by the business
+	VendorNumber *VendorNumber `json:"vendorNumber,omitempty" url:"vendorNumber,omitempty"`
+	// Status code for the vendor
+	VendorStatus *Vendorstatus `json:"vendorStatus,omitempty" url:"vendorStatus,omitempty"`
+	// Vendor's ZIP code
+	Zip *string `json:"zip,omitempty" url:"zip,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetAdditionalData() *AdditionalDataMap {
+	if g == nil {
+		return nil
+	}
+	return g.AdditionalData
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetAddress1() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Address1
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetAddress2() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Address2
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetBillingData() *VendorResponseBillingData {
+	if g == nil {
+		return nil
+	}
+	return g.BillingData
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetCity() *string {
+	if g == nil {
+		return nil
+	}
+	return g.City
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetContacts() []*Contacts {
+	if g == nil {
+		return nil
+	}
+	return g.Contacts
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetCountry() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Country
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetCreatedDate() *time.Time {
+	if g == nil {
+		return nil
+	}
+	return g.CreatedDate
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetCustomField1() *string {
+	if g == nil {
+		return nil
+	}
+	return g.CustomField1
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetCustomField2() *string {
+	if g == nil {
+		return nil
+	}
+	return g.CustomField2
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetCustomerVendorAccount() *string {
+	if g == nil {
+		return nil
+	}
+	return g.CustomerVendorAccount
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetEin() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Ein
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetEmail() *Email {
+	if g == nil {
+		return nil
+	}
+	return g.Email
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetEnrollmentStatus() *string {
+	if g == nil {
+		return nil
+	}
+	return g.EnrollmentStatus
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetExternalPaypointId() *string {
+	if g == nil {
+		return nil
+	}
+	return g.ExternalPaypointId
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetInternalReferenceId() *InternalReferenceId {
+	if g == nil {
+		return nil
+	}
+	return g.InternalReferenceId
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetLastUpdated() *time.Time {
+	if g == nil {
+		return nil
+	}
+	return g.LastUpdated
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetLocationCode() *LocationCode {
+	if g == nil {
+		return nil
+	}
+	return g.LocationCode
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetMcc() *Mcc {
+	if g == nil {
+		return nil
+	}
+	return g.Mcc
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetName1() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Name1
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetName2() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Name2
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetParentOrgId() *int {
+	if g == nil {
+		return nil
+	}
+	return g.ParentOrgId
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetParentOrgName() *string {
+	if g == nil {
+		return nil
+	}
+	return g.ParentOrgName
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetPayeeName1() *PayeeName {
+	if g == nil {
+		return nil
+	}
+	return g.PayeeName1
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetPayeeName2() *PayeeName {
+	if g == nil {
+		return nil
+	}
+	return g.PayeeName2
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetPaymentMethod() *string {
+	if g == nil {
+		return nil
+	}
+	return g.PaymentMethod
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetPaypointDbaname() *string {
+	if g == nil {
+		return nil
+	}
+	return g.PaypointDbaname
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetPaypointEntryname() *string {
+	if g == nil {
+		return nil
+	}
+	return g.PaypointEntryname
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetPaypointId() *string {
+	if g == nil {
+		return nil
+	}
+	return g.PaypointId
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetPaypointLegalname() *string {
+	if g == nil {
+		return nil
+	}
+	return g.PaypointLegalname
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetPhone() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Phone
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetRemitAddress1() *Remitaddress1 {
+	if g == nil {
+		return nil
+	}
+	return g.RemitAddress1
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetRemitAddress2() *Remitaddress2 {
+	if g == nil {
+		return nil
+	}
+	return g.RemitAddress2
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetRemitCity() *Remitcity {
+	if g == nil {
+		return nil
+	}
+	return g.RemitCity
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetRemitCountry() *Remitcountry {
+	if g == nil {
+		return nil
+	}
+	return g.RemitCountry
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetRemitEmail() *string {
+	if g == nil {
+		return nil
+	}
+	return g.RemitEmail
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetRemitState() *Remitstate {
+	if g == nil {
+		return nil
+	}
+	return g.RemitState
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetRemitZip() *Remitzip {
+	if g == nil {
+		return nil
+	}
+	return g.RemitZip
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetState() *string {
+	if g == nil {
+		return nil
+	}
+	return g.State
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetStoredMethods() []*VendorResponseStoredMethod {
+	if g == nil {
+		return nil
+	}
+	return g.StoredMethods
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetSummary() *VendorResponseSummary {
+	if g == nil {
+		return nil
+	}
+	return g.Summary
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetVendorId() *Vendorid {
+	if g == nil {
+		return nil
+	}
+	return g.VendorId
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetVendorNumber() *VendorNumber {
+	if g == nil {
+		return nil
+	}
+	return g.VendorNumber
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetVendorStatus() *Vendorstatus {
+	if g == nil {
+		return nil
+	}
+	return g.VendorStatus
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetZip() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Zip
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetAdditionalData(additionalData *AdditionalDataMap) {
+	g.AdditionalData = additionalData
+	g.require(getMethodResponseResponseDataVendorsItemFieldAdditionalData)
+}
+
+// SetAddress1 sets the Address1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetAddress1(address1 *string) {
+	g.Address1 = address1
+	g.require(getMethodResponseResponseDataVendorsItemFieldAddress1)
+}
+
+// SetAddress2 sets the Address2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetAddress2(address2 *string) {
+	g.Address2 = address2
+	g.require(getMethodResponseResponseDataVendorsItemFieldAddress2)
+}
+
+// SetBillingData sets the BillingData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetBillingData(billingData *VendorResponseBillingData) {
+	g.BillingData = billingData
+	g.require(getMethodResponseResponseDataVendorsItemFieldBillingData)
+}
+
+// SetCity sets the City field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetCity(city *string) {
+	g.City = city
+	g.require(getMethodResponseResponseDataVendorsItemFieldCity)
+}
+
+// SetContacts sets the Contacts field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetContacts(contacts []*Contacts) {
+	g.Contacts = contacts
+	g.require(getMethodResponseResponseDataVendorsItemFieldContacts)
+}
+
+// SetCountry sets the Country field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetCountry(country *string) {
+	g.Country = country
+	g.require(getMethodResponseResponseDataVendorsItemFieldCountry)
+}
+
+// SetCreatedDate sets the CreatedDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetCreatedDate(createdDate *time.Time) {
+	g.CreatedDate = createdDate
+	g.require(getMethodResponseResponseDataVendorsItemFieldCreatedDate)
+}
+
+// SetCustomField1 sets the CustomField1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetCustomField1(customField1 *string) {
+	g.CustomField1 = customField1
+	g.require(getMethodResponseResponseDataVendorsItemFieldCustomField1)
+}
+
+// SetCustomField2 sets the CustomField2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetCustomField2(customField2 *string) {
+	g.CustomField2 = customField2
+	g.require(getMethodResponseResponseDataVendorsItemFieldCustomField2)
+}
+
+// SetCustomerVendorAccount sets the CustomerVendorAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetCustomerVendorAccount(customerVendorAccount *string) {
+	g.CustomerVendorAccount = customerVendorAccount
+	g.require(getMethodResponseResponseDataVendorsItemFieldCustomerVendorAccount)
+}
+
+// SetEin sets the Ein field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetEin(ein *string) {
+	g.Ein = ein
+	g.require(getMethodResponseResponseDataVendorsItemFieldEin)
+}
+
+// SetEmail sets the Email field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetEmail(email *Email) {
+	g.Email = email
+	g.require(getMethodResponseResponseDataVendorsItemFieldEmail)
+}
+
+// SetEnrollmentStatus sets the EnrollmentStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetEnrollmentStatus(enrollmentStatus *string) {
+	g.EnrollmentStatus = enrollmentStatus
+	g.require(getMethodResponseResponseDataVendorsItemFieldEnrollmentStatus)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetExternalPaypointId(externalPaypointId *string) {
+	g.ExternalPaypointId = externalPaypointId
+	g.require(getMethodResponseResponseDataVendorsItemFieldExternalPaypointId)
+}
+
+// SetInternalReferenceId sets the InternalReferenceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetInternalReferenceId(internalReferenceId *InternalReferenceId) {
+	g.InternalReferenceId = internalReferenceId
+	g.require(getMethodResponseResponseDataVendorsItemFieldInternalReferenceId)
+}
+
+// SetLastUpdated sets the LastUpdated field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetLastUpdated(lastUpdated *time.Time) {
+	g.LastUpdated = lastUpdated
+	g.require(getMethodResponseResponseDataVendorsItemFieldLastUpdated)
+}
+
+// SetLocationCode sets the LocationCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetLocationCode(locationCode *LocationCode) {
+	g.LocationCode = locationCode
+	g.require(getMethodResponseResponseDataVendorsItemFieldLocationCode)
+}
+
+// SetMcc sets the Mcc field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetMcc(mcc *Mcc) {
+	g.Mcc = mcc
+	g.require(getMethodResponseResponseDataVendorsItemFieldMcc)
+}
+
+// SetName1 sets the Name1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetName1(name1 *string) {
+	g.Name1 = name1
+	g.require(getMethodResponseResponseDataVendorsItemFieldName1)
+}
+
+// SetName2 sets the Name2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetName2(name2 *string) {
+	g.Name2 = name2
+	g.require(getMethodResponseResponseDataVendorsItemFieldName2)
+}
+
+// SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetParentOrgId(parentOrgId *int) {
+	g.ParentOrgId = parentOrgId
+	g.require(getMethodResponseResponseDataVendorsItemFieldParentOrgId)
+}
+
+// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetParentOrgName(parentOrgName *string) {
+	g.ParentOrgName = parentOrgName
+	g.require(getMethodResponseResponseDataVendorsItemFieldParentOrgName)
+}
+
+// SetPayeeName1 sets the PayeeName1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetPayeeName1(payeeName1 *PayeeName) {
+	g.PayeeName1 = payeeName1
+	g.require(getMethodResponseResponseDataVendorsItemFieldPayeeName1)
+}
+
+// SetPayeeName2 sets the PayeeName2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetPayeeName2(payeeName2 *PayeeName) {
+	g.PayeeName2 = payeeName2
+	g.require(getMethodResponseResponseDataVendorsItemFieldPayeeName2)
+}
+
+// SetPaymentMethod sets the PaymentMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetPaymentMethod(paymentMethod *string) {
+	g.PaymentMethod = paymentMethod
+	g.require(getMethodResponseResponseDataVendorsItemFieldPaymentMethod)
+}
+
+// SetPaypointDbaname sets the PaypointDbaname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetPaypointDbaname(paypointDbaname *string) {
+	g.PaypointDbaname = paypointDbaname
+	g.require(getMethodResponseResponseDataVendorsItemFieldPaypointDbaname)
+}
+
+// SetPaypointEntryname sets the PaypointEntryname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetPaypointEntryname(paypointEntryname *string) {
+	g.PaypointEntryname = paypointEntryname
+	g.require(getMethodResponseResponseDataVendorsItemFieldPaypointEntryname)
+}
+
+// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetPaypointId(paypointId *string) {
+	g.PaypointId = paypointId
+	g.require(getMethodResponseResponseDataVendorsItemFieldPaypointId)
+}
+
+// SetPaypointLegalname sets the PaypointLegalname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetPaypointLegalname(paypointLegalname *string) {
+	g.PaypointLegalname = paypointLegalname
+	g.require(getMethodResponseResponseDataVendorsItemFieldPaypointLegalname)
+}
+
+// SetPhone sets the Phone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetPhone(phone *string) {
+	g.Phone = phone
+	g.require(getMethodResponseResponseDataVendorsItemFieldPhone)
+}
+
+// SetRemitAddress1 sets the RemitAddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetRemitAddress1(remitAddress1 *Remitaddress1) {
+	g.RemitAddress1 = remitAddress1
+	g.require(getMethodResponseResponseDataVendorsItemFieldRemitAddress1)
+}
+
+// SetRemitAddress2 sets the RemitAddress2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetRemitAddress2(remitAddress2 *Remitaddress2) {
+	g.RemitAddress2 = remitAddress2
+	g.require(getMethodResponseResponseDataVendorsItemFieldRemitAddress2)
+}
+
+// SetRemitCity sets the RemitCity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetRemitCity(remitCity *Remitcity) {
+	g.RemitCity = remitCity
+	g.require(getMethodResponseResponseDataVendorsItemFieldRemitCity)
+}
+
+// SetRemitCountry sets the RemitCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetRemitCountry(remitCountry *Remitcountry) {
+	g.RemitCountry = remitCountry
+	g.require(getMethodResponseResponseDataVendorsItemFieldRemitCountry)
+}
+
+// SetRemitEmail sets the RemitEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetRemitEmail(remitEmail *string) {
+	g.RemitEmail = remitEmail
+	g.require(getMethodResponseResponseDataVendorsItemFieldRemitEmail)
+}
+
+// SetRemitState sets the RemitState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetRemitState(remitState *Remitstate) {
+	g.RemitState = remitState
+	g.require(getMethodResponseResponseDataVendorsItemFieldRemitState)
+}
+
+// SetRemitZip sets the RemitZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetRemitZip(remitZip *Remitzip) {
+	g.RemitZip = remitZip
+	g.require(getMethodResponseResponseDataVendorsItemFieldRemitZip)
+}
+
+// SetState sets the State field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetState(state *string) {
+	g.State = state
+	g.require(getMethodResponseResponseDataVendorsItemFieldState)
+}
+
+// SetStoredMethods sets the StoredMethods field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetStoredMethods(storedMethods []*VendorResponseStoredMethod) {
+	g.StoredMethods = storedMethods
+	g.require(getMethodResponseResponseDataVendorsItemFieldStoredMethods)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetSummary(summary *VendorResponseSummary) {
+	g.Summary = summary
+	g.require(getMethodResponseResponseDataVendorsItemFieldSummary)
+}
+
+// SetVendorId sets the VendorId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetVendorId(vendorId *Vendorid) {
+	g.VendorId = vendorId
+	g.require(getMethodResponseResponseDataVendorsItemFieldVendorId)
+}
+
+// SetVendorNumber sets the VendorNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetVendorNumber(vendorNumber *VendorNumber) {
+	g.VendorNumber = vendorNumber
+	g.require(getMethodResponseResponseDataVendorsItemFieldVendorNumber)
+}
+
+// SetVendorStatus sets the VendorStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetVendorStatus(vendorStatus *Vendorstatus) {
+	g.VendorStatus = vendorStatus
+	g.require(getMethodResponseResponseDataVendorsItemFieldVendorStatus)
+}
+
+// SetZip sets the Zip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetZip(zip *string) {
+	g.Zip = zip
+	g.require(getMethodResponseResponseDataVendorsItemFieldZip)
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) UnmarshalJSON(data []byte) error {
+	type embed GetMethodResponseResponseDataVendorsItem
+	var unmarshaler = struct {
+		embed
+		CreatedDate *internal.DateTime `json:"createdDate,omitempty"`
+		LastUpdated *internal.DateTime `json:"lastUpdated,omitempty"`
+	}{
+		embed: embed(*g),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*g = GetMethodResponseResponseDataVendorsItem(unmarshaler.embed)
+	g.CreatedDate = unmarshaler.CreatedDate.TimePtr()
+	g.LastUpdated = unmarshaler.LastUpdated.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) MarshalJSON() ([]byte, error) {
+	type embed GetMethodResponseResponseDataVendorsItem
+	var marshaler = struct {
+		embed
+		CreatedDate *internal.DateTime `json:"createdDate,omitempty"`
+		LastUpdated *internal.DateTime `json:"lastUpdated,omitempty"`
+	}{
+		embed:       embed(*g),
+		CreatedDate: internal.NewOptionalDateTime(g.CreatedDate),
+		LastUpdated: internal.NewOptionalDateTime(g.LastUpdated),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+var (
 	requestTokenStorageFieldCustomerData       = big.NewInt(1 << 0)
 	requestTokenStorageFieldEntryPoint         = big.NewInt(1 << 1)
 	requestTokenStorageFieldFallbackAuth       = big.NewInt(1 << 2)
 	requestTokenStorageFieldFallbackAuthAmount = big.NewInt(1 << 3)
 	requestTokenStorageFieldMethodDescription  = big.NewInt(1 << 4)
 	requestTokenStorageFieldPaymentMethod      = big.NewInt(1 << 5)
-	requestTokenStorageFieldSource             = big.NewInt(1 << 6)
-	requestTokenStorageFieldSubdomain          = big.NewInt(1 << 7)
+	requestTokenStorageFieldVendorData         = big.NewInt(1 << 6)
+	requestTokenStorageFieldSource             = big.NewInt(1 << 7)
+	requestTokenStorageFieldSubdomain          = big.NewInt(1 << 8)
 )
 
 type RequestTokenStorage struct {
@@ -1981,6 +2875,7 @@ type RequestTokenStorage struct {
 	MethodDescription *string `json:"methodDescription,omitempty" url:"methodDescription,omitempty"`
 	// Information about the payment method for the transaction.
 	PaymentMethod *RequestTokenStoragePaymentMethod `json:"paymentMethod,omitempty" url:"paymentMethod,omitempty"`
+	VendorData    *VendorDataRequest                `json:"vendorData,omitempty" url:"vendorData,omitempty"`
 	// Custom identifier to indicate the source for the request
 	Source    *Source    `json:"source,omitempty" url:"source,omitempty"`
 	Subdomain *Subdomain `json:"subdomain,omitempty" url:"subdomain,omitempty"`
@@ -2032,6 +2927,13 @@ func (r *RequestTokenStorage) GetPaymentMethod() *RequestTokenStoragePaymentMeth
 		return nil
 	}
 	return r.PaymentMethod
+}
+
+func (r *RequestTokenStorage) GetVendorData() *VendorDataRequest {
+	if r == nil {
+		return nil
+	}
+	return r.VendorData
 }
 
 func (r *RequestTokenStorage) GetSource() *Source {
@@ -2099,6 +3001,13 @@ func (r *RequestTokenStorage) SetMethodDescription(methodDescription *string) {
 func (r *RequestTokenStorage) SetPaymentMethod(paymentMethod *RequestTokenStoragePaymentMethod) {
 	r.PaymentMethod = paymentMethod
 	r.require(requestTokenStorageFieldPaymentMethod)
+}
+
+// SetVendorData sets the VendorData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RequestTokenStorage) SetVendorData(vendorData *VendorDataRequest) {
+	r.VendorData = vendorData
+	r.require(requestTokenStorageFieldVendorData)
 }
 
 // SetSource sets the Source field and marks it as non-optional;
@@ -2592,4 +3501,101 @@ func (t *TokenizeCard) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", t)
+}
+
+// Object describing the vendor owner of payment method. Required when saving an ACH payment method on behalf of a vendor (for Pay Out transactions).
+var (
+	vendorDataRequestFieldVendorId     = big.NewInt(1 << 0)
+	vendorDataRequestFieldVendorNumber = big.NewInt(1 << 1)
+)
+
+type VendorDataRequest struct {
+	// The unique numeric ID assigned to the vendor in Payabli. Either `vendorId` or `vendorNumber` is required.
+	VendorId *int64 `json:"vendorId,omitempty" url:"vendorId,omitempty"`
+	// Custom vendor number assigned by the business. Either `vendorId` or `vendorNumber` is required.
+	VendorNumber *string `json:"vendorNumber,omitempty" url:"vendorNumber,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *VendorDataRequest) GetVendorId() *int64 {
+	if v == nil {
+		return nil
+	}
+	return v.VendorId
+}
+
+func (v *VendorDataRequest) GetVendorNumber() *string {
+	if v == nil {
+		return nil
+	}
+	return v.VendorNumber
+}
+
+func (v *VendorDataRequest) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *VendorDataRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetVendorId sets the VendorId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataRequest) SetVendorId(vendorId *int64) {
+	v.VendorId = vendorId
+	v.require(vendorDataRequestFieldVendorId)
+}
+
+// SetVendorNumber sets the VendorNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataRequest) SetVendorNumber(vendorNumber *string) {
+	v.VendorNumber = vendorNumber
+	v.require(vendorDataRequestFieldVendorNumber)
+}
+
+func (v *VendorDataRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler VendorDataRequest
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VendorDataRequest(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VendorDataRequest) MarshalJSON() ([]byte, error) {
+	type embed VendorDataRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *VendorDataRequest) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
 }

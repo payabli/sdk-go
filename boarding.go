@@ -648,6 +648,7 @@ var (
 	applicationDataFieldRepCode                    = big.NewInt(1 << 52)
 	applicationDataFieldRepName                    = big.NewInt(1 << 53)
 	applicationDataFieldRepOffice                  = big.NewInt(1 << 54)
+	applicationDataFieldOnCreate                   = big.NewInt(1 << 55)
 )
 
 type ApplicationData struct {
@@ -707,6 +708,7 @@ type ApplicationData struct {
 	RepCode                    *RepCode                    `json:"RepCode,omitempty" url:"RepCode,omitempty"`
 	RepName                    *RepName                    `json:"RepName,omitempty" url:"RepName,omitempty"`
 	RepOffice                  *RepOffice                  `json:"RepOffice,omitempty" url:"RepOffice,omitempty"`
+	OnCreate                   *OnCreate                   `json:"onCreate,omitempty" url:"onCreate,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1098,6 +1100,13 @@ func (a *ApplicationData) GetRepOffice() *RepOffice {
 		return nil
 	}
 	return a.RepOffice
+}
+
+func (a *ApplicationData) GetOnCreate() *OnCreate {
+	if a == nil {
+		return nil
+	}
+	return a.OnCreate
 }
 
 func (a *ApplicationData) GetExtraProperties() map[string]interface{} {
@@ -1496,6 +1505,13 @@ func (a *ApplicationData) SetRepOffice(repOffice *RepOffice) {
 	a.require(applicationDataFieldRepOffice)
 }
 
+// SetOnCreate sets the OnCreate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationData) SetOnCreate(onCreate *OnCreate) {
+	a.OnCreate = onCreate
+	a.require(applicationDataFieldOnCreate)
+}
+
 func (a *ApplicationData) UnmarshalJSON(data []byte) error {
 	type unmarshaler ApplicationData
 	var value unmarshaler
@@ -1576,6 +1592,7 @@ var (
 	applicationDataManagedFieldRepCode                    = big.NewInt(1 << 37)
 	applicationDataManagedFieldRepName                    = big.NewInt(1 << 38)
 	applicationDataManagedFieldRepOffice                  = big.NewInt(1 << 39)
+	applicationDataManagedFieldOnCreate                   = big.NewInt(1 << 40)
 )
 
 type ApplicationDataManaged struct {
@@ -1625,6 +1642,7 @@ type ApplicationDataManaged struct {
 	RepCode    *RepCode    `json:"RepCode,omitempty" url:"RepCode,omitempty"`
 	RepName    *RepName    `json:"RepName,omitempty" url:"RepName,omitempty"`
 	RepOffice  *RepOffice  `json:"RepOffice,omitempty" url:"RepOffice,omitempty"`
+	OnCreate   *OnCreate   `json:"onCreate,omitempty" url:"onCreate,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1911,6 +1929,13 @@ func (a *ApplicationDataManaged) GetRepOffice() *RepOffice {
 		return nil
 	}
 	return a.RepOffice
+}
+
+func (a *ApplicationDataManaged) GetOnCreate() *OnCreate {
+	if a == nil {
+		return nil
+	}
+	return a.OnCreate
 }
 
 func (a *ApplicationDataManaged) GetExtraProperties() map[string]interface{} {
@@ -2202,6 +2227,13 @@ func (a *ApplicationDataManaged) SetRepName(repName *RepName) {
 func (a *ApplicationDataManaged) SetRepOffice(repOffice *RepOffice) {
 	a.RepOffice = repOffice
 	a.require(applicationDataManagedFieldRepOffice)
+}
+
+// SetOnCreate sets the OnCreate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataManaged) SetOnCreate(onCreate *OnCreate) {
+	a.OnCreate = onCreate
+	a.require(applicationDataManagedFieldOnCreate)
 }
 
 func (a *ApplicationDataManaged) UnmarshalJSON(data []byte) error {
@@ -2769,6 +2801,7 @@ var (
 	applicationDataOdpFieldRepCode                    = big.NewInt(1 << 43)
 	applicationDataOdpFieldRepName                    = big.NewInt(1 << 44)
 	applicationDataOdpFieldRepOffice                  = big.NewInt(1 << 45)
+	applicationDataOdpFieldOnCreate                   = big.NewInt(1 << 46)
 )
 
 type ApplicationDataOdp struct {
@@ -2824,6 +2857,7 @@ type ApplicationDataOdp struct {
 	RepCode    *RepCode    `json:"RepCode,omitempty" url:"RepCode,omitempty"`
 	RepName    *RepName    `json:"RepName,omitempty" url:"RepName,omitempty"`
 	RepOffice  *RepOffice  `json:"RepOffice,omitempty" url:"RepOffice,omitempty"`
+	OnCreate   *OnCreate   `json:"onCreate,omitempty" url:"onCreate,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3152,6 +3186,13 @@ func (a *ApplicationDataOdp) GetRepOffice() *RepOffice {
 		return nil
 	}
 	return a.RepOffice
+}
+
+func (a *ApplicationDataOdp) GetOnCreate() *OnCreate {
+	if a == nil {
+		return nil
+	}
+	return a.OnCreate
 }
 
 func (a *ApplicationDataOdp) GetExtraProperties() map[string]interface{} {
@@ -3485,6 +3526,13 @@ func (a *ApplicationDataOdp) SetRepName(repName *RepName) {
 func (a *ApplicationDataOdp) SetRepOffice(repOffice *RepOffice) {
 	a.RepOffice = repOffice
 	a.require(applicationDataOdpFieldRepOffice)
+}
+
+// SetOnCreate sets the OnCreate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataOdp) SetOnCreate(onCreate *OnCreate) {
+	a.OnCreate = onCreate
+	a.require(applicationDataOdpFieldOnCreate)
 }
 
 func (a *ApplicationDataOdp) UnmarshalJSON(data []byte) error {
@@ -4063,6 +4111,7 @@ var (
 	applicationDataPayInFieldRepCode                    = big.NewInt(1 << 53)
 	applicationDataPayInFieldRepName                    = big.NewInt(1 << 54)
 	applicationDataPayInFieldRepOffice                  = big.NewInt(1 << 55)
+	applicationDataPayInFieldOnCreate                   = big.NewInt(1 << 56)
 )
 
 type ApplicationDataPayIn struct {
@@ -4132,6 +4181,7 @@ type ApplicationDataPayIn struct {
 	RepCode        *RepCode              `json:"RepCode,omitempty" url:"RepCode,omitempty"`
 	RepName        *RepName              `json:"RepName,omitempty" url:"RepName,omitempty"`
 	RepOffice      *RepOffice            `json:"RepOffice,omitempty" url:"RepOffice,omitempty"`
+	OnCreate       *OnCreate             `json:"onCreate,omitempty" url:"onCreate,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -4530,6 +4580,13 @@ func (a *ApplicationDataPayIn) GetRepOffice() *RepOffice {
 		return nil
 	}
 	return a.RepOffice
+}
+
+func (a *ApplicationDataPayIn) GetOnCreate() *OnCreate {
+	if a == nil {
+		return nil
+	}
+	return a.OnCreate
 }
 
 func (a *ApplicationDataPayIn) GetExtraProperties() map[string]interface{} {
@@ -4933,6 +4990,13 @@ func (a *ApplicationDataPayIn) SetRepName(repName *RepName) {
 func (a *ApplicationDataPayIn) SetRepOffice(repOffice *RepOffice) {
 	a.RepOffice = repOffice
 	a.require(applicationDataPayInFieldRepOffice)
+}
+
+// SetOnCreate sets the OnCreate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDataPayIn) SetOnCreate(onCreate *OnCreate) {
+	a.OnCreate = onCreate
+	a.require(applicationDataPayInFieldOnCreate)
 }
 
 func (a *ApplicationDataPayIn) UnmarshalJSON(data []byte) error {
@@ -10741,6 +10805,9 @@ func (o *OSection) String() string {
 	}
 	return fmt.Sprintf("%#v", o)
 }
+
+// Action to take when the application is created. The only currently supported option is `submitApplication`. Use this when you have collected eSignature elsewhere or are adding additional locations for an applicant, or when you want to submit an application via API with one call without using the hosted boarding UI or embedded boarding components
+type OnCreate = string
 
 var (
 	pSectionFieldAvgmonthly    = big.NewInt(1 << 0)

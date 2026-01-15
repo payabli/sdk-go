@@ -11283,8 +11283,8 @@ var (
 )
 
 type QuerySubscriptionResponse struct {
-	Records *SubscriptionQueryRecords `json:"Records,omitempty" url:"Records,omitempty"`
-	Summary *QuerySummary             `json:"Summary,omitempty" url:"Summary,omitempty"`
+	Records []*SubscriptionQueryRecords `json:"Records,omitempty" url:"Records,omitempty"`
+	Summary *QuerySummary               `json:"Summary,omitempty" url:"Summary,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -11293,7 +11293,7 @@ type QuerySubscriptionResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (q *QuerySubscriptionResponse) GetRecords() *SubscriptionQueryRecords {
+func (q *QuerySubscriptionResponse) GetRecords() []*SubscriptionQueryRecords {
 	if q == nil {
 		return nil
 	}
@@ -11320,7 +11320,7 @@ func (q *QuerySubscriptionResponse) require(field *big.Int) {
 
 // SetRecords sets the Records field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QuerySubscriptionResponse) SetRecords(records *SubscriptionQueryRecords) {
+func (q *QuerySubscriptionResponse) SetRecords(records []*SubscriptionQueryRecords) {
 	q.Records = records
 	q.require(querySubscriptionResponseFieldRecords)
 }

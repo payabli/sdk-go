@@ -359,6 +359,54 @@ func (r *RequestPaymentValidate) SetPaymentMethod(paymentMethod *RequestPaymentV
 }
 
 var (
+	requestPaymentAuthorizeV2FieldIdempotencyKey        = big.NewInt(1 << 0)
+	requestPaymentAuthorizeV2FieldForceCustomerCreation = big.NewInt(1 << 1)
+)
+
+type RequestPaymentAuthorizeV2 struct {
+	IdempotencyKey        *IdempotencyKey        `json:"-" url:"-"`
+	ForceCustomerCreation *ForceCustomerCreation `json:"-" url:"forceCustomerCreation,omitempty"`
+	Body                  *TransRequestBody      `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (r *RequestPaymentAuthorizeV2) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetIdempotencyKey sets the IdempotencyKey field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RequestPaymentAuthorizeV2) SetIdempotencyKey(idempotencyKey *IdempotencyKey) {
+	r.IdempotencyKey = idempotencyKey
+	r.require(requestPaymentAuthorizeV2FieldIdempotencyKey)
+}
+
+// SetForceCustomerCreation sets the ForceCustomerCreation field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RequestPaymentAuthorizeV2) SetForceCustomerCreation(forceCustomerCreation *ForceCustomerCreation) {
+	r.ForceCustomerCreation = forceCustomerCreation
+	r.require(requestPaymentAuthorizeV2FieldForceCustomerCreation)
+}
+
+func (r *RequestPaymentAuthorizeV2) UnmarshalJSON(data []byte) error {
+	body := new(TransRequestBody)
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	r.Body = body
+	return nil
+}
+
+func (r *RequestPaymentAuthorizeV2) MarshalJSON() ([]byte, error) {
+	return json.Marshal(r.Body)
+}
+
+var (
 	requestPaymentFieldIdempotencyKey        = big.NewInt(1 << 0)
 	requestPaymentFieldValidationCode        = big.NewInt(1 << 1)
 	requestPaymentFieldAchValidation         = big.NewInt(1 << 2)
@@ -432,6 +480,73 @@ func (r *RequestPayment) UnmarshalJSON(data []byte) error {
 }
 
 func (r *RequestPayment) MarshalJSON() ([]byte, error) {
+	return json.Marshal(r.Body)
+}
+
+var (
+	requestPaymentV2FieldIdempotencyKey        = big.NewInt(1 << 0)
+	requestPaymentV2FieldValidationCode        = big.NewInt(1 << 1)
+	requestPaymentV2FieldAchValidation         = big.NewInt(1 << 2)
+	requestPaymentV2FieldForceCustomerCreation = big.NewInt(1 << 3)
+)
+
+type RequestPaymentV2 struct {
+	IdempotencyKey *IdempotencyKey `json:"-" url:"-"`
+	// Value obtained from user when an API generated CAPTCHA is used in payment page
+	ValidationCode        *string                `json:"-" url:"-"`
+	AchValidation         *AchValidation         `json:"-" url:"achValidation,omitempty"`
+	ForceCustomerCreation *ForceCustomerCreation `json:"-" url:"forceCustomerCreation,omitempty"`
+	Body                  *TransRequestBody      `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (r *RequestPaymentV2) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetIdempotencyKey sets the IdempotencyKey field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RequestPaymentV2) SetIdempotencyKey(idempotencyKey *IdempotencyKey) {
+	r.IdempotencyKey = idempotencyKey
+	r.require(requestPaymentV2FieldIdempotencyKey)
+}
+
+// SetValidationCode sets the ValidationCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RequestPaymentV2) SetValidationCode(validationCode *string) {
+	r.ValidationCode = validationCode
+	r.require(requestPaymentV2FieldValidationCode)
+}
+
+// SetAchValidation sets the AchValidation field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RequestPaymentV2) SetAchValidation(achValidation *AchValidation) {
+	r.AchValidation = achValidation
+	r.require(requestPaymentV2FieldAchValidation)
+}
+
+// SetForceCustomerCreation sets the ForceCustomerCreation field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RequestPaymentV2) SetForceCustomerCreation(forceCustomerCreation *ForceCustomerCreation) {
+	r.ForceCustomerCreation = forceCustomerCreation
+	r.require(requestPaymentV2FieldForceCustomerCreation)
+}
+
+func (r *RequestPaymentV2) UnmarshalJSON(data []byte) error {
+	body := new(TransRequestBody)
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	r.Body = body
+	return nil
+}
+
+func (r *RequestPaymentV2) MarshalJSON() ([]byte, error) {
 	return json.Marshal(r.Body)
 }
 
@@ -606,6 +721,8 @@ func (c *Check) String() string {
 	}
 	return fmt.Sprintf("%#v", c)
 }
+
+type CustomerVaultId = string
 
 // The expected time that the refund will be processed. This value only appears when the `resultCode` is `10`, which means that the refund has been initiated and is queued for processing. See [Enhanced Refund Flow](/guides/pay-in-enhanced-refund-flow) for more information about refund processing.
 type ExpectedProcessingDateTime = *time.Time
@@ -3135,8 +3252,8 @@ type AuthResponseResponseData struct {
 	ReferenceId       Referenceidtrans   `json:"referenceId" url:"referenceId"`
 	ResultCode        ResultCode         `json:"resultCode" url:"resultCode"`
 	ResultText        Resulttext         `json:"resultText" url:"resultText"`
-	AvsResponseText   Avsresponsetext    `json:"avsResponseText" url:"avsResponseText"`
-	CvvResponseText   Cvvresponsetext    `json:"cvvResponseText" url:"cvvResponseText"`
+	AvsResponseText   AvsResponseText    `json:"avsResponseText" url:"avsResponseText"`
+	CvvResponseText   CvvResponseText    `json:"cvvResponseText" url:"cvvResponseText"`
 	CustomerId        Customeridtrans    `json:"customerId" url:"customerId"`
 	MethodReferenceId *MethodReferenceId `json:"methodReferenceId,omitempty" url:"methodReferenceId,omitempty"`
 
@@ -3175,14 +3292,14 @@ func (a *AuthResponseResponseData) GetResultText() Resulttext {
 	return a.ResultText
 }
 
-func (a *AuthResponseResponseData) GetAvsResponseText() Avsresponsetext {
+func (a *AuthResponseResponseData) GetAvsResponseText() AvsResponseText {
 	if a == nil {
 		return ""
 	}
 	return a.AvsResponseText
 }
 
-func (a *AuthResponseResponseData) GetCvvResponseText() Cvvresponsetext {
+func (a *AuthResponseResponseData) GetCvvResponseText() CvvResponseText {
 	if a == nil {
 		return ""
 	}
@@ -3244,14 +3361,14 @@ func (a *AuthResponseResponseData) SetResultText(resultText Resulttext) {
 
 // SetAvsResponseText sets the AvsResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AuthResponseResponseData) SetAvsResponseText(avsResponseText Avsresponsetext) {
+func (a *AuthResponseResponseData) SetAvsResponseText(avsResponseText AvsResponseText) {
 	a.AvsResponseText = avsResponseText
 	a.require(authResponseResponseDataFieldAvsResponseText)
 }
 
 // SetCvvResponseText sets the CvvResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AuthResponseResponseData) SetCvvResponseText(cvvResponseText Cvvresponsetext) {
+func (a *AuthResponseResponseData) SetCvvResponseText(cvvResponseText CvvResponseText) {
 	a.CvvResponseText = cvvResponseText
 	a.require(authResponseResponseDataFieldCvvResponseText)
 }
@@ -3660,8 +3777,8 @@ type CaptureResponseData struct {
 	ReferenceId       Referenceidtrans   `json:"referenceId" url:"referenceId"`
 	ResultCode        ResultCode         `json:"resultCode" url:"resultCode"`
 	ResultText        Resulttext         `json:"resultText" url:"resultText"`
-	AvsResponseText   *Avsresponsetext   `json:"avsResponseText,omitempty" url:"avsResponseText,omitempty"`
-	CvvResponseText   *Cvvresponsetext   `json:"cvvResponseText,omitempty" url:"cvvResponseText,omitempty"`
+	AvsResponseText   *AvsResponseText   `json:"avsResponseText,omitempty" url:"avsResponseText,omitempty"`
+	CvvResponseText   *CvvResponseText   `json:"cvvResponseText,omitempty" url:"cvvResponseText,omitempty"`
 	CustomerId        *Customeridtrans   `json:"customerId,omitempty" url:"customerId,omitempty"`
 	MethodReferenceId *MethodReferenceId `json:"methodReferenceId,omitempty" url:"methodReferenceId,omitempty"`
 
@@ -3700,14 +3817,14 @@ func (c *CaptureResponseData) GetResultText() Resulttext {
 	return c.ResultText
 }
 
-func (c *CaptureResponseData) GetAvsResponseText() *Avsresponsetext {
+func (c *CaptureResponseData) GetAvsResponseText() *AvsResponseText {
 	if c == nil {
 		return nil
 	}
 	return c.AvsResponseText
 }
 
-func (c *CaptureResponseData) GetCvvResponseText() *Cvvresponsetext {
+func (c *CaptureResponseData) GetCvvResponseText() *CvvResponseText {
 	if c == nil {
 		return nil
 	}
@@ -3769,14 +3886,14 @@ func (c *CaptureResponseData) SetResultText(resultText Resulttext) {
 
 // SetAvsResponseText sets the AvsResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaptureResponseData) SetAvsResponseText(avsResponseText *Avsresponsetext) {
+func (c *CaptureResponseData) SetAvsResponseText(avsResponseText *AvsResponseText) {
 	c.AvsResponseText = avsResponseText
 	c.require(captureResponseDataFieldAvsResponseText)
 }
 
 // SetCvvResponseText sets the CvvResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaptureResponseData) SetCvvResponseText(cvvResponseText *Cvvresponsetext) {
+func (c *CaptureResponseData) SetCvvResponseText(cvvResponseText *CvvResponseText) {
 	c.CvvResponseText = cvvResponseText
 	c.require(captureResponseDataFieldCvvResponseText)
 }
@@ -3836,8 +3953,8 @@ func (c *CaptureResponseData) String() string {
 
 // Response data for GetPaid transactions
 var (
-	getPaidResponseDataFieldTransactionDetails = big.NewInt(1 << 0)
-	getPaidResponseDataFieldAuthCode           = big.NewInt(1 << 1)
+	getPaidResponseDataFieldAuthCode           = big.NewInt(1 << 0)
+	getPaidResponseDataFieldTransactionDetails = big.NewInt(1 << 1)
 	getPaidResponseDataFieldReferenceId        = big.NewInt(1 << 2)
 	getPaidResponseDataFieldResultCode         = big.NewInt(1 << 3)
 	getPaidResponseDataFieldResultText         = big.NewInt(1 << 4)
@@ -3848,14 +3965,14 @@ var (
 )
 
 type GetPaidResponseData struct {
+	AuthCode *Authcode `json:"authCode,omitempty" url:"authCode,omitempty"`
 	// Details of the transaction. Present only if `includeDetails` query parameter is set to `true` in the request.
 	TransactionDetails *TransactionDetailRecord `json:"transactionDetails,omitempty" url:"transactionDetails,omitempty"`
-	AuthCode           *Authcode                `json:"authCode,omitempty" url:"authCode,omitempty"`
 	ReferenceId        Referenceidtrans         `json:"referenceId" url:"referenceId"`
 	ResultCode         ResultCode               `json:"resultCode" url:"resultCode"`
 	ResultText         Resulttext               `json:"resultText" url:"resultText"`
-	AvsResponseText    Avsresponsetext          `json:"avsResponseText" url:"avsResponseText"`
-	CvvResponseText    Cvvresponsetext          `json:"cvvResponseText" url:"cvvResponseText"`
+	AvsResponseText    AvsResponseText          `json:"avsResponseText" url:"avsResponseText"`
+	CvvResponseText    CvvResponseText          `json:"cvvResponseText" url:"cvvResponseText"`
 	CustomerId         Customeridtrans          `json:"customerId" url:"customerId"`
 	MethodReferenceId  *MethodReferenceId       `json:"methodReferenceId,omitempty" url:"methodReferenceId,omitempty"`
 
@@ -3866,18 +3983,18 @@ type GetPaidResponseData struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetPaidResponseData) GetTransactionDetails() *TransactionDetailRecord {
-	if g == nil {
-		return nil
-	}
-	return g.TransactionDetails
-}
-
 func (g *GetPaidResponseData) GetAuthCode() *Authcode {
 	if g == nil {
 		return nil
 	}
 	return g.AuthCode
+}
+
+func (g *GetPaidResponseData) GetTransactionDetails() *TransactionDetailRecord {
+	if g == nil {
+		return nil
+	}
+	return g.TransactionDetails
 }
 
 func (g *GetPaidResponseData) GetReferenceId() Referenceidtrans {
@@ -3901,14 +4018,14 @@ func (g *GetPaidResponseData) GetResultText() Resulttext {
 	return g.ResultText
 }
 
-func (g *GetPaidResponseData) GetAvsResponseText() Avsresponsetext {
+func (g *GetPaidResponseData) GetAvsResponseText() AvsResponseText {
 	if g == nil {
 		return ""
 	}
 	return g.AvsResponseText
 }
 
-func (g *GetPaidResponseData) GetCvvResponseText() Cvvresponsetext {
+func (g *GetPaidResponseData) GetCvvResponseText() CvvResponseText {
 	if g == nil {
 		return ""
 	}
@@ -3940,18 +4057,18 @@ func (g *GetPaidResponseData) require(field *big.Int) {
 	g.explicitFields.Or(g.explicitFields, field)
 }
 
-// SetTransactionDetails sets the TransactionDetails field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPaidResponseData) SetTransactionDetails(transactionDetails *TransactionDetailRecord) {
-	g.TransactionDetails = transactionDetails
-	g.require(getPaidResponseDataFieldTransactionDetails)
-}
-
 // SetAuthCode sets the AuthCode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (g *GetPaidResponseData) SetAuthCode(authCode *Authcode) {
 	g.AuthCode = authCode
 	g.require(getPaidResponseDataFieldAuthCode)
+}
+
+// SetTransactionDetails sets the TransactionDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPaidResponseData) SetTransactionDetails(transactionDetails *TransactionDetailRecord) {
+	g.TransactionDetails = transactionDetails
+	g.require(getPaidResponseDataFieldTransactionDetails)
 }
 
 // SetReferenceId sets the ReferenceId field and marks it as non-optional;
@@ -3977,14 +4094,14 @@ func (g *GetPaidResponseData) SetResultText(resultText Resulttext) {
 
 // SetAvsResponseText sets the AvsResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPaidResponseData) SetAvsResponseText(avsResponseText Avsresponsetext) {
+func (g *GetPaidResponseData) SetAvsResponseText(avsResponseText AvsResponseText) {
 	g.AvsResponseText = avsResponseText
 	g.require(getPaidResponseDataFieldAvsResponseText)
 }
 
 // SetCvvResponseText sets the CvvResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPaidResponseData) SetCvvResponseText(cvvResponseText Cvvresponsetext) {
+func (g *GetPaidResponseData) SetCvvResponseText(cvvResponseText CvvResponseText) {
 	g.CvvResponseText = cvvResponseText
 	g.require(getPaidResponseDataFieldCvvResponseText)
 }
@@ -5041,10 +5158,10 @@ type ResponseDataRefunds struct {
 	AuthCode                   Authcode                    `json:"authCode" url:"authCode"`
 	ExpectedProcessingDateTime *ExpectedProcessingDateTime `json:"expectedProcessingDateTime,omitempty" url:"expectedProcessingDateTime,omitempty"`
 	// This field isn't applicable to refund operations.
-	AvsResponseText *Avsresponsetext `json:"avsResponseText,omitempty" url:"avsResponseText,omitempty"`
+	AvsResponseText *AvsResponseText `json:"avsResponseText,omitempty" url:"avsResponseText,omitempty"`
 	CustomerId      *CustomerId      `json:"customerId,omitempty" url:"customerId,omitempty"`
 	// This field isn't applicable to refund operations.
-	CvvResponseText *Cvvresponsetext `json:"cvvResponseText,omitempty" url:"cvvResponseText,omitempty"`
+	CvvResponseText *CvvResponseText `json:"cvvResponseText,omitempty" url:"cvvResponseText,omitempty"`
 	// This field isn't applicable to refund operations.
 	MethodReferenceId *MethodReferenceId `json:"methodReferenceId,omitempty" url:"methodReferenceId,omitempty"`
 	ReferenceId       Referenceidtrans   `json:"referenceId" url:"referenceId"`
@@ -5073,7 +5190,7 @@ func (r *ResponseDataRefunds) GetExpectedProcessingDateTime() *ExpectedProcessin
 	return r.ExpectedProcessingDateTime
 }
 
-func (r *ResponseDataRefunds) GetAvsResponseText() *Avsresponsetext {
+func (r *ResponseDataRefunds) GetAvsResponseText() *AvsResponseText {
 	if r == nil {
 		return nil
 	}
@@ -5087,7 +5204,7 @@ func (r *ResponseDataRefunds) GetCustomerId() *CustomerId {
 	return r.CustomerId
 }
 
-func (r *ResponseDataRefunds) GetCvvResponseText() *Cvvresponsetext {
+func (r *ResponseDataRefunds) GetCvvResponseText() *CvvResponseText {
 	if r == nil {
 		return nil
 	}
@@ -5149,7 +5266,7 @@ func (r *ResponseDataRefunds) SetExpectedProcessingDateTime(expectedProcessingDa
 
 // SetAvsResponseText sets the AvsResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *ResponseDataRefunds) SetAvsResponseText(avsResponseText *Avsresponsetext) {
+func (r *ResponseDataRefunds) SetAvsResponseText(avsResponseText *AvsResponseText) {
 	r.AvsResponseText = avsResponseText
 	r.require(responseDataRefundsFieldAvsResponseText)
 }
@@ -5163,7 +5280,7 @@ func (r *ResponseDataRefunds) SetCustomerId(customerId *CustomerId) {
 
 // SetCvvResponseText sets the CvvResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *ResponseDataRefunds) SetCvvResponseText(cvvResponseText *Cvvresponsetext) {
+func (r *ResponseDataRefunds) SetCvvResponseText(cvvResponseText *CvvResponseText) {
 	r.CvvResponseText = cvvResponseText
 	r.require(responseDataRefundsFieldCvvResponseText)
 }
@@ -8262,43 +8379,63 @@ func (t TransactionDetailRecordMethod) Ptr() *TransactionDetailRecordMethod {
 
 // Response data from payment processor
 var (
-	transactionDetailResponseDataFieldResponse            = big.NewInt(1 << 0)
-	transactionDetailResponseDataFieldResponsetext        = big.NewInt(1 << 1)
-	transactionDetailResponseDataFieldAuthcode            = big.NewInt(1 << 2)
-	transactionDetailResponseDataFieldTransactionid       = big.NewInt(1 << 3)
-	transactionDetailResponseDataFieldAvsresponse         = big.NewInt(1 << 4)
-	transactionDetailResponseDataFieldAvsresponseText     = big.NewInt(1 << 5)
-	transactionDetailResponseDataFieldCvvresponse         = big.NewInt(1 << 6)
-	transactionDetailResponseDataFieldCvvresponseText     = big.NewInt(1 << 7)
-	transactionDetailResponseDataFieldOrderid             = big.NewInt(1 << 8)
-	transactionDetailResponseDataFieldType                = big.NewInt(1 << 9)
-	transactionDetailResponseDataFieldResponseCode        = big.NewInt(1 << 10)
-	transactionDetailResponseDataFieldResponseCodeText    = big.NewInt(1 << 11)
-	transactionDetailResponseDataFieldCustomerVaultId     = big.NewInt(1 << 12)
-	transactionDetailResponseDataFieldEmvAuthResponseData = big.NewInt(1 << 13)
+	transactionDetailResponseDataFieldResultCode          = big.NewInt(1 << 0)
+	transactionDetailResponseDataFieldResultCodeText      = big.NewInt(1 << 1)
+	transactionDetailResponseDataFieldResponse            = big.NewInt(1 << 2)
+	transactionDetailResponseDataFieldResponsetext        = big.NewInt(1 << 3)
+	transactionDetailResponseDataFieldAuthcode            = big.NewInt(1 << 4)
+	transactionDetailResponseDataFieldTransactionid       = big.NewInt(1 << 5)
+	transactionDetailResponseDataFieldAvsresponse         = big.NewInt(1 << 6)
+	transactionDetailResponseDataFieldAvsresponseText     = big.NewInt(1 << 7)
+	transactionDetailResponseDataFieldCvvresponse         = big.NewInt(1 << 8)
+	transactionDetailResponseDataFieldCvvresponseText     = big.NewInt(1 << 9)
+	transactionDetailResponseDataFieldOrderid             = big.NewInt(1 << 10)
+	transactionDetailResponseDataFieldType                = big.NewInt(1 << 11)
+	transactionDetailResponseDataFieldResponseCode        = big.NewInt(1 << 12)
+	transactionDetailResponseDataFieldResponseCodeText    = big.NewInt(1 << 13)
+	transactionDetailResponseDataFieldCustomerVaultId     = big.NewInt(1 << 14)
+	transactionDetailResponseDataFieldEmvAuthResponseData = big.NewInt(1 << 15)
 )
 
 type TransactionDetailResponseData struct {
-	Response            *string          `json:"response,omitempty" url:"response,omitempty"`
-	Responsetext        Resulttext       `json:"responsetext" url:"responsetext"`
-	Authcode            *Authcode        `json:"authcode,omitempty" url:"authcode,omitempty"`
-	Transactionid       string           `json:"transactionid" url:"transactionid"`
-	Avsresponse         *string          `json:"avsresponse,omitempty" url:"avsresponse,omitempty"`
-	AvsresponseText     *Avsresponsetext `json:"avsresponse_text,omitempty" url:"avsresponse_text,omitempty"`
-	Cvvresponse         *string          `json:"cvvresponse,omitempty" url:"cvvresponse,omitempty"`
-	CvvresponseText     *Cvvresponsetext `json:"cvvresponse_text,omitempty" url:"cvvresponse_text,omitempty"`
-	Orderid             *OrderId         `json:"orderid,omitempty" url:"orderid,omitempty"`
-	Type                *string          `json:"type,omitempty" url:"type,omitempty"`
-	ResponseCode        string           `json:"response_code" url:"response_code"`
-	ResponseCodeText    string           `json:"response_code_text" url:"response_code_text"`
-	CustomerVaultId     *string          `json:"customer_vault_id,omitempty" url:"customer_vault_id,omitempty"`
-	EmvAuthResponseData *string          `json:"emv_auth_response_data,omitempty" url:"emv_auth_response_data,omitempty"`
+	// Unified result code for the transaction. See [Pay In unified response codes](/developers/references/pay-in-unified-response-codes) for more information.
+	ResultCode *string `json:"resultCode,omitempty" url:"resultCode,omitempty"`
+	// Description of the result code. See [Pay In unified response codes](/developers/references/pay-in-unified-response-codes) for more information.
+	ResultCodeText      *string              `json:"resultCodeText,omitempty" url:"resultCodeText,omitempty"`
+	Response            *string              `json:"response,omitempty" url:"response,omitempty"`
+	Responsetext        Resulttext           `json:"responsetext" url:"responsetext"`
+	Authcode            *Authcode            `json:"authcode,omitempty" url:"authcode,omitempty"`
+	Transactionid       string               `json:"transactionid" url:"transactionid"`
+	Avsresponse         *string              `json:"avsresponse,omitempty" url:"avsresponse,omitempty"`
+	AvsresponseText     *AvsResponseText     `json:"avsresponse_text,omitempty" url:"avsresponse_text,omitempty"`
+	Cvvresponse         *string              `json:"cvvresponse,omitempty" url:"cvvresponse,omitempty"`
+	CvvresponseText     *CvvResponseText     `json:"cvvresponse_text,omitempty" url:"cvvresponse_text,omitempty"`
+	Orderid             *OrderId             `json:"orderid,omitempty" url:"orderid,omitempty"`
+	Type                *string              `json:"type,omitempty" url:"type,omitempty"`
+	ResponseCode        string               `json:"response_code" url:"response_code"`
+	ResponseCodeText    string               `json:"response_code_text" url:"response_code_text"`
+	CustomerVaultId     *string              `json:"customer_vault_id,omitempty" url:"customer_vault_id,omitempty"`
+	EmvAuthResponseData *EmvAuthResponseData `json:"emv_auth_response_data,omitempty" url:"emv_auth_response_data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
+}
+
+func (t *TransactionDetailResponseData) GetResultCode() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ResultCode
+}
+
+func (t *TransactionDetailResponseData) GetResultCodeText() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ResultCodeText
 }
 
 func (t *TransactionDetailResponseData) GetResponse() *string {
@@ -8336,7 +8473,7 @@ func (t *TransactionDetailResponseData) GetAvsresponse() *string {
 	return t.Avsresponse
 }
 
-func (t *TransactionDetailResponseData) GetAvsresponseText() *Avsresponsetext {
+func (t *TransactionDetailResponseData) GetAvsresponseText() *AvsResponseText {
 	if t == nil {
 		return nil
 	}
@@ -8350,7 +8487,7 @@ func (t *TransactionDetailResponseData) GetCvvresponse() *string {
 	return t.Cvvresponse
 }
 
-func (t *TransactionDetailResponseData) GetCvvresponseText() *Cvvresponsetext {
+func (t *TransactionDetailResponseData) GetCvvresponseText() *CvvResponseText {
 	if t == nil {
 		return nil
 	}
@@ -8392,7 +8529,7 @@ func (t *TransactionDetailResponseData) GetCustomerVaultId() *string {
 	return t.CustomerVaultId
 }
 
-func (t *TransactionDetailResponseData) GetEmvAuthResponseData() *string {
+func (t *TransactionDetailResponseData) GetEmvAuthResponseData() *EmvAuthResponseData {
 	if t == nil {
 		return nil
 	}
@@ -8408,6 +8545,20 @@ func (t *TransactionDetailResponseData) require(field *big.Int) {
 		t.explicitFields = big.NewInt(0)
 	}
 	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetResultCode sets the ResultCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailResponseData) SetResultCode(resultCode *string) {
+	t.ResultCode = resultCode
+	t.require(transactionDetailResponseDataFieldResultCode)
+}
+
+// SetResultCodeText sets the ResultCodeText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionDetailResponseData) SetResultCodeText(resultCodeText *string) {
+	t.ResultCodeText = resultCodeText
+	t.require(transactionDetailResponseDataFieldResultCodeText)
 }
 
 // SetResponse sets the Response field and marks it as non-optional;
@@ -8447,7 +8598,7 @@ func (t *TransactionDetailResponseData) SetAvsresponse(avsresponse *string) {
 
 // SetAvsresponseText sets the AvsresponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailResponseData) SetAvsresponseText(avsresponseText *Avsresponsetext) {
+func (t *TransactionDetailResponseData) SetAvsresponseText(avsresponseText *AvsResponseText) {
 	t.AvsresponseText = avsresponseText
 	t.require(transactionDetailResponseDataFieldAvsresponseText)
 }
@@ -8461,7 +8612,7 @@ func (t *TransactionDetailResponseData) SetCvvresponse(cvvresponse *string) {
 
 // SetCvvresponseText sets the CvvresponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailResponseData) SetCvvresponseText(cvvresponseText *Cvvresponsetext) {
+func (t *TransactionDetailResponseData) SetCvvresponseText(cvvresponseText *CvvResponseText) {
 	t.CvvresponseText = cvvresponseText
 	t.require(transactionDetailResponseDataFieldCvvresponseText)
 }
@@ -8503,7 +8654,7 @@ func (t *TransactionDetailResponseData) SetCustomerVaultId(customerVaultId *stri
 
 // SetEmvAuthResponseData sets the EmvAuthResponseData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailResponseData) SetEmvAuthResponseData(emvAuthResponseData *string) {
+func (t *TransactionDetailResponseData) SetEmvAuthResponseData(emvAuthResponseData *EmvAuthResponseData) {
 	t.EmvAuthResponseData = emvAuthResponseData
 	t.require(transactionDetailResponseDataFieldEmvAuthResponseData)
 }
@@ -8675,8 +8826,8 @@ type ValidateResponseData struct {
 	ReferenceId       Referenceidtrans   `json:"referenceId" url:"referenceId"`
 	ResultCode        ResultCode         `json:"resultCode" url:"resultCode"`
 	ResultText        Resulttext         `json:"resultText" url:"resultText"`
-	AvsResponseText   Avsresponsetext    `json:"avsResponseText" url:"avsResponseText"`
-	CvvResponseText   Cvvresponsetext    `json:"cvvResponseText" url:"cvvResponseText"`
+	AvsResponseText   AvsResponseText    `json:"avsResponseText" url:"avsResponseText"`
+	CvvResponseText   CvvResponseText    `json:"cvvResponseText" url:"cvvResponseText"`
 	CustomerId        Customeridtrans    `json:"customerId" url:"customerId"`
 	MethodReferenceId *MethodReferenceId `json:"methodReferenceId,omitempty" url:"methodReferenceId,omitempty"`
 
@@ -8715,14 +8866,14 @@ func (v *ValidateResponseData) GetResultText() Resulttext {
 	return v.ResultText
 }
 
-func (v *ValidateResponseData) GetAvsResponseText() Avsresponsetext {
+func (v *ValidateResponseData) GetAvsResponseText() AvsResponseText {
 	if v == nil {
 		return ""
 	}
 	return v.AvsResponseText
 }
 
-func (v *ValidateResponseData) GetCvvResponseText() Cvvresponsetext {
+func (v *ValidateResponseData) GetCvvResponseText() CvvResponseText {
 	if v == nil {
 		return ""
 	}
@@ -8784,14 +8935,14 @@ func (v *ValidateResponseData) SetResultText(resultText Resulttext) {
 
 // SetAvsResponseText sets the AvsResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *ValidateResponseData) SetAvsResponseText(avsResponseText Avsresponsetext) {
+func (v *ValidateResponseData) SetAvsResponseText(avsResponseText AvsResponseText) {
 	v.AvsResponseText = avsResponseText
 	v.require(validateResponseDataFieldAvsResponseText)
 }
 
 // SetCvvResponseText sets the CvvResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *ValidateResponseData) SetCvvResponseText(cvvResponseText Cvvresponsetext) {
+func (v *ValidateResponseData) SetCvvResponseText(cvvResponseText CvvResponseText) {
 	v.CvvResponseText = cvvResponseText
 	v.require(validateResponseDataFieldCvvResponseText)
 }
@@ -9025,8 +9176,8 @@ type VoidResponseData struct {
 	ReferenceId       Referenceidtrans   `json:"referenceId" url:"referenceId"`
 	ResultCode        ResultCode         `json:"resultCode" url:"resultCode"`
 	ResultText        Resulttext         `json:"resultText" url:"resultText"`
-	AvsResponseText   *Avsresponsetext   `json:"avsResponseText,omitempty" url:"avsResponseText,omitempty"`
-	CvvResponseText   *Cvvresponsetext   `json:"cvvResponseText,omitempty" url:"cvvResponseText,omitempty"`
+	AvsResponseText   *AvsResponseText   `json:"avsResponseText,omitempty" url:"avsResponseText,omitempty"`
+	CvvResponseText   *CvvResponseText   `json:"cvvResponseText,omitempty" url:"cvvResponseText,omitempty"`
 	CustomerId        *Customeridtrans   `json:"customerId,omitempty" url:"customerId,omitempty"`
 	MethodReferenceId *MethodReferenceId `json:"methodReferenceId,omitempty" url:"methodReferenceId,omitempty"`
 
@@ -9065,14 +9216,14 @@ func (v *VoidResponseData) GetResultText() Resulttext {
 	return v.ResultText
 }
 
-func (v *VoidResponseData) GetAvsResponseText() *Avsresponsetext {
+func (v *VoidResponseData) GetAvsResponseText() *AvsResponseText {
 	if v == nil {
 		return nil
 	}
 	return v.AvsResponseText
 }
 
-func (v *VoidResponseData) GetCvvResponseText() *Cvvresponsetext {
+func (v *VoidResponseData) GetCvvResponseText() *CvvResponseText {
 	if v == nil {
 		return nil
 	}
@@ -9134,14 +9285,14 @@ func (v *VoidResponseData) SetResultText(resultText Resulttext) {
 
 // SetAvsResponseText sets the AvsResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VoidResponseData) SetAvsResponseText(avsResponseText *Avsresponsetext) {
+func (v *VoidResponseData) SetAvsResponseText(avsResponseText *AvsResponseText) {
 	v.AvsResponseText = avsResponseText
 	v.require(voidResponseDataFieldAvsResponseText)
 }
 
 // SetCvvResponseText sets the CvvResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VoidResponseData) SetCvvResponseText(cvvResponseText *Cvvresponsetext) {
+func (v *VoidResponseData) SetCvvResponseText(cvvResponseText *CvvResponseText) {
 	v.CvvResponseText = cvvResponseText
 	v.require(voidResponseDataFieldCvvResponseText)
 }

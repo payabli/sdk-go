@@ -855,7 +855,10 @@ func (a *AutoElement) String() string {
 type Avgmonthly = *float64
 
 // Text code describing the result for address validation (applies only for card transactions).
-type Avsresponsetext = string
+type AvsResponse = string
+
+// Text code describing the result for address validation (applies only for card transactions).
+type AvsResponseText = string
 
 // Business address. This must be a physical address, not a P.O. box.
 type Baddress1 = string
@@ -6039,7 +6042,10 @@ func (c *CustomerSummaryRecord) String() string {
 type Customeridtrans = int64
 
 // Text code describing the result for CVV validation (applies only for card transactions).
-type Cvvresponsetext = string
+type CvvResponse = string
+
+// Text code describing the result for CVV validation (applies only for card transactions).
+type CvvResponseText = string
 
 // Date in YYYY-MM-DD format.
 type Datenullable = *time.Time
@@ -6373,6 +6379,9 @@ func (e *Element) String() string {
 
 // Email address.
 type Email = string
+
+// EMV authorization response data, applicable for card transactions.
+type EmvAuthResponseData = string
 
 // Toggles whether the section or element is enabled.
 type Enabled = bool
@@ -7993,6 +8002,9 @@ type Maddress1 = string
 // Masked card or bank account used in transaction. In the case of Apple Pay, this is a masked DPAN (device primary account number).
 type Maskedaccount = string
 
+// Maximum ticket amount for transactions within the paypoint. Contact Payabli support to request a change to this value.
+type MaxTicket = *float64
+
 // Business Merchant Category Code (MCC). [This resource](https://github.com/greggles/mcc-codes/blob/main/mcc_codes.csv) lists MCC codes.
 type Mcc = string
 
@@ -9002,6 +9014,9 @@ func (m *MethodsList) String() string {
 type Mfa = *bool
 
 type MfaMode = int
+
+// Minimum ticket amount for transactions within the paypoint. Contact Payabli support to request a change to this value.
+type MinTicket = *float64
 
 // The business's mailing address state.
 type Mstate = string
@@ -12866,9 +12881,9 @@ var (
 
 type PayabliApiResponse0ResponseData struct {
 	AuthCode          *Authcode          `json:"AuthCode,omitempty" url:"AuthCode,omitempty"`
-	AvsResponseText   *Avsresponsetext   `json:"avsResponseText,omitempty" url:"avsResponseText,omitempty"`
+	AvsResponseText   *AvsResponseText   `json:"avsResponseText,omitempty" url:"avsResponseText,omitempty"`
 	CustomerId        *Customeridtrans   `json:"CustomerId,omitempty" url:"CustomerId,omitempty"`
-	CvvResponseText   *Cvvresponsetext   `json:"cvvResponseText,omitempty" url:"cvvResponseText,omitempty"`
+	CvvResponseText   *CvvResponseText   `json:"cvvResponseText,omitempty" url:"cvvResponseText,omitempty"`
 	MethodReferenceId *MethodReferenceId `json:"methodReferenceId,omitempty" url:"methodReferenceId,omitempty"`
 	ReferenceId       *Referenceidtrans  `json:"ReferenceId,omitempty" url:"ReferenceId,omitempty"`
 	ResultCode        *ResultCode        `json:"ResultCode,omitempty" url:"ResultCode,omitempty"`
@@ -12888,7 +12903,7 @@ func (p *PayabliApiResponse0ResponseData) GetAuthCode() *Authcode {
 	return p.AuthCode
 }
 
-func (p *PayabliApiResponse0ResponseData) GetAvsResponseText() *Avsresponsetext {
+func (p *PayabliApiResponse0ResponseData) GetAvsResponseText() *AvsResponseText {
 	if p == nil {
 		return nil
 	}
@@ -12902,7 +12917,7 @@ func (p *PayabliApiResponse0ResponseData) GetCustomerId() *Customeridtrans {
 	return p.CustomerId
 }
 
-func (p *PayabliApiResponse0ResponseData) GetCvvResponseText() *Cvvresponsetext {
+func (p *PayabliApiResponse0ResponseData) GetCvvResponseText() *CvvResponseText {
 	if p == nil {
 		return nil
 	}
@@ -12957,7 +12972,7 @@ func (p *PayabliApiResponse0ResponseData) SetAuthCode(authCode *Authcode) {
 
 // SetAvsResponseText sets the AvsResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponse0ResponseData) SetAvsResponseText(avsResponseText *Avsresponsetext) {
+func (p *PayabliApiResponse0ResponseData) SetAvsResponseText(avsResponseText *AvsResponseText) {
 	p.AvsResponseText = avsResponseText
 	p.require(payabliApiResponse0ResponseDataFieldAvsResponseText)
 }
@@ -12971,7 +12986,7 @@ func (p *PayabliApiResponse0ResponseData) SetCustomerId(customerId *Customeridtr
 
 // SetCvvResponseText sets the CvvResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponse0ResponseData) SetCvvResponseText(cvvResponseText *Cvvresponsetext) {
+func (p *PayabliApiResponse0ResponseData) SetCvvResponseText(cvvResponseText *CvvResponseText) {
 	p.CvvResponseText = cvvResponseText
 	p.require(payabliApiResponse0ResponseDataFieldCvvResponseText)
 }
@@ -13761,17 +13776,17 @@ var (
 )
 
 type PayabliCredentialsPascal struct {
-	Service          *string  `json:"Service,omitempty" url:"Service,omitempty"`
-	Mode             *int     `json:"Mode,omitempty" url:"Mode,omitempty"`
-	MinTicket        *float64 `json:"MinTicket,omitempty" url:"MinTicket,omitempty"`
-	MaxTicket        *float64 `json:"MaxTicket,omitempty" url:"MaxTicket,omitempty"`
-	CfeeFix          *float64 `json:"CfeeFix,omitempty" url:"CfeeFix,omitempty"`
-	CfeeFloat        *float64 `json:"CfeeFloat,omitempty" url:"CfeeFloat,omitempty"`
-	CfeeMin          *float64 `json:"CfeeMin,omitempty" url:"CfeeMin,omitempty"`
-	CfeeMax          *float64 `json:"CfeeMax,omitempty" url:"CfeeMax,omitempty"`
-	AccountId        *string  `json:"AccountId,omitempty" url:"AccountId,omitempty"`
-	ReferenceId      *int64   `json:"ReferenceId,omitempty" url:"ReferenceId,omitempty"`
-	AcceptSameDayAch *bool    `json:"acceptSameDayACH,omitempty" url:"acceptSameDayACH,omitempty"`
+	Service          *string   `json:"Service,omitempty" url:"Service,omitempty"`
+	Mode             *int      `json:"Mode,omitempty" url:"Mode,omitempty"`
+	MinTicket        MinTicket `json:"MinTicket,omitempty" url:"MinTicket,omitempty"`
+	MaxTicket        MaxTicket `json:"MaxTicket,omitempty" url:"MaxTicket,omitempty"`
+	CfeeFix          *float64  `json:"CfeeFix,omitempty" url:"CfeeFix,omitempty"`
+	CfeeFloat        *float64  `json:"CfeeFloat,omitempty" url:"CfeeFloat,omitempty"`
+	CfeeMin          *float64  `json:"CfeeMin,omitempty" url:"CfeeMin,omitempty"`
+	CfeeMax          *float64  `json:"CfeeMax,omitempty" url:"CfeeMax,omitempty"`
+	AccountId        *string   `json:"AccountId,omitempty" url:"AccountId,omitempty"`
+	ReferenceId      *int64    `json:"ReferenceId,omitempty" url:"ReferenceId,omitempty"`
+	AcceptSameDayAch *bool     `json:"acceptSameDayACH,omitempty" url:"acceptSameDayACH,omitempty"`
 	// The default currency for the paypoint, either `USD` or `CAD`.
 	Currency *string `json:"Currency,omitempty" url:"Currency,omitempty"`
 
@@ -13796,14 +13811,14 @@ func (p *PayabliCredentialsPascal) GetMode() *int {
 	return p.Mode
 }
 
-func (p *PayabliCredentialsPascal) GetMinTicket() *float64 {
+func (p *PayabliCredentialsPascal) GetMinTicket() MinTicket {
 	if p == nil {
 		return nil
 	}
 	return p.MinTicket
 }
 
-func (p *PayabliCredentialsPascal) GetMaxTicket() *float64 {
+func (p *PayabliCredentialsPascal) GetMaxTicket() MaxTicket {
 	if p == nil {
 		return nil
 	}
@@ -13893,14 +13908,14 @@ func (p *PayabliCredentialsPascal) SetMode(mode *int) {
 
 // SetMinTicket sets the MinTicket field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliCredentialsPascal) SetMinTicket(minTicket *float64) {
+func (p *PayabliCredentialsPascal) SetMinTicket(minTicket MinTicket) {
 	p.MinTicket = minTicket
 	p.require(payabliCredentialsPascalFieldMinTicket)
 }
 
 // SetMaxTicket sets the MaxTicket field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliCredentialsPascal) SetMaxTicket(maxTicket *float64) {
+func (p *PayabliCredentialsPascal) SetMaxTicket(maxTicket MaxTicket) {
 	p.MaxTicket = maxTicket
 	p.require(payabliCredentialsPascalFieldMaxTicket)
 }
@@ -16724,23 +16739,20 @@ var (
 	queryResponseDataFieldResponseCode        = big.NewInt(1 << 8)
 	queryResponseDataFieldResponseCodeText    = big.NewInt(1 << 9)
 	queryResponseDataFieldResponsetext        = big.NewInt(1 << 10)
-	queryResponseDataFieldTransactionid       = big.NewInt(1 << 11)
-	queryResponseDataFieldType                = big.NewInt(1 << 12)
+	queryResponseDataFieldResultCode          = big.NewInt(1 << 11)
+	queryResponseDataFieldResultCodeText      = big.NewInt(1 << 12)
+	queryResponseDataFieldTransactionid       = big.NewInt(1 << 13)
+	queryResponseDataFieldType                = big.NewInt(1 << 14)
 )
 
 type QueryResponseData struct {
-	Authcode *Authcode `json:"authcode,omitempty" url:"authcode,omitempty"`
-	// Text code describing the result for address validation (applies only for card transactions).
-	Avsresponse *string `json:"avsresponse,omitempty" url:"avsresponse,omitempty"`
-	// Text code describing the result for address validation (applies only for card transactions).
-	AvsresponseText *string `json:"avsresponse_text,omitempty" url:"avsresponse_text,omitempty"`
-	// Text code describing the result for CVV validation (applies only for card transactions).
-	Cvvresponse *string `json:"cvvresponse,omitempty" url:"cvvresponse,omitempty"`
-	// Text code describing the result for CVV validation (applies only for card transactions).
-	CvvresponseText *string `json:"cvvresponse_text,omitempty" url:"cvvresponse_text,omitempty"`
-	// EMV authorization response data, applicable for card transactions.
-	EmvAuthResponseData *string  `json:"emv_auth_response_data,omitempty" url:"emv_auth_response_data,omitempty"`
-	Orderid             *OrderId `json:"orderid,omitempty" url:"orderid,omitempty"`
+	Authcode            *Authcode            `json:"authcode,omitempty" url:"authcode,omitempty"`
+	Avsresponse         *AvsResponse         `json:"avsresponse,omitempty" url:"avsresponse,omitempty"`
+	AvsresponseText     *AvsResponseText     `json:"avsresponse_text,omitempty" url:"avsresponse_text,omitempty"`
+	Cvvresponse         *CvvResponse         `json:"cvvresponse,omitempty" url:"cvvresponse,omitempty"`
+	CvvresponseText     *CvvResponseText     `json:"cvvresponse_text,omitempty" url:"cvvresponse_text,omitempty"`
+	EmvAuthResponseData *EmvAuthResponseData `json:"emv_auth_response_data,omitempty" url:"emv_auth_response_data,omitempty"`
+	Orderid             *OrderId             `json:"orderid,omitempty" url:"orderid,omitempty"`
 	// Response text for operation: 'Success' or 'Declined'.
 	Response *string `json:"response,omitempty" url:"response,omitempty"`
 	// Internal result code processing the transaction. Value 1 indicates successful operation, values 2 and 3 indicate errors.
@@ -16748,7 +16760,9 @@ type QueryResponseData struct {
 	// Text describing the result. If resultCode = 1, will return 'Approved' or a general success message. If resultCode = 2 or 3, will contain the cause of the decline.
 	ResponseCodeText *string `json:"response_code_text,omitempty" url:"response_code_text,omitempty"`
 	// Text describing the result. If resultCode = 1, will return 'Approved' or a general success message. If resultCode = 2 or 3, will contain the cause of the decline.
-	Responsetext *string `json:"responsetext,omitempty" url:"responsetext,omitempty"`
+	Responsetext   *string         `json:"responsetext,omitempty" url:"responsetext,omitempty"`
+	ResultCode     *ResultCodev2   `json:"resultCode,omitempty" url:"resultCode,omitempty"`
+	ResultCodeText *ResultCodeText `json:"resultCodeText,omitempty" url:"resultCodeText,omitempty"`
 	// The transaction identifier in Payabli.
 	Transactionid *string `json:"transactionid,omitempty" url:"transactionid,omitempty"`
 	// Type of transaction or operation.
@@ -16768,35 +16782,35 @@ func (q *QueryResponseData) GetAuthcode() *Authcode {
 	return q.Authcode
 }
 
-func (q *QueryResponseData) GetAvsresponse() *string {
+func (q *QueryResponseData) GetAvsresponse() *AvsResponse {
 	if q == nil {
 		return nil
 	}
 	return q.Avsresponse
 }
 
-func (q *QueryResponseData) GetAvsresponseText() *string {
+func (q *QueryResponseData) GetAvsresponseText() *AvsResponseText {
 	if q == nil {
 		return nil
 	}
 	return q.AvsresponseText
 }
 
-func (q *QueryResponseData) GetCvvresponse() *string {
+func (q *QueryResponseData) GetCvvresponse() *CvvResponse {
 	if q == nil {
 		return nil
 	}
 	return q.Cvvresponse
 }
 
-func (q *QueryResponseData) GetCvvresponseText() *string {
+func (q *QueryResponseData) GetCvvresponseText() *CvvResponseText {
 	if q == nil {
 		return nil
 	}
 	return q.CvvresponseText
 }
 
-func (q *QueryResponseData) GetEmvAuthResponseData() *string {
+func (q *QueryResponseData) GetEmvAuthResponseData() *EmvAuthResponseData {
 	if q == nil {
 		return nil
 	}
@@ -16838,6 +16852,20 @@ func (q *QueryResponseData) GetResponsetext() *string {
 	return q.Responsetext
 }
 
+func (q *QueryResponseData) GetResultCode() *ResultCodev2 {
+	if q == nil {
+		return nil
+	}
+	return q.ResultCode
+}
+
+func (q *QueryResponseData) GetResultCodeText() *ResultCodeText {
+	if q == nil {
+		return nil
+	}
+	return q.ResultCodeText
+}
+
 func (q *QueryResponseData) GetTransactionid() *string {
 	if q == nil {
 		return nil
@@ -16872,35 +16900,35 @@ func (q *QueryResponseData) SetAuthcode(authcode *Authcode) {
 
 // SetAvsresponse sets the Avsresponse field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryResponseData) SetAvsresponse(avsresponse *string) {
+func (q *QueryResponseData) SetAvsresponse(avsresponse *AvsResponse) {
 	q.Avsresponse = avsresponse
 	q.require(queryResponseDataFieldAvsresponse)
 }
 
 // SetAvsresponseText sets the AvsresponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryResponseData) SetAvsresponseText(avsresponseText *string) {
+func (q *QueryResponseData) SetAvsresponseText(avsresponseText *AvsResponseText) {
 	q.AvsresponseText = avsresponseText
 	q.require(queryResponseDataFieldAvsresponseText)
 }
 
 // SetCvvresponse sets the Cvvresponse field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryResponseData) SetCvvresponse(cvvresponse *string) {
+func (q *QueryResponseData) SetCvvresponse(cvvresponse *CvvResponse) {
 	q.Cvvresponse = cvvresponse
 	q.require(queryResponseDataFieldCvvresponse)
 }
 
 // SetCvvresponseText sets the CvvresponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryResponseData) SetCvvresponseText(cvvresponseText *string) {
+func (q *QueryResponseData) SetCvvresponseText(cvvresponseText *CvvResponseText) {
 	q.CvvresponseText = cvvresponseText
 	q.require(queryResponseDataFieldCvvresponseText)
 }
 
 // SetEmvAuthResponseData sets the EmvAuthResponseData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryResponseData) SetEmvAuthResponseData(emvAuthResponseData *string) {
+func (q *QueryResponseData) SetEmvAuthResponseData(emvAuthResponseData *EmvAuthResponseData) {
 	q.EmvAuthResponseData = emvAuthResponseData
 	q.require(queryResponseDataFieldEmvAuthResponseData)
 }
@@ -16938,6 +16966,20 @@ func (q *QueryResponseData) SetResponseCodeText(responseCodeText *string) {
 func (q *QueryResponseData) SetResponsetext(responsetext *string) {
 	q.Responsetext = responsetext
 	q.require(queryResponseDataFieldResponsetext)
+}
+
+// SetResultCode sets the ResultCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseData) SetResultCode(resultCode *ResultCodev2) {
+	q.ResultCode = resultCode
+	q.require(queryResponseDataFieldResultCode)
+}
+
+// SetResultCodeText sets the ResultCodeText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseData) SetResultCodeText(resultCodeText *ResultCodeText) {
+	q.ResultCodeText = resultCodeText
+	q.require(queryResponseDataFieldResultCodeText)
 }
 
 // SetTransactionid sets the Transactionid field and marks it as non-optional;
@@ -17396,7 +17438,7 @@ type QueryTransactionPayorData struct {
 	ShippingCountry  *Shippingcountry           `json:"ShippingCountry,omitempty" url:"ShippingCountry,omitempty"`
 	CustomerId       *CustomerId                `json:"customerId,omitempty" url:"customerId,omitempty"`
 	CustomerStatus   *CustomerStatus            `json:"customerStatus,omitempty" url:"customerStatus,omitempty"`
-	AdditionalData   *AdditionalDataString      `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
+	AdditionalData   *AdditionalDataMap         `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -17552,7 +17594,7 @@ func (q *QueryTransactionPayorData) GetCustomerStatus() *CustomerStatus {
 	return q.CustomerStatus
 }
 
-func (q *QueryTransactionPayorData) GetAdditionalData() *AdditionalDataString {
+func (q *QueryTransactionPayorData) GetAdditionalData() *AdditionalDataMap {
 	if q == nil {
 		return nil
 	}
@@ -17719,7 +17761,7 @@ func (q *QueryTransactionPayorData) SetCustomerStatus(customerStatus *CustomerSt
 
 // SetAdditionalData sets the AdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryTransactionPayorData) SetAdditionalData(additionalData *AdditionalDataString) {
+func (q *QueryTransactionPayorData) SetAdditionalData(additionalData *AdditionalDataMap) {
 	q.AdditionalData = additionalData
 	q.require(queryTransactionPayorDataFieldAdditionalData)
 }
@@ -18101,6 +18143,12 @@ func (r *Responsedatanonobject) Accept(visitor ResponsedatanonobjectVisitor) err
 // values 2 and 3 indicate errors. A value of 10 indicates that an operation
 // has been initiated and is pending.
 type ResultCode = int
+
+// Description of the result code. See [Pay In unified response codes](/developers/references/pay-in-unified-response-codes) for more information.
+type ResultCodeText = string
+
+// Unified result code for the transaction. See [Pay In unified response codes](/developers/references/pay-in-unified-response-codes) for more information.
+type ResultCodev2 = string
 
 // Text describing the result. If `ResultCode` = 1, will return 'Approved' or a general success message. If `ResultCode“ = 2 or 3, will contain the cause of the error or decline.
 type Resulttext = string
@@ -22649,6 +22697,293 @@ func (v *VendorQueryRecord) String() string {
 	return fmt.Sprintf("%#v", v)
 }
 
+// Object containing vendor's bank information
+var (
+	vendorResponseBillingDataFieldId                    = big.NewInt(1 << 0)
+	vendorResponseBillingDataFieldAccountId             = big.NewInt(1 << 1)
+	vendorResponseBillingDataFieldNickname              = big.NewInt(1 << 2)
+	vendorResponseBillingDataFieldBankName              = big.NewInt(1 << 3)
+	vendorResponseBillingDataFieldRoutingAccount        = big.NewInt(1 << 4)
+	vendorResponseBillingDataFieldAccountNumber         = big.NewInt(1 << 5)
+	vendorResponseBillingDataFieldTypeAccount           = big.NewInt(1 << 6)
+	vendorResponseBillingDataFieldBankAccountHolderName = big.NewInt(1 << 7)
+	vendorResponseBillingDataFieldBankAccountHolderType = big.NewInt(1 << 8)
+	vendorResponseBillingDataFieldBankAccountFunction   = big.NewInt(1 << 9)
+	vendorResponseBillingDataFieldVerified              = big.NewInt(1 << 10)
+	vendorResponseBillingDataFieldStatus                = big.NewInt(1 << 11)
+	vendorResponseBillingDataFieldServices              = big.NewInt(1 << 12)
+	vendorResponseBillingDataFieldDefault               = big.NewInt(1 << 13)
+)
+
+type VendorResponseBillingData struct {
+	Id                    *int          `json:"id,omitempty" url:"id,omitempty"`
+	AccountId             *string       `json:"accountId,omitempty" url:"accountId,omitempty"`
+	Nickname              *string       `json:"nickname,omitempty" url:"nickname,omitempty"`
+	BankName              *string       `json:"bankName,omitempty" url:"bankName,omitempty"`
+	RoutingAccount        *string       `json:"routingAccount,omitempty" url:"routingAccount,omitempty"`
+	AccountNumber         *string       `json:"accountNumber,omitempty" url:"accountNumber,omitempty"`
+	TypeAccount           *string       `json:"typeAccount,omitempty" url:"typeAccount,omitempty"`
+	BankAccountHolderName *string       `json:"bankAccountHolderName,omitempty" url:"bankAccountHolderName,omitempty"`
+	BankAccountHolderType *string       `json:"bankAccountHolderType,omitempty" url:"bankAccountHolderType,omitempty"`
+	BankAccountFunction   *int          `json:"bankAccountFunction,omitempty" url:"bankAccountFunction,omitempty"`
+	Verified              *bool         `json:"verified,omitempty" url:"verified,omitempty"`
+	Status                *int          `json:"status,omitempty" url:"status,omitempty"`
+	Services              []interface{} `json:"services,omitempty" url:"services,omitempty"`
+	Default               *bool         `json:"default,omitempty" url:"default,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *VendorResponseBillingData) GetId() *int {
+	if v == nil {
+		return nil
+	}
+	return v.Id
+}
+
+func (v *VendorResponseBillingData) GetAccountId() *string {
+	if v == nil {
+		return nil
+	}
+	return v.AccountId
+}
+
+func (v *VendorResponseBillingData) GetNickname() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Nickname
+}
+
+func (v *VendorResponseBillingData) GetBankName() *string {
+	if v == nil {
+		return nil
+	}
+	return v.BankName
+}
+
+func (v *VendorResponseBillingData) GetRoutingAccount() *string {
+	if v == nil {
+		return nil
+	}
+	return v.RoutingAccount
+}
+
+func (v *VendorResponseBillingData) GetAccountNumber() *string {
+	if v == nil {
+		return nil
+	}
+	return v.AccountNumber
+}
+
+func (v *VendorResponseBillingData) GetTypeAccount() *string {
+	if v == nil {
+		return nil
+	}
+	return v.TypeAccount
+}
+
+func (v *VendorResponseBillingData) GetBankAccountHolderName() *string {
+	if v == nil {
+		return nil
+	}
+	return v.BankAccountHolderName
+}
+
+func (v *VendorResponseBillingData) GetBankAccountHolderType() *string {
+	if v == nil {
+		return nil
+	}
+	return v.BankAccountHolderType
+}
+
+func (v *VendorResponseBillingData) GetBankAccountFunction() *int {
+	if v == nil {
+		return nil
+	}
+	return v.BankAccountFunction
+}
+
+func (v *VendorResponseBillingData) GetVerified() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.Verified
+}
+
+func (v *VendorResponseBillingData) GetStatus() *int {
+	if v == nil {
+		return nil
+	}
+	return v.Status
+}
+
+func (v *VendorResponseBillingData) GetServices() []interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.Services
+}
+
+func (v *VendorResponseBillingData) GetDefault() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.Default
+}
+
+func (v *VendorResponseBillingData) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *VendorResponseBillingData) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetId(id *int) {
+	v.Id = id
+	v.require(vendorResponseBillingDataFieldId)
+}
+
+// SetAccountId sets the AccountId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetAccountId(accountId *string) {
+	v.AccountId = accountId
+	v.require(vendorResponseBillingDataFieldAccountId)
+}
+
+// SetNickname sets the Nickname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetNickname(nickname *string) {
+	v.Nickname = nickname
+	v.require(vendorResponseBillingDataFieldNickname)
+}
+
+// SetBankName sets the BankName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetBankName(bankName *string) {
+	v.BankName = bankName
+	v.require(vendorResponseBillingDataFieldBankName)
+}
+
+// SetRoutingAccount sets the RoutingAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetRoutingAccount(routingAccount *string) {
+	v.RoutingAccount = routingAccount
+	v.require(vendorResponseBillingDataFieldRoutingAccount)
+}
+
+// SetAccountNumber sets the AccountNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetAccountNumber(accountNumber *string) {
+	v.AccountNumber = accountNumber
+	v.require(vendorResponseBillingDataFieldAccountNumber)
+}
+
+// SetTypeAccount sets the TypeAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetTypeAccount(typeAccount *string) {
+	v.TypeAccount = typeAccount
+	v.require(vendorResponseBillingDataFieldTypeAccount)
+}
+
+// SetBankAccountHolderName sets the BankAccountHolderName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetBankAccountHolderName(bankAccountHolderName *string) {
+	v.BankAccountHolderName = bankAccountHolderName
+	v.require(vendorResponseBillingDataFieldBankAccountHolderName)
+}
+
+// SetBankAccountHolderType sets the BankAccountHolderType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetBankAccountHolderType(bankAccountHolderType *string) {
+	v.BankAccountHolderType = bankAccountHolderType
+	v.require(vendorResponseBillingDataFieldBankAccountHolderType)
+}
+
+// SetBankAccountFunction sets the BankAccountFunction field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetBankAccountFunction(bankAccountFunction *int) {
+	v.BankAccountFunction = bankAccountFunction
+	v.require(vendorResponseBillingDataFieldBankAccountFunction)
+}
+
+// SetVerified sets the Verified field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetVerified(verified *bool) {
+	v.Verified = verified
+	v.require(vendorResponseBillingDataFieldVerified)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetStatus(status *int) {
+	v.Status = status
+	v.require(vendorResponseBillingDataFieldStatus)
+}
+
+// SetServices sets the Services field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetServices(services []interface{}) {
+	v.Services = services
+	v.require(vendorResponseBillingDataFieldServices)
+}
+
+// SetDefault sets the Default field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseBillingData) SetDefault(default_ *bool) {
+	v.Default = default_
+	v.require(vendorResponseBillingDataFieldDefault)
+}
+
+func (v *VendorResponseBillingData) UnmarshalJSON(data []byte) error {
+	type unmarshaler VendorResponseBillingData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VendorResponseBillingData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VendorResponseBillingData) MarshalJSON() ([]byte, error) {
+	type embed VendorResponseBillingData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *VendorResponseBillingData) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
 // Stored payment method information
 var (
 	vendorResponseStoredMethodFieldIdPmethod      = big.NewInt(1 << 0)
@@ -22969,6 +23304,325 @@ func (v *VendorResponseStoredMethod) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VendorResponseStoredMethod) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+// Vendor bill summary statistics
+var (
+	vendorResponseSummaryFieldActiveBills            = big.NewInt(1 << 0)
+	vendorResponseSummaryFieldPendingBills           = big.NewInt(1 << 1)
+	vendorResponseSummaryFieldInTransitBills         = big.NewInt(1 << 2)
+	vendorResponseSummaryFieldPaidBills              = big.NewInt(1 << 3)
+	vendorResponseSummaryFieldOverdueBills           = big.NewInt(1 << 4)
+	vendorResponseSummaryFieldApprovedBills          = big.NewInt(1 << 5)
+	vendorResponseSummaryFieldDisapprovedBills       = big.NewInt(1 << 6)
+	vendorResponseSummaryFieldTotalBills             = big.NewInt(1 << 7)
+	vendorResponseSummaryFieldActiveBillsAmount      = big.NewInt(1 << 8)
+	vendorResponseSummaryFieldPendingBillsAmount     = big.NewInt(1 << 9)
+	vendorResponseSummaryFieldInTransitBillsAmount   = big.NewInt(1 << 10)
+	vendorResponseSummaryFieldPaidBillsAmount        = big.NewInt(1 << 11)
+	vendorResponseSummaryFieldOverdueBillsAmount     = big.NewInt(1 << 12)
+	vendorResponseSummaryFieldApprovedBillsAmount    = big.NewInt(1 << 13)
+	vendorResponseSummaryFieldDisapprovedBillsAmount = big.NewInt(1 << 14)
+	vendorResponseSummaryFieldTotalBillsAmount       = big.NewInt(1 << 15)
+)
+
+type VendorResponseSummary struct {
+	ActiveBills            *int     `json:"ActiveBills,omitempty" url:"ActiveBills,omitempty"`
+	PendingBills           *int     `json:"PendingBills,omitempty" url:"PendingBills,omitempty"`
+	InTransitBills         *int     `json:"InTransitBills,omitempty" url:"InTransitBills,omitempty"`
+	PaidBills              *int     `json:"PaidBills,omitempty" url:"PaidBills,omitempty"`
+	OverdueBills           *int     `json:"OverdueBills,omitempty" url:"OverdueBills,omitempty"`
+	ApprovedBills          *int     `json:"ApprovedBills,omitempty" url:"ApprovedBills,omitempty"`
+	DisapprovedBills       *int     `json:"DisapprovedBills,omitempty" url:"DisapprovedBills,omitempty"`
+	TotalBills             *int     `json:"TotalBills,omitempty" url:"TotalBills,omitempty"`
+	ActiveBillsAmount      *float64 `json:"ActiveBillsAmount,omitempty" url:"ActiveBillsAmount,omitempty"`
+	PendingBillsAmount     *float64 `json:"PendingBillsAmount,omitempty" url:"PendingBillsAmount,omitempty"`
+	InTransitBillsAmount   *float64 `json:"InTransitBillsAmount,omitempty" url:"InTransitBillsAmount,omitempty"`
+	PaidBillsAmount        *float64 `json:"PaidBillsAmount,omitempty" url:"PaidBillsAmount,omitempty"`
+	OverdueBillsAmount     *float64 `json:"OverdueBillsAmount,omitempty" url:"OverdueBillsAmount,omitempty"`
+	ApprovedBillsAmount    *float64 `json:"ApprovedBillsAmount,omitempty" url:"ApprovedBillsAmount,omitempty"`
+	DisapprovedBillsAmount *float64 `json:"DisapprovedBillsAmount,omitempty" url:"DisapprovedBillsAmount,omitempty"`
+	TotalBillsAmount       *float64 `json:"TotalBillsAmount,omitempty" url:"TotalBillsAmount,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *VendorResponseSummary) GetActiveBills() *int {
+	if v == nil {
+		return nil
+	}
+	return v.ActiveBills
+}
+
+func (v *VendorResponseSummary) GetPendingBills() *int {
+	if v == nil {
+		return nil
+	}
+	return v.PendingBills
+}
+
+func (v *VendorResponseSummary) GetInTransitBills() *int {
+	if v == nil {
+		return nil
+	}
+	return v.InTransitBills
+}
+
+func (v *VendorResponseSummary) GetPaidBills() *int {
+	if v == nil {
+		return nil
+	}
+	return v.PaidBills
+}
+
+func (v *VendorResponseSummary) GetOverdueBills() *int {
+	if v == nil {
+		return nil
+	}
+	return v.OverdueBills
+}
+
+func (v *VendorResponseSummary) GetApprovedBills() *int {
+	if v == nil {
+		return nil
+	}
+	return v.ApprovedBills
+}
+
+func (v *VendorResponseSummary) GetDisapprovedBills() *int {
+	if v == nil {
+		return nil
+	}
+	return v.DisapprovedBills
+}
+
+func (v *VendorResponseSummary) GetTotalBills() *int {
+	if v == nil {
+		return nil
+	}
+	return v.TotalBills
+}
+
+func (v *VendorResponseSummary) GetActiveBillsAmount() *float64 {
+	if v == nil {
+		return nil
+	}
+	return v.ActiveBillsAmount
+}
+
+func (v *VendorResponseSummary) GetPendingBillsAmount() *float64 {
+	if v == nil {
+		return nil
+	}
+	return v.PendingBillsAmount
+}
+
+func (v *VendorResponseSummary) GetInTransitBillsAmount() *float64 {
+	if v == nil {
+		return nil
+	}
+	return v.InTransitBillsAmount
+}
+
+func (v *VendorResponseSummary) GetPaidBillsAmount() *float64 {
+	if v == nil {
+		return nil
+	}
+	return v.PaidBillsAmount
+}
+
+func (v *VendorResponseSummary) GetOverdueBillsAmount() *float64 {
+	if v == nil {
+		return nil
+	}
+	return v.OverdueBillsAmount
+}
+
+func (v *VendorResponseSummary) GetApprovedBillsAmount() *float64 {
+	if v == nil {
+		return nil
+	}
+	return v.ApprovedBillsAmount
+}
+
+func (v *VendorResponseSummary) GetDisapprovedBillsAmount() *float64 {
+	if v == nil {
+		return nil
+	}
+	return v.DisapprovedBillsAmount
+}
+
+func (v *VendorResponseSummary) GetTotalBillsAmount() *float64 {
+	if v == nil {
+		return nil
+	}
+	return v.TotalBillsAmount
+}
+
+func (v *VendorResponseSummary) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *VendorResponseSummary) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetActiveBills sets the ActiveBills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetActiveBills(activeBills *int) {
+	v.ActiveBills = activeBills
+	v.require(vendorResponseSummaryFieldActiveBills)
+}
+
+// SetPendingBills sets the PendingBills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetPendingBills(pendingBills *int) {
+	v.PendingBills = pendingBills
+	v.require(vendorResponseSummaryFieldPendingBills)
+}
+
+// SetInTransitBills sets the InTransitBills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetInTransitBills(inTransitBills *int) {
+	v.InTransitBills = inTransitBills
+	v.require(vendorResponseSummaryFieldInTransitBills)
+}
+
+// SetPaidBills sets the PaidBills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetPaidBills(paidBills *int) {
+	v.PaidBills = paidBills
+	v.require(vendorResponseSummaryFieldPaidBills)
+}
+
+// SetOverdueBills sets the OverdueBills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetOverdueBills(overdueBills *int) {
+	v.OverdueBills = overdueBills
+	v.require(vendorResponseSummaryFieldOverdueBills)
+}
+
+// SetApprovedBills sets the ApprovedBills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetApprovedBills(approvedBills *int) {
+	v.ApprovedBills = approvedBills
+	v.require(vendorResponseSummaryFieldApprovedBills)
+}
+
+// SetDisapprovedBills sets the DisapprovedBills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetDisapprovedBills(disapprovedBills *int) {
+	v.DisapprovedBills = disapprovedBills
+	v.require(vendorResponseSummaryFieldDisapprovedBills)
+}
+
+// SetTotalBills sets the TotalBills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetTotalBills(totalBills *int) {
+	v.TotalBills = totalBills
+	v.require(vendorResponseSummaryFieldTotalBills)
+}
+
+// SetActiveBillsAmount sets the ActiveBillsAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetActiveBillsAmount(activeBillsAmount *float64) {
+	v.ActiveBillsAmount = activeBillsAmount
+	v.require(vendorResponseSummaryFieldActiveBillsAmount)
+}
+
+// SetPendingBillsAmount sets the PendingBillsAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetPendingBillsAmount(pendingBillsAmount *float64) {
+	v.PendingBillsAmount = pendingBillsAmount
+	v.require(vendorResponseSummaryFieldPendingBillsAmount)
+}
+
+// SetInTransitBillsAmount sets the InTransitBillsAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetInTransitBillsAmount(inTransitBillsAmount *float64) {
+	v.InTransitBillsAmount = inTransitBillsAmount
+	v.require(vendorResponseSummaryFieldInTransitBillsAmount)
+}
+
+// SetPaidBillsAmount sets the PaidBillsAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetPaidBillsAmount(paidBillsAmount *float64) {
+	v.PaidBillsAmount = paidBillsAmount
+	v.require(vendorResponseSummaryFieldPaidBillsAmount)
+}
+
+// SetOverdueBillsAmount sets the OverdueBillsAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetOverdueBillsAmount(overdueBillsAmount *float64) {
+	v.OverdueBillsAmount = overdueBillsAmount
+	v.require(vendorResponseSummaryFieldOverdueBillsAmount)
+}
+
+// SetApprovedBillsAmount sets the ApprovedBillsAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetApprovedBillsAmount(approvedBillsAmount *float64) {
+	v.ApprovedBillsAmount = approvedBillsAmount
+	v.require(vendorResponseSummaryFieldApprovedBillsAmount)
+}
+
+// SetDisapprovedBillsAmount sets the DisapprovedBillsAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetDisapprovedBillsAmount(disapprovedBillsAmount *float64) {
+	v.DisapprovedBillsAmount = disapprovedBillsAmount
+	v.require(vendorResponseSummaryFieldDisapprovedBillsAmount)
+}
+
+// SetTotalBillsAmount sets the TotalBillsAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorResponseSummary) SetTotalBillsAmount(totalBillsAmount *float64) {
+	v.TotalBillsAmount = totalBillsAmount
+	v.require(vendorResponseSummaryFieldTotalBillsAmount)
+}
+
+func (v *VendorResponseSummary) UnmarshalJSON(data []byte) error {
+	type unmarshaler VendorResponseSummary
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VendorResponseSummary(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VendorResponseSummary) MarshalJSON() ([]byte, error) {
+	type embed VendorResponseSummary
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *VendorResponseSummary) String() string {
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value

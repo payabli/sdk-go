@@ -6,6 +6,7 @@ The Payabli Go library provides convenient access to the Payabli APIs from Go.
 
 ## Table of Contents
 
+- [Passing Query Parameters](#passing-query-parameters)
 - [Usage](#usage)
 - [Environments](#environments)
 - [Errors](#errors)
@@ -18,6 +19,29 @@ The Payabli Go library provides convenient access to the Payabli APIs from Go.
 - [Contributing](#contributing)
 - [Documentation](#documentation)
 - [Reference](#reference)
+
+## Passing Query Parameters
+
+```go
+client := client.NewClient(option.WithApiKey("API_KEY"))
+
+query_parameters := url.Values{}
+query_parameters.Add("email(ct)", "test@example.com")
+
+response, err := client.Query.ListCustomers(
+  context.Background(),
+  "ENTRYPOINT",
+  &payabli.ListCustomersRequest{},
+  option.WithQueryParameters(query_parameters),
+)
+
+if err != nil {
+  log.Fatalf("Query failed: %v", err)
+}
+
+fmt.Printf("Query successful: %+v\n", response)
+```
+
 
 ## Usage
 

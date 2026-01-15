@@ -183,8 +183,8 @@ type AuthCapturePayoutResponseData struct {
 	ReferenceId       Referenceidtrans   `json:"referenceId" url:"referenceId"`
 	ResultCode        ResultCode         `json:"resultCode" url:"resultCode"`
 	ResultText        Resulttext         `json:"resultText" url:"resultText"`
-	AvsResponseText   *Avsresponsetext   `json:"avsResponseText,omitempty" url:"avsResponseText,omitempty"`
-	CvvResponseText   *Cvvresponsetext   `json:"cvvResponseText,omitempty" url:"cvvResponseText,omitempty"`
+	AvsResponseText   *AvsResponseText   `json:"avsResponseText,omitempty" url:"avsResponseText,omitempty"`
+	CvvResponseText   *CvvResponseText   `json:"cvvResponseText,omitempty" url:"cvvResponseText,omitempty"`
 	CustomerId        Customeridtrans    `json:"customerId" url:"customerId"`
 	MethodReferenceId *MethodReferenceId `json:"methodReferenceId,omitempty" url:"methodReferenceId,omitempty"`
 
@@ -223,14 +223,14 @@ func (a *AuthCapturePayoutResponseData) GetResultText() Resulttext {
 	return a.ResultText
 }
 
-func (a *AuthCapturePayoutResponseData) GetAvsResponseText() *Avsresponsetext {
+func (a *AuthCapturePayoutResponseData) GetAvsResponseText() *AvsResponseText {
 	if a == nil {
 		return nil
 	}
 	return a.AvsResponseText
 }
 
-func (a *AuthCapturePayoutResponseData) GetCvvResponseText() *Cvvresponsetext {
+func (a *AuthCapturePayoutResponseData) GetCvvResponseText() *CvvResponseText {
 	if a == nil {
 		return nil
 	}
@@ -292,14 +292,14 @@ func (a *AuthCapturePayoutResponseData) SetResultText(resultText Resulttext) {
 
 // SetAvsResponseText sets the AvsResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AuthCapturePayoutResponseData) SetAvsResponseText(avsResponseText *Avsresponsetext) {
+func (a *AuthCapturePayoutResponseData) SetAvsResponseText(avsResponseText *AvsResponseText) {
 	a.AvsResponseText = avsResponseText
 	a.require(authCapturePayoutResponseDataFieldAvsResponseText)
 }
 
 // SetCvvResponseText sets the CvvResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AuthCapturePayoutResponseData) SetCvvResponseText(cvvResponseText *Cvvresponsetext) {
+func (a *AuthCapturePayoutResponseData) SetCvvResponseText(cvvResponseText *CvvResponseText) {
 	a.CvvResponseText = cvvResponseText
 	a.require(authCapturePayoutResponseDataFieldCvvResponseText)
 }
