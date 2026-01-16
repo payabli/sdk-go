@@ -1238,8 +1238,8 @@ var (
 )
 
 type BillData struct {
-	AdditionalData *AdditionalDataString `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
-	Attachments    *Attachments          `json:"attachments,omitempty" url:"attachments,omitempty"`
+	AdditionalData *AdditionalDataMap `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
+	Attachments    *Attachments       `json:"attachments,omitempty" url:"attachments,omitempty"`
 	// Company name of the recipient of the invoice.
 	Company    *string     `json:"company,omitempty" url:"company,omitempty"`
 	Discount   *Discount   `json:"discount,omitempty" url:"discount,omitempty"`
@@ -1290,7 +1290,7 @@ type BillData struct {
 	rawJSON         json.RawMessage
 }
 
-func (b *BillData) GetAdditionalData() *AdditionalDataString {
+func (b *BillData) GetAdditionalData() *AdditionalDataMap {
 	if b == nil {
 		return nil
 	}
@@ -1527,7 +1527,7 @@ func (b *BillData) require(field *big.Int) {
 
 // SetAdditionalData sets the AdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillData) SetAdditionalData(additionalData *AdditionalDataString) {
+func (b *BillData) SetAdditionalData(additionalData *AdditionalDataMap) {
 	b.AdditionalData = additionalData
 	b.require(billDataFieldAdditionalData)
 }
