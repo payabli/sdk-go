@@ -1030,7 +1030,7 @@ type GetInvoiceRecord struct {
 	PaypointDbaname      Dbaname                   `json:"PaypointDbaname" url:"PaypointDbaname"`
 	PaypointEntryname    Entrypointfield           `json:"PaypointEntryname" url:"PaypointEntryname"`
 	ParentOrgName        OrgParentName             `json:"ParentOrgName" url:"ParentOrgName"`
-	AdditionalData       *AdditionalDataString     `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
+	AdditionalData       *AdditionalDataMap        `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
 	DocumentsRef         *DocumentsRef             `json:"DocumentsRef" url:"DocumentsRef"`
 	ExternalPaypointId   *ExternalPaypointId       `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
 
@@ -1356,7 +1356,7 @@ func (g *GetInvoiceRecord) GetParentOrgName() OrgParentName {
 	return g.ParentOrgName
 }
 
-func (g *GetInvoiceRecord) GetAdditionalData() *AdditionalDataString {
+func (g *GetInvoiceRecord) GetAdditionalData() *AdditionalDataMap {
 	if g == nil {
 		return nil
 	}
@@ -1705,7 +1705,7 @@ func (g *GetInvoiceRecord) SetParentOrgName(parentOrgName OrgParentName) {
 
 // SetAdditionalData sets the AdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetInvoiceRecord) SetAdditionalData(additionalData *AdditionalDataString) {
+func (g *GetInvoiceRecord) SetAdditionalData(additionalData *AdditionalDataMap) {
 	g.AdditionalData = additionalData
 	g.require(getInvoiceRecordFieldAdditionalData)
 }

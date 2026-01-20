@@ -1224,5 +1224,5 @@ func (p *PayabliApiResponse0000) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
-// A check number, between 1 and 9999, passed as a string. This value can be used for fraud prevention with the positive pay service.
+// A check number between 1 and 500,000,000. This value must be passed as a string. This value can be used for fraud prevention with the positive pay service. When no check number is provided, Payabli automatically manages check numbering and sequencing for checks issued from the same bank account.
 type VendorCheckNumber = string
