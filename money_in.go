@@ -2464,7 +2464,7 @@ type TransactionQueryRecordsCustomer struct {
 	FeeAmount                    *FeeAmount                         `json:"FeeAmount,omitempty" url:"FeeAmount,omitempty"`
 	// Internal identifier used for processing.
 	GatewayTransId *string   `json:"GatewayTransId,omitempty" url:"GatewayTransId,omitempty"`
-	InvoiceData    *BillData `json:"InvoiceData,omitempty" url:"InvoiceData,omitempty"`
+	InvoiceData    *BillData `json:"invoiceData,omitempty" url:"invoiceData,omitempty"`
 	// Payment method used: card, ach, or wallet.
 	Method *string `json:"Method,omitempty" url:"Method,omitempty"`
 	// Net amount paid.

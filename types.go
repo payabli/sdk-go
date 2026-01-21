@@ -8003,7 +8003,7 @@ type Maddress1 = string
 type Maskedaccount = string
 
 // Maximum ticket amount for transactions within the paypoint. Contact Payabli support to request a change to this value.
-type MaxTicket = *float64
+type MaxTicket = float64
 
 // Business Merchant Category Code (MCC). [This resource](https://github.com/greggles/mcc-codes/blob/main/mcc_codes.csv) lists MCC codes.
 type Mcc = string
@@ -9016,7 +9016,7 @@ type Mfa = *bool
 type MfaMode = int
 
 // Minimum ticket amount for transactions within the paypoint. Contact Payabli support to request a change to this value.
-type MinTicket = *float64
+type MinTicket = float64
 
 // The business's mailing address state.
 type Mstate = string
@@ -13776,17 +13776,17 @@ var (
 )
 
 type PayabliCredentialsPascal struct {
-	Service          *string   `json:"Service,omitempty" url:"Service,omitempty"`
-	Mode             *int      `json:"Mode,omitempty" url:"Mode,omitempty"`
-	MinTicket        MinTicket `json:"MinTicket,omitempty" url:"MinTicket,omitempty"`
-	MaxTicket        MaxTicket `json:"MaxTicket,omitempty" url:"MaxTicket,omitempty"`
-	CfeeFix          *float64  `json:"CfeeFix,omitempty" url:"CfeeFix,omitempty"`
-	CfeeFloat        *float64  `json:"CfeeFloat,omitempty" url:"CfeeFloat,omitempty"`
-	CfeeMin          *float64  `json:"CfeeMin,omitempty" url:"CfeeMin,omitempty"`
-	CfeeMax          *float64  `json:"CfeeMax,omitempty" url:"CfeeMax,omitempty"`
-	AccountId        *string   `json:"AccountId,omitempty" url:"AccountId,omitempty"`
-	ReferenceId      *int64    `json:"ReferenceId,omitempty" url:"ReferenceId,omitempty"`
-	AcceptSameDayAch *bool     `json:"acceptSameDayACH,omitempty" url:"acceptSameDayACH,omitempty"`
+	Service          *string    `json:"Service,omitempty" url:"Service,omitempty"`
+	Mode             *int       `json:"Mode,omitempty" url:"Mode,omitempty"`
+	MinTicket        *MinTicket `json:"MinTicket,omitempty" url:"MinTicket,omitempty"`
+	MaxTicket        *MaxTicket `json:"MaxTicket,omitempty" url:"MaxTicket,omitempty"`
+	CfeeFix          *float64   `json:"CfeeFix,omitempty" url:"CfeeFix,omitempty"`
+	CfeeFloat        *float64   `json:"CfeeFloat,omitempty" url:"CfeeFloat,omitempty"`
+	CfeeMin          *float64   `json:"CfeeMin,omitempty" url:"CfeeMin,omitempty"`
+	CfeeMax          *float64   `json:"CfeeMax,omitempty" url:"CfeeMax,omitempty"`
+	AccountId        *string    `json:"AccountId,omitempty" url:"AccountId,omitempty"`
+	ReferenceId      *int64     `json:"ReferenceId,omitempty" url:"ReferenceId,omitempty"`
+	AcceptSameDayAch *bool      `json:"acceptSameDayACH,omitempty" url:"acceptSameDayACH,omitempty"`
 	// The default currency for the paypoint, either `USD` or `CAD`.
 	Currency *string `json:"Currency,omitempty" url:"Currency,omitempty"`
 
@@ -13811,14 +13811,14 @@ func (p *PayabliCredentialsPascal) GetMode() *int {
 	return p.Mode
 }
 
-func (p *PayabliCredentialsPascal) GetMinTicket() MinTicket {
+func (p *PayabliCredentialsPascal) GetMinTicket() *MinTicket {
 	if p == nil {
 		return nil
 	}
 	return p.MinTicket
 }
 
-func (p *PayabliCredentialsPascal) GetMaxTicket() MaxTicket {
+func (p *PayabliCredentialsPascal) GetMaxTicket() *MaxTicket {
 	if p == nil {
 		return nil
 	}
@@ -13908,14 +13908,14 @@ func (p *PayabliCredentialsPascal) SetMode(mode *int) {
 
 // SetMinTicket sets the MinTicket field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliCredentialsPascal) SetMinTicket(minTicket MinTicket) {
+func (p *PayabliCredentialsPascal) SetMinTicket(minTicket *MinTicket) {
 	p.MinTicket = minTicket
 	p.require(payabliCredentialsPascalFieldMinTicket)
 }
 
 // SetMaxTicket sets the MaxTicket field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliCredentialsPascal) SetMaxTicket(maxTicket MaxTicket) {
+func (p *PayabliCredentialsPascal) SetMaxTicket(maxTicket *MaxTicket) {
 	p.MaxTicket = maxTicket
 	p.require(payabliCredentialsPascalFieldMaxTicket)
 }
