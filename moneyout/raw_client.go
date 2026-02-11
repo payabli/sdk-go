@@ -496,3 +496,51 @@ func (r *RawClient) GetCheckImage(
 		Body:       response,
 	}, nil
 }
+
+func (r *RawClient) UpdateCheckPaymentStatus(
+	ctx context.Context,
+	// The Payabli transaction ID for the check payment.
+	transId string,
+	// The new status to apply to the check transaction. To mark a check as `Paid`, send 5. To mark a check as `Cancelled`, send 0.
+	checkPaymentStatus *payabli.AllowedCheckPaymentStatus,
+	opts ...option.RequestOption,
+) (*core.Response[*payabli.PayabliApiResponse00Responsedatanonobject], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://api-sandbox.payabli.com/api",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/MoneyOut/status/%v/%v",
+		transId,
+		checkPaymentStatus,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *payabli.PayabliApiResponse00Responsedatanonobject
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPatch,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*payabli.PayabliApiResponse00Responsedatanonobject]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}

@@ -9,6 +9,31 @@ import (
 	big "math/big"
 )
 
+// The new status to apply to a check payment transaction.
+// - `0`: Cancelled/Voided — Cancels the check transaction.
+// - `5`: Paid — Marks the check transaction as paid.
+type AllowedCheckPaymentStatus string
+
+const (
+	AllowedCheckPaymentStatusCancelled AllowedCheckPaymentStatus = "0"
+	AllowedCheckPaymentStatusPaid      AllowedCheckPaymentStatus = "5"
+)
+
+func NewAllowedCheckPaymentStatusFromString(s string) (AllowedCheckPaymentStatus, error) {
+	switch s {
+	case "0":
+		return AllowedCheckPaymentStatusCancelled, nil
+	case "5":
+		return AllowedCheckPaymentStatusPaid, nil
+	}
+	var t AllowedCheckPaymentStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AllowedCheckPaymentStatus) Ptr() *AllowedCheckPaymentStatus {
+	return &a
+}
+
 var (
 	authCapturePayoutResponseFieldResponseCode   = big.NewInt(1 << 0)
 	authCapturePayoutResponseFieldPageIdentifier = big.NewInt(1 << 1)

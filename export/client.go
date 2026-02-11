@@ -60,7 +60,7 @@ func (c *Client) ExportBatchDetails(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.ExportBatchDetailsRequest,
 	opts ...option.RequestOption,
@@ -106,7 +106,7 @@ func (c *Client) ExportBatches(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.ExportBatchesRequest,
 	opts ...option.RequestOption,
@@ -152,7 +152,7 @@ func (c *Client) ExportBatchesOut(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.ExportBatchesOutRequest,
 	opts ...option.RequestOption,
@@ -198,7 +198,7 @@ func (c *Client) ExportBills(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.ExportBillsRequest,
 	opts ...option.RequestOption,
@@ -244,7 +244,7 @@ func (c *Client) ExportChargebacks(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.ExportChargebacksRequest,
 	opts ...option.RequestOption,
@@ -290,7 +290,7 @@ func (c *Client) ExportCustomers(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.ExportCustomersRequest,
 	opts ...option.RequestOption,
@@ -336,7 +336,7 @@ func (c *Client) ExportInvoices(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.ExportInvoicesRequest,
 	opts ...option.RequestOption,
@@ -405,7 +405,7 @@ func (c *Client) ExportPayout(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.ExportPayoutRequest,
 	opts ...option.RequestOption,
@@ -474,7 +474,7 @@ func (c *Client) ExportSettlements(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.ExportSettlementsRequest,
 	opts ...option.RequestOption,
@@ -520,7 +520,7 @@ func (c *Client) ExportSubscriptions(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.ExportSubscriptionsRequest,
 	opts ...option.RequestOption,
@@ -566,7 +566,7 @@ func (c *Client) ExportTransactions(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.ExportTransactionsRequest,
 	opts ...option.RequestOption,
@@ -612,7 +612,7 @@ func (c *Client) ExportTransferDetails(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Transfer identifier.
 	transferId int64,
@@ -636,7 +636,7 @@ func (c *Client) ExportTransferDetails(
 // Get a list of transfers for an entrypoint. Use filters to limit results.
 func (c *Client) ExportTransfers(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.ExportTransfersRequest,
 	opts ...option.RequestOption,
@@ -658,7 +658,7 @@ func (c *Client) ExportVendors(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.ExportVendorsRequest,
 	opts ...option.RequestOption,

@@ -90,7 +90,7 @@ func (c *Client) EditOrganization(
 // Gets an organization's basic information by entry name (entrypoint identifier).
 func (c *Client) GetBasicOrganization(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	opts ...option.RequestOption,
 ) (*payabli.OrganizationQueryRecord, error) {

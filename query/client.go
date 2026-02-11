@@ -581,6 +581,67 @@ func (c *Client) ListTransfersOrg(
 	return response.Body, nil
 }
 
+// Retrieve a list of outbound transfers for an organization. Use filters to limit results.
+func (c *Client) ListTransfersOutOrg(
+	ctx context.Context,
+	// The numeric identifier for organization, assigned by Payabli.
+	orgId int,
+	request *payabli.ListTransfersOutOrgRequest,
+	opts ...option.RequestOption,
+) (*payabli.TransferOutQueryResponse, error) {
+	response, err := c.WithRawResponse.ListTransfersOutOrg(
+		ctx,
+		orgId,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Retrieve a list of outbound transfers for a paypoint. Use filters to limit results.
+func (c *Client) ListTransfersOutPaypoint(
+	ctx context.Context,
+	entry payabli.Entry,
+	request *payabli.ListTransfersOutPaypointRequest,
+	opts ...option.RequestOption,
+) (*payabli.TransferOutQueryResponse, error) {
+	response, err := c.WithRawResponse.ListTransfersOutPaypoint(
+		ctx,
+		entry,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Retrieve details for a specific outbound transfer. Use filters to limit results.
+func (c *Client) ListTransferDetailsOut(
+	ctx context.Context,
+	entry payabli.Entry,
+	// The numeric identifier for the transfer, assigned by Payabli.
+	transferId int,
+	request *payabli.ListTransferDetailsOutRequest,
+	opts ...option.RequestOption,
+) (*payabli.TransferOutDetailQueryResponse, error) {
+	response, err := c.WithRawResponse.ListTransferDetailsOut(
+		ctx,
+		entry,
+		transferId,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 // Get list of users for an org. Use filters to limit results.
 func (c *Client) ListUsersOrg(
 	ctx context.Context,
@@ -604,7 +665,7 @@ func (c *Client) ListUsersOrg(
 // Get list of users for a paypoint. Use filters to limit results.
 func (c *Client) ListUsersPaypoint(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.ListUsersPaypointRequest,
 	opts ...option.RequestOption,
@@ -624,7 +685,7 @@ func (c *Client) ListUsersPaypoint(
 // Retrieve a list of vendors for an entrypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListVendors(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.ListVendorsRequest,
 	opts ...option.RequestOption,

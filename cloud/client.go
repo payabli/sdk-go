@@ -35,7 +35,7 @@ func NewClient(options *core.RequestOptions) *Client {
 // Register a cloud device to an entrypoint. See [Devices Quickstart](/developers/developer-guides/devices-quickstart#devices-quickstart) for a complete guide.
 func (c *Client) AddDevice(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.DeviceEntry,
 	opts ...option.RequestOption,
@@ -55,7 +55,7 @@ func (c *Client) AddDevice(
 // Retrieve the registration history for a device.
 func (c *Client) HistoryDevice(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// ID of the cloud device.
 	deviceId string,
@@ -76,7 +76,7 @@ func (c *Client) HistoryDevice(
 // Get a list of cloud devices registered to an entrypoint.
 func (c *Client) ListDevice(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.ListDeviceRequest,
 	opts ...option.RequestOption,
@@ -96,7 +96,7 @@ func (c *Client) ListDevice(
 // Remove a cloud device from an entrypoint.
 func (c *Client) RemoveDevice(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// ID of the cloud device.
 	deviceId string,

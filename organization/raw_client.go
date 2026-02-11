@@ -171,7 +171,7 @@ func (r *RawClient) EditOrganization(
 
 func (r *RawClient) GetBasicOrganization(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.OrganizationQueryRecord], error) {

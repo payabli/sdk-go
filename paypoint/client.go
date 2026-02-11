@@ -35,7 +35,7 @@ func NewClient(options *core.RequestOptions) *Client {
 // Gets the basic details for a paypoint.
 func (c *Client) GetBasicEntry(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	opts ...option.RequestOption,
 ) (*payabli.GetBasicEntryResponse, error) {
@@ -71,7 +71,7 @@ func (c *Client) GetBasicEntryById(
 // Gets the details for a single paypoint.
 func (c *Client) GetEntryConfig(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.GetEntryConfigRequest,
 	opts ...option.RequestOption,
@@ -91,7 +91,7 @@ func (c *Client) GetEntryConfig(
 // Gets the details for single payment page for a paypoint.
 func (c *Client) GetPage(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Payment page identifier. The subdomain value is the last portion of the payment page URL. For example, in`https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
 	subdomain string,
@@ -112,7 +112,7 @@ func (c *Client) GetPage(
 // Deletes a payment page in a paypoint.
 func (c *Client) RemovePage(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Payment page identifier. The subdomain value is the last portion of the payment page URL. For example, in`https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
 	subdomain string,
@@ -133,7 +133,7 @@ func (c *Client) RemovePage(
 // Updates a paypoint logo.
 func (c *Client) SaveLogo(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.FileContent,
 	opts ...option.RequestOption,
@@ -153,7 +153,7 @@ func (c *Client) SaveLogo(
 // Retrieves an paypoint's basic settings like custom fields, identifiers, and invoicing settings.
 func (c *Client) SettingsPage(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	opts ...option.RequestOption,
 ) (*payabli.SettingsQueryRecord, error) {

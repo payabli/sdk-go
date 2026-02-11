@@ -32,7 +32,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) AddDevice(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.DeviceEntry,
 	opts ...option.RequestOption,
@@ -83,7 +83,7 @@ func (r *RawClient) AddDevice(
 
 func (r *RawClient) HistoryDevice(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// ID of the cloud device.
 	deviceId string,
@@ -131,7 +131,7 @@ func (r *RawClient) HistoryDevice(
 
 func (r *RawClient) ListDevice(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.ListDeviceRequest,
 	opts ...option.RequestOption,
@@ -184,7 +184,7 @@ func (r *RawClient) ListDevice(
 
 func (r *RawClient) RemoveDevice(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// ID of the cloud device.
 	deviceId string,

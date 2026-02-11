@@ -8398,9 +8398,9 @@ var (
 )
 
 type TransactionDetailResponseData struct {
-	// Unified result code for the transaction. See [Pay In unified response codes](/developers/references/pay-in-unified-response-codes) for more information.
+	// Unified result code for the transaction. See [Pay In unified response codes](/guides/pay-in-unified-response-codes-reference) for more information.
 	ResultCode *string `json:"resultCode,omitempty" url:"resultCode,omitempty"`
-	// Description of the result code. See [Pay In unified response codes](/developers/references/pay-in-unified-response-codes) for more information.
+	// Description of the result code. See [Pay In unified response codes](/guides/pay-in-unified-response-codes-reference) for more information.
 	ResultCodeText      *string              `json:"resultCodeText,omitempty" url:"resultCodeText,omitempty"`
 	Response            *string              `json:"response,omitempty" url:"response,omitempty"`
 	Responsetext        Resulttext           `json:"responsetext" url:"responsetext"`

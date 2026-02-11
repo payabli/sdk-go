@@ -151,7 +151,7 @@ func (u *UnauthorizedError) Unwrap() error {
 	return u.APIError
 }
 
-// Bad request error for v2 Money In auth endpoint (HTTP 400). Returned when request validation fails. Follows RFC 7807 Problem Details format with Payabli-specific unified response codes. See the [Pay In unified response codes reference](/developers/references/pay-in-unified-response-codes) for the complete list of codes.
+// Bad request error for v2 Money In auth endpoint (HTTP 400). Returned when request validation fails. Follows RFC 7807 Problem Details format with Payabli-specific unified response codes. See the [Pay In unified response codes reference](/developers/references/pay-in-unified-response-codes-reference) for the complete list of codes.
 type BadRequestAuthResponseErrorV2 struct {
 	*core.APIError
 	Body *V2BadRequestError
@@ -175,7 +175,7 @@ func (b *BadRequestAuthResponseErrorV2) Unwrap() error {
 	return b.APIError
 }
 
-// Bad request error for v2 Money In capture endpoint (HTTP 400). Returned when request validation fails. Follows RFC 7807 Problem Details format with Payabli-specific unified response codes. See the [Pay In unified response codes reference](/developers/references/pay-in-unified-response-codes) for the complete list of codes.
+// Bad request error for v2 Money In capture endpoint (HTTP 400). Returned when request validation fails. Follows RFC 7807 Problem Details format with Payabli-specific unified response codes. See the [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for the complete list of codes.
 type BadRequestCaptureResponseErrorV2 struct {
 	*core.APIError
 	Body *V2BadRequestError
@@ -199,7 +199,7 @@ func (b *BadRequestCaptureResponseErrorV2) Unwrap() error {
 	return b.APIError
 }
 
-// Bad request error for v2 Money In refund endpoint (HTTP 400). Returned when request validation fails. Follows RFC 7807 Problem Details format with Payabli-specific unified response codes. See the [Pay In unified response codes reference](/developers/references/pay-in-unified-response-codes) for the complete list of codes.
+// Bad request error for v2 Money In refund endpoint (HTTP 400). Returned when request validation fails. Follows RFC 7807 Problem Details format with Payabli-specific unified response codes. See the [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for the complete list of codes.
 type BadRequestRefundResponseErrorV2 struct {
 	*core.APIError
 	Body *V2BadRequestError
@@ -223,7 +223,7 @@ func (b *BadRequestRefundResponseErrorV2) Unwrap() error {
 	return b.APIError
 }
 
-// Bad request error for v2 Money In void endpoint (HTTP 400). Returned when request validation fails. Follows RFC 7807 Problem Details format with Payabli-specific unified response codes. See the [Pay In unified response codes reference](/developers/references/pay-in-unified-response-codes) for the complete list of codes.
+// Bad request error for v2 Money In void endpoint (HTTP 400). Returned when request validation fails. Follows RFC 7807 Problem Details format with Payabli-specific unified response codes. See the [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for the complete list of codes.
 type BadRequestVoidResponseErrorV2 struct {
 	*core.APIError
 	Body *V2BadRequestError
@@ -247,7 +247,7 @@ func (b *BadRequestVoidResponseErrorV2) Unwrap() error {
 	return b.APIError
 }
 
-// Auth or sale decline error for v2 Money In endpoints (HTTP 402). Returned when an authorization or sale operation is declined for a transaction. Uses unified response codes starting with 'D'. See the [Pay In unified response codes reference](/developers/references/pay-in-unified-response-codes) for the complete list of codes.
+// Auth or sale decline error for v2 Money In endpoints (HTTP 402). Returned when an authorization or sale operation is declined for a transaction. Uses unified response codes starting with 'D'. See the [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for the complete list of codes.
 type DeclinedAuthResponseErrorV2 struct {
 	*core.APIError
 	Body *V2DeclinedTransactionResponseWrapper
@@ -271,7 +271,7 @@ func (d *DeclinedAuthResponseErrorV2) Unwrap() error {
 	return d.APIError
 }
 
-// Capture decline error for v2 Money In endpoints (HTTP 402). Returned when a capture operation is declined for a transaction. Uses unified response codes starting with 'D'. See the [Pay In unified response codes reference](/developers/references/pay-in-unified-response-codes) for the complete list of codes.
+// Capture decline error for v2 Money In endpoints (HTTP 402). Returned when a capture operation is declined for a transaction. Uses unified response codes starting with 'D'. See the [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for the complete list of codes.
 type DeclinedCaptureResponseErrorV2 struct {
 	*core.APIError
 	Body *V2DeclinedTransactionResponseWrapper
@@ -295,7 +295,7 @@ func (d *DeclinedCaptureResponseErrorV2) Unwrap() error {
 	return d.APIError
 }
 
-// Refund decline error for v2 Money In endpoints (HTTP 402). Returned when a refund operation is declined for a transaction. Uses unified response codes starting with 'D'. See the [Pay In unified response codes reference](/developers/references/pay-in-unified-response-codes) for the complete list of codes.
+// Refund decline error for v2 Money In endpoints (HTTP 402). Returned when a refund operation is declined for a transaction. Uses unified response codes starting with 'D'. See the [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for the complete list of codes.
 type DeclinedRefundResponseErrorV2 struct {
 	*core.APIError
 	Body *V2DeclinedTransactionResponseWrapper
@@ -319,7 +319,7 @@ func (d *DeclinedRefundResponseErrorV2) Unwrap() error {
 	return d.APIError
 }
 
-// Void decline error for v2 Money In endpoints (HTTP 402). Returned when a void operation is declined for a transaction. Uses unified response codes starting with 'D'. See the [Pay In unified response codes reference](/developers/references/pay-in-unified-response-codes) for the complete list of codes.
+// Void decline error for v2 Money In endpoints (HTTP 402). Returned when a void operation is declined for a transaction. Uses unified response codes starting with 'D'. See the [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for the complete list of codes.
 type DeclinedVoidResponseErrorV2 struct {
 	*core.APIError
 	Body *V2DeclinedTransactionResponseWrapper

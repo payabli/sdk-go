@@ -220,3 +220,35 @@ func (c *Client) GetCheckImage(
 	}
 	return response.Body, nil
 }
+
+// Updates the status of a processed check payment transaction. This endpoint handles the status transition, updates related bills, creates audit events, and triggers notifications.
+//
+// The transaction must meet all of the following criteria:
+// - **Status**: Must be in Processing or Processed status.
+// - **Payment method**: Must be a check payment method.
+//
+// ### Allowed status values
+//
+// | Value | Status | Description |
+// |-------|--------|-------------|
+// | `0` | Cancelled/Voided | Cancels the check transaction. Reverts associated bills to their previous state (Approved or Active), creates "Cancelled" events, and sends a `payout_transaction_voidedcancelled` notification if the notification is enabled. |
+// | `5` | Paid | Marks the check transaction as paid. Updates associated bills to "Paid" status, creates "Paid" events, and sends a `payout_transaction_paid` notification if the notification is enabled. |
+func (c *Client) UpdateCheckPaymentStatus(
+	ctx context.Context,
+	// The Payabli transaction ID for the check payment.
+	transId string,
+	// The new status to apply to the check transaction. To mark a check as `Paid`, send 5. To mark a check as `Cancelled`, send 0.
+	checkPaymentStatus *payabli.AllowedCheckPaymentStatus,
+	opts ...option.RequestOption,
+) (*payabli.PayabliApiResponse00Responsedatanonobject, error) {
+	response, err := c.WithRawResponse.UpdateCheckPaymentStatus(
+		ctx,
+		transId,
+		checkPaymentStatus,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}

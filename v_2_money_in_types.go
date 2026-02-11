@@ -32,7 +32,7 @@ type V2BadRequestError struct {
 	Detail string `json:"detail" url:"detail"`
 	// Request URL that caused the error.
 	Instance string `json:"instance" url:"instance"`
-	// Payabli's unified response code for validation errors. Starts with 'E'. See [Pay In unified response codes reference](/developers/references/pay-in-unified-response-codes) for more information.
+	// Payabli's unified response code for validation errors. Starts with 'E'. See [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for more information.
 	Code string `json:"code" url:"code"`
 	// Dictionary of field-specific validation errors. Keys are field paths (e.g., "paymentMethod.cardnumber") and values are arrays of error details.
 	Errors map[string][]*V2BadRequestErrorDetail `json:"errors" url:"errors"`
@@ -599,7 +599,7 @@ func (v *V2InternalServerError) String() string {
 // Recommended resolution approach or next steps based on the response.
 type V2ResponseAction = string
 
-// Payabli's unified response code. Starts with `A` (Approved) or `D` (Declined) followed by a four-digit code that provides specific details about the transaction result. See [Pay In unified response codes reference](/developers/references/pay-in-unified-response-codes) for more information.
+// Payabli's unified response code. Starts with `A` (Approved) or `D` (Declined) followed by a four-digit code that provides specific details about the transaction result. See [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for more information.
 type V2ResponseCode = string
 
 // Detailed description of the response code.

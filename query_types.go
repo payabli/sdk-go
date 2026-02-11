@@ -4162,5 +4162,4846 @@ func (t *TransferDetailRecord) String() string {
 	return fmt.Sprintf("%#v", t)
 }
 
+// Bank account information for an outbound transfer.
+var (
+	transferOutBankAccountFieldAccountNumber = big.NewInt(1 << 0)
+	transferOutBankAccountFieldRoutingNumber = big.NewInt(1 << 1)
+	transferOutBankAccountFieldBankName      = big.NewInt(1 << 2)
+)
+
+type TransferOutBankAccount struct {
+	// The masked bank account number.
+	AccountNumber *string `json:"accountNumber,omitempty" url:"accountNumber,omitempty"`
+	// The bank routing number.
+	RoutingNumber *string `json:"routingNumber,omitempty" url:"routingNumber,omitempty"`
+	// The bank name.
+	BankName *string `json:"bankName,omitempty" url:"bankName,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransferOutBankAccount) GetAccountNumber() *string {
+	if t == nil {
+		return nil
+	}
+	return t.AccountNumber
+}
+
+func (t *TransferOutBankAccount) GetRoutingNumber() *string {
+	if t == nil {
+		return nil
+	}
+	return t.RoutingNumber
+}
+
+func (t *TransferOutBankAccount) GetBankName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.BankName
+}
+
+func (t *TransferOutBankAccount) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransferOutBankAccount) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetAccountNumber sets the AccountNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutBankAccount) SetAccountNumber(accountNumber *string) {
+	t.AccountNumber = accountNumber
+	t.require(transferOutBankAccountFieldAccountNumber)
+}
+
+// SetRoutingNumber sets the RoutingNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutBankAccount) SetRoutingNumber(routingNumber *string) {
+	t.RoutingNumber = routingNumber
+	t.require(transferOutBankAccountFieldRoutingNumber)
+}
+
+// SetBankName sets the BankName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutBankAccount) SetBankName(bankName *string) {
+	t.BankName = bankName
+	t.require(transferOutBankAccountFieldBankName)
+}
+
+func (t *TransferOutBankAccount) UnmarshalJSON(data []byte) error {
+	type unmarshaler TransferOutBankAccount
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TransferOutBankAccount(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransferOutBankAccount) MarshalJSON() ([]byte, error) {
+	type embed TransferOutBankAccount
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TransferOutBankAccount) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+// Bill information for an outbound transfer detail.
+var (
+	transferOutDetailBillFieldBillId           = big.NewInt(1 << 0)
+	transferOutDetailBillFieldLotNumber        = big.NewInt(1 << 1)
+	transferOutDetailBillFieldAccountingField1 = big.NewInt(1 << 2)
+	transferOutDetailBillFieldAccountingField2 = big.NewInt(1 << 3)
+	transferOutDetailBillFieldTerms            = big.NewInt(1 << 4)
+	transferOutDetailBillFieldAdditionalData   = big.NewInt(1 << 5)
+	transferOutDetailBillFieldAttachments      = big.NewInt(1 << 6)
+	transferOutDetailBillFieldInvoiceNumber    = big.NewInt(1 << 7)
+	transferOutDetailBillFieldNetAmount        = big.NewInt(1 << 8)
+	transferOutDetailBillFieldInvoiceDate      = big.NewInt(1 << 9)
+	transferOutDetailBillFieldDueDate          = big.NewInt(1 << 10)
+	transferOutDetailBillFieldComments         = big.NewInt(1 << 11)
+	transferOutDetailBillFieldIdentifier       = big.NewInt(1 << 12)
+	transferOutDetailBillFieldDiscount         = big.NewInt(1 << 13)
+	transferOutDetailBillFieldTotalAmount      = big.NewInt(1 << 14)
+)
+
+type TransferOutDetailBill struct {
+	// Unique identifier for the bill.
+	BillId *int `json:"billId,omitempty" url:"billId,omitempty"`
+	// Lot number.
+	LotNumber *string `json:"LotNumber,omitempty" url:"LotNumber,omitempty"`
+	// Accounting field 1.
+	AccountingField1 *string `json:"AccountingField1,omitempty" url:"AccountingField1,omitempty"`
+	// Accounting field 2.
+	AccountingField2 *string `json:"AccountingField2,omitempty" url:"AccountingField2,omitempty"`
+	// Payment terms.
+	Terms *string `json:"Terms,omitempty" url:"Terms,omitempty"`
+	// Additional data for the bill.
+	AdditionalData map[string]interface{} `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
+	// Attachments for the bill.
+	Attachments []*TransferOutDetailBillAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
+	// Invoice number.
+	InvoiceNumber *string `json:"invoiceNumber,omitempty" url:"invoiceNumber,omitempty"`
+	// Net amount of the bill.
+	NetAmount *string `json:"netAmount,omitempty" url:"netAmount,omitempty"`
+	// Date of the invoice.
+	InvoiceDate *string `json:"invoiceDate,omitempty" url:"invoiceDate,omitempty"`
+	// Due date for the bill.
+	DueDate *string `json:"dueDate,omitempty" url:"dueDate,omitempty"`
+	// Comments on the bill.
+	Comments *string `json:"comments,omitempty" url:"comments,omitempty"`
+	// Identifier for the bill.
+	Identifier *string `json:"identifier,omitempty" url:"identifier,omitempty"`
+	// Discount applied.
+	Discount *float64 `json:"discount,omitempty" url:"discount,omitempty"`
+	// Total amount of the bill.
+	TotalAmount *float64 `json:"totalAmount,omitempty" url:"totalAmount,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransferOutDetailBill) GetBillId() *int {
+	if t == nil {
+		return nil
+	}
+	return t.BillId
+}
+
+func (t *TransferOutDetailBill) GetLotNumber() *string {
+	if t == nil {
+		return nil
+	}
+	return t.LotNumber
+}
+
+func (t *TransferOutDetailBill) GetAccountingField1() *string {
+	if t == nil {
+		return nil
+	}
+	return t.AccountingField1
+}
+
+func (t *TransferOutDetailBill) GetAccountingField2() *string {
+	if t == nil {
+		return nil
+	}
+	return t.AccountingField2
+}
+
+func (t *TransferOutDetailBill) GetTerms() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Terms
+}
+
+func (t *TransferOutDetailBill) GetAdditionalData() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
+	return t.AdditionalData
+}
+
+func (t *TransferOutDetailBill) GetAttachments() []*TransferOutDetailBillAttachment {
+	if t == nil {
+		return nil
+	}
+	return t.Attachments
+}
+
+func (t *TransferOutDetailBill) GetInvoiceNumber() *string {
+	if t == nil {
+		return nil
+	}
+	return t.InvoiceNumber
+}
+
+func (t *TransferOutDetailBill) GetNetAmount() *string {
+	if t == nil {
+		return nil
+	}
+	return t.NetAmount
+}
+
+func (t *TransferOutDetailBill) GetInvoiceDate() *string {
+	if t == nil {
+		return nil
+	}
+	return t.InvoiceDate
+}
+
+func (t *TransferOutDetailBill) GetDueDate() *string {
+	if t == nil {
+		return nil
+	}
+	return t.DueDate
+}
+
+func (t *TransferOutDetailBill) GetComments() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Comments
+}
+
+func (t *TransferOutDetailBill) GetIdentifier() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Identifier
+}
+
+func (t *TransferOutDetailBill) GetDiscount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.Discount
+}
+
+func (t *TransferOutDetailBill) GetTotalAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.TotalAmount
+}
+
+func (t *TransferOutDetailBill) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransferOutDetailBill) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetBillId sets the BillId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailBill) SetBillId(billId *int) {
+	t.BillId = billId
+	t.require(transferOutDetailBillFieldBillId)
+}
+
+// SetLotNumber sets the LotNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailBill) SetLotNumber(lotNumber *string) {
+	t.LotNumber = lotNumber
+	t.require(transferOutDetailBillFieldLotNumber)
+}
+
+// SetAccountingField1 sets the AccountingField1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailBill) SetAccountingField1(accountingField1 *string) {
+	t.AccountingField1 = accountingField1
+	t.require(transferOutDetailBillFieldAccountingField1)
+}
+
+// SetAccountingField2 sets the AccountingField2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailBill) SetAccountingField2(accountingField2 *string) {
+	t.AccountingField2 = accountingField2
+	t.require(transferOutDetailBillFieldAccountingField2)
+}
+
+// SetTerms sets the Terms field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailBill) SetTerms(terms *string) {
+	t.Terms = terms
+	t.require(transferOutDetailBillFieldTerms)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailBill) SetAdditionalData(additionalData map[string]interface{}) {
+	t.AdditionalData = additionalData
+	t.require(transferOutDetailBillFieldAdditionalData)
+}
+
+// SetAttachments sets the Attachments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailBill) SetAttachments(attachments []*TransferOutDetailBillAttachment) {
+	t.Attachments = attachments
+	t.require(transferOutDetailBillFieldAttachments)
+}
+
+// SetInvoiceNumber sets the InvoiceNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailBill) SetInvoiceNumber(invoiceNumber *string) {
+	t.InvoiceNumber = invoiceNumber
+	t.require(transferOutDetailBillFieldInvoiceNumber)
+}
+
+// SetNetAmount sets the NetAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailBill) SetNetAmount(netAmount *string) {
+	t.NetAmount = netAmount
+	t.require(transferOutDetailBillFieldNetAmount)
+}
+
+// SetInvoiceDate sets the InvoiceDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailBill) SetInvoiceDate(invoiceDate *string) {
+	t.InvoiceDate = invoiceDate
+	t.require(transferOutDetailBillFieldInvoiceDate)
+}
+
+// SetDueDate sets the DueDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailBill) SetDueDate(dueDate *string) {
+	t.DueDate = dueDate
+	t.require(transferOutDetailBillFieldDueDate)
+}
+
+// SetComments sets the Comments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailBill) SetComments(comments *string) {
+	t.Comments = comments
+	t.require(transferOutDetailBillFieldComments)
+}
+
+// SetIdentifier sets the Identifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailBill) SetIdentifier(identifier *string) {
+	t.Identifier = identifier
+	t.require(transferOutDetailBillFieldIdentifier)
+}
+
+// SetDiscount sets the Discount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailBill) SetDiscount(discount *float64) {
+	t.Discount = discount
+	t.require(transferOutDetailBillFieldDiscount)
+}
+
+// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailBill) SetTotalAmount(totalAmount *float64) {
+	t.TotalAmount = totalAmount
+	t.require(transferOutDetailBillFieldTotalAmount)
+}
+
+func (t *TransferOutDetailBill) UnmarshalJSON(data []byte) error {
+	type unmarshaler TransferOutDetailBill
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TransferOutDetailBill(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransferOutDetailBill) MarshalJSON() ([]byte, error) {
+	type embed TransferOutDetailBill
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TransferOutDetailBill) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+// Attachment for a bill.
+var (
+	transferOutDetailBillAttachmentFieldFtype          = big.NewInt(1 << 0)
+	transferOutDetailBillAttachmentFieldFilename       = big.NewInt(1 << 1)
+	transferOutDetailBillAttachmentFieldFileDescriptor = big.NewInt(1 << 2)
+	transferOutDetailBillAttachmentFieldFurl           = big.NewInt(1 << 3)
+	transferOutDetailBillAttachmentFieldFContent       = big.NewInt(1 << 4)
+)
+
+type TransferOutDetailBillAttachment struct {
+	// File type.
+	Ftype *string `json:"ftype,omitempty" url:"ftype,omitempty"`
+	// File name.
+	Filename *string `json:"filename,omitempty" url:"filename,omitempty"`
+	// File descriptor.
+	FileDescriptor *string `json:"fileDescriptor,omitempty" url:"fileDescriptor,omitempty"`
+	// File URL.
+	Furl *string `json:"furl,omitempty" url:"furl,omitempty"`
+	// File content.
+	FContent *string `json:"fContent,omitempty" url:"fContent,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransferOutDetailBillAttachment) GetFtype() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Ftype
+}
+
+func (t *TransferOutDetailBillAttachment) GetFilename() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Filename
+}
+
+func (t *TransferOutDetailBillAttachment) GetFileDescriptor() *string {
+	if t == nil {
+		return nil
+	}
+	return t.FileDescriptor
+}
+
+func (t *TransferOutDetailBillAttachment) GetFurl() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Furl
+}
+
+func (t *TransferOutDetailBillAttachment) GetFContent() *string {
+	if t == nil {
+		return nil
+	}
+	return t.FContent
+}
+
+func (t *TransferOutDetailBillAttachment) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransferOutDetailBillAttachment) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetFtype sets the Ftype field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailBillAttachment) SetFtype(ftype *string) {
+	t.Ftype = ftype
+	t.require(transferOutDetailBillAttachmentFieldFtype)
+}
+
+// SetFilename sets the Filename field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailBillAttachment) SetFilename(filename *string) {
+	t.Filename = filename
+	t.require(transferOutDetailBillAttachmentFieldFilename)
+}
+
+// SetFileDescriptor sets the FileDescriptor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailBillAttachment) SetFileDescriptor(fileDescriptor *string) {
+	t.FileDescriptor = fileDescriptor
+	t.require(transferOutDetailBillAttachmentFieldFileDescriptor)
+}
+
+// SetFurl sets the Furl field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailBillAttachment) SetFurl(furl *string) {
+	t.Furl = furl
+	t.require(transferOutDetailBillAttachmentFieldFurl)
+}
+
+// SetFContent sets the FContent field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailBillAttachment) SetFContent(fContent *string) {
+	t.FContent = fContent
+	t.require(transferOutDetailBillAttachmentFieldFContent)
+}
+
+func (t *TransferOutDetailBillAttachment) UnmarshalJSON(data []byte) error {
+	type unmarshaler TransferOutDetailBillAttachment
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TransferOutDetailBillAttachment(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransferOutDetailBillAttachment) MarshalJSON() ([]byte, error) {
+	type embed TransferOutDetailBillAttachment
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TransferOutDetailBillAttachment) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+// Check data for an outbound transfer detail.
+var (
+	transferOutDetailCheckDataFieldCheckNumber = big.NewInt(1 << 0)
+	transferOutDetailCheckDataFieldCheckData   = big.NewInt(1 << 1)
+)
+
+type TransferOutDetailCheckData struct {
+	// The check number.
+	CheckNumber *string `json:"CheckNumber,omitempty" url:"CheckNumber,omitempty"`
+	// Additional check data.
+	CheckData *string `json:"CheckData,omitempty" url:"CheckData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransferOutDetailCheckData) GetCheckNumber() *string {
+	if t == nil {
+		return nil
+	}
+	return t.CheckNumber
+}
+
+func (t *TransferOutDetailCheckData) GetCheckData() *string {
+	if t == nil {
+		return nil
+	}
+	return t.CheckData
+}
+
+func (t *TransferOutDetailCheckData) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransferOutDetailCheckData) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetCheckNumber sets the CheckNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailCheckData) SetCheckNumber(checkNumber *string) {
+	t.CheckNumber = checkNumber
+	t.require(transferOutDetailCheckDataFieldCheckNumber)
+}
+
+// SetCheckData sets the CheckData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailCheckData) SetCheckData(checkData *string) {
+	t.CheckData = checkData
+	t.require(transferOutDetailCheckDataFieldCheckData)
+}
+
+func (t *TransferOutDetailCheckData) UnmarshalJSON(data []byte) error {
+	type unmarshaler TransferOutDetailCheckData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TransferOutDetailCheckData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransferOutDetailCheckData) MarshalJSON() ([]byte, error) {
+	type embed TransferOutDetailCheckData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TransferOutDetailCheckData) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+// Event data for an outbound transfer detail.
+var (
+	transferOutDetailEventFieldTransEvent = big.NewInt(1 << 0)
+	transferOutDetailEventFieldEventData  = big.NewInt(1 << 1)
+	transferOutDetailEventFieldEventTime  = big.NewInt(1 << 2)
+)
+
+type TransferOutDetailEvent struct {
+	// Description of the transaction event.
+	TransEvent *string `json:"TransEvent,omitempty" url:"TransEvent,omitempty"`
+	// Additional event data.
+	EventData *string `json:"EventData,omitempty" url:"EventData,omitempty"`
+	// Time the event occurred.
+	EventTime *string `json:"EventTime,omitempty" url:"EventTime,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransferOutDetailEvent) GetTransEvent() *string {
+	if t == nil {
+		return nil
+	}
+	return t.TransEvent
+}
+
+func (t *TransferOutDetailEvent) GetEventData() *string {
+	if t == nil {
+		return nil
+	}
+	return t.EventData
+}
+
+func (t *TransferOutDetailEvent) GetEventTime() *string {
+	if t == nil {
+		return nil
+	}
+	return t.EventTime
+}
+
+func (t *TransferOutDetailEvent) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransferOutDetailEvent) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetTransEvent sets the TransEvent field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailEvent) SetTransEvent(transEvent *string) {
+	t.TransEvent = transEvent
+	t.require(transferOutDetailEventFieldTransEvent)
+}
+
+// SetEventData sets the EventData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailEvent) SetEventData(eventData *string) {
+	t.EventData = eventData
+	t.require(transferOutDetailEventFieldEventData)
+}
+
+// SetEventTime sets the EventTime field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailEvent) SetEventTime(eventTime *string) {
+	t.EventTime = eventTime
+	t.require(transferOutDetailEventFieldEventTime)
+}
+
+func (t *TransferOutDetailEvent) UnmarshalJSON(data []byte) error {
+	type unmarshaler TransferOutDetailEvent
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TransferOutDetailEvent(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransferOutDetailEvent) MarshalJSON() ([]byte, error) {
+	type embed TransferOutDetailEvent
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TransferOutDetailEvent) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+// Payment data for an outbound transfer detail.
+var (
+	transferOutDetailPaymentDataFieldMaskedAccount         = big.NewInt(1 << 0)
+	transferOutDetailPaymentDataFieldAccountType           = big.NewInt(1 << 1)
+	transferOutDetailPaymentDataFieldAccountExp            = big.NewInt(1 << 2)
+	transferOutDetailPaymentDataFieldAccountZip            = big.NewInt(1 << 3)
+	transferOutDetailPaymentDataFieldHolderName            = big.NewInt(1 << 4)
+	transferOutDetailPaymentDataFieldStoredId              = big.NewInt(1 << 5)
+	transferOutDetailPaymentDataFieldInitiator             = big.NewInt(1 << 6)
+	transferOutDetailPaymentDataFieldStoredMethodUsageType = big.NewInt(1 << 7)
+	transferOutDetailPaymentDataFieldSequence              = big.NewInt(1 << 8)
+	transferOutDetailPaymentDataFieldOrderDescription      = big.NewInt(1 << 9)
+	transferOutDetailPaymentDataFieldCloudSignatureData    = big.NewInt(1 << 10)
+	transferOutDetailPaymentDataFieldCloudSignatureFormat  = big.NewInt(1 << 11)
+	transferOutDetailPaymentDataFieldPaymentDetails        = big.NewInt(1 << 12)
+	transferOutDetailPaymentDataFieldPayorData             = big.NewInt(1 << 13)
+	transferOutDetailPaymentDataFieldAccountId             = big.NewInt(1 << 14)
+	transferOutDetailPaymentDataFieldBankAccount           = big.NewInt(1 << 15)
+	transferOutDetailPaymentDataFieldGatewayConnector      = big.NewInt(1 << 16)
+	transferOutDetailPaymentDataFieldBinData               = big.NewInt(1 << 17)
+)
+
+type TransferOutDetailPaymentData struct {
+	// Masked account number.
+	MaskedAccount *string `json:"MaskedAccount,omitempty" url:"MaskedAccount,omitempty"`
+	// Type of account.
+	AccountType *string `json:"AccountType,omitempty" url:"AccountType,omitempty"`
+	// Account expiration date.
+	AccountExp *string `json:"AccountExp,omitempty" url:"AccountExp,omitempty"`
+	// ZIP code associated with the account.
+	AccountZip *string `json:"AccountZip,omitempty" url:"AccountZip,omitempty"`
+	// Name of the account holder.
+	HolderName *string `json:"HolderName,omitempty" url:"HolderName,omitempty"`
+	// ID of the stored payment method.
+	StoredId *string `json:"StoredId,omitempty" url:"StoredId,omitempty"`
+	// Initiator of the payment.
+	Initiator *string `json:"Initiator,omitempty" url:"Initiator,omitempty"`
+	// Usage type for stored method.
+	StoredMethodUsageType *string `json:"StoredMethodUsageType,omitempty" url:"StoredMethodUsageType,omitempty"`
+	// Sequence number.
+	Sequence *string `json:"Sequence,omitempty" url:"Sequence,omitempty"`
+	// Description of the order.
+	OrderDescription *string `json:"orderDescription,omitempty" url:"orderDescription,omitempty"`
+	// Cloud signature data.
+	CloudSignatureData *string `json:"cloudSignatureData,omitempty" url:"cloudSignatureData,omitempty"`
+	// Format of cloud signature.
+	CloudSignatureFormat *string `json:"cloudSignatureFormat,omitempty" url:"cloudSignatureFormat,omitempty"`
+	// Additional payment details.
+	PaymentDetails interface{} `json:"paymentDetails,omitempty" url:"paymentDetails,omitempty"`
+	// Data about the payor.
+	PayorData *string `json:"payorData,omitempty" url:"payorData,omitempty"`
+	// Account ID.
+	AccountId *string `json:"accountId,omitempty" url:"accountId,omitempty"`
+	// Bank account information.
+	BankAccount *string `json:"bankAccount,omitempty" url:"bankAccount,omitempty"`
+	// Gateway connector used.
+	GatewayConnector *string `json:"gatewayConnector,omitempty" url:"gatewayConnector,omitempty"`
+	// BIN data for the card.
+	BinData interface{} `json:"binData,omitempty" url:"binData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransferOutDetailPaymentData) GetMaskedAccount() *string {
+	if t == nil {
+		return nil
+	}
+	return t.MaskedAccount
+}
+
+func (t *TransferOutDetailPaymentData) GetAccountType() *string {
+	if t == nil {
+		return nil
+	}
+	return t.AccountType
+}
+
+func (t *TransferOutDetailPaymentData) GetAccountExp() *string {
+	if t == nil {
+		return nil
+	}
+	return t.AccountExp
+}
+
+func (t *TransferOutDetailPaymentData) GetAccountZip() *string {
+	if t == nil {
+		return nil
+	}
+	return t.AccountZip
+}
+
+func (t *TransferOutDetailPaymentData) GetHolderName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.HolderName
+}
+
+func (t *TransferOutDetailPaymentData) GetStoredId() *string {
+	if t == nil {
+		return nil
+	}
+	return t.StoredId
+}
+
+func (t *TransferOutDetailPaymentData) GetInitiator() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Initiator
+}
+
+func (t *TransferOutDetailPaymentData) GetStoredMethodUsageType() *string {
+	if t == nil {
+		return nil
+	}
+	return t.StoredMethodUsageType
+}
+
+func (t *TransferOutDetailPaymentData) GetSequence() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Sequence
+}
+
+func (t *TransferOutDetailPaymentData) GetOrderDescription() *string {
+	if t == nil {
+		return nil
+	}
+	return t.OrderDescription
+}
+
+func (t *TransferOutDetailPaymentData) GetCloudSignatureData() *string {
+	if t == nil {
+		return nil
+	}
+	return t.CloudSignatureData
+}
+
+func (t *TransferOutDetailPaymentData) GetCloudSignatureFormat() *string {
+	if t == nil {
+		return nil
+	}
+	return t.CloudSignatureFormat
+}
+
+func (t *TransferOutDetailPaymentData) GetPaymentDetails() interface{} {
+	if t == nil {
+		return nil
+	}
+	return t.PaymentDetails
+}
+
+func (t *TransferOutDetailPaymentData) GetPayorData() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PayorData
+}
+
+func (t *TransferOutDetailPaymentData) GetAccountId() *string {
+	if t == nil {
+		return nil
+	}
+	return t.AccountId
+}
+
+func (t *TransferOutDetailPaymentData) GetBankAccount() *string {
+	if t == nil {
+		return nil
+	}
+	return t.BankAccount
+}
+
+func (t *TransferOutDetailPaymentData) GetGatewayConnector() *string {
+	if t == nil {
+		return nil
+	}
+	return t.GatewayConnector
+}
+
+func (t *TransferOutDetailPaymentData) GetBinData() interface{} {
+	if t == nil {
+		return nil
+	}
+	return t.BinData
+}
+
+func (t *TransferOutDetailPaymentData) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransferOutDetailPaymentData) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetMaskedAccount sets the MaskedAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailPaymentData) SetMaskedAccount(maskedAccount *string) {
+	t.MaskedAccount = maskedAccount
+	t.require(transferOutDetailPaymentDataFieldMaskedAccount)
+}
+
+// SetAccountType sets the AccountType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailPaymentData) SetAccountType(accountType *string) {
+	t.AccountType = accountType
+	t.require(transferOutDetailPaymentDataFieldAccountType)
+}
+
+// SetAccountExp sets the AccountExp field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailPaymentData) SetAccountExp(accountExp *string) {
+	t.AccountExp = accountExp
+	t.require(transferOutDetailPaymentDataFieldAccountExp)
+}
+
+// SetAccountZip sets the AccountZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailPaymentData) SetAccountZip(accountZip *string) {
+	t.AccountZip = accountZip
+	t.require(transferOutDetailPaymentDataFieldAccountZip)
+}
+
+// SetHolderName sets the HolderName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailPaymentData) SetHolderName(holderName *string) {
+	t.HolderName = holderName
+	t.require(transferOutDetailPaymentDataFieldHolderName)
+}
+
+// SetStoredId sets the StoredId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailPaymentData) SetStoredId(storedId *string) {
+	t.StoredId = storedId
+	t.require(transferOutDetailPaymentDataFieldStoredId)
+}
+
+// SetInitiator sets the Initiator field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailPaymentData) SetInitiator(initiator *string) {
+	t.Initiator = initiator
+	t.require(transferOutDetailPaymentDataFieldInitiator)
+}
+
+// SetStoredMethodUsageType sets the StoredMethodUsageType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailPaymentData) SetStoredMethodUsageType(storedMethodUsageType *string) {
+	t.StoredMethodUsageType = storedMethodUsageType
+	t.require(transferOutDetailPaymentDataFieldStoredMethodUsageType)
+}
+
+// SetSequence sets the Sequence field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailPaymentData) SetSequence(sequence *string) {
+	t.Sequence = sequence
+	t.require(transferOutDetailPaymentDataFieldSequence)
+}
+
+// SetOrderDescription sets the OrderDescription field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailPaymentData) SetOrderDescription(orderDescription *string) {
+	t.OrderDescription = orderDescription
+	t.require(transferOutDetailPaymentDataFieldOrderDescription)
+}
+
+// SetCloudSignatureData sets the CloudSignatureData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailPaymentData) SetCloudSignatureData(cloudSignatureData *string) {
+	t.CloudSignatureData = cloudSignatureData
+	t.require(transferOutDetailPaymentDataFieldCloudSignatureData)
+}
+
+// SetCloudSignatureFormat sets the CloudSignatureFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailPaymentData) SetCloudSignatureFormat(cloudSignatureFormat *string) {
+	t.CloudSignatureFormat = cloudSignatureFormat
+	t.require(transferOutDetailPaymentDataFieldCloudSignatureFormat)
+}
+
+// SetPaymentDetails sets the PaymentDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailPaymentData) SetPaymentDetails(paymentDetails interface{}) {
+	t.PaymentDetails = paymentDetails
+	t.require(transferOutDetailPaymentDataFieldPaymentDetails)
+}
+
+// SetPayorData sets the PayorData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailPaymentData) SetPayorData(payorData *string) {
+	t.PayorData = payorData
+	t.require(transferOutDetailPaymentDataFieldPayorData)
+}
+
+// SetAccountId sets the AccountId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailPaymentData) SetAccountId(accountId *string) {
+	t.AccountId = accountId
+	t.require(transferOutDetailPaymentDataFieldAccountId)
+}
+
+// SetBankAccount sets the BankAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailPaymentData) SetBankAccount(bankAccount *string) {
+	t.BankAccount = bankAccount
+	t.require(transferOutDetailPaymentDataFieldBankAccount)
+}
+
+// SetGatewayConnector sets the GatewayConnector field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailPaymentData) SetGatewayConnector(gatewayConnector *string) {
+	t.GatewayConnector = gatewayConnector
+	t.require(transferOutDetailPaymentDataFieldGatewayConnector)
+}
+
+// SetBinData sets the BinData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailPaymentData) SetBinData(binData interface{}) {
+	t.BinData = binData
+	t.require(transferOutDetailPaymentDataFieldBinData)
+}
+
+func (t *TransferOutDetailPaymentData) UnmarshalJSON(data []byte) error {
+	type unmarshaler TransferOutDetailPaymentData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TransferOutDetailPaymentData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransferOutDetailPaymentData) MarshalJSON() ([]byte, error) {
+	type embed TransferOutDetailPaymentData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TransferOutDetailPaymentData) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+// Response body for queries about outbound transfer details.
+var (
+	transferOutDetailQueryResponseFieldSummary = big.NewInt(1 << 0)
+	transferOutDetailQueryResponseFieldRecords = big.NewInt(1 << 1)
+)
+
+type TransferOutDetailQueryResponse struct {
+	// Summary information about the transfer details.
+	Summary *QueryTransferSummary `json:"Summary" url:"Summary"`
+	// List of outbound transfer detail records.
+	Records []*TransferOutDetailRecord `json:"Records" url:"Records"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransferOutDetailQueryResponse) GetSummary() *QueryTransferSummary {
+	if t == nil {
+		return nil
+	}
+	return t.Summary
+}
+
+func (t *TransferOutDetailQueryResponse) GetRecords() []*TransferOutDetailRecord {
+	if t == nil {
+		return nil
+	}
+	return t.Records
+}
+
+func (t *TransferOutDetailQueryResponse) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransferOutDetailQueryResponse) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailQueryResponse) SetSummary(summary *QueryTransferSummary) {
+	t.Summary = summary
+	t.require(transferOutDetailQueryResponseFieldSummary)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailQueryResponse) SetRecords(records []*TransferOutDetailRecord) {
+	t.Records = records
+	t.require(transferOutDetailQueryResponseFieldRecords)
+}
+
+func (t *TransferOutDetailQueryResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler TransferOutDetailQueryResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TransferOutDetailQueryResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransferOutDetailQueryResponse) MarshalJSON() ([]byte, error) {
+	type embed TransferOutDetailQueryResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TransferOutDetailQueryResponse) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+// A record representing an outbound transfer detail.
+var (
+	transferOutDetailRecordFieldTransferDetailId     = big.NewInt(1 << 0)
+	transferOutDetailRecordFieldTransferId           = big.NewInt(1 << 1)
+	transferOutDetailRecordFieldTransactionId        = big.NewInt(1 << 2)
+	transferOutDetailRecordFieldIdOut                = big.NewInt(1 << 3)
+	transferOutDetailRecordFieldMethod               = big.NewInt(1 << 4)
+	transferOutDetailRecordFieldType                 = big.NewInt(1 << 5)
+	transferOutDetailRecordFieldCategory             = big.NewInt(1 << 6)
+	transferOutDetailRecordFieldGrossAmount          = big.NewInt(1 << 7)
+	transferOutDetailRecordFieldReturnedAmount       = big.NewInt(1 << 8)
+	transferOutDetailRecordFieldRefundAmount         = big.NewInt(1 << 9)
+	transferOutDetailRecordFieldHoldAmount           = big.NewInt(1 << 10)
+	transferOutDetailRecordFieldReleasedAmount       = big.NewInt(1 << 11)
+	transferOutDetailRecordFieldBillingFeesAmount    = big.NewInt(1 << 12)
+	transferOutDetailRecordFieldAdjustmentsAmount    = big.NewInt(1 << 13)
+	transferOutDetailRecordFieldNetTransferAmount    = big.NewInt(1 << 14)
+	transferOutDetailRecordFieldBillingFeesDetails   = big.NewInt(1 << 15)
+	transferOutDetailRecordFieldCreatedAt            = big.NewInt(1 << 16)
+	transferOutDetailRecordFieldComments             = big.NewInt(1 << 17)
+	transferOutDetailRecordFieldVendor               = big.NewInt(1 << 18)
+	transferOutDetailRecordFieldPaypointDbaname      = big.NewInt(1 << 19)
+	transferOutDetailRecordFieldPaypointLegalname    = big.NewInt(1 << 20)
+	transferOutDetailRecordFieldPaypointId           = big.NewInt(1 << 21)
+	transferOutDetailRecordFieldStatus               = big.NewInt(1 << 22)
+	transferOutDetailRecordFieldPaymentId            = big.NewInt(1 << 23)
+	transferOutDetailRecordFieldTransId              = big.NewInt(1 << 24)
+	transferOutDetailRecordFieldTransStatus          = big.NewInt(1 << 25)
+	transferOutDetailRecordFieldTransStatusDetail    = big.NewInt(1 << 26)
+	transferOutDetailRecordFieldTransStatusName      = big.NewInt(1 << 27)
+	transferOutDetailRecordFieldTransStatusCategory  = big.NewInt(1 << 28)
+	transferOutDetailRecordFieldLastUpdated          = big.NewInt(1 << 29)
+	transferOutDetailRecordFieldTotalAmount          = big.NewInt(1 << 30)
+	transferOutDetailRecordFieldNetAmount            = big.NewInt(1 << 31)
+	transferOutDetailRecordFieldFeeAmount            = big.NewInt(1 << 32)
+	transferOutDetailRecordFieldSource               = big.NewInt(1 << 33)
+	transferOutDetailRecordFieldParentOrgName        = big.NewInt(1 << 34)
+	transferOutDetailRecordFieldParentOrgId          = big.NewInt(1 << 35)
+	transferOutDetailRecordFieldBatchNumber          = big.NewInt(1 << 36)
+	transferOutDetailRecordFieldPaymentStatus        = big.NewInt(1 << 37)
+	transferOutDetailRecordFieldPaymentMethod        = big.NewInt(1 << 38)
+	transferOutDetailRecordFieldCardToken            = big.NewInt(1 << 39)
+	transferOutDetailRecordFieldCheckNumber          = big.NewInt(1 << 40)
+	transferOutDetailRecordFieldCheckData            = big.NewInt(1 << 41)
+	transferOutDetailRecordFieldPaymentData          = big.NewInt(1 << 42)
+	transferOutDetailRecordFieldBills                = big.NewInt(1 << 43)
+	transferOutDetailRecordFieldEvents               = big.NewInt(1 << 44)
+	transferOutDetailRecordFieldExternalPaypointId   = big.NewInt(1 << 45)
+	transferOutDetailRecordFieldEntryName            = big.NewInt(1 << 46)
+	transferOutDetailRecordFieldGateway              = big.NewInt(1 << 47)
+	transferOutDetailRecordFieldBatchId              = big.NewInt(1 << 48)
+	transferOutDetailRecordFieldHasVcardTransactions = big.NewInt(1 << 49)
+	transferOutDetailRecordFieldIsSameDayAch         = big.NewInt(1 << 50)
+	transferOutDetailRecordFieldScheduleId           = big.NewInt(1 << 51)
+	transferOutDetailRecordFieldSettlementStatus     = big.NewInt(1 << 52)
+	transferOutDetailRecordFieldSettlementStatusName = big.NewInt(1 << 53)
+	transferOutDetailRecordFieldSettlementDate       = big.NewInt(1 << 54)
+	transferOutDetailRecordFieldRiskFlagged          = big.NewInt(1 << 55)
+	transferOutDetailRecordFieldRiskFlaggedOn        = big.NewInt(1 << 56)
+	transferOutDetailRecordFieldRiskStatus           = big.NewInt(1 << 57)
+	transferOutDetailRecordFieldRiskReason           = big.NewInt(1 << 58)
+	transferOutDetailRecordFieldRiskAction           = big.NewInt(1 << 59)
+	transferOutDetailRecordFieldRiskActionCode       = big.NewInt(1 << 60)
+	transferOutDetailRecordFieldPayoutProgram        = big.NewInt(1 << 61)
+	transferOutDetailRecordFieldAchTraceNumber       = big.NewInt(1 << 62)
+)
+
+type TransferOutDetailRecord struct {
+	// Unique identifier for the transfer detail.
+	TransferDetailId *int `json:"transferDetailId,omitempty" url:"transferDetailId,omitempty"`
+	// The ID of the transfer this detail belongs to.
+	TransferId *int `json:"transferId,omitempty" url:"transferId,omitempty"`
+	// The transaction ID in Payabli's system.
+	TransactionId *string `json:"transactionId,omitempty" url:"transactionId,omitempty"`
+	// The outbound transaction ID.
+	IdOut *int `json:"IdOut,omitempty" url:"IdOut,omitempty"`
+	// Payment method used.
+	Method *string `json:"method,omitempty" url:"method,omitempty"`
+	// The transaction type (credit or debit).
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
+	// Category of the transaction detail.
+	Category *string `json:"category,omitempty" url:"category,omitempty"`
+	// The gross amount of the transaction.
+	GrossAmount *float64 `json:"grossAmount,omitempty" url:"grossAmount,omitempty"`
+	// Amount returned.
+	ReturnedAmount *float64 `json:"returnedAmount,omitempty" url:"returnedAmount,omitempty"`
+	// Amount refunded.
+	RefundAmount *float64 `json:"refundAmount,omitempty" url:"refundAmount,omitempty"`
+	// Amount being held.
+	HoldAmount *float64 `json:"holdAmount,omitempty" url:"holdAmount,omitempty"`
+	// Amount released.
+	ReleasedAmount *float64 `json:"releasedAmount,omitempty" url:"releasedAmount,omitempty"`
+	// Billing fees amount.
+	BillingFeesAmount *float64 `json:"billingFeesAmount,omitempty" url:"billingFeesAmount,omitempty"`
+	// Adjustments amount.
+	AdjustmentsAmount *float64 `json:"adjustmentsAmount,omitempty" url:"adjustmentsAmount,omitempty"`
+	// Net transfer amount after deductions.
+	NetTransferAmount *float64 `json:"netTransferAmount,omitempty" url:"netTransferAmount,omitempty"`
+	// Detailed breakdown of billing fees.
+	BillingFeesDetails []*BillingFeeDetail `json:"billingFeesDetails,omitempty" url:"billingFeesDetails,omitempty"`
+	// Date and time the record was created.
+	CreatedAt *string `json:"CreatedAt,omitempty" url:"CreatedAt,omitempty"`
+	// Comments on the transfer detail.
+	Comments *string `json:"Comments,omitempty" url:"Comments,omitempty"`
+	// Vendor information.
+	Vendor *TransferOutDetailVendor `json:"Vendor,omitempty" url:"Vendor,omitempty"`
+	// DBA name of the paypoint.
+	PaypointDbaname *string `json:"PaypointDbaname,omitempty" url:"PaypointDbaname,omitempty"`
+	// Legal name of the paypoint.
+	PaypointLegalname *string `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
+	// ID of the paypoint.
+	PaypointId *int `json:"PaypointId,omitempty" url:"PaypointId,omitempty"`
+	// Status of the transfer detail.
+	Status *int `json:"Status,omitempty" url:"Status,omitempty"`
+	// Payment ID.
+	PaymentId *string `json:"PaymentId,omitempty" url:"PaymentId,omitempty"`
+	// Transaction ID.
+	TransId *string `json:"TransId,omitempty" url:"TransId,omitempty"`
+	// Transaction status.
+	TransStatus *int `json:"TransStatus,omitempty" url:"TransStatus,omitempty"`
+	// Detailed transaction status.
+	TransStatusDetail *string `json:"TransStatusDetail,omitempty" url:"TransStatusDetail,omitempty"`
+	// Name of the transaction status.
+	TransStatusName *string `json:"TransStatusName,omitempty" url:"TransStatusName,omitempty"`
+	// Category of the transaction status.
+	TransStatusCategory *string `json:"TransStatusCategory,omitempty" url:"TransStatusCategory,omitempty"`
+	// Date and time the record was last updated.
+	LastUpdated *string `json:"LastUpdated,omitempty" url:"LastUpdated,omitempty"`
+	// Total amount of the transaction.
+	TotalAmount *float64 `json:"TotalAmount,omitempty" url:"TotalAmount,omitempty"`
+	// Net amount of the transaction.
+	NetAmount *float64 `json:"NetAmount,omitempty" url:"NetAmount,omitempty"`
+	// Fee amount for the transaction.
+	FeeAmount *float64 `json:"FeeAmount,omitempty" url:"FeeAmount,omitempty"`
+	// Source of the transaction.
+	Source *string `json:"Source,omitempty" url:"Source,omitempty"`
+	// Name of the parent organization.
+	ParentOrgName *string `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
+	// ID of the parent organization.
+	ParentOrgId *int `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
+	// Batch number for the transfer.
+	BatchNumber *string `json:"BatchNumber,omitempty" url:"BatchNumber,omitempty"`
+	// Status of the payment.
+	PaymentStatus *string `json:"PaymentStatus,omitempty" url:"PaymentStatus,omitempty"`
+	// Payment method used.
+	PaymentMethod *string `json:"PaymentMethod,omitempty" url:"PaymentMethod,omitempty"`
+	// Token for the card used.
+	CardToken *string `json:"CardToken,omitempty" url:"CardToken,omitempty"`
+	// Check number if paid by check.
+	CheckNumber *string `json:"CheckNumber,omitempty" url:"CheckNumber,omitempty"`
+	// Check data if paid by check.
+	CheckData *TransferOutDetailCheckData `json:"CheckData,omitempty" url:"CheckData,omitempty"`
+	// Payment data for the transaction.
+	PaymentData *TransferOutDetailPaymentData `json:"PaymentData,omitempty" url:"PaymentData,omitempty"`
+	// Bills associated with the transfer.
+	Bills []*TransferOutDetailBill `json:"Bills,omitempty" url:"Bills,omitempty"`
+	// Events associated with the transfer.
+	Events []*TransferOutDetailEvent `json:"Events,omitempty" url:"Events,omitempty"`
+	// External paypoint ID.
+	ExternalPaypointId *string `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	// Entry name for the paypoint.
+	EntryName *string `json:"EntryName,omitempty" url:"EntryName,omitempty"`
+	// Gateway used for the transaction.
+	Gateway *string `json:"Gateway,omitempty" url:"Gateway,omitempty"`
+	// ID of the batch.
+	BatchId *int `json:"BatchId,omitempty" url:"BatchId,omitempty"`
+	// Whether the transfer has virtual card transactions.
+	HasVcardTransactions *bool `json:"HasVcardTransactions,omitempty" url:"HasVcardTransactions,omitempty"`
+	// Whether this is a same-day ACH transaction.
+	IsSameDayAch *bool `json:"IsSameDayACH,omitempty" url:"IsSameDayACH,omitempty"`
+	// ID of the schedule if applicable.
+	ScheduleId *int `json:"ScheduleId,omitempty" url:"ScheduleId,omitempty"`
+	// Settlement status.
+	SettlementStatus *string `json:"SettlementStatus,omitempty" url:"SettlementStatus,omitempty"`
+	// Name of the settlement status.
+	SettlementStatusName *string `json:"SettlementStatusName,omitempty" url:"SettlementStatusName,omitempty"`
+	// Date of settlement.
+	SettlementDate *string `json:"SettlementDate,omitempty" url:"SettlementDate,omitempty"`
+	// Whether the transaction was flagged for risk.
+	RiskFlagged *bool `json:"RiskFlagged,omitempty" url:"RiskFlagged,omitempty"`
+	// Date and time the transaction was flagged.
+	RiskFlaggedOn *string `json:"RiskFlaggedOn,omitempty" url:"RiskFlaggedOn,omitempty"`
+	// Risk status of the transaction.
+	RiskStatus *string `json:"RiskStatus,omitempty" url:"RiskStatus,omitempty"`
+	// Reason for the risk flag.
+	RiskReason *string `json:"RiskReason,omitempty" url:"RiskReason,omitempty"`
+	// Action taken for risk.
+	RiskAction *string `json:"RiskAction,omitempty" url:"RiskAction,omitempty"`
+	// Code for the risk action.
+	RiskActionCode *int `json:"RiskActionCode,omitempty" url:"RiskActionCode,omitempty"`
+	// Payout program used.
+	PayoutProgram *string `json:"PayoutProgram,omitempty" url:"PayoutProgram,omitempty"`
+	// ACH trace number.
+	AchTraceNumber *string `json:"AchTraceNumber,omitempty" url:"AchTraceNumber,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransferOutDetailRecord) GetTransferDetailId() *int {
+	if t == nil {
+		return nil
+	}
+	return t.TransferDetailId
+}
+
+func (t *TransferOutDetailRecord) GetTransferId() *int {
+	if t == nil {
+		return nil
+	}
+	return t.TransferId
+}
+
+func (t *TransferOutDetailRecord) GetTransactionId() *string {
+	if t == nil {
+		return nil
+	}
+	return t.TransactionId
+}
+
+func (t *TransferOutDetailRecord) GetIdOut() *int {
+	if t == nil {
+		return nil
+	}
+	return t.IdOut
+}
+
+func (t *TransferOutDetailRecord) GetMethod() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Method
+}
+
+func (t *TransferOutDetailRecord) GetType() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Type
+}
+
+func (t *TransferOutDetailRecord) GetCategory() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Category
+}
+
+func (t *TransferOutDetailRecord) GetGrossAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.GrossAmount
+}
+
+func (t *TransferOutDetailRecord) GetReturnedAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.ReturnedAmount
+}
+
+func (t *TransferOutDetailRecord) GetRefundAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.RefundAmount
+}
+
+func (t *TransferOutDetailRecord) GetHoldAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.HoldAmount
+}
+
+func (t *TransferOutDetailRecord) GetReleasedAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.ReleasedAmount
+}
+
+func (t *TransferOutDetailRecord) GetBillingFeesAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.BillingFeesAmount
+}
+
+func (t *TransferOutDetailRecord) GetAdjustmentsAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.AdjustmentsAmount
+}
+
+func (t *TransferOutDetailRecord) GetNetTransferAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.NetTransferAmount
+}
+
+func (t *TransferOutDetailRecord) GetBillingFeesDetails() []*BillingFeeDetail {
+	if t == nil {
+		return nil
+	}
+	return t.BillingFeesDetails
+}
+
+func (t *TransferOutDetailRecord) GetCreatedAt() *string {
+	if t == nil {
+		return nil
+	}
+	return t.CreatedAt
+}
+
+func (t *TransferOutDetailRecord) GetComments() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Comments
+}
+
+func (t *TransferOutDetailRecord) GetVendor() *TransferOutDetailVendor {
+	if t == nil {
+		return nil
+	}
+	return t.Vendor
+}
+
+func (t *TransferOutDetailRecord) GetPaypointDbaname() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PaypointDbaname
+}
+
+func (t *TransferOutDetailRecord) GetPaypointLegalname() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PaypointLegalname
+}
+
+func (t *TransferOutDetailRecord) GetPaypointId() *int {
+	if t == nil {
+		return nil
+	}
+	return t.PaypointId
+}
+
+func (t *TransferOutDetailRecord) GetStatus() *int {
+	if t == nil {
+		return nil
+	}
+	return t.Status
+}
+
+func (t *TransferOutDetailRecord) GetPaymentId() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PaymentId
+}
+
+func (t *TransferOutDetailRecord) GetTransId() *string {
+	if t == nil {
+		return nil
+	}
+	return t.TransId
+}
+
+func (t *TransferOutDetailRecord) GetTransStatus() *int {
+	if t == nil {
+		return nil
+	}
+	return t.TransStatus
+}
+
+func (t *TransferOutDetailRecord) GetTransStatusDetail() *string {
+	if t == nil {
+		return nil
+	}
+	return t.TransStatusDetail
+}
+
+func (t *TransferOutDetailRecord) GetTransStatusName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.TransStatusName
+}
+
+func (t *TransferOutDetailRecord) GetTransStatusCategory() *string {
+	if t == nil {
+		return nil
+	}
+	return t.TransStatusCategory
+}
+
+func (t *TransferOutDetailRecord) GetLastUpdated() *string {
+	if t == nil {
+		return nil
+	}
+	return t.LastUpdated
+}
+
+func (t *TransferOutDetailRecord) GetTotalAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.TotalAmount
+}
+
+func (t *TransferOutDetailRecord) GetNetAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.NetAmount
+}
+
+func (t *TransferOutDetailRecord) GetFeeAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.FeeAmount
+}
+
+func (t *TransferOutDetailRecord) GetSource() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Source
+}
+
+func (t *TransferOutDetailRecord) GetParentOrgName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ParentOrgName
+}
+
+func (t *TransferOutDetailRecord) GetParentOrgId() *int {
+	if t == nil {
+		return nil
+	}
+	return t.ParentOrgId
+}
+
+func (t *TransferOutDetailRecord) GetBatchNumber() *string {
+	if t == nil {
+		return nil
+	}
+	return t.BatchNumber
+}
+
+func (t *TransferOutDetailRecord) GetPaymentStatus() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PaymentStatus
+}
+
+func (t *TransferOutDetailRecord) GetPaymentMethod() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PaymentMethod
+}
+
+func (t *TransferOutDetailRecord) GetCardToken() *string {
+	if t == nil {
+		return nil
+	}
+	return t.CardToken
+}
+
+func (t *TransferOutDetailRecord) GetCheckNumber() *string {
+	if t == nil {
+		return nil
+	}
+	return t.CheckNumber
+}
+
+func (t *TransferOutDetailRecord) GetCheckData() *TransferOutDetailCheckData {
+	if t == nil {
+		return nil
+	}
+	return t.CheckData
+}
+
+func (t *TransferOutDetailRecord) GetPaymentData() *TransferOutDetailPaymentData {
+	if t == nil {
+		return nil
+	}
+	return t.PaymentData
+}
+
+func (t *TransferOutDetailRecord) GetBills() []*TransferOutDetailBill {
+	if t == nil {
+		return nil
+	}
+	return t.Bills
+}
+
+func (t *TransferOutDetailRecord) GetEvents() []*TransferOutDetailEvent {
+	if t == nil {
+		return nil
+	}
+	return t.Events
+}
+
+func (t *TransferOutDetailRecord) GetExternalPaypointId() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ExternalPaypointId
+}
+
+func (t *TransferOutDetailRecord) GetEntryName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.EntryName
+}
+
+func (t *TransferOutDetailRecord) GetGateway() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Gateway
+}
+
+func (t *TransferOutDetailRecord) GetBatchId() *int {
+	if t == nil {
+		return nil
+	}
+	return t.BatchId
+}
+
+func (t *TransferOutDetailRecord) GetHasVcardTransactions() *bool {
+	if t == nil {
+		return nil
+	}
+	return t.HasVcardTransactions
+}
+
+func (t *TransferOutDetailRecord) GetIsSameDayAch() *bool {
+	if t == nil {
+		return nil
+	}
+	return t.IsSameDayAch
+}
+
+func (t *TransferOutDetailRecord) GetScheduleId() *int {
+	if t == nil {
+		return nil
+	}
+	return t.ScheduleId
+}
+
+func (t *TransferOutDetailRecord) GetSettlementStatus() *string {
+	if t == nil {
+		return nil
+	}
+	return t.SettlementStatus
+}
+
+func (t *TransferOutDetailRecord) GetSettlementStatusName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.SettlementStatusName
+}
+
+func (t *TransferOutDetailRecord) GetSettlementDate() *string {
+	if t == nil {
+		return nil
+	}
+	return t.SettlementDate
+}
+
+func (t *TransferOutDetailRecord) GetRiskFlagged() *bool {
+	if t == nil {
+		return nil
+	}
+	return t.RiskFlagged
+}
+
+func (t *TransferOutDetailRecord) GetRiskFlaggedOn() *string {
+	if t == nil {
+		return nil
+	}
+	return t.RiskFlaggedOn
+}
+
+func (t *TransferOutDetailRecord) GetRiskStatus() *string {
+	if t == nil {
+		return nil
+	}
+	return t.RiskStatus
+}
+
+func (t *TransferOutDetailRecord) GetRiskReason() *string {
+	if t == nil {
+		return nil
+	}
+	return t.RiskReason
+}
+
+func (t *TransferOutDetailRecord) GetRiskAction() *string {
+	if t == nil {
+		return nil
+	}
+	return t.RiskAction
+}
+
+func (t *TransferOutDetailRecord) GetRiskActionCode() *int {
+	if t == nil {
+		return nil
+	}
+	return t.RiskActionCode
+}
+
+func (t *TransferOutDetailRecord) GetPayoutProgram() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PayoutProgram
+}
+
+func (t *TransferOutDetailRecord) GetAchTraceNumber() *string {
+	if t == nil {
+		return nil
+	}
+	return t.AchTraceNumber
+}
+
+func (t *TransferOutDetailRecord) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransferOutDetailRecord) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetTransferDetailId sets the TransferDetailId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetTransferDetailId(transferDetailId *int) {
+	t.TransferDetailId = transferDetailId
+	t.require(transferOutDetailRecordFieldTransferDetailId)
+}
+
+// SetTransferId sets the TransferId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetTransferId(transferId *int) {
+	t.TransferId = transferId
+	t.require(transferOutDetailRecordFieldTransferId)
+}
+
+// SetTransactionId sets the TransactionId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetTransactionId(transactionId *string) {
+	t.TransactionId = transactionId
+	t.require(transferOutDetailRecordFieldTransactionId)
+}
+
+// SetIdOut sets the IdOut field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetIdOut(idOut *int) {
+	t.IdOut = idOut
+	t.require(transferOutDetailRecordFieldIdOut)
+}
+
+// SetMethod sets the Method field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetMethod(method *string) {
+	t.Method = method
+	t.require(transferOutDetailRecordFieldMethod)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetType(type_ *string) {
+	t.Type = type_
+	t.require(transferOutDetailRecordFieldType)
+}
+
+// SetCategory sets the Category field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetCategory(category *string) {
+	t.Category = category
+	t.require(transferOutDetailRecordFieldCategory)
+}
+
+// SetGrossAmount sets the GrossAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetGrossAmount(grossAmount *float64) {
+	t.GrossAmount = grossAmount
+	t.require(transferOutDetailRecordFieldGrossAmount)
+}
+
+// SetReturnedAmount sets the ReturnedAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetReturnedAmount(returnedAmount *float64) {
+	t.ReturnedAmount = returnedAmount
+	t.require(transferOutDetailRecordFieldReturnedAmount)
+}
+
+// SetRefundAmount sets the RefundAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetRefundAmount(refundAmount *float64) {
+	t.RefundAmount = refundAmount
+	t.require(transferOutDetailRecordFieldRefundAmount)
+}
+
+// SetHoldAmount sets the HoldAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetHoldAmount(holdAmount *float64) {
+	t.HoldAmount = holdAmount
+	t.require(transferOutDetailRecordFieldHoldAmount)
+}
+
+// SetReleasedAmount sets the ReleasedAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetReleasedAmount(releasedAmount *float64) {
+	t.ReleasedAmount = releasedAmount
+	t.require(transferOutDetailRecordFieldReleasedAmount)
+}
+
+// SetBillingFeesAmount sets the BillingFeesAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetBillingFeesAmount(billingFeesAmount *float64) {
+	t.BillingFeesAmount = billingFeesAmount
+	t.require(transferOutDetailRecordFieldBillingFeesAmount)
+}
+
+// SetAdjustmentsAmount sets the AdjustmentsAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetAdjustmentsAmount(adjustmentsAmount *float64) {
+	t.AdjustmentsAmount = adjustmentsAmount
+	t.require(transferOutDetailRecordFieldAdjustmentsAmount)
+}
+
+// SetNetTransferAmount sets the NetTransferAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetNetTransferAmount(netTransferAmount *float64) {
+	t.NetTransferAmount = netTransferAmount
+	t.require(transferOutDetailRecordFieldNetTransferAmount)
+}
+
+// SetBillingFeesDetails sets the BillingFeesDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetBillingFeesDetails(billingFeesDetails []*BillingFeeDetail) {
+	t.BillingFeesDetails = billingFeesDetails
+	t.require(transferOutDetailRecordFieldBillingFeesDetails)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetCreatedAt(createdAt *string) {
+	t.CreatedAt = createdAt
+	t.require(transferOutDetailRecordFieldCreatedAt)
+}
+
+// SetComments sets the Comments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetComments(comments *string) {
+	t.Comments = comments
+	t.require(transferOutDetailRecordFieldComments)
+}
+
+// SetVendor sets the Vendor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetVendor(vendor_ *TransferOutDetailVendor) {
+	t.Vendor = vendor_
+	t.require(transferOutDetailRecordFieldVendor)
+}
+
+// SetPaypointDbaname sets the PaypointDbaname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetPaypointDbaname(paypointDbaname *string) {
+	t.PaypointDbaname = paypointDbaname
+	t.require(transferOutDetailRecordFieldPaypointDbaname)
+}
+
+// SetPaypointLegalname sets the PaypointLegalname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetPaypointLegalname(paypointLegalname *string) {
+	t.PaypointLegalname = paypointLegalname
+	t.require(transferOutDetailRecordFieldPaypointLegalname)
+}
+
+// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetPaypointId(paypointId *int) {
+	t.PaypointId = paypointId
+	t.require(transferOutDetailRecordFieldPaypointId)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetStatus(status *int) {
+	t.Status = status
+	t.require(transferOutDetailRecordFieldStatus)
+}
+
+// SetPaymentId sets the PaymentId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetPaymentId(paymentId *string) {
+	t.PaymentId = paymentId
+	t.require(transferOutDetailRecordFieldPaymentId)
+}
+
+// SetTransId sets the TransId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetTransId(transId *string) {
+	t.TransId = transId
+	t.require(transferOutDetailRecordFieldTransId)
+}
+
+// SetTransStatus sets the TransStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetTransStatus(transStatus *int) {
+	t.TransStatus = transStatus
+	t.require(transferOutDetailRecordFieldTransStatus)
+}
+
+// SetTransStatusDetail sets the TransStatusDetail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetTransStatusDetail(transStatusDetail *string) {
+	t.TransStatusDetail = transStatusDetail
+	t.require(transferOutDetailRecordFieldTransStatusDetail)
+}
+
+// SetTransStatusName sets the TransStatusName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetTransStatusName(transStatusName *string) {
+	t.TransStatusName = transStatusName
+	t.require(transferOutDetailRecordFieldTransStatusName)
+}
+
+// SetTransStatusCategory sets the TransStatusCategory field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetTransStatusCategory(transStatusCategory *string) {
+	t.TransStatusCategory = transStatusCategory
+	t.require(transferOutDetailRecordFieldTransStatusCategory)
+}
+
+// SetLastUpdated sets the LastUpdated field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetLastUpdated(lastUpdated *string) {
+	t.LastUpdated = lastUpdated
+	t.require(transferOutDetailRecordFieldLastUpdated)
+}
+
+// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetTotalAmount(totalAmount *float64) {
+	t.TotalAmount = totalAmount
+	t.require(transferOutDetailRecordFieldTotalAmount)
+}
+
+// SetNetAmount sets the NetAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetNetAmount(netAmount *float64) {
+	t.NetAmount = netAmount
+	t.require(transferOutDetailRecordFieldNetAmount)
+}
+
+// SetFeeAmount sets the FeeAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetFeeAmount(feeAmount *float64) {
+	t.FeeAmount = feeAmount
+	t.require(transferOutDetailRecordFieldFeeAmount)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetSource(source *string) {
+	t.Source = source
+	t.require(transferOutDetailRecordFieldSource)
+}
+
+// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetParentOrgName(parentOrgName *string) {
+	t.ParentOrgName = parentOrgName
+	t.require(transferOutDetailRecordFieldParentOrgName)
+}
+
+// SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetParentOrgId(parentOrgId *int) {
+	t.ParentOrgId = parentOrgId
+	t.require(transferOutDetailRecordFieldParentOrgId)
+}
+
+// SetBatchNumber sets the BatchNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetBatchNumber(batchNumber *string) {
+	t.BatchNumber = batchNumber
+	t.require(transferOutDetailRecordFieldBatchNumber)
+}
+
+// SetPaymentStatus sets the PaymentStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetPaymentStatus(paymentStatus *string) {
+	t.PaymentStatus = paymentStatus
+	t.require(transferOutDetailRecordFieldPaymentStatus)
+}
+
+// SetPaymentMethod sets the PaymentMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetPaymentMethod(paymentMethod *string) {
+	t.PaymentMethod = paymentMethod
+	t.require(transferOutDetailRecordFieldPaymentMethod)
+}
+
+// SetCardToken sets the CardToken field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetCardToken(cardToken *string) {
+	t.CardToken = cardToken
+	t.require(transferOutDetailRecordFieldCardToken)
+}
+
+// SetCheckNumber sets the CheckNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetCheckNumber(checkNumber *string) {
+	t.CheckNumber = checkNumber
+	t.require(transferOutDetailRecordFieldCheckNumber)
+}
+
+// SetCheckData sets the CheckData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetCheckData(checkData *TransferOutDetailCheckData) {
+	t.CheckData = checkData
+	t.require(transferOutDetailRecordFieldCheckData)
+}
+
+// SetPaymentData sets the PaymentData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetPaymentData(paymentData *TransferOutDetailPaymentData) {
+	t.PaymentData = paymentData
+	t.require(transferOutDetailRecordFieldPaymentData)
+}
+
+// SetBills sets the Bills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetBills(bills []*TransferOutDetailBill) {
+	t.Bills = bills
+	t.require(transferOutDetailRecordFieldBills)
+}
+
+// SetEvents sets the Events field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetEvents(events []*TransferOutDetailEvent) {
+	t.Events = events
+	t.require(transferOutDetailRecordFieldEvents)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetExternalPaypointId(externalPaypointId *string) {
+	t.ExternalPaypointId = externalPaypointId
+	t.require(transferOutDetailRecordFieldExternalPaypointId)
+}
+
+// SetEntryName sets the EntryName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetEntryName(entryName *string) {
+	t.EntryName = entryName
+	t.require(transferOutDetailRecordFieldEntryName)
+}
+
+// SetGateway sets the Gateway field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetGateway(gateway *string) {
+	t.Gateway = gateway
+	t.require(transferOutDetailRecordFieldGateway)
+}
+
+// SetBatchId sets the BatchId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetBatchId(batchId *int) {
+	t.BatchId = batchId
+	t.require(transferOutDetailRecordFieldBatchId)
+}
+
+// SetHasVcardTransactions sets the HasVcardTransactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetHasVcardTransactions(hasVcardTransactions *bool) {
+	t.HasVcardTransactions = hasVcardTransactions
+	t.require(transferOutDetailRecordFieldHasVcardTransactions)
+}
+
+// SetIsSameDayAch sets the IsSameDayAch field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetIsSameDayAch(isSameDayAch *bool) {
+	t.IsSameDayAch = isSameDayAch
+	t.require(transferOutDetailRecordFieldIsSameDayAch)
+}
+
+// SetScheduleId sets the ScheduleId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetScheduleId(scheduleId *int) {
+	t.ScheduleId = scheduleId
+	t.require(transferOutDetailRecordFieldScheduleId)
+}
+
+// SetSettlementStatus sets the SettlementStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetSettlementStatus(settlementStatus *string) {
+	t.SettlementStatus = settlementStatus
+	t.require(transferOutDetailRecordFieldSettlementStatus)
+}
+
+// SetSettlementStatusName sets the SettlementStatusName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetSettlementStatusName(settlementStatusName *string) {
+	t.SettlementStatusName = settlementStatusName
+	t.require(transferOutDetailRecordFieldSettlementStatusName)
+}
+
+// SetSettlementDate sets the SettlementDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetSettlementDate(settlementDate *string) {
+	t.SettlementDate = settlementDate
+	t.require(transferOutDetailRecordFieldSettlementDate)
+}
+
+// SetRiskFlagged sets the RiskFlagged field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetRiskFlagged(riskFlagged *bool) {
+	t.RiskFlagged = riskFlagged
+	t.require(transferOutDetailRecordFieldRiskFlagged)
+}
+
+// SetRiskFlaggedOn sets the RiskFlaggedOn field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetRiskFlaggedOn(riskFlaggedOn *string) {
+	t.RiskFlaggedOn = riskFlaggedOn
+	t.require(transferOutDetailRecordFieldRiskFlaggedOn)
+}
+
+// SetRiskStatus sets the RiskStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetRiskStatus(riskStatus *string) {
+	t.RiskStatus = riskStatus
+	t.require(transferOutDetailRecordFieldRiskStatus)
+}
+
+// SetRiskReason sets the RiskReason field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetRiskReason(riskReason *string) {
+	t.RiskReason = riskReason
+	t.require(transferOutDetailRecordFieldRiskReason)
+}
+
+// SetRiskAction sets the RiskAction field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetRiskAction(riskAction *string) {
+	t.RiskAction = riskAction
+	t.require(transferOutDetailRecordFieldRiskAction)
+}
+
+// SetRiskActionCode sets the RiskActionCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetRiskActionCode(riskActionCode *int) {
+	t.RiskActionCode = riskActionCode
+	t.require(transferOutDetailRecordFieldRiskActionCode)
+}
+
+// SetPayoutProgram sets the PayoutProgram field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetPayoutProgram(payoutProgram *string) {
+	t.PayoutProgram = payoutProgram
+	t.require(transferOutDetailRecordFieldPayoutProgram)
+}
+
+// SetAchTraceNumber sets the AchTraceNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetAchTraceNumber(achTraceNumber *string) {
+	t.AchTraceNumber = achTraceNumber
+	t.require(transferOutDetailRecordFieldAchTraceNumber)
+}
+
+func (t *TransferOutDetailRecord) UnmarshalJSON(data []byte) error {
+	type unmarshaler TransferOutDetailRecord
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TransferOutDetailRecord(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransferOutDetailRecord) MarshalJSON() ([]byte, error) {
+	type embed TransferOutDetailRecord
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TransferOutDetailRecord) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+// Vendor information for an outbound transfer detail.
+var (
+	transferOutDetailVendorFieldVendorNumber          = big.NewInt(1 << 0)
+	transferOutDetailVendorFieldName1                 = big.NewInt(1 << 1)
+	transferOutDetailVendorFieldName2                 = big.NewInt(1 << 2)
+	transferOutDetailVendorFieldEin                   = big.NewInt(1 << 3)
+	transferOutDetailVendorFieldPhone                 = big.NewInt(1 << 4)
+	transferOutDetailVendorFieldEmail                 = big.NewInt(1 << 5)
+	transferOutDetailVendorFieldRemitEmail            = big.NewInt(1 << 6)
+	transferOutDetailVendorFieldAddress1              = big.NewInt(1 << 7)
+	transferOutDetailVendorFieldAddress2              = big.NewInt(1 << 8)
+	transferOutDetailVendorFieldCity                  = big.NewInt(1 << 9)
+	transferOutDetailVendorFieldState                 = big.NewInt(1 << 10)
+	transferOutDetailVendorFieldZip                   = big.NewInt(1 << 11)
+	transferOutDetailVendorFieldCountry               = big.NewInt(1 << 12)
+	transferOutDetailVendorFieldMcc                   = big.NewInt(1 << 13)
+	transferOutDetailVendorFieldLocationCode          = big.NewInt(1 << 14)
+	transferOutDetailVendorFieldContacts              = big.NewInt(1 << 15)
+	transferOutDetailVendorFieldBillingData           = big.NewInt(1 << 16)
+	transferOutDetailVendorFieldPaymentMethod         = big.NewInt(1 << 17)
+	transferOutDetailVendorFieldVendorStatus          = big.NewInt(1 << 18)
+	transferOutDetailVendorFieldVendorId              = big.NewInt(1 << 19)
+	transferOutDetailVendorFieldEnrollmentStatus      = big.NewInt(1 << 20)
+	transferOutDetailVendorFieldSummary               = big.NewInt(1 << 21)
+	transferOutDetailVendorFieldPaypointLegalname     = big.NewInt(1 << 22)
+	transferOutDetailVendorFieldPaypointId            = big.NewInt(1 << 23)
+	transferOutDetailVendorFieldPaypointDbaname       = big.NewInt(1 << 24)
+	transferOutDetailVendorFieldPaypointEntryname     = big.NewInt(1 << 25)
+	transferOutDetailVendorFieldParentOrgName         = big.NewInt(1 << 26)
+	transferOutDetailVendorFieldParentOrgId           = big.NewInt(1 << 27)
+	transferOutDetailVendorFieldCreatedDate           = big.NewInt(1 << 28)
+	transferOutDetailVendorFieldLastUpdated           = big.NewInt(1 << 29)
+	transferOutDetailVendorFieldRemitAddress1         = big.NewInt(1 << 30)
+	transferOutDetailVendorFieldRemitAddress2         = big.NewInt(1 << 31)
+	transferOutDetailVendorFieldRemitCity             = big.NewInt(1 << 32)
+	transferOutDetailVendorFieldRemitState            = big.NewInt(1 << 33)
+	transferOutDetailVendorFieldRemitZip              = big.NewInt(1 << 34)
+	transferOutDetailVendorFieldRemitCountry          = big.NewInt(1 << 35)
+	transferOutDetailVendorFieldPayeeName1            = big.NewInt(1 << 36)
+	transferOutDetailVendorFieldPayeeName2            = big.NewInt(1 << 37)
+	transferOutDetailVendorFieldCustomField1          = big.NewInt(1 << 38)
+	transferOutDetailVendorFieldCustomField2          = big.NewInt(1 << 39)
+	transferOutDetailVendorFieldCustomerVendorAccount = big.NewInt(1 << 40)
+	transferOutDetailVendorFieldInternalReferenceId   = big.NewInt(1 << 41)
+	transferOutDetailVendorFieldAdditionalData        = big.NewInt(1 << 42)
+	transferOutDetailVendorFieldExternalPaypointId    = big.NewInt(1 << 43)
+	transferOutDetailVendorFieldStoredMethods         = big.NewInt(1 << 44)
+)
+
+type TransferOutDetailVendor struct {
+	// The vendor's unique number.
+	VendorNumber *string `json:"VendorNumber,omitempty" url:"VendorNumber,omitempty"`
+	// Primary name of the vendor.
+	Name1 *string `json:"Name1,omitempty" url:"Name1,omitempty"`
+	// Secondary name of the vendor.
+	Name2 *string `json:"Name2,omitempty" url:"Name2,omitempty"`
+	// Employer Identification Number.
+	Ein *string `json:"EIN,omitempty" url:"EIN,omitempty"`
+	// Vendor's phone number.
+	Phone *string `json:"Phone,omitempty" url:"Phone,omitempty"`
+	// Vendor's email address.
+	Email *string `json:"Email,omitempty" url:"Email,omitempty"`
+	// Email for remittance notifications.
+	RemitEmail *string `json:"RemitEmail,omitempty" url:"RemitEmail,omitempty"`
+	// Primary address line.
+	Address1 *string `json:"Address1,omitempty" url:"Address1,omitempty"`
+	// Secondary address line.
+	Address2 *string `json:"Address2,omitempty" url:"Address2,omitempty"`
+	// City of the vendor.
+	City *string `json:"City,omitempty" url:"City,omitempty"`
+	// State of the vendor.
+	State *string `json:"State,omitempty" url:"State,omitempty"`
+	// ZIP code of the vendor.
+	Zip *string `json:"Zip,omitempty" url:"Zip,omitempty"`
+	// Country of the vendor.
+	Country *string `json:"Country,omitempty" url:"Country,omitempty"`
+	// Merchant Category Code.
+	Mcc *string `json:"Mcc,omitempty" url:"Mcc,omitempty"`
+	// Location code for the vendor.
+	LocationCode *string `json:"LocationCode,omitempty" url:"LocationCode,omitempty"`
+	// List of contacts for the vendor.
+	Contacts []*ContactsResponse `json:"Contacts,omitempty" url:"Contacts,omitempty"`
+	// Billing data for the vendor.
+	BillingData *TransferOutDetailVendorBillingData `json:"BillingData,omitempty" url:"BillingData,omitempty"`
+	// Preferred payment method.
+	PaymentMethod *string `json:"PaymentMethod,omitempty" url:"PaymentMethod,omitempty"`
+	// Status of the vendor.
+	VendorStatus *int `json:"VendorStatus,omitempty" url:"VendorStatus,omitempty"`
+	// Unique identifier for the vendor.
+	VendorId *int `json:"VendorId,omitempty" url:"VendorId,omitempty"`
+	// Enrollment status of the vendor.
+	EnrollmentStatus *int `json:"EnrollmentStatus,omitempty" url:"EnrollmentStatus,omitempty"`
+	// Summary information about the vendor.
+	Summary *string `json:"Summary,omitempty" url:"Summary,omitempty"`
+	// Legal name of the paypoint.
+	PaypointLegalname *string `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
+	// ID of the paypoint.
+	PaypointId *int `json:"PaypointId,omitempty" url:"PaypointId,omitempty"`
+	// DBA name of the paypoint.
+	PaypointDbaname *string `json:"PaypointDbaname,omitempty" url:"PaypointDbaname,omitempty"`
+	// Entry name of the paypoint.
+	PaypointEntryname *string `json:"PaypointEntryname,omitempty" url:"PaypointEntryname,omitempty"`
+	// Name of the parent organization.
+	ParentOrgName *string `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
+	// ID of the parent organization.
+	ParentOrgId *int `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
+	// Date the vendor was created.
+	CreatedDate *string `json:"CreatedDate,omitempty" url:"CreatedDate,omitempty"`
+	// Date the vendor was last updated.
+	LastUpdated *string `json:"LastUpdated,omitempty" url:"LastUpdated,omitempty"`
+	// Primary remittance address line.
+	RemitAddress1 *string `json:"remitAddress1,omitempty" url:"remitAddress1,omitempty"`
+	// Secondary remittance address line.
+	RemitAddress2 *string `json:"remitAddress2,omitempty" url:"remitAddress2,omitempty"`
+	// Remittance city.
+	RemitCity *string `json:"remitCity,omitempty" url:"remitCity,omitempty"`
+	// Remittance state.
+	RemitState *string `json:"remitState,omitempty" url:"remitState,omitempty"`
+	// Remittance ZIP code.
+	RemitZip *string `json:"remitZip,omitempty" url:"remitZip,omitempty"`
+	// Remittance country.
+	RemitCountry *string `json:"remitCountry,omitempty" url:"remitCountry,omitempty"`
+	// Primary payee name.
+	PayeeName1 *string `json:"payeeName1,omitempty" url:"payeeName1,omitempty"`
+	// Secondary payee name.
+	PayeeName2 *string `json:"payeeName2,omitempty" url:"payeeName2,omitempty"`
+	// Custom field 1.
+	CustomField1 *string `json:"customField1,omitempty" url:"customField1,omitempty"`
+	// Custom field 2.
+	CustomField2 *string `json:"customField2,omitempty" url:"customField2,omitempty"`
+	// Customer vendor account number.
+	CustomerVendorAccount *string `json:"customerVendorAccount,omitempty" url:"customerVendorAccount,omitempty"`
+	// Internal reference ID.
+	InternalReferenceId *int `json:"InternalReferenceId,omitempty" url:"InternalReferenceId,omitempty"`
+	// Additional data for the vendor.
+	AdditionalData map[string]interface{} `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	// External paypoint ID.
+	ExternalPaypointId *string `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	// Stored payment methods for the vendor.
+	StoredMethods []interface{} `json:"StoredMethods,omitempty" url:"StoredMethods,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransferOutDetailVendor) GetVendorNumber() *string {
+	if t == nil {
+		return nil
+	}
+	return t.VendorNumber
+}
+
+func (t *TransferOutDetailVendor) GetName1() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Name1
+}
+
+func (t *TransferOutDetailVendor) GetName2() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Name2
+}
+
+func (t *TransferOutDetailVendor) GetEin() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Ein
+}
+
+func (t *TransferOutDetailVendor) GetPhone() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Phone
+}
+
+func (t *TransferOutDetailVendor) GetEmail() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Email
+}
+
+func (t *TransferOutDetailVendor) GetRemitEmail() *string {
+	if t == nil {
+		return nil
+	}
+	return t.RemitEmail
+}
+
+func (t *TransferOutDetailVendor) GetAddress1() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Address1
+}
+
+func (t *TransferOutDetailVendor) GetAddress2() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Address2
+}
+
+func (t *TransferOutDetailVendor) GetCity() *string {
+	if t == nil {
+		return nil
+	}
+	return t.City
+}
+
+func (t *TransferOutDetailVendor) GetState() *string {
+	if t == nil {
+		return nil
+	}
+	return t.State
+}
+
+func (t *TransferOutDetailVendor) GetZip() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Zip
+}
+
+func (t *TransferOutDetailVendor) GetCountry() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Country
+}
+
+func (t *TransferOutDetailVendor) GetMcc() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Mcc
+}
+
+func (t *TransferOutDetailVendor) GetLocationCode() *string {
+	if t == nil {
+		return nil
+	}
+	return t.LocationCode
+}
+
+func (t *TransferOutDetailVendor) GetContacts() []*ContactsResponse {
+	if t == nil {
+		return nil
+	}
+	return t.Contacts
+}
+
+func (t *TransferOutDetailVendor) GetBillingData() *TransferOutDetailVendorBillingData {
+	if t == nil {
+		return nil
+	}
+	return t.BillingData
+}
+
+func (t *TransferOutDetailVendor) GetPaymentMethod() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PaymentMethod
+}
+
+func (t *TransferOutDetailVendor) GetVendorStatus() *int {
+	if t == nil {
+		return nil
+	}
+	return t.VendorStatus
+}
+
+func (t *TransferOutDetailVendor) GetVendorId() *int {
+	if t == nil {
+		return nil
+	}
+	return t.VendorId
+}
+
+func (t *TransferOutDetailVendor) GetEnrollmentStatus() *int {
+	if t == nil {
+		return nil
+	}
+	return t.EnrollmentStatus
+}
+
+func (t *TransferOutDetailVendor) GetSummary() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Summary
+}
+
+func (t *TransferOutDetailVendor) GetPaypointLegalname() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PaypointLegalname
+}
+
+func (t *TransferOutDetailVendor) GetPaypointId() *int {
+	if t == nil {
+		return nil
+	}
+	return t.PaypointId
+}
+
+func (t *TransferOutDetailVendor) GetPaypointDbaname() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PaypointDbaname
+}
+
+func (t *TransferOutDetailVendor) GetPaypointEntryname() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PaypointEntryname
+}
+
+func (t *TransferOutDetailVendor) GetParentOrgName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ParentOrgName
+}
+
+func (t *TransferOutDetailVendor) GetParentOrgId() *int {
+	if t == nil {
+		return nil
+	}
+	return t.ParentOrgId
+}
+
+func (t *TransferOutDetailVendor) GetCreatedDate() *string {
+	if t == nil {
+		return nil
+	}
+	return t.CreatedDate
+}
+
+func (t *TransferOutDetailVendor) GetLastUpdated() *string {
+	if t == nil {
+		return nil
+	}
+	return t.LastUpdated
+}
+
+func (t *TransferOutDetailVendor) GetRemitAddress1() *string {
+	if t == nil {
+		return nil
+	}
+	return t.RemitAddress1
+}
+
+func (t *TransferOutDetailVendor) GetRemitAddress2() *string {
+	if t == nil {
+		return nil
+	}
+	return t.RemitAddress2
+}
+
+func (t *TransferOutDetailVendor) GetRemitCity() *string {
+	if t == nil {
+		return nil
+	}
+	return t.RemitCity
+}
+
+func (t *TransferOutDetailVendor) GetRemitState() *string {
+	if t == nil {
+		return nil
+	}
+	return t.RemitState
+}
+
+func (t *TransferOutDetailVendor) GetRemitZip() *string {
+	if t == nil {
+		return nil
+	}
+	return t.RemitZip
+}
+
+func (t *TransferOutDetailVendor) GetRemitCountry() *string {
+	if t == nil {
+		return nil
+	}
+	return t.RemitCountry
+}
+
+func (t *TransferOutDetailVendor) GetPayeeName1() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PayeeName1
+}
+
+func (t *TransferOutDetailVendor) GetPayeeName2() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PayeeName2
+}
+
+func (t *TransferOutDetailVendor) GetCustomField1() *string {
+	if t == nil {
+		return nil
+	}
+	return t.CustomField1
+}
+
+func (t *TransferOutDetailVendor) GetCustomField2() *string {
+	if t == nil {
+		return nil
+	}
+	return t.CustomField2
+}
+
+func (t *TransferOutDetailVendor) GetCustomerVendorAccount() *string {
+	if t == nil {
+		return nil
+	}
+	return t.CustomerVendorAccount
+}
+
+func (t *TransferOutDetailVendor) GetInternalReferenceId() *int {
+	if t == nil {
+		return nil
+	}
+	return t.InternalReferenceId
+}
+
+func (t *TransferOutDetailVendor) GetAdditionalData() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
+	return t.AdditionalData
+}
+
+func (t *TransferOutDetailVendor) GetExternalPaypointId() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ExternalPaypointId
+}
+
+func (t *TransferOutDetailVendor) GetStoredMethods() []interface{} {
+	if t == nil {
+		return nil
+	}
+	return t.StoredMethods
+}
+
+func (t *TransferOutDetailVendor) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransferOutDetailVendor) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetVendorNumber sets the VendorNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetVendorNumber(vendorNumber *string) {
+	t.VendorNumber = vendorNumber
+	t.require(transferOutDetailVendorFieldVendorNumber)
+}
+
+// SetName1 sets the Name1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetName1(name1 *string) {
+	t.Name1 = name1
+	t.require(transferOutDetailVendorFieldName1)
+}
+
+// SetName2 sets the Name2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetName2(name2 *string) {
+	t.Name2 = name2
+	t.require(transferOutDetailVendorFieldName2)
+}
+
+// SetEin sets the Ein field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetEin(ein *string) {
+	t.Ein = ein
+	t.require(transferOutDetailVendorFieldEin)
+}
+
+// SetPhone sets the Phone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetPhone(phone *string) {
+	t.Phone = phone
+	t.require(transferOutDetailVendorFieldPhone)
+}
+
+// SetEmail sets the Email field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetEmail(email *string) {
+	t.Email = email
+	t.require(transferOutDetailVendorFieldEmail)
+}
+
+// SetRemitEmail sets the RemitEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetRemitEmail(remitEmail *string) {
+	t.RemitEmail = remitEmail
+	t.require(transferOutDetailVendorFieldRemitEmail)
+}
+
+// SetAddress1 sets the Address1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetAddress1(address1 *string) {
+	t.Address1 = address1
+	t.require(transferOutDetailVendorFieldAddress1)
+}
+
+// SetAddress2 sets the Address2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetAddress2(address2 *string) {
+	t.Address2 = address2
+	t.require(transferOutDetailVendorFieldAddress2)
+}
+
+// SetCity sets the City field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetCity(city *string) {
+	t.City = city
+	t.require(transferOutDetailVendorFieldCity)
+}
+
+// SetState sets the State field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetState(state *string) {
+	t.State = state
+	t.require(transferOutDetailVendorFieldState)
+}
+
+// SetZip sets the Zip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetZip(zip *string) {
+	t.Zip = zip
+	t.require(transferOutDetailVendorFieldZip)
+}
+
+// SetCountry sets the Country field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetCountry(country *string) {
+	t.Country = country
+	t.require(transferOutDetailVendorFieldCountry)
+}
+
+// SetMcc sets the Mcc field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetMcc(mcc *string) {
+	t.Mcc = mcc
+	t.require(transferOutDetailVendorFieldMcc)
+}
+
+// SetLocationCode sets the LocationCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetLocationCode(locationCode *string) {
+	t.LocationCode = locationCode
+	t.require(transferOutDetailVendorFieldLocationCode)
+}
+
+// SetContacts sets the Contacts field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetContacts(contacts []*ContactsResponse) {
+	t.Contacts = contacts
+	t.require(transferOutDetailVendorFieldContacts)
+}
+
+// SetBillingData sets the BillingData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetBillingData(billingData *TransferOutDetailVendorBillingData) {
+	t.BillingData = billingData
+	t.require(transferOutDetailVendorFieldBillingData)
+}
+
+// SetPaymentMethod sets the PaymentMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetPaymentMethod(paymentMethod *string) {
+	t.PaymentMethod = paymentMethod
+	t.require(transferOutDetailVendorFieldPaymentMethod)
+}
+
+// SetVendorStatus sets the VendorStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetVendorStatus(vendorStatus *int) {
+	t.VendorStatus = vendorStatus
+	t.require(transferOutDetailVendorFieldVendorStatus)
+}
+
+// SetVendorId sets the VendorId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetVendorId(vendorId *int) {
+	t.VendorId = vendorId
+	t.require(transferOutDetailVendorFieldVendorId)
+}
+
+// SetEnrollmentStatus sets the EnrollmentStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetEnrollmentStatus(enrollmentStatus *int) {
+	t.EnrollmentStatus = enrollmentStatus
+	t.require(transferOutDetailVendorFieldEnrollmentStatus)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetSummary(summary *string) {
+	t.Summary = summary
+	t.require(transferOutDetailVendorFieldSummary)
+}
+
+// SetPaypointLegalname sets the PaypointLegalname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetPaypointLegalname(paypointLegalname *string) {
+	t.PaypointLegalname = paypointLegalname
+	t.require(transferOutDetailVendorFieldPaypointLegalname)
+}
+
+// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetPaypointId(paypointId *int) {
+	t.PaypointId = paypointId
+	t.require(transferOutDetailVendorFieldPaypointId)
+}
+
+// SetPaypointDbaname sets the PaypointDbaname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetPaypointDbaname(paypointDbaname *string) {
+	t.PaypointDbaname = paypointDbaname
+	t.require(transferOutDetailVendorFieldPaypointDbaname)
+}
+
+// SetPaypointEntryname sets the PaypointEntryname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetPaypointEntryname(paypointEntryname *string) {
+	t.PaypointEntryname = paypointEntryname
+	t.require(transferOutDetailVendorFieldPaypointEntryname)
+}
+
+// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetParentOrgName(parentOrgName *string) {
+	t.ParentOrgName = parentOrgName
+	t.require(transferOutDetailVendorFieldParentOrgName)
+}
+
+// SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetParentOrgId(parentOrgId *int) {
+	t.ParentOrgId = parentOrgId
+	t.require(transferOutDetailVendorFieldParentOrgId)
+}
+
+// SetCreatedDate sets the CreatedDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetCreatedDate(createdDate *string) {
+	t.CreatedDate = createdDate
+	t.require(transferOutDetailVendorFieldCreatedDate)
+}
+
+// SetLastUpdated sets the LastUpdated field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetLastUpdated(lastUpdated *string) {
+	t.LastUpdated = lastUpdated
+	t.require(transferOutDetailVendorFieldLastUpdated)
+}
+
+// SetRemitAddress1 sets the RemitAddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetRemitAddress1(remitAddress1 *string) {
+	t.RemitAddress1 = remitAddress1
+	t.require(transferOutDetailVendorFieldRemitAddress1)
+}
+
+// SetRemitAddress2 sets the RemitAddress2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetRemitAddress2(remitAddress2 *string) {
+	t.RemitAddress2 = remitAddress2
+	t.require(transferOutDetailVendorFieldRemitAddress2)
+}
+
+// SetRemitCity sets the RemitCity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetRemitCity(remitCity *string) {
+	t.RemitCity = remitCity
+	t.require(transferOutDetailVendorFieldRemitCity)
+}
+
+// SetRemitState sets the RemitState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetRemitState(remitState *string) {
+	t.RemitState = remitState
+	t.require(transferOutDetailVendorFieldRemitState)
+}
+
+// SetRemitZip sets the RemitZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetRemitZip(remitZip *string) {
+	t.RemitZip = remitZip
+	t.require(transferOutDetailVendorFieldRemitZip)
+}
+
+// SetRemitCountry sets the RemitCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetRemitCountry(remitCountry *string) {
+	t.RemitCountry = remitCountry
+	t.require(transferOutDetailVendorFieldRemitCountry)
+}
+
+// SetPayeeName1 sets the PayeeName1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetPayeeName1(payeeName1 *string) {
+	t.PayeeName1 = payeeName1
+	t.require(transferOutDetailVendorFieldPayeeName1)
+}
+
+// SetPayeeName2 sets the PayeeName2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetPayeeName2(payeeName2 *string) {
+	t.PayeeName2 = payeeName2
+	t.require(transferOutDetailVendorFieldPayeeName2)
+}
+
+// SetCustomField1 sets the CustomField1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetCustomField1(customField1 *string) {
+	t.CustomField1 = customField1
+	t.require(transferOutDetailVendorFieldCustomField1)
+}
+
+// SetCustomField2 sets the CustomField2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetCustomField2(customField2 *string) {
+	t.CustomField2 = customField2
+	t.require(transferOutDetailVendorFieldCustomField2)
+}
+
+// SetCustomerVendorAccount sets the CustomerVendorAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetCustomerVendorAccount(customerVendorAccount *string) {
+	t.CustomerVendorAccount = customerVendorAccount
+	t.require(transferOutDetailVendorFieldCustomerVendorAccount)
+}
+
+// SetInternalReferenceId sets the InternalReferenceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetInternalReferenceId(internalReferenceId *int) {
+	t.InternalReferenceId = internalReferenceId
+	t.require(transferOutDetailVendorFieldInternalReferenceId)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetAdditionalData(additionalData map[string]interface{}) {
+	t.AdditionalData = additionalData
+	t.require(transferOutDetailVendorFieldAdditionalData)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetExternalPaypointId(externalPaypointId *string) {
+	t.ExternalPaypointId = externalPaypointId
+	t.require(transferOutDetailVendorFieldExternalPaypointId)
+}
+
+// SetStoredMethods sets the StoredMethods field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetStoredMethods(storedMethods []interface{}) {
+	t.StoredMethods = storedMethods
+	t.require(transferOutDetailVendorFieldStoredMethods)
+}
+
+func (t *TransferOutDetailVendor) UnmarshalJSON(data []byte) error {
+	type unmarshaler TransferOutDetailVendor
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TransferOutDetailVendor(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransferOutDetailVendor) MarshalJSON() ([]byte, error) {
+	type embed TransferOutDetailVendor
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TransferOutDetailVendor) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+// Billing data for a vendor.
+var (
+	transferOutDetailVendorBillingDataFieldId                    = big.NewInt(1 << 0)
+	transferOutDetailVendorBillingDataFieldAccountId             = big.NewInt(1 << 1)
+	transferOutDetailVendorBillingDataFieldNickname              = big.NewInt(1 << 2)
+	transferOutDetailVendorBillingDataFieldBankName              = big.NewInt(1 << 3)
+	transferOutDetailVendorBillingDataFieldRoutingAccount        = big.NewInt(1 << 4)
+	transferOutDetailVendorBillingDataFieldAccountNumber         = big.NewInt(1 << 5)
+	transferOutDetailVendorBillingDataFieldTypeAccount           = big.NewInt(1 << 6)
+	transferOutDetailVendorBillingDataFieldBankAccountHolderName = big.NewInt(1 << 7)
+	transferOutDetailVendorBillingDataFieldBankAccountHolderType = big.NewInt(1 << 8)
+	transferOutDetailVendorBillingDataFieldBankAccountFunction   = big.NewInt(1 << 9)
+	transferOutDetailVendorBillingDataFieldVerified              = big.NewInt(1 << 10)
+	transferOutDetailVendorBillingDataFieldStatus                = big.NewInt(1 << 11)
+	transferOutDetailVendorBillingDataFieldServices              = big.NewInt(1 << 12)
+	transferOutDetailVendorBillingDataFieldDefault               = big.NewInt(1 << 13)
+	transferOutDetailVendorBillingDataFieldCountry               = big.NewInt(1 << 14)
+)
+
+type TransferOutDetailVendorBillingData struct {
+	// Unique identifier for the billing data.
+	Id *int `json:"id,omitempty" url:"id,omitempty"`
+	// The account ID.
+	AccountId *string `json:"accountId,omitempty" url:"accountId,omitempty"`
+	// A nickname for the account.
+	Nickname *string `json:"nickname,omitempty" url:"nickname,omitempty"`
+	// The name of the bank.
+	BankName *string `json:"bankName,omitempty" url:"bankName,omitempty"`
+	// The routing number.
+	RoutingAccount *string `json:"routingAccount,omitempty" url:"routingAccount,omitempty"`
+	// The account number.
+	AccountNumber *string `json:"accountNumber,omitempty" url:"accountNumber,omitempty"`
+	// The type of account.
+	TypeAccount *string `json:"typeAccount,omitempty" url:"typeAccount,omitempty"`
+	// The name of the account holder.
+	BankAccountHolderName *string `json:"bankAccountHolderName,omitempty" url:"bankAccountHolderName,omitempty"`
+	// The type of account holder.
+	BankAccountHolderType *string `json:"bankAccountHolderType,omitempty" url:"bankAccountHolderType,omitempty"`
+	// The function of the bank account.
+	BankAccountFunction *int `json:"bankAccountFunction,omitempty" url:"bankAccountFunction,omitempty"`
+	// Whether the account is verified.
+	Verified *bool `json:"verified,omitempty" url:"verified,omitempty"`
+	// The status of the billing data.
+	Status *int `json:"status,omitempty" url:"status,omitempty"`
+	// Services associated with the billing data.
+	Services []interface{} `json:"services,omitempty" url:"services,omitempty"`
+	// Whether this is the default billing data.
+	Default *bool `json:"default,omitempty" url:"default,omitempty"`
+	// The country of the bank account.
+	Country *string `json:"country,omitempty" url:"country,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransferOutDetailVendorBillingData) GetId() *int {
+	if t == nil {
+		return nil
+	}
+	return t.Id
+}
+
+func (t *TransferOutDetailVendorBillingData) GetAccountId() *string {
+	if t == nil {
+		return nil
+	}
+	return t.AccountId
+}
+
+func (t *TransferOutDetailVendorBillingData) GetNickname() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Nickname
+}
+
+func (t *TransferOutDetailVendorBillingData) GetBankName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.BankName
+}
+
+func (t *TransferOutDetailVendorBillingData) GetRoutingAccount() *string {
+	if t == nil {
+		return nil
+	}
+	return t.RoutingAccount
+}
+
+func (t *TransferOutDetailVendorBillingData) GetAccountNumber() *string {
+	if t == nil {
+		return nil
+	}
+	return t.AccountNumber
+}
+
+func (t *TransferOutDetailVendorBillingData) GetTypeAccount() *string {
+	if t == nil {
+		return nil
+	}
+	return t.TypeAccount
+}
+
+func (t *TransferOutDetailVendorBillingData) GetBankAccountHolderName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.BankAccountHolderName
+}
+
+func (t *TransferOutDetailVendorBillingData) GetBankAccountHolderType() *string {
+	if t == nil {
+		return nil
+	}
+	return t.BankAccountHolderType
+}
+
+func (t *TransferOutDetailVendorBillingData) GetBankAccountFunction() *int {
+	if t == nil {
+		return nil
+	}
+	return t.BankAccountFunction
+}
+
+func (t *TransferOutDetailVendorBillingData) GetVerified() *bool {
+	if t == nil {
+		return nil
+	}
+	return t.Verified
+}
+
+func (t *TransferOutDetailVendorBillingData) GetStatus() *int {
+	if t == nil {
+		return nil
+	}
+	return t.Status
+}
+
+func (t *TransferOutDetailVendorBillingData) GetServices() []interface{} {
+	if t == nil {
+		return nil
+	}
+	return t.Services
+}
+
+func (t *TransferOutDetailVendorBillingData) GetDefault() *bool {
+	if t == nil {
+		return nil
+	}
+	return t.Default
+}
+
+func (t *TransferOutDetailVendorBillingData) GetCountry() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Country
+}
+
+func (t *TransferOutDetailVendorBillingData) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransferOutDetailVendorBillingData) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendorBillingData) SetId(id *int) {
+	t.Id = id
+	t.require(transferOutDetailVendorBillingDataFieldId)
+}
+
+// SetAccountId sets the AccountId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendorBillingData) SetAccountId(accountId *string) {
+	t.AccountId = accountId
+	t.require(transferOutDetailVendorBillingDataFieldAccountId)
+}
+
+// SetNickname sets the Nickname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendorBillingData) SetNickname(nickname *string) {
+	t.Nickname = nickname
+	t.require(transferOutDetailVendorBillingDataFieldNickname)
+}
+
+// SetBankName sets the BankName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendorBillingData) SetBankName(bankName *string) {
+	t.BankName = bankName
+	t.require(transferOutDetailVendorBillingDataFieldBankName)
+}
+
+// SetRoutingAccount sets the RoutingAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendorBillingData) SetRoutingAccount(routingAccount *string) {
+	t.RoutingAccount = routingAccount
+	t.require(transferOutDetailVendorBillingDataFieldRoutingAccount)
+}
+
+// SetAccountNumber sets the AccountNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendorBillingData) SetAccountNumber(accountNumber *string) {
+	t.AccountNumber = accountNumber
+	t.require(transferOutDetailVendorBillingDataFieldAccountNumber)
+}
+
+// SetTypeAccount sets the TypeAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendorBillingData) SetTypeAccount(typeAccount *string) {
+	t.TypeAccount = typeAccount
+	t.require(transferOutDetailVendorBillingDataFieldTypeAccount)
+}
+
+// SetBankAccountHolderName sets the BankAccountHolderName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendorBillingData) SetBankAccountHolderName(bankAccountHolderName *string) {
+	t.BankAccountHolderName = bankAccountHolderName
+	t.require(transferOutDetailVendorBillingDataFieldBankAccountHolderName)
+}
+
+// SetBankAccountHolderType sets the BankAccountHolderType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendorBillingData) SetBankAccountHolderType(bankAccountHolderType *string) {
+	t.BankAccountHolderType = bankAccountHolderType
+	t.require(transferOutDetailVendorBillingDataFieldBankAccountHolderType)
+}
+
+// SetBankAccountFunction sets the BankAccountFunction field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendorBillingData) SetBankAccountFunction(bankAccountFunction *int) {
+	t.BankAccountFunction = bankAccountFunction
+	t.require(transferOutDetailVendorBillingDataFieldBankAccountFunction)
+}
+
+// SetVerified sets the Verified field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendorBillingData) SetVerified(verified *bool) {
+	t.Verified = verified
+	t.require(transferOutDetailVendorBillingDataFieldVerified)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendorBillingData) SetStatus(status *int) {
+	t.Status = status
+	t.require(transferOutDetailVendorBillingDataFieldStatus)
+}
+
+// SetServices sets the Services field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendorBillingData) SetServices(services []interface{}) {
+	t.Services = services
+	t.require(transferOutDetailVendorBillingDataFieldServices)
+}
+
+// SetDefault sets the Default field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendorBillingData) SetDefault(default_ *bool) {
+	t.Default = default_
+	t.require(transferOutDetailVendorBillingDataFieldDefault)
+}
+
+// SetCountry sets the Country field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendorBillingData) SetCountry(country *string) {
+	t.Country = country
+	t.require(transferOutDetailVendorBillingDataFieldCountry)
+}
+
+func (t *TransferOutDetailVendorBillingData) UnmarshalJSON(data []byte) error {
+	type unmarshaler TransferOutDetailVendorBillingData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TransferOutDetailVendorBillingData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransferOutDetailVendorBillingData) MarshalJSON() ([]byte, error) {
+	type embed TransferOutDetailVendorBillingData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TransferOutDetailVendorBillingData) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+// Event data associated with an outbound transfer.
+var (
+	transferOutEventDataFieldDescription = big.NewInt(1 << 0)
+	transferOutEventDataFieldEventTime   = big.NewInt(1 << 1)
+	transferOutEventDataFieldRefData     = big.NewInt(1 << 2)
+	transferOutEventDataFieldExtraData   = big.NewInt(1 << 3)
+	transferOutEventDataFieldSource      = big.NewInt(1 << 4)
+)
+
+type TransferOutEventData struct {
+	// Description of the event.
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	// The time the event occurred.
+	EventTime *string `json:"eventTime,omitempty" url:"eventTime,omitempty"`
+	// Reference data for the event.
+	RefData *string `json:"refData,omitempty" url:"refData,omitempty"`
+	// Additional event data, which may contain detailed transaction information.
+	ExtraData interface{} `json:"extraData,omitempty" url:"extraData,omitempty"`
+	// The source of the event.
+	Source *string `json:"source,omitempty" url:"source,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransferOutEventData) GetDescription() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Description
+}
+
+func (t *TransferOutEventData) GetEventTime() *string {
+	if t == nil {
+		return nil
+	}
+	return t.EventTime
+}
+
+func (t *TransferOutEventData) GetRefData() *string {
+	if t == nil {
+		return nil
+	}
+	return t.RefData
+}
+
+func (t *TransferOutEventData) GetExtraData() interface{} {
+	if t == nil {
+		return nil
+	}
+	return t.ExtraData
+}
+
+func (t *TransferOutEventData) GetSource() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Source
+}
+
+func (t *TransferOutEventData) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransferOutEventData) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutEventData) SetDescription(description *string) {
+	t.Description = description
+	t.require(transferOutEventDataFieldDescription)
+}
+
+// SetEventTime sets the EventTime field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutEventData) SetEventTime(eventTime *string) {
+	t.EventTime = eventTime
+	t.require(transferOutEventDataFieldEventTime)
+}
+
+// SetRefData sets the RefData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutEventData) SetRefData(refData *string) {
+	t.RefData = refData
+	t.require(transferOutEventDataFieldRefData)
+}
+
+// SetExtraData sets the ExtraData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutEventData) SetExtraData(extraData interface{}) {
+	t.ExtraData = extraData
+	t.require(transferOutEventDataFieldExtraData)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutEventData) SetSource(source *string) {
+	t.Source = source
+	t.require(transferOutEventDataFieldSource)
+}
+
+func (t *TransferOutEventData) UnmarshalJSON(data []byte) error {
+	type unmarshaler TransferOutEventData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TransferOutEventData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransferOutEventData) MarshalJSON() ([]byte, error) {
+	type embed TransferOutEventData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TransferOutEventData) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+// A message associated with an outbound transfer.
+var (
+	transferOutMessageFieldId                = big.NewInt(1 << 0)
+	transferOutMessageFieldRoomId            = big.NewInt(1 << 1)
+	transferOutMessageFieldUserId            = big.NewInt(1 << 2)
+	transferOutMessageFieldUserName          = big.NewInt(1 << 3)
+	transferOutMessageFieldContent           = big.NewInt(1 << 4)
+	transferOutMessageFieldCreatedAt         = big.NewInt(1 << 5)
+	transferOutMessageFieldMessageType       = big.NewInt(1 << 6)
+	transferOutMessageFieldMessageProperties = big.NewInt(1 << 7)
+)
+
+type TransferOutMessage struct {
+	// Unique identifier for the message.
+	Id *int `json:"Id,omitempty" url:"Id,omitempty"`
+	// The ID of the room where the message was sent.
+	RoomId *int `json:"RoomId,omitempty" url:"RoomId,omitempty"`
+	// The ID of the user who sent the message.
+	UserId *int `json:"UserId,omitempty" url:"UserId,omitempty"`
+	// The name of the user who sent the message.
+	UserName *string `json:"UserName,omitempty" url:"UserName,omitempty"`
+	// The content of the message.
+	Content *string `json:"Content,omitempty" url:"Content,omitempty"`
+	// The time the message was created.
+	CreatedAt *string `json:"CreatedAt,omitempty" url:"CreatedAt,omitempty"`
+	// The type of message.
+	MessageType *int `json:"MessageType,omitempty" url:"MessageType,omitempty"`
+	// Additional properties for the message.
+	MessageProperties *TransferOutMessageProperties `json:"MessageProperties,omitempty" url:"MessageProperties,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransferOutMessage) GetId() *int {
+	if t == nil {
+		return nil
+	}
+	return t.Id
+}
+
+func (t *TransferOutMessage) GetRoomId() *int {
+	if t == nil {
+		return nil
+	}
+	return t.RoomId
+}
+
+func (t *TransferOutMessage) GetUserId() *int {
+	if t == nil {
+		return nil
+	}
+	return t.UserId
+}
+
+func (t *TransferOutMessage) GetUserName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.UserName
+}
+
+func (t *TransferOutMessage) GetContent() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Content
+}
+
+func (t *TransferOutMessage) GetCreatedAt() *string {
+	if t == nil {
+		return nil
+	}
+	return t.CreatedAt
+}
+
+func (t *TransferOutMessage) GetMessageType() *int {
+	if t == nil {
+		return nil
+	}
+	return t.MessageType
+}
+
+func (t *TransferOutMessage) GetMessageProperties() *TransferOutMessageProperties {
+	if t == nil {
+		return nil
+	}
+	return t.MessageProperties
+}
+
+func (t *TransferOutMessage) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransferOutMessage) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutMessage) SetId(id *int) {
+	t.Id = id
+	t.require(transferOutMessageFieldId)
+}
+
+// SetRoomId sets the RoomId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutMessage) SetRoomId(roomId *int) {
+	t.RoomId = roomId
+	t.require(transferOutMessageFieldRoomId)
+}
+
+// SetUserId sets the UserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutMessage) SetUserId(userId *int) {
+	t.UserId = userId
+	t.require(transferOutMessageFieldUserId)
+}
+
+// SetUserName sets the UserName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutMessage) SetUserName(userName *string) {
+	t.UserName = userName
+	t.require(transferOutMessageFieldUserName)
+}
+
+// SetContent sets the Content field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutMessage) SetContent(content *string) {
+	t.Content = content
+	t.require(transferOutMessageFieldContent)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutMessage) SetCreatedAt(createdAt *string) {
+	t.CreatedAt = createdAt
+	t.require(transferOutMessageFieldCreatedAt)
+}
+
+// SetMessageType sets the MessageType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutMessage) SetMessageType(messageType *int) {
+	t.MessageType = messageType
+	t.require(transferOutMessageFieldMessageType)
+}
+
+// SetMessageProperties sets the MessageProperties field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutMessage) SetMessageProperties(messageProperties *TransferOutMessageProperties) {
+	t.MessageProperties = messageProperties
+	t.require(transferOutMessageFieldMessageProperties)
+}
+
+func (t *TransferOutMessage) UnmarshalJSON(data []byte) error {
+	type unmarshaler TransferOutMessage
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TransferOutMessage(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransferOutMessage) MarshalJSON() ([]byte, error) {
+	type embed TransferOutMessage
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TransferOutMessage) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+// Properties associated with a transfer message.
+var (
+	transferOutMessagePropertiesFieldOriginalTransferStatus = big.NewInt(1 << 0)
+	transferOutMessagePropertiesFieldCurrentTransferStatus  = big.NewInt(1 << 1)
+)
+
+type TransferOutMessageProperties struct {
+	// The original status of the transfer before the message.
+	OriginalTransferStatus *string `json:"originalTransferStatus,omitempty" url:"originalTransferStatus,omitempty"`
+	// The current status of the transfer after the message.
+	CurrentTransferStatus *string `json:"currentTransferStatus,omitempty" url:"currentTransferStatus,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransferOutMessageProperties) GetOriginalTransferStatus() *string {
+	if t == nil {
+		return nil
+	}
+	return t.OriginalTransferStatus
+}
+
+func (t *TransferOutMessageProperties) GetCurrentTransferStatus() *string {
+	if t == nil {
+		return nil
+	}
+	return t.CurrentTransferStatus
+}
+
+func (t *TransferOutMessageProperties) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransferOutMessageProperties) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetOriginalTransferStatus sets the OriginalTransferStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutMessageProperties) SetOriginalTransferStatus(originalTransferStatus *string) {
+	t.OriginalTransferStatus = originalTransferStatus
+	t.require(transferOutMessagePropertiesFieldOriginalTransferStatus)
+}
+
+// SetCurrentTransferStatus sets the CurrentTransferStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutMessageProperties) SetCurrentTransferStatus(currentTransferStatus *string) {
+	t.CurrentTransferStatus = currentTransferStatus
+	t.require(transferOutMessagePropertiesFieldCurrentTransferStatus)
+}
+
+func (t *TransferOutMessageProperties) UnmarshalJSON(data []byte) error {
+	type unmarshaler TransferOutMessageProperties
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TransferOutMessageProperties(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransferOutMessageProperties) MarshalJSON() ([]byte, error) {
+	type embed TransferOutMessageProperties
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TransferOutMessageProperties) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+// Response body for queries about outbound transfers.
+var (
+	transferOutQueryResponseFieldSummary = big.NewInt(1 << 0)
+	transferOutQueryResponseFieldRecords = big.NewInt(1 << 1)
+)
+
+type TransferOutQueryResponse struct {
+	// Summary information about the transfers.
+	Summary *TransferOutSummary `json:"Summary" url:"Summary"`
+	// List of outbound transfer records.
+	Records []*TransferOutRecord `json:"Records" url:"Records"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransferOutQueryResponse) GetSummary() *TransferOutSummary {
+	if t == nil {
+		return nil
+	}
+	return t.Summary
+}
+
+func (t *TransferOutQueryResponse) GetRecords() []*TransferOutRecord {
+	if t == nil {
+		return nil
+	}
+	return t.Records
+}
+
+func (t *TransferOutQueryResponse) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransferOutQueryResponse) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutQueryResponse) SetSummary(summary *TransferOutSummary) {
+	t.Summary = summary
+	t.require(transferOutQueryResponseFieldSummary)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutQueryResponse) SetRecords(records []*TransferOutRecord) {
+	t.Records = records
+	t.require(transferOutQueryResponseFieldRecords)
+}
+
+func (t *TransferOutQueryResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler TransferOutQueryResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TransferOutQueryResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransferOutQueryResponse) MarshalJSON() ([]byte, error) {
+	type embed TransferOutQueryResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TransferOutQueryResponse) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+// A record representing an outbound transfer.
+var (
+	transferOutRecordFieldTransferId           = big.NewInt(1 << 0)
+	transferOutRecordFieldPaypointId           = big.NewInt(1 << 1)
+	transferOutRecordFieldBatchNumber          = big.NewInt(1 << 2)
+	transferOutRecordFieldBatchCurrency        = big.NewInt(1 << 3)
+	transferOutRecordFieldBatchRecords         = big.NewInt(1 << 4)
+	transferOutRecordFieldTransferIdentifier   = big.NewInt(1 << 5)
+	transferOutRecordFieldBatchId              = big.NewInt(1 << 6)
+	transferOutRecordFieldBatchNetAmount       = big.NewInt(1 << 7)
+	transferOutRecordFieldBatchStatus          = big.NewInt(1 << 8)
+	transferOutRecordFieldPaypointEntryName    = big.NewInt(1 << 9)
+	transferOutRecordFieldPaypointLegalName    = big.NewInt(1 << 10)
+	transferOutRecordFieldPaypointDbaName      = big.NewInt(1 << 11)
+	transferOutRecordFieldPaypointLogo         = big.NewInt(1 << 12)
+	transferOutRecordFieldParentOrgName        = big.NewInt(1 << 13)
+	transferOutRecordFieldParentOrgId          = big.NewInt(1 << 14)
+	transferOutRecordFieldParentOrgLogo        = big.NewInt(1 << 15)
+	transferOutRecordFieldParentOrgEntryName   = big.NewInt(1 << 16)
+	transferOutRecordFieldExternalPaypointId   = big.NewInt(1 << 17)
+	transferOutRecordFieldBankAccount          = big.NewInt(1 << 18)
+	transferOutRecordFieldTransferDate         = big.NewInt(1 << 19)
+	transferOutRecordFieldProcessor            = big.NewInt(1 << 20)
+	transferOutRecordFieldTransferStatus       = big.NewInt(1 << 21)
+	transferOutRecordFieldGrossAmount          = big.NewInt(1 << 22)
+	transferOutRecordFieldChargeBackAmount     = big.NewInt(1 << 23)
+	transferOutRecordFieldReturnedAmount       = big.NewInt(1 << 24)
+	transferOutRecordFieldHoldAmount           = big.NewInt(1 << 25)
+	transferOutRecordFieldReleasedAmount       = big.NewInt(1 << 26)
+	transferOutRecordFieldBillingFeesAmount    = big.NewInt(1 << 27)
+	transferOutRecordFieldThirdPartyPaidAmount = big.NewInt(1 << 28)
+	transferOutRecordFieldAdjustmentsAmount    = big.NewInt(1 << 29)
+	transferOutRecordFieldNetTransferAmount    = big.NewInt(1 << 30)
+	transferOutRecordFieldSplitAmount          = big.NewInt(1 << 31)
+	transferOutRecordFieldEventsData           = big.NewInt(1 << 32)
+	transferOutRecordFieldMessages             = big.NewInt(1 << 33)
+)
+
+type TransferOutRecord struct {
+	// Unique identifier for the transfer.
+	TransferId *int `json:"transferId,omitempty" url:"transferId,omitempty"`
+	// The ID of the paypoint associated with the transfer.
+	PaypointId *int `json:"paypointId,omitempty" url:"paypointId,omitempty"`
+	// The batch number for the transfer.
+	BatchNumber *string `json:"batchNumber,omitempty" url:"batchNumber,omitempty"`
+	// The currency of the batch.
+	BatchCurrency *string `json:"batchCurrency,omitempty" url:"batchCurrency,omitempty"`
+	// The number of records in the batch.
+	BatchRecords *int `json:"batchRecords,omitempty" url:"batchRecords,omitempty"`
+	// An identifier for the transfer.
+	TransferIdentifier *string `json:"transferIdentifier,omitempty" url:"transferIdentifier,omitempty"`
+	// The ID of the batch.
+	BatchId *int `json:"batchId,omitempty" url:"batchId,omitempty"`
+	// The net amount of the batch.
+	BatchNetAmount *float64 `json:"batchNetAmount,omitempty" url:"batchNetAmount,omitempty"`
+	// The status of the batch.
+	BatchStatus *int `json:"batchStatus,omitempty" url:"batchStatus,omitempty"`
+	// The entry name for the paypoint.
+	PaypointEntryName *string `json:"paypointEntryName,omitempty" url:"paypointEntryName,omitempty"`
+	// The legal name of the paypoint.
+	PaypointLegalName *string `json:"paypointLegalName,omitempty" url:"paypointLegalName,omitempty"`
+	// The DBA name of the paypoint.
+	PaypointDbaName *string `json:"paypointDbaName,omitempty" url:"paypointDbaName,omitempty"`
+	// URL to the paypoint's logo.
+	PaypointLogo *string `json:"paypointLogo,omitempty" url:"paypointLogo,omitempty"`
+	// The name of the parent organization.
+	ParentOrgName *string `json:"parentOrgName,omitempty" url:"parentOrgName,omitempty"`
+	// The ID of the parent organization.
+	ParentOrgId *int `json:"parentOrgId,omitempty" url:"parentOrgId,omitempty"`
+	// URL to the parent organization's logo.
+	ParentOrgLogo *string `json:"parentOrgLogo,omitempty" url:"parentOrgLogo,omitempty"`
+	// The entry name for the parent organization.
+	ParentOrgEntryName *string `json:"parentOrgEntryName,omitempty" url:"parentOrgEntryName,omitempty"`
+	// External identifier for the paypoint.
+	ExternalPaypointId *string `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	// Bank account information for the transfer.
+	BankAccount *TransferOutBankAccount `json:"bankAccount,omitempty" url:"bankAccount,omitempty"`
+	// The date of the transfer.
+	TransferDate *time.Time `json:"transferDate,omitempty" url:"transferDate,omitempty"`
+	// The processor used for the transfer.
+	Processor *string `json:"processor,omitempty" url:"processor,omitempty"`
+	// The status of the transfer.
+	TransferStatus *int `json:"transferStatus,omitempty" url:"transferStatus,omitempty"`
+	// The gross amount of the transfer.
+	GrossAmount *float64 `json:"grossAmount,omitempty" url:"grossAmount,omitempty"`
+	// The chargeback amount deducted from the transfer.
+	ChargeBackAmount *float64 `json:"chargeBackAmount,omitempty" url:"chargeBackAmount,omitempty"`
+	// The returned amount deducted from the transfer.
+	ReturnedAmount *float64 `json:"returnedAmount,omitempty" url:"returnedAmount,omitempty"`
+	// The amount being held.
+	HoldAmount *float64 `json:"holdAmount,omitempty" url:"holdAmount,omitempty"`
+	// The amount that has been released.
+	ReleasedAmount *float64 `json:"releasedAmount,omitempty" url:"releasedAmount,omitempty"`
+	// The billing fees amount.
+	BillingFeesAmount *float64 `json:"billingFeesAmount,omitempty" url:"billingFeesAmount,omitempty"`
+	// The third party paid amount.
+	ThirdPartyPaidAmount *float64 `json:"thirdPartyPaidAmount,omitempty" url:"thirdPartyPaidAmount,omitempty"`
+	// The adjustments amount.
+	AdjustmentsAmount *float64 `json:"adjustmentsAmount,omitempty" url:"adjustmentsAmount,omitempty"`
+	// The net transfer amount after all deductions.
+	NetTransferAmount *float64 `json:"netTransferAmount,omitempty" url:"netTransferAmount,omitempty"`
+	// The split funding amount.
+	SplitAmount *float64 `json:"splitAmount,omitempty" url:"splitAmount,omitempty"`
+	// List of events associated with the transfer.
+	EventsData []*TransferOutEventData `json:"eventsData,omitempty" url:"eventsData,omitempty"`
+	// List of messages associated with the transfer.
+	Messages []*TransferOutMessage `json:"messages,omitempty" url:"messages,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransferOutRecord) GetTransferId() *int {
+	if t == nil {
+		return nil
+	}
+	return t.TransferId
+}
+
+func (t *TransferOutRecord) GetPaypointId() *int {
+	if t == nil {
+		return nil
+	}
+	return t.PaypointId
+}
+
+func (t *TransferOutRecord) GetBatchNumber() *string {
+	if t == nil {
+		return nil
+	}
+	return t.BatchNumber
+}
+
+func (t *TransferOutRecord) GetBatchCurrency() *string {
+	if t == nil {
+		return nil
+	}
+	return t.BatchCurrency
+}
+
+func (t *TransferOutRecord) GetBatchRecords() *int {
+	if t == nil {
+		return nil
+	}
+	return t.BatchRecords
+}
+
+func (t *TransferOutRecord) GetTransferIdentifier() *string {
+	if t == nil {
+		return nil
+	}
+	return t.TransferIdentifier
+}
+
+func (t *TransferOutRecord) GetBatchId() *int {
+	if t == nil {
+		return nil
+	}
+	return t.BatchId
+}
+
+func (t *TransferOutRecord) GetBatchNetAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.BatchNetAmount
+}
+
+func (t *TransferOutRecord) GetBatchStatus() *int {
+	if t == nil {
+		return nil
+	}
+	return t.BatchStatus
+}
+
+func (t *TransferOutRecord) GetPaypointEntryName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PaypointEntryName
+}
+
+func (t *TransferOutRecord) GetPaypointLegalName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PaypointLegalName
+}
+
+func (t *TransferOutRecord) GetPaypointDbaName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PaypointDbaName
+}
+
+func (t *TransferOutRecord) GetPaypointLogo() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PaypointLogo
+}
+
+func (t *TransferOutRecord) GetParentOrgName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ParentOrgName
+}
+
+func (t *TransferOutRecord) GetParentOrgId() *int {
+	if t == nil {
+		return nil
+	}
+	return t.ParentOrgId
+}
+
+func (t *TransferOutRecord) GetParentOrgLogo() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ParentOrgLogo
+}
+
+func (t *TransferOutRecord) GetParentOrgEntryName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ParentOrgEntryName
+}
+
+func (t *TransferOutRecord) GetExternalPaypointId() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ExternalPaypointId
+}
+
+func (t *TransferOutRecord) GetBankAccount() *TransferOutBankAccount {
+	if t == nil {
+		return nil
+	}
+	return t.BankAccount
+}
+
+func (t *TransferOutRecord) GetTransferDate() *time.Time {
+	if t == nil {
+		return nil
+	}
+	return t.TransferDate
+}
+
+func (t *TransferOutRecord) GetProcessor() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Processor
+}
+
+func (t *TransferOutRecord) GetTransferStatus() *int {
+	if t == nil {
+		return nil
+	}
+	return t.TransferStatus
+}
+
+func (t *TransferOutRecord) GetGrossAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.GrossAmount
+}
+
+func (t *TransferOutRecord) GetChargeBackAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.ChargeBackAmount
+}
+
+func (t *TransferOutRecord) GetReturnedAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.ReturnedAmount
+}
+
+func (t *TransferOutRecord) GetHoldAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.HoldAmount
+}
+
+func (t *TransferOutRecord) GetReleasedAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.ReleasedAmount
+}
+
+func (t *TransferOutRecord) GetBillingFeesAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.BillingFeesAmount
+}
+
+func (t *TransferOutRecord) GetThirdPartyPaidAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.ThirdPartyPaidAmount
+}
+
+func (t *TransferOutRecord) GetAdjustmentsAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.AdjustmentsAmount
+}
+
+func (t *TransferOutRecord) GetNetTransferAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.NetTransferAmount
+}
+
+func (t *TransferOutRecord) GetSplitAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.SplitAmount
+}
+
+func (t *TransferOutRecord) GetEventsData() []*TransferOutEventData {
+	if t == nil {
+		return nil
+	}
+	return t.EventsData
+}
+
+func (t *TransferOutRecord) GetMessages() []*TransferOutMessage {
+	if t == nil {
+		return nil
+	}
+	return t.Messages
+}
+
+func (t *TransferOutRecord) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransferOutRecord) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetTransferId sets the TransferId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetTransferId(transferId *int) {
+	t.TransferId = transferId
+	t.require(transferOutRecordFieldTransferId)
+}
+
+// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetPaypointId(paypointId *int) {
+	t.PaypointId = paypointId
+	t.require(transferOutRecordFieldPaypointId)
+}
+
+// SetBatchNumber sets the BatchNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetBatchNumber(batchNumber *string) {
+	t.BatchNumber = batchNumber
+	t.require(transferOutRecordFieldBatchNumber)
+}
+
+// SetBatchCurrency sets the BatchCurrency field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetBatchCurrency(batchCurrency *string) {
+	t.BatchCurrency = batchCurrency
+	t.require(transferOutRecordFieldBatchCurrency)
+}
+
+// SetBatchRecords sets the BatchRecords field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetBatchRecords(batchRecords *int) {
+	t.BatchRecords = batchRecords
+	t.require(transferOutRecordFieldBatchRecords)
+}
+
+// SetTransferIdentifier sets the TransferIdentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetTransferIdentifier(transferIdentifier *string) {
+	t.TransferIdentifier = transferIdentifier
+	t.require(transferOutRecordFieldTransferIdentifier)
+}
+
+// SetBatchId sets the BatchId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetBatchId(batchId *int) {
+	t.BatchId = batchId
+	t.require(transferOutRecordFieldBatchId)
+}
+
+// SetBatchNetAmount sets the BatchNetAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetBatchNetAmount(batchNetAmount *float64) {
+	t.BatchNetAmount = batchNetAmount
+	t.require(transferOutRecordFieldBatchNetAmount)
+}
+
+// SetBatchStatus sets the BatchStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetBatchStatus(batchStatus *int) {
+	t.BatchStatus = batchStatus
+	t.require(transferOutRecordFieldBatchStatus)
+}
+
+// SetPaypointEntryName sets the PaypointEntryName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetPaypointEntryName(paypointEntryName *string) {
+	t.PaypointEntryName = paypointEntryName
+	t.require(transferOutRecordFieldPaypointEntryName)
+}
+
+// SetPaypointLegalName sets the PaypointLegalName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetPaypointLegalName(paypointLegalName *string) {
+	t.PaypointLegalName = paypointLegalName
+	t.require(transferOutRecordFieldPaypointLegalName)
+}
+
+// SetPaypointDbaName sets the PaypointDbaName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetPaypointDbaName(paypointDbaName *string) {
+	t.PaypointDbaName = paypointDbaName
+	t.require(transferOutRecordFieldPaypointDbaName)
+}
+
+// SetPaypointLogo sets the PaypointLogo field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetPaypointLogo(paypointLogo *string) {
+	t.PaypointLogo = paypointLogo
+	t.require(transferOutRecordFieldPaypointLogo)
+}
+
+// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetParentOrgName(parentOrgName *string) {
+	t.ParentOrgName = parentOrgName
+	t.require(transferOutRecordFieldParentOrgName)
+}
+
+// SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetParentOrgId(parentOrgId *int) {
+	t.ParentOrgId = parentOrgId
+	t.require(transferOutRecordFieldParentOrgId)
+}
+
+// SetParentOrgLogo sets the ParentOrgLogo field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetParentOrgLogo(parentOrgLogo *string) {
+	t.ParentOrgLogo = parentOrgLogo
+	t.require(transferOutRecordFieldParentOrgLogo)
+}
+
+// SetParentOrgEntryName sets the ParentOrgEntryName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetParentOrgEntryName(parentOrgEntryName *string) {
+	t.ParentOrgEntryName = parentOrgEntryName
+	t.require(transferOutRecordFieldParentOrgEntryName)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetExternalPaypointId(externalPaypointId *string) {
+	t.ExternalPaypointId = externalPaypointId
+	t.require(transferOutRecordFieldExternalPaypointId)
+}
+
+// SetBankAccount sets the BankAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetBankAccount(bankAccount *TransferOutBankAccount) {
+	t.BankAccount = bankAccount
+	t.require(transferOutRecordFieldBankAccount)
+}
+
+// SetTransferDate sets the TransferDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetTransferDate(transferDate *time.Time) {
+	t.TransferDate = transferDate
+	t.require(transferOutRecordFieldTransferDate)
+}
+
+// SetProcessor sets the Processor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetProcessor(processor *string) {
+	t.Processor = processor
+	t.require(transferOutRecordFieldProcessor)
+}
+
+// SetTransferStatus sets the TransferStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetTransferStatus(transferStatus *int) {
+	t.TransferStatus = transferStatus
+	t.require(transferOutRecordFieldTransferStatus)
+}
+
+// SetGrossAmount sets the GrossAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetGrossAmount(grossAmount *float64) {
+	t.GrossAmount = grossAmount
+	t.require(transferOutRecordFieldGrossAmount)
+}
+
+// SetChargeBackAmount sets the ChargeBackAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetChargeBackAmount(chargeBackAmount *float64) {
+	t.ChargeBackAmount = chargeBackAmount
+	t.require(transferOutRecordFieldChargeBackAmount)
+}
+
+// SetReturnedAmount sets the ReturnedAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetReturnedAmount(returnedAmount *float64) {
+	t.ReturnedAmount = returnedAmount
+	t.require(transferOutRecordFieldReturnedAmount)
+}
+
+// SetHoldAmount sets the HoldAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetHoldAmount(holdAmount *float64) {
+	t.HoldAmount = holdAmount
+	t.require(transferOutRecordFieldHoldAmount)
+}
+
+// SetReleasedAmount sets the ReleasedAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetReleasedAmount(releasedAmount *float64) {
+	t.ReleasedAmount = releasedAmount
+	t.require(transferOutRecordFieldReleasedAmount)
+}
+
+// SetBillingFeesAmount sets the BillingFeesAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetBillingFeesAmount(billingFeesAmount *float64) {
+	t.BillingFeesAmount = billingFeesAmount
+	t.require(transferOutRecordFieldBillingFeesAmount)
+}
+
+// SetThirdPartyPaidAmount sets the ThirdPartyPaidAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetThirdPartyPaidAmount(thirdPartyPaidAmount *float64) {
+	t.ThirdPartyPaidAmount = thirdPartyPaidAmount
+	t.require(transferOutRecordFieldThirdPartyPaidAmount)
+}
+
+// SetAdjustmentsAmount sets the AdjustmentsAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetAdjustmentsAmount(adjustmentsAmount *float64) {
+	t.AdjustmentsAmount = adjustmentsAmount
+	t.require(transferOutRecordFieldAdjustmentsAmount)
+}
+
+// SetNetTransferAmount sets the NetTransferAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetNetTransferAmount(netTransferAmount *float64) {
+	t.NetTransferAmount = netTransferAmount
+	t.require(transferOutRecordFieldNetTransferAmount)
+}
+
+// SetSplitAmount sets the SplitAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetSplitAmount(splitAmount *float64) {
+	t.SplitAmount = splitAmount
+	t.require(transferOutRecordFieldSplitAmount)
+}
+
+// SetEventsData sets the EventsData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetEventsData(eventsData []*TransferOutEventData) {
+	t.EventsData = eventsData
+	t.require(transferOutRecordFieldEventsData)
+}
+
+// SetMessages sets the Messages field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetMessages(messages []*TransferOutMessage) {
+	t.Messages = messages
+	t.require(transferOutRecordFieldMessages)
+}
+
+func (t *TransferOutRecord) UnmarshalJSON(data []byte) error {
+	type embed TransferOutRecord
+	var unmarshaler = struct {
+		embed
+		TransferDate *internal.DateTime `json:"transferDate,omitempty"`
+	}{
+		embed: embed(*t),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*t = TransferOutRecord(unmarshaler.embed)
+	t.TransferDate = unmarshaler.TransferDate.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransferOutRecord) MarshalJSON() ([]byte, error) {
+	type embed TransferOutRecord
+	var marshaler = struct {
+		embed
+		TransferDate *internal.DateTime `json:"transferDate,omitempty"`
+	}{
+		embed:        embed(*t),
+		TransferDate: internal.NewOptionalDateTime(t.TransferDate),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TransferOutRecord) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+// Summary information for outbound transfer queries.
+var (
+	transferOutSummaryFieldTotalPages   = big.NewInt(1 << 0)
+	transferOutSummaryFieldTotalRecords = big.NewInt(1 << 1)
+	transferOutSummaryFieldPageSize     = big.NewInt(1 << 2)
+)
+
+type TransferOutSummary struct {
+	// Number of pages in the response.
+	TotalPages *int `json:"totalPages,omitempty" url:"totalPages,omitempty"`
+	// Number of records in the response.
+	TotalRecords *int `json:"totalRecords,omitempty" url:"totalRecords,omitempty"`
+	// Number of records per page.
+	PageSize *int `json:"pageSize,omitempty" url:"pageSize,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransferOutSummary) GetTotalPages() *int {
+	if t == nil {
+		return nil
+	}
+	return t.TotalPages
+}
+
+func (t *TransferOutSummary) GetTotalRecords() *int {
+	if t == nil {
+		return nil
+	}
+	return t.TotalRecords
+}
+
+func (t *TransferOutSummary) GetPageSize() *int {
+	if t == nil {
+		return nil
+	}
+	return t.PageSize
+}
+
+func (t *TransferOutSummary) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransferOutSummary) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetTotalPages sets the TotalPages field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutSummary) SetTotalPages(totalPages *int) {
+	t.TotalPages = totalPages
+	t.require(transferOutSummaryFieldTotalPages)
+}
+
+// SetTotalRecords sets the TotalRecords field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutSummary) SetTotalRecords(totalRecords *int) {
+	t.TotalRecords = totalRecords
+	t.require(transferOutSummaryFieldTotalRecords)
+}
+
+// SetPageSize sets the PageSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutSummary) SetPageSize(pageSize *int) {
+	t.PageSize = pageSize
+	t.require(transferOutSummaryFieldPageSize)
+}
+
+func (t *TransferOutSummary) UnmarshalJSON(data []byte) error {
+	type unmarshaler TransferOutSummary
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TransferOutSummary(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransferOutSummary) MarshalJSON() ([]byte, error) {
+	type embed TransferOutSummary
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TransferOutSummary) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
 // Max number of records to return for the query. Use `0` or negative value to return all records. Defaults to 20.
 type LimitRecord = *int

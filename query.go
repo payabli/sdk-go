@@ -3221,6 +3221,90 @@ func (l *ListTransfersPaypointRequest) SetSortBy(sortBy *string) {
 }
 
 var (
+	listTransferDetailsOutRequestFieldFromRecord  = big.NewInt(1 << 0)
+	listTransferDetailsOutRequestFieldLimitRecord = big.NewInt(1 << 1)
+	listTransferDetailsOutRequestFieldParameters  = big.NewInt(1 << 2)
+	listTransferDetailsOutRequestFieldSortBy      = big.NewInt(1 << 3)
+)
+
+type ListTransferDetailsOutRequest struct {
+	// The number of records to skip before starting to collect the result set.
+	FromRecord *int `json:"-" url:"fromRecord,omitempty"`
+	// Max number of records to return for the query. Use `0` or negative value to return all records.
+	LimitRecord *int `json:"-" url:"limitRecord,omitempty"`
+	// Collection of field names, conditions, and values used to filter the query. See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for more information.
+	// <Info>
+	//
+	//	**You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+	//
+	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+	//
+	//	For example:
+	//
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//
+	//	should become:
+	//
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//
+	// </Info>
+	// List of field names accepted:
+	//
+	//   - `grossAmount` (gt, ge, lt, le, eq, ne)
+	//   - `returnedAmount` (gt, ge, lt, le, eq, ne)
+	//   - `billingFeeAmount` (gt, ge, lt, le, eq, ne)
+	//   - `netFundedAmount` (gt, ge, lt, le, eq, ne)
+	//   - `adjustmentAmount` (gt, ge, lt, le, eq, ne)
+	//   - `transactionId` (eq, ne, in, nin)
+	//   - `category` (eq, ne, ct, nct)
+	//   - `type` (eq, ne, in, nin)
+	//   - `method` (eq, ne, in, nin)
+	//   - `walletType` (eq, ne, in, nin)
+	//   - `splitFundingAmount` (gt, ge, lt, le, eq, ne)
+	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (l *ListTransferDetailsOutRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransferDetailsOutRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listTransferDetailsOutRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransferDetailsOutRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listTransferDetailsOutRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransferDetailsOutRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listTransferDetailsOutRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransferDetailsOutRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listTransferDetailsOutRequestFieldSortBy)
+}
+
+var (
 	listTransfersRequestFieldExportFormat = big.NewInt(1 << 0)
 	listTransfersRequestFieldFromRecord   = big.NewInt(1 << 1)
 	listTransfersRequestFieldLimitRecord  = big.NewInt(1 << 2)
@@ -3426,6 +3510,176 @@ func (l *ListTransfersRequestOrg) SetParameters(parameters map[string]*string) {
 func (l *ListTransfersRequestOrg) SetSortBy(sortBy *string) {
 	l.SortBy = sortBy
 	l.require(listTransfersRequestOrgFieldSortBy)
+}
+
+var (
+	listTransfersOutOrgRequestFieldFromRecord  = big.NewInt(1 << 0)
+	listTransfersOutOrgRequestFieldLimitRecord = big.NewInt(1 << 1)
+	listTransfersOutOrgRequestFieldParameters  = big.NewInt(1 << 2)
+	listTransfersOutOrgRequestFieldSortBy      = big.NewInt(1 << 3)
+)
+
+type ListTransfersOutOrgRequest struct {
+	// The number of records to skip before starting to collect the result set.
+	FromRecord *int `json:"-" url:"fromRecord,omitempty"`
+	// Max number of records to return for the query. Use `0` or negative value to return all records.
+	LimitRecord *int `json:"-" url:"limitRecord,omitempty"`
+	// Collection of field names, conditions, and values used to filter the query. See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for more information.
+	// <Info>
+	//
+	//	**You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+	//
+	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+	//
+	//	For example:
+	//
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//
+	//	should become:
+	//
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//
+	// </Info>
+	// List of field names accepted:
+	//
+	//   - `transferDate` (gt, ge, lt, le, eq, ne)
+	//   - `grossAmount` (gt, ge, lt, le, eq, ne)
+	//   - `returnedAmount` (gt, ge, lt, le, eq, ne)
+	//   - `billingFeeAmount` (gt, ge, lt, le, eq, ne)
+	//   - `netFundedAmount` (gt, ge, lt, le, eq, ne)
+	//   - `processor` (ne, eq, ct, nct)
+	//   - `transferStatus` (ne, eq, in, nin)
+	//   - `transferId` (ne, eq, in, nin)
+	//   - `paypointLegalName` (ne, eq, ct, nct)
+	//   - `paypointDbaName` (ne, eq, ct, nct)
+	//   - `batchNumber` (ne, eq, ct, nct)
+	//   - `batchId` (ne, eq, in, nin)
+	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (l *ListTransfersOutOrgRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransfersOutOrgRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listTransfersOutOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransfersOutOrgRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listTransfersOutOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransfersOutOrgRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listTransfersOutOrgRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransfersOutOrgRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listTransfersOutOrgRequestFieldSortBy)
+}
+
+var (
+	listTransfersOutPaypointRequestFieldFromRecord  = big.NewInt(1 << 0)
+	listTransfersOutPaypointRequestFieldLimitRecord = big.NewInt(1 << 1)
+	listTransfersOutPaypointRequestFieldParameters  = big.NewInt(1 << 2)
+	listTransfersOutPaypointRequestFieldSortBy      = big.NewInt(1 << 3)
+)
+
+type ListTransfersOutPaypointRequest struct {
+	// The number of records to skip before starting to collect the result set.
+	FromRecord *int `json:"-" url:"fromRecord,omitempty"`
+	// Max number of records to return for the query. Use `0` or negative value to return all records.
+	LimitRecord *int `json:"-" url:"limitRecord,omitempty"`
+	// Collection of field names, conditions, and values used to filter the query. See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for more information.
+	// <Info>
+	//
+	//	**You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+	//
+	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+	//
+	//	For example:
+	//
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//
+	//	should become:
+	//
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//
+	// </Info>
+	// List of field names accepted:
+	//
+	//   - `transferDate` (gt, ge, lt, le, eq, ne)
+	//   - `grossAmount` (gt, ge, lt, le, eq, ne)
+	//   - `returnedAmount` (gt, ge, lt, le, eq, ne)
+	//   - `billingFeeAmount` (gt, ge, lt, le, eq, ne)
+	//   - `netFundedAmount` (gt, ge, lt, le, eq, ne)
+	//   - `processor` (ne, eq, ct, nct)
+	//   - `transferStatus` (ne, eq, in, nin)
+	//   - `transferId` (ne, eq, in, nin)
+	//   - `paypointLegalName` (ne, eq, ct, nct)
+	//   - `paypointDbaName` (ne, eq, ct, nct)
+	//   - `batchNumber` (ne, eq, ct, nct)
+	//   - `batchId` (ne, eq, in, nin)
+	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (l *ListTransfersOutPaypointRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransfersOutPaypointRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listTransfersOutPaypointRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransfersOutPaypointRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listTransfersOutPaypointRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransfersOutPaypointRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listTransfersOutPaypointRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListTransfersOutPaypointRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listTransfersOutPaypointRequestFieldSortBy)
 }
 
 var (
@@ -12071,11 +12325,13 @@ func (t *Transfer) String() string {
 var (
 	transferBankAccountFieldAccountNumber = big.NewInt(1 << 0)
 	transferBankAccountFieldRoutingNumber = big.NewInt(1 << 1)
+	transferBankAccountFieldBankName      = big.NewInt(1 << 2)
 )
 
 type TransferBankAccount struct {
 	AccountNumber AccountNumber  `json:"accountNumber" url:"accountNumber"`
 	RoutingNumber RoutingAccount `json:"routingNumber" url:"routingNumber"`
+	BankName      BankName       `json:"bankName" url:"bankName"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -12096,6 +12352,13 @@ func (t *TransferBankAccount) GetRoutingNumber() RoutingAccount {
 		return ""
 	}
 	return t.RoutingNumber
+}
+
+func (t *TransferBankAccount) GetBankName() BankName {
+	if t == nil {
+		return ""
+	}
+	return t.BankName
 }
 
 func (t *TransferBankAccount) GetExtraProperties() map[string]interface{} {
@@ -12121,6 +12384,13 @@ func (t *TransferBankAccount) SetAccountNumber(accountNumber AccountNumber) {
 func (t *TransferBankAccount) SetRoutingNumber(routingNumber RoutingAccount) {
 	t.RoutingNumber = routingNumber
 	t.require(transferBankAccountFieldRoutingNumber)
+}
+
+// SetBankName sets the BankName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferBankAccount) SetBankName(bankName BankName) {
+	t.BankName = bankName
+	t.require(transferBankAccountFieldBankName)
 }
 
 func (t *TransferBankAccount) UnmarshalJSON(data []byte) error {

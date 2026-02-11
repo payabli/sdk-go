@@ -6394,7 +6394,7 @@ type EnrollmentStatus = *string
 // ID.
 type EntityId = int64
 
-// The entity's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 type Entry = string
 
 type EntryAttributes = string
@@ -16146,7 +16146,7 @@ type Paypointstatus = int
 
 // The difference between the configured pass-through fee and the fee amount sent in the request. When transferring funds, Payabli uses this field to deduct the fee difference and transfer the correct amount to the merchant.
 //
-// When a paypoint is set up to absorb fees, and the pass-through fee sent with the request is less than the configured amount, the difference must be covered by the merchant. See [Fee Configuration](/guides/passthrough-fees#fee-configuration) to learn more about pass-through fee settings.
+// When a paypoint is set up to absorb fees, and the pass-through fee sent with the request is less than the configured amount, the difference must be covered by the merchant. See [Fee Configuration](/guides/pay-in-fees-passthrough-overview#fee-configuration) to learn more about pass-through fee settings.
 type PendingFeeAmount = *float64
 
 // Phone number.
@@ -17206,7 +17206,7 @@ type QueryTransactionEvents struct {
 	EventData *QueryTransactionEventsEventData `json:"EventData,omitempty" url:"EventData,omitempty"`
 	// Date and time of event.
 	EventTime *time.Time `json:"EventTime,omitempty" url:"EventTime,omitempty"`
-	// Event descriptor. See [TransEvent Reference](/developers/references/transevents) for more details.
+	// Event descriptor. See [TransEvent Reference](/guides/pay-in-transevents-reference) for more details.
 	TransEvent *string `json:"TransEvent,omitempty" url:"TransEvent,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -18070,7 +18070,7 @@ type RequiredElement = bool
 // Response text for operation: 'Success' or 'Declined'.
 type ResponseText = string
 
-// Code for the response. Learn more in [API Response Codes](/api-reference/api-responses).
+// Code for the response. Learn more in [API Response Codes](/developers/api-reference/api-responses).
 type Responsecode = int
 
 // The object containing the response data.
@@ -18144,10 +18144,10 @@ func (r *Responsedatanonobject) Accept(visitor ResponsedatanonobjectVisitor) err
 // has been initiated and is pending.
 type ResultCode = int
 
-// Description of the result code. See [Pay In unified response codes](/developers/references/pay-in-unified-response-codes) for more information.
+// Description of the result code. See [Pay In unified response codes](/developers/references/pay-in-unified-response-codes-reference) for more information.
 type ResultCodeText = string
 
-// Unified result code for the transaction. See [Pay In unified response codes](/developers/references/pay-in-unified-response-codes) for more information.
+// Unified result code for the transaction. See [Pay In unified response codes](/developers/references/pay-in-unified-response-codes-reference) for more information.
 type ResultCodev2 = string
 
 // Text describing the result. If `ResultCode` = 1, will return 'Approved' or a general success message. If `ResultCode“ = 2 or 3, will contain the cause of the error or decline.
@@ -18331,7 +18331,7 @@ type SettingElement struct {
 	Order  *Order             `json:"order,omitempty" url:"order,omitempty"`
 	// When `true`, Payabli automatically sends the receipt to the payor email address.
 	SendAuto *bool `json:"sendAuto,omitempty" url:"sendAuto,omitempty"`
-	// When `true`, you must send the reciept to the payor manually using the [/MoneyIn/sendreceipt/\{transId\}](/api-reference/moneyin/send-receipt-for-transaction) endpoint.
+	// When `true`, you must send the reciept to the payor manually using the [/MoneyIn/sendreceipt/\{transId\}](/developers/api-reference/moneyin/send-receipt-for-transaction) endpoint.
 	SendManual *bool `json:"sendManual,omitempty" url:"sendManual,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted

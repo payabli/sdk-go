@@ -32,7 +32,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) AddInvoice(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.AddInvoiceRequest,
 	opts ...option.RequestOption,
@@ -361,7 +361,7 @@ func (r *RawClient) GetInvoice(
 
 func (r *RawClient) GetInvoiceNumber(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.InvoiceNumberResponse], error) {
@@ -406,7 +406,7 @@ func (r *RawClient) GetInvoiceNumber(
 
 func (r *RawClient) ListInvoices(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.ListInvoicesRequest,
 	opts ...option.RequestOption,

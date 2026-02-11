@@ -35,7 +35,7 @@ func NewClient(options *core.RequestOptions) *Client {
 // Creates an invoice in an entrypoint.
 func (c *Client) AddInvoice(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.AddInvoiceRequest,
 	opts ...option.RequestOption,
@@ -177,7 +177,7 @@ func (c *Client) GetInvoice(
 // Retrieves the next available invoice number for a paypoint.
 func (c *Client) GetInvoiceNumber(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	opts ...option.RequestOption,
 ) (*payabli.InvoiceNumberResponse, error) {
@@ -195,7 +195,7 @@ func (c *Client) GetInvoiceNumber(
 // Returns a list of invoices for an entrypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListInvoices(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.ListInvoicesRequest,
 	opts ...option.RequestOption,

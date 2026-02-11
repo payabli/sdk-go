@@ -35,7 +35,7 @@ func NewClient(options *core.RequestOptions) *Client {
 // Creates a bill in an entrypoint.
 func (c *Client) AddBill(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.AddBillRequest,
 	opts ...option.RequestOption,
@@ -182,7 +182,7 @@ func (c *Client) GetBill(
 // Retrieve a list of bills for an entrypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListBills(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/api-reference/api-overview#entrypoint-vs-entry)
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	request *payabli.ListBillsRequest,
 	opts ...option.RequestOption,
