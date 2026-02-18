@@ -75,6 +75,27 @@ func (r *ResponseChargeBack) SetNotes(notes *string) {
 	r.require(responseChargeBackFieldNotes)
 }
 
+func (r *ResponseChargeBack) UnmarshalJSON(data []byte) error {
+	type unmarshaler ResponseChargeBack
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*r = ResponseChargeBack(body)
+	return nil
+}
+
+func (r *ResponseChargeBack) MarshalJSON() ([]byte, error) {
+	type embed ResponseChargeBack
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	addResponseResponseFieldIsSuccess    = big.NewInt(1 << 0)
 	addResponseResponseFieldResponseText = big.NewInt(1 << 1)

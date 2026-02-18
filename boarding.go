@@ -45,6 +45,27 @@ func (r *RequestAppByAuth) SetReferenceId(referenceId *string) {
 	r.require(requestAppByAuthFieldReferenceId)
 }
 
+func (r *RequestAppByAuth) UnmarshalJSON(data []byte) error {
+	type unmarshaler RequestAppByAuth
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*r = RequestAppByAuth(body)
+	return nil
+}
+
+func (r *RequestAppByAuth) MarshalJSON() ([]byte, error) {
+	type embed RequestAppByAuth
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	listApplicationsRequestFieldExportFormat = big.NewInt(1 << 0)
 	listApplicationsRequestFieldFromRecord   = big.NewInt(1 << 1)

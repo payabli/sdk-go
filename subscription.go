@@ -102,6 +102,27 @@ func (r *RequestUpdateSchedule) SetSetPause(setPause *SetPause) {
 	r.require(requestUpdateScheduleFieldSetPause)
 }
 
+func (r *RequestUpdateSchedule) UnmarshalJSON(data []byte) error {
+	type unmarshaler RequestUpdateSchedule
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*r = RequestUpdateSchedule(body)
+	return nil
+}
+
+func (r *RequestUpdateSchedule) MarshalJSON() ([]byte, error) {
+	type embed RequestUpdateSchedule
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	scheduleDetailFieldEndDate   = big.NewInt(1 << 0)
 	scheduleDetailFieldFrequency = big.NewInt(1 << 1)

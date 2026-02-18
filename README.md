@@ -67,7 +67,7 @@ func do() {
         Body: &payabli.TransRequestBody{
             CustomerData: &payabli.PayorDataRequest{
                 CustomerId: payabli.Int64(
-                    4440,
+                    int64(4440),
                 ),
             },
             EntryPoint: payabli.String(

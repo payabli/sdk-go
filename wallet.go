@@ -53,6 +53,27 @@ func (c *ConfigureOrganizationRequestApplePay) SetOrgId(orgId *OrganizationId) {
 	c.require(configureOrganizationRequestApplePayFieldOrgId)
 }
 
+func (c *ConfigureOrganizationRequestApplePay) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConfigureOrganizationRequestApplePay
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = ConfigureOrganizationRequestApplePay(body)
+	return nil
+}
+
+func (c *ConfigureOrganizationRequestApplePay) MarshalJSON() ([]byte, error) {
+	type embed ConfigureOrganizationRequestApplePay
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	configurePaypointRequestApplePayFieldEntry     = big.NewInt(1 << 0)
 	configurePaypointRequestApplePayFieldIsEnabled = big.NewInt(1 << 1)
@@ -86,6 +107,27 @@ func (c *ConfigurePaypointRequestApplePay) SetEntry(entry *Entry) {
 func (c *ConfigurePaypointRequestApplePay) SetIsEnabled(isEnabled *IsEnabled) {
 	c.IsEnabled = isEnabled
 	c.require(configurePaypointRequestApplePayFieldIsEnabled)
+}
+
+func (c *ConfigurePaypointRequestApplePay) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConfigurePaypointRequestApplePay
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = ConfigurePaypointRequestApplePay(body)
+	return nil
+}
+
+func (c *ConfigurePaypointRequestApplePay) MarshalJSON() ([]byte, error) {
+	type embed ConfigurePaypointRequestApplePay
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -131,6 +173,27 @@ func (c *ConfigureOrganizationRequestGooglePay) SetOrgId(orgId *OrganizationId) 
 	c.require(configureOrganizationRequestGooglePayFieldOrgId)
 }
 
+func (c *ConfigureOrganizationRequestGooglePay) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConfigureOrganizationRequestGooglePay
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = ConfigureOrganizationRequestGooglePay(body)
+	return nil
+}
+
+func (c *ConfigureOrganizationRequestGooglePay) MarshalJSON() ([]byte, error) {
+	type embed ConfigureOrganizationRequestGooglePay
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	configurePaypointRequestGooglePayFieldEntry     = big.NewInt(1 << 0)
 	configurePaypointRequestGooglePayFieldIsEnabled = big.NewInt(1 << 1)
@@ -164,6 +227,27 @@ func (c *ConfigurePaypointRequestGooglePay) SetEntry(entry *Entry) {
 func (c *ConfigurePaypointRequestGooglePay) SetIsEnabled(isEnabled *IsEnabled) {
 	c.IsEnabled = isEnabled
 	c.require(configurePaypointRequestGooglePayFieldIsEnabled)
+}
+
+func (c *ConfigurePaypointRequestGooglePay) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConfigurePaypointRequestGooglePay
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = ConfigurePaypointRequestGooglePay(body)
+	return nil
+}
+
+func (c *ConfigurePaypointRequestGooglePay) MarshalJSON() ([]byte, error) {
+	type embed ConfigurePaypointRequestGooglePay
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 // The internal identifier for Apple Pay-related information.

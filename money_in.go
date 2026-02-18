@@ -77,13 +77,13 @@ type RequestCredit struct {
 	ForceCustomerCreation *ForceCustomerCreation `json:"-" url:"forceCustomerCreation,omitempty"`
 	AccountId             *Accountid             `json:"accountId,omitempty" url:"-"`
 	// Object describing the customer/payor.
-	CustomerData     *PayorDataRequest    `json:"customerData,omitempty" url:"-"`
+	CustomerData     *PayorDataRequest    `json:"customerData" url:"-"`
 	Entrypoint       *Entrypointfield     `json:"entrypoint,omitempty" url:"-"`
 	OrderDescription *Orderdescription    `json:"orderDescription,omitempty" url:"-"`
 	OrderId          *OrderId             `json:"orderId,omitempty" url:"-"`
-	PaymentDetails   *PaymentDetailCredit `json:"paymentDetails,omitempty" url:"-"`
+	PaymentDetails   *PaymentDetailCredit `json:"paymentDetails" url:"-"`
 	// Object describing the ACH payment method to use for transaction.
-	PaymentMethod *RequestCreditPaymentMethod `json:"paymentMethod,omitempty" url:"-"`
+	PaymentMethod *RequestCreditPaymentMethod `json:"paymentMethod" url:"-"`
 	Source        *Source                     `json:"source,omitempty" url:"-"`
 	Subdomain     *Subdomain                  `json:"subdomain,omitempty" url:"-"`
 
@@ -175,6 +175,27 @@ func (r *RequestCredit) SetSubdomain(subdomain *Subdomain) {
 	r.require(requestCreditFieldSubdomain)
 }
 
+func (r *RequestCredit) UnmarshalJSON(data []byte) error {
+	type unmarshaler RequestCredit
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*r = RequestCredit(body)
+	return nil
+}
+
+func (r *RequestCredit) MarshalJSON() ([]byte, error) {
+	type embed RequestCredit
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	requestRefundFieldIdempotencyKey   = big.NewInt(1 << 0)
 	requestRefundFieldAmount           = big.NewInt(1 << 1)
@@ -259,6 +280,27 @@ func (r *RequestRefund) SetSource(source *Source) {
 	r.require(requestRefundFieldSource)
 }
 
+func (r *RequestRefund) UnmarshalJSON(data []byte) error {
+	type unmarshaler RequestRefund
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*r = RequestRefund(body)
+	return nil
+}
+
+func (r *RequestRefund) MarshalJSON() ([]byte, error) {
+	type embed RequestRefund
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	sendReceipt2TransRequestFieldEmail = big.NewInt(1 << 0)
 )
@@ -303,7 +345,7 @@ type RequestPaymentValidate struct {
 	OrderDescription *Orderdescription `json:"orderDescription,omitempty" url:"-"`
 	OrderId          *OrderId          `json:"orderId,omitempty" url:"-"`
 	// Object describing payment method to use for transaction.
-	PaymentMethod *RequestPaymentValidatePaymentMethod `json:"paymentMethod,omitempty" url:"-"`
+	PaymentMethod *RequestPaymentValidatePaymentMethod `json:"paymentMethod" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -356,6 +398,27 @@ func (r *RequestPaymentValidate) SetOrderId(orderId *OrderId) {
 func (r *RequestPaymentValidate) SetPaymentMethod(paymentMethod *RequestPaymentValidatePaymentMethod) {
 	r.PaymentMethod = paymentMethod
 	r.require(requestPaymentValidateFieldPaymentMethod)
+}
+
+func (r *RequestPaymentValidate) UnmarshalJSON(data []byte) error {
+	type unmarshaler RequestPaymentValidate
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*r = RequestPaymentValidate(body)
+	return nil
+}
+
+func (r *RequestPaymentValidate) MarshalJSON() ([]byte, error) {
+	type embed RequestPaymentValidate
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (

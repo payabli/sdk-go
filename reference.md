@@ -1251,7 +1251,7 @@ request := &payabli.AddApplicationRequest{
                 "37615",
             ),
             OrgId: payabli.Int64(
-                123,
+                int64(123),
             ),
             Ownership: []*payabli.ApplicationDataPayInOwnershipItem{
                 &payabli.ApplicationDataPayInOwnershipItem{
@@ -1370,7 +1370,7 @@ request := &payabli.AddApplicationRequest{
                 "Sunshine LLC",
             ),
             TemplateId: payabli.Int64(
-                22,
+                int64(22),
             ),
             Ticketamt: payabli.Float64(
                 1000,
@@ -2248,7 +2248,7 @@ request := &payabli.ResponseChargeBack{
     }
 client.ChargeBacks.AddResponse(
         context.TODO(),
-        1000000,
+        int64(1000000),
         request,
     )
 }
@@ -2347,7 +2347,7 @@ Retrieves a chargeback record and its details.
 ```go
 client.ChargeBacks.GetChargeback(
         context.TODO(),
-        1000000,
+        int64(1000000),
     )
 }
 ```
@@ -2405,7 +2405,7 @@ Retrieves a chargeback attachment file by its file name.
 ```go
 client.ChargeBacks.GetChargebackAttachment(
         context.TODO(),
-        1000000,
+        int64(1000000),
         "fileName",
     )
 }
@@ -7656,7 +7656,7 @@ client.Export.ExportTransferDetails(
         context.TODO(),
         "8cfec329267",
         payabli.ExportFormat1Csv.Ptr(),
-        1000000,
+        int64(1000000),
         request,
     )
 }
@@ -8530,7 +8530,11 @@ Import a list of bills from a CSV file. See the [Import Guide](/developers/devel
 <dd>
 
 ```go
-request := &payabli.ImportBillsRequest{}
+request := &payabli.ImportBillsRequest{
+        File: strings.NewReader(
+            "",
+        ),
+    }
 client.Import.ImportBills(
         context.TODO(),
         "8cfec329267",
@@ -8590,7 +8594,11 @@ Import a list of customers from a CSV file. See the [Import Guide](/developers/d
 <dd>
 
 ```go
-request := &payabli.ImportCustomerRequest{}
+request := &payabli.ImportCustomerRequest{
+        File: strings.NewReader(
+            "",
+        ),
+    }
 client.Import.ImportCustomer(
         context.TODO(),
         "8cfec329267",
@@ -8658,7 +8666,11 @@ Import a list of vendors from a CSV file. See the [Import Guide](/developers/dev
 <dd>
 
 ```go
-request := &payabli.ImportVendorRequest{}
+request := &payabli.ImportVendorRequest{
+        File: strings.NewReader(
+            "",
+        ),
+    }
 client.Import.ImportVendor(
         context.TODO(),
         "8cfec329267",
@@ -10268,7 +10280,7 @@ request := &payabli.RequestPaymentAuthorize{
         Body: &payabli.TransRequestBody{
             CustomerData: &payabli.PayorDataRequest{
                 CustomerId: payabli.Int64(
-                    4440,
+                    int64(4440),
                 ),
             },
             EntryPoint: payabli.String(
@@ -10770,7 +10782,7 @@ request := &payabli.RequestPayment{
         Body: &payabli.TransRequestBody{
             CustomerData: &payabli.PayorDataRequest{
                 CustomerId: payabli.Int64(
-                    4440,
+                    int64(4440),
                 ),
             },
             EntryPoint: payabli.String(
@@ -11534,7 +11546,7 @@ request := &payabli.RequestPaymentV2{
         Body: &payabli.TransRequestBody{
             CustomerData: &payabli.PayorDataRequest{
                 CustomerId: payabli.Int64(
-                    4440,
+                    int64(4440),
                 ),
             },
             EntryPoint: payabli.String(
@@ -11665,7 +11677,7 @@ request := &payabli.RequestPaymentAuthorizeV2{
         Body: &payabli.TransRequestBody{
             CustomerData: &payabli.PayorDataRequest{
                 CustomerId: payabli.Int64(
-                    4440,
+                    int64(4440),
                 ),
             },
             EntryPoint: payabli.String(
@@ -12043,7 +12055,7 @@ request := &payabli.MoneyOutTypesRequestOutAuthorize{
             InvoiceData: []*payabli.RequestOutAuthorizeInvoiceData{
                 &payabli.RequestOutAuthorizeInvoiceData{
                     BillId: payabli.Int64(
-                        54323,
+                        int64(54323),
                     ),
                 },
             },
@@ -13082,7 +13094,7 @@ Gets a copy of a generated report by ID.
 ```go
 client.Notification.GetReportFile(
         context.TODO(),
-        1000000,
+        int64(1000000),
     )
 }
 ```
@@ -13155,7 +13167,7 @@ request := &payabli.SearchNotificationLogsRequest{
                 "2024-01-31T23:59:59Z",
             ),
             OrgId: payabli.Int64(
-                12345,
+                int64(12345),
             ),
             NotificationEvent: payabli.String(
                 "ActivatedMerchant",
@@ -13646,7 +13658,7 @@ request := &payabli.AddOrganizationRequest{
         },
         OrgName: "Pilgrim Planner",
         OrgParentId: payabli.Int64(
-            236,
+            int64(236),
         ),
         OrgState: payabli.String(
             "TN",
@@ -15829,7 +15841,7 @@ request := &payabli.AddPaymentMethodDomainRequest{
             "checkout.example.com",
         ),
         EntityId: payabli.Int64(
-            109,
+            int64(109),
         ),
         EntityType: payabli.String(
             "paypoint",
@@ -16111,7 +16123,7 @@ Get a list of payment method domains that belong to a PSP, organization, or payp
 ```go
 request := &payabli.ListPaymentMethodDomainsRequest{
         EntityId: payabli.Int64(
-            1147,
+            int64(1147),
         ),
         EntityType: payabli.String(
             "paypoint",
@@ -21286,7 +21298,7 @@ Retrieve a list of transfers for an org. Use filters to limit results. Include t
 
 ```go
 request := &payabli.ListTransfersRequestOrg{
-        OrgId: 123,
+        OrgId: int64(123),
         FromRecord: payabli.Int(
             0,
         ),
@@ -22762,7 +22774,7 @@ request := &payabli.BasicStatsRequest{
     }
 client.Statistic.BasicStats(
         context.TODO(),
-        1000000,
+        int64(1000000),
         "m",
         1,
         "ytd",
@@ -23025,7 +23037,7 @@ Retrieves the subscription statistics for a given interval for a paypoint or org
 request := &payabli.SubStatsRequest{}
 client.Statistic.SubStats(
         context.TODO(),
-        1000000,
+        int64(1000000),
         "30",
         1,
         request,
@@ -23292,7 +23304,7 @@ request := &payabli.RequestSchedule{
         Body: &payabli.SubscriptionRequestBody{
             CustomerData: &payabli.PayorDataRequest{
                 CustomerId: payabli.Int64(
-                    4440,
+                    int64(4440),
                 ),
             },
             EntryPoint: payabli.String(
@@ -23892,7 +23904,7 @@ request := &payabli.AddMethodRequest{
         Body: &payabli.RequestTokenStorage{
             CustomerData: &payabli.PayorDataRequest{
                 CustomerId: payabli.Int64(
-                    4440,
+                    int64(4440),
                 ),
             },
             EntryPoint: payabli.String(
@@ -24170,7 +24182,7 @@ request := &payabli.UpdateMethodRequest{
         Body: &payabli.RequestTokenStorage{
             CustomerData: &payabli.PayorDataRequest{
                 CustomerId: payabli.Int64(
-                    4440,
+                    int64(4440),
                 ),
             },
             EntryPoint: payabli.String(
@@ -24616,7 +24628,7 @@ Use this endpoint to delete a specific user within an organization.
 ```go
 client.User.DeleteUser(
         context.TODO(),
-        1000000,
+        int64(1000000),
     )
 }
 ```
@@ -24675,7 +24687,7 @@ Use this endpoint to enable or disable multi-factor authentication (MFA) for a u
 request := &payabli.MfaData{}
 client.User.EditMfaUser(
         context.TODO(),
-        1000000,
+        int64(1000000),
         request,
     )
 }
@@ -24743,7 +24755,7 @@ Use this endpoint to modify the details of a specific user within an organizatio
 request := &payabli.UserData{}
 client.User.EditUser(
         context.TODO(),
-        1000000,
+        int64(1000000),
         request,
     )
 }
@@ -24815,7 +24827,7 @@ request := &payabli.GetUserRequest{
     }
 client.User.GetUser(
         context.TODO(),
-        1000000,
+        int64(1000000),
         request,
     )
 }
@@ -25189,7 +25201,7 @@ request := &payabli.VendorData{
             "A-37622",
         ),
         InternalReferenceId: payabli.Int64(
-            123,
+            int64(123),
         ),
     }
 client.Vendor.AddVendor(
@@ -25456,7 +25468,7 @@ request := &payabli.ConfigureOrganizationRequestApplePay{
             true,
         ),
         OrgId: payabli.Int64(
-            901,
+            int64(901),
         ),
     }
 client.Wallet.ConfigureApplePayOrganization(
@@ -25615,7 +25627,7 @@ request := &payabli.ConfigureOrganizationRequestGooglePay{
             true,
         ),
         OrgId: payabli.Int64(
-            901,
+            int64(901),
         ),
     }
 client.Wallet.ConfigureGooglePayOrganization(

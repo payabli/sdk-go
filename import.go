@@ -51,6 +51,27 @@ func (i *ImportCustomerRequest) SetReplaceExisting(replaceExisting *int) {
 	i.require(importCustomerRequestFieldReplaceExisting)
 }
 
+func (i *ImportCustomerRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler ImportCustomerRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*i = ImportCustomerRequest(body)
+	return nil
+}
+
+func (i *ImportCustomerRequest) MarshalJSON() ([]byte, error) {
+	type embed ImportCustomerRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*i),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, i.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 type ImportVendorRequest struct {
 	File io.Reader `json:"-" url:"-"`
 

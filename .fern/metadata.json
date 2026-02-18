@@ -1,12 +1,13 @@
 {
-  "cliVersion": "3.68.1",
+  "cliVersion": "3.79.2",
   "generatorName": "fernapi/fern-go-sdk",
-  "generatorVersion": "1.18.4",
+  "generatorVersion": "1.24.0",
   "generatorConfig": {
     "packageName": "payabli",
     "enableWireTests": false,
     "module": {
       "path": "github.com/payabli/sdk-go"
     }
-  }
+  },
+  "sdkVersion": "v0.0.445"
 }

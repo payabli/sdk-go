@@ -55,6 +55,27 @@ func (u *UserAuthResetRequest) SetEntryType(entryType *int) {
 	u.require(userAuthResetRequestFieldEntryType)
 }
 
+func (u *UserAuthResetRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler UserAuthResetRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*u = UserAuthResetRequest(body)
+	return nil
+}
+
+func (u *UserAuthResetRequest) MarshalJSON() ([]byte, error) {
+	type embed UserAuthResetRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	userAuthRequestFieldEmail       = big.NewInt(1 << 0)
 	userAuthRequestFieldEntry       = big.NewInt(1 << 1)
@@ -127,6 +148,27 @@ func (u *UserAuthRequest) SetUserTokenId(userTokenId *string) {
 	u.require(userAuthRequestFieldUserTokenId)
 }
 
+func (u *UserAuthRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler UserAuthRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*u = UserAuthRequest(body)
+	return nil
+}
+
+func (u *UserAuthRequest) MarshalJSON() ([]byte, error) {
+	type embed UserAuthRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	userAuthPswResetRequestFieldPsw = big.NewInt(1 << 0)
 )
@@ -151,6 +193,27 @@ func (u *UserAuthPswResetRequest) require(field *big.Int) {
 func (u *UserAuthPswResetRequest) SetPsw(psw *string) {
 	u.Psw = psw
 	u.require(userAuthPswResetRequestFieldPsw)
+}
+
+func (u *UserAuthPswResetRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler UserAuthPswResetRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*u = UserAuthPswResetRequest(body)
+	return nil
+}
+
+func (u *UserAuthPswResetRequest) MarshalJSON() ([]byte, error) {
+	type embed UserAuthPswResetRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -221,6 +284,27 @@ func (m *MfaValidationData) SetMfaCode(mfaCode *string) {
 func (m *MfaValidationData) SetMfaValidationCode(mfaValidationCode *MfaValidationCode) {
 	m.MfaValidationCode = mfaValidationCode
 	m.require(mfaValidationDataFieldMfaValidationCode)
+}
+
+func (m *MfaValidationData) UnmarshalJSON(data []byte) error {
+	type unmarshaler MfaValidationData
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*m = MfaValidationData(body)
+	return nil
+}
+
+func (m *MfaValidationData) MarshalJSON() ([]byte, error) {
+	type embed MfaValidationData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (

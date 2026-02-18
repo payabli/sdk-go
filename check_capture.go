@@ -64,6 +64,27 @@ func (c *CheckCaptureRequestBody) SetCheckAmount(checkAmount int) {
 	c.require(checkCaptureRequestBodyFieldCheckAmount)
 }
 
+func (c *CheckCaptureRequestBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler CheckCaptureRequestBody
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = CheckCaptureRequestBody(body)
+	return nil
+}
+
+func (c *CheckCaptureRequestBody) MarshalJSON() ([]byte, error) {
+	type embed CheckCaptureRequestBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 // Request model for check capture processing.
 var (
 	checkCaptureRequestFieldEntryPoint  = big.NewInt(1 << 0)

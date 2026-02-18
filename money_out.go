@@ -168,6 +168,27 @@ func (s *SendVCardLinkRequest) SetTransId(transId string) {
 	s.require(sendVCardLinkRequestFieldTransId)
 }
 
+func (s *SendVCardLinkRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler SendVCardLinkRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*s = SendVCardLinkRequest(body)
+	return nil
+}
+
+func (s *SendVCardLinkRequest) MarshalJSON() ([]byte, error) {
+	type embed SendVCardLinkRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	billDetailResponseFieldBills                = big.NewInt(1 << 0)
 	billDetailResponseFieldCheckData            = big.NewInt(1 << 1)

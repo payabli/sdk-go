@@ -85,6 +85,27 @@ func (d *DeviceEntry) SetRegistrationCode(registrationCode *string) {
 	d.require(deviceEntryFieldRegistrationCode)
 }
 
+func (d *DeviceEntry) UnmarshalJSON(data []byte) error {
+	type unmarshaler DeviceEntry
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*d = DeviceEntry(body)
+	return nil
+}
+
+func (d *DeviceEntry) MarshalJSON() ([]byte, error) {
+	type embed DeviceEntry
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*d),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 // Object containing details about cloud devices and their registration history.
 var (
 	cloudQueryApiResponseFieldIsSuccess    = big.NewInt(1 << 0)

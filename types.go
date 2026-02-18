@@ -353,6 +353,7 @@ func (a *AchPaymentMethod) String() string {
 //   - WEB (Internet-Initiated/Mobile Entry) - Used for debit entries when authorization is obtained from an accountholder via the internet or a wireless network. Common examples are online bill payments, ecommerce purchases, and mobile app payments where the consumer enters their banking information online.
 //   - TEL (Telephone-Initiated Entry) - Used for one-time debit entries where authorization is obtained from a consumer via telephone. Common examples are phone-based purchases or bill payments where the consumer provides their banking information over the phone.
 //   - CCD (Corporate Credit or Debit) - Used for fund transfers between business accounts. This code is specifically for business-to-business transactions. Common examples include vendor payments and other business-to-business payments.
+//   - BOC (Back Office Conversion) - Used to convert paper checks received in-person at a point-of-sale or staffed payment location into electronic ACH debits. Required for Remote Deposit Capture (RDC) transactions. Only supports consumer checks; business, government, and mailed checks aren't eligible.
 type AchSecCode = string
 
 var (
@@ -14408,13 +14409,14 @@ func (p *PaymentCategories) String() string {
 
 // Details about the payment.
 var (
-	paymentDetailFieldCategories   = big.NewInt(1 << 0)
-	paymentDetailFieldCheckImage   = big.NewInt(1 << 1)
-	paymentDetailFieldCheckNumber  = big.NewInt(1 << 2)
-	paymentDetailFieldCurrency     = big.NewInt(1 << 3)
-	paymentDetailFieldServiceFee   = big.NewInt(1 << 4)
-	paymentDetailFieldSplitFunding = big.NewInt(1 << 5)
-	paymentDetailFieldTotalAmount  = big.NewInt(1 << 6)
+	paymentDetailFieldCategories    = big.NewInt(1 << 0)
+	paymentDetailFieldCheckImage    = big.NewInt(1 << 1)
+	paymentDetailFieldCheckNumber   = big.NewInt(1 << 2)
+	paymentDetailFieldCurrency      = big.NewInt(1 << 3)
+	paymentDetailFieldServiceFee    = big.NewInt(1 << 4)
+	paymentDetailFieldSplitFunding  = big.NewInt(1 << 5)
+	paymentDetailFieldCheckUniqueId = big.NewInt(1 << 6)
+	paymentDetailFieldTotalAmount   = big.NewInt(1 << 7)
 )
 
 type PaymentDetail struct {
@@ -14431,6 +14433,8 @@ type PaymentDetail struct {
 	ServiceFee *float64 `json:"serviceFee,omitempty" url:"serviceFee,omitempty"`
 	// Split funding instructions for the transaction. See [Split a Transaction](/developers/developer-guides/money-in-split-funding) for more.
 	SplitFunding *SplitFunding `json:"splitFunding,omitempty" url:"splitFunding,omitempty"`
+	// Unique identifier for a processed check image. Required for RDC (Remote Deposit Capture) transactions where `achCode` is `BOC`. Use the `id` value from the [check processing](/developers/api-reference/checkcapture/process-a-check-image) response.
+	CheckUniqueId *string `json:"checkUniqueId,omitempty" url:"checkUniqueId,omitempty"`
 	// Total amount to be charged. If a service fee is sent, then this amount should include the service fee."
 	TotalAmount float64 `json:"totalAmount" url:"totalAmount"`
 
@@ -14481,6 +14485,13 @@ func (p *PaymentDetail) GetSplitFunding() *SplitFunding {
 		return nil
 	}
 	return p.SplitFunding
+}
+
+func (p *PaymentDetail) GetCheckUniqueId() *string {
+	if p == nil {
+		return nil
+	}
+	return p.CheckUniqueId
 }
 
 func (p *PaymentDetail) GetTotalAmount() float64 {
@@ -14541,6 +14552,13 @@ func (p *PaymentDetail) SetServiceFee(serviceFee *float64) {
 func (p *PaymentDetail) SetSplitFunding(splitFunding *SplitFunding) {
 	p.SplitFunding = splitFunding
 	p.require(paymentDetailFieldSplitFunding)
+}
+
+// SetCheckUniqueId sets the CheckUniqueId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaymentDetail) SetCheckUniqueId(checkUniqueId *string) {
+	p.CheckUniqueId = checkUniqueId
+	p.require(paymentDetailFieldCheckUniqueId)
 }
 
 // SetTotalAmount sets the TotalAmount field and marks it as non-optional;

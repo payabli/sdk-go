@@ -73,6 +73,27 @@ func (a *AddPaymentMethodDomainRequest) SetEntityType(entityType *EntityType) {
 	a.require(addPaymentMethodDomainRequestFieldEntityType)
 }
 
+func (a *AddPaymentMethodDomainRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler AddPaymentMethodDomainRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*a = AddPaymentMethodDomainRequest(body)
+	return nil
+}
+
+func (a *AddPaymentMethodDomainRequest) MarshalJSON() ([]byte, error) {
+	type embed AddPaymentMethodDomainRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	listPaymentMethodDomainsRequestFieldEntityId    = big.NewInt(1 << 0)
 	listPaymentMethodDomainsRequestFieldEntityType  = big.NewInt(1 << 1)
@@ -165,6 +186,27 @@ func (u *UpdatePaymentMethodDomainRequest) SetApplePay(applePay *UpdatePaymentMe
 func (u *UpdatePaymentMethodDomainRequest) SetGooglePay(googlePay *UpdatePaymentMethodDomainRequestWallet) {
 	u.GooglePay = googlePay
 	u.require(updatePaymentMethodDomainRequestFieldGooglePay)
+}
+
+func (u *UpdatePaymentMethodDomainRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdatePaymentMethodDomainRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*u = UpdatePaymentMethodDomainRequest(body)
+	return nil
+}
+
+func (u *UpdatePaymentMethodDomainRequest) MarshalJSON() ([]byte, error) {
+	type embed UpdatePaymentMethodDomainRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*u),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, u.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 // Response for the add payment method domain operation.

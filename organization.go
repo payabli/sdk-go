@@ -205,6 +205,27 @@ func (a *AddOrganizationRequest) SetReplyToEmail(replyToEmail ReplyToEmail) {
 	a.require(addOrganizationRequestFieldReplyToEmail)
 }
 
+func (a *AddOrganizationRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler AddOrganizationRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*a = AddOrganizationRequest(body)
+	return nil
+}
+
+func (a *AddOrganizationRequest) MarshalJSON() ([]byte, error) {
+	type embed AddOrganizationRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
 var (
 	organizationDataFieldServices              = big.NewInt(1 << 0)
 	organizationDataFieldBillingInfo           = big.NewInt(1 << 1)
@@ -390,6 +411,27 @@ func (o *OrganizationData) SetOrgZip(orgZip *Orgzip) {
 func (o *OrganizationData) SetReplyToEmail(replyToEmail *ReplyToEmail) {
 	o.ReplyToEmail = replyToEmail
 	o.require(organizationDataFieldReplyToEmail)
+}
+
+func (o *OrganizationData) UnmarshalJSON(data []byte) error {
+	type unmarshaler OrganizationData
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*o = OrganizationData(body)
+	return nil
+}
+
+func (o *OrganizationData) MarshalJSON() ([]byte, error) {
+	type embed OrganizationData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*o),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, o.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (

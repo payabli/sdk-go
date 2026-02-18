@@ -1528,3 +1528,24 @@ func (p *PayLinkUpdateData) SetSettings(settings *PagelinkSetting) {
 	p.Settings = settings
 	p.require(payLinkUpdateDataFieldSettings)
 }
+
+func (p *PayLinkUpdateData) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayLinkUpdateData
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*p = PayLinkUpdateData(body)
+	return nil
+}
+
+func (p *PayLinkUpdateData) MarshalJSON() ([]byte, error) {
+	type embed PayLinkUpdateData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
