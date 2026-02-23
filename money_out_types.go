@@ -101,6 +101,9 @@ func (a *AuthCapturePayoutResponse) GetResponseData() *AuthCapturePayoutResponse
 }
 
 func (a *AuthCapturePayoutResponse) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -181,6 +184,9 @@ func (a *AuthCapturePayoutResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AuthCapturePayoutResponse) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -277,6 +283,9 @@ func (a *AuthCapturePayoutResponseData) GetMethodReferenceId() *MethodReferenceI
 }
 
 func (a *AuthCapturePayoutResponseData) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -371,6 +380,9 @@ func (a *AuthCapturePayoutResponseData) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AuthCapturePayoutResponseData) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -497,6 +509,9 @@ func (a *AuthorizePaymentMethod) GetStoredMethodUsageType() *StoredMethodUsageTy
 }
 
 func (a *AuthorizePaymentMethod) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -605,6 +620,9 @@ func (a *AuthorizePaymentMethod) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AuthorizePaymentMethod) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -731,6 +749,9 @@ func (a *AuthorizePayoutBody) GetSubscriptionId() *Subscriptionid {
 }
 
 func (a *AuthorizePayoutBody) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -846,6 +867,9 @@ func (a *AuthorizePayoutBody) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AuthorizePayoutBody) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -916,6 +940,9 @@ func (c *CaptureAllOutResponse) GetResponseText() ResponseText {
 }
 
 func (c *CaptureAllOutResponse) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -989,6 +1016,9 @@ func (c *CaptureAllOutResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CaptureAllOutResponse) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -1053,6 +1083,9 @@ func (c *CaptureAllOutResponseResponseDataItem) GetResultText() *Resulttext {
 }
 
 func (c *CaptureAllOutResponseResponseDataItem) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -1119,6 +1152,9 @@ func (c *CaptureAllOutResponseResponseDataItem) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CaptureAllOutResponseResponseDataItem) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -1166,6 +1202,9 @@ func (o *OperationResult) GetSuccess() bool {
 }
 
 func (o *OperationResult) GetExtraProperties() map[string]interface{} {
+	if o == nil {
+		return nil
+	}
 	return o.extraProperties
 }
 
@@ -1218,6 +1257,9 @@ func (o *OperationResult) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OperationResult) String() string {
+	if o == nil {
+		return "<nil>"
+	}
 	if len(o.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
 			return value
@@ -1361,6 +1403,9 @@ func (r *RequestOutAuthorizeInvoiceData) GetAttachments() *Attachments {
 }
 
 func (r *RequestOutAuthorizeInvoiceData) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
 	return r.extraProperties
 }
 
@@ -1490,6 +1535,9 @@ func (r *RequestOutAuthorizeInvoiceData) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestOutAuthorizeInvoiceData) String() string {
+	if r == nil {
+		return "<nil>"
+	}
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
@@ -1564,6 +1612,9 @@ func (r *RequestOutAuthorizePaymentDetails) GetUnbundled() *bool {
 }
 
 func (r *RequestOutAuthorizePaymentDetails) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
 	return r.extraProperties
 }
 
@@ -1637,6 +1688,9 @@ func (r *RequestOutAuthorizePaymentDetails) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestOutAuthorizePaymentDetails) String() string {
+	if r == nil {
+		return "<nil>"
+	}
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
@@ -1707,6 +1761,9 @@ func (r *RequestOutAuthorizeVendorBillingData) GetBankAccountHolderName() *BankA
 }
 
 func (r *RequestOutAuthorizeVendorBillingData) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
 	return r.extraProperties
 }
 
@@ -1780,6 +1837,9 @@ func (r *RequestOutAuthorizeVendorBillingData) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestOutAuthorizeVendorBillingData) String() string {
+	if r == nil {
+		return "<nil>"
+	}
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
@@ -2093,6 +2153,9 @@ func (r *RequestOutAuthorizeVendorData) GetVendorId() *Vendorid {
 }
 
 func (r *RequestOutAuthorizeVendorData) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
 	return r.extraProperties
 }
 
@@ -2355,6 +2418,9 @@ func (r *RequestOutAuthorizeVendorData) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestOutAuthorizeVendorData) String() string {
+	if r == nil {
+		return "<nil>"
+	}
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
@@ -2680,6 +2746,9 @@ func (r *RequestOutAuthorizeVendorDataOld) GetZip() *string {
 }
 
 func (r *RequestOutAuthorizeVendorDataOld) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
 	return r.extraProperties
 }
 
@@ -2942,6 +3011,9 @@ func (r *RequestOutAuthorizeVendorDataOld) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestOutAuthorizeVendorDataOld) String() string {
+	if r == nil {
+		return "<nil>"
+	}
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
@@ -3235,6 +3307,9 @@ func (v *VCardGetResponse) GetPaypointId() *int {
 }
 
 func (v *VCardGetResponse) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -3462,6 +3537,9 @@ func (v *VCardGetResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VCardGetResponse) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
@@ -3918,6 +3996,9 @@ func (v *VCardGetResponseAssociatedVendor) GetStoredMethods() *string {
 }
 
 func (v *VCardGetResponseAssociatedVendor) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -4264,6 +4345,9 @@ func (v *VCardGetResponseAssociatedVendor) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VCardGetResponseAssociatedVendor) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
@@ -4429,6 +4513,9 @@ func (v *VCardGetResponseAssociatedVendorBillingData) GetDefault() *bool {
 }
 
 func (v *VCardGetResponseAssociatedVendorBillingData) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -4565,6 +4652,9 @@ func (v *VCardGetResponseAssociatedVendorBillingData) MarshalJSON() ([]byte, err
 }
 
 func (v *VCardGetResponseAssociatedVendorBillingData) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
@@ -4750,6 +4840,9 @@ func (v *VCardGetResponseAssociatedVendorSummary) GetTotalBillsAmount() *float64
 }
 
 func (v *VCardGetResponseAssociatedVendorSummary) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -4900,6 +4993,9 @@ func (v *VCardGetResponseAssociatedVendorSummary) MarshalJSON() ([]byte, error) 
 }
 
 func (v *VCardGetResponseAssociatedVendorSummary) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
@@ -4965,6 +5061,9 @@ func (v *VCardGetResponseContact) GetContactPhone() *string {
 }
 
 func (v *VCardGetResponseContact) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -5031,6 +5130,9 @@ func (v *VCardGetResponseContact) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VCardGetResponseContact) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value

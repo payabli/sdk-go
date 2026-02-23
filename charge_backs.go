@@ -137,6 +137,9 @@ func (a *AddResponseResponse) GetResponseData() *int {
 }
 
 func (a *AddResponseResponse) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -196,6 +199,9 @@ func (a *AddResponseResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AddResponseResponse) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -280,6 +286,9 @@ func (c *ChargeBackResponse) GetNotes() *string {
 }
 
 func (c *ChargeBackResponse) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -360,6 +369,9 @@ func (c *ChargeBackResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ChargeBackResponse) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -464,6 +476,9 @@ func (c *ChargebackMessage) GetMessageProperties() map[string]string {
 }
 
 func (c *ChargebackMessage) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -566,6 +581,9 @@ func (c *ChargebackMessage) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ChargebackMessage) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -907,6 +925,9 @@ func (c *ChargebackQueryRecords) GetProcessorName() string {
 }
 
 func (c *ChargebackQueryRecords) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -1177,6 +1198,9 @@ func (c *ChargebackQueryRecords) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ChargebackQueryRecords) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value

@@ -338,6 +338,9 @@ func (m *MfaData) GetMfaMode() *MfaMode {
 }
 
 func (m *MfaData) GetExtraProperties() map[string]interface{} {
+	if m == nil {
+		return nil
+	}
 	return m.extraProperties
 }
 
@@ -390,6 +393,9 @@ func (m *MfaData) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MfaData) String() string {
+	if m == nil {
+		return "<nil>"
+	}
 	if len(m.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
 			return value
@@ -435,6 +441,9 @@ func (o *OrgScope) GetOrgType() *Orgtype {
 }
 
 func (o *OrgScope) GetExtraProperties() map[string]interface{} {
+	if o == nil {
+		return nil
+	}
 	return o.extraProperties
 }
 
@@ -487,6 +496,9 @@ func (o *OrgScope) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OrgScope) String() string {
+	if o == nil {
+		return "<nil>"
+	}
 	if len(o.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
 			return value
@@ -567,6 +579,9 @@ func (p *PayabliApiResponseMfaBasic) GetResponseText() ResponseText {
 }
 
 func (p *PayabliApiResponseMfaBasic) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -647,6 +662,9 @@ func (p *PayabliApiResponseMfaBasic) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PayabliApiResponseMfaBasic) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -716,6 +734,9 @@ func (p *PayabliApiResponseUserMfa) GetResponseText() ResponseText {
 }
 
 func (p *PayabliApiResponseUserMfa) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -789,6 +810,9 @@ func (p *PayabliApiResponseUserMfa) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PayabliApiResponseUserMfa) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -914,6 +938,9 @@ func (u *UserData) GetUsrStatus() *UsrStatus {
 }
 
 func (u *UserData) GetExtraProperties() map[string]interface{} {
+	if u == nil {
+		return nil
+	}
 	return u.extraProperties
 }
 
@@ -1029,6 +1056,9 @@ func (u *UserData) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UserData) String() string {
+	if u == nil {
+		return "<nil>"
+	}
 	if len(u.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
 			return value
@@ -1081,6 +1111,9 @@ func (a *AddUserResponse) GetResponseText() ResponseText {
 }
 
 func (a *AddUserResponse) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -1140,6 +1173,9 @@ func (a *AddUserResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AddUserResponse) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -1182,6 +1218,9 @@ func (a *AuthResetUserResponse) GetResponseText() ResponseText {
 }
 
 func (a *AuthResetUserResponse) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -1234,6 +1273,9 @@ func (a *AuthResetUserResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AuthResetUserResponse) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -1276,6 +1318,9 @@ func (c *ChangePswUserResponse) GetResponseText() ResponseText {
 }
 
 func (c *ChangePswUserResponse) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -1328,6 +1373,9 @@ func (c *ChangePswUserResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ChangePswUserResponse) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -1361,6 +1409,9 @@ func (d *DeleteUserResponse) GetResponseText() ResponseText {
 }
 
 func (d *DeleteUserResponse) GetExtraProperties() map[string]interface{} {
+	if d == nil {
+		return nil
+	}
 	return d.extraProperties
 }
 
@@ -1406,6 +1457,9 @@ func (d *DeleteUserResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeleteUserResponse) String() string {
+	if d == nil {
+		return "<nil>"
+	}
 	if len(d.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
 			return value
@@ -1448,6 +1502,9 @@ func (e *EditMfaUserResponse) GetResponseText() ResponseText {
 }
 
 func (e *EditMfaUserResponse) GetExtraProperties() map[string]interface{} {
+	if e == nil {
+		return nil
+	}
 	return e.extraProperties
 }
 
@@ -1500,6 +1557,9 @@ func (e *EditMfaUserResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EditMfaUserResponse) String() string {
+	if e == nil {
+		return "<nil>"
+	}
 	if len(e.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
 			return value
@@ -1542,6 +1602,9 @@ func (l *LogoutUserResponse) GetResponseText() ResponseText {
 }
 
 func (l *LogoutUserResponse) GetExtraProperties() map[string]interface{} {
+	if l == nil {
+		return nil
+	}
 	return l.extraProperties
 }
 
@@ -1594,6 +1657,9 @@ func (l *LogoutUserResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (l *LogoutUserResponse) String() string {
+	if l == nil {
+		return "<nil>"
+	}
 	if len(l.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
 			return value

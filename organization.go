@@ -519,6 +519,9 @@ func (s *ServiceCost) GetTxPercentCost() *float64 {
 }
 
 func (s *ServiceCost) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
 	return s.extraProperties
 }
 
@@ -613,6 +616,9 @@ func (s *ServiceCost) MarshalJSON() ([]byte, error) {
 }
 
 func (s *ServiceCost) String() string {
+	if s == nil {
+		return "<nil>"
+	}
 	if len(s.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
@@ -665,6 +671,9 @@ func (a *AddOrganizationResponse) GetResponseText() ResponseText {
 }
 
 func (a *AddOrganizationResponse) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -724,6 +733,9 @@ func (a *AddOrganizationResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AddOrganizationResponse) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -776,6 +788,9 @@ func (d *DeleteOrganizationResponse) GetResponseText() ResponseText {
 }
 
 func (d *DeleteOrganizationResponse) GetExtraProperties() map[string]interface{} {
+	if d == nil {
+		return nil
+	}
 	return d.extraProperties
 }
 
@@ -835,6 +850,9 @@ func (d *DeleteOrganizationResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeleteOrganizationResponse) String() string {
+	if d == nil {
+		return "<nil>"
+	}
 	if len(d.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
 			return value
@@ -905,6 +923,9 @@ func (e *EditOrganizationResponse) GetResponseText() ResponseText {
 }
 
 func (e *EditOrganizationResponse) GetExtraProperties() map[string]interface{} {
+	if e == nil {
+		return nil
+	}
 	return e.extraProperties
 }
 
@@ -978,6 +999,9 @@ func (e *EditOrganizationResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EditOrganizationResponse) String() string {
+	if e == nil {
+		return "<nil>"
+	}
 	if len(e.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
 			return value

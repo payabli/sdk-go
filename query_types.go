@@ -518,6 +518,9 @@ func (b *BatchDetailResponseRecord) GetIsHold() int {
 }
 
 func (b *BatchDetailResponseRecord) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -949,6 +952,9 @@ func (b *BatchDetailResponseRecord) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BatchDetailResponseRecord) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -1063,6 +1069,9 @@ func (b *BatchDetailResponseSummary) GetPageidentifier() *PageIdentifier {
 }
 
 func (b *BatchDetailResponseSummary) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -1171,6 +1180,9 @@ func (b *BatchDetailResponseSummary) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BatchDetailResponseSummary) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -1213,6 +1225,9 @@ func (l *ListOrganizationsResponse) GetSummary() *QuerySummary {
 }
 
 func (l *ListOrganizationsResponse) GetExtraProperties() map[string]interface{} {
+	if l == nil {
+		return nil
+	}
 	return l.extraProperties
 }
 
@@ -1265,6 +1280,9 @@ func (l *ListOrganizationsResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (l *ListOrganizationsResponse) String() string {
+	if l == nil {
+		return "<nil>"
+	}
 	if len(l.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
 			return value
@@ -1308,6 +1326,9 @@ func (q *QueryBatchesDetailResponse) GetSummary() *BatchDetailResponseSummary {
 }
 
 func (q *QueryBatchesDetailResponse) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -1360,6 +1381,9 @@ func (q *QueryBatchesDetailResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QueryBatchesDetailResponse) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -1403,6 +1427,9 @@ func (q *QueryBatchesResponse) GetSummary() *BatchSummary {
 }
 
 func (q *QueryBatchesResponse) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -1455,6 +1482,9 @@ func (q *QueryBatchesResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QueryBatchesResponse) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -1768,6 +1798,9 @@ func (q *QueryBatchesResponseRecordsItem) GetTransfer() *QueryBatchesTransfer {
 }
 
 func (q *QueryBatchesResponseRecordsItem) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -2028,6 +2061,9 @@ func (q *QueryBatchesResponseRecordsItem) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QueryBatchesResponseRecordsItem) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -2193,6 +2229,9 @@ func (q *QueryBatchesTransfer) GetNetFundedAmount() *float64 {
 }
 
 func (q *QueryBatchesTransfer) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -2337,6 +2376,9 @@ func (q *QueryBatchesTransfer) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QueryBatchesTransfer) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -2381,6 +2423,9 @@ func (q *QueryTransferDetailResponse) GetSummary() *QueryTransferSummary {
 }
 
 func (q *QueryTransferDetailResponse) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -2433,6 +2478,9 @@ func (q *QueryTransferDetailResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QueryTransferDetailResponse) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -2477,6 +2525,9 @@ func (q *QueryTransferResponse) GetRecords() []*TransactionQueryRecords {
 }
 
 func (q *QueryTransferResponse) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -2529,6 +2580,9 @@ func (q *QueryTransferResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QueryTransferResponse) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -2754,6 +2808,9 @@ func (q *QueryTransferSummary) GetPageidentifier() *PageIdentifier {
 }
 
 func (q *QueryTransferSummary) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -2932,6 +2989,9 @@ func (q *QueryTransferSummary) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QueryTransferSummary) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -3623,6 +3683,9 @@ func (t *TransferDetailRecord) GetWalletType() *string {
 }
 
 func (t *TransferDetailRecord) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -4151,6 +4214,9 @@ func (t *TransferDetailRecord) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferDetailRecord) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -4206,6 +4272,9 @@ func (t *TransferOutBankAccount) GetBankName() *string {
 }
 
 func (t *TransferOutBankAccount) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -4265,6 +4334,9 @@ func (t *TransferOutBankAccount) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutBankAccount) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -4440,6 +4512,9 @@ func (t *TransferOutDetailBill) GetTotalAmount() *float64 {
 }
 
 func (t *TransferOutDetailBill) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -4583,6 +4658,9 @@ func (t *TransferOutDetailBill) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutDetailBill) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -4658,6 +4736,9 @@ func (t *TransferOutDetailBillAttachment) GetFContent() *string {
 }
 
 func (t *TransferOutDetailBillAttachment) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -4731,6 +4812,9 @@ func (t *TransferOutDetailBillAttachment) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutDetailBillAttachment) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -4776,6 +4860,9 @@ func (t *TransferOutDetailCheckData) GetCheckData() *string {
 }
 
 func (t *TransferOutDetailCheckData) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -4828,6 +4915,9 @@ func (t *TransferOutDetailCheckData) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutDetailCheckData) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -4883,6 +4973,9 @@ func (t *TransferOutDetailEvent) GetEventTime() *string {
 }
 
 func (t *TransferOutDetailEvent) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -4942,6 +5035,9 @@ func (t *TransferOutDetailEvent) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutDetailEvent) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -5147,6 +5243,9 @@ func (t *TransferOutDetailPaymentData) GetBinData() interface{} {
 }
 
 func (t *TransferOutDetailPaymentData) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -5311,6 +5410,9 @@ func (t *TransferOutDetailPaymentData) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutDetailPaymentData) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -5356,6 +5458,9 @@ func (t *TransferOutDetailQueryResponse) GetRecords() []*TransferOutDetailRecord
 }
 
 func (t *TransferOutDetailQueryResponse) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -5408,6 +5513,9 @@ func (t *TransferOutDetailQueryResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutDetailQueryResponse) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -6063,6 +6171,9 @@ func (t *TransferOutDetailRecord) GetAchTraceNumber() *string {
 }
 
 func (t *TransferOutDetailRecord) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -6542,6 +6653,9 @@ func (t *TransferOutDetailRecord) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutDetailRecord) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -7017,6 +7131,9 @@ func (t *TransferOutDetailVendor) GetStoredMethods() []interface{} {
 }
 
 func (t *TransferOutDetailVendor) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -7370,6 +7487,9 @@ func (t *TransferOutDetailVendor) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutDetailVendor) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -7545,6 +7665,9 @@ func (t *TransferOutDetailVendorBillingData) GetCountry() *string {
 }
 
 func (t *TransferOutDetailVendorBillingData) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -7688,6 +7811,9 @@ func (t *TransferOutDetailVendorBillingData) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutDetailVendorBillingData) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -7763,6 +7889,9 @@ func (t *TransferOutEventData) GetSource() *string {
 }
 
 func (t *TransferOutEventData) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -7836,6 +7965,9 @@ func (t *TransferOutEventData) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutEventData) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -7941,6 +8073,9 @@ func (t *TransferOutMessage) GetMessageProperties() *TransferOutMessagePropertie
 }
 
 func (t *TransferOutMessage) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -8035,6 +8170,9 @@ func (t *TransferOutMessage) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutMessage) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -8080,6 +8218,9 @@ func (t *TransferOutMessageProperties) GetCurrentTransferStatus() *string {
 }
 
 func (t *TransferOutMessageProperties) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -8132,6 +8273,9 @@ func (t *TransferOutMessageProperties) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutMessageProperties) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -8177,6 +8321,9 @@ func (t *TransferOutQueryResponse) GetRecords() []*TransferOutRecord {
 }
 
 func (t *TransferOutQueryResponse) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -8229,6 +8376,9 @@ func (t *TransferOutQueryResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutQueryResponse) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -8594,6 +8744,9 @@ func (t *TransferOutRecord) GetMessages() []*TransferOutMessage {
 }
 
 func (t *TransferOutRecord) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -8878,6 +9031,9 @@ func (t *TransferOutRecord) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutRecord) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -8933,6 +9089,9 @@ func (t *TransferOutSummary) GetPageSize() *int {
 }
 
 func (t *TransferOutSummary) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -8992,6 +9151,9 @@ func (t *TransferOutSummary) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutSummary) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value

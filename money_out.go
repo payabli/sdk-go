@@ -582,6 +582,9 @@ func (b *BillDetailResponse) GetRiskActionCode() *RiskActionCode {
 }
 
 func (b *BillDetailResponse) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -893,6 +896,9 @@ func (b *BillDetailResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BillDetailResponse) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -997,6 +1003,9 @@ func (b *BillDetailsResponse) GetComments() *Comments {
 }
 
 func (b *BillDetailsResponse) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -1091,6 +1100,9 @@ func (b *BillDetailsResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BillDetailsResponse) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -1161,6 +1173,9 @@ func (p *PayabliApiResponse0000) GetResponseData() *PayabliApiResponse0ResponseD
 }
 
 func (p *PayabliApiResponse0000) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -1234,6 +1249,9 @@ func (p *PayabliApiResponse0000) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PayabliApiResponse0000) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
