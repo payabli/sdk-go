@@ -103,6 +103,9 @@ func (v *V2BadRequestError) GetToken() *string {
 }
 
 func (v *V2BadRequestError) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -197,6 +200,9 @@ func (v *V2BadRequestError) MarshalJSON() ([]byte, error) {
 }
 
 func (v *V2BadRequestError) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
@@ -242,6 +248,9 @@ func (v *V2BadRequestErrorDetail) GetSuggestion() string {
 }
 
 func (v *V2BadRequestErrorDetail) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -294,6 +303,9 @@ func (v *V2BadRequestErrorDetail) MarshalJSON() ([]byte, error) {
 }
 
 func (v *V2BadRequestErrorDetail) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
@@ -374,6 +386,9 @@ func (v *V2DeclinedTransactionResponseWrapper) GetToken() *string {
 }
 
 func (v *V2DeclinedTransactionResponseWrapper) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -454,6 +469,9 @@ func (v *V2DeclinedTransactionResponseWrapper) MarshalJSON() ([]byte, error) {
 }
 
 func (v *V2DeclinedTransactionResponseWrapper) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
@@ -519,6 +537,9 @@ func (v *V2InternalServerError) GetInstance() string {
 }
 
 func (v *V2InternalServerError) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -585,6 +606,9 @@ func (v *V2InternalServerError) MarshalJSON() ([]byte, error) {
 }
 
 func (v *V2InternalServerError) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
@@ -769,6 +793,9 @@ func (v *V2TransactionDetailResponseData) GetEmvAuthResponseData() *EmvAuthRespo
 }
 
 func (v *V2TransactionDetailResponseData) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -919,6 +946,9 @@ func (v *V2TransactionDetailResponseData) MarshalJSON() ([]byte, error) {
 }
 
 func (v *V2TransactionDetailResponseData) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
@@ -1424,6 +1454,9 @@ func (v *V2TransactionDetails) GetWalletType() *string {
 }
 
 func (v *V2TransactionDetails) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -1826,6 +1859,9 @@ func (v *V2TransactionDetails) MarshalJSON() ([]byte, error) {
 }
 
 func (v *V2TransactionDetails) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
@@ -1906,6 +1942,9 @@ func (v *V2TransactionResponseWrapper) GetToken() *string {
 }
 
 func (v *V2TransactionResponseWrapper) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -1986,6 +2025,9 @@ func (v *V2TransactionResponseWrapper) MarshalJSON() ([]byte, error) {
 }
 
 func (v *V2TransactionResponseWrapper) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value

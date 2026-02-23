@@ -138,6 +138,9 @@ func (c *CheckCaptureRequest) GetCheckAmount() int {
 }
 
 func (c *CheckCaptureRequest) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -204,6 +207,9 @@ func (c *CheckCaptureRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CheckCaptureRequest) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -471,6 +477,9 @@ func (c *CheckCaptureResponse) GetPageIdentifier() *PageIdentifier {
 }
 
 func (c *CheckCaptureResponse) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -677,6 +686,9 @@ func (c *CheckCaptureResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CheckCaptureResponse) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value

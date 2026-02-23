@@ -447,6 +447,9 @@ func (b *BillOptions) GetIncludePdf() *bool {
 }
 
 func (b *BillOptions) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -499,6 +502,9 @@ func (b *BillOptions) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BillOptions) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -727,6 +733,9 @@ func (p *PayorDataResponse) GetShippingZip() *Shippingzip {
 }
 
 func (p *PayorDataResponse) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -919,6 +928,9 @@ func (p *PayorDataResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PayorDataResponse) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -1378,6 +1390,9 @@ func (g *GetInvoiceRecord) GetExternalPaypointId() *ExternalPaypointId {
 }
 
 func (g *GetInvoiceRecord) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
 	return g.extraProperties
 }
 
@@ -1752,6 +1767,9 @@ func (g *GetInvoiceRecord) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetInvoiceRecord) String() string {
+	if g == nil {
+		return "<nil>"
+	}
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
@@ -1806,6 +1824,9 @@ func (i *InvoiceDataRequest) GetScheduledOptions() *BillOptions {
 }
 
 func (i *InvoiceDataRequest) GetExtraProperties() map[string]interface{} {
+	if i == nil {
+		return nil
+	}
 	return i.extraProperties
 }
 
@@ -1865,6 +1886,9 @@ func (i *InvoiceDataRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (i *InvoiceDataRequest) String() string {
+	if i == nil {
+		return "<nil>"
+	}
 	if len(i.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
 			return value
@@ -1921,6 +1945,9 @@ func (i *InvoiceNumberResponse) GetResponseData() string {
 }
 
 func (i *InvoiceNumberResponse) GetExtraProperties() map[string]interface{} {
+	if i == nil {
+		return nil
+	}
 	return i.extraProperties
 }
 
@@ -1980,6 +2007,9 @@ func (i *InvoiceNumberResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (i *InvoiceNumberResponse) String() string {
+	if i == nil {
+		return "<nil>"
+	}
 	if len(i.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
 			return value
@@ -2063,6 +2093,9 @@ func (i *InvoiceResponseWithoutData) GetRoomId() RoomIdNotInUse {
 }
 
 func (i *InvoiceResponseWithoutData) GetExtraProperties() map[string]interface{} {
+	if i == nil {
+		return nil
+	}
 	return i.extraProperties
 }
 
@@ -2143,6 +2176,9 @@ func (i *InvoiceResponseWithoutData) MarshalJSON() ([]byte, error) {
 }
 
 func (i *InvoiceResponseWithoutData) String() string {
+	if i == nil {
+		return "<nil>"
+	}
 	if len(i.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
 			return value
@@ -2185,6 +2221,9 @@ func (q *QueryInvoiceResponse) GetSummary() *QuerySummary {
 }
 
 func (q *QueryInvoiceResponse) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -2237,6 +2276,9 @@ func (q *QueryInvoiceResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QueryInvoiceResponse) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -2730,6 +2772,9 @@ func (q *QueryInvoiceResponseRecordsItem) GetPageIdentifier() *PageIdentifier {
 }
 
 func (q *QueryInvoiceResponseRecordsItem) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -3118,6 +3163,9 @@ func (q *QueryInvoiceResponseRecordsItem) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QueryInvoiceResponseRecordsItem) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -3160,6 +3208,9 @@ func (s *SendInvoiceResponse) GetResponseText() ResponseText {
 }
 
 func (s *SendInvoiceResponse) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
 	return s.extraProperties
 }
 
@@ -3212,6 +3263,9 @@ func (s *SendInvoiceResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SendInvoiceResponse) String() string {
+	if s == nil {
+		return "<nil>"
+	}
 	if len(s.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value

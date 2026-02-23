@@ -92,6 +92,9 @@ func (g *GetBasicEntryByIdResponse) GetResponseText() ResponseText {
 }
 
 func (g *GetBasicEntryByIdResponse) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
 	return g.extraProperties
 }
 
@@ -165,6 +168,9 @@ func (g *GetBasicEntryByIdResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetBasicEntryByIdResponse) String() string {
+	if g == nil {
+		return "<nil>"
+	}
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
@@ -234,6 +240,9 @@ func (g *GetBasicEntryResponse) GetResponseText() ResponseText {
 }
 
 func (g *GetBasicEntryResponse) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
 	return g.extraProperties
 }
 
@@ -307,6 +316,9 @@ func (g *GetBasicEntryResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetBasicEntryResponse) String() string {
+	if g == nil {
+		return "<nil>"
+	}
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
@@ -376,6 +388,9 @@ func (g *GetEntryConfigResponse) GetResponseText() ResponseText {
 }
 
 func (g *GetEntryConfigResponse) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
 	return g.extraProperties
 }
 
@@ -449,6 +464,9 @@ func (g *GetEntryConfigResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetEntryConfigResponse) String() string {
+	if g == nil {
+		return "<nil>"
+	}
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
@@ -500,6 +518,9 @@ func (m *MigratePaypointResponse) GetResponseText() ResponseText {
 }
 
 func (m *MigratePaypointResponse) GetExtraProperties() map[string]interface{} {
+	if m == nil {
+		return nil
+	}
 	return m.extraProperties
 }
 
@@ -559,6 +580,9 @@ func (m *MigratePaypointResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MigratePaypointResponse) String() string {
+	if m == nil {
+		return "<nil>"
+	}
 	if len(m.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
 			return value
@@ -603,6 +627,9 @@ func (n *NotificationRequest) GetWebHeaderParameters() []*WebHeaderParameter {
 }
 
 func (n *NotificationRequest) GetExtraProperties() map[string]interface{} {
+	if n == nil {
+		return nil
+	}
 	return n.extraProperties
 }
 
@@ -655,6 +682,9 @@ func (n *NotificationRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (n *NotificationRequest) String() string {
+	if n == nil {
+		return "<nil>"
+	}
 	if len(n.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(n.rawJSON); err == nil {
 			return value
@@ -708,6 +738,9 @@ func (p *PaypointMoveRequest) GetNotificationRequest() *NotificationRequest {
 }
 
 func (p *PaypointMoveRequest) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -767,6 +800,9 @@ func (p *PaypointMoveRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PaypointMoveRequest) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -809,6 +845,9 @@ func (w *WebHeaderParameter) GetValue() string {
 }
 
 func (w *WebHeaderParameter) GetExtraProperties() map[string]interface{} {
+	if w == nil {
+		return nil
+	}
 	return w.extraProperties
 }
 
@@ -861,6 +900,9 @@ func (w *WebHeaderParameter) MarshalJSON() ([]byte, error) {
 }
 
 func (w *WebHeaderParameter) String() string {
+	if w == nil {
+		return "<nil>"
+	}
 	if len(w.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(w.rawJSON); err == nil {
 			return value

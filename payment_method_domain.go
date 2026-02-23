@@ -259,6 +259,9 @@ func (a *AddPaymentMethodDomainApiResponse) GetResponseText() string {
 }
 
 func (a *AddPaymentMethodDomainApiResponse) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -325,6 +328,9 @@ func (a *AddPaymentMethodDomainApiResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AddPaymentMethodDomainApiResponse) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -370,6 +376,9 @@ func (a *ApplePayData) GetIsEnabled() *IsEnabled {
 }
 
 func (a *ApplePayData) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -422,6 +431,9 @@ func (a *ApplePayData) MarshalJSON() ([]byte, error) {
 }
 
 func (a *ApplePayData) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -498,6 +510,9 @@ func (a *ApplePayMetadata) GetStatusCode() *int {
 }
 
 func (a *ApplePayMetadata) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -571,6 +586,9 @@ func (a *ApplePayMetadata) MarshalJSON() ([]byte, error) {
 }
 
 func (a *ApplePayMetadata) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -615,6 +633,9 @@ func (a *ApplePayStatusData) GetMetadata() *ApplePayMetadata {
 }
 
 func (a *ApplePayStatusData) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -667,6 +688,9 @@ func (a *ApplePayStatusData) MarshalJSON() ([]byte, error) {
 }
 
 func (a *ApplePayStatusData) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -738,6 +762,9 @@ func (c *CascadeJobDetails) GetUpdatedAt() *LastModified {
 }
 
 func (c *CascadeJobDetails) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -811,6 +838,9 @@ func (c *CascadeJobDetails) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CascadeJobDetails) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -862,6 +892,9 @@ func (g *GooglePayData) GetIsEnabled() *IsEnabled {
 }
 
 func (g *GooglePayData) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
 	return g.extraProperties
 }
 
@@ -914,6 +947,9 @@ func (g *GooglePayData) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GooglePayData) String() string {
+	if g == nil {
+		return "<nil>"
+	}
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
@@ -969,6 +1005,9 @@ func (g *GooglePayMetadata) GetRedirectDomainName() *string {
 }
 
 func (g *GooglePayMetadata) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
 	return g.extraProperties
 }
 
@@ -1028,6 +1067,9 @@ func (g *GooglePayMetadata) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GooglePayMetadata) String() string {
+	if g == nil {
+		return "<nil>"
+	}
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
@@ -1072,6 +1114,9 @@ func (g *GooglePayStatusData) GetMetadata() *GooglePayMetadata {
 }
 
 func (g *GooglePayStatusData) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
 	return g.extraProperties
 }
 
@@ -1124,6 +1169,9 @@ func (g *GooglePayStatusData) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GooglePayStatusData) String() string {
+	if g == nil {
+		return "<nil>"
+	}
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
@@ -1268,6 +1316,9 @@ func (p *PaymentMethodDomainApiResponse) GetUpdatedAt() LastModified {
 }
 
 func (p *PaymentMethodDomainApiResponse) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -1390,6 +1441,9 @@ func (p *PaymentMethodDomainApiResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PaymentMethodDomainApiResponse) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -1450,6 +1504,9 @@ func (p *PaymentMethodDomainGeneralResponse) GetResponseText() string {
 }
 
 func (p *PaymentMethodDomainGeneralResponse) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -1516,6 +1573,9 @@ func (p *PaymentMethodDomainGeneralResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PaymentMethodDomainGeneralResponse) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -1579,6 +1639,9 @@ func (q *QuerySummaryNoAmt) GetTotalRecords() *Totalrecords {
 }
 
 func (q *QuerySummaryNoAmt) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -1645,6 +1708,9 @@ func (q *QuerySummaryNoAmt) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QuerySummaryNoAmt) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -1679,6 +1745,9 @@ func (a *AddPaymentMethodDomainRequestApplePay) GetIsEnabled() *IsEnabled {
 }
 
 func (a *AddPaymentMethodDomainRequestApplePay) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -1724,6 +1793,9 @@ func (a *AddPaymentMethodDomainRequestApplePay) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AddPaymentMethodDomainRequestApplePay) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -1758,6 +1830,9 @@ func (a *AddPaymentMethodDomainRequestGooglePay) GetIsEnabled() *IsEnabled {
 }
 
 func (a *AddPaymentMethodDomainRequestGooglePay) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -1803,6 +1878,9 @@ func (a *AddPaymentMethodDomainRequestGooglePay) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AddPaymentMethodDomainRequestGooglePay) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -1864,6 +1942,9 @@ func (d *DeletePaymentMethodDomainResponse) GetResponseText() ResponseText {
 }
 
 func (d *DeletePaymentMethodDomainResponse) GetExtraProperties() map[string]interface{} {
+	if d == nil {
+		return nil
+	}
 	return d.extraProperties
 }
 
@@ -1930,6 +2011,9 @@ func (d *DeletePaymentMethodDomainResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeletePaymentMethodDomainResponse) String() string {
+	if d == nil {
+		return "<nil>"
+	}
 	if len(d.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
 			return value
@@ -1972,6 +2056,9 @@ func (l *ListPaymentMethodDomainsResponse) GetSummary() *QuerySummaryNoAmt {
 }
 
 func (l *ListPaymentMethodDomainsResponse) GetExtraProperties() map[string]interface{} {
+	if l == nil {
+		return nil
+	}
 	return l.extraProperties
 }
 
@@ -2024,6 +2111,9 @@ func (l *ListPaymentMethodDomainsResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (l *ListPaymentMethodDomainsResponse) String() string {
+	if l == nil {
+		return "<nil>"
+	}
 	if len(l.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
 			return value
@@ -2057,6 +2147,9 @@ func (u *UpdatePaymentMethodDomainRequestWallet) GetIsEnabled() *IsEnabled {
 }
 
 func (u *UpdatePaymentMethodDomainRequestWallet) GetExtraProperties() map[string]interface{} {
+	if u == nil {
+		return nil
+	}
 	return u.extraProperties
 }
 
@@ -2102,6 +2195,9 @@ func (u *UpdatePaymentMethodDomainRequestWallet) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdatePaymentMethodDomainRequestWallet) String() string {
+	if u == nil {
+		return "<nil>"
+	}
 	if len(u.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
 			return value
