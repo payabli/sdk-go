@@ -332,6 +332,9 @@ func (p *PagelinkSetting) GetRedirectAfterApproveUrl() *string {
 }
 
 func (p *PagelinkSetting) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -412,6 +415,9 @@ func (p *PagelinkSetting) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PagelinkSetting) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -576,6 +582,9 @@ func (p *PushPayLinkRequestEmail) GetAttachFile() *bool {
 }
 
 func (p *PushPayLinkRequestEmail) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -628,6 +637,9 @@ func (p *PushPayLinkRequestEmail) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PushPayLinkRequestEmail) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -649,6 +661,9 @@ type PushPayLinkRequestSms struct {
 }
 
 func (p *PushPayLinkRequestSms) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -687,6 +702,9 @@ func (p *PushPayLinkRequestSms) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PushPayLinkRequestSms) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -738,6 +756,9 @@ func (g *GetPayLinkFromIdResponse) GetResponseData() *GetPayLinkFromIdResponseRe
 }
 
 func (g *GetPayLinkFromIdResponse) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
 	return g.extraProperties
 }
 
@@ -797,6 +818,9 @@ func (g *GetPayLinkFromIdResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetPayLinkFromIdResponse) String() string {
+	if g == nil {
+		return "<nil>"
+	}
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
@@ -929,6 +953,9 @@ func (g *GetPayLinkFromIdResponseResponseData) GetValidationCode() *string {
 }
 
 func (g *GetPayLinkFromIdResponseResponseData) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
 	return g.extraProperties
 }
 
@@ -1052,6 +1079,9 @@ func (g *GetPayLinkFromIdResponseResponseData) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetPayLinkFromIdResponseResponseData) String() string {
+	if g == nil {
+		return "<nil>"
+	}
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
@@ -1104,6 +1134,9 @@ func (p *PayabliApiResponsePaymentLinks) GetResponseText() ResponseText {
 }
 
 func (p *PayabliApiResponsePaymentLinks) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -1163,6 +1196,9 @@ func (p *PayabliApiResponsePaymentLinks) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PayabliApiResponsePaymentLinks) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -1297,6 +1333,9 @@ func (p *PaymentPageRequestBody) GetSettings() *PagelinkSetting {
 }
 
 func (p *PaymentPageRequestBody) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -1412,6 +1451,9 @@ func (p *PaymentPageRequestBody) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PaymentPageRequestBody) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value

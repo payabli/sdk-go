@@ -526,6 +526,9 @@ func (s *StatBasicExtendedQueryRecord) GetInAchReturnsVolume() float64 {
 }
 
 func (s *StatBasicExtendedQueryRecord) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
 	return s.extraProperties
 }
 
@@ -823,6 +826,9 @@ func (s *StatBasicExtendedQueryRecord) MarshalJSON() ([]byte, error) {
 }
 
 func (s *StatBasicExtendedQueryRecord) String() string {
+	if s == nil {
+		return "<nil>"
+	}
 	if len(s.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
@@ -897,6 +903,9 @@ func (s *StatBasicQueryRecord) GetInWalletVolume() float64 {
 }
 
 func (s *StatBasicQueryRecord) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
 	return s.extraProperties
 }
 
@@ -970,6 +979,9 @@ func (s *StatBasicQueryRecord) MarshalJSON() ([]byte, error) {
 }
 
 func (s *StatBasicQueryRecord) String() string {
+	if s == nil {
+		return "<nil>"
+	}
 	if len(s.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
@@ -1164,6 +1176,9 @@ func (s *StatisticsVendorQueryRecord) GetPaidVolume() float64 {
 }
 
 func (s *StatisticsVendorQueryRecord) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
 	return s.extraProperties
 }
 
@@ -1321,6 +1336,9 @@ func (s *StatisticsVendorQueryRecord) MarshalJSON() ([]byte, error) {
 }
 
 func (s *StatisticsVendorQueryRecord) String() string {
+	if s == nil {
+		return "<nil>"
+	}
 	if len(s.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
@@ -1375,6 +1393,9 @@ func (s *SubscriptionStatsQueryRecord) GetVolume() float64 {
 }
 
 func (s *SubscriptionStatsQueryRecord) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
 	return s.extraProperties
 }
 
@@ -1434,6 +1455,9 @@ func (s *SubscriptionStatsQueryRecord) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SubscriptionStatsQueryRecord) String() string {
+	if s == nil {
+		return "<nil>"
+	}
 	if len(s.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value

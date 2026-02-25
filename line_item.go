@@ -257,6 +257,9 @@ func (l *LineItem) GetItemUnitOfMeasure() *ItemUnitofMeasure {
 }
 
 func (l *LineItem) GetExtraProperties() map[string]interface{} {
+	if l == nil {
+		return nil
+	}
 	return l.extraProperties
 }
 
@@ -358,6 +361,9 @@ func (l *LineItem) MarshalJSON() ([]byte, error) {
 }
 
 func (l *LineItem) String() string {
+	if l == nil {
+		return "<nil>"
+	}
 	if len(l.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
 			return value
@@ -546,6 +552,9 @@ func (l *LineItemQueryRecord) GetPaypointLegalname() *Legalname {
 }
 
 func (l *LineItemQueryRecord) GetExtraProperties() map[string]interface{} {
+	if l == nil {
+		return nil
+	}
 	return l.extraProperties
 }
 
@@ -703,6 +712,9 @@ func (l *LineItemQueryRecord) MarshalJSON() ([]byte, error) {
 }
 
 func (l *LineItemQueryRecord) String() string {
+	if l == nil {
+		return "<nil>"
+	}
 	if len(l.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
 			return value
@@ -765,6 +777,9 @@ func (p *PayabliApiResponse6) GetResponseText() ResponseText {
 }
 
 func (p *PayabliApiResponse6) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -831,6 +846,9 @@ func (p *PayabliApiResponse6) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PayabliApiResponse6) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -874,6 +892,9 @@ func (q *QueryResponseItems) GetSummary() *QuerySummary {
 }
 
 func (q *QueryResponseItems) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -926,6 +947,9 @@ func (q *QueryResponseItems) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QueryResponseItems) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -998,6 +1022,9 @@ func (q *QueryResponseItemsRecordsItem) GetPaypointLegalname() *Legalname {
 }
 
 func (q *QueryResponseItemsRecordsItem) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -1071,6 +1098,9 @@ func (q *QueryResponseItemsRecordsItem) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QueryResponseItemsRecordsItem) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -1113,6 +1143,9 @@ func (d *DeleteItemResponse) GetResponseText() ResponseText {
 }
 
 func (d *DeleteItemResponse) GetExtraProperties() map[string]interface{} {
+	if d == nil {
+		return nil
+	}
 	return d.extraProperties
 }
 
@@ -1165,6 +1198,9 @@ func (d *DeleteItemResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeleteItemResponse) String() string {
+	if d == nil {
+		return "<nil>"
+	}
 	if len(d.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
 			return value

@@ -137,6 +137,9 @@ func (a *AddResponseResponse) GetResponseData() *int {
 }
 
 func (a *AddResponseResponse) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -196,6 +199,9 @@ func (a *AddResponseResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AddResponseResponse) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -280,6 +286,9 @@ func (c *ChargeBackResponse) GetNotes() *string {
 }
 
 func (c *ChargeBackResponse) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -360,6 +369,9 @@ func (c *ChargeBackResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ChargeBackResponse) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -464,6 +476,9 @@ func (c *ChargebackMessage) GetMessageProperties() map[string]string {
 }
 
 func (c *ChargebackMessage) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -566,6 +581,9 @@ func (c *ChargebackMessage) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ChargebackMessage) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -648,7 +666,7 @@ type ChargebackQueryRecords struct {
 	ScheduleReference *int64  `json:"ScheduleReference,omitempty" url:"ScheduleReference,omitempty"`
 	OrderId           OrderId `json:"OrderId" url:"OrderId"`
 	// Net amount in chargeback or ACH return.
-	NetAmount       Netamountnullable          `json:"NetAmount,omitempty" url:"NetAmount,omitempty"`
+	NetAmount       *Netamountnullable         `json:"NetAmount,omitempty" url:"NetAmount,omitempty"`
 	TransactionTime TransactionTime            `json:"TransactionTime" url:"TransactionTime"`
 	Customer        *QueryTransactionPayorData `json:"Customer" url:"Customer"`
 	PaymentData     *QueryPaymentData          `json:"PaymentData" url:"PaymentData"`
@@ -787,7 +805,7 @@ func (c *ChargebackQueryRecords) GetOrderId() OrderId {
 	return c.OrderId
 }
 
-func (c *ChargebackQueryRecords) GetNetAmount() Netamountnullable {
+func (c *ChargebackQueryRecords) GetNetAmount() *Netamountnullable {
 	if c == nil {
 		return nil
 	}
@@ -907,6 +925,9 @@ func (c *ChargebackQueryRecords) GetProcessorName() string {
 }
 
 func (c *ChargebackQueryRecords) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -1024,7 +1045,7 @@ func (c *ChargebackQueryRecords) SetOrderId(orderId OrderId) {
 
 // SetNetAmount sets the NetAmount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ChargebackQueryRecords) SetNetAmount(netAmount Netamountnullable) {
+func (c *ChargebackQueryRecords) SetNetAmount(netAmount *Netamountnullable) {
 	c.NetAmount = netAmount
 	c.require(chargebackQueryRecordsFieldNetAmount)
 }
@@ -1177,6 +1198,9 @@ func (c *ChargebackQueryRecords) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ChargebackQueryRecords) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value

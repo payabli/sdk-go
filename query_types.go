@@ -83,7 +83,7 @@ type BatchDetailResponseRecord struct {
 	OrderId                  OrderId                    `json:"OrderId" url:"OrderId"`
 	TransMethod              string                     `json:"TransMethod" url:"TransMethod"`
 	PaymentData              *QueryPaymentData          `json:"PaymentData,omitempty" url:"PaymentData,omitempty"`
-	NetAmount                Netamountnullable          `json:"NetAmount,omitempty" url:"NetAmount,omitempty"`
+	NetAmount                *Netamountnullable         `json:"NetAmount,omitempty" url:"NetAmount,omitempty"`
 	Operation                Operation                  `json:"Operation" url:"Operation"`
 	Category                 Category                   `json:"Category" url:"Category"`
 	Source                   *Source                    `json:"Source,omitempty" url:"Source,omitempty"`
@@ -114,10 +114,10 @@ type BatchDetailResponseRecord struct {
 	OrgId                    Orgid                      `json:"OrgId" url:"OrgId"`
 	PayorId                  PayorId                    `json:"PayorId" url:"PayorId"`
 	PaypointId               PaypointId                 `json:"PaypointId" url:"PaypointId"`
-	PendingFeeAmount         PendingFeeAmount           `json:"PendingFeeAmount,omitempty" url:"PendingFeeAmount,omitempty"`
+	PendingFeeAmount         *PendingFeeAmount          `json:"PendingFeeAmount,omitempty" url:"PendingFeeAmount,omitempty"`
 	RefundId                 RefundId                   `json:"RefundId" url:"RefundId"`
 	ReturnedId               ReturnedId                 `json:"ReturnedId" url:"ReturnedId"`
-	SplitFundingInstructions SplitFunding               `json:"splitFundingInstructions,omitempty" url:"splitFundingInstructions,omitempty"`
+	SplitFundingInstructions *SplitFunding              `json:"splitFundingInstructions,omitempty" url:"splitFundingInstructions,omitempty"`
 	TotalAmount              float64                    `json:"TotalAmount" url:"TotalAmount"`
 	CfeeTransactions         []*QueryCFeeTransaction    `json:"CfeeTransactions" url:"CfeeTransactions"`
 	InvoiceData              *BillData                  `json:"invoiceData,omitempty" url:"invoiceData,omitempty"`
@@ -230,7 +230,7 @@ func (b *BatchDetailResponseRecord) GetPaymentData() *QueryPaymentData {
 	return b.PaymentData
 }
 
-func (b *BatchDetailResponseRecord) GetNetAmount() Netamountnullable {
+func (b *BatchDetailResponseRecord) GetNetAmount() *Netamountnullable {
 	if b == nil {
 		return nil
 	}
@@ -447,7 +447,7 @@ func (b *BatchDetailResponseRecord) GetPaypointId() PaypointId {
 	return b.PaypointId
 }
 
-func (b *BatchDetailResponseRecord) GetPendingFeeAmount() PendingFeeAmount {
+func (b *BatchDetailResponseRecord) GetPendingFeeAmount() *PendingFeeAmount {
 	if b == nil {
 		return nil
 	}
@@ -468,7 +468,7 @@ func (b *BatchDetailResponseRecord) GetReturnedId() ReturnedId {
 	return b.ReturnedId
 }
 
-func (b *BatchDetailResponseRecord) GetSplitFundingInstructions() SplitFunding {
+func (b *BatchDetailResponseRecord) GetSplitFundingInstructions() *SplitFunding {
 	if b == nil {
 		return nil
 	}
@@ -518,6 +518,9 @@ func (b *BatchDetailResponseRecord) GetIsHold() int {
 }
 
 func (b *BatchDetailResponseRecord) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -628,7 +631,7 @@ func (b *BatchDetailResponseRecord) SetPaymentData(paymentData *QueryPaymentData
 
 // SetNetAmount sets the NetAmount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BatchDetailResponseRecord) SetNetAmount(netAmount Netamountnullable) {
+func (b *BatchDetailResponseRecord) SetNetAmount(netAmount *Netamountnullable) {
 	b.NetAmount = netAmount
 	b.require(batchDetailResponseRecordFieldNetAmount)
 }
@@ -845,7 +848,7 @@ func (b *BatchDetailResponseRecord) SetPaypointId(paypointId PaypointId) {
 
 // SetPendingFeeAmount sets the PendingFeeAmount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BatchDetailResponseRecord) SetPendingFeeAmount(pendingFeeAmount PendingFeeAmount) {
+func (b *BatchDetailResponseRecord) SetPendingFeeAmount(pendingFeeAmount *PendingFeeAmount) {
 	b.PendingFeeAmount = pendingFeeAmount
 	b.require(batchDetailResponseRecordFieldPendingFeeAmount)
 }
@@ -866,7 +869,7 @@ func (b *BatchDetailResponseRecord) SetReturnedId(returnedId ReturnedId) {
 
 // SetSplitFundingInstructions sets the SplitFundingInstructions field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BatchDetailResponseRecord) SetSplitFundingInstructions(splitFundingInstructions SplitFunding) {
+func (b *BatchDetailResponseRecord) SetSplitFundingInstructions(splitFundingInstructions *SplitFunding) {
 	b.SplitFundingInstructions = splitFundingInstructions
 	b.require(batchDetailResponseRecordFieldSplitFundingInstructions)
 }
@@ -949,6 +952,9 @@ func (b *BatchDetailResponseRecord) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BatchDetailResponseRecord) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -1063,6 +1069,9 @@ func (b *BatchDetailResponseSummary) GetPageidentifier() *PageIdentifier {
 }
 
 func (b *BatchDetailResponseSummary) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -1171,6 +1180,9 @@ func (b *BatchDetailResponseSummary) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BatchDetailResponseSummary) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -1213,6 +1225,9 @@ func (l *ListOrganizationsResponse) GetSummary() *QuerySummary {
 }
 
 func (l *ListOrganizationsResponse) GetExtraProperties() map[string]interface{} {
+	if l == nil {
+		return nil
+	}
 	return l.extraProperties
 }
 
@@ -1265,6 +1280,9 @@ func (l *ListOrganizationsResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (l *ListOrganizationsResponse) String() string {
+	if l == nil {
+		return "<nil>"
+	}
 	if len(l.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
 			return value
@@ -1308,6 +1326,9 @@ func (q *QueryBatchesDetailResponse) GetSummary() *BatchDetailResponseSummary {
 }
 
 func (q *QueryBatchesDetailResponse) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -1360,6 +1381,9 @@ func (q *QueryBatchesDetailResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QueryBatchesDetailResponse) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -1403,6 +1427,9 @@ func (q *QueryBatchesResponse) GetSummary() *BatchSummary {
 }
 
 func (q *QueryBatchesResponse) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -1455,6 +1482,9 @@ func (q *QueryBatchesResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QueryBatchesResponse) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -1768,6 +1798,9 @@ func (q *QueryBatchesResponseRecordsItem) GetTransfer() *QueryBatchesTransfer {
 }
 
 func (q *QueryBatchesResponseRecordsItem) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -2028,6 +2061,9 @@ func (q *QueryBatchesResponseRecordsItem) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QueryBatchesResponseRecordsItem) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -2193,6 +2229,9 @@ func (q *QueryBatchesTransfer) GetNetFundedAmount() *float64 {
 }
 
 func (q *QueryBatchesTransfer) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -2337,6 +2376,9 @@ func (q *QueryBatchesTransfer) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QueryBatchesTransfer) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -2381,6 +2423,9 @@ func (q *QueryTransferDetailResponse) GetSummary() *QueryTransferSummary {
 }
 
 func (q *QueryTransferDetailResponse) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -2433,6 +2478,9 @@ func (q *QueryTransferDetailResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QueryTransferDetailResponse) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -2477,6 +2525,9 @@ func (q *QueryTransferResponse) GetRecords() []*TransactionQueryRecords {
 }
 
 func (q *QueryTransferResponse) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -2529,6 +2580,9 @@ func (q *QueryTransferResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QueryTransferResponse) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -2754,6 +2808,9 @@ func (q *QueryTransferSummary) GetPageidentifier() *PageIdentifier {
 }
 
 func (q *QueryTransferSummary) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -2932,6 +2989,9 @@ func (q *QueryTransferSummary) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QueryTransferSummary) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -3104,7 +3164,7 @@ type TransferDetailRecord struct {
 	// Indicates whether the ACH account has been validated
 	IsValidatedAch *bool `json:"IsValidatedACH,omitempty" url:"IsValidatedACH,omitempty"`
 	// Transaction date and time, in UTC
-	TransactionTime          *DatetimeNullable          `json:"TransactionTime,omitempty" url:"TransactionTime,omitempty"`
+	TransactionTime          *time.Time                 `json:"TransactionTime,omitempty" url:"TransactionTime,omitempty"`
 	Customer                 *QueryTransactionPayorData `json:"Customer,omitempty" url:"Customer,omitempty"`
 	SplitFundingInstructions *SplitFunding              `json:"splitFundingInstructions,omitempty" url:"splitFundingInstructions,omitempty"`
 	CfeeTransactions         []*QueryCFeeTransaction    `json:"CfeeTransactions,omitempty" url:"CfeeTransactions,omitempty"`
@@ -3496,7 +3556,7 @@ func (t *TransferDetailRecord) GetIsValidatedAch() *bool {
 	return t.IsValidatedAch
 }
 
-func (t *TransferDetailRecord) GetTransactionTime() *DatetimeNullable {
+func (t *TransferDetailRecord) GetTransactionTime() *time.Time {
 	if t == nil {
 		return nil
 	}
@@ -3623,6 +3683,9 @@ func (t *TransferDetailRecord) GetWalletType() *string {
 }
 
 func (t *TransferDetailRecord) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -3999,7 +4062,7 @@ func (t *TransferDetailRecord) SetIsValidatedAch(isValidatedAch *bool) {
 
 // SetTransactionTime sets the TransactionTime field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransferDetailRecord) SetTransactionTime(transactionTime *DatetimeNullable) {
+func (t *TransferDetailRecord) SetTransactionTime(transactionTime *time.Time) {
 	t.TransactionTime = transactionTime
 	t.require(transferDetailRecordFieldTransactionTime)
 }
@@ -4124,12 +4187,18 @@ func (t *TransferDetailRecord) SetWalletType(walletType *string) {
 }
 
 func (t *TransferDetailRecord) UnmarshalJSON(data []byte) error {
-	type unmarshaler TransferDetailRecord
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed TransferDetailRecord
+	var unmarshaler = struct {
+		embed
+		TransactionTime *internal.DateTime `json:"TransactionTime,omitempty"`
+	}{
+		embed: embed(*t),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*t = TransferDetailRecord(value)
+	*t = TransferDetailRecord(unmarshaler.embed)
+	t.TransactionTime = unmarshaler.TransactionTime.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *t)
 	if err != nil {
 		return err
@@ -4143,14 +4212,19 @@ func (t *TransferDetailRecord) MarshalJSON() ([]byte, error) {
 	type embed TransferDetailRecord
 	var marshaler = struct {
 		embed
+		TransactionTime *internal.DateTime `json:"TransactionTime,omitempty"`
 	}{
-		embed: embed(*t),
+		embed:           embed(*t),
+		TransactionTime: internal.NewOptionalDateTime(t.TransactionTime),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 func (t *TransferDetailRecord) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -4206,6 +4280,9 @@ func (t *TransferOutBankAccount) GetBankName() *string {
 }
 
 func (t *TransferOutBankAccount) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -4265,6 +4342,9 @@ func (t *TransferOutBankAccount) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutBankAccount) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -4440,6 +4520,9 @@ func (t *TransferOutDetailBill) GetTotalAmount() *float64 {
 }
 
 func (t *TransferOutDetailBill) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -4583,6 +4666,9 @@ func (t *TransferOutDetailBill) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutDetailBill) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -4658,6 +4744,9 @@ func (t *TransferOutDetailBillAttachment) GetFContent() *string {
 }
 
 func (t *TransferOutDetailBillAttachment) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -4731,6 +4820,9 @@ func (t *TransferOutDetailBillAttachment) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutDetailBillAttachment) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -4776,6 +4868,9 @@ func (t *TransferOutDetailCheckData) GetCheckData() *string {
 }
 
 func (t *TransferOutDetailCheckData) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -4828,6 +4923,9 @@ func (t *TransferOutDetailCheckData) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutDetailCheckData) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -4883,6 +4981,9 @@ func (t *TransferOutDetailEvent) GetEventTime() *string {
 }
 
 func (t *TransferOutDetailEvent) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -4942,6 +5043,9 @@ func (t *TransferOutDetailEvent) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutDetailEvent) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -5147,6 +5251,9 @@ func (t *TransferOutDetailPaymentData) GetBinData() interface{} {
 }
 
 func (t *TransferOutDetailPaymentData) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -5311,6 +5418,9 @@ func (t *TransferOutDetailPaymentData) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutDetailPaymentData) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -5356,6 +5466,9 @@ func (t *TransferOutDetailQueryResponse) GetRecords() []*TransferOutDetailRecord
 }
 
 func (t *TransferOutDetailQueryResponse) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -5408,6 +5521,9 @@ func (t *TransferOutDetailQueryResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutDetailQueryResponse) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -6063,6 +6179,9 @@ func (t *TransferOutDetailRecord) GetAchTraceNumber() *string {
 }
 
 func (t *TransferOutDetailRecord) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -6542,6 +6661,9 @@ func (t *TransferOutDetailRecord) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutDetailRecord) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -7017,6 +7139,9 @@ func (t *TransferOutDetailVendor) GetStoredMethods() []interface{} {
 }
 
 func (t *TransferOutDetailVendor) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -7370,6 +7495,9 @@ func (t *TransferOutDetailVendor) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutDetailVendor) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -7545,6 +7673,9 @@ func (t *TransferOutDetailVendorBillingData) GetCountry() *string {
 }
 
 func (t *TransferOutDetailVendorBillingData) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -7688,6 +7819,9 @@ func (t *TransferOutDetailVendorBillingData) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutDetailVendorBillingData) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -7763,6 +7897,9 @@ func (t *TransferOutEventData) GetSource() *string {
 }
 
 func (t *TransferOutEventData) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -7836,6 +7973,9 @@ func (t *TransferOutEventData) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutEventData) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -7941,6 +8081,9 @@ func (t *TransferOutMessage) GetMessageProperties() *TransferOutMessagePropertie
 }
 
 func (t *TransferOutMessage) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -8035,6 +8178,9 @@ func (t *TransferOutMessage) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutMessage) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -8080,6 +8226,9 @@ func (t *TransferOutMessageProperties) GetCurrentTransferStatus() *string {
 }
 
 func (t *TransferOutMessageProperties) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -8132,6 +8281,9 @@ func (t *TransferOutMessageProperties) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutMessageProperties) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -8177,6 +8329,9 @@ func (t *TransferOutQueryResponse) GetRecords() []*TransferOutRecord {
 }
 
 func (t *TransferOutQueryResponse) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -8229,6 +8384,9 @@ func (t *TransferOutQueryResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutQueryResponse) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -8594,6 +8752,9 @@ func (t *TransferOutRecord) GetMessages() []*TransferOutMessage {
 }
 
 func (t *TransferOutRecord) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -8878,6 +9039,9 @@ func (t *TransferOutRecord) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutRecord) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -8933,6 +9097,9 @@ func (t *TransferOutSummary) GetPageSize() *int {
 }
 
 func (t *TransferOutSummary) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -8992,6 +9159,9 @@ func (t *TransferOutSummary) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransferOutSummary) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -9004,4 +9174,4 @@ func (t *TransferOutSummary) String() string {
 }
 
 // Max number of records to return for the query. Use `0` or negative value to return all records. Defaults to 20.
-type LimitRecord = *int
+type LimitRecord = int

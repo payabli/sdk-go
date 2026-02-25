@@ -148,6 +148,9 @@ func (a *AchAbsorbSection) GetVisible() *Visible {
 }
 
 func (a *AchAbsorbSection) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -207,6 +210,9 @@ func (a *AchAbsorbSection) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AchAbsorbSection) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -285,6 +291,9 @@ func (a *AchAcceptanceElement) GetVisible() *Visible {
 }
 
 func (a *AchAcceptanceElement) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -365,6 +374,9 @@ func (a *AchAcceptanceElement) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AchAcceptanceElement) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -506,6 +518,9 @@ func (a *AchFeeSection) GetVisible() *Visible {
 }
 
 func (a *AchFeeSection) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -635,6 +650,9 @@ func (a *AchFeeSection) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AchFeeSection) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -686,6 +704,9 @@ func (a *AchPassThroughSection) GetVisible() *Visible {
 }
 
 func (a *AchPassThroughSection) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -745,6 +766,9 @@ func (a *AchPassThroughSection) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AchPassThroughSection) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -941,6 +965,9 @@ func (a *AchService) GetVisible() *Visible {
 }
 
 func (a *AchService) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -1112,6 +1139,9 @@ func (a *AchService) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AchService) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -1163,6 +1193,9 @@ func (a *AchTypes) GetWeb() *BasicTemplateElement {
 }
 
 func (a *AchTypes) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -1222,6 +1255,9 @@ func (a *AchTypes) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AchTypes) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -1273,6 +1309,9 @@ func (a *AchTypesPass) GetWeb() *TierItemPass {
 }
 
 func (a *AchTypesPass) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -1332,6 +1371,9 @@ func (a *AchTypesPass) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AchTypesPass) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -1383,6 +1425,9 @@ func (a *AchTypesTiers) GetWeb() *TierItem {
 }
 
 func (a *AchTypesTiers) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -1442,6 +1487,9 @@ func (a *AchTypesTiers) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AchTypesTiers) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -1512,6 +1560,9 @@ func (b *BankSection) GetRoutingNumber() *TemplateElement {
 }
 
 func (b *BankSection) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -1585,6 +1636,9 @@ func (b *BankSection) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BankSection) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -1636,6 +1690,9 @@ func (b *BasicTemplateElement) GetVisible() *Visible {
 }
 
 func (b *BasicTemplateElement) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -1695,6 +1752,9 @@ func (b *BasicTemplateElement) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BasicTemplateElement) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -1739,6 +1799,9 @@ func (b *BoardingLinkApiResponse) GetResponseText() ResponseText {
 }
 
 func (b *BoardingLinkApiResponse) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -1791,6 +1854,9 @@ func (b *BoardingLinkApiResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BoardingLinkApiResponse) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -1905,6 +1971,9 @@ func (b *BoardingQueryLinks) GetTemplateName() *TemplateName {
 }
 
 func (b *BoardingQueryLinks) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -2013,6 +2082,9 @@ func (b *BoardingQueryLinks) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BoardingQueryLinks) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -2263,6 +2335,9 @@ func (b *BusinessSection) GetAdditionalData() *TemplateAdditionalDataSection {
 }
 
 func (b *BusinessSection) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -2476,6 +2551,9 @@ func (b *BusinessSection) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BusinessSection) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -2554,6 +2632,9 @@ func (c *CardAcceptanceElement) GetVisible() *Visible {
 }
 
 func (c *CardAcceptanceElement) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -2634,6 +2715,9 @@ func (c *CardAcceptanceElement) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CardAcceptanceElement) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -2766,6 +2850,9 @@ func (c *CardFeeSection) GetVisible() *Visible {
 }
 
 func (c *CardFeeSection) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -2888,6 +2975,9 @@ func (c *CardFeeSection) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CardFeeSection) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -2930,6 +3020,9 @@ func (c *CardFlatSection) GetVisible() *Visible {
 }
 
 func (c *CardFlatSection) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -2982,6 +3075,9 @@ func (c *CardFlatSection) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CardFlatSection) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -3024,6 +3120,9 @@ func (c *CardIcpSection) GetVisible() *Visible {
 }
 
 func (c *CardIcpSection) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -3076,6 +3175,9 @@ func (c *CardIcpSection) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CardIcpSection) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -3127,6 +3229,9 @@ func (c *CardPassThroughSection) GetVisible() *Visible {
 }
 
 func (c *CardPassThroughSection) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -3186,6 +3291,9 @@ func (c *CardPassThroughSection) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CardPassThroughSection) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -3490,6 +3598,9 @@ func (c *CardService) GetVisible() *Visible {
 }
 
 func (c *CardService) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -3745,6 +3856,9 @@ func (c *CardService) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CardService) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -3805,6 +3919,9 @@ func (c *CardType) GetVisa() *TierItem {
 }
 
 func (c *CardType) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -3871,6 +3988,9 @@ func (c *CardType) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CardType) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -3931,6 +4051,9 @@ func (c *CardTypePass) GetVisa() *TierItemPass {
 }
 
 func (c *CardTypePass) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -3997,6 +4120,9 @@ func (c *CardTypePass) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CardTypePass) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -4057,6 +4183,9 @@ func (c *CardTypes) GetVisa() *BasicTemplateElement {
 }
 
 func (c *CardTypes) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -4123,6 +4252,9 @@ func (c *CardTypes) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CardTypes) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -4248,6 +4380,9 @@ func (d *DocumentSection) GetWithdrawalBank() *BankSection {
 }
 
 func (d *DocumentSection) GetExtraProperties() map[string]interface{} {
+	if d == nil {
+		return nil
+	}
 	return d.extraProperties
 }
 
@@ -4363,6 +4498,9 @@ func (d *DocumentSection) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DocumentSection) String() string {
+	if d == nil {
+		return "<nil>"
+	}
 	if len(d.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
 			return value
@@ -4405,6 +4543,9 @@ func (d *DocumentSectionTermsAndConditions) GetVisible() *Visible {
 }
 
 func (d *DocumentSectionTermsAndConditions) GetExtraProperties() map[string]interface{} {
+	if d == nil {
+		return nil
+	}
 	return d.extraProperties
 }
 
@@ -4457,6 +4598,9 @@ func (d *DocumentSectionTermsAndConditions) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DocumentSectionTermsAndConditions) String() string {
+	if d == nil {
+		return "<nil>"
+	}
 	if len(d.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
 			return value
@@ -4499,6 +4643,9 @@ func (d *DocumentSectionTermsAndConditionsTcLinksItem) GetValue() *string {
 }
 
 func (d *DocumentSectionTermsAndConditionsTcLinksItem) GetExtraProperties() map[string]interface{} {
+	if d == nil {
+		return nil
+	}
 	return d.extraProperties
 }
 
@@ -4551,6 +4698,9 @@ func (d *DocumentSectionTermsAndConditionsTcLinksItem) MarshalJSON() ([]byte, er
 }
 
 func (d *DocumentSectionTermsAndConditionsTcLinksItem) String() string {
+	if d == nil {
+		return "<nil>"
+	}
 	if len(d.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
 			return value
@@ -4803,6 +4953,9 @@ func (o *OwnersSection) GetAdditionalData() *TemplateAdditionalDataSection {
 }
 
 func (o *OwnersSection) GetExtraProperties() map[string]interface{} {
+	if o == nil {
+		return nil
+	}
 	return o.extraProperties
 }
 
@@ -5016,6 +5169,9 @@ func (o *OwnersSection) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OwnersSection) String() string {
+	if o == nil {
+		return "<nil>"
+	}
 	if len(o.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
 			return value
@@ -5086,6 +5242,9 @@ func (p *PayabliApiResponseTemplateId) GetResponseText() ResponseText {
 }
 
 func (p *PayabliApiResponseTemplateId) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -5159,6 +5318,9 @@ func (p *PayabliApiResponseTemplateId) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PayabliApiResponseTemplateId) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -5327,6 +5489,9 @@ func (p *ProcessingSection) GetWhenRefunded() *TemplateElement {
 }
 
 func (p *ProcessingSection) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -5470,6 +5635,9 @@ func (p *ProcessingSection) MarshalJSON() ([]byte, error) {
 }
 
 func (p *ProcessingSection) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -5512,6 +5680,9 @@ func (s *SalesSection) GetSalesCrm() *string {
 }
 
 func (s *SalesSection) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
 	return s.extraProperties
 }
 
@@ -5564,6 +5735,9 @@ func (s *SalesSection) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SalesSection) String() string {
+	if s == nil {
+		return "<nil>"
+	}
 	if len(s.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
@@ -5634,6 +5808,9 @@ func (s *ServicesSection) GetVisible() *Visible {
 }
 
 func (s *ServicesSection) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
 	return s.extraProperties
 }
 
@@ -5707,6 +5884,9 @@ func (s *ServicesSection) MarshalJSON() ([]byte, error) {
 }
 
 func (s *ServicesSection) String() string {
+	if s == nil {
+		return "<nil>"
+	}
 	if len(s.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
@@ -5866,6 +6046,9 @@ func (s *SignerSection) GetAdditionalData() *TemplateAdditionalDataSection {
 }
 
 func (s *SignerSection) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
 	return s.extraProperties
 }
 
@@ -6009,6 +6192,9 @@ func (s *SignerSection) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SignerSection) String() string {
+	if s == nil {
+		return "<nil>"
+	}
 	if len(s.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
@@ -6109,6 +6295,9 @@ func (t *TemplateAdditionalDataField) GetType() *string {
 }
 
 func (t *TemplateAdditionalDataField) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -6203,6 +6392,9 @@ func (t *TemplateAdditionalDataField) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TemplateAdditionalDataField) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -6220,7 +6412,7 @@ var (
 )
 
 type TemplateAdditionalDataSection struct {
-	Visible Visible                                 `json:"visible,omitempty" url:"visible,omitempty"`
+	Visible *Visible                                `json:"visible,omitempty" url:"visible,omitempty"`
 	Fields  map[string]*TemplateAdditionalDataField `json:"fields" url:"fields"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -6230,7 +6422,7 @@ type TemplateAdditionalDataSection struct {
 	rawJSON         json.RawMessage
 }
 
-func (t *TemplateAdditionalDataSection) GetVisible() Visible {
+func (t *TemplateAdditionalDataSection) GetVisible() *Visible {
 	if t == nil {
 		return nil
 	}
@@ -6245,6 +6437,9 @@ func (t *TemplateAdditionalDataSection) GetFields() map[string]*TemplateAddition
 }
 
 func (t *TemplateAdditionalDataSection) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -6257,7 +6452,7 @@ func (t *TemplateAdditionalDataSection) require(field *big.Int) {
 
 // SetVisible sets the Visible field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TemplateAdditionalDataSection) SetVisible(visible Visible) {
+func (t *TemplateAdditionalDataSection) SetVisible(visible *Visible) {
 	t.Visible = visible
 	t.require(templateAdditionalDataSectionFieldVisible)
 }
@@ -6297,6 +6492,9 @@ func (t *TemplateAdditionalDataSection) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TemplateAdditionalDataSection) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -6384,6 +6582,9 @@ func (t *TemplateContentResponse) GetUnderwritingData() *UnderwritingDataRespons
 }
 
 func (t *TemplateContentResponse) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -6471,6 +6672,9 @@ func (t *TemplateContentResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TemplateContentResponse) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -6540,6 +6744,9 @@ func (t *TemplateElement) GetVisible() *Visible {
 }
 
 func (t *TemplateElement) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -6613,6 +6820,9 @@ func (t *TemplateElement) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TemplateElement) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -6754,6 +6964,9 @@ func (t *TemplateQueryRecord) GetUsedBy() *int {
 }
 
 func (t *TemplateQueryRecord) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -6883,6 +7096,9 @@ func (t *TemplateQueryRecord) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TemplateQueryRecord) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -6925,6 +7141,9 @@ func (t *TemplateQueryResponse) GetSummary() *QuerySummary {
 }
 
 func (t *TemplateQueryResponse) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -6977,6 +7196,9 @@ func (t *TemplateQueryResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TemplateQueryResponse) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -7037,6 +7259,9 @@ func (t *TierItem) GetPercentxAuth() *float64 {
 }
 
 func (t *TierItem) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -7103,6 +7328,9 @@ func (t *TierItem) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TierItem) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -7181,6 +7409,9 @@ func (t *TierItemPass) GetPercentFeeRecurring() *float64 {
 }
 
 func (t *TierItemPass) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -7261,6 +7492,9 @@ func (t *TierItemPass) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TierItemPass) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -7333,6 +7567,9 @@ func (u *UnderwritingDataResponse) GetPolicyId() *PolicyId {
 }
 
 func (u *UnderwritingDataResponse) GetExtraProperties() map[string]interface{} {
+	if u == nil {
+		return nil
+	}
 	return u.extraProperties
 }
 
@@ -7385,6 +7622,9 @@ func (u *UnderwritingDataResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UnderwritingDataResponse) String() string {
+	if u == nil {
+		return "<nil>"
+	}
 	if len(u.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
 			return value
@@ -7397,4 +7637,4 @@ func (u *UnderwritingDataResponse) String() string {
 }
 
 // When `true`, makes the section visible on the application.
-type Visible = *bool
+type Visible = bool

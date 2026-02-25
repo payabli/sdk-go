@@ -7,6 +7,7 @@ import (
 	fmt "fmt"
 	internal "github.com/payabli/sdk-go/internal"
 	big "math/big"
+	time "time"
 )
 
 var (
@@ -582,6 +583,9 @@ func (b *BillDetailResponse) GetRiskActionCode() *RiskActionCode {
 }
 
 func (b *BillDetailResponse) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -893,6 +897,9 @@ func (b *BillDetailResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BillDetailResponse) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -927,9 +934,9 @@ type BillDetailsResponse struct {
 	// Bill discount amount.
 	Discount *string `json:"discount,omitempty" url:"discount,omitempty"`
 	// Bill due date in format YYYY-MM-DD or MM/DD/YYYY.
-	DueDate *Datenullable `json:"dueDate,omitempty" url:"dueDate,omitempty"`
+	DueDate *time.Time `json:"dueDate,omitempty" url:"dueDate,omitempty" format:"date"`
 	// Bill date in format YYYY-MM-DD or MM/DD/YYYY.
-	InvoiceDate *Datenullable `json:"invoiceDate,omitempty" url:"invoiceDate,omitempty"`
+	InvoiceDate *time.Time `json:"invoiceDate,omitempty" url:"invoiceDate,omitempty" format:"date"`
 	// Any comments about bill. **For managed payouts, this field has a limit of 100 characters**.
 	Comments *Comments `json:"comments,omitempty" url:"comments,omitempty"`
 
@@ -975,14 +982,14 @@ func (b *BillDetailsResponse) GetDiscount() *string {
 	return b.Discount
 }
 
-func (b *BillDetailsResponse) GetDueDate() *Datenullable {
+func (b *BillDetailsResponse) GetDueDate() *time.Time {
 	if b == nil {
 		return nil
 	}
 	return b.DueDate
 }
 
-func (b *BillDetailsResponse) GetInvoiceDate() *Datenullable {
+func (b *BillDetailsResponse) GetInvoiceDate() *time.Time {
 	if b == nil {
 		return nil
 	}
@@ -997,6 +1004,9 @@ func (b *BillDetailsResponse) GetComments() *Comments {
 }
 
 func (b *BillDetailsResponse) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -1044,14 +1054,14 @@ func (b *BillDetailsResponse) SetDiscount(discount *string) {
 
 // SetDueDate sets the DueDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillDetailsResponse) SetDueDate(dueDate *Datenullable) {
+func (b *BillDetailsResponse) SetDueDate(dueDate *time.Time) {
 	b.DueDate = dueDate
 	b.require(billDetailsResponseFieldDueDate)
 }
 
 // SetInvoiceDate sets the InvoiceDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillDetailsResponse) SetInvoiceDate(invoiceDate *Datenullable) {
+func (b *BillDetailsResponse) SetInvoiceDate(invoiceDate *time.Time) {
 	b.InvoiceDate = invoiceDate
 	b.require(billDetailsResponseFieldInvoiceDate)
 }
@@ -1064,12 +1074,20 @@ func (b *BillDetailsResponse) SetComments(comments *Comments) {
 }
 
 func (b *BillDetailsResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler BillDetailsResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed BillDetailsResponse
+	var unmarshaler = struct {
+		embed
+		DueDate     *internal.Date `json:"dueDate,omitempty"`
+		InvoiceDate *internal.Date `json:"invoiceDate,omitempty"`
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*b = BillDetailsResponse(value)
+	*b = BillDetailsResponse(unmarshaler.embed)
+	b.DueDate = unmarshaler.DueDate.TimePtr()
+	b.InvoiceDate = unmarshaler.InvoiceDate.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *b)
 	if err != nil {
 		return err
@@ -1083,14 +1101,21 @@ func (b *BillDetailsResponse) MarshalJSON() ([]byte, error) {
 	type embed BillDetailsResponse
 	var marshaler = struct {
 		embed
+		DueDate     *internal.Date `json:"dueDate,omitempty"`
+		InvoiceDate *internal.Date `json:"invoiceDate,omitempty"`
 	}{
-		embed: embed(*b),
+		embed:       embed(*b),
+		DueDate:     internal.NewOptionalDate(b.DueDate),
+		InvoiceDate: internal.NewOptionalDate(b.InvoiceDate),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 func (b *BillDetailsResponse) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -1161,6 +1186,9 @@ func (p *PayabliApiResponse0000) GetResponseData() *PayabliApiResponse0ResponseD
 }
 
 func (p *PayabliApiResponse0000) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -1234,6 +1262,9 @@ func (p *PayabliApiResponse0000) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PayabliApiResponse0000) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value

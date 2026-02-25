@@ -145,6 +145,9 @@ func (p *PayabliApiResponseImport) GetResponseText() ResponseText {
 }
 
 func (p *PayabliApiResponseImport) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -218,6 +221,9 @@ func (p *PayabliApiResponseImport) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PayabliApiResponseImport) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -273,6 +279,9 @@ func (p *PayabliApiResponseImportResponseData) GetRejected() *int {
 }
 
 func (p *PayabliApiResponseImportResponseData) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -332,6 +341,9 @@ func (p *PayabliApiResponseImportResponseData) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PayabliApiResponseImportResponseData) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value

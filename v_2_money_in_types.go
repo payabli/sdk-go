@@ -103,6 +103,9 @@ func (v *V2BadRequestError) GetToken() *string {
 }
 
 func (v *V2BadRequestError) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -197,6 +200,9 @@ func (v *V2BadRequestError) MarshalJSON() ([]byte, error) {
 }
 
 func (v *V2BadRequestError) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
@@ -242,6 +248,9 @@ func (v *V2BadRequestErrorDetail) GetSuggestion() string {
 }
 
 func (v *V2BadRequestErrorDetail) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -294,6 +303,9 @@ func (v *V2BadRequestErrorDetail) MarshalJSON() ([]byte, error) {
 }
 
 func (v *V2BadRequestErrorDetail) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
@@ -374,6 +386,9 @@ func (v *V2DeclinedTransactionResponseWrapper) GetToken() *string {
 }
 
 func (v *V2DeclinedTransactionResponseWrapper) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -454,6 +469,9 @@ func (v *V2DeclinedTransactionResponseWrapper) MarshalJSON() ([]byte, error) {
 }
 
 func (v *V2DeclinedTransactionResponseWrapper) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
@@ -519,6 +537,9 @@ func (v *V2InternalServerError) GetInstance() string {
 }
 
 func (v *V2InternalServerError) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -585,6 +606,9 @@ func (v *V2InternalServerError) MarshalJSON() ([]byte, error) {
 }
 
 func (v *V2InternalServerError) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
@@ -769,6 +793,9 @@ func (v *V2TransactionDetailResponseData) GetEmvAuthResponseData() *EmvAuthRespo
 }
 
 func (v *V2TransactionDetailResponseData) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -919,6 +946,9 @@ func (v *V2TransactionDetailResponseData) MarshalJSON() ([]byte, error) {
 }
 
 func (v *V2TransactionDetailResponseData) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
@@ -1036,13 +1066,13 @@ type V2TransactionDetails struct {
 	SplitFundingInstructions *SplitFunding              `json:"splitFundingInstructions,omitempty" url:"splitFundingInstructions,omitempty"`
 	CfeeTransactions         []*QueryCFeeTransaction    `json:"cfeeTransactions" url:"cfeeTransactions"`
 	TransactionEvents        []*TransactionDetailEvent  `json:"transactionEvents" url:"transactionEvents"`
-	PendingFeeAmount         PendingFeeAmount           `json:"pendingFeeAmount,omitempty" url:"pendingFeeAmount,omitempty"`
-	RiskFlagged              RiskFlagged                `json:"riskFlagged,omitempty" url:"riskFlagged,omitempty"`
-	RiskFlaggedOn            RiskFlaggedOn              `json:"riskFlaggedOn,omitempty" url:"riskFlaggedOn,omitempty"`
+	PendingFeeAmount         *PendingFeeAmount          `json:"pendingFeeAmount,omitempty" url:"pendingFeeAmount,omitempty"`
+	RiskFlagged              *RiskFlagged               `json:"riskFlagged,omitempty" url:"riskFlagged,omitempty"`
+	RiskFlaggedOn            *RiskFlaggedOn             `json:"riskFlaggedOn,omitempty" url:"riskFlaggedOn,omitempty"`
 	RiskStatus               RiskStatus                 `json:"riskStatus" url:"riskStatus"`
 	RiskReason               RiskReason                 `json:"riskReason" url:"riskReason"`
 	RiskAction               RiskAction                 `json:"riskAction" url:"riskAction"`
-	RiskActionCode           RiskActionCode             `json:"riskActionCode,omitempty" url:"riskActionCode,omitempty"`
+	RiskActionCode           *RiskActionCode            `json:"riskActionCode,omitempty" url:"riskActionCode,omitempty"`
 	DeviceId                 Device                     `json:"deviceId" url:"deviceId"`
 	AchSecCode               AchSecCode                 `json:"achSecCode" url:"achSecCode"`
 	AchHolderType            AchHolderType              `json:"achHolderType" url:"achHolderType"`
@@ -1332,21 +1362,21 @@ func (v *V2TransactionDetails) GetTransactionEvents() []*TransactionDetailEvent 
 	return v.TransactionEvents
 }
 
-func (v *V2TransactionDetails) GetPendingFeeAmount() PendingFeeAmount {
+func (v *V2TransactionDetails) GetPendingFeeAmount() *PendingFeeAmount {
 	if v == nil {
 		return nil
 	}
 	return v.PendingFeeAmount
 }
 
-func (v *V2TransactionDetails) GetRiskFlagged() RiskFlagged {
+func (v *V2TransactionDetails) GetRiskFlagged() *RiskFlagged {
 	if v == nil {
 		return nil
 	}
 	return v.RiskFlagged
 }
 
-func (v *V2TransactionDetails) GetRiskFlaggedOn() RiskFlaggedOn {
+func (v *V2TransactionDetails) GetRiskFlaggedOn() *RiskFlaggedOn {
 	if v == nil {
 		return nil
 	}
@@ -1374,7 +1404,7 @@ func (v *V2TransactionDetails) GetRiskAction() RiskAction {
 	return v.RiskAction
 }
 
-func (v *V2TransactionDetails) GetRiskActionCode() RiskActionCode {
+func (v *V2TransactionDetails) GetRiskActionCode() *RiskActionCode {
 	if v == nil {
 		return nil
 	}
@@ -1424,6 +1454,9 @@ func (v *V2TransactionDetails) GetWalletType() *string {
 }
 
 func (v *V2TransactionDetails) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -1709,21 +1742,21 @@ func (v *V2TransactionDetails) SetTransactionEvents(transactionEvents []*Transac
 
 // SetPendingFeeAmount sets the PendingFeeAmount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TransactionDetails) SetPendingFeeAmount(pendingFeeAmount PendingFeeAmount) {
+func (v *V2TransactionDetails) SetPendingFeeAmount(pendingFeeAmount *PendingFeeAmount) {
 	v.PendingFeeAmount = pendingFeeAmount
 	v.require(v2TransactionDetailsFieldPendingFeeAmount)
 }
 
 // SetRiskFlagged sets the RiskFlagged field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TransactionDetails) SetRiskFlagged(riskFlagged RiskFlagged) {
+func (v *V2TransactionDetails) SetRiskFlagged(riskFlagged *RiskFlagged) {
 	v.RiskFlagged = riskFlagged
 	v.require(v2TransactionDetailsFieldRiskFlagged)
 }
 
 // SetRiskFlaggedOn sets the RiskFlaggedOn field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TransactionDetails) SetRiskFlaggedOn(riskFlaggedOn RiskFlaggedOn) {
+func (v *V2TransactionDetails) SetRiskFlaggedOn(riskFlaggedOn *RiskFlaggedOn) {
 	v.RiskFlaggedOn = riskFlaggedOn
 	v.require(v2TransactionDetailsFieldRiskFlaggedOn)
 }
@@ -1751,7 +1784,7 @@ func (v *V2TransactionDetails) SetRiskAction(riskAction RiskAction) {
 
 // SetRiskActionCode sets the RiskActionCode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TransactionDetails) SetRiskActionCode(riskActionCode RiskActionCode) {
+func (v *V2TransactionDetails) SetRiskActionCode(riskActionCode *RiskActionCode) {
 	v.RiskActionCode = riskActionCode
 	v.require(v2TransactionDetailsFieldRiskActionCode)
 }
@@ -1826,6 +1859,9 @@ func (v *V2TransactionDetails) MarshalJSON() ([]byte, error) {
 }
 
 func (v *V2TransactionDetails) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
@@ -1906,6 +1942,9 @@ func (v *V2TransactionResponseWrapper) GetToken() *string {
 }
 
 func (v *V2TransactionResponseWrapper) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -1986,6 +2025,9 @@ func (v *V2TransactionResponseWrapper) MarshalJSON() ([]byte, error) {
 }
 
 func (v *V2TransactionResponseWrapper) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
