@@ -122,7 +122,7 @@ func TestMoneyInAuthorizeWithWireMock(
 		),
 	)
 
-	fmt.Println(t)
+	fmt.Printf("RAW: %#v\n", t)
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestMoneyInAuthorizeWithWireMock", "POST", "/MoneyIn/authorize", nil, 1)
 }
@@ -612,7 +612,7 @@ func TestMoneyInGetpaidv2WithWireMock(
 		),
 	)
 
-	fmt.Println(t)
+	fmt.Printf("RAW: %#v\n", t)
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestMoneyInGetpaidv2WithWireMock", "POST", "/v2/MoneyIn/getpaid", nil, 1)
 }
