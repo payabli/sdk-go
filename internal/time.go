@@ -153,6 +153,7 @@ func (d *DateTime) UnmarshalJSON(data []byte) error {
 
 	layouts := []string{
 		time.RFC3339Nano,                // with timezone
+		"2006-01-02T15:04:05.999",       // without timezone
 		"2006-01-02T15:04:05.999999999", // without timezone
 	}
 
