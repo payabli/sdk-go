@@ -62,6 +62,9 @@ func (f *FileContentImageOnly) GetFContent() *string {
 }
 
 func (f *FileContentImageOnly) GetExtraProperties() map[string]interface{} {
+	if f == nil {
+		return nil
+	}
 	return f.extraProperties
 }
 
@@ -128,6 +131,9 @@ func (f *FileContentImageOnly) MarshalJSON() ([]byte, error) {
 }
 
 func (f *FileContentImageOnly) String() string {
+	if f == nil {
+		return "<nil>"
+	}
 	if len(f.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(f.rawJSON); err == nil {
 			return value
@@ -197,6 +203,9 @@ func (o *OcrAttachment) GetFContent() *string {
 }
 
 func (o *OcrAttachment) GetExtraProperties() map[string]interface{} {
+	if o == nil {
+		return nil
+	}
 	return o.extraProperties
 }
 
@@ -270,6 +279,9 @@ func (o *OcrAttachment) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OcrAttachment) String() string {
+	if o == nil {
+		return "<nil>"
+	}
 	if len(o.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
 			return value
@@ -402,6 +414,9 @@ func (o *OcrBillItem) GetItemCategories() []string {
 }
 
 func (o *OcrBillItem) GetExtraProperties() map[string]interface{} {
+	if o == nil {
+		return nil
+	}
 	return o.extraProperties
 }
 
@@ -524,6 +539,9 @@ func (o *OcrBillItem) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OcrBillItem) String() string {
+	if o == nil {
+		return "<nil>"
+	}
 	if len(o.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
 			return value
@@ -584,6 +602,9 @@ func (o *OcrBillItemAdditionalData) GetReferenceNumber() *string {
 }
 
 func (o *OcrBillItemAdditionalData) GetExtraProperties() map[string]interface{} {
+	if o == nil {
+		return nil
+	}
 	return o.extraProperties
 }
 
@@ -650,6 +671,9 @@ func (o *OcrBillItemAdditionalData) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OcrBillItemAdditionalData) String() string {
+	if o == nil {
+		return "<nil>"
+	}
 	if len(o.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
 			return value
@@ -683,6 +707,9 @@ func (o *OcrResponseData) GetResultData() *OcrResultData {
 }
 
 func (o *OcrResponseData) GetExtraProperties() map[string]interface{} {
+	if o == nil {
+		return nil
+	}
 	return o.extraProperties
 }
 
@@ -728,6 +755,9 @@ func (o *OcrResponseData) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OcrResponseData) String() string {
+	if o == nil {
+		return "<nil>"
+	}
 	if len(o.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
 			return value
@@ -905,6 +935,9 @@ func (o *OcrResultData) GetAttachments() []*OcrAttachment {
 }
 
 func (o *OcrResultData) GetExtraProperties() map[string]interface{} {
+	if o == nil {
+		return nil
+	}
 	return o.extraProperties
 }
 
@@ -1078,6 +1111,9 @@ func (o *OcrResultData) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OcrResultData) String() string {
+	if o == nil {
+		return "<nil>"
+	}
 	if len(o.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
 			return value
@@ -1381,6 +1417,9 @@ func (o *OcrVendor) GetAdditionalData() *OcrVendorAdditionalData {
 }
 
 func (o *OcrVendor) GetExtraProperties() map[string]interface{} {
+	if o == nil {
+		return nil
+	}
 	return o.extraProperties
 }
 
@@ -1636,6 +1675,9 @@ func (o *OcrVendor) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OcrVendor) String() string {
+	if o == nil {
+		return "<nil>"
+	}
 	if len(o.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
 			return value
@@ -1669,6 +1711,9 @@ func (o *OcrVendorAdditionalData) GetWeb() *string {
 }
 
 func (o *OcrVendorAdditionalData) GetExtraProperties() map[string]interface{} {
+	if o == nil {
+		return nil
+	}
 	return o.extraProperties
 }
 
@@ -1714,6 +1759,9 @@ func (o *OcrVendorAdditionalData) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OcrVendorAdditionalData) String() string {
+	if o == nil {
+		return "<nil>"
+	}
 	if len(o.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
 			return value
@@ -1810,6 +1858,9 @@ func (o *OcrVendorBillingData) GetBankAccountFunction() *int {
 }
 
 func (o *OcrVendorBillingData) GetExtraProperties() map[string]interface{} {
+	if o == nil {
+		return nil
+	}
 	return o.extraProperties
 }
 
@@ -1904,6 +1955,9 @@ func (o *OcrVendorBillingData) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OcrVendorBillingData) String() string {
+	if o == nil {
+		return "<nil>"
+	}
 	if len(o.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
 			return value
@@ -1965,6 +2019,9 @@ func (p *PayabliApiResponseOcr) GetResponseData() *OcrResponseData {
 }
 
 func (p *PayabliApiResponseOcr) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -2031,6 +2088,9 @@ func (p *PayabliApiResponseOcr) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PayabliApiResponseOcr) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value

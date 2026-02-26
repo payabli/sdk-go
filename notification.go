@@ -135,6 +135,9 @@ func (n *NotificationQueryRecord) GetTarget() *Target {
 }
 
 func (n *NotificationQueryRecord) GetExtraProperties() map[string]interface{} {
+	if n == nil {
+		return nil
+	}
 	return n.extraProperties
 }
 
@@ -257,6 +260,9 @@ func (n *NotificationQueryRecord) MarshalJSON() ([]byte, error) {
 }
 
 func (n *NotificationQueryRecord) String() string {
+	if n == nil {
+		return "<nil>"
+	}
 	if len(n.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(n.rawJSON); err == nil {
 			return value
@@ -351,6 +357,9 @@ func (n *NotificationReportRequest) GetTarget() string {
 }
 
 func (n *NotificationReportRequest) GetExtraProperties() map[string]interface{} {
+	if n == nil {
+		return nil
+	}
 	return n.extraProperties
 }
 
@@ -438,6 +447,9 @@ func (n *NotificationReportRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (n *NotificationReportRequest) String() string {
+	if n == nil {
+		return "<nil>"
+	}
 	if len(n.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(n.rawJSON); err == nil {
 			return value
@@ -524,6 +536,9 @@ func (n *NotificationReportRequestContent) GetWebHeaderParameters() []*KeyValueD
 }
 
 func (n *NotificationReportRequestContent) GetExtraProperties() map[string]interface{} {
+	if n == nil {
+		return nil
+	}
 	return n.extraProperties
 }
 
@@ -611,6 +626,9 @@ func (n *NotificationReportRequestContent) MarshalJSON() ([]byte, error) {
 }
 
 func (n *NotificationReportRequestContent) String() string {
+	if n == nil {
+		return "<nil>"
+	}
 	if len(n.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(n.rawJSON); err == nil {
 			return value
@@ -823,6 +841,9 @@ func (n *NotificationStandardRequest) GetTarget() string {
 }
 
 func (n *NotificationStandardRequest) GetExtraProperties() map[string]interface{} {
+	if n == nil {
+		return nil
+	}
 	return n.extraProperties
 }
 
@@ -910,6 +931,9 @@ func (n *NotificationStandardRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (n *NotificationStandardRequest) String() string {
+	if n == nil {
+		return "<nil>"
+	}
 	if len(n.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(n.rawJSON); err == nil {
 			return value
@@ -974,6 +998,9 @@ func (n *NotificationStandardRequestContent) GetWebHeaderParameters() []*KeyValu
 }
 
 func (n *NotificationStandardRequestContent) GetExtraProperties() map[string]interface{} {
+	if n == nil {
+		return nil
+	}
 	return n.extraProperties
 }
 
@@ -1040,6 +1067,9 @@ func (n *NotificationStandardRequestContent) MarshalJSON() ([]byte, error) {
 }
 
 func (n *NotificationStandardRequestContent) String() string {
+	if n == nil {
+		return "<nil>"
+	}
 	if len(n.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(n.rawJSON); err == nil {
 			return value
@@ -1652,6 +1682,9 @@ func (p *PayabliApiResponseNotifications) GetResponseText() ResponseText {
 }
 
 func (p *PayabliApiResponseNotifications) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -1725,6 +1758,9 @@ func (p *PayabliApiResponseNotifications) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PayabliApiResponseNotifications) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value

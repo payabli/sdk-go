@@ -446,7 +446,7 @@ type BillQueryRecord2 struct {
 	BatchNumber   *string                              `json:"BatchNumber,omitempty" url:"BatchNumber,omitempty"`
 	BillApprovals []*BillQueryRecord2BillApprovalsItem `json:"billApprovals,omitempty" url:"billApprovals,omitempty"`
 	// Bill creation date in one of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.
-	BillDate *Datenullable `json:"BillDate,omitempty" url:"BillDate,omitempty"`
+	BillDate *time.Time `json:"BillDate,omitempty" url:"BillDate,omitempty" format:"date"`
 	// Events associated with the bill.
 	BillEvents []*GeneralEvents `json:"billEvents,omitempty" url:"billEvents,omitempty"`
 	// Array of items included in the bill.
@@ -462,9 +462,9 @@ type BillQueryRecord2 struct {
 	// Reference to documents associated with the bill.
 	DocumentsRef *string `json:"DocumentsRef,omitempty" url:"DocumentsRef,omitempty"`
 	// Bill due date in one of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.
-	DueDate *Datenullable `json:"DueDate,omitempty" url:"DueDate,omitempty"`
+	DueDate *time.Time `json:"DueDate,omitempty" url:"DueDate,omitempty" format:"date"`
 	// End date for the bill.
-	EndDate *Datenullable `json:"EndDate,omitempty" url:"EndDate,omitempty"`
+	EndDate *time.Time `json:"EndDate,omitempty" url:"EndDate,omitempty" format:"date"`
 	// Entity identifier associated with the bill.
 	EntityId           *string             `json:"EntityID,omitempty" url:"EntityID,omitempty"`
 	ExternalPaypointId *ExternalPaypointId `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
@@ -473,7 +473,7 @@ type BillQueryRecord2 struct {
 	// Identifier of the bill.
 	IdBill *int64 `json:"IdBill,omitempty" url:"IdBill,omitempty"`
 	// Timestamp of when bill was last updated, in UTC.
-	LastUpdated *DatetimeNullable `json:"LastUpdated,omitempty" url:"LastUpdated,omitempty"`
+	LastUpdated *time.Time `json:"LastUpdated,omitempty" url:"LastUpdated,omitempty"`
 	// Lot number associated with the bill.
 	LotNumber *string `json:"LotNumber,omitempty" url:"LotNumber,omitempty"`
 	// Bill mode: value `0` for single/one-time bills, `1` for scheduled bills.
@@ -547,7 +547,7 @@ func (b *BillQueryRecord2) GetBillApprovals() []*BillQueryRecord2BillApprovalsIt
 	return b.BillApprovals
 }
 
-func (b *BillQueryRecord2) GetBillDate() *Datenullable {
+func (b *BillQueryRecord2) GetBillDate() *time.Time {
 	if b == nil {
 		return nil
 	}
@@ -603,14 +603,14 @@ func (b *BillQueryRecord2) GetDocumentsRef() *string {
 	return b.DocumentsRef
 }
 
-func (b *BillQueryRecord2) GetDueDate() *Datenullable {
+func (b *BillQueryRecord2) GetDueDate() *time.Time {
 	if b == nil {
 		return nil
 	}
 	return b.DueDate
 }
 
-func (b *BillQueryRecord2) GetEndDate() *Datenullable {
+func (b *BillQueryRecord2) GetEndDate() *time.Time {
 	if b == nil {
 		return nil
 	}
@@ -645,7 +645,7 @@ func (b *BillQueryRecord2) GetIdBill() *int64 {
 	return b.IdBill
 }
 
-func (b *BillQueryRecord2) GetLastUpdated() *DatetimeNullable {
+func (b *BillQueryRecord2) GetLastUpdated() *time.Time {
 	if b == nil {
 		return nil
 	}
@@ -772,6 +772,9 @@ func (b *BillQueryRecord2) GetVendor() *VendorOutData {
 }
 
 func (b *BillQueryRecord2) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -819,7 +822,7 @@ func (b *BillQueryRecord2) SetBillApprovals(billApprovals []*BillQueryRecord2Bil
 
 // SetBillDate sets the BillDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillQueryRecord2) SetBillDate(billDate *Datenullable) {
+func (b *BillQueryRecord2) SetBillDate(billDate *time.Time) {
 	b.BillDate = billDate
 	b.require(billQueryRecord2FieldBillDate)
 }
@@ -875,14 +878,14 @@ func (b *BillQueryRecord2) SetDocumentsRef(documentsRef *string) {
 
 // SetDueDate sets the DueDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillQueryRecord2) SetDueDate(dueDate *Datenullable) {
+func (b *BillQueryRecord2) SetDueDate(dueDate *time.Time) {
 	b.DueDate = dueDate
 	b.require(billQueryRecord2FieldDueDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillQueryRecord2) SetEndDate(endDate *Datenullable) {
+func (b *BillQueryRecord2) SetEndDate(endDate *time.Time) {
 	b.EndDate = endDate
 	b.require(billQueryRecord2FieldEndDate)
 }
@@ -917,7 +920,7 @@ func (b *BillQueryRecord2) SetIdBill(idBill *int64) {
 
 // SetLastUpdated sets the LastUpdated field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillQueryRecord2) SetLastUpdated(lastUpdated *DatetimeNullable) {
+func (b *BillQueryRecord2) SetLastUpdated(lastUpdated *time.Time) {
 	b.LastUpdated = lastUpdated
 	b.require(billQueryRecord2FieldLastUpdated)
 }
@@ -1042,12 +1045,24 @@ func (b *BillQueryRecord2) SetVendor(vendor_ *VendorOutData) {
 }
 
 func (b *BillQueryRecord2) UnmarshalJSON(data []byte) error {
-	type unmarshaler BillQueryRecord2
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed BillQueryRecord2
+	var unmarshaler = struct {
+		embed
+		BillDate    *internal.Date     `json:"BillDate,omitempty"`
+		DueDate     *internal.Date     `json:"DueDate,omitempty"`
+		EndDate     *internal.Date     `json:"EndDate,omitempty"`
+		LastUpdated *internal.DateTime `json:"LastUpdated,omitempty"`
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*b = BillQueryRecord2(value)
+	*b = BillQueryRecord2(unmarshaler.embed)
+	b.BillDate = unmarshaler.BillDate.TimePtr()
+	b.DueDate = unmarshaler.DueDate.TimePtr()
+	b.EndDate = unmarshaler.EndDate.TimePtr()
+	b.LastUpdated = unmarshaler.LastUpdated.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *b)
 	if err != nil {
 		return err
@@ -1061,14 +1076,25 @@ func (b *BillQueryRecord2) MarshalJSON() ([]byte, error) {
 	type embed BillQueryRecord2
 	var marshaler = struct {
 		embed
+		BillDate    *internal.Date     `json:"BillDate,omitempty"`
+		DueDate     *internal.Date     `json:"DueDate,omitempty"`
+		EndDate     *internal.Date     `json:"EndDate,omitempty"`
+		LastUpdated *internal.DateTime `json:"LastUpdated,omitempty"`
 	}{
-		embed: embed(*b),
+		embed:       embed(*b),
+		BillDate:    internal.NewOptionalDate(b.BillDate),
+		DueDate:     internal.NewOptionalDate(b.DueDate),
+		EndDate:     internal.NewOptionalDate(b.EndDate),
+		LastUpdated: internal.NewOptionalDateTime(b.LastUpdated),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 func (b *BillQueryRecord2) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -1092,7 +1118,7 @@ type BillQueryRecord2BillApprovalsItem struct {
 	// Indicates whether the bill has been approved. `0` is false, and `1` is true.
 	Approved *int `json:"approved,omitempty" url:"approved,omitempty"`
 	// Timestamp of when the approval was made, in UTC.
-	ApprovedTime *DatetimeNullable `json:"approvedTime,omitempty" url:"approvedTime,omitempty"`
+	ApprovedTime *time.Time `json:"approvedTime,omitempty" url:"approvedTime,omitempty"`
 	// Additional comments on the approval.
 	Comments *string `json:"comments,omitempty" url:"comments,omitempty"`
 	// The approving user's email address.
@@ -1114,7 +1140,7 @@ func (b *BillQueryRecord2BillApprovalsItem) GetApproved() *int {
 	return b.Approved
 }
 
-func (b *BillQueryRecord2BillApprovalsItem) GetApprovedTime() *DatetimeNullable {
+func (b *BillQueryRecord2BillApprovalsItem) GetApprovedTime() *time.Time {
 	if b == nil {
 		return nil
 	}
@@ -1143,6 +1169,9 @@ func (b *BillQueryRecord2BillApprovalsItem) GetId() *int64 {
 }
 
 func (b *BillQueryRecord2BillApprovalsItem) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -1162,7 +1191,7 @@ func (b *BillQueryRecord2BillApprovalsItem) SetApproved(approved *int) {
 
 // SetApprovedTime sets the ApprovedTime field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillQueryRecord2BillApprovalsItem) SetApprovedTime(approvedTime *DatetimeNullable) {
+func (b *BillQueryRecord2BillApprovalsItem) SetApprovedTime(approvedTime *time.Time) {
 	b.ApprovedTime = approvedTime
 	b.require(billQueryRecord2BillApprovalsItemFieldApprovedTime)
 }
@@ -1189,12 +1218,18 @@ func (b *BillQueryRecord2BillApprovalsItem) SetId(id *int64) {
 }
 
 func (b *BillQueryRecord2BillApprovalsItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler BillQueryRecord2BillApprovalsItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed BillQueryRecord2BillApprovalsItem
+	var unmarshaler = struct {
+		embed
+		ApprovedTime *internal.DateTime `json:"approvedTime,omitempty"`
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*b = BillQueryRecord2BillApprovalsItem(value)
+	*b = BillQueryRecord2BillApprovalsItem(unmarshaler.embed)
+	b.ApprovedTime = unmarshaler.ApprovedTime.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *b)
 	if err != nil {
 		return err
@@ -1208,14 +1243,19 @@ func (b *BillQueryRecord2BillApprovalsItem) MarshalJSON() ([]byte, error) {
 	type embed BillQueryRecord2BillApprovalsItem
 	var marshaler = struct {
 		embed
+		ApprovedTime *internal.DateTime `json:"approvedTime,omitempty"`
 	}{
-		embed: embed(*b),
+		embed:        embed(*b),
+		ApprovedTime: internal.NewOptionalDateTime(b.ApprovedTime),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 func (b *BillQueryRecord2BillApprovalsItem) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -1292,6 +1332,9 @@ func (b *BillQueryResponse) GetRecords() []*BillQueryRecord2 {
 }
 
 func (b *BillQueryResponse) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -1344,6 +1387,9 @@ func (b *BillQueryResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BillQueryResponse) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -1584,6 +1630,9 @@ func (b *BillQueryResponseSummary) GetTotalsent2Approval() *int {
 }
 
 func (b *BillQueryResponseSummary) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -1783,6 +1832,9 @@ func (b *BillQueryResponseSummary) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BillQueryResponseSummary) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -2187,6 +2239,9 @@ func (t *TransactionOutQueryRecord) GetPayoutProgram() *PayoutProgram {
 }
 
 func (t *TransactionOutQueryRecord) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -2498,6 +2553,9 @@ func (t *TransactionOutQueryRecord) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransactionOutQueryRecord) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -2946,6 +3004,9 @@ func (v *VendorDataResponse) GetStoredMethods() []*VendorResponseStoredMethod {
 }
 
 func (v *VendorDataResponse) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -3304,6 +3365,9 @@ func (v *VendorDataResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VendorDataResponse) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
@@ -3643,6 +3707,9 @@ func (v *VendorOutData) GetZip() string {
 }
 
 func (v *VendorOutData) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -3891,6 +3958,9 @@ func (v *VendorOutData) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VendorOutData) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
@@ -3932,17 +4002,17 @@ type BillOutData struct {
 	// An array of bill images. Attachments aren't required, but we strongly recommend including them. Including a bill image can make payouts smoother and prevent delays. You can include either the Base64-encoded file content, or you can include an fURL to a public file. The maximum file size for image uploads is 30 MB.
 	Attachments *Attachments `json:"attachments,omitempty" url:"attachments,omitempty"`
 	// Date of bill. Accepted formats: YYYY-MM-DD, MM/DD/YYYY.
-	BillDate  *Datenullable `json:"billDate,omitempty" url:"billDate,omitempty"`
-	BillItems *Billitems    `json:"billItems,omitempty" url:"billItems,omitempty"`
+	BillDate  *time.Time `json:"billDate,omitempty" url:"billDate,omitempty" format:"date"`
+	BillItems *Billitems `json:"billItems,omitempty" url:"billItems,omitempty"`
 	// Unique identifier for the bill. Required when adding a bill.
 	BillNumber *string   `json:"billNumber,omitempty" url:"billNumber,omitempty"`
 	Comments   *Comments `json:"comments,omitempty" url:"comments,omitempty"`
 	// Discount amount applied to the bill.
 	Discount *float64 `json:"discount,omitempty" url:"discount,omitempty"`
 	// Due date of bill. Accepted formats: YYYY-MM-DD, MM/DD/YYYY.
-	DueDate *Datenullable `json:"dueDate,omitempty" url:"dueDate,omitempty"`
+	DueDate *time.Time `json:"dueDate,omitempty" url:"dueDate,omitempty" format:"date"`
 	// End Date for scheduled bills. Applied only in `Mode` = 1. Accepted formats: YYYY-MM-DD, MM/DD/YYYY
-	EndDate *Datenullable `json:"endDate,omitempty" url:"endDate,omitempty"`
+	EndDate *time.Time `json:"endDate,omitempty" url:"endDate,omitempty" format:"date"`
 	// Frequency for scheduled bills. Applied only in `Mode` = 1.
 	Frequency *Frequency `json:"frequency,omitempty" url:"frequency,omitempty"`
 	// Lot number associated with the bill.
@@ -3995,7 +4065,7 @@ func (b *BillOutData) GetAttachments() *Attachments {
 	return b.Attachments
 }
 
-func (b *BillOutData) GetBillDate() *Datenullable {
+func (b *BillOutData) GetBillDate() *time.Time {
 	if b == nil {
 		return nil
 	}
@@ -4030,14 +4100,14 @@ func (b *BillOutData) GetDiscount() *float64 {
 	return b.Discount
 }
 
-func (b *BillOutData) GetDueDate() *Datenullable {
+func (b *BillOutData) GetDueDate() *time.Time {
 	if b == nil {
 		return nil
 	}
 	return b.DueDate
 }
 
-func (b *BillOutData) GetEndDate() *Datenullable {
+func (b *BillOutData) GetEndDate() *time.Time {
 	if b == nil {
 		return nil
 	}
@@ -4108,6 +4178,9 @@ func (b *BillOutData) GetVendor() *VendorData {
 }
 
 func (b *BillOutData) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -4148,7 +4221,7 @@ func (b *BillOutData) SetAttachments(attachments *Attachments) {
 
 // SetBillDate sets the BillDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillOutData) SetBillDate(billDate *Datenullable) {
+func (b *BillOutData) SetBillDate(billDate *time.Time) {
 	b.BillDate = billDate
 	b.require(billOutDataFieldBillDate)
 }
@@ -4183,14 +4256,14 @@ func (b *BillOutData) SetDiscount(discount *float64) {
 
 // SetDueDate sets the DueDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillOutData) SetDueDate(dueDate *Datenullable) {
+func (b *BillOutData) SetDueDate(dueDate *time.Time) {
 	b.DueDate = dueDate
 	b.require(billOutDataFieldDueDate)
 }
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillOutData) SetEndDate(endDate *Datenullable) {
+func (b *BillOutData) SetEndDate(endDate *time.Time) {
 	b.EndDate = endDate
 	b.require(billOutDataFieldEndDate)
 }
@@ -4259,12 +4332,22 @@ func (b *BillOutData) SetVendor(vendor_ *VendorData) {
 }
 
 func (b *BillOutData) UnmarshalJSON(data []byte) error {
-	type unmarshaler BillOutData
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed BillOutData
+	var unmarshaler = struct {
+		embed
+		BillDate *internal.Date `json:"billDate,omitempty"`
+		DueDate  *internal.Date `json:"dueDate,omitempty"`
+		EndDate  *internal.Date `json:"endDate,omitempty"`
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*b = BillOutData(value)
+	*b = BillOutData(unmarshaler.embed)
+	b.BillDate = unmarshaler.BillDate.TimePtr()
+	b.DueDate = unmarshaler.DueDate.TimePtr()
+	b.EndDate = unmarshaler.EndDate.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *b)
 	if err != nil {
 		return err
@@ -4278,14 +4361,23 @@ func (b *BillOutData) MarshalJSON() ([]byte, error) {
 	type embed BillOutData
 	var marshaler = struct {
 		embed
+		BillDate *internal.Date `json:"billDate,omitempty"`
+		DueDate  *internal.Date `json:"dueDate,omitempty"`
+		EndDate  *internal.Date `json:"endDate,omitempty"`
 	}{
-		embed: embed(*b),
+		embed:    embed(*b),
+		BillDate: internal.NewOptionalDate(b.BillDate),
+		DueDate:  internal.NewOptionalDate(b.DueDate),
+		EndDate:  internal.NewOptionalDate(b.EndDate),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 func (b *BillOutData) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -4320,6 +4412,9 @@ func (b *BillOutDataScheduledOptions) GetStoredMethodId() *string {
 }
 
 func (b *BillOutDataScheduledOptions) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -4365,6 +4460,9 @@ func (b *BillOutDataScheduledOptions) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BillOutDataScheduledOptions) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -4444,6 +4542,9 @@ func (b *BillResponse) GetResponseData() *Responsedatanonobject {
 }
 
 func (b *BillResponse) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -4524,6 +4625,9 @@ func (b *BillResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BillResponse) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -4586,9 +4690,9 @@ type BillResponseData struct {
 	// Total amount for the bill.
 	TotalAmount *float64 `json:"TotalAmount,omitempty" url:"TotalAmount,omitempty"`
 	// Date of bill. Accepted formats: YYYY-MM-DD, MM/DD/YYYY
-	BillDate *Datenullable `json:"BillDate,omitempty" url:"BillDate,omitempty"`
+	BillDate *time.Time `json:"BillDate,omitempty" url:"BillDate,omitempty" format:"date"`
 	// Due Date of bill. Accepted formats: YYYY-MM-DD, MM/DD/YYYY
-	DueDate *Datenullable `json:"DueDate,omitempty" url:"DueDate,omitempty"`
+	DueDate *time.Time `json:"DueDate,omitempty" url:"DueDate,omitempty" format:"date"`
 	// Comments associated with the bill. For managed payables, the character limit is 200. For on demand payouts, the characters limit is 250.
 	Comments *string `json:"Comments,omitempty" url:"Comments,omitempty"`
 	// The batch number that the bill belongs to.
@@ -4611,7 +4715,7 @@ type BillResponseData struct {
 	Status         *Billstatus           `json:"Status,omitempty" url:"Status,omitempty"`
 	CreatedAt      *CreatedAt            `json:"CreatedAt,omitempty" url:"CreatedAt,omitempty"`
 	// End date for scheduled bills. Applied only in `Mode` = 1.
-	EndDate     *Datenullable `json:"EndDate,omitempty" url:"EndDate,omitempty"`
+	EndDate     *time.Time    `json:"EndDate,omitempty" url:"EndDate,omitempty" format:"date"`
 	LastUpdated *LastModified `json:"LastUpdated,omitempty" url:"LastUpdated,omitempty"`
 	// Frequency for scheduled bills. Applied only in `Mode` = 1.
 	Frequency *Frequency `json:"Frequency,omitempty" url:"Frequency,omitempty"`
@@ -4674,14 +4778,14 @@ func (b *BillResponseData) GetTotalAmount() *float64 {
 	return b.TotalAmount
 }
 
-func (b *BillResponseData) GetBillDate() *Datenullable {
+func (b *BillResponseData) GetBillDate() *time.Time {
 	if b == nil {
 		return nil
 	}
 	return b.BillDate
 }
 
-func (b *BillResponseData) GetDueDate() *Datenullable {
+func (b *BillResponseData) GetDueDate() *time.Time {
 	if b == nil {
 		return nil
 	}
@@ -4786,7 +4890,7 @@ func (b *BillResponseData) GetCreatedAt() *CreatedAt {
 	return b.CreatedAt
 }
 
-func (b *BillResponseData) GetEndDate() *Datenullable {
+func (b *BillResponseData) GetEndDate() *time.Time {
 	if b == nil {
 		return nil
 	}
@@ -4899,6 +5003,9 @@ func (b *BillResponseData) GetEntityId() *EntityId {
 }
 
 func (b *BillResponseData) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -4946,14 +5053,14 @@ func (b *BillResponseData) SetTotalAmount(totalAmount *float64) {
 
 // SetBillDate sets the BillDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillResponseData) SetBillDate(billDate *Datenullable) {
+func (b *BillResponseData) SetBillDate(billDate *time.Time) {
 	b.BillDate = billDate
 	b.require(billResponseDataFieldBillDate)
 }
 
 // SetDueDate sets the DueDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillResponseData) SetDueDate(dueDate *Datenullable) {
+func (b *BillResponseData) SetDueDate(dueDate *time.Time) {
 	b.DueDate = dueDate
 	b.require(billResponseDataFieldDueDate)
 }
@@ -5058,7 +5165,7 @@ func (b *BillResponseData) SetCreatedAt(createdAt *CreatedAt) {
 
 // SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillResponseData) SetEndDate(endDate *Datenullable) {
+func (b *BillResponseData) SetEndDate(endDate *time.Time) {
 	b.EndDate = endDate
 	b.require(billResponseDataFieldEndDate)
 }
@@ -5169,12 +5276,22 @@ func (b *BillResponseData) SetEntityId(entityId *EntityId) {
 }
 
 func (b *BillResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler BillResponseData
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed BillResponseData
+	var unmarshaler = struct {
+		embed
+		BillDate *internal.Date `json:"BillDate,omitempty"`
+		DueDate  *internal.Date `json:"DueDate,omitempty"`
+		EndDate  *internal.Date `json:"EndDate,omitempty"`
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*b = BillResponseData(value)
+	*b = BillResponseData(unmarshaler.embed)
+	b.BillDate = unmarshaler.BillDate.TimePtr()
+	b.DueDate = unmarshaler.DueDate.TimePtr()
+	b.EndDate = unmarshaler.EndDate.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *b)
 	if err != nil {
 		return err
@@ -5188,14 +5305,23 @@ func (b *BillResponseData) MarshalJSON() ([]byte, error) {
 	type embed BillResponseData
 	var marshaler = struct {
 		embed
+		BillDate *internal.Date `json:"BillDate,omitempty"`
+		DueDate  *internal.Date `json:"DueDate,omitempty"`
+		EndDate  *internal.Date `json:"EndDate,omitempty"`
 	}{
-		embed: embed(*b),
+		embed:    embed(*b),
+		BillDate: internal.NewOptionalDate(b.BillDate),
+		DueDate:  internal.NewOptionalDate(b.DueDate),
+		EndDate:  internal.NewOptionalDate(b.EndDate),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 func (b *BillResponseData) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -5275,6 +5401,9 @@ func (e *EditBillResponse) GetResponseData() *int {
 }
 
 func (e *EditBillResponse) GetExtraProperties() map[string]interface{} {
+	if e == nil {
+		return nil
+	}
 	return e.extraProperties
 }
 
@@ -5355,6 +5484,9 @@ func (e *EditBillResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EditBillResponse) String() string {
+	if e == nil {
+		return "<nil>"
+	}
 	if len(e.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
 			return value
@@ -5434,6 +5566,9 @@ func (g *GetBillResponse) GetResponseData() *BillResponseData {
 }
 
 func (g *GetBillResponse) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
 	return g.extraProperties
 }
 
@@ -5514,6 +5649,9 @@ func (g *GetBillResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetBillResponse) String() string {
+	if g == nil {
+		return "<nil>"
+	}
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
@@ -5566,6 +5704,9 @@ func (m *ModifyApprovalBillResponse) GetResponseData() *int {
 }
 
 func (m *ModifyApprovalBillResponse) GetExtraProperties() map[string]interface{} {
+	if m == nil {
+		return nil
+	}
 	return m.extraProperties
 }
 
@@ -5625,6 +5766,9 @@ func (m *ModifyApprovalBillResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (m *ModifyApprovalBillResponse) String() string {
+	if m == nil {
+		return "<nil>"
+	}
 	if len(m.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
 			return value
@@ -5677,6 +5821,9 @@ func (s *SetApprovedBillResponse) GetResponseData() *int {
 }
 
 func (s *SetApprovedBillResponse) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
 	return s.extraProperties
 }
 
@@ -5736,6 +5883,9 @@ func (s *SetApprovedBillResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SetApprovedBillResponse) String() string {
+	if s == nil {
+		return "<nil>"
+	}
 	if len(s.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value

@@ -614,7 +614,6 @@ func (r *RequestPaymentV2) MarshalJSON() ([]byte, error) {
 }
 
 type Cash struct {
-	// Method to use for the transaction. For cash transactions, use `cash`.
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -629,6 +628,9 @@ func (c *Cash) Method() string {
 }
 
 func (c *Cash) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -678,6 +680,9 @@ func (c *Cash) MarshalJSON() ([]byte, error) {
 }
 
 func (c *Cash) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -696,7 +701,6 @@ var (
 type Check struct {
 	// The checking accountholder's name.
 	AchHolder AchHolder `json:"achHolder" url:"achHolder"`
-	// Method to use for the transaction. Use `check` for a paper check transaction. When the method is `check`, then `paymentDetails.checkNumber` is required.
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -718,6 +722,9 @@ func (c *Check) Method() string {
 }
 
 func (c *Check) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -774,6 +781,9 @@ func (c *Check) MarshalJSON() ([]byte, error) {
 }
 
 func (c *Check) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -788,7 +798,7 @@ func (c *Check) String() string {
 type CustomerVaultId = string
 
 // The expected time that the refund will be processed. This value only appears when the `resultCode` is `10`, which means that the refund has been initiated and is queued for processing. See [Enhanced Refund Flow](/guides/pay-in-enhanced-refund-flow) for more information about refund processing.
-type ExpectedProcessingDateTime = *time.Time
+type ExpectedProcessingDateTime = time.Time
 
 // Method to use for the transaction.
 type Methodall string
@@ -982,6 +992,9 @@ func (p *PayMethodBodyAllFields) GetStoredMethodUsageType() *StoredMethodUsageTy
 }
 
 func (p *PayMethodBodyAllFields) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -1132,6 +1145,9 @@ func (p *PayMethodBodyAllFields) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PayMethodBodyAllFields) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -1149,8 +1165,7 @@ var (
 )
 
 type PayMethodCloud struct {
-	Device *Device `json:"device,omitempty" url:"device,omitempty"`
-	// Method to use for the transaction. For cloud device transactions, the method is `cloud`.
+	Device        *Device        `json:"device,omitempty" url:"device,omitempty"`
 	SaveIfSuccess *SaveIfSuccess `json:"saveIfSuccess,omitempty" url:"saveIfSuccess,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1180,6 +1195,9 @@ func (p *PayMethodCloud) Method() string {
 }
 
 func (p *PayMethodCloud) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -1243,6 +1261,9 @@ func (p *PayMethodCloud) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PayMethodCloud) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -1306,6 +1327,9 @@ func (p *PayMethodStoredMethod) GetStoredMethodUsageType() *StoredMethodUsageTyp
 }
 
 func (p *PayMethodStoredMethod) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -1372,6 +1396,9 @@ func (p *PayMethodStoredMethod) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PayMethodStoredMethod) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -1456,6 +1483,9 @@ func (p *PayabliApiResponse0) GetResponseText() ResponseText {
 }
 
 func (p *PayabliApiResponse0) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -1522,6 +1552,9 @@ func (p *PayabliApiResponse0) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PayabliApiResponse0) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -1577,6 +1610,9 @@ func (p *PaymentDetailCredit) GetTotalAmount() float64 {
 }
 
 func (p *PaymentDetailCredit) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -1636,6 +1672,9 @@ func (p *PaymentDetailCredit) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PaymentDetailCredit) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -2038,6 +2077,9 @@ func (q *QueryTransactionPayorDataCustomer) GetAdditionalData() *AdditionalDataM
 }
 
 func (q *QueryTransactionPayorDataCustomer) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -2230,6 +2272,9 @@ func (q *QueryTransactionPayorDataCustomer) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QueryTransactionPayorDataCustomer) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -2275,6 +2320,9 @@ func (r *RefundDetail) GetSplitRefunding() []*SplitFundingRefundContent {
 }
 
 func (r *RefundDetail) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
 	return r.extraProperties
 }
 
@@ -2327,6 +2375,9 @@ func (r *RefundDetail) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RefundDetail) String() string {
+	if r == nil {
+		return "<nil>"
+	}
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
@@ -2391,6 +2442,9 @@ func (s *SplitFundingRefundContent) GetOriginationEntryPoint() *string {
 }
 
 func (s *SplitFundingRefundContent) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
 	return s.extraProperties
 }
 
@@ -2457,6 +2511,9 @@ func (s *SplitFundingRefundContent) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SplitFundingRefundContent) String() string {
+	if s == nil {
+		return "<nil>"
+	}
 	if len(s.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
@@ -2564,8 +2621,8 @@ type TransactionQueryRecordsCustomer struct {
 	// Events associated with this transaction.
 	TransactionEvents []*QueryTransactionEvents `json:"TransactionEvents,omitempty" url:"TransactionEvents,omitempty"`
 	// Transaction date and time, in UTC.
-	TransactionTime     *DatetimeNullable `json:"TransactionTime,omitempty" url:"TransactionTime,omitempty"`
-	TransAdditionalData interface{}       `json:"TransAdditionalData,omitempty" url:"TransAdditionalData,omitempty"`
+	TransactionTime     *time.Time  `json:"TransactionTime,omitempty" url:"TransactionTime,omitempty"`
+	TransAdditionalData interface{} `json:"TransAdditionalData,omitempty" url:"TransAdditionalData,omitempty"`
 	// Status of transaction. See [the docs](/developers/references/money-in-statuses#money-in-transaction-status) for a full reference.
 	TransStatus *int `json:"TransStatus,omitempty" url:"TransStatus,omitempty"`
 
@@ -2828,7 +2885,7 @@ func (t *TransactionQueryRecordsCustomer) GetTransactionEvents() []*QueryTransac
 	return t.TransactionEvents
 }
 
-func (t *TransactionQueryRecordsCustomer) GetTransactionTime() *DatetimeNullable {
+func (t *TransactionQueryRecordsCustomer) GetTransactionTime() *time.Time {
 	if t == nil {
 		return nil
 	}
@@ -2850,6 +2907,9 @@ func (t *TransactionQueryRecordsCustomer) GetTransStatus() *int {
 }
 
 func (t *TransactionQueryRecordsCustomer) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -3114,7 +3174,7 @@ func (t *TransactionQueryRecordsCustomer) SetTransactionEvents(transactionEvents
 
 // SetTransactionTime sets the TransactionTime field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionQueryRecordsCustomer) SetTransactionTime(transactionTime *DatetimeNullable) {
+func (t *TransactionQueryRecordsCustomer) SetTransactionTime(transactionTime *time.Time) {
 	t.TransactionTime = transactionTime
 	t.require(transactionQueryRecordsCustomerFieldTransactionTime)
 }
@@ -3134,12 +3194,18 @@ func (t *TransactionQueryRecordsCustomer) SetTransStatus(transStatus *int) {
 }
 
 func (t *TransactionQueryRecordsCustomer) UnmarshalJSON(data []byte) error {
-	type unmarshaler TransactionQueryRecordsCustomer
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed TransactionQueryRecordsCustomer
+	var unmarshaler = struct {
+		embed
+		TransactionTime *internal.DateTime `json:"TransactionTime,omitempty"`
+	}{
+		embed: embed(*t),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*t = TransactionQueryRecordsCustomer(value)
+	*t = TransactionQueryRecordsCustomer(unmarshaler.embed)
+	t.TransactionTime = unmarshaler.TransactionTime.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *t)
 	if err != nil {
 		return err
@@ -3153,14 +3219,19 @@ func (t *TransactionQueryRecordsCustomer) MarshalJSON() ([]byte, error) {
 	type embed TransactionQueryRecordsCustomer
 	var marshaler = struct {
 		embed
+		TransactionTime *internal.DateTime `json:"TransactionTime,omitempty"`
 	}{
-		embed: embed(*t),
+		embed:           embed(*t),
+		TransactionTime: internal.NewOptionalDateTime(t.TransactionTime),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 func (t *TransactionQueryRecordsCustomer) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -3222,6 +3293,9 @@ func (a *AuthResponse) GetResponseData() *AuthResponseResponseData {
 }
 
 func (a *AuthResponse) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -3288,6 +3362,9 @@ func (a *AuthResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AuthResponse) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -3384,6 +3461,9 @@ func (a *AuthResponseResponseData) GetMethodReferenceId() *MethodReferenceId {
 }
 
 func (a *AuthResponseResponseData) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -3478,6 +3558,9 @@ func (a *AuthResponseResponseData) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AuthResponseResponseData) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -3523,6 +3606,9 @@ func (c *CapturePaymentDetails) GetServiceFee() *float64 {
 }
 
 func (c *CapturePaymentDetails) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -3575,6 +3661,9 @@ func (c *CapturePaymentDetails) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CapturePaymentDetails) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -3608,6 +3697,9 @@ func (c *CaptureRequest) GetPaymentDetails() *CapturePaymentDetails {
 }
 
 func (c *CaptureRequest) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -3653,6 +3745,9 @@ func (c *CaptureRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CaptureRequest) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -3732,6 +3827,9 @@ func (c *CaptureResponse) GetResponseData() *CaptureResponseData {
 }
 
 func (c *CaptureResponse) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -3812,6 +3910,9 @@ func (c *CaptureResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CaptureResponse) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -3909,6 +4010,9 @@ func (c *CaptureResponseData) GetMethodReferenceId() *MethodReferenceId {
 }
 
 func (c *CaptureResponseData) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -4003,6 +4107,9 @@ func (c *CaptureResponseData) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CaptureResponseData) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -4110,6 +4217,9 @@ func (g *GetPaidResponseData) GetMethodReferenceId() *MethodReferenceId {
 }
 
 func (g *GetPaidResponseData) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
 	return g.extraProperties
 }
 
@@ -4211,6 +4321,9 @@ func (g *GetPaidResponseData) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetPaidResponseData) String() string {
+	if g == nil {
+		return "<nil>"
+	}
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
@@ -4245,6 +4358,9 @@ func (i *InvalidTransStatusErrorType) GetResponseText() string {
 }
 
 func (i *InvalidTransStatusErrorType) GetExtraProperties() map[string]interface{} {
+	if i == nil {
+		return nil
+	}
 	return i.extraProperties
 }
 
@@ -4290,6 +4406,9 @@ func (i *InvalidTransStatusErrorType) MarshalJSON() ([]byte, error) {
 }
 
 func (i *InvalidTransStatusErrorType) String() string {
+	if i == nil {
+		return "<nil>"
+	}
 	if len(i.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
 			return value
@@ -4351,6 +4470,9 @@ func (p *PayabliApiResponseGetPaid) GetResponseData() *GetPaidResponseData {
 }
 
 func (p *PayabliApiResponseGetPaid) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -4417,6 +4539,9 @@ func (p *PayabliApiResponseGetPaid) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PayabliApiResponseGetPaid) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -4469,6 +4594,9 @@ func (r *ReceiptResponse) GetResponseText() ResponseText {
 }
 
 func (r *ReceiptResponse) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
 	return r.extraProperties
 }
 
@@ -4528,6 +4656,9 @@ func (r *ReceiptResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (r *ReceiptResponse) String() string {
+	if r == nil {
+		return "<nil>"
+	}
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
@@ -4588,6 +4719,9 @@ func (r *RefundResponse) GetPageidentifier() *PageIdentifier {
 }
 
 func (r *RefundResponse) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
 	return r.extraProperties
 }
 
@@ -4654,6 +4788,9 @@ func (r *RefundResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RefundResponse) String() string {
+	if r == nil {
+		return "<nil>"
+	}
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
@@ -4714,6 +4851,9 @@ func (r *RefundWithInstructionsResponse) GetPageidentifier() *PageIdentifier {
 }
 
 func (r *RefundWithInstructionsResponse) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
 	return r.extraProperties
 }
 
@@ -4780,6 +4920,9 @@ func (r *RefundWithInstructionsResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RefundWithInstructionsResponse) String() string {
+	if r == nil {
+		return "<nil>"
+	}
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
@@ -4807,7 +4950,6 @@ type RequestCreditPaymentMethod struct {
 	// Bank account holder.
 	AchHolder  *AchHolder  `json:"achHolder,omitempty" url:"achHolder,omitempty"`
 	AchRouting *Achrouting `json:"achRouting,omitempty" url:"achRouting,omitempty"`
-	// Method to use for the transaction. Must be ACH.
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -4857,6 +4999,9 @@ func (r *RequestCreditPaymentMethod) Method() string {
 }
 
 func (r *RequestCreditPaymentMethod) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
 	return r.extraProperties
 }
 
@@ -4941,6 +5086,9 @@ func (r *RequestCreditPaymentMethod) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestCreditPaymentMethod) String() string {
+	if r == nil {
+		return "<nil>"
+	}
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
@@ -5098,6 +5246,9 @@ func (r *RequestPaymentValidatePaymentMethod) GetCardHolder() Cardholder {
 }
 
 func (r *RequestPaymentValidatePaymentMethod) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
 	return r.extraProperties
 }
 
@@ -5171,6 +5322,9 @@ func (r *RequestPaymentValidatePaymentMethod) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestPaymentValidatePaymentMethod) String() string {
+	if r == nil {
+		return "<nil>"
+	}
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
@@ -5303,6 +5457,9 @@ func (r *ResponseDataRefunds) GetResultText() string {
 }
 
 func (r *ResponseDataRefunds) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
 	return r.extraProperties
 }
 
@@ -5404,6 +5561,9 @@ func (r *ResponseDataRefunds) MarshalJSON() ([]byte, error) {
 }
 
 func (r *ResponseDataRefunds) String() string {
+	if r == nil {
+		return "<nil>"
+	}
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
@@ -5482,6 +5642,9 @@ func (r *ReverseResponse) GetResponseData() *ResponseDataRefunds {
 }
 
 func (r *ReverseResponse) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
 	return r.extraProperties
 }
 
@@ -5562,6 +5725,9 @@ func (r *ReverseResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (r *ReverseResponse) String() string {
+	if r == nil {
+		return "<nil>"
+	}
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
@@ -5698,6 +5864,9 @@ func (t *TransRequestBody) GetSubscriptionId() *Subscriptionid {
 }
 
 func (t *TransRequestBody) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -5820,6 +5989,9 @@ func (t *TransRequestBody) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransRequestBody) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -6043,6 +6215,9 @@ func (t *TransactionDetailCustomer) GetAdditionalData() *AdditionalDataString {
 }
 
 func (t *TransactionDetailCustomer) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -6235,6 +6410,9 @@ func (t *TransactionDetailCustomer) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransactionDetailCustomer) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -6287,6 +6465,9 @@ func (t *TransactionDetailEvent) GetEventTime() string {
 }
 
 func (t *TransactionDetailEvent) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -6346,6 +6527,9 @@ func (t *TransactionDetailEvent) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransactionDetailEvent) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -6395,9 +6579,9 @@ var (
 
 type TransactionDetailInvoiceData struct {
 	InvoiceNumber        *InvoiceNumber             `json:"invoiceNumber,omitempty" url:"invoiceNumber,omitempty"`
-	InvoiceDate          *Datenullable              `json:"invoiceDate,omitempty" url:"invoiceDate,omitempty"`
-	InvoiceDueDate       *Datenullable              `json:"invoiceDueDate,omitempty" url:"invoiceDueDate,omitempty"`
-	InvoiceEndDate       *Datenullable              `json:"invoiceEndDate,omitempty" url:"invoiceEndDate,omitempty"`
+	InvoiceDate          *time.Time                 `json:"invoiceDate,omitempty" url:"invoiceDate,omitempty" format:"date"`
+	InvoiceDueDate       *time.Time                 `json:"invoiceDueDate,omitempty" url:"invoiceDueDate,omitempty" format:"date"`
+	InvoiceEndDate       *time.Time                 `json:"invoiceEndDate,omitempty" url:"invoiceEndDate,omitempty" format:"date"`
 	InvoiceStatus        *Invoicestatus             `json:"invoiceStatus,omitempty" url:"invoiceStatus,omitempty"`
 	InvoiceType          *InvoiceType               `json:"invoiceType,omitempty" url:"invoiceType,omitempty"`
 	Frequency            *Frequency                 `json:"frequency,omitempty" url:"frequency,omitempty"`
@@ -6441,21 +6625,21 @@ func (t *TransactionDetailInvoiceData) GetInvoiceNumber() *InvoiceNumber {
 	return t.InvoiceNumber
 }
 
-func (t *TransactionDetailInvoiceData) GetInvoiceDate() *Datenullable {
+func (t *TransactionDetailInvoiceData) GetInvoiceDate() *time.Time {
 	if t == nil {
 		return nil
 	}
 	return t.InvoiceDate
 }
 
-func (t *TransactionDetailInvoiceData) GetInvoiceDueDate() *Datenullable {
+func (t *TransactionDetailInvoiceData) GetInvoiceDueDate() *time.Time {
 	if t == nil {
 		return nil
 	}
 	return t.InvoiceDueDate
 }
 
-func (t *TransactionDetailInvoiceData) GetInvoiceEndDate() *Datenullable {
+func (t *TransactionDetailInvoiceData) GetInvoiceEndDate() *time.Time {
 	if t == nil {
 		return nil
 	}
@@ -6659,6 +6843,9 @@ func (t *TransactionDetailInvoiceData) GetAdditionalData() *AdditionalDataString
 }
 
 func (t *TransactionDetailInvoiceData) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -6678,21 +6865,21 @@ func (t *TransactionDetailInvoiceData) SetInvoiceNumber(invoiceNumber *InvoiceNu
 
 // SetInvoiceDate sets the InvoiceDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailInvoiceData) SetInvoiceDate(invoiceDate *Datenullable) {
+func (t *TransactionDetailInvoiceData) SetInvoiceDate(invoiceDate *time.Time) {
 	t.InvoiceDate = invoiceDate
 	t.require(transactionDetailInvoiceDataFieldInvoiceDate)
 }
 
 // SetInvoiceDueDate sets the InvoiceDueDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailInvoiceData) SetInvoiceDueDate(invoiceDueDate *Datenullable) {
+func (t *TransactionDetailInvoiceData) SetInvoiceDueDate(invoiceDueDate *time.Time) {
 	t.InvoiceDueDate = invoiceDueDate
 	t.require(transactionDetailInvoiceDataFieldInvoiceDueDate)
 }
 
 // SetInvoiceEndDate sets the InvoiceEndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailInvoiceData) SetInvoiceEndDate(invoiceEndDate *Datenullable) {
+func (t *TransactionDetailInvoiceData) SetInvoiceEndDate(invoiceEndDate *time.Time) {
 	t.InvoiceEndDate = invoiceEndDate
 	t.require(transactionDetailInvoiceDataFieldInvoiceEndDate)
 }
@@ -6894,12 +7081,22 @@ func (t *TransactionDetailInvoiceData) SetAdditionalData(additionalData *Additio
 }
 
 func (t *TransactionDetailInvoiceData) UnmarshalJSON(data []byte) error {
-	type unmarshaler TransactionDetailInvoiceData
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed TransactionDetailInvoiceData
+	var unmarshaler = struct {
+		embed
+		InvoiceDate    *internal.Date `json:"invoiceDate,omitempty"`
+		InvoiceDueDate *internal.Date `json:"invoiceDueDate,omitempty"`
+		InvoiceEndDate *internal.Date `json:"invoiceEndDate,omitempty"`
+	}{
+		embed: embed(*t),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*t = TransactionDetailInvoiceData(value)
+	*t = TransactionDetailInvoiceData(unmarshaler.embed)
+	t.InvoiceDate = unmarshaler.InvoiceDate.TimePtr()
+	t.InvoiceDueDate = unmarshaler.InvoiceDueDate.TimePtr()
+	t.InvoiceEndDate = unmarshaler.InvoiceEndDate.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *t)
 	if err != nil {
 		return err
@@ -6913,14 +7110,23 @@ func (t *TransactionDetailInvoiceData) MarshalJSON() ([]byte, error) {
 	type embed TransactionDetailInvoiceData
 	var marshaler = struct {
 		embed
+		InvoiceDate    *internal.Date `json:"invoiceDate,omitempty"`
+		InvoiceDueDate *internal.Date `json:"invoiceDueDate,omitempty"`
+		InvoiceEndDate *internal.Date `json:"invoiceEndDate,omitempty"`
 	}{
-		embed: embed(*t),
+		embed:          embed(*t),
+		InvoiceDate:    internal.NewOptionalDate(t.InvoiceDate),
+		InvoiceDueDate: internal.NewOptionalDate(t.InvoiceDueDate),
+		InvoiceEndDate: internal.NewOptionalDate(t.InvoiceEndDate),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 func (t *TransactionDetailInvoiceData) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -7063,6 +7269,9 @@ func (t *TransactionDetailPaymentData) GetPaymentDetails() *TransactionDetailPay
 }
 
 func (t *TransactionDetailPaymentData) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -7192,6 +7401,9 @@ func (t *TransactionDetailPaymentData) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransactionDetailPaymentData) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -7361,6 +7573,9 @@ func (t *TransactionDetailPaymentDetails) GetSplitFunding() []interface{} {
 }
 
 func (t *TransactionDetailPaymentDetails) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -7511,6 +7726,9 @@ func (t *TransactionDetailPaymentDetails) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransactionDetailPaymentDetails) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -7618,13 +7836,13 @@ type TransactionDetailRecord struct {
 	SplitFundingInstructions     *SplitFunding                  `json:"splitFundingInstructions,omitempty" url:"splitFundingInstructions,omitempty"`
 	CfeeTransactions             []*QueryCFeeTransaction        `json:"cfeeTransactions" url:"cfeeTransactions"`
 	TransactionEvents            []*TransactionDetailEvent      `json:"transactionEvents" url:"transactionEvents"`
-	PendingFeeAmount             PendingFeeAmount               `json:"pendingFeeAmount,omitempty" url:"pendingFeeAmount,omitempty"`
-	RiskFlagged                  RiskFlagged                    `json:"riskFlagged,omitempty" url:"riskFlagged,omitempty"`
-	RiskFlaggedOn                RiskFlaggedOn                  `json:"riskFlaggedOn,omitempty" url:"riskFlaggedOn,omitempty"`
+	PendingFeeAmount             *PendingFeeAmount              `json:"pendingFeeAmount,omitempty" url:"pendingFeeAmount,omitempty"`
+	RiskFlagged                  *RiskFlagged                   `json:"riskFlagged,omitempty" url:"riskFlagged,omitempty"`
+	RiskFlaggedOn                *RiskFlaggedOn                 `json:"riskFlaggedOn,omitempty" url:"riskFlaggedOn,omitempty"`
 	RiskStatus                   RiskStatus                     `json:"riskStatus" url:"riskStatus"`
 	RiskReason                   RiskReason                     `json:"riskReason" url:"riskReason"`
 	RiskAction                   RiskAction                     `json:"riskAction" url:"riskAction"`
-	RiskActionCode               RiskActionCode                 `json:"riskActionCode,omitempty" url:"riskActionCode,omitempty"`
+	RiskActionCode               *RiskActionCode                `json:"riskActionCode,omitempty" url:"riskActionCode,omitempty"`
 	DeviceId                     Device                         `json:"deviceId" url:"deviceId"`
 	AchSecCode                   AchSecCode                     `json:"achSecCode" url:"achSecCode"`
 	AchHolderType                AchHolderType                  `json:"achHolderType" url:"achHolderType"`
@@ -7912,21 +8130,21 @@ func (t *TransactionDetailRecord) GetTransactionEvents() []*TransactionDetailEve
 	return t.TransactionEvents
 }
 
-func (t *TransactionDetailRecord) GetPendingFeeAmount() PendingFeeAmount {
+func (t *TransactionDetailRecord) GetPendingFeeAmount() *PendingFeeAmount {
 	if t == nil {
 		return nil
 	}
 	return t.PendingFeeAmount
 }
 
-func (t *TransactionDetailRecord) GetRiskFlagged() RiskFlagged {
+func (t *TransactionDetailRecord) GetRiskFlagged() *RiskFlagged {
 	if t == nil {
 		return nil
 	}
 	return t.RiskFlagged
 }
 
-func (t *TransactionDetailRecord) GetRiskFlaggedOn() RiskFlaggedOn {
+func (t *TransactionDetailRecord) GetRiskFlaggedOn() *RiskFlaggedOn {
 	if t == nil {
 		return nil
 	}
@@ -7954,7 +8172,7 @@ func (t *TransactionDetailRecord) GetRiskAction() RiskAction {
 	return t.RiskAction
 }
 
-func (t *TransactionDetailRecord) GetRiskActionCode() RiskActionCode {
+func (t *TransactionDetailRecord) GetRiskActionCode() *RiskActionCode {
 	if t == nil {
 		return nil
 	}
@@ -8004,6 +8222,9 @@ func (t *TransactionDetailRecord) GetWalletType() *string {
 }
 
 func (t *TransactionDetailRecord) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -8289,21 +8510,21 @@ func (t *TransactionDetailRecord) SetTransactionEvents(transactionEvents []*Tran
 
 // SetPendingFeeAmount sets the PendingFeeAmount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailRecord) SetPendingFeeAmount(pendingFeeAmount PendingFeeAmount) {
+func (t *TransactionDetailRecord) SetPendingFeeAmount(pendingFeeAmount *PendingFeeAmount) {
 	t.PendingFeeAmount = pendingFeeAmount
 	t.require(transactionDetailRecordFieldPendingFeeAmount)
 }
 
 // SetRiskFlagged sets the RiskFlagged field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailRecord) SetRiskFlagged(riskFlagged RiskFlagged) {
+func (t *TransactionDetailRecord) SetRiskFlagged(riskFlagged *RiskFlagged) {
 	t.RiskFlagged = riskFlagged
 	t.require(transactionDetailRecordFieldRiskFlagged)
 }
 
 // SetRiskFlaggedOn sets the RiskFlaggedOn field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailRecord) SetRiskFlaggedOn(riskFlaggedOn RiskFlaggedOn) {
+func (t *TransactionDetailRecord) SetRiskFlaggedOn(riskFlaggedOn *RiskFlaggedOn) {
 	t.RiskFlaggedOn = riskFlaggedOn
 	t.require(transactionDetailRecordFieldRiskFlaggedOn)
 }
@@ -8331,7 +8552,7 @@ func (t *TransactionDetailRecord) SetRiskAction(riskAction RiskAction) {
 
 // SetRiskActionCode sets the RiskActionCode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailRecord) SetRiskActionCode(riskActionCode RiskActionCode) {
+func (t *TransactionDetailRecord) SetRiskActionCode(riskActionCode *RiskActionCode) {
 	t.RiskActionCode = riskActionCode
 	t.require(transactionDetailRecordFieldRiskActionCode)
 }
@@ -8406,6 +8627,9 @@ func (t *TransactionDetailRecord) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransactionDetailRecord) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -8600,6 +8824,9 @@ func (t *TransactionDetailResponseData) GetEmvAuthResponseData() *EmvAuthRespons
 }
 
 func (t *TransactionDetailResponseData) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -8750,6 +8977,9 @@ func (t *TransactionDetailResponseData) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransactionDetailResponseData) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -8802,6 +9032,9 @@ func (v *ValidateResponse) GetResponseData() *ValidateResponseData {
 }
 
 func (v *ValidateResponse) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -8861,6 +9094,9 @@ func (v *ValidateResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (v *ValidateResponse) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
@@ -8958,6 +9194,9 @@ func (v *ValidateResponseData) GetMethodReferenceId() *MethodReferenceId {
 }
 
 func (v *ValidateResponseData) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -9052,6 +9291,9 @@ func (v *ValidateResponseData) MarshalJSON() ([]byte, error) {
 }
 
 func (v *ValidateResponseData) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
@@ -9131,6 +9373,9 @@ func (v *VoidResponse) GetResponseData() *VoidResponseData {
 }
 
 func (v *VoidResponse) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -9211,6 +9456,9 @@ func (v *VoidResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VoidResponse) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
@@ -9308,6 +9556,9 @@ func (v *VoidResponseData) GetMethodReferenceId() *MethodReferenceId {
 }
 
 func (v *VoidResponseData) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -9402,6 +9653,9 @@ func (v *VoidResponseData) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VoidResponseData) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value

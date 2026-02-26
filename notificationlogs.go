@@ -94,6 +94,9 @@ func (k *KeyValueArray) GetValue() []string {
 }
 
 func (k *KeyValueArray) GetExtraProperties() map[string]interface{} {
+	if k == nil {
+		return nil
+	}
 	return k.extraProperties
 }
 
@@ -146,6 +149,9 @@ func (k *KeyValueArray) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KeyValueArray) String() string {
+	if k == nil {
+		return "<nil>"
+	}
 	if len(k.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(k.rawJSON); err == nil {
 			return value
@@ -290,6 +296,9 @@ func (n *NotificationLog) GetIsInProgress() bool {
 }
 
 func (n *NotificationLog) GetExtraProperties() map[string]interface{} {
+	if n == nil {
+		return nil
+	}
 	return n.extraProperties
 }
 
@@ -428,6 +437,9 @@ func (n *NotificationLog) MarshalJSON() ([]byte, error) {
 }
 
 func (n *NotificationLog) String() string {
+	if n == nil {
+		return "<nil>"
+	}
 	if len(n.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(n.rawJSON); err == nil {
 			return value
@@ -599,6 +611,9 @@ func (n *NotificationLogDetail) GetResponseContent() *string {
 }
 
 func (n *NotificationLogDetail) GetExtraProperties() map[string]interface{} {
+	if n == nil {
+		return nil
+	}
 	return n.extraProperties
 }
 
@@ -758,6 +773,9 @@ func (n *NotificationLogDetail) MarshalJSON() ([]byte, error) {
 }
 
 func (n *NotificationLogDetail) String() string {
+	if n == nil {
+		return "<nil>"
+	}
 	if len(n.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(n.rawJSON); err == nil {
 			return value
@@ -842,6 +860,9 @@ func (n *NotificationLogSearchRequest) GetPaypointId() *int64 {
 }
 
 func (n *NotificationLogSearchRequest) GetExtraProperties() map[string]interface{} {
+	if n == nil {
+		return nil
+	}
 	return n.extraProperties
 }
 
@@ -934,6 +955,9 @@ func (n *NotificationLogSearchRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (n *NotificationLogSearchRequest) String() string {
+	if n == nil {
+		return "<nil>"
+	}
 	if len(n.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(n.rawJSON); err == nil {
 			return value
@@ -976,6 +1000,9 @@ func (s *StringStringKeyValuePair) GetValue() *string {
 }
 
 func (s *StringStringKeyValuePair) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
 	return s.extraProperties
 }
 
@@ -1028,6 +1055,9 @@ func (s *StringStringKeyValuePair) MarshalJSON() ([]byte, error) {
 }
 
 func (s *StringStringKeyValuePair) String() string {
+	if s == nil {
+		return "<nil>"
+	}
 	if len(s.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value

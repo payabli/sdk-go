@@ -58,18 +58,42 @@ func (d *Date) MarshalJSON() ([]byte, error) {
 }
 
 func (d *Date) UnmarshalJSON(data []byte) error {
+	if string(data) == "null" {
+		d.t = nil
+		return nil
+	}
+
 	var raw string
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
 
-	parsedTime, err := time.Parse(dateFormat, raw)
-	if err != nil {
-		return err
+	layouts := []string{
+		dateFormat,                      // 2006-01-02
+		time.RFC3339Nano,                // with timezone
+		"2006-01-02T15:04:05.999999999", // without timezone
 	}
 
-	*d = Date{t: &parsedTime}
-	return nil
+	for i, layout := range layouts {
+		if t, err := time.Parse(layout, raw); err == nil {
+			// If parsed from datetime without timezone, normalize to UTC
+			if i == 2 {
+				t = t.UTC()
+			}
+
+			// Truncate to date (midnight UTC)
+			year, month, day := t.Date()
+			normalized := time.Date(year, month, day, 0, 0, 0, 0, time.UTC)
+
+			*d = Date{t: &normalized}
+			return nil
+		}
+	}
+
+	return &json.UnmarshalTypeError{
+		Value: "invalid datetime format: " + raw,
+		Type:  nil,
+	}
 }
 
 // DateTime wraps time.Time and adapts its JSON representation
@@ -129,6 +153,7 @@ func (d *DateTime) UnmarshalJSON(data []byte) error {
 
 	layouts := []string{
 		time.RFC3339Nano,                // with timezone
+		"2006-01-02T15:04:05.999",       // without timezone
 		"2006-01-02T15:04:05.999999999", // without timezone
 	}
 
