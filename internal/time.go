@@ -2,6 +2,7 @@ package internal
 
 import (
 	"encoding/json"
+	"fmt"
 	"time"
 )
 
@@ -150,6 +151,7 @@ func (d *DateTime) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
+	fmt.Printf("RAW: %q\n", raw)
 
 	layouts := []string{
 		time.RFC3339Nano,                // with timezone
