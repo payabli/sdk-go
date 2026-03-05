@@ -52,7 +52,7 @@ func (c *Client) AddPayLinkFromInvoice(
 	return response.Body, nil
 }
 
-// Generates a payment link for a bill from the bill ID.
+// Generates a payment link for a bill from the bill ID. The vendor receives a secure page where they can select their preferred payment method (ACH, virtual card, or check) and complete the payment.
 func (c *Client) AddPayLinkFromBill(
 	ctx context.Context,
 	// The Payabli ID for the bill.
@@ -199,6 +199,46 @@ func (c *Client) AddPayLinkFromBillLotNumber(
 	response, err := c.WithRawResponse.AddPayLinkFromBillLotNumber(
 		ctx,
 		lotNumber,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Partially updates a Pay Out payment link's content, expiration date, and/or status. Use this to modify the payment page configuration, extend or change the expiration, or cancel a link. Updating the expiration date of an expired link reactivates it to Active status.
+func (c *Client) PatchOutPaymentLink(
+	ctx context.Context,
+	// ID for the payment link.
+	paylinkId string,
+	request *payabli.PatchOutPaymentLinkRequest,
+	opts ...option.RequestOption,
+) (*payabli.PayabliApiResponsePaymentLinks, error) {
+	response, err := c.WithRawResponse.PatchOutPaymentLink(
+		ctx,
+		paylinkId,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Updates the payment page content for a Pay Out payment link. Use this to change the branding, messaging, payment methods offered, or other page configuration.
+func (c *Client) UpdatePayLinkOutFromId(
+	ctx context.Context,
+	// ID for the payment link.
+	paylinkId string,
+	request *payabli.PaymentPageRequestBodyOut,
+	opts ...option.RequestOption,
+) (*payabli.PayabliApiResponsePaymentLinks, error) {
+	response, err := c.WithRawResponse.UpdatePayLinkOutFromId(
+		ctx,
+		paylinkId,
 		request,
 		opts...,
 	)

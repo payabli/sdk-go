@@ -48,7 +48,7 @@ request := &payabli.AddBillRequest{
             Comments: payabli.String(
                 "Deposit for materials",
             ),
-            BillItems: []*payabli.BillItem{
+            BillItems: &payabli.Billitems{
                 &payabli.BillItem{
                     ItemProductCode: payabli.String(
                         "M-DEPOSIT",
@@ -111,7 +111,7 @@ request := &payabli.AddBillRequest{
             Status: payabli.Int(
                 -99,
             ),
-            Attachments: []*payabli.FileContent{
+            Attachments: &payabli.Attachments{
                 &payabli.FileContent{
                     Ftype: payabli.FileContentFtypePdf.Ptr(),
                     Filename: payabli.String(
@@ -202,8 +202,8 @@ Delete a file attached to a bill.
 request := &payabli.DeleteAttachedFromBillRequest{}
 client.Bill.DeleteAttachedFromBill(
         context.TODO(),
-        "0_Bill.pdf",
         285,
+        "0_Bill.pdf",
         request,
     )
 }
@@ -435,8 +435,8 @@ request := &payabli.GetAttachedFromBillRequest{
     }
 client.Bill.GetAttachedFromBill(
         context.TODO(),
-        "0_Bill.pdf",
         285,
+        "0_Bill.pdf",
         request,
     )
 }
@@ -1051,8 +1051,8 @@ Approve or disapprove a bill by ID.
 request := &payabli.SetApprovedBillRequest{}
 client.Bill.SetApprovedBill(
         context.TODO(),
-        "true",
         285,
+        "true",
         request,
     )
 }
@@ -2659,8 +2659,8 @@ Retrieve the registration history for a device.
 ```go
 client.Cloud.HistoryDevice(
         context.TODO(),
-        "WXGDWB",
         "8cfec329267",
+        "WXGDWB",
     )
 }
 ```
@@ -2794,8 +2794,8 @@ Remove a cloud device from an entrypoint.
 ```go
 client.Cloud.RemoveDevice(
         context.TODO(),
-        "6c361c7d-674c-44cc-b790-382b75d1xxx",
         "8cfec329267",
+        "6c361c7d-674c-44cc-b790-382b75d1xxx",
     )
 }
 ```
@@ -3500,8 +3500,8 @@ request := &payabli.ExportBatchDetailsRequest{
     }
 client.Export.ExportBatchDetails(
         context.TODO(),
-        "8cfec329267",
         payabli.ExportFormat1Csv.Ptr(),
+        "8cfec329267",
         request,
     )
 }
@@ -3850,8 +3850,8 @@ request := &payabli.ExportBatchesRequest{
     }
 client.Export.ExportBatches(
         context.TODO(),
-        "8cfec329267",
         payabli.ExportFormat1Csv.Ptr(),
+        "8cfec329267",
         request,
     )
 }
@@ -4178,8 +4178,8 @@ request := &payabli.ExportBatchesOutRequest{
     }
 client.Export.ExportBatchesOut(
         context.TODO(),
-        "8cfec329267",
         payabli.ExportFormat1Csv.Ptr(),
+        "8cfec329267",
         request,
     )
 }
@@ -4468,8 +4468,8 @@ request := &payabli.ExportBillsRequest{
     }
 client.Export.ExportBills(
         context.TODO(),
-        "8cfec329267",
         payabli.ExportFormat1Csv.Ptr(),
+        "8cfec329267",
         request,
     )
 }
@@ -4794,8 +4794,8 @@ request := &payabli.ExportChargebacksRequest{
     }
 client.Export.ExportChargebacks(
         context.TODO(),
-        "8cfec329267",
         payabli.ExportFormat1Csv.Ptr(),
+        "8cfec329267",
         request,
     )
 }
@@ -5162,8 +5162,8 @@ request := &payabli.ExportCustomersRequest{
     }
 client.Export.ExportCustomers(
         context.TODO(),
-        "8cfec329267",
         payabli.ExportFormat1Csv.Ptr(),
+        "8cfec329267",
         request,
     )
 }
@@ -5516,8 +5516,8 @@ request := &payabli.ExportInvoicesRequest{
     }
 client.Export.ExportInvoices(
         context.TODO(),
-        "8cfec329267",
         payabli.ExportFormat1Csv.Ptr(),
+        "8cfec329267",
         request,
     )
 }
@@ -6052,8 +6052,8 @@ request := &payabli.ExportPayoutRequest{
     }
 client.Export.ExportPayout(
         context.TODO(),
-        "8cfec329267",
         payabli.ExportFormat1Csv.Ptr(),
+        "8cfec329267",
         request,
     )
 }
@@ -6537,8 +6537,8 @@ request := &payabli.ExportSettlementsRequest{
     }
 client.Export.ExportSettlements(
         context.TODO(),
-        "8cfec329267",
         payabli.ExportFormat1Csv.Ptr(),
+        "8cfec329267",
         request,
     )
 }
@@ -6903,8 +6903,8 @@ request := &payabli.ExportSubscriptionsRequest{
     }
 client.Export.ExportSubscriptions(
         context.TODO(),
-        "8cfec329267",
         payabli.ExportFormat1Csv.Ptr(),
+        "8cfec329267",
         request,
     )
 }
@@ -7273,8 +7273,8 @@ request := &payabli.ExportTransactionsRequest{
     }
 client.Export.ExportTransactions(
         context.TODO(),
-        "8cfec329267",
         payabli.ExportFormat1Csv.Ptr(),
+        "8cfec329267",
         request,
     )
 }
@@ -7654,8 +7654,8 @@ request := &payabli.ExportTransferDetailsRequest{
     }
 client.Export.ExportTransferDetails(
         context.TODO(),
-        "8cfec329267",
         payabli.ExportFormat1Csv.Ptr(),
+        "8cfec329267",
         int64(1000000),
         request,
     )
@@ -7980,8 +7980,8 @@ request := &payabli.ExportVendorsRequest{
     }
 client.Export.ExportVendors(
         context.TODO(),
-        "8cfec329267",
         payabli.ExportFormat1Csv.Ptr(),
+        "8cfec329267",
         request,
     )
 }
@@ -8889,8 +8889,8 @@ Deletes an invoice that's attached to a file.
 ```go
 client.Invoice.DeleteAttachedFromInvoice(
         context.TODO(),
-        "0_Bill.pdf",
         23548884,
+        "0_Bill.pdf",
     )
 }
 ```
@@ -10527,7 +10527,7 @@ client.MoneyIn.CaptureAuth(
 <dl>
 <dd>
 
-Make a temporary microdeposit in a customer account to verify the customer's ownership and access to the target account. Reverse the microdeposit with `reverseCredit`.
+Make a temporary microdeposit in a customer account to verify the customer's ownership and access to the target account. Reverse the microdeposit with `reverseCredit`. Payabli doesn't automatically make microdeposits when you add a bank account, you must manually make the requests.
 
 This feature must be enabled by Payabli on a per-merchant basis. Contact support for help. 
 </dd>
@@ -10917,8 +10917,8 @@ A reversal either refunds or voids a transaction independent of the transaction'
 ```go
 client.MoneyIn.Reverse(
         context.TODO(),
-        0,
         "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
+        0,
     )
 }
 ```
@@ -10995,8 +10995,8 @@ Refund a transaction that has settled and send money back to the account holder.
 ```go
 client.MoneyIn.Refund(
         context.TODO(),
-        0,
         "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
+        0,
     )
 }
 ```
@@ -12824,8 +12824,8 @@ request := &payabli.AddNotificationRequest{
             },
             Frequency: payabli.NotificationStandardRequestFrequencyUntilcancelled,
             Method: payabli.NotificationStandardRequestMethodWeb,
-            OwnerId: payabli.String(
-                "236",
+            OwnerId: payabli.Int(
+                236,
             ),
             OwnerType: 0,
             Status: payabli.Int(
@@ -13015,8 +13015,8 @@ request := &payabli.UpdateNotificationRequest{
             },
             Frequency: payabli.NotificationStandardRequestFrequencyUntilcancelled,
             Method: payabli.NotificationStandardRequestMethodEmail,
-            OwnerId: payabli.String(
-                "136",
+            OwnerId: payabli.Int(
+                136,
             ),
             OwnerType: 0,
             Status: payabli.Int(
@@ -13607,7 +13607,7 @@ request := &payabli.AddOrganizationRequest{
                 "37615",
             ),
         },
-        Contacts: []*payabli.Contacts{
+        Contacts: &payabli.ContactsField{
             &payabli.Contacts{
                 ContactEmail: payabli.String(
                     "herman@hermanscoatings.com",
@@ -13944,7 +13944,7 @@ Updates an organization's details by ID.
 
 ```go
 request := &payabli.OrganizationData{
-        Contacts: []*payabli.Contacts{
+        Contacts: &payabli.ContactsField{
             &payabli.Contacts{
                 ContactEmail: payabli.String(
                     "herman@hermanscoatings.com",
@@ -14758,7 +14758,7 @@ client.PaymentLink.AddPayLinkFromInvoice(
 <dl>
 <dd>
 
-Generates a payment link for a bill from the bill ID. 
+Generates a payment link for a bill from the bill ID. The vendor receives a secure page where they can select their preferred payment method (ACH, virtual card, or check) and complete the payment.
 </dd>
 </dl>
 </dd>
@@ -14777,7 +14777,7 @@ request := &payabli.PayLinkDataBill{
         Mail2: payabli.String(
             "jo@example.com; ceo@example.com",
         ),
-        Body: &payabli.PaymentPageRequestBody{
+        Body: &payabli.PaymentPageRequestBodyOut{
             ContactUs: &payabli.ContactElement{
                 EmailLabel: payabli.String(
                     "Email",
@@ -14859,9 +14859,15 @@ request := &payabli.PayLinkDataBill{
                     0,
                 ),
             },
-            PaymentMethods: &payabli.MethodElement{
+            PaymentMethods: &payabli.MethodElementOut{
                 AllMethodsChecked: payabli.Bool(
                     true,
+                ),
+                AllowMultipleMethods: payabli.Bool(
+                    true,
+                ),
+                DefaultMethod: payabli.String(
+                    "vcard",
                 ),
                 Enabled: payabli.Bool(
                     true,
@@ -14869,73 +14875,22 @@ request := &payabli.PayLinkDataBill{
                 Header: payabli.String(
                     "Payment Methods",
                 ),
-                Methods: &payabli.MethodsList{
-                    Amex: payabli.Bool(
+                Methods: &payabli.MethodsListOut{
+                    Ach: payabli.Bool(
                         true,
                     ),
-                    ApplePay: payabli.Bool(
+                    Check: payabli.Bool(
                         true,
                     ),
-                    Discover: payabli.Bool(
-                        true,
-                    ),
-                    ECheck: payabli.Bool(
-                        true,
-                    ),
-                    Mastercard: payabli.Bool(
-                        true,
-                    ),
-                    Visa: payabli.Bool(
+                    Vcard: payabli.Bool(
                         true,
                     ),
                 },
                 Order: payabli.Int(
                     0,
                 ),
-            },
-            Payor: &payabli.PayorElement{
-                Enabled: payabli.Bool(
+                ShowPreviewVirtualCard: payabli.Bool(
                     true,
-                ),
-                Fields: []*payabli.PayorFields{
-                    &payabli.PayorFields{
-                        Display: payabli.Bool(
-                            true,
-                        ),
-                        Fixed: payabli.Bool(
-                            true,
-                        ),
-                        Identifier: payabli.Bool(
-                            true,
-                        ),
-                        Label: payabli.String(
-                            "Full Name",
-                        ),
-                        Name: payabli.String(
-                            "fullName",
-                        ),
-                        Order: payabli.Int(
-                            0,
-                        ),
-                        Required: payabli.Bool(
-                            true,
-                        ),
-                        Validation: payabli.String(
-                            "alpha",
-                        ),
-                        Value: payabli.String(
-                            "",
-                        ),
-                        Width: payabli.Int(
-                            0,
-                        ),
-                    },
-                },
-                Header: payabli.String(
-                    "Payor Information",
-                ),
-                Order: payabli.Int(
-                    0,
                 ),
             },
             Review: &payabli.HeaderElement{
@@ -15011,7 +14966,7 @@ client.PaymentLink.AddPayLinkFromBill(
 <dl>
 <dd>
 
-**request:** `*payabli.PaymentPageRequestBody` 
+**request:** `*payabli.PaymentPageRequestBodyOut` 
     
 </dd>
 </dl>
@@ -15052,7 +15007,7 @@ Deletes a payment link by ID.
 ```go
 client.PaymentLink.DeletePayLinkFromId(
         context.TODO(),
-        "payLinkId",
+        "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
     )
 }
 ```
@@ -15554,7 +15509,7 @@ request := &payabli.PayLinkDataOut{
         AmountFixed: payabli.String(
             "true",
         ),
-        Body: &payabli.PaymentPageRequestBody{
+        Body: &payabli.PaymentPageRequestBodyOut{
             ContactUs: &payabli.ContactElement{
                 EmailLabel: payabli.String(
                     "Email",
@@ -15636,9 +15591,15 @@ request := &payabli.PayLinkDataOut{
                     0,
                 ),
             },
-            PaymentMethods: &payabli.MethodElement{
+            PaymentMethods: &payabli.MethodElementOut{
                 AllMethodsChecked: payabli.Bool(
                     true,
+                ),
+                AllowMultipleMethods: payabli.Bool(
+                    true,
+                ),
+                DefaultMethod: payabli.String(
+                    "vcard",
                 ),
                 Enabled: payabli.Bool(
                     true,
@@ -15646,73 +15607,22 @@ request := &payabli.PayLinkDataOut{
                 Header: payabli.String(
                     "Payment Methods",
                 ),
-                Methods: &payabli.MethodsList{
-                    Amex: payabli.Bool(
+                Methods: &payabli.MethodsListOut{
+                    Ach: payabli.Bool(
                         true,
                     ),
-                    ApplePay: payabli.Bool(
+                    Check: payabli.Bool(
                         true,
                     ),
-                    Discover: payabli.Bool(
-                        true,
-                    ),
-                    ECheck: payabli.Bool(
-                        true,
-                    ),
-                    Mastercard: payabli.Bool(
-                        true,
-                    ),
-                    Visa: payabli.Bool(
+                    Vcard: payabli.Bool(
                         true,
                     ),
                 },
                 Order: payabli.Int(
                     0,
                 ),
-            },
-            Payor: &payabli.PayorElement{
-                Enabled: payabli.Bool(
+                ShowPreviewVirtualCard: payabli.Bool(
                     true,
-                ),
-                Fields: []*payabli.PayorFields{
-                    &payabli.PayorFields{
-                        Display: payabli.Bool(
-                            true,
-                        ),
-                        Fixed: payabli.Bool(
-                            true,
-                        ),
-                        Identifier: payabli.Bool(
-                            true,
-                        ),
-                        Label: payabli.String(
-                            "Full Name",
-                        ),
-                        Name: payabli.String(
-                            "fullName",
-                        ),
-                        Order: payabli.Int(
-                            0,
-                        ),
-                        Required: payabli.Bool(
-                            true,
-                        ),
-                        Validation: payabli.String(
-                            "alpha",
-                        ),
-                        Value: payabli.String(
-                            "",
-                        ),
-                        Width: payabli.Int(
-                            0,
-                        ),
-                    },
-                },
-                Header: payabli.String(
-                    "Payor Information",
-                ),
-                Order: payabli.Int(
-                    0,
                 ),
             },
             Review: &payabli.HeaderElement{
@@ -15796,7 +15706,283 @@ client.PaymentLink.AddPayLinkFromBillLotNumber(
 <dl>
 <dd>
 
-**request:** `*payabli.PaymentPageRequestBody` 
+**request:** `*payabli.PaymentPageRequestBodyOut` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PaymentLink.PatchOutPaymentLink(PaylinkId, request) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Partially updates a Pay Out payment link's content, expiration date, and/or status. Use this to modify the payment page configuration, extend or change the expiration, or cancel a link. Updating the expiration date of an expired link reactivates it to Active status.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.PatchOutPaymentLinkRequest{
+        ExpirationDate: payabli.String(
+            "2026-06-01T00:00:00Z",
+        ),
+        Status: payabli.PaymentLinkStatusActive.Ptr(),
+    }
+client.PaymentLink.PatchOutPaymentLink(
+        context.TODO(),
+        "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paylinkId:** `string` — ID for the payment link.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `*payabli.PatchOutPaymentLinkRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PaymentLink.UpdatePayLinkOutFromId(PaylinkId, request) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates the payment page content for a Pay Out payment link. Use this to change the branding, messaging, payment methods offered, or other page configuration.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.PaymentPageRequestBodyOut{
+        ContactUs: &payabli.ContactElement{
+            EmailLabel: payabli.String(
+                "Email",
+            ),
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Header: payabli.String(
+                "Contact Us",
+            ),
+            Order: payabli.Int(
+                0,
+            ),
+            PaymentIcons: payabli.Bool(
+                true,
+            ),
+            PhoneLabel: payabli.String(
+                "Phone",
+            ),
+        },
+        Logo: &payabli.Element{
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Order: payabli.Int(
+                0,
+            ),
+        },
+        MessageBeforePaying: &payabli.LabelElement{
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Label: payabli.String(
+                "Please review your payment details",
+            ),
+            Order: payabli.Int(
+                0,
+            ),
+        },
+        Notes: &payabli.NoteElement{
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Header: payabli.String(
+                "Additional Notes",
+            ),
+            Order: payabli.Int(
+                0,
+            ),
+            Placeholder: payabli.String(
+                "Enter any additional notes here",
+            ),
+            Value: payabli.String(
+                "",
+            ),
+        },
+        Page: &payabli.PageElement{
+            Description: payabli.String(
+                "Get paid securely",
+            ),
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Header: payabli.String(
+                "Payment Page",
+            ),
+            Order: payabli.Int(
+                0,
+            ),
+        },
+        PaymentButton: &payabli.LabelElement{
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Label: payabli.String(
+                "Pay Now",
+            ),
+            Order: payabli.Int(
+                0,
+            ),
+        },
+        PaymentMethods: &payabli.MethodElementOut{
+            AllMethodsChecked: payabli.Bool(
+                true,
+            ),
+            AllowMultipleMethods: payabli.Bool(
+                true,
+            ),
+            DefaultMethod: payabli.String(
+                "vcard",
+            ),
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Header: payabli.String(
+                "Payment Methods",
+            ),
+            Methods: &payabli.MethodsListOut{
+                Ach: payabli.Bool(
+                    true,
+                ),
+                Check: payabli.Bool(
+                    true,
+                ),
+                Vcard: payabli.Bool(
+                    true,
+                ),
+            },
+            Order: payabli.Int(
+                0,
+            ),
+            ShowPreviewVirtualCard: payabli.Bool(
+                true,
+            ),
+        },
+        Review: &payabli.HeaderElement{
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Header: payabli.String(
+                "Review Payment",
+            ),
+            Order: payabli.Int(
+                0,
+            ),
+        },
+        Settings: &payabli.PagelinkSetting{
+            Color: payabli.String(
+                "#000000",
+            ),
+            Language: payabli.String(
+                "en",
+            ),
+        },
+    }
+client.PaymentLink.UpdatePayLinkOutFromId(
+        context.TODO(),
+        "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paylinkId:** `string` — ID for the payment link.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `*payabli.PaymentPageRequestBodyOut` 
     
 </dd>
 </dl>
@@ -22774,10 +22960,10 @@ request := &payabli.BasicStatsRequest{
     }
 client.Statistic.BasicStats(
         context.TODO(),
-        int64(1000000),
+        "ytd",
         "m",
         1,
-        "ytd",
+        int64(1000000),
         request,
     )
 }
@@ -22928,9 +23114,9 @@ Retrieves the basic statistics for a customer for a specific time period, groupe
 request := &payabli.CustomerBasicStatsRequest{}
 client.Statistic.CustomerBasicStats(
         context.TODO(),
-        998,
-        "m",
         "ytd",
+        "m",
+        998,
         request,
     )
 }
@@ -23037,9 +23223,9 @@ Retrieves the subscription statistics for a given interval for a paypoint or org
 request := &payabli.SubStatsRequest{}
 client.Statistic.SubStats(
         context.TODO(),
-        int64(1000000),
         "30",
         1,
+        int64(1000000),
         request,
     )
 }
@@ -23135,9 +23321,9 @@ Retrieve the basic statistics about a vendor for a given time period, grouped by
 request := &payabli.VendorBasicStatsRequest{}
 client.Statistic.VendorBasicStats(
         context.TODO(),
+        "ytd",
         "m",
         1,
-        "ytd",
         request,
     )
 }
@@ -23629,8 +23815,8 @@ Generates a boarding link from a boarding template.
 ```go
 client.Templates.GetlinkTemplate(
         context.TODO(),
-        true,
         80,
+        true,
     )
 }
 ```
@@ -23956,7 +24142,7 @@ client.TokenStorage.AddMethod(
 <dl>
 <dd>
 
-**createAnonymous:** `payabli.CreateAnonymous` 
+**createAnonymous:** `*payabli.CreateAnonymous` 
     
 </dd>
 </dl>
@@ -23972,7 +24158,7 @@ client.TokenStorage.AddMethod(
 <dl>
 <dd>
 
-**temporary:** `payabli.Temporary` 
+**temporary:** `*payabli.Temporary` 
     
 </dd>
 </dl>
@@ -24944,9 +25130,9 @@ Resends the MFA code to the user via the selected MFA mode (email or SMS).
 ```go
 client.User.ResendMfaCode(
         context.TODO(),
+        "usrname",
         "Entry",
         1,
-        "usrname",
     )
 }
 ```
@@ -25129,7 +25315,7 @@ request := &payabli.VendorData{
         LocationCode: payabli.String(
             "MIA123",
         ),
-        Contacts: []*payabli.Contacts{
+        Contacts: &payabli.ContactsField{
             &payabli.Contacts{
                 ContactName: payabli.String(
                     "Herman Martinez",
@@ -25750,3 +25936,4 @@ client.Wallet.ConfigureGooglePayPaypoint(
 </dd>
 </dl>
 </details>
+

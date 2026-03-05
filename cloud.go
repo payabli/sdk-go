@@ -148,6 +148,9 @@ func (c *CloudQueryApiResponse) GetResponseText() ResponseText {
 }
 
 func (c *CloudQueryApiResponse) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -207,6 +210,9 @@ func (c *CloudQueryApiResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CloudQueryApiResponse) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -362,6 +368,9 @@ func (p *PoiDevice) GetSerialNumber() *string {
 }
 
 func (p *PoiDevice) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -515,6 +524,9 @@ func (p *PoiDevice) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PoiDevice) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -577,6 +589,9 @@ func (a *AddDeviceResponse) GetResponseData() *string {
 }
 
 func (a *AddDeviceResponse) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -643,6 +658,9 @@ func (a *AddDeviceResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AddDeviceResponse) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -705,6 +723,9 @@ func (r *RemoveDeviceResponse) GetResponseData() *string {
 }
 
 func (r *RemoveDeviceResponse) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
 	return r.extraProperties
 }
 
@@ -771,6 +792,9 @@ func (r *RemoveDeviceResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RemoveDeviceResponse) String() string {
+	if r == nil {
+		return "<nil>"
+	}
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value

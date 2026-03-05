@@ -137,6 +137,9 @@ func (a *AddResponseResponse) GetResponseData() *int {
 }
 
 func (a *AddResponseResponse) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -196,6 +199,9 @@ func (a *AddResponseResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AddResponseResponse) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -280,6 +286,9 @@ func (c *ChargeBackResponse) GetNotes() *string {
 }
 
 func (c *ChargeBackResponse) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -333,12 +342,18 @@ func (c *ChargeBackResponse) SetNotes(notes *string) {
 }
 
 func (c *ChargeBackResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler ChargeBackResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed ChargeBackResponse
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt,omitempty"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*c = ChargeBackResponse(value)
+	*c = ChargeBackResponse(unmarshaler.embed)
+	c.CreatedAt = unmarshaler.CreatedAt.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *c)
 	if err != nil {
 		return err
@@ -352,14 +367,19 @@ func (c *ChargeBackResponse) MarshalJSON() ([]byte, error) {
 	type embed ChargeBackResponse
 	var marshaler = struct {
 		embed
+		CreatedAt *internal.DateTime `json:"createdAt,omitempty"`
 	}{
-		embed: embed(*c),
+		embed:     embed(*c),
+		CreatedAt: internal.NewOptionalDateTime(c.CreatedAt),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 func (c *ChargeBackResponse) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -464,6 +484,9 @@ func (c *ChargebackMessage) GetMessageProperties() map[string]string {
 }
 
 func (c *ChargebackMessage) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -566,6 +589,9 @@ func (c *ChargebackMessage) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ChargebackMessage) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -648,7 +674,7 @@ type ChargebackQueryRecords struct {
 	ScheduleReference *int64  `json:"ScheduleReference,omitempty" url:"ScheduleReference,omitempty"`
 	OrderId           OrderId `json:"OrderId" url:"OrderId"`
 	// Net amount in chargeback or ACH return.
-	NetAmount       Netamountnullable          `json:"NetAmount,omitempty" url:"NetAmount,omitempty"`
+	NetAmount       *Netamountnullable         `json:"NetAmount,omitempty" url:"NetAmount,omitempty"`
 	TransactionTime TransactionTime            `json:"TransactionTime" url:"TransactionTime"`
 	Customer        *QueryTransactionPayorData `json:"Customer" url:"Customer"`
 	PaymentData     *QueryPaymentData          `json:"PaymentData" url:"PaymentData"`
@@ -787,7 +813,7 @@ func (c *ChargebackQueryRecords) GetOrderId() OrderId {
 	return c.OrderId
 }
 
-func (c *ChargebackQueryRecords) GetNetAmount() Netamountnullable {
+func (c *ChargebackQueryRecords) GetNetAmount() *Netamountnullable {
 	if c == nil {
 		return nil
 	}
@@ -907,6 +933,9 @@ func (c *ChargebackQueryRecords) GetProcessorName() string {
 }
 
 func (c *ChargebackQueryRecords) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -1024,7 +1053,7 @@ func (c *ChargebackQueryRecords) SetOrderId(orderId OrderId) {
 
 // SetNetAmount sets the NetAmount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ChargebackQueryRecords) SetNetAmount(netAmount Netamountnullable) {
+func (c *ChargebackQueryRecords) SetNetAmount(netAmount *Netamountnullable) {
 	c.NetAmount = netAmount
 	c.require(chargebackQueryRecordsFieldNetAmount)
 }
@@ -1145,7 +1174,10 @@ func (c *ChargebackQueryRecords) UnmarshalJSON(data []byte) error {
 	type embed ChargebackQueryRecords
 	var unmarshaler = struct {
 		embed
-		ChargebackDate *internal.DateTime `json:"ChargebackDate"`
+		ChargebackDate  *internal.DateTime `json:"ChargebackDate"`
+		CreatedAt       *internal.DateTime `json:"CreatedAt"`
+		ReplyBy         *internal.DateTime `json:"ReplyBy"`
+		TransactionTime *internal.DateTime `json:"TransactionTime"`
 	}{
 		embed: embed(*c),
 	}
@@ -1154,6 +1186,9 @@ func (c *ChargebackQueryRecords) UnmarshalJSON(data []byte) error {
 	}
 	*c = ChargebackQueryRecords(unmarshaler.embed)
 	c.ChargebackDate = unmarshaler.ChargebackDate.Time()
+	c.CreatedAt = unmarshaler.CreatedAt.Time()
+	c.ReplyBy = unmarshaler.ReplyBy.Time()
+	c.TransactionTime = unmarshaler.TransactionTime.Time()
 	extraProperties, err := internal.ExtractExtraProperties(data, *c)
 	if err != nil {
 		return err
@@ -1167,16 +1202,25 @@ func (c *ChargebackQueryRecords) MarshalJSON() ([]byte, error) {
 	type embed ChargebackQueryRecords
 	var marshaler = struct {
 		embed
-		ChargebackDate *internal.DateTime `json:"ChargebackDate"`
+		ChargebackDate  *internal.DateTime `json:"ChargebackDate"`
+		CreatedAt       *internal.DateTime `json:"CreatedAt"`
+		ReplyBy         *internal.DateTime `json:"ReplyBy"`
+		TransactionTime *internal.DateTime `json:"TransactionTime"`
 	}{
-		embed:          embed(*c),
-		ChargebackDate: internal.NewDateTime(c.ChargebackDate),
+		embed:           embed(*c),
+		ChargebackDate:  internal.NewDateTime(c.ChargebackDate),
+		CreatedAt:       internal.NewDateTime(c.CreatedAt),
+		ReplyBy:         internal.NewDateTime(c.ReplyBy),
+		TransactionTime: internal.NewDateTime(c.TransactionTime),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 func (c *ChargebackQueryRecords) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
