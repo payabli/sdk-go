@@ -257,6 +257,9 @@ func (l *LineItem) GetItemUnitOfMeasure() *ItemUnitofMeasure {
 }
 
 func (l *LineItem) GetExtraProperties() map[string]interface{} {
+	if l == nil {
+		return nil
+	}
 	return l.extraProperties
 }
 
@@ -358,6 +361,9 @@ func (l *LineItem) MarshalJSON() ([]byte, error) {
 }
 
 func (l *LineItem) String() string {
+	if l == nil {
+		return "<nil>"
+	}
 	if len(l.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
 			return value
@@ -546,6 +552,9 @@ func (l *LineItemQueryRecord) GetPaypointLegalname() *Legalname {
 }
 
 func (l *LineItemQueryRecord) GetExtraProperties() map[string]interface{} {
+	if l == nil {
+		return nil
+	}
 	return l.extraProperties
 }
 
@@ -676,12 +685,20 @@ func (l *LineItemQueryRecord) SetPaypointLegalname(paypointLegalname *Legalname)
 }
 
 func (l *LineItemQueryRecord) UnmarshalJSON(data []byte) error {
-	type unmarshaler LineItemQueryRecord
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed LineItemQueryRecord
+	var unmarshaler = struct {
+		embed
+		CreatedAt   *internal.DateTime `json:"createdAt,omitempty"`
+		LastUpdated *internal.DateTime `json:"lastUpdated,omitempty"`
+	}{
+		embed: embed(*l),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*l = LineItemQueryRecord(value)
+	*l = LineItemQueryRecord(unmarshaler.embed)
+	l.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	l.LastUpdated = unmarshaler.LastUpdated.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *l)
 	if err != nil {
 		return err
@@ -695,14 +712,21 @@ func (l *LineItemQueryRecord) MarshalJSON() ([]byte, error) {
 	type embed LineItemQueryRecord
 	var marshaler = struct {
 		embed
+		CreatedAt   *internal.DateTime `json:"createdAt,omitempty"`
+		LastUpdated *internal.DateTime `json:"lastUpdated,omitempty"`
 	}{
-		embed: embed(*l),
+		embed:       embed(*l),
+		CreatedAt:   internal.NewOptionalDateTime(l.CreatedAt),
+		LastUpdated: internal.NewOptionalDateTime(l.LastUpdated),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 func (l *LineItemQueryRecord) String() string {
+	if l == nil {
+		return "<nil>"
+	}
 	if len(l.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
 			return value
@@ -765,6 +789,9 @@ func (p *PayabliApiResponse6) GetResponseText() ResponseText {
 }
 
 func (p *PayabliApiResponse6) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -831,6 +858,9 @@ func (p *PayabliApiResponse6) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PayabliApiResponse6) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -874,6 +904,9 @@ func (q *QueryResponseItems) GetSummary() *QuerySummary {
 }
 
 func (q *QueryResponseItems) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -926,6 +959,9 @@ func (q *QueryResponseItems) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QueryResponseItems) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -998,6 +1034,9 @@ func (q *QueryResponseItemsRecordsItem) GetPaypointLegalname() *Legalname {
 }
 
 func (q *QueryResponseItemsRecordsItem) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -1071,6 +1110,9 @@ func (q *QueryResponseItemsRecordsItem) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QueryResponseItemsRecordsItem) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -1113,6 +1155,9 @@ func (d *DeleteItemResponse) GetResponseText() ResponseText {
 }
 
 func (d *DeleteItemResponse) GetExtraProperties() map[string]interface{} {
+	if d == nil {
+		return nil
+	}
 	return d.extraProperties
 }
 
@@ -1165,6 +1210,9 @@ func (d *DeleteItemResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeleteItemResponse) String() string {
+	if d == nil {
+		return "<nil>"
+	}
 	if len(d.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
 			return value

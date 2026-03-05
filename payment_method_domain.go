@@ -259,6 +259,9 @@ func (a *AddPaymentMethodDomainApiResponse) GetResponseText() string {
 }
 
 func (a *AddPaymentMethodDomainApiResponse) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -325,6 +328,9 @@ func (a *AddPaymentMethodDomainApiResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AddPaymentMethodDomainApiResponse) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -370,6 +376,9 @@ func (a *ApplePayData) GetIsEnabled() *IsEnabled {
 }
 
 func (a *ApplePayData) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -422,6 +431,9 @@ func (a *ApplePayData) MarshalJSON() ([]byte, error) {
 }
 
 func (a *ApplePayData) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -498,6 +510,9 @@ func (a *ApplePayMetadata) GetStatusCode() *int {
 }
 
 func (a *ApplePayMetadata) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -571,6 +586,9 @@ func (a *ApplePayMetadata) MarshalJSON() ([]byte, error) {
 }
 
 func (a *ApplePayMetadata) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -615,6 +633,9 @@ func (a *ApplePayStatusData) GetMetadata() *ApplePayMetadata {
 }
 
 func (a *ApplePayStatusData) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -667,6 +688,9 @@ func (a *ApplePayStatusData) MarshalJSON() ([]byte, error) {
 }
 
 func (a *ApplePayStatusData) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -738,6 +762,9 @@ func (c *CascadeJobDetails) GetUpdatedAt() *LastModified {
 }
 
 func (c *CascadeJobDetails) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -784,12 +811,20 @@ func (c *CascadeJobDetails) SetUpdatedAt(updatedAt *LastModified) {
 }
 
 func (c *CascadeJobDetails) UnmarshalJSON(data []byte) error {
-	type unmarshaler CascadeJobDetails
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed CascadeJobDetails
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updatedAt,omitempty"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*c = CascadeJobDetails(value)
+	*c = CascadeJobDetails(unmarshaler.embed)
+	c.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	c.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *c)
 	if err != nil {
 		return err
@@ -803,14 +838,21 @@ func (c *CascadeJobDetails) MarshalJSON() ([]byte, error) {
 	type embed CascadeJobDetails
 	var marshaler = struct {
 		embed
+		CreatedAt *internal.DateTime `json:"createdAt,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updatedAt,omitempty"`
 	}{
-		embed: embed(*c),
+		embed:     embed(*c),
+		CreatedAt: internal.NewOptionalDateTime(c.CreatedAt),
+		UpdatedAt: internal.NewOptionalDateTime(c.UpdatedAt),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 func (c *CascadeJobDetails) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -862,6 +904,9 @@ func (g *GooglePayData) GetIsEnabled() *IsEnabled {
 }
 
 func (g *GooglePayData) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
 	return g.extraProperties
 }
 
@@ -914,6 +959,9 @@ func (g *GooglePayData) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GooglePayData) String() string {
+	if g == nil {
+		return "<nil>"
+	}
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
@@ -969,6 +1017,9 @@ func (g *GooglePayMetadata) GetRedirectDomainName() *string {
 }
 
 func (g *GooglePayMetadata) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
 	return g.extraProperties
 }
 
@@ -1028,6 +1079,9 @@ func (g *GooglePayMetadata) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GooglePayMetadata) String() string {
+	if g == nil {
+		return "<nil>"
+	}
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
@@ -1072,6 +1126,9 @@ func (g *GooglePayStatusData) GetMetadata() *GooglePayMetadata {
 }
 
 func (g *GooglePayStatusData) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
 	return g.extraProperties
 }
 
@@ -1124,6 +1181,9 @@ func (g *GooglePayStatusData) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GooglePayStatusData) String() string {
+	if g == nil {
+		return "<nil>"
+	}
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
@@ -1174,7 +1234,7 @@ type PaymentMethodDomainApiResponse struct {
 	Id              PaymentMethodDomainId `json:"id" url:"id"`
 	OwnerEntityId   OwnerEntityId         `json:"ownerEntityId" url:"ownerEntityId"`
 	OwnerEntityType OwnerEntityType       `json:"ownerEntityType" url:"ownerEntityType"`
-	UpdatedAt       LastModified          `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
+	UpdatedAt       *LastModified         `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1260,7 +1320,7 @@ func (p *PaymentMethodDomainApiResponse) GetOwnerEntityType() OwnerEntityType {
 	return p.OwnerEntityType
 }
 
-func (p *PaymentMethodDomainApiResponse) GetUpdatedAt() LastModified {
+func (p *PaymentMethodDomainApiResponse) GetUpdatedAt() *LastModified {
 	if p == nil {
 		return nil
 	}
@@ -1268,6 +1328,9 @@ func (p *PaymentMethodDomainApiResponse) GetUpdatedAt() LastModified {
 }
 
 func (p *PaymentMethodDomainApiResponse) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -1357,18 +1420,26 @@ func (p *PaymentMethodDomainApiResponse) SetOwnerEntityType(ownerEntityType Owne
 
 // SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentMethodDomainApiResponse) SetUpdatedAt(updatedAt LastModified) {
+func (p *PaymentMethodDomainApiResponse) SetUpdatedAt(updatedAt *LastModified) {
 	p.UpdatedAt = updatedAt
 	p.require(paymentMethodDomainApiResponseFieldUpdatedAt)
 }
 
 func (p *PaymentMethodDomainApiResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler PaymentMethodDomainApiResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed PaymentMethodDomainApiResponse
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt,omitempty"`
+	}{
+		embed: embed(*p),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*p = PaymentMethodDomainApiResponse(value)
+	*p = PaymentMethodDomainApiResponse(unmarshaler.embed)
+	p.CreatedAt = unmarshaler.CreatedAt.Time()
+	p.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *p)
 	if err != nil {
 		return err
@@ -1382,14 +1453,21 @@ func (p *PaymentMethodDomainApiResponse) MarshalJSON() ([]byte, error) {
 	type embed PaymentMethodDomainApiResponse
 	var marshaler = struct {
 		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt,omitempty"`
 	}{
-		embed: embed(*p),
+		embed:     embed(*p),
+		CreatedAt: internal.NewDateTime(p.CreatedAt),
+		UpdatedAt: internal.NewOptionalDateTime(p.UpdatedAt),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 func (p *PaymentMethodDomainApiResponse) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -1450,6 +1528,9 @@ func (p *PaymentMethodDomainGeneralResponse) GetResponseText() string {
 }
 
 func (p *PaymentMethodDomainGeneralResponse) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -1516,6 +1597,9 @@ func (p *PaymentMethodDomainGeneralResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PaymentMethodDomainGeneralResponse) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -1579,6 +1663,9 @@ func (q *QuerySummaryNoAmt) GetTotalRecords() *Totalrecords {
 }
 
 func (q *QuerySummaryNoAmt) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -1645,6 +1732,9 @@ func (q *QuerySummaryNoAmt) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QuerySummaryNoAmt) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -1679,6 +1769,9 @@ func (a *AddPaymentMethodDomainRequestApplePay) GetIsEnabled() *IsEnabled {
 }
 
 func (a *AddPaymentMethodDomainRequestApplePay) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -1724,6 +1817,9 @@ func (a *AddPaymentMethodDomainRequestApplePay) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AddPaymentMethodDomainRequestApplePay) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -1758,6 +1854,9 @@ func (a *AddPaymentMethodDomainRequestGooglePay) GetIsEnabled() *IsEnabled {
 }
 
 func (a *AddPaymentMethodDomainRequestGooglePay) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -1803,6 +1902,9 @@ func (a *AddPaymentMethodDomainRequestGooglePay) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AddPaymentMethodDomainRequestGooglePay) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -1864,6 +1966,9 @@ func (d *DeletePaymentMethodDomainResponse) GetResponseText() ResponseText {
 }
 
 func (d *DeletePaymentMethodDomainResponse) GetExtraProperties() map[string]interface{} {
+	if d == nil {
+		return nil
+	}
 	return d.extraProperties
 }
 
@@ -1930,6 +2035,9 @@ func (d *DeletePaymentMethodDomainResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeletePaymentMethodDomainResponse) String() string {
+	if d == nil {
+		return "<nil>"
+	}
 	if len(d.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
 			return value
@@ -1972,6 +2080,9 @@ func (l *ListPaymentMethodDomainsResponse) GetSummary() *QuerySummaryNoAmt {
 }
 
 func (l *ListPaymentMethodDomainsResponse) GetExtraProperties() map[string]interface{} {
+	if l == nil {
+		return nil
+	}
 	return l.extraProperties
 }
 
@@ -2024,6 +2135,9 @@ func (l *ListPaymentMethodDomainsResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (l *ListPaymentMethodDomainsResponse) String() string {
+	if l == nil {
+		return "<nil>"
+	}
 	if len(l.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
 			return value
@@ -2057,6 +2171,9 @@ func (u *UpdatePaymentMethodDomainRequestWallet) GetIsEnabled() *IsEnabled {
 }
 
 func (u *UpdatePaymentMethodDomainRequestWallet) GetExtraProperties() map[string]interface{} {
+	if u == nil {
+		return nil
+	}
 	return u.extraProperties
 }
 
@@ -2102,6 +2219,9 @@ func (u *UpdatePaymentMethodDomainRequestWallet) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdatePaymentMethodDomainRequestWallet) String() string {
+	if u == nil {
+		return "<nil>"
+	}
 	if len(u.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
 			return value
