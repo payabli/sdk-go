@@ -7,6 +7,7 @@ import (
 	fmt "fmt"
 	internal "github.com/payabli/sdk-go/internal"
 	big "math/big"
+	time "time"
 )
 
 // The new status to apply to a check payment transaction.
@@ -101,6 +102,9 @@ func (a *AuthCapturePayoutResponse) GetResponseData() *AuthCapturePayoutResponse
 }
 
 func (a *AuthCapturePayoutResponse) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -181,6 +185,9 @@ func (a *AuthCapturePayoutResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AuthCapturePayoutResponse) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -277,6 +284,9 @@ func (a *AuthCapturePayoutResponseData) GetMethodReferenceId() *MethodReferenceI
 }
 
 func (a *AuthCapturePayoutResponseData) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -371,6 +381,9 @@ func (a *AuthCapturePayoutResponseData) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AuthCapturePayoutResponseData) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -497,6 +510,9 @@ func (a *AuthorizePaymentMethod) GetStoredMethodUsageType() *StoredMethodUsageTy
 }
 
 func (a *AuthorizePaymentMethod) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -605,6 +621,9 @@ func (a *AuthorizePaymentMethod) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AuthorizePaymentMethod) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -731,6 +750,9 @@ func (a *AuthorizePayoutBody) GetSubscriptionId() *Subscriptionid {
 }
 
 func (a *AuthorizePayoutBody) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -846,6 +868,9 @@ func (a *AuthorizePayoutBody) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AuthorizePayoutBody) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -916,6 +941,9 @@ func (c *CaptureAllOutResponse) GetResponseText() ResponseText {
 }
 
 func (c *CaptureAllOutResponse) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -989,6 +1017,9 @@ func (c *CaptureAllOutResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CaptureAllOutResponse) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -1053,6 +1084,9 @@ func (c *CaptureAllOutResponseResponseDataItem) GetResultText() *Resulttext {
 }
 
 func (c *CaptureAllOutResponseResponseDataItem) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -1119,6 +1153,9 @@ func (c *CaptureAllOutResponseResponseDataItem) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CaptureAllOutResponseResponseDataItem) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -1132,6 +1169,330 @@ func (c *CaptureAllOutResponseResponseDataItem) String() string {
 
 // Lot number associated with the bill.
 type LotNumber = string
+
+// Configuration for payment method selection on Pay Out payment links.
+var (
+	methodElementOutFieldAllMethodsChecked      = big.NewInt(1 << 0)
+	methodElementOutFieldAllowMultipleMethods   = big.NewInt(1 << 1)
+	methodElementOutFieldDefaultMethod          = big.NewInt(1 << 2)
+	methodElementOutFieldEnabled                = big.NewInt(1 << 3)
+	methodElementOutFieldHeader                 = big.NewInt(1 << 4)
+	methodElementOutFieldMethods                = big.NewInt(1 << 5)
+	methodElementOutFieldOrder                  = big.NewInt(1 << 6)
+	methodElementOutFieldShowPreviewVirtualCard = big.NewInt(1 << 7)
+)
+
+type MethodElementOut struct {
+	// Flag indicating if all allowed payment methods will be pre-selected.
+	AllMethodsChecked *bool `json:"allMethodsChecked,omitempty" url:"allMethodsChecked,omitempty"`
+	// When `true`, the vendor can select from multiple payment methods. When `false`, only the default method is shown.
+	AllowMultipleMethods *bool `json:"allowMultipleMethods,omitempty" url:"allowMultipleMethods,omitempty"`
+	// The default payment method to highlight on the payment link page. For example, `"vcard"`, `"ach"`, or `"check"`.
+	DefaultMethod *string `json:"defaultMethod,omitempty" url:"defaultMethod,omitempty"`
+	// When `true`, the payment methods section is displayed on the payment link page.
+	Enabled *bool `json:"enabled,omitempty" url:"enabled,omitempty"`
+	// Header text for the payment methods section.
+	Header  *string         `json:"header,omitempty" url:"header,omitempty"`
+	Methods *MethodsListOut `json:"methods,omitempty" url:"methods,omitempty"`
+	// Display order of the payment methods section on the page.
+	Order *int `json:"order,omitempty" url:"order,omitempty"`
+	// When `true`, a preview of the virtual card is shown on the payment link page.
+	ShowPreviewVirtualCard *bool `json:"showPreviewVirtualCard,omitempty" url:"showPreviewVirtualCard,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *MethodElementOut) GetAllMethodsChecked() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.AllMethodsChecked
+}
+
+func (m *MethodElementOut) GetAllowMultipleMethods() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.AllowMultipleMethods
+}
+
+func (m *MethodElementOut) GetDefaultMethod() *string {
+	if m == nil {
+		return nil
+	}
+	return m.DefaultMethod
+}
+
+func (m *MethodElementOut) GetEnabled() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.Enabled
+}
+
+func (m *MethodElementOut) GetHeader() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Header
+}
+
+func (m *MethodElementOut) GetMethods() *MethodsListOut {
+	if m == nil {
+		return nil
+	}
+	return m.Methods
+}
+
+func (m *MethodElementOut) GetOrder() *int {
+	if m == nil {
+		return nil
+	}
+	return m.Order
+}
+
+func (m *MethodElementOut) GetShowPreviewVirtualCard() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.ShowPreviewVirtualCard
+}
+
+func (m *MethodElementOut) GetExtraProperties() map[string]interface{} {
+	if m == nil {
+		return nil
+	}
+	return m.extraProperties
+}
+
+func (m *MethodElementOut) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetAllMethodsChecked sets the AllMethodsChecked field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodElementOut) SetAllMethodsChecked(allMethodsChecked *bool) {
+	m.AllMethodsChecked = allMethodsChecked
+	m.require(methodElementOutFieldAllMethodsChecked)
+}
+
+// SetAllowMultipleMethods sets the AllowMultipleMethods field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodElementOut) SetAllowMultipleMethods(allowMultipleMethods *bool) {
+	m.AllowMultipleMethods = allowMultipleMethods
+	m.require(methodElementOutFieldAllowMultipleMethods)
+}
+
+// SetDefaultMethod sets the DefaultMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodElementOut) SetDefaultMethod(defaultMethod *string) {
+	m.DefaultMethod = defaultMethod
+	m.require(methodElementOutFieldDefaultMethod)
+}
+
+// SetEnabled sets the Enabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodElementOut) SetEnabled(enabled *bool) {
+	m.Enabled = enabled
+	m.require(methodElementOutFieldEnabled)
+}
+
+// SetHeader sets the Header field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodElementOut) SetHeader(header *string) {
+	m.Header = header
+	m.require(methodElementOutFieldHeader)
+}
+
+// SetMethods sets the Methods field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodElementOut) SetMethods(methods *MethodsListOut) {
+	m.Methods = methods
+	m.require(methodElementOutFieldMethods)
+}
+
+// SetOrder sets the Order field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodElementOut) SetOrder(order *int) {
+	m.Order = order
+	m.require(methodElementOutFieldOrder)
+}
+
+// SetShowPreviewVirtualCard sets the ShowPreviewVirtualCard field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodElementOut) SetShowPreviewVirtualCard(showPreviewVirtualCard *bool) {
+	m.ShowPreviewVirtualCard = showPreviewVirtualCard
+	m.require(methodElementOutFieldShowPreviewVirtualCard)
+}
+
+func (m *MethodElementOut) UnmarshalJSON(data []byte) error {
+	type unmarshaler MethodElementOut
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = MethodElementOut(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *MethodElementOut) MarshalJSON() ([]byte, error) {
+	type embed MethodElementOut
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *MethodElementOut) String() string {
+	if m == nil {
+		return "<nil>"
+	}
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+// Payment methods available for Pay Out payment links. Controls which payout options are offered to the vendor.
+var (
+	methodsListOutFieldAch   = big.NewInt(1 << 0)
+	methodsListOutFieldCheck = big.NewInt(1 << 1)
+	methodsListOutFieldVcard = big.NewInt(1 << 2)
+)
+
+type MethodsListOut struct {
+	// When `true`, ACH bank transfer is offered as a payout method.
+	Ach *bool `json:"ach,omitempty" url:"ach,omitempty"`
+	// When `true`, physical check is offered as a payout method.
+	Check *bool `json:"check,omitempty" url:"check,omitempty"`
+	// When `true`, virtual card (vCard) is offered as a payout method.
+	Vcard *bool `json:"vcard,omitempty" url:"vcard,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *MethodsListOut) GetAch() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.Ach
+}
+
+func (m *MethodsListOut) GetCheck() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.Check
+}
+
+func (m *MethodsListOut) GetVcard() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.Vcard
+}
+
+func (m *MethodsListOut) GetExtraProperties() map[string]interface{} {
+	if m == nil {
+		return nil
+	}
+	return m.extraProperties
+}
+
+func (m *MethodsListOut) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetAch sets the Ach field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodsListOut) SetAch(ach *bool) {
+	m.Ach = ach
+	m.require(methodsListOutFieldAch)
+}
+
+// SetCheck sets the Check field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodsListOut) SetCheck(check *bool) {
+	m.Check = check
+	m.require(methodsListOutFieldCheck)
+}
+
+// SetVcard sets the Vcard field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodsListOut) SetVcard(vcard *bool) {
+	m.Vcard = vcard
+	m.require(methodsListOutFieldVcard)
+}
+
+func (m *MethodsListOut) UnmarshalJSON(data []byte) error {
+	type unmarshaler MethodsListOut
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = MethodsListOut(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *MethodsListOut) MarshalJSON() ([]byte, error) {
+	type embed MethodsListOut
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *MethodsListOut) String() string {
+	if m == nil {
+		return "<nil>"
+	}
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
 
 var (
 	operationResultFieldMessage = big.NewInt(1 << 0)
@@ -1166,6 +1527,9 @@ func (o *OperationResult) GetSuccess() bool {
 }
 
 func (o *OperationResult) GetExtraProperties() map[string]interface{} {
+	if o == nil {
+		return nil
+	}
 	return o.extraProperties
 }
 
@@ -1218,6 +1582,9 @@ func (o *OperationResult) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OperationResult) String() string {
+	if o == nil {
+		return "<nil>"
+	}
 	if len(o.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
 			return value
@@ -1227,6 +1594,35 @@ func (o *OperationResult) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", o)
+}
+
+// The status of a payment link.
+type PaymentLinkStatus string
+
+const (
+	PaymentLinkStatusActive   PaymentLinkStatus = "Active"
+	PaymentLinkStatusExpired  PaymentLinkStatus = "Expired"
+	PaymentLinkStatusCanceled PaymentLinkStatus = "Canceled"
+	PaymentLinkStatusDeleted  PaymentLinkStatus = "Deleted"
+)
+
+func NewPaymentLinkStatusFromString(s string) (PaymentLinkStatus, error) {
+	switch s {
+	case "Active":
+		return PaymentLinkStatusActive, nil
+	case "Expired":
+		return PaymentLinkStatusExpired, nil
+	case "Canceled":
+		return PaymentLinkStatusCanceled, nil
+	case "Deleted":
+		return PaymentLinkStatusDeleted, nil
+	}
+	var t PaymentLinkStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (p PaymentLinkStatus) Ptr() *PaymentLinkStatus {
+	return &p
 }
 
 var (
@@ -1249,9 +1645,9 @@ type RequestOutAuthorizeInvoiceData struct {
 	InvoiceNumber *InvoiceNumber   `json:"invoiceNumber,omitempty" url:"invoiceNumber,omitempty"`
 	NetAmount     *NetAmountstring `json:"netAmount,omitempty" url:"netAmount,omitempty"`
 	// Invoice date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.
-	InvoiceDate *Datenullable `json:"invoiceDate,omitempty" url:"invoiceDate,omitempty"`
+	InvoiceDate *time.Time `json:"invoiceDate,omitempty" url:"invoiceDate,omitempty" format:"date"`
 	// Invoice due date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.
-	DueDate          *Datenullable         `json:"dueDate,omitempty" url:"dueDate,omitempty"`
+	DueDate          *time.Time            `json:"dueDate,omitempty" url:"dueDate,omitempty" format:"date"`
 	Comments         *Comments             `json:"comments,omitempty" url:"comments,omitempty"`
 	LotNumber        *LotNumber            `json:"lotNumber,omitempty" url:"lotNumber,omitempty"`
 	BillId           *BillId               `json:"billId,omitempty" url:"billId,omitempty"`
@@ -1283,14 +1679,14 @@ func (r *RequestOutAuthorizeInvoiceData) GetNetAmount() *NetAmountstring {
 	return r.NetAmount
 }
 
-func (r *RequestOutAuthorizeInvoiceData) GetInvoiceDate() *Datenullable {
+func (r *RequestOutAuthorizeInvoiceData) GetInvoiceDate() *time.Time {
 	if r == nil {
 		return nil
 	}
 	return r.InvoiceDate
 }
 
-func (r *RequestOutAuthorizeInvoiceData) GetDueDate() *Datenullable {
+func (r *RequestOutAuthorizeInvoiceData) GetDueDate() *time.Time {
 	if r == nil {
 		return nil
 	}
@@ -1361,6 +1757,9 @@ func (r *RequestOutAuthorizeInvoiceData) GetAttachments() *Attachments {
 }
 
 func (r *RequestOutAuthorizeInvoiceData) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
 	return r.extraProperties
 }
 
@@ -1387,14 +1786,14 @@ func (r *RequestOutAuthorizeInvoiceData) SetNetAmount(netAmount *NetAmountstring
 
 // SetInvoiceDate sets the InvoiceDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeInvoiceData) SetInvoiceDate(invoiceDate *Datenullable) {
+func (r *RequestOutAuthorizeInvoiceData) SetInvoiceDate(invoiceDate *time.Time) {
 	r.InvoiceDate = invoiceDate
 	r.require(requestOutAuthorizeInvoiceDataFieldInvoiceDate)
 }
 
 // SetDueDate sets the DueDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeInvoiceData) SetDueDate(dueDate *Datenullable) {
+func (r *RequestOutAuthorizeInvoiceData) SetDueDate(dueDate *time.Time) {
 	r.DueDate = dueDate
 	r.require(requestOutAuthorizeInvoiceDataFieldDueDate)
 }
@@ -1463,12 +1862,20 @@ func (r *RequestOutAuthorizeInvoiceData) SetAttachments(attachments *Attachments
 }
 
 func (r *RequestOutAuthorizeInvoiceData) UnmarshalJSON(data []byte) error {
-	type unmarshaler RequestOutAuthorizeInvoiceData
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed RequestOutAuthorizeInvoiceData
+	var unmarshaler = struct {
+		embed
+		InvoiceDate *internal.Date `json:"invoiceDate,omitempty"`
+		DueDate     *internal.Date `json:"dueDate,omitempty"`
+	}{
+		embed: embed(*r),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*r = RequestOutAuthorizeInvoiceData(value)
+	*r = RequestOutAuthorizeInvoiceData(unmarshaler.embed)
+	r.InvoiceDate = unmarshaler.InvoiceDate.TimePtr()
+	r.DueDate = unmarshaler.DueDate.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *r)
 	if err != nil {
 		return err
@@ -1482,14 +1889,21 @@ func (r *RequestOutAuthorizeInvoiceData) MarshalJSON() ([]byte, error) {
 	type embed RequestOutAuthorizeInvoiceData
 	var marshaler = struct {
 		embed
+		InvoiceDate *internal.Date `json:"invoiceDate,omitempty"`
+		DueDate     *internal.Date `json:"dueDate,omitempty"`
 	}{
-		embed: embed(*r),
+		embed:       embed(*r),
+		InvoiceDate: internal.NewOptionalDate(r.InvoiceDate),
+		DueDate:     internal.NewOptionalDate(r.DueDate),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 func (r *RequestOutAuthorizeInvoiceData) String() string {
+	if r == nil {
+		return "<nil>"
+	}
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
@@ -1564,6 +1978,9 @@ func (r *RequestOutAuthorizePaymentDetails) GetUnbundled() *bool {
 }
 
 func (r *RequestOutAuthorizePaymentDetails) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
 	return r.extraProperties
 }
 
@@ -1637,6 +2054,9 @@ func (r *RequestOutAuthorizePaymentDetails) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestOutAuthorizePaymentDetails) String() string {
+	if r == nil {
+		return "<nil>"
+	}
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
@@ -1707,6 +2127,9 @@ func (r *RequestOutAuthorizeVendorBillingData) GetBankAccountHolderName() *BankA
 }
 
 func (r *RequestOutAuthorizeVendorBillingData) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
 	return r.extraProperties
 }
 
@@ -1780,6 +2203,9 @@ func (r *RequestOutAuthorizeVendorBillingData) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestOutAuthorizeVendorBillingData) String() string {
+	if r == nil {
+		return "<nil>"
+	}
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
@@ -2093,6 +2519,9 @@ func (r *RequestOutAuthorizeVendorData) GetVendorId() *Vendorid {
 }
 
 func (r *RequestOutAuthorizeVendorData) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
 	return r.extraProperties
 }
 
@@ -2355,6 +2784,9 @@ func (r *RequestOutAuthorizeVendorData) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestOutAuthorizeVendorData) String() string {
+	if r == nil {
+		return "<nil>"
+	}
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
@@ -2680,6 +3112,9 @@ func (r *RequestOutAuthorizeVendorDataOld) GetZip() *string {
 }
 
 func (r *RequestOutAuthorizeVendorDataOld) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
 	return r.extraProperties
 }
 
@@ -2942,6 +3377,9 @@ func (r *RequestOutAuthorizeVendorDataOld) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestOutAuthorizeVendorDataOld) String() string {
+	if r == nil {
+		return "<nil>"
+	}
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
@@ -3235,6 +3673,9 @@ func (v *VCardGetResponse) GetPaypointId() *int {
 }
 
 func (v *VCardGetResponse) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -3462,6 +3903,9 @@ func (v *VCardGetResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VCardGetResponse) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
@@ -3918,6 +4362,9 @@ func (v *VCardGetResponseAssociatedVendor) GetStoredMethods() *string {
 }
 
 func (v *VCardGetResponseAssociatedVendor) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -4264,6 +4711,9 @@ func (v *VCardGetResponseAssociatedVendor) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VCardGetResponseAssociatedVendor) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
@@ -4429,6 +4879,9 @@ func (v *VCardGetResponseAssociatedVendorBillingData) GetDefault() *bool {
 }
 
 func (v *VCardGetResponseAssociatedVendorBillingData) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -4565,6 +5018,9 @@ func (v *VCardGetResponseAssociatedVendorBillingData) MarshalJSON() ([]byte, err
 }
 
 func (v *VCardGetResponseAssociatedVendorBillingData) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
@@ -4750,6 +5206,9 @@ func (v *VCardGetResponseAssociatedVendorSummary) GetTotalBillsAmount() *float64
 }
 
 func (v *VCardGetResponseAssociatedVendorSummary) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -4900,6 +5359,9 @@ func (v *VCardGetResponseAssociatedVendorSummary) MarshalJSON() ([]byte, error) 
 }
 
 func (v *VCardGetResponseAssociatedVendorSummary) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value
@@ -4965,6 +5427,9 @@ func (v *VCardGetResponseContact) GetContactPhone() *string {
 }
 
 func (v *VCardGetResponseContact) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -5031,6 +5496,9 @@ func (v *VCardGetResponseContact) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VCardGetResponseContact) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value

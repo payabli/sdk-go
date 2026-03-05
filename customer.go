@@ -108,6 +108,9 @@ func (p *PayabliApiResponseCustomerQuery) GetResponseText() ResponseText {
 }
 
 func (p *PayabliApiResponseCustomerQuery) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -167,6 +170,9 @@ func (p *PayabliApiResponseCustomerQuery) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PayabliApiResponseCustomerQuery) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value

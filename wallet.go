@@ -340,6 +340,9 @@ func (a *ApplePayOrganizationUpdateData) GetUpdates() *OrganizationUpdates {
 }
 
 func (a *ApplePayOrganizationUpdateData) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -407,12 +410,20 @@ func (a *ApplePayOrganizationUpdateData) SetUpdates(updates *OrganizationUpdates
 }
 
 func (a *ApplePayOrganizationUpdateData) UnmarshalJSON(data []byte) error {
-	type unmarshaler ApplePayOrganizationUpdateData
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed ApplePayOrganizationUpdateData
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updatedAt,omitempty"`
+	}{
+		embed: embed(*a),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*a = ApplePayOrganizationUpdateData(value)
+	*a = ApplePayOrganizationUpdateData(unmarshaler.embed)
+	a.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	a.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *a)
 	if err != nil {
 		return err
@@ -426,14 +437,21 @@ func (a *ApplePayOrganizationUpdateData) MarshalJSON() ([]byte, error) {
 	type embed ApplePayOrganizationUpdateData
 	var marshaler = struct {
 		embed
+		CreatedAt *internal.DateTime `json:"createdAt,omitempty"`
+		UpdatedAt *internal.DateTime `json:"updatedAt,omitempty"`
 	}{
-		embed: embed(*a),
+		embed:     embed(*a),
+		CreatedAt: internal.NewOptionalDateTime(a.CreatedAt),
+		UpdatedAt: internal.NewOptionalDateTime(a.UpdatedAt),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 func (a *ApplePayOrganizationUpdateData) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -495,6 +513,9 @@ func (a *ApplePayPaypointRegistrationData) GetWalletData() *AppleWalletData {
 }
 
 func (a *ApplePayPaypointRegistrationData) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -561,6 +582,9 @@ func (a *ApplePayPaypointRegistrationData) MarshalJSON() ([]byte, error) {
 }
 
 func (a *ApplePayPaypointRegistrationData) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -573,7 +597,7 @@ func (a *ApplePayPaypointRegistrationData) String() string {
 }
 
 // The record type.
-type ApplePayType = *string
+type ApplePayType = string
 
 // The wallet data.
 var (
@@ -685,6 +709,9 @@ func (a *AppleWalletData) GetType() *ApplePayType {
 }
 
 func (a *AppleWalletData) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -770,6 +797,8 @@ func (a *AppleWalletData) UnmarshalJSON(data []byte) error {
 	var unmarshaler = struct {
 		embed
 		MarkedForDeletionAt *internal.DateTime `json:"markedForDeletionAt,omitempty"`
+		CreatedAt           *internal.DateTime `json:"createdAt,omitempty"`
+		UpdatedAt           *internal.DateTime `json:"updatedAt,omitempty"`
 	}{
 		embed: embed(*a),
 	}
@@ -778,6 +807,8 @@ func (a *AppleWalletData) UnmarshalJSON(data []byte) error {
 	}
 	*a = AppleWalletData(unmarshaler.embed)
 	a.MarkedForDeletionAt = unmarshaler.MarkedForDeletionAt.TimePtr()
+	a.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	a.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *a)
 	if err != nil {
 		return err
@@ -792,15 +823,22 @@ func (a *AppleWalletData) MarshalJSON() ([]byte, error) {
 	var marshaler = struct {
 		embed
 		MarkedForDeletionAt *internal.DateTime `json:"markedForDeletionAt,omitempty"`
+		CreatedAt           *internal.DateTime `json:"createdAt,omitempty"`
+		UpdatedAt           *internal.DateTime `json:"updatedAt,omitempty"`
 	}{
 		embed:               embed(*a),
 		MarkedForDeletionAt: internal.NewOptionalDateTime(a.MarkedForDeletionAt),
+		CreatedAt:           internal.NewOptionalDateTime(a.CreatedAt),
+		UpdatedAt:           internal.NewOptionalDateTime(a.UpdatedAt),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 func (a *AppleWalletData) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -873,6 +911,9 @@ func (c *ConfigureApplePayOrganizationApiResponse) GetResponseText() ResponseTex
 }
 
 func (c *ConfigureApplePayOrganizationApiResponse) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -946,6 +987,9 @@ func (c *ConfigureApplePayOrganizationApiResponse) MarshalJSON() ([]byte, error)
 }
 
 func (c *ConfigureApplePayOrganizationApiResponse) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -1025,6 +1069,9 @@ func (c *ConfigureApplePaypointApiResponse) GetRoomId() *int64 {
 }
 
 func (c *ConfigureApplePaypointApiResponse) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -1105,6 +1152,9 @@ func (c *ConfigureApplePaypointApiResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfigureApplePaypointApiResponse) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -1184,6 +1234,9 @@ func (c *ConfigureGooglePaypointApiResponse) GetRoomId() *int64 {
 }
 
 func (c *ConfigureGooglePaypointApiResponse) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -1264,6 +1317,9 @@ func (c *ConfigureGooglePaypointApiResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfigureGooglePaypointApiResponse) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -1325,6 +1381,9 @@ func (g *GooglePayPaypointRegistrationData) GetWalletData() *GoogleWalletData {
 }
 
 func (g *GooglePayPaypointRegistrationData) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
 	return g.extraProperties
 }
 
@@ -1391,6 +1450,9 @@ func (g *GooglePayPaypointRegistrationData) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GooglePayPaypointRegistrationData) String() string {
+	if g == nil {
+		return "<nil>"
+	}
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
@@ -1436,6 +1498,9 @@ func (g *GoogleWalletData) GetGatewayId() *string {
 }
 
 func (g *GoogleWalletData) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
 	return g.extraProperties
 }
 
@@ -1488,6 +1553,9 @@ func (g *GoogleWalletData) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GoogleWalletData) String() string {
+	if g == nil {
+		return "<nil>"
+	}
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
@@ -1533,6 +1601,9 @@ func (o *OrganizationUpdates) GetIsEnabled() *WalletIsEnabled {
 }
 
 func (o *OrganizationUpdates) GetExtraProperties() map[string]interface{} {
+	if o == nil {
+		return nil
+	}
 	return o.extraProperties
 }
 
@@ -1585,6 +1656,9 @@ func (o *OrganizationUpdates) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OrganizationUpdates) String() string {
+	if o == nil {
+		return "<nil>"
+	}
 	if len(o.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
 			return value
