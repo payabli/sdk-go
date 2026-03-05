@@ -21,9 +21,9 @@ var (
 type AddMethodRequest struct {
 	IdempotencyKey        *IdempotencyKey        `json:"-" url:"-"`
 	AchValidation         *AchValidation         `json:"-" url:"achValidation,omitempty"`
-	CreateAnonymous       CreateAnonymous        `json:"-" url:"createAnonymous,omitempty"`
+	CreateAnonymous       *CreateAnonymous       `json:"-" url:"createAnonymous,omitempty"`
 	ForceCustomerCreation *ForceCustomerCreation `json:"-" url:"forceCustomerCreation,omitempty"`
-	Temporary             Temporary              `json:"-" url:"temporary,omitempty"`
+	Temporary             *Temporary             `json:"-" url:"temporary,omitempty"`
 	Body                  *RequestTokenStorage   `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -53,7 +53,7 @@ func (a *AddMethodRequest) SetAchValidation(achValidation *AchValidation) {
 
 // SetCreateAnonymous sets the CreateAnonymous field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AddMethodRequest) SetCreateAnonymous(createAnonymous CreateAnonymous) {
+func (a *AddMethodRequest) SetCreateAnonymous(createAnonymous *CreateAnonymous) {
 	a.CreateAnonymous = createAnonymous
 	a.require(addMethodRequestFieldCreateAnonymous)
 }
@@ -67,7 +67,7 @@ func (a *AddMethodRequest) SetForceCustomerCreation(forceCustomerCreation *Force
 
 // SetTemporary sets the Temporary field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AddMethodRequest) SetTemporary(temporary Temporary) {
+func (a *AddMethodRequest) SetTemporary(temporary *Temporary) {
 	a.Temporary = temporary
 	a.require(addMethodRequestFieldTemporary)
 }
@@ -209,6 +209,9 @@ func (p *PayabliApiResponsePaymethodDelete) GetResponseText() ResponseText {
 }
 
 func (p *PayabliApiResponsePaymethodDelete) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -268,6 +271,9 @@ func (p *PayabliApiResponsePaymethodDelete) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PayabliApiResponsePaymethodDelete) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -320,6 +326,9 @@ func (p *PayabliApiResponsePaymethodDeleteResponseData) GetResultText() *Resultt
 }
 
 func (p *PayabliApiResponsePaymethodDeleteResponseData) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -379,6 +388,9 @@ func (p *PayabliApiResponsePaymethodDeleteResponseData) MarshalJSON() ([]byte, e
 }
 
 func (p *PayabliApiResponsePaymethodDeleteResponseData) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -430,6 +442,9 @@ func (a *AddMethodResponse) GetResponseData() *AddMethodResponseResponseData {
 }
 
 func (a *AddMethodResponse) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -489,6 +504,9 @@ func (a *AddMethodResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AddMethodResponse) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -562,6 +580,9 @@ func (a *AddMethodResponseResponseData) GetMethodReferenceId() *MethodReferenceI
 }
 
 func (a *AddMethodResponseResponseData) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -635,6 +656,9 @@ func (a *AddMethodResponseResponseData) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AddMethodResponseResponseData) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -680,6 +704,9 @@ func (c *ConvertToken) GetTokenId() string {
 }
 
 func (c *ConvertToken) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -732,6 +759,9 @@ func (c *ConvertToken) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConvertToken) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -744,7 +774,7 @@ func (c *ConvertToken) String() string {
 }
 
 // When `true`, creates a saved method with no associated customer information. The token will be associated with customer information the first time it's used to make a payment. Defaults to `false`.
-type CreateAnonymous = *bool
+type CreateAnonymous = bool
 
 var (
 	getMethodResponseFieldIsSuccess    = big.NewInt(1 << 0)
@@ -786,6 +816,9 @@ func (g *GetMethodResponse) GetResponseText() ResponseText {
 }
 
 func (g *GetMethodResponse) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
 	return g.extraProperties
 }
 
@@ -845,6 +878,9 @@ func (g *GetMethodResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetMethodResponse) String() string {
+	if g == nil {
+		return "<nil>"
+	}
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
@@ -1042,6 +1078,9 @@ func (g *GetMethodResponseResponseData) GetVendors() []*GetMethodResponseRespons
 }
 
 func (g *GetMethodResponseResponseData) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
 	return g.extraProperties
 }
 
@@ -1218,6 +1257,9 @@ func (g *GetMethodResponseResponseData) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetMethodResponseResponseData) String() string {
+	if g == nil {
+		return "<nil>"
+	}
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
@@ -1649,6 +1691,9 @@ func (g *GetMethodResponseResponseDataCustomersItem) GetTimeZone() *int {
 }
 
 func (g *GetMethodResponseResponseDataCustomersItem) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
 	return g.extraProperties
 }
 
@@ -2000,6 +2045,9 @@ func (g *GetMethodResponseResponseDataCustomersItem) MarshalJSON() ([]byte, erro
 }
 
 func (g *GetMethodResponseResponseDataCustomersItem) String() string {
+	if g == nil {
+		return "<nil>"
+	}
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
@@ -2474,6 +2522,9 @@ func (g *GetMethodResponseResponseDataVendorsItem) GetZip() *string {
 }
 
 func (g *GetMethodResponseResponseDataVendorsItem) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
 	return g.extraProperties
 }
 
@@ -2839,6 +2890,9 @@ func (g *GetMethodResponseResponseDataVendorsItem) MarshalJSON() ([]byte, error)
 }
 
 func (g *GetMethodResponseResponseDataVendorsItem) String() string {
+	if g == nil {
+		return "<nil>"
+	}
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
@@ -2951,6 +3005,9 @@ func (r *RequestTokenStorage) GetSubdomain() *Subdomain {
 }
 
 func (r *RequestTokenStorage) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
 	return r.extraProperties
 }
 
@@ -3052,6 +3109,9 @@ func (r *RequestTokenStorage) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestTokenStorage) String() string {
+	if r == nil {
+		return "<nil>"
+	}
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
@@ -3151,7 +3211,7 @@ func (r *RequestTokenStoragePaymentMethod) Accept(visitor RequestTokenStoragePay
 }
 
 // Creates a temporary, one-time-use token for the payment method that expires in 12 hours. Defaults to `false`.
-type Temporary = *bool
+type Temporary = bool
 
 var (
 	tokenizeAchFieldMethod         = big.NewInt(1 << 0)
@@ -3239,6 +3299,9 @@ func (t *TokenizeAch) GetDevice() *Device {
 }
 
 func (t *TokenizeAch) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -3333,6 +3396,9 @@ func (t *TokenizeAch) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TokenizeAch) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -3412,6 +3478,9 @@ func (t *TokenizeCard) GetCardzip() *Cardzip {
 }
 
 func (t *TokenizeCard) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
 	return t.extraProperties
 }
 
@@ -3492,6 +3561,9 @@ func (t *TokenizeCard) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TokenizeCard) String() string {
+	if t == nil {
+		return "<nil>"
+	}
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -3537,6 +3609,9 @@ func (v *VendorDataRequest) GetVendorNumber() *string {
 }
 
 func (v *VendorDataRequest) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
 	return v.extraProperties
 }
 
@@ -3589,6 +3664,9 @@ func (v *VendorDataRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VendorDataRequest) String() string {
+	if v == nil {
+		return "<nil>"
+	}
 	if len(v.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
 			return value

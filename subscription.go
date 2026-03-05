@@ -176,6 +176,9 @@ func (s *ScheduleDetail) GetStartDate() *string {
 }
 
 func (s *ScheduleDetail) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
 	return s.extraProperties
 }
 
@@ -242,6 +245,9 @@ func (s *ScheduleDetail) MarshalJSON() ([]byte, error) {
 }
 
 func (s *ScheduleDetail) String() string {
+	if s == nil {
+		return "<nil>"
+	}
 	if len(s.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
@@ -304,6 +310,9 @@ func (a *AddSubscriptionResponse) GetResponseData() int {
 }
 
 func (a *AddSubscriptionResponse) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -370,6 +379,9 @@ func (a *AddSubscriptionResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AddSubscriptionResponse) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -425,6 +437,9 @@ func (r *RemoveSubscriptionResponse) GetResponseText() ResponseText {
 }
 
 func (r *RemoveSubscriptionResponse) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
 	return r.extraProperties
 }
 
@@ -484,6 +499,9 @@ func (r *RemoveSubscriptionResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RemoveSubscriptionResponse) String() string {
+	if r == nil {
+		return "<nil>"
+	}
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
@@ -622,6 +640,9 @@ func (r *RequestSchedulePaymentMethodInitiator) GetStoredMethodUsageType() *Stor
 }
 
 func (r *RequestSchedulePaymentMethodInitiator) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
 	return r.extraProperties
 }
 
@@ -681,6 +702,9 @@ func (r *RequestSchedulePaymentMethodInitiator) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestSchedulePaymentMethodInitiator) String() string {
+	if r == nil {
+		return "<nil>"
+	}
 	if len(r.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
 			return value
@@ -794,6 +818,9 @@ func (s *SubscriptionRequestBody) GetSubdomain() *Subdomain {
 }
 
 func (s *SubscriptionRequestBody) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
 	return s.extraProperties
 }
 
@@ -895,6 +922,9 @@ func (s *SubscriptionRequestBody) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SubscriptionRequestBody) String() string {
+	if s == nil {
+		return "<nil>"
+	}
 	if len(s.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
@@ -959,6 +989,9 @@ func (u *UpdateSubscriptionResponse) GetCustomerId() *CustomerId {
 }
 
 func (u *UpdateSubscriptionResponse) GetExtraProperties() map[string]interface{} {
+	if u == nil {
+		return nil
+	}
 	return u.extraProperties
 }
 
@@ -1025,6 +1058,9 @@ func (u *UpdateSubscriptionResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateSubscriptionResponse) String() string {
+	if u == nil {
+		return "<nil>"
+	}
 	if len(u.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
 			return value

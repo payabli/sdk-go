@@ -447,6 +447,9 @@ func (b *BillOptions) GetIncludePdf() *bool {
 }
 
 func (b *BillOptions) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -499,6 +502,9 @@ func (b *BillOptions) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BillOptions) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -727,6 +733,9 @@ func (p *PayorDataResponse) GetShippingZip() *Shippingzip {
 }
 
 func (p *PayorDataResponse) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -919,6 +928,9 @@ func (p *PayorDataResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PayorDataResponse) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -986,11 +998,11 @@ type GetInvoiceRecord struct {
 	CustomerId        CustomerId        `json:"customerId" url:"customerId"`
 	PaypointId        PaypointId        `json:"paypointId" url:"paypointId"`
 	InvoiceNumber     InvoiceNumber     `json:"invoiceNumber" url:"invoiceNumber"`
-	InvoiceDate       Datenullable      `json:"invoiceDate,omitempty" url:"invoiceDate,omitempty"`
-	InvoiceDueDate    Datenullable      `json:"invoiceDueDate,omitempty" url:"invoiceDueDate,omitempty"`
-	InvoiceSentDate   DatetimeNullable  `json:"invoiceSentDate,omitempty" url:"invoiceSentDate,omitempty"`
-	InvoiceEndDate    Datenullable      `json:"invoiceEndDate,omitempty" url:"invoiceEndDate,omitempty"`
-	LastPaymentDate   DatetimeNullable  `json:"lastPaymentDate,omitempty" url:"lastPaymentDate,omitempty"`
+	InvoiceDate       *time.Time        `json:"invoiceDate,omitempty" url:"invoiceDate,omitempty" format:"date"`
+	InvoiceDueDate    *time.Time        `json:"invoiceDueDate,omitempty" url:"invoiceDueDate,omitempty" format:"date"`
+	InvoiceSentDate   *time.Time        `json:"invoiceSentDate,omitempty" url:"invoiceSentDate,omitempty"`
+	InvoiceEndDate    *time.Time        `json:"invoiceEndDate,omitempty" url:"invoiceEndDate,omitempty" format:"date"`
+	LastPaymentDate   *time.Time        `json:"lastPaymentDate,omitempty" url:"lastPaymentDate,omitempty"`
 	CreatedAt         CreatedAt         `json:"createdAt" url:"createdAt"`
 	InvoiceStatus     Invoicestatus     `json:"invoiceStatus" url:"invoiceStatus"`
 	InvoiceType       InvoiceType       `json:"invoiceType" url:"invoiceType"`
@@ -998,12 +1010,12 @@ type GetInvoiceRecord struct {
 	PaymentTerms      Terms             `json:"paymentTerms" url:"paymentTerms"`
 	TermsConditions   *TermsConditions  `json:"termsConditions,omitempty" url:"termsConditions,omitempty"`
 	Notes             *string           `json:"notes,omitempty" url:"notes,omitempty"`
-	Tax               Tax               `json:"tax,omitempty" url:"tax,omitempty"`
-	Discount          Discount          `json:"discount,omitempty" url:"discount,omitempty"`
+	Tax               *Tax              `json:"tax,omitempty" url:"tax,omitempty"`
+	Discount          *Discount         `json:"discount,omitempty" url:"discount,omitempty"`
 	InvoiceAmount     InvoiceAmount     `json:"invoiceAmount" url:"invoiceAmount"`
 	InvoicePaidAmount InvoicePaidAmount `json:"invoicePaidAmount" url:"invoicePaidAmount"`
-	FreightAmount     FreightAmount     `json:"freightAmount,omitempty" url:"freightAmount,omitempty"`
-	DutyAmount        DutyAmount        `json:"dutyAmount,omitempty" url:"dutyAmount,omitempty"`
+	FreightAmount     *FreightAmount    `json:"freightAmount,omitempty" url:"freightAmount,omitempty"`
+	DutyAmount        *DutyAmount       `json:"dutyAmount,omitempty" url:"dutyAmount,omitempty"`
 	PurchaseOrder     PurchaseOrder     `json:"purchaseOrder" url:"purchaseOrder"`
 	// First name of the recipient of the invoice.
 	FirstName *string `json:"firstName,omitempty" url:"firstName,omitempty"`
@@ -1024,7 +1036,7 @@ type GetInvoiceRecord struct {
 	Items                []*BillItem               `json:"items" url:"items"`
 	Customer             *PayorDataResponse        `json:"Customer" url:"Customer"`
 	PaylinkId            PaylinkId                 `json:"paylinkId" url:"paylinkId"`
-	BillEvents           BillEvents                `json:"billEvents,omitempty" url:"billEvents,omitempty"`
+	BillEvents           *BillEvents               `json:"billEvents,omitempty" url:"billEvents,omitempty"`
 	ScheduledOptions     *BillOptions              `json:"scheduledOptions" url:"scheduledOptions"`
 	PaypointLegalname    string                    `json:"PaypointLegalname" url:"PaypointLegalname"`
 	PaypointDbaname      Dbaname                   `json:"PaypointDbaname" url:"PaypointDbaname"`
@@ -1069,35 +1081,35 @@ func (g *GetInvoiceRecord) GetInvoiceNumber() InvoiceNumber {
 	return g.InvoiceNumber
 }
 
-func (g *GetInvoiceRecord) GetInvoiceDate() Datenullable {
+func (g *GetInvoiceRecord) GetInvoiceDate() *time.Time {
 	if g == nil {
 		return nil
 	}
 	return g.InvoiceDate
 }
 
-func (g *GetInvoiceRecord) GetInvoiceDueDate() Datenullable {
+func (g *GetInvoiceRecord) GetInvoiceDueDate() *time.Time {
 	if g == nil {
 		return nil
 	}
 	return g.InvoiceDueDate
 }
 
-func (g *GetInvoiceRecord) GetInvoiceSentDate() DatetimeNullable {
+func (g *GetInvoiceRecord) GetInvoiceSentDate() *time.Time {
 	if g == nil {
 		return nil
 	}
 	return g.InvoiceSentDate
 }
 
-func (g *GetInvoiceRecord) GetInvoiceEndDate() Datenullable {
+func (g *GetInvoiceRecord) GetInvoiceEndDate() *time.Time {
 	if g == nil {
 		return nil
 	}
 	return g.InvoiceEndDate
 }
 
-func (g *GetInvoiceRecord) GetLastPaymentDate() DatetimeNullable {
+func (g *GetInvoiceRecord) GetLastPaymentDate() *time.Time {
 	if g == nil {
 		return nil
 	}
@@ -1153,14 +1165,14 @@ func (g *GetInvoiceRecord) GetNotes() *string {
 	return g.Notes
 }
 
-func (g *GetInvoiceRecord) GetTax() Tax {
+func (g *GetInvoiceRecord) GetTax() *Tax {
 	if g == nil {
 		return nil
 	}
 	return g.Tax
 }
 
-func (g *GetInvoiceRecord) GetDiscount() Discount {
+func (g *GetInvoiceRecord) GetDiscount() *Discount {
 	if g == nil {
 		return nil
 	}
@@ -1181,14 +1193,14 @@ func (g *GetInvoiceRecord) GetInvoicePaidAmount() InvoicePaidAmount {
 	return g.InvoicePaidAmount
 }
 
-func (g *GetInvoiceRecord) GetFreightAmount() FreightAmount {
+func (g *GetInvoiceRecord) GetFreightAmount() *FreightAmount {
 	if g == nil {
 		return nil
 	}
 	return g.FreightAmount
 }
 
-func (g *GetInvoiceRecord) GetDutyAmount() DutyAmount {
+func (g *GetInvoiceRecord) GetDutyAmount() *DutyAmount {
 	if g == nil {
 		return nil
 	}
@@ -1314,7 +1326,7 @@ func (g *GetInvoiceRecord) GetPaylinkId() PaylinkId {
 	return g.PaylinkId
 }
 
-func (g *GetInvoiceRecord) GetBillEvents() BillEvents {
+func (g *GetInvoiceRecord) GetBillEvents() *BillEvents {
 	if g == nil {
 		return nil
 	}
@@ -1378,6 +1390,9 @@ func (g *GetInvoiceRecord) GetExternalPaypointId() *ExternalPaypointId {
 }
 
 func (g *GetInvoiceRecord) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
 	return g.extraProperties
 }
 
@@ -1418,35 +1433,35 @@ func (g *GetInvoiceRecord) SetInvoiceNumber(invoiceNumber InvoiceNumber) {
 
 // SetInvoiceDate sets the InvoiceDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetInvoiceRecord) SetInvoiceDate(invoiceDate Datenullable) {
+func (g *GetInvoiceRecord) SetInvoiceDate(invoiceDate *time.Time) {
 	g.InvoiceDate = invoiceDate
 	g.require(getInvoiceRecordFieldInvoiceDate)
 }
 
 // SetInvoiceDueDate sets the InvoiceDueDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetInvoiceRecord) SetInvoiceDueDate(invoiceDueDate Datenullable) {
+func (g *GetInvoiceRecord) SetInvoiceDueDate(invoiceDueDate *time.Time) {
 	g.InvoiceDueDate = invoiceDueDate
 	g.require(getInvoiceRecordFieldInvoiceDueDate)
 }
 
 // SetInvoiceSentDate sets the InvoiceSentDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetInvoiceRecord) SetInvoiceSentDate(invoiceSentDate DatetimeNullable) {
+func (g *GetInvoiceRecord) SetInvoiceSentDate(invoiceSentDate *time.Time) {
 	g.InvoiceSentDate = invoiceSentDate
 	g.require(getInvoiceRecordFieldInvoiceSentDate)
 }
 
 // SetInvoiceEndDate sets the InvoiceEndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetInvoiceRecord) SetInvoiceEndDate(invoiceEndDate Datenullable) {
+func (g *GetInvoiceRecord) SetInvoiceEndDate(invoiceEndDate *time.Time) {
 	g.InvoiceEndDate = invoiceEndDate
 	g.require(getInvoiceRecordFieldInvoiceEndDate)
 }
 
 // SetLastPaymentDate sets the LastPaymentDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetInvoiceRecord) SetLastPaymentDate(lastPaymentDate DatetimeNullable) {
+func (g *GetInvoiceRecord) SetLastPaymentDate(lastPaymentDate *time.Time) {
 	g.LastPaymentDate = lastPaymentDate
 	g.require(getInvoiceRecordFieldLastPaymentDate)
 }
@@ -1502,14 +1517,14 @@ func (g *GetInvoiceRecord) SetNotes(notes *string) {
 
 // SetTax sets the Tax field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetInvoiceRecord) SetTax(tax Tax) {
+func (g *GetInvoiceRecord) SetTax(tax *Tax) {
 	g.Tax = tax
 	g.require(getInvoiceRecordFieldTax)
 }
 
 // SetDiscount sets the Discount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetInvoiceRecord) SetDiscount(discount Discount) {
+func (g *GetInvoiceRecord) SetDiscount(discount *Discount) {
 	g.Discount = discount
 	g.require(getInvoiceRecordFieldDiscount)
 }
@@ -1530,14 +1545,14 @@ func (g *GetInvoiceRecord) SetInvoicePaidAmount(invoicePaidAmount InvoicePaidAmo
 
 // SetFreightAmount sets the FreightAmount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetInvoiceRecord) SetFreightAmount(freightAmount FreightAmount) {
+func (g *GetInvoiceRecord) SetFreightAmount(freightAmount *FreightAmount) {
 	g.FreightAmount = freightAmount
 	g.require(getInvoiceRecordFieldFreightAmount)
 }
 
 // SetDutyAmount sets the DutyAmount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetInvoiceRecord) SetDutyAmount(dutyAmount DutyAmount) {
+func (g *GetInvoiceRecord) SetDutyAmount(dutyAmount *DutyAmount) {
 	g.DutyAmount = dutyAmount
 	g.require(getInvoiceRecordFieldDutyAmount)
 }
@@ -1663,7 +1678,7 @@ func (g *GetInvoiceRecord) SetPaylinkId(paylinkId PaylinkId) {
 
 // SetBillEvents sets the BillEvents field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetInvoiceRecord) SetBillEvents(billEvents BillEvents) {
+func (g *GetInvoiceRecord) SetBillEvents(billEvents *BillEvents) {
 	g.BillEvents = billEvents
 	g.require(getInvoiceRecordFieldBillEvents)
 }
@@ -1725,12 +1740,28 @@ func (g *GetInvoiceRecord) SetExternalPaypointId(externalPaypointId *ExternalPay
 }
 
 func (g *GetInvoiceRecord) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetInvoiceRecord
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed GetInvoiceRecord
+	var unmarshaler = struct {
+		embed
+		InvoiceDate     *internal.Date     `json:"invoiceDate,omitempty"`
+		InvoiceDueDate  *internal.Date     `json:"invoiceDueDate,omitempty"`
+		InvoiceSentDate *internal.DateTime `json:"invoiceSentDate,omitempty"`
+		InvoiceEndDate  *internal.Date     `json:"invoiceEndDate,omitempty"`
+		LastPaymentDate *internal.DateTime `json:"lastPaymentDate,omitempty"`
+		CreatedAt       *internal.DateTime `json:"createdAt"`
+	}{
+		embed: embed(*g),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*g = GetInvoiceRecord(value)
+	*g = GetInvoiceRecord(unmarshaler.embed)
+	g.InvoiceDate = unmarshaler.InvoiceDate.TimePtr()
+	g.InvoiceDueDate = unmarshaler.InvoiceDueDate.TimePtr()
+	g.InvoiceSentDate = unmarshaler.InvoiceSentDate.TimePtr()
+	g.InvoiceEndDate = unmarshaler.InvoiceEndDate.TimePtr()
+	g.LastPaymentDate = unmarshaler.LastPaymentDate.TimePtr()
+	g.CreatedAt = unmarshaler.CreatedAt.Time()
 	extraProperties, err := internal.ExtractExtraProperties(data, *g)
 	if err != nil {
 		return err
@@ -1744,14 +1775,29 @@ func (g *GetInvoiceRecord) MarshalJSON() ([]byte, error) {
 	type embed GetInvoiceRecord
 	var marshaler = struct {
 		embed
+		InvoiceDate     *internal.Date     `json:"invoiceDate,omitempty"`
+		InvoiceDueDate  *internal.Date     `json:"invoiceDueDate,omitempty"`
+		InvoiceSentDate *internal.DateTime `json:"invoiceSentDate,omitempty"`
+		InvoiceEndDate  *internal.Date     `json:"invoiceEndDate,omitempty"`
+		LastPaymentDate *internal.DateTime `json:"lastPaymentDate,omitempty"`
+		CreatedAt       *internal.DateTime `json:"createdAt"`
 	}{
-		embed: embed(*g),
+		embed:           embed(*g),
+		InvoiceDate:     internal.NewOptionalDate(g.InvoiceDate),
+		InvoiceDueDate:  internal.NewOptionalDate(g.InvoiceDueDate),
+		InvoiceSentDate: internal.NewOptionalDateTime(g.InvoiceSentDate),
+		InvoiceEndDate:  internal.NewOptionalDate(g.InvoiceEndDate),
+		LastPaymentDate: internal.NewOptionalDateTime(g.LastPaymentDate),
+		CreatedAt:       internal.NewDateTime(g.CreatedAt),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 func (g *GetInvoiceRecord) String() string {
+	if g == nil {
+		return "<nil>"
+	}
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
@@ -1806,6 +1852,9 @@ func (i *InvoiceDataRequest) GetScheduledOptions() *BillOptions {
 }
 
 func (i *InvoiceDataRequest) GetExtraProperties() map[string]interface{} {
+	if i == nil {
+		return nil
+	}
 	return i.extraProperties
 }
 
@@ -1865,6 +1914,9 @@ func (i *InvoiceDataRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (i *InvoiceDataRequest) String() string {
+	if i == nil {
+		return "<nil>"
+	}
 	if len(i.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
 			return value
@@ -1921,6 +1973,9 @@ func (i *InvoiceNumberResponse) GetResponseData() string {
 }
 
 func (i *InvoiceNumberResponse) GetExtraProperties() map[string]interface{} {
+	if i == nil {
+		return nil
+	}
 	return i.extraProperties
 }
 
@@ -1980,6 +2035,9 @@ func (i *InvoiceNumberResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (i *InvoiceNumberResponse) String() string {
+	if i == nil {
+		return "<nil>"
+	}
 	if len(i.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
 			return value
@@ -2063,6 +2121,9 @@ func (i *InvoiceResponseWithoutData) GetRoomId() RoomIdNotInUse {
 }
 
 func (i *InvoiceResponseWithoutData) GetExtraProperties() map[string]interface{} {
+	if i == nil {
+		return nil
+	}
 	return i.extraProperties
 }
 
@@ -2143,6 +2204,9 @@ func (i *InvoiceResponseWithoutData) MarshalJSON() ([]byte, error) {
 }
 
 func (i *InvoiceResponseWithoutData) String() string {
+	if i == nil {
+		return "<nil>"
+	}
 	if len(i.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
 			return value
@@ -2185,6 +2249,9 @@ func (q *QueryInvoiceResponse) GetSummary() *QuerySummary {
 }
 
 func (q *QueryInvoiceResponse) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -2237,6 +2304,9 @@ func (q *QueryInvoiceResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QueryInvoiceResponse) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -2307,30 +2377,30 @@ type QueryInvoiceResponseRecordsItem struct {
 	PaypointId    PaypointId    `json:"paypointId" url:"paypointId"`
 	InvoiceNumber InvoiceNumber `json:"invoiceNumber" url:"invoiceNumber"`
 	// Invoice date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.
-	InvoiceDate Datenullable `json:"invoiceDate,omitempty" url:"invoiceDate,omitempty"`
+	InvoiceDate *time.Time `json:"invoiceDate,omitempty" url:"invoiceDate,omitempty" format:"date"`
 	// Invoice due date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.
-	InvoiceDueDate Datenullable `json:"invoiceDueDate,omitempty" url:"invoiceDueDate,omitempty"`
+	InvoiceDueDate *time.Time `json:"invoiceDueDate,omitempty" url:"invoiceDueDate,omitempty" format:"date"`
 	// Invoice sent date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.
-	InvoiceSentDate Datenullable `json:"invoiceSentDate,omitempty" url:"invoiceSentDate,omitempty"`
+	InvoiceSentDate *time.Time `json:"invoiceSentDate,omitempty" url:"invoiceSentDate,omitempty" format:"date"`
 	// The end date for a scheduled invoice cycle (`invoiceType` = 1).
-	InvoiceEndDate Datenullable `json:"invoiceEndDate,omitempty" url:"invoiceEndDate,omitempty"`
+	InvoiceEndDate *time.Time `json:"invoiceEndDate,omitempty" url:"invoiceEndDate,omitempty" format:"date"`
 	// Timestamp of last payment.
-	LastPaymentDate *DatetimeNullable `json:"lastPaymentDate,omitempty" url:"lastPaymentDate,omitempty"`
-	CreatedAt       CreatedAt         `json:"createdAt" url:"createdAt"`
-	InvoiceStatus   Invoicestatus     `json:"invoiceStatus" url:"invoiceStatus"`
-	InvoiceType     InvoiceType       `json:"invoiceType" url:"invoiceType"`
+	LastPaymentDate *time.Time    `json:"lastPaymentDate,omitempty" url:"lastPaymentDate,omitempty"`
+	CreatedAt       CreatedAt     `json:"createdAt" url:"createdAt"`
+	InvoiceStatus   Invoicestatus `json:"invoiceStatus" url:"invoiceStatus"`
+	InvoiceType     InvoiceType   `json:"invoiceType" url:"invoiceType"`
 	// Frequency of scheduled invoice.
 	Frequency       Frequency        `json:"frequency" url:"frequency"`
 	PaymentTerms    Terms            `json:"paymentTerms" url:"paymentTerms"`
 	TermsConditions *TermsConditions `json:"termsConditions,omitempty" url:"termsConditions,omitempty"`
 	// Invoice notes.
 	Notes             *string           `json:"notes,omitempty" url:"notes,omitempty"`
-	Tax               Tax               `json:"tax,omitempty" url:"tax,omitempty"`
-	Discount          Discount          `json:"discount,omitempty" url:"discount,omitempty"`
+	Tax               *Tax              `json:"tax,omitempty" url:"tax,omitempty"`
+	Discount          *Discount         `json:"discount,omitempty" url:"discount,omitempty"`
 	InvoiceAmount     InvoiceAmount     `json:"invoiceAmount" url:"invoiceAmount"`
 	InvoicePaidAmount InvoicePaidAmount `json:"invoicePaidAmount" url:"invoicePaidAmount"`
-	FreightAmount     FreightAmount     `json:"freightAmount,omitempty" url:"freightAmount,omitempty"`
-	DutyAmount        DutyAmount        `json:"dutyAmount,omitempty" url:"dutyAmount,omitempty"`
+	FreightAmount     *FreightAmount    `json:"freightAmount,omitempty" url:"freightAmount,omitempty"`
+	DutyAmount        *DutyAmount       `json:"dutyAmount,omitempty" url:"dutyAmount,omitempty"`
 	PurchaseOrder     *PurchaseOrder    `json:"purchaseOrder,omitempty" url:"purchaseOrder,omitempty"`
 	// First name of the recipient of the invoice.
 	FirstName string `json:"firstName" url:"firstName"`
@@ -2354,7 +2424,7 @@ type QueryInvoiceResponseRecordsItem struct {
 	Items      []*BillItem        `json:"items" url:"items"`
 	Customer   *PayorDataResponse `json:"Customer" url:"Customer"`
 	PaylinkId  string             `json:"paylinkId" url:"paylinkId"`
-	BillEvents BillEvents         `json:"billEvents,omitempty" url:"billEvents,omitempty"`
+	BillEvents *BillEvents        `json:"billEvents,omitempty" url:"billEvents,omitempty"`
 	// Object with options for scheduled invoices.
 	ScheduledOptions *BillOptions `json:"scheduledOptions,omitempty" url:"scheduledOptions,omitempty"`
 	// Paypoint's legal name.
@@ -2407,35 +2477,35 @@ func (q *QueryInvoiceResponseRecordsItem) GetInvoiceNumber() InvoiceNumber {
 	return q.InvoiceNumber
 }
 
-func (q *QueryInvoiceResponseRecordsItem) GetInvoiceDate() Datenullable {
+func (q *QueryInvoiceResponseRecordsItem) GetInvoiceDate() *time.Time {
 	if q == nil {
 		return nil
 	}
 	return q.InvoiceDate
 }
 
-func (q *QueryInvoiceResponseRecordsItem) GetInvoiceDueDate() Datenullable {
+func (q *QueryInvoiceResponseRecordsItem) GetInvoiceDueDate() *time.Time {
 	if q == nil {
 		return nil
 	}
 	return q.InvoiceDueDate
 }
 
-func (q *QueryInvoiceResponseRecordsItem) GetInvoiceSentDate() Datenullable {
+func (q *QueryInvoiceResponseRecordsItem) GetInvoiceSentDate() *time.Time {
 	if q == nil {
 		return nil
 	}
 	return q.InvoiceSentDate
 }
 
-func (q *QueryInvoiceResponseRecordsItem) GetInvoiceEndDate() Datenullable {
+func (q *QueryInvoiceResponseRecordsItem) GetInvoiceEndDate() *time.Time {
 	if q == nil {
 		return nil
 	}
 	return q.InvoiceEndDate
 }
 
-func (q *QueryInvoiceResponseRecordsItem) GetLastPaymentDate() *DatetimeNullable {
+func (q *QueryInvoiceResponseRecordsItem) GetLastPaymentDate() *time.Time {
 	if q == nil {
 		return nil
 	}
@@ -2491,14 +2561,14 @@ func (q *QueryInvoiceResponseRecordsItem) GetNotes() *string {
 	return q.Notes
 }
 
-func (q *QueryInvoiceResponseRecordsItem) GetTax() Tax {
+func (q *QueryInvoiceResponseRecordsItem) GetTax() *Tax {
 	if q == nil {
 		return nil
 	}
 	return q.Tax
 }
 
-func (q *QueryInvoiceResponseRecordsItem) GetDiscount() Discount {
+func (q *QueryInvoiceResponseRecordsItem) GetDiscount() *Discount {
 	if q == nil {
 		return nil
 	}
@@ -2519,14 +2589,14 @@ func (q *QueryInvoiceResponseRecordsItem) GetInvoicePaidAmount() InvoicePaidAmou
 	return q.InvoicePaidAmount
 }
 
-func (q *QueryInvoiceResponseRecordsItem) GetFreightAmount() FreightAmount {
+func (q *QueryInvoiceResponseRecordsItem) GetFreightAmount() *FreightAmount {
 	if q == nil {
 		return nil
 	}
 	return q.FreightAmount
 }
 
-func (q *QueryInvoiceResponseRecordsItem) GetDutyAmount() DutyAmount {
+func (q *QueryInvoiceResponseRecordsItem) GetDutyAmount() *DutyAmount {
 	if q == nil {
 		return nil
 	}
@@ -2652,7 +2722,7 @@ func (q *QueryInvoiceResponseRecordsItem) GetPaylinkId() string {
 	return q.PaylinkId
 }
 
-func (q *QueryInvoiceResponseRecordsItem) GetBillEvents() BillEvents {
+func (q *QueryInvoiceResponseRecordsItem) GetBillEvents() *BillEvents {
 	if q == nil {
 		return nil
 	}
@@ -2730,6 +2800,9 @@ func (q *QueryInvoiceResponseRecordsItem) GetPageIdentifier() *PageIdentifier {
 }
 
 func (q *QueryInvoiceResponseRecordsItem) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -2770,35 +2843,35 @@ func (q *QueryInvoiceResponseRecordsItem) SetInvoiceNumber(invoiceNumber Invoice
 
 // SetInvoiceDate sets the InvoiceDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryInvoiceResponseRecordsItem) SetInvoiceDate(invoiceDate Datenullable) {
+func (q *QueryInvoiceResponseRecordsItem) SetInvoiceDate(invoiceDate *time.Time) {
 	q.InvoiceDate = invoiceDate
 	q.require(queryInvoiceResponseRecordsItemFieldInvoiceDate)
 }
 
 // SetInvoiceDueDate sets the InvoiceDueDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryInvoiceResponseRecordsItem) SetInvoiceDueDate(invoiceDueDate Datenullable) {
+func (q *QueryInvoiceResponseRecordsItem) SetInvoiceDueDate(invoiceDueDate *time.Time) {
 	q.InvoiceDueDate = invoiceDueDate
 	q.require(queryInvoiceResponseRecordsItemFieldInvoiceDueDate)
 }
 
 // SetInvoiceSentDate sets the InvoiceSentDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryInvoiceResponseRecordsItem) SetInvoiceSentDate(invoiceSentDate Datenullable) {
+func (q *QueryInvoiceResponseRecordsItem) SetInvoiceSentDate(invoiceSentDate *time.Time) {
 	q.InvoiceSentDate = invoiceSentDate
 	q.require(queryInvoiceResponseRecordsItemFieldInvoiceSentDate)
 }
 
 // SetInvoiceEndDate sets the InvoiceEndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryInvoiceResponseRecordsItem) SetInvoiceEndDate(invoiceEndDate Datenullable) {
+func (q *QueryInvoiceResponseRecordsItem) SetInvoiceEndDate(invoiceEndDate *time.Time) {
 	q.InvoiceEndDate = invoiceEndDate
 	q.require(queryInvoiceResponseRecordsItemFieldInvoiceEndDate)
 }
 
 // SetLastPaymentDate sets the LastPaymentDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryInvoiceResponseRecordsItem) SetLastPaymentDate(lastPaymentDate *DatetimeNullable) {
+func (q *QueryInvoiceResponseRecordsItem) SetLastPaymentDate(lastPaymentDate *time.Time) {
 	q.LastPaymentDate = lastPaymentDate
 	q.require(queryInvoiceResponseRecordsItemFieldLastPaymentDate)
 }
@@ -2854,14 +2927,14 @@ func (q *QueryInvoiceResponseRecordsItem) SetNotes(notes *string) {
 
 // SetTax sets the Tax field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryInvoiceResponseRecordsItem) SetTax(tax Tax) {
+func (q *QueryInvoiceResponseRecordsItem) SetTax(tax *Tax) {
 	q.Tax = tax
 	q.require(queryInvoiceResponseRecordsItemFieldTax)
 }
 
 // SetDiscount sets the Discount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryInvoiceResponseRecordsItem) SetDiscount(discount Discount) {
+func (q *QueryInvoiceResponseRecordsItem) SetDiscount(discount *Discount) {
 	q.Discount = discount
 	q.require(queryInvoiceResponseRecordsItemFieldDiscount)
 }
@@ -2882,14 +2955,14 @@ func (q *QueryInvoiceResponseRecordsItem) SetInvoicePaidAmount(invoicePaidAmount
 
 // SetFreightAmount sets the FreightAmount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryInvoiceResponseRecordsItem) SetFreightAmount(freightAmount FreightAmount) {
+func (q *QueryInvoiceResponseRecordsItem) SetFreightAmount(freightAmount *FreightAmount) {
 	q.FreightAmount = freightAmount
 	q.require(queryInvoiceResponseRecordsItemFieldFreightAmount)
 }
 
 // SetDutyAmount sets the DutyAmount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryInvoiceResponseRecordsItem) SetDutyAmount(dutyAmount DutyAmount) {
+func (q *QueryInvoiceResponseRecordsItem) SetDutyAmount(dutyAmount *DutyAmount) {
 	q.DutyAmount = dutyAmount
 	q.require(queryInvoiceResponseRecordsItemFieldDutyAmount)
 }
@@ -3015,7 +3088,7 @@ func (q *QueryInvoiceResponseRecordsItem) SetPaylinkId(paylinkId string) {
 
 // SetBillEvents sets the BillEvents field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryInvoiceResponseRecordsItem) SetBillEvents(billEvents BillEvents) {
+func (q *QueryInvoiceResponseRecordsItem) SetBillEvents(billEvents *BillEvents) {
 	q.BillEvents = billEvents
 	q.require(queryInvoiceResponseRecordsItemFieldBillEvents)
 }
@@ -3091,12 +3164,28 @@ func (q *QueryInvoiceResponseRecordsItem) SetPageIdentifier(pageIdentifier *Page
 }
 
 func (q *QueryInvoiceResponseRecordsItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler QueryInvoiceResponseRecordsItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed QueryInvoiceResponseRecordsItem
+	var unmarshaler = struct {
+		embed
+		InvoiceDate     *internal.Date     `json:"invoiceDate,omitempty"`
+		InvoiceDueDate  *internal.Date     `json:"invoiceDueDate,omitempty"`
+		InvoiceSentDate *internal.Date     `json:"invoiceSentDate,omitempty"`
+		InvoiceEndDate  *internal.Date     `json:"invoiceEndDate,omitempty"`
+		LastPaymentDate *internal.DateTime `json:"lastPaymentDate,omitempty"`
+		CreatedAt       *internal.DateTime `json:"createdAt"`
+	}{
+		embed: embed(*q),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*q = QueryInvoiceResponseRecordsItem(value)
+	*q = QueryInvoiceResponseRecordsItem(unmarshaler.embed)
+	q.InvoiceDate = unmarshaler.InvoiceDate.TimePtr()
+	q.InvoiceDueDate = unmarshaler.InvoiceDueDate.TimePtr()
+	q.InvoiceSentDate = unmarshaler.InvoiceSentDate.TimePtr()
+	q.InvoiceEndDate = unmarshaler.InvoiceEndDate.TimePtr()
+	q.LastPaymentDate = unmarshaler.LastPaymentDate.TimePtr()
+	q.CreatedAt = unmarshaler.CreatedAt.Time()
 	extraProperties, err := internal.ExtractExtraProperties(data, *q)
 	if err != nil {
 		return err
@@ -3110,14 +3199,29 @@ func (q *QueryInvoiceResponseRecordsItem) MarshalJSON() ([]byte, error) {
 	type embed QueryInvoiceResponseRecordsItem
 	var marshaler = struct {
 		embed
+		InvoiceDate     *internal.Date     `json:"invoiceDate,omitempty"`
+		InvoiceDueDate  *internal.Date     `json:"invoiceDueDate,omitempty"`
+		InvoiceSentDate *internal.Date     `json:"invoiceSentDate,omitempty"`
+		InvoiceEndDate  *internal.Date     `json:"invoiceEndDate,omitempty"`
+		LastPaymentDate *internal.DateTime `json:"lastPaymentDate,omitempty"`
+		CreatedAt       *internal.DateTime `json:"createdAt"`
 	}{
-		embed: embed(*q),
+		embed:           embed(*q),
+		InvoiceDate:     internal.NewOptionalDate(q.InvoiceDate),
+		InvoiceDueDate:  internal.NewOptionalDate(q.InvoiceDueDate),
+		InvoiceSentDate: internal.NewOptionalDate(q.InvoiceSentDate),
+		InvoiceEndDate:  internal.NewOptionalDate(q.InvoiceEndDate),
+		LastPaymentDate: internal.NewOptionalDateTime(q.LastPaymentDate),
+		CreatedAt:       internal.NewDateTime(q.CreatedAt),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 func (q *QueryInvoiceResponseRecordsItem) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -3160,6 +3264,9 @@ func (s *SendInvoiceResponse) GetResponseText() ResponseText {
 }
 
 func (s *SendInvoiceResponse) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
 	return s.extraProperties
 }
 
@@ -3212,6 +3319,9 @@ func (s *SendInvoiceResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SendInvoiceResponse) String() string {
+	if s == nil {
+		return "<nil>"
+	}
 	if len(s.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
