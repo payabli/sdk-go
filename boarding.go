@@ -317,6 +317,9 @@ func (a *ASection) GetMultipleOwners() *bool {
 }
 
 func (a *ASection) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -376,6 +379,9 @@ func (a *ASection) MarshalJSON() ([]byte, error) {
 }
 
 func (a *ASection) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -427,6 +433,9 @@ func (a *AchLinkTypes) GetWeb() *LinkData {
 }
 
 func (a *AchLinkTypes) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -486,6 +495,9 @@ func (a *AchLinkTypes) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AchLinkTypes) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -537,6 +549,9 @@ func (a *AchSection) GetPrice() *BasicTable {
 }
 
 func (a *AchSection) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -596,6 +611,9 @@ func (a *AchSection) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AchSection) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -608,7 +626,7 @@ func (a *AchSection) String() string {
 }
 
 // Annual revenue amount.
-type Annualrevenue = *float64
+type Annualrevenue = float64
 
 // Boarding application ID.
 type AppId = int
@@ -679,7 +697,7 @@ type ApplicationData struct {
 	Avgmonthly                 *Avgmonthly                 `json:"avgmonthly,omitempty" url:"avgmonthly,omitempty"`
 	Baddress                   *Baddress1                  `json:"baddress,omitempty" url:"baddress,omitempty"`
 	Baddress1                  *Baddress2                  `json:"baddress1,omitempty" url:"baddress1,omitempty"`
-	BankData                   *Bank                       `json:"bankData,omitempty" url:"bankData,omitempty"`
+	BankData                   *BankData                   `json:"bankData,omitempty" url:"bankData,omitempty"`
 	Bcity                      *Bcity                      `json:"bcity,omitempty" url:"bcity,omitempty"`
 	Bcountry                   *Bcountry                   `json:"bcountry,omitempty" url:"bcountry,omitempty"`
 	Binperson                  *Binperson                  `json:"binperson,omitempty" url:"binperson,omitempty"`
@@ -780,7 +798,7 @@ func (a *ApplicationData) GetBaddress1() *Baddress2 {
 	return a.Baddress1
 }
 
-func (a *ApplicationData) GetBankData() *Bank {
+func (a *ApplicationData) GetBankData() *BankData {
 	if a == nil {
 		return nil
 	}
@@ -1131,6 +1149,9 @@ func (a *ApplicationData) GetOnCreate() *OnCreate {
 }
 
 func (a *ApplicationData) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -1185,7 +1206,7 @@ func (a *ApplicationData) SetBaddress1(baddress1 *Baddress2) {
 
 // SetBankData sets the BankData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationData) SetBankData(bankData *Bank) {
+func (a *ApplicationData) SetBankData(bankData *BankData) {
 	a.BankData = bankData
 	a.require(applicationDataFieldBankData)
 }
@@ -1561,6 +1582,9 @@ func (a *ApplicationData) MarshalJSON() ([]byte, error) {
 }
 
 func (a *ApplicationData) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -1960,6 +1984,9 @@ func (a *ApplicationDataManaged) GetOnCreate() *OnCreate {
 }
 
 func (a *ApplicationDataManaged) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -2285,6 +2312,9 @@ func (a *ApplicationDataManaged) MarshalJSON() ([]byte, error) {
 }
 
 func (a *ApplicationDataManaged) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -2358,6 +2388,9 @@ func (a *ApplicationDataManagedContactsItem) GetAdditionalData() *AdditionalData
 }
 
 func (a *ApplicationDataManagedContactsItem) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -2431,6 +2464,9 @@ func (a *ApplicationDataManagedContactsItem) MarshalJSON() ([]byte, error) {
 }
 
 func (a *ApplicationDataManagedContactsItem) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -2614,6 +2650,9 @@ func (a *ApplicationDataManagedOwnershipItem) GetAdditionalData() *AdditionalDat
 }
 
 func (a *ApplicationDataManagedOwnershipItem) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -2764,6 +2803,9 @@ func (a *ApplicationDataManagedOwnershipItem) MarshalJSON() ([]byte, error) {
 }
 
 func (a *ApplicationDataManagedOwnershipItem) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -3217,6 +3259,9 @@ func (a *ApplicationDataOdp) GetOnCreate() *OnCreate {
 }
 
 func (a *ApplicationDataOdp) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -3584,6 +3629,9 @@ func (a *ApplicationDataOdp) MarshalJSON() ([]byte, error) {
 }
 
 func (a *ApplicationDataOdp) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -3657,6 +3705,9 @@ func (a *ApplicationDataOdpContactsItem) GetAdditionalData() *AdditionalDataStri
 }
 
 func (a *ApplicationDataOdpContactsItem) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -3730,6 +3781,9 @@ func (a *ApplicationDataOdpContactsItem) MarshalJSON() ([]byte, error) {
 }
 
 func (a *ApplicationDataOdpContactsItem) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -3913,6 +3967,9 @@ func (a *ApplicationDataOdpOwnershipItem) GetAdditionalData() *AdditionalDataStr
 }
 
 func (a *ApplicationDataOdpOwnershipItem) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -4063,6 +4120,9 @@ func (a *ApplicationDataOdpOwnershipItem) MarshalJSON() ([]byte, error) {
 }
 
 func (a *ApplicationDataOdpOwnershipItem) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -4143,7 +4203,7 @@ type ApplicationDataPayIn struct {
 	Avgmonthly         *Avgmonthly                   `json:"avgmonthly,omitempty" url:"avgmonthly,omitempty"`
 	Baddress           *Baddress1                    `json:"baddress,omitempty" url:"baddress,omitempty"`
 	Baddress1          *Baddress2                    `json:"baddress1,omitempty" url:"baddress1,omitempty"`
-	BankData           *ApplicationDataPayInBankData `json:"bankData" url:"bankData"`
+	BankData           BankData                      `json:"bankData" url:"bankData"`
 	Bcity              *Bcity                        `json:"bcity,omitempty" url:"bcity,omitempty"`
 	Bcountry           *Bcountry                     `json:"bcountry,omitempty" url:"bcountry,omitempty"`
 	Binperson          *Binperson                    `json:"binperson,omitempty" url:"binperson,omitempty"`
@@ -4157,7 +4217,7 @@ type ApplicationDataPayIn struct {
 	Bzip           *Bzip     `json:"bzip,omitempty" url:"bzip,omitempty"`
 	// List of contacts for the business.
 	Contacts []*ApplicationDataPayInContactsItem `json:"contacts,omitempty" url:"contacts,omitempty"`
-	// The maximum amount of credit that our lending partner, has authorized to your business. It's the upper boundary on how much you can spend or owe on a credit account at any given time.
+	// The maximum amount of credit that our lending partner has authorized to your business for Pay In processing. It's the upper boundary on how much you can spend or owe on a credit account at any given time. For on-demand payout (Pay Out) credit limits, see `payoutCreditLimit`.
 	CreditLimit *string `json:"creditLimit,omitempty" url:"creditLimit,omitempty"`
 	// The alternate or common name that this business is doing business under usually referred to as a DBA name. Payabli strongly recommends including this information.
 	DbaName            *Dbaname            `json:"dbaName,omitempty" url:"dbaName,omitempty"`
@@ -4191,18 +4251,18 @@ type ApplicationDataPayIn struct {
 	Startdate                  *Busstartdate               `json:"startdate,omitempty" url:"startdate,omitempty"`
 	TaxFillName                *Taxfillname                `json:"taxFillName,omitempty" url:"taxFillName,omitempty"`
 	// The associated boarding template's ID in Payabli. Either `templateId` or `boardingLinkId` are required.
-	TemplateId     *TemplateId           `json:"templateId,omitempty" url:"templateId,omitempty"`
-	Ticketamt      *Ticketamt            `json:"ticketamt,omitempty" url:"ticketamt,omitempty"`
-	Website        *Website              `json:"website,omitempty" url:"website,omitempty"`
-	WhenCharged    Whencharged           `json:"whenCharged" url:"whenCharged"`
-	WhenDelivered  Whendelivered         `json:"whenDelivered" url:"whenDelivered"`
-	WhenProvided   Whenprovided          `json:"whenProvided" url:"whenProvided"`
-	WhenRefunded   Whenrefunded          `json:"whenRefunded" url:"whenRefunded"`
-	AdditionalData *AdditionalDataString `json:"additionalData,omitempty" url:"additionalData,omitempty"`
-	RepCode        *RepCode              `json:"RepCode,omitempty" url:"RepCode,omitempty"`
-	RepName        *RepName              `json:"RepName,omitempty" url:"RepName,omitempty"`
-	RepOffice      *RepOffice            `json:"RepOffice,omitempty" url:"RepOffice,omitempty"`
-	OnCreate       *OnCreate             `json:"onCreate,omitempty" url:"onCreate,omitempty"`
+	TemplateId     *TemplateId        `json:"templateId,omitempty" url:"templateId,omitempty"`
+	Ticketamt      *Ticketamt         `json:"ticketamt,omitempty" url:"ticketamt,omitempty"`
+	Website        *Website           `json:"website,omitempty" url:"website,omitempty"`
+	WhenCharged    Whencharged        `json:"whenCharged" url:"whenCharged"`
+	WhenDelivered  Whendelivered      `json:"whenDelivered" url:"whenDelivered"`
+	WhenProvided   Whenprovided       `json:"whenProvided" url:"whenProvided"`
+	WhenRefunded   Whenrefunded       `json:"whenRefunded" url:"whenRefunded"`
+	AdditionalData *AdditionalDataMap `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	RepCode        *RepCode           `json:"RepCode,omitempty" url:"RepCode,omitempty"`
+	RepName        *RepName           `json:"RepName,omitempty" url:"RepName,omitempty"`
+	RepOffice      *RepOffice         `json:"RepOffice,omitempty" url:"RepOffice,omitempty"`
+	OnCreate       *OnCreate          `json:"onCreate,omitempty" url:"onCreate,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -4260,7 +4320,7 @@ func (a *ApplicationDataPayIn) GetBaddress1() *Baddress2 {
 	return a.Baddress1
 }
 
-func (a *ApplicationDataPayIn) GetBankData() *ApplicationDataPayInBankData {
+func (a *ApplicationDataPayIn) GetBankData() BankData {
 	if a == nil {
 		return nil
 	}
@@ -4575,7 +4635,7 @@ func (a *ApplicationDataPayIn) GetWhenRefunded() Whenrefunded {
 	return a.WhenRefunded
 }
 
-func (a *ApplicationDataPayIn) GetAdditionalData() *AdditionalDataString {
+func (a *ApplicationDataPayIn) GetAdditionalData() *AdditionalDataMap {
 	if a == nil {
 		return nil
 	}
@@ -4611,6 +4671,9 @@ func (a *ApplicationDataPayIn) GetOnCreate() *OnCreate {
 }
 
 func (a *ApplicationDataPayIn) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -4672,7 +4735,7 @@ func (a *ApplicationDataPayIn) SetBaddress1(baddress1 *Baddress2) {
 
 // SetBankData sets the BankData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayIn) SetBankData(bankData *ApplicationDataPayInBankData) {
+func (a *ApplicationDataPayIn) SetBankData(bankData BankData) {
 	a.BankData = bankData
 	a.require(applicationDataPayInFieldBankData)
 }
@@ -4987,7 +5050,7 @@ func (a *ApplicationDataPayIn) SetWhenRefunded(whenRefunded Whenrefunded) {
 
 // SetAdditionalData sets the AdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayIn) SetAdditionalData(additionalData *AdditionalDataString) {
+func (a *ApplicationDataPayIn) SetAdditionalData(additionalData *AdditionalDataMap) {
 	a.AdditionalData = additionalData
 	a.require(applicationDataPayInFieldAdditionalData)
 }
@@ -5048,281 +5111,9 @@ func (a *ApplicationDataPayIn) MarshalJSON() ([]byte, error) {
 }
 
 func (a *ApplicationDataPayIn) String() string {
-	if len(a.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(a); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", a)
-}
-
-var (
-	applicationDataPayInBankDataFieldId                    = big.NewInt(1 << 0)
-	applicationDataPayInBankDataFieldAccountId             = big.NewInt(1 << 1)
-	applicationDataPayInBankDataFieldNickname              = big.NewInt(1 << 2)
-	applicationDataPayInBankDataFieldBankName              = big.NewInt(1 << 3)
-	applicationDataPayInBankDataFieldRoutingAccount        = big.NewInt(1 << 4)
-	applicationDataPayInBankDataFieldAccountNumber         = big.NewInt(1 << 5)
-	applicationDataPayInBankDataFieldTypeAccount           = big.NewInt(1 << 6)
-	applicationDataPayInBankDataFieldBankAccountHolderName = big.NewInt(1 << 7)
-	applicationDataPayInBankDataFieldBankAccountHolderType = big.NewInt(1 << 8)
-	applicationDataPayInBankDataFieldBankAccountFunction   = big.NewInt(1 << 9)
-	applicationDataPayInBankDataFieldVerified              = big.NewInt(1 << 10)
-	applicationDataPayInBankDataFieldStatus                = big.NewInt(1 << 11)
-	applicationDataPayInBankDataFieldServices              = big.NewInt(1 << 12)
-)
-
-type ApplicationDataPayInBankData struct {
-	// The Payabli-assigned internal identifier for the bank account.
-	Id *int `json:"id,omitempty" url:"id,omitempty"`
-	// A user-defined internal identifier for the bank account. This allows you to specify which bank account should be used for payments in cases where multiple accounts are configured.
-	AccountId             *string                `json:"accountId,omitempty" url:"accountId,omitempty"`
-	Nickname              *BankNickname          `json:"nickname,omitempty" url:"nickname,omitempty"`
-	BankName              *BankName              `json:"bankName,omitempty" url:"bankName,omitempty"`
-	RoutingAccount        *RoutingAccount        `json:"routingAccount,omitempty" url:"routingAccount,omitempty"`
-	AccountNumber         *AccountNumber         `json:"accountNumber,omitempty" url:"accountNumber,omitempty"`
-	TypeAccount           *TypeAccount           `json:"typeAccount,omitempty" url:"typeAccount,omitempty"`
-	BankAccountHolderName *BankAccountHolderName `json:"bankAccountHolderName,omitempty" url:"bankAccountHolderName,omitempty"`
-	BankAccountHolderType *BankAccountHolderType `json:"bankAccountHolderType,omitempty" url:"bankAccountHolderType,omitempty"`
-	BankAccountFunction   *BankAccountFunction   `json:"bankAccountFunction,omitempty" url:"bankAccountFunction,omitempty"`
-	// Bank account verification status. When `true`, the account has been verified to exist and be in good standing based on vendor checks or previous processing histories.
-	Verified *bool `json:"verified,omitempty" url:"verified,omitempty"`
-	// Bank account status
-	Status *int `json:"status,omitempty" url:"status,omitempty"`
-	// Array of services associated with this bank account
-	Services []string `json:"services,omitempty" url:"services,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (a *ApplicationDataPayInBankData) GetId() *int {
 	if a == nil {
-		return nil
+		return "<nil>"
 	}
-	return a.Id
-}
-
-func (a *ApplicationDataPayInBankData) GetAccountId() *string {
-	if a == nil {
-		return nil
-	}
-	return a.AccountId
-}
-
-func (a *ApplicationDataPayInBankData) GetNickname() *BankNickname {
-	if a == nil {
-		return nil
-	}
-	return a.Nickname
-}
-
-func (a *ApplicationDataPayInBankData) GetBankName() *BankName {
-	if a == nil {
-		return nil
-	}
-	return a.BankName
-}
-
-func (a *ApplicationDataPayInBankData) GetRoutingAccount() *RoutingAccount {
-	if a == nil {
-		return nil
-	}
-	return a.RoutingAccount
-}
-
-func (a *ApplicationDataPayInBankData) GetAccountNumber() *AccountNumber {
-	if a == nil {
-		return nil
-	}
-	return a.AccountNumber
-}
-
-func (a *ApplicationDataPayInBankData) GetTypeAccount() *TypeAccount {
-	if a == nil {
-		return nil
-	}
-	return a.TypeAccount
-}
-
-func (a *ApplicationDataPayInBankData) GetBankAccountHolderName() *BankAccountHolderName {
-	if a == nil {
-		return nil
-	}
-	return a.BankAccountHolderName
-}
-
-func (a *ApplicationDataPayInBankData) GetBankAccountHolderType() *BankAccountHolderType {
-	if a == nil {
-		return nil
-	}
-	return a.BankAccountHolderType
-}
-
-func (a *ApplicationDataPayInBankData) GetBankAccountFunction() *BankAccountFunction {
-	if a == nil {
-		return nil
-	}
-	return a.BankAccountFunction
-}
-
-func (a *ApplicationDataPayInBankData) GetVerified() *bool {
-	if a == nil {
-		return nil
-	}
-	return a.Verified
-}
-
-func (a *ApplicationDataPayInBankData) GetStatus() *int {
-	if a == nil {
-		return nil
-	}
-	return a.Status
-}
-
-func (a *ApplicationDataPayInBankData) GetServices() []string {
-	if a == nil {
-		return nil
-	}
-	return a.Services
-}
-
-func (a *ApplicationDataPayInBankData) GetExtraProperties() map[string]interface{} {
-	return a.extraProperties
-}
-
-func (a *ApplicationDataPayInBankData) require(field *big.Int) {
-	if a.explicitFields == nil {
-		a.explicitFields = big.NewInt(0)
-	}
-	a.explicitFields.Or(a.explicitFields, field)
-}
-
-// SetId sets the Id field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInBankData) SetId(id *int) {
-	a.Id = id
-	a.require(applicationDataPayInBankDataFieldId)
-}
-
-// SetAccountId sets the AccountId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInBankData) SetAccountId(accountId *string) {
-	a.AccountId = accountId
-	a.require(applicationDataPayInBankDataFieldAccountId)
-}
-
-// SetNickname sets the Nickname field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInBankData) SetNickname(nickname *BankNickname) {
-	a.Nickname = nickname
-	a.require(applicationDataPayInBankDataFieldNickname)
-}
-
-// SetBankName sets the BankName field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInBankData) SetBankName(bankName *BankName) {
-	a.BankName = bankName
-	a.require(applicationDataPayInBankDataFieldBankName)
-}
-
-// SetRoutingAccount sets the RoutingAccount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInBankData) SetRoutingAccount(routingAccount *RoutingAccount) {
-	a.RoutingAccount = routingAccount
-	a.require(applicationDataPayInBankDataFieldRoutingAccount)
-}
-
-// SetAccountNumber sets the AccountNumber field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInBankData) SetAccountNumber(accountNumber *AccountNumber) {
-	a.AccountNumber = accountNumber
-	a.require(applicationDataPayInBankDataFieldAccountNumber)
-}
-
-// SetTypeAccount sets the TypeAccount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInBankData) SetTypeAccount(typeAccount *TypeAccount) {
-	a.TypeAccount = typeAccount
-	a.require(applicationDataPayInBankDataFieldTypeAccount)
-}
-
-// SetBankAccountHolderName sets the BankAccountHolderName field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInBankData) SetBankAccountHolderName(bankAccountHolderName *BankAccountHolderName) {
-	a.BankAccountHolderName = bankAccountHolderName
-	a.require(applicationDataPayInBankDataFieldBankAccountHolderName)
-}
-
-// SetBankAccountHolderType sets the BankAccountHolderType field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInBankData) SetBankAccountHolderType(bankAccountHolderType *BankAccountHolderType) {
-	a.BankAccountHolderType = bankAccountHolderType
-	a.require(applicationDataPayInBankDataFieldBankAccountHolderType)
-}
-
-// SetBankAccountFunction sets the BankAccountFunction field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInBankData) SetBankAccountFunction(bankAccountFunction *BankAccountFunction) {
-	a.BankAccountFunction = bankAccountFunction
-	a.require(applicationDataPayInBankDataFieldBankAccountFunction)
-}
-
-// SetVerified sets the Verified field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInBankData) SetVerified(verified *bool) {
-	a.Verified = verified
-	a.require(applicationDataPayInBankDataFieldVerified)
-}
-
-// SetStatus sets the Status field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInBankData) SetStatus(status *int) {
-	a.Status = status
-	a.require(applicationDataPayInBankDataFieldStatus)
-}
-
-// SetServices sets the Services field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInBankData) SetServices(services []string) {
-	a.Services = services
-	a.require(applicationDataPayInBankDataFieldServices)
-}
-
-func (a *ApplicationDataPayInBankData) UnmarshalJSON(data []byte) error {
-	type unmarshaler ApplicationDataPayInBankData
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*a = ApplicationDataPayInBankData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *a)
-	if err != nil {
-		return err
-	}
-	a.extraProperties = extraProperties
-	a.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (a *ApplicationDataPayInBankData) MarshalJSON() ([]byte, error) {
-	type embed ApplicationDataPayInBankData
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*a),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (a *ApplicationDataPayInBankData) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -5396,6 +5187,9 @@ func (a *ApplicationDataPayInContactsItem) GetAdditionalData() *AdditionalDataSt
 }
 
 func (a *ApplicationDataPayInContactsItem) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -5469,6 +5263,9 @@ func (a *ApplicationDataPayInContactsItem) MarshalJSON() ([]byte, error) {
 }
 
 func (a *ApplicationDataPayInContactsItem) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -5652,6 +5449,9 @@ func (a *ApplicationDataPayInOwnershipItem) GetAdditionalData() *AdditionalDataS
 }
 
 func (a *ApplicationDataPayInOwnershipItem) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -5802,6 +5602,9 @@ func (a *ApplicationDataPayInOwnershipItem) MarshalJSON() ([]byte, error) {
 }
 
 func (a *ApplicationDataPayInOwnershipItem) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -5853,6 +5656,9 @@ func (a *ApplicationDataPayInServices) GetOdp() *OdpSetup {
 }
 
 func (a *ApplicationDataPayInServices) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -5912,6 +5718,9 @@ func (a *ApplicationDataPayInServices) MarshalJSON() ([]byte, error) {
 }
 
 func (a *ApplicationDataPayInServices) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -5966,6 +5775,9 @@ func (a *ApplicationDataPayInServicesAch) GetAcceptWeb() *bool {
 }
 
 func (a *ApplicationDataPayInServicesAch) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -6025,6 +5837,9 @@ func (a *ApplicationDataPayInServicesAch) MarshalJSON() ([]byte, error) {
 }
 
 func (a *ApplicationDataPayInServicesAch) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -6089,6 +5904,9 @@ func (a *ApplicationDataPayInServicesCard) GetAcceptVisa() *bool {
 }
 
 func (a *ApplicationDataPayInServicesCard) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -6155,6 +5973,9 @@ func (a *ApplicationDataPayInServicesCard) MarshalJSON() ([]byte, error) {
 }
 
 func (a *ApplicationDataPayInServicesCard) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -6294,7 +6115,7 @@ type ApplicationDetailsRecord struct {
 	Whendelivered              *Whendelivered                          `json:"whendelivered,omitempty" url:"whendelivered,omitempty"`
 	WhenProvided               *Whenprovided                           `json:"whenProvided,omitempty" url:"whenProvided,omitempty"`
 	Whenrefund                 *Whenrefunded                           `json:"whenrefund,omitempty" url:"whenrefund,omitempty"`
-	AdditionalData             *AdditionalDataString                   `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	AdditionalData             *AdditionalDataMap                      `json:"additionalData,omitempty" url:"additionalData,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -6723,7 +6544,7 @@ func (a *ApplicationDetailsRecord) GetWhenrefund() *Whenrefunded {
 	return a.Whenrefund
 }
 
-func (a *ApplicationDetailsRecord) GetAdditionalData() *AdditionalDataString {
+func (a *ApplicationDetailsRecord) GetAdditionalData() *AdditionalDataMap {
 	if a == nil {
 		return nil
 	}
@@ -6731,6 +6552,9 @@ func (a *ApplicationDetailsRecord) GetAdditionalData() *AdditionalDataString {
 }
 
 func (a *ApplicationDetailsRecord) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -7163,18 +6987,26 @@ func (a *ApplicationDetailsRecord) SetWhenrefund(whenrefund *Whenrefunded) {
 
 // SetAdditionalData sets the AdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDetailsRecord) SetAdditionalData(additionalData *AdditionalDataString) {
+func (a *ApplicationDetailsRecord) SetAdditionalData(additionalData *AdditionalDataMap) {
 	a.AdditionalData = additionalData
 	a.require(applicationDetailsRecordFieldAdditionalData)
 }
 
 func (a *ApplicationDetailsRecord) UnmarshalJSON(data []byte) error {
-	type unmarshaler ApplicationDetailsRecord
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed ApplicationDetailsRecord
+	var unmarshaler = struct {
+		embed
+		CreatedAt    *internal.DateTime `json:"createdAt,omitempty"`
+		LastModified *internal.DateTime `json:"lastModified,omitempty"`
+	}{
+		embed: embed(*a),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*a = ApplicationDetailsRecord(value)
+	*a = ApplicationDetailsRecord(unmarshaler.embed)
+	a.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	a.LastModified = unmarshaler.LastModified.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *a)
 	if err != nil {
 		return err
@@ -7188,14 +7020,21 @@ func (a *ApplicationDetailsRecord) MarshalJSON() ([]byte, error) {
 	type embed ApplicationDetailsRecord
 	var marshaler = struct {
 		embed
+		CreatedAt    *internal.DateTime `json:"createdAt,omitempty"`
+		LastModified *internal.DateTime `json:"lastModified,omitempty"`
 	}{
-		embed: embed(*a),
+		embed:        embed(*a),
+		CreatedAt:    internal.NewOptionalDateTime(a.CreatedAt),
+		LastModified: internal.NewOptionalDateTime(a.LastModified),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 func (a *ApplicationDetailsRecord) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -7319,6 +7158,9 @@ func (a *ApplicationDetailsRecordMessagesItem) GetUserName() *string {
 }
 
 func (a *ApplicationDetailsRecordMessagesItem) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -7407,12 +7249,18 @@ func (a *ApplicationDetailsRecordMessagesItem) SetUserName(userName *string) {
 }
 
 func (a *ApplicationDetailsRecordMessagesItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler ApplicationDetailsRecordMessagesItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed ApplicationDetailsRecordMessagesItem
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt,omitempty"`
+	}{
+		embed: embed(*a),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*a = ApplicationDetailsRecordMessagesItem(value)
+	*a = ApplicationDetailsRecordMessagesItem(unmarshaler.embed)
+	a.CreatedAt = unmarshaler.CreatedAt.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *a)
 	if err != nil {
 		return err
@@ -7426,14 +7274,19 @@ func (a *ApplicationDetailsRecordMessagesItem) MarshalJSON() ([]byte, error) {
 	type embed ApplicationDetailsRecordMessagesItem
 	var marshaler = struct {
 		embed
+		CreatedAt *internal.DateTime `json:"createdAt,omitempty"`
 	}{
-		embed: embed(*a),
+		embed:     embed(*a),
+		CreatedAt: internal.NewOptionalDateTime(a.CreatedAt),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 func (a *ApplicationDetailsRecordMessagesItem) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -7574,7 +7427,7 @@ type ApplicationQueryRecord struct {
 	Whendelivered              *Whendelivered              `json:"whendelivered,omitempty" url:"whendelivered,omitempty"`
 	WhenProvided               *Whenprovided               `json:"whenProvided,omitempty" url:"whenProvided,omitempty"`
 	Whenrefund                 *Whenrefunded               `json:"whenrefund,omitempty" url:"whenrefund,omitempty"`
-	AdditionalData             *AdditionalDataString       `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	AdditionalData             *AdditionalDataMap          `json:"additionalData,omitempty" url:"additionalData,omitempty"`
 	RepCode                    *RepCode                    `json:"RepCode,omitempty" url:"RepCode,omitempty"`
 	RepName                    *RepName                    `json:"RepName,omitempty" url:"RepName,omitempty"`
 	RepOffice                  *RepOffice                  `json:"RepOffice,omitempty" url:"RepOffice,omitempty"`
@@ -7999,7 +7852,7 @@ func (a *ApplicationQueryRecord) GetWhenrefund() *Whenrefunded {
 	return a.Whenrefund
 }
 
-func (a *ApplicationQueryRecord) GetAdditionalData() *AdditionalDataString {
+func (a *ApplicationQueryRecord) GetAdditionalData() *AdditionalDataMap {
 	if a == nil {
 		return nil
 	}
@@ -8028,6 +7881,9 @@ func (a *ApplicationQueryRecord) GetRepOffice() *RepOffice {
 }
 
 func (a *ApplicationQueryRecord) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
 	return a.extraProperties
 }
 
@@ -8453,7 +8309,7 @@ func (a *ApplicationQueryRecord) SetWhenrefund(whenrefund *Whenrefunded) {
 
 // SetAdditionalData sets the AdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationQueryRecord) SetAdditionalData(additionalData *AdditionalDataString) {
+func (a *ApplicationQueryRecord) SetAdditionalData(additionalData *AdditionalDataMap) {
 	a.AdditionalData = additionalData
 	a.require(applicationQueryRecordFieldAdditionalData)
 }
@@ -8480,12 +8336,20 @@ func (a *ApplicationQueryRecord) SetRepOffice(repOffice *RepOffice) {
 }
 
 func (a *ApplicationQueryRecord) UnmarshalJSON(data []byte) error {
-	type unmarshaler ApplicationQueryRecord
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed ApplicationQueryRecord
+	var unmarshaler = struct {
+		embed
+		CreatedAt    *internal.DateTime `json:"createdAt,omitempty"`
+		LastModified *internal.DateTime `json:"lastModified,omitempty"`
+	}{
+		embed: embed(*a),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*a = ApplicationQueryRecord(value)
+	*a = ApplicationQueryRecord(unmarshaler.embed)
+	a.CreatedAt = unmarshaler.CreatedAt.TimePtr()
+	a.LastModified = unmarshaler.LastModified.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *a)
 	if err != nil {
 		return err
@@ -8499,14 +8363,21 @@ func (a *ApplicationQueryRecord) MarshalJSON() ([]byte, error) {
 	type embed ApplicationQueryRecord
 	var marshaler = struct {
 		embed
+		CreatedAt    *internal.DateTime `json:"createdAt,omitempty"`
+		LastModified *internal.DateTime `json:"lastModified,omitempty"`
 	}{
-		embed: embed(*a),
+		embed:        embed(*a),
+		CreatedAt:    internal.NewOptionalDateTime(a.CreatedAt),
+		LastModified: internal.NewOptionalDateTime(a.LastModified),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 func (a *ApplicationQueryRecord) String() string {
+	if a == nil {
+		return "<nil>"
+	}
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -8642,6 +8513,9 @@ func (b *BAddress) GetMzip() *LinkData {
 }
 
 func (b *BAddress) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -8764,6 +8638,9 @@ func (b *BAddress) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BAddress) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -8887,6 +8764,9 @@ func (b *BDetails) GetWebsite() *LinkData {
 }
 
 func (b *BDetails) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -9002,6 +8882,9 @@ func (b *BDetails) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BDetails) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -9044,6 +8927,9 @@ func (b *BSection) GetDetails() *BDetails {
 }
 
 func (b *BSection) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -9096,6 +8982,9 @@ func (b *BSection) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BSection) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -9138,6 +9027,9 @@ func (b *BasicTable) GetHeader() *LinkRow {
 }
 
 func (b *BasicTable) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -9190,6 +9082,9 @@ func (b *BasicTable) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BasicTable) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -9250,6 +9145,9 @@ func (b *Bnk) GetTypeAccount() *LinkData {
 }
 
 func (b *Bnk) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -9316,6 +9214,9 @@ func (b *Bnk) MarshalJSON() ([]byte, error) {
 }
 
 func (b *Bnk) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -9461,6 +9362,9 @@ func (b *BoardingLinkQueryRecord) GetResumable() *Resumable {
 }
 
 func (b *BoardingLinkQueryRecord) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -9583,6 +9487,9 @@ func (b *BoardingLinkQueryRecord) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BoardingLinkQueryRecord) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -9664,6 +9571,9 @@ func (b *BuilderData) GetProcessing() *PSection {
 }
 
 func (b *BuilderData) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
 	return b.extraProperties
 }
 
@@ -9744,6 +9654,9 @@ func (b *BuilderData) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BuilderData) String() string {
+	if b == nil {
+		return "<nil>"
+	}
 	if len(b.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
 			return value
@@ -9804,6 +9717,9 @@ func (c *CList) GetContactTitle() *LinkData {
 }
 
 func (c *CList) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -9870,6 +9786,9 @@ func (c *CList) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CList) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -9930,6 +9849,9 @@ func (c *CardLinkTypes) GetVisa() *LinkData {
 }
 
 func (c *CardLinkTypes) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -9996,6 +9918,9 @@ func (c *CardLinkTypes) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CardLinkTypes) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -10047,6 +9972,9 @@ func (c *CardSection) GetPrice() *BasicTable {
 }
 
 func (c *CardSection) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
 	return c.extraProperties
 }
 
@@ -10106,6 +10034,9 @@ func (c *CardSection) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CardSection) String() string {
+	if c == nil {
+		return "<nil>"
+	}
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -10148,6 +10079,9 @@ func (d *DSection) GetWithdrawalAccount() *Bnk {
 }
 
 func (d *DSection) GetExtraProperties() map[string]interface{} {
+	if d == nil {
+		return nil
+	}
 	return d.extraProperties
 }
 
@@ -10200,6 +10134,9 @@ func (d *DSection) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DSection) String() string {
+	if d == nil {
+		return "<nil>"
+	}
 	if len(d.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
 			return value
@@ -10276,6 +10213,9 @@ func (l *LinkData) GetValue() *ValueTemplates {
 }
 
 func (l *LinkData) GetExtraProperties() map[string]interface{} {
+	if l == nil {
+		return nil
+	}
 	return l.extraProperties
 }
 
@@ -10342,6 +10282,9 @@ func (l *LinkData) MarshalJSON() ([]byte, error) {
 }
 
 func (l *LinkData) String() string {
+	if l == nil {
+		return "<nil>"
+	}
 	if len(l.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
 			return value
@@ -10375,6 +10318,9 @@ func (l *LinkRow) GetColumns() []*LinkData {
 }
 
 func (l *LinkRow) GetExtraProperties() map[string]interface{} {
+	if l == nil {
+		return nil
+	}
 	return l.extraProperties
 }
 
@@ -10420,6 +10366,9 @@ func (l *LinkRow) MarshalJSON() ([]byte, error) {
 }
 
 func (l *LinkRow) String() string {
+	if l == nil {
+		return "<nil>"
+	}
 	if len(l.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
 			return value
@@ -10579,6 +10528,9 @@ func (o *OList) GetOzip() *LinkData {
 }
 
 func (o *OList) GetExtraProperties() map[string]interface{} {
+	if o == nil {
+		return nil
+	}
 	return o.extraProperties
 }
 
@@ -10722,6 +10674,9 @@ func (o *OList) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OList) String() string {
+	if o == nil {
+		return "<nil>"
+	}
 	if len(o.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
 			return value
@@ -10764,6 +10719,9 @@ func (o *OSection) GetOwnList() *OList {
 }
 
 func (o *OSection) GetExtraProperties() map[string]interface{} {
+	if o == nil {
+		return nil
+	}
 	return o.extraProperties
 }
 
@@ -10816,6 +10774,9 @@ func (o *OSection) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OSection) String() string {
+	if o == nil {
+		return "<nil>"
+	}
 	if len(o.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(o.rawJSON); err == nil {
 			return value
@@ -10951,6 +10912,9 @@ func (p *PSection) GetWhenRefunded() *LinkData {
 }
 
 func (p *PSection) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -11073,6 +11037,9 @@ func (p *PSection) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PSection) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -11142,6 +11109,9 @@ func (p *PayabliApiResponse00) GetResponseText() ResponseText {
 }
 
 func (p *PayabliApiResponse00) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
 	return p.extraProperties
 }
 
@@ -11215,6 +11185,9 @@ func (p *PayabliApiResponse00) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PayabliApiResponse00) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	if len(p.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
 			return value
@@ -11239,7 +11212,7 @@ type PayoutCreditLimit = float64
 type PayoutHighTicketAmount = float64
 
 // When `true`, indicates that the merchant acknowledges PCI responsibilities and can be enrolled in the PCI program for breach insurance
-type PciAttestation = *bool
+type PciAttestation = bool
 
 var (
 	queryBoardingAppsListResponseFieldRecords = big.NewInt(1 << 0)
@@ -11272,6 +11245,9 @@ func (q *QueryBoardingAppsListResponse) GetSummary() *QuerySummary {
 }
 
 func (q *QueryBoardingAppsListResponse) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -11324,6 +11300,9 @@ func (q *QueryBoardingAppsListResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QueryBoardingAppsListResponse) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -11366,6 +11345,9 @@ func (q *QueryBoardingLinksResponse) GetSummary() *QuerySummary {
 }
 
 func (q *QueryBoardingLinksResponse) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -11418,6 +11400,9 @@ func (q *QueryBoardingLinksResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QueryBoardingLinksResponse) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -11533,6 +11518,9 @@ func (q *QueryBoardingLinksResponseRecordsItem) GetTemplateName() *TemplateName 
 }
 
 func (q *QueryBoardingLinksResponseRecordsItem) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
 	return q.extraProperties
 }
 
@@ -11614,12 +11602,18 @@ func (q *QueryBoardingLinksResponseRecordsItem) SetTemplateName(templateName *Te
 }
 
 func (q *QueryBoardingLinksResponseRecordsItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler QueryBoardingLinksResponseRecordsItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+	type embed QueryBoardingLinksResponseRecordsItem
+	var unmarshaler = struct {
+		embed
+		LastUpdated *internal.DateTime `json:"LastUpdated,omitempty"`
+	}{
+		embed: embed(*q),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*q = QueryBoardingLinksResponseRecordsItem(value)
+	*q = QueryBoardingLinksResponseRecordsItem(unmarshaler.embed)
+	q.LastUpdated = unmarshaler.LastUpdated.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *q)
 	if err != nil {
 		return err
@@ -11633,14 +11627,19 @@ func (q *QueryBoardingLinksResponseRecordsItem) MarshalJSON() ([]byte, error) {
 	type embed QueryBoardingLinksResponseRecordsItem
 	var marshaler = struct {
 		embed
+		LastUpdated *internal.DateTime `json:"LastUpdated,omitempty"`
 	}{
-		embed: embed(*q),
+		embed:       embed(*q),
+		LastUpdated: internal.NewOptionalDateTime(q.LastUpdated),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
 func (q *QueryBoardingLinksResponseRecordsItem) String() string {
+	if q == nil {
+		return "<nil>"
+	}
 	if len(q.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
 			return value
@@ -11692,6 +11691,9 @@ func (s *SSection) GetCard() *CardSection {
 }
 
 func (s *SSection) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
 	return s.extraProperties
 }
 
@@ -11744,6 +11746,9 @@ func (s *SSection) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SSection) String() string {
+	if s == nil {
+		return "<nil>"
+	}
 	if len(s.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
@@ -11763,7 +11768,7 @@ type SignDate = string
 type SignedDocumentReference = string
 
 // The signer's acceptance status. A true or false indicating an acceptance to the terms of service with the root org or provider.
-type SignerAcceptance = *bool
+type SignerAcceptance = bool
 
 // Additional line for the signer's address. If used, this must be the physical address of the signer, not a P.O. box.
 type SignerAddress1 = string
@@ -11813,11 +11818,11 @@ type SignerData struct {
 	Country    *SignerCountry    `json:"country,omitempty" url:"country,omitempty"`
 	Acceptance *SignerAcceptance `json:"acceptance,omitempty" url:"acceptance,omitempty"`
 	// Reference to the signed document.
-	SignedDocumentReference *string               `json:"signedDocumentReference,omitempty" url:"signedDocumentReference,omitempty"`
-	PciAttestation          *PciAttestation       `json:"pciAttestation,omitempty" url:"pciAttestation,omitempty"`
-	AttestationDate         *AttestationDate      `json:"attestationDate,omitempty" url:"attestationDate,omitempty"`
-	SignDate                *SignDate             `json:"signDate,omitempty" url:"signDate,omitempty"`
-	AdditionalData          *AdditionalDataString `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	SignedDocumentReference *string            `json:"signedDocumentReference,omitempty" url:"signedDocumentReference,omitempty"`
+	PciAttestation          *PciAttestation    `json:"pciAttestation,omitempty" url:"pciAttestation,omitempty"`
+	AttestationDate         *AttestationDate   `json:"attestationDate,omitempty" url:"attestationDate,omitempty"`
+	SignDate                *SignDate          `json:"signDate,omitempty" url:"signDate,omitempty"`
+	AdditionalData          *AdditionalDataMap `json:"additionalData,omitempty" url:"additionalData,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -11945,7 +11950,7 @@ func (s *SignerData) GetSignDate() *SignDate {
 	return s.SignDate
 }
 
-func (s *SignerData) GetAdditionalData() *AdditionalDataString {
+func (s *SignerData) GetAdditionalData() *AdditionalDataMap {
 	if s == nil {
 		return nil
 	}
@@ -11953,6 +11958,9 @@ func (s *SignerData) GetAdditionalData() *AdditionalDataString {
 }
 
 func (s *SignerData) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
 	return s.extraProperties
 }
 
@@ -12084,7 +12092,7 @@ func (s *SignerData) SetSignDate(signDate *SignDate) {
 
 // SetAdditionalData sets the AdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SignerData) SetAdditionalData(additionalData *AdditionalDataString) {
+func (s *SignerData) SetAdditionalData(additionalData *AdditionalDataMap) {
 	s.AdditionalData = additionalData
 	s.require(signerDataFieldAdditionalData)
 }
@@ -12117,6 +12125,9 @@ func (s *SignerData) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SignerData) String() string {
+	if s == nil {
+		return "<nil>"
+	}
 	if len(s.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
@@ -12166,7 +12177,7 @@ type SignerDataRequest struct {
 	SignedDocumentReference *SignedDocumentReference `json:"signedDocumentReference,omitempty" url:"signedDocumentReference,omitempty"`
 	PciAttestation          *PciAttestation          `json:"pciAttestation,omitempty" url:"pciAttestation,omitempty"`
 	AttestationDate         *AttestationDate         `json:"attestationDate,omitempty" url:"attestationDate,omitempty"`
-	AdditionalData          *AdditionalDataString    `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	AdditionalData          *AdditionalDataMap       `json:"additionalData,omitempty" url:"additionalData,omitempty"`
 	SignDate                *SignDate                `json:"signDate,omitempty" url:"signDate,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -12281,7 +12292,7 @@ func (s *SignerDataRequest) GetAttestationDate() *AttestationDate {
 	return s.AttestationDate
 }
 
-func (s *SignerDataRequest) GetAdditionalData() *AdditionalDataString {
+func (s *SignerDataRequest) GetAdditionalData() *AdditionalDataMap {
 	if s == nil {
 		return nil
 	}
@@ -12296,6 +12307,9 @@ func (s *SignerDataRequest) GetSignDate() *SignDate {
 }
 
 func (s *SignerDataRequest) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
 	return s.extraProperties
 }
 
@@ -12413,7 +12427,7 @@ func (s *SignerDataRequest) SetAttestationDate(attestationDate *AttestationDate)
 
 // SetAdditionalData sets the AdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SignerDataRequest) SetAdditionalData(additionalData *AdditionalDataString) {
+func (s *SignerDataRequest) SetAdditionalData(additionalData *AdditionalDataMap) {
 	s.AdditionalData = additionalData
 	s.require(signerDataRequestFieldAdditionalData)
 }
@@ -12453,6 +12467,9 @@ func (s *SignerDataRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SignerDataRequest) String() string {
+	if s == nil {
+		return "<nil>"
+	}
 	if len(s.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
@@ -12486,7 +12503,7 @@ type SignerZip = string
 type Signeraddress = string
 
 // The average transaction size that the business expects to process. For example, if you process \$10,000 a month across 10 transactions, that's an average ticket of \$1000.
-type Ticketamt = *float64
+type Ticketamt = float64
 
 type AddApplicationRequest struct {
 	// Fields for Pay In processing applications
