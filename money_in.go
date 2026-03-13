@@ -6059,7 +6059,7 @@ type TransactionDetailCustomer struct {
 	ShippingCountry  Shippingcountry             `json:"shippingCountry" url:"shippingCountry"`
 	CustomerId       CustomerId                  `json:"customerId" url:"customerId"`
 	CustomerStatus   CustomerStatus              `json:"customerStatus" url:"customerStatus"`
-	AdditionalData   *AdditionalDataString       `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	AdditionalData   *AdditionalDataMap          `json:"additionalData,omitempty" url:"additionalData,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -6215,7 +6215,7 @@ func (t *TransactionDetailCustomer) GetCustomerStatus() CustomerStatus {
 	return t.CustomerStatus
 }
 
-func (t *TransactionDetailCustomer) GetAdditionalData() *AdditionalDataString {
+func (t *TransactionDetailCustomer) GetAdditionalData() *AdditionalDataMap {
 	if t == nil {
 		return nil
 	}
@@ -6385,7 +6385,7 @@ func (t *TransactionDetailCustomer) SetCustomerStatus(customerStatus CustomerSta
 
 // SetAdditionalData sets the AdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailCustomer) SetAdditionalData(additionalData *AdditionalDataString) {
+func (t *TransactionDetailCustomer) SetAdditionalData(additionalData *AdditionalDataMap) {
 	t.AdditionalData = additionalData
 	t.require(transactionDetailCustomerFieldAdditionalData)
 }
@@ -6617,7 +6617,7 @@ type TransactionDetailInvoiceData struct {
 	SummaryCommodityCode *SummaryCommodityCode      `json:"summaryCommodityCode,omitempty" url:"summaryCommodityCode,omitempty"`
 	Items                []*BillItem                `json:"items,omitempty" url:"items,omitempty"`
 	Attachments          *Attachments               `json:"attachments,omitempty" url:"attachments,omitempty"`
-	AdditionalData       *AdditionalDataString      `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	AdditionalData       *AdditionalDataMap         `json:"additionalData,omitempty" url:"additionalData,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -6843,7 +6843,7 @@ func (t *TransactionDetailInvoiceData) GetAttachments() *Attachments {
 	return t.Attachments
 }
 
-func (t *TransactionDetailInvoiceData) GetAdditionalData() *AdditionalDataString {
+func (t *TransactionDetailInvoiceData) GetAdditionalData() *AdditionalDataMap {
 	if t == nil {
 		return nil
 	}
@@ -7083,7 +7083,7 @@ func (t *TransactionDetailInvoiceData) SetAttachments(attachments *Attachments) 
 
 // SetAdditionalData sets the AdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailInvoiceData) SetAdditionalData(additionalData *AdditionalDataString) {
+func (t *TransactionDetailInvoiceData) SetAdditionalData(additionalData *AdditionalDataMap) {
 	t.AdditionalData = additionalData
 	t.require(transactionDetailInvoiceDataFieldAdditionalData)
 }

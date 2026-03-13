@@ -15296,7 +15296,7 @@ func TestSettersTransactionDetailCustomer(t *testing.T) {
 
 	t.Run("SetAdditionalData", func(t *testing.T) {
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueAdditionalData *AdditionalDataString
+		var fernTestValueAdditionalData *AdditionalDataMap
 		obj.SetAdditionalData(fernTestValueAdditionalData)
 		assert.Equal(t, fernTestValueAdditionalData, obj.AdditionalData)
 		assert.NotNil(t, obj.explicitFields)
@@ -15802,7 +15802,7 @@ func TestGettersTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var expected *AdditionalDataString
+		var expected *AdditionalDataMap
 		obj.AdditionalData = expected
 
 		// Act & Assert
@@ -16489,7 +16489,7 @@ func TestSettersMarkExplicitTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueAdditionalData *AdditionalDataString
+		var fernTestValueAdditionalData *AdditionalDataMap
 
 		// Act
 		obj.SetAdditionalData(fernTestValueAdditionalData)
@@ -16964,7 +16964,7 @@ func TestSettersTransactionDetailInvoiceData(t *testing.T) {
 
 	t.Run("SetAdditionalData", func(t *testing.T) {
 		obj := &TransactionDetailInvoiceData{}
-		var fernTestValueAdditionalData *AdditionalDataString
+		var fernTestValueAdditionalData *AdditionalDataMap
 		obj.SetAdditionalData(fernTestValueAdditionalData)
 		assert.Equal(t, fernTestValueAdditionalData, obj.AdditionalData)
 		assert.NotNil(t, obj.explicitFields)
@@ -18000,7 +18000,7 @@ func TestGettersTransactionDetailInvoiceData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailInvoiceData{}
-		var expected *AdditionalDataString
+		var expected *AdditionalDataMap
 		obj.AdditionalData = expected
 
 		// Act & Assert
@@ -18997,7 +18997,7 @@ func TestSettersMarkExplicitTransactionDetailInvoiceData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailInvoiceData{}
-		var fernTestValueAdditionalData *AdditionalDataString
+		var fernTestValueAdditionalData *AdditionalDataMap
 
 		// Act
 		obj.SetAdditionalData(fernTestValueAdditionalData)
