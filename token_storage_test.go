@@ -3204,7 +3204,7 @@ func TestSettersGetMethodResponseResponseDataCustomersItem(t *testing.T) {
 
 	t.Run("SetCustomerConsent", func(t *testing.T) {
 		obj := &GetMethodResponseResponseDataCustomersItem{}
-		var fernTestValueCustomerConsent map[string]interface{}
+		var fernTestValueCustomerConsent map[string]any
 		obj.SetCustomerConsent(fernTestValueCustomerConsent)
 		assert.Equal(t, fernTestValueCustomerConsent, obj.CustomerConsent)
 		assert.NotNil(t, obj.explicitFields)
@@ -3316,7 +3316,7 @@ func TestSettersGetMethodResponseResponseDataCustomersItem(t *testing.T) {
 
 	t.Run("SetSnData", func(t *testing.T) {
 		obj := &GetMethodResponseResponseDataCustomersItem{}
-		var fernTestValueSnData map[string]interface{}
+		var fernTestValueSnData map[string]any
 		obj.SetSnData(fernTestValueSnData)
 		assert.Equal(t, fernTestValueSnData, obj.SnData)
 		assert.NotNil(t, obj.explicitFields)
@@ -4128,7 +4128,7 @@ func TestGettersGetMethodResponseResponseDataCustomersItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &GetMethodResponseResponseDataCustomersItem{}
-		var expected map[string]interface{}
+		var expected map[string]any
 		obj.CustomerConsent = expected
 
 		// Act & Assert
@@ -4590,7 +4590,7 @@ func TestGettersGetMethodResponseResponseDataCustomersItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &GetMethodResponseResponseDataCustomersItem{}
-		var expected map[string]interface{}
+		var expected map[string]any
 		obj.SnData = expected
 
 		// Act & Assert
@@ -5504,7 +5504,7 @@ func TestSettersMarkExplicitGetMethodResponseResponseDataCustomersItem(t *testin
 		t.Parallel()
 		// Arrange
 		obj := &GetMethodResponseResponseDataCustomersItem{}
-		var fernTestValueCustomerConsent map[string]interface{}
+		var fernTestValueCustomerConsent map[string]any
 
 		// Act
 		obj.SetCustomerConsent(fernTestValueCustomerConsent)
@@ -5938,7 +5938,7 @@ func TestSettersMarkExplicitGetMethodResponseResponseDataCustomersItem(t *testin
 		t.Parallel()
 		// Arrange
 		obj := &GetMethodResponseResponseDataCustomersItem{}
-		var fernTestValueSnData map[string]interface{}
+		var fernTestValueSnData map[string]any
 
 		// Act
 		obj.SetSnData(fernTestValueSnData)
@@ -10165,7 +10165,7 @@ func TestSettersTokenizeAch(t *testing.T) {
 
 	t.Run("SetAchHolder", func(t *testing.T) {
 		obj := &TokenizeAch{}
-		var fernTestValueAchHolder AchHolder
+		var fernTestValueAchHolder string
 		obj.SetAchHolder(fernTestValueAchHolder)
 		assert.Equal(t, fernTestValueAchHolder, obj.AchHolder)
 		assert.NotNil(t, obj.explicitFields)
@@ -10304,7 +10304,7 @@ func TestGettersTokenizeAch(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TokenizeAch{}
-		var expected AchHolder
+		var expected string
 		obj.AchHolder = expected
 
 		// Act & Assert
@@ -10543,7 +10543,7 @@ func TestSettersMarkExplicitTokenizeAch(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TokenizeAch{}
-		var fernTestValueAchHolder AchHolder
+		var fernTestValueAchHolder string
 
 		// Act
 		obj.SetAchHolder(fernTestValueAchHolder)

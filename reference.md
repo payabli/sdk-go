@@ -10666,7 +10666,7 @@ client.MoneyIn.Credit(
 <dl>
 <dd>
 
-**accountId:** `*payabli.Accountid` 
+**accountId:** `*payabli.AccountId` 
     
 </dd>
 </dl>
@@ -11462,7 +11462,7 @@ client.MoneyIn.Validate(
 <dl>
 <dd>
 
-**accountId:** `*payabli.Accountid` 
+**accountId:** `*payabli.AccountId` 
     
 </dd>
 </dl>
@@ -12831,6 +12831,105 @@ client.MoneyOut.UpdateCheckPaymentStatus(
 <dd>
 
 **checkPaymentStatus:** `*payabli.AllowedCheckPaymentStatus` — The new status to apply to the check transaction. To mark a check as `Paid`, send 5. To mark a check as `Cancelled`, send 0.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MoneyOut.ReissueOut(request) -> *payabli.ReissuePayoutResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Reissues a payout transaction with a new payment method. This creates a new transaction linked to the original and marks the original transaction as reissued.
+
+The original transaction must be in **Processing** or **Processed** status. The payment method in the request body is used directly. The endpoint doesn't fall back to vendor-managed payment methods.
+
+The new transaction goes through the standard authorize-and-capture flow automatically. Both the original and new transactions are linked through their event histories for audit purposes.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ReissueOutRequest{
+        TransId: "129-219",
+        Body: &payabli.ReissuePayoutBody{
+            PaymentMethod: &payabli.ReissuePaymentMethod{
+                Method: "ach",
+                AchAccount: payabli.String(
+                    "9876543210",
+                ),
+                AchAccountType: payabli.String(
+                    "savings",
+                ),
+                AchRouting: payabli.String(
+                    "021000021",
+                ),
+                AchHolder: payabli.String(
+                    "Acme Corp",
+                ),
+                AchHolderType: payabli.AchHolderTypeBusiness.Ptr(),
+            },
+        },
+    }
+client.MoneyOut.ReissueOut(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**transId:** `string` — The transaction ID of the payout to reissue.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `*payabli.IdempotencyKey` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `*payabli.ReissuePayoutBody` 
     
 </dd>
 </dl>

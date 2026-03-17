@@ -6956,7 +6956,7 @@ func TestSettersQueryInvoiceResponseRecordsItem(t *testing.T) {
 
 	t.Run("SetAdditionalData", func(t *testing.T) {
 		obj := &QueryInvoiceResponseRecordsItem{}
-		var fernTestValueAdditionalData map[string]interface{}
+		var fernTestValueAdditionalData map[string]any
 		obj.SetAdditionalData(fernTestValueAdditionalData)
 		assert.Equal(t, fernTestValueAdditionalData, obj.AdditionalData)
 		assert.NotNil(t, obj.explicitFields)
@@ -8231,7 +8231,7 @@ func TestGettersQueryInvoiceResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryInvoiceResponseRecordsItem{}
-		var expected map[string]interface{}
+		var expected map[string]any
 		obj.AdditionalData = expected
 
 		// Act & Assert
@@ -9782,7 +9782,7 @@ func TestSettersMarkExplicitQueryInvoiceResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryInvoiceResponseRecordsItem{}
-		var fernTestValueAdditionalData map[string]interface{}
+		var fernTestValueAdditionalData map[string]any
 
 		// Act
 		obj.SetAdditionalData(fernTestValueAdditionalData)

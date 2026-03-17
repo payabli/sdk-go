@@ -144,6 +144,55 @@ func (c *CaptureOutRequest) SetIdempotencyKey(idempotencyKey *IdempotencyKey) {
 }
 
 var (
+	reissueOutRequestFieldIdempotencyKey = big.NewInt(1 << 0)
+	reissueOutRequestFieldTransId        = big.NewInt(1 << 1)
+)
+
+type ReissueOutRequest struct {
+	IdempotencyKey *IdempotencyKey `json:"-" url:"-"`
+	// The transaction ID of the payout to reissue.
+	TransId string             `json:"-" url:"transId"`
+	Body    *ReissuePayoutBody `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (r *ReissueOutRequest) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetIdempotencyKey sets the IdempotencyKey field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReissueOutRequest) SetIdempotencyKey(idempotencyKey *IdempotencyKey) {
+	r.IdempotencyKey = idempotencyKey
+	r.require(reissueOutRequestFieldIdempotencyKey)
+}
+
+// SetTransId sets the TransId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReissueOutRequest) SetTransId(transId string) {
+	r.TransId = transId
+	r.require(reissueOutRequestFieldTransId)
+}
+
+func (r *ReissueOutRequest) UnmarshalJSON(data []byte) error {
+	body := new(ReissuePayoutBody)
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	r.Body = body
+	return nil
+}
+
+func (r *ReissueOutRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(r.Body)
+}
+
+var (
 	sendVCardLinkRequestFieldTransId = big.NewInt(1 << 0)
 )
 
@@ -233,7 +282,7 @@ var (
 )
 
 type BillDetailResponse struct {
-	// Events associated to this transaction.
+	// Bills associated with this transaction.
 	Bills []*BillDetailsResponse `json:"Bills,omitempty" url:"Bills,omitempty"`
 	// Object referencing to paper check image.
 	CheckData *FileContent `json:"CheckData,omitempty" url:"CheckData,omitempty"`
@@ -281,7 +330,7 @@ type BillDetailResponse struct {
 	// | **OnHold** | 4 | A payout has been placed on hold and requires review before proceeding. | OnHold |
 	// | **Paid** | 5 | A payout has been paid and the recipient has redeemed the funds. | Paid (check cleared, vCard used, ACH settled) |
 	Status *int `json:"Status,omitempty" url:"Status,omitempty"`
-	// Status of payout transaction.
+	// Text description of the payout transaction status.
 	StatusText *string `json:"StatusText,omitempty" url:"StatusText,omitempty"`
 	// Transaction total amount (including service fee or sub-charge).
 	TotalAmount *float64 `json:"TotalAmount,omitempty" url:"TotalAmount,omitempty"`

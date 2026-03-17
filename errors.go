@@ -10,11 +10,11 @@ import (
 // Bad request/ invalid data
 type BadRequestError struct {
 	*core.APIError
-	Body interface{}
+	Body any
 }
 
 func (b *BadRequestError) UnmarshalJSON(data []byte) error {
-	var body interface{}
+	var body any
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
@@ -82,11 +82,11 @@ func (f *ForbiddenError) Unwrap() error {
 // Internal API Error
 type InternalServerError struct {
 	*core.APIError
-	Body interface{}
+	Body any
 }
 
 func (i *InternalServerError) UnmarshalJSON(data []byte) error {
-	var body interface{}
+	var body any
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
@@ -130,11 +130,11 @@ func (s *ServiceUnavailableError) Unwrap() error {
 // Unauthorized request.
 type UnauthorizedError struct {
 	*core.APIError
-	Body interface{}
+	Body any
 }
 
 func (u *UnauthorizedError) UnmarshalJSON(data []byte) error {
-	var body interface{}
+	var body any
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}

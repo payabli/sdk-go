@@ -661,7 +661,7 @@ type AuthorizePayoutBody struct {
 	VendorData *RequestOutAuthorizeVendorData `json:"vendorData" url:"vendorData"`
 	// Array of bills associated to the transaction
 	InvoiceData    []*RequestOutAuthorizeInvoiceData `json:"invoiceData" url:"invoiceData"`
-	AccountId      *Accountid                        `json:"accountId,omitempty" url:"accountId,omitempty"`
+	AccountId      *AccountId                        `json:"accountId,omitempty" url:"accountId,omitempty"`
 	Subdomain      *Subdomain                        `json:"subdomain,omitempty" url:"subdomain,omitempty"`
 	SubscriptionId *Subscriptionid                   `json:"subscriptionId,omitempty" url:"subscriptionId,omitempty"`
 
@@ -728,7 +728,7 @@ func (a *AuthorizePayoutBody) GetInvoiceData() []*RequestOutAuthorizeInvoiceData
 	return a.InvoiceData
 }
 
-func (a *AuthorizePayoutBody) GetAccountId() *Accountid {
+func (a *AuthorizePayoutBody) GetAccountId() *AccountId {
 	if a == nil {
 		return nil
 	}
@@ -821,7 +821,7 @@ func (a *AuthorizePayoutBody) SetInvoiceData(invoiceData []*RequestOutAuthorizeI
 
 // SetAccountId sets the AccountId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AuthorizePayoutBody) SetAccountId(accountId *Accountid) {
+func (a *AuthorizePayoutBody) SetAccountId(accountId *AccountId) {
 	a.AccountId = accountId
 	a.require(authorizePayoutBodyFieldAccountId)
 }
@@ -1623,6 +1623,515 @@ func NewPaymentLinkStatusFromString(s string) (PaymentLinkStatus, error) {
 
 func (p PaymentLinkStatus) Ptr() *PaymentLinkStatus {
 	return &p
+}
+
+// Payment method for reissuing a payout transaction. The reissue endpoint uses the payment method details directly. It doesn't fall back to the vendor's managed payment method.
+// - `{ method: "vcard" }` - Reissue as a virtual card
+// - `{ method: "check" }` - Reissue as a paper check
+// - `{ method: "ach", achHolder: "...", achRouting: "...", achAccount: "...", achAccountType: "...", achHolderType: "..." }` - Reissue as ACH with bank details
+var (
+	reissuePaymentMethodFieldMethod         = big.NewInt(1 << 0)
+	reissuePaymentMethodFieldAchHolder      = big.NewInt(1 << 1)
+	reissuePaymentMethodFieldAchRouting     = big.NewInt(1 << 2)
+	reissuePaymentMethodFieldAchAccount     = big.NewInt(1 << 3)
+	reissuePaymentMethodFieldAchAccountType = big.NewInt(1 << 4)
+	reissuePaymentMethodFieldAchHolderType  = big.NewInt(1 << 5)
+)
+
+type ReissuePaymentMethod struct {
+	// Payment method type. Must be `"ach"`, `"check"`, or `"vcard"`.
+	Method string `json:"method" url:"method"`
+	// Account holder name. Required when `method` is `"ach"`.
+	AchHolder *string `json:"achHolder,omitempty" url:"achHolder,omitempty"`
+	// Bank routing number (9 digits). Required when `method` is `"ach"`.
+	AchRouting *string `json:"achRouting,omitempty" url:"achRouting,omitempty"`
+	// Bank account number (8-17 digits). Required when `method` is `"ach"`.
+	AchAccount *string `json:"achAccount,omitempty" url:"achAccount,omitempty"`
+	// Bank account type (`"checking"` or `"savings"`). Required when `method` is `"ach"`.
+	AchAccountType *string        `json:"achAccountType,omitempty" url:"achAccountType,omitempty"`
+	AchHolderType  *AchHolderType `json:"achHolderType,omitempty" url:"achHolderType,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *ReissuePaymentMethod) GetMethod() string {
+	if r == nil {
+		return ""
+	}
+	return r.Method
+}
+
+func (r *ReissuePaymentMethod) GetAchHolder() *string {
+	if r == nil {
+		return nil
+	}
+	return r.AchHolder
+}
+
+func (r *ReissuePaymentMethod) GetAchRouting() *string {
+	if r == nil {
+		return nil
+	}
+	return r.AchRouting
+}
+
+func (r *ReissuePaymentMethod) GetAchAccount() *string {
+	if r == nil {
+		return nil
+	}
+	return r.AchAccount
+}
+
+func (r *ReissuePaymentMethod) GetAchAccountType() *string {
+	if r == nil {
+		return nil
+	}
+	return r.AchAccountType
+}
+
+func (r *ReissuePaymentMethod) GetAchHolderType() *AchHolderType {
+	if r == nil {
+		return nil
+	}
+	return r.AchHolderType
+}
+
+func (r *ReissuePaymentMethod) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
+	return r.extraProperties
+}
+
+func (r *ReissuePaymentMethod) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetMethod sets the Method field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReissuePaymentMethod) SetMethod(method string) {
+	r.Method = method
+	r.require(reissuePaymentMethodFieldMethod)
+}
+
+// SetAchHolder sets the AchHolder field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReissuePaymentMethod) SetAchHolder(achHolder *string) {
+	r.AchHolder = achHolder
+	r.require(reissuePaymentMethodFieldAchHolder)
+}
+
+// SetAchRouting sets the AchRouting field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReissuePaymentMethod) SetAchRouting(achRouting *string) {
+	r.AchRouting = achRouting
+	r.require(reissuePaymentMethodFieldAchRouting)
+}
+
+// SetAchAccount sets the AchAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReissuePaymentMethod) SetAchAccount(achAccount *string) {
+	r.AchAccount = achAccount
+	r.require(reissuePaymentMethodFieldAchAccount)
+}
+
+// SetAchAccountType sets the AchAccountType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReissuePaymentMethod) SetAchAccountType(achAccountType *string) {
+	r.AchAccountType = achAccountType
+	r.require(reissuePaymentMethodFieldAchAccountType)
+}
+
+// SetAchHolderType sets the AchHolderType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReissuePaymentMethod) SetAchHolderType(achHolderType *AchHolderType) {
+	r.AchHolderType = achHolderType
+	r.require(reissuePaymentMethodFieldAchHolderType)
+}
+
+func (r *ReissuePaymentMethod) UnmarshalJSON(data []byte) error {
+	type unmarshaler ReissuePaymentMethod
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = ReissuePaymentMethod(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *ReissuePaymentMethod) MarshalJSON() ([]byte, error) {
+	type embed ReissuePaymentMethod
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *ReissuePaymentMethod) String() string {
+	if r == nil {
+		return "<nil>"
+	}
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+// Request body for reissuing a payout transaction.
+var (
+	reissuePayoutBodyFieldPaymentMethod = big.NewInt(1 << 0)
+)
+
+type ReissuePayoutBody struct {
+	PaymentMethod *ReissuePaymentMethod `json:"paymentMethod" url:"paymentMethod"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *ReissuePayoutBody) GetPaymentMethod() *ReissuePaymentMethod {
+	if r == nil {
+		return nil
+	}
+	return r.PaymentMethod
+}
+
+func (r *ReissuePayoutBody) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
+	return r.extraProperties
+}
+
+func (r *ReissuePayoutBody) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetPaymentMethod sets the PaymentMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReissuePayoutBody) SetPaymentMethod(paymentMethod *ReissuePaymentMethod) {
+	r.PaymentMethod = paymentMethod
+	r.require(reissuePayoutBodyFieldPaymentMethod)
+}
+
+func (r *ReissuePayoutBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler ReissuePayoutBody
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = ReissuePayoutBody(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *ReissuePayoutBody) MarshalJSON() ([]byte, error) {
+	type embed ReissuePayoutBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *ReissuePayoutBody) String() string {
+	if r == nil {
+		return "<nil>"
+	}
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	reissuePayoutResponseFieldIsSuccess    = big.NewInt(1 << 0)
+	reissuePayoutResponseFieldResponseCode = big.NewInt(1 << 1)
+	reissuePayoutResponseFieldResponseText = big.NewInt(1 << 2)
+	reissuePayoutResponseFieldResponseData = big.NewInt(1 << 3)
+)
+
+type ReissuePayoutResponse struct {
+	IsSuccess    IsSuccess                  `json:"isSuccess" url:"isSuccess"`
+	ResponseCode Responsecode               `json:"responseCode" url:"responseCode"`
+	ResponseText ResponseText               `json:"responseText" url:"responseText"`
+	ResponseData *ReissuePayoutResponseData `json:"responseData" url:"responseData"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *ReissuePayoutResponse) GetIsSuccess() IsSuccess {
+	if r == nil {
+		return false
+	}
+	return r.IsSuccess
+}
+
+func (r *ReissuePayoutResponse) GetResponseCode() Responsecode {
+	if r == nil {
+		return 0
+	}
+	return r.ResponseCode
+}
+
+func (r *ReissuePayoutResponse) GetResponseText() ResponseText {
+	if r == nil {
+		return ""
+	}
+	return r.ResponseText
+}
+
+func (r *ReissuePayoutResponse) GetResponseData() *ReissuePayoutResponseData {
+	if r == nil {
+		return nil
+	}
+	return r.ResponseData
+}
+
+func (r *ReissuePayoutResponse) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
+	return r.extraProperties
+}
+
+func (r *ReissuePayoutResponse) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReissuePayoutResponse) SetIsSuccess(isSuccess IsSuccess) {
+	r.IsSuccess = isSuccess
+	r.require(reissuePayoutResponseFieldIsSuccess)
+}
+
+// SetResponseCode sets the ResponseCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReissuePayoutResponse) SetResponseCode(responseCode Responsecode) {
+	r.ResponseCode = responseCode
+	r.require(reissuePayoutResponseFieldResponseCode)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReissuePayoutResponse) SetResponseText(responseText ResponseText) {
+	r.ResponseText = responseText
+	r.require(reissuePayoutResponseFieldResponseText)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReissuePayoutResponse) SetResponseData(responseData *ReissuePayoutResponseData) {
+	r.ResponseData = responseData
+	r.require(reissuePayoutResponseFieldResponseData)
+}
+
+func (r *ReissuePayoutResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ReissuePayoutResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = ReissuePayoutResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *ReissuePayoutResponse) MarshalJSON() ([]byte, error) {
+	type embed ReissuePayoutResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *ReissuePayoutResponse) String() string {
+	if r == nil {
+		return "<nil>"
+	}
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	reissuePayoutResponseDataFieldTransactionId         = big.NewInt(1 << 0)
+	reissuePayoutResponseDataFieldStatus                = big.NewInt(1 << 1)
+	reissuePayoutResponseDataFieldOriginalTransactionId = big.NewInt(1 << 2)
+)
+
+type ReissuePayoutResponseData struct {
+	// The transaction ID of the newly created payout.
+	TransactionId string `json:"transactionId" url:"transactionId"`
+	// The status of the new transaction.
+	Status string `json:"status" url:"status"`
+	// The transaction ID of the original payout that was reissued.
+	OriginalTransactionId *string `json:"originalTransactionId,omitempty" url:"originalTransactionId,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *ReissuePayoutResponseData) GetTransactionId() string {
+	if r == nil {
+		return ""
+	}
+	return r.TransactionId
+}
+
+func (r *ReissuePayoutResponseData) GetStatus() string {
+	if r == nil {
+		return ""
+	}
+	return r.Status
+}
+
+func (r *ReissuePayoutResponseData) GetOriginalTransactionId() *string {
+	if r == nil {
+		return nil
+	}
+	return r.OriginalTransactionId
+}
+
+func (r *ReissuePayoutResponseData) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
+	return r.extraProperties
+}
+
+func (r *ReissuePayoutResponseData) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetTransactionId sets the TransactionId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReissuePayoutResponseData) SetTransactionId(transactionId string) {
+	r.TransactionId = transactionId
+	r.require(reissuePayoutResponseDataFieldTransactionId)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReissuePayoutResponseData) SetStatus(status string) {
+	r.Status = status
+	r.require(reissuePayoutResponseDataFieldStatus)
+}
+
+// SetOriginalTransactionId sets the OriginalTransactionId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReissuePayoutResponseData) SetOriginalTransactionId(originalTransactionId *string) {
+	r.OriginalTransactionId = originalTransactionId
+	r.require(reissuePayoutResponseDataFieldOriginalTransactionId)
+}
+
+func (r *ReissuePayoutResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler ReissuePayoutResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = ReissuePayoutResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *ReissuePayoutResponseData) MarshalJSON() ([]byte, error) {
+	type embed ReissuePayoutResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *ReissuePayoutResponseData) String() string {
+	if r == nil {
+		return "<nil>"
+	}
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
 }
 
 var (
@@ -4769,7 +5278,7 @@ type VCardGetResponseAssociatedVendorBillingData struct {
 	// Status of the billing data.
 	Status *int `json:"status,omitempty" url:"status,omitempty"`
 	// Services associated with the account.
-	Services []interface{} `json:"services,omitempty" url:"services,omitempty"`
+	Services []any `json:"services,omitempty" url:"services,omitempty"`
 	// Indicates if this is the default billing account.
 	Default *bool `json:"default,omitempty" url:"default,omitempty"`
 
@@ -4864,7 +5373,7 @@ func (v *VCardGetResponseAssociatedVendorBillingData) GetStatus() *int {
 	return v.Status
 }
 
-func (v *VCardGetResponseAssociatedVendorBillingData) GetServices() []interface{} {
+func (v *VCardGetResponseAssociatedVendorBillingData) GetServices() []any {
 	if v == nil {
 		return nil
 	}
@@ -4978,7 +5487,7 @@ func (v *VCardGetResponseAssociatedVendorBillingData) SetStatus(status *int) {
 
 // SetServices sets the Services field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardGetResponseAssociatedVendorBillingData) SetServices(services []interface{}) {
+func (v *VCardGetResponseAssociatedVendorBillingData) SetServices(services []any) {
 	v.Services = services
 	v.require(vCardGetResponseAssociatedVendorBillingDataFieldServices)
 }

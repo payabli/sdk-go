@@ -209,18 +209,21 @@ func (a *Ach) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+// Whether the paypoint absorbs the difference between the configured service fee and the actual fee charged to the customer.
+type AbsorbDifference = bool
+
 type AcceptOauth = bool
 
 type AcceptRegister = bool
+
+// Custom identifier for payment connector.
+type AccountId = string
 
 // Account number for bank account. This value is returned masked in responses.
 type AccountNumber = string
 
 // Expiration date of card used in transaction.
 type Accountexp = string
-
-// Custom identifier for payment connector.
-type Accountid = string
 
 // Optional custom field.
 type AccountingField = string
@@ -536,7 +539,7 @@ type Achrouting = string
 //	}
 //
 // ```
-type AdditionalData = map[string]map[string]interface{}
+type AdditionalData = map[string]map[string]any
 
 // Custom dictionary of key:value pairs. You can use this field to store any data related to the object or for your system.
 //
@@ -573,6 +576,9 @@ type AddressAddtlNullable = string
 
 // The address.
 type AddressNullable = string
+
+// Whether the configured service fee can be overridden at the transaction level.
+type AllowOverride = bool
 
 var (
 	amountElementFieldCategories = big.NewInt(1 << 0)
@@ -916,8 +922,8 @@ var (
 type Bank struct {
 	// The Payabli-assigned internal identifier for the bank account.
 	Id *int `json:"id,omitempty" url:"id,omitempty"`
-	// A user-defined internal identifier for the bank account. This allows you to specify which bank account should be used for payments in cases where multiple accounts are configured.
-	AccountId             *string                `json:"accountId,omitempty" url:"accountId,omitempty"`
+	// An identifier for the bank account, used to specify which account handles payments when multiple accounts are configured. If not provided during creation or update, the system generates one in the format `acct-{first_digit}xxxxx{last_4_digits}` based on the account number. The mask always uses five `x` characters regardless of account number length. For example, account number `123456789` produces `acct-1xxxxx6789`. If a duplicate exists within the same service at the paypoint, a numeric suffix is appended, such as `acct-1xxxxx6789-2`. This value is also used as the identifier for the bank account's associated payment connector.
+	AccountId             *AccountId             `json:"accountId,omitempty" url:"accountId,omitempty"`
 	Nickname              *BankNickname          `json:"nickname,omitempty" url:"nickname,omitempty"`
 	BankName              *BankName              `json:"bankName,omitempty" url:"bankName,omitempty"`
 	RoutingAccount        *RoutingAccount        `json:"routingAccount,omitempty" url:"routingAccount,omitempty"`
@@ -947,7 +953,7 @@ func (b *Bank) GetId() *int {
 	return b.Id
 }
 
-func (b *Bank) GetAccountId() *string {
+func (b *Bank) GetAccountId() *AccountId {
 	if b == nil {
 		return nil
 	}
@@ -1054,7 +1060,7 @@ func (b *Bank) SetId(id *int) {
 
 // SetAccountId sets the AccountId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *Bank) SetAccountId(accountId *string) {
+func (b *Bank) SetAccountId(accountId *AccountId) {
 	b.AccountId = accountId
 	b.require(bankFieldAccountId)
 }
@@ -3038,8 +3044,9 @@ var (
 
 type BillingDataResponse struct {
 	// The bank's ID in Payabli.
-	Id                    int                   `json:"id" url:"id"`
-	AccountId             interface{}           `json:"accountId,omitempty" url:"accountId,omitempty"`
+	Id int `json:"id" url:"id"`
+	// An identifier for the bank account. If not provided during creation or update, the system generates one in the format `acct-{first_digit}xxxxx{last_4_digits}` based on the account number. If a duplicate exists within the same service at the paypoint, a numeric suffix is appended, such as `-2`. This value is also used as the identifier for the bank account's associated payment connector.
+	AccountId             *AccountId            `json:"accountId,omitempty" url:"accountId,omitempty"`
 	Nickname              string                `json:"nickname" url:"nickname"`
 	BankName              BankName              `json:"bankName" url:"bankName"`
 	RoutingAccount        RoutingAccount        `json:"routingAccount" url:"routingAccount"`
@@ -3051,11 +3058,11 @@ type BillingDataResponse struct {
 	//   - `0`: Deposit
 	//   - `1`: Withdrawal
 	//   - `2`: Deposit and withdrawal
-	BankAccountFunction int           `json:"bankAccountFunction" url:"bankAccountFunction"`
-	Verified            bool          `json:"verified" url:"verified"`
-	Status              int           `json:"status" url:"status"`
-	Services            []interface{} `json:"services" url:"services"`
-	Default             bool          `json:"default" url:"default"`
+	BankAccountFunction int   `json:"bankAccountFunction" url:"bankAccountFunction"`
+	Verified            bool  `json:"verified" url:"verified"`
+	Status              int   `json:"status" url:"status"`
+	Services            []any `json:"services" url:"services"`
+	Default             bool  `json:"default" url:"default"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3071,7 +3078,7 @@ func (b *BillingDataResponse) GetId() int {
 	return b.Id
 }
 
-func (b *BillingDataResponse) GetAccountId() interface{} {
+func (b *BillingDataResponse) GetAccountId() *AccountId {
 	if b == nil {
 		return nil
 	}
@@ -3148,7 +3155,7 @@ func (b *BillingDataResponse) GetStatus() int {
 	return b.Status
 }
 
-func (b *BillingDataResponse) GetServices() []interface{} {
+func (b *BillingDataResponse) GetServices() []any {
 	if b == nil {
 		return nil
 	}
@@ -3185,7 +3192,7 @@ func (b *BillingDataResponse) SetId(id int) {
 
 // SetAccountId sets the AccountId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillingDataResponse) SetAccountId(accountId interface{}) {
+func (b *BillingDataResponse) SetAccountId(accountId *AccountId) {
 	b.AccountId = accountId
 	b.require(billingDataResponseFieldAccountId)
 }
@@ -3262,7 +3269,7 @@ func (b *BillingDataResponse) SetStatus(status int) {
 
 // SetServices sets the Services field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillingDataResponse) SetServices(services []interface{}) {
+func (b *BillingDataResponse) SetServices(services []any) {
 	b.Services = services
 	b.require(billingDataResponseFieldServices)
 }
@@ -6666,7 +6673,7 @@ type ExternalProcessorInformation = string
 type FeeAmount = float64
 
 // A file containing the response data, in the format specified in the request.
-type File = map[string]interface{}
+type File = map[string]any
 
 // Contains details about a file. Max upload size is 30 MB.
 var (
@@ -7003,19 +7010,19 @@ var (
 )
 
 type FrequencyList struct {
-	// Enable or disable frequency
+	// Enable or disable the annual frequency.
 	Annually *bool `json:"annually,omitempty" url:"annually,omitempty"`
-	// Enable or disable frequency
+	// Enable or disable the every-two-weeks frequency.
 	Every2Weeks *bool `json:"every2Weeks,omitempty" url:"every2Weeks,omitempty"`
-	// Enable or disable frequency
+	// Enable or disable the every-three-months frequency.
 	Every3Months *bool `json:"every3Months,omitempty" url:"every3Months,omitempty"`
-	// Enable or disable frequency
+	// Enable or disable the every-six-months frequency.
 	Every6Months *bool `json:"every6Months,omitempty" url:"every6Months,omitempty"`
-	// Enable or disable frequency
+	// Enable or disable the monthly frequency.
 	Monthly *bool `json:"monthly,omitempty" url:"monthly,omitempty"`
-	// Enable or disable frequency
+	// Enable or disable the one-time frequency.
 	Onetime *bool `json:"onetime,omitempty" url:"onetime,omitempty"`
-	// Enable or disable frequency
+	// Enable or disable the weekly frequency.
 	Weekly *bool `json:"weekly,omitempty" url:"weekly,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -7253,7 +7260,7 @@ type GeneralEvents struct {
 	// Event timestamp, in UTC.
 	EventTime *time.Time `json:"eventTime,omitempty" url:"eventTime,omitempty"`
 	// Extra data.
-	ExtraData map[string]interface{} `json:"extraData,omitempty" url:"extraData,omitempty"`
+	ExtraData map[string]any `json:"extraData,omitempty" url:"extraData,omitempty"`
 	// Reference data.
 	RefData *string `json:"refData,omitempty" url:"refData,omitempty"`
 	// The event source.
@@ -7280,7 +7287,7 @@ func (g *GeneralEvents) GetEventTime() *time.Time {
 	return g.EventTime
 }
 
-func (g *GeneralEvents) GetExtraData() map[string]interface{} {
+func (g *GeneralEvents) GetExtraData() map[string]any {
 	if g == nil {
 		return nil
 	}
@@ -7331,7 +7338,7 @@ func (g *GeneralEvents) SetEventTime(eventTime *time.Time) {
 
 // SetExtraData sets the ExtraData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GeneralEvents) SetExtraData(extraData map[string]interface{}) {
+func (g *GeneralEvents) SetExtraData(extraData map[string]any) {
 	g.ExtraData = extraData
 	g.require(generalEventsFieldExtraData)
 }
@@ -7399,6 +7406,9 @@ func (g *GeneralEvents) String() string {
 	}
 	return fmt.Sprintf("%#v", g)
 }
+
+// Whether a customer fee greater than the configured service fee is allowed for this credential.
+type GreaterValueAllowed = bool
 
 type HasVcardTransactions = bool
 
@@ -14006,31 +14016,38 @@ func (p *PayabliApiResponsePaylinks) String() string {
 }
 
 var (
-	payabliCredentialsFieldAccountId   = big.NewInt(1 << 0)
-	payabliCredentialsFieldCfeeFix     = big.NewInt(1 << 1)
-	payabliCredentialsFieldCfeeFloat   = big.NewInt(1 << 2)
-	payabliCredentialsFieldCfeeMax     = big.NewInt(1 << 3)
-	payabliCredentialsFieldCfeeMin     = big.NewInt(1 << 4)
-	payabliCredentialsFieldMaxticket   = big.NewInt(1 << 5)
-	payabliCredentialsFieldMinticket   = big.NewInt(1 << 6)
-	payabliCredentialsFieldMode        = big.NewInt(1 << 7)
-	payabliCredentialsFieldReferenceId = big.NewInt(1 << 8)
-	payabliCredentialsFieldService     = big.NewInt(1 << 9)
+	payabliCredentialsFieldAccountId           = big.NewInt(1 << 0)
+	payabliCredentialsFieldCfeeFix             = big.NewInt(1 << 1)
+	payabliCredentialsFieldCfeeFloat           = big.NewInt(1 << 2)
+	payabliCredentialsFieldCfeeMax             = big.NewInt(1 << 3)
+	payabliCredentialsFieldCfeeMin             = big.NewInt(1 << 4)
+	payabliCredentialsFieldMaxticket           = big.NewInt(1 << 5)
+	payabliCredentialsFieldMinticket           = big.NewInt(1 << 6)
+	payabliCredentialsFieldMode                = big.NewInt(1 << 7)
+	payabliCredentialsFieldReferenceId         = big.NewInt(1 << 8)
+	payabliCredentialsFieldService             = big.NewInt(1 << 9)
+	payabliCredentialsFieldGreaterValueAllowed = big.NewInt(1 << 10)
+	payabliCredentialsFieldAbsorbDifference    = big.NewInt(1 << 11)
+	payabliCredentialsFieldAllowOverride       = big.NewInt(1 << 12)
 )
 
 type PayabliCredentials struct {
-	AccountId *string  `json:"accountId,omitempty" url:"accountId,omitempty"`
-	CfeeFix   *float64 `json:"cfeeFix,omitempty" url:"cfeeFix,omitempty"`
-	CfeeFloat *float64 `json:"cfeeFloat,omitempty" url:"cfeeFloat,omitempty"`
-	CfeeMax   *float64 `json:"cfeeMax,omitempty" url:"cfeeMax,omitempty"`
-	CfeeMin   *float64 `json:"cfeeMin,omitempty" url:"cfeeMin,omitempty"`
-	Maxticket *float64 `json:"maxticket,omitempty" url:"maxticket,omitempty"`
-	Minticket *float64 `json:"minticket,omitempty" url:"minticket,omitempty"`
+	// The identifier for the payment connector, matching the `accountId` of the linked bank account.
+	AccountId *AccountId `json:"accountId,omitempty" url:"accountId,omitempty"`
+	CfeeFix   *float64   `json:"cfeeFix,omitempty" url:"cfeeFix,omitempty"`
+	CfeeFloat *float64   `json:"cfeeFloat,omitempty" url:"cfeeFloat,omitempty"`
+	CfeeMax   *float64   `json:"cfeeMax,omitempty" url:"cfeeMax,omitempty"`
+	CfeeMin   *float64   `json:"cfeeMin,omitempty" url:"cfeeMin,omitempty"`
+	Maxticket *float64   `json:"maxticket,omitempty" url:"maxticket,omitempty"`
+	Minticket *float64   `json:"minticket,omitempty" url:"minticket,omitempty"`
 	// The payment mode supported by this service. `0` for one-time payments, `1` for recurring payments, `2` for both.
 	Mode        *int   `json:"mode,omitempty" url:"mode,omitempty"`
 	ReferenceId *int64 `json:"referenceId,omitempty" url:"referenceId,omitempty"`
 	// The payment service that this credential applies to. A paypoint can support multiple services, each represented by its own credential object in the array. Possible values are `card` (credit/debit card), `ach` (ACH bank transfer), `check` (paper check), `vcard` (virtual card), `cloud` (card-present), `cash`, `managed` (managed payment service), and `wallet`.
-	Service *string `json:"service,omitempty" url:"service,omitempty"`
+	Service             *string              `json:"service,omitempty" url:"service,omitempty"`
+	GreaterValueAllowed *GreaterValueAllowed `json:"greaterValueAllowed,omitempty" url:"greaterValueAllowed,omitempty"`
+	AbsorbDifference    *AbsorbDifference    `json:"absorbDifference,omitempty" url:"absorbDifference,omitempty"`
+	AllowOverride       *AllowOverride       `json:"allowOverride,omitempty" url:"allowOverride,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -14039,7 +14056,7 @@ type PayabliCredentials struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PayabliCredentials) GetAccountId() *string {
+func (p *PayabliCredentials) GetAccountId() *AccountId {
 	if p == nil {
 		return nil
 	}
@@ -14109,6 +14126,27 @@ func (p *PayabliCredentials) GetService() *string {
 	return p.Service
 }
 
+func (p *PayabliCredentials) GetGreaterValueAllowed() *GreaterValueAllowed {
+	if p == nil {
+		return nil
+	}
+	return p.GreaterValueAllowed
+}
+
+func (p *PayabliCredentials) GetAbsorbDifference() *AbsorbDifference {
+	if p == nil {
+		return nil
+	}
+	return p.AbsorbDifference
+}
+
+func (p *PayabliCredentials) GetAllowOverride() *AllowOverride {
+	if p == nil {
+		return nil
+	}
+	return p.AllowOverride
+}
+
 func (p *PayabliCredentials) GetExtraProperties() map[string]interface{} {
 	if p == nil {
 		return nil
@@ -14125,7 +14163,7 @@ func (p *PayabliCredentials) require(field *big.Int) {
 
 // SetAccountId sets the AccountId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliCredentials) SetAccountId(accountId *string) {
+func (p *PayabliCredentials) SetAccountId(accountId *AccountId) {
 	p.AccountId = accountId
 	p.require(payabliCredentialsFieldAccountId)
 }
@@ -14193,6 +14231,27 @@ func (p *PayabliCredentials) SetService(service *string) {
 	p.require(payabliCredentialsFieldService)
 }
 
+// SetGreaterValueAllowed sets the GreaterValueAllowed field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliCredentials) SetGreaterValueAllowed(greaterValueAllowed *GreaterValueAllowed) {
+	p.GreaterValueAllowed = greaterValueAllowed
+	p.require(payabliCredentialsFieldGreaterValueAllowed)
+}
+
+// SetAbsorbDifference sets the AbsorbDifference field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliCredentials) SetAbsorbDifference(absorbDifference *AbsorbDifference) {
+	p.AbsorbDifference = absorbDifference
+	p.require(payabliCredentialsFieldAbsorbDifference)
+}
+
+// SetAllowOverride sets the AllowOverride field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliCredentials) SetAllowOverride(allowOverride *AllowOverride) {
+	p.AllowOverride = allowOverride
+	p.require(payabliCredentialsFieldAllowOverride)
+}
+
 func (p *PayabliCredentials) UnmarshalJSON(data []byte) error {
 	type unmarshaler PayabliCredentials
 	var value unmarshaler
@@ -14236,36 +14295,43 @@ func (p *PayabliCredentials) String() string {
 }
 
 var (
-	payabliCredentialsPascalFieldService          = big.NewInt(1 << 0)
-	payabliCredentialsPascalFieldMode             = big.NewInt(1 << 1)
-	payabliCredentialsPascalFieldMinTicket        = big.NewInt(1 << 2)
-	payabliCredentialsPascalFieldMaxTicket        = big.NewInt(1 << 3)
-	payabliCredentialsPascalFieldCfeeFix          = big.NewInt(1 << 4)
-	payabliCredentialsPascalFieldCfeeFloat        = big.NewInt(1 << 5)
-	payabliCredentialsPascalFieldCfeeMin          = big.NewInt(1 << 6)
-	payabliCredentialsPascalFieldCfeeMax          = big.NewInt(1 << 7)
-	payabliCredentialsPascalFieldAccountId        = big.NewInt(1 << 8)
-	payabliCredentialsPascalFieldReferenceId      = big.NewInt(1 << 9)
-	payabliCredentialsPascalFieldAcceptSameDayAch = big.NewInt(1 << 10)
-	payabliCredentialsPascalFieldCurrency         = big.NewInt(1 << 11)
+	payabliCredentialsPascalFieldService             = big.NewInt(1 << 0)
+	payabliCredentialsPascalFieldMode                = big.NewInt(1 << 1)
+	payabliCredentialsPascalFieldMinTicket           = big.NewInt(1 << 2)
+	payabliCredentialsPascalFieldMaxTicket           = big.NewInt(1 << 3)
+	payabliCredentialsPascalFieldCfeeFix             = big.NewInt(1 << 4)
+	payabliCredentialsPascalFieldCfeeFloat           = big.NewInt(1 << 5)
+	payabliCredentialsPascalFieldCfeeMin             = big.NewInt(1 << 6)
+	payabliCredentialsPascalFieldCfeeMax             = big.NewInt(1 << 7)
+	payabliCredentialsPascalFieldAccountId           = big.NewInt(1 << 8)
+	payabliCredentialsPascalFieldReferenceId         = big.NewInt(1 << 9)
+	payabliCredentialsPascalFieldAcceptSameDayAch    = big.NewInt(1 << 10)
+	payabliCredentialsPascalFieldCurrency            = big.NewInt(1 << 11)
+	payabliCredentialsPascalFieldGreaterValueAllowed = big.NewInt(1 << 12)
+	payabliCredentialsPascalFieldAbsorbDifference    = big.NewInt(1 << 13)
+	payabliCredentialsPascalFieldAllowOverride       = big.NewInt(1 << 14)
 )
 
 type PayabliCredentialsPascal struct {
 	// The payment service that this credential applies to. A paypoint can support multiple services, each represented by its own credential object in the array. Possible values are `card` (credit/debit card), `ach` (ACH bank transfer), `check` (paper check), `vcard` (virtual card), `cloud` (card-present), `cash`, `managed` (managed payment service), and `wallet`.
 	Service *string `json:"Service,omitempty" url:"Service,omitempty"`
 	// The payment mode supported by this service. `0` for one-time payments, `1` for recurring payments, `2` for both.
-	Mode             *int       `json:"Mode,omitempty" url:"Mode,omitempty"`
-	MinTicket        *MinTicket `json:"MinTicket,omitempty" url:"MinTicket,omitempty"`
-	MaxTicket        *MaxTicket `json:"MaxTicket,omitempty" url:"MaxTicket,omitempty"`
-	CfeeFix          *float64   `json:"CfeeFix,omitempty" url:"CfeeFix,omitempty"`
-	CfeeFloat        *float64   `json:"CfeeFloat,omitempty" url:"CfeeFloat,omitempty"`
-	CfeeMin          *float64   `json:"CfeeMin,omitempty" url:"CfeeMin,omitempty"`
-	CfeeMax          *float64   `json:"CfeeMax,omitempty" url:"CfeeMax,omitempty"`
-	AccountId        *string    `json:"AccountId,omitempty" url:"AccountId,omitempty"`
+	Mode      *int       `json:"Mode,omitempty" url:"Mode,omitempty"`
+	MinTicket *MinTicket `json:"MinTicket,omitempty" url:"MinTicket,omitempty"`
+	MaxTicket *MaxTicket `json:"MaxTicket,omitempty" url:"MaxTicket,omitempty"`
+	CfeeFix   *float64   `json:"CfeeFix,omitempty" url:"CfeeFix,omitempty"`
+	CfeeFloat *float64   `json:"CfeeFloat,omitempty" url:"CfeeFloat,omitempty"`
+	CfeeMin   *float64   `json:"CfeeMin,omitempty" url:"CfeeMin,omitempty"`
+	CfeeMax   *float64   `json:"CfeeMax,omitempty" url:"CfeeMax,omitempty"`
+	// The identifier for the payment connector, matching the `accountId` of the linked bank account.
+	AccountId        *AccountId `json:"AccountId,omitempty" url:"AccountId,omitempty"`
 	ReferenceId      *int64     `json:"ReferenceId,omitempty" url:"ReferenceId,omitempty"`
 	AcceptSameDayAch *bool      `json:"acceptSameDayACH,omitempty" url:"acceptSameDayACH,omitempty"`
 	// The default currency for the paypoint, either `USD` or `CAD`.
-	Currency *string `json:"Currency,omitempty" url:"Currency,omitempty"`
+	Currency            *string              `json:"Currency,omitempty" url:"Currency,omitempty"`
+	GreaterValueAllowed *GreaterValueAllowed `json:"GreaterValueAllowed,omitempty" url:"GreaterValueAllowed,omitempty"`
+	AbsorbDifference    *AbsorbDifference    `json:"AbsorbDifference,omitempty" url:"AbsorbDifference,omitempty"`
+	AllowOverride       *AllowOverride       `json:"AllowOverride,omitempty" url:"AllowOverride,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -14330,7 +14396,7 @@ func (p *PayabliCredentialsPascal) GetCfeeMax() *float64 {
 	return p.CfeeMax
 }
 
-func (p *PayabliCredentialsPascal) GetAccountId() *string {
+func (p *PayabliCredentialsPascal) GetAccountId() *AccountId {
 	if p == nil {
 		return nil
 	}
@@ -14356,6 +14422,27 @@ func (p *PayabliCredentialsPascal) GetCurrency() *string {
 		return nil
 	}
 	return p.Currency
+}
+
+func (p *PayabliCredentialsPascal) GetGreaterValueAllowed() *GreaterValueAllowed {
+	if p == nil {
+		return nil
+	}
+	return p.GreaterValueAllowed
+}
+
+func (p *PayabliCredentialsPascal) GetAbsorbDifference() *AbsorbDifference {
+	if p == nil {
+		return nil
+	}
+	return p.AbsorbDifference
+}
+
+func (p *PayabliCredentialsPascal) GetAllowOverride() *AllowOverride {
+	if p == nil {
+		return nil
+	}
+	return p.AllowOverride
 }
 
 func (p *PayabliCredentialsPascal) GetExtraProperties() map[string]interface{} {
@@ -14430,7 +14517,7 @@ func (p *PayabliCredentialsPascal) SetCfeeMax(cfeeMax *float64) {
 
 // SetAccountId sets the AccountId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliCredentialsPascal) SetAccountId(accountId *string) {
+func (p *PayabliCredentialsPascal) SetAccountId(accountId *AccountId) {
 	p.AccountId = accountId
 	p.require(payabliCredentialsPascalFieldAccountId)
 }
@@ -14454,6 +14541,27 @@ func (p *PayabliCredentialsPascal) SetAcceptSameDayAch(acceptSameDayAch *bool) {
 func (p *PayabliCredentialsPascal) SetCurrency(currency *string) {
 	p.Currency = currency
 	p.require(payabliCredentialsPascalFieldCurrency)
+}
+
+// SetGreaterValueAllowed sets the GreaterValueAllowed field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliCredentialsPascal) SetGreaterValueAllowed(greaterValueAllowed *GreaterValueAllowed) {
+	p.GreaterValueAllowed = greaterValueAllowed
+	p.require(payabliCredentialsPascalFieldGreaterValueAllowed)
+}
+
+// SetAbsorbDifference sets the AbsorbDifference field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliCredentialsPascal) SetAbsorbDifference(absorbDifference *AbsorbDifference) {
+	p.AbsorbDifference = absorbDifference
+	p.require(payabliCredentialsPascalFieldAbsorbDifference)
+}
+
+// SetAllowOverride sets the AllowOverride field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliCredentialsPascal) SetAllowOverride(allowOverride *AllowOverride) {
+	p.AllowOverride = allowOverride
+	p.require(payabliCredentialsPascalFieldAllowOverride)
 }
 
 func (p *PayabliCredentialsPascal) UnmarshalJSON(data []byte) error {
@@ -14918,7 +15026,7 @@ type PaymentDetail struct {
 	// **Note**: These categories are for information only and aren't validated against the total amount provided.
 	Categories []*PaymentCategories `json:"categories,omitempty" url:"categories,omitempty"`
 	// Object containing image of paper check.
-	CheckImage map[string]interface{} `json:"checkImage,omitempty" url:"checkImage,omitempty"`
+	CheckImage map[string]any `json:"checkImage,omitempty" url:"checkImage,omitempty"`
 	// A check number to be used in the ach transaction. **Required** for payment method = 'check'.
 	CheckNumber *string `json:"checkNumber,omitempty" url:"checkNumber,omitempty"`
 	// The currency for the transaction, `USD` or `CAD`. If your paypoint is configured for CAD, you must send the `CAD` value in this field, otherwise it defaults to USD, which will cause the transaction to fail.
@@ -14946,7 +15054,7 @@ func (p *PaymentDetail) GetCategories() []*PaymentCategories {
 	return p.Categories
 }
 
-func (p *PaymentDetail) GetCheckImage() map[string]interface{} {
+func (p *PaymentDetail) GetCheckImage() map[string]any {
 	if p == nil {
 		return nil
 	}
@@ -15018,7 +15126,7 @@ func (p *PaymentDetail) SetCategories(categories []*PaymentCategories) {
 
 // SetCheckImage sets the CheckImage field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentDetail) SetCheckImage(checkImage map[string]interface{}) {
+func (p *PaymentDetail) SetCheckImage(checkImage map[string]any) {
 	p.CheckImage = checkImage
 	p.require(paymentDetailFieldCheckImage)
 }
@@ -15943,6 +16051,7 @@ var (
 	paypointDataFieldTimeZone           = big.NewInt(1 << 19)
 	paypointDataFieldWebsiteAddress     = big.NewInt(1 << 20)
 	paypointDataFieldZip                = big.NewInt(1 << 21)
+	paypointDataFieldStatementEmail     = big.NewInt(1 << 22)
 )
 
 type PaypointData struct {
@@ -15969,6 +16078,8 @@ type PaypointData struct {
 	TimeZone       *Timezone        `json:"timeZone,omitempty" url:"timeZone,omitempty"`
 	WebsiteAddress *Website         `json:"websiteAddress,omitempty" url:"websiteAddress,omitempty"`
 	Zip            *Zip             `json:"zip,omitempty" url:"zip,omitempty"`
+	// Configuration for billing statement email recipients and sender address. `null` if not configured.
+	StatementEmail *StatementEmailConfig `json:"statementEmail,omitempty" url:"statementEmail,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -16129,6 +16240,13 @@ func (p *PaypointData) GetZip() *Zip {
 		return nil
 	}
 	return p.Zip
+}
+
+func (p *PaypointData) GetStatementEmail() *StatementEmailConfig {
+	if p == nil {
+		return nil
+	}
+	return p.StatementEmail
 }
 
 func (p *PaypointData) GetExtraProperties() map[string]interface{} {
@@ -16297,6 +16415,13 @@ func (p *PaypointData) SetWebsiteAddress(websiteAddress *Website) {
 func (p *PaypointData) SetZip(zip *Zip) {
 	p.Zip = zip
 	p.require(paypointDataFieldZip)
+}
+
+// SetStatementEmail sets the StatementEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointData) SetStatementEmail(statementEmail *StatementEmailConfig) {
+	p.StatementEmail = statementEmail
+	p.require(paypointDataFieldStatementEmail)
 }
 
 func (p *PaypointData) UnmarshalJSON(data []byte) error {
@@ -16721,14 +16846,14 @@ var (
 )
 
 type QueryCFeeTransaction struct {
-	CFeeTransid      *string                `json:"cFeeTransid,omitempty" url:"cFeeTransid,omitempty"`
-	FeeAmount        *float64               `json:"feeAmount,omitempty" url:"feeAmount,omitempty"`
-	Operation        *string                `json:"operation,omitempty" url:"operation,omitempty"`
-	RefundId         *int64                 `json:"refundId,omitempty" url:"refundId,omitempty"`
-	ResponseData     map[string]interface{} `json:"responseData,omitempty" url:"responseData,omitempty"`
-	SettlementStatus *int                   `json:"settlementStatus,omitempty" url:"settlementStatus,omitempty"`
-	TransactionTime  *TransactionTime       `json:"transactionTime,omitempty" url:"transactionTime,omitempty"`
-	TransStatus      *int                   `json:"transStatus,omitempty" url:"transStatus,omitempty"`
+	CFeeTransid      *string          `json:"cFeeTransid,omitempty" url:"cFeeTransid,omitempty"`
+	FeeAmount        *float64         `json:"feeAmount,omitempty" url:"feeAmount,omitempty"`
+	Operation        *string          `json:"operation,omitempty" url:"operation,omitempty"`
+	RefundId         *int64           `json:"refundId,omitempty" url:"refundId,omitempty"`
+	ResponseData     map[string]any   `json:"responseData,omitempty" url:"responseData,omitempty"`
+	SettlementStatus *int             `json:"settlementStatus,omitempty" url:"settlementStatus,omitempty"`
+	TransactionTime  *TransactionTime `json:"transactionTime,omitempty" url:"transactionTime,omitempty"`
+	TransStatus      *int             `json:"transStatus,omitempty" url:"transStatus,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -16765,7 +16890,7 @@ func (q *QueryCFeeTransaction) GetRefundId() *int64 {
 	return q.RefundId
 }
 
-func (q *QueryCFeeTransaction) GetResponseData() map[string]interface{} {
+func (q *QueryCFeeTransaction) GetResponseData() map[string]any {
 	if q == nil {
 		return nil
 	}
@@ -16837,7 +16962,7 @@ func (q *QueryCFeeTransaction) SetRefundId(refundId *int64) {
 
 // SetResponseData sets the ResponseData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryCFeeTransaction) SetResponseData(responseData map[string]interface{}) {
+func (q *QueryCFeeTransaction) SetResponseData(responseData map[string]any) {
 	q.ResponseData = responseData
 	q.require(queryCFeeTransactionFieldResponseData)
 }
@@ -16932,7 +17057,7 @@ var (
 
 type QueryPaymentData struct {
 	AccountExp       *Accountexp       `json:"AccountExp,omitempty" url:"AccountExp,omitempty"`
-	AccountId        *Accountid        `json:"accountId,omitempty" url:"accountId,omitempty"`
+	AccountId        *AccountId        `json:"accountId,omitempty" url:"accountId,omitempty"`
 	AccountType      *Accounttype      `json:"AccountType,omitempty" url:"AccountType,omitempty"`
 	AccountZip       *Accountzip       `json:"AccountZip,omitempty" url:"AccountZip,omitempty"`
 	BinData          *BinData          `json:"binData,omitempty" url:"binData,omitempty"`
@@ -16961,7 +17086,7 @@ func (q *QueryPaymentData) GetAccountExp() *Accountexp {
 	return q.AccountExp
 }
 
-func (q *QueryPaymentData) GetAccountId() *Accountid {
+func (q *QueryPaymentData) GetAccountId() *AccountId {
 	if q == nil {
 		return nil
 	}
@@ -17075,7 +17200,7 @@ func (q *QueryPaymentData) SetAccountExp(accountExp *Accountexp) {
 
 // SetAccountId sets the AccountId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPaymentData) SetAccountId(accountId *Accountid) {
+func (q *QueryPaymentData) SetAccountId(accountId *AccountId) {
 	q.AccountId = accountId
 	q.require(queryPaymentDataFieldAccountId)
 }
@@ -17212,8 +17337,8 @@ var (
 )
 
 type QueryResponse struct {
-	Records []interface{} `json:"records,omitempty" url:"records,omitempty"`
-	Summary *string       `json:"summary,omitempty" url:"summary,omitempty"`
+	Records []any   `json:"records,omitempty" url:"records,omitempty"`
+	Summary *string `json:"summary,omitempty" url:"summary,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -17222,7 +17347,7 @@ type QueryResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (q *QueryResponse) GetRecords() []interface{} {
+func (q *QueryResponse) GetRecords() []any {
 	if q == nil {
 		return nil
 	}
@@ -17252,7 +17377,7 @@ func (q *QueryResponse) require(field *big.Int) {
 
 // SetRecords sets the Records field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryResponse) SetRecords(records []interface{}) {
+func (q *QueryResponse) SetRecords(records []any) {
 	q.Records = records
 	q.require(queryResponseFieldRecords)
 }
@@ -17916,13 +18041,13 @@ func (q *QueryTransactionEvents) String() string {
 
 // Any data associated to the event received from processor. Contents vary by event type.
 type QueryTransactionEventsEventData struct {
-	StringUnknownMap map[string]interface{}
+	StringUnknownMap map[string]any
 	String           string
 
 	typ string
 }
 
-func (q *QueryTransactionEventsEventData) GetStringUnknownMap() map[string]interface{} {
+func (q *QueryTransactionEventsEventData) GetStringUnknownMap() map[string]any {
 	if q == nil {
 		return nil
 	}
@@ -17937,7 +18062,7 @@ func (q *QueryTransactionEventsEventData) GetString() string {
 }
 
 func (q *QueryTransactionEventsEventData) UnmarshalJSON(data []byte) error {
-	var valueStringUnknownMap map[string]interface{}
+	var valueStringUnknownMap map[string]any
 	if err := json.Unmarshal(data, &valueStringUnknownMap); err == nil {
 		q.typ = "StringUnknownMap"
 		q.StringUnknownMap = valueStringUnknownMap
@@ -17963,7 +18088,7 @@ func (q QueryTransactionEventsEventData) MarshalJSON() ([]byte, error) {
 }
 
 type QueryTransactionEventsEventDataVisitor interface {
-	VisitStringUnknownMap(map[string]interface{}) error
+	VisitStringUnknownMap(map[string]any) error
 	VisitString(string) error
 }
 
@@ -18004,7 +18129,7 @@ var (
 
 type QueryTransactionPayorData struct {
 	// Array of field names to be used as identifiers.
-	Identifiers []interface{} `json:"Identifiers,omitempty" url:"Identifiers,omitempty"`
+	Identifiers []any `json:"Identifiers,omitempty" url:"Identifiers,omitempty"`
 	// Customer/Payor first name.
 	FirstName *string `json:"FirstName,omitempty" url:"FirstName,omitempty"`
 	// Customer/Payor last name.
@@ -18045,7 +18170,7 @@ type QueryTransactionPayorData struct {
 	rawJSON         json.RawMessage
 }
 
-func (q *QueryTransactionPayorData) GetIdentifiers() []interface{} {
+func (q *QueryTransactionPayorData) GetIdentifiers() []any {
 	if q == nil {
 		return nil
 	}
@@ -18215,7 +18340,7 @@ func (q *QueryTransactionPayorData) require(field *big.Int) {
 
 // SetIdentifiers sets the Identifiers field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryTransactionPayorData) SetIdentifiers(identifiers []interface{}) {
+func (q *QueryTransactionPayorData) SetIdentifiers(identifiers []any) {
 	q.Identifiers = identifiers
 	q.require(queryTransactionPayorDataFieldIdentifiers)
 }
@@ -18684,7 +18809,7 @@ type ResponseText = string
 type Responsecode = int
 
 // The object containing the response data.
-type Responsedata = map[string]interface{}
+type Responsedata = map[string]any
 
 // The response data.
 type Responsedatanonobject struct {
@@ -19294,7 +19419,7 @@ var (
 type SplitFundingContent struct {
 	// The accountId for the account the split should be sent to.
 	AccountId *string `json:"accountId,omitempty" url:"accountId,omitempty"`
-	// Amount from the transaction to sent to this recipient.
+	// Amount from the transaction to send to this recipient.
 	Amount *float64 `json:"amount,omitempty" url:"amount,omitempty"`
 	// A description for the split.
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
@@ -19422,6 +19547,109 @@ func (s *SplitFundingContent) String() string {
 
 // The state or province.
 type StateNullable = string
+
+// Configuration for statement email recipients and the sender address.
+var (
+	statementEmailConfigFieldSender     = big.NewInt(1 << 0)
+	statementEmailConfigFieldRecipients = big.NewInt(1 << 1)
+)
+
+type StatementEmailConfig struct {
+	// The email address from which statements are sent. Always uses a Payabli domain, for example `acme-partners@payabli.com`. If `null`, `noreply@payabli.com` is used.
+	Sender *string `json:"sender,omitempty" url:"sender,omitempty"`
+	// List of email addresses that receive billing statements. These are merchant or partner contacts.
+	Recipients []string `json:"recipients,omitempty" url:"recipients,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *StatementEmailConfig) GetSender() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Sender
+}
+
+func (s *StatementEmailConfig) GetRecipients() []string {
+	if s == nil {
+		return nil
+	}
+	return s.Recipients
+}
+
+func (s *StatementEmailConfig) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
+	return s.extraProperties
+}
+
+func (s *StatementEmailConfig) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetSender sets the Sender field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatementEmailConfig) SetSender(sender *string) {
+	s.Sender = sender
+	s.require(statementEmailConfigFieldSender)
+}
+
+// SetRecipients sets the Recipients field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatementEmailConfig) SetRecipients(recipients []string) {
+	s.Recipients = recipients
+	s.require(statementEmailConfigFieldRecipients)
+}
+
+func (s *StatementEmailConfig) UnmarshalJSON(data []byte) error {
+	type unmarshaler StatementEmailConfig
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = StatementEmailConfig(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *StatementEmailConfig) MarshalJSON() ([]byte, error) {
+	type embed StatementEmailConfig
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *StatementEmailConfig) String() string {
+	if s == nil {
+		return "<nil>"
+	}
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
 
 // Status of notification:
 //   - `0`: Inactive
@@ -20725,8 +20953,8 @@ type TransactionQueryRecords struct {
 	// Events associated with this transaction.
 	TransactionEvents []*QueryTransactionEvents `json:"TransactionEvents,omitempty" url:"TransactionEvents,omitempty"`
 	// Transaction date and time, in UTC.
-	TransactionTime     *time.Time  `json:"TransactionTime,omitempty" url:"TransactionTime,omitempty"`
-	TransAdditionalData interface{} `json:"TransAdditionalData,omitempty" url:"TransAdditionalData,omitempty"`
+	TransactionTime     *time.Time `json:"TransactionTime,omitempty" url:"TransactionTime,omitempty"`
+	TransAdditionalData any        `json:"TransAdditionalData,omitempty" url:"TransAdditionalData,omitempty"`
 	// Status of transaction. See [the docs](/developers/references/money-in-statuses#money-in-transaction-status) for a full reference.
 	TransStatus *int `json:"TransStatus,omitempty" url:"TransStatus,omitempty"`
 
@@ -20996,7 +21224,7 @@ func (t *TransactionQueryRecords) GetTransactionTime() *time.Time {
 	return t.TransactionTime
 }
 
-func (t *TransactionQueryRecords) GetTransAdditionalData() interface{} {
+func (t *TransactionQueryRecords) GetTransAdditionalData() any {
 	if t == nil {
 		return nil
 	}
@@ -21285,7 +21513,7 @@ func (t *TransactionQueryRecords) SetTransactionTime(transactionTime *time.Time)
 
 // SetTransAdditionalData sets the TransAdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionQueryRecords) SetTransAdditionalData(transAdditionalData interface{}) {
+func (t *TransactionQueryRecords) SetTransAdditionalData(transAdditionalData any) {
 	t.TransAdditionalData = transAdditionalData
 	t.require(transactionQueryRecordsFieldTransAdditionalData)
 }
@@ -23468,20 +23696,20 @@ var (
 )
 
 type VendorResponseBillingData struct {
-	Id                    *int          `json:"id,omitempty" url:"id,omitempty"`
-	AccountId             *string       `json:"accountId,omitempty" url:"accountId,omitempty"`
-	Nickname              *string       `json:"nickname,omitempty" url:"nickname,omitempty"`
-	BankName              *string       `json:"bankName,omitempty" url:"bankName,omitempty"`
-	RoutingAccount        *string       `json:"routingAccount,omitempty" url:"routingAccount,omitempty"`
-	AccountNumber         *string       `json:"accountNumber,omitempty" url:"accountNumber,omitempty"`
-	TypeAccount           *string       `json:"typeAccount,omitempty" url:"typeAccount,omitempty"`
-	BankAccountHolderName *string       `json:"bankAccountHolderName,omitempty" url:"bankAccountHolderName,omitempty"`
-	BankAccountHolderType *string       `json:"bankAccountHolderType,omitempty" url:"bankAccountHolderType,omitempty"`
-	BankAccountFunction   *int          `json:"bankAccountFunction,omitempty" url:"bankAccountFunction,omitempty"`
-	Verified              *bool         `json:"verified,omitempty" url:"verified,omitempty"`
-	Status                *int          `json:"status,omitempty" url:"status,omitempty"`
-	Services              []interface{} `json:"services,omitempty" url:"services,omitempty"`
-	Default               *bool         `json:"default,omitempty" url:"default,omitempty"`
+	Id                    *int    `json:"id,omitempty" url:"id,omitempty"`
+	AccountId             *string `json:"accountId,omitempty" url:"accountId,omitempty"`
+	Nickname              *string `json:"nickname,omitempty" url:"nickname,omitempty"`
+	BankName              *string `json:"bankName,omitempty" url:"bankName,omitempty"`
+	RoutingAccount        *string `json:"routingAccount,omitempty" url:"routingAccount,omitempty"`
+	AccountNumber         *string `json:"accountNumber,omitempty" url:"accountNumber,omitempty"`
+	TypeAccount           *string `json:"typeAccount,omitempty" url:"typeAccount,omitempty"`
+	BankAccountHolderName *string `json:"bankAccountHolderName,omitempty" url:"bankAccountHolderName,omitempty"`
+	BankAccountHolderType *string `json:"bankAccountHolderType,omitempty" url:"bankAccountHolderType,omitempty"`
+	BankAccountFunction   *int    `json:"bankAccountFunction,omitempty" url:"bankAccountFunction,omitempty"`
+	Verified              *bool   `json:"verified,omitempty" url:"verified,omitempty"`
+	Status                *int    `json:"status,omitempty" url:"status,omitempty"`
+	Services              []any   `json:"services,omitempty" url:"services,omitempty"`
+	Default               *bool   `json:"default,omitempty" url:"default,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -23574,7 +23802,7 @@ func (v *VendorResponseBillingData) GetStatus() *int {
 	return v.Status
 }
 
-func (v *VendorResponseBillingData) GetServices() []interface{} {
+func (v *VendorResponseBillingData) GetServices() []any {
 	if v == nil {
 		return nil
 	}
@@ -23688,7 +23916,7 @@ func (v *VendorResponseBillingData) SetStatus(status *int) {
 
 // SetServices sets the Services field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorResponseBillingData) SetServices(services []interface{}) {
+func (v *VendorResponseBillingData) SetServices(services []any) {
 	v.Services = services
 	v.require(vendorResponseBillingDataFieldServices)
 }

@@ -9917,7 +9917,7 @@ func TestSettersTransferDetailRecord(t *testing.T) {
 
 	t.Run("SetTransAdditionalData", func(t *testing.T) {
 		obj := &TransferDetailRecord{}
-		var fernTestValueTransAdditionalData interface{}
+		var fernTestValueTransAdditionalData any
 		obj.SetTransAdditionalData(fernTestValueTransAdditionalData)
 		assert.Equal(t, fernTestValueTransAdditionalData, obj.TransAdditionalData)
 		assert.NotNil(t, obj.explicitFields)
@@ -11657,7 +11657,7 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var expected interface{}
+		var expected any
 		obj.TransAdditionalData = expected
 
 		// Act & Assert
@@ -13866,7 +13866,7 @@ func TestSettersMarkExplicitTransferDetailRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var fernTestValueTransAdditionalData interface{}
+		var fernTestValueTransAdditionalData any
 
 		// Act
 		obj.SetTransAdditionalData(fernTestValueTransAdditionalData)
@@ -14845,7 +14845,7 @@ func TestSettersTransferOutDetailBill(t *testing.T) {
 
 	t.Run("SetAdditionalData", func(t *testing.T) {
 		obj := &TransferOutDetailBill{}
-		var fernTestValueAdditionalData map[string]interface{}
+		var fernTestValueAdditionalData map[string]any
 		obj.SetAdditionalData(fernTestValueAdditionalData)
 		assert.Equal(t, fernTestValueAdditionalData, obj.AdditionalData)
 		assert.NotNil(t, obj.explicitFields)
@@ -15095,7 +15095,7 @@ func TestGettersTransferOutDetailBill(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailBill{}
-		var expected map[string]interface{}
+		var expected map[string]any
 		obj.AdditionalData = expected
 
 		// Act & Assert
@@ -15583,7 +15583,7 @@ func TestSettersMarkExplicitTransferOutDetailBill(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailBill{}
-		var fernTestValueAdditionalData map[string]interface{}
+		var fernTestValueAdditionalData map[string]any
 
 		// Act
 		obj.SetAdditionalData(fernTestValueAdditionalData)
@@ -16737,7 +16737,7 @@ func TestSettersTransferOutDetailPaymentData(t *testing.T) {
 
 	t.Run("SetPaymentDetails", func(t *testing.T) {
 		obj := &TransferOutDetailPaymentData{}
-		var fernTestValuePaymentDetails interface{}
+		var fernTestValuePaymentDetails any
 		obj.SetPaymentDetails(fernTestValuePaymentDetails)
 		assert.Equal(t, fernTestValuePaymentDetails, obj.PaymentDetails)
 		assert.NotNil(t, obj.explicitFields)
@@ -16777,7 +16777,7 @@ func TestSettersTransferOutDetailPaymentData(t *testing.T) {
 
 	t.Run("SetBinData", func(t *testing.T) {
 		obj := &TransferOutDetailPaymentData{}
-		var fernTestValueBinData interface{}
+		var fernTestValueBinData any
 		obj.SetBinData(fernTestValueBinData)
 		assert.Equal(t, fernTestValueBinData, obj.BinData)
 		assert.NotNil(t, obj.explicitFields)
@@ -17186,7 +17186,7 @@ func TestGettersTransferOutDetailPaymentData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailPaymentData{}
-		var expected interface{}
+		var expected any
 		obj.PaymentDetails = expected
 
 		// Act & Assert
@@ -17341,7 +17341,7 @@ func TestGettersTransferOutDetailPaymentData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailPaymentData{}
-		var expected interface{}
+		var expected any
 		obj.BinData = expected
 
 		// Act & Assert
@@ -17739,7 +17739,7 @@ func TestSettersMarkExplicitTransferOutDetailPaymentData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailPaymentData{}
-		var fernTestValuePaymentDetails interface{}
+		var fernTestValuePaymentDetails any
 
 		// Act
 		obj.SetPaymentDetails(fernTestValuePaymentDetails)
@@ -17894,7 +17894,7 @@ func TestSettersMarkExplicitTransferOutDetailPaymentData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailPaymentData{}
-		var fernTestValueBinData interface{}
+		var fernTestValueBinData any
 
 		// Act
 		obj.SetBinData(fernTestValueBinData)
@@ -22960,7 +22960,7 @@ func TestSettersTransferOutDetailVendor(t *testing.T) {
 
 	t.Run("SetAdditionalData", func(t *testing.T) {
 		obj := &TransferOutDetailVendor{}
-		var fernTestValueAdditionalData map[string]interface{}
+		var fernTestValueAdditionalData map[string]any
 		obj.SetAdditionalData(fernTestValueAdditionalData)
 		assert.Equal(t, fernTestValueAdditionalData, obj.AdditionalData)
 		assert.NotNil(t, obj.explicitFields)
@@ -22976,7 +22976,7 @@ func TestSettersTransferOutDetailVendor(t *testing.T) {
 
 	t.Run("SetStoredMethods", func(t *testing.T) {
 		obj := &TransferOutDetailVendor{}
-		var fernTestValueStoredMethods []interface{}
+		var fernTestValueStoredMethods []any
 		obj.SetStoredMethods(fernTestValueStoredMethods)
 		assert.Equal(t, fernTestValueStoredMethods, obj.StoredMethods)
 		assert.NotNil(t, obj.explicitFields)
@@ -24375,7 +24375,7 @@ func TestGettersTransferOutDetailVendor(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendor{}
-		var expected map[string]interface{}
+		var expected map[string]any
 		obj.AdditionalData = expected
 
 		// Act & Assert
@@ -24441,7 +24441,7 @@ func TestGettersTransferOutDetailVendor(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendor{}
-		var expected []interface{}
+		var expected []any
 		obj.StoredMethods = expected
 
 		// Act & Assert
@@ -25779,7 +25779,7 @@ func TestSettersMarkExplicitTransferOutDetailVendor(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendor{}
-		var fernTestValueAdditionalData map[string]interface{}
+		var fernTestValueAdditionalData map[string]any
 
 		// Act
 		obj.SetAdditionalData(fernTestValueAdditionalData)
@@ -25841,7 +25841,7 @@ func TestSettersMarkExplicitTransferOutDetailVendor(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendor{}
-		var fernTestValueStoredMethods []interface{}
+		var fernTestValueStoredMethods []any
 
 		// Act
 		obj.SetStoredMethods(fernTestValueStoredMethods)
@@ -25969,7 +25969,7 @@ func TestSettersTransferOutDetailVendorBillingData(t *testing.T) {
 
 	t.Run("SetServices", func(t *testing.T) {
 		obj := &TransferOutDetailVendorBillingData{}
-		var fernTestValueServices []interface{}
+		var fernTestValueServices []any
 		obj.SetServices(fernTestValueServices)
 		assert.Equal(t, fernTestValueServices, obj.Services)
 		assert.NotNil(t, obj.explicitFields)
@@ -26394,7 +26394,7 @@ func TestGettersTransferOutDetailVendorBillingData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendorBillingData{}
-		var expected []interface{}
+		var expected []any
 		obj.Services = expected
 
 		// Act & Assert
@@ -26868,7 +26868,7 @@ func TestSettersMarkExplicitTransferOutDetailVendorBillingData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendorBillingData{}
-		var fernTestValueServices []interface{}
+		var fernTestValueServices []any
 
 		// Act
 		obj.SetServices(fernTestValueServices)
@@ -26986,7 +26986,7 @@ func TestSettersTransferOutEventData(t *testing.T) {
 
 	t.Run("SetExtraData", func(t *testing.T) {
 		obj := &TransferOutEventData{}
-		var fernTestValueExtraData interface{}
+		var fernTestValueExtraData any
 		obj.SetExtraData(fernTestValueExtraData)
 		assert.Equal(t, fernTestValueExtraData, obj.ExtraData)
 		assert.NotNil(t, obj.explicitFields)
@@ -27106,7 +27106,7 @@ func TestGettersTransferOutEventData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutEventData{}
-		var expected interface{}
+		var expected any
 		obj.ExtraData = expected
 
 		// Act & Assert
@@ -27258,7 +27258,7 @@ func TestSettersMarkExplicitTransferOutEventData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutEventData{}
-		var fernTestValueExtraData interface{}
+		var fernTestValueExtraData any
 
 		// Act
 		obj.SetExtraData(fernTestValueExtraData)

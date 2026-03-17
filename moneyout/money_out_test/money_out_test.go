@@ -352,3 +352,46 @@ func TestMoneyOutUpdateCheckPaymentStatusWithWireMock(
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestMoneyOutUpdateCheckPaymentStatusWithWireMock", "PATCH", "/MoneyOut/status/TRANS123456/5", nil, 1)
 }
+
+func TestMoneyOutReissueOutWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &payabli.ReissueOutRequest{
+		TransId: "129-219",
+		Body: &payabli.ReissuePayoutBody{
+			PaymentMethod: &payabli.ReissuePaymentMethod{
+				Method: "ach",
+				AchAccount: payabli.String(
+					"9876543210",
+				),
+				AchAccountType: payabli.String(
+					"savings",
+				),
+				AchRouting: payabli.String(
+					"021000021",
+				),
+				AchHolder: payabli.String(
+					"Acme Corp",
+				),
+				AchHolderType: payabli.AchHolderTypeBusiness.Ptr(),
+			},
+		},
+	}
+	_, invocationErr := client.MoneyOut.ReissueOut(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestMoneyOutReissueOutWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestMoneyOutReissueOutWithWireMock", "POST", "/MoneyOut/reissue", map[string]string{"transId": "129-219"}, 1)
+}

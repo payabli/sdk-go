@@ -2661,7 +2661,7 @@ func TestSettersV2TransactionDetails(t *testing.T) {
 
 	t.Run("SetTransAdditionalData", func(t *testing.T) {
 		obj := &V2TransactionDetails{}
-		var fernTestValueTransAdditionalData interface{}
+		var fernTestValueTransAdditionalData any
 		obj.SetTransAdditionalData(fernTestValueTransAdditionalData)
 		assert.Equal(t, fernTestValueTransAdditionalData, obj.TransAdditionalData)
 		assert.NotNil(t, obj.explicitFields)
@@ -3547,7 +3547,7 @@ func TestGettersV2TransactionDetails(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &V2TransactionDetails{}
-		var expected interface{}
+		var expected any
 		obj.TransAdditionalData = expected
 
 		// Act & Assert
@@ -5078,7 +5078,7 @@ func TestSettersMarkExplicitV2TransactionDetails(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &V2TransactionDetails{}
-		var fernTestValueTransAdditionalData interface{}
+		var fernTestValueTransAdditionalData any
 
 		// Act
 		obj.SetTransAdditionalData(fernTestValueTransAdditionalData)

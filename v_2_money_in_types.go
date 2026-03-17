@@ -1054,7 +1054,7 @@ type V2TransactionDetails struct {
 	ReturnedId          ReturnedId                    `json:"returnedId" url:"returnedId"`
 	ChargebackId        ChargebackId                  `json:"chargebackId" url:"chargebackId"`
 	RetrievalId         RetrievalId                   `json:"retrievalId" url:"retrievalId"`
-	TransAdditionalData interface{}                   `json:"transAdditionalData,omitempty" url:"transAdditionalData,omitempty"`
+	TransAdditionalData any                           `json:"transAdditionalData,omitempty" url:"transAdditionalData,omitempty"`
 	InvoiceData         *TransactionDetailInvoiceData `json:"invoiceData" url:"invoiceData"`
 	EntrypageId         EntrypageId                   `json:"entrypageId" url:"entrypageId"`
 	ExternalPaypointId  ExternalPaypointId            `json:"externalPaypointID" url:"externalPaypointID"`
@@ -1292,7 +1292,7 @@ func (v *V2TransactionDetails) GetRetrievalId() RetrievalId {
 	return v.RetrievalId
 }
 
-func (v *V2TransactionDetails) GetTransAdditionalData() interface{} {
+func (v *V2TransactionDetails) GetTransAdditionalData() any {
 	if v == nil {
 		return nil
 	}
@@ -1672,7 +1672,7 @@ func (v *V2TransactionDetails) SetRetrievalId(retrievalId RetrievalId) {
 
 // SetTransAdditionalData sets the TransAdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TransactionDetails) SetTransAdditionalData(transAdditionalData interface{}) {
+func (v *V2TransactionDetails) SetTransAdditionalData(transAdditionalData any) {
 	v.TransAdditionalData = transAdditionalData
 	v.require(v2TransactionDetailsFieldTransAdditionalData)
 }

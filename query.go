@@ -8519,7 +8519,7 @@ type QueryPayoutTransactionRecordsItem struct {
 	BatchNumber *BatchNumber `json:"BatchNumber,omitempty" url:"BatchNumber,omitempty"`
 	// Identifier of the batch associated with payout transaction.
 	BatchId *int `json:"BatchId,omitempty" url:"BatchId,omitempty"`
-	// Events associated with this transaction.
+	// Bills associated with this transaction.
 	Bills     []*BillPayOutData `json:"Bills,omitempty" url:"Bills,omitempty"`
 	CardToken *string           `json:"CardToken,omitempty" url:"CardToken,omitempty"`
 	// Object referencing paper check image.
@@ -9220,7 +9220,7 @@ var (
 
 type QueryPayoutTransactionRecordsItemPaymentData struct {
 	AccountExp           *Accountexp             `json:"AccountExp,omitempty" url:"AccountExp,omitempty"`
-	AccountId            *Accountid              `json:"accountId,omitempty" url:"accountId,omitempty"`
+	AccountId            *AccountId              `json:"accountId,omitempty" url:"accountId,omitempty"`
 	AccountType          *Accounttype            `json:"AccountType,omitempty" url:"AccountType,omitempty"`
 	AccountZip           *Accountzip             `json:"AccountZip,omitempty" url:"AccountZip,omitempty"`
 	BankAccount          *string                 `json:"bankAccount,omitempty" url:"bankAccount,omitempty"`
@@ -9254,7 +9254,7 @@ func (q *QueryPayoutTransactionRecordsItemPaymentData) GetAccountExp() *Accounte
 	return q.AccountExp
 }
 
-func (q *QueryPayoutTransactionRecordsItemPaymentData) GetAccountId() *Accountid {
+func (q *QueryPayoutTransactionRecordsItemPaymentData) GetAccountId() *AccountId {
 	if q == nil {
 		return nil
 	}
@@ -9396,7 +9396,7 @@ func (q *QueryPayoutTransactionRecordsItemPaymentData) SetAccountExp(accountExp 
 
 // SetAccountId sets the AccountId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItemPaymentData) SetAccountId(accountId *Accountid) {
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetAccountId(accountId *AccountId) {
 	q.AccountId = accountId
 	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldAccountId)
 }

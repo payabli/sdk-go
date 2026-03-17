@@ -2436,7 +2436,7 @@ type QueryInvoiceResponseRecordsItem struct {
 	ParentOrgId       Orgid           `json:"ParentOrgId" url:"ParentOrgId"`
 	ParentOrgName     OrgParentName   `json:"ParentOrgName" url:"ParentOrgName"`
 	// Custom list of key:value pairs. This field is used to store any data related to the invoice or for your system.
-	AdditionalData map[string]interface{} `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
+	AdditionalData map[string]any `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
 	// Object containing attachments associated to the invoice.
 	DocumentsRef       *DocumentsRef      `json:"DocumentsRef,omitempty" url:"DocumentsRef,omitempty"`
 	ExternalPaypointId ExternalPaypointId `json:"externalPaypointID" url:"externalPaypointID"`
@@ -2771,7 +2771,7 @@ func (q *QueryInvoiceResponseRecordsItem) GetParentOrgName() OrgParentName {
 	return q.ParentOrgName
 }
 
-func (q *QueryInvoiceResponseRecordsItem) GetAdditionalData() map[string]interface{} {
+func (q *QueryInvoiceResponseRecordsItem) GetAdditionalData() map[string]any {
 	if q == nil {
 		return nil
 	}
@@ -3137,7 +3137,7 @@ func (q *QueryInvoiceResponseRecordsItem) SetParentOrgName(parentOrgName OrgPare
 
 // SetAdditionalData sets the AdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryInvoiceResponseRecordsItem) SetAdditionalData(additionalData map[string]interface{}) {
+func (q *QueryInvoiceResponseRecordsItem) SetAdditionalData(additionalData map[string]any) {
 	q.AdditionalData = additionalData
 	q.require(queryInvoiceResponseRecordsItemFieldAdditionalData)
 }

@@ -113,7 +113,7 @@ func TestSettersRequestCredit(t *testing.T) {
 
 	t.Run("SetAccountId", func(t *testing.T) {
 		obj := &RequestCredit{}
-		var fernTestValueAccountId *Accountid
+		var fernTestValueAccountId *AccountId
 		obj.SetAccountId(fernTestValueAccountId)
 		assert.Equal(t, fernTestValueAccountId, obj.AccountId)
 		assert.NotNil(t, obj.explicitFields)
@@ -252,7 +252,7 @@ func TestSettersMarkExplicitRequestCredit(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &RequestCredit{}
-		var fernTestValueAccountId *Accountid
+		var fernTestValueAccountId *AccountId
 
 		// Act
 		obj.SetAccountId(fernTestValueAccountId)
@@ -864,7 +864,7 @@ func TestSettersRequestPaymentValidate(t *testing.T) {
 
 	t.Run("SetAccountId", func(t *testing.T) {
 		obj := &RequestPaymentValidate{}
-		var fernTestValueAccountId *Accountid
+		var fernTestValueAccountId *AccountId
 		obj.SetAccountId(fernTestValueAccountId)
 		assert.Equal(t, fernTestValueAccountId, obj.AccountId)
 		assert.NotNil(t, obj.explicitFields)
@@ -940,7 +940,7 @@ func TestSettersMarkExplicitRequestPaymentValidate(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &RequestPaymentValidate{}
-		var fernTestValueAccountId *Accountid
+		var fernTestValueAccountId *AccountId
 
 		// Act
 		obj.SetAccountId(fernTestValueAccountId)
@@ -3921,7 +3921,7 @@ func TestGettersPaymentMethod(t *testing.T) {
 func TestSettersQueryTransactionPayorDataCustomer(t *testing.T) {
 	t.Run("SetIdentifiers", func(t *testing.T) {
 		obj := &QueryTransactionPayorDataCustomer{}
-		var fernTestValueIdentifiers []interface{}
+		var fernTestValueIdentifiers []any
 		obj.SetIdentifiers(fernTestValueIdentifiers)
 		assert.Equal(t, fernTestValueIdentifiers, obj.Identifiers)
 		assert.NotNil(t, obj.explicitFields)
@@ -4102,7 +4102,7 @@ func TestGettersQueryTransactionPayorDataCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryTransactionPayorDataCustomer{}
-		var expected []interface{}
+		var expected []any
 		obj.Identifiers = expected
 
 		// Act & Assert
@@ -4831,7 +4831,7 @@ func TestSettersMarkExplicitQueryTransactionPayorDataCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryTransactionPayorDataCustomer{}
-		var fernTestValueIdentifiers []interface{}
+		var fernTestValueIdentifiers []any
 
 		// Act
 		obj.SetIdentifiers(fernTestValueIdentifiers)
@@ -6260,7 +6260,7 @@ func TestSettersTransactionQueryRecordsCustomer(t *testing.T) {
 
 	t.Run("SetTransAdditionalData", func(t *testing.T) {
 		obj := &TransactionQueryRecordsCustomer{}
-		var fernTestValueTransAdditionalData interface{}
+		var fernTestValueTransAdditionalData any
 		obj.SetTransAdditionalData(fernTestValueTransAdditionalData)
 		assert.Equal(t, fernTestValueTransAdditionalData, obj.TransAdditionalData)
 		assert.NotNil(t, obj.explicitFields)
@@ -7502,7 +7502,7 @@ func TestGettersTransactionQueryRecordsCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionQueryRecordsCustomer{}
-		var expected interface{}
+		var expected any
 		obj.TransAdditionalData = expected
 
 		// Act & Assert
@@ -8708,7 +8708,7 @@ func TestSettersMarkExplicitTransactionQueryRecordsCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionQueryRecordsCustomer{}
-		var fernTestValueTransAdditionalData interface{}
+		var fernTestValueTransAdditionalData any
 
 		// Act
 		obj.SetTransAdditionalData(fernTestValueTransAdditionalData)
@@ -14255,7 +14255,7 @@ func TestSettersMarkExplicitReverseResponse(t *testing.T) {
 func TestSettersTransRequestBody(t *testing.T) {
 	t.Run("SetAccountId", func(t *testing.T) {
 		obj := &TransRequestBody{}
-		var fernTestValueAccountId *Accountid
+		var fernTestValueAccountId *AccountId
 		obj.SetAccountId(fernTestValueAccountId)
 		assert.Equal(t, fernTestValueAccountId, obj.AccountId)
 		assert.NotNil(t, obj.explicitFields)
@@ -14356,7 +14356,7 @@ func TestGettersTransRequestBody(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransRequestBody{}
-		var expected *Accountid
+		var expected *AccountId
 		obj.AccountId = expected
 
 		// Act & Assert
@@ -14755,7 +14755,7 @@ func TestSettersMarkExplicitTransRequestBody(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransRequestBody{}
-		var fernTestValueAccountId *Accountid
+		var fernTestValueAccountId *AccountId
 
 		// Act
 		obj.SetAccountId(fernTestValueAccountId)
@@ -19101,7 +19101,7 @@ func TestSettersTransactionDetailPaymentData(t *testing.T) {
 
 	t.Run("SetAccountId", func(t *testing.T) {
 		obj := &TransactionDetailPaymentData{}
-		var fernTestValueAccountId *Accountid
+		var fernTestValueAccountId *AccountId
 		obj.SetAccountId(fernTestValueAccountId)
 		assert.Equal(t, fernTestValueAccountId, obj.AccountId)
 		assert.NotNil(t, obj.explicitFields)
@@ -19395,7 +19395,7 @@ func TestGettersTransactionDetailPaymentData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailPaymentData{}
-		var expected *Accountid
+		var expected *AccountId
 		obj.AccountId = expected
 
 		// Act & Assert
@@ -19809,7 +19809,7 @@ func TestSettersMarkExplicitTransactionDetailPaymentData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailPaymentData{}
-		var fernTestValueAccountId *Accountid
+		var fernTestValueAccountId *AccountId
 
 		// Act
 		obj.SetAccountId(fernTestValueAccountId)
@@ -19958,7 +19958,7 @@ func TestSettersTransactionDetailPaymentDetails(t *testing.T) {
 
 	t.Run("SetCheckImage", func(t *testing.T) {
 		obj := &TransactionDetailPaymentDetails{}
-		var fernTestValueCheckImage interface{}
+		var fernTestValueCheckImage any
 		obj.SetCheckImage(fernTestValueCheckImage)
 		assert.Equal(t, fernTestValueCheckImage, obj.CheckImage)
 		assert.NotNil(t, obj.explicitFields)
@@ -20038,7 +20038,7 @@ func TestSettersTransactionDetailPaymentDetails(t *testing.T) {
 
 	t.Run("SetUnbundled", func(t *testing.T) {
 		obj := &TransactionDetailPaymentDetails{}
-		var fernTestValueUnbundled interface{}
+		var fernTestValueUnbundled any
 		obj.SetUnbundled(fernTestValueUnbundled)
 		assert.Equal(t, fernTestValueUnbundled, obj.Unbundled)
 		assert.NotNil(t, obj.explicitFields)
@@ -20046,7 +20046,7 @@ func TestSettersTransactionDetailPaymentDetails(t *testing.T) {
 
 	t.Run("SetCategories", func(t *testing.T) {
 		obj := &TransactionDetailPaymentDetails{}
-		var fernTestValueCategories []interface{}
+		var fernTestValueCategories []any
 		obj.SetCategories(fernTestValueCategories)
 		assert.Equal(t, fernTestValueCategories, obj.Categories)
 		assert.NotNil(t, obj.explicitFields)
@@ -20054,7 +20054,7 @@ func TestSettersTransactionDetailPaymentDetails(t *testing.T) {
 
 	t.Run("SetSplitFunding", func(t *testing.T) {
 		obj := &TransactionDetailPaymentDetails{}
-		var fernTestValueSplitFunding []interface{}
+		var fernTestValueSplitFunding []any
 		obj.SetSplitFunding(fernTestValueSplitFunding)
 		assert.Equal(t, fernTestValueSplitFunding, obj.SplitFunding)
 		assert.NotNil(t, obj.explicitFields)
@@ -20146,7 +20146,7 @@ func TestGettersTransactionDetailPaymentDetails(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailPaymentDetails{}
-		var expected interface{}
+		var expected any
 		obj.CheckImage = expected
 
 		// Act & Assert
@@ -20446,7 +20446,7 @@ func TestGettersTransactionDetailPaymentDetails(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailPaymentDetails{}
-		var expected interface{}
+		var expected any
 		obj.Unbundled = expected
 
 		// Act & Assert
@@ -20469,7 +20469,7 @@ func TestGettersTransactionDetailPaymentDetails(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailPaymentDetails{}
-		var expected []interface{}
+		var expected []any
 		obj.Categories = expected
 
 		// Act & Assert
@@ -20502,7 +20502,7 @@ func TestGettersTransactionDetailPaymentDetails(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailPaymentDetails{}
-		var expected []interface{}
+		var expected []any
 		obj.SplitFunding = expected
 
 		// Act & Assert
@@ -20631,7 +20631,7 @@ func TestSettersMarkExplicitTransactionDetailPaymentDetails(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailPaymentDetails{}
-		var fernTestValueCheckImage interface{}
+		var fernTestValueCheckImage any
 
 		// Act
 		obj.SetCheckImage(fernTestValueCheckImage)
@@ -20941,7 +20941,7 @@ func TestSettersMarkExplicitTransactionDetailPaymentDetails(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailPaymentDetails{}
-		var fernTestValueUnbundled interface{}
+		var fernTestValueUnbundled any
 
 		// Act
 		obj.SetUnbundled(fernTestValueUnbundled)
@@ -20972,7 +20972,7 @@ func TestSettersMarkExplicitTransactionDetailPaymentDetails(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailPaymentDetails{}
-		var fernTestValueCategories []interface{}
+		var fernTestValueCategories []any
 
 		// Act
 		obj.SetCategories(fernTestValueCategories)
@@ -21003,7 +21003,7 @@ func TestSettersMarkExplicitTransactionDetailPaymentDetails(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailPaymentDetails{}
-		var fernTestValueSplitFunding []interface{}
+		var fernTestValueSplitFunding []any
 
 		// Act
 		obj.SetSplitFunding(fernTestValueSplitFunding)
@@ -21267,7 +21267,7 @@ func TestSettersTransactionDetailRecord(t *testing.T) {
 
 	t.Run("SetTransAdditionalData", func(t *testing.T) {
 		obj := &TransactionDetailRecord{}
-		var fernTestValueTransAdditionalData interface{}
+		var fernTestValueTransAdditionalData any
 		obj.SetTransAdditionalData(fernTestValueTransAdditionalData)
 		assert.Equal(t, fernTestValueTransAdditionalData, obj.TransAdditionalData)
 		assert.NotNil(t, obj.explicitFields)
@@ -22153,7 +22153,7 @@ func TestGettersTransactionDetailRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailRecord{}
-		var expected interface{}
+		var expected any
 		obj.TransAdditionalData = expected
 
 		// Act & Assert
@@ -23684,7 +23684,7 @@ func TestSettersMarkExplicitTransactionDetailRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailRecord{}
-		var fernTestValueTransAdditionalData interface{}
+		var fernTestValueTransAdditionalData any
 
 		// Act
 		obj.SetTransAdditionalData(fernTestValueTransAdditionalData)

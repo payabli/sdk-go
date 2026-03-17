@@ -24198,7 +24198,7 @@ func TestSettersQueryPayoutTransactionRecordsItemPaymentData(t *testing.T) {
 
 	t.Run("SetAccountId", func(t *testing.T) {
 		obj := &QueryPayoutTransactionRecordsItemPaymentData{}
-		var fernTestValueAccountId *Accountid
+		var fernTestValueAccountId *AccountId
 		obj.SetAccountId(fernTestValueAccountId)
 		assert.Equal(t, fernTestValueAccountId, obj.AccountId)
 		assert.NotNil(t, obj.explicitFields)
@@ -24372,7 +24372,7 @@ func TestGettersQueryPayoutTransactionRecordsItemPaymentData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryPayoutTransactionRecordsItemPaymentData{}
-		var expected *Accountid
+		var expected *AccountId
 		obj.AccountId = expected
 
 		// Act & Assert
@@ -24967,7 +24967,7 @@ func TestSettersMarkExplicitQueryPayoutTransactionRecordsItemPaymentData(t *test
 		t.Parallel()
 		// Arrange
 		obj := &QueryPayoutTransactionRecordsItemPaymentData{}
-		var fernTestValueAccountId *Accountid
+		var fernTestValueAccountId *AccountId
 
 		// Act
 		obj.SetAccountId(fernTestValueAccountId)

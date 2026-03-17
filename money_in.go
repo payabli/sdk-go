@@ -75,7 +75,7 @@ var (
 type RequestCredit struct {
 	IdempotencyKey        *IdempotencyKey        `json:"-" url:"-"`
 	ForceCustomerCreation *ForceCustomerCreation `json:"-" url:"forceCustomerCreation,omitempty"`
-	AccountId             *Accountid             `json:"accountId,omitempty" url:"-"`
+	AccountId             *AccountId             `json:"accountId,omitempty" url:"-"`
 	// Object describing the customer/payor.
 	CustomerData     *PayorDataRequest    `json:"customerData" url:"-"`
 	Entrypoint       *Entrypointfield     `json:"entrypoint,omitempty" url:"-"`
@@ -114,7 +114,7 @@ func (r *RequestCredit) SetForceCustomerCreation(forceCustomerCreation *ForceCus
 
 // SetAccountId sets the AccountId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestCredit) SetAccountId(accountId *Accountid) {
+func (r *RequestCredit) SetAccountId(accountId *AccountId) {
 	r.AccountId = accountId
 	r.require(requestCreditFieldAccountId)
 }
@@ -340,7 +340,7 @@ var (
 
 type RequestPaymentValidate struct {
 	IdempotencyKey   *IdempotencyKey   `json:"-" url:"-"`
-	AccountId        *Accountid        `json:"accountId,omitempty" url:"-"`
+	AccountId        *AccountId        `json:"accountId,omitempty" url:"-"`
 	EntryPoint       Entrypointfield   `json:"entryPoint" url:"-"`
 	OrderDescription *Orderdescription `json:"orderDescription,omitempty" url:"-"`
 	OrderId          *OrderId          `json:"orderId,omitempty" url:"-"`
@@ -367,7 +367,7 @@ func (r *RequestPaymentValidate) SetIdempotencyKey(idempotencyKey *IdempotencyKe
 
 // SetAccountId sets the AccountId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestPaymentValidate) SetAccountId(accountId *Accountid) {
+func (r *RequestPaymentValidate) SetAccountId(accountId *AccountId) {
 	r.AccountId = accountId
 	r.require(requestPaymentValidateFieldAccountId)
 }
@@ -1881,7 +1881,7 @@ var (
 
 type QueryTransactionPayorDataCustomer struct {
 	// Array of field names to be used as identifiers.
-	Identifiers []interface{} `json:"Identifiers,omitempty" url:"Identifiers,omitempty"`
+	Identifiers []any `json:"Identifiers,omitempty" url:"Identifiers,omitempty"`
 	// Customer/Payor first name.
 	FirstName *string `json:"FirstName,omitempty" url:"FirstName,omitempty"`
 	// Customer/Payor last name.
@@ -1922,7 +1922,7 @@ type QueryTransactionPayorDataCustomer struct {
 	rawJSON         json.RawMessage
 }
 
-func (q *QueryTransactionPayorDataCustomer) GetIdentifiers() []interface{} {
+func (q *QueryTransactionPayorDataCustomer) GetIdentifiers() []any {
 	if q == nil {
 		return nil
 	}
@@ -2092,7 +2092,7 @@ func (q *QueryTransactionPayorDataCustomer) require(field *big.Int) {
 
 // SetIdentifiers sets the Identifiers field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryTransactionPayorDataCustomer) SetIdentifiers(identifiers []interface{}) {
+func (q *QueryTransactionPayorDataCustomer) SetIdentifiers(identifiers []any) {
 	q.Identifiers = identifiers
 	q.require(queryTransactionPayorDataCustomerFieldIdentifiers)
 }
@@ -2621,8 +2621,8 @@ type TransactionQueryRecordsCustomer struct {
 	// Events associated with this transaction.
 	TransactionEvents []*QueryTransactionEvents `json:"TransactionEvents,omitempty" url:"TransactionEvents,omitempty"`
 	// Transaction date and time, in UTC.
-	TransactionTime     *time.Time  `json:"TransactionTime,omitempty" url:"TransactionTime,omitempty"`
-	TransAdditionalData interface{} `json:"TransAdditionalData,omitempty" url:"TransAdditionalData,omitempty"`
+	TransactionTime     *time.Time `json:"TransactionTime,omitempty" url:"TransactionTime,omitempty"`
+	TransAdditionalData any        `json:"TransAdditionalData,omitempty" url:"TransAdditionalData,omitempty"`
 	// Status of transaction. See [the docs](/developers/references/money-in-statuses#money-in-transaction-status) for a full reference.
 	TransStatus *int `json:"TransStatus,omitempty" url:"TransStatus,omitempty"`
 
@@ -2892,7 +2892,7 @@ func (t *TransactionQueryRecordsCustomer) GetTransactionTime() *time.Time {
 	return t.TransactionTime
 }
 
-func (t *TransactionQueryRecordsCustomer) GetTransAdditionalData() interface{} {
+func (t *TransactionQueryRecordsCustomer) GetTransAdditionalData() any {
 	if t == nil {
 		return nil
 	}
@@ -3181,7 +3181,7 @@ func (t *TransactionQueryRecordsCustomer) SetTransactionTime(transactionTime *ti
 
 // SetTransAdditionalData sets the TransAdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionQueryRecordsCustomer) SetTransAdditionalData(transAdditionalData interface{}) {
+func (t *TransactionQueryRecordsCustomer) SetTransAdditionalData(transAdditionalData any) {
 	t.TransAdditionalData = transAdditionalData
 	t.require(transactionQueryRecordsCustomerFieldTransAdditionalData)
 }
@@ -5763,7 +5763,7 @@ var (
 )
 
 type TransRequestBody struct {
-	AccountId *Accountid `json:"accountId,omitempty" url:"accountId,omitempty"`
+	AccountId *AccountId `json:"accountId,omitempty" url:"accountId,omitempty"`
 	// Object describing the Customer/Payor. Which fields are required depends on the paypoint's custom identifier settings.
 	CustomerData *PayorDataRequest `json:"customerData,omitempty" url:"customerData,omitempty"`
 	EntryPoint   *Entrypointfield  `json:"entryPoint,omitempty" url:"entryPoint,omitempty"`
@@ -5787,7 +5787,7 @@ type TransRequestBody struct {
 	rawJSON         json.RawMessage
 }
 
-func (t *TransRequestBody) GetAccountId() *Accountid {
+func (t *TransRequestBody) GetAccountId() *AccountId {
 	if t == nil {
 		return nil
 	}
@@ -5887,7 +5887,7 @@ func (t *TransRequestBody) require(field *big.Int) {
 
 // SetAccountId sets the AccountId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransRequestBody) SetAccountId(accountId *Accountid) {
+func (t *TransRequestBody) SetAccountId(accountId *AccountId) {
 	t.AccountId = accountId
 	t.require(transRequestBodyFieldAccountId)
 }
@@ -7173,7 +7173,7 @@ type TransactionDetailPaymentData struct {
 	StoredMethodUsageType *StoredMethodUsageType           `json:"storedMethodUsageType,omitempty" url:"storedMethodUsageType,omitempty"`
 	Sequence              *Sequence                        `json:"sequence,omitempty" url:"sequence,omitempty"`
 	OrderDescription      Orderdescription                 `json:"orderDescription" url:"orderDescription"`
-	AccountId             *Accountid                       `json:"accountId,omitempty" url:"accountId,omitempty"`
+	AccountId             *AccountId                       `json:"accountId,omitempty" url:"accountId,omitempty"`
 	SignatureData         *Signaturedata                   `json:"signatureData,omitempty" url:"signatureData,omitempty"`
 	BinData               *BinData                         `json:"binData,omitempty" url:"binData,omitempty"`
 	PaymentDetails        *TransactionDetailPaymentDetails `json:"paymentDetails" url:"paymentDetails"`
@@ -7248,7 +7248,7 @@ func (t *TransactionDetailPaymentData) GetOrderDescription() Orderdescription {
 	return t.OrderDescription
 }
 
-func (t *TransactionDetailPaymentData) GetAccountId() *Accountid {
+func (t *TransactionDetailPaymentData) GetAccountId() *AccountId {
 	if t == nil {
 		return nil
 	}
@@ -7355,7 +7355,7 @@ func (t *TransactionDetailPaymentData) SetOrderDescription(orderDescription Orde
 
 // SetAccountId sets the AccountId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailPaymentData) SetAccountId(accountId *Accountid) {
+func (t *TransactionDetailPaymentData) SetAccountId(accountId *AccountId) {
 	t.AccountId = accountId
 	t.require(transactionDetailPaymentDataFieldAccountId)
 }
@@ -7447,7 +7447,7 @@ type TransactionDetailPaymentDetails struct {
 	TotalAmount        float64           `json:"totalAmount" url:"totalAmount"`
 	ServiceFee         float64           `json:"serviceFee" url:"serviceFee"`
 	CheckNumber        *string           `json:"checkNumber,omitempty" url:"checkNumber,omitempty"`
-	CheckImage         interface{}       `json:"checkImage,omitempty" url:"checkImage,omitempty"`
+	CheckImage         any               `json:"checkImage,omitempty" url:"checkImage,omitempty"`
 	CheckUniqueId      string            `json:"checkUniqueId" url:"checkUniqueId"`
 	Currency           string            `json:"currency" url:"currency"`
 	OrderDescription   *Orderdescription `json:"orderDescription,omitempty" url:"orderDescription,omitempty"`
@@ -7457,9 +7457,9 @@ type TransactionDetailPaymentDetails struct {
 	GroupNumber        *string           `json:"groupNumber,omitempty" url:"groupNumber,omitempty"`
 	Source             *Source           `json:"source,omitempty" url:"source,omitempty"`
 	PayabliTransId     *string           `json:"payabliTransId,omitempty" url:"payabliTransId,omitempty"`
-	Unbundled          interface{}       `json:"unbundled,omitempty" url:"unbundled,omitempty"`
-	Categories         []interface{}     `json:"categories" url:"categories"`
-	SplitFunding       []interface{}     `json:"splitFunding" url:"splitFunding"`
+	Unbundled          any               `json:"unbundled,omitempty" url:"unbundled,omitempty"`
+	Categories         []any             `json:"categories" url:"categories"`
+	SplitFunding       []any             `json:"splitFunding" url:"splitFunding"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -7489,7 +7489,7 @@ func (t *TransactionDetailPaymentDetails) GetCheckNumber() *string {
 	return t.CheckNumber
 }
 
-func (t *TransactionDetailPaymentDetails) GetCheckImage() interface{} {
+func (t *TransactionDetailPaymentDetails) GetCheckImage() any {
 	if t == nil {
 		return nil
 	}
@@ -7559,21 +7559,21 @@ func (t *TransactionDetailPaymentDetails) GetPayabliTransId() *string {
 	return t.PayabliTransId
 }
 
-func (t *TransactionDetailPaymentDetails) GetUnbundled() interface{} {
+func (t *TransactionDetailPaymentDetails) GetUnbundled() any {
 	if t == nil {
 		return nil
 	}
 	return t.Unbundled
 }
 
-func (t *TransactionDetailPaymentDetails) GetCategories() []interface{} {
+func (t *TransactionDetailPaymentDetails) GetCategories() []any {
 	if t == nil {
 		return nil
 	}
 	return t.Categories
 }
 
-func (t *TransactionDetailPaymentDetails) GetSplitFunding() []interface{} {
+func (t *TransactionDetailPaymentDetails) GetSplitFunding() []any {
 	if t == nil {
 		return nil
 	}
@@ -7617,7 +7617,7 @@ func (t *TransactionDetailPaymentDetails) SetCheckNumber(checkNumber *string) {
 
 // SetCheckImage sets the CheckImage field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailPaymentDetails) SetCheckImage(checkImage interface{}) {
+func (t *TransactionDetailPaymentDetails) SetCheckImage(checkImage any) {
 	t.CheckImage = checkImage
 	t.require(transactionDetailPaymentDetailsFieldCheckImage)
 }
@@ -7687,21 +7687,21 @@ func (t *TransactionDetailPaymentDetails) SetPayabliTransId(payabliTransId *stri
 
 // SetUnbundled sets the Unbundled field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailPaymentDetails) SetUnbundled(unbundled interface{}) {
+func (t *TransactionDetailPaymentDetails) SetUnbundled(unbundled any) {
 	t.Unbundled = unbundled
 	t.require(transactionDetailPaymentDetailsFieldUnbundled)
 }
 
 // SetCategories sets the Categories field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailPaymentDetails) SetCategories(categories []interface{}) {
+func (t *TransactionDetailPaymentDetails) SetCategories(categories []any) {
 	t.Categories = categories
 	t.require(transactionDetailPaymentDetailsFieldCategories)
 }
 
 // SetSplitFunding sets the SplitFunding field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailPaymentDetails) SetSplitFunding(splitFunding []interface{}) {
+func (t *TransactionDetailPaymentDetails) SetSplitFunding(splitFunding []any) {
 	t.SplitFunding = splitFunding
 	t.require(transactionDetailPaymentDetailsFieldSplitFunding)
 }
@@ -7834,7 +7834,7 @@ type TransactionDetailRecord struct {
 	ReturnedId                   ReturnedId                     `json:"returnedId" url:"returnedId"`
 	ChargebackId                 ChargebackId                   `json:"chargebackId" url:"chargebackId"`
 	RetrievalId                  RetrievalId                    `json:"retrievalId" url:"retrievalId"`
-	TransAdditionalData          interface{}                    `json:"transAdditionalData,omitempty" url:"transAdditionalData,omitempty"`
+	TransAdditionalData          any                            `json:"transAdditionalData,omitempty" url:"transAdditionalData,omitempty"`
 	InvoiceData                  *TransactionDetailInvoiceData  `json:"invoiceData" url:"invoiceData"`
 	EntrypageId                  EntrypageId                    `json:"entrypageId" url:"entrypageId"`
 	ExternalPaypointId           ExternalPaypointId             `json:"externalPaypointID" url:"externalPaypointID"`
@@ -8068,7 +8068,7 @@ func (t *TransactionDetailRecord) GetRetrievalId() RetrievalId {
 	return t.RetrievalId
 }
 
-func (t *TransactionDetailRecord) GetTransAdditionalData() interface{} {
+func (t *TransactionDetailRecord) GetTransAdditionalData() any {
 	if t == nil {
 		return nil
 	}
@@ -8448,7 +8448,7 @@ func (t *TransactionDetailRecord) SetRetrievalId(retrievalId RetrievalId) {
 
 // SetTransAdditionalData sets the TransAdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailRecord) SetTransAdditionalData(transAdditionalData interface{}) {
+func (t *TransactionDetailRecord) SetTransAdditionalData(transAdditionalData any) {
 	t.TransAdditionalData = transAdditionalData
 	t.require(transactionDetailRecordFieldTransAdditionalData)
 }

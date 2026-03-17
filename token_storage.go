@@ -1348,7 +1348,7 @@ type GetMethodResponseResponseDataCustomersItem struct {
 	// Creation timestamp
 	Created *time.Time `json:"created,omitempty" url:"created,omitempty"`
 	// Customer consent information
-	CustomerConsent map[string]interface{} `json:"customerConsent,omitempty" url:"customerConsent,omitempty"`
+	CustomerConsent map[string]any `json:"customerConsent,omitempty" url:"customerConsent,omitempty"`
 	// Status code for the customer
 	CustomerStatus  *int                   `json:"customerStatus,omitempty" url:"customerStatus,omitempty"`
 	CustomerSummary *CustomerSummaryRecord `json:"customerSummary,omitempty" url:"customerSummary,omitempty"`
@@ -1370,7 +1370,7 @@ type GetMethodResponseResponseDataCustomersItem struct {
 	PaypointEntryname *string    `json:"paypointEntryname,omitempty" url:"paypointEntryname,omitempty"`
 	PaypointLegalname *Legalname `json:"paypointLegalname,omitempty" url:"paypointLegalname,omitempty"`
 	// Social network data
-	SnData map[string]interface{} `json:"snData,omitempty" url:"snData,omitempty"`
+	SnData map[string]any `json:"snData,omitempty" url:"snData,omitempty"`
 	// Social network identifier
 	SnIdentifier *string `json:"snIdentifier,omitempty" url:"snIdentifier,omitempty"`
 	// Social network provider
@@ -1550,7 +1550,7 @@ func (g *GetMethodResponseResponseDataCustomersItem) GetCreated() *time.Time {
 	return g.Created
 }
 
-func (g *GetMethodResponseResponseDataCustomersItem) GetCustomerConsent() map[string]interface{} {
+func (g *GetMethodResponseResponseDataCustomersItem) GetCustomerConsent() map[string]any {
 	if g == nil {
 		return nil
 	}
@@ -1648,7 +1648,7 @@ func (g *GetMethodResponseResponseDataCustomersItem) GetPaypointLegalname() *Leg
 	return g.PaypointLegalname
 }
 
-func (g *GetMethodResponseResponseDataCustomersItem) GetSnData() map[string]interface{} {
+func (g *GetMethodResponseResponseDataCustomersItem) GetSnData() map[string]any {
 	if g == nil {
 		return nil
 	}
@@ -1867,7 +1867,7 @@ func (g *GetMethodResponseResponseDataCustomersItem) SetCreated(created *time.Ti
 
 // SetCustomerConsent sets the CustomerConsent field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMethodResponseResponseDataCustomersItem) SetCustomerConsent(customerConsent map[string]interface{}) {
+func (g *GetMethodResponseResponseDataCustomersItem) SetCustomerConsent(customerConsent map[string]any) {
 	g.CustomerConsent = customerConsent
 	g.require(getMethodResponseResponseDataCustomersItemFieldCustomerConsent)
 }
@@ -1965,7 +1965,7 @@ func (g *GetMethodResponseResponseDataCustomersItem) SetPaypointLegalname(paypoi
 
 // SetSnData sets the SnData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMethodResponseResponseDataCustomersItem) SetSnData(snData map[string]interface{}) {
+func (g *GetMethodResponseResponseDataCustomersItem) SetSnData(snData map[string]any) {
 	g.SnData = snData
 	g.require(getMethodResponseResponseDataCustomersItemFieldSnData)
 }
@@ -3230,10 +3230,11 @@ type TokenizeAch struct {
 	AchAccount     Achaccount     `json:"achAccount" url:"achAccount"`
 	AchAccountType Achaccounttype `json:"achAccountType" url:"achAccountType"`
 	AchCode        *AchSecCode    `json:"achCode,omitempty" url:"achCode,omitempty"`
-	AchHolder      AchHolder      `json:"achHolder" url:"achHolder"`
-	AchHolderType  *AchHolderType `json:"achHolderType,omitempty" url:"achHolderType,omitempty"`
-	AchRouting     Achrouting     `json:"achRouting" url:"achRouting"`
-	Device         *Device        `json:"device,omitempty" url:"device,omitempty"`
+	// Bank account holder. This field is **required** when `method` is `ach`. Only letters, numbers, spaces, hyphens, apostrophes, and periods are allowed.
+	AchHolder     string         `json:"achHolder" url:"achHolder"`
+	AchHolderType *AchHolderType `json:"achHolderType,omitempty" url:"achHolderType,omitempty"`
+	AchRouting    Achrouting     `json:"achRouting" url:"achRouting"`
+	Device        *Device        `json:"device,omitempty" url:"device,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3270,7 +3271,7 @@ func (t *TokenizeAch) GetAchCode() *AchSecCode {
 	return t.AchCode
 }
 
-func (t *TokenizeAch) GetAchHolder() AchHolder {
+func (t *TokenizeAch) GetAchHolder() string {
 	if t == nil {
 		return ""
 	}
@@ -3342,7 +3343,7 @@ func (t *TokenizeAch) SetAchCode(achCode *AchSecCode) {
 
 // SetAchHolder sets the AchHolder field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TokenizeAch) SetAchHolder(achHolder AchHolder) {
+func (t *TokenizeAch) SetAchHolder(achHolder string) {
 	t.AchHolder = achHolder
 	t.require(tokenizeAchFieldAchHolder)
 }

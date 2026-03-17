@@ -252,3 +252,24 @@ func (c *Client) UpdateCheckPaymentStatus(
 	}
 	return response.Body, nil
 }
+
+// Reissues a payout transaction with a new payment method. This creates a new transaction linked to the original and marks the original transaction as reissued.
+//
+// The original transaction must be in **Processing** or **Processed** status. The payment method in the request body is used directly. The endpoint doesn't fall back to vendor-managed payment methods.
+//
+// The new transaction goes through the standard authorize-and-capture flow automatically. Both the original and new transactions are linked through their event histories for audit purposes.
+func (c *Client) ReissueOut(
+	ctx context.Context,
+	request *payabli.ReissueOutRequest,
+	opts ...option.RequestOption,
+) (*payabli.ReissuePayoutResponse, error) {
+	response, err := c.WithRawResponse.ReissueOut(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}

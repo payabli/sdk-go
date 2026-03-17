@@ -1941,9 +1941,9 @@ type TransactionOutQueryRecord struct {
 	CheckData   *FileContent      `json:"CheckData,omitempty" url:"CheckData,omitempty"`
 	PaymentId   *PaymentIdString  `json:"PaymentId,omitempty" url:"PaymentId,omitempty"`
 	PaymentData *QueryPaymentData `json:"PaymentData,omitempty" url:"PaymentData,omitempty"`
-	// Events associated to this transaction.
+	// Bills associated with this transaction.
 	Bills []*BillPayOutData `json:"Bills,omitempty" url:"Bills,omitempty"`
-	// Events associated to this transaction.
+	// Events associated with this transaction.
 	Events             []*QueryTransactionEvents `json:"Events,omitempty" url:"Events,omitempty"`
 	ExternalPaypointId *ExternalPaypointId       `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
 	EntryName          *Entrypointfield          `json:"EntryName,omitempty" url:"EntryName,omitempty"`

@@ -3180,7 +3180,7 @@ type TransferDetailRecord struct {
 	ChargebackId      *ChargebackId `json:"ChargebackId,omitempty" url:"ChargebackId,omitempty"`
 	RetrievalId       *RetrievalId  `json:"RetrievalId,omitempty" url:"RetrievalId,omitempty"`
 	// Additional transaction data
-	TransAdditionalData interface{} `json:"TransAdditionalData,omitempty" url:"TransAdditionalData,omitempty"`
+	TransAdditionalData any `json:"TransAdditionalData,omitempty" url:"TransAdditionalData,omitempty"`
 	// Associated invoice data
 	InvoiceData        *BillData           `json:"invoiceData,omitempty" url:"invoiceData,omitempty"`
 	EntrypageId        *EntrypageId        `json:"EntrypageId,omitempty" url:"EntrypageId,omitempty"`
@@ -3545,7 +3545,7 @@ func (t *TransferDetailRecord) GetRetrievalId() *RetrievalId {
 	return t.RetrievalId
 }
 
-func (t *TransferDetailRecord) GetTransAdditionalData() interface{} {
+func (t *TransferDetailRecord) GetTransAdditionalData() any {
 	if t == nil {
 		return nil
 	}
@@ -4051,7 +4051,7 @@ func (t *TransferDetailRecord) SetRetrievalId(retrievalId *RetrievalId) {
 
 // SetTransAdditionalData sets the TransAdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransferDetailRecord) SetTransAdditionalData(transAdditionalData interface{}) {
+func (t *TransferDetailRecord) SetTransAdditionalData(transAdditionalData any) {
 	t.TransAdditionalData = transAdditionalData
 	t.require(transferDetailRecordFieldTransAdditionalData)
 }
@@ -4415,7 +4415,7 @@ type TransferOutDetailBill struct {
 	// Payment terms.
 	Terms *string `json:"Terms,omitempty" url:"Terms,omitempty"`
 	// Additional data for the bill.
-	AdditionalData map[string]interface{} `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
+	AdditionalData map[string]any `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
 	// Attachments for the bill.
 	Attachments []*TransferOutDetailBillAttachment `json:"attachments,omitempty" url:"attachments,omitempty"`
 	// Invoice number.
@@ -4477,7 +4477,7 @@ func (t *TransferOutDetailBill) GetTerms() *string {
 	return t.Terms
 }
 
-func (t *TransferOutDetailBill) GetAdditionalData() map[string]interface{} {
+func (t *TransferOutDetailBill) GetAdditionalData() map[string]any {
 	if t == nil {
 		return nil
 	}
@@ -4598,7 +4598,7 @@ func (t *TransferOutDetailBill) SetTerms(terms *string) {
 
 // SetAdditionalData sets the AdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransferOutDetailBill) SetAdditionalData(additionalData map[string]interface{}) {
+func (t *TransferOutDetailBill) SetAdditionalData(additionalData map[string]any) {
 	t.AdditionalData = additionalData
 	t.require(transferOutDetailBillFieldAdditionalData)
 }
@@ -5133,7 +5133,7 @@ type TransferOutDetailPaymentData struct {
 	// Format of cloud signature.
 	CloudSignatureFormat *string `json:"cloudSignatureFormat,omitempty" url:"cloudSignatureFormat,omitempty"`
 	// Additional payment details.
-	PaymentDetails interface{} `json:"paymentDetails,omitempty" url:"paymentDetails,omitempty"`
+	PaymentDetails any `json:"paymentDetails,omitempty" url:"paymentDetails,omitempty"`
 	// Data about the payor.
 	PayorData *string `json:"payorData,omitempty" url:"payorData,omitempty"`
 	// Account ID.
@@ -5143,7 +5143,7 @@ type TransferOutDetailPaymentData struct {
 	// Gateway connector used.
 	GatewayConnector *string `json:"gatewayConnector,omitempty" url:"gatewayConnector,omitempty"`
 	// BIN data for the card.
-	BinData interface{} `json:"binData,omitempty" url:"binData,omitempty"`
+	BinData any `json:"binData,omitempty" url:"binData,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -5236,7 +5236,7 @@ func (t *TransferOutDetailPaymentData) GetCloudSignatureFormat() *string {
 	return t.CloudSignatureFormat
 }
 
-func (t *TransferOutDetailPaymentData) GetPaymentDetails() interface{} {
+func (t *TransferOutDetailPaymentData) GetPaymentDetails() any {
 	if t == nil {
 		return nil
 	}
@@ -5271,7 +5271,7 @@ func (t *TransferOutDetailPaymentData) GetGatewayConnector() *string {
 	return t.GatewayConnector
 }
 
-func (t *TransferOutDetailPaymentData) GetBinData() interface{} {
+func (t *TransferOutDetailPaymentData) GetBinData() any {
 	if t == nil {
 		return nil
 	}
@@ -5378,7 +5378,7 @@ func (t *TransferOutDetailPaymentData) SetCloudSignatureFormat(cloudSignatureFor
 
 // SetPaymentDetails sets the PaymentDetails field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransferOutDetailPaymentData) SetPaymentDetails(paymentDetails interface{}) {
+func (t *TransferOutDetailPaymentData) SetPaymentDetails(paymentDetails any) {
 	t.PaymentDetails = paymentDetails
 	t.require(transferOutDetailPaymentDataFieldPaymentDetails)
 }
@@ -5413,7 +5413,7 @@ func (t *TransferOutDetailPaymentData) SetGatewayConnector(gatewayConnector *str
 
 // SetBinData sets the BinData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransferOutDetailPaymentData) SetBinData(binData interface{}) {
+func (t *TransferOutDetailPaymentData) SetBinData(binData any) {
 	t.BinData = binData
 	t.require(transferOutDetailPaymentDataFieldBinData)
 }
@@ -6838,11 +6838,11 @@ type TransferOutDetailVendor struct {
 	// Internal reference ID.
 	InternalReferenceId *int `json:"InternalReferenceId,omitempty" url:"InternalReferenceId,omitempty"`
 	// Additional data for the vendor.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	AdditionalData map[string]any `json:"additionalData,omitempty" url:"additionalData,omitempty"`
 	// External paypoint ID.
 	ExternalPaypointId *string `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
 	// Stored payment methods for the vendor.
-	StoredMethods []interface{} `json:"StoredMethods,omitempty" url:"StoredMethods,omitempty"`
+	StoredMethods []any `json:"StoredMethods,omitempty" url:"StoredMethods,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -7145,7 +7145,7 @@ func (t *TransferOutDetailVendor) GetInternalReferenceId() *int {
 	return t.InternalReferenceId
 }
 
-func (t *TransferOutDetailVendor) GetAdditionalData() map[string]interface{} {
+func (t *TransferOutDetailVendor) GetAdditionalData() map[string]any {
 	if t == nil {
 		return nil
 	}
@@ -7159,7 +7159,7 @@ func (t *TransferOutDetailVendor) GetExternalPaypointId() *string {
 	return t.ExternalPaypointId
 }
 
-func (t *TransferOutDetailVendor) GetStoredMethods() []interface{} {
+func (t *TransferOutDetailVendor) GetStoredMethods() []any {
 	if t == nil {
 		return nil
 	}
@@ -7476,7 +7476,7 @@ func (t *TransferOutDetailVendor) SetInternalReferenceId(internalReferenceId *in
 
 // SetAdditionalData sets the AdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransferOutDetailVendor) SetAdditionalData(additionalData map[string]interface{}) {
+func (t *TransferOutDetailVendor) SetAdditionalData(additionalData map[string]any) {
 	t.AdditionalData = additionalData
 	t.require(transferOutDetailVendorFieldAdditionalData)
 }
@@ -7490,7 +7490,7 @@ func (t *TransferOutDetailVendor) SetExternalPaypointId(externalPaypointId *stri
 
 // SetStoredMethods sets the StoredMethods field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransferOutDetailVendor) SetStoredMethods(storedMethods []interface{}) {
+func (t *TransferOutDetailVendor) SetStoredMethods(storedMethods []any) {
 	t.StoredMethods = storedMethods
 	t.require(transferOutDetailVendorFieldStoredMethods)
 }
@@ -7582,7 +7582,7 @@ type TransferOutDetailVendorBillingData struct {
 	// The status of the billing data.
 	Status *int `json:"status,omitempty" url:"status,omitempty"`
 	// Services associated with the billing data.
-	Services []interface{} `json:"services,omitempty" url:"services,omitempty"`
+	Services []any `json:"services,omitempty" url:"services,omitempty"`
 	// Whether this is the default billing data.
 	Default *bool `json:"default,omitempty" url:"default,omitempty"`
 	// The country of the bank account.
@@ -7679,7 +7679,7 @@ func (t *TransferOutDetailVendorBillingData) GetStatus() *int {
 	return t.Status
 }
 
-func (t *TransferOutDetailVendorBillingData) GetServices() []interface{} {
+func (t *TransferOutDetailVendorBillingData) GetServices() []any {
 	if t == nil {
 		return nil
 	}
@@ -7800,7 +7800,7 @@ func (t *TransferOutDetailVendorBillingData) SetStatus(status *int) {
 
 // SetServices sets the Services field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransferOutDetailVendorBillingData) SetServices(services []interface{}) {
+func (t *TransferOutDetailVendorBillingData) SetServices(services []any) {
 	t.Services = services
 	t.require(transferOutDetailVendorBillingDataFieldServices)
 }
@@ -7878,7 +7878,7 @@ type TransferOutEventData struct {
 	// Reference data for the event.
 	RefData *string `json:"refData,omitempty" url:"refData,omitempty"`
 	// Additional event data, which may contain detailed transaction information.
-	ExtraData interface{} `json:"extraData,omitempty" url:"extraData,omitempty"`
+	ExtraData any `json:"extraData,omitempty" url:"extraData,omitempty"`
 	// The source of the event.
 	Source *string `json:"source,omitempty" url:"source,omitempty"`
 
@@ -7910,7 +7910,7 @@ func (t *TransferOutEventData) GetRefData() *string {
 	return t.RefData
 }
 
-func (t *TransferOutEventData) GetExtraData() interface{} {
+func (t *TransferOutEventData) GetExtraData() any {
 	if t == nil {
 		return nil
 	}
@@ -7961,7 +7961,7 @@ func (t *TransferOutEventData) SetRefData(refData *string) {
 
 // SetExtraData sets the ExtraData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransferOutEventData) SetExtraData(extraData interface{}) {
+func (t *TransferOutEventData) SetExtraData(extraData any) {
 	t.ExtraData = extraData
 	t.require(transferOutEventDataFieldExtraData)
 }
