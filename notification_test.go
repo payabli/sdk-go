@@ -3586,95 +3586,11 @@ func TestEnumNotificationReportRequestMethod(t *testing.T) {
 }
 
 func TestEnumNotificationStandardRequestContentEventType(t *testing.T) {
-	t.Run("NewFromString_payin_transaction_initiated", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_transaction_initiated")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_transaction_initiated"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_transaction_authorized", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_transaction_authorized")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_transaction_authorized"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_transaction_approvedcaptured", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_transaction_approvedcaptured")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_transaction_approvedcaptured"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_transaction_declined", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_transaction_declined")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_transaction_declined"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_transaction_technicaldecline", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_transaction_technicaldecline")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_transaction_technicaldecline"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_transaction_failed", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_transaction_failed")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_transaction_failed"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_transaction_error", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_transaction_error")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_transaction_error"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_transaction_paid", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_transaction_paid")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_transaction_paid"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_transaction_returned", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_transaction_returned")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_transaction_returned"), val, "enum value should match expected wire value")
-	})
-
 	t.Run("NewFromString_payin_transaction_rejected", func(t *testing.T) {
 		t.Parallel()
 		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_transaction_rejected")
 		assert.NoError(t, err, "valid enum value should not return error")
 		assert.Equal(t, NotificationStandardRequestContentEventType("payin_transaction_rejected"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_transaction_voidedcancelled", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_transaction_voidedcancelled")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_transaction_voidedcancelled"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_transaction_processing", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_transaction_processing")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_transaction_processing"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_transaction_processed", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_transaction_processed")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_transaction_processed"), val, "enum value should match expected wire value")
 	})
 
 	t.Run("NewFromString_payin_transaction_onhold", func(t *testing.T) {
@@ -3810,13 +3726,6 @@ func TestEnumNotificationStandardRequestContentEventType(t *testing.T) {
 		assert.Equal(t, NotificationStandardRequestContentEventType("payout_transaction_recovered"), val, "enum value should match expected wire value")
 	})
 
-	t.Run("NewFromString_payin_batch_open", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_batch_open")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_batch_open"), val, "enum value should match expected wire value")
-	})
-
 	t.Run("NewFromString_payin_batch_onhold", func(t *testing.T) {
 		t.Parallel()
 		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_batch_onhold")
@@ -3829,69 +3738,6 @@ func TestEnumNotificationStandardRequestContentEventType(t *testing.T) {
 		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_batch_released")
 		assert.NoError(t, err, "valid enum value should not return error")
 		assert.Equal(t, NotificationStandardRequestContentEventType("payin_batch_released"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_batch_processed", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_batch_processed")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_batch_processed"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_batch_paid", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_batch_paid")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_batch_paid"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_batch_funded", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_batch_funded")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_batch_funded"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_batch_closed", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_batch_closed")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_batch_closed"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_batch_notclosed", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_batch_notclosed")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_batch_notclosed"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_batch_fundpending", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_batch_fundpending")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_batch_fundpending"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_batch_cancelled", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_batch_cancelled")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_batch_cancelled"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_batch_transferred", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_batch_transferred")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_batch_transferred"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_batch_resolved", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_batch_resolved")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_batch_resolved"), val, "enum value should match expected wire value")
 	})
 
 	t.Run("NewFromString_payout_batch_open", func(t *testing.T) {
@@ -3976,69 +3822,6 @@ func TestEnumNotificationStandardRequestContentEventType(t *testing.T) {
 		val, err := NewNotificationStandardRequestContentEventTypeFromString("payout_batch_resolved")
 		assert.NoError(t, err, "valid enum value should not return error")
 		assert.Equal(t, NotificationStandardRequestContentEventType("payout_batch_resolved"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_batch_settlement_pending", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_batch_settlement_pending")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_batch_settlement_pending"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_batch_settlement_intransit", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_batch_settlement_intransit")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_batch_settlement_intransit"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_batch_settlement_transferred", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_batch_settlement_transferred")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_batch_settlement_transferred"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_batch_settlement_funded", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_batch_settlement_funded")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_batch_settlement_funded"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_batch_settlement_resolved", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_batch_settlement_resolved")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_batch_settlement_resolved"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_batch_settlement_exception", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_batch_settlement_exception")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_batch_settlement_exception"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_batch_settlement_achreturn", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_batch_settlement_achreturn")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_batch_settlement_achreturn"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_batch_settlement_held", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_batch_settlement_held")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_batch_settlement_held"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_payin_batch_settlement_released", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_batch_settlement_released")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("payin_batch_settlement_released"), val, "enum value should match expected wire value")
 	})
 
 	t.Run("NewFromString_payout_batch_settlement_pending", func(t *testing.T) {
@@ -4698,7 +4481,7 @@ func TestEnumNotificationStandardRequestContentEventType(t *testing.T) {
 	})
 
 	t.Run("Ptr", func(t *testing.T) {
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_transaction_initiated")
+		val, err := NewNotificationStandardRequestContentEventTypeFromString("payin_transaction_rejected")
 		assert.NoError(t, err)
 		ptr := val.Ptr()
 		assert.NotNil(t, ptr)

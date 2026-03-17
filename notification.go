@@ -1097,19 +1097,7 @@ func (n *NotificationStandardRequestContent) String() string {
 type NotificationStandardRequestContentEventType string
 
 const (
-	NotificationStandardRequestContentEventTypePayinTransactionInitiated         NotificationStandardRequestContentEventType = "payin_transaction_initiated"
-	NotificationStandardRequestContentEventTypePayinTransactionAuthorized        NotificationStandardRequestContentEventType = "payin_transaction_authorized"
-	NotificationStandardRequestContentEventTypePayinTransactionApprovedcaptured  NotificationStandardRequestContentEventType = "payin_transaction_approvedcaptured"
-	NotificationStandardRequestContentEventTypePayinTransactionDeclined          NotificationStandardRequestContentEventType = "payin_transaction_declined"
-	NotificationStandardRequestContentEventTypePayinTransactionTechnicaldecline  NotificationStandardRequestContentEventType = "payin_transaction_technicaldecline"
-	NotificationStandardRequestContentEventTypePayinTransactionFailed            NotificationStandardRequestContentEventType = "payin_transaction_failed"
-	NotificationStandardRequestContentEventTypePayinTransactionError             NotificationStandardRequestContentEventType = "payin_transaction_error"
-	NotificationStandardRequestContentEventTypePayinTransactionPaid              NotificationStandardRequestContentEventType = "payin_transaction_paid"
-	NotificationStandardRequestContentEventTypePayinTransactionReturned          NotificationStandardRequestContentEventType = "payin_transaction_returned"
 	NotificationStandardRequestContentEventTypePayinTransactionRejected          NotificationStandardRequestContentEventType = "payin_transaction_rejected"
-	NotificationStandardRequestContentEventTypePayinTransactionVoidedcancelled   NotificationStandardRequestContentEventType = "payin_transaction_voidedcancelled"
-	NotificationStandardRequestContentEventTypePayinTransactionProcessing        NotificationStandardRequestContentEventType = "payin_transaction_processing"
-	NotificationStandardRequestContentEventTypePayinTransactionProcessed         NotificationStandardRequestContentEventType = "payin_transaction_processed"
 	NotificationStandardRequestContentEventTypePayinTransactionOnhold            NotificationStandardRequestContentEventType = "payin_transaction_onhold"
 	NotificationStandardRequestContentEventTypePayinTransactionReleased          NotificationStandardRequestContentEventType = "payin_transaction_released"
 	NotificationStandardRequestContentEventTypePayinTransactionRecovered         NotificationStandardRequestContentEventType = "payin_transaction_recovered"
@@ -1129,18 +1117,8 @@ const (
 	NotificationStandardRequestContentEventTypePayoutTransactionOnhold           NotificationStandardRequestContentEventType = "payout_transaction_onhold"
 	NotificationStandardRequestContentEventTypePayoutTransactionReleased         NotificationStandardRequestContentEventType = "payout_transaction_released"
 	NotificationStandardRequestContentEventTypePayoutTransactionRecovered        NotificationStandardRequestContentEventType = "payout_transaction_recovered"
-	NotificationStandardRequestContentEventTypePayinBatchOpen                    NotificationStandardRequestContentEventType = "payin_batch_open"
 	NotificationStandardRequestContentEventTypePayinBatchOnhold                  NotificationStandardRequestContentEventType = "payin_batch_onhold"
 	NotificationStandardRequestContentEventTypePayinBatchReleased                NotificationStandardRequestContentEventType = "payin_batch_released"
-	NotificationStandardRequestContentEventTypePayinBatchProcessed               NotificationStandardRequestContentEventType = "payin_batch_processed"
-	NotificationStandardRequestContentEventTypePayinBatchPaid                    NotificationStandardRequestContentEventType = "payin_batch_paid"
-	NotificationStandardRequestContentEventTypePayinBatchFunded                  NotificationStandardRequestContentEventType = "payin_batch_funded"
-	NotificationStandardRequestContentEventTypePayinBatchClosed                  NotificationStandardRequestContentEventType = "payin_batch_closed"
-	NotificationStandardRequestContentEventTypePayinBatchNotclosed               NotificationStandardRequestContentEventType = "payin_batch_notclosed"
-	NotificationStandardRequestContentEventTypePayinBatchFundpending             NotificationStandardRequestContentEventType = "payin_batch_fundpending"
-	NotificationStandardRequestContentEventTypePayinBatchCancelled               NotificationStandardRequestContentEventType = "payin_batch_cancelled"
-	NotificationStandardRequestContentEventTypePayinBatchTransferred             NotificationStandardRequestContentEventType = "payin_batch_transferred"
-	NotificationStandardRequestContentEventTypePayinBatchResolved                NotificationStandardRequestContentEventType = "payin_batch_resolved"
 	NotificationStandardRequestContentEventTypePayoutBatchOpen                   NotificationStandardRequestContentEventType = "payout_batch_open"
 	NotificationStandardRequestContentEventTypePayoutBatchOnhold                 NotificationStandardRequestContentEventType = "payout_batch_onhold"
 	NotificationStandardRequestContentEventTypePayoutBatchReleased               NotificationStandardRequestContentEventType = "payout_batch_released"
@@ -1153,15 +1131,6 @@ const (
 	NotificationStandardRequestContentEventTypePayoutBatchCancelled              NotificationStandardRequestContentEventType = "payout_batch_cancelled"
 	NotificationStandardRequestContentEventTypePayoutBatchTransferred            NotificationStandardRequestContentEventType = "payout_batch_transferred"
 	NotificationStandardRequestContentEventTypePayoutBatchResolved               NotificationStandardRequestContentEventType = "payout_batch_resolved"
-	NotificationStandardRequestContentEventTypePayinBatchSettlementPending       NotificationStandardRequestContentEventType = "payin_batch_settlement_pending"
-	NotificationStandardRequestContentEventTypePayinBatchSettlementIntransit     NotificationStandardRequestContentEventType = "payin_batch_settlement_intransit"
-	NotificationStandardRequestContentEventTypePayinBatchSettlementTransferred   NotificationStandardRequestContentEventType = "payin_batch_settlement_transferred"
-	NotificationStandardRequestContentEventTypePayinBatchSettlementFunded        NotificationStandardRequestContentEventType = "payin_batch_settlement_funded"
-	NotificationStandardRequestContentEventTypePayinBatchSettlementResolved      NotificationStandardRequestContentEventType = "payin_batch_settlement_resolved"
-	NotificationStandardRequestContentEventTypePayinBatchSettlementException     NotificationStandardRequestContentEventType = "payin_batch_settlement_exception"
-	NotificationStandardRequestContentEventTypePayinBatchSettlementAchreturn     NotificationStandardRequestContentEventType = "payin_batch_settlement_achreturn"
-	NotificationStandardRequestContentEventTypePayinBatchSettlementHeld          NotificationStandardRequestContentEventType = "payin_batch_settlement_held"
-	NotificationStandardRequestContentEventTypePayinBatchSettlementReleased      NotificationStandardRequestContentEventType = "payin_batch_settlement_released"
 	NotificationStandardRequestContentEventTypePayoutBatchSettlementPending      NotificationStandardRequestContentEventType = "payout_batch_settlement_pending"
 	NotificationStandardRequestContentEventTypePayoutBatchSettlementIntransit    NotificationStandardRequestContentEventType = "payout_batch_settlement_intransit"
 	NotificationStandardRequestContentEventTypePayoutBatchSettlementTransferred  NotificationStandardRequestContentEventType = "payout_batch_settlement_transferred"
@@ -1259,32 +1228,8 @@ const (
 
 func NewNotificationStandardRequestContentEventTypeFromString(s string) (NotificationStandardRequestContentEventType, error) {
 	switch s {
-	case "payin_transaction_initiated":
-		return NotificationStandardRequestContentEventTypePayinTransactionInitiated, nil
-	case "payin_transaction_authorized":
-		return NotificationStandardRequestContentEventTypePayinTransactionAuthorized, nil
-	case "payin_transaction_approvedcaptured":
-		return NotificationStandardRequestContentEventTypePayinTransactionApprovedcaptured, nil
-	case "payin_transaction_declined":
-		return NotificationStandardRequestContentEventTypePayinTransactionDeclined, nil
-	case "payin_transaction_technicaldecline":
-		return NotificationStandardRequestContentEventTypePayinTransactionTechnicaldecline, nil
-	case "payin_transaction_failed":
-		return NotificationStandardRequestContentEventTypePayinTransactionFailed, nil
-	case "payin_transaction_error":
-		return NotificationStandardRequestContentEventTypePayinTransactionError, nil
-	case "payin_transaction_paid":
-		return NotificationStandardRequestContentEventTypePayinTransactionPaid, nil
-	case "payin_transaction_returned":
-		return NotificationStandardRequestContentEventTypePayinTransactionReturned, nil
 	case "payin_transaction_rejected":
 		return NotificationStandardRequestContentEventTypePayinTransactionRejected, nil
-	case "payin_transaction_voidedcancelled":
-		return NotificationStandardRequestContentEventTypePayinTransactionVoidedcancelled, nil
-	case "payin_transaction_processing":
-		return NotificationStandardRequestContentEventTypePayinTransactionProcessing, nil
-	case "payin_transaction_processed":
-		return NotificationStandardRequestContentEventTypePayinTransactionProcessed, nil
 	case "payin_transaction_onhold":
 		return NotificationStandardRequestContentEventTypePayinTransactionOnhold, nil
 	case "payin_transaction_released":
@@ -1323,30 +1268,10 @@ func NewNotificationStandardRequestContentEventTypeFromString(s string) (Notific
 		return NotificationStandardRequestContentEventTypePayoutTransactionReleased, nil
 	case "payout_transaction_recovered":
 		return NotificationStandardRequestContentEventTypePayoutTransactionRecovered, nil
-	case "payin_batch_open":
-		return NotificationStandardRequestContentEventTypePayinBatchOpen, nil
 	case "payin_batch_onhold":
 		return NotificationStandardRequestContentEventTypePayinBatchOnhold, nil
 	case "payin_batch_released":
 		return NotificationStandardRequestContentEventTypePayinBatchReleased, nil
-	case "payin_batch_processed":
-		return NotificationStandardRequestContentEventTypePayinBatchProcessed, nil
-	case "payin_batch_paid":
-		return NotificationStandardRequestContentEventTypePayinBatchPaid, nil
-	case "payin_batch_funded":
-		return NotificationStandardRequestContentEventTypePayinBatchFunded, nil
-	case "payin_batch_closed":
-		return NotificationStandardRequestContentEventTypePayinBatchClosed, nil
-	case "payin_batch_notclosed":
-		return NotificationStandardRequestContentEventTypePayinBatchNotclosed, nil
-	case "payin_batch_fundpending":
-		return NotificationStandardRequestContentEventTypePayinBatchFundpending, nil
-	case "payin_batch_cancelled":
-		return NotificationStandardRequestContentEventTypePayinBatchCancelled, nil
-	case "payin_batch_transferred":
-		return NotificationStandardRequestContentEventTypePayinBatchTransferred, nil
-	case "payin_batch_resolved":
-		return NotificationStandardRequestContentEventTypePayinBatchResolved, nil
 	case "payout_batch_open":
 		return NotificationStandardRequestContentEventTypePayoutBatchOpen, nil
 	case "payout_batch_onhold":
@@ -1371,24 +1296,6 @@ func NewNotificationStandardRequestContentEventTypeFromString(s string) (Notific
 		return NotificationStandardRequestContentEventTypePayoutBatchTransferred, nil
 	case "payout_batch_resolved":
 		return NotificationStandardRequestContentEventTypePayoutBatchResolved, nil
-	case "payin_batch_settlement_pending":
-		return NotificationStandardRequestContentEventTypePayinBatchSettlementPending, nil
-	case "payin_batch_settlement_intransit":
-		return NotificationStandardRequestContentEventTypePayinBatchSettlementIntransit, nil
-	case "payin_batch_settlement_transferred":
-		return NotificationStandardRequestContentEventTypePayinBatchSettlementTransferred, nil
-	case "payin_batch_settlement_funded":
-		return NotificationStandardRequestContentEventTypePayinBatchSettlementFunded, nil
-	case "payin_batch_settlement_resolved":
-		return NotificationStandardRequestContentEventTypePayinBatchSettlementResolved, nil
-	case "payin_batch_settlement_exception":
-		return NotificationStandardRequestContentEventTypePayinBatchSettlementException, nil
-	case "payin_batch_settlement_achreturn":
-		return NotificationStandardRequestContentEventTypePayinBatchSettlementAchreturn, nil
-	case "payin_batch_settlement_held":
-		return NotificationStandardRequestContentEventTypePayinBatchSettlementHeld, nil
-	case "payin_batch_settlement_released":
-		return NotificationStandardRequestContentEventTypePayinBatchSettlementReleased, nil
 	case "payout_batch_settlement_pending":
 		return NotificationStandardRequestContentEventTypePayoutBatchSettlementPending, nil
 	case "payout_batch_settlement_intransit":
