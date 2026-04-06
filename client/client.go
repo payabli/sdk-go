@@ -11,6 +11,7 @@ import (
 	core "github.com/payabli/sdk-go/core"
 	customer "github.com/payabli/sdk-go/customer"
 	export "github.com/payabli/sdk-go/export"
+	ghostcard "github.com/payabli/sdk-go/ghostcard"
 	hostedpaymentpages "github.com/payabli/sdk-go/hostedpaymentpages"
 	import_ "github.com/payabli/sdk-go/import_"
 	internal "github.com/payabli/sdk-go/internal"
@@ -25,6 +26,7 @@ import (
 	organization "github.com/payabli/sdk-go/organization"
 	paymentlink "github.com/payabli/sdk-go/paymentlink"
 	paymentmethoddomain "github.com/payabli/sdk-go/paymentmethoddomain"
+	payoutsubscription "github.com/payabli/sdk-go/payoutsubscription"
 	paypoint "github.com/payabli/sdk-go/paypoint"
 	query "github.com/payabli/sdk-go/query"
 	statistic "github.com/payabli/sdk-go/statistic"
@@ -44,6 +46,7 @@ type Client struct {
 	Cloud               *cloud.Client
 	Customer            *customer.Client
 	Export              *export.Client
+	GhostCard           *ghostcard.Client
 	HostedPaymentPages  *hostedpaymentpages.Client
 	Import              *import_.Client
 	Invoice             *invoice.Client
@@ -56,6 +59,7 @@ type Client struct {
 	Organization        *organization.Client
 	PaymentLink         *paymentlink.Client
 	PaymentMethodDomain *paymentmethoddomain.Client
+	PayoutSubscription  *payoutsubscription.Client
 	Paypoint            *paypoint.Client
 	Query               *query.Client
 	Statistic           *statistic.Client
@@ -81,6 +85,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Cloud:               cloud.NewClient(options),
 		Customer:            customer.NewClient(options),
 		Export:              export.NewClient(options),
+		GhostCard:           ghostcard.NewClient(options),
 		HostedPaymentPages:  hostedpaymentpages.NewClient(options),
 		Import:              import_.NewClient(options),
 		Invoice:             invoice.NewClient(options),
@@ -93,6 +98,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Organization:        organization.NewClient(options),
 		PaymentLink:         paymentlink.NewClient(options),
 		PaymentMethodDomain: paymentmethoddomain.NewClient(options),
+		PayoutSubscription:  payoutsubscription.NewClient(options),
 		Paypoint:            paypoint.NewClient(options),
 		Query:               query.NewClient(options),
 		Statistic:           statistic.NewClient(options),

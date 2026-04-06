@@ -810,6 +810,74 @@ func TestQueryListSubscriptionsOrgWithWireMock(
 	VerifyRequestCount(t, "TestQueryListSubscriptionsOrgWithWireMock", "GET", "/Query/subscriptions/org/123", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
+func TestQueryListPayoutSubscriptionsWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &payabli.ListPayoutSubscriptionsRequest{
+		FromRecord: payabli.Int(
+			0,
+		),
+		LimitRecord: payabli.Int(
+			20,
+		),
+		SortBy: payabli.String(
+			"desc(field_name)",
+		),
+	}
+	_, invocationErr := client.Query.ListPayoutSubscriptions(
+		context.TODO(),
+		"8cfec329267",
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestQueryListPayoutSubscriptionsWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestQueryListPayoutSubscriptionsWithWireMock", "GET", "/Query/payoutsubscriptions/8cfec329267", map[string]string{"fromRecord": "0", "limitRecord": "20", "sortBy": "desc(field_name)"}, 1)
+}
+
+func TestQueryListPayoutSubscriptionsOrgWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &payabli.ListPayoutSubscriptionsOrgRequest{
+		FromRecord: payabli.Int(
+			0,
+		),
+		LimitRecord: payabli.Int(
+			20,
+		),
+		SortBy: payabli.String(
+			"desc(field_name)",
+		),
+	}
+	_, invocationErr := client.Query.ListPayoutSubscriptionsOrg(
+		context.TODO(),
+		123,
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestQueryListPayoutSubscriptionsOrgWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestQueryListPayoutSubscriptionsOrgWithWireMock", "GET", "/Query/payoutsubscriptions/org/123", map[string]string{"fromRecord": "0", "limitRecord": "20", "sortBy": "desc(field_name)"}, 1)
+}
+
 func TestQueryListTransactionsWithWireMock(
 	t *testing.T,
 ) {

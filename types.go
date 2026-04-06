@@ -2530,287 +2530,6 @@ func (b *BillPayOutData) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
-var (
-	billPayOutDataRequestFieldBillId           = big.NewInt(1 << 0)
-	billPayOutDataRequestFieldComments         = big.NewInt(1 << 1)
-	billPayOutDataRequestFieldDueDate          = big.NewInt(1 << 2)
-	billPayOutDataRequestFieldInvoiceDate      = big.NewInt(1 << 3)
-	billPayOutDataRequestFieldInvoiceNumber    = big.NewInt(1 << 4)
-	billPayOutDataRequestFieldNetAmount        = big.NewInt(1 << 5)
-	billPayOutDataRequestFieldDiscount         = big.NewInt(1 << 6)
-	billPayOutDataRequestFieldTerms            = big.NewInt(1 << 7)
-	billPayOutDataRequestFieldAccountingField1 = big.NewInt(1 << 8)
-	billPayOutDataRequestFieldAccountingField2 = big.NewInt(1 << 9)
-	billPayOutDataRequestFieldAdditionalData   = big.NewInt(1 << 10)
-	billPayOutDataRequestFieldAttachments      = big.NewInt(1 << 11)
-)
-
-type BillPayOutDataRequest struct {
-	// Bill ID in Payabli.
-	BillId *int64 `json:"billId,omitempty" url:"billId,omitempty"`
-	// Any comments about bill. **For managed payouts, this field has a limit of 100 characters**.
-	Comments *Comments `json:"comments,omitempty" url:"comments,omitempty"`
-	// Bill due date in format YYYY-MM-DD or MM/DD/YYYY.
-	DueDate *time.Time `json:"dueDate,omitempty" url:"dueDate,omitempty" format:"date"`
-	// Bill date in format YYYY-MM-DD or MM/DD/YYYY.
-	InvoiceDate *time.Time `json:"invoiceDate,omitempty" url:"invoiceDate,omitempty" format:"date"`
-	// Custom number identifying the bill. Must be unique in paypoint. **Required** for new bill and when `billId` isn't provided.
-	InvoiceNumber *InvoiceNumber `json:"invoiceNumber,omitempty" url:"invoiceNumber,omitempty"`
-	// Net Amount owed in bill. Required when adding a bill.
-	NetAmount *NetAmountstring `json:"netAmount,omitempty" url:"netAmount,omitempty"`
-	// Bill discount amount.
-	Discount *string `json:"discount,omitempty" url:"discount,omitempty"`
-	// Description of payment terms.
-	Terms            *Terms                `json:"terms,omitempty" url:"terms,omitempty"`
-	AccountingField1 *AccountingField      `json:"accountingField1,omitempty" url:"accountingField1,omitempty"`
-	AccountingField2 *AccountingField      `json:"accountingField2,omitempty" url:"accountingField2,omitempty"`
-	AdditionalData   *AdditionalDataString `json:"additionalData,omitempty" url:"additionalData,omitempty"`
-	// Bill image attachment. Send the bill image as Base64-encoded string, or as a publicly accessible link. For full details on using this field with a payout authorization, see [the documentation](/developers/developer-guides/pay-out-manage-payouts).
-	Attachments *Attachments `json:"attachments,omitempty" url:"attachments,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (b *BillPayOutDataRequest) GetBillId() *int64 {
-	if b == nil {
-		return nil
-	}
-	return b.BillId
-}
-
-func (b *BillPayOutDataRequest) GetComments() *Comments {
-	if b == nil {
-		return nil
-	}
-	return b.Comments
-}
-
-func (b *BillPayOutDataRequest) GetDueDate() *time.Time {
-	if b == nil {
-		return nil
-	}
-	return b.DueDate
-}
-
-func (b *BillPayOutDataRequest) GetInvoiceDate() *time.Time {
-	if b == nil {
-		return nil
-	}
-	return b.InvoiceDate
-}
-
-func (b *BillPayOutDataRequest) GetInvoiceNumber() *InvoiceNumber {
-	if b == nil {
-		return nil
-	}
-	return b.InvoiceNumber
-}
-
-func (b *BillPayOutDataRequest) GetNetAmount() *NetAmountstring {
-	if b == nil {
-		return nil
-	}
-	return b.NetAmount
-}
-
-func (b *BillPayOutDataRequest) GetDiscount() *string {
-	if b == nil {
-		return nil
-	}
-	return b.Discount
-}
-
-func (b *BillPayOutDataRequest) GetTerms() *Terms {
-	if b == nil {
-		return nil
-	}
-	return b.Terms
-}
-
-func (b *BillPayOutDataRequest) GetAccountingField1() *AccountingField {
-	if b == nil {
-		return nil
-	}
-	return b.AccountingField1
-}
-
-func (b *BillPayOutDataRequest) GetAccountingField2() *AccountingField {
-	if b == nil {
-		return nil
-	}
-	return b.AccountingField2
-}
-
-func (b *BillPayOutDataRequest) GetAdditionalData() *AdditionalDataString {
-	if b == nil {
-		return nil
-	}
-	return b.AdditionalData
-}
-
-func (b *BillPayOutDataRequest) GetAttachments() *Attachments {
-	if b == nil {
-		return nil
-	}
-	return b.Attachments
-}
-
-func (b *BillPayOutDataRequest) GetExtraProperties() map[string]interface{} {
-	if b == nil {
-		return nil
-	}
-	return b.extraProperties
-}
-
-func (b *BillPayOutDataRequest) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
-	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetBillId sets the BillId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillPayOutDataRequest) SetBillId(billId *int64) {
-	b.BillId = billId
-	b.require(billPayOutDataRequestFieldBillId)
-}
-
-// SetComments sets the Comments field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillPayOutDataRequest) SetComments(comments *Comments) {
-	b.Comments = comments
-	b.require(billPayOutDataRequestFieldComments)
-}
-
-// SetDueDate sets the DueDate field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillPayOutDataRequest) SetDueDate(dueDate *time.Time) {
-	b.DueDate = dueDate
-	b.require(billPayOutDataRequestFieldDueDate)
-}
-
-// SetInvoiceDate sets the InvoiceDate field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillPayOutDataRequest) SetInvoiceDate(invoiceDate *time.Time) {
-	b.InvoiceDate = invoiceDate
-	b.require(billPayOutDataRequestFieldInvoiceDate)
-}
-
-// SetInvoiceNumber sets the InvoiceNumber field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillPayOutDataRequest) SetInvoiceNumber(invoiceNumber *InvoiceNumber) {
-	b.InvoiceNumber = invoiceNumber
-	b.require(billPayOutDataRequestFieldInvoiceNumber)
-}
-
-// SetNetAmount sets the NetAmount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillPayOutDataRequest) SetNetAmount(netAmount *NetAmountstring) {
-	b.NetAmount = netAmount
-	b.require(billPayOutDataRequestFieldNetAmount)
-}
-
-// SetDiscount sets the Discount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillPayOutDataRequest) SetDiscount(discount *string) {
-	b.Discount = discount
-	b.require(billPayOutDataRequestFieldDiscount)
-}
-
-// SetTerms sets the Terms field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillPayOutDataRequest) SetTerms(terms *Terms) {
-	b.Terms = terms
-	b.require(billPayOutDataRequestFieldTerms)
-}
-
-// SetAccountingField1 sets the AccountingField1 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillPayOutDataRequest) SetAccountingField1(accountingField1 *AccountingField) {
-	b.AccountingField1 = accountingField1
-	b.require(billPayOutDataRequestFieldAccountingField1)
-}
-
-// SetAccountingField2 sets the AccountingField2 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillPayOutDataRequest) SetAccountingField2(accountingField2 *AccountingField) {
-	b.AccountingField2 = accountingField2
-	b.require(billPayOutDataRequestFieldAccountingField2)
-}
-
-// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillPayOutDataRequest) SetAdditionalData(additionalData *AdditionalDataString) {
-	b.AdditionalData = additionalData
-	b.require(billPayOutDataRequestFieldAdditionalData)
-}
-
-// SetAttachments sets the Attachments field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillPayOutDataRequest) SetAttachments(attachments *Attachments) {
-	b.Attachments = attachments
-	b.require(billPayOutDataRequestFieldAttachments)
-}
-
-func (b *BillPayOutDataRequest) UnmarshalJSON(data []byte) error {
-	type embed BillPayOutDataRequest
-	var unmarshaler = struct {
-		embed
-		DueDate     *internal.Date `json:"dueDate,omitempty"`
-		InvoiceDate *internal.Date `json:"invoiceDate,omitempty"`
-	}{
-		embed: embed(*b),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*b = BillPayOutDataRequest(unmarshaler.embed)
-	b.DueDate = unmarshaler.DueDate.TimePtr()
-	b.InvoiceDate = unmarshaler.InvoiceDate.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
-	if err != nil {
-		return err
-	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (b *BillPayOutDataRequest) MarshalJSON() ([]byte, error) {
-	type embed BillPayOutDataRequest
-	var marshaler = struct {
-		embed
-		DueDate     *internal.Date `json:"dueDate,omitempty"`
-		InvoiceDate *internal.Date `json:"invoiceDate,omitempty"`
-	}{
-		embed:       embed(*b),
-		DueDate:     internal.NewOptionalDate(b.DueDate),
-		InvoiceDate: internal.NewOptionalDate(b.InvoiceDate),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (b *BillPayOutDataRequest) String() string {
-	if b == nil {
-		return "<nil>"
-	}
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(b); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", b)
-}
-
 // Additional line for the billing address.
 type BillingAddressAddtlNullable = string
 
@@ -18775,22 +18494,22 @@ type RefundId = int64
 // Remittance email address. Used for sending virtual cards and other information about payouts.
 type RemitEmail = string
 
-// Remittance address. Used for mailing paper checks.
+// Remittance street address. Used for mailing paper checks. Required if any remittance address field is provided. Allowed characters are letters, numbers, spaces, and `. ,
 type Remitaddress1 = string
 
-// Remittance address additional line. Used for mailing paper checks.
+// Remittance address additional line, such as a suite or unit number. Used for mailing paper checks. Always optional.
 type Remitaddress2 = string
 
-// Remittance address city. Used for mailing paper checks.
+// Remittance address city. Used for mailing paper checks. Required if any remittance address field is provided.
 type Remitcity = string
 
-// Remittance address country. Used for mailing paper checks.
+// Remittance address country. Used for mailing paper checks. Must be `US` or `CA`. Defaults to `US` if not provided.
 type Remitcountry = string
 
-// Remittance address state. Used for mailing paper checks.
+// Remittance address state or province. Used for mailing paper checks. Required if any remittance address field is provided. Must be a valid US state or Canadian province abbreviation.
 type Remitstate = string
 
-// Remittance address ZIP code. Used for mailing paper checks.
+// Remittance address ZIP or postal code. Used for mailing paper checks. Required if any remittance address field is provided. For US addresses, use five digits or ZIP+4 format.
 type Remitzip = string
 
 // Email address for organization-level communications, such as messages about why an application was declined. This is required by commerce laws in the US.
@@ -22209,17 +21928,17 @@ var (
 type VendorData struct {
 	VendorNumber   *VendorNumber   `json:"vendorNumber,omitempty" url:"vendorNumber,omitempty"`
 	AdditionalData *AdditionalData `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
-	// Vendor's address
+	// Vendor's street address. If any address field is provided, this field is required along with `city`, `state`, and `zip`. Allowed characters are letters, numbers, spaces, and `. ,
 	Address1 *AddressNullable `json:"address1,omitempty" url:"address1,omitempty"`
-	// Additional line for vendor's address.
+	// Additional line for vendor's address, such as a suite or unit number. Always optional.
 	Address2 *AddressAddtlNullable `json:"address2,omitempty" url:"address2,omitempty"`
 	// Object containing vendor's bank information.
 	BillingData *BillingData `json:"billingData,omitempty" url:"billingData,omitempty"`
-	// Vendor's city.
+	// Vendor's city. Required if any address field is provided.
 	City *string `json:"city,omitempty" url:"city,omitempty"`
 	// Array of objects describing the vendor's contacts.
 	Contacts *ContactsField `json:"contacts,omitempty" url:"contacts,omitempty"`
-	// Vendor's country.
+	// Vendor's country. Must be `US` or `CA`. Defaults to `US` if not provided.
 	Country *string `json:"country,omitempty" url:"country,omitempty"`
 	// Custom field 1 for vendor
 	CustomField1 *string `json:"customField1,omitempty" url:"customField1,omitempty"`
@@ -22247,10 +21966,10 @@ type VendorData struct {
 	RemitEmail          *RemitEmail                `json:"remitEmail,omitempty" url:"remitEmail,omitempty"`
 	RemitState          *Remitstate                `json:"remitState,omitempty" url:"remitState,omitempty"`
 	RemitZip            *Remitzip                  `json:"remitZip,omitempty" url:"remitZip,omitempty"`
-	// Vendor's state. Must be a 2 character state code.
+	// Vendor's state or province. Required if any address field is provided. Must be a valid US state abbreviation (such as `CA`, `NY`) or Canadian province abbreviation (such as `ON`, `BC`), depending on the `country` value.
 	State        *string       `json:"state,omitempty" url:"state,omitempty"`
 	VendorStatus *Vendorstatus `json:"vendorStatus,omitempty" url:"vendorStatus,omitempty"`
-	// Vendor's zip code.
+	// Vendor's ZIP or postal code. Required if any address field is provided. For US addresses, use five digits (`12345`) or ZIP+4 format (`12345-6789`).
 	Zip *string `json:"zip,omitempty" url:"zip,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -22764,16 +22483,16 @@ func (v *VendorData) String() string {
 	return fmt.Sprintf("%#v", v)
 }
 
-// EIN/Tax ID for vendor.
+// EIN/Tax ID for vendor. Must be nine digits formatted as `XX-XXXXXXX` (for example, `12-3456789`).
 type VendorEin = string
 
-// Primary name for vendor. Required for new vendor.
+// Primary name for vendor. Required for new vendor. Allowed characters are letters, numbers, spaces, and the following symbols `. , ' & ( )
 type VendorName1 = string
 
-// Secondary name for vendor.
+// Secondary name for vendor. If provided, allowed characters are the same as the `name1` field. Letters, numbers, spaces, and `. , ' & ( )
 type VendorName2 = string
 
-// Custom number identifying the vendor. Must be unique in paypoint.
+// Custom number identifying the vendor. Must be unique in paypoint. Can't be blank.
 type VendorNumber = string
 
 // Payment method object to use for the payout.
@@ -24960,11 +24679,13 @@ func (v *VendorSummary) String() string {
 type Vendorid = int
 
 // Vendor's status.
-// Allowed status:
+// Allowed values:
 //
-//   - 0 Inactive
+//   - `0` Inactive
 //
-//   - 1 Active
+//   - `1` Active
+//
+//   - `-99` Deleted
 type Vendorstatus = int
 
 // The business website address. Include only the domain and TLD, do not enter the protocol (http/https). For example: `www.example.com` is acceptable.

@@ -2136,6 +2136,264 @@ func (l *ListPayoutOrgRequest) SetSortBy(sortBy *string) {
 }
 
 var (
+	listPayoutSubscriptionsRequestFieldExportFormat = big.NewInt(1 << 0)
+	listPayoutSubscriptionsRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listPayoutSubscriptionsRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listPayoutSubscriptionsRequestFieldParameters   = big.NewInt(1 << 3)
+	listPayoutSubscriptionsRequestFieldSortBy       = big.NewInt(1 << 4)
+)
+
+type ListPayoutSubscriptionsRequest struct {
+	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
+	// The number of records to skip before starting to collect the result set.
+	FromRecord *int `json:"-" url:"fromRecord,omitempty"`
+	// Max number of records to return for the query. Use `0` or negative value to return all records.
+	LimitRecord *int `json:"-" url:"limitRecord,omitempty"`
+	// Collection of field names, conditions, and values used to filter the query.
+	// <Info>
+	//
+	//	**You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+	//
+	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+	//
+	//	For example:
+	//
+	//	--url https://api-sandbox.payabli.com/api/Query/payoutsubscriptions/entry123?parameters=totalAmount(gt)=1000&limitRecord=20
+	//
+	//	should become:
+	//
+	//	--url https://api-sandbox.payabli.com/api/Query/payoutsubscriptions/entry123?totalAmount(gt)=1000&limitRecord=20
+	//
+	// </Info>
+	// See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for more information.
+	// **List of field names accepted:**
+	//
+	// - `startDate` (gt, ge, lt, le, eq, ne)
+	// - `endDate` (gt, ge, lt, le, eq, ne)
+	// - `nextDate` (gt, ge, lt, le, eq, ne)
+	// - `frequency` (in, nin, ne, eq)
+	// - `method` (in, nin, eq, ne)
+	// - `totalAmount` (gt, ge, lt, le, eq, ne)
+	// - `netAmount` (gt, ge, lt, le, eq, ne)
+	// - `feeAmount` (gt, ge, lt, le, eq, ne)
+	// - `status` (in, nin, eq, ne)
+	// - `untilcancelled` (eq, ne)
+	// - `payaccountLastfour` (ct, nct)
+	// - `payaccountType` (ne, eq, in, nin)
+	// - `payaccountCurrency` (ne, eq, in, nin)
+	// - `paypointId` (ne, eq)
+	// - `paypointLegal` (ne, eq, ct, nct)
+	// - `paypointDba` (ne, eq, ct, nct)
+	// - `orgName` (ne, eq, ct, nct, nin, in)
+	// - `parentOrgId` (ne, eq, nin, in)
+	// - `subscriptionId` (eq, ne)
+	// - `orderDescription` (ct, nct)
+	// - `cycles` (eq, ne, gt, ge, lt, le)
+	// - `leftcycles` (eq, ne, gt, ge, lt, le)
+	// - `createdAt` (eq, ne, gt, ge, lt, le)
+	// - `updatedOn` (eq, ne, gt, ge, lt, le)
+	// - `vendorNumber` (ne, eq, ct, nct)
+	// - `name` (ne, eq, ct, nct)
+	// - `phone` (ne, eq, ct, nct)
+	// - `email` (ne, eq, ct, nct)
+	// - `address` (ne, eq, ct, nct)
+	// - `remitAddress` (ct, nct)
+	// - `city` (ne, eq, ct, nct)
+	// - `state` (ne, eq, ct, nct)
+	// - `country` (ne, eq, ct, nct)
+	// - `zip` (ne, eq, ct, nct)
+	//
+	// **List of comparison operators accepted:**
+	// - `eq` or empty => equal
+	// - `gt` => greater than
+	// - `ge` => greater or equal
+	// - `lt` => less than
+	// - `le` => less or equal
+	// - `ne` => not equal
+	// - `ct` => contains
+	// - `nct` => not contains
+	// - `in` => inside array
+	// - `nin` => not inside array
+	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (l *ListPayoutSubscriptionsRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPayoutSubscriptionsRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listPayoutSubscriptionsRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPayoutSubscriptionsRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listPayoutSubscriptionsRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPayoutSubscriptionsRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listPayoutSubscriptionsRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPayoutSubscriptionsRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listPayoutSubscriptionsRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPayoutSubscriptionsRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listPayoutSubscriptionsRequestFieldSortBy)
+}
+
+var (
+	listPayoutSubscriptionsOrgRequestFieldExportFormat = big.NewInt(1 << 0)
+	listPayoutSubscriptionsOrgRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listPayoutSubscriptionsOrgRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listPayoutSubscriptionsOrgRequestFieldParameters   = big.NewInt(1 << 3)
+	listPayoutSubscriptionsOrgRequestFieldSortBy       = big.NewInt(1 << 4)
+)
+
+type ListPayoutSubscriptionsOrgRequest struct {
+	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
+	// The number of records to skip before starting to collect the result set.
+	FromRecord *int `json:"-" url:"fromRecord,omitempty"`
+	// Max number of records to return for the query. Use `0` or negative value to return all records.
+	LimitRecord *int `json:"-" url:"limitRecord,omitempty"`
+	// Collection of field names, conditions, and values used to filter the query.
+	// <Info>
+	//
+	//	**You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+	//
+	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+	//
+	//	For example:
+	//
+	//	--url https://api-sandbox.payabli.com/api/Query/payoutsubscriptions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//
+	//	should become:
+	//
+	//	--url https://api-sandbox.payabli.com/api/Query/payoutsubscriptions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//
+	// </Info>
+	// See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for more information.
+	// **List of field names accepted:**
+	//
+	// - `startDate` (gt, ge, lt, le, eq, ne)
+	// - `endDate` (gt, ge, lt, le, eq, ne)
+	// - `nextDate` (gt, ge, lt, le, eq, ne)
+	// - `frequency` (in, nin, ne, eq)
+	// - `method` (in, nin, eq, ne)
+	// - `totalAmount` (gt, ge, lt, le, eq, ne)
+	// - `netAmount` (gt, ge, lt, le, eq, ne)
+	// - `feeAmount` (gt, ge, lt, le, eq, ne)
+	// - `status` (in, nin, eq, ne)
+	// - `untilcancelled` (eq, ne)
+	// - `payaccountLastfour` (ct, nct)
+	// - `payaccountType` (ne, eq, in, nin)
+	// - `payaccountCurrency` (ne, eq, in, nin)
+	// - `paypointId` (ne, eq)
+	// - `paypointLegal` (ne, eq, ct, nct)
+	// - `paypointDba` (ne, eq, ct, nct)
+	// - `orgName` (ne, eq, ct, nct, nin, in)
+	// - `parentOrgId` (ne, eq, nin, in)
+	// - `subscriptionId` (eq, ne)
+	// - `orderDescription` (ct, nct)
+	// - `cycles` (eq, ne, gt, ge, lt, le)
+	// - `leftcycles` (eq, ne, gt, ge, lt, le)
+	// - `createdAt` (eq, ne, gt, ge, lt, le)
+	// - `updatedOn` (eq, ne, gt, ge, lt, le)
+	// - `vendorNumber` (ne, eq, ct, nct)
+	// - `name` (ne, eq, ct, nct)
+	// - `phone` (ne, eq, ct, nct)
+	// - `email` (ne, eq, ct, nct)
+	// - `address` (ne, eq, ct, nct)
+	// - `remitAddress` (ct, nct)
+	// - `city` (ne, eq, ct, nct)
+	// - `state` (ne, eq, ct, nct)
+	// - `country` (ne, eq, ct, nct)
+	// - `zip` (ne, eq, ct, nct)
+	//
+	// **List of comparison operators accepted:**
+	// - `eq` or empty => equal
+	// - `gt` => greater than
+	// - `ge` => greater or equal
+	// - `lt` => less than
+	// - `le` => less or equal
+	// - `ne` => not equal
+	// - `ct` => contains
+	// - `nct` => not contains
+	// - `in` => inside array
+	// - `nin` => not inside array
+	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (l *ListPayoutSubscriptionsOrgRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPayoutSubscriptionsOrgRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listPayoutSubscriptionsOrgRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPayoutSubscriptionsOrgRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listPayoutSubscriptionsOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPayoutSubscriptionsOrgRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listPayoutSubscriptionsOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPayoutSubscriptionsOrgRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listPayoutSubscriptionsOrgRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPayoutSubscriptionsOrgRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listPayoutSubscriptionsOrgRequestFieldSortBy)
+}
+
+var (
 	listPaypointsRequestFieldExportFormat = big.NewInt(1 << 0)
 	listPaypointsRequestFieldFromRecord   = big.NewInt(1 << 1)
 	listPaypointsRequestFieldLimitRecord  = big.NewInt(1 << 2)

@@ -3463,9 +3463,9 @@ var (
 
 type VendorOutData struct {
 	AdditionalData *AdditionalData `json:"additionalData,omitempty" url:"additionalData,omitempty"`
-	// Vendor's address
+	// Vendor's street address. Allowed characters are letters, numbers, spaces, and `. ,
 	Address1 *AddressNullable `json:"Address1,omitempty" url:"Address1,omitempty"`
-	// Additional line for vendor's address.
+	// Additional line for vendor's address, such as a suite or unit number.
 	Address2 *AddressAddtlNullable `json:"Address2,omitempty" url:"Address2,omitempty"`
 	// Object containing vendor's bank information.
 	BillingData *BillingData `json:"BillingData,omitempty" url:"BillingData,omitempty"`
@@ -3473,11 +3473,11 @@ type VendorOutData struct {
 	City string `json:"City" url:"City"`
 	// Array of objects describing the vendor's contacts.
 	Contacts *ContactsField `json:"Contacts,omitempty" url:"Contacts,omitempty"`
-	// Vendor's country.
+	// Vendor's country. `US` or `CA`.
 	Country string `json:"Country" url:"Country"`
 	// Account number of paypoint in the vendor side.
 	CustomerVendorAccount *string `json:"customerVendorAccount,omitempty" url:"customerVendorAccount,omitempty"`
-	// EIN/Tax ID for vendor. In reponses, this field is masked, and looks like: `XXXXX6789`.
+	// EIN/Tax ID for vendor. Must be nine digits formatted as `XX-XXXXXXX`. In responses, this field is masked and looks like: `XXXXX6789`.
 	Ein string `json:"EIN" url:"EIN"`
 	// Vendor's email address. Required for vCard.
 	Email *Email `json:"Email,omitempty" url:"Email,omitempty"`
@@ -3485,14 +3485,14 @@ type VendorOutData struct {
 	InternalReferenceId *int64        `json:"InternalReferenceId,omitempty" url:"InternalReferenceId,omitempty"`
 	LocationCode        *LocationCode `json:"LocationCode,omitempty" url:"LocationCode,omitempty"`
 	Mcc                 *Mcc          `json:"Mcc,omitempty" url:"Mcc,omitempty"`
-	// Primary name for vendor. Required for new vendor.
+	// Primary name for vendor. Required for new vendor. Allowed characters are letters, numbers, spaces, and `. , ' & ( )
 	Name1 string `json:"Name1" url:"Name1"`
-	// Secondary name for vendor.
+	// Secondary name for vendor. If provided, allowed characters are the same as `Name1`.
 	Name2         *string              `json:"Name2,omitempty" url:"Name2,omitempty"`
 	PayeeName1    *PayeeName           `json:"payeeName1,omitempty" url:"payeeName1,omitempty"`
 	PayeeName2    *PayeeName           `json:"payeeName2,omitempty" url:"payeeName2,omitempty"`
 	PaymentMethod *VendorPaymentMethod `json:"PaymentMethod,omitempty" url:"PaymentMethod,omitempty"`
-	// Vendor's phone number
+	// Vendor's phone number. Digits only when creating or updating a vendor.
 	Phone         string         `json:"Phone" url:"Phone"`
 	RemitAddress1 *Remitaddress1 `json:"remitAddress1,omitempty" url:"remitAddress1,omitempty"`
 	RemitAddress2 *Remitaddress2 `json:"remitAddress2,omitempty" url:"remitAddress2,omitempty"`
@@ -3500,13 +3500,13 @@ type VendorOutData struct {
 	RemitCountry  *Remitcountry  `json:"remitCountry,omitempty" url:"remitCountry,omitempty"`
 	RemitState    *Remitstate    `json:"remitState,omitempty" url:"remitState,omitempty"`
 	RemitZip      *Remitzip      `json:"remitZip,omitempty" url:"remitZip,omitempty"`
-	// Vendor's state. Must be a 2 character state code.
+	// Vendor's state or province. Must be a valid US state or Canadian province abbreviation, depending on the `Country` value.
 	State string `json:"State" url:"State"`
 	// Payabli identifier for vendor record. Required when `VendorNumber` isn't included.
 	VendorId     *Vendorid     `json:"VendorId,omitempty" url:"VendorId,omitempty"`
 	VendorNumber *VendorNumber `json:"VendorNumber,omitempty" url:"VendorNumber,omitempty"`
 	VendorStatus *Vendorstatus `json:"VendorStatus,omitempty" url:"VendorStatus,omitempty"`
-	// Vendor's zip code.
+	// Vendor's ZIP or postal code. For US addresses, five digits (`12345`) or ZIP+4 format (`12345-6789`).
 	Zip string `json:"Zip" url:"Zip"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted

@@ -463,13 +463,51 @@ func (c *Client) ListSubscriptionsOrg(
 	return response.Body, nil
 }
 
+// Returns a list of payout subscriptions for a single paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
+func (c *Client) ListPayoutSubscriptions(
+	ctx context.Context,
+	entry payabli.Entry,
+	request *payabli.ListPayoutSubscriptionsRequest,
+	opts ...option.RequestOption,
+) (*payabli.QueryPayoutSubscriptionResponse, error) {
+	response, err := c.WithRawResponse.ListPayoutSubscriptions(
+		ctx,
+		entry,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Returns a list of payout subscriptions for a single org. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
+func (c *Client) ListPayoutSubscriptionsOrg(
+	ctx context.Context,
+	// The numeric identifier for organization, assigned by Payabli.
+	orgId int,
+	request *payabli.ListPayoutSubscriptionsOrgRequest,
+	opts ...option.RequestOption,
+) (*payabli.QueryPayoutSubscriptionResponse, error) {
+	response, err := c.WithRawResponse.ListPayoutSubscriptionsOrg(
+		ctx,
+		orgId,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 // Retrieve a list of transactions for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 // By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include `transactionDate` filters.
 // For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.
 //
-//	``` curl --request GET \
-//	  --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&fromRecord=0&transactionDate(ge)=2024-04-01T00:00:00&transactionDate(le)=2024-04-09T23:59:59\
-//	  --header 'requestToken: <api-key>'
+//	``` curl -X GET https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&fromRecord=0&transactionDate(ge)=2024-04-01T00:00:00&transactionDate(le)=2024-04-09T23:59:59\
+//	  -H 'requestToken: <API TOKEN>'
 //
 //	  ```
 func (c *Client) ListTransactions(
@@ -499,9 +537,8 @@ func (c *Client) ListTransactions(
 //
 // ```
 //
-//	curl --request GET \
-//	  --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&fromRecord=0&transactionDate(ge)=2024-04-01T00:00:00&transactionDate(le)=2024-04-09T23:59:59\
-//	  --header 'requestToken: <api-key>'
+//	curl -X GET "https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&fromRecord=0&transactionDate(ge)=2024-04-01T00:00:00&transactionDate(le)=2024-04-09T23:59:59"\
+//	  -H 'requestToken: <API TOKEN>'
 //
 //	  ```
 func (c *Client) ListTransactionsOrg(

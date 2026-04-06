@@ -1186,6 +1186,111 @@ func (r *RawClient) ListSubscriptionsOrg(
 	}, nil
 }
 
+func (r *RawClient) ListPayoutSubscriptions(
+	ctx context.Context,
+	entry payabli.Entry,
+	request *payabli.ListPayoutSubscriptionsRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*payabli.QueryPayoutSubscriptionResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://api-sandbox.payabli.com/api",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/Query/payoutsubscriptions/%v",
+		entry,
+	)
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *payabli.QueryPayoutSubscriptionResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*payabli.QueryPayoutSubscriptionResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) ListPayoutSubscriptionsOrg(
+	ctx context.Context,
+	// The numeric identifier for organization, assigned by Payabli.
+	orgId int,
+	request *payabli.ListPayoutSubscriptionsOrgRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*payabli.QueryPayoutSubscriptionResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://api-sandbox.payabli.com/api",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/Query/payoutsubscriptions/org/%v",
+		orgId,
+	)
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *payabli.QueryPayoutSubscriptionResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*payabli.QueryPayoutSubscriptionResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
 func (r *RawClient) ListTransactions(
 	ctx context.Context,
 	entry payabli.Entry,

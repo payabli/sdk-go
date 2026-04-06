@@ -8327,6 +8327,302 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
+## GhostCard
+<details><summary><code>client.GhostCard.CreateGhostCard(Entry, request) -> *payabli.CreateGhostCardResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a ghost card, a multi-use virtual debit card issued to a vendor for recurring or discretionary spend.
+
+Unlike single-use virtual cards issued as part of a payout transaction, ghost cards aren't tied to a specific payout. They're issued directly to a vendor and can be reused up to a configurable number of times within the card's spending limits.
+
+Only one ghost card can exist per vendor per paypoint. To issue a new card to the same vendor, cancel the existing card first.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.CreateGhostCardRequestBody{
+        VendorId: int64(42),
+        ExpenseLimit: 500,
+        Amount: 500,
+        MaxNumberOfUses: 3,
+        ExactAmount: false,
+        ExpenseLimitPeriod: "monthly",
+        BillingCycle: "monthly",
+        BillingCycleDay: "1",
+        DailyTransactionCount: 5,
+        DailyAmountLimit: 200,
+        TransactionAmountLimit: 100,
+        Mcc: payabli.String(
+            "5411",
+        ),
+        Tcc: payabli.String(
+            "R",
+        ),
+        Misc1: payabli.String(
+            "PO-98765",
+        ),
+        Misc2: payabli.String(
+            "Dept-Finance",
+        ),
+    }
+client.GhostCard.CreateGhostCard(
+        context.TODO(),
+        "8cfec2e0fa",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `payabli.Entry` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**vendorId:** `int64` — ID of the vendor who receives the card. The vendor must belong to the paypoint and have an active status.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expenseLimit:** `float64` — Spending limit for the card. Must be greater than `0` and can't exceed the paypoint's configured payout credit limit.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expirationDate:** `*string` — Requested expiration date for the card. If not provided, defaults to 30 days from creation.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**amount:** `float64` — Initial load amount for the card.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**maxNumberOfUses:** `int` — Maximum number of times the card can be used. Ignored and set to `1` when `exactAmount` is `true`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exactAmount:** `bool` — When `true`, restricts the card to a single use. `maxNumberOfUses` is automatically set to `1` regardless of any other value provided.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expenseLimitPeriod:** `string` — Time period over which `expenseLimit` applies (for example, `monthly` or `weekly`).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billingCycle:** `string` — Billing cycle identifier.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billingCycleDay:** `string` — Day within the billing cycle.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**dailyTransactionCount:** `int` — Maximum number of transactions allowed per day.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**dailyAmountLimit:** `float64` — Maximum total spend allowed per day.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**transactionAmountLimit:** `int` — Maximum spend allowed per single transaction.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**mcc:** `*string` — Merchant Category Code to restrict where the card can be used. Must be a valid MCC if provided.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tcc:** `*string` — Transaction Category Code to restrict where the card can be used. Must be a valid TCC if provided.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**misc1:** `*string` — Custom metadata field. Stored on the card record.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**misc2:** `*string` — Custom metadata field. Stored on the card record.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.GhostCard.UpdateCard(Entry, request) -> *payabli.PayabliApiResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates the status of a virtual card (including ghost cards) under a paypoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.UpdateCardRequestBody{
+        CardToken: "gc_abc123def456",
+        Status: payabli.CardStatusCancelled.Ptr(),
+    }
+client.GhostCard.UpdateCard(
+        context.TODO(),
+        "8cfec2e0fa",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `payabli.Entry` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cardToken:** `string` — Token that uniquely identifies the card. This is the `ReferenceId` returned when the card was created.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `*payabli.CardStatus` — The new status to set on the card.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## HostedPaymentPages
 <details><summary><code>client.HostedPaymentPages.LoadPage(Entry, Subdomain) -> *payabli.PayabliPages</code></summary>
 <dl>
@@ -16675,6 +16971,324 @@ client.PaymentMethodDomain.VerifyPaymentMethodDomain(
 </dl>
 </details>
 
+## PayoutSubscription
+<details><summary><code>client.PayoutSubscription.CreatePayoutSubscription(request) -> *payabli.AddPayoutSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a payout subscription to automatically send payouts to a vendor on a recurring schedule. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for a step-by-step guide.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.RequestPayoutSchedule{
+        Body: &payabli.PayoutSubscriptionRequestBody{
+            EntryPoint: "d193cf9a46",
+            PaymentMethod: &payabli.AuthorizePaymentMethod{
+                Method: "ach",
+                AchHolder: payabli.String(
+                    "Herman Coatings",
+                ),
+                AchRouting: payabli.String(
+                    "021000021",
+                ),
+                AchAccount: payabli.String(
+                    "3453445666",
+                ),
+                AchAccountType: payabli.String(
+                    "checking",
+                ),
+            },
+            PaymentDetails: &payabli.PayoutPaymentDetail{
+                TotalAmount: 500,
+                ServiceFee: payabli.Float64(
+                    0,
+                ),
+                Currency: payabli.String(
+                    "USD",
+                ),
+            },
+            VendorData: &payabli.RequestOutAuthorizeVendorData{
+                VendorId: payabli.Int(
+                    1501,
+                ),
+            },
+            BillData: []*payabli.BillPayOutDataRequest{
+                &payabli.BillPayOutDataRequest{
+                    InvoiceNumber: payabli.String(
+                        "INV-5001",
+                    ),
+                    NetAmount: payabli.String(
+                        "500",
+                    ),
+                    InvoiceDate: payabli.Time(
+                        payabli.MustParseDate(
+                            "2025-08-01",
+                        ),
+                    ),
+                    DueDate: payabli.Time(
+                        payabli.MustParseDate(
+                            "2025-08-15",
+                        ),
+                    ),
+                },
+            },
+            ScheduleDetails: &payabli.PayoutScheduleDetail{
+                StartDate: payabli.String(
+                    "09/01/2025",
+                ),
+                EndDate: payabli.String(
+                    "09/01/2026",
+                ),
+                Frequency: payabli.FrequencyMonthly.Ptr(),
+            },
+        },
+    }
+client.PayoutSubscription.CreatePayoutSubscription(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `*payabli.IdempotencyKey` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `*payabli.PayoutSubscriptionRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PayoutSubscription.GetPayoutSubscription(Id) -> *payabli.GetPayoutSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a single payout subscription's details. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.PayoutSubscription.GetPayoutSubscription(
+        context.TODO(),
+        int64(42),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `int64` — The payout subscription ID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PayoutSubscription.UpdatePayoutSubscription(Id, request) -> *payabli.UpdatePayoutSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates a payout subscription's details. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.UpdatePayoutSubscriptionBody{
+        SetPause: payabli.Bool(
+            true,
+        ),
+    }
+client.PayoutSubscription.UpdatePayoutSubscription(
+        context.TODO(),
+        int64(42),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `int64` — The payout subscription ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `*payabli.UpdatePayoutSubscriptionBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PayoutSubscription.DeletePayoutSubscription(Id) -> *payabli.DeletePayoutSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes a payout subscription and prevents future payouts. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.PayoutSubscription.DeletePayoutSubscription(
+        context.TODO(),
+        int64(42),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `int64` — The payout subscription ID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Paypoint
 <details><summary><code>client.Paypoint.GetBasicEntry(Entry) -> *payabli.GetBasicEntryResponse</code></summary>
 <dl>
@@ -20907,6 +21521,356 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 </dl>
 </details>
 
+<details><summary><code>client.Query.ListPayoutSubscriptions(Entry) -> *payabli.QueryPayoutSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a list of payout subscriptions for a single paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ListPayoutSubscriptionsRequest{
+        FromRecord: payabli.Int(
+            0,
+        ),
+        LimitRecord: payabli.Int(
+            20,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
+client.Query.ListPayoutSubscriptions(
+        context.TODO(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `payabli.Entry` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exportFormat:** `*payabli.ExportFormat` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — Max number of records to return for the query. Use `0` or negative value to return all records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+
+Collection of field names, conditions, and values used to filter the query.
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/payoutsubscriptions/entry123?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/payoutsubscriptions/entry123?totalAmount(gt)=1000&limitRecord=20
+</Info>
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for more information.
+**List of field names accepted:**
+
+- `startDate` (gt, ge, lt, le, eq, ne)
+- `endDate` (gt, ge, lt, le, eq, ne)
+- `nextDate` (gt, ge, lt, le, eq, ne)
+- `frequency` (in, nin, ne, eq)
+- `method` (in, nin, eq, ne)
+- `totalAmount` (gt, ge, lt, le, eq, ne)
+- `netAmount` (gt, ge, lt, le, eq, ne)
+- `feeAmount` (gt, ge, lt, le, eq, ne)
+- `status` (in, nin, eq, ne)
+- `untilcancelled` (eq, ne)
+- `payaccountLastfour` (ct, nct)
+- `payaccountType` (ne, eq, in, nin)
+- `payaccountCurrency` (ne, eq, in, nin)
+- `paypointId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct, nin, in)
+- `parentOrgId` (ne, eq, nin, in)
+- `subscriptionId` (eq, ne)
+- `orderDescription` (ct, nct)
+- `cycles` (eq, ne, gt, ge, lt, le)
+- `leftcycles` (eq, ne, gt, ge, lt, le)
+- `createdAt` (eq, ne, gt, ge, lt, le)
+- `updatedOn` (eq, ne, gt, ge, lt, le)
+- `vendorNumber` (ne, eq, ct, nct)
+- `name` (ne, eq, ct, nct)
+- `phone` (ne, eq, ct, nct)
+- `email` (ne, eq, ct, nct)
+- `address` (ne, eq, ct, nct)
+- `remitAddress` (ct, nct)
+- `city` (ne, eq, ct, nct)
+- `state` (ne, eq, ct, nct)
+- `country` (ne, eq, ct, nct)
+- `zip` (ne, eq, ct, nct)
+
+**List of comparison operators accepted:**
+- `eq` or empty => equal
+- `gt` => greater than
+- `ge` => greater or equal
+- `lt` => less than
+- `le` => less or equal
+- `ne` => not equal
+- `ct` => contains
+- `nct` => not contains
+- `in` => inside array
+- `nin` => not inside array
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `*string` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Query.ListPayoutSubscriptionsOrg(OrgId) -> *payabli.QueryPayoutSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a list of payout subscriptions for a single org. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ListPayoutSubscriptionsOrgRequest{
+        FromRecord: payabli.Int(
+            0,
+        ),
+        LimitRecord: payabli.Int(
+            20,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
+client.Query.ListPayoutSubscriptionsOrg(
+        context.TODO(),
+        123,
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exportFormat:** `*payabli.ExportFormat` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — Max number of records to return for the query. Use `0` or negative value to return all records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+
+Collection of field names, conditions, and values used to filter the query.
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/payoutsubscriptions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/payoutsubscriptions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for more information.
+**List of field names accepted:**
+
+- `startDate` (gt, ge, lt, le, eq, ne)
+- `endDate` (gt, ge, lt, le, eq, ne)
+- `nextDate` (gt, ge, lt, le, eq, ne)
+- `frequency` (in, nin, ne, eq)
+- `method` (in, nin, eq, ne)
+- `totalAmount` (gt, ge, lt, le, eq, ne)
+- `netAmount` (gt, ge, lt, le, eq, ne)
+- `feeAmount` (gt, ge, lt, le, eq, ne)
+- `status` (in, nin, eq, ne)
+- `untilcancelled` (eq, ne)
+- `payaccountLastfour` (ct, nct)
+- `payaccountType` (ne, eq, in, nin)
+- `payaccountCurrency` (ne, eq, in, nin)
+- `paypointId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct, nin, in)
+- `parentOrgId` (ne, eq, nin, in)
+- `subscriptionId` (eq, ne)
+- `orderDescription` (ct, nct)
+- `cycles` (eq, ne, gt, ge, lt, le)
+- `leftcycles` (eq, ne, gt, ge, lt, le)
+- `createdAt` (eq, ne, gt, ge, lt, le)
+- `updatedOn` (eq, ne, gt, ge, lt, le)
+- `vendorNumber` (ne, eq, ct, nct)
+- `name` (ne, eq, ct, nct)
+- `phone` (ne, eq, ct, nct)
+- `email` (ne, eq, ct, nct)
+- `address` (ne, eq, ct, nct)
+- `remitAddress` (ct, nct)
+- `city` (ne, eq, ct, nct)
+- `state` (ne, eq, ct, nct)
+- `country` (ne, eq, ct, nct)
+- `zip` (ne, eq, ct, nct)
+
+**List of comparison operators accepted:**
+- `eq` or empty => equal
+- `gt` => greater than
+- `ge` => greater or equal
+- `lt` => less than
+- `le` => less or equal
+- `ne` => not equal
+- `ct` => contains
+- `nct` => not contains
+- `in` => inside array
+- `nin` => not inside array
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `*string` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Query.ListTransactions(Entry) -> *payabli.QueryResponseTransactions</code></summary>
 <dl>
 <dd>
@@ -20922,9 +21886,8 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 Retrieve a list of transactions for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include `transactionDate` filters.
 For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024. 
-``` curl --request GET \
-  --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&fromRecord=0&transactionDate(ge)=2024-04-01T00:00:00&transactionDate(le)=2024-04-09T23:59:59\
-  --header 'requestToken: <api-key>'
+``` curl -X GET https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&fromRecord=0&transactionDate(ge)=2024-04-01T00:00:00&transactionDate(le)=2024-04-09T23:59:59\
+  -H 'requestToken: <API TOKEN>'
 
   ```
 </dd>
@@ -21131,9 +22094,8 @@ By default, this endpoint returns only transactions from the last 60 days. To qu
 For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024. 
 
 ```
-curl --request GET \
-  --url https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&fromRecord=0&transactionDate(ge)=2024-04-01T00:00:00&transactionDate(le)=2024-04-09T23:59:59\
-  --header 'requestToken: <api-key>'
+curl -X GET "https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&fromRecord=0&transactionDate(ge)=2024-04-01T00:00:00&transactionDate(le)=2024-04-09T23:59:59"\
+  -H 'requestToken: <API TOKEN>'
 
   ```
 </dd>
