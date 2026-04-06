@@ -7,6 +7,7 @@ The Payabli Go library provides convenient access to the Payabli APIs from Go.
 ## Table of Contents
 
 - [Changelog](#changelog)
+- [Getting Started](#getting-started)
 - [Passing Query Parameters](#passing-query-parameters)
 - [Usage](#usage)
 - [Environments](#environments)
@@ -24,6 +25,11 @@ The Payabli Go library provides convenient access to the Payabli APIs from Go.
 ## Changelog
 
 The changelog for the official Payabli Go SDK is available on the Payabli Docs site. See [Go SDK Changelog](https://docs.payabli.com/changelog/go-sdk) for more information.
+
+
+## Getting Started
+
+Visit the Payabli Docs site to get started with the official Payabli Go SDK. See [Use the Go SDK](https://docs.payabli.com/developers/platform-sdk-go-guide) for more information.
 
 
 ## Passing Query Parameters
