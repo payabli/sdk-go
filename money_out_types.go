@@ -647,6 +647,7 @@ var (
 	authorizePayoutBodyFieldAccountId        = big.NewInt(1 << 8)
 	authorizePayoutBodyFieldSubdomain        = big.NewInt(1 << 9)
 	authorizePayoutBodyFieldSubscriptionId   = big.NewInt(1 << 10)
+	authorizePayoutBodyFieldAutoCapture      = big.NewInt(1 << 11)
 )
 
 type AuthorizePayoutBody struct {
@@ -664,6 +665,7 @@ type AuthorizePayoutBody struct {
 	AccountId      *AccountId                        `json:"accountId,omitempty" url:"accountId,omitempty"`
 	Subdomain      *Subdomain                        `json:"subdomain,omitempty" url:"subdomain,omitempty"`
 	SubscriptionId *Subscriptionid                   `json:"subscriptionId,omitempty" url:"subscriptionId,omitempty"`
+	AutoCapture    *AutoCapture                      `json:"autoCapture,omitempty" url:"autoCapture,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -747,6 +749,13 @@ func (a *AuthorizePayoutBody) GetSubscriptionId() *Subscriptionid {
 		return nil
 	}
 	return a.SubscriptionId
+}
+
+func (a *AuthorizePayoutBody) GetAutoCapture() *AutoCapture {
+	if a == nil {
+		return nil
+	}
+	return a.AutoCapture
 }
 
 func (a *AuthorizePayoutBody) GetExtraProperties() map[string]interface{} {
@@ -838,6 +847,13 @@ func (a *AuthorizePayoutBody) SetSubdomain(subdomain *Subdomain) {
 func (a *AuthorizePayoutBody) SetSubscriptionId(subscriptionId *Subscriptionid) {
 	a.SubscriptionId = subscriptionId
 	a.require(authorizePayoutBodyFieldSubscriptionId)
+}
+
+// SetAutoCapture sets the AutoCapture field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AuthorizePayoutBody) SetAutoCapture(autoCapture *AutoCapture) {
+	a.AutoCapture = autoCapture
+	a.require(authorizePayoutBodyFieldAutoCapture)
 }
 
 func (a *AuthorizePayoutBody) UnmarshalJSON(data []byte) error {

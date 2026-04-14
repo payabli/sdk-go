@@ -4111,13 +4111,6 @@ func TestEnumNotificationStandardRequestContentEventType(t *testing.T) {
 		assert.Equal(t, NotificationStandardRequestContentEventType("SubmittedApplication"), val, "enum value should match expected wire value")
 	})
 
-	t.Run("NewFromString_UnderWritingApplication", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewNotificationStandardRequestContentEventTypeFromString("UnderWritingApplication")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, NotificationStandardRequestContentEventType("UnderWritingApplication"), val, "enum value should match expected wire value")
-	})
-
 	t.Run("NewFromString_ActivatedMerchant", func(t *testing.T) {
 		t.Parallel()
 		val, err := NewNotificationStandardRequestContentEventTypeFromString("ActivatedMerchant")

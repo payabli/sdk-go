@@ -75,6 +75,9 @@ func TestMoneyOutAuthorizeOutWithWireMock(
 	request := &payabli.MoneyOutTypesRequestOutAuthorize{
 		Body: &payabli.AuthorizePayoutBody{
 			EntryPoint: "48acde49",
+			AutoCapture: payabli.Bool(
+				true,
+			),
 			InvoiceData: []*payabli.RequestOutAuthorizeInvoiceData{
 				&payabli.RequestOutAuthorizeInvoiceData{
 					BillId: payabli.Int64(

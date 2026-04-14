@@ -239,6 +239,9 @@ func (s *SendVCardLinkRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
+// When `true`, the transaction is automatically captured after a successful authorization. When `false`, you must manually capture the transaction after a successful authorization. Defaults to `false`. See [Manage payouts with the API](/guides/pay-out-developer-payouts-manage) for more information.
+type AutoCapture = bool
+
 var (
 	billDetailResponseFieldBills                = big.NewInt(1 << 0)
 	billDetailResponseFieldCheckData            = big.NewInt(1 << 1)

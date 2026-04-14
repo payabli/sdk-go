@@ -9456,7 +9456,6 @@ const (
 	NotificationContentEventTypeApprovedApplication         NotificationContentEventType = "ApprovedApplication"
 	NotificationContentEventTypeFailedBoardingApplication   NotificationContentEventType = "FailedBoardingApplication"
 	NotificationContentEventTypeSubmittedApplication        NotificationContentEventType = "SubmittedApplication"
-	NotificationContentEventTypeUnderWritingApplication     NotificationContentEventType = "UnderWritingApplication"
 	NotificationContentEventTypeActivatedMerchant           NotificationContentEventType = "ActivatedMerchant"
 	NotificationContentEventTypeReceivedChargeBack          NotificationContentEventType = "ReceivedChargeBack"
 	NotificationContentEventTypeChargebackUpdated           NotificationContentEventType = "ChargebackUpdated"
@@ -9568,8 +9567,6 @@ func NewNotificationContentEventTypeFromString(s string) (NotificationContentEve
 		return NotificationContentEventTypeFailedBoardingApplication, nil
 	case "SubmittedApplication":
 		return NotificationContentEventTypeSubmittedApplication, nil
-	case "UnderWritingApplication":
-		return NotificationContentEventTypeUnderWritingApplication, nil
 	case "ActivatedMerchant":
 		return NotificationContentEventTypeActivatedMerchant, nil
 	case "ReceivedChargeBack":
@@ -21923,6 +21920,8 @@ var (
 	vendorDataFieldState                 = big.NewInt(1 << 29)
 	vendorDataFieldVendorStatus          = big.NewInt(1 << 30)
 	vendorDataFieldZip                   = big.NewInt(1 << 31)
+	vendorDataFieldDefaultMethodId       = big.NewInt(1 << 32)
+	vendorDataFieldAttachment            = big.NewInt(1 << 33)
 )
 
 type VendorData struct {
@@ -21971,6 +21970,16 @@ type VendorData struct {
 	VendorStatus *Vendorstatus `json:"vendorStatus,omitempty" url:"vendorStatus,omitempty"`
 	// Vendor's ZIP or postal code. Required if any address field is provided. For US addresses, use five digits (`12345`) or ZIP+4 format (`12345-6789`).
 	Zip *string `json:"zip,omitempty" url:"zip,omitempty"`
+	// Identifier for the vendor's default stored payment method.
+	DefaultMethodId *string `json:"defaultMethodId,omitempty" url:"defaultMethodId,omitempty"`
+	// PDF invoice attachment for AI-powered vendor enrichment.
+	// When this feature is enabled and you include an attachment, the invoice is scanned and extracted vendor information is merged into the request.
+	// Fields in the request body take precedence over extracted data.
+	// If the scan fails, vendor creation proceeds with the original request data.
+	//
+	// See the [vendor enrichment guide](/guides/pay-out-vendor-enrichment-overview) for details.
+	// Contact Payabli to enable this feature.
+	Attachment *FileContent `json:"attachment,omitempty" url:"attachment,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -22201,6 +22210,20 @@ func (v *VendorData) GetZip() *string {
 		return nil
 	}
 	return v.Zip
+}
+
+func (v *VendorData) GetDefaultMethodId() *string {
+	if v == nil {
+		return nil
+	}
+	return v.DefaultMethodId
+}
+
+func (v *VendorData) GetAttachment() *FileContent {
+	if v == nil {
+		return nil
+	}
+	return v.Attachment
 }
 
 func (v *VendorData) GetExtraProperties() map[string]interface{} {
@@ -22441,6 +22464,20 @@ func (v *VendorData) SetZip(zip *string) {
 	v.require(vendorDataFieldZip)
 }
 
+// SetDefaultMethodId sets the DefaultMethodId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetDefaultMethodId(defaultMethodId *string) {
+	v.DefaultMethodId = defaultMethodId
+	v.require(vendorDataFieldDefaultMethodId)
+}
+
+// SetAttachment sets the Attachment field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetAttachment(attachment *FileContent) {
+	v.Attachment = attachment
+	v.require(vendorDataFieldAttachment)
+}
+
 func (v *VendorData) UnmarshalJSON(data []byte) error {
 	type unmarshaler VendorData
 	var value unmarshaler
@@ -22657,6 +22694,13 @@ var (
 	vendorQueryRecordFieldVendorNumber          = big.NewInt(1 << 41)
 	vendorQueryRecordFieldVendorStatus          = big.NewInt(1 << 42)
 	vendorQueryRecordFieldZip                   = big.NewInt(1 << 43)
+	vendorQueryRecordFieldPaymentPortalUrl      = big.NewInt(1 << 44)
+	vendorQueryRecordFieldCardAccepted          = big.NewInt(1 << 45)
+	vendorQueryRecordFieldAchAccepted           = big.NewInt(1 << 46)
+	vendorQueryRecordFieldEnrichmentStatus      = big.NewInt(1 << 47)
+	vendorQueryRecordFieldEnrichedBy            = big.NewInt(1 << 48)
+	vendorQueryRecordFieldEnrichedAt            = big.NewInt(1 << 49)
+	vendorQueryRecordFieldEnrichmentId          = big.NewInt(1 << 50)
 )
 
 type VendorQueryRecord struct {
@@ -22704,6 +22748,20 @@ type VendorQueryRecord struct {
 	VendorNumber          *VendorNumber                 `json:"VendorNumber,omitempty" url:"VendorNumber,omitempty"`
 	VendorStatus          *Vendorstatus                 `json:"VendorStatus,omitempty" url:"VendorStatus,omitempty"`
 	Zip                   *Zip                          `json:"Zip,omitempty" url:"Zip,omitempty"`
+	// URL for the vendor's online payment portal, if known. Populated by the vendor enrichment pipeline.
+	PaymentPortalUrl *string `json:"PaymentPortalUrl,omitempty" url:"PaymentPortalUrl,omitempty"`
+	// Whether the vendor accepts card payments. Values are `yes`, `no`, or `unable to determine`. Populated by the vendor enrichment pipeline.
+	CardAccepted *string `json:"CardAccepted,omitempty" url:"CardAccepted,omitempty"`
+	// Whether the vendor accepts ACH payments. Values are `yes`, `no`, or `unable to determine`. Populated by the vendor enrichment pipeline.
+	AchAccepted *string `json:"AchAccepted,omitempty" url:"AchAccepted,omitempty"`
+	// Current enrichment state of the vendor. Values are `not_enriched`, `partially_enriched`, `fully_enriched`, or `fallback_applied`.
+	EnrichmentStatus *string `json:"EnrichmentStatus,omitempty" url:"EnrichmentStatus,omitempty"`
+	// Which enrichment method resolved the vendor's payment acceptance info. Values are `invoice_scan`, `web_search`, `vendor_network`, or `manual`.
+	EnrichedBy *string `json:"EnrichedBy,omitempty" url:"EnrichedBy,omitempty"`
+	// When the vendor was last enriched (UTC).
+	EnrichedAt *time.Time `json:"EnrichedAt,omitempty" url:"EnrichedAt,omitempty"`
+	// Identifier for the enrichment request that last updated this vendor.
+	EnrichmentId *string `json:"EnrichmentId,omitempty" url:"EnrichmentId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -23018,6 +23076,55 @@ func (v *VendorQueryRecord) GetZip() *Zip {
 		return nil
 	}
 	return v.Zip
+}
+
+func (v *VendorQueryRecord) GetPaymentPortalUrl() *string {
+	if v == nil {
+		return nil
+	}
+	return v.PaymentPortalUrl
+}
+
+func (v *VendorQueryRecord) GetCardAccepted() *string {
+	if v == nil {
+		return nil
+	}
+	return v.CardAccepted
+}
+
+func (v *VendorQueryRecord) GetAchAccepted() *string {
+	if v == nil {
+		return nil
+	}
+	return v.AchAccepted
+}
+
+func (v *VendorQueryRecord) GetEnrichmentStatus() *string {
+	if v == nil {
+		return nil
+	}
+	return v.EnrichmentStatus
+}
+
+func (v *VendorQueryRecord) GetEnrichedBy() *string {
+	if v == nil {
+		return nil
+	}
+	return v.EnrichedBy
+}
+
+func (v *VendorQueryRecord) GetEnrichedAt() *time.Time {
+	if v == nil {
+		return nil
+	}
+	return v.EnrichedAt
+}
+
+func (v *VendorQueryRecord) GetEnrichmentId() *string {
+	if v == nil {
+		return nil
+	}
+	return v.EnrichmentId
 }
 
 func (v *VendorQueryRecord) GetExtraProperties() map[string]interface{} {
@@ -23342,12 +23449,62 @@ func (v *VendorQueryRecord) SetZip(zip *Zip) {
 	v.require(vendorQueryRecordFieldZip)
 }
 
+// SetPaymentPortalUrl sets the PaymentPortalUrl field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorQueryRecord) SetPaymentPortalUrl(paymentPortalUrl *string) {
+	v.PaymentPortalUrl = paymentPortalUrl
+	v.require(vendorQueryRecordFieldPaymentPortalUrl)
+}
+
+// SetCardAccepted sets the CardAccepted field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorQueryRecord) SetCardAccepted(cardAccepted *string) {
+	v.CardAccepted = cardAccepted
+	v.require(vendorQueryRecordFieldCardAccepted)
+}
+
+// SetAchAccepted sets the AchAccepted field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorQueryRecord) SetAchAccepted(achAccepted *string) {
+	v.AchAccepted = achAccepted
+	v.require(vendorQueryRecordFieldAchAccepted)
+}
+
+// SetEnrichmentStatus sets the EnrichmentStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorQueryRecord) SetEnrichmentStatus(enrichmentStatus *string) {
+	v.EnrichmentStatus = enrichmentStatus
+	v.require(vendorQueryRecordFieldEnrichmentStatus)
+}
+
+// SetEnrichedBy sets the EnrichedBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorQueryRecord) SetEnrichedBy(enrichedBy *string) {
+	v.EnrichedBy = enrichedBy
+	v.require(vendorQueryRecordFieldEnrichedBy)
+}
+
+// SetEnrichedAt sets the EnrichedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorQueryRecord) SetEnrichedAt(enrichedAt *time.Time) {
+	v.EnrichedAt = enrichedAt
+	v.require(vendorQueryRecordFieldEnrichedAt)
+}
+
+// SetEnrichmentId sets the EnrichmentId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorQueryRecord) SetEnrichmentId(enrichmentId *string) {
+	v.EnrichmentId = enrichmentId
+	v.require(vendorQueryRecordFieldEnrichmentId)
+}
+
 func (v *VendorQueryRecord) UnmarshalJSON(data []byte) error {
 	type embed VendorQueryRecord
 	var unmarshaler = struct {
 		embed
 		CreatedDate *internal.DateTime `json:"CreatedDate,omitempty"`
 		LastUpdated *internal.DateTime `json:"LastUpdated,omitempty"`
+		EnrichedAt  *internal.DateTime `json:"EnrichedAt,omitempty"`
 	}{
 		embed: embed(*v),
 	}
@@ -23357,6 +23514,7 @@ func (v *VendorQueryRecord) UnmarshalJSON(data []byte) error {
 	*v = VendorQueryRecord(unmarshaler.embed)
 	v.CreatedDate = unmarshaler.CreatedDate.TimePtr()
 	v.LastUpdated = unmarshaler.LastUpdated.TimePtr()
+	v.EnrichedAt = unmarshaler.EnrichedAt.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *v)
 	if err != nil {
 		return err
@@ -23372,10 +23530,12 @@ func (v *VendorQueryRecord) MarshalJSON() ([]byte, error) {
 		embed
 		CreatedDate *internal.DateTime `json:"CreatedDate,omitempty"`
 		LastUpdated *internal.DateTime `json:"LastUpdated,omitempty"`
+		EnrichedAt  *internal.DateTime `json:"EnrichedAt,omitempty"`
 	}{
 		embed:       embed(*v),
 		CreatedDate: internal.NewOptionalDateTime(v.CreatedDate),
 		LastUpdated: internal.NewOptionalDateTime(v.LastUpdated),
+		EnrichedAt:  internal.NewOptionalDateTime(v.EnrichedAt),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)

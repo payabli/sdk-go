@@ -90,7 +90,7 @@ func (c *Client) EditVendor(
 	return response.Body, nil
 }
 
-// Retrieves a vendor's details.
+// Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
 func (c *Client) GetVendor(
 	ctx context.Context,
 	// Vendor ID.
@@ -100,6 +100,26 @@ func (c *Client) GetVendor(
 	response, err := c.WithRawResponse.GetVendor(
 		ctx,
 		idVendor,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Triggers AI-powered vendor enrichment for an existing vendor. Runs one or more enrichment stages (invoice scan, web search) based on the `scope` parameter. Can automatically apply extracted payment acceptance info and vendor contact information to the vendor record, or return raw results for manual review. Contact Payabli to enable this feature.
+func (c *Client) EnrichVendor(
+	ctx context.Context,
+	// Entrypoint identifier.
+	entry string,
+	request *payabli.VendorEnrichRequest,
+	opts ...option.RequestOption,
+) (*payabli.VendorEnrichResponse, error) {
+	response, err := c.WithRawResponse.EnrichVendor(
+		ctx,
+		entry,
+		request,
 		opts...,
 	)
 	if err != nil {

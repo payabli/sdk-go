@@ -274,3 +274,47 @@ func TestVendorGetVendorWithWireMock(
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestVendorGetVendorWithWireMock", "GET", "/Vendor/1", nil, 1)
 }
+
+func TestVendorEnrichVendorWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &payabli.VendorEnrichRequest{
+		VendorId: int64(3890),
+		Scope: []string{
+			"invoice_scan",
+		},
+		ApplyEnrichmentData: payabli.Bool(
+			false,
+		),
+		FallbackMethod: payabli.String(
+			"check",
+		),
+		InvoiceFile: &payabli.FileContent{
+			Ftype: payabli.FileContentFtypePdf.Ptr(),
+			Filename: payabli.String(
+				"invoice-2026-001.pdf",
+			),
+			FContent: payabli.String(
+				"<base64-encoded-pdf>",
+			),
+		},
+	}
+	_, invocationErr := client.Vendor.EnrichVendor(
+		context.TODO(),
+		"8cfec329267",
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestVendorEnrichVendorWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestVendorEnrichVendorWithWireMock", "POST", "/Vendor/enrich/8cfec329267", nil, 1)
+}
