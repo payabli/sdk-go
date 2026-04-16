@@ -86,7 +86,7 @@ func (r *RawClient) AddMethod(
 func (r *RawClient) GetMethod(
 	ctx context.Context,
 	// The saved payment method ID.
-	methodId string,
+	methodID string,
 	request *payabli.GetMethodRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.GetMethodResponse], error) {
@@ -98,7 +98,7 @@ func (r *RawClient) GetMethod(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/TokenStorage/%v",
-		methodId,
+		methodID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -139,9 +139,9 @@ func (r *RawClient) GetMethod(
 func (r *RawClient) RemoveMethod(
 	ctx context.Context,
 	// The saved payment method ID.
-	methodId string,
+	methodID string,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponsePaymethodDelete], error) {
+) (*core.Response[*payabli.PayabliAPIResponsePaymethodDelete], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -150,13 +150,13 @@ func (r *RawClient) RemoveMethod(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/TokenStorage/%v",
-		methodId,
+		methodID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponsePaymethodDelete
+	var response *payabli.PayabliAPIResponsePaymethodDelete
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -174,7 +174,7 @@ func (r *RawClient) RemoveMethod(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponsePaymethodDelete]{
+	return &core.Response[*payabli.PayabliAPIResponsePaymethodDelete]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -184,10 +184,10 @@ func (r *RawClient) RemoveMethod(
 func (r *RawClient) UpdateMethod(
 	ctx context.Context,
 	// The saved payment method ID.
-	methodId string,
+	methodID string,
 	request *payabli.UpdateMethodRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponsePaymethodDelete], error) {
+) (*core.Response[*payabli.PayabliAPIResponsePaymethodDelete], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -196,7 +196,7 @@ func (r *RawClient) UpdateMethod(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/TokenStorage/%v",
-		methodId,
+		methodID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -210,7 +210,7 @@ func (r *RawClient) UpdateMethod(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *payabli.PayabliApiResponsePaymethodDelete
+	var response *payabli.PayabliAPIResponsePaymethodDelete
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -228,7 +228,7 @@ func (r *RawClient) UpdateMethod(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponsePaymethodDelete]{
+	return &core.Response[*payabli.PayabliAPIResponsePaymethodDelete]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

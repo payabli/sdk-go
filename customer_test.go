@@ -132,9 +132,9 @@ func TestSettersMarkExplicitAddCustomerRequest(t *testing.T) {
 
 }
 
-func TestSettersPayabliApiResponseCustomerQuery(t *testing.T) {
+func TestSettersPayabliAPIResponseCustomerQuery(t *testing.T) {
 	t.Run("SetIsSuccess", func(t *testing.T) {
-		obj := &PayabliApiResponseCustomerQuery{}
+		obj := &PayabliAPIResponseCustomerQuery{}
 		var fernTestValueIsSuccess *IsSuccess
 		obj.SetIsSuccess(fernTestValueIsSuccess)
 		assert.Equal(t, fernTestValueIsSuccess, obj.IsSuccess)
@@ -142,7 +142,7 @@ func TestSettersPayabliApiResponseCustomerQuery(t *testing.T) {
 	})
 
 	t.Run("SetResponseData", func(t *testing.T) {
-		obj := &PayabliApiResponseCustomerQuery{}
+		obj := &PayabliAPIResponseCustomerQuery{}
 		var fernTestValueResponseData *CustomerQueryRecords
 		obj.SetResponseData(fernTestValueResponseData)
 		assert.Equal(t, fernTestValueResponseData, obj.ResponseData)
@@ -150,7 +150,7 @@ func TestSettersPayabliApiResponseCustomerQuery(t *testing.T) {
 	})
 
 	t.Run("SetResponseText", func(t *testing.T) {
-		obj := &PayabliApiResponseCustomerQuery{}
+		obj := &PayabliAPIResponseCustomerQuery{}
 		var fernTestValueResponseText ResponseText
 		obj.SetResponseText(fernTestValueResponseText)
 		assert.Equal(t, fernTestValueResponseText, obj.ResponseText)
@@ -159,11 +159,11 @@ func TestSettersPayabliApiResponseCustomerQuery(t *testing.T) {
 
 }
 
-func TestGettersPayabliApiResponseCustomerQuery(t *testing.T) {
+func TestGettersPayabliAPIResponseCustomerQuery(t *testing.T) {
 	t.Run("GetIsSuccess", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseCustomerQuery{}
+		obj := &PayabliAPIResponseCustomerQuery{}
 		var expected *IsSuccess
 		obj.IsSuccess = expected
 
@@ -174,7 +174,7 @@ func TestGettersPayabliApiResponseCustomerQuery(t *testing.T) {
 	t.Run("GetIsSuccess_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseCustomerQuery{}
+		obj := &PayabliAPIResponseCustomerQuery{}
 		obj.IsSuccess = nil
 
 		// Act & Assert
@@ -183,7 +183,7 @@ func TestGettersPayabliApiResponseCustomerQuery(t *testing.T) {
 
 	t.Run("GetIsSuccess_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseCustomerQuery
+		var obj *PayabliAPIResponseCustomerQuery
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -196,7 +196,7 @@ func TestGettersPayabliApiResponseCustomerQuery(t *testing.T) {
 	t.Run("GetResponseData", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseCustomerQuery{}
+		obj := &PayabliAPIResponseCustomerQuery{}
 		var expected *CustomerQueryRecords
 		obj.ResponseData = expected
 
@@ -207,7 +207,7 @@ func TestGettersPayabliApiResponseCustomerQuery(t *testing.T) {
 	t.Run("GetResponseData_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseCustomerQuery{}
+		obj := &PayabliAPIResponseCustomerQuery{}
 		obj.ResponseData = nil
 
 		// Act & Assert
@@ -216,7 +216,7 @@ func TestGettersPayabliApiResponseCustomerQuery(t *testing.T) {
 
 	t.Run("GetResponseData_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseCustomerQuery
+		var obj *PayabliAPIResponseCustomerQuery
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -229,7 +229,7 @@ func TestGettersPayabliApiResponseCustomerQuery(t *testing.T) {
 	t.Run("GetResponseText", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseCustomerQuery{}
+		obj := &PayabliAPIResponseCustomerQuery{}
 		var expected ResponseText
 		obj.ResponseText = expected
 
@@ -239,7 +239,7 @@ func TestGettersPayabliApiResponseCustomerQuery(t *testing.T) {
 
 	t.Run("GetResponseText_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseCustomerQuery
+		var obj *PayabliAPIResponseCustomerQuery
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -251,11 +251,11 @@ func TestGettersPayabliApiResponseCustomerQuery(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitPayabliApiResponseCustomerQuery(t *testing.T) {
+func TestSettersMarkExplicitPayabliAPIResponseCustomerQuery(t *testing.T) {
 	t.Run("SetIsSuccess_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseCustomerQuery{}
+		obj := &PayabliAPIResponseCustomerQuery{}
 		var fernTestValueIsSuccess *IsSuccess
 
 		// Act
@@ -286,7 +286,7 @@ func TestSettersMarkExplicitPayabliApiResponseCustomerQuery(t *testing.T) {
 	t.Run("SetResponseData_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseCustomerQuery{}
+		obj := &PayabliAPIResponseCustomerQuery{}
 		var fernTestValueResponseData *CustomerQueryRecords
 
 		// Act
@@ -317,7 +317,7 @@ func TestSettersMarkExplicitPayabliApiResponseCustomerQuery(t *testing.T) {
 	t.Run("SetResponseText_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseCustomerQuery{}
+		obj := &PayabliAPIResponseCustomerQuery{}
 		var fernTestValueResponseText ResponseText
 
 		// Act
@@ -347,11 +347,11 @@ func TestSettersMarkExplicitPayabliApiResponseCustomerQuery(t *testing.T) {
 
 }
 
-func TestJSONMarshalingPayabliApiResponseCustomerQuery(t *testing.T) {
+func TestJSONMarshalingPayabliAPIResponseCustomerQuery(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseCustomerQuery{}
+		obj := &PayabliAPIResponseCustomerQuery{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -360,46 +360,46 @@ func TestJSONMarshalingPayabliApiResponseCustomerQuery(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled PayabliApiResponseCustomerQuery
+		var unmarshaled PayabliAPIResponseCustomerQuery
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj PayabliApiResponseCustomerQuery
+		var obj PayabliAPIResponseCustomerQuery
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj PayabliApiResponseCustomerQuery
+		var obj PayabliAPIResponseCustomerQuery
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestStringPayabliApiResponseCustomerQuery(t *testing.T) {
+func TestStringPayabliAPIResponseCustomerQuery(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &PayabliApiResponseCustomerQuery{}
+		obj := &PayabliAPIResponseCustomerQuery{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseCustomerQuery
+		var obj *PayabliAPIResponseCustomerQuery
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestExtraPropertiesPayabliApiResponseCustomerQuery(t *testing.T) {
+func TestExtraPropertiesPayabliAPIResponseCustomerQuery(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &PayabliApiResponseCustomerQuery{}
+		obj := &PayabliAPIResponseCustomerQuery{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -413,7 +413,7 @@ func TestExtraPropertiesPayabliApiResponseCustomerQuery(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseCustomerQuery
+		var obj *PayabliAPIResponseCustomerQuery
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})

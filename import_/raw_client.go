@@ -36,7 +36,7 @@ func (r *RawClient) ImportBills(
 	entry string,
 	request *payabli.ImportBillsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponseImport], error) {
+) (*core.Response[*payabli.PayabliAPIResponseImport], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -60,7 +60,7 @@ func (r *RawClient) ImportBills(
 	}
 	headers.Set("Content-Type", writer.ContentType())
 
-	var response *payabli.PayabliApiResponseImport
+	var response *payabli.PayabliAPIResponseImport
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -79,7 +79,7 @@ func (r *RawClient) ImportBills(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponseImport]{
+	return &core.Response[*payabli.PayabliAPIResponseImport]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -91,7 +91,7 @@ func (r *RawClient) ImportCustomer(
 	entry payabli.Entrypointfield,
 	request *payabli.ImportCustomerRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponseImport], error) {
+) (*core.Response[*payabli.PayabliAPIResponseImport], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -122,7 +122,7 @@ func (r *RawClient) ImportCustomer(
 	}
 	headers.Set("Content-Type", writer.ContentType())
 
-	var response *payabli.PayabliApiResponseImport
+	var response *payabli.PayabliAPIResponseImport
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -141,7 +141,7 @@ func (r *RawClient) ImportCustomer(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponseImport]{
+	return &core.Response[*payabli.PayabliAPIResponseImport]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -153,7 +153,7 @@ func (r *RawClient) ImportVendor(
 	entry payabli.Entrypointfield,
 	request *payabli.ImportVendorRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponseImport], error) {
+) (*core.Response[*payabli.PayabliAPIResponseImport], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -177,7 +177,7 @@ func (r *RawClient) ImportVendor(
 	}
 	headers.Set("Content-Type", writer.ContentType())
 
-	var response *payabli.PayabliApiResponseImport
+	var response *payabli.PayabliAPIResponseImport
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -195,7 +195,7 @@ func (r *RawClient) ImportVendor(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponseImport]{
+	return &core.Response[*payabli.PayabliAPIResponseImport]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

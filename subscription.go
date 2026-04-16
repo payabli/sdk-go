@@ -126,7 +126,7 @@ func (r *RequestUpdateSchedule) MarshalJSON() ([]byte, error) {
 var (
 	scheduleDetailFieldEndDate   = big.NewInt(1 << 0)
 	scheduleDetailFieldFrequency = big.NewInt(1 << 1)
-	scheduleDetailFieldPlanId    = big.NewInt(1 << 2)
+	scheduleDetailFieldPlanID    = big.NewInt(1 << 2)
 	scheduleDetailFieldStartDate = big.NewInt(1 << 3)
 )
 
@@ -136,7 +136,7 @@ type ScheduleDetail struct {
 	// Frequency of the subscription.
 	Frequency *Frequency `json:"frequency,omitempty" url:"frequency,omitempty"`
 	// This field is for future development, leave null. Identifier of subscription plan applied in the scheduled payment/subscription.
-	PlanId *int `json:"planId,omitempty" url:"planId,omitempty"`
+	PlanID *int `json:"planId,omitempty" url:"planId,omitempty"`
 	// Subscription start date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY. This must be a future date.
 	StartDate *string `json:"startDate,omitempty" url:"startDate,omitempty"`
 
@@ -161,11 +161,11 @@ func (s *ScheduleDetail) GetFrequency() *Frequency {
 	return s.Frequency
 }
 
-func (s *ScheduleDetail) GetPlanId() *int {
+func (s *ScheduleDetail) GetPlanID() *int {
 	if s == nil {
 		return nil
 	}
-	return s.PlanId
+	return s.PlanID
 }
 
 func (s *ScheduleDetail) GetStartDate() *string {
@@ -203,11 +203,11 @@ func (s *ScheduleDetail) SetFrequency(frequency *Frequency) {
 	s.require(scheduleDetailFieldFrequency)
 }
 
-// SetPlanId sets the PlanId field and marks it as non-optional;
+// SetPlanID sets the PlanID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *ScheduleDetail) SetPlanId(planId *int) {
-	s.PlanId = planId
-	s.require(scheduleDetailFieldPlanId)
+func (s *ScheduleDetail) SetPlanID(planID *int) {
+	s.PlanID = planID
+	s.require(scheduleDetailFieldPlanID)
 }
 
 // SetStartDate sets the StartDate field and marks it as non-optional;
@@ -261,14 +261,14 @@ func (s *ScheduleDetail) String() string {
 
 // Success response
 var (
-	addSubscriptionResponseFieldCustomerId   = big.NewInt(1 << 0)
+	addSubscriptionResponseFieldCustomerID   = big.NewInt(1 << 0)
 	addSubscriptionResponseFieldResponseText = big.NewInt(1 << 1)
 	addSubscriptionResponseFieldIsSuccess    = big.NewInt(1 << 2)
 	addSubscriptionResponseFieldResponseData = big.NewInt(1 << 3)
 )
 
 type AddSubscriptionResponse struct {
-	CustomerId   *CustomerId  `json:"customerId,omitempty" url:"customerId,omitempty"`
+	CustomerID   *CustomerID  `json:"customerId,omitempty" url:"customerId,omitempty"`
 	ResponseText ResponseText `json:"responseText" url:"responseText"`
 	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	// The identifier of the newly created subscription.
@@ -281,11 +281,11 @@ type AddSubscriptionResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (a *AddSubscriptionResponse) GetCustomerId() *CustomerId {
+func (a *AddSubscriptionResponse) GetCustomerID() *CustomerID {
 	if a == nil {
 		return nil
 	}
-	return a.CustomerId
+	return a.CustomerID
 }
 
 func (a *AddSubscriptionResponse) GetResponseText() ResponseText {
@@ -323,11 +323,11 @@ func (a *AddSubscriptionResponse) require(field *big.Int) {
 	a.explicitFields.Or(a.explicitFields, field)
 }
 
-// SetCustomerId sets the CustomerId field and marks it as non-optional;
+// SetCustomerID sets the CustomerID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AddSubscriptionResponse) SetCustomerId(customerId *CustomerId) {
-	a.CustomerId = customerId
-	a.require(addSubscriptionResponseFieldCustomerId)
+func (a *AddSubscriptionResponse) SetCustomerID(customerID *CustomerID) {
+	a.CustomerID = customerID
+	a.require(addSubscriptionResponseFieldCustomerID)
 }
 
 // SetResponseText sets the ResponseText field and marks it as non-optional;
@@ -601,14 +601,14 @@ func (r *RequestSchedulePaymentMethod) Accept(visitor RequestSchedulePaymentMeth
 // The required and recommended fields for a payment made with a stored payment method.
 var (
 	requestSchedulePaymentMethodInitiatorFieldInitiator             = big.NewInt(1 << 0)
-	requestSchedulePaymentMethodInitiatorFieldStoredMethodId        = big.NewInt(1 << 1)
+	requestSchedulePaymentMethodInitiatorFieldStoredMethodID        = big.NewInt(1 << 1)
 	requestSchedulePaymentMethodInitiatorFieldStoredMethodUsageType = big.NewInt(1 << 2)
 )
 
 type RequestSchedulePaymentMethodInitiator struct {
 	Initiator *Initiator `json:"initiator,omitempty" url:"initiator,omitempty"`
 	// Payabli identifier of a tokenized payment method.
-	StoredMethodId        *Storedmethodid        `json:"storedMethodId,omitempty" url:"storedMethodId,omitempty"`
+	StoredMethodID        *Storedmethodid        `json:"storedMethodId,omitempty" url:"storedMethodId,omitempty"`
 	StoredMethodUsageType *StoredMethodUsageType `json:"storedMethodUsageType,omitempty" url:"storedMethodUsageType,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -625,11 +625,11 @@ func (r *RequestSchedulePaymentMethodInitiator) GetInitiator() *Initiator {
 	return r.Initiator
 }
 
-func (r *RequestSchedulePaymentMethodInitiator) GetStoredMethodId() *Storedmethodid {
+func (r *RequestSchedulePaymentMethodInitiator) GetStoredMethodID() *Storedmethodid {
 	if r == nil {
 		return nil
 	}
-	return r.StoredMethodId
+	return r.StoredMethodID
 }
 
 func (r *RequestSchedulePaymentMethodInitiator) GetStoredMethodUsageType() *StoredMethodUsageType {
@@ -660,11 +660,11 @@ func (r *RequestSchedulePaymentMethodInitiator) SetInitiator(initiator *Initiato
 	r.require(requestSchedulePaymentMethodInitiatorFieldInitiator)
 }
 
-// SetStoredMethodId sets the StoredMethodId field and marks it as non-optional;
+// SetStoredMethodID sets the StoredMethodID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestSchedulePaymentMethodInitiator) SetStoredMethodId(storedMethodId *Storedmethodid) {
-	r.StoredMethodId = storedMethodId
-	r.require(requestSchedulePaymentMethodInitiatorFieldStoredMethodId)
+func (r *RequestSchedulePaymentMethodInitiator) SetStoredMethodID(storedMethodID *Storedmethodid) {
+	r.StoredMethodID = storedMethodID
+	r.require(requestSchedulePaymentMethodInitiatorFieldStoredMethodID)
 }
 
 // SetStoredMethodUsageType sets the StoredMethodUsageType field and marks it as non-optional;
@@ -941,7 +941,7 @@ var (
 	updateSubscriptionResponseFieldIsSuccess    = big.NewInt(1 << 0)
 	updateSubscriptionResponseFieldResponseData = big.NewInt(1 << 1)
 	updateSubscriptionResponseFieldResponseText = big.NewInt(1 << 2)
-	updateSubscriptionResponseFieldCustomerId   = big.NewInt(1 << 3)
+	updateSubscriptionResponseFieldCustomerID   = big.NewInt(1 << 3)
 )
 
 type UpdateSubscriptionResponse struct {
@@ -951,7 +951,7 @@ type UpdateSubscriptionResponse struct {
 	// If `isSuccess` = false, this contains the reason for the failure.
 	ResponseData *string      `json:"responseData,omitempty" url:"responseData,omitempty"`
 	ResponseText ResponseText `json:"responseText" url:"responseText"`
-	CustomerId   *CustomerId  `json:"customerId,omitempty" url:"customerId,omitempty"`
+	CustomerID   *CustomerID  `json:"customerId,omitempty" url:"customerId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -981,11 +981,11 @@ func (u *UpdateSubscriptionResponse) GetResponseText() ResponseText {
 	return u.ResponseText
 }
 
-func (u *UpdateSubscriptionResponse) GetCustomerId() *CustomerId {
+func (u *UpdateSubscriptionResponse) GetCustomerID() *CustomerID {
 	if u == nil {
 		return nil
 	}
-	return u.CustomerId
+	return u.CustomerID
 }
 
 func (u *UpdateSubscriptionResponse) GetExtraProperties() map[string]interface{} {
@@ -1023,11 +1023,11 @@ func (u *UpdateSubscriptionResponse) SetResponseText(responseText ResponseText) 
 	u.require(updateSubscriptionResponseFieldResponseText)
 }
 
-// SetCustomerId sets the CustomerId field and marks it as non-optional;
+// SetCustomerID sets the CustomerID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdateSubscriptionResponse) SetCustomerId(customerId *CustomerId) {
-	u.CustomerId = customerId
-	u.require(updateSubscriptionResponseFieldCustomerId)
+func (u *UpdateSubscriptionResponse) SetCustomerID(customerID *CustomerID) {
+	u.CustomerID = customerID
+	u.require(updateSubscriptionResponseFieldCustomerID)
 }
 
 func (u *UpdateSubscriptionResponse) UnmarshalJSON(data []byte) error {

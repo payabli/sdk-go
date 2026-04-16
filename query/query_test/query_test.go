@@ -1013,7 +1013,7 @@ func TestQueryListTransfersOrgWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &payabli.ListTransfersRequestOrg{
-		OrgId: int64(123),
+		OrgID: int64(123),
 		FromRecord: payabli.Int(
 			0,
 		),

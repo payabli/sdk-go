@@ -50,19 +50,19 @@ func TestSettersNotificationQueryRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetNotificationId", func(t *testing.T) {
+	t.Run("SetNotificationID", func(t *testing.T) {
 		obj := &NotificationQueryRecord{}
-		var fernTestValueNotificationId *NotificationId
-		obj.SetNotificationId(fernTestValueNotificationId)
-		assert.Equal(t, fernTestValueNotificationId, obj.NotificationId)
+		var fernTestValueNotificationID *NotificationID
+		obj.SetNotificationID(fernTestValueNotificationID)
+		assert.Equal(t, fernTestValueNotificationID, obj.NotificationID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetOwnerId", func(t *testing.T) {
+	t.Run("SetOwnerID", func(t *testing.T) {
 		obj := &NotificationQueryRecord{}
-		var fernTestValueOwnerId *Ownerid
-		obj.SetOwnerId(fernTestValueOwnerId)
-		assert.Equal(t, fernTestValueOwnerId, obj.OwnerId)
+		var fernTestValueOwnerID *Ownerid
+		obj.SetOwnerID(fernTestValueOwnerID)
+		assert.Equal(t, fernTestValueOwnerID, obj.OwnerID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -274,28 +274,28 @@ func TestGettersNotificationQueryRecord(t *testing.T) {
 		_ = obj.GetMethod() // Should return zero value
 	})
 
-	t.Run("GetNotificationId", func(t *testing.T) {
+	t.Run("GetNotificationID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &NotificationQueryRecord{}
-		var expected *NotificationId
-		obj.NotificationId = expected
+		var expected *NotificationID
+		obj.NotificationID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetNotificationId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetNotificationID(), "getter should return the property value")
 	})
 
-	t.Run("GetNotificationId_NilValue", func(t *testing.T) {
+	t.Run("GetNotificationID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &NotificationQueryRecord{}
-		obj.NotificationId = nil
+		obj.NotificationID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetNotificationId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetNotificationID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetNotificationId_NilReceiver", func(t *testing.T) {
+	t.Run("GetNotificationID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *NotificationQueryRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -304,31 +304,31 @@ func TestGettersNotificationQueryRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetNotificationId() // Should return zero value
+		_ = obj.GetNotificationID() // Should return zero value
 	})
 
-	t.Run("GetOwnerId", func(t *testing.T) {
+	t.Run("GetOwnerID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &NotificationQueryRecord{}
 		var expected *Ownerid
-		obj.OwnerId = expected
+		obj.OwnerID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetOwnerId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetOwnerID(), "getter should return the property value")
 	})
 
-	t.Run("GetOwnerId_NilValue", func(t *testing.T) {
+	t.Run("GetOwnerID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &NotificationQueryRecord{}
-		obj.OwnerId = nil
+		obj.OwnerID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetOwnerId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetOwnerID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetOwnerId_NilReceiver", func(t *testing.T) {
+	t.Run("GetOwnerID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *NotificationQueryRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -337,7 +337,7 @@ func TestGettersNotificationQueryRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetOwnerId() // Should return zero value
+		_ = obj.GetOwnerID() // Should return zero value
 	})
 
 	t.Run("GetOwnerName", func(t *testing.T) {
@@ -663,14 +663,14 @@ func TestSettersMarkExplicitNotificationQueryRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetNotificationId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetNotificationID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &NotificationQueryRecord{}
-		var fernTestValueNotificationId *NotificationId
+		var fernTestValueNotificationID *NotificationID
 
 		// Act
-		obj.SetNotificationId(fernTestValueNotificationId)
+		obj.SetNotificationID(fernTestValueNotificationID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -694,14 +694,14 @@ func TestSettersMarkExplicitNotificationQueryRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetOwnerId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetOwnerID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &NotificationQueryRecord{}
-		var fernTestValueOwnerId *Ownerid
+		var fernTestValueOwnerID *Ownerid
 
 		// Act
-		obj.SetOwnerId(fernTestValueOwnerId)
+		obj.SetOwnerID(fernTestValueOwnerID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -907,11 +907,11 @@ func TestSettersNotificationReportRequest(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetOwnerId", func(t *testing.T) {
+	t.Run("SetOwnerID", func(t *testing.T) {
 		obj := &NotificationReportRequest{}
-		var fernTestValueOwnerId *Ownerid
-		obj.SetOwnerId(fernTestValueOwnerId)
-		assert.Equal(t, fernTestValueOwnerId, obj.OwnerId)
+		var fernTestValueOwnerID *Ownerid
+		obj.SetOwnerID(fernTestValueOwnerID)
+		assert.Equal(t, fernTestValueOwnerID, obj.OwnerID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -1021,28 +1021,28 @@ func TestGettersNotificationReportRequest(t *testing.T) {
 		_ = obj.GetMethod() // Should return zero value
 	})
 
-	t.Run("GetOwnerId", func(t *testing.T) {
+	t.Run("GetOwnerID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &NotificationReportRequest{}
 		var expected *Ownerid
-		obj.OwnerId = expected
+		obj.OwnerID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetOwnerId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetOwnerID(), "getter should return the property value")
 	})
 
-	t.Run("GetOwnerId_NilValue", func(t *testing.T) {
+	t.Run("GetOwnerID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &NotificationReportRequest{}
-		obj.OwnerId = nil
+		obj.OwnerID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetOwnerId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetOwnerID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetOwnerId_NilReceiver", func(t *testing.T) {
+	t.Run("GetOwnerID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *NotificationReportRequest
 		// Should not panic - getters should handle nil receiver gracefully
@@ -1051,7 +1051,7 @@ func TestGettersNotificationReportRequest(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetOwnerId() // Should return zero value
+		_ = obj.GetOwnerID() // Should return zero value
 	})
 
 	t.Run("GetOwnerType", func(t *testing.T) {
@@ -1229,14 +1229,14 @@ func TestSettersMarkExplicitNotificationReportRequest(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetOwnerId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetOwnerID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &NotificationReportRequest{}
-		var fernTestValueOwnerId *Ownerid
+		var fernTestValueOwnerID *Ownerid
 
 		// Act
-		obj.SetOwnerId(fernTestValueOwnerId)
+		obj.SetOwnerID(fernTestValueOwnerID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -1388,11 +1388,11 @@ func TestSettersNotificationReportRequestContent(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetTransactionId", func(t *testing.T) {
+	t.Run("SetTransactionID", func(t *testing.T) {
 		obj := &NotificationReportRequestContent{}
-		var fernTestValueTransactionId *string
-		obj.SetTransactionId(fernTestValueTransactionId)
-		assert.Equal(t, fernTestValueTransactionId, obj.TransactionId)
+		var fernTestValueTransactionID *string
+		obj.SetTransactionID(fernTestValueTransactionID)
+		assert.Equal(t, fernTestValueTransactionID, obj.TransactionID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -1539,28 +1539,28 @@ func TestGettersNotificationReportRequestContent(t *testing.T) {
 		_ = obj.GetTimeZone() // Should return zero value
 	})
 
-	t.Run("GetTransactionId", func(t *testing.T) {
+	t.Run("GetTransactionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &NotificationReportRequestContent{}
 		var expected *string
-		obj.TransactionId = expected
+		obj.TransactionID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetTransactionId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetTransactionID(), "getter should return the property value")
 	})
 
-	t.Run("GetTransactionId_NilValue", func(t *testing.T) {
+	t.Run("GetTransactionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &NotificationReportRequestContent{}
-		obj.TransactionId = nil
+		obj.TransactionID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetTransactionId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetTransactionID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetTransactionId_NilReceiver", func(t *testing.T) {
+	t.Run("GetTransactionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *NotificationReportRequestContent
 		// Should not panic - getters should handle nil receiver gracefully
@@ -1569,7 +1569,7 @@ func TestGettersNotificationReportRequestContent(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetTransactionId() // Should return zero value
+		_ = obj.GetTransactionID() // Should return zero value
 	})
 
 	t.Run("GetWebHeaderParameters", func(t *testing.T) {
@@ -1732,14 +1732,14 @@ func TestSettersMarkExplicitNotificationReportRequestContent(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetTransactionId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetTransactionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &NotificationReportRequestContent{}
-		var fernTestValueTransactionId *string
+		var fernTestValueTransactionID *string
 
 		// Act
-		obj.SetTransactionId(fernTestValueTransactionId)
+		obj.SetTransactionID(fernTestValueTransactionID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -1821,11 +1821,11 @@ func TestSettersNotificationStandardRequest(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetOwnerId", func(t *testing.T) {
+	t.Run("SetOwnerID", func(t *testing.T) {
 		obj := &NotificationStandardRequest{}
-		var fernTestValueOwnerId *Ownerid
-		obj.SetOwnerId(fernTestValueOwnerId)
-		assert.Equal(t, fernTestValueOwnerId, obj.OwnerId)
+		var fernTestValueOwnerID *Ownerid
+		obj.SetOwnerID(fernTestValueOwnerID)
+		assert.Equal(t, fernTestValueOwnerID, obj.OwnerID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -1935,28 +1935,28 @@ func TestGettersNotificationStandardRequest(t *testing.T) {
 		_ = obj.GetMethod() // Should return zero value
 	})
 
-	t.Run("GetOwnerId", func(t *testing.T) {
+	t.Run("GetOwnerID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &NotificationStandardRequest{}
 		var expected *Ownerid
-		obj.OwnerId = expected
+		obj.OwnerID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetOwnerId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetOwnerID(), "getter should return the property value")
 	})
 
-	t.Run("GetOwnerId_NilValue", func(t *testing.T) {
+	t.Run("GetOwnerID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &NotificationStandardRequest{}
-		obj.OwnerId = nil
+		obj.OwnerID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetOwnerId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetOwnerID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetOwnerId_NilReceiver", func(t *testing.T) {
+	t.Run("GetOwnerID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *NotificationStandardRequest
 		// Should not panic - getters should handle nil receiver gracefully
@@ -1965,7 +1965,7 @@ func TestGettersNotificationStandardRequest(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetOwnerId() // Should return zero value
+		_ = obj.GetOwnerID() // Should return zero value
 	})
 
 	t.Run("GetOwnerType", func(t *testing.T) {
@@ -2143,14 +2143,14 @@ func TestSettersMarkExplicitNotificationStandardRequest(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetOwnerId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetOwnerID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &NotificationStandardRequest{}
-		var fernTestValueOwnerId *Ownerid
+		var fernTestValueOwnerID *Ownerid
 
 		// Act
-		obj.SetOwnerId(fernTestValueOwnerId)
+		obj.SetOwnerID(fernTestValueOwnerID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -2286,11 +2286,11 @@ func TestSettersNotificationStandardRequestContent(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetTransactionId", func(t *testing.T) {
+	t.Run("SetTransactionID", func(t *testing.T) {
 		obj := &NotificationStandardRequestContent{}
-		var fernTestValueTransactionId *string
-		obj.SetTransactionId(fernTestValueTransactionId)
-		assert.Equal(t, fernTestValueTransactionId, obj.TransactionId)
+		var fernTestValueTransactionID *string
+		obj.SetTransactionID(fernTestValueTransactionID)
+		assert.Equal(t, fernTestValueTransactionID, obj.TransactionID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -2371,28 +2371,28 @@ func TestGettersNotificationStandardRequestContent(t *testing.T) {
 		_ = obj.GetInternalData() // Should return zero value
 	})
 
-	t.Run("GetTransactionId", func(t *testing.T) {
+	t.Run("GetTransactionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &NotificationStandardRequestContent{}
 		var expected *string
-		obj.TransactionId = expected
+		obj.TransactionID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetTransactionId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetTransactionID(), "getter should return the property value")
 	})
 
-	t.Run("GetTransactionId_NilValue", func(t *testing.T) {
+	t.Run("GetTransactionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &NotificationStandardRequestContent{}
-		obj.TransactionId = nil
+		obj.TransactionID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetTransactionId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetTransactionID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetTransactionId_NilReceiver", func(t *testing.T) {
+	t.Run("GetTransactionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *NotificationStandardRequestContent
 		// Should not panic - getters should handle nil receiver gracefully
@@ -2401,7 +2401,7 @@ func TestGettersNotificationStandardRequestContent(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetTransactionId() // Should return zero value
+		_ = obj.GetTransactionID() // Should return zero value
 	})
 
 	t.Run("GetWebHeaderParameters", func(t *testing.T) {
@@ -2502,14 +2502,14 @@ func TestSettersMarkExplicitNotificationStandardRequestContent(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetTransactionId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetTransactionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &NotificationStandardRequestContent{}
-		var fernTestValueTransactionId *string
+		var fernTestValueTransactionID *string
 
 		// Act
-		obj.SetTransactionId(fernTestValueTransactionId)
+		obj.SetTransactionID(fernTestValueTransactionID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -2566,9 +2566,9 @@ func TestSettersMarkExplicitNotificationStandardRequestContent(t *testing.T) {
 
 }
 
-func TestSettersPayabliApiResponseNotifications(t *testing.T) {
+func TestSettersPayabliAPIResponseNotifications(t *testing.T) {
 	t.Run("SetIsSuccess", func(t *testing.T) {
-		obj := &PayabliApiResponseNotifications{}
+		obj := &PayabliAPIResponseNotifications{}
 		var fernTestValueIsSuccess *IsSuccess
 		obj.SetIsSuccess(fernTestValueIsSuccess)
 		assert.Equal(t, fernTestValueIsSuccess, obj.IsSuccess)
@@ -2576,7 +2576,7 @@ func TestSettersPayabliApiResponseNotifications(t *testing.T) {
 	})
 
 	t.Run("SetPageIdentifier", func(t *testing.T) {
-		obj := &PayabliApiResponseNotifications{}
+		obj := &PayabliAPIResponseNotifications{}
 		var fernTestValuePageIdentifier *PageIdentifier
 		obj.SetPageIdentifier(fernTestValuePageIdentifier)
 		assert.Equal(t, fernTestValuePageIdentifier, obj.PageIdentifier)
@@ -2584,7 +2584,7 @@ func TestSettersPayabliApiResponseNotifications(t *testing.T) {
 	})
 
 	t.Run("SetResponseCode", func(t *testing.T) {
-		obj := &PayabliApiResponseNotifications{}
+		obj := &PayabliAPIResponseNotifications{}
 		var fernTestValueResponseCode *Responsecode
 		obj.SetResponseCode(fernTestValueResponseCode)
 		assert.Equal(t, fernTestValueResponseCode, obj.ResponseCode)
@@ -2592,15 +2592,15 @@ func TestSettersPayabliApiResponseNotifications(t *testing.T) {
 	})
 
 	t.Run("SetResponseData", func(t *testing.T) {
-		obj := &PayabliApiResponseNotifications{}
-		var fernTestValueResponseData *PayabliApiResponseNotificationsResponseData
+		obj := &PayabliAPIResponseNotifications{}
+		var fernTestValueResponseData *PayabliAPIResponseNotificationsResponseData
 		obj.SetResponseData(fernTestValueResponseData)
 		assert.Equal(t, fernTestValueResponseData, obj.ResponseData)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
 	t.Run("SetResponseText", func(t *testing.T) {
-		obj := &PayabliApiResponseNotifications{}
+		obj := &PayabliAPIResponseNotifications{}
 		var fernTestValueResponseText ResponseText
 		obj.SetResponseText(fernTestValueResponseText)
 		assert.Equal(t, fernTestValueResponseText, obj.ResponseText)
@@ -2609,11 +2609,11 @@ func TestSettersPayabliApiResponseNotifications(t *testing.T) {
 
 }
 
-func TestGettersPayabliApiResponseNotifications(t *testing.T) {
+func TestGettersPayabliAPIResponseNotifications(t *testing.T) {
 	t.Run("GetIsSuccess", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseNotifications{}
+		obj := &PayabliAPIResponseNotifications{}
 		var expected *IsSuccess
 		obj.IsSuccess = expected
 
@@ -2624,7 +2624,7 @@ func TestGettersPayabliApiResponseNotifications(t *testing.T) {
 	t.Run("GetIsSuccess_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseNotifications{}
+		obj := &PayabliAPIResponseNotifications{}
 		obj.IsSuccess = nil
 
 		// Act & Assert
@@ -2633,7 +2633,7 @@ func TestGettersPayabliApiResponseNotifications(t *testing.T) {
 
 	t.Run("GetIsSuccess_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseNotifications
+		var obj *PayabliAPIResponseNotifications
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2646,7 +2646,7 @@ func TestGettersPayabliApiResponseNotifications(t *testing.T) {
 	t.Run("GetPageIdentifier", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseNotifications{}
+		obj := &PayabliAPIResponseNotifications{}
 		var expected *PageIdentifier
 		obj.PageIdentifier = expected
 
@@ -2657,7 +2657,7 @@ func TestGettersPayabliApiResponseNotifications(t *testing.T) {
 	t.Run("GetPageIdentifier_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseNotifications{}
+		obj := &PayabliAPIResponseNotifications{}
 		obj.PageIdentifier = nil
 
 		// Act & Assert
@@ -2666,7 +2666,7 @@ func TestGettersPayabliApiResponseNotifications(t *testing.T) {
 
 	t.Run("GetPageIdentifier_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseNotifications
+		var obj *PayabliAPIResponseNotifications
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2679,7 +2679,7 @@ func TestGettersPayabliApiResponseNotifications(t *testing.T) {
 	t.Run("GetResponseCode", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseNotifications{}
+		obj := &PayabliAPIResponseNotifications{}
 		var expected *Responsecode
 		obj.ResponseCode = expected
 
@@ -2690,7 +2690,7 @@ func TestGettersPayabliApiResponseNotifications(t *testing.T) {
 	t.Run("GetResponseCode_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseNotifications{}
+		obj := &PayabliAPIResponseNotifications{}
 		obj.ResponseCode = nil
 
 		// Act & Assert
@@ -2699,7 +2699,7 @@ func TestGettersPayabliApiResponseNotifications(t *testing.T) {
 
 	t.Run("GetResponseCode_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseNotifications
+		var obj *PayabliAPIResponseNotifications
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2712,8 +2712,8 @@ func TestGettersPayabliApiResponseNotifications(t *testing.T) {
 	t.Run("GetResponseData", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseNotifications{}
-		var expected *PayabliApiResponseNotificationsResponseData
+		obj := &PayabliAPIResponseNotifications{}
+		var expected *PayabliAPIResponseNotificationsResponseData
 		obj.ResponseData = expected
 
 		// Act & Assert
@@ -2723,7 +2723,7 @@ func TestGettersPayabliApiResponseNotifications(t *testing.T) {
 	t.Run("GetResponseData_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseNotifications{}
+		obj := &PayabliAPIResponseNotifications{}
 		obj.ResponseData = nil
 
 		// Act & Assert
@@ -2732,7 +2732,7 @@ func TestGettersPayabliApiResponseNotifications(t *testing.T) {
 
 	t.Run("GetResponseData_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseNotifications
+		var obj *PayabliAPIResponseNotifications
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2745,7 +2745,7 @@ func TestGettersPayabliApiResponseNotifications(t *testing.T) {
 	t.Run("GetResponseText", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseNotifications{}
+		obj := &PayabliAPIResponseNotifications{}
 		var expected ResponseText
 		obj.ResponseText = expected
 
@@ -2755,7 +2755,7 @@ func TestGettersPayabliApiResponseNotifications(t *testing.T) {
 
 	t.Run("GetResponseText_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseNotifications
+		var obj *PayabliAPIResponseNotifications
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2767,11 +2767,11 @@ func TestGettersPayabliApiResponseNotifications(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitPayabliApiResponseNotifications(t *testing.T) {
+func TestSettersMarkExplicitPayabliAPIResponseNotifications(t *testing.T) {
 	t.Run("SetIsSuccess_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseNotifications{}
+		obj := &PayabliAPIResponseNotifications{}
 		var fernTestValueIsSuccess *IsSuccess
 
 		// Act
@@ -2802,7 +2802,7 @@ func TestSettersMarkExplicitPayabliApiResponseNotifications(t *testing.T) {
 	t.Run("SetPageIdentifier_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseNotifications{}
+		obj := &PayabliAPIResponseNotifications{}
 		var fernTestValuePageIdentifier *PageIdentifier
 
 		// Act
@@ -2833,7 +2833,7 @@ func TestSettersMarkExplicitPayabliApiResponseNotifications(t *testing.T) {
 	t.Run("SetResponseCode_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseNotifications{}
+		obj := &PayabliAPIResponseNotifications{}
 		var fernTestValueResponseCode *Responsecode
 
 		// Act
@@ -2864,8 +2864,8 @@ func TestSettersMarkExplicitPayabliApiResponseNotifications(t *testing.T) {
 	t.Run("SetResponseData_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseNotifications{}
-		var fernTestValueResponseData *PayabliApiResponseNotificationsResponseData
+		obj := &PayabliAPIResponseNotifications{}
+		var fernTestValueResponseData *PayabliAPIResponseNotificationsResponseData
 
 		// Act
 		obj.SetResponseData(fernTestValueResponseData)
@@ -2895,7 +2895,7 @@ func TestSettersMarkExplicitPayabliApiResponseNotifications(t *testing.T) {
 	t.Run("SetResponseText_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseNotifications{}
+		obj := &PayabliAPIResponseNotifications{}
 		var fernTestValueResponseText ResponseText
 
 		// Act
@@ -2925,11 +2925,11 @@ func TestSettersMarkExplicitPayabliApiResponseNotifications(t *testing.T) {
 
 }
 
-func TestGettersPayabliApiResponseNotificationsResponseData(t *testing.T) {
+func TestGettersPayabliAPIResponseNotificationsResponseData(t *testing.T) {
 	t.Run("GetInteger", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseNotificationsResponseData{}
+		obj := &PayabliAPIResponseNotificationsResponseData{}
 		var expected int
 		obj.Integer = expected
 
@@ -2939,7 +2939,7 @@ func TestGettersPayabliApiResponseNotificationsResponseData(t *testing.T) {
 
 	t.Run("GetInteger_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseNotificationsResponseData
+		var obj *PayabliAPIResponseNotificationsResponseData
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2952,7 +2952,7 @@ func TestGettersPayabliApiResponseNotificationsResponseData(t *testing.T) {
 	t.Run("GetString", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseNotificationsResponseData{}
+		obj := &PayabliAPIResponseNotificationsResponseData{}
 		var expected string
 		obj.String = expected
 
@@ -2962,7 +2962,7 @@ func TestGettersPayabliApiResponseNotificationsResponseData(t *testing.T) {
 
 	t.Run("GetString_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseNotificationsResponseData
+		var obj *PayabliAPIResponseNotificationsResponseData
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -3277,11 +3277,11 @@ func TestJSONMarshalingNotificationStandardRequestContent(t *testing.T) {
 	})
 }
 
-func TestJSONMarshalingPayabliApiResponseNotifications(t *testing.T) {
+func TestJSONMarshalingPayabliAPIResponseNotifications(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseNotifications{}
+		obj := &PayabliAPIResponseNotifications{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -3290,21 +3290,21 @@ func TestJSONMarshalingPayabliApiResponseNotifications(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled PayabliApiResponseNotifications
+		var unmarshaled PayabliAPIResponseNotifications
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj PayabliApiResponseNotifications
+		var obj PayabliAPIResponseNotifications
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj PayabliApiResponseNotifications
+		var obj PayabliAPIResponseNotifications
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
@@ -3390,17 +3390,17 @@ func TestStringNotificationStandardRequestContent(t *testing.T) {
 	})
 }
 
-func TestStringPayabliApiResponseNotifications(t *testing.T) {
+func TestStringPayabliAPIResponseNotifications(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &PayabliApiResponseNotifications{}
+		obj := &PayabliAPIResponseNotifications{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseNotifications
+		var obj *PayabliAPIResponseNotifications
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
@@ -4662,10 +4662,10 @@ func TestExtraPropertiesNotificationStandardRequestContent(t *testing.T) {
 	})
 }
 
-func TestExtraPropertiesPayabliApiResponseNotifications(t *testing.T) {
+func TestExtraPropertiesPayabliAPIResponseNotifications(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &PayabliApiResponseNotifications{}
+		obj := &PayabliAPIResponseNotifications{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -4679,7 +4679,7 @@ func TestExtraPropertiesPayabliApiResponseNotifications(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseNotifications
+		var obj *PayabliAPIResponseNotifications
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})

@@ -75,7 +75,7 @@ func TestTokenStorageAddMethodWithWireMock(
 	request := &payabli.AddMethodRequest{
 		Body: &payabli.RequestTokenStorage{
 			CustomerData: &payabli.PayorDataRequest{
-				CustomerId: payabli.Int64(
+				CustomerID: payabli.Int64(
 					int64(4440),
 				),
 			},
@@ -188,7 +188,7 @@ func TestTokenStorageUpdateMethodWithWireMock(
 	request := &payabli.UpdateMethodRequest{
 		Body: &payabli.RequestTokenStorage{
 			CustomerData: &payabli.PayorDataRequest{
-				CustomerId: payabli.Int64(
+				CustomerID: payabli.Int64(
 					int64(4440),
 				),
 			},

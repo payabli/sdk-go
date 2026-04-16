@@ -11,11 +11,11 @@ import (
 )
 
 func TestSettersBatchDetailResponseRecord(t *testing.T) {
-	t.Run("SetId", func(t *testing.T) {
+	t.Run("SetID", func(t *testing.T) {
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValueId int
-		obj.SetId(fernTestValueId)
-		assert.Equal(t, fernTestValueId, obj.Id)
+		var fernTestValueID int
+		obj.SetID(fernTestValueID)
+		assert.Equal(t, fernTestValueID, obj.ID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -67,11 +67,11 @@ func TestSettersBatchDetailResponseRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetPaymentTransId", func(t *testing.T) {
+	t.Run("SetPaymentTransID", func(t *testing.T) {
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValuePaymentTransId string
-		obj.SetPaymentTransId(fernTestValuePaymentTransId)
-		assert.Equal(t, fernTestValuePaymentTransId, obj.PaymentTransId)
+		var fernTestValuePaymentTransID string
+		obj.SetPaymentTransID(fernTestValuePaymentTransID)
+		assert.Equal(t, fernTestValuePaymentTransID, obj.PaymentTransID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -91,19 +91,19 @@ func TestSettersBatchDetailResponseRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetGatewayTransId", func(t *testing.T) {
+	t.Run("SetGatewayTransID", func(t *testing.T) {
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValueGatewayTransId string
-		obj.SetGatewayTransId(fernTestValueGatewayTransId)
-		assert.Equal(t, fernTestValueGatewayTransId, obj.GatewayTransId)
+		var fernTestValueGatewayTransID string
+		obj.SetGatewayTransID(fernTestValueGatewayTransID)
+		assert.Equal(t, fernTestValueGatewayTransID, obj.GatewayTransID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetOrderId", func(t *testing.T) {
+	t.Run("SetOrderID", func(t *testing.T) {
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValueOrderId OrderId
-		obj.SetOrderId(fernTestValueOrderId)
-		assert.Equal(t, fernTestValueOrderId, obj.OrderId)
+		var fernTestValueOrderID OrderID
+		obj.SetOrderID(fernTestValueOrderID)
+		assert.Equal(t, fernTestValueOrderID, obj.OrderID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -267,11 +267,11 @@ func TestSettersBatchDetailResponseRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetParentOrgId", func(t *testing.T) {
+	t.Run("SetParentOrgID", func(t *testing.T) {
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValueParentOrgId int
-		obj.SetParentOrgId(fernTestValueParentOrgId)
-		assert.Equal(t, fernTestValueParentOrgId, obj.ParentOrgId)
+		var fernTestValueParentOrgID int
+		obj.SetParentOrgID(fernTestValueParentOrgID)
+		assert.Equal(t, fernTestValueParentOrgID, obj.ParentOrgID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -283,27 +283,27 @@ func TestSettersBatchDetailResponseRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetDeviceId", func(t *testing.T) {
+	t.Run("SetDeviceID", func(t *testing.T) {
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValueDeviceId *Device
-		obj.SetDeviceId(fernTestValueDeviceId)
-		assert.Equal(t, fernTestValueDeviceId, obj.DeviceId)
+		var fernTestValueDeviceID *Device
+		obj.SetDeviceID(fernTestValueDeviceID)
+		assert.Equal(t, fernTestValueDeviceID, obj.DeviceID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetRetrievalId", func(t *testing.T) {
+	t.Run("SetRetrievalID", func(t *testing.T) {
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValueRetrievalId RetrievalId
-		obj.SetRetrievalId(fernTestValueRetrievalId)
-		assert.Equal(t, fernTestValueRetrievalId, obj.RetrievalId)
+		var fernTestValueRetrievalID RetrievalID
+		obj.SetRetrievalID(fernTestValueRetrievalID)
+		assert.Equal(t, fernTestValueRetrievalID, obj.RetrievalID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetChargebackId", func(t *testing.T) {
+	t.Run("SetChargebackID", func(t *testing.T) {
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValueChargebackId ChargebackId
-		obj.SetChargebackId(fernTestValueChargebackId)
-		assert.Equal(t, fernTestValueChargebackId, obj.ChargebackId)
+		var fernTestValueChargebackID ChargebackID
+		obj.SetChargebackID(fernTestValueChargebackID)
+		assert.Equal(t, fernTestValueChargebackID, obj.ChargebackID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -331,11 +331,11 @@ func TestSettersBatchDetailResponseRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetEntrypageId", func(t *testing.T) {
+	t.Run("SetEntrypageID", func(t *testing.T) {
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValueEntrypageId EntrypageId
-		obj.SetEntrypageId(fernTestValueEntrypageId)
-		assert.Equal(t, fernTestValueEntrypageId, obj.EntrypageId)
+		var fernTestValueEntrypageID EntrypageID
+		obj.SetEntrypageID(fernTestValueEntrypageID)
+		assert.Equal(t, fernTestValueEntrypageID, obj.EntrypageID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -347,27 +347,27 @@ func TestSettersBatchDetailResponseRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetOrgId", func(t *testing.T) {
+	t.Run("SetOrgID", func(t *testing.T) {
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValueOrgId Orgid
-		obj.SetOrgId(fernTestValueOrgId)
-		assert.Equal(t, fernTestValueOrgId, obj.OrgId)
+		var fernTestValueOrgID Orgid
+		obj.SetOrgID(fernTestValueOrgID)
+		assert.Equal(t, fernTestValueOrgID, obj.OrgID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetPayorId", func(t *testing.T) {
+	t.Run("SetPayorID", func(t *testing.T) {
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValuePayorId PayorId
-		obj.SetPayorId(fernTestValuePayorId)
-		assert.Equal(t, fernTestValuePayorId, obj.PayorId)
+		var fernTestValuePayorID PayorID
+		obj.SetPayorID(fernTestValuePayorID)
+		assert.Equal(t, fernTestValuePayorID, obj.PayorID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetPaypointId", func(t *testing.T) {
+	t.Run("SetPaypointID", func(t *testing.T) {
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValuePaypointId PaypointId
-		obj.SetPaypointId(fernTestValuePaypointId)
-		assert.Equal(t, fernTestValuePaypointId, obj.PaypointId)
+		var fernTestValuePaypointID PaypointID
+		obj.SetPaypointID(fernTestValuePaypointID)
+		assert.Equal(t, fernTestValuePaypointID, obj.PaypointID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -379,19 +379,19 @@ func TestSettersBatchDetailResponseRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetRefundId", func(t *testing.T) {
+	t.Run("SetRefundID", func(t *testing.T) {
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValueRefundId RefundId
-		obj.SetRefundId(fernTestValueRefundId)
-		assert.Equal(t, fernTestValueRefundId, obj.RefundId)
+		var fernTestValueRefundID RefundID
+		obj.SetRefundID(fernTestValueRefundID)
+		assert.Equal(t, fernTestValueRefundID, obj.RefundID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetReturnedId", func(t *testing.T) {
+	t.Run("SetReturnedID", func(t *testing.T) {
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValueReturnedId ReturnedId
-		obj.SetReturnedId(fernTestValueReturnedId)
-		assert.Equal(t, fernTestValueReturnedId, obj.ReturnedId)
+		var fernTestValueReturnedID ReturnedID
+		obj.SetReturnedID(fernTestValueReturnedID)
+		assert.Equal(t, fernTestValueReturnedID, obj.ReturnedID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -435,11 +435,11 @@ func TestSettersBatchDetailResponseRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetExternalPaypointId", func(t *testing.T) {
+	t.Run("SetExternalPaypointID", func(t *testing.T) {
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValueExternalPaypointId ExternalPaypointId
-		obj.SetExternalPaypointId(fernTestValueExternalPaypointId)
-		assert.Equal(t, fernTestValueExternalPaypointId, obj.ExternalPaypointId)
+		var fernTestValueExternalPaypointID ExternalPaypointID
+		obj.SetExternalPaypointID(fernTestValueExternalPaypointID)
+		assert.Equal(t, fernTestValueExternalPaypointID, obj.ExternalPaypointID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -454,18 +454,18 @@ func TestSettersBatchDetailResponseRecord(t *testing.T) {
 }
 
 func TestGettersBatchDetailResponseRecord(t *testing.T) {
-	t.Run("GetId", func(t *testing.T) {
+	t.Run("GetID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
 		var expected int
-		obj.Id = expected
+		obj.ID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetID(), "getter should return the property value")
 	})
 
-	t.Run("GetId_NilReceiver", func(t *testing.T) {
+	t.Run("GetID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *BatchDetailResponseRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -474,7 +474,7 @@ func TestGettersBatchDetailResponseRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetId() // Should return zero value
+		_ = obj.GetID() // Should return zero value
 	})
 
 	t.Run("GetMethod", func(t *testing.T) {
@@ -625,18 +625,18 @@ func TestGettersBatchDetailResponseRecord(t *testing.T) {
 		_ = obj.GetBatchAmount() // Should return zero value
 	})
 
-	t.Run("GetPaymentTransId", func(t *testing.T) {
+	t.Run("GetPaymentTransID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
 		var expected string
-		obj.PaymentTransId = expected
+		obj.PaymentTransID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetPaymentTransId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetPaymentTransID(), "getter should return the property value")
 	})
 
-	t.Run("GetPaymentTransId_NilReceiver", func(t *testing.T) {
+	t.Run("GetPaymentTransID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *BatchDetailResponseRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -645,7 +645,7 @@ func TestGettersBatchDetailResponseRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetPaymentTransId() // Should return zero value
+		_ = obj.GetPaymentTransID() // Should return zero value
 	})
 
 	t.Run("GetPaymentTransStatus", func(t *testing.T) {
@@ -694,18 +694,18 @@ func TestGettersBatchDetailResponseRecord(t *testing.T) {
 		_ = obj.GetScheduleReference() // Should return zero value
 	})
 
-	t.Run("GetGatewayTransId", func(t *testing.T) {
+	t.Run("GetGatewayTransID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
 		var expected string
-		obj.GatewayTransId = expected
+		obj.GatewayTransID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetGatewayTransId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetGatewayTransID(), "getter should return the property value")
 	})
 
-	t.Run("GetGatewayTransId_NilReceiver", func(t *testing.T) {
+	t.Run("GetGatewayTransID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *BatchDetailResponseRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -714,21 +714,21 @@ func TestGettersBatchDetailResponseRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetGatewayTransId() // Should return zero value
+		_ = obj.GetGatewayTransID() // Should return zero value
 	})
 
-	t.Run("GetOrderId", func(t *testing.T) {
+	t.Run("GetOrderID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
-		var expected OrderId
-		obj.OrderId = expected
+		var expected OrderID
+		obj.OrderID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetOrderId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetOrderID(), "getter should return the property value")
 	})
 
-	t.Run("GetOrderId_NilReceiver", func(t *testing.T) {
+	t.Run("GetOrderID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *BatchDetailResponseRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -737,7 +737,7 @@ func TestGettersBatchDetailResponseRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetOrderId() // Should return zero value
+		_ = obj.GetOrderID() // Should return zero value
 	})
 
 	t.Run("GetTransMethod", func(t *testing.T) {
@@ -1250,18 +1250,18 @@ func TestGettersBatchDetailResponseRecord(t *testing.T) {
 		_ = obj.GetParentOrgName() // Should return zero value
 	})
 
-	t.Run("GetParentOrgId", func(t *testing.T) {
+	t.Run("GetParentOrgID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
 		var expected int
-		obj.ParentOrgId = expected
+		obj.ParentOrgID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetParentOrgId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetParentOrgID(), "getter should return the property value")
 	})
 
-	t.Run("GetParentOrgId_NilReceiver", func(t *testing.T) {
+	t.Run("GetParentOrgID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *BatchDetailResponseRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -1270,7 +1270,7 @@ func TestGettersBatchDetailResponseRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetParentOrgId() // Should return zero value
+		_ = obj.GetParentOrgID() // Should return zero value
 	})
 
 	t.Run("GetPaypointEntryname", func(t *testing.T) {
@@ -1296,28 +1296,28 @@ func TestGettersBatchDetailResponseRecord(t *testing.T) {
 		_ = obj.GetPaypointEntryname() // Should return zero value
 	})
 
-	t.Run("GetDeviceId", func(t *testing.T) {
+	t.Run("GetDeviceID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
 		var expected *Device
-		obj.DeviceId = expected
+		obj.DeviceID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetDeviceId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetDeviceID(), "getter should return the property value")
 	})
 
-	t.Run("GetDeviceId_NilValue", func(t *testing.T) {
+	t.Run("GetDeviceID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
-		obj.DeviceId = nil
+		obj.DeviceID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetDeviceId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetDeviceID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetDeviceId_NilReceiver", func(t *testing.T) {
+	t.Run("GetDeviceID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *BatchDetailResponseRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -1326,21 +1326,21 @@ func TestGettersBatchDetailResponseRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetDeviceId() // Should return zero value
+		_ = obj.GetDeviceID() // Should return zero value
 	})
 
-	t.Run("GetRetrievalId", func(t *testing.T) {
+	t.Run("GetRetrievalID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
-		var expected RetrievalId
-		obj.RetrievalId = expected
+		var expected RetrievalID
+		obj.RetrievalID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetRetrievalId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetRetrievalID(), "getter should return the property value")
 	})
 
-	t.Run("GetRetrievalId_NilReceiver", func(t *testing.T) {
+	t.Run("GetRetrievalID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *BatchDetailResponseRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -1349,21 +1349,21 @@ func TestGettersBatchDetailResponseRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetRetrievalId() // Should return zero value
+		_ = obj.GetRetrievalID() // Should return zero value
 	})
 
-	t.Run("GetChargebackId", func(t *testing.T) {
+	t.Run("GetChargebackID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
-		var expected ChargebackId
-		obj.ChargebackId = expected
+		var expected ChargebackID
+		obj.ChargebackID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetChargebackId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetChargebackID(), "getter should return the property value")
 	})
 
-	t.Run("GetChargebackId_NilReceiver", func(t *testing.T) {
+	t.Run("GetChargebackID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *BatchDetailResponseRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -1372,7 +1372,7 @@ func TestGettersBatchDetailResponseRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetChargebackId() // Should return zero value
+		_ = obj.GetChargebackID() // Should return zero value
 	})
 
 	t.Run("GetAchHolderType", func(t *testing.T) {
@@ -1444,18 +1444,18 @@ func TestGettersBatchDetailResponseRecord(t *testing.T) {
 		_ = obj.GetConnectorName() // Should return zero value
 	})
 
-	t.Run("GetEntrypageId", func(t *testing.T) {
+	t.Run("GetEntrypageID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
-		var expected EntrypageId
-		obj.EntrypageId = expected
+		var expected EntrypageID
+		obj.EntrypageID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetEntrypageId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetEntrypageID(), "getter should return the property value")
 	})
 
-	t.Run("GetEntrypageId_NilReceiver", func(t *testing.T) {
+	t.Run("GetEntrypageID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *BatchDetailResponseRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -1464,7 +1464,7 @@ func TestGettersBatchDetailResponseRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetEntrypageId() // Should return zero value
+		_ = obj.GetEntrypageID() // Should return zero value
 	})
 
 	t.Run("GetFeeAmount", func(t *testing.T) {
@@ -1490,18 +1490,18 @@ func TestGettersBatchDetailResponseRecord(t *testing.T) {
 		_ = obj.GetFeeAmount() // Should return zero value
 	})
 
-	t.Run("GetOrgId", func(t *testing.T) {
+	t.Run("GetOrgID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
 		var expected Orgid
-		obj.OrgId = expected
+		obj.OrgID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetOrgId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetOrgID(), "getter should return the property value")
 	})
 
-	t.Run("GetOrgId_NilReceiver", func(t *testing.T) {
+	t.Run("GetOrgID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *BatchDetailResponseRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -1510,21 +1510,21 @@ func TestGettersBatchDetailResponseRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetOrgId() // Should return zero value
+		_ = obj.GetOrgID() // Should return zero value
 	})
 
-	t.Run("GetPayorId", func(t *testing.T) {
+	t.Run("GetPayorID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
-		var expected PayorId
-		obj.PayorId = expected
+		var expected PayorID
+		obj.PayorID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetPayorId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetPayorID(), "getter should return the property value")
 	})
 
-	t.Run("GetPayorId_NilReceiver", func(t *testing.T) {
+	t.Run("GetPayorID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *BatchDetailResponseRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -1533,21 +1533,21 @@ func TestGettersBatchDetailResponseRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetPayorId() // Should return zero value
+		_ = obj.GetPayorID() // Should return zero value
 	})
 
-	t.Run("GetPaypointId", func(t *testing.T) {
+	t.Run("GetPaypointID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
-		var expected PaypointId
-		obj.PaypointId = expected
+		var expected PaypointID
+		obj.PaypointID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetPaypointId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetPaypointID(), "getter should return the property value")
 	})
 
-	t.Run("GetPaypointId_NilReceiver", func(t *testing.T) {
+	t.Run("GetPaypointID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *BatchDetailResponseRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -1556,7 +1556,7 @@ func TestGettersBatchDetailResponseRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetPaypointId() // Should return zero value
+		_ = obj.GetPaypointID() // Should return zero value
 	})
 
 	t.Run("GetPendingFeeAmount", func(t *testing.T) {
@@ -1592,18 +1592,18 @@ func TestGettersBatchDetailResponseRecord(t *testing.T) {
 		_ = obj.GetPendingFeeAmount() // Should return zero value
 	})
 
-	t.Run("GetRefundId", func(t *testing.T) {
+	t.Run("GetRefundID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
-		var expected RefundId
-		obj.RefundId = expected
+		var expected RefundID
+		obj.RefundID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetRefundId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetRefundID(), "getter should return the property value")
 	})
 
-	t.Run("GetRefundId_NilReceiver", func(t *testing.T) {
+	t.Run("GetRefundID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *BatchDetailResponseRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -1612,21 +1612,21 @@ func TestGettersBatchDetailResponseRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetRefundId() // Should return zero value
+		_ = obj.GetRefundID() // Should return zero value
 	})
 
-	t.Run("GetReturnedId", func(t *testing.T) {
+	t.Run("GetReturnedID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
-		var expected ReturnedId
-		obj.ReturnedId = expected
+		var expected ReturnedID
+		obj.ReturnedID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetReturnedId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetReturnedID(), "getter should return the property value")
 	})
 
-	t.Run("GetReturnedId_NilReceiver", func(t *testing.T) {
+	t.Run("GetReturnedID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *BatchDetailResponseRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -1635,7 +1635,7 @@ func TestGettersBatchDetailResponseRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetReturnedId() // Should return zero value
+		_ = obj.GetReturnedID() // Should return zero value
 	})
 
 	t.Run("GetSplitFundingInstructions", func(t *testing.T) {
@@ -1793,18 +1793,18 @@ func TestGettersBatchDetailResponseRecord(t *testing.T) {
 		_ = obj.GetTransactionEvents() // Should return zero value
 	})
 
-	t.Run("GetExternalPaypointId", func(t *testing.T) {
+	t.Run("GetExternalPaypointID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
-		var expected ExternalPaypointId
-		obj.ExternalPaypointId = expected
+		var expected ExternalPaypointID
+		obj.ExternalPaypointID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetExternalPaypointId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetExternalPaypointID(), "getter should return the property value")
 	})
 
-	t.Run("GetExternalPaypointId_NilReceiver", func(t *testing.T) {
+	t.Run("GetExternalPaypointID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *BatchDetailResponseRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -1813,7 +1813,7 @@ func TestGettersBatchDetailResponseRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetExternalPaypointId() // Should return zero value
+		_ = obj.GetExternalPaypointID() // Should return zero value
 	})
 
 	t.Run("GetIsHold", func(t *testing.T) {
@@ -1842,14 +1842,14 @@ func TestGettersBatchDetailResponseRecord(t *testing.T) {
 }
 
 func TestSettersMarkExplicitBatchDetailResponseRecord(t *testing.T) {
-	t.Run("SetId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValueId int
+		var fernTestValueID int
 
 		// Act
-		obj.SetId(fernTestValueId)
+		obj.SetID(fernTestValueID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -2059,14 +2059,14 @@ func TestSettersMarkExplicitBatchDetailResponseRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetPaymentTransId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetPaymentTransID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValuePaymentTransId string
+		var fernTestValuePaymentTransID string
 
 		// Act
-		obj.SetPaymentTransId(fernTestValuePaymentTransId)
+		obj.SetPaymentTransID(fernTestValuePaymentTransID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -2152,14 +2152,14 @@ func TestSettersMarkExplicitBatchDetailResponseRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetGatewayTransId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetGatewayTransID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValueGatewayTransId string
+		var fernTestValueGatewayTransID string
 
 		// Act
-		obj.SetGatewayTransId(fernTestValueGatewayTransId)
+		obj.SetGatewayTransID(fernTestValueGatewayTransID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -2183,14 +2183,14 @@ func TestSettersMarkExplicitBatchDetailResponseRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetOrderId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetOrderID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValueOrderId OrderId
+		var fernTestValueOrderID OrderID
 
 		// Act
-		obj.SetOrderId(fernTestValueOrderId)
+		obj.SetOrderID(fernTestValueOrderID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -2834,14 +2834,14 @@ func TestSettersMarkExplicitBatchDetailResponseRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetParentOrgId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetParentOrgID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValueParentOrgId int
+		var fernTestValueParentOrgID int
 
 		// Act
-		obj.SetParentOrgId(fernTestValueParentOrgId)
+		obj.SetParentOrgID(fernTestValueParentOrgID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -2896,14 +2896,14 @@ func TestSettersMarkExplicitBatchDetailResponseRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetDeviceId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetDeviceID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValueDeviceId *Device
+		var fernTestValueDeviceID *Device
 
 		// Act
-		obj.SetDeviceId(fernTestValueDeviceId)
+		obj.SetDeviceID(fernTestValueDeviceID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -2927,14 +2927,14 @@ func TestSettersMarkExplicitBatchDetailResponseRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetRetrievalId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetRetrievalID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValueRetrievalId RetrievalId
+		var fernTestValueRetrievalID RetrievalID
 
 		// Act
-		obj.SetRetrievalId(fernTestValueRetrievalId)
+		obj.SetRetrievalID(fernTestValueRetrievalID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -2958,14 +2958,14 @@ func TestSettersMarkExplicitBatchDetailResponseRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetChargebackId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetChargebackID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValueChargebackId ChargebackId
+		var fernTestValueChargebackID ChargebackID
 
 		// Act
-		obj.SetChargebackId(fernTestValueChargebackId)
+		obj.SetChargebackID(fernTestValueChargebackID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -3082,14 +3082,14 @@ func TestSettersMarkExplicitBatchDetailResponseRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetEntrypageId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetEntrypageID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValueEntrypageId EntrypageId
+		var fernTestValueEntrypageID EntrypageID
 
 		// Act
-		obj.SetEntrypageId(fernTestValueEntrypageId)
+		obj.SetEntrypageID(fernTestValueEntrypageID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -3144,14 +3144,14 @@ func TestSettersMarkExplicitBatchDetailResponseRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetOrgId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetOrgID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValueOrgId Orgid
+		var fernTestValueOrgID Orgid
 
 		// Act
-		obj.SetOrgId(fernTestValueOrgId)
+		obj.SetOrgID(fernTestValueOrgID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -3175,14 +3175,14 @@ func TestSettersMarkExplicitBatchDetailResponseRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetPayorId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetPayorID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValuePayorId PayorId
+		var fernTestValuePayorID PayorID
 
 		// Act
-		obj.SetPayorId(fernTestValuePayorId)
+		obj.SetPayorID(fernTestValuePayorID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -3206,14 +3206,14 @@ func TestSettersMarkExplicitBatchDetailResponseRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetPaypointId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetPaypointID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValuePaypointId PaypointId
+		var fernTestValuePaypointID PaypointID
 
 		// Act
-		obj.SetPaypointId(fernTestValuePaypointId)
+		obj.SetPaypointID(fernTestValuePaypointID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -3268,14 +3268,14 @@ func TestSettersMarkExplicitBatchDetailResponseRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetRefundId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetRefundID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValueRefundId RefundId
+		var fernTestValueRefundID RefundID
 
 		// Act
-		obj.SetRefundId(fernTestValueRefundId)
+		obj.SetRefundID(fernTestValueRefundID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -3299,14 +3299,14 @@ func TestSettersMarkExplicitBatchDetailResponseRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetReturnedId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetReturnedID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValueReturnedId ReturnedId
+		var fernTestValueReturnedID ReturnedID
 
 		// Act
-		obj.SetReturnedId(fernTestValueReturnedId)
+		obj.SetReturnedID(fernTestValueReturnedID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -3485,14 +3485,14 @@ func TestSettersMarkExplicitBatchDetailResponseRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetExternalPaypointId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetExternalPaypointID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BatchDetailResponseRecord{}
-		var fernTestValueExternalPaypointId ExternalPaypointId
+		var fernTestValueExternalPaypointID ExternalPaypointID
 
 		// Act
-		obj.SetExternalPaypointId(fernTestValueExternalPaypointId)
+		obj.SetExternalPaypointID(fernTestValueExternalPaypointID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -4648,11 +4648,11 @@ func TestSettersMarkExplicitQueryBatchesResponse(t *testing.T) {
 }
 
 func TestSettersQueryBatchesResponseRecordsItem(t *testing.T) {
-	t.Run("SetIdBatch", func(t *testing.T) {
+	t.Run("SetIDBatch", func(t *testing.T) {
 		obj := &QueryBatchesResponseRecordsItem{}
-		var fernTestValueIdBatch *int
-		obj.SetIdBatch(fernTestValueIdBatch)
-		assert.Equal(t, fernTestValueIdBatch, obj.IdBatch)
+		var fernTestValueIDBatch *int
+		obj.SetIDBatch(fernTestValueIDBatch)
+		assert.Equal(t, fernTestValueIDBatch, obj.IDBatch)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -4776,11 +4776,11 @@ func TestSettersQueryBatchesResponseRecordsItem(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetPaypointId", func(t *testing.T) {
+	t.Run("SetPaypointID", func(t *testing.T) {
 		obj := &QueryBatchesResponseRecordsItem{}
-		var fernTestValuePaypointId *PaypointId
-		obj.SetPaypointId(fernTestValuePaypointId)
-		assert.Equal(t, fernTestValuePaypointId, obj.PaypointId)
+		var fernTestValuePaypointID *PaypointID
+		obj.SetPaypointID(fernTestValuePaypointID)
+		assert.Equal(t, fernTestValuePaypointID, obj.PaypointID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -4808,19 +4808,19 @@ func TestSettersQueryBatchesResponseRecordsItem(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetParentOrgId", func(t *testing.T) {
+	t.Run("SetParentOrgID", func(t *testing.T) {
 		obj := &QueryBatchesResponseRecordsItem{}
-		var fernTestValueParentOrgId int
-		obj.SetParentOrgId(fernTestValueParentOrgId)
-		assert.Equal(t, fernTestValueParentOrgId, obj.ParentOrgId)
+		var fernTestValueParentOrgID int
+		obj.SetParentOrgID(fernTestValueParentOrgID)
+		assert.Equal(t, fernTestValueParentOrgID, obj.ParentOrgID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetExternalPaypointId", func(t *testing.T) {
+	t.Run("SetExternalPaypointID", func(t *testing.T) {
 		obj := &QueryBatchesResponseRecordsItem{}
-		var fernTestValueExternalPaypointId *ExternalPaypointId
-		obj.SetExternalPaypointId(fernTestValueExternalPaypointId)
-		assert.Equal(t, fernTestValueExternalPaypointId, obj.ExternalPaypointId)
+		var fernTestValueExternalPaypointID *ExternalPaypointID
+		obj.SetExternalPaypointID(fernTestValueExternalPaypointID)
+		assert.Equal(t, fernTestValueExternalPaypointID, obj.ExternalPaypointID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -4891,28 +4891,28 @@ func TestSettersQueryBatchesResponseRecordsItem(t *testing.T) {
 }
 
 func TestGettersQueryBatchesResponseRecordsItem(t *testing.T) {
-	t.Run("GetIdBatch", func(t *testing.T) {
+	t.Run("GetIDBatch", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryBatchesResponseRecordsItem{}
 		var expected *int
-		obj.IdBatch = expected
+		obj.IDBatch = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetIdBatch(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetIDBatch(), "getter should return the property value")
 	})
 
-	t.Run("GetIdBatch_NilValue", func(t *testing.T) {
+	t.Run("GetIDBatch_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryBatchesResponseRecordsItem{}
-		obj.IdBatch = nil
+		obj.IDBatch = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetIdBatch(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetIDBatch(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetIdBatch_NilReceiver", func(t *testing.T) {
+	t.Run("GetIDBatch_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *QueryBatchesResponseRecordsItem
 		// Should not panic - getters should handle nil receiver gracefully
@@ -4921,7 +4921,7 @@ func TestGettersQueryBatchesResponseRecordsItem(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetIdBatch() // Should return zero value
+		_ = obj.GetIDBatch() // Should return zero value
 	})
 
 	t.Run("GetBatchNumber", func(t *testing.T) {
@@ -5399,28 +5399,28 @@ func TestGettersQueryBatchesResponseRecordsItem(t *testing.T) {
 		_ = obj.GetBatchRecords() // Should return zero value
 	})
 
-	t.Run("GetPaypointId", func(t *testing.T) {
+	t.Run("GetPaypointID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryBatchesResponseRecordsItem{}
-		var expected *PaypointId
-		obj.PaypointId = expected
+		var expected *PaypointID
+		obj.PaypointID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetPaypointId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetPaypointID(), "getter should return the property value")
 	})
 
-	t.Run("GetPaypointId_NilValue", func(t *testing.T) {
+	t.Run("GetPaypointID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryBatchesResponseRecordsItem{}
-		obj.PaypointId = nil
+		obj.PaypointID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetPaypointId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetPaypointID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetPaypointId_NilReceiver", func(t *testing.T) {
+	t.Run("GetPaypointID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *QueryBatchesResponseRecordsItem
 		// Should not panic - getters should handle nil receiver gracefully
@@ -5429,7 +5429,7 @@ func TestGettersQueryBatchesResponseRecordsItem(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetPaypointId() // Should return zero value
+		_ = obj.GetPaypointID() // Should return zero value
 	})
 
 	t.Run("GetPaypointName", func(t *testing.T) {
@@ -5521,18 +5521,18 @@ func TestGettersQueryBatchesResponseRecordsItem(t *testing.T) {
 		_ = obj.GetParentOrgName() // Should return zero value
 	})
 
-	t.Run("GetParentOrgId", func(t *testing.T) {
+	t.Run("GetParentOrgID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryBatchesResponseRecordsItem{}
 		var expected int
-		obj.ParentOrgId = expected
+		obj.ParentOrgID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetParentOrgId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetParentOrgID(), "getter should return the property value")
 	})
 
-	t.Run("GetParentOrgId_NilReceiver", func(t *testing.T) {
+	t.Run("GetParentOrgID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *QueryBatchesResponseRecordsItem
 		// Should not panic - getters should handle nil receiver gracefully
@@ -5541,31 +5541,31 @@ func TestGettersQueryBatchesResponseRecordsItem(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetParentOrgId() // Should return zero value
+		_ = obj.GetParentOrgID() // Should return zero value
 	})
 
-	t.Run("GetExternalPaypointId", func(t *testing.T) {
+	t.Run("GetExternalPaypointID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryBatchesResponseRecordsItem{}
-		var expected *ExternalPaypointId
-		obj.ExternalPaypointId = expected
+		var expected *ExternalPaypointID
+		obj.ExternalPaypointID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetExternalPaypointId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetExternalPaypointID(), "getter should return the property value")
 	})
 
-	t.Run("GetExternalPaypointId_NilValue", func(t *testing.T) {
+	t.Run("GetExternalPaypointID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryBatchesResponseRecordsItem{}
-		obj.ExternalPaypointId = nil
+		obj.ExternalPaypointID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetExternalPaypointId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetExternalPaypointID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetExternalPaypointId_NilReceiver", func(t *testing.T) {
+	t.Run("GetExternalPaypointID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *QueryBatchesResponseRecordsItem
 		// Should not panic - getters should handle nil receiver gracefully
@@ -5574,7 +5574,7 @@ func TestGettersQueryBatchesResponseRecordsItem(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetExternalPaypointId() // Should return zero value
+		_ = obj.GetExternalPaypointID() // Should return zero value
 	})
 
 	t.Run("GetEntryName", func(t *testing.T) {
@@ -5834,14 +5834,14 @@ func TestGettersQueryBatchesResponseRecordsItem(t *testing.T) {
 }
 
 func TestSettersMarkExplicitQueryBatchesResponseRecordsItem(t *testing.T) {
-	t.Run("SetIdBatch_MarksExplicit", func(t *testing.T) {
+	t.Run("SetIDBatch_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryBatchesResponseRecordsItem{}
-		var fernTestValueIdBatch *int
+		var fernTestValueIDBatch *int
 
 		// Act
-		obj.SetIdBatch(fernTestValueIdBatch)
+		obj.SetIDBatch(fernTestValueIDBatch)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -6330,14 +6330,14 @@ func TestSettersMarkExplicitQueryBatchesResponseRecordsItem(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetPaypointId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetPaypointID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryBatchesResponseRecordsItem{}
-		var fernTestValuePaypointId *PaypointId
+		var fernTestValuePaypointID *PaypointID
 
 		// Act
-		obj.SetPaypointId(fernTestValuePaypointId)
+		obj.SetPaypointID(fernTestValuePaypointID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -6454,14 +6454,14 @@ func TestSettersMarkExplicitQueryBatchesResponseRecordsItem(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetParentOrgId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetParentOrgID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryBatchesResponseRecordsItem{}
-		var fernTestValueParentOrgId int
+		var fernTestValueParentOrgID int
 
 		// Act
-		obj.SetParentOrgId(fernTestValueParentOrgId)
+		obj.SetParentOrgID(fernTestValueParentOrgID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -6485,14 +6485,14 @@ func TestSettersMarkExplicitQueryBatchesResponseRecordsItem(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetExternalPaypointId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetExternalPaypointID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryBatchesResponseRecordsItem{}
-		var fernTestValueExternalPaypointId *ExternalPaypointId
+		var fernTestValueExternalPaypointID *ExternalPaypointID
 
 		// Act
-		obj.SetExternalPaypointId(fernTestValueExternalPaypointId)
+		obj.SetExternalPaypointID(fernTestValueExternalPaypointID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -6767,11 +6767,11 @@ func TestSettersMarkExplicitQueryBatchesResponseRecordsItem(t *testing.T) {
 }
 
 func TestSettersQueryBatchesTransfer(t *testing.T) {
-	t.Run("SetTransferId", func(t *testing.T) {
+	t.Run("SetTransferID", func(t *testing.T) {
 		obj := &QueryBatchesTransfer{}
-		var fernTestValueTransferId *int
-		obj.SetTransferId(fernTestValueTransferId)
-		assert.Equal(t, fernTestValueTransferId, obj.TransferId)
+		var fernTestValueTransferID *int
+		obj.SetTransferID(fernTestValueTransferID)
+		assert.Equal(t, fernTestValueTransferID, obj.TransferID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -6882,28 +6882,28 @@ func TestSettersQueryBatchesTransfer(t *testing.T) {
 }
 
 func TestGettersQueryBatchesTransfer(t *testing.T) {
-	t.Run("GetTransferId", func(t *testing.T) {
+	t.Run("GetTransferID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryBatchesTransfer{}
 		var expected *int
-		obj.TransferId = expected
+		obj.TransferID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetTransferId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetTransferID(), "getter should return the property value")
 	})
 
-	t.Run("GetTransferId_NilValue", func(t *testing.T) {
+	t.Run("GetTransferID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryBatchesTransfer{}
-		obj.TransferId = nil
+		obj.TransferID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetTransferId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetTransferID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetTransferId_NilReceiver", func(t *testing.T) {
+	t.Run("GetTransferID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *QueryBatchesTransfer
 		// Should not panic - getters should handle nil receiver gracefully
@@ -6912,7 +6912,7 @@ func TestGettersQueryBatchesTransfer(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetTransferId() // Should return zero value
+		_ = obj.GetTransferID() // Should return zero value
 	})
 
 	t.Run("GetTransferDate", func(t *testing.T) {
@@ -7347,14 +7347,14 @@ func TestGettersQueryBatchesTransfer(t *testing.T) {
 }
 
 func TestSettersMarkExplicitQueryBatchesTransfer(t *testing.T) {
-	t.Run("SetTransferId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetTransferID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryBatchesTransfer{}
-		var fernTestValueTransferId *int
+		var fernTestValueTransferID *int
 
 		// Act
-		obj.SetTransferId(fernTestValueTransferId)
+		obj.SetTransferID(fernTestValueTransferID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -9539,27 +9539,27 @@ func TestSettersMarkExplicitQueryTransferSummary(t *testing.T) {
 }
 
 func TestSettersTransferDetailRecord(t *testing.T) {
-	t.Run("SetTransferDetailId", func(t *testing.T) {
+	t.Run("SetTransferDetailID", func(t *testing.T) {
 		obj := &TransferDetailRecord{}
-		var fernTestValueTransferDetailId *int
-		obj.SetTransferDetailId(fernTestValueTransferDetailId)
-		assert.Equal(t, fernTestValueTransferDetailId, obj.TransferDetailId)
+		var fernTestValueTransferDetailID *int
+		obj.SetTransferDetailID(fernTestValueTransferDetailID)
+		assert.Equal(t, fernTestValueTransferDetailID, obj.TransferDetailID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetTransferId", func(t *testing.T) {
+	t.Run("SetTransferID", func(t *testing.T) {
 		obj := &TransferDetailRecord{}
-		var fernTestValueTransferId *int
-		obj.SetTransferId(fernTestValueTransferId)
-		assert.Equal(t, fernTestValueTransferId, obj.TransferId)
+		var fernTestValueTransferID *int
+		obj.SetTransferID(fernTestValueTransferID)
+		assert.Equal(t, fernTestValueTransferID, obj.TransferID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetTransactionId", func(t *testing.T) {
+	t.Run("SetTransactionID", func(t *testing.T) {
 		obj := &TransferDetailRecord{}
-		var fernTestValueTransactionId *string
-		obj.SetTransactionId(fernTestValueTransactionId)
-		assert.Equal(t, fernTestValueTransactionId, obj.TransactionId)
+		var fernTestValueTransactionID *string
+		obj.SetTransactionID(fernTestValueTransactionID)
+		assert.Equal(t, fernTestValueTransactionID, obj.TransactionID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -9715,11 +9715,11 @@ func TestSettersTransferDetailRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetPaymentTransId", func(t *testing.T) {
+	t.Run("SetPaymentTransID", func(t *testing.T) {
 		obj := &TransferDetailRecord{}
-		var fernTestValuePaymentTransId *string
-		obj.SetPaymentTransId(fernTestValuePaymentTransId)
-		assert.Equal(t, fernTestValuePaymentTransId, obj.PaymentTransId)
+		var fernTestValuePaymentTransID *string
+		obj.SetPaymentTransID(fernTestValuePaymentTransID)
+		assert.Equal(t, fernTestValuePaymentTransID, obj.PaymentTransID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -9739,19 +9739,19 @@ func TestSettersTransferDetailRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetGatewayTransId", func(t *testing.T) {
+	t.Run("SetGatewayTransID", func(t *testing.T) {
 		obj := &TransferDetailRecord{}
-		var fernTestValueGatewayTransId *string
-		obj.SetGatewayTransId(fernTestValueGatewayTransId)
-		assert.Equal(t, fernTestValueGatewayTransId, obj.GatewayTransId)
+		var fernTestValueGatewayTransID *string
+		obj.SetGatewayTransID(fernTestValueGatewayTransID)
+		assert.Equal(t, fernTestValueGatewayTransID, obj.GatewayTransID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetOrderId", func(t *testing.T) {
+	t.Run("SetOrderID", func(t *testing.T) {
 		obj := &TransferDetailRecord{}
-		var fernTestValueOrderId *OrderId
-		obj.SetOrderId(fernTestValueOrderId)
-		assert.Equal(t, fernTestValueOrderId, obj.OrderId)
+		var fernTestValueOrderID *OrderID
+		obj.SetOrderID(fernTestValueOrderID)
+		assert.Equal(t, fernTestValueOrderID, obj.OrderID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -9779,11 +9779,11 @@ func TestSettersTransferDetailRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetPayorId", func(t *testing.T) {
+	t.Run("SetPayorID", func(t *testing.T) {
 		obj := &TransferDetailRecord{}
-		var fernTestValuePayorId *PayorId
-		obj.SetPayorId(fernTestValuePayorId)
-		assert.Equal(t, fernTestValuePayorId, obj.PayorId)
+		var fernTestValuePayorID *PayorID
+		obj.SetPayorID(fernTestValuePayorID)
+		assert.Equal(t, fernTestValuePayorID, obj.PayorID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -9803,11 +9803,11 @@ func TestSettersTransferDetailRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetPaypointId", func(t *testing.T) {
+	t.Run("SetPaypointID", func(t *testing.T) {
 		obj := &TransferDetailRecord{}
-		var fernTestValuePaypointId *PaypointId
-		obj.SetPaypointId(fernTestValuePaypointId)
-		assert.Equal(t, fernTestValuePaypointId, obj.PaypointId)
+		var fernTestValuePaypointID *PaypointID
+		obj.SetPaypointID(fernTestValuePaypointID)
+		assert.Equal(t, fernTestValuePaypointID, obj.PaypointID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -9875,43 +9875,43 @@ func TestSettersTransferDetailRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetOrgId", func(t *testing.T) {
+	t.Run("SetOrgID", func(t *testing.T) {
 		obj := &TransferDetailRecord{}
-		var fernTestValueOrgId *Orgid
-		obj.SetOrgId(fernTestValueOrgId)
-		assert.Equal(t, fernTestValueOrgId, obj.OrgId)
+		var fernTestValueOrgID *Orgid
+		obj.SetOrgID(fernTestValueOrgID)
+		assert.Equal(t, fernTestValueOrgID, obj.OrgID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetRefundId", func(t *testing.T) {
+	t.Run("SetRefundID", func(t *testing.T) {
 		obj := &TransferDetailRecord{}
-		var fernTestValueRefundId *RefundId
-		obj.SetRefundId(fernTestValueRefundId)
-		assert.Equal(t, fernTestValueRefundId, obj.RefundId)
+		var fernTestValueRefundID *RefundID
+		obj.SetRefundID(fernTestValueRefundID)
+		assert.Equal(t, fernTestValueRefundID, obj.RefundID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetReturnedId", func(t *testing.T) {
+	t.Run("SetReturnedID", func(t *testing.T) {
 		obj := &TransferDetailRecord{}
-		var fernTestValueReturnedId *ReturnedId
-		obj.SetReturnedId(fernTestValueReturnedId)
-		assert.Equal(t, fernTestValueReturnedId, obj.ReturnedId)
+		var fernTestValueReturnedID *ReturnedID
+		obj.SetReturnedID(fernTestValueReturnedID)
+		assert.Equal(t, fernTestValueReturnedID, obj.ReturnedID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetChargebackId", func(t *testing.T) {
+	t.Run("SetChargebackID", func(t *testing.T) {
 		obj := &TransferDetailRecord{}
-		var fernTestValueChargebackId *ChargebackId
-		obj.SetChargebackId(fernTestValueChargebackId)
-		assert.Equal(t, fernTestValueChargebackId, obj.ChargebackId)
+		var fernTestValueChargebackID *ChargebackID
+		obj.SetChargebackID(fernTestValueChargebackID)
+		assert.Equal(t, fernTestValueChargebackID, obj.ChargebackID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetRetrievalId", func(t *testing.T) {
+	t.Run("SetRetrievalID", func(t *testing.T) {
 		obj := &TransferDetailRecord{}
-		var fernTestValueRetrievalId *RetrievalId
-		obj.SetRetrievalId(fernTestValueRetrievalId)
-		assert.Equal(t, fernTestValueRetrievalId, obj.RetrievalId)
+		var fernTestValueRetrievalID *RetrievalID
+		obj.SetRetrievalID(fernTestValueRetrievalID)
+		assert.Equal(t, fernTestValueRetrievalID, obj.RetrievalID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -9931,19 +9931,19 @@ func TestSettersTransferDetailRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetEntrypageId", func(t *testing.T) {
+	t.Run("SetEntrypageID", func(t *testing.T) {
 		obj := &TransferDetailRecord{}
-		var fernTestValueEntrypageId *EntrypageId
-		obj.SetEntrypageId(fernTestValueEntrypageId)
-		assert.Equal(t, fernTestValueEntrypageId, obj.EntrypageId)
+		var fernTestValueEntrypageID *EntrypageID
+		obj.SetEntrypageID(fernTestValueEntrypageID)
+		assert.Equal(t, fernTestValueEntrypageID, obj.EntrypageID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetExternalPaypointId", func(t *testing.T) {
+	t.Run("SetExternalPaypointID", func(t *testing.T) {
 		obj := &TransferDetailRecord{}
-		var fernTestValueExternalPaypointId *ExternalPaypointId
-		obj.SetExternalPaypointId(fernTestValueExternalPaypointId)
-		assert.Equal(t, fernTestValueExternalPaypointId, obj.ExternalPaypointId)
+		var fernTestValueExternalPaypointID *ExternalPaypointID
+		obj.SetExternalPaypointID(fernTestValueExternalPaypointID)
+		assert.Equal(t, fernTestValueExternalPaypointID, obj.ExternalPaypointID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -10051,11 +10051,11 @@ func TestSettersTransferDetailRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetDeviceId", func(t *testing.T) {
+	t.Run("SetDeviceID", func(t *testing.T) {
 		obj := &TransferDetailRecord{}
-		var fernTestValueDeviceId *DeviceId
-		obj.SetDeviceId(fernTestValueDeviceId)
-		assert.Equal(t, fernTestValueDeviceId, obj.DeviceId)
+		var fernTestValueDeviceID *DeviceID
+		obj.SetDeviceID(fernTestValueDeviceID)
+		assert.Equal(t, fernTestValueDeviceID, obj.DeviceID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -10075,11 +10075,11 @@ func TestSettersTransferDetailRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetIpAddress", func(t *testing.T) {
+	t.Run("SetIPAddress", func(t *testing.T) {
 		obj := &TransferDetailRecord{}
-		var fernTestValueIpAddress *IpAddress
-		obj.SetIpAddress(fernTestValueIpAddress)
-		assert.Equal(t, fernTestValueIpAddress, obj.IpAddress)
+		var fernTestValueIPAddress *IPAddress
+		obj.SetIPAddress(fernTestValueIPAddress)
+		assert.Equal(t, fernTestValueIPAddress, obj.IPAddress)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -10102,28 +10102,28 @@ func TestSettersTransferDetailRecord(t *testing.T) {
 }
 
 func TestGettersTransferDetailRecord(t *testing.T) {
-	t.Run("GetTransferDetailId", func(t *testing.T) {
+	t.Run("GetTransferDetailID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
 		var expected *int
-		obj.TransferDetailId = expected
+		obj.TransferDetailID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetTransferDetailId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetTransferDetailID(), "getter should return the property value")
 	})
 
-	t.Run("GetTransferDetailId_NilValue", func(t *testing.T) {
+	t.Run("GetTransferDetailID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		obj.TransferDetailId = nil
+		obj.TransferDetailID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetTransferDetailId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetTransferDetailID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetTransferDetailId_NilReceiver", func(t *testing.T) {
+	t.Run("GetTransferDetailID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -10132,31 +10132,31 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetTransferDetailId() // Should return zero value
+		_ = obj.GetTransferDetailID() // Should return zero value
 	})
 
-	t.Run("GetTransferId", func(t *testing.T) {
+	t.Run("GetTransferID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
 		var expected *int
-		obj.TransferId = expected
+		obj.TransferID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetTransferId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetTransferID(), "getter should return the property value")
 	})
 
-	t.Run("GetTransferId_NilValue", func(t *testing.T) {
+	t.Run("GetTransferID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		obj.TransferId = nil
+		obj.TransferID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetTransferId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetTransferID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetTransferId_NilReceiver", func(t *testing.T) {
+	t.Run("GetTransferID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -10165,31 +10165,31 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetTransferId() // Should return zero value
+		_ = obj.GetTransferID() // Should return zero value
 	})
 
-	t.Run("GetTransactionId", func(t *testing.T) {
+	t.Run("GetTransactionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
 		var expected *string
-		obj.TransactionId = expected
+		obj.TransactionID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetTransactionId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetTransactionID(), "getter should return the property value")
 	})
 
-	t.Run("GetTransactionId_NilValue", func(t *testing.T) {
+	t.Run("GetTransactionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		obj.TransactionId = nil
+		obj.TransactionID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetTransactionId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetTransactionID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetTransactionId_NilReceiver", func(t *testing.T) {
+	t.Run("GetTransactionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -10198,7 +10198,7 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetTransactionId() // Should return zero value
+		_ = obj.GetTransactionID() // Should return zero value
 	})
 
 	t.Run("GetTransactionNumber", func(t *testing.T) {
@@ -10828,28 +10828,28 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 		_ = obj.GetPaypointEntryname() // Should return zero value
 	})
 
-	t.Run("GetPaymentTransId", func(t *testing.T) {
+	t.Run("GetPaymentTransID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
 		var expected *string
-		obj.PaymentTransId = expected
+		obj.PaymentTransID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetPaymentTransId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetPaymentTransID(), "getter should return the property value")
 	})
 
-	t.Run("GetPaymentTransId_NilValue", func(t *testing.T) {
+	t.Run("GetPaymentTransID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		obj.PaymentTransId = nil
+		obj.PaymentTransID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetPaymentTransId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetPaymentTransID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetPaymentTransId_NilReceiver", func(t *testing.T) {
+	t.Run("GetPaymentTransID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -10858,7 +10858,7 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetPaymentTransId() // Should return zero value
+		_ = obj.GetPaymentTransID() // Should return zero value
 	})
 
 	t.Run("GetConnectorName", func(t *testing.T) {
@@ -10927,28 +10927,28 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 		_ = obj.GetExternalProcessorInformation() // Should return zero value
 	})
 
-	t.Run("GetGatewayTransId", func(t *testing.T) {
+	t.Run("GetGatewayTransID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
 		var expected *string
-		obj.GatewayTransId = expected
+		obj.GatewayTransID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetGatewayTransId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetGatewayTransID(), "getter should return the property value")
 	})
 
-	t.Run("GetGatewayTransId_NilValue", func(t *testing.T) {
+	t.Run("GetGatewayTransID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		obj.GatewayTransId = nil
+		obj.GatewayTransID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetGatewayTransId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetGatewayTransID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetGatewayTransId_NilReceiver", func(t *testing.T) {
+	t.Run("GetGatewayTransID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -10957,31 +10957,31 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetGatewayTransId() // Should return zero value
+		_ = obj.GetGatewayTransID() // Should return zero value
 	})
 
-	t.Run("GetOrderId", func(t *testing.T) {
+	t.Run("GetOrderID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var expected *OrderId
-		obj.OrderId = expected
+		var expected *OrderID
+		obj.OrderID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetOrderId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetOrderID(), "getter should return the property value")
 	})
 
-	t.Run("GetOrderId_NilValue", func(t *testing.T) {
+	t.Run("GetOrderID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		obj.OrderId = nil
+		obj.OrderID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetOrderId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetOrderID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetOrderId_NilReceiver", func(t *testing.T) {
+	t.Run("GetOrderID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -10990,7 +10990,7 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetOrderId() // Should return zero value
+		_ = obj.GetOrderID() // Should return zero value
 	})
 
 	t.Run("GetMethod", func(t *testing.T) {
@@ -11092,28 +11092,28 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 		_ = obj.GetBatchAmount() // Should return zero value
 	})
 
-	t.Run("GetPayorId", func(t *testing.T) {
+	t.Run("GetPayorID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var expected *PayorId
-		obj.PayorId = expected
+		var expected *PayorID
+		obj.PayorID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetPayorId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetPayorID(), "getter should return the property value")
 	})
 
-	t.Run("GetPayorId_NilValue", func(t *testing.T) {
+	t.Run("GetPayorID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		obj.PayorId = nil
+		obj.PayorID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetPayorId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetPayorID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetPayorId_NilReceiver", func(t *testing.T) {
+	t.Run("GetPayorID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -11122,7 +11122,7 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetPayorId() // Should return zero value
+		_ = obj.GetPayorID() // Should return zero value
 	})
 
 	t.Run("GetPaymentData", func(t *testing.T) {
@@ -11191,28 +11191,28 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 		_ = obj.GetTransStatus() // Should return zero value
 	})
 
-	t.Run("GetPaypointId", func(t *testing.T) {
+	t.Run("GetPaypointID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var expected *PaypointId
-		obj.PaypointId = expected
+		var expected *PaypointID
+		obj.PaypointID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetPaypointId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetPaypointID(), "getter should return the property value")
 	})
 
-	t.Run("GetPaypointId_NilValue", func(t *testing.T) {
+	t.Run("GetPaypointID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		obj.PaypointId = nil
+		obj.PaypointID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetPaypointId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetPaypointID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetPaypointId_NilReceiver", func(t *testing.T) {
+	t.Run("GetPaypointID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -11221,7 +11221,7 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetPaypointId() // Should return zero value
+		_ = obj.GetPaypointID() // Should return zero value
 	})
 
 	t.Run("GetTotalAmount", func(t *testing.T) {
@@ -11488,28 +11488,28 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 		_ = obj.GetScheduleReference() // Should return zero value
 	})
 
-	t.Run("GetOrgId", func(t *testing.T) {
+	t.Run("GetOrgID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
 		var expected *Orgid
-		obj.OrgId = expected
+		obj.OrgID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetOrgId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetOrgID(), "getter should return the property value")
 	})
 
-	t.Run("GetOrgId_NilValue", func(t *testing.T) {
+	t.Run("GetOrgID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		obj.OrgId = nil
+		obj.OrgID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetOrgId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetOrgID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetOrgId_NilReceiver", func(t *testing.T) {
+	t.Run("GetOrgID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -11518,31 +11518,31 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetOrgId() // Should return zero value
+		_ = obj.GetOrgID() // Should return zero value
 	})
 
-	t.Run("GetRefundId", func(t *testing.T) {
+	t.Run("GetRefundID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var expected *RefundId
-		obj.RefundId = expected
+		var expected *RefundID
+		obj.RefundID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetRefundId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetRefundID(), "getter should return the property value")
 	})
 
-	t.Run("GetRefundId_NilValue", func(t *testing.T) {
+	t.Run("GetRefundID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		obj.RefundId = nil
+		obj.RefundID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetRefundId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetRefundID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetRefundId_NilReceiver", func(t *testing.T) {
+	t.Run("GetRefundID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -11551,31 +11551,31 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetRefundId() // Should return zero value
+		_ = obj.GetRefundID() // Should return zero value
 	})
 
-	t.Run("GetReturnedId", func(t *testing.T) {
+	t.Run("GetReturnedID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var expected *ReturnedId
-		obj.ReturnedId = expected
+		var expected *ReturnedID
+		obj.ReturnedID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetReturnedId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetReturnedID(), "getter should return the property value")
 	})
 
-	t.Run("GetReturnedId_NilValue", func(t *testing.T) {
+	t.Run("GetReturnedID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		obj.ReturnedId = nil
+		obj.ReturnedID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetReturnedId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetReturnedID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetReturnedId_NilReceiver", func(t *testing.T) {
+	t.Run("GetReturnedID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -11584,31 +11584,31 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetReturnedId() // Should return zero value
+		_ = obj.GetReturnedID() // Should return zero value
 	})
 
-	t.Run("GetChargebackId", func(t *testing.T) {
+	t.Run("GetChargebackID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var expected *ChargebackId
-		obj.ChargebackId = expected
+		var expected *ChargebackID
+		obj.ChargebackID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetChargebackId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetChargebackID(), "getter should return the property value")
 	})
 
-	t.Run("GetChargebackId_NilValue", func(t *testing.T) {
+	t.Run("GetChargebackID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		obj.ChargebackId = nil
+		obj.ChargebackID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetChargebackId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetChargebackID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetChargebackId_NilReceiver", func(t *testing.T) {
+	t.Run("GetChargebackID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -11617,31 +11617,31 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetChargebackId() // Should return zero value
+		_ = obj.GetChargebackID() // Should return zero value
 	})
 
-	t.Run("GetRetrievalId", func(t *testing.T) {
+	t.Run("GetRetrievalID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var expected *RetrievalId
-		obj.RetrievalId = expected
+		var expected *RetrievalID
+		obj.RetrievalID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetRetrievalId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetRetrievalID(), "getter should return the property value")
 	})
 
-	t.Run("GetRetrievalId_NilValue", func(t *testing.T) {
+	t.Run("GetRetrievalID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		obj.RetrievalId = nil
+		obj.RetrievalID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetRetrievalId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetRetrievalID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetRetrievalId_NilReceiver", func(t *testing.T) {
+	t.Run("GetRetrievalID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -11650,7 +11650,7 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetRetrievalId() // Should return zero value
+		_ = obj.GetRetrievalID() // Should return zero value
 	})
 
 	t.Run("GetTransAdditionalData", func(t *testing.T) {
@@ -11709,28 +11709,28 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 		_ = obj.GetInvoiceData() // Should return zero value
 	})
 
-	t.Run("GetEntrypageId", func(t *testing.T) {
+	t.Run("GetEntrypageID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var expected *EntrypageId
-		obj.EntrypageId = expected
+		var expected *EntrypageID
+		obj.EntrypageID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetEntrypageId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetEntrypageID(), "getter should return the property value")
 	})
 
-	t.Run("GetEntrypageId_NilValue", func(t *testing.T) {
+	t.Run("GetEntrypageID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		obj.EntrypageId = nil
+		obj.EntrypageID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetEntrypageId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetEntrypageID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetEntrypageId_NilReceiver", func(t *testing.T) {
+	t.Run("GetEntrypageID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -11739,31 +11739,31 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetEntrypageId() // Should return zero value
+		_ = obj.GetEntrypageID() // Should return zero value
 	})
 
-	t.Run("GetExternalPaypointId", func(t *testing.T) {
+	t.Run("GetExternalPaypointID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var expected *ExternalPaypointId
-		obj.ExternalPaypointId = expected
+		var expected *ExternalPaypointID
+		obj.ExternalPaypointID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetExternalPaypointId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetExternalPaypointID(), "getter should return the property value")
 	})
 
-	t.Run("GetExternalPaypointId_NilValue", func(t *testing.T) {
+	t.Run("GetExternalPaypointID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		obj.ExternalPaypointId = nil
+		obj.ExternalPaypointID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetExternalPaypointId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetExternalPaypointID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetExternalPaypointId_NilReceiver", func(t *testing.T) {
+	t.Run("GetExternalPaypointID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -11772,7 +11772,7 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetExternalPaypointId() // Should return zero value
+		_ = obj.GetExternalPaypointID() // Should return zero value
 	})
 
 	t.Run("GetIsValidatedAch", func(t *testing.T) {
@@ -12204,28 +12204,28 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 		_ = obj.GetRiskActionCode() // Should return zero value
 	})
 
-	t.Run("GetDeviceId", func(t *testing.T) {
+	t.Run("GetDeviceID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var expected *DeviceId
-		obj.DeviceId = expected
+		var expected *DeviceID
+		obj.DeviceID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetDeviceId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetDeviceID(), "getter should return the property value")
 	})
 
-	t.Run("GetDeviceId_NilValue", func(t *testing.T) {
+	t.Run("GetDeviceID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		obj.DeviceId = nil
+		obj.DeviceID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetDeviceId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetDeviceID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetDeviceId_NilReceiver", func(t *testing.T) {
+	t.Run("GetDeviceID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -12234,7 +12234,7 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetDeviceId() // Should return zero value
+		_ = obj.GetDeviceID() // Should return zero value
 	})
 
 	t.Run("GetAchSecCode", func(t *testing.T) {
@@ -12303,28 +12303,28 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 		_ = obj.GetAchHolderType() // Should return zero value
 	})
 
-	t.Run("GetIpAddress", func(t *testing.T) {
+	t.Run("GetIPAddress", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var expected *IpAddress
-		obj.IpAddress = expected
+		var expected *IPAddress
+		obj.IPAddress = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetIpAddress(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetIPAddress(), "getter should return the property value")
 	})
 
-	t.Run("GetIpAddress_NilValue", func(t *testing.T) {
+	t.Run("GetIPAddress_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		obj.IpAddress = nil
+		obj.IPAddress = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetIpAddress(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetIPAddress(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetIpAddress_NilReceiver", func(t *testing.T) {
+	t.Run("GetIPAddress_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -12333,7 +12333,7 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetIpAddress() // Should return zero value
+		_ = obj.GetIPAddress() // Should return zero value
 	})
 
 	t.Run("GetIsSameDayAch", func(t *testing.T) {
@@ -12405,14 +12405,14 @@ func TestGettersTransferDetailRecord(t *testing.T) {
 }
 
 func TestSettersMarkExplicitTransferDetailRecord(t *testing.T) {
-	t.Run("SetTransferDetailId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetTransferDetailID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var fernTestValueTransferDetailId *int
+		var fernTestValueTransferDetailID *int
 
 		// Act
-		obj.SetTransferDetailId(fernTestValueTransferDetailId)
+		obj.SetTransferDetailID(fernTestValueTransferDetailID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -12436,14 +12436,14 @@ func TestSettersMarkExplicitTransferDetailRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetTransferId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetTransferID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var fernTestValueTransferId *int
+		var fernTestValueTransferID *int
 
 		// Act
-		obj.SetTransferId(fernTestValueTransferId)
+		obj.SetTransferID(fernTestValueTransferID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -12467,14 +12467,14 @@ func TestSettersMarkExplicitTransferDetailRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetTransactionId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetTransactionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var fernTestValueTransactionId *string
+		var fernTestValueTransactionID *string
 
 		// Act
-		obj.SetTransactionId(fernTestValueTransactionId)
+		obj.SetTransactionID(fernTestValueTransactionID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -13087,14 +13087,14 @@ func TestSettersMarkExplicitTransferDetailRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetPaymentTransId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetPaymentTransID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var fernTestValuePaymentTransId *string
+		var fernTestValuePaymentTransID *string
 
 		// Act
-		obj.SetPaymentTransId(fernTestValuePaymentTransId)
+		obj.SetPaymentTransID(fernTestValuePaymentTransID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -13180,14 +13180,14 @@ func TestSettersMarkExplicitTransferDetailRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetGatewayTransId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetGatewayTransID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var fernTestValueGatewayTransId *string
+		var fernTestValueGatewayTransID *string
 
 		// Act
-		obj.SetGatewayTransId(fernTestValueGatewayTransId)
+		obj.SetGatewayTransID(fernTestValueGatewayTransID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -13211,14 +13211,14 @@ func TestSettersMarkExplicitTransferDetailRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetOrderId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetOrderID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var fernTestValueOrderId *OrderId
+		var fernTestValueOrderID *OrderID
 
 		// Act
-		obj.SetOrderId(fernTestValueOrderId)
+		obj.SetOrderID(fernTestValueOrderID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -13335,14 +13335,14 @@ func TestSettersMarkExplicitTransferDetailRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetPayorId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetPayorID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var fernTestValuePayorId *PayorId
+		var fernTestValuePayorID *PayorID
 
 		// Act
-		obj.SetPayorId(fernTestValuePayorId)
+		obj.SetPayorID(fernTestValuePayorID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -13428,14 +13428,14 @@ func TestSettersMarkExplicitTransferDetailRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetPaypointId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetPaypointID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var fernTestValuePaypointId *PaypointId
+		var fernTestValuePaypointID *PaypointID
 
 		// Act
-		obj.SetPaypointId(fernTestValuePaypointId)
+		obj.SetPaypointID(fernTestValuePaypointID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -13707,14 +13707,14 @@ func TestSettersMarkExplicitTransferDetailRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetOrgId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetOrgID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var fernTestValueOrgId *Orgid
+		var fernTestValueOrgID *Orgid
 
 		// Act
-		obj.SetOrgId(fernTestValueOrgId)
+		obj.SetOrgID(fernTestValueOrgID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -13738,14 +13738,14 @@ func TestSettersMarkExplicitTransferDetailRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetRefundId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetRefundID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var fernTestValueRefundId *RefundId
+		var fernTestValueRefundID *RefundID
 
 		// Act
-		obj.SetRefundId(fernTestValueRefundId)
+		obj.SetRefundID(fernTestValueRefundID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -13769,14 +13769,14 @@ func TestSettersMarkExplicitTransferDetailRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetReturnedId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetReturnedID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var fernTestValueReturnedId *ReturnedId
+		var fernTestValueReturnedID *ReturnedID
 
 		// Act
-		obj.SetReturnedId(fernTestValueReturnedId)
+		obj.SetReturnedID(fernTestValueReturnedID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -13800,14 +13800,14 @@ func TestSettersMarkExplicitTransferDetailRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetChargebackId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetChargebackID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var fernTestValueChargebackId *ChargebackId
+		var fernTestValueChargebackID *ChargebackID
 
 		// Act
-		obj.SetChargebackId(fernTestValueChargebackId)
+		obj.SetChargebackID(fernTestValueChargebackID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -13831,14 +13831,14 @@ func TestSettersMarkExplicitTransferDetailRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetRetrievalId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetRetrievalID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var fernTestValueRetrievalId *RetrievalId
+		var fernTestValueRetrievalID *RetrievalID
 
 		// Act
-		obj.SetRetrievalId(fernTestValueRetrievalId)
+		obj.SetRetrievalID(fernTestValueRetrievalID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -13924,14 +13924,14 @@ func TestSettersMarkExplicitTransferDetailRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetEntrypageId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetEntrypageID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var fernTestValueEntrypageId *EntrypageId
+		var fernTestValueEntrypageID *EntrypageID
 
 		// Act
-		obj.SetEntrypageId(fernTestValueEntrypageId)
+		obj.SetEntrypageID(fernTestValueEntrypageID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -13955,14 +13955,14 @@ func TestSettersMarkExplicitTransferDetailRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetExternalPaypointId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetExternalPaypointID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var fernTestValueExternalPaypointId *ExternalPaypointId
+		var fernTestValueExternalPaypointID *ExternalPaypointID
 
 		// Act
-		obj.SetExternalPaypointId(fernTestValueExternalPaypointId)
+		obj.SetExternalPaypointID(fernTestValueExternalPaypointID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -14389,14 +14389,14 @@ func TestSettersMarkExplicitTransferDetailRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetDeviceId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetDeviceID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var fernTestValueDeviceId *DeviceId
+		var fernTestValueDeviceID *DeviceID
 
 		// Act
-		obj.SetDeviceId(fernTestValueDeviceId)
+		obj.SetDeviceID(fernTestValueDeviceID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -14482,14 +14482,14 @@ func TestSettersMarkExplicitTransferDetailRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetIpAddress_MarksExplicit", func(t *testing.T) {
+	t.Run("SetIPAddress_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferDetailRecord{}
-		var fernTestValueIpAddress *IpAddress
+		var fernTestValueIPAddress *IPAddress
 
 		// Act
-		obj.SetIpAddress(fernTestValueIpAddress)
+		obj.SetIPAddress(fernTestValueIPAddress)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -14803,11 +14803,11 @@ func TestSettersMarkExplicitTransferOutBankAccount(t *testing.T) {
 }
 
 func TestSettersTransferOutDetailBill(t *testing.T) {
-	t.Run("SetBillId", func(t *testing.T) {
+	t.Run("SetBillID", func(t *testing.T) {
 		obj := &TransferOutDetailBill{}
-		var fernTestValueBillId *int
-		obj.SetBillId(fernTestValueBillId)
-		assert.Equal(t, fernTestValueBillId, obj.BillId)
+		var fernTestValueBillID *int
+		obj.SetBillID(fernTestValueBillID)
+		assert.Equal(t, fernTestValueBillID, obj.BillID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -14926,28 +14926,28 @@ func TestSettersTransferOutDetailBill(t *testing.T) {
 }
 
 func TestGettersTransferOutDetailBill(t *testing.T) {
-	t.Run("GetBillId", func(t *testing.T) {
+	t.Run("GetBillID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailBill{}
 		var expected *int
-		obj.BillId = expected
+		obj.BillID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetBillId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetBillID(), "getter should return the property value")
 	})
 
-	t.Run("GetBillId_NilValue", func(t *testing.T) {
+	t.Run("GetBillID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailBill{}
-		obj.BillId = nil
+		obj.BillID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetBillId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetBillID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetBillId_NilReceiver", func(t *testing.T) {
+	t.Run("GetBillID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutDetailBill
 		// Should not panic - getters should handle nil receiver gracefully
@@ -14956,7 +14956,7 @@ func TestGettersTransferOutDetailBill(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetBillId() // Should return zero value
+		_ = obj.GetBillID() // Should return zero value
 	})
 
 	t.Run("GetLotNumber", func(t *testing.T) {
@@ -15424,14 +15424,14 @@ func TestGettersTransferOutDetailBill(t *testing.T) {
 }
 
 func TestSettersMarkExplicitTransferOutDetailBill(t *testing.T) {
-	t.Run("SetBillId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetBillID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailBill{}
-		var fernTestValueBillId *int
+		var fernTestValueBillID *int
 
 		// Act
-		obj.SetBillId(fernTestValueBillId)
+		obj.SetBillID(fernTestValueBillID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -16679,11 +16679,11 @@ func TestSettersTransferOutDetailPaymentData(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetStoredId", func(t *testing.T) {
+	t.Run("SetStoredID", func(t *testing.T) {
 		obj := &TransferOutDetailPaymentData{}
-		var fernTestValueStoredId *string
-		obj.SetStoredId(fernTestValueStoredId)
-		assert.Equal(t, fernTestValueStoredId, obj.StoredId)
+		var fernTestValueStoredID *string
+		obj.SetStoredID(fernTestValueStoredID)
+		assert.Equal(t, fernTestValueStoredID, obj.StoredID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -16751,11 +16751,11 @@ func TestSettersTransferOutDetailPaymentData(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetAccountId", func(t *testing.T) {
+	t.Run("SetAccountID", func(t *testing.T) {
 		obj := &TransferOutDetailPaymentData{}
-		var fernTestValueAccountId *string
-		obj.SetAccountId(fernTestValueAccountId)
-		assert.Equal(t, fernTestValueAccountId, obj.AccountId)
+		var fernTestValueAccountID *string
+		obj.SetAccountID(fernTestValueAccountID)
+		assert.Equal(t, fernTestValueAccountID, obj.AccountID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -16951,28 +16951,28 @@ func TestGettersTransferOutDetailPaymentData(t *testing.T) {
 		_ = obj.GetHolderName() // Should return zero value
 	})
 
-	t.Run("GetStoredId", func(t *testing.T) {
+	t.Run("GetStoredID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailPaymentData{}
 		var expected *string
-		obj.StoredId = expected
+		obj.StoredID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetStoredId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetStoredID(), "getter should return the property value")
 	})
 
-	t.Run("GetStoredId_NilValue", func(t *testing.T) {
+	t.Run("GetStoredID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailPaymentData{}
-		obj.StoredId = nil
+		obj.StoredID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetStoredId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetStoredID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetStoredId_NilReceiver", func(t *testing.T) {
+	t.Run("GetStoredID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutDetailPaymentData
 		// Should not panic - getters should handle nil receiver gracefully
@@ -16981,7 +16981,7 @@ func TestGettersTransferOutDetailPaymentData(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetStoredId() // Should return zero value
+		_ = obj.GetStoredID() // Should return zero value
 	})
 
 	t.Run("GetInitiator", func(t *testing.T) {
@@ -17238,28 +17238,28 @@ func TestGettersTransferOutDetailPaymentData(t *testing.T) {
 		_ = obj.GetPayorData() // Should return zero value
 	})
 
-	t.Run("GetAccountId", func(t *testing.T) {
+	t.Run("GetAccountID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailPaymentData{}
 		var expected *string
-		obj.AccountId = expected
+		obj.AccountID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetAccountId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetAccountID(), "getter should return the property value")
 	})
 
-	t.Run("GetAccountId_NilValue", func(t *testing.T) {
+	t.Run("GetAccountID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailPaymentData{}
-		obj.AccountId = nil
+		obj.AccountID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetAccountId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetAccountID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetAccountId_NilReceiver", func(t *testing.T) {
+	t.Run("GetAccountID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutDetailPaymentData
 		// Should not panic - getters should handle nil receiver gracefully
@@ -17268,7 +17268,7 @@ func TestGettersTransferOutDetailPaymentData(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetAccountId() // Should return zero value
+		_ = obj.GetAccountID() // Should return zero value
 	})
 
 	t.Run("GetBankAccount", func(t *testing.T) {
@@ -17518,14 +17518,14 @@ func TestSettersMarkExplicitTransferOutDetailPaymentData(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetStoredId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetStoredID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailPaymentData{}
-		var fernTestValueStoredId *string
+		var fernTestValueStoredID *string
 
 		// Act
-		obj.SetStoredId(fernTestValueStoredId)
+		obj.SetStoredID(fernTestValueStoredID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -17797,14 +17797,14 @@ func TestSettersMarkExplicitTransferOutDetailPaymentData(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetAccountId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetAccountID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailPaymentData{}
-		var fernTestValueAccountId *string
+		var fernTestValueAccountID *string
 
 		// Act
-		obj.SetAccountId(fernTestValueAccountId)
+		obj.SetAccountID(fernTestValueAccountID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -18077,35 +18077,35 @@ func TestSettersMarkExplicitTransferOutDetailQueryResponse(t *testing.T) {
 }
 
 func TestSettersTransferOutDetailRecord(t *testing.T) {
-	t.Run("SetTransferDetailId", func(t *testing.T) {
+	t.Run("SetTransferDetailID", func(t *testing.T) {
 		obj := &TransferOutDetailRecord{}
-		var fernTestValueTransferDetailId *int
-		obj.SetTransferDetailId(fernTestValueTransferDetailId)
-		assert.Equal(t, fernTestValueTransferDetailId, obj.TransferDetailId)
+		var fernTestValueTransferDetailID *int
+		obj.SetTransferDetailID(fernTestValueTransferDetailID)
+		assert.Equal(t, fernTestValueTransferDetailID, obj.TransferDetailID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetTransferId", func(t *testing.T) {
+	t.Run("SetTransferID", func(t *testing.T) {
 		obj := &TransferOutDetailRecord{}
-		var fernTestValueTransferId *int
-		obj.SetTransferId(fernTestValueTransferId)
-		assert.Equal(t, fernTestValueTransferId, obj.TransferId)
+		var fernTestValueTransferID *int
+		obj.SetTransferID(fernTestValueTransferID)
+		assert.Equal(t, fernTestValueTransferID, obj.TransferID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetTransactionId", func(t *testing.T) {
+	t.Run("SetTransactionID", func(t *testing.T) {
 		obj := &TransferOutDetailRecord{}
-		var fernTestValueTransactionId *string
-		obj.SetTransactionId(fernTestValueTransactionId)
-		assert.Equal(t, fernTestValueTransactionId, obj.TransactionId)
+		var fernTestValueTransactionID *string
+		obj.SetTransactionID(fernTestValueTransactionID)
+		assert.Equal(t, fernTestValueTransactionID, obj.TransactionID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetIdOut", func(t *testing.T) {
+	t.Run("SetIDOut", func(t *testing.T) {
 		obj := &TransferOutDetailRecord{}
-		var fernTestValueIdOut *int
-		obj.SetIdOut(fernTestValueIdOut)
-		assert.Equal(t, fernTestValueIdOut, obj.IdOut)
+		var fernTestValueIDOut *int
+		obj.SetIDOut(fernTestValueIDOut)
+		assert.Equal(t, fernTestValueIDOut, obj.IDOut)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -18245,11 +18245,11 @@ func TestSettersTransferOutDetailRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetPaypointId", func(t *testing.T) {
+	t.Run("SetPaypointID", func(t *testing.T) {
 		obj := &TransferOutDetailRecord{}
-		var fernTestValuePaypointId *int
-		obj.SetPaypointId(fernTestValuePaypointId)
-		assert.Equal(t, fernTestValuePaypointId, obj.PaypointId)
+		var fernTestValuePaypointID *int
+		obj.SetPaypointID(fernTestValuePaypointID)
+		assert.Equal(t, fernTestValuePaypointID, obj.PaypointID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -18261,19 +18261,19 @@ func TestSettersTransferOutDetailRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetPaymentId", func(t *testing.T) {
+	t.Run("SetPaymentID", func(t *testing.T) {
 		obj := &TransferOutDetailRecord{}
-		var fernTestValuePaymentId *string
-		obj.SetPaymentId(fernTestValuePaymentId)
-		assert.Equal(t, fernTestValuePaymentId, obj.PaymentId)
+		var fernTestValuePaymentID *string
+		obj.SetPaymentID(fernTestValuePaymentID)
+		assert.Equal(t, fernTestValuePaymentID, obj.PaymentID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetTransId", func(t *testing.T) {
+	t.Run("SetTransID", func(t *testing.T) {
 		obj := &TransferOutDetailRecord{}
-		var fernTestValueTransId *string
-		obj.SetTransId(fernTestValueTransId)
-		assert.Equal(t, fernTestValueTransId, obj.TransId)
+		var fernTestValueTransID *string
+		obj.SetTransID(fernTestValueTransID)
+		assert.Equal(t, fernTestValueTransID, obj.TransID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -18357,11 +18357,11 @@ func TestSettersTransferOutDetailRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetParentOrgId", func(t *testing.T) {
+	t.Run("SetParentOrgID", func(t *testing.T) {
 		obj := &TransferOutDetailRecord{}
-		var fernTestValueParentOrgId *int
-		obj.SetParentOrgId(fernTestValueParentOrgId)
-		assert.Equal(t, fernTestValueParentOrgId, obj.ParentOrgId)
+		var fernTestValueParentOrgID *int
+		obj.SetParentOrgID(fernTestValueParentOrgID)
+		assert.Equal(t, fernTestValueParentOrgID, obj.ParentOrgID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -18437,11 +18437,11 @@ func TestSettersTransferOutDetailRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetExternalPaypointId", func(t *testing.T) {
+	t.Run("SetExternalPaypointID", func(t *testing.T) {
 		obj := &TransferOutDetailRecord{}
-		var fernTestValueExternalPaypointId *string
-		obj.SetExternalPaypointId(fernTestValueExternalPaypointId)
-		assert.Equal(t, fernTestValueExternalPaypointId, obj.ExternalPaypointId)
+		var fernTestValueExternalPaypointID *string
+		obj.SetExternalPaypointID(fernTestValueExternalPaypointID)
+		assert.Equal(t, fernTestValueExternalPaypointID, obj.ExternalPaypointID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -18461,11 +18461,11 @@ func TestSettersTransferOutDetailRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetBatchId", func(t *testing.T) {
+	t.Run("SetBatchID", func(t *testing.T) {
 		obj := &TransferOutDetailRecord{}
-		var fernTestValueBatchId *int
-		obj.SetBatchId(fernTestValueBatchId)
-		assert.Equal(t, fernTestValueBatchId, obj.BatchId)
+		var fernTestValueBatchID *int
+		obj.SetBatchID(fernTestValueBatchID)
+		assert.Equal(t, fernTestValueBatchID, obj.BatchID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -18485,11 +18485,11 @@ func TestSettersTransferOutDetailRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetScheduleId", func(t *testing.T) {
+	t.Run("SetScheduleID", func(t *testing.T) {
 		obj := &TransferOutDetailRecord{}
-		var fernTestValueScheduleId *int
-		obj.SetScheduleId(fernTestValueScheduleId)
-		assert.Equal(t, fernTestValueScheduleId, obj.ScheduleId)
+		var fernTestValueScheduleID *int
+		obj.SetScheduleID(fernTestValueScheduleID)
+		assert.Equal(t, fernTestValueScheduleID, obj.ScheduleID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -18584,28 +18584,28 @@ func TestSettersTransferOutDetailRecord(t *testing.T) {
 }
 
 func TestGettersTransferOutDetailRecord(t *testing.T) {
-	t.Run("GetTransferDetailId", func(t *testing.T) {
+	t.Run("GetTransferDetailID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
 		var expected *int
-		obj.TransferDetailId = expected
+		obj.TransferDetailID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetTransferDetailId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetTransferDetailID(), "getter should return the property value")
 	})
 
-	t.Run("GetTransferDetailId_NilValue", func(t *testing.T) {
+	t.Run("GetTransferDetailID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
-		obj.TransferDetailId = nil
+		obj.TransferDetailID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetTransferDetailId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetTransferDetailID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetTransferDetailId_NilReceiver", func(t *testing.T) {
+	t.Run("GetTransferDetailID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -18614,31 +18614,31 @@ func TestGettersTransferOutDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetTransferDetailId() // Should return zero value
+		_ = obj.GetTransferDetailID() // Should return zero value
 	})
 
-	t.Run("GetTransferId", func(t *testing.T) {
+	t.Run("GetTransferID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
 		var expected *int
-		obj.TransferId = expected
+		obj.TransferID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetTransferId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetTransferID(), "getter should return the property value")
 	})
 
-	t.Run("GetTransferId_NilValue", func(t *testing.T) {
+	t.Run("GetTransferID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
-		obj.TransferId = nil
+		obj.TransferID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetTransferId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetTransferID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetTransferId_NilReceiver", func(t *testing.T) {
+	t.Run("GetTransferID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -18647,31 +18647,31 @@ func TestGettersTransferOutDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetTransferId() // Should return zero value
+		_ = obj.GetTransferID() // Should return zero value
 	})
 
-	t.Run("GetTransactionId", func(t *testing.T) {
+	t.Run("GetTransactionID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
 		var expected *string
-		obj.TransactionId = expected
+		obj.TransactionID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetTransactionId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetTransactionID(), "getter should return the property value")
 	})
 
-	t.Run("GetTransactionId_NilValue", func(t *testing.T) {
+	t.Run("GetTransactionID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
-		obj.TransactionId = nil
+		obj.TransactionID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetTransactionId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetTransactionID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetTransactionId_NilReceiver", func(t *testing.T) {
+	t.Run("GetTransactionID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -18680,31 +18680,31 @@ func TestGettersTransferOutDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetTransactionId() // Should return zero value
+		_ = obj.GetTransactionID() // Should return zero value
 	})
 
-	t.Run("GetIdOut", func(t *testing.T) {
+	t.Run("GetIDOut", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
 		var expected *int
-		obj.IdOut = expected
+		obj.IDOut = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetIdOut(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetIDOut(), "getter should return the property value")
 	})
 
-	t.Run("GetIdOut_NilValue", func(t *testing.T) {
+	t.Run("GetIDOut_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
-		obj.IdOut = nil
+		obj.IDOut = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetIdOut(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetIDOut(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetIdOut_NilReceiver", func(t *testing.T) {
+	t.Run("GetIDOut_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -18713,7 +18713,7 @@ func TestGettersTransferOutDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetIdOut() // Should return zero value
+		_ = obj.GetIDOut() // Should return zero value
 	})
 
 	t.Run("GetMethod", func(t *testing.T) {
@@ -19277,28 +19277,28 @@ func TestGettersTransferOutDetailRecord(t *testing.T) {
 		_ = obj.GetPaypointLegalname() // Should return zero value
 	})
 
-	t.Run("GetPaypointId", func(t *testing.T) {
+	t.Run("GetPaypointID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
 		var expected *int
-		obj.PaypointId = expected
+		obj.PaypointID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetPaypointId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetPaypointID(), "getter should return the property value")
 	})
 
-	t.Run("GetPaypointId_NilValue", func(t *testing.T) {
+	t.Run("GetPaypointID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
-		obj.PaypointId = nil
+		obj.PaypointID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetPaypointId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetPaypointID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetPaypointId_NilReceiver", func(t *testing.T) {
+	t.Run("GetPaypointID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -19307,7 +19307,7 @@ func TestGettersTransferOutDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetPaypointId() // Should return zero value
+		_ = obj.GetPaypointID() // Should return zero value
 	})
 
 	t.Run("GetStatus", func(t *testing.T) {
@@ -19343,28 +19343,28 @@ func TestGettersTransferOutDetailRecord(t *testing.T) {
 		_ = obj.GetStatus() // Should return zero value
 	})
 
-	t.Run("GetPaymentId", func(t *testing.T) {
+	t.Run("GetPaymentID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
 		var expected *string
-		obj.PaymentId = expected
+		obj.PaymentID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetPaymentId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetPaymentID(), "getter should return the property value")
 	})
 
-	t.Run("GetPaymentId_NilValue", func(t *testing.T) {
+	t.Run("GetPaymentID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
-		obj.PaymentId = nil
+		obj.PaymentID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetPaymentId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetPaymentID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetPaymentId_NilReceiver", func(t *testing.T) {
+	t.Run("GetPaymentID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -19373,31 +19373,31 @@ func TestGettersTransferOutDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetPaymentId() // Should return zero value
+		_ = obj.GetPaymentID() // Should return zero value
 	})
 
-	t.Run("GetTransId", func(t *testing.T) {
+	t.Run("GetTransID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
 		var expected *string
-		obj.TransId = expected
+		obj.TransID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetTransId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetTransID(), "getter should return the property value")
 	})
 
-	t.Run("GetTransId_NilValue", func(t *testing.T) {
+	t.Run("GetTransID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
-		obj.TransId = nil
+		obj.TransID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetTransId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetTransID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetTransId_NilReceiver", func(t *testing.T) {
+	t.Run("GetTransID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -19406,7 +19406,7 @@ func TestGettersTransferOutDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetTransId() // Should return zero value
+		_ = obj.GetTransID() // Should return zero value
 	})
 
 	t.Run("GetTransStatus", func(t *testing.T) {
@@ -19739,28 +19739,28 @@ func TestGettersTransferOutDetailRecord(t *testing.T) {
 		_ = obj.GetParentOrgName() // Should return zero value
 	})
 
-	t.Run("GetParentOrgId", func(t *testing.T) {
+	t.Run("GetParentOrgID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
 		var expected *int
-		obj.ParentOrgId = expected
+		obj.ParentOrgID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetParentOrgId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetParentOrgID(), "getter should return the property value")
 	})
 
-	t.Run("GetParentOrgId_NilValue", func(t *testing.T) {
+	t.Run("GetParentOrgID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
-		obj.ParentOrgId = nil
+		obj.ParentOrgID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetParentOrgId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetParentOrgID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetParentOrgId_NilReceiver", func(t *testing.T) {
+	t.Run("GetParentOrgID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -19769,7 +19769,7 @@ func TestGettersTransferOutDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetParentOrgId() // Should return zero value
+		_ = obj.GetParentOrgID() // Should return zero value
 	})
 
 	t.Run("GetBatchNumber", func(t *testing.T) {
@@ -20069,28 +20069,28 @@ func TestGettersTransferOutDetailRecord(t *testing.T) {
 		_ = obj.GetEvents() // Should return zero value
 	})
 
-	t.Run("GetExternalPaypointId", func(t *testing.T) {
+	t.Run("GetExternalPaypointID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
 		var expected *string
-		obj.ExternalPaypointId = expected
+		obj.ExternalPaypointID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetExternalPaypointId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetExternalPaypointID(), "getter should return the property value")
 	})
 
-	t.Run("GetExternalPaypointId_NilValue", func(t *testing.T) {
+	t.Run("GetExternalPaypointID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
-		obj.ExternalPaypointId = nil
+		obj.ExternalPaypointID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetExternalPaypointId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetExternalPaypointID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetExternalPaypointId_NilReceiver", func(t *testing.T) {
+	t.Run("GetExternalPaypointID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -20099,7 +20099,7 @@ func TestGettersTransferOutDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetExternalPaypointId() // Should return zero value
+		_ = obj.GetExternalPaypointID() // Should return zero value
 	})
 
 	t.Run("GetEntryName", func(t *testing.T) {
@@ -20168,28 +20168,28 @@ func TestGettersTransferOutDetailRecord(t *testing.T) {
 		_ = obj.GetGateway() // Should return zero value
 	})
 
-	t.Run("GetBatchId", func(t *testing.T) {
+	t.Run("GetBatchID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
 		var expected *int
-		obj.BatchId = expected
+		obj.BatchID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetBatchId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetBatchID(), "getter should return the property value")
 	})
 
-	t.Run("GetBatchId_NilValue", func(t *testing.T) {
+	t.Run("GetBatchID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
-		obj.BatchId = nil
+		obj.BatchID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetBatchId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetBatchID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetBatchId_NilReceiver", func(t *testing.T) {
+	t.Run("GetBatchID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -20198,7 +20198,7 @@ func TestGettersTransferOutDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetBatchId() // Should return zero value
+		_ = obj.GetBatchID() // Should return zero value
 	})
 
 	t.Run("GetHasVcardTransactions", func(t *testing.T) {
@@ -20267,28 +20267,28 @@ func TestGettersTransferOutDetailRecord(t *testing.T) {
 		_ = obj.GetIsSameDayAch() // Should return zero value
 	})
 
-	t.Run("GetScheduleId", func(t *testing.T) {
+	t.Run("GetScheduleID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
 		var expected *int
-		obj.ScheduleId = expected
+		obj.ScheduleID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetScheduleId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetScheduleID(), "getter should return the property value")
 	})
 
-	t.Run("GetScheduleId_NilValue", func(t *testing.T) {
+	t.Run("GetScheduleID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
-		obj.ScheduleId = nil
+		obj.ScheduleID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetScheduleId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetScheduleID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetScheduleId_NilReceiver", func(t *testing.T) {
+	t.Run("GetScheduleID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutDetailRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -20297,7 +20297,7 @@ func TestGettersTransferOutDetailRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetScheduleId() // Should return zero value
+		_ = obj.GetScheduleID() // Should return zero value
 	})
 
 	t.Run("GetSettlementStatus", func(t *testing.T) {
@@ -20666,14 +20666,14 @@ func TestGettersTransferOutDetailRecord(t *testing.T) {
 }
 
 func TestSettersMarkExplicitTransferOutDetailRecord(t *testing.T) {
-	t.Run("SetTransferDetailId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetTransferDetailID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
-		var fernTestValueTransferDetailId *int
+		var fernTestValueTransferDetailID *int
 
 		// Act
-		obj.SetTransferDetailId(fernTestValueTransferDetailId)
+		obj.SetTransferDetailID(fernTestValueTransferDetailID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -20697,14 +20697,14 @@ func TestSettersMarkExplicitTransferOutDetailRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetTransferId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetTransferID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
-		var fernTestValueTransferId *int
+		var fernTestValueTransferID *int
 
 		// Act
-		obj.SetTransferId(fernTestValueTransferId)
+		obj.SetTransferID(fernTestValueTransferID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -20728,14 +20728,14 @@ func TestSettersMarkExplicitTransferOutDetailRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetTransactionId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetTransactionID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
-		var fernTestValueTransactionId *string
+		var fernTestValueTransactionID *string
 
 		// Act
-		obj.SetTransactionId(fernTestValueTransactionId)
+		obj.SetTransactionID(fernTestValueTransactionID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -20759,14 +20759,14 @@ func TestSettersMarkExplicitTransferOutDetailRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetIdOut_MarksExplicit", func(t *testing.T) {
+	t.Run("SetIDOut_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
-		var fernTestValueIdOut *int
+		var fernTestValueIDOut *int
 
 		// Act
-		obj.SetIdOut(fernTestValueIdOut)
+		obj.SetIDOut(fernTestValueIDOut)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -21317,14 +21317,14 @@ func TestSettersMarkExplicitTransferOutDetailRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetPaypointId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetPaypointID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
-		var fernTestValuePaypointId *int
+		var fernTestValuePaypointID *int
 
 		// Act
-		obj.SetPaypointId(fernTestValuePaypointId)
+		obj.SetPaypointID(fernTestValuePaypointID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -21379,14 +21379,14 @@ func TestSettersMarkExplicitTransferOutDetailRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetPaymentId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetPaymentID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
-		var fernTestValuePaymentId *string
+		var fernTestValuePaymentID *string
 
 		// Act
-		obj.SetPaymentId(fernTestValuePaymentId)
+		obj.SetPaymentID(fernTestValuePaymentID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -21410,14 +21410,14 @@ func TestSettersMarkExplicitTransferOutDetailRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetTransId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetTransID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
-		var fernTestValueTransId *string
+		var fernTestValueTransID *string
 
 		// Act
-		obj.SetTransId(fernTestValueTransId)
+		obj.SetTransID(fernTestValueTransID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -21751,14 +21751,14 @@ func TestSettersMarkExplicitTransferOutDetailRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetParentOrgId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetParentOrgID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
-		var fernTestValueParentOrgId *int
+		var fernTestValueParentOrgID *int
 
 		// Act
-		obj.SetParentOrgId(fernTestValueParentOrgId)
+		obj.SetParentOrgID(fernTestValueParentOrgID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -22061,14 +22061,14 @@ func TestSettersMarkExplicitTransferOutDetailRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetExternalPaypointId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetExternalPaypointID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
-		var fernTestValueExternalPaypointId *string
+		var fernTestValueExternalPaypointID *string
 
 		// Act
-		obj.SetExternalPaypointId(fernTestValueExternalPaypointId)
+		obj.SetExternalPaypointID(fernTestValueExternalPaypointID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -22154,14 +22154,14 @@ func TestSettersMarkExplicitTransferOutDetailRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetBatchId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetBatchID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
-		var fernTestValueBatchId *int
+		var fernTestValueBatchID *int
 
 		// Act
-		obj.SetBatchId(fernTestValueBatchId)
+		obj.SetBatchID(fernTestValueBatchID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -22247,14 +22247,14 @@ func TestSettersMarkExplicitTransferOutDetailRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetScheduleId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetScheduleID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
-		var fernTestValueScheduleId *int
+		var fernTestValueScheduleID *int
 
 		// Act
-		obj.SetScheduleId(fernTestValueScheduleId)
+		obj.SetScheduleID(fernTestValueScheduleID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -22774,11 +22774,11 @@ func TestSettersTransferOutDetailVendor(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetVendorId", func(t *testing.T) {
+	t.Run("SetVendorID", func(t *testing.T) {
 		obj := &TransferOutDetailVendor{}
-		var fernTestValueVendorId *int
-		obj.SetVendorId(fernTestValueVendorId)
-		assert.Equal(t, fernTestValueVendorId, obj.VendorId)
+		var fernTestValueVendorID *int
+		obj.SetVendorID(fernTestValueVendorID)
+		assert.Equal(t, fernTestValueVendorID, obj.VendorID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -22806,11 +22806,11 @@ func TestSettersTransferOutDetailVendor(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetPaypointId", func(t *testing.T) {
+	t.Run("SetPaypointID", func(t *testing.T) {
 		obj := &TransferOutDetailVendor{}
-		var fernTestValuePaypointId *int
-		obj.SetPaypointId(fernTestValuePaypointId)
-		assert.Equal(t, fernTestValuePaypointId, obj.PaypointId)
+		var fernTestValuePaypointID *int
+		obj.SetPaypointID(fernTestValuePaypointID)
+		assert.Equal(t, fernTestValuePaypointID, obj.PaypointID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -22838,11 +22838,11 @@ func TestSettersTransferOutDetailVendor(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetParentOrgId", func(t *testing.T) {
+	t.Run("SetParentOrgID", func(t *testing.T) {
 		obj := &TransferOutDetailVendor{}
-		var fernTestValueParentOrgId *int
-		obj.SetParentOrgId(fernTestValueParentOrgId)
-		assert.Equal(t, fernTestValueParentOrgId, obj.ParentOrgId)
+		var fernTestValueParentOrgID *int
+		obj.SetParentOrgID(fernTestValueParentOrgID)
+		assert.Equal(t, fernTestValueParentOrgID, obj.ParentOrgID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -22950,11 +22950,11 @@ func TestSettersTransferOutDetailVendor(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetInternalReferenceId", func(t *testing.T) {
+	t.Run("SetInternalReferenceID", func(t *testing.T) {
 		obj := &TransferOutDetailVendor{}
-		var fernTestValueInternalReferenceId *int
-		obj.SetInternalReferenceId(fernTestValueInternalReferenceId)
-		assert.Equal(t, fernTestValueInternalReferenceId, obj.InternalReferenceId)
+		var fernTestValueInternalReferenceID *int
+		obj.SetInternalReferenceID(fernTestValueInternalReferenceID)
+		assert.Equal(t, fernTestValueInternalReferenceID, obj.InternalReferenceID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -22966,11 +22966,11 @@ func TestSettersTransferOutDetailVendor(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetExternalPaypointId", func(t *testing.T) {
+	t.Run("SetExternalPaypointID", func(t *testing.T) {
 		obj := &TransferOutDetailVendor{}
-		var fernTestValueExternalPaypointId *string
-		obj.SetExternalPaypointId(fernTestValueExternalPaypointId)
-		assert.Equal(t, fernTestValueExternalPaypointId, obj.ExternalPaypointId)
+		var fernTestValueExternalPaypointID *string
+		obj.SetExternalPaypointID(fernTestValueExternalPaypointID)
+		assert.Equal(t, fernTestValueExternalPaypointID, obj.ExternalPaypointID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -23612,28 +23612,28 @@ func TestGettersTransferOutDetailVendor(t *testing.T) {
 		_ = obj.GetVendorStatus() // Should return zero value
 	})
 
-	t.Run("GetVendorId", func(t *testing.T) {
+	t.Run("GetVendorID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendor{}
 		var expected *int
-		obj.VendorId = expected
+		obj.VendorID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetVendorId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetVendorID(), "getter should return the property value")
 	})
 
-	t.Run("GetVendorId_NilValue", func(t *testing.T) {
+	t.Run("GetVendorID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendor{}
-		obj.VendorId = nil
+		obj.VendorID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetVendorId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetVendorID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetVendorId_NilReceiver", func(t *testing.T) {
+	t.Run("GetVendorID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutDetailVendor
 		// Should not panic - getters should handle nil receiver gracefully
@@ -23642,7 +23642,7 @@ func TestGettersTransferOutDetailVendor(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetVendorId() // Should return zero value
+		_ = obj.GetVendorID() // Should return zero value
 	})
 
 	t.Run("GetEnrollmentStatus", func(t *testing.T) {
@@ -23744,28 +23744,28 @@ func TestGettersTransferOutDetailVendor(t *testing.T) {
 		_ = obj.GetPaypointLegalname() // Should return zero value
 	})
 
-	t.Run("GetPaypointId", func(t *testing.T) {
+	t.Run("GetPaypointID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendor{}
 		var expected *int
-		obj.PaypointId = expected
+		obj.PaypointID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetPaypointId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetPaypointID(), "getter should return the property value")
 	})
 
-	t.Run("GetPaypointId_NilValue", func(t *testing.T) {
+	t.Run("GetPaypointID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendor{}
-		obj.PaypointId = nil
+		obj.PaypointID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetPaypointId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetPaypointID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetPaypointId_NilReceiver", func(t *testing.T) {
+	t.Run("GetPaypointID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutDetailVendor
 		// Should not panic - getters should handle nil receiver gracefully
@@ -23774,7 +23774,7 @@ func TestGettersTransferOutDetailVendor(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetPaypointId() // Should return zero value
+		_ = obj.GetPaypointID() // Should return zero value
 	})
 
 	t.Run("GetPaypointDbaname", func(t *testing.T) {
@@ -23876,28 +23876,28 @@ func TestGettersTransferOutDetailVendor(t *testing.T) {
 		_ = obj.GetParentOrgName() // Should return zero value
 	})
 
-	t.Run("GetParentOrgId", func(t *testing.T) {
+	t.Run("GetParentOrgID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendor{}
 		var expected *int
-		obj.ParentOrgId = expected
+		obj.ParentOrgID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetParentOrgId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetParentOrgID(), "getter should return the property value")
 	})
 
-	t.Run("GetParentOrgId_NilValue", func(t *testing.T) {
+	t.Run("GetParentOrgID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendor{}
-		obj.ParentOrgId = nil
+		obj.ParentOrgID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetParentOrgId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetParentOrgID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetParentOrgId_NilReceiver", func(t *testing.T) {
+	t.Run("GetParentOrgID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutDetailVendor
 		// Should not panic - getters should handle nil receiver gracefully
@@ -23906,7 +23906,7 @@ func TestGettersTransferOutDetailVendor(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetParentOrgId() // Should return zero value
+		_ = obj.GetParentOrgID() // Should return zero value
 	})
 
 	t.Run("GetCreatedDate", func(t *testing.T) {
@@ -24338,28 +24338,28 @@ func TestGettersTransferOutDetailVendor(t *testing.T) {
 		_ = obj.GetCustomerVendorAccount() // Should return zero value
 	})
 
-	t.Run("GetInternalReferenceId", func(t *testing.T) {
+	t.Run("GetInternalReferenceID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendor{}
 		var expected *int
-		obj.InternalReferenceId = expected
+		obj.InternalReferenceID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetInternalReferenceId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetInternalReferenceID(), "getter should return the property value")
 	})
 
-	t.Run("GetInternalReferenceId_NilValue", func(t *testing.T) {
+	t.Run("GetInternalReferenceID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendor{}
-		obj.InternalReferenceId = nil
+		obj.InternalReferenceID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetInternalReferenceId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetInternalReferenceID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetInternalReferenceId_NilReceiver", func(t *testing.T) {
+	t.Run("GetInternalReferenceID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutDetailVendor
 		// Should not panic - getters should handle nil receiver gracefully
@@ -24368,7 +24368,7 @@ func TestGettersTransferOutDetailVendor(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetInternalReferenceId() // Should return zero value
+		_ = obj.GetInternalReferenceID() // Should return zero value
 	})
 
 	t.Run("GetAdditionalData", func(t *testing.T) {
@@ -24404,28 +24404,28 @@ func TestGettersTransferOutDetailVendor(t *testing.T) {
 		_ = obj.GetAdditionalData() // Should return zero value
 	})
 
-	t.Run("GetExternalPaypointId", func(t *testing.T) {
+	t.Run("GetExternalPaypointID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendor{}
 		var expected *string
-		obj.ExternalPaypointId = expected
+		obj.ExternalPaypointID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetExternalPaypointId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetExternalPaypointID(), "getter should return the property value")
 	})
 
-	t.Run("GetExternalPaypointId_NilValue", func(t *testing.T) {
+	t.Run("GetExternalPaypointID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendor{}
-		obj.ExternalPaypointId = nil
+		obj.ExternalPaypointID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetExternalPaypointId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetExternalPaypointID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetExternalPaypointId_NilReceiver", func(t *testing.T) {
+	t.Run("GetExternalPaypointID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutDetailVendor
 		// Should not panic - getters should handle nil receiver gracefully
@@ -24434,7 +24434,7 @@ func TestGettersTransferOutDetailVendor(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetExternalPaypointId() // Should return zero value
+		_ = obj.GetExternalPaypointID() // Should return zero value
 	})
 
 	t.Run("GetStoredMethods", func(t *testing.T) {
@@ -25062,14 +25062,14 @@ func TestSettersMarkExplicitTransferOutDetailVendor(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetVendorId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetVendorID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendor{}
-		var fernTestValueVendorId *int
+		var fernTestValueVendorID *int
 
 		// Act
-		obj.SetVendorId(fernTestValueVendorId)
+		obj.SetVendorID(fernTestValueVendorID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -25186,14 +25186,14 @@ func TestSettersMarkExplicitTransferOutDetailVendor(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetPaypointId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetPaypointID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendor{}
-		var fernTestValuePaypointId *int
+		var fernTestValuePaypointID *int
 
 		// Act
-		obj.SetPaypointId(fernTestValuePaypointId)
+		obj.SetPaypointID(fernTestValuePaypointID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -25310,14 +25310,14 @@ func TestSettersMarkExplicitTransferOutDetailVendor(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetParentOrgId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetParentOrgID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendor{}
-		var fernTestValueParentOrgId *int
+		var fernTestValueParentOrgID *int
 
 		// Act
-		obj.SetParentOrgId(fernTestValueParentOrgId)
+		obj.SetParentOrgID(fernTestValueParentOrgID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -25744,14 +25744,14 @@ func TestSettersMarkExplicitTransferOutDetailVendor(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetInternalReferenceId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetInternalReferenceID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendor{}
-		var fernTestValueInternalReferenceId *int
+		var fernTestValueInternalReferenceID *int
 
 		// Act
-		obj.SetInternalReferenceId(fernTestValueInternalReferenceId)
+		obj.SetInternalReferenceID(fernTestValueInternalReferenceID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -25806,14 +25806,14 @@ func TestSettersMarkExplicitTransferOutDetailVendor(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetExternalPaypointId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetExternalPaypointID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendor{}
-		var fernTestValueExternalPaypointId *string
+		var fernTestValueExternalPaypointID *string
 
 		// Act
-		obj.SetExternalPaypointId(fernTestValueExternalPaypointId)
+		obj.SetExternalPaypointID(fernTestValueExternalPaypointID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -25871,19 +25871,19 @@ func TestSettersMarkExplicitTransferOutDetailVendor(t *testing.T) {
 }
 
 func TestSettersTransferOutDetailVendorBillingData(t *testing.T) {
-	t.Run("SetId", func(t *testing.T) {
+	t.Run("SetID", func(t *testing.T) {
 		obj := &TransferOutDetailVendorBillingData{}
-		var fernTestValueId *int
-		obj.SetId(fernTestValueId)
-		assert.Equal(t, fernTestValueId, obj.Id)
+		var fernTestValueID *int
+		obj.SetID(fernTestValueID)
+		assert.Equal(t, fernTestValueID, obj.ID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetAccountId", func(t *testing.T) {
+	t.Run("SetAccountID", func(t *testing.T) {
 		obj := &TransferOutDetailVendorBillingData{}
-		var fernTestValueAccountId *string
-		obj.SetAccountId(fernTestValueAccountId)
-		assert.Equal(t, fernTestValueAccountId, obj.AccountId)
+		var fernTestValueAccountID *string
+		obj.SetAccountID(fernTestValueAccountID)
+		assert.Equal(t, fernTestValueAccountID, obj.AccountID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -25994,28 +25994,28 @@ func TestSettersTransferOutDetailVendorBillingData(t *testing.T) {
 }
 
 func TestGettersTransferOutDetailVendorBillingData(t *testing.T) {
-	t.Run("GetId", func(t *testing.T) {
+	t.Run("GetID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendorBillingData{}
 		var expected *int
-		obj.Id = expected
+		obj.ID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetID(), "getter should return the property value")
 	})
 
-	t.Run("GetId_NilValue", func(t *testing.T) {
+	t.Run("GetID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendorBillingData{}
-		obj.Id = nil
+		obj.ID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetId_NilReceiver", func(t *testing.T) {
+	t.Run("GetID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutDetailVendorBillingData
 		// Should not panic - getters should handle nil receiver gracefully
@@ -26024,31 +26024,31 @@ func TestGettersTransferOutDetailVendorBillingData(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetId() // Should return zero value
+		_ = obj.GetID() // Should return zero value
 	})
 
-	t.Run("GetAccountId", func(t *testing.T) {
+	t.Run("GetAccountID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendorBillingData{}
 		var expected *string
-		obj.AccountId = expected
+		obj.AccountID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetAccountId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetAccountID(), "getter should return the property value")
 	})
 
-	t.Run("GetAccountId_NilValue", func(t *testing.T) {
+	t.Run("GetAccountID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendorBillingData{}
-		obj.AccountId = nil
+		obj.AccountID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetAccountId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetAccountID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetAccountId_NilReceiver", func(t *testing.T) {
+	t.Run("GetAccountID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutDetailVendorBillingData
 		// Should not panic - getters should handle nil receiver gracefully
@@ -26057,7 +26057,7 @@ func TestGettersTransferOutDetailVendorBillingData(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetAccountId() // Should return zero value
+		_ = obj.GetAccountID() // Should return zero value
 	})
 
 	t.Run("GetNickname", func(t *testing.T) {
@@ -26492,14 +26492,14 @@ func TestGettersTransferOutDetailVendorBillingData(t *testing.T) {
 }
 
 func TestSettersMarkExplicitTransferOutDetailVendorBillingData(t *testing.T) {
-	t.Run("SetId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendorBillingData{}
-		var fernTestValueId *int
+		var fernTestValueID *int
 
 		// Act
-		obj.SetId(fernTestValueId)
+		obj.SetID(fernTestValueID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -26523,14 +26523,14 @@ func TestSettersMarkExplicitTransferOutDetailVendorBillingData(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetAccountId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetAccountID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailVendorBillingData{}
-		var fernTestValueAccountId *string
+		var fernTestValueAccountID *string
 
 		// Act
-		obj.SetAccountId(fernTestValueAccountId)
+		obj.SetAccountID(fernTestValueAccountID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -27319,27 +27319,27 @@ func TestSettersMarkExplicitTransferOutEventData(t *testing.T) {
 }
 
 func TestSettersTransferOutMessage(t *testing.T) {
-	t.Run("SetId", func(t *testing.T) {
+	t.Run("SetID", func(t *testing.T) {
 		obj := &TransferOutMessage{}
-		var fernTestValueId *int
-		obj.SetId(fernTestValueId)
-		assert.Equal(t, fernTestValueId, obj.Id)
+		var fernTestValueID *int
+		obj.SetID(fernTestValueID)
+		assert.Equal(t, fernTestValueID, obj.ID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetRoomId", func(t *testing.T) {
+	t.Run("SetRoomID", func(t *testing.T) {
 		obj := &TransferOutMessage{}
-		var fernTestValueRoomId *int
-		obj.SetRoomId(fernTestValueRoomId)
-		assert.Equal(t, fernTestValueRoomId, obj.RoomId)
+		var fernTestValueRoomID *int
+		obj.SetRoomID(fernTestValueRoomID)
+		assert.Equal(t, fernTestValueRoomID, obj.RoomID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetUserId", func(t *testing.T) {
+	t.Run("SetUserID", func(t *testing.T) {
 		obj := &TransferOutMessage{}
-		var fernTestValueUserId *int
-		obj.SetUserId(fernTestValueUserId)
-		assert.Equal(t, fernTestValueUserId, obj.UserId)
+		var fernTestValueUserID *int
+		obj.SetUserID(fernTestValueUserID)
+		assert.Equal(t, fernTestValueUserID, obj.UserID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -27386,28 +27386,28 @@ func TestSettersTransferOutMessage(t *testing.T) {
 }
 
 func TestGettersTransferOutMessage(t *testing.T) {
-	t.Run("GetId", func(t *testing.T) {
+	t.Run("GetID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutMessage{}
 		var expected *int
-		obj.Id = expected
+		obj.ID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetID(), "getter should return the property value")
 	})
 
-	t.Run("GetId_NilValue", func(t *testing.T) {
+	t.Run("GetID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutMessage{}
-		obj.Id = nil
+		obj.ID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetId_NilReceiver", func(t *testing.T) {
+	t.Run("GetID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutMessage
 		// Should not panic - getters should handle nil receiver gracefully
@@ -27416,31 +27416,31 @@ func TestGettersTransferOutMessage(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetId() // Should return zero value
+		_ = obj.GetID() // Should return zero value
 	})
 
-	t.Run("GetRoomId", func(t *testing.T) {
+	t.Run("GetRoomID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutMessage{}
 		var expected *int
-		obj.RoomId = expected
+		obj.RoomID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetRoomId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetRoomID(), "getter should return the property value")
 	})
 
-	t.Run("GetRoomId_NilValue", func(t *testing.T) {
+	t.Run("GetRoomID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutMessage{}
-		obj.RoomId = nil
+		obj.RoomID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetRoomId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetRoomID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetRoomId_NilReceiver", func(t *testing.T) {
+	t.Run("GetRoomID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutMessage
 		// Should not panic - getters should handle nil receiver gracefully
@@ -27449,31 +27449,31 @@ func TestGettersTransferOutMessage(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetRoomId() // Should return zero value
+		_ = obj.GetRoomID() // Should return zero value
 	})
 
-	t.Run("GetUserId", func(t *testing.T) {
+	t.Run("GetUserID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutMessage{}
 		var expected *int
-		obj.UserId = expected
+		obj.UserID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetUserId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetUserID(), "getter should return the property value")
 	})
 
-	t.Run("GetUserId_NilValue", func(t *testing.T) {
+	t.Run("GetUserID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutMessage{}
-		obj.UserId = nil
+		obj.UserID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetUserId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetUserID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetUserId_NilReceiver", func(t *testing.T) {
+	t.Run("GetUserID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutMessage
 		// Should not panic - getters should handle nil receiver gracefully
@@ -27482,7 +27482,7 @@ func TestGettersTransferOutMessage(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetUserId() // Should return zero value
+		_ = obj.GetUserID() // Should return zero value
 	})
 
 	t.Run("GetUserName", func(t *testing.T) {
@@ -27653,14 +27653,14 @@ func TestGettersTransferOutMessage(t *testing.T) {
 }
 
 func TestSettersMarkExplicitTransferOutMessage(t *testing.T) {
-	t.Run("SetId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutMessage{}
-		var fernTestValueId *int
+		var fernTestValueID *int
 
 		// Act
-		obj.SetId(fernTestValueId)
+		obj.SetID(fernTestValueID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -27684,14 +27684,14 @@ func TestSettersMarkExplicitTransferOutMessage(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetRoomId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetRoomID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutMessage{}
-		var fernTestValueRoomId *int
+		var fernTestValueRoomID *int
 
 		// Act
-		obj.SetRoomId(fernTestValueRoomId)
+		obj.SetRoomID(fernTestValueRoomID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -27715,14 +27715,14 @@ func TestSettersMarkExplicitTransferOutMessage(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetUserId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetUserID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutMessage{}
-		var fernTestValueUserId *int
+		var fernTestValueUserID *int
 
 		// Act
-		obj.SetUserId(fernTestValueUserId)
+		obj.SetUserID(fernTestValueUserID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -28210,19 +28210,19 @@ func TestSettersMarkExplicitTransferOutQueryResponse(t *testing.T) {
 }
 
 func TestSettersTransferOutRecord(t *testing.T) {
-	t.Run("SetTransferId", func(t *testing.T) {
+	t.Run("SetTransferID", func(t *testing.T) {
 		obj := &TransferOutRecord{}
-		var fernTestValueTransferId *int
-		obj.SetTransferId(fernTestValueTransferId)
-		assert.Equal(t, fernTestValueTransferId, obj.TransferId)
+		var fernTestValueTransferID *int
+		obj.SetTransferID(fernTestValueTransferID)
+		assert.Equal(t, fernTestValueTransferID, obj.TransferID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetPaypointId", func(t *testing.T) {
+	t.Run("SetPaypointID", func(t *testing.T) {
 		obj := &TransferOutRecord{}
-		var fernTestValuePaypointId *int
-		obj.SetPaypointId(fernTestValuePaypointId)
-		assert.Equal(t, fernTestValuePaypointId, obj.PaypointId)
+		var fernTestValuePaypointID *int
+		obj.SetPaypointID(fernTestValuePaypointID)
+		assert.Equal(t, fernTestValuePaypointID, obj.PaypointID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -28258,11 +28258,11 @@ func TestSettersTransferOutRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetBatchId", func(t *testing.T) {
+	t.Run("SetBatchID", func(t *testing.T) {
 		obj := &TransferOutRecord{}
-		var fernTestValueBatchId *int
-		obj.SetBatchId(fernTestValueBatchId)
-		assert.Equal(t, fernTestValueBatchId, obj.BatchId)
+		var fernTestValueBatchID *int
+		obj.SetBatchID(fernTestValueBatchID)
+		assert.Equal(t, fernTestValueBatchID, obj.BatchID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -28322,11 +28322,11 @@ func TestSettersTransferOutRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetParentOrgId", func(t *testing.T) {
+	t.Run("SetParentOrgID", func(t *testing.T) {
 		obj := &TransferOutRecord{}
-		var fernTestValueParentOrgId *int
-		obj.SetParentOrgId(fernTestValueParentOrgId)
-		assert.Equal(t, fernTestValueParentOrgId, obj.ParentOrgId)
+		var fernTestValueParentOrgID *int
+		obj.SetParentOrgID(fernTestValueParentOrgID)
+		assert.Equal(t, fernTestValueParentOrgID, obj.ParentOrgID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -28346,11 +28346,11 @@ func TestSettersTransferOutRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetExternalPaypointId", func(t *testing.T) {
+	t.Run("SetExternalPaypointID", func(t *testing.T) {
 		obj := &TransferOutRecord{}
-		var fernTestValueExternalPaypointId *string
-		obj.SetExternalPaypointId(fernTestValueExternalPaypointId)
-		assert.Equal(t, fernTestValueExternalPaypointId, obj.ExternalPaypointId)
+		var fernTestValueExternalPaypointID *string
+		obj.SetExternalPaypointID(fernTestValueExternalPaypointID)
+		assert.Equal(t, fernTestValueExternalPaypointID, obj.ExternalPaypointID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -28485,28 +28485,28 @@ func TestSettersTransferOutRecord(t *testing.T) {
 }
 
 func TestGettersTransferOutRecord(t *testing.T) {
-	t.Run("GetTransferId", func(t *testing.T) {
+	t.Run("GetTransferID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutRecord{}
 		var expected *int
-		obj.TransferId = expected
+		obj.TransferID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetTransferId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetTransferID(), "getter should return the property value")
 	})
 
-	t.Run("GetTransferId_NilValue", func(t *testing.T) {
+	t.Run("GetTransferID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutRecord{}
-		obj.TransferId = nil
+		obj.TransferID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetTransferId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetTransferID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetTransferId_NilReceiver", func(t *testing.T) {
+	t.Run("GetTransferID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -28515,31 +28515,31 @@ func TestGettersTransferOutRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetTransferId() // Should return zero value
+		_ = obj.GetTransferID() // Should return zero value
 	})
 
-	t.Run("GetPaypointId", func(t *testing.T) {
+	t.Run("GetPaypointID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutRecord{}
 		var expected *int
-		obj.PaypointId = expected
+		obj.PaypointID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetPaypointId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetPaypointID(), "getter should return the property value")
 	})
 
-	t.Run("GetPaypointId_NilValue", func(t *testing.T) {
+	t.Run("GetPaypointID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutRecord{}
-		obj.PaypointId = nil
+		obj.PaypointID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetPaypointId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetPaypointID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetPaypointId_NilReceiver", func(t *testing.T) {
+	t.Run("GetPaypointID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -28548,7 +28548,7 @@ func TestGettersTransferOutRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetPaypointId() // Should return zero value
+		_ = obj.GetPaypointID() // Should return zero value
 	})
 
 	t.Run("GetBatchNumber", func(t *testing.T) {
@@ -28683,28 +28683,28 @@ func TestGettersTransferOutRecord(t *testing.T) {
 		_ = obj.GetTransferIdentifier() // Should return zero value
 	})
 
-	t.Run("GetBatchId", func(t *testing.T) {
+	t.Run("GetBatchID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutRecord{}
 		var expected *int
-		obj.BatchId = expected
+		obj.BatchID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetBatchId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetBatchID(), "getter should return the property value")
 	})
 
-	t.Run("GetBatchId_NilValue", func(t *testing.T) {
+	t.Run("GetBatchID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutRecord{}
-		obj.BatchId = nil
+		obj.BatchID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetBatchId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetBatchID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetBatchId_NilReceiver", func(t *testing.T) {
+	t.Run("GetBatchID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -28713,7 +28713,7 @@ func TestGettersTransferOutRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetBatchId() // Should return zero value
+		_ = obj.GetBatchID() // Should return zero value
 	})
 
 	t.Run("GetBatchNetAmount", func(t *testing.T) {
@@ -28947,28 +28947,28 @@ func TestGettersTransferOutRecord(t *testing.T) {
 		_ = obj.GetParentOrgName() // Should return zero value
 	})
 
-	t.Run("GetParentOrgId", func(t *testing.T) {
+	t.Run("GetParentOrgID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutRecord{}
 		var expected *int
-		obj.ParentOrgId = expected
+		obj.ParentOrgID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetParentOrgId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetParentOrgID(), "getter should return the property value")
 	})
 
-	t.Run("GetParentOrgId_NilValue", func(t *testing.T) {
+	t.Run("GetParentOrgID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutRecord{}
-		obj.ParentOrgId = nil
+		obj.ParentOrgID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetParentOrgId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetParentOrgID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetParentOrgId_NilReceiver", func(t *testing.T) {
+	t.Run("GetParentOrgID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -28977,7 +28977,7 @@ func TestGettersTransferOutRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetParentOrgId() // Should return zero value
+		_ = obj.GetParentOrgID() // Should return zero value
 	})
 
 	t.Run("GetParentOrgLogo", func(t *testing.T) {
@@ -29046,28 +29046,28 @@ func TestGettersTransferOutRecord(t *testing.T) {
 		_ = obj.GetParentOrgEntryName() // Should return zero value
 	})
 
-	t.Run("GetExternalPaypointId", func(t *testing.T) {
+	t.Run("GetExternalPaypointID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutRecord{}
 		var expected *string
-		obj.ExternalPaypointId = expected
+		obj.ExternalPaypointID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetExternalPaypointId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetExternalPaypointID(), "getter should return the property value")
 	})
 
-	t.Run("GetExternalPaypointId_NilValue", func(t *testing.T) {
+	t.Run("GetExternalPaypointID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutRecord{}
-		obj.ExternalPaypointId = nil
+		obj.ExternalPaypointID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetExternalPaypointId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetExternalPaypointID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetExternalPaypointId_NilReceiver", func(t *testing.T) {
+	t.Run("GetExternalPaypointID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *TransferOutRecord
 		// Should not panic - getters should handle nil receiver gracefully
@@ -29076,7 +29076,7 @@ func TestGettersTransferOutRecord(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetExternalPaypointId() // Should return zero value
+		_ = obj.GetExternalPaypointID() // Should return zero value
 	})
 
 	t.Run("GetBankAccount", func(t *testing.T) {
@@ -29610,14 +29610,14 @@ func TestGettersTransferOutRecord(t *testing.T) {
 }
 
 func TestSettersMarkExplicitTransferOutRecord(t *testing.T) {
-	t.Run("SetTransferId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetTransferID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutRecord{}
-		var fernTestValueTransferId *int
+		var fernTestValueTransferID *int
 
 		// Act
-		obj.SetTransferId(fernTestValueTransferId)
+		obj.SetTransferID(fernTestValueTransferID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -29641,14 +29641,14 @@ func TestSettersMarkExplicitTransferOutRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetPaypointId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetPaypointID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutRecord{}
-		var fernTestValuePaypointId *int
+		var fernTestValuePaypointID *int
 
 		// Act
-		obj.SetPaypointId(fernTestValuePaypointId)
+		obj.SetPaypointID(fernTestValuePaypointID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -29796,14 +29796,14 @@ func TestSettersMarkExplicitTransferOutRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetBatchId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetBatchID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutRecord{}
-		var fernTestValueBatchId *int
+		var fernTestValueBatchID *int
 
 		// Act
-		obj.SetBatchId(fernTestValueBatchId)
+		obj.SetBatchID(fernTestValueBatchID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -30044,14 +30044,14 @@ func TestSettersMarkExplicitTransferOutRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetParentOrgId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetParentOrgID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutRecord{}
-		var fernTestValueParentOrgId *int
+		var fernTestValueParentOrgID *int
 
 		// Act
-		obj.SetParentOrgId(fernTestValueParentOrgId)
+		obj.SetParentOrgID(fernTestValueParentOrgID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -30137,14 +30137,14 @@ func TestSettersMarkExplicitTransferOutRecord(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetExternalPaypointId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetExternalPaypointID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutRecord{}
-		var fernTestValueExternalPaypointId *string
+		var fernTestValueExternalPaypointID *string
 
 		// Act
-		obj.SetExternalPaypointId(fernTestValueExternalPaypointId)
+		obj.SetExternalPaypointID(fernTestValueExternalPaypointID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)

@@ -418,9 +418,9 @@ func TestSettersMarkExplicitPayLinkDataInvoice(t *testing.T) {
 
 }
 
-func TestSettersRefreshPayLinkFromIdRequest(t *testing.T) {
+func TestSettersRefreshPayLinkFromIDRequest(t *testing.T) {
 	t.Run("SetAmountFixed", func(t *testing.T) {
-		obj := &RefreshPayLinkFromIdRequest{}
+		obj := &RefreshPayLinkFromIDRequest{}
 		var fernTestValueAmountFixed *bool
 		obj.SetAmountFixed(fernTestValueAmountFixed)
 		assert.Equal(t, fernTestValueAmountFixed, obj.AmountFixed)
@@ -429,11 +429,11 @@ func TestSettersRefreshPayLinkFromIdRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitRefreshPayLinkFromIdRequest(t *testing.T) {
+func TestSettersMarkExplicitRefreshPayLinkFromIDRequest(t *testing.T) {
 	t.Run("SetAmountFixed_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &RefreshPayLinkFromIdRequest{}
+		obj := &RefreshPayLinkFromIDRequest{}
 		var fernTestValueAmountFixed *bool
 
 		// Act
@@ -463,9 +463,9 @@ func TestSettersMarkExplicitRefreshPayLinkFromIdRequest(t *testing.T) {
 
 }
 
-func TestSettersSendPayLinkFromIdRequest(t *testing.T) {
+func TestSettersSendPayLinkFromIDRequest(t *testing.T) {
 	t.Run("SetAttachfile", func(t *testing.T) {
-		obj := &SendPayLinkFromIdRequest{}
+		obj := &SendPayLinkFromIDRequest{}
 		var fernTestValueAttachfile *bool
 		obj.SetAttachfile(fernTestValueAttachfile)
 		assert.Equal(t, fernTestValueAttachfile, obj.Attachfile)
@@ -473,7 +473,7 @@ func TestSettersSendPayLinkFromIdRequest(t *testing.T) {
 	})
 
 	t.Run("SetMail2", func(t *testing.T) {
-		obj := &SendPayLinkFromIdRequest{}
+		obj := &SendPayLinkFromIDRequest{}
 		var fernTestValueMail2 *string
 		obj.SetMail2(fernTestValueMail2)
 		assert.Equal(t, fernTestValueMail2, obj.Mail2)
@@ -482,11 +482,11 @@ func TestSettersSendPayLinkFromIdRequest(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitSendPayLinkFromIdRequest(t *testing.T) {
+func TestSettersMarkExplicitSendPayLinkFromIDRequest(t *testing.T) {
 	t.Run("SetAttachfile_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SendPayLinkFromIdRequest{}
+		obj := &SendPayLinkFromIDRequest{}
 		var fernTestValueAttachfile *bool
 
 		// Act
@@ -517,7 +517,7 @@ func TestSettersMarkExplicitSendPayLinkFromIdRequest(t *testing.T) {
 	t.Run("SetMail2_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &SendPayLinkFromIdRequest{}
+		obj := &SendPayLinkFromIDRequest{}
 		var fernTestValueMail2 *string
 
 		// Act
@@ -588,11 +588,11 @@ func TestSettersPagelinkSetting(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetRedirectAfterApproveUrl", func(t *testing.T) {
+	t.Run("SetRedirectAfterApproveURL", func(t *testing.T) {
 		obj := &PagelinkSetting{}
-		var fernTestValueRedirectAfterApproveUrl *string
-		obj.SetRedirectAfterApproveUrl(fernTestValueRedirectAfterApproveUrl)
-		assert.Equal(t, fernTestValueRedirectAfterApproveUrl, obj.RedirectAfterApproveUrl)
+		var fernTestValueRedirectAfterApproveURL *string
+		obj.SetRedirectAfterApproveURL(fernTestValueRedirectAfterApproveURL)
+		assert.Equal(t, fernTestValueRedirectAfterApproveURL, obj.RedirectAfterApproveURL)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -764,28 +764,28 @@ func TestGettersPagelinkSetting(t *testing.T) {
 		_ = obj.GetRedirectAfterApprove() // Should return zero value
 	})
 
-	t.Run("GetRedirectAfterApproveUrl", func(t *testing.T) {
+	t.Run("GetRedirectAfterApproveURL", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &PagelinkSetting{}
 		var expected *string
-		obj.RedirectAfterApproveUrl = expected
+		obj.RedirectAfterApproveURL = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetRedirectAfterApproveUrl(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetRedirectAfterApproveURL(), "getter should return the property value")
 	})
 
-	t.Run("GetRedirectAfterApproveUrl_NilValue", func(t *testing.T) {
+	t.Run("GetRedirectAfterApproveURL_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &PagelinkSetting{}
-		obj.RedirectAfterApproveUrl = nil
+		obj.RedirectAfterApproveURL = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetRedirectAfterApproveUrl(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetRedirectAfterApproveURL(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetRedirectAfterApproveUrl_NilReceiver", func(t *testing.T) {
+	t.Run("GetRedirectAfterApproveURL_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *PagelinkSetting
 		// Should not panic - getters should handle nil receiver gracefully
@@ -794,7 +794,7 @@ func TestGettersPagelinkSetting(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetRedirectAfterApproveUrl() // Should return zero value
+		_ = obj.GetRedirectAfterApproveURL() // Should return zero value
 	})
 
 }
@@ -955,14 +955,14 @@ func TestSettersMarkExplicitPagelinkSetting(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetRedirectAfterApproveUrl_MarksExplicit", func(t *testing.T) {
+	t.Run("SetRedirectAfterApproveURL_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &PagelinkSetting{}
-		var fernTestValueRedirectAfterApproveUrl *string
+		var fernTestValueRedirectAfterApproveURL *string
 
 		// Act
-		obj.SetRedirectAfterApproveUrl(fernTestValueRedirectAfterApproveUrl)
+		obj.SetRedirectAfterApproveURL(fernTestValueRedirectAfterApproveURL)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -1233,9 +1233,9 @@ func TestSettersMarkExplicitPushPayLinkRequestEmail(t *testing.T) {
 
 }
 
-func TestSettersGetPayLinkFromIdResponse(t *testing.T) {
+func TestSettersGetPayLinkFromIDResponse(t *testing.T) {
 	t.Run("SetIsSuccess", func(t *testing.T) {
-		obj := &GetPayLinkFromIdResponse{}
+		obj := &GetPayLinkFromIDResponse{}
 		var fernTestValueIsSuccess *IsSuccess
 		obj.SetIsSuccess(fernTestValueIsSuccess)
 		assert.Equal(t, fernTestValueIsSuccess, obj.IsSuccess)
@@ -1243,7 +1243,7 @@ func TestSettersGetPayLinkFromIdResponse(t *testing.T) {
 	})
 
 	t.Run("SetResponseText", func(t *testing.T) {
-		obj := &GetPayLinkFromIdResponse{}
+		obj := &GetPayLinkFromIDResponse{}
 		var fernTestValueResponseText ResponseText
 		obj.SetResponseText(fernTestValueResponseText)
 		assert.Equal(t, fernTestValueResponseText, obj.ResponseText)
@@ -1251,8 +1251,8 @@ func TestSettersGetPayLinkFromIdResponse(t *testing.T) {
 	})
 
 	t.Run("SetResponseData", func(t *testing.T) {
-		obj := &GetPayLinkFromIdResponse{}
-		var fernTestValueResponseData *GetPayLinkFromIdResponseResponseData
+		obj := &GetPayLinkFromIDResponse{}
+		var fernTestValueResponseData *GetPayLinkFromIDResponseResponseData
 		obj.SetResponseData(fernTestValueResponseData)
 		assert.Equal(t, fernTestValueResponseData, obj.ResponseData)
 		assert.NotNil(t, obj.explicitFields)
@@ -1260,11 +1260,11 @@ func TestSettersGetPayLinkFromIdResponse(t *testing.T) {
 
 }
 
-func TestGettersGetPayLinkFromIdResponse(t *testing.T) {
+func TestGettersGetPayLinkFromIDResponse(t *testing.T) {
 	t.Run("GetIsSuccess", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponse{}
+		obj := &GetPayLinkFromIDResponse{}
 		var expected *IsSuccess
 		obj.IsSuccess = expected
 
@@ -1275,7 +1275,7 @@ func TestGettersGetPayLinkFromIdResponse(t *testing.T) {
 	t.Run("GetIsSuccess_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponse{}
+		obj := &GetPayLinkFromIDResponse{}
 		obj.IsSuccess = nil
 
 		// Act & Assert
@@ -1284,7 +1284,7 @@ func TestGettersGetPayLinkFromIdResponse(t *testing.T) {
 
 	t.Run("GetIsSuccess_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetPayLinkFromIdResponse
+		var obj *GetPayLinkFromIDResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1297,7 +1297,7 @@ func TestGettersGetPayLinkFromIdResponse(t *testing.T) {
 	t.Run("GetResponseText", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponse{}
+		obj := &GetPayLinkFromIDResponse{}
 		var expected ResponseText
 		obj.ResponseText = expected
 
@@ -1307,7 +1307,7 @@ func TestGettersGetPayLinkFromIdResponse(t *testing.T) {
 
 	t.Run("GetResponseText_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetPayLinkFromIdResponse
+		var obj *GetPayLinkFromIDResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1320,8 +1320,8 @@ func TestGettersGetPayLinkFromIdResponse(t *testing.T) {
 	t.Run("GetResponseData", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponse{}
-		var expected *GetPayLinkFromIdResponseResponseData
+		obj := &GetPayLinkFromIDResponse{}
+		var expected *GetPayLinkFromIDResponseResponseData
 		obj.ResponseData = expected
 
 		// Act & Assert
@@ -1331,7 +1331,7 @@ func TestGettersGetPayLinkFromIdResponse(t *testing.T) {
 	t.Run("GetResponseData_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponse{}
+		obj := &GetPayLinkFromIDResponse{}
 		obj.ResponseData = nil
 
 		// Act & Assert
@@ -1340,7 +1340,7 @@ func TestGettersGetPayLinkFromIdResponse(t *testing.T) {
 
 	t.Run("GetResponseData_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetPayLinkFromIdResponse
+		var obj *GetPayLinkFromIDResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1352,11 +1352,11 @@ func TestGettersGetPayLinkFromIdResponse(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitGetPayLinkFromIdResponse(t *testing.T) {
+func TestSettersMarkExplicitGetPayLinkFromIDResponse(t *testing.T) {
 	t.Run("SetIsSuccess_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponse{}
+		obj := &GetPayLinkFromIDResponse{}
 		var fernTestValueIsSuccess *IsSuccess
 
 		// Act
@@ -1387,7 +1387,7 @@ func TestSettersMarkExplicitGetPayLinkFromIdResponse(t *testing.T) {
 	t.Run("SetResponseText_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponse{}
+		obj := &GetPayLinkFromIDResponse{}
 		var fernTestValueResponseText ResponseText
 
 		// Act
@@ -1418,8 +1418,8 @@ func TestSettersMarkExplicitGetPayLinkFromIdResponse(t *testing.T) {
 	t.Run("SetResponseData_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponse{}
-		var fernTestValueResponseData *GetPayLinkFromIdResponseResponseData
+		obj := &GetPayLinkFromIDResponse{}
+		var fernTestValueResponseData *GetPayLinkFromIDResponseResponseData
 
 		// Act
 		obj.SetResponseData(fernTestValueResponseData)
@@ -1448,9 +1448,9 @@ func TestSettersMarkExplicitGetPayLinkFromIdResponse(t *testing.T) {
 
 }
 
-func TestSettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
+func TestSettersGetPayLinkFromIDResponseResponseData(t *testing.T) {
 	t.Run("SetAdditionalData", func(t *testing.T) {
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var fernTestValueAdditionalData *AdditionalData
 		obj.SetAdditionalData(fernTestValueAdditionalData)
 		assert.Equal(t, fernTestValueAdditionalData, obj.AdditionalData)
@@ -1458,7 +1458,7 @@ func TestSettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	})
 
 	t.Run("SetCredentials", func(t *testing.T) {
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var fernTestValueCredentials []*PayabliCredentials
 		obj.SetCredentials(fernTestValueCredentials)
 		assert.Equal(t, fernTestValueCredentials, obj.Credentials)
@@ -1466,7 +1466,7 @@ func TestSettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	})
 
 	t.Run("SetLastAccess", func(t *testing.T) {
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var fernTestValueLastAccess *time.Time
 		obj.SetLastAccess(fernTestValueLastAccess)
 		assert.Equal(t, fernTestValueLastAccess, obj.LastAccess)
@@ -1474,7 +1474,7 @@ func TestSettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	})
 
 	t.Run("SetPageContent", func(t *testing.T) {
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var fernTestValuePageContent *PageContent
 		obj.SetPageContent(fernTestValuePageContent)
 		assert.Equal(t, fernTestValuePageContent, obj.PageContent)
@@ -1482,7 +1482,7 @@ func TestSettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	})
 
 	t.Run("SetPageIdentifier", func(t *testing.T) {
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var fernTestValuePageIdentifier *PageIdentifier
 		obj.SetPageIdentifier(fernTestValuePageIdentifier)
 		assert.Equal(t, fernTestValuePageIdentifier, obj.PageIdentifier)
@@ -1490,7 +1490,7 @@ func TestSettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	})
 
 	t.Run("SetPageSettings", func(t *testing.T) {
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var fernTestValuePageSettings *PageSetting
 		obj.SetPageSettings(fernTestValuePageSettings)
 		assert.Equal(t, fernTestValuePageSettings, obj.PageSettings)
@@ -1498,7 +1498,7 @@ func TestSettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	})
 
 	t.Run("SetPublished", func(t *testing.T) {
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var fernTestValuePublished *int
 		obj.SetPublished(fernTestValuePublished)
 		assert.Equal(t, fernTestValuePublished, obj.Published)
@@ -1506,7 +1506,7 @@ func TestSettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	})
 
 	t.Run("SetReceiptContent", func(t *testing.T) {
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var fernTestValueReceiptContent *ReceiptContent
 		obj.SetReceiptContent(fernTestValueReceiptContent)
 		assert.Equal(t, fernTestValueReceiptContent, obj.ReceiptContent)
@@ -1514,7 +1514,7 @@ func TestSettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	})
 
 	t.Run("SetSubdomain", func(t *testing.T) {
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var fernTestValueSubdomain *Subdomain
 		obj.SetSubdomain(fernTestValueSubdomain)
 		assert.Equal(t, fernTestValueSubdomain, obj.Subdomain)
@@ -1522,7 +1522,7 @@ func TestSettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	})
 
 	t.Run("SetTotalAmount", func(t *testing.T) {
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var fernTestValueTotalAmount *float64
 		obj.SetTotalAmount(fernTestValueTotalAmount)
 		assert.Equal(t, fernTestValueTotalAmount, obj.TotalAmount)
@@ -1530,7 +1530,7 @@ func TestSettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	})
 
 	t.Run("SetValidationCode", func(t *testing.T) {
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var fernTestValueValidationCode *string
 		obj.SetValidationCode(fernTestValueValidationCode)
 		assert.Equal(t, fernTestValueValidationCode, obj.ValidationCode)
@@ -1539,11 +1539,11 @@ func TestSettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 
 }
 
-func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
+func TestGettersGetPayLinkFromIDResponseResponseData(t *testing.T) {
 	t.Run("GetAdditionalData", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var expected *AdditionalData
 		obj.AdditionalData = expected
 
@@ -1554,7 +1554,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("GetAdditionalData_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		obj.AdditionalData = nil
 
 		// Act & Assert
@@ -1563,7 +1563,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 
 	t.Run("GetAdditionalData_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetPayLinkFromIdResponseResponseData
+		var obj *GetPayLinkFromIDResponseResponseData
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1576,7 +1576,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("GetCredentials", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var expected []*PayabliCredentials
 		obj.Credentials = expected
 
@@ -1587,7 +1587,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("GetCredentials_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		obj.Credentials = nil
 
 		// Act & Assert
@@ -1596,7 +1596,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 
 	t.Run("GetCredentials_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetPayLinkFromIdResponseResponseData
+		var obj *GetPayLinkFromIDResponseResponseData
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1609,7 +1609,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("GetLastAccess", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var expected *time.Time
 		obj.LastAccess = expected
 
@@ -1620,7 +1620,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("GetLastAccess_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		obj.LastAccess = nil
 
 		// Act & Assert
@@ -1629,7 +1629,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 
 	t.Run("GetLastAccess_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetPayLinkFromIdResponseResponseData
+		var obj *GetPayLinkFromIDResponseResponseData
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1642,7 +1642,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("GetPageContent", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var expected *PageContent
 		obj.PageContent = expected
 
@@ -1653,7 +1653,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("GetPageContent_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		obj.PageContent = nil
 
 		// Act & Assert
@@ -1662,7 +1662,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 
 	t.Run("GetPageContent_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetPayLinkFromIdResponseResponseData
+		var obj *GetPayLinkFromIDResponseResponseData
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1675,7 +1675,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("GetPageIdentifier", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var expected *PageIdentifier
 		obj.PageIdentifier = expected
 
@@ -1686,7 +1686,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("GetPageIdentifier_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		obj.PageIdentifier = nil
 
 		// Act & Assert
@@ -1695,7 +1695,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 
 	t.Run("GetPageIdentifier_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetPayLinkFromIdResponseResponseData
+		var obj *GetPayLinkFromIDResponseResponseData
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1708,7 +1708,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("GetPageSettings", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var expected *PageSetting
 		obj.PageSettings = expected
 
@@ -1719,7 +1719,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("GetPageSettings_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		obj.PageSettings = nil
 
 		// Act & Assert
@@ -1728,7 +1728,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 
 	t.Run("GetPageSettings_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetPayLinkFromIdResponseResponseData
+		var obj *GetPayLinkFromIDResponseResponseData
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1741,7 +1741,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("GetPublished", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var expected *int
 		obj.Published = expected
 
@@ -1752,7 +1752,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("GetPublished_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		obj.Published = nil
 
 		// Act & Assert
@@ -1761,7 +1761,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 
 	t.Run("GetPublished_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetPayLinkFromIdResponseResponseData
+		var obj *GetPayLinkFromIDResponseResponseData
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1774,7 +1774,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("GetReceiptContent", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var expected *ReceiptContent
 		obj.ReceiptContent = expected
 
@@ -1785,7 +1785,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("GetReceiptContent_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		obj.ReceiptContent = nil
 
 		// Act & Assert
@@ -1794,7 +1794,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 
 	t.Run("GetReceiptContent_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetPayLinkFromIdResponseResponseData
+		var obj *GetPayLinkFromIDResponseResponseData
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1807,7 +1807,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("GetSubdomain", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var expected *Subdomain
 		obj.Subdomain = expected
 
@@ -1818,7 +1818,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("GetSubdomain_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		obj.Subdomain = nil
 
 		// Act & Assert
@@ -1827,7 +1827,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 
 	t.Run("GetSubdomain_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetPayLinkFromIdResponseResponseData
+		var obj *GetPayLinkFromIDResponseResponseData
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1840,7 +1840,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("GetTotalAmount", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var expected *float64
 		obj.TotalAmount = expected
 
@@ -1851,7 +1851,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("GetTotalAmount_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		obj.TotalAmount = nil
 
 		// Act & Assert
@@ -1860,7 +1860,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 
 	t.Run("GetTotalAmount_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetPayLinkFromIdResponseResponseData
+		var obj *GetPayLinkFromIDResponseResponseData
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1873,7 +1873,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("GetValidationCode", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var expected *string
 		obj.ValidationCode = expected
 
@@ -1884,7 +1884,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("GetValidationCode_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		obj.ValidationCode = nil
 
 		// Act & Assert
@@ -1893,7 +1893,7 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 
 	t.Run("GetValidationCode_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetPayLinkFromIdResponseResponseData
+		var obj *GetPayLinkFromIDResponseResponseData
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1905,11 +1905,11 @@ func TestGettersGetPayLinkFromIdResponseResponseData(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitGetPayLinkFromIdResponseResponseData(t *testing.T) {
+func TestSettersMarkExplicitGetPayLinkFromIDResponseResponseData(t *testing.T) {
 	t.Run("SetAdditionalData_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var fernTestValueAdditionalData *AdditionalData
 
 		// Act
@@ -1940,7 +1940,7 @@ func TestSettersMarkExplicitGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("SetCredentials_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var fernTestValueCredentials []*PayabliCredentials
 
 		// Act
@@ -1971,7 +1971,7 @@ func TestSettersMarkExplicitGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("SetLastAccess_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var fernTestValueLastAccess *time.Time
 
 		// Act
@@ -2002,7 +2002,7 @@ func TestSettersMarkExplicitGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("SetPageContent_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var fernTestValuePageContent *PageContent
 
 		// Act
@@ -2033,7 +2033,7 @@ func TestSettersMarkExplicitGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("SetPageIdentifier_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var fernTestValuePageIdentifier *PageIdentifier
 
 		// Act
@@ -2064,7 +2064,7 @@ func TestSettersMarkExplicitGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("SetPageSettings_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var fernTestValuePageSettings *PageSetting
 
 		// Act
@@ -2095,7 +2095,7 @@ func TestSettersMarkExplicitGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("SetPublished_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var fernTestValuePublished *int
 
 		// Act
@@ -2126,7 +2126,7 @@ func TestSettersMarkExplicitGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("SetReceiptContent_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var fernTestValueReceiptContent *ReceiptContent
 
 		// Act
@@ -2157,7 +2157,7 @@ func TestSettersMarkExplicitGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("SetSubdomain_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var fernTestValueSubdomain *Subdomain
 
 		// Act
@@ -2188,7 +2188,7 @@ func TestSettersMarkExplicitGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("SetTotalAmount_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var fernTestValueTotalAmount *float64
 
 		// Act
@@ -2219,7 +2219,7 @@ func TestSettersMarkExplicitGetPayLinkFromIdResponseResponseData(t *testing.T) {
 	t.Run("SetValidationCode_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		var fernTestValueValidationCode *string
 
 		// Act
@@ -2474,9 +2474,9 @@ func TestSettersMarkExplicitPatchOutPaymentLinkRequest(t *testing.T) {
 
 }
 
-func TestSettersPayabliApiResponsePaymentLinks(t *testing.T) {
+func TestSettersPayabliAPIResponsePaymentLinks(t *testing.T) {
 	t.Run("SetIsSuccess", func(t *testing.T) {
-		obj := &PayabliApiResponsePaymentLinks{}
+		obj := &PayabliAPIResponsePaymentLinks{}
 		var fernTestValueIsSuccess IsSuccess
 		obj.SetIsSuccess(fernTestValueIsSuccess)
 		assert.Equal(t, fernTestValueIsSuccess, obj.IsSuccess)
@@ -2484,7 +2484,7 @@ func TestSettersPayabliApiResponsePaymentLinks(t *testing.T) {
 	})
 
 	t.Run("SetResponseData", func(t *testing.T) {
-		obj := &PayabliApiResponsePaymentLinks{}
+		obj := &PayabliAPIResponsePaymentLinks{}
 		var fernTestValueResponseData *string
 		obj.SetResponseData(fernTestValueResponseData)
 		assert.Equal(t, fernTestValueResponseData, obj.ResponseData)
@@ -2492,7 +2492,7 @@ func TestSettersPayabliApiResponsePaymentLinks(t *testing.T) {
 	})
 
 	t.Run("SetResponseText", func(t *testing.T) {
-		obj := &PayabliApiResponsePaymentLinks{}
+		obj := &PayabliAPIResponsePaymentLinks{}
 		var fernTestValueResponseText ResponseText
 		obj.SetResponseText(fernTestValueResponseText)
 		assert.Equal(t, fernTestValueResponseText, obj.ResponseText)
@@ -2501,11 +2501,11 @@ func TestSettersPayabliApiResponsePaymentLinks(t *testing.T) {
 
 }
 
-func TestGettersPayabliApiResponsePaymentLinks(t *testing.T) {
+func TestGettersPayabliAPIResponsePaymentLinks(t *testing.T) {
 	t.Run("GetIsSuccess", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponsePaymentLinks{}
+		obj := &PayabliAPIResponsePaymentLinks{}
 		var expected IsSuccess
 		obj.IsSuccess = expected
 
@@ -2515,7 +2515,7 @@ func TestGettersPayabliApiResponsePaymentLinks(t *testing.T) {
 
 	t.Run("GetIsSuccess_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponsePaymentLinks
+		var obj *PayabliAPIResponsePaymentLinks
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2528,7 +2528,7 @@ func TestGettersPayabliApiResponsePaymentLinks(t *testing.T) {
 	t.Run("GetResponseData", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponsePaymentLinks{}
+		obj := &PayabliAPIResponsePaymentLinks{}
 		var expected *string
 		obj.ResponseData = expected
 
@@ -2539,7 +2539,7 @@ func TestGettersPayabliApiResponsePaymentLinks(t *testing.T) {
 	t.Run("GetResponseData_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponsePaymentLinks{}
+		obj := &PayabliAPIResponsePaymentLinks{}
 		obj.ResponseData = nil
 
 		// Act & Assert
@@ -2548,7 +2548,7 @@ func TestGettersPayabliApiResponsePaymentLinks(t *testing.T) {
 
 	t.Run("GetResponseData_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponsePaymentLinks
+		var obj *PayabliAPIResponsePaymentLinks
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2561,7 +2561,7 @@ func TestGettersPayabliApiResponsePaymentLinks(t *testing.T) {
 	t.Run("GetResponseText", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponsePaymentLinks{}
+		obj := &PayabliAPIResponsePaymentLinks{}
 		var expected ResponseText
 		obj.ResponseText = expected
 
@@ -2571,7 +2571,7 @@ func TestGettersPayabliApiResponsePaymentLinks(t *testing.T) {
 
 	t.Run("GetResponseText_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponsePaymentLinks
+		var obj *PayabliAPIResponsePaymentLinks
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2583,11 +2583,11 @@ func TestGettersPayabliApiResponsePaymentLinks(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitPayabliApiResponsePaymentLinks(t *testing.T) {
+func TestSettersMarkExplicitPayabliAPIResponsePaymentLinks(t *testing.T) {
 	t.Run("SetIsSuccess_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponsePaymentLinks{}
+		obj := &PayabliAPIResponsePaymentLinks{}
 		var fernTestValueIsSuccess IsSuccess
 
 		// Act
@@ -2618,7 +2618,7 @@ func TestSettersMarkExplicitPayabliApiResponsePaymentLinks(t *testing.T) {
 	t.Run("SetResponseData_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponsePaymentLinks{}
+		obj := &PayabliAPIResponsePaymentLinks{}
 		var fernTestValueResponseData *string
 
 		// Act
@@ -2649,7 +2649,7 @@ func TestSettersMarkExplicitPayabliApiResponsePaymentLinks(t *testing.T) {
 	t.Run("SetResponseText_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponsePaymentLinks{}
+		obj := &PayabliAPIResponsePaymentLinks{}
 		var fernTestValueResponseText ResponseText
 
 		// Act
@@ -4566,11 +4566,11 @@ func TestSettersMarkExplicitPayLinkUpdateData(t *testing.T) {
 
 }
 
-func TestJSONMarshalingGetPayLinkFromIdResponse(t *testing.T) {
+func TestJSONMarshalingGetPayLinkFromIDResponse(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponse{}
+		obj := &GetPayLinkFromIDResponse{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -4579,31 +4579,31 @@ func TestJSONMarshalingGetPayLinkFromIdResponse(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled GetPayLinkFromIdResponse
+		var unmarshaled GetPayLinkFromIDResponse
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj GetPayLinkFromIdResponse
+		var obj GetPayLinkFromIDResponse
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj GetPayLinkFromIdResponse
+		var obj GetPayLinkFromIDResponse
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingGetPayLinkFromIdResponseResponseData(t *testing.T) {
+func TestJSONMarshalingGetPayLinkFromIDResponseResponseData(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -4612,21 +4612,21 @@ func TestJSONMarshalingGetPayLinkFromIdResponseResponseData(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled GetPayLinkFromIdResponseResponseData
+		var unmarshaled GetPayLinkFromIDResponseResponseData
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj GetPayLinkFromIdResponseResponseData
+		var obj GetPayLinkFromIDResponseResponseData
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj GetPayLinkFromIdResponseResponseData
+		var obj GetPayLinkFromIDResponseResponseData
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
@@ -4698,11 +4698,11 @@ func TestJSONMarshalingPatchOutPaymentLinkRequest(t *testing.T) {
 	})
 }
 
-func TestJSONMarshalingPayabliApiResponsePaymentLinks(t *testing.T) {
+func TestJSONMarshalingPayabliAPIResponsePaymentLinks(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponsePaymentLinks{}
+		obj := &PayabliAPIResponsePaymentLinks{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -4711,21 +4711,21 @@ func TestJSONMarshalingPayabliApiResponsePaymentLinks(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled PayabliApiResponsePaymentLinks
+		var unmarshaled PayabliAPIResponsePaymentLinks
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj PayabliApiResponsePaymentLinks
+		var obj PayabliAPIResponsePaymentLinks
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj PayabliApiResponsePaymentLinks
+		var obj PayabliAPIResponsePaymentLinks
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
@@ -4863,33 +4863,33 @@ func TestJSONMarshalingPushPayLinkRequestSms(t *testing.T) {
 	})
 }
 
-func TestStringGetPayLinkFromIdResponse(t *testing.T) {
+func TestStringGetPayLinkFromIDResponse(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &GetPayLinkFromIdResponse{}
+		obj := &GetPayLinkFromIDResponse{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetPayLinkFromIdResponse
+		var obj *GetPayLinkFromIDResponse
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringGetPayLinkFromIdResponseResponseData(t *testing.T) {
+func TestStringGetPayLinkFromIDResponseResponseData(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetPayLinkFromIdResponseResponseData
+		var obj *GetPayLinkFromIDResponseResponseData
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
@@ -4927,17 +4927,17 @@ func TestStringPatchOutPaymentLinkRequest(t *testing.T) {
 	})
 }
 
-func TestStringPayabliApiResponsePaymentLinks(t *testing.T) {
+func TestStringPayabliAPIResponsePaymentLinks(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &PayabliApiResponsePaymentLinks{}
+		obj := &PayabliAPIResponsePaymentLinks{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponsePaymentLinks
+		var obj *PayabliAPIResponsePaymentLinks
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
@@ -5007,10 +5007,10 @@ func TestStringPushPayLinkRequestSms(t *testing.T) {
 	})
 }
 
-func TestExtraPropertiesGetPayLinkFromIdResponse(t *testing.T) {
+func TestExtraPropertiesGetPayLinkFromIDResponse(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &GetPayLinkFromIdResponse{}
+		obj := &GetPayLinkFromIDResponse{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -5024,16 +5024,16 @@ func TestExtraPropertiesGetPayLinkFromIdResponse(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetPayLinkFromIdResponse
+		var obj *GetPayLinkFromIDResponse
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesGetPayLinkFromIdResponseResponseData(t *testing.T) {
+func TestExtraPropertiesGetPayLinkFromIDResponseResponseData(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &GetPayLinkFromIdResponseResponseData{}
+		obj := &GetPayLinkFromIDResponseResponseData{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -5047,7 +5047,7 @@ func TestExtraPropertiesGetPayLinkFromIdResponseResponseData(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetPayLinkFromIdResponseResponseData
+		var obj *GetPayLinkFromIDResponseResponseData
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
@@ -5099,10 +5099,10 @@ func TestExtraPropertiesPatchOutPaymentLinkRequest(t *testing.T) {
 	})
 }
 
-func TestExtraPropertiesPayabliApiResponsePaymentLinks(t *testing.T) {
+func TestExtraPropertiesPayabliAPIResponsePaymentLinks(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &PayabliApiResponsePaymentLinks{}
+		obj := &PayabliAPIResponsePaymentLinks{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -5116,7 +5116,7 @@ func TestExtraPropertiesPayabliApiResponsePaymentLinks(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponsePaymentLinks
+		var obj *PayabliAPIResponsePaymentLinks
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})

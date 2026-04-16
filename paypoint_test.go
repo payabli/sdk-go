@@ -54,9 +54,9 @@ func TestSettersMarkExplicitGetEntryConfigRequest(t *testing.T) {
 
 }
 
-func TestSettersGetBasicEntryByIdResponse(t *testing.T) {
+func TestSettersGetBasicEntryByIDResponse(t *testing.T) {
 	t.Run("SetIsSuccess", func(t *testing.T) {
-		obj := &GetBasicEntryByIdResponse{}
+		obj := &GetBasicEntryByIDResponse{}
 		var fernTestValueIsSuccess IsSuccess
 		obj.SetIsSuccess(fernTestValueIsSuccess)
 		assert.Equal(t, fernTestValueIsSuccess, obj.IsSuccess)
@@ -64,7 +64,7 @@ func TestSettersGetBasicEntryByIdResponse(t *testing.T) {
 	})
 
 	t.Run("SetPageIdentifier", func(t *testing.T) {
-		obj := &GetBasicEntryByIdResponse{}
+		obj := &GetBasicEntryByIDResponse{}
 		var fernTestValuePageIdentifier *PageIdentifier
 		obj.SetPageIdentifier(fernTestValuePageIdentifier)
 		assert.Equal(t, fernTestValuePageIdentifier, obj.PageIdentifier)
@@ -72,7 +72,7 @@ func TestSettersGetBasicEntryByIdResponse(t *testing.T) {
 	})
 
 	t.Run("SetResponseCode", func(t *testing.T) {
-		obj := &GetBasicEntryByIdResponse{}
+		obj := &GetBasicEntryByIDResponse{}
 		var fernTestValueResponseCode *Responsecode
 		obj.SetResponseCode(fernTestValueResponseCode)
 		assert.Equal(t, fernTestValueResponseCode, obj.ResponseCode)
@@ -80,7 +80,7 @@ func TestSettersGetBasicEntryByIdResponse(t *testing.T) {
 	})
 
 	t.Run("SetResponseData", func(t *testing.T) {
-		obj := &GetBasicEntryByIdResponse{}
+		obj := &GetBasicEntryByIDResponse{}
 		var fernTestValueResponseData *PaypointEntryConfig
 		obj.SetResponseData(fernTestValueResponseData)
 		assert.Equal(t, fernTestValueResponseData, obj.ResponseData)
@@ -88,7 +88,7 @@ func TestSettersGetBasicEntryByIdResponse(t *testing.T) {
 	})
 
 	t.Run("SetResponseText", func(t *testing.T) {
-		obj := &GetBasicEntryByIdResponse{}
+		obj := &GetBasicEntryByIDResponse{}
 		var fernTestValueResponseText ResponseText
 		obj.SetResponseText(fernTestValueResponseText)
 		assert.Equal(t, fernTestValueResponseText, obj.ResponseText)
@@ -97,11 +97,11 @@ func TestSettersGetBasicEntryByIdResponse(t *testing.T) {
 
 }
 
-func TestGettersGetBasicEntryByIdResponse(t *testing.T) {
+func TestGettersGetBasicEntryByIDResponse(t *testing.T) {
 	t.Run("GetIsSuccess", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetBasicEntryByIdResponse{}
+		obj := &GetBasicEntryByIDResponse{}
 		var expected IsSuccess
 		obj.IsSuccess = expected
 
@@ -111,7 +111,7 @@ func TestGettersGetBasicEntryByIdResponse(t *testing.T) {
 
 	t.Run("GetIsSuccess_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetBasicEntryByIdResponse
+		var obj *GetBasicEntryByIDResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -124,7 +124,7 @@ func TestGettersGetBasicEntryByIdResponse(t *testing.T) {
 	t.Run("GetPageIdentifier", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetBasicEntryByIdResponse{}
+		obj := &GetBasicEntryByIDResponse{}
 		var expected *PageIdentifier
 		obj.PageIdentifier = expected
 
@@ -135,7 +135,7 @@ func TestGettersGetBasicEntryByIdResponse(t *testing.T) {
 	t.Run("GetPageIdentifier_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetBasicEntryByIdResponse{}
+		obj := &GetBasicEntryByIDResponse{}
 		obj.PageIdentifier = nil
 
 		// Act & Assert
@@ -144,7 +144,7 @@ func TestGettersGetBasicEntryByIdResponse(t *testing.T) {
 
 	t.Run("GetPageIdentifier_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetBasicEntryByIdResponse
+		var obj *GetBasicEntryByIDResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -157,7 +157,7 @@ func TestGettersGetBasicEntryByIdResponse(t *testing.T) {
 	t.Run("GetResponseCode", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetBasicEntryByIdResponse{}
+		obj := &GetBasicEntryByIDResponse{}
 		var expected *Responsecode
 		obj.ResponseCode = expected
 
@@ -168,7 +168,7 @@ func TestGettersGetBasicEntryByIdResponse(t *testing.T) {
 	t.Run("GetResponseCode_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetBasicEntryByIdResponse{}
+		obj := &GetBasicEntryByIDResponse{}
 		obj.ResponseCode = nil
 
 		// Act & Assert
@@ -177,7 +177,7 @@ func TestGettersGetBasicEntryByIdResponse(t *testing.T) {
 
 	t.Run("GetResponseCode_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetBasicEntryByIdResponse
+		var obj *GetBasicEntryByIDResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -190,7 +190,7 @@ func TestGettersGetBasicEntryByIdResponse(t *testing.T) {
 	t.Run("GetResponseData", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetBasicEntryByIdResponse{}
+		obj := &GetBasicEntryByIDResponse{}
 		var expected *PaypointEntryConfig
 		obj.ResponseData = expected
 
@@ -201,7 +201,7 @@ func TestGettersGetBasicEntryByIdResponse(t *testing.T) {
 	t.Run("GetResponseData_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetBasicEntryByIdResponse{}
+		obj := &GetBasicEntryByIDResponse{}
 		obj.ResponseData = nil
 
 		// Act & Assert
@@ -210,7 +210,7 @@ func TestGettersGetBasicEntryByIdResponse(t *testing.T) {
 
 	t.Run("GetResponseData_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetBasicEntryByIdResponse
+		var obj *GetBasicEntryByIDResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -223,7 +223,7 @@ func TestGettersGetBasicEntryByIdResponse(t *testing.T) {
 	t.Run("GetResponseText", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetBasicEntryByIdResponse{}
+		obj := &GetBasicEntryByIDResponse{}
 		var expected ResponseText
 		obj.ResponseText = expected
 
@@ -233,7 +233,7 @@ func TestGettersGetBasicEntryByIdResponse(t *testing.T) {
 
 	t.Run("GetResponseText_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetBasicEntryByIdResponse
+		var obj *GetBasicEntryByIDResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -245,11 +245,11 @@ func TestGettersGetBasicEntryByIdResponse(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitGetBasicEntryByIdResponse(t *testing.T) {
+func TestSettersMarkExplicitGetBasicEntryByIDResponse(t *testing.T) {
 	t.Run("SetIsSuccess_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetBasicEntryByIdResponse{}
+		obj := &GetBasicEntryByIDResponse{}
 		var fernTestValueIsSuccess IsSuccess
 
 		// Act
@@ -280,7 +280,7 @@ func TestSettersMarkExplicitGetBasicEntryByIdResponse(t *testing.T) {
 	t.Run("SetPageIdentifier_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetBasicEntryByIdResponse{}
+		obj := &GetBasicEntryByIDResponse{}
 		var fernTestValuePageIdentifier *PageIdentifier
 
 		// Act
@@ -311,7 +311,7 @@ func TestSettersMarkExplicitGetBasicEntryByIdResponse(t *testing.T) {
 	t.Run("SetResponseCode_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetBasicEntryByIdResponse{}
+		obj := &GetBasicEntryByIDResponse{}
 		var fernTestValueResponseCode *Responsecode
 
 		// Act
@@ -342,7 +342,7 @@ func TestSettersMarkExplicitGetBasicEntryByIdResponse(t *testing.T) {
 	t.Run("SetResponseData_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetBasicEntryByIdResponse{}
+		obj := &GetBasicEntryByIDResponse{}
 		var fernTestValueResponseData *PaypointEntryConfig
 
 		// Act
@@ -373,7 +373,7 @@ func TestSettersMarkExplicitGetBasicEntryByIdResponse(t *testing.T) {
 	t.Run("SetResponseText_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetBasicEntryByIdResponse{}
+		obj := &GetBasicEntryByIDResponse{}
 		var fernTestValueResponseText ResponseText
 
 		// Act
@@ -1307,11 +1307,11 @@ func TestSettersMarkExplicitMigratePaypointResponse(t *testing.T) {
 }
 
 func TestSettersNotificationRequest(t *testing.T) {
-	t.Run("SetNotificationUrl", func(t *testing.T) {
+	t.Run("SetNotificationURL", func(t *testing.T) {
 		obj := &NotificationRequest{}
-		var fernTestValueNotificationUrl string
-		obj.SetNotificationUrl(fernTestValueNotificationUrl)
-		assert.Equal(t, fernTestValueNotificationUrl, obj.NotificationUrl)
+		var fernTestValueNotificationURL string
+		obj.SetNotificationURL(fernTestValueNotificationURL)
+		assert.Equal(t, fernTestValueNotificationURL, obj.NotificationURL)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -1326,18 +1326,18 @@ func TestSettersNotificationRequest(t *testing.T) {
 }
 
 func TestGettersNotificationRequest(t *testing.T) {
-	t.Run("GetNotificationUrl", func(t *testing.T) {
+	t.Run("GetNotificationURL", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &NotificationRequest{}
 		var expected string
-		obj.NotificationUrl = expected
+		obj.NotificationURL = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetNotificationUrl(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetNotificationURL(), "getter should return the property value")
 	})
 
-	t.Run("GetNotificationUrl_NilReceiver", func(t *testing.T) {
+	t.Run("GetNotificationURL_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *NotificationRequest
 		// Should not panic - getters should handle nil receiver gracefully
@@ -1346,7 +1346,7 @@ func TestGettersNotificationRequest(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetNotificationUrl() // Should return zero value
+		_ = obj.GetNotificationURL() // Should return zero value
 	})
 
 	t.Run("GetWebHeaderParameters", func(t *testing.T) {
@@ -1385,14 +1385,14 @@ func TestGettersNotificationRequest(t *testing.T) {
 }
 
 func TestSettersMarkExplicitNotificationRequest(t *testing.T) {
-	t.Run("SetNotificationUrl_MarksExplicit", func(t *testing.T) {
+	t.Run("SetNotificationURL_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &NotificationRequest{}
-		var fernTestValueNotificationUrl string
+		var fernTestValueNotificationURL string
 
 		// Act
-		obj.SetNotificationUrl(fernTestValueNotificationUrl)
+		obj.SetNotificationURL(fernTestValueNotificationURL)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -1458,11 +1458,11 @@ func TestSettersPaypointMoveRequest(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetNewParentOrganizationId", func(t *testing.T) {
+	t.Run("SetNewParentOrganizationID", func(t *testing.T) {
 		obj := &PaypointMoveRequest{}
-		var fernTestValueNewParentOrganizationId int
-		obj.SetNewParentOrganizationId(fernTestValueNewParentOrganizationId)
-		assert.Equal(t, fernTestValueNewParentOrganizationId, obj.NewParentOrganizationId)
+		var fernTestValueNewParentOrganizationID int
+		obj.SetNewParentOrganizationID(fernTestValueNewParentOrganizationID)
+		assert.Equal(t, fernTestValueNewParentOrganizationID, obj.NewParentOrganizationID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -1500,18 +1500,18 @@ func TestGettersPaypointMoveRequest(t *testing.T) {
 		_ = obj.GetEntryPoint() // Should return zero value
 	})
 
-	t.Run("GetNewParentOrganizationId", func(t *testing.T) {
+	t.Run("GetNewParentOrganizationID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &PaypointMoveRequest{}
 		var expected int
-		obj.NewParentOrganizationId = expected
+		obj.NewParentOrganizationID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetNewParentOrganizationId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetNewParentOrganizationID(), "getter should return the property value")
 	})
 
-	t.Run("GetNewParentOrganizationId_NilReceiver", func(t *testing.T) {
+	t.Run("GetNewParentOrganizationID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *PaypointMoveRequest
 		// Should not panic - getters should handle nil receiver gracefully
@@ -1520,7 +1520,7 @@ func TestGettersPaypointMoveRequest(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetNewParentOrganizationId() // Should return zero value
+		_ = obj.GetNewParentOrganizationID() // Should return zero value
 	})
 
 	t.Run("GetNotificationRequest", func(t *testing.T) {
@@ -1590,14 +1590,14 @@ func TestSettersMarkExplicitPaypointMoveRequest(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetNewParentOrganizationId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetNewParentOrganizationID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &PaypointMoveRequest{}
-		var fernTestValueNewParentOrganizationId int
+		var fernTestValueNewParentOrganizationID int
 
 		// Act
-		obj.SetNewParentOrganizationId(fernTestValueNewParentOrganizationId)
+		obj.SetNewParentOrganizationID(fernTestValueNewParentOrganizationID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -1787,11 +1787,11 @@ func TestSettersMarkExplicitWebHeaderParameter(t *testing.T) {
 
 }
 
-func TestJSONMarshalingGetBasicEntryByIdResponse(t *testing.T) {
+func TestJSONMarshalingGetBasicEntryByIDResponse(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &GetBasicEntryByIdResponse{}
+		obj := &GetBasicEntryByIDResponse{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -1800,21 +1800,21 @@ func TestJSONMarshalingGetBasicEntryByIdResponse(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled GetBasicEntryByIdResponse
+		var unmarshaled GetBasicEntryByIDResponse
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj GetBasicEntryByIdResponse
+		var obj GetBasicEntryByIDResponse
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj GetBasicEntryByIdResponse
+		var obj GetBasicEntryByIDResponse
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
@@ -2018,17 +2018,17 @@ func TestJSONMarshalingWebHeaderParameter(t *testing.T) {
 	})
 }
 
-func TestStringGetBasicEntryByIdResponse(t *testing.T) {
+func TestStringGetBasicEntryByIDResponse(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &GetBasicEntryByIdResponse{}
+		obj := &GetBasicEntryByIDResponse{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetBasicEntryByIdResponse
+		var obj *GetBasicEntryByIDResponse
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
@@ -2130,10 +2130,10 @@ func TestStringWebHeaderParameter(t *testing.T) {
 	})
 }
 
-func TestExtraPropertiesGetBasicEntryByIdResponse(t *testing.T) {
+func TestExtraPropertiesGetBasicEntryByIDResponse(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &GetBasicEntryByIdResponse{}
+		obj := &GetBasicEntryByIDResponse{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -2147,7 +2147,7 @@ func TestExtraPropertiesGetBasicEntryByIdResponse(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *GetBasicEntryByIdResponse
+		var obj *GetBasicEntryByIDResponse
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})

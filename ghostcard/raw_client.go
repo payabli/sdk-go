@@ -82,7 +82,7 @@ func (r *RawClient) UpdateCard(
 	entry payabli.Entry,
 	request *payabli.UpdateCardRequestBody,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponse], error) {
+) (*core.Response[*payabli.PayabliAPIResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -98,7 +98,7 @@ func (r *RawClient) UpdateCard(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *payabli.PayabliApiResponse
+	var response *payabli.PayabliAPIResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -117,7 +117,7 @@ func (r *RawClient) UpdateCard(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponse]{
+	return &core.Response[*payabli.PayabliAPIResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

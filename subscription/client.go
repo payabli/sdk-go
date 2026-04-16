@@ -36,12 +36,12 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) GetSubscription(
 	ctx context.Context,
 	// The subscription ID.
-	subId int,
+	subID int,
 	opts ...option.RequestOption,
 ) (*payabli.SubscriptionQueryRecords, error) {
 	response, err := c.WithRawResponse.GetSubscription(
 		ctx,
-		subId,
+		subID,
 		opts...,
 	)
 	if err != nil {
@@ -71,12 +71,12 @@ func (c *Client) NewSubscription(
 func (c *Client) RemoveSubscription(
 	ctx context.Context,
 	// The subscription ID.
-	subId int,
+	subID int,
 	opts ...option.RequestOption,
 ) (*payabli.RemoveSubscriptionResponse, error) {
 	response, err := c.WithRawResponse.RemoveSubscription(
 		ctx,
-		subId,
+		subID,
 		opts...,
 	)
 	if err != nil {
@@ -89,13 +89,13 @@ func (c *Client) RemoveSubscription(
 func (c *Client) UpdateSubscription(
 	ctx context.Context,
 	// The subscription ID.
-	subId int,
+	subID int,
 	request *payabli.RequestUpdateSchedule,
 	opts ...option.RequestOption,
 ) (*payabli.UpdateSubscriptionResponse, error) {
 	response, err := c.WithRawResponse.UpdateSubscription(
 		ctx,
-		subId,
+		subID,
 		request,
 		opts...,
 	)

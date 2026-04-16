@@ -73,7 +73,7 @@ func TestGhostCardCreateGhostCardWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &payabli.CreateGhostCardRequestBody{
-		VendorId:               int64(42),
+		VendorID:               int64(42),
 		ExpenseLimit:           500,
 		Amount:                 500,
 		MaxNumberOfUses:        3,

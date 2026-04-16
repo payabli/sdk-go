@@ -75,7 +75,7 @@ func (r *RawClient) AddUser(
 func (r *RawClient) AuthRefreshUser(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponseUserMfa], error) {
+) (*core.Response[*payabli.PayabliAPIResponseUserMfa], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -87,7 +87,7 @@ func (r *RawClient) AuthRefreshUser(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponseUserMfa
+	var response *payabli.PayabliAPIResponseUserMfa
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -105,7 +105,7 @@ func (r *RawClient) AuthRefreshUser(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponseUserMfa]{
+	return &core.Response[*payabli.PayabliAPIResponseUserMfa]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -161,7 +161,7 @@ func (r *RawClient) AuthUser(
 	provider string,
 	request *payabli.UserAuthRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponseMfaBasic], error) {
+) (*core.Response[*payabli.PayabliAPIResponseMfaBasic], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -177,7 +177,7 @@ func (r *RawClient) AuthUser(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *payabli.PayabliApiResponseMfaBasic
+	var response *payabli.PayabliAPIResponseMfaBasic
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -196,7 +196,7 @@ func (r *RawClient) AuthUser(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponseMfaBasic]{
+	return &core.Response[*payabli.PayabliAPIResponseMfaBasic]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -249,7 +249,7 @@ func (r *RawClient) ChangePswUser(
 func (r *RawClient) DeleteUser(
 	ctx context.Context,
 	// The Payabli-generated `userId` value.
-	userId int64,
+	userID int64,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.DeleteUserResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -260,7 +260,7 @@ func (r *RawClient) DeleteUser(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/User/%v",
-		userId,
+		userID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -294,7 +294,7 @@ func (r *RawClient) DeleteUser(
 func (r *RawClient) EditMfaUser(
 	ctx context.Context,
 	// User Identifier
-	userId int64,
+	userID int64,
 	request *payabli.MfaData,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.EditMfaUserResponse], error) {
@@ -306,7 +306,7 @@ func (r *RawClient) EditMfaUser(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/User/mfa/%v",
-		userId,
+		userID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -341,10 +341,10 @@ func (r *RawClient) EditMfaUser(
 func (r *RawClient) EditUser(
 	ctx context.Context,
 	// User Identifier
-	userId int64,
+	userID int64,
 	request *payabli.UserData,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponse], error) {
+) (*core.Response[*payabli.PayabliAPIResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -353,13 +353,13 @@ func (r *RawClient) EditUser(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/User/%v",
-		userId,
+		userID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponse
+	var response *payabli.PayabliAPIResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -378,7 +378,7 @@ func (r *RawClient) EditUser(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponse]{
+	return &core.Response[*payabli.PayabliAPIResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -388,7 +388,7 @@ func (r *RawClient) EditUser(
 func (r *RawClient) GetUser(
 	ctx context.Context,
 	// The Payabli-generated `userId` value.
-	userId int64,
+	userID int64,
 	request *payabli.GetUserRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.UserQueryRecord], error) {
@@ -400,7 +400,7 @@ func (r *RawClient) GetUser(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/User/%v",
-		userId,
+		userID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -487,7 +487,7 @@ func (r *RawClient) ResendMfaCode(
 	//
 	entryType int,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponseMfaBasic], error) {
+) (*core.Response[*payabli.PayabliAPIResponseMfaBasic], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -504,7 +504,7 @@ func (r *RawClient) ResendMfaCode(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponseMfaBasic
+	var response *payabli.PayabliAPIResponseMfaBasic
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -522,7 +522,7 @@ func (r *RawClient) ResendMfaCode(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponseMfaBasic]{
+	return &core.Response[*payabli.PayabliAPIResponseMfaBasic]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -533,7 +533,7 @@ func (r *RawClient) ValidateMfaUser(
 	ctx context.Context,
 	request *payabli.MfaValidationData,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponseUserMfa], error) {
+) (*core.Response[*payabli.PayabliAPIResponseUserMfa], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -546,7 +546,7 @@ func (r *RawClient) ValidateMfaUser(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *payabli.PayabliApiResponseUserMfa
+	var response *payabli.PayabliAPIResponseUserMfa
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -564,7 +564,7 @@ func (r *RawClient) ValidateMfaUser(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponseUserMfa]{
+	return &core.Response[*payabli.PayabliAPIResponseUserMfa]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

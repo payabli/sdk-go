@@ -53,7 +53,7 @@ func (c *Client) AddUser(
 func (c *Client) AuthRefreshUser(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponseUserMfa, error) {
+) (*payabli.PayabliAPIResponseUserMfa, error) {
 	response, err := c.WithRawResponse.AuthRefreshUser(
 		ctx,
 		opts...,
@@ -88,7 +88,7 @@ func (c *Client) AuthUser(
 	provider string,
 	request *payabli.UserAuthRequest,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponseMfaBasic, error) {
+) (*payabli.PayabliAPIResponseMfaBasic, error) {
 	response, err := c.WithRawResponse.AuthUser(
 		ctx,
 		provider,
@@ -122,12 +122,12 @@ func (c *Client) ChangePswUser(
 func (c *Client) DeleteUser(
 	ctx context.Context,
 	// The Payabli-generated `userId` value.
-	userId int64,
+	userID int64,
 	opts ...option.RequestOption,
 ) (*payabli.DeleteUserResponse, error) {
 	response, err := c.WithRawResponse.DeleteUser(
 		ctx,
-		userId,
+		userID,
 		opts...,
 	)
 	if err != nil {
@@ -140,13 +140,13 @@ func (c *Client) DeleteUser(
 func (c *Client) EditMfaUser(
 	ctx context.Context,
 	// User Identifier
-	userId int64,
+	userID int64,
 	request *payabli.MfaData,
 	opts ...option.RequestOption,
 ) (*payabli.EditMfaUserResponse, error) {
 	response, err := c.WithRawResponse.EditMfaUser(
 		ctx,
-		userId,
+		userID,
 		request,
 		opts...,
 	)
@@ -160,13 +160,13 @@ func (c *Client) EditMfaUser(
 func (c *Client) EditUser(
 	ctx context.Context,
 	// User Identifier
-	userId int64,
+	userID int64,
 	request *payabli.UserData,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponse, error) {
+) (*payabli.PayabliAPIResponse, error) {
 	response, err := c.WithRawResponse.EditUser(
 		ctx,
-		userId,
+		userID,
 		request,
 		opts...,
 	)
@@ -180,13 +180,13 @@ func (c *Client) EditUser(
 func (c *Client) GetUser(
 	ctx context.Context,
 	// The Payabli-generated `userId` value.
-	userId int64,
+	userID int64,
 	request *payabli.GetUserRequest,
 	opts ...option.RequestOption,
 ) (*payabli.UserQueryRecord, error) {
 	response, err := c.WithRawResponse.GetUser(
 		ctx,
-		userId,
+		userID,
 		request,
 		opts...,
 	)
@@ -221,7 +221,7 @@ func (c *Client) ResendMfaCode(
 	//
 	entryType int,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponseMfaBasic, error) {
+) (*payabli.PayabliAPIResponseMfaBasic, error) {
 	response, err := c.WithRawResponse.ResendMfaCode(
 		ctx,
 		usrname,
@@ -240,7 +240,7 @@ func (c *Client) ValidateMfaUser(
 	ctx context.Context,
 	request *payabli.MfaValidationData,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponseUserMfa, error) {
+) (*payabli.PayabliAPIResponseUserMfa, error) {
 	response, err := c.WithRawResponse.ValidateMfaUser(
 		ctx,
 		request,

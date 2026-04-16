@@ -90,11 +90,11 @@ func TestSettersAddOrganizationRequest(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetOrgId", func(t *testing.T) {
+	t.Run("SetOrgID", func(t *testing.T) {
 		obj := &AddOrganizationRequest{}
-		var fernTestValueOrgId *Orgidstring
-		obj.SetOrgId(fernTestValueOrgId)
-		assert.Equal(t, fernTestValueOrgId, obj.OrgId)
+		var fernTestValueOrgID *Orgidstring
+		obj.SetOrgID(fernTestValueOrgID)
+		assert.Equal(t, fernTestValueOrgID, obj.OrgID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -114,11 +114,11 @@ func TestSettersAddOrganizationRequest(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetOrgParentId", func(t *testing.T) {
+	t.Run("SetOrgParentID", func(t *testing.T) {
 		obj := &AddOrganizationRequest{}
-		var fernTestValueOrgParentId *OrgParentId
-		obj.SetOrgParentId(fernTestValueOrgParentId)
-		assert.Equal(t, fernTestValueOrgParentId, obj.OrgParentId)
+		var fernTestValueOrgParentID *OrgParentID
+		obj.SetOrgParentID(fernTestValueOrgParentID)
+		assert.Equal(t, fernTestValueOrgParentID, obj.OrgParentID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -483,14 +483,14 @@ func TestSettersMarkExplicitAddOrganizationRequest(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetOrgId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetOrgID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &AddOrganizationRequest{}
-		var fernTestValueOrgId *Orgidstring
+		var fernTestValueOrgID *Orgidstring
 
 		// Act
-		obj.SetOrgId(fernTestValueOrgId)
+		obj.SetOrgID(fernTestValueOrgID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -576,14 +576,14 @@ func TestSettersMarkExplicitAddOrganizationRequest(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetOrgParentId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetOrgParentID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &AddOrganizationRequest{}
-		var fernTestValueOrgParentId *OrgParentId
+		var fernTestValueOrgParentID *OrgParentID
 
 		// Act
-		obj.SetOrgParentId(fernTestValueOrgParentId)
+		obj.SetOrgParentID(fernTestValueOrgParentID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -868,11 +868,11 @@ func TestSettersOrganizationData(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetOrganizationDataOrgId", func(t *testing.T) {
+	t.Run("SetOrganizationDataOrgID", func(t *testing.T) {
 		obj := &OrganizationData{}
-		var fernTestValueOrganizationDataOrgId *Orgidstring
-		obj.SetOrganizationDataOrgId(fernTestValueOrganizationDataOrgId)
-		assert.Equal(t, fernTestValueOrganizationDataOrgId, obj.OrganizationDataOrgId)
+		var fernTestValueOrganizationDataOrgID *Orgidstring
+		obj.SetOrganizationDataOrgID(fernTestValueOrganizationDataOrgID)
+		assert.Equal(t, fernTestValueOrganizationDataOrgID, obj.OrganizationDataOrgID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -892,11 +892,11 @@ func TestSettersOrganizationData(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetOrgParentId", func(t *testing.T) {
+	t.Run("SetOrgParentID", func(t *testing.T) {
 		obj := &OrganizationData{}
-		var fernTestValueOrgParentId *OrgParentId
-		obj.SetOrgParentId(fernTestValueOrgParentId)
-		assert.Equal(t, fernTestValueOrgParentId, obj.OrgParentId)
+		var fernTestValueOrgParentID *OrgParentID
+		obj.SetOrgParentID(fernTestValueOrgParentID)
+		assert.Equal(t, fernTestValueOrgParentID, obj.OrgParentID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -1230,14 +1230,14 @@ func TestSettersMarkExplicitOrganizationData(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetOrganizationDataOrgId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetOrganizationDataOrgID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &OrganizationData{}
-		var fernTestValueOrganizationDataOrgId *Orgidstring
+		var fernTestValueOrganizationDataOrgID *Orgidstring
 
 		// Act
-		obj.SetOrganizationDataOrgId(fernTestValueOrganizationDataOrgId)
+		obj.SetOrganizationDataOrgID(fernTestValueOrganizationDataOrgID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -1323,14 +1323,14 @@ func TestSettersMarkExplicitOrganizationData(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetOrgParentId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetOrgParentID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &OrganizationData{}
-		var fernTestValueOrgParentId *OrgParentId
+		var fernTestValueOrgParentID *OrgParentID
 
 		// Act
-		obj.SetOrgParentId(fernTestValueOrgParentId)
+		obj.SetOrgParentID(fernTestValueOrgParentID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)

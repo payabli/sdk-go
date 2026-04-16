@@ -75,7 +75,7 @@ func TestMoneyInAuthorizeWithWireMock(
 	request := &payabli.RequestPaymentAuthorize{
 		Body: &payabli.TransRequestBody{
 			CustomerData: &payabli.PayorDataRequest{
-				CustomerId: payabli.Int64(
+				CustomerID: payabli.Int64(
 					int64(4440),
 				),
 			},
@@ -268,7 +268,7 @@ func TestMoneyInGetpaidWithWireMock(
 	request := &payabli.RequestPayment{
 		Body: &payabli.TransRequestBody{
 			CustomerData: &payabli.PayorDataRequest{
-				CustomerId: payabli.Int64(
+				CustomerID: payabli.Int64(
 					int64(4440),
 				),
 			},
@@ -391,7 +391,7 @@ func TestMoneyInRefundWithInstructionsWithWireMock(
 					OriginationEntryPoint: payabli.String(
 						"7f1a381696",
 					),
-					AccountId: payabli.String(
+					AccountID: payabli.String(
 						"187-342",
 					),
 					Description: payabli.String(
@@ -405,7 +405,7 @@ func TestMoneyInRefundWithInstructionsWithWireMock(
 					OriginationEntryPoint: payabli.String(
 						"7f1a381696",
 					),
-					AccountId: payabli.String(
+					AccountID: payabli.String(
 						"187-343",
 					),
 					Description: payabli.String(
@@ -551,7 +551,7 @@ func TestMoneyInGetpaidv2WithWireMock(
 	request := &payabli.RequestPaymentV2{
 		Body: &payabli.TransRequestBody{
 			CustomerData: &payabli.PayorDataRequest{
-				CustomerId: payabli.Int64(
+				CustomerID: payabli.Int64(
 					int64(4440),
 				),
 			},
@@ -612,7 +612,7 @@ func TestMoneyInAuthorizev2WithWireMock(
 	request := &payabli.RequestPaymentAuthorizeV2{
 		Body: &payabli.TransRequestBody{
 			CustomerData: &payabli.PayorDataRequest{
-				CustomerId: payabli.Int64(
+				CustomerID: payabli.Int64(
 					int64(4440),
 				),
 			},

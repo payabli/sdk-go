@@ -25,7 +25,7 @@ type RequestOptions struct {
 	QueryParameters url.Values
 	MaxAttempts     uint
 	MaxBufSize      int
-	ApiKey          string
+	APIKey          string
 }
 
 // NewRequestOptions returns a new *RequestOptions value.
@@ -48,8 +48,8 @@ func NewRequestOptions(opts ...RequestOption) *RequestOptions {
 // for the request(s).
 func (r *RequestOptions) ToHeader() http.Header {
 	header := r.cloneHeader()
-	if r.ApiKey != "" {
-		header.Set("requestToken", fmt.Sprintf("%v", r.ApiKey))
+	if r.APIKey != "" {
+		header.Set("requestToken", fmt.Sprintf("%v", r.APIKey))
 	}
 	return header
 }
@@ -58,8 +58,8 @@ func (r *RequestOptions) cloneHeader() http.Header {
 	headers := r.HTTPHeader.Clone()
 	headers.Set("X-Fern-Language", "Go")
 	headers.Set("X-Fern-SDK-Name", "github.com/payabli/sdk-go")
-	headers.Set("X-Fern-SDK-Version", "v0.0.452")
-	headers.Set("User-Agent", "github.com/payabli/sdk-go/0.0.452")
+	headers.Set("X-Fern-SDK-Version", "v0.0.453")
+	headers.Set("User-Agent", "github.com/payabli/sdk-go/0.0.453")
 	return headers
 }
 
@@ -126,11 +126,11 @@ func (m *MaxBufSizeOption) applyRequestOptions(opts *RequestOptions) {
 	opts.MaxBufSize = m.MaxBufSize
 }
 
-// ApiKeyOption implements the RequestOption interface.
-type ApiKeyOption struct {
-	ApiKey string
+// APIKeyOption implements the RequestOption interface.
+type APIKeyOption struct {
+	APIKey string
 }
 
-func (a *ApiKeyOption) applyRequestOptions(opts *RequestOptions) {
-	opts.ApiKey = a.ApiKey
+func (a *APIKeyOption) applyRequestOptions(opts *RequestOptions) {
+	opts.APIKey = a.APIKey
 }

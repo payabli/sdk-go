@@ -15,8 +15,8 @@ var (
 	notificationQueryRecordFieldFrequency      = big.NewInt(1 << 2)
 	notificationQueryRecordFieldLastUpdated    = big.NewInt(1 << 3)
 	notificationQueryRecordFieldMethod         = big.NewInt(1 << 4)
-	notificationQueryRecordFieldNotificationId = big.NewInt(1 << 5)
-	notificationQueryRecordFieldOwnerId        = big.NewInt(1 << 6)
+	notificationQueryRecordFieldNotificationID = big.NewInt(1 << 5)
+	notificationQueryRecordFieldOwnerID        = big.NewInt(1 << 6)
 	notificationQueryRecordFieldOwnerName      = big.NewInt(1 << 7)
 	notificationQueryRecordFieldOwnerType      = big.NewInt(1 << 8)
 	notificationQueryRecordFieldSource         = big.NewInt(1 << 9)
@@ -33,8 +33,8 @@ type NotificationQueryRecord struct {
 	// Timestamp of when notification was last updated.
 	LastUpdated    *LastModified       `json:"lastUpdated,omitempty" url:"lastUpdated,omitempty"`
 	Method         *Methodnotification `json:"method,omitempty" url:"method,omitempty"`
-	NotificationId *NotificationId     `json:"notificationId,omitempty" url:"notificationId,omitempty"`
-	OwnerId        *Ownerid            `json:"ownerId,omitempty" url:"ownerId,omitempty"`
+	NotificationID *NotificationID     `json:"notificationId,omitempty" url:"notificationId,omitempty"`
+	OwnerID        *Ownerid            `json:"ownerId,omitempty" url:"ownerId,omitempty"`
 	// Name of entity owner of notification.
 	OwnerName *string    `json:"ownerName,omitempty" url:"ownerName,omitempty"`
 	OwnerType *Ownertype `json:"ownerType,omitempty" url:"ownerType,omitempty"`
@@ -85,18 +85,18 @@ func (n *NotificationQueryRecord) GetMethod() *Methodnotification {
 	return n.Method
 }
 
-func (n *NotificationQueryRecord) GetNotificationId() *NotificationId {
+func (n *NotificationQueryRecord) GetNotificationID() *NotificationID {
 	if n == nil {
 		return nil
 	}
-	return n.NotificationId
+	return n.NotificationID
 }
 
-func (n *NotificationQueryRecord) GetOwnerId() *Ownerid {
+func (n *NotificationQueryRecord) GetOwnerID() *Ownerid {
 	if n == nil {
 		return nil
 	}
-	return n.OwnerId
+	return n.OwnerID
 }
 
 func (n *NotificationQueryRecord) GetOwnerName() *string {
@@ -183,18 +183,18 @@ func (n *NotificationQueryRecord) SetMethod(method *Methodnotification) {
 	n.require(notificationQueryRecordFieldMethod)
 }
 
-// SetNotificationId sets the NotificationId field and marks it as non-optional;
+// SetNotificationID sets the NotificationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotificationQueryRecord) SetNotificationId(notificationId *NotificationId) {
-	n.NotificationId = notificationId
-	n.require(notificationQueryRecordFieldNotificationId)
+func (n *NotificationQueryRecord) SetNotificationID(notificationID *NotificationID) {
+	n.NotificationID = notificationID
+	n.require(notificationQueryRecordFieldNotificationID)
 }
 
-// SetOwnerId sets the OwnerId field and marks it as non-optional;
+// SetOwnerID sets the OwnerID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotificationQueryRecord) SetOwnerId(ownerId *Ownerid) {
-	n.OwnerId = ownerId
-	n.require(notificationQueryRecordFieldOwnerId)
+func (n *NotificationQueryRecord) SetOwnerID(ownerID *Ownerid) {
+	n.OwnerID = ownerID
+	n.require(notificationQueryRecordFieldOwnerID)
 }
 
 // SetOwnerName sets the OwnerName field and marks it as non-optional;
@@ -291,7 +291,7 @@ var (
 	notificationReportRequestFieldContent   = big.NewInt(1 << 0)
 	notificationReportRequestFieldFrequency = big.NewInt(1 << 1)
 	notificationReportRequestFieldMethod    = big.NewInt(1 << 2)
-	notificationReportRequestFieldOwnerId   = big.NewInt(1 << 3)
+	notificationReportRequestFieldOwnerID   = big.NewInt(1 << 3)
 	notificationReportRequestFieldOwnerType = big.NewInt(1 << 4)
 	notificationReportRequestFieldStatus    = big.NewInt(1 << 5)
 	notificationReportRequestFieldTarget    = big.NewInt(1 << 6)
@@ -302,7 +302,7 @@ type NotificationReportRequest struct {
 	Frequency NotificationReportRequestFrequency `json:"frequency" url:"frequency"`
 	// Automated reporting lets you gather critical reports without manually filtering and exporting the data. Get automated daily, weekly, and monthly report for daily sales, ACH returns, settlements, and more. You can send these reports via email or via webhook. See [Automated Reports](/developers/developer-guides/notifications-and-webhooks-overview#automated-reports) for more.
 	Method    NotificationReportRequestMethod `json:"method" url:"method"`
-	OwnerId   *Ownerid                        `json:"ownerId,omitempty" url:"ownerId,omitempty"`
+	OwnerID   *Ownerid                        `json:"ownerId,omitempty" url:"ownerId,omitempty"`
 	OwnerType Ownertype                       `json:"ownerType" url:"ownerType"`
 	Status    *Statusnotification             `json:"status,omitempty" url:"status,omitempty"`
 	// Specify the notification target.
@@ -340,11 +340,11 @@ func (n *NotificationReportRequest) GetMethod() NotificationReportRequestMethod 
 	return n.Method
 }
 
-func (n *NotificationReportRequest) GetOwnerId() *Ownerid {
+func (n *NotificationReportRequest) GetOwnerID() *Ownerid {
 	if n == nil {
 		return nil
 	}
-	return n.OwnerId
+	return n.OwnerID
 }
 
 func (n *NotificationReportRequest) GetOwnerType() Ownertype {
@@ -403,11 +403,11 @@ func (n *NotificationReportRequest) SetMethod(method NotificationReportRequestMe
 	n.require(notificationReportRequestFieldMethod)
 }
 
-// SetOwnerId sets the OwnerId field and marks it as non-optional;
+// SetOwnerID sets the OwnerID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotificationReportRequest) SetOwnerId(ownerId *Ownerid) {
-	n.OwnerId = ownerId
-	n.require(notificationReportRequestFieldOwnerId)
+func (n *NotificationReportRequest) SetOwnerID(ownerID *Ownerid) {
+	n.OwnerID = ownerID
+	n.require(notificationReportRequestFieldOwnerID)
 }
 
 // SetOwnerType sets the OwnerType field and marks it as non-optional;
@@ -479,7 +479,7 @@ var (
 	notificationReportRequestContentFieldInternalData        = big.NewInt(1 << 2)
 	notificationReportRequestContentFieldReportName          = big.NewInt(1 << 3)
 	notificationReportRequestContentFieldTimeZone            = big.NewInt(1 << 4)
-	notificationReportRequestContentFieldTransactionId       = big.NewInt(1 << 5)
+	notificationReportRequestContentFieldTransactionID       = big.NewInt(1 << 5)
 	notificationReportRequestContentFieldWebHeaderParameters = big.NewInt(1 << 6)
 )
 
@@ -494,7 +494,7 @@ type NotificationReportRequestContent struct {
 	ReportName *NotificationReportRequestContentReportName `json:"reportName,omitempty" url:"reportName,omitempty"`
 	TimeZone   *Timezone                                   `json:"timeZone,omitempty" url:"timeZone,omitempty"`
 	// Used internally to reference the entity or object generating the event.
-	TransactionId *string `json:"transactionId,omitempty" url:"transactionId,omitempty"`
+	TransactionID *string `json:"transactionId,omitempty" url:"transactionId,omitempty"`
 	// Array of pairs key:value to insert in header of request to target in **method** = *report-web*.
 	WebHeaderParameters []*KeyValueDuo `json:"webHeaderParameters,omitempty" url:"webHeaderParameters,omitempty"`
 
@@ -533,11 +533,11 @@ func (n *NotificationReportRequestContent) GetTimeZone() *Timezone {
 	return n.TimeZone
 }
 
-func (n *NotificationReportRequestContent) GetTransactionId() *string {
+func (n *NotificationReportRequestContent) GetTransactionID() *string {
 	if n == nil {
 		return nil
 	}
-	return n.TransactionId
+	return n.TransactionID
 }
 
 func (n *NotificationReportRequestContent) GetWebHeaderParameters() []*KeyValueDuo {
@@ -596,11 +596,11 @@ func (n *NotificationReportRequestContent) SetTimeZone(timeZone *Timezone) {
 	n.require(notificationReportRequestContentFieldTimeZone)
 }
 
-// SetTransactionId sets the TransactionId field and marks it as non-optional;
+// SetTransactionID sets the TransactionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotificationReportRequestContent) SetTransactionId(transactionId *string) {
-	n.TransactionId = transactionId
-	n.require(notificationReportRequestContentFieldTransactionId)
+func (n *NotificationReportRequestContent) SetTransactionID(transactionID *string) {
+	n.TransactionID = transactionID
+	n.require(notificationReportRequestContentFieldTransactionID)
 }
 
 // SetWebHeaderParameters sets the WebHeaderParameters field and marks it as non-optional;
@@ -656,7 +656,7 @@ func (n *NotificationReportRequestContent) String() string {
 type NotificationReportRequestContentFileFormat string
 
 const (
-	NotificationReportRequestContentFileFormatJson NotificationReportRequestContentFileFormat = "json"
+	NotificationReportRequestContentFileFormatJSON NotificationReportRequestContentFileFormat = "json"
 	NotificationReportRequestContentFileFormatCsv  NotificationReportRequestContentFileFormat = "csv"
 	NotificationReportRequestContentFileFormatXlsx NotificationReportRequestContentFileFormat = "xlsx"
 )
@@ -664,7 +664,7 @@ const (
 func NewNotificationReportRequestContentFileFormatFromString(s string) (NotificationReportRequestContentFileFormat, error) {
 	switch s {
 	case "json":
-		return NotificationReportRequestContentFileFormatJson, nil
+		return NotificationReportRequestContentFileFormatJSON, nil
 	case "csv":
 		return NotificationReportRequestContentFileFormatCsv, nil
 	case "xlsx":
@@ -775,7 +775,7 @@ var (
 	notificationStandardRequestFieldContent   = big.NewInt(1 << 0)
 	notificationStandardRequestFieldFrequency = big.NewInt(1 << 1)
 	notificationStandardRequestFieldMethod    = big.NewInt(1 << 2)
-	notificationStandardRequestFieldOwnerId   = big.NewInt(1 << 3)
+	notificationStandardRequestFieldOwnerID   = big.NewInt(1 << 3)
 	notificationStandardRequestFieldOwnerType = big.NewInt(1 << 4)
 	notificationStandardRequestFieldStatus    = big.NewInt(1 << 5)
 	notificationStandardRequestFieldTarget    = big.NewInt(1 << 6)
@@ -786,7 +786,7 @@ type NotificationStandardRequest struct {
 	Frequency NotificationStandardRequestFrequency `json:"frequency" url:"frequency"`
 	// Get near-instant notifications via email, SMS, or webhooks for important events like new payment disputes, merchant activations, fraud alerts, approved transactions, settlement history, vendor payouts, and more. Use webhooks with notifications to get real-time updates and automate operations based on key those key events. See [Notifications](/developers/developer-guides/notifications-and-webhooks-overview#notifications) for more.
 	Method    NotificationStandardRequestMethod `json:"method" url:"method"`
-	OwnerId   *Ownerid                          `json:"ownerId,omitempty" url:"ownerId,omitempty"`
+	OwnerID   *Ownerid                          `json:"ownerId,omitempty" url:"ownerId,omitempty"`
 	OwnerType Ownertype                         `json:"ownerType" url:"ownerType"`
 	Status    *Statusnotification               `json:"status,omitempty" url:"status,omitempty"`
 	// Specify the notification target.
@@ -824,11 +824,11 @@ func (n *NotificationStandardRequest) GetMethod() NotificationStandardRequestMet
 	return n.Method
 }
 
-func (n *NotificationStandardRequest) GetOwnerId() *Ownerid {
+func (n *NotificationStandardRequest) GetOwnerID() *Ownerid {
 	if n == nil {
 		return nil
 	}
-	return n.OwnerId
+	return n.OwnerID
 }
 
 func (n *NotificationStandardRequest) GetOwnerType() Ownertype {
@@ -887,11 +887,11 @@ func (n *NotificationStandardRequest) SetMethod(method NotificationStandardReque
 	n.require(notificationStandardRequestFieldMethod)
 }
 
-// SetOwnerId sets the OwnerId field and marks it as non-optional;
+// SetOwnerID sets the OwnerID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotificationStandardRequest) SetOwnerId(ownerId *Ownerid) {
-	n.OwnerId = ownerId
-	n.require(notificationStandardRequestFieldOwnerId)
+func (n *NotificationStandardRequest) SetOwnerID(ownerID *Ownerid) {
+	n.OwnerID = ownerID
+	n.require(notificationStandardRequestFieldOwnerID)
 }
 
 // SetOwnerType sets the OwnerType field and marks it as non-optional;
@@ -960,7 +960,7 @@ func (n *NotificationStandardRequest) String() string {
 var (
 	notificationStandardRequestContentFieldEventType           = big.NewInt(1 << 0)
 	notificationStandardRequestContentFieldInternalData        = big.NewInt(1 << 1)
-	notificationStandardRequestContentFieldTransactionId       = big.NewInt(1 << 2)
+	notificationStandardRequestContentFieldTransactionID       = big.NewInt(1 << 2)
 	notificationStandardRequestContentFieldWebHeaderParameters = big.NewInt(1 << 3)
 )
 
@@ -970,7 +970,7 @@ type NotificationStandardRequestContent struct {
 	// Array of pairs key:value to insert in request body to target in **method** = *web*.
 	InternalData []*KeyValueDuo `json:"internalData,omitempty" url:"internalData,omitempty"`
 	// Used internally to reference the entity or object generating the event.
-	TransactionId *string `json:"transactionId,omitempty" url:"transactionId,omitempty"`
+	TransactionID *string `json:"transactionId,omitempty" url:"transactionId,omitempty"`
 	// Array of pairs key:value to insert in header of request to target in **method** = *web*.
 	WebHeaderParameters []*KeyValueDuo `json:"webHeaderParameters,omitempty" url:"webHeaderParameters,omitempty"`
 
@@ -995,11 +995,11 @@ func (n *NotificationStandardRequestContent) GetInternalData() []*KeyValueDuo {
 	return n.InternalData
 }
 
-func (n *NotificationStandardRequestContent) GetTransactionId() *string {
+func (n *NotificationStandardRequestContent) GetTransactionID() *string {
 	if n == nil {
 		return nil
 	}
-	return n.TransactionId
+	return n.TransactionID
 }
 
 func (n *NotificationStandardRequestContent) GetWebHeaderParameters() []*KeyValueDuo {
@@ -1037,11 +1037,11 @@ func (n *NotificationStandardRequestContent) SetInternalData(internalData []*Key
 	n.require(notificationStandardRequestContentFieldInternalData)
 }
 
-// SetTransactionId sets the TransactionId field and marks it as non-optional;
+// SetTransactionID sets the TransactionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotificationStandardRequestContent) SetTransactionId(transactionId *string) {
-	n.TransactionId = transactionId
-	n.require(notificationStandardRequestContentFieldTransactionId)
+func (n *NotificationStandardRequestContent) SetTransactionID(transactionID *string) {
+	n.TransactionID = transactionID
+	n.require(notificationStandardRequestContentFieldTransactionID)
 }
 
 // SetWebHeaderParameters sets the WebHeaderParameters field and marks it as non-optional;
@@ -1537,14 +1537,14 @@ func (n NotificationStandardRequestMethod) Ptr() *NotificationStandardRequestMet
 }
 
 var (
-	payabliApiResponseNotificationsFieldIsSuccess      = big.NewInt(1 << 0)
-	payabliApiResponseNotificationsFieldPageIdentifier = big.NewInt(1 << 1)
-	payabliApiResponseNotificationsFieldResponseCode   = big.NewInt(1 << 2)
-	payabliApiResponseNotificationsFieldResponseData   = big.NewInt(1 << 3)
-	payabliApiResponseNotificationsFieldResponseText   = big.NewInt(1 << 4)
+	payabliAPIResponseNotificationsFieldIsSuccess      = big.NewInt(1 << 0)
+	payabliAPIResponseNotificationsFieldPageIdentifier = big.NewInt(1 << 1)
+	payabliAPIResponseNotificationsFieldResponseCode   = big.NewInt(1 << 2)
+	payabliAPIResponseNotificationsFieldResponseData   = big.NewInt(1 << 3)
+	payabliAPIResponseNotificationsFieldResponseText   = big.NewInt(1 << 4)
 )
 
-type PayabliApiResponseNotifications struct {
+type PayabliAPIResponseNotifications struct {
 	// If `isSuccess` = true, `responseData` contains the notification identifier.
 	//
 	// If `isSuccess` = false, `responseData` contains the reason for the error.
@@ -1552,7 +1552,7 @@ type PayabliApiResponseNotifications struct {
 	PageIdentifier *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 	ResponseCode   *Responsecode   `json:"responseCode,omitempty" url:"responseCode,omitempty"`
 	// When the request was successful, this contains the notification ID, or `nID` used to manage the notification.
-	ResponseData *PayabliApiResponseNotificationsResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
+	ResponseData *PayabliAPIResponseNotificationsResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
 	ResponseText ResponseText                                 `json:"responseText" url:"responseText"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1562,49 +1562,49 @@ type PayabliApiResponseNotifications struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PayabliApiResponseNotifications) GetIsSuccess() *IsSuccess {
+func (p *PayabliAPIResponseNotifications) GetIsSuccess() *IsSuccess {
 	if p == nil {
 		return nil
 	}
 	return p.IsSuccess
 }
 
-func (p *PayabliApiResponseNotifications) GetPageIdentifier() *PageIdentifier {
+func (p *PayabliAPIResponseNotifications) GetPageIdentifier() *PageIdentifier {
 	if p == nil {
 		return nil
 	}
 	return p.PageIdentifier
 }
 
-func (p *PayabliApiResponseNotifications) GetResponseCode() *Responsecode {
+func (p *PayabliAPIResponseNotifications) GetResponseCode() *Responsecode {
 	if p == nil {
 		return nil
 	}
 	return p.ResponseCode
 }
 
-func (p *PayabliApiResponseNotifications) GetResponseData() *PayabliApiResponseNotificationsResponseData {
+func (p *PayabliAPIResponseNotifications) GetResponseData() *PayabliAPIResponseNotificationsResponseData {
 	if p == nil {
 		return nil
 	}
 	return p.ResponseData
 }
 
-func (p *PayabliApiResponseNotifications) GetResponseText() ResponseText {
+func (p *PayabliAPIResponseNotifications) GetResponseText() ResponseText {
 	if p == nil {
 		return ""
 	}
 	return p.ResponseText
 }
 
-func (p *PayabliApiResponseNotifications) GetExtraProperties() map[string]interface{} {
+func (p *PayabliAPIResponseNotifications) GetExtraProperties() map[string]interface{} {
 	if p == nil {
 		return nil
 	}
 	return p.extraProperties
 }
 
-func (p *PayabliApiResponseNotifications) require(field *big.Int) {
+func (p *PayabliAPIResponseNotifications) require(field *big.Int) {
 	if p.explicitFields == nil {
 		p.explicitFields = big.NewInt(0)
 	}
@@ -1613,46 +1613,46 @@ func (p *PayabliApiResponseNotifications) require(field *big.Int) {
 
 // SetIsSuccess sets the IsSuccess field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseNotifications) SetIsSuccess(isSuccess *IsSuccess) {
+func (p *PayabliAPIResponseNotifications) SetIsSuccess(isSuccess *IsSuccess) {
 	p.IsSuccess = isSuccess
-	p.require(payabliApiResponseNotificationsFieldIsSuccess)
+	p.require(payabliAPIResponseNotificationsFieldIsSuccess)
 }
 
 // SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseNotifications) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+func (p *PayabliAPIResponseNotifications) SetPageIdentifier(pageIdentifier *PageIdentifier) {
 	p.PageIdentifier = pageIdentifier
-	p.require(payabliApiResponseNotificationsFieldPageIdentifier)
+	p.require(payabliAPIResponseNotificationsFieldPageIdentifier)
 }
 
 // SetResponseCode sets the ResponseCode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseNotifications) SetResponseCode(responseCode *Responsecode) {
+func (p *PayabliAPIResponseNotifications) SetResponseCode(responseCode *Responsecode) {
 	p.ResponseCode = responseCode
-	p.require(payabliApiResponseNotificationsFieldResponseCode)
+	p.require(payabliAPIResponseNotificationsFieldResponseCode)
 }
 
 // SetResponseData sets the ResponseData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseNotifications) SetResponseData(responseData *PayabliApiResponseNotificationsResponseData) {
+func (p *PayabliAPIResponseNotifications) SetResponseData(responseData *PayabliAPIResponseNotificationsResponseData) {
 	p.ResponseData = responseData
-	p.require(payabliApiResponseNotificationsFieldResponseData)
+	p.require(payabliAPIResponseNotificationsFieldResponseData)
 }
 
 // SetResponseText sets the ResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseNotifications) SetResponseText(responseText ResponseText) {
+func (p *PayabliAPIResponseNotifications) SetResponseText(responseText ResponseText) {
 	p.ResponseText = responseText
-	p.require(payabliApiResponseNotificationsFieldResponseText)
+	p.require(payabliAPIResponseNotificationsFieldResponseText)
 }
 
-func (p *PayabliApiResponseNotifications) UnmarshalJSON(data []byte) error {
-	type unmarshaler PayabliApiResponseNotifications
+func (p *PayabliAPIResponseNotifications) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayabliAPIResponseNotifications
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PayabliApiResponseNotifications(value)
+	*p = PayabliAPIResponseNotifications(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *p)
 	if err != nil {
 		return err
@@ -1662,8 +1662,8 @@ func (p *PayabliApiResponseNotifications) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (p *PayabliApiResponseNotifications) MarshalJSON() ([]byte, error) {
-	type embed PayabliApiResponseNotifications
+func (p *PayabliAPIResponseNotifications) MarshalJSON() ([]byte, error) {
+	type embed PayabliAPIResponseNotifications
 	var marshaler = struct {
 		embed
 	}{
@@ -1673,7 +1673,7 @@ func (p *PayabliApiResponseNotifications) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PayabliApiResponseNotifications) String() string {
+func (p *PayabliAPIResponseNotifications) String() string {
 	if p == nil {
 		return "<nil>"
 	}
@@ -1690,28 +1690,28 @@ func (p *PayabliApiResponseNotifications) String() string {
 
 // When the request was successful, this contains the notification ID, or
 // `nID` used to manage the notification.
-type PayabliApiResponseNotificationsResponseData struct {
+type PayabliAPIResponseNotificationsResponseData struct {
 	Integer int
 	String  string
 
 	typ string
 }
 
-func (p *PayabliApiResponseNotificationsResponseData) GetInteger() int {
+func (p *PayabliAPIResponseNotificationsResponseData) GetInteger() int {
 	if p == nil {
 		return 0
 	}
 	return p.Integer
 }
 
-func (p *PayabliApiResponseNotificationsResponseData) GetString() string {
+func (p *PayabliAPIResponseNotificationsResponseData) GetString() string {
 	if p == nil {
 		return ""
 	}
 	return p.String
 }
 
-func (p *PayabliApiResponseNotificationsResponseData) UnmarshalJSON(data []byte) error {
+func (p *PayabliAPIResponseNotificationsResponseData) UnmarshalJSON(data []byte) error {
 	var valueInteger int
 	if err := json.Unmarshal(data, &valueInteger); err == nil {
 		p.typ = "Integer"
@@ -1727,7 +1727,7 @@ func (p *PayabliApiResponseNotificationsResponseData) UnmarshalJSON(data []byte)
 	return fmt.Errorf("%s cannot be deserialized as a %T", data, p)
 }
 
-func (p PayabliApiResponseNotificationsResponseData) MarshalJSON() ([]byte, error) {
+func (p PayabliAPIResponseNotificationsResponseData) MarshalJSON() ([]byte, error) {
 	if p.typ == "Integer" || p.Integer != 0 {
 		return json.Marshal(p.Integer)
 	}
@@ -1737,12 +1737,12 @@ func (p PayabliApiResponseNotificationsResponseData) MarshalJSON() ([]byte, erro
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", p)
 }
 
-type PayabliApiResponseNotificationsResponseDataVisitor interface {
+type PayabliAPIResponseNotificationsResponseDataVisitor interface {
 	VisitInteger(int) error
 	VisitString(string) error
 }
 
-func (p *PayabliApiResponseNotificationsResponseData) Accept(visitor PayabliApiResponseNotificationsResponseDataVisitor) error {
+func (p *PayabliAPIResponseNotificationsResponseData) Accept(visitor PayabliAPIResponseNotificationsResponseDataVisitor) error {
 	if p.typ == "Integer" || p.Integer != 0 {
 		return visitor.VisitInteger(p.Integer)
 	}

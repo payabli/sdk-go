@@ -377,7 +377,7 @@ func (l *LineItem) String() string {
 
 var (
 	lineItemQueryRecordFieldCreatedAt         = big.NewInt(1 << 0)
-	lineItemQueryRecordFieldId                = big.NewInt(1 << 1)
+	lineItemQueryRecordFieldID                = big.NewInt(1 << 1)
 	lineItemQueryRecordFieldItemCategories    = big.NewInt(1 << 2)
 	lineItemQueryRecordFieldItemCommodityCode = big.NewInt(1 << 3)
 	lineItemQueryRecordFieldItemCost          = big.NewInt(1 << 4)
@@ -399,7 +399,7 @@ type LineItemQueryRecord struct {
 	// Timestamp of when line item was created, in UTC.
 	CreatedAt *CreatedAt `json:"createdAt,omitempty" url:"createdAt,omitempty"`
 	// Identifier of line item.
-	Id *int64 `json:"id,omitempty" url:"id,omitempty"`
+	ID *int64 `json:"id,omitempty" url:"id,omitempty"`
 	// Array of tags classifying item or product.
 	ItemCategories    []*string          `json:"itemCategories,omitempty" url:"itemCategories,omitempty"`
 	ItemCommodityCode *ItemCommodityCode `json:"itemCommodityCode,omitempty" url:"itemCommodityCode,omitempty"`
@@ -439,11 +439,11 @@ func (l *LineItemQueryRecord) GetCreatedAt() *CreatedAt {
 	return l.CreatedAt
 }
 
-func (l *LineItemQueryRecord) GetId() *int64 {
+func (l *LineItemQueryRecord) GetID() *int64 {
 	if l == nil {
 		return nil
 	}
-	return l.Id
+	return l.ID
 }
 
 func (l *LineItemQueryRecord) GetItemCategories() []*string {
@@ -572,11 +572,11 @@ func (l *LineItemQueryRecord) SetCreatedAt(createdAt *CreatedAt) {
 	l.require(lineItemQueryRecordFieldCreatedAt)
 }
 
-// SetId sets the Id field and marks it as non-optional;
+// SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LineItemQueryRecord) SetId(id *int64) {
-	l.Id = id
-	l.require(lineItemQueryRecordFieldId)
+func (l *LineItemQueryRecord) SetID(id *int64) {
+	l.ID = id
+	l.require(lineItemQueryRecordFieldID)
 }
 
 // SetItemCategories sets the ItemCategories field and marks it as non-optional;
@@ -740,13 +740,13 @@ func (l *LineItemQueryRecord) String() string {
 
 // Response schema for line item operations.
 var (
-	payabliApiResponse6FieldIsSuccess      = big.NewInt(1 << 0)
-	payabliApiResponse6FieldPageIdentifier = big.NewInt(1 << 1)
-	payabliApiResponse6FieldResponseData   = big.NewInt(1 << 2)
-	payabliApiResponse6FieldResponseText   = big.NewInt(1 << 3)
+	payabliAPIResponse6FieldIsSuccess      = big.NewInt(1 << 0)
+	payabliAPIResponse6FieldPageIdentifier = big.NewInt(1 << 1)
+	payabliAPIResponse6FieldResponseData   = big.NewInt(1 << 2)
+	payabliAPIResponse6FieldResponseText   = big.NewInt(1 << 3)
 )
 
-type PayabliApiResponse6 struct {
+type PayabliAPIResponse6 struct {
 	IsSuccess      *IsSuccess      `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	PageIdentifier *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 	// If `isSuccess` = true, this contains the line item identifier. If `isSuccess` = false, this contains the reason of the error.
@@ -760,42 +760,42 @@ type PayabliApiResponse6 struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PayabliApiResponse6) GetIsSuccess() *IsSuccess {
+func (p *PayabliAPIResponse6) GetIsSuccess() *IsSuccess {
 	if p == nil {
 		return nil
 	}
 	return p.IsSuccess
 }
 
-func (p *PayabliApiResponse6) GetPageIdentifier() *PageIdentifier {
+func (p *PayabliAPIResponse6) GetPageIdentifier() *PageIdentifier {
 	if p == nil {
 		return nil
 	}
 	return p.PageIdentifier
 }
 
-func (p *PayabliApiResponse6) GetResponseData() *Responsedatanonobject {
+func (p *PayabliAPIResponse6) GetResponseData() *Responsedatanonobject {
 	if p == nil {
 		return nil
 	}
 	return p.ResponseData
 }
 
-func (p *PayabliApiResponse6) GetResponseText() ResponseText {
+func (p *PayabliAPIResponse6) GetResponseText() ResponseText {
 	if p == nil {
 		return ""
 	}
 	return p.ResponseText
 }
 
-func (p *PayabliApiResponse6) GetExtraProperties() map[string]interface{} {
+func (p *PayabliAPIResponse6) GetExtraProperties() map[string]interface{} {
 	if p == nil {
 		return nil
 	}
 	return p.extraProperties
 }
 
-func (p *PayabliApiResponse6) require(field *big.Int) {
+func (p *PayabliAPIResponse6) require(field *big.Int) {
 	if p.explicitFields == nil {
 		p.explicitFields = big.NewInt(0)
 	}
@@ -804,39 +804,39 @@ func (p *PayabliApiResponse6) require(field *big.Int) {
 
 // SetIsSuccess sets the IsSuccess field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponse6) SetIsSuccess(isSuccess *IsSuccess) {
+func (p *PayabliAPIResponse6) SetIsSuccess(isSuccess *IsSuccess) {
 	p.IsSuccess = isSuccess
-	p.require(payabliApiResponse6FieldIsSuccess)
+	p.require(payabliAPIResponse6FieldIsSuccess)
 }
 
 // SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponse6) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+func (p *PayabliAPIResponse6) SetPageIdentifier(pageIdentifier *PageIdentifier) {
 	p.PageIdentifier = pageIdentifier
-	p.require(payabliApiResponse6FieldPageIdentifier)
+	p.require(payabliAPIResponse6FieldPageIdentifier)
 }
 
 // SetResponseData sets the ResponseData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponse6) SetResponseData(responseData *Responsedatanonobject) {
+func (p *PayabliAPIResponse6) SetResponseData(responseData *Responsedatanonobject) {
 	p.ResponseData = responseData
-	p.require(payabliApiResponse6FieldResponseData)
+	p.require(payabliAPIResponse6FieldResponseData)
 }
 
 // SetResponseText sets the ResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponse6) SetResponseText(responseText ResponseText) {
+func (p *PayabliAPIResponse6) SetResponseText(responseText ResponseText) {
 	p.ResponseText = responseText
-	p.require(payabliApiResponse6FieldResponseText)
+	p.require(payabliAPIResponse6FieldResponseText)
 }
 
-func (p *PayabliApiResponse6) UnmarshalJSON(data []byte) error {
-	type unmarshaler PayabliApiResponse6
+func (p *PayabliAPIResponse6) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayabliAPIResponse6
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PayabliApiResponse6(value)
+	*p = PayabliAPIResponse6(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *p)
 	if err != nil {
 		return err
@@ -846,8 +846,8 @@ func (p *PayabliApiResponse6) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (p *PayabliApiResponse6) MarshalJSON() ([]byte, error) {
-	type embed PayabliApiResponse6
+func (p *PayabliAPIResponse6) MarshalJSON() ([]byte, error) {
+	type embed PayabliAPIResponse6
 	var marshaler = struct {
 		embed
 	}{
@@ -857,7 +857,7 @@ func (p *PayabliApiResponse6) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PayabliApiResponse6) String() string {
+func (p *PayabliAPIResponse6) String() string {
 	if p == nil {
 		return "<nil>"
 	}

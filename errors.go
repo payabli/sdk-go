@@ -34,11 +34,11 @@ func (b *BadRequestError) Unwrap() error {
 // Opt in pending
 type ConflictError struct {
 	*core.APIError
-	Body *PayabliApiResponsePaylinks
+	Body *PayabliAPIResponsePaylinks
 }
 
 func (c *ConflictError) UnmarshalJSON(data []byte) error {
-	var body *PayabliApiResponsePaylinks
+	var body *PayabliAPIResponsePaylinks
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
@@ -58,11 +58,11 @@ func (c *ConflictError) Unwrap() error {
 // Consent error
 type ForbiddenError struct {
 	*core.APIError
-	Body *PayabliApiResponsePaylinks
+	Body *PayabliAPIResponsePaylinks
 }
 
 func (f *ForbiddenError) UnmarshalJSON(data []byte) error {
-	var body *PayabliApiResponsePaylinks
+	var body *PayabliAPIResponsePaylinks
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
@@ -106,11 +106,11 @@ func (i *InternalServerError) Unwrap() error {
 // Database connection error
 type ServiceUnavailableError struct {
 	*core.APIError
-	Body *PayabliApiResponse
+	Body *PayabliAPIResponse
 }
 
 func (s *ServiceUnavailableError) UnmarshalJSON(data []byte) error {
-	var body *PayabliApiResponse
+	var body *PayabliAPIResponse
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
@@ -370,11 +370,11 @@ func (i *InternalServerResponseErrorV2) Unwrap() error {
 // Validation errors for capture requests. Possible response codes include: 3014, 3015, 3016.
 type CaptureError struct {
 	*core.APIError
-	Body *PayabliApiResponseError400
+	Body *PayabliAPIResponseError400
 }
 
 func (c *CaptureError) UnmarshalJSON(data []byte) error {
-	var body *PayabliApiResponseError400
+	var body *PayabliAPIResponseError400
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}

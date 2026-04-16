@@ -164,9 +164,9 @@ func (k *KeyValueArray) String() string {
 }
 
 var (
-	notificationLogFieldId                = big.NewInt(1 << 0)
-	notificationLogFieldOrgId             = big.NewInt(1 << 1)
-	notificationLogFieldPaypointId        = big.NewInt(1 << 2)
+	notificationLogFieldID                = big.NewInt(1 << 0)
+	notificationLogFieldOrgID             = big.NewInt(1 << 1)
+	notificationLogFieldPaypointID        = big.NewInt(1 << 2)
 	notificationLogFieldNotificationEvent = big.NewInt(1 << 3)
 	notificationLogFieldTarget            = big.NewInt(1 << 4)
 	notificationLogFieldResponseStatus    = big.NewInt(1 << 5)
@@ -180,11 +180,11 @@ var (
 
 type NotificationLog struct {
 	// The unique identifier for the notification.
-	Id uuid.UUID `json:"id" url:"id"`
+	ID uuid.UUID `json:"id" url:"id"`
 	// The ID of the organization that the notification belongs to.
-	OrgId *int64 `json:"orgId,omitempty" url:"orgId,omitempty"`
+	OrgID *int64 `json:"orgId,omitempty" url:"orgId,omitempty"`
 	// The ID of the paypoint that the notification is related to.
-	PaypointId *int64 `json:"paypointId,omitempty" url:"paypointId,omitempty"`
+	PaypointID *int64 `json:"paypointId,omitempty" url:"paypointId,omitempty"`
 	// The event that triggered the notification.
 	NotificationEvent *string `json:"notificationEvent,omitempty" url:"notificationEvent,omitempty"`
 	// The target URL for the notification.
@@ -211,25 +211,25 @@ type NotificationLog struct {
 	rawJSON         json.RawMessage
 }
 
-func (n *NotificationLog) GetId() uuid.UUID {
+func (n *NotificationLog) GetID() uuid.UUID {
 	if n == nil {
 		return uuid.Nil
 	}
-	return n.Id
+	return n.ID
 }
 
-func (n *NotificationLog) GetOrgId() *int64 {
+func (n *NotificationLog) GetOrgID() *int64 {
 	if n == nil {
 		return nil
 	}
-	return n.OrgId
+	return n.OrgID
 }
 
-func (n *NotificationLog) GetPaypointId() *int64 {
+func (n *NotificationLog) GetPaypointID() *int64 {
 	if n == nil {
 		return nil
 	}
-	return n.PaypointId
+	return n.PaypointID
 }
 
 func (n *NotificationLog) GetNotificationEvent() *string {
@@ -309,25 +309,25 @@ func (n *NotificationLog) require(field *big.Int) {
 	n.explicitFields.Or(n.explicitFields, field)
 }
 
-// SetId sets the Id field and marks it as non-optional;
+// SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotificationLog) SetId(id uuid.UUID) {
-	n.Id = id
-	n.require(notificationLogFieldId)
+func (n *NotificationLog) SetID(id uuid.UUID) {
+	n.ID = id
+	n.require(notificationLogFieldID)
 }
 
-// SetOrgId sets the OrgId field and marks it as non-optional;
+// SetOrgID sets the OrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotificationLog) SetOrgId(orgId *int64) {
-	n.OrgId = orgId
-	n.require(notificationLogFieldOrgId)
+func (n *NotificationLog) SetOrgID(orgID *int64) {
+	n.OrgID = orgID
+	n.require(notificationLogFieldOrgID)
 }
 
-// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// SetPaypointID sets the PaypointID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotificationLog) SetPaypointId(paypointId *int64) {
-	n.PaypointId = paypointId
-	n.require(notificationLogFieldPaypointId)
+func (n *NotificationLog) SetPaypointID(paypointID *int64) {
+	n.PaypointID = paypointID
+	n.require(notificationLogFieldPaypointID)
 }
 
 // SetNotificationEvent sets the NotificationEvent field and marks it as non-optional;
@@ -452,9 +452,9 @@ func (n *NotificationLog) String() string {
 }
 
 var (
-	notificationLogDetailFieldId                = big.NewInt(1 << 0)
-	notificationLogDetailFieldOrgId             = big.NewInt(1 << 1)
-	notificationLogDetailFieldPaypointId        = big.NewInt(1 << 2)
+	notificationLogDetailFieldID                = big.NewInt(1 << 0)
+	notificationLogDetailFieldOrgID             = big.NewInt(1 << 1)
+	notificationLogDetailFieldPaypointID        = big.NewInt(1 << 2)
 	notificationLogDetailFieldNotificationEvent = big.NewInt(1 << 3)
 	notificationLogDetailFieldTarget            = big.NewInt(1 << 4)
 	notificationLogDetailFieldResponseStatus    = big.NewInt(1 << 5)
@@ -471,11 +471,11 @@ var (
 
 type NotificationLogDetail struct {
 	// The unique identifier for the notification.
-	Id uuid.UUID `json:"id" url:"id"`
+	ID uuid.UUID `json:"id" url:"id"`
 	// The ID of the organization that the notification belongs to.
-	OrgId *int64 `json:"orgId,omitempty" url:"orgId,omitempty"`
+	OrgID *int64 `json:"orgId,omitempty" url:"orgId,omitempty"`
 	// The ID of the paypoint that the notification is related to.
-	PaypointId *int64 `json:"paypointId,omitempty" url:"paypointId,omitempty"`
+	PaypointID *int64 `json:"paypointId,omitempty" url:"paypointId,omitempty"`
 	// The event that triggered the notification.
 	NotificationEvent *string `json:"notificationEvent,omitempty" url:"notificationEvent,omitempty"`
 	// The target URL for the notification.
@@ -505,25 +505,25 @@ type NotificationLogDetail struct {
 	rawJSON         json.RawMessage
 }
 
-func (n *NotificationLogDetail) GetId() uuid.UUID {
+func (n *NotificationLogDetail) GetID() uuid.UUID {
 	if n == nil {
 		return uuid.Nil
 	}
-	return n.Id
+	return n.ID
 }
 
-func (n *NotificationLogDetail) GetOrgId() *int64 {
+func (n *NotificationLogDetail) GetOrgID() *int64 {
 	if n == nil {
 		return nil
 	}
-	return n.OrgId
+	return n.OrgID
 }
 
-func (n *NotificationLogDetail) GetPaypointId() *int64 {
+func (n *NotificationLogDetail) GetPaypointID() *int64 {
 	if n == nil {
 		return nil
 	}
-	return n.PaypointId
+	return n.PaypointID
 }
 
 func (n *NotificationLogDetail) GetNotificationEvent() *string {
@@ -624,25 +624,25 @@ func (n *NotificationLogDetail) require(field *big.Int) {
 	n.explicitFields.Or(n.explicitFields, field)
 }
 
-// SetId sets the Id field and marks it as non-optional;
+// SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotificationLogDetail) SetId(id uuid.UUID) {
-	n.Id = id
-	n.require(notificationLogDetailFieldId)
+func (n *NotificationLogDetail) SetID(id uuid.UUID) {
+	n.ID = id
+	n.require(notificationLogDetailFieldID)
 }
 
-// SetOrgId sets the OrgId field and marks it as non-optional;
+// SetOrgID sets the OrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotificationLogDetail) SetOrgId(orgId *int64) {
-	n.OrgId = orgId
-	n.require(notificationLogDetailFieldOrgId)
+func (n *NotificationLogDetail) SetOrgID(orgID *int64) {
+	n.OrgID = orgID
+	n.require(notificationLogDetailFieldOrgID)
 }
 
-// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// SetPaypointID sets the PaypointID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotificationLogDetail) SetPaypointId(paypointId *int64) {
-	n.PaypointId = paypointId
-	n.require(notificationLogDetailFieldPaypointId)
+func (n *NotificationLogDetail) SetPaypointID(paypointID *int64) {
+	n.PaypointID = paypointID
+	n.require(notificationLogDetailFieldPaypointID)
 }
 
 // SetNotificationEvent sets the NotificationEvent field and marks it as non-optional;
@@ -792,8 +792,8 @@ var (
 	notificationLogSearchRequestFieldEndDate           = big.NewInt(1 << 1)
 	notificationLogSearchRequestFieldNotificationEvent = big.NewInt(1 << 2)
 	notificationLogSearchRequestFieldSucceeded         = big.NewInt(1 << 3)
-	notificationLogSearchRequestFieldOrgId             = big.NewInt(1 << 4)
-	notificationLogSearchRequestFieldPaypointId        = big.NewInt(1 << 5)
+	notificationLogSearchRequestFieldOrgID             = big.NewInt(1 << 4)
+	notificationLogSearchRequestFieldPaypointID        = big.NewInt(1 << 5)
 )
 
 type NotificationLogSearchRequest struct {
@@ -806,9 +806,9 @@ type NotificationLogSearchRequest struct {
 	// Indicates whether the notification was successful.
 	Succeeded *bool `json:"succeeded,omitempty" url:"succeeded,omitempty"`
 	// The ID of the organization to filter by.
-	OrgId *int64 `json:"orgId,omitempty" url:"orgId,omitempty"`
+	OrgID *int64 `json:"orgId,omitempty" url:"orgId,omitempty"`
 	// The ID of the paypoint to filter by.
-	PaypointId *int64 `json:"paypointId,omitempty" url:"paypointId,omitempty"`
+	PaypointID *int64 `json:"paypointId,omitempty" url:"paypointId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -845,18 +845,18 @@ func (n *NotificationLogSearchRequest) GetSucceeded() *bool {
 	return n.Succeeded
 }
 
-func (n *NotificationLogSearchRequest) GetOrgId() *int64 {
+func (n *NotificationLogSearchRequest) GetOrgID() *int64 {
 	if n == nil {
 		return nil
 	}
-	return n.OrgId
+	return n.OrgID
 }
 
-func (n *NotificationLogSearchRequest) GetPaypointId() *int64 {
+func (n *NotificationLogSearchRequest) GetPaypointID() *int64 {
 	if n == nil {
 		return nil
 	}
-	return n.PaypointId
+	return n.PaypointID
 }
 
 func (n *NotificationLogSearchRequest) GetExtraProperties() map[string]interface{} {
@@ -901,18 +901,18 @@ func (n *NotificationLogSearchRequest) SetSucceeded(succeeded *bool) {
 	n.require(notificationLogSearchRequestFieldSucceeded)
 }
 
-// SetOrgId sets the OrgId field and marks it as non-optional;
+// SetOrgID sets the OrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotificationLogSearchRequest) SetOrgId(orgId *int64) {
-	n.OrgId = orgId
-	n.require(notificationLogSearchRequestFieldOrgId)
+func (n *NotificationLogSearchRequest) SetOrgID(orgID *int64) {
+	n.OrgID = orgID
+	n.require(notificationLogSearchRequestFieldOrgID)
 }
 
-// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// SetPaypointID sets the PaypointID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotificationLogSearchRequest) SetPaypointId(paypointId *int64) {
-	n.PaypointId = paypointId
-	n.require(notificationLogSearchRequestFieldPaypointId)
+func (n *NotificationLogSearchRequest) SetPaypointID(paypointID *int64) {
+	n.PaypointID = paypointID
+	n.require(notificationLogSearchRequestFieldPaypointID)
 }
 
 func (n *NotificationLogSearchRequest) UnmarshalJSON(data []byte) error {

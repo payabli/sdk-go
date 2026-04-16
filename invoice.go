@@ -528,7 +528,7 @@ var (
 	payorDataResponseFieldBillingState     = big.NewInt(1 << 7)
 	payorDataResponseFieldBillingZip       = big.NewInt(1 << 8)
 	payorDataResponseFieldCompanyName      = big.NewInt(1 << 9)
-	payorDataResponseFieldCustomerId       = big.NewInt(1 << 10)
+	payorDataResponseFieldCustomerID       = big.NewInt(1 << 10)
 	payorDataResponseFieldCustomerNumber   = big.NewInt(1 << 11)
 	payorDataResponseFieldCustomerStatus   = big.NewInt(1 << 12)
 	payorDataResponseFieldFirstName        = big.NewInt(1 << 13)
@@ -555,7 +555,7 @@ type PayorDataResponse struct {
 	BillingZip *BillingZip `json:"BillingZip,omitempty" url:"BillingZip,omitempty"`
 	// Customer's company name.
 	CompanyName    *string                 `json:"CompanyName,omitempty" url:"CompanyName,omitempty"`
-	CustomerId     *CustomerId             `json:"customerId,omitempty" url:"customerId,omitempty"`
+	CustomerID     *CustomerID             `json:"customerId,omitempty" url:"customerId,omitempty"`
 	CustomerNumber *CustomerNumberNullable `json:"CustomerNumber,omitempty" url:"CustomerNumber,omitempty"`
 	// Customer status. This is used to determine if the customer is active or inactive.
 	CustomerStatus *CustomerStatus `json:"customerStatus,omitempty" url:"customerStatus,omitempty"`
@@ -648,11 +648,11 @@ func (p *PayorDataResponse) GetCompanyName() *string {
 	return p.CompanyName
 }
 
-func (p *PayorDataResponse) GetCustomerId() *CustomerId {
+func (p *PayorDataResponse) GetCustomerID() *CustomerID {
 	if p == nil {
 		return nil
 	}
-	return p.CustomerId
+	return p.CustomerID
 }
 
 func (p *PayorDataResponse) GetCustomerNumber() *CustomerNumberNullable {
@@ -816,11 +816,11 @@ func (p *PayorDataResponse) SetCompanyName(companyName *string) {
 	p.require(payorDataResponseFieldCompanyName)
 }
 
-// SetCustomerId sets the CustomerId field and marks it as non-optional;
+// SetCustomerID sets the CustomerID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayorDataResponse) SetCustomerId(customerId *CustomerId) {
-	p.CustomerId = customerId
-	p.require(payorDataResponseFieldCustomerId)
+func (p *PayorDataResponse) SetCustomerID(customerID *CustomerID) {
+	p.CustomerID = customerID
+	p.require(payorDataResponseFieldCustomerID)
 }
 
 // SetCustomerNumber sets the CustomerNumber field and marks it as non-optional;
@@ -943,9 +943,9 @@ func (p *PayorDataResponse) String() string {
 }
 
 var (
-	getInvoiceRecordFieldInvoiceId            = big.NewInt(1 << 0)
-	getInvoiceRecordFieldCustomerId           = big.NewInt(1 << 1)
-	getInvoiceRecordFieldPaypointId           = big.NewInt(1 << 2)
+	getInvoiceRecordFieldInvoiceID            = big.NewInt(1 << 0)
+	getInvoiceRecordFieldCustomerID           = big.NewInt(1 << 1)
+	getInvoiceRecordFieldPaypointID           = big.NewInt(1 << 2)
 	getInvoiceRecordFieldInvoiceNumber        = big.NewInt(1 << 3)
 	getInvoiceRecordFieldInvoiceDate          = big.NewInt(1 << 4)
 	getInvoiceRecordFieldInvoiceDueDate       = big.NewInt(1 << 5)
@@ -981,7 +981,7 @@ var (
 	getInvoiceRecordFieldSummaryCommodityCode = big.NewInt(1 << 35)
 	getInvoiceRecordFieldItems                = big.NewInt(1 << 36)
 	getInvoiceRecordFieldCustomer             = big.NewInt(1 << 37)
-	getInvoiceRecordFieldPaylinkId            = big.NewInt(1 << 38)
+	getInvoiceRecordFieldPaylinkID            = big.NewInt(1 << 38)
 	getInvoiceRecordFieldBillEvents           = big.NewInt(1 << 39)
 	getInvoiceRecordFieldScheduledOptions     = big.NewInt(1 << 40)
 	getInvoiceRecordFieldPaypointLegalname    = big.NewInt(1 << 41)
@@ -990,13 +990,13 @@ var (
 	getInvoiceRecordFieldParentOrgName        = big.NewInt(1 << 44)
 	getInvoiceRecordFieldAdditionalData       = big.NewInt(1 << 45)
 	getInvoiceRecordFieldDocumentsRef         = big.NewInt(1 << 46)
-	getInvoiceRecordFieldExternalPaypointId   = big.NewInt(1 << 47)
+	getInvoiceRecordFieldExternalPaypointID   = big.NewInt(1 << 47)
 )
 
 type GetInvoiceRecord struct {
-	InvoiceId         InvoiceId         `json:"invoiceId" url:"invoiceId"`
-	CustomerId        CustomerId        `json:"customerId" url:"customerId"`
-	PaypointId        PaypointId        `json:"paypointId" url:"paypointId"`
+	InvoiceID         InvoiceID         `json:"invoiceId" url:"invoiceId"`
+	CustomerID        CustomerID        `json:"customerId" url:"customerId"`
+	PaypointID        PaypointID        `json:"paypointId" url:"paypointId"`
 	InvoiceNumber     InvoiceNumber     `json:"invoiceNumber" url:"invoiceNumber"`
 	InvoiceDate       *time.Time        `json:"invoiceDate,omitempty" url:"invoiceDate,omitempty" format:"date"`
 	InvoiceDueDate    *time.Time        `json:"invoiceDueDate,omitempty" url:"invoiceDueDate,omitempty" format:"date"`
@@ -1035,7 +1035,7 @@ type GetInvoiceRecord struct {
 	SummaryCommodityCode SummaryCommodityCode      `json:"summaryCommodityCode" url:"summaryCommodityCode"`
 	Items                []*BillItem               `json:"items" url:"items"`
 	Customer             *PayorDataResponse        `json:"Customer" url:"Customer"`
-	PaylinkId            PaylinkId                 `json:"paylinkId" url:"paylinkId"`
+	PaylinkID            PaylinkID                 `json:"paylinkId" url:"paylinkId"`
 	BillEvents           *BillEvents               `json:"billEvents,omitempty" url:"billEvents,omitempty"`
 	ScheduledOptions     *BillOptions              `json:"scheduledOptions" url:"scheduledOptions"`
 	PaypointLegalname    string                    `json:"PaypointLegalname" url:"PaypointLegalname"`
@@ -1044,7 +1044,7 @@ type GetInvoiceRecord struct {
 	ParentOrgName        OrgParentName             `json:"ParentOrgName" url:"ParentOrgName"`
 	AdditionalData       *AdditionalDataMap        `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
 	DocumentsRef         *DocumentsRef             `json:"DocumentsRef" url:"DocumentsRef"`
-	ExternalPaypointId   *ExternalPaypointId       `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	ExternalPaypointID   *ExternalPaypointID       `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1053,25 +1053,25 @@ type GetInvoiceRecord struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetInvoiceRecord) GetInvoiceId() InvoiceId {
+func (g *GetInvoiceRecord) GetInvoiceID() InvoiceID {
 	if g == nil {
 		return 0
 	}
-	return g.InvoiceId
+	return g.InvoiceID
 }
 
-func (g *GetInvoiceRecord) GetCustomerId() CustomerId {
+func (g *GetInvoiceRecord) GetCustomerID() CustomerID {
 	if g == nil {
 		return 0
 	}
-	return g.CustomerId
+	return g.CustomerID
 }
 
-func (g *GetInvoiceRecord) GetPaypointId() PaypointId {
+func (g *GetInvoiceRecord) GetPaypointID() PaypointID {
 	if g == nil {
 		return 0
 	}
-	return g.PaypointId
+	return g.PaypointID
 }
 
 func (g *GetInvoiceRecord) GetInvoiceNumber() InvoiceNumber {
@@ -1319,11 +1319,11 @@ func (g *GetInvoiceRecord) GetCustomer() *PayorDataResponse {
 	return g.Customer
 }
 
-func (g *GetInvoiceRecord) GetPaylinkId() PaylinkId {
+func (g *GetInvoiceRecord) GetPaylinkID() PaylinkID {
 	if g == nil {
 		return ""
 	}
-	return g.PaylinkId
+	return g.PaylinkID
 }
 
 func (g *GetInvoiceRecord) GetBillEvents() *BillEvents {
@@ -1382,11 +1382,11 @@ func (g *GetInvoiceRecord) GetDocumentsRef() *DocumentsRef {
 	return g.DocumentsRef
 }
 
-func (g *GetInvoiceRecord) GetExternalPaypointId() *ExternalPaypointId {
+func (g *GetInvoiceRecord) GetExternalPaypointID() *ExternalPaypointID {
 	if g == nil {
 		return nil
 	}
-	return g.ExternalPaypointId
+	return g.ExternalPaypointID
 }
 
 func (g *GetInvoiceRecord) GetExtraProperties() map[string]interface{} {
@@ -1403,25 +1403,25 @@ func (g *GetInvoiceRecord) require(field *big.Int) {
 	g.explicitFields.Or(g.explicitFields, field)
 }
 
-// SetInvoiceId sets the InvoiceId field and marks it as non-optional;
+// SetInvoiceID sets the InvoiceID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetInvoiceRecord) SetInvoiceId(invoiceId InvoiceId) {
-	g.InvoiceId = invoiceId
-	g.require(getInvoiceRecordFieldInvoiceId)
+func (g *GetInvoiceRecord) SetInvoiceID(invoiceID InvoiceID) {
+	g.InvoiceID = invoiceID
+	g.require(getInvoiceRecordFieldInvoiceID)
 }
 
-// SetCustomerId sets the CustomerId field and marks it as non-optional;
+// SetCustomerID sets the CustomerID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetInvoiceRecord) SetCustomerId(customerId CustomerId) {
-	g.CustomerId = customerId
-	g.require(getInvoiceRecordFieldCustomerId)
+func (g *GetInvoiceRecord) SetCustomerID(customerID CustomerID) {
+	g.CustomerID = customerID
+	g.require(getInvoiceRecordFieldCustomerID)
 }
 
-// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// SetPaypointID sets the PaypointID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetInvoiceRecord) SetPaypointId(paypointId PaypointId) {
-	g.PaypointId = paypointId
-	g.require(getInvoiceRecordFieldPaypointId)
+func (g *GetInvoiceRecord) SetPaypointID(paypointID PaypointID) {
+	g.PaypointID = paypointID
+	g.require(getInvoiceRecordFieldPaypointID)
 }
 
 // SetInvoiceNumber sets the InvoiceNumber field and marks it as non-optional;
@@ -1669,11 +1669,11 @@ func (g *GetInvoiceRecord) SetCustomer(customer *PayorDataResponse) {
 	g.require(getInvoiceRecordFieldCustomer)
 }
 
-// SetPaylinkId sets the PaylinkId field and marks it as non-optional;
+// SetPaylinkID sets the PaylinkID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetInvoiceRecord) SetPaylinkId(paylinkId PaylinkId) {
-	g.PaylinkId = paylinkId
-	g.require(getInvoiceRecordFieldPaylinkId)
+func (g *GetInvoiceRecord) SetPaylinkID(paylinkID PaylinkID) {
+	g.PaylinkID = paylinkID
+	g.require(getInvoiceRecordFieldPaylinkID)
 }
 
 // SetBillEvents sets the BillEvents field and marks it as non-optional;
@@ -1732,11 +1732,11 @@ func (g *GetInvoiceRecord) SetDocumentsRef(documentsRef *DocumentsRef) {
 	g.require(getInvoiceRecordFieldDocumentsRef)
 }
 
-// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// SetExternalPaypointID sets the ExternalPaypointID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetInvoiceRecord) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
-	g.ExternalPaypointId = externalPaypointId
-	g.require(getInvoiceRecordFieldExternalPaypointId)
+func (g *GetInvoiceRecord) SetExternalPaypointID(externalPaypointID *ExternalPaypointID) {
+	g.ExternalPaypointID = externalPaypointID
+	g.require(getInvoiceRecordFieldExternalPaypointID)
 }
 
 func (g *GetInvoiceRecord) UnmarshalJSON(data []byte) error {
@@ -1929,7 +1929,7 @@ func (i *InvoiceDataRequest) String() string {
 }
 
 // Identifier of invoice.
-type InvoiceId = int64
+type InvoiceID = int64
 
 // Response schema for operations for sending invoices or getting next invoice number.
 var (
@@ -2059,7 +2059,7 @@ var (
 	invoiceResponseWithoutDataFieldResponseData   = big.NewInt(1 << 2)
 	invoiceResponseWithoutDataFieldResponseText   = big.NewInt(1 << 3)
 	invoiceResponseWithoutDataFieldPageidentifier = big.NewInt(1 << 4)
-	invoiceResponseWithoutDataFieldRoomId         = big.NewInt(1 << 5)
+	invoiceResponseWithoutDataFieldRoomID         = big.NewInt(1 << 5)
 )
 
 type InvoiceResponseWithoutData struct {
@@ -2069,7 +2069,7 @@ type InvoiceResponseWithoutData struct {
 	ResponseData   *Responsedatanonobject `json:"responseData" url:"responseData"`
 	ResponseText   ResponseText           `json:"responseText" url:"responseText"`
 	Pageidentifier *PageIdentifier        `json:"pageidentifier,omitempty" url:"pageidentifier,omitempty"`
-	RoomId         RoomIdNotInUse         `json:"roomId" url:"roomId"`
+	RoomID         RoomIDNotInUse         `json:"roomId" url:"roomId"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2113,11 +2113,11 @@ func (i *InvoiceResponseWithoutData) GetPageidentifier() *PageIdentifier {
 	return i.Pageidentifier
 }
 
-func (i *InvoiceResponseWithoutData) GetRoomId() RoomIdNotInUse {
+func (i *InvoiceResponseWithoutData) GetRoomID() RoomIDNotInUse {
 	if i == nil {
 		return 0
 	}
-	return i.RoomId
+	return i.RoomID
 }
 
 func (i *InvoiceResponseWithoutData) GetExtraProperties() map[string]interface{} {
@@ -2169,11 +2169,11 @@ func (i *InvoiceResponseWithoutData) SetPageidentifier(pageidentifier *PageIdent
 	i.require(invoiceResponseWithoutDataFieldPageidentifier)
 }
 
-// SetRoomId sets the RoomId field and marks it as non-optional;
+// SetRoomID sets the RoomID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *InvoiceResponseWithoutData) SetRoomId(roomId RoomIdNotInUse) {
-	i.RoomId = roomId
-	i.require(invoiceResponseWithoutDataFieldRoomId)
+func (i *InvoiceResponseWithoutData) SetRoomID(roomID RoomIDNotInUse) {
+	i.RoomID = roomID
+	i.require(invoiceResponseWithoutDataFieldRoomID)
 }
 
 func (i *InvoiceResponseWithoutData) UnmarshalJSON(data []byte) error {
@@ -2319,9 +2319,9 @@ func (q *QueryInvoiceResponse) String() string {
 }
 
 var (
-	queryInvoiceResponseRecordsItemFieldInvoiceId            = big.NewInt(1 << 0)
-	queryInvoiceResponseRecordsItemFieldCustomerId           = big.NewInt(1 << 1)
-	queryInvoiceResponseRecordsItemFieldPaypointId           = big.NewInt(1 << 2)
+	queryInvoiceResponseRecordsItemFieldInvoiceID            = big.NewInt(1 << 0)
+	queryInvoiceResponseRecordsItemFieldCustomerID           = big.NewInt(1 << 1)
+	queryInvoiceResponseRecordsItemFieldPaypointID           = big.NewInt(1 << 2)
 	queryInvoiceResponseRecordsItemFieldInvoiceNumber        = big.NewInt(1 << 3)
 	queryInvoiceResponseRecordsItemFieldInvoiceDate          = big.NewInt(1 << 4)
 	queryInvoiceResponseRecordsItemFieldInvoiceDueDate       = big.NewInt(1 << 5)
@@ -2357,24 +2357,24 @@ var (
 	queryInvoiceResponseRecordsItemFieldSummaryCommodityCode = big.NewInt(1 << 35)
 	queryInvoiceResponseRecordsItemFieldItems                = big.NewInt(1 << 36)
 	queryInvoiceResponseRecordsItemFieldCustomer             = big.NewInt(1 << 37)
-	queryInvoiceResponseRecordsItemFieldPaylinkId            = big.NewInt(1 << 38)
+	queryInvoiceResponseRecordsItemFieldPaylinkID            = big.NewInt(1 << 38)
 	queryInvoiceResponseRecordsItemFieldBillEvents           = big.NewInt(1 << 39)
 	queryInvoiceResponseRecordsItemFieldScheduledOptions     = big.NewInt(1 << 40)
 	queryInvoiceResponseRecordsItemFieldPaypointLegalname    = big.NewInt(1 << 41)
 	queryInvoiceResponseRecordsItemFieldPaypointDbaname      = big.NewInt(1 << 42)
 	queryInvoiceResponseRecordsItemFieldPaypointEntryname    = big.NewInt(1 << 43)
-	queryInvoiceResponseRecordsItemFieldParentOrgId          = big.NewInt(1 << 44)
+	queryInvoiceResponseRecordsItemFieldParentOrgID          = big.NewInt(1 << 44)
 	queryInvoiceResponseRecordsItemFieldParentOrgName        = big.NewInt(1 << 45)
 	queryInvoiceResponseRecordsItemFieldAdditionalData       = big.NewInt(1 << 46)
 	queryInvoiceResponseRecordsItemFieldDocumentsRef         = big.NewInt(1 << 47)
-	queryInvoiceResponseRecordsItemFieldExternalPaypointId   = big.NewInt(1 << 48)
+	queryInvoiceResponseRecordsItemFieldExternalPaypointID   = big.NewInt(1 << 48)
 	queryInvoiceResponseRecordsItemFieldPageIdentifier       = big.NewInt(1 << 49)
 )
 
 type QueryInvoiceResponseRecordsItem struct {
-	InvoiceId     InvoiceId     `json:"invoiceId" url:"invoiceId"`
-	CustomerId    CustomerId    `json:"customerId" url:"customerId"`
-	PaypointId    PaypointId    `json:"paypointId" url:"paypointId"`
+	InvoiceID     InvoiceID     `json:"invoiceId" url:"invoiceId"`
+	CustomerID    CustomerID    `json:"customerId" url:"customerId"`
+	PaypointID    PaypointID    `json:"paypointId" url:"paypointId"`
 	InvoiceNumber InvoiceNumber `json:"invoiceNumber" url:"invoiceNumber"`
 	// Invoice date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.
 	InvoiceDate *time.Time `json:"invoiceDate,omitempty" url:"invoiceDate,omitempty" format:"date"`
@@ -2423,7 +2423,7 @@ type QueryInvoiceResponseRecordsItem struct {
 	// Array of line items included in the invoice.
 	Items      []*BillItem        `json:"items" url:"items"`
 	Customer   *PayorDataResponse `json:"Customer" url:"Customer"`
-	PaylinkId  string             `json:"paylinkId" url:"paylinkId"`
+	PaylinkID  string             `json:"paylinkId" url:"paylinkId"`
 	BillEvents *BillEvents        `json:"billEvents,omitempty" url:"billEvents,omitempty"`
 	// Object with options for scheduled invoices.
 	ScheduledOptions *BillOptions `json:"scheduledOptions,omitempty" url:"scheduledOptions,omitempty"`
@@ -2433,13 +2433,13 @@ type QueryInvoiceResponseRecordsItem struct {
 	PaypointDbaname Dbaname `json:"PaypointDbaname" url:"PaypointDbaname"`
 	// Paypoint's entryname.
 	PaypointEntryname Entrypointfield `json:"PaypointEntryname" url:"PaypointEntryname"`
-	ParentOrgId       Orgid           `json:"ParentOrgId" url:"ParentOrgId"`
+	ParentOrgID       Orgid           `json:"ParentOrgId" url:"ParentOrgId"`
 	ParentOrgName     OrgParentName   `json:"ParentOrgName" url:"ParentOrgName"`
 	// Custom list of key:value pairs. This field is used to store any data related to the invoice or for your system.
 	AdditionalData map[string]any `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
 	// Object containing attachments associated to the invoice.
 	DocumentsRef       *DocumentsRef      `json:"DocumentsRef,omitempty" url:"DocumentsRef,omitempty"`
-	ExternalPaypointId ExternalPaypointId `json:"externalPaypointID" url:"externalPaypointID"`
+	ExternalPaypointID ExternalPaypointID `json:"externalPaypointID" url:"externalPaypointID"`
 	PageIdentifier     *PageIdentifier    `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2449,25 +2449,25 @@ type QueryInvoiceResponseRecordsItem struct {
 	rawJSON         json.RawMessage
 }
 
-func (q *QueryInvoiceResponseRecordsItem) GetInvoiceId() InvoiceId {
+func (q *QueryInvoiceResponseRecordsItem) GetInvoiceID() InvoiceID {
 	if q == nil {
 		return 0
 	}
-	return q.InvoiceId
+	return q.InvoiceID
 }
 
-func (q *QueryInvoiceResponseRecordsItem) GetCustomerId() CustomerId {
+func (q *QueryInvoiceResponseRecordsItem) GetCustomerID() CustomerID {
 	if q == nil {
 		return 0
 	}
-	return q.CustomerId
+	return q.CustomerID
 }
 
-func (q *QueryInvoiceResponseRecordsItem) GetPaypointId() PaypointId {
+func (q *QueryInvoiceResponseRecordsItem) GetPaypointID() PaypointID {
 	if q == nil {
 		return 0
 	}
-	return q.PaypointId
+	return q.PaypointID
 }
 
 func (q *QueryInvoiceResponseRecordsItem) GetInvoiceNumber() InvoiceNumber {
@@ -2715,11 +2715,11 @@ func (q *QueryInvoiceResponseRecordsItem) GetCustomer() *PayorDataResponse {
 	return q.Customer
 }
 
-func (q *QueryInvoiceResponseRecordsItem) GetPaylinkId() string {
+func (q *QueryInvoiceResponseRecordsItem) GetPaylinkID() string {
 	if q == nil {
 		return ""
 	}
-	return q.PaylinkId
+	return q.PaylinkID
 }
 
 func (q *QueryInvoiceResponseRecordsItem) GetBillEvents() *BillEvents {
@@ -2757,11 +2757,11 @@ func (q *QueryInvoiceResponseRecordsItem) GetPaypointEntryname() Entrypointfield
 	return q.PaypointEntryname
 }
 
-func (q *QueryInvoiceResponseRecordsItem) GetParentOrgId() Orgid {
+func (q *QueryInvoiceResponseRecordsItem) GetParentOrgID() Orgid {
 	if q == nil {
 		return 0
 	}
-	return q.ParentOrgId
+	return q.ParentOrgID
 }
 
 func (q *QueryInvoiceResponseRecordsItem) GetParentOrgName() OrgParentName {
@@ -2785,11 +2785,11 @@ func (q *QueryInvoiceResponseRecordsItem) GetDocumentsRef() *DocumentsRef {
 	return q.DocumentsRef
 }
 
-func (q *QueryInvoiceResponseRecordsItem) GetExternalPaypointId() ExternalPaypointId {
+func (q *QueryInvoiceResponseRecordsItem) GetExternalPaypointID() ExternalPaypointID {
 	if q == nil {
 		return ""
 	}
-	return q.ExternalPaypointId
+	return q.ExternalPaypointID
 }
 
 func (q *QueryInvoiceResponseRecordsItem) GetPageIdentifier() *PageIdentifier {
@@ -2813,25 +2813,25 @@ func (q *QueryInvoiceResponseRecordsItem) require(field *big.Int) {
 	q.explicitFields.Or(q.explicitFields, field)
 }
 
-// SetInvoiceId sets the InvoiceId field and marks it as non-optional;
+// SetInvoiceID sets the InvoiceID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryInvoiceResponseRecordsItem) SetInvoiceId(invoiceId InvoiceId) {
-	q.InvoiceId = invoiceId
-	q.require(queryInvoiceResponseRecordsItemFieldInvoiceId)
+func (q *QueryInvoiceResponseRecordsItem) SetInvoiceID(invoiceID InvoiceID) {
+	q.InvoiceID = invoiceID
+	q.require(queryInvoiceResponseRecordsItemFieldInvoiceID)
 }
 
-// SetCustomerId sets the CustomerId field and marks it as non-optional;
+// SetCustomerID sets the CustomerID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryInvoiceResponseRecordsItem) SetCustomerId(customerId CustomerId) {
-	q.CustomerId = customerId
-	q.require(queryInvoiceResponseRecordsItemFieldCustomerId)
+func (q *QueryInvoiceResponseRecordsItem) SetCustomerID(customerID CustomerID) {
+	q.CustomerID = customerID
+	q.require(queryInvoiceResponseRecordsItemFieldCustomerID)
 }
 
-// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// SetPaypointID sets the PaypointID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryInvoiceResponseRecordsItem) SetPaypointId(paypointId PaypointId) {
-	q.PaypointId = paypointId
-	q.require(queryInvoiceResponseRecordsItemFieldPaypointId)
+func (q *QueryInvoiceResponseRecordsItem) SetPaypointID(paypointID PaypointID) {
+	q.PaypointID = paypointID
+	q.require(queryInvoiceResponseRecordsItemFieldPaypointID)
 }
 
 // SetInvoiceNumber sets the InvoiceNumber field and marks it as non-optional;
@@ -3079,11 +3079,11 @@ func (q *QueryInvoiceResponseRecordsItem) SetCustomer(customer *PayorDataRespons
 	q.require(queryInvoiceResponseRecordsItemFieldCustomer)
 }
 
-// SetPaylinkId sets the PaylinkId field and marks it as non-optional;
+// SetPaylinkID sets the PaylinkID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryInvoiceResponseRecordsItem) SetPaylinkId(paylinkId string) {
-	q.PaylinkId = paylinkId
-	q.require(queryInvoiceResponseRecordsItemFieldPaylinkId)
+func (q *QueryInvoiceResponseRecordsItem) SetPaylinkID(paylinkID string) {
+	q.PaylinkID = paylinkID
+	q.require(queryInvoiceResponseRecordsItemFieldPaylinkID)
 }
 
 // SetBillEvents sets the BillEvents field and marks it as non-optional;
@@ -3121,11 +3121,11 @@ func (q *QueryInvoiceResponseRecordsItem) SetPaypointEntryname(paypointEntryname
 	q.require(queryInvoiceResponseRecordsItemFieldPaypointEntryname)
 }
 
-// SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
+// SetParentOrgID sets the ParentOrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryInvoiceResponseRecordsItem) SetParentOrgId(parentOrgId Orgid) {
-	q.ParentOrgId = parentOrgId
-	q.require(queryInvoiceResponseRecordsItemFieldParentOrgId)
+func (q *QueryInvoiceResponseRecordsItem) SetParentOrgID(parentOrgID Orgid) {
+	q.ParentOrgID = parentOrgID
+	q.require(queryInvoiceResponseRecordsItemFieldParentOrgID)
 }
 
 // SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
@@ -3149,11 +3149,11 @@ func (q *QueryInvoiceResponseRecordsItem) SetDocumentsRef(documentsRef *Document
 	q.require(queryInvoiceResponseRecordsItemFieldDocumentsRef)
 }
 
-// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// SetExternalPaypointID sets the ExternalPaypointID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryInvoiceResponseRecordsItem) SetExternalPaypointId(externalPaypointId ExternalPaypointId) {
-	q.ExternalPaypointId = externalPaypointId
-	q.require(queryInvoiceResponseRecordsItemFieldExternalPaypointId)
+func (q *QueryInvoiceResponseRecordsItem) SetExternalPaypointID(externalPaypointID ExternalPaypointID) {
+	q.ExternalPaypointID = externalPaypointID
+	q.require(queryInvoiceResponseRecordsItemFieldExternalPaypointID)
 }
 
 // SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;

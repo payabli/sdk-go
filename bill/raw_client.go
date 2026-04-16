@@ -411,7 +411,7 @@ func (r *RawClient) ListBills(
 func (r *RawClient) ListBillsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListBillsOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.BillQueryResponse], error) {
@@ -423,7 +423,7 @@ func (r *RawClient) ListBillsOrg(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/bills/org/%v",
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {

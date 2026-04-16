@@ -218,7 +218,7 @@ var (
 	chargeBackResponseFieldContactEmail = big.NewInt(1 << 1)
 	chargeBackResponseFieldContactName  = big.NewInt(1 << 2)
 	chargeBackResponseFieldCreatedAt    = big.NewInt(1 << 3)
-	chargeBackResponseFieldId           = big.NewInt(1 << 4)
+	chargeBackResponseFieldID           = big.NewInt(1 << 4)
 	chargeBackResponseFieldNotes        = big.NewInt(1 << 5)
 )
 
@@ -232,7 +232,7 @@ type ChargeBackResponse struct {
 	// Timestamp when response was submitted, in UTC.
 	CreatedAt *CreatedAt `json:"createdAt,omitempty" url:"createdAt,omitempty"`
 	// Chargeback response identifier
-	Id *int64 `json:"id,omitempty" url:"id,omitempty"`
+	ID *int64 `json:"id,omitempty" url:"id,omitempty"`
 	// Response notes
 	Notes *string `json:"notes,omitempty" url:"notes,omitempty"`
 
@@ -271,11 +271,11 @@ func (c *ChargeBackResponse) GetCreatedAt() *CreatedAt {
 	return c.CreatedAt
 }
 
-func (c *ChargeBackResponse) GetId() *int64 {
+func (c *ChargeBackResponse) GetID() *int64 {
 	if c == nil {
 		return nil
 	}
-	return c.Id
+	return c.ID
 }
 
 func (c *ChargeBackResponse) GetNotes() *string {
@@ -327,11 +327,11 @@ func (c *ChargeBackResponse) SetCreatedAt(createdAt *CreatedAt) {
 	c.require(chargeBackResponseFieldCreatedAt)
 }
 
-// SetId sets the Id field and marks it as non-optional;
+// SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ChargeBackResponse) SetId(id *int64) {
-	c.Id = id
-	c.require(chargeBackResponseFieldId)
+func (c *ChargeBackResponse) SetID(id *int64) {
+	c.ID = id
+	c.require(chargeBackResponseFieldID)
 }
 
 // SetNotes sets the Notes field and marks it as non-optional;
@@ -392,9 +392,9 @@ func (c *ChargeBackResponse) String() string {
 }
 
 var (
-	chargebackMessageFieldId                = big.NewInt(1 << 0)
-	chargebackMessageFieldRoomId            = big.NewInt(1 << 1)
-	chargebackMessageFieldUserId            = big.NewInt(1 << 2)
+	chargebackMessageFieldID                = big.NewInt(1 << 0)
+	chargebackMessageFieldRoomID            = big.NewInt(1 << 1)
+	chargebackMessageFieldUserID            = big.NewInt(1 << 2)
 	chargebackMessageFieldUserName          = big.NewInt(1 << 3)
 	chargebackMessageFieldContent           = big.NewInt(1 << 4)
 	chargebackMessageFieldCreatedAt         = big.NewInt(1 << 5)
@@ -404,11 +404,11 @@ var (
 
 type ChargebackMessage struct {
 	// Message identifier.
-	Id int `json:"Id" url:"Id"`
+	ID int `json:"Id" url:"Id"`
 	// Room identifier for the message.
-	RoomId int `json:"RoomId" url:"RoomId"`
+	RoomID int `json:"RoomId" url:"RoomId"`
 	// User identifier who sent the message.
-	UserId int `json:"UserId" url:"UserId"`
+	UserID int `json:"UserId" url:"UserId"`
 	// Name of the user who sent the message.
 	UserName string `json:"UserName" url:"UserName"`
 	// Content of the message.
@@ -427,25 +427,25 @@ type ChargebackMessage struct {
 	rawJSON         json.RawMessage
 }
 
-func (c *ChargebackMessage) GetId() int {
+func (c *ChargebackMessage) GetID() int {
 	if c == nil {
 		return 0
 	}
-	return c.Id
+	return c.ID
 }
 
-func (c *ChargebackMessage) GetRoomId() int {
+func (c *ChargebackMessage) GetRoomID() int {
 	if c == nil {
 		return 0
 	}
-	return c.RoomId
+	return c.RoomID
 }
 
-func (c *ChargebackMessage) GetUserId() int {
+func (c *ChargebackMessage) GetUserID() int {
 	if c == nil {
 		return 0
 	}
-	return c.UserId
+	return c.UserID
 }
 
 func (c *ChargebackMessage) GetUserName() string {
@@ -497,25 +497,25 @@ func (c *ChargebackMessage) require(field *big.Int) {
 	c.explicitFields.Or(c.explicitFields, field)
 }
 
-// SetId sets the Id field and marks it as non-optional;
+// SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ChargebackMessage) SetId(id int) {
-	c.Id = id
-	c.require(chargebackMessageFieldId)
+func (c *ChargebackMessage) SetID(id int) {
+	c.ID = id
+	c.require(chargebackMessageFieldID)
 }
 
-// SetRoomId sets the RoomId field and marks it as non-optional;
+// SetRoomID sets the RoomID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ChargebackMessage) SetRoomId(roomId int) {
-	c.RoomId = roomId
-	c.require(chargebackMessageFieldRoomId)
+func (c *ChargebackMessage) SetRoomID(roomID int) {
+	c.RoomID = roomID
+	c.require(chargebackMessageFieldRoomID)
 }
 
-// SetUserId sets the UserId field and marks it as non-optional;
+// SetUserID sets the UserID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ChargebackMessage) SetUserId(userId int) {
-	c.UserId = userId
-	c.require(chargebackMessageFieldUserId)
+func (c *ChargebackMessage) SetUserID(userID int) {
+	c.UserID = userID
+	c.require(chargebackMessageFieldUserID)
 }
 
 // SetUserName sets the UserName field and marks it as non-optional;
@@ -604,7 +604,7 @@ func (c *ChargebackMessage) String() string {
 }
 
 var (
-	chargebackQueryRecordsFieldId                 = big.NewInt(1 << 0)
+	chargebackQueryRecordsFieldID                 = big.NewInt(1 << 0)
 	chargebackQueryRecordsFieldChargebackDate     = big.NewInt(1 << 1)
 	chargebackQueryRecordsFieldCaseNumber         = big.NewInt(1 << 2)
 	chargebackQueryRecordsFieldReasonCode         = big.NewInt(1 << 3)
@@ -616,9 +616,9 @@ var (
 	chargebackQueryRecordsFieldMethod             = big.NewInt(1 << 9)
 	chargebackQueryRecordsFieldCreatedAt          = big.NewInt(1 << 10)
 	chargebackQueryRecordsFieldReplyBy            = big.NewInt(1 << 11)
-	chargebackQueryRecordsFieldPaymentTransId     = big.NewInt(1 << 12)
+	chargebackQueryRecordsFieldPaymentTransID     = big.NewInt(1 << 12)
 	chargebackQueryRecordsFieldScheduleReference  = big.NewInt(1 << 13)
-	chargebackQueryRecordsFieldOrderId            = big.NewInt(1 << 14)
+	chargebackQueryRecordsFieldOrderID            = big.NewInt(1 << 14)
 	chargebackQueryRecordsFieldNetAmount          = big.NewInt(1 << 15)
 	chargebackQueryRecordsFieldTransactionTime    = big.NewInt(1 << 16)
 	chargebackQueryRecordsFieldCustomer           = big.NewInt(1 << 17)
@@ -626,11 +626,11 @@ var (
 	chargebackQueryRecordsFieldPaypointLegalname  = big.NewInt(1 << 19)
 	chargebackQueryRecordsFieldPaypointDbaname    = big.NewInt(1 << 20)
 	chargebackQueryRecordsFieldParentOrgName      = big.NewInt(1 << 21)
-	chargebackQueryRecordsFieldParentOrgId        = big.NewInt(1 << 22)
+	chargebackQueryRecordsFieldParentOrgID        = big.NewInt(1 << 22)
 	chargebackQueryRecordsFieldPaypointEntryname  = big.NewInt(1 << 23)
 	chargebackQueryRecordsFieldResponses          = big.NewInt(1 << 24)
 	chargebackQueryRecordsFieldTransaction        = big.NewInt(1 << 25)
-	chargebackQueryRecordsFieldExternalPaypointId = big.NewInt(1 << 26)
+	chargebackQueryRecordsFieldExternalPaypointID = big.NewInt(1 << 26)
 	chargebackQueryRecordsFieldPageidentifier     = big.NewInt(1 << 27)
 	chargebackQueryRecordsFieldMessages           = big.NewInt(1 << 28)
 	chargebackQueryRecordsFieldServiceGroup       = big.NewInt(1 << 29)
@@ -640,7 +640,7 @@ var (
 
 type ChargebackQueryRecords struct {
 	// Identifier of chargeback or return.
-	Id int64 `json:"Id" url:"Id"`
+	ID int64 `json:"Id" url:"Id"`
 	// Date of chargeback in format YYYY-MM-DD or MM/DD/YYYY.
 	ChargebackDate time.Time `json:"ChargebackDate" url:"ChargebackDate"`
 	// Number of case assigned to the chargeback.
@@ -669,10 +669,10 @@ type ChargebackQueryRecords struct {
 	CreatedAt CreatedAt `json:"CreatedAt" url:"CreatedAt"`
 	ReplyBy   Replyby   `json:"ReplyBy" url:"ReplyBy"`
 	// ReferenceId of the transaction in Payabli.
-	PaymentTransId string `json:"PaymentTransId" url:"PaymentTransId"`
+	PaymentTransID string `json:"PaymentTransId" url:"PaymentTransId"`
 	// Reference to the subscription originating the transaction.
 	ScheduleReference *int64  `json:"ScheduleReference,omitempty" url:"ScheduleReference,omitempty"`
-	OrderId           OrderId `json:"OrderId" url:"OrderId"`
+	OrderID           OrderID `json:"OrderId" url:"OrderId"`
 	// Net amount in chargeback or ACH return.
 	NetAmount       *Netamountnullable         `json:"NetAmount,omitempty" url:"NetAmount,omitempty"`
 	TransactionTime TransactionTime            `json:"TransactionTime" url:"TransactionTime"`
@@ -684,13 +684,13 @@ type ChargebackQueryRecords struct {
 	PaypointDbaname Dbaname       `json:"PaypointDbaname" url:"PaypointDbaname"`
 	ParentOrgName   OrgParentName `json:"ParentOrgName" url:"ParentOrgName"`
 	// The ID of the parent organization.
-	ParentOrgId int64 `json:"ParentOrgId" url:"ParentOrgId"`
+	ParentOrgID int64 `json:"ParentOrgId" url:"ParentOrgId"`
 	// The paypoint's entryname.
 	PaypointEntryname Entrypointfield `json:"PaypointEntryname" url:"PaypointEntryname"`
 	// Chargeback response records.
 	Responses          []*ChargeBackResponse    `json:"Responses" url:"Responses"`
 	Transaction        *TransactionQueryRecords `json:"Transaction" url:"Transaction"`
-	ExternalPaypointId *ExternalPaypointId      `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	ExternalPaypointID *ExternalPaypointID      `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
 	Pageidentifier     *PageIdentifier          `json:"pageidentifier,omitempty" url:"pageidentifier,omitempty"`
 	// Messages related to the chargeback.
 	Messages []*ChargebackMessage `json:"messages" url:"messages"`
@@ -708,11 +708,11 @@ type ChargebackQueryRecords struct {
 	rawJSON         json.RawMessage
 }
 
-func (c *ChargebackQueryRecords) GetId() int64 {
+func (c *ChargebackQueryRecords) GetID() int64 {
 	if c == nil {
 		return 0
 	}
-	return c.Id
+	return c.ID
 }
 
 func (c *ChargebackQueryRecords) GetChargebackDate() time.Time {
@@ -792,11 +792,11 @@ func (c *ChargebackQueryRecords) GetReplyBy() Replyby {
 	return c.ReplyBy
 }
 
-func (c *ChargebackQueryRecords) GetPaymentTransId() string {
+func (c *ChargebackQueryRecords) GetPaymentTransID() string {
 	if c == nil {
 		return ""
 	}
-	return c.PaymentTransId
+	return c.PaymentTransID
 }
 
 func (c *ChargebackQueryRecords) GetScheduleReference() *int64 {
@@ -806,11 +806,11 @@ func (c *ChargebackQueryRecords) GetScheduleReference() *int64 {
 	return c.ScheduleReference
 }
 
-func (c *ChargebackQueryRecords) GetOrderId() OrderId {
+func (c *ChargebackQueryRecords) GetOrderID() OrderID {
 	if c == nil {
 		return ""
 	}
-	return c.OrderId
+	return c.OrderID
 }
 
 func (c *ChargebackQueryRecords) GetNetAmount() *Netamountnullable {
@@ -862,11 +862,11 @@ func (c *ChargebackQueryRecords) GetParentOrgName() OrgParentName {
 	return c.ParentOrgName
 }
 
-func (c *ChargebackQueryRecords) GetParentOrgId() int64 {
+func (c *ChargebackQueryRecords) GetParentOrgID() int64 {
 	if c == nil {
 		return 0
 	}
-	return c.ParentOrgId
+	return c.ParentOrgID
 }
 
 func (c *ChargebackQueryRecords) GetPaypointEntryname() Entrypointfield {
@@ -890,11 +890,11 @@ func (c *ChargebackQueryRecords) GetTransaction() *TransactionQueryRecords {
 	return c.Transaction
 }
 
-func (c *ChargebackQueryRecords) GetExternalPaypointId() *ExternalPaypointId {
+func (c *ChargebackQueryRecords) GetExternalPaypointID() *ExternalPaypointID {
 	if c == nil {
 		return nil
 	}
-	return c.ExternalPaypointId
+	return c.ExternalPaypointID
 }
 
 func (c *ChargebackQueryRecords) GetPageidentifier() *PageIdentifier {
@@ -946,11 +946,11 @@ func (c *ChargebackQueryRecords) require(field *big.Int) {
 	c.explicitFields.Or(c.explicitFields, field)
 }
 
-// SetId sets the Id field and marks it as non-optional;
+// SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ChargebackQueryRecords) SetId(id int64) {
-	c.Id = id
-	c.require(chargebackQueryRecordsFieldId)
+func (c *ChargebackQueryRecords) SetID(id int64) {
+	c.ID = id
+	c.require(chargebackQueryRecordsFieldID)
 }
 
 // SetChargebackDate sets the ChargebackDate field and marks it as non-optional;
@@ -1030,11 +1030,11 @@ func (c *ChargebackQueryRecords) SetReplyBy(replyBy Replyby) {
 	c.require(chargebackQueryRecordsFieldReplyBy)
 }
 
-// SetPaymentTransId sets the PaymentTransId field and marks it as non-optional;
+// SetPaymentTransID sets the PaymentTransID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ChargebackQueryRecords) SetPaymentTransId(paymentTransId string) {
-	c.PaymentTransId = paymentTransId
-	c.require(chargebackQueryRecordsFieldPaymentTransId)
+func (c *ChargebackQueryRecords) SetPaymentTransID(paymentTransID string) {
+	c.PaymentTransID = paymentTransID
+	c.require(chargebackQueryRecordsFieldPaymentTransID)
 }
 
 // SetScheduleReference sets the ScheduleReference field and marks it as non-optional;
@@ -1044,11 +1044,11 @@ func (c *ChargebackQueryRecords) SetScheduleReference(scheduleReference *int64) 
 	c.require(chargebackQueryRecordsFieldScheduleReference)
 }
 
-// SetOrderId sets the OrderId field and marks it as non-optional;
+// SetOrderID sets the OrderID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ChargebackQueryRecords) SetOrderId(orderId OrderId) {
-	c.OrderId = orderId
-	c.require(chargebackQueryRecordsFieldOrderId)
+func (c *ChargebackQueryRecords) SetOrderID(orderID OrderID) {
+	c.OrderID = orderID
+	c.require(chargebackQueryRecordsFieldOrderID)
 }
 
 // SetNetAmount sets the NetAmount field and marks it as non-optional;
@@ -1100,11 +1100,11 @@ func (c *ChargebackQueryRecords) SetParentOrgName(parentOrgName OrgParentName) {
 	c.require(chargebackQueryRecordsFieldParentOrgName)
 }
 
-// SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
+// SetParentOrgID sets the ParentOrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ChargebackQueryRecords) SetParentOrgId(parentOrgId int64) {
-	c.ParentOrgId = parentOrgId
-	c.require(chargebackQueryRecordsFieldParentOrgId)
+func (c *ChargebackQueryRecords) SetParentOrgID(parentOrgID int64) {
+	c.ParentOrgID = parentOrgID
+	c.require(chargebackQueryRecordsFieldParentOrgID)
 }
 
 // SetPaypointEntryname sets the PaypointEntryname field and marks it as non-optional;
@@ -1128,11 +1128,11 @@ func (c *ChargebackQueryRecords) SetTransaction(transaction *TransactionQueryRec
 	c.require(chargebackQueryRecordsFieldTransaction)
 }
 
-// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// SetExternalPaypointID sets the ExternalPaypointID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ChargebackQueryRecords) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
-	c.ExternalPaypointId = externalPaypointId
-	c.require(chargebackQueryRecordsFieldExternalPaypointId)
+func (c *ChargebackQueryRecords) SetExternalPaypointID(externalPaypointID *ExternalPaypointID) {
+	c.ExternalPaypointID = externalPaypointID
+	c.require(chargebackQueryRecordsFieldExternalPaypointID)
 }
 
 // SetPageidentifier sets the Pageidentifier field and marks it as non-optional;

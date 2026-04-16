@@ -84,7 +84,7 @@ func (r *RawClient) NewPage(
 	entry string,
 	request *payabli.NewPageRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponse00Responsedatanonobject], error) {
+) (*core.Response[*payabli.PayabliAPIResponse00Responsedatanonobject], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -103,7 +103,7 @@ func (r *RawClient) NewPage(
 		headers.Add("idempotencyKey", *request.IdempotencyKey)
 	}
 	headers.Add("Content-Type", "application/json")
-	var response *payabli.PayabliApiResponse00Responsedatanonobject
+	var response *payabli.PayabliAPIResponse00Responsedatanonobject
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -122,7 +122,7 @@ func (r *RawClient) NewPage(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponse00Responsedatanonobject]{
+	return &core.Response[*payabli.PayabliAPIResponse00Responsedatanonobject]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -137,7 +137,7 @@ func (r *RawClient) SavePage(
 	subdomain string,
 	request *payabli.PayabliPages,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponse00Responsedatanonobject], error) {
+) (*core.Response[*payabli.PayabliAPIResponse00Responsedatanonobject], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -153,7 +153,7 @@ func (r *RawClient) SavePage(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponse00Responsedatanonobject
+	var response *payabli.PayabliAPIResponse00Responsedatanonobject
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -172,7 +172,7 @@ func (r *RawClient) SavePage(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponse00Responsedatanonobject]{
+	return &core.Response[*payabli.PayabliAPIResponse00Responsedatanonobject]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

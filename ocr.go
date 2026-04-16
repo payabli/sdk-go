@@ -1153,7 +1153,7 @@ var (
 	ocrVendorFieldPayeeName1            = big.NewInt(1 << 24)
 	ocrVendorFieldPayeeName2            = big.NewInt(1 << 25)
 	ocrVendorFieldCustomerVendorAccount = big.NewInt(1 << 26)
-	ocrVendorFieldInternalReferenceId   = big.NewInt(1 << 27)
+	ocrVendorFieldInternalReferenceID   = big.NewInt(1 << 27)
 	ocrVendorFieldCustomField1          = big.NewInt(1 << 28)
 	ocrVendorFieldCustomField2          = big.NewInt(1 << 29)
 	ocrVendorFieldAdditionalData        = big.NewInt(1 << 30)
@@ -1187,7 +1187,7 @@ type OcrVendor struct {
 	PayeeName1            *string                  `json:"payeeName1,omitempty" url:"payeeName1,omitempty"`
 	PayeeName2            *string                  `json:"payeeName2,omitempty" url:"payeeName2,omitempty"`
 	CustomerVendorAccount *string                  `json:"customerVendorAccount,omitempty" url:"customerVendorAccount,omitempty"`
-	InternalReferenceId   *int64                   `json:"internalReferenceId,omitempty" url:"internalReferenceId,omitempty"`
+	InternalReferenceID   *int64                   `json:"internalReferenceId,omitempty" url:"internalReferenceId,omitempty"`
 	CustomField1          *string                  `json:"customField1,omitempty" url:"customField1,omitempty"`
 	CustomField2          *string                  `json:"customField2,omitempty" url:"customField2,omitempty"`
 	AdditionalData        *OcrVendorAdditionalData `json:"additionalData,omitempty" url:"additionalData,omitempty"`
@@ -1388,11 +1388,11 @@ func (o *OcrVendor) GetCustomerVendorAccount() *string {
 	return o.CustomerVendorAccount
 }
 
-func (o *OcrVendor) GetInternalReferenceId() *int64 {
+func (o *OcrVendor) GetInternalReferenceID() *int64 {
 	if o == nil {
 		return nil
 	}
-	return o.InternalReferenceId
+	return o.InternalReferenceID
 }
 
 func (o *OcrVendor) GetCustomField1() *string {
@@ -1619,11 +1619,11 @@ func (o *OcrVendor) SetCustomerVendorAccount(customerVendorAccount *string) {
 	o.require(ocrVendorFieldCustomerVendorAccount)
 }
 
-// SetInternalReferenceId sets the InternalReferenceId field and marks it as non-optional;
+// SetInternalReferenceID sets the InternalReferenceID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (o *OcrVendor) SetInternalReferenceId(internalReferenceId *int64) {
-	o.InternalReferenceId = internalReferenceId
-	o.require(ocrVendorFieldInternalReferenceId)
+func (o *OcrVendor) SetInternalReferenceID(internalReferenceID *int64) {
+	o.InternalReferenceID = internalReferenceID
+	o.require(ocrVendorFieldInternalReferenceID)
 }
 
 // SetCustomField1 sets the CustomField1 field and marks it as non-optional;
@@ -1774,7 +1774,7 @@ func (o *OcrVendorAdditionalData) String() string {
 }
 
 var (
-	ocrVendorBillingDataFieldId                    = big.NewInt(1 << 0)
+	ocrVendorBillingDataFieldID                    = big.NewInt(1 << 0)
 	ocrVendorBillingDataFieldBankName              = big.NewInt(1 << 1)
 	ocrVendorBillingDataFieldRoutingAccount        = big.NewInt(1 << 2)
 	ocrVendorBillingDataFieldAccountNumber         = big.NewInt(1 << 3)
@@ -1785,7 +1785,7 @@ var (
 )
 
 type OcrVendorBillingData struct {
-	Id                    *int    `json:"id,omitempty" url:"id,omitempty"`
+	ID                    *int    `json:"id,omitempty" url:"id,omitempty"`
 	BankName              *string `json:"bankName,omitempty" url:"bankName,omitempty"`
 	RoutingAccount        *string `json:"routingAccount,omitempty" url:"routingAccount,omitempty"`
 	AccountNumber         *string `json:"accountNumber,omitempty" url:"accountNumber,omitempty"`
@@ -1801,11 +1801,11 @@ type OcrVendorBillingData struct {
 	rawJSON         json.RawMessage
 }
 
-func (o *OcrVendorBillingData) GetId() *int {
+func (o *OcrVendorBillingData) GetID() *int {
 	if o == nil {
 		return nil
 	}
-	return o.Id
+	return o.ID
 }
 
 func (o *OcrVendorBillingData) GetBankName() *string {
@@ -1871,11 +1871,11 @@ func (o *OcrVendorBillingData) require(field *big.Int) {
 	o.explicitFields.Or(o.explicitFields, field)
 }
 
-// SetId sets the Id field and marks it as non-optional;
+// SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (o *OcrVendorBillingData) SetId(id *int) {
-	o.Id = id
-	o.require(ocrVendorBillingDataFieldId)
+func (o *OcrVendorBillingData) SetID(id *int) {
+	o.ID = id
+	o.require(ocrVendorBillingDataFieldID)
 }
 
 // SetBankName sets the BankName field and marks it as non-optional;
@@ -1970,13 +1970,13 @@ func (o *OcrVendorBillingData) String() string {
 }
 
 var (
-	payabliApiResponseOcrFieldIsSuccess    = big.NewInt(1 << 0)
-	payabliApiResponseOcrFieldResponseText = big.NewInt(1 << 1)
-	payabliApiResponseOcrFieldResponseCode = big.NewInt(1 << 2)
-	payabliApiResponseOcrFieldResponseData = big.NewInt(1 << 3)
+	payabliAPIResponseOcrFieldIsSuccess    = big.NewInt(1 << 0)
+	payabliAPIResponseOcrFieldResponseText = big.NewInt(1 << 1)
+	payabliAPIResponseOcrFieldResponseCode = big.NewInt(1 << 2)
+	payabliAPIResponseOcrFieldResponseData = big.NewInt(1 << 3)
 )
 
-type PayabliApiResponseOcr struct {
+type PayabliAPIResponseOcr struct {
 	IsSuccess    IsSuccess    `json:"isSuccess" url:"isSuccess"`
 	ResponseText ResponseText `json:"responseText" url:"responseText"`
 	ResponseCode Responsecode `json:"responseCode" url:"responseCode"`
@@ -1990,42 +1990,42 @@ type PayabliApiResponseOcr struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PayabliApiResponseOcr) GetIsSuccess() IsSuccess {
+func (p *PayabliAPIResponseOcr) GetIsSuccess() IsSuccess {
 	if p == nil {
 		return false
 	}
 	return p.IsSuccess
 }
 
-func (p *PayabliApiResponseOcr) GetResponseText() ResponseText {
+func (p *PayabliAPIResponseOcr) GetResponseText() ResponseText {
 	if p == nil {
 		return ""
 	}
 	return p.ResponseText
 }
 
-func (p *PayabliApiResponseOcr) GetResponseCode() Responsecode {
+func (p *PayabliAPIResponseOcr) GetResponseCode() Responsecode {
 	if p == nil {
 		return 0
 	}
 	return p.ResponseCode
 }
 
-func (p *PayabliApiResponseOcr) GetResponseData() *OcrResponseData {
+func (p *PayabliAPIResponseOcr) GetResponseData() *OcrResponseData {
 	if p == nil {
 		return nil
 	}
 	return p.ResponseData
 }
 
-func (p *PayabliApiResponseOcr) GetExtraProperties() map[string]interface{} {
+func (p *PayabliAPIResponseOcr) GetExtraProperties() map[string]interface{} {
 	if p == nil {
 		return nil
 	}
 	return p.extraProperties
 }
 
-func (p *PayabliApiResponseOcr) require(field *big.Int) {
+func (p *PayabliAPIResponseOcr) require(field *big.Int) {
 	if p.explicitFields == nil {
 		p.explicitFields = big.NewInt(0)
 	}
@@ -2034,39 +2034,39 @@ func (p *PayabliApiResponseOcr) require(field *big.Int) {
 
 // SetIsSuccess sets the IsSuccess field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseOcr) SetIsSuccess(isSuccess IsSuccess) {
+func (p *PayabliAPIResponseOcr) SetIsSuccess(isSuccess IsSuccess) {
 	p.IsSuccess = isSuccess
-	p.require(payabliApiResponseOcrFieldIsSuccess)
+	p.require(payabliAPIResponseOcrFieldIsSuccess)
 }
 
 // SetResponseText sets the ResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseOcr) SetResponseText(responseText ResponseText) {
+func (p *PayabliAPIResponseOcr) SetResponseText(responseText ResponseText) {
 	p.ResponseText = responseText
-	p.require(payabliApiResponseOcrFieldResponseText)
+	p.require(payabliAPIResponseOcrFieldResponseText)
 }
 
 // SetResponseCode sets the ResponseCode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseOcr) SetResponseCode(responseCode Responsecode) {
+func (p *PayabliAPIResponseOcr) SetResponseCode(responseCode Responsecode) {
 	p.ResponseCode = responseCode
-	p.require(payabliApiResponseOcrFieldResponseCode)
+	p.require(payabliAPIResponseOcrFieldResponseCode)
 }
 
 // SetResponseData sets the ResponseData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseOcr) SetResponseData(responseData *OcrResponseData) {
+func (p *PayabliAPIResponseOcr) SetResponseData(responseData *OcrResponseData) {
 	p.ResponseData = responseData
-	p.require(payabliApiResponseOcrFieldResponseData)
+	p.require(payabliAPIResponseOcrFieldResponseData)
 }
 
-func (p *PayabliApiResponseOcr) UnmarshalJSON(data []byte) error {
-	type unmarshaler PayabliApiResponseOcr
+func (p *PayabliAPIResponseOcr) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayabliAPIResponseOcr
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PayabliApiResponseOcr(value)
+	*p = PayabliAPIResponseOcr(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *p)
 	if err != nil {
 		return err
@@ -2076,8 +2076,8 @@ func (p *PayabliApiResponseOcr) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (p *PayabliApiResponseOcr) MarshalJSON() ([]byte, error) {
-	type embed PayabliApiResponseOcr
+func (p *PayabliAPIResponseOcr) MarshalJSON() ([]byte, error) {
+	type embed PayabliAPIResponseOcr
 	var marshaler = struct {
 		embed
 	}{
@@ -2087,7 +2087,7 @@ func (p *PayabliApiResponseOcr) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PayabliApiResponseOcr) String() string {
+func (p *PayabliAPIResponseOcr) String() string {
 	if p == nil {
 		return "<nil>"
 	}

@@ -79,7 +79,7 @@ func TestWalletConfigureApplePayOrganizationWithWireMock(
 		IsEnabled: payabli.Bool(
 			true,
 		),
-		OrgId: payabli.Int64(
+		OrgID: payabli.Int64(
 			int64(901),
 		),
 	}
@@ -142,7 +142,7 @@ func TestWalletConfigureGooglePayOrganizationWithWireMock(
 		IsEnabled: payabli.Bool(
 			true,
 		),
-		OrgId: payabli.Int64(
+		OrgID: payabli.Int64(
 			int64(901),
 		),
 	}

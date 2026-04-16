@@ -79,7 +79,7 @@ func (r *RawClient) AddOrganization(
 func (r *RawClient) DeleteOrganization(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.DeleteOrganizationResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -90,7 +90,7 @@ func (r *RawClient) DeleteOrganization(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Organization/%v",
-		orgId,
+		orgID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -124,7 +124,7 @@ func (r *RawClient) DeleteOrganization(
 func (r *RawClient) EditOrganization(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.OrganizationData,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.EditOrganizationResponse], error) {
@@ -136,7 +136,7 @@ func (r *RawClient) EditOrganization(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Organization/%v",
-		orgId,
+		orgID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -214,10 +214,10 @@ func (r *RawClient) GetBasicOrganization(
 	}, nil
 }
 
-func (r *RawClient) GetBasicOrganizationById(
+func (r *RawClient) GetBasicOrganizationByID(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.OrganizationQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
@@ -228,7 +228,7 @@ func (r *RawClient) GetBasicOrganizationById(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Organization/basicById/%v",
-		orgId,
+		orgID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -262,7 +262,7 @@ func (r *RawClient) GetBasicOrganizationById(
 func (r *RawClient) GetOrganization(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.OrganizationQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
@@ -273,7 +273,7 @@ func (r *RawClient) GetOrganization(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Organization/read/%v",
-		orgId,
+		orgID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -307,7 +307,7 @@ func (r *RawClient) GetOrganization(
 func (r *RawClient) GetSettingsOrganization(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.SettingsQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
@@ -318,7 +318,7 @@ func (r *RawClient) GetSettingsOrganization(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Organization/settings/%v",
-		orgId,
+		orgID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),

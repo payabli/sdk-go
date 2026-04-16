@@ -36,12 +36,12 @@ func NewClient(options *core.RequestOptions) *Client {
 func (c *Client) DeleteTemplate(
 	ctx context.Context,
 	// The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
-	templateId float64,
+	templateID float64,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponseTemplateId, error) {
+) (*payabli.PayabliAPIResponseTemplateID, error) {
 	response, err := c.WithRawResponse.DeleteTemplate(
 		ctx,
-		templateId,
+		templateID,
 		opts...,
 	)
 	if err != nil {
@@ -54,14 +54,14 @@ func (c *Client) DeleteTemplate(
 func (c *Client) GetlinkTemplate(
 	ctx context.Context,
 	// The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
-	templateId float64,
+	templateID float64,
 	// Ignore read-only and empty fields Default is `false`. If `ignoreEmpty` = `false` and any field is empty, then the request returns a failure response. If `ignoreEmpty` = `true`, the request returns the boarding link name regardless of whether fields are empty.
 	ignoreEmpty bool,
 	opts ...option.RequestOption,
-) (*payabli.BoardingLinkApiResponse, error) {
+) (*payabli.BoardingLinkAPIResponse, error) {
 	response, err := c.WithRawResponse.GetlinkTemplate(
 		ctx,
-		templateId,
+		templateID,
 		ignoreEmpty,
 		opts...,
 	)
@@ -75,12 +75,12 @@ func (c *Client) GetlinkTemplate(
 func (c *Client) GetTemplate(
 	ctx context.Context,
 	// The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
-	templateId float64,
+	templateID float64,
 	opts ...option.RequestOption,
 ) (*payabli.TemplateQueryRecord, error) {
 	response, err := c.WithRawResponse.GetTemplate(
 		ctx,
-		templateId,
+		templateID,
 		opts...,
 	)
 	if err != nil {
@@ -93,13 +93,13 @@ func (c *Client) GetTemplate(
 func (c *Client) ListTemplates(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListTemplatesRequest,
 	opts ...option.RequestOption,
 ) (*payabli.TemplateQueryResponse, error) {
 	response, err := c.WithRawResponse.ListTemplates(
 		ctx,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)

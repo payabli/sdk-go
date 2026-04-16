@@ -35,14 +35,14 @@ func (g *GetEntryConfigRequest) SetEntrypages(entrypages *string) {
 }
 
 var (
-	getBasicEntryByIdResponseFieldIsSuccess      = big.NewInt(1 << 0)
-	getBasicEntryByIdResponseFieldPageIdentifier = big.NewInt(1 << 1)
-	getBasicEntryByIdResponseFieldResponseCode   = big.NewInt(1 << 2)
-	getBasicEntryByIdResponseFieldResponseData   = big.NewInt(1 << 3)
-	getBasicEntryByIdResponseFieldResponseText   = big.NewInt(1 << 4)
+	getBasicEntryByIDResponseFieldIsSuccess      = big.NewInt(1 << 0)
+	getBasicEntryByIDResponseFieldPageIdentifier = big.NewInt(1 << 1)
+	getBasicEntryByIDResponseFieldResponseCode   = big.NewInt(1 << 2)
+	getBasicEntryByIDResponseFieldResponseData   = big.NewInt(1 << 3)
+	getBasicEntryByIDResponseFieldResponseText   = big.NewInt(1 << 4)
 )
 
-type GetBasicEntryByIdResponse struct {
+type GetBasicEntryByIDResponse struct {
 	IsSuccess      IsSuccess            `json:"isSuccess" url:"isSuccess"`
 	PageIdentifier *PageIdentifier      `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 	ResponseCode   *Responsecode        `json:"responseCode,omitempty" url:"responseCode,omitempty"`
@@ -56,49 +56,49 @@ type GetBasicEntryByIdResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetBasicEntryByIdResponse) GetIsSuccess() IsSuccess {
+func (g *GetBasicEntryByIDResponse) GetIsSuccess() IsSuccess {
 	if g == nil {
 		return false
 	}
 	return g.IsSuccess
 }
 
-func (g *GetBasicEntryByIdResponse) GetPageIdentifier() *PageIdentifier {
+func (g *GetBasicEntryByIDResponse) GetPageIdentifier() *PageIdentifier {
 	if g == nil {
 		return nil
 	}
 	return g.PageIdentifier
 }
 
-func (g *GetBasicEntryByIdResponse) GetResponseCode() *Responsecode {
+func (g *GetBasicEntryByIDResponse) GetResponseCode() *Responsecode {
 	if g == nil {
 		return nil
 	}
 	return g.ResponseCode
 }
 
-func (g *GetBasicEntryByIdResponse) GetResponseData() *PaypointEntryConfig {
+func (g *GetBasicEntryByIDResponse) GetResponseData() *PaypointEntryConfig {
 	if g == nil {
 		return nil
 	}
 	return g.ResponseData
 }
 
-func (g *GetBasicEntryByIdResponse) GetResponseText() ResponseText {
+func (g *GetBasicEntryByIDResponse) GetResponseText() ResponseText {
 	if g == nil {
 		return ""
 	}
 	return g.ResponseText
 }
 
-func (g *GetBasicEntryByIdResponse) GetExtraProperties() map[string]interface{} {
+func (g *GetBasicEntryByIDResponse) GetExtraProperties() map[string]interface{} {
 	if g == nil {
 		return nil
 	}
 	return g.extraProperties
 }
 
-func (g *GetBasicEntryByIdResponse) require(field *big.Int) {
+func (g *GetBasicEntryByIDResponse) require(field *big.Int) {
 	if g.explicitFields == nil {
 		g.explicitFields = big.NewInt(0)
 	}
@@ -107,46 +107,46 @@ func (g *GetBasicEntryByIdResponse) require(field *big.Int) {
 
 // SetIsSuccess sets the IsSuccess field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetBasicEntryByIdResponse) SetIsSuccess(isSuccess IsSuccess) {
+func (g *GetBasicEntryByIDResponse) SetIsSuccess(isSuccess IsSuccess) {
 	g.IsSuccess = isSuccess
-	g.require(getBasicEntryByIdResponseFieldIsSuccess)
+	g.require(getBasicEntryByIDResponseFieldIsSuccess)
 }
 
 // SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetBasicEntryByIdResponse) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+func (g *GetBasicEntryByIDResponse) SetPageIdentifier(pageIdentifier *PageIdentifier) {
 	g.PageIdentifier = pageIdentifier
-	g.require(getBasicEntryByIdResponseFieldPageIdentifier)
+	g.require(getBasicEntryByIDResponseFieldPageIdentifier)
 }
 
 // SetResponseCode sets the ResponseCode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetBasicEntryByIdResponse) SetResponseCode(responseCode *Responsecode) {
+func (g *GetBasicEntryByIDResponse) SetResponseCode(responseCode *Responsecode) {
 	g.ResponseCode = responseCode
-	g.require(getBasicEntryByIdResponseFieldResponseCode)
+	g.require(getBasicEntryByIDResponseFieldResponseCode)
 }
 
 // SetResponseData sets the ResponseData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetBasicEntryByIdResponse) SetResponseData(responseData *PaypointEntryConfig) {
+func (g *GetBasicEntryByIDResponse) SetResponseData(responseData *PaypointEntryConfig) {
 	g.ResponseData = responseData
-	g.require(getBasicEntryByIdResponseFieldResponseData)
+	g.require(getBasicEntryByIDResponseFieldResponseData)
 }
 
 // SetResponseText sets the ResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetBasicEntryByIdResponse) SetResponseText(responseText ResponseText) {
+func (g *GetBasicEntryByIDResponse) SetResponseText(responseText ResponseText) {
 	g.ResponseText = responseText
-	g.require(getBasicEntryByIdResponseFieldResponseText)
+	g.require(getBasicEntryByIDResponseFieldResponseText)
 }
 
-func (g *GetBasicEntryByIdResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetBasicEntryByIdResponse
+func (g *GetBasicEntryByIDResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetBasicEntryByIDResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*g = GetBasicEntryByIdResponse(value)
+	*g = GetBasicEntryByIDResponse(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *g)
 	if err != nil {
 		return err
@@ -156,8 +156,8 @@ func (g *GetBasicEntryByIdResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (g *GetBasicEntryByIdResponse) MarshalJSON() ([]byte, error) {
-	type embed GetBasicEntryByIdResponse
+func (g *GetBasicEntryByIDResponse) MarshalJSON() ([]byte, error) {
+	type embed GetBasicEntryByIDResponse
 	var marshaler = struct {
 		embed
 	}{
@@ -167,7 +167,7 @@ func (g *GetBasicEntryByIdResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (g *GetBasicEntryByIdResponse) String() string {
+func (g *GetBasicEntryByIDResponse) String() string {
 	if g == nil {
 		return "<nil>"
 	}
@@ -595,13 +595,13 @@ func (m *MigratePaypointResponse) String() string {
 }
 
 var (
-	notificationRequestFieldNotificationUrl     = big.NewInt(1 << 0)
+	notificationRequestFieldNotificationURL     = big.NewInt(1 << 0)
 	notificationRequestFieldWebHeaderParameters = big.NewInt(1 << 1)
 )
 
 type NotificationRequest struct {
 	// Complete HTTP URL receiving the notification
-	NotificationUrl string `json:"notificationUrl" url:"notificationUrl"`
+	NotificationURL string `json:"notificationUrl" url:"notificationUrl"`
 	// A dictionary of key-value pairs to be inserted in the header when the notification request is submitted
 	WebHeaderParameters []*WebHeaderParameter `json:"webHeaderParameters,omitempty" url:"webHeaderParameters,omitempty"`
 
@@ -612,11 +612,11 @@ type NotificationRequest struct {
 	rawJSON         json.RawMessage
 }
 
-func (n *NotificationRequest) GetNotificationUrl() string {
+func (n *NotificationRequest) GetNotificationURL() string {
 	if n == nil {
 		return ""
 	}
-	return n.NotificationUrl
+	return n.NotificationURL
 }
 
 func (n *NotificationRequest) GetWebHeaderParameters() []*WebHeaderParameter {
@@ -640,11 +640,11 @@ func (n *NotificationRequest) require(field *big.Int) {
 	n.explicitFields.Or(n.explicitFields, field)
 }
 
-// SetNotificationUrl sets the NotificationUrl field and marks it as non-optional;
+// SetNotificationURL sets the NotificationURL field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotificationRequest) SetNotificationUrl(notificationUrl string) {
-	n.NotificationUrl = notificationUrl
-	n.require(notificationRequestFieldNotificationUrl)
+func (n *NotificationRequest) SetNotificationURL(notificationURL string) {
+	n.NotificationURL = notificationURL
+	n.require(notificationRequestFieldNotificationURL)
 }
 
 // SetWebHeaderParameters sets the WebHeaderParameters field and marks it as non-optional;
@@ -698,14 +698,14 @@ func (n *NotificationRequest) String() string {
 
 var (
 	paypointMoveRequestFieldEntryPoint              = big.NewInt(1 << 0)
-	paypointMoveRequestFieldNewParentOrganizationId = big.NewInt(1 << 1)
+	paypointMoveRequestFieldNewParentOrganizationID = big.NewInt(1 << 1)
 	paypointMoveRequestFieldNotificationRequest     = big.NewInt(1 << 2)
 )
 
 type PaypointMoveRequest struct {
 	EntryPoint Entrypointfield `json:"entryPoint" url:"entryPoint"`
 	// The ID for the paypoint's new parent organization.
-	NewParentOrganizationId int `json:"newParentOrganizationId" url:"newParentOrganizationId"`
+	NewParentOrganizationID int `json:"newParentOrganizationId" url:"newParentOrganizationId"`
 	// Optional notification request object for a webhook
 	NotificationRequest *NotificationRequest `json:"notificationRequest,omitempty" url:"notificationRequest,omitempty"`
 
@@ -723,11 +723,11 @@ func (p *PaypointMoveRequest) GetEntryPoint() Entrypointfield {
 	return p.EntryPoint
 }
 
-func (p *PaypointMoveRequest) GetNewParentOrganizationId() int {
+func (p *PaypointMoveRequest) GetNewParentOrganizationID() int {
 	if p == nil {
 		return 0
 	}
-	return p.NewParentOrganizationId
+	return p.NewParentOrganizationID
 }
 
 func (p *PaypointMoveRequest) GetNotificationRequest() *NotificationRequest {
@@ -758,11 +758,11 @@ func (p *PaypointMoveRequest) SetEntryPoint(entryPoint Entrypointfield) {
 	p.require(paypointMoveRequestFieldEntryPoint)
 }
 
-// SetNewParentOrganizationId sets the NewParentOrganizationId field and marks it as non-optional;
+// SetNewParentOrganizationID sets the NewParentOrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaypointMoveRequest) SetNewParentOrganizationId(newParentOrganizationId int) {
-	p.NewParentOrganizationId = newParentOrganizationId
-	p.require(paypointMoveRequestFieldNewParentOrganizationId)
+func (p *PaypointMoveRequest) SetNewParentOrganizationID(newParentOrganizationID int) {
+	p.NewParentOrganizationID = newParentOrganizationID
+	p.require(paypointMoveRequestFieldNewParentOrganizationID)
 }
 
 // SetNotificationRequest sets the NotificationRequest field and marks it as non-optional;

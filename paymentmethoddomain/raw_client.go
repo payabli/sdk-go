@@ -34,7 +34,7 @@ func (r *RawClient) AddPaymentMethodDomain(
 	ctx context.Context,
 	request *payabli.AddPaymentMethodDomainRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.AddPaymentMethodDomainApiResponse], error) {
+) (*core.Response[*payabli.AddPaymentMethodDomainAPIResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -47,7 +47,7 @@ func (r *RawClient) AddPaymentMethodDomain(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *payabli.AddPaymentMethodDomainApiResponse
+	var response *payabli.AddPaymentMethodDomainAPIResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -66,7 +66,7 @@ func (r *RawClient) AddPaymentMethodDomain(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.AddPaymentMethodDomainApiResponse]{
+	return &core.Response[*payabli.AddPaymentMethodDomainAPIResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -76,7 +76,7 @@ func (r *RawClient) AddPaymentMethodDomain(
 func (r *RawClient) CascadePaymentMethodDomain(
 	ctx context.Context,
 	// The payment method domain's ID in Payabli.
-	domainId string,
+	domainID string,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.PaymentMethodDomainGeneralResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -87,7 +87,7 @@ func (r *RawClient) CascadePaymentMethodDomain(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/PaymentMethodDomain/%v/cascade",
-		domainId,
+		domainID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -121,7 +121,7 @@ func (r *RawClient) CascadePaymentMethodDomain(
 func (r *RawClient) DeletePaymentMethodDomain(
 	ctx context.Context,
 	// The payment method domain's ID in Payabli.
-	domainId string,
+	domainID string,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.DeletePaymentMethodDomainResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -132,7 +132,7 @@ func (r *RawClient) DeletePaymentMethodDomain(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/PaymentMethodDomain/%v",
-		domainId,
+		domainID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -166,9 +166,9 @@ func (r *RawClient) DeletePaymentMethodDomain(
 func (r *RawClient) GetPaymentMethodDomain(
 	ctx context.Context,
 	// The payment method domain's ID in Payabli.
-	domainId string,
+	domainID string,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PaymentMethodDomainApiResponse], error) {
+) (*core.Response[*payabli.PaymentMethodDomainAPIResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -177,13 +177,13 @@ func (r *RawClient) GetPaymentMethodDomain(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/PaymentMethodDomain/%v",
-		domainId,
+		domainID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PaymentMethodDomainApiResponse
+	var response *payabli.PaymentMethodDomainAPIResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -201,7 +201,7 @@ func (r *RawClient) GetPaymentMethodDomain(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PaymentMethodDomainApiResponse]{
+	return &core.Response[*payabli.PaymentMethodDomainAPIResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -259,7 +259,7 @@ func (r *RawClient) ListPaymentMethodDomains(
 func (r *RawClient) UpdatePaymentMethodDomain(
 	ctx context.Context,
 	// The payment method domain's ID in Payabli.
-	domainId string,
+	domainID string,
 	request *payabli.UpdatePaymentMethodDomainRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.PaymentMethodDomainGeneralResponse], error) {
@@ -271,7 +271,7 @@ func (r *RawClient) UpdatePaymentMethodDomain(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/PaymentMethodDomain/%v",
-		domainId,
+		domainID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -307,7 +307,7 @@ func (r *RawClient) UpdatePaymentMethodDomain(
 func (r *RawClient) VerifyPaymentMethodDomain(
 	ctx context.Context,
 	// The payment method domain's ID in Payabli.
-	domainId string,
+	domainID string,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.PaymentMethodDomainGeneralResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -318,7 +318,7 @@ func (r *RawClient) VerifyPaymentMethodDomain(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/PaymentMethodDomain/%v/verify",
-		domainId,
+		domainID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),

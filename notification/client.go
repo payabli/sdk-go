@@ -37,7 +37,7 @@ func (c *Client) AddNotification(
 	ctx context.Context,
 	request *payabli.AddNotificationRequest,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponseNotifications, error) {
+) (*payabli.PayabliAPIResponseNotifications, error) {
 	response, err := c.WithRawResponse.AddNotification(
 		ctx,
 		request,
@@ -53,12 +53,12 @@ func (c *Client) AddNotification(
 func (c *Client) DeleteNotification(
 	ctx context.Context,
 	// Notification ID.
-	nId string,
+	nID string,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponseNotifications, error) {
+) (*payabli.PayabliAPIResponseNotifications, error) {
 	response, err := c.WithRawResponse.DeleteNotification(
 		ctx,
-		nId,
+		nID,
 		opts...,
 	)
 	if err != nil {
@@ -71,12 +71,12 @@ func (c *Client) DeleteNotification(
 func (c *Client) GetNotification(
 	ctx context.Context,
 	// Notification ID.
-	nId string,
+	nID string,
 	opts ...option.RequestOption,
 ) (*payabli.NotificationQueryRecord, error) {
 	response, err := c.WithRawResponse.GetNotification(
 		ctx,
-		nId,
+		nID,
 		opts...,
 	)
 	if err != nil {
@@ -89,13 +89,13 @@ func (c *Client) GetNotification(
 func (c *Client) UpdateNotification(
 	ctx context.Context,
 	// Notification ID.
-	nId string,
+	nID string,
 	request *payabli.UpdateNotificationRequest,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponseNotifications, error) {
+) (*payabli.PayabliAPIResponseNotifications, error) {
 	response, err := c.WithRawResponse.UpdateNotification(
 		ctx,
-		nId,
+		nID,
 		request,
 		opts...,
 	)

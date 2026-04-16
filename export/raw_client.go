@@ -35,7 +35,7 @@ func (r *RawClient) ExportApplications(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportApplicationsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -48,7 +48,7 @@ func (r *RawClient) ExportApplications(
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/boarding/%v/%v",
 		format,
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -147,7 +147,7 @@ func (r *RawClient) ExportBatchDetailsOrg(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportBatchDetailsOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -160,7 +160,7 @@ func (r *RawClient) ExportBatchDetailsOrg(
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/batchDetails/%v/org/%v",
 		format,
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -259,7 +259,7 @@ func (r *RawClient) ExportBatchesOrg(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportBatchesOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -272,7 +272,7 @@ func (r *RawClient) ExportBatchesOrg(
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/batches/%v/org/%v",
 		format,
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -371,7 +371,7 @@ func (r *RawClient) ExportBatchesOutOrg(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportBatchesOutOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -384,7 +384,7 @@ func (r *RawClient) ExportBatchesOutOrg(
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/batchesOut/%v/org/%v",
 		format,
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -483,7 +483,7 @@ func (r *RawClient) ExportBillsOrg(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportBillsOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -496,7 +496,7 @@ func (r *RawClient) ExportBillsOrg(
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/bills/%v/org/%v",
 		format,
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -595,7 +595,7 @@ func (r *RawClient) ExportChargebacksOrg(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportChargebacksOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -608,7 +608,7 @@ func (r *RawClient) ExportChargebacksOrg(
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/chargebacks/%v/org/%v",
 		format,
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -707,7 +707,7 @@ func (r *RawClient) ExportCustomersOrg(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportCustomersOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -720,7 +720,7 @@ func (r *RawClient) ExportCustomersOrg(
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/customers/%v/org/%v",
 		format,
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -819,7 +819,7 @@ func (r *RawClient) ExportInvoicesOrg(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportInvoicesOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -832,7 +832,7 @@ func (r *RawClient) ExportInvoicesOrg(
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/invoices/%v/org/%v",
 		format,
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -875,7 +875,7 @@ func (r *RawClient) ExportOrganizations(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportOrganizationsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -888,7 +888,7 @@ func (r *RawClient) ExportOrganizations(
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/organizations/%v/org/%v",
 		format,
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -987,7 +987,7 @@ func (r *RawClient) ExportPayoutOrg(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportPayoutOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -1000,7 +1000,7 @@ func (r *RawClient) ExportPayoutOrg(
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/payouts/%v/org/%v",
 		format,
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1043,7 +1043,7 @@ func (r *RawClient) ExportPaypoints(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportPaypointsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -1056,7 +1056,7 @@ func (r *RawClient) ExportPaypoints(
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/paypoints/%v/%v",
 		format,
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1155,7 +1155,7 @@ func (r *RawClient) ExportSettlementsOrg(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportSettlementsOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -1168,7 +1168,7 @@ func (r *RawClient) ExportSettlementsOrg(
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/settlements/%v/org/%v",
 		format,
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1267,7 +1267,7 @@ func (r *RawClient) ExportSubscriptionsOrg(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportSubscriptionsOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -1280,7 +1280,7 @@ func (r *RawClient) ExportSubscriptionsOrg(
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/subscriptions/%v/org/%v",
 		format,
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1379,7 +1379,7 @@ func (r *RawClient) ExportTransactionsOrg(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportTransactionsOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -1392,7 +1392,7 @@ func (r *RawClient) ExportTransactionsOrg(
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/transactions/%v/org/%v",
 		format,
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1437,7 +1437,7 @@ func (r *RawClient) ExportTransferDetails(
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Transfer identifier.
-	transferId int64,
+	transferID int64,
 	request *payabli.ExportTransferDetailsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -1451,7 +1451,7 @@ func (r *RawClient) ExportTransferDetails(
 		baseURL+"/Export/transferDetails/%v/%v/%v",
 		format,
 		entry,
-		transferId,
+		transferID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1603,7 +1603,7 @@ func (r *RawClient) ExportVendorsOrg(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportVendorsOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[payabli.File], error) {
@@ -1616,7 +1616,7 @@ func (r *RawClient) ExportVendorsOrg(
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Export/vendors/%v/org/%v",
 		format,
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {

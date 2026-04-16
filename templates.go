@@ -793,7 +793,7 @@ var (
 	achServiceFieldDiscountFrequency     = big.NewInt(1 << 9)
 	achServiceFieldFundingRollup         = big.NewInt(1 << 10)
 	achServiceFieldGateway               = big.NewInt(1 << 11)
-	achServiceFieldPdfTemplateId         = big.NewInt(1 << 12)
+	achServiceFieldPdfTemplateID         = big.NewInt(1 << 12)
 	achServiceFieldPricingPlan           = big.NewInt(1 << 13)
 	achServiceFieldPricingType           = big.NewInt(1 << 14)
 	achServiceFieldProcessor             = big.NewInt(1 << 15)
@@ -816,7 +816,7 @@ type AchService struct {
 	DiscountFrequency *TemplateElement `json:"discountFrequency,omitempty" url:"discountFrequency,omitempty"`
 	FundingRollup     *TemplateElement `json:"fundingRollup,omitempty" url:"fundingRollup,omitempty"`
 	Gateway           *TemplateElement `json:"gateway,omitempty" url:"gateway,omitempty"`
-	PdfTemplateId     *TemplateElement `json:"pdfTemplateId,omitempty" url:"pdfTemplateId,omitempty"`
+	PdfTemplateID     *TemplateElement `json:"pdfTemplateId,omitempty" url:"pdfTemplateId,omitempty"`
 	PricingPlan       *int64           `json:"pricingPlan,omitempty" url:"pricingPlan,omitempty"`
 	PricingType       *TemplateElement `json:"pricingType,omitempty" url:"pricingType,omitempty"`
 	Processor         *TemplateElement `json:"processor,omitempty" url:"processor,omitempty"`
@@ -915,11 +915,11 @@ func (a *AchService) GetGateway() *TemplateElement {
 	return a.Gateway
 }
 
-func (a *AchService) GetPdfTemplateId() *TemplateElement {
+func (a *AchService) GetPdfTemplateID() *TemplateElement {
 	if a == nil {
 		return nil
 	}
-	return a.PdfTemplateId
+	return a.PdfTemplateID
 }
 
 func (a *AchService) GetPricingPlan() *int64 {
@@ -1062,11 +1062,11 @@ func (a *AchService) SetGateway(gateway *TemplateElement) {
 	a.require(achServiceFieldGateway)
 }
 
-// SetPdfTemplateId sets the PdfTemplateId field and marks it as non-optional;
+// SetPdfTemplateID sets the PdfTemplateID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AchService) SetPdfTemplateId(pdfTemplateId *TemplateElement) {
-	a.PdfTemplateId = pdfTemplateId
-	a.require(achServiceFieldPdfTemplateId)
+func (a *AchService) SetPdfTemplateID(pdfTemplateID *TemplateElement) {
+	a.PdfTemplateID = pdfTemplateID
+	a.require(achServiceFieldPdfTemplateID)
 }
 
 // SetPricingPlan sets the PricingPlan field and marks it as non-optional;
@@ -1767,11 +1767,11 @@ func (b *BasicTemplateElement) String() string {
 }
 
 var (
-	boardingLinkApiResponseFieldResponseData = big.NewInt(1 << 0)
-	boardingLinkApiResponseFieldResponseText = big.NewInt(1 << 1)
+	boardingLinkAPIResponseFieldResponseData = big.NewInt(1 << 0)
+	boardingLinkAPIResponseFieldResponseText = big.NewInt(1 << 1)
 )
 
-type BoardingLinkApiResponse struct {
+type BoardingLinkAPIResponse struct {
 	// Reference name for boarding link (if responseText = Success) or
 	// List of empty fields separated by comma (if responseText = Fail)
 	ResponseData *string      `json:"responseData,omitempty" url:"responseData,omitempty"`
@@ -1784,28 +1784,28 @@ type BoardingLinkApiResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (b *BoardingLinkApiResponse) GetResponseData() *string {
+func (b *BoardingLinkAPIResponse) GetResponseData() *string {
 	if b == nil {
 		return nil
 	}
 	return b.ResponseData
 }
 
-func (b *BoardingLinkApiResponse) GetResponseText() ResponseText {
+func (b *BoardingLinkAPIResponse) GetResponseText() ResponseText {
 	if b == nil {
 		return ""
 	}
 	return b.ResponseText
 }
 
-func (b *BoardingLinkApiResponse) GetExtraProperties() map[string]interface{} {
+func (b *BoardingLinkAPIResponse) GetExtraProperties() map[string]interface{} {
 	if b == nil {
 		return nil
 	}
 	return b.extraProperties
 }
 
-func (b *BoardingLinkApiResponse) require(field *big.Int) {
+func (b *BoardingLinkAPIResponse) require(field *big.Int) {
 	if b.explicitFields == nil {
 		b.explicitFields = big.NewInt(0)
 	}
@@ -1814,25 +1814,25 @@ func (b *BoardingLinkApiResponse) require(field *big.Int) {
 
 // SetResponseData sets the ResponseData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BoardingLinkApiResponse) SetResponseData(responseData *string) {
+func (b *BoardingLinkAPIResponse) SetResponseData(responseData *string) {
 	b.ResponseData = responseData
-	b.require(boardingLinkApiResponseFieldResponseData)
+	b.require(boardingLinkAPIResponseFieldResponseData)
 }
 
 // SetResponseText sets the ResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BoardingLinkApiResponse) SetResponseText(responseText ResponseText) {
+func (b *BoardingLinkAPIResponse) SetResponseText(responseText ResponseText) {
 	b.ResponseText = responseText
-	b.require(boardingLinkApiResponseFieldResponseText)
+	b.require(boardingLinkAPIResponseFieldResponseText)
 }
 
-func (b *BoardingLinkApiResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler BoardingLinkApiResponse
+func (b *BoardingLinkAPIResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler BoardingLinkAPIResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*b = BoardingLinkApiResponse(value)
+	*b = BoardingLinkAPIResponse(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *b)
 	if err != nil {
 		return err
@@ -1842,8 +1842,8 @@ func (b *BoardingLinkApiResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (b *BoardingLinkApiResponse) MarshalJSON() ([]byte, error) {
-	type embed BoardingLinkApiResponse
+func (b *BoardingLinkAPIResponse) MarshalJSON() ([]byte, error) {
+	type embed BoardingLinkAPIResponse
 	var marshaler = struct {
 		embed
 	}{
@@ -1853,7 +1853,7 @@ func (b *BoardingLinkApiResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (b *BoardingLinkApiResponse) String() string {
+func (b *BoardingLinkAPIResponse) String() string {
 	if b == nil {
 		return "<nil>"
 	}
@@ -1872,11 +1872,11 @@ var (
 	boardingQueryLinksFieldAcceptOauth         = big.NewInt(1 << 0)
 	boardingQueryLinksFieldAcceptRegister      = big.NewInt(1 << 1)
 	boardingQueryLinksFieldEntryAttributes     = big.NewInt(1 << 2)
-	boardingQueryLinksFieldId                  = big.NewInt(1 << 3)
+	boardingQueryLinksFieldID                  = big.NewInt(1 << 3)
 	boardingQueryLinksFieldLastUpdated         = big.NewInt(1 << 4)
 	boardingQueryLinksFieldOrgParentName       = big.NewInt(1 << 5)
 	boardingQueryLinksFieldReferenceName       = big.NewInt(1 << 6)
-	boardingQueryLinksFieldReferenceTemplateId = big.NewInt(1 << 7)
+	boardingQueryLinksFieldReferenceTemplateID = big.NewInt(1 << 7)
 	boardingQueryLinksFieldTemplateCode        = big.NewInt(1 << 8)
 	boardingQueryLinksFieldTemplateName        = big.NewInt(1 << 9)
 )
@@ -1885,11 +1885,11 @@ type BoardingQueryLinks struct {
 	AcceptOauth         *AcceptOauth         `json:"acceptOauth,omitempty" url:"acceptOauth,omitempty"`
 	AcceptRegister      *AcceptRegister      `json:"acceptRegister,omitempty" url:"acceptRegister,omitempty"`
 	EntryAttributes     *EntryAttributes     `json:"entryAttributes,omitempty" url:"entryAttributes,omitempty"`
-	Id                  *BoardingLinkId      `json:"id,omitempty" url:"id,omitempty"`
+	ID                  *BoardingLinkID      `json:"id,omitempty" url:"id,omitempty"`
 	LastUpdated         *LastModified        `json:"lastUpdated,omitempty" url:"lastUpdated,omitempty"`
 	OrgParentName       *OrgParentName       `json:"orgParentName,omitempty" url:"orgParentName,omitempty"`
 	ReferenceName       *ReferenceName       `json:"referenceName,omitempty" url:"referenceName,omitempty"`
-	ReferenceTemplateId *ReferenceTemplateId `json:"referenceTemplateId,omitempty" url:"referenceTemplateId,omitempty"`
+	ReferenceTemplateID *ReferenceTemplateID `json:"referenceTemplateId,omitempty" url:"referenceTemplateId,omitempty"`
 	TemplateCode        *TemplateCode        `json:"templateCode,omitempty" url:"templateCode,omitempty"`
 	TemplateName        *TemplateName        `json:"templateName,omitempty" url:"templateName,omitempty"`
 
@@ -1921,11 +1921,11 @@ func (b *BoardingQueryLinks) GetEntryAttributes() *EntryAttributes {
 	return b.EntryAttributes
 }
 
-func (b *BoardingQueryLinks) GetId() *BoardingLinkId {
+func (b *BoardingQueryLinks) GetID() *BoardingLinkID {
 	if b == nil {
 		return nil
 	}
-	return b.Id
+	return b.ID
 }
 
 func (b *BoardingQueryLinks) GetLastUpdated() *LastModified {
@@ -1949,11 +1949,11 @@ func (b *BoardingQueryLinks) GetReferenceName() *ReferenceName {
 	return b.ReferenceName
 }
 
-func (b *BoardingQueryLinks) GetReferenceTemplateId() *ReferenceTemplateId {
+func (b *BoardingQueryLinks) GetReferenceTemplateID() *ReferenceTemplateID {
 	if b == nil {
 		return nil
 	}
-	return b.ReferenceTemplateId
+	return b.ReferenceTemplateID
 }
 
 func (b *BoardingQueryLinks) GetTemplateCode() *TemplateCode {
@@ -2005,11 +2005,11 @@ func (b *BoardingQueryLinks) SetEntryAttributes(entryAttributes *EntryAttributes
 	b.require(boardingQueryLinksFieldEntryAttributes)
 }
 
-// SetId sets the Id field and marks it as non-optional;
+// SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BoardingQueryLinks) SetId(id *BoardingLinkId) {
-	b.Id = id
-	b.require(boardingQueryLinksFieldId)
+func (b *BoardingQueryLinks) SetID(id *BoardingLinkID) {
+	b.ID = id
+	b.require(boardingQueryLinksFieldID)
 }
 
 // SetLastUpdated sets the LastUpdated field and marks it as non-optional;
@@ -2033,11 +2033,11 @@ func (b *BoardingQueryLinks) SetReferenceName(referenceName *ReferenceName) {
 	b.require(boardingQueryLinksFieldReferenceName)
 }
 
-// SetReferenceTemplateId sets the ReferenceTemplateId field and marks it as non-optional;
+// SetReferenceTemplateID sets the ReferenceTemplateID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BoardingQueryLinks) SetReferenceTemplateId(referenceTemplateId *ReferenceTemplateId) {
-	b.ReferenceTemplateId = referenceTemplateId
-	b.require(boardingQueryLinksFieldReferenceTemplateId)
+func (b *BoardingQueryLinks) SetReferenceTemplateID(referenceTemplateID *ReferenceTemplateID) {
+	b.ReferenceTemplateID = referenceTemplateID
+	b.require(boardingQueryLinksFieldReferenceTemplateID)
 }
 
 // SetTemplateCode sets the TemplateCode field and marks it as non-optional;
@@ -3338,7 +3338,7 @@ var (
 	cardServiceFieldFundingRollup                   = big.NewInt(1 << 21)
 	cardServiceFieldGateway                         = big.NewInt(1 << 22)
 	cardServiceFieldPassThroughCost                 = big.NewInt(1 << 23)
-	cardServiceFieldPdfTemplateId                   = big.NewInt(1 << 24)
+	cardServiceFieldPdfTemplateID                   = big.NewInt(1 << 24)
 	cardServiceFieldPricingPlan                     = big.NewInt(1 << 25)
 	cardServiceFieldPricingType                     = big.NewInt(1 << 26)
 	cardServiceFieldProcessor                       = big.NewInt(1 << 27)
@@ -3373,7 +3373,7 @@ type CardService struct {
 	FundingRollup                   *TemplateElement        `json:"fundingRollup,omitempty" url:"fundingRollup,omitempty"`
 	Gateway                         *TemplateElement        `json:"gateway,omitempty" url:"gateway,omitempty"`
 	PassThroughCost                 *TemplateElement        `json:"passThroughCost,omitempty" url:"passThroughCost,omitempty"`
-	PdfTemplateId                   *TemplateElement        `json:"pdfTemplateId,omitempty" url:"pdfTemplateId,omitempty"`
+	PdfTemplateID                   *TemplateElement        `json:"pdfTemplateId,omitempty" url:"pdfTemplateId,omitempty"`
 	PricingPlan                     *int64                  `json:"pricingPlan,omitempty" url:"pricingPlan,omitempty"`
 	PricingType                     *TemplateElement        `json:"pricingType,omitempty" url:"pricingType,omitempty"`
 	Processor                       *TemplateElement        `json:"processor,omitempty" url:"processor,omitempty"`
@@ -3556,11 +3556,11 @@ func (c *CardService) GetPassThroughCost() *TemplateElement {
 	return c.PassThroughCost
 }
 
-func (c *CardService) GetPdfTemplateId() *TemplateElement {
+func (c *CardService) GetPdfTemplateID() *TemplateElement {
 	if c == nil {
 		return nil
 	}
-	return c.PdfTemplateId
+	return c.PdfTemplateID
 }
 
 func (c *CardService) GetPricingPlan() *int64 {
@@ -3787,11 +3787,11 @@ func (c *CardService) SetPassThroughCost(passThroughCost *TemplateElement) {
 	c.require(cardServiceFieldPassThroughCost)
 }
 
-// SetPdfTemplateId sets the PdfTemplateId field and marks it as non-optional;
+// SetPdfTemplateID sets the PdfTemplateID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CardService) SetPdfTemplateId(pdfTemplateId *TemplateElement) {
-	c.PdfTemplateId = pdfTemplateId
-	c.require(cardServiceFieldPdfTemplateId)
+func (c *CardService) SetPdfTemplateID(pdfTemplateID *TemplateElement) {
+	c.PdfTemplateID = pdfTemplateID
+	c.require(cardServiceFieldPdfTemplateID)
 }
 
 // SetPricingPlan sets the PricingPlan field and marks it as non-optional;
@@ -5192,14 +5192,14 @@ func (o *OwnersSection) String() string {
 }
 
 var (
-	payabliApiResponseTemplateIdFieldIsSuccess      = big.NewInt(1 << 0)
-	payabliApiResponseTemplateIdFieldPageIdentifier = big.NewInt(1 << 1)
-	payabliApiResponseTemplateIdFieldResponseCode   = big.NewInt(1 << 2)
-	payabliApiResponseTemplateIdFieldResponseData   = big.NewInt(1 << 3)
-	payabliApiResponseTemplateIdFieldResponseText   = big.NewInt(1 << 4)
+	payabliAPIResponseTemplateIDFieldIsSuccess      = big.NewInt(1 << 0)
+	payabliAPIResponseTemplateIDFieldPageIdentifier = big.NewInt(1 << 1)
+	payabliAPIResponseTemplateIDFieldResponseCode   = big.NewInt(1 << 2)
+	payabliAPIResponseTemplateIDFieldResponseData   = big.NewInt(1 << 3)
+	payabliAPIResponseTemplateIDFieldResponseText   = big.NewInt(1 << 4)
 )
 
-type PayabliApiResponseTemplateId struct {
+type PayabliAPIResponseTemplateID struct {
 	IsSuccess      *IsSuccess      `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	PageIdentifier *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 	ResponseCode   *Responsecode   `json:"responseCode,omitempty" url:"responseCode,omitempty"`
@@ -5214,49 +5214,49 @@ type PayabliApiResponseTemplateId struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PayabliApiResponseTemplateId) GetIsSuccess() *IsSuccess {
+func (p *PayabliAPIResponseTemplateID) GetIsSuccess() *IsSuccess {
 	if p == nil {
 		return nil
 	}
 	return p.IsSuccess
 }
 
-func (p *PayabliApiResponseTemplateId) GetPageIdentifier() *PageIdentifier {
+func (p *PayabliAPIResponseTemplateID) GetPageIdentifier() *PageIdentifier {
 	if p == nil {
 		return nil
 	}
 	return p.PageIdentifier
 }
 
-func (p *PayabliApiResponseTemplateId) GetResponseCode() *Responsecode {
+func (p *PayabliAPIResponseTemplateID) GetResponseCode() *Responsecode {
 	if p == nil {
 		return nil
 	}
 	return p.ResponseCode
 }
 
-func (p *PayabliApiResponseTemplateId) GetResponseData() *Responsedatanonobject {
+func (p *PayabliAPIResponseTemplateID) GetResponseData() *Responsedatanonobject {
 	if p == nil {
 		return nil
 	}
 	return p.ResponseData
 }
 
-func (p *PayabliApiResponseTemplateId) GetResponseText() ResponseText {
+func (p *PayabliAPIResponseTemplateID) GetResponseText() ResponseText {
 	if p == nil {
 		return ""
 	}
 	return p.ResponseText
 }
 
-func (p *PayabliApiResponseTemplateId) GetExtraProperties() map[string]interface{} {
+func (p *PayabliAPIResponseTemplateID) GetExtraProperties() map[string]interface{} {
 	if p == nil {
 		return nil
 	}
 	return p.extraProperties
 }
 
-func (p *PayabliApiResponseTemplateId) require(field *big.Int) {
+func (p *PayabliAPIResponseTemplateID) require(field *big.Int) {
 	if p.explicitFields == nil {
 		p.explicitFields = big.NewInt(0)
 	}
@@ -5265,46 +5265,46 @@ func (p *PayabliApiResponseTemplateId) require(field *big.Int) {
 
 // SetIsSuccess sets the IsSuccess field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseTemplateId) SetIsSuccess(isSuccess *IsSuccess) {
+func (p *PayabliAPIResponseTemplateID) SetIsSuccess(isSuccess *IsSuccess) {
 	p.IsSuccess = isSuccess
-	p.require(payabliApiResponseTemplateIdFieldIsSuccess)
+	p.require(payabliAPIResponseTemplateIDFieldIsSuccess)
 }
 
 // SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseTemplateId) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+func (p *PayabliAPIResponseTemplateID) SetPageIdentifier(pageIdentifier *PageIdentifier) {
 	p.PageIdentifier = pageIdentifier
-	p.require(payabliApiResponseTemplateIdFieldPageIdentifier)
+	p.require(payabliAPIResponseTemplateIDFieldPageIdentifier)
 }
 
 // SetResponseCode sets the ResponseCode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseTemplateId) SetResponseCode(responseCode *Responsecode) {
+func (p *PayabliAPIResponseTemplateID) SetResponseCode(responseCode *Responsecode) {
 	p.ResponseCode = responseCode
-	p.require(payabliApiResponseTemplateIdFieldResponseCode)
+	p.require(payabliAPIResponseTemplateIDFieldResponseCode)
 }
 
 // SetResponseData sets the ResponseData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseTemplateId) SetResponseData(responseData *Responsedatanonobject) {
+func (p *PayabliAPIResponseTemplateID) SetResponseData(responseData *Responsedatanonobject) {
 	p.ResponseData = responseData
-	p.require(payabliApiResponseTemplateIdFieldResponseData)
+	p.require(payabliAPIResponseTemplateIDFieldResponseData)
 }
 
 // SetResponseText sets the ResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseTemplateId) SetResponseText(responseText ResponseText) {
+func (p *PayabliAPIResponseTemplateID) SetResponseText(responseText ResponseText) {
 	p.ResponseText = responseText
-	p.require(payabliApiResponseTemplateIdFieldResponseText)
+	p.require(payabliAPIResponseTemplateIDFieldResponseText)
 }
 
-func (p *PayabliApiResponseTemplateId) UnmarshalJSON(data []byte) error {
-	type unmarshaler PayabliApiResponseTemplateId
+func (p *PayabliAPIResponseTemplateID) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayabliAPIResponseTemplateID
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PayabliApiResponseTemplateId(value)
+	*p = PayabliAPIResponseTemplateID(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *p)
 	if err != nil {
 		return err
@@ -5314,8 +5314,8 @@ func (p *PayabliApiResponseTemplateId) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (p *PayabliApiResponseTemplateId) MarshalJSON() ([]byte, error) {
-	type embed PayabliApiResponseTemplateId
+func (p *PayabliAPIResponseTemplateID) MarshalJSON() ([]byte, error) {
+	type embed PayabliAPIResponseTemplateID
 	var marshaler = struct {
 		embed
 	}{
@@ -5325,7 +5325,7 @@ func (p *PayabliApiResponseTemplateId) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PayabliApiResponseTemplateId) String() string {
+func (p *PayabliAPIResponseTemplateID) String() string {
 	if p == nil {
 		return "<nil>"
 	}
@@ -5341,7 +5341,7 @@ func (p *PayabliApiResponseTemplateId) String() string {
 }
 
 // Used to identify the risk workflow used to review this account. Policy IDs must be created before using automatic underwriting, and is **required** when `method` is `automatic`.
-type PolicyId = string
+type PolicyID = string
 
 // The element's column position.
 type PosCol = int
@@ -6846,7 +6846,7 @@ var (
 	templateQueryRecordFieldAddPrice                   = big.NewInt(1 << 0)
 	templateQueryRecordFieldBoardingLinks              = big.NewInt(1 << 1)
 	templateQueryRecordFieldCreatedAt                  = big.NewInt(1 << 2)
-	templateQueryRecordFieldIdTemplate                 = big.NewInt(1 << 3)
+	templateQueryRecordFieldIDTemplate                 = big.NewInt(1 << 3)
 	templateQueryRecordFieldIsRoot                     = big.NewInt(1 << 4)
 	templateQueryRecordFieldOrgParentName              = big.NewInt(1 << 5)
 	templateQueryRecordFieldRecipientEmailNotification = big.NewInt(1 << 6)
@@ -6862,7 +6862,7 @@ type TemplateQueryRecord struct {
 	AddPrice                   *bool                       `json:"addPrice,omitempty" url:"addPrice,omitempty"`
 	BoardingLinks              []*BoardingQueryLinks       `json:"boardingLinks,omitempty" url:"boardingLinks,omitempty"`
 	CreatedAt                  *CreatedAt                  `json:"createdAt,omitempty" url:"createdAt,omitempty"`
-	IdTemplate                 *int64                      `json:"idTemplate,omitempty" url:"idTemplate,omitempty"`
+	IDTemplate                 *int64                      `json:"idTemplate,omitempty" url:"idTemplate,omitempty"`
 	IsRoot                     *IsRoot                     `json:"isRoot,omitempty" url:"isRoot,omitempty"`
 	OrgParentName              *OrgParentName              `json:"orgParentName,omitempty" url:"orgParentName,omitempty"`
 	RecipientEmailNotification *RecipientEmailNotification `json:"recipientEmailNotification,omitempty" url:"recipientEmailNotification,omitempty"`
@@ -6901,11 +6901,11 @@ func (t *TemplateQueryRecord) GetCreatedAt() *CreatedAt {
 	return t.CreatedAt
 }
 
-func (t *TemplateQueryRecord) GetIdTemplate() *int64 {
+func (t *TemplateQueryRecord) GetIDTemplate() *int64 {
 	if t == nil {
 		return nil
 	}
-	return t.IdTemplate
+	return t.IDTemplate
 }
 
 func (t *TemplateQueryRecord) GetIsRoot() *IsRoot {
@@ -7006,11 +7006,11 @@ func (t *TemplateQueryRecord) SetCreatedAt(createdAt *CreatedAt) {
 	t.require(templateQueryRecordFieldCreatedAt)
 }
 
-// SetIdTemplate sets the IdTemplate field and marks it as non-optional;
+// SetIDTemplate sets the IDTemplate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TemplateQueryRecord) SetIdTemplate(idTemplate *int64) {
-	t.IdTemplate = idTemplate
-	t.require(templateQueryRecordFieldIdTemplate)
+func (t *TemplateQueryRecord) SetIDTemplate(idTemplate *int64) {
+	t.IDTemplate = idTemplate
+	t.require(templateQueryRecordFieldIDTemplate)
 }
 
 // SetIsRoot sets the IsRoot field and marks it as non-optional;
@@ -7554,12 +7554,12 @@ func (u UnderWritingMethod) Ptr() *UnderWritingMethod {
 // Underwriting data is used to manage risk orchestration in the boarding application lifecycle.
 var (
 	underwritingDataResponseFieldMethod   = big.NewInt(1 << 0)
-	underwritingDataResponseFieldPolicyId = big.NewInt(1 << 1)
+	underwritingDataResponseFieldPolicyID = big.NewInt(1 << 1)
 )
 
 type UnderwritingDataResponse struct {
 	Method   *UnderWritingMethod `json:"method,omitempty" url:"method,omitempty"`
-	PolicyId *PolicyId           `json:"policyId,omitempty" url:"policyId,omitempty"`
+	PolicyID *PolicyID           `json:"policyId,omitempty" url:"policyId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -7575,11 +7575,11 @@ func (u *UnderwritingDataResponse) GetMethod() *UnderWritingMethod {
 	return u.Method
 }
 
-func (u *UnderwritingDataResponse) GetPolicyId() *PolicyId {
+func (u *UnderwritingDataResponse) GetPolicyID() *PolicyID {
 	if u == nil {
 		return nil
 	}
-	return u.PolicyId
+	return u.PolicyID
 }
 
 func (u *UnderwritingDataResponse) GetExtraProperties() map[string]interface{} {
@@ -7603,11 +7603,11 @@ func (u *UnderwritingDataResponse) SetMethod(method *UnderWritingMethod) {
 	u.require(underwritingDataResponseFieldMethod)
 }
 
-// SetPolicyId sets the PolicyId field and marks it as non-optional;
+// SetPolicyID sets the PolicyID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UnderwritingDataResponse) SetPolicyId(policyId *PolicyId) {
-	u.PolicyId = policyId
-	u.require(underwritingDataResponseFieldPolicyId)
+func (u *UnderwritingDataResponse) SetPolicyID(policyID *PolicyID) {
+	u.PolicyID = policyID
+	u.require(underwritingDataResponseFieldPolicyID)
 }
 
 func (u *UnderwritingDataResponse) UnmarshalJSON(data []byte) error {

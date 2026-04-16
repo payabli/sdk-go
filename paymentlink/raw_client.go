@@ -36,7 +36,7 @@ func (r *RawClient) AddPayLinkFromInvoice(
 	idInvoice int,
 	request *payabli.PayLinkDataInvoice,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponsePaymentLinks], error) {
+) (*core.Response[*payabli.PayabliAPIResponsePaymentLinks], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -62,7 +62,7 @@ func (r *RawClient) AddPayLinkFromInvoice(
 		headers.Add("idempotencyKey", *request.IdempotencyKey)
 	}
 	headers.Add("Content-Type", "application/json")
-	var response *payabli.PayabliApiResponsePaymentLinks
+	var response *payabli.PayabliAPIResponsePaymentLinks
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -81,7 +81,7 @@ func (r *RawClient) AddPayLinkFromInvoice(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponsePaymentLinks]{
+	return &core.Response[*payabli.PayabliAPIResponsePaymentLinks]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -91,10 +91,10 @@ func (r *RawClient) AddPayLinkFromInvoice(
 func (r *RawClient) AddPayLinkFromBill(
 	ctx context.Context,
 	// The Payabli ID for the bill.
-	billId int,
+	billID int,
 	request *payabli.PayLinkDataBill,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponsePaymentLinks], error) {
+) (*core.Response[*payabli.PayabliAPIResponsePaymentLinks], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -103,7 +103,7 @@ func (r *RawClient) AddPayLinkFromBill(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/PaymentLink/bill/%v",
-		billId,
+		billID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -120,7 +120,7 @@ func (r *RawClient) AddPayLinkFromBill(
 		headers.Add("idempotencyKey", *request.IdempotencyKey)
 	}
 	headers.Add("Content-Type", "application/json")
-	var response *payabli.PayabliApiResponsePaymentLinks
+	var response *payabli.PayabliAPIResponsePaymentLinks
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -139,19 +139,19 @@ func (r *RawClient) AddPayLinkFromBill(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponsePaymentLinks]{
+	return &core.Response[*payabli.PayabliAPIResponsePaymentLinks]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) DeletePayLinkFromId(
+func (r *RawClient) DeletePayLinkFromID(
 	ctx context.Context,
 	// ID for the payment link.
-	payLinkId string,
+	payLinkID string,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponsePaymentLinks], error) {
+) (*core.Response[*payabli.PayabliAPIResponsePaymentLinks], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -160,13 +160,13 @@ func (r *RawClient) DeletePayLinkFromId(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/PaymentLink/%v",
-		payLinkId,
+		payLinkID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponsePaymentLinks
+	var response *payabli.PayabliAPIResponsePaymentLinks
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -184,19 +184,19 @@ func (r *RawClient) DeletePayLinkFromId(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponsePaymentLinks]{
+	return &core.Response[*payabli.PayabliAPIResponsePaymentLinks]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) GetPayLinkFromId(
+func (r *RawClient) GetPayLinkFromID(
 	ctx context.Context,
 	// ID for payment link
-	paylinkId string,
+	paylinkID string,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.GetPayLinkFromIdResponse], error) {
+) (*core.Response[*payabli.GetPayLinkFromIDResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -205,13 +205,13 @@ func (r *RawClient) GetPayLinkFromId(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/PaymentLink/load/%v",
-		paylinkId,
+		paylinkID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.GetPayLinkFromIdResponse
+	var response *payabli.GetPayLinkFromIDResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -229,20 +229,20 @@ func (r *RawClient) GetPayLinkFromId(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.GetPayLinkFromIdResponse]{
+	return &core.Response[*payabli.GetPayLinkFromIDResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) PushPayLinkFromId(
+func (r *RawClient) PushPayLinkFromID(
 	ctx context.Context,
 	// ID for the payment link.
-	payLinkId string,
+	payLinkID string,
 	request *payabli.PushPayLinkRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponsePaymentLinks], error) {
+) (*core.Response[*payabli.PayabliAPIResponsePaymentLinks], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -251,13 +251,13 @@ func (r *RawClient) PushPayLinkFromId(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/PaymentLink/push/%v",
-		payLinkId,
+		payLinkID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponsePaymentLinks
+	var response *payabli.PayabliAPIResponsePaymentLinks
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -276,20 +276,20 @@ func (r *RawClient) PushPayLinkFromId(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponsePaymentLinks]{
+	return &core.Response[*payabli.PayabliAPIResponsePaymentLinks]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) RefreshPayLinkFromId(
+func (r *RawClient) RefreshPayLinkFromID(
 	ctx context.Context,
 	// ID for the payment link.
-	payLinkId string,
-	request *payabli.RefreshPayLinkFromIdRequest,
+	payLinkID string,
+	request *payabli.RefreshPayLinkFromIDRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponsePaymentLinks], error) {
+) (*core.Response[*payabli.PayabliAPIResponsePaymentLinks], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -298,7 +298,7 @@ func (r *RawClient) RefreshPayLinkFromId(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/PaymentLink/refresh/%v",
-		payLinkId,
+		payLinkID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -311,7 +311,7 @@ func (r *RawClient) RefreshPayLinkFromId(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponsePaymentLinks
+	var response *payabli.PayabliAPIResponsePaymentLinks
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -329,20 +329,20 @@ func (r *RawClient) RefreshPayLinkFromId(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponsePaymentLinks]{
+	return &core.Response[*payabli.PayabliAPIResponsePaymentLinks]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) SendPayLinkFromId(
+func (r *RawClient) SendPayLinkFromID(
 	ctx context.Context,
 	// ID for the payment link.
-	payLinkId string,
-	request *payabli.SendPayLinkFromIdRequest,
+	payLinkID string,
+	request *payabli.SendPayLinkFromIDRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponsePaymentLinks], error) {
+) (*core.Response[*payabli.PayabliAPIResponsePaymentLinks], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -351,7 +351,7 @@ func (r *RawClient) SendPayLinkFromId(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/PaymentLink/send/%v",
-		payLinkId,
+		payLinkID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -364,7 +364,7 @@ func (r *RawClient) SendPayLinkFromId(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponsePaymentLinks
+	var response *payabli.PayabliAPIResponsePaymentLinks
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -382,20 +382,20 @@ func (r *RawClient) SendPayLinkFromId(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponsePaymentLinks]{
+	return &core.Response[*payabli.PayabliAPIResponsePaymentLinks]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) UpdatePayLinkFromId(
+func (r *RawClient) UpdatePayLinkFromID(
 	ctx context.Context,
 	// ID for the payment link.
-	payLinkId string,
+	payLinkID string,
 	request *payabli.PayLinkUpdateData,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponsePaymentLinks], error) {
+) (*core.Response[*payabli.PayabliAPIResponsePaymentLinks], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -404,14 +404,14 @@ func (r *RawClient) UpdatePayLinkFromId(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/PaymentLink/update/%v",
-		payLinkId,
+		payLinkID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *payabli.PayabliApiResponsePaymentLinks
+	var response *payabli.PayabliAPIResponsePaymentLinks
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -430,7 +430,7 @@ func (r *RawClient) UpdatePayLinkFromId(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponsePaymentLinks]{
+	return &core.Response[*payabli.PayabliAPIResponsePaymentLinks]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -443,7 +443,7 @@ func (r *RawClient) AddPayLinkFromBillLotNumber(
 	lotNumber string,
 	request *payabli.PayLinkDataOut,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponsePaymentLinks], error) {
+) (*core.Response[*payabli.PayabliAPIResponsePaymentLinks], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -466,7 +466,7 @@ func (r *RawClient) AddPayLinkFromBillLotNumber(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *payabli.PayabliApiResponsePaymentLinks
+	var response *payabli.PayabliAPIResponsePaymentLinks
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -484,7 +484,7 @@ func (r *RawClient) AddPayLinkFromBillLotNumber(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponsePaymentLinks]{
+	return &core.Response[*payabli.PayabliAPIResponsePaymentLinks]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -494,10 +494,10 @@ func (r *RawClient) AddPayLinkFromBillLotNumber(
 func (r *RawClient) PatchOutPaymentLink(
 	ctx context.Context,
 	// ID for the payment link.
-	paylinkId string,
+	paylinkID string,
 	request *payabli.PatchOutPaymentLinkRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponsePaymentLinks], error) {
+) (*core.Response[*payabli.PayabliAPIResponsePaymentLinks], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -506,13 +506,13 @@ func (r *RawClient) PatchOutPaymentLink(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/PaymentLink/out/%v",
-		paylinkId,
+		paylinkID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponsePaymentLinks
+	var response *payabli.PayabliAPIResponsePaymentLinks
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -531,20 +531,20 @@ func (r *RawClient) PatchOutPaymentLink(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponsePaymentLinks]{
+	return &core.Response[*payabli.PayabliAPIResponsePaymentLinks]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) UpdatePayLinkOutFromId(
+func (r *RawClient) UpdatePayLinkOutFromID(
 	ctx context.Context,
 	// ID for the payment link.
-	paylinkId string,
+	paylinkID string,
 	request *payabli.PaymentPageRequestBodyOut,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponsePaymentLinks], error) {
+) (*core.Response[*payabli.PayabliAPIResponsePaymentLinks], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -553,13 +553,13 @@ func (r *RawClient) UpdatePayLinkOutFromId(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/PaymentLink/updateOut/%v",
-		paylinkId,
+		paylinkID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponsePaymentLinks
+	var response *payabli.PayabliAPIResponsePaymentLinks
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -578,7 +578,7 @@ func (r *RawClient) UpdatePayLinkOutFromId(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponsePaymentLinks]{
+	return &core.Response[*payabli.PayabliAPIResponsePaymentLinks]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

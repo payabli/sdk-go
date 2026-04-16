@@ -165,19 +165,19 @@ func TestSettersUserAuthRequest(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetUserId", func(t *testing.T) {
+	t.Run("SetUserID", func(t *testing.T) {
 		obj := &UserAuthRequest{}
-		var fernTestValueUserId *int64
-		obj.SetUserId(fernTestValueUserId)
-		assert.Equal(t, fernTestValueUserId, obj.UserId)
+		var fernTestValueUserID *int64
+		obj.SetUserID(fernTestValueUserID)
+		assert.Equal(t, fernTestValueUserID, obj.UserID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetUserTokenId", func(t *testing.T) {
+	t.Run("SetUserTokenID", func(t *testing.T) {
 		obj := &UserAuthRequest{}
-		var fernTestValueUserTokenId *string
-		obj.SetUserTokenId(fernTestValueUserTokenId)
-		assert.Equal(t, fernTestValueUserTokenId, obj.UserTokenId)
+		var fernTestValueUserTokenID *string
+		obj.SetUserTokenID(fernTestValueUserTokenID)
+		assert.Equal(t, fernTestValueUserTokenID, obj.UserTokenID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -308,14 +308,14 @@ func TestSettersMarkExplicitUserAuthRequest(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetUserId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetUserID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &UserAuthRequest{}
-		var fernTestValueUserId *int64
+		var fernTestValueUserID *int64
 
 		// Act
-		obj.SetUserId(fernTestValueUserId)
+		obj.SetUserID(fernTestValueUserID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -339,14 +339,14 @@ func TestSettersMarkExplicitUserAuthRequest(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetUserTokenId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetUserTokenID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &UserAuthRequest{}
-		var fernTestValueUserTokenId *string
+		var fernTestValueUserTokenID *string
 
 		// Act
-		obj.SetUserTokenId(fernTestValueUserTokenId)
+		obj.SetUserTokenID(fernTestValueUserTokenID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -739,11 +739,11 @@ func TestSettersMarkExplicitMfaData(t *testing.T) {
 }
 
 func TestSettersOrgScope(t *testing.T) {
-	t.Run("SetOrgId", func(t *testing.T) {
+	t.Run("SetOrgID", func(t *testing.T) {
 		obj := &OrgScope{}
-		var fernTestValueOrgId *Orgid
-		obj.SetOrgId(fernTestValueOrgId)
-		assert.Equal(t, fernTestValueOrgId, obj.OrgId)
+		var fernTestValueOrgID *Orgid
+		obj.SetOrgID(fernTestValueOrgID)
+		assert.Equal(t, fernTestValueOrgID, obj.OrgID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -758,28 +758,28 @@ func TestSettersOrgScope(t *testing.T) {
 }
 
 func TestGettersOrgScope(t *testing.T) {
-	t.Run("GetOrgId", func(t *testing.T) {
+	t.Run("GetOrgID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &OrgScope{}
 		var expected *Orgid
-		obj.OrgId = expected
+		obj.OrgID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetOrgId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetOrgID(), "getter should return the property value")
 	})
 
-	t.Run("GetOrgId_NilValue", func(t *testing.T) {
+	t.Run("GetOrgID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &OrgScope{}
-		obj.OrgId = nil
+		obj.OrgID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetOrgId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetOrgID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetOrgId_NilReceiver", func(t *testing.T) {
+	t.Run("GetOrgID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *OrgScope
 		// Should not panic - getters should handle nil receiver gracefully
@@ -788,7 +788,7 @@ func TestGettersOrgScope(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetOrgId() // Should return zero value
+		_ = obj.GetOrgID() // Should return zero value
 	})
 
 	t.Run("GetOrgType", func(t *testing.T) {
@@ -827,14 +827,14 @@ func TestGettersOrgScope(t *testing.T) {
 }
 
 func TestSettersMarkExplicitOrgScope(t *testing.T) {
-	t.Run("SetOrgId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetOrgID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &OrgScope{}
-		var fernTestValueOrgId *Orgid
+		var fernTestValueOrgID *Orgid
 
 		// Act
-		obj.SetOrgId(fernTestValueOrgId)
+		obj.SetOrgID(fernTestValueOrgID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -891,9 +891,9 @@ func TestSettersMarkExplicitOrgScope(t *testing.T) {
 
 }
 
-func TestSettersPayabliApiResponseMfaBasic(t *testing.T) {
+func TestSettersPayabliAPIResponseMfaBasic(t *testing.T) {
 	t.Run("SetIsSuccess", func(t *testing.T) {
-		obj := &PayabliApiResponseMfaBasic{}
+		obj := &PayabliAPIResponseMfaBasic{}
 		var fernTestValueIsSuccess *IsSuccess
 		obj.SetIsSuccess(fernTestValueIsSuccess)
 		assert.Equal(t, fernTestValueIsSuccess, obj.IsSuccess)
@@ -901,7 +901,7 @@ func TestSettersPayabliApiResponseMfaBasic(t *testing.T) {
 	})
 
 	t.Run("SetMfa", func(t *testing.T) {
-		obj := &PayabliApiResponseMfaBasic{}
+		obj := &PayabliAPIResponseMfaBasic{}
 		var fernTestValueMfa *Mfa
 		obj.SetMfa(fernTestValueMfa)
 		assert.Equal(t, fernTestValueMfa, obj.Mfa)
@@ -909,7 +909,7 @@ func TestSettersPayabliApiResponseMfaBasic(t *testing.T) {
 	})
 
 	t.Run("SetMfaMode", func(t *testing.T) {
-		obj := &PayabliApiResponseMfaBasic{}
+		obj := &PayabliAPIResponseMfaBasic{}
 		var fernTestValueMfaMode *string
 		obj.SetMfaMode(fernTestValueMfaMode)
 		assert.Equal(t, fernTestValueMfaMode, obj.MfaMode)
@@ -917,7 +917,7 @@ func TestSettersPayabliApiResponseMfaBasic(t *testing.T) {
 	})
 
 	t.Run("SetMfaValidationCode", func(t *testing.T) {
-		obj := &PayabliApiResponseMfaBasic{}
+		obj := &PayabliAPIResponseMfaBasic{}
 		var fernTestValueMfaValidationCode *MfaValidationCode
 		obj.SetMfaValidationCode(fernTestValueMfaValidationCode)
 		assert.Equal(t, fernTestValueMfaValidationCode, obj.MfaValidationCode)
@@ -925,7 +925,7 @@ func TestSettersPayabliApiResponseMfaBasic(t *testing.T) {
 	})
 
 	t.Run("SetResponseData", func(t *testing.T) {
-		obj := &PayabliApiResponseMfaBasic{}
+		obj := &PayabliAPIResponseMfaBasic{}
 		var fernTestValueResponseData *string
 		obj.SetResponseData(fernTestValueResponseData)
 		assert.Equal(t, fernTestValueResponseData, obj.ResponseData)
@@ -933,7 +933,7 @@ func TestSettersPayabliApiResponseMfaBasic(t *testing.T) {
 	})
 
 	t.Run("SetResponseText", func(t *testing.T) {
-		obj := &PayabliApiResponseMfaBasic{}
+		obj := &PayabliAPIResponseMfaBasic{}
 		var fernTestValueResponseText ResponseText
 		obj.SetResponseText(fernTestValueResponseText)
 		assert.Equal(t, fernTestValueResponseText, obj.ResponseText)
@@ -942,11 +942,11 @@ func TestSettersPayabliApiResponseMfaBasic(t *testing.T) {
 
 }
 
-func TestGettersPayabliApiResponseMfaBasic(t *testing.T) {
+func TestGettersPayabliAPIResponseMfaBasic(t *testing.T) {
 	t.Run("GetIsSuccess", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseMfaBasic{}
+		obj := &PayabliAPIResponseMfaBasic{}
 		var expected *IsSuccess
 		obj.IsSuccess = expected
 
@@ -957,7 +957,7 @@ func TestGettersPayabliApiResponseMfaBasic(t *testing.T) {
 	t.Run("GetIsSuccess_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseMfaBasic{}
+		obj := &PayabliAPIResponseMfaBasic{}
 		obj.IsSuccess = nil
 
 		// Act & Assert
@@ -966,7 +966,7 @@ func TestGettersPayabliApiResponseMfaBasic(t *testing.T) {
 
 	t.Run("GetIsSuccess_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseMfaBasic
+		var obj *PayabliAPIResponseMfaBasic
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -979,7 +979,7 @@ func TestGettersPayabliApiResponseMfaBasic(t *testing.T) {
 	t.Run("GetMfa", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseMfaBasic{}
+		obj := &PayabliAPIResponseMfaBasic{}
 		var expected *Mfa
 		obj.Mfa = expected
 
@@ -990,7 +990,7 @@ func TestGettersPayabliApiResponseMfaBasic(t *testing.T) {
 	t.Run("GetMfa_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseMfaBasic{}
+		obj := &PayabliAPIResponseMfaBasic{}
 		obj.Mfa = nil
 
 		// Act & Assert
@@ -999,7 +999,7 @@ func TestGettersPayabliApiResponseMfaBasic(t *testing.T) {
 
 	t.Run("GetMfa_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseMfaBasic
+		var obj *PayabliAPIResponseMfaBasic
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1012,7 +1012,7 @@ func TestGettersPayabliApiResponseMfaBasic(t *testing.T) {
 	t.Run("GetMfaMode", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseMfaBasic{}
+		obj := &PayabliAPIResponseMfaBasic{}
 		var expected *string
 		obj.MfaMode = expected
 
@@ -1023,7 +1023,7 @@ func TestGettersPayabliApiResponseMfaBasic(t *testing.T) {
 	t.Run("GetMfaMode_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseMfaBasic{}
+		obj := &PayabliAPIResponseMfaBasic{}
 		obj.MfaMode = nil
 
 		// Act & Assert
@@ -1032,7 +1032,7 @@ func TestGettersPayabliApiResponseMfaBasic(t *testing.T) {
 
 	t.Run("GetMfaMode_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseMfaBasic
+		var obj *PayabliAPIResponseMfaBasic
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1045,7 +1045,7 @@ func TestGettersPayabliApiResponseMfaBasic(t *testing.T) {
 	t.Run("GetMfaValidationCode", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseMfaBasic{}
+		obj := &PayabliAPIResponseMfaBasic{}
 		var expected *MfaValidationCode
 		obj.MfaValidationCode = expected
 
@@ -1056,7 +1056,7 @@ func TestGettersPayabliApiResponseMfaBasic(t *testing.T) {
 	t.Run("GetMfaValidationCode_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseMfaBasic{}
+		obj := &PayabliAPIResponseMfaBasic{}
 		obj.MfaValidationCode = nil
 
 		// Act & Assert
@@ -1065,7 +1065,7 @@ func TestGettersPayabliApiResponseMfaBasic(t *testing.T) {
 
 	t.Run("GetMfaValidationCode_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseMfaBasic
+		var obj *PayabliAPIResponseMfaBasic
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1078,7 +1078,7 @@ func TestGettersPayabliApiResponseMfaBasic(t *testing.T) {
 	t.Run("GetResponseData", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseMfaBasic{}
+		obj := &PayabliAPIResponseMfaBasic{}
 		var expected *string
 		obj.ResponseData = expected
 
@@ -1089,7 +1089,7 @@ func TestGettersPayabliApiResponseMfaBasic(t *testing.T) {
 	t.Run("GetResponseData_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseMfaBasic{}
+		obj := &PayabliAPIResponseMfaBasic{}
 		obj.ResponseData = nil
 
 		// Act & Assert
@@ -1098,7 +1098,7 @@ func TestGettersPayabliApiResponseMfaBasic(t *testing.T) {
 
 	t.Run("GetResponseData_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseMfaBasic
+		var obj *PayabliAPIResponseMfaBasic
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1111,7 +1111,7 @@ func TestGettersPayabliApiResponseMfaBasic(t *testing.T) {
 	t.Run("GetResponseText", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseMfaBasic{}
+		obj := &PayabliAPIResponseMfaBasic{}
 		var expected ResponseText
 		obj.ResponseText = expected
 
@@ -1121,7 +1121,7 @@ func TestGettersPayabliApiResponseMfaBasic(t *testing.T) {
 
 	t.Run("GetResponseText_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseMfaBasic
+		var obj *PayabliAPIResponseMfaBasic
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1133,11 +1133,11 @@ func TestGettersPayabliApiResponseMfaBasic(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitPayabliApiResponseMfaBasic(t *testing.T) {
+func TestSettersMarkExplicitPayabliAPIResponseMfaBasic(t *testing.T) {
 	t.Run("SetIsSuccess_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseMfaBasic{}
+		obj := &PayabliAPIResponseMfaBasic{}
 		var fernTestValueIsSuccess *IsSuccess
 
 		// Act
@@ -1168,7 +1168,7 @@ func TestSettersMarkExplicitPayabliApiResponseMfaBasic(t *testing.T) {
 	t.Run("SetMfa_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseMfaBasic{}
+		obj := &PayabliAPIResponseMfaBasic{}
 		var fernTestValueMfa *Mfa
 
 		// Act
@@ -1199,7 +1199,7 @@ func TestSettersMarkExplicitPayabliApiResponseMfaBasic(t *testing.T) {
 	t.Run("SetMfaMode_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseMfaBasic{}
+		obj := &PayabliAPIResponseMfaBasic{}
 		var fernTestValueMfaMode *string
 
 		// Act
@@ -1230,7 +1230,7 @@ func TestSettersMarkExplicitPayabliApiResponseMfaBasic(t *testing.T) {
 	t.Run("SetMfaValidationCode_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseMfaBasic{}
+		obj := &PayabliAPIResponseMfaBasic{}
 		var fernTestValueMfaValidationCode *MfaValidationCode
 
 		// Act
@@ -1261,7 +1261,7 @@ func TestSettersMarkExplicitPayabliApiResponseMfaBasic(t *testing.T) {
 	t.Run("SetResponseData_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseMfaBasic{}
+		obj := &PayabliAPIResponseMfaBasic{}
 		var fernTestValueResponseData *string
 
 		// Act
@@ -1292,7 +1292,7 @@ func TestSettersMarkExplicitPayabliApiResponseMfaBasic(t *testing.T) {
 	t.Run("SetResponseText_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseMfaBasic{}
+		obj := &PayabliAPIResponseMfaBasic{}
 		var fernTestValueResponseText ResponseText
 
 		// Act
@@ -1322,9 +1322,9 @@ func TestSettersMarkExplicitPayabliApiResponseMfaBasic(t *testing.T) {
 
 }
 
-func TestSettersPayabliApiResponseUserMfa(t *testing.T) {
+func TestSettersPayabliAPIResponseUserMfa(t *testing.T) {
 	t.Run("SetInactiveTokenTime", func(t *testing.T) {
-		obj := &PayabliApiResponseUserMfa{}
+		obj := &PayabliAPIResponseUserMfa{}
 		var fernTestValueInactiveTokenTime *int
 		obj.SetInactiveTokenTime(fernTestValueInactiveTokenTime)
 		assert.Equal(t, fernTestValueInactiveTokenTime, obj.InactiveTokenTime)
@@ -1332,7 +1332,7 @@ func TestSettersPayabliApiResponseUserMfa(t *testing.T) {
 	})
 
 	t.Run("SetIsSuccess", func(t *testing.T) {
-		obj := &PayabliApiResponseUserMfa{}
+		obj := &PayabliAPIResponseUserMfa{}
 		var fernTestValueIsSuccess *IsSuccess
 		obj.SetIsSuccess(fernTestValueIsSuccess)
 		assert.Equal(t, fernTestValueIsSuccess, obj.IsSuccess)
@@ -1340,7 +1340,7 @@ func TestSettersPayabliApiResponseUserMfa(t *testing.T) {
 	})
 
 	t.Run("SetRemaining", func(t *testing.T) {
-		obj := &PayabliApiResponseUserMfa{}
+		obj := &PayabliAPIResponseUserMfa{}
 		var fernTestValueRemaining *int
 		obj.SetRemaining(fernTestValueRemaining)
 		assert.Equal(t, fernTestValueRemaining, obj.Remaining)
@@ -1348,7 +1348,7 @@ func TestSettersPayabliApiResponseUserMfa(t *testing.T) {
 	})
 
 	t.Run("SetResponseData", func(t *testing.T) {
-		obj := &PayabliApiResponseUserMfa{}
+		obj := &PayabliAPIResponseUserMfa{}
 		var fernTestValueResponseData *Responsedatanonobject
 		obj.SetResponseData(fernTestValueResponseData)
 		assert.Equal(t, fernTestValueResponseData, obj.ResponseData)
@@ -1356,7 +1356,7 @@ func TestSettersPayabliApiResponseUserMfa(t *testing.T) {
 	})
 
 	t.Run("SetResponseText", func(t *testing.T) {
-		obj := &PayabliApiResponseUserMfa{}
+		obj := &PayabliAPIResponseUserMfa{}
 		var fernTestValueResponseText ResponseText
 		obj.SetResponseText(fernTestValueResponseText)
 		assert.Equal(t, fernTestValueResponseText, obj.ResponseText)
@@ -1365,11 +1365,11 @@ func TestSettersPayabliApiResponseUserMfa(t *testing.T) {
 
 }
 
-func TestGettersPayabliApiResponseUserMfa(t *testing.T) {
+func TestGettersPayabliAPIResponseUserMfa(t *testing.T) {
 	t.Run("GetInactiveTokenTime", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseUserMfa{}
+		obj := &PayabliAPIResponseUserMfa{}
 		var expected *int
 		obj.InactiveTokenTime = expected
 
@@ -1380,7 +1380,7 @@ func TestGettersPayabliApiResponseUserMfa(t *testing.T) {
 	t.Run("GetInactiveTokenTime_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseUserMfa{}
+		obj := &PayabliAPIResponseUserMfa{}
 		obj.InactiveTokenTime = nil
 
 		// Act & Assert
@@ -1389,7 +1389,7 @@ func TestGettersPayabliApiResponseUserMfa(t *testing.T) {
 
 	t.Run("GetInactiveTokenTime_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseUserMfa
+		var obj *PayabliAPIResponseUserMfa
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1402,7 +1402,7 @@ func TestGettersPayabliApiResponseUserMfa(t *testing.T) {
 	t.Run("GetIsSuccess", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseUserMfa{}
+		obj := &PayabliAPIResponseUserMfa{}
 		var expected *IsSuccess
 		obj.IsSuccess = expected
 
@@ -1413,7 +1413,7 @@ func TestGettersPayabliApiResponseUserMfa(t *testing.T) {
 	t.Run("GetIsSuccess_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseUserMfa{}
+		obj := &PayabliAPIResponseUserMfa{}
 		obj.IsSuccess = nil
 
 		// Act & Assert
@@ -1422,7 +1422,7 @@ func TestGettersPayabliApiResponseUserMfa(t *testing.T) {
 
 	t.Run("GetIsSuccess_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseUserMfa
+		var obj *PayabliAPIResponseUserMfa
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1435,7 +1435,7 @@ func TestGettersPayabliApiResponseUserMfa(t *testing.T) {
 	t.Run("GetRemaining", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseUserMfa{}
+		obj := &PayabliAPIResponseUserMfa{}
 		var expected *int
 		obj.Remaining = expected
 
@@ -1446,7 +1446,7 @@ func TestGettersPayabliApiResponseUserMfa(t *testing.T) {
 	t.Run("GetRemaining_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseUserMfa{}
+		obj := &PayabliAPIResponseUserMfa{}
 		obj.Remaining = nil
 
 		// Act & Assert
@@ -1455,7 +1455,7 @@ func TestGettersPayabliApiResponseUserMfa(t *testing.T) {
 
 	t.Run("GetRemaining_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseUserMfa
+		var obj *PayabliAPIResponseUserMfa
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1468,7 +1468,7 @@ func TestGettersPayabliApiResponseUserMfa(t *testing.T) {
 	t.Run("GetResponseData", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseUserMfa{}
+		obj := &PayabliAPIResponseUserMfa{}
 		var expected *Responsedatanonobject
 		obj.ResponseData = expected
 
@@ -1479,7 +1479,7 @@ func TestGettersPayabliApiResponseUserMfa(t *testing.T) {
 	t.Run("GetResponseData_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseUserMfa{}
+		obj := &PayabliAPIResponseUserMfa{}
 		obj.ResponseData = nil
 
 		// Act & Assert
@@ -1488,7 +1488,7 @@ func TestGettersPayabliApiResponseUserMfa(t *testing.T) {
 
 	t.Run("GetResponseData_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseUserMfa
+		var obj *PayabliAPIResponseUserMfa
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1501,7 +1501,7 @@ func TestGettersPayabliApiResponseUserMfa(t *testing.T) {
 	t.Run("GetResponseText", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseUserMfa{}
+		obj := &PayabliAPIResponseUserMfa{}
 		var expected ResponseText
 		obj.ResponseText = expected
 
@@ -1511,7 +1511,7 @@ func TestGettersPayabliApiResponseUserMfa(t *testing.T) {
 
 	t.Run("GetResponseText_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseUserMfa
+		var obj *PayabliAPIResponseUserMfa
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -1523,11 +1523,11 @@ func TestGettersPayabliApiResponseUserMfa(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitPayabliApiResponseUserMfa(t *testing.T) {
+func TestSettersMarkExplicitPayabliAPIResponseUserMfa(t *testing.T) {
 	t.Run("SetInactiveTokenTime_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseUserMfa{}
+		obj := &PayabliAPIResponseUserMfa{}
 		var fernTestValueInactiveTokenTime *int
 
 		// Act
@@ -1558,7 +1558,7 @@ func TestSettersMarkExplicitPayabliApiResponseUserMfa(t *testing.T) {
 	t.Run("SetIsSuccess_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseUserMfa{}
+		obj := &PayabliAPIResponseUserMfa{}
 		var fernTestValueIsSuccess *IsSuccess
 
 		// Act
@@ -1589,7 +1589,7 @@ func TestSettersMarkExplicitPayabliApiResponseUserMfa(t *testing.T) {
 	t.Run("SetRemaining_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseUserMfa{}
+		obj := &PayabliAPIResponseUserMfa{}
 		var fernTestValueRemaining *int
 
 		// Act
@@ -1620,7 +1620,7 @@ func TestSettersMarkExplicitPayabliApiResponseUserMfa(t *testing.T) {
 	t.Run("SetResponseData_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseUserMfa{}
+		obj := &PayabliAPIResponseUserMfa{}
 		var fernTestValueResponseData *Responsedatanonobject
 
 		// Act
@@ -1651,7 +1651,7 @@ func TestSettersMarkExplicitPayabliApiResponseUserMfa(t *testing.T) {
 	t.Run("SetResponseText_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseUserMfa{}
+		obj := &PayabliAPIResponseUserMfa{}
 		var fernTestValueResponseText ResponseText
 
 		// Act
@@ -3604,11 +3604,11 @@ func TestJSONMarshalingOrgScope(t *testing.T) {
 	})
 }
 
-func TestJSONMarshalingPayabliApiResponseMfaBasic(t *testing.T) {
+func TestJSONMarshalingPayabliAPIResponseMfaBasic(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseMfaBasic{}
+		obj := &PayabliAPIResponseMfaBasic{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -3617,31 +3617,31 @@ func TestJSONMarshalingPayabliApiResponseMfaBasic(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled PayabliApiResponseMfaBasic
+		var unmarshaled PayabliAPIResponseMfaBasic
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj PayabliApiResponseMfaBasic
+		var obj PayabliAPIResponseMfaBasic
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj PayabliApiResponseMfaBasic
+		var obj PayabliAPIResponseMfaBasic
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingPayabliApiResponseUserMfa(t *testing.T) {
+func TestJSONMarshalingPayabliAPIResponseUserMfa(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseUserMfa{}
+		obj := &PayabliAPIResponseUserMfa{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -3650,21 +3650,21 @@ func TestJSONMarshalingPayabliApiResponseUserMfa(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled PayabliApiResponseUserMfa
+		var unmarshaled PayabliAPIResponseUserMfa
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj PayabliApiResponseUserMfa
+		var obj PayabliAPIResponseUserMfa
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj PayabliApiResponseUserMfa
+		var obj PayabliAPIResponseUserMfa
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
@@ -3831,33 +3831,33 @@ func TestStringOrgScope(t *testing.T) {
 	})
 }
 
-func TestStringPayabliApiResponseMfaBasic(t *testing.T) {
+func TestStringPayabliAPIResponseMfaBasic(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &PayabliApiResponseMfaBasic{}
+		obj := &PayabliAPIResponseMfaBasic{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseMfaBasic
+		var obj *PayabliAPIResponseMfaBasic
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringPayabliApiResponseUserMfa(t *testing.T) {
+func TestStringPayabliAPIResponseUserMfa(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &PayabliApiResponseUserMfa{}
+		obj := &PayabliAPIResponseUserMfa{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseUserMfa
+		var obj *PayabliAPIResponseUserMfa
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
@@ -4063,10 +4063,10 @@ func TestExtraPropertiesOrgScope(t *testing.T) {
 	})
 }
 
-func TestExtraPropertiesPayabliApiResponseMfaBasic(t *testing.T) {
+func TestExtraPropertiesPayabliAPIResponseMfaBasic(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &PayabliApiResponseMfaBasic{}
+		obj := &PayabliAPIResponseMfaBasic{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -4080,16 +4080,16 @@ func TestExtraPropertiesPayabliApiResponseMfaBasic(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseMfaBasic
+		var obj *PayabliAPIResponseMfaBasic
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesPayabliApiResponseUserMfa(t *testing.T) {
+func TestExtraPropertiesPayabliAPIResponseUserMfa(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &PayabliApiResponseUserMfa{}
+		obj := &PayabliAPIResponseUserMfa{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -4103,7 +4103,7 @@ func TestExtraPropertiesPayabliApiResponseUserMfa(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseUserMfa
+		var obj *PayabliAPIResponseUserMfa
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})

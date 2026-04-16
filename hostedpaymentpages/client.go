@@ -61,7 +61,7 @@ func (c *Client) NewPage(
 	entry string,
 	request *payabli.NewPageRequest,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponse00Responsedatanonobject, error) {
+) (*payabli.PayabliAPIResponse00Responsedatanonobject, error) {
 	response, err := c.WithRawResponse.NewPage(
 		ctx,
 		entry,
@@ -83,7 +83,7 @@ func (c *Client) SavePage(
 	subdomain string,
 	request *payabli.PayabliPages,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponse00Responsedatanonobject, error) {
+) (*payabli.PayabliAPIResponse00Responsedatanonobject, error) {
 	response, err := c.WithRawResponse.SavePage(
 		ctx,
 		entry,

@@ -38,7 +38,7 @@ func (a AllowedCheckPaymentStatus) Ptr() *AllowedCheckPaymentStatus {
 var (
 	authCapturePayoutResponseFieldResponseCode   = big.NewInt(1 << 0)
 	authCapturePayoutResponseFieldPageIdentifier = big.NewInt(1 << 1)
-	authCapturePayoutResponseFieldRoomId         = big.NewInt(1 << 2)
+	authCapturePayoutResponseFieldRoomID         = big.NewInt(1 << 2)
 	authCapturePayoutResponseFieldIsSuccess      = big.NewInt(1 << 3)
 	authCapturePayoutResponseFieldResponseText   = big.NewInt(1 << 4)
 	authCapturePayoutResponseFieldResponseData   = big.NewInt(1 << 5)
@@ -47,7 +47,7 @@ var (
 type AuthCapturePayoutResponse struct {
 	ResponseCode   Responsecode                   `json:"responseCode" url:"responseCode"`
 	PageIdentifier *PageIdentifier                `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
-	RoomId         RoomIdNotInUse                 `json:"roomId" url:"roomId"`
+	RoomID         RoomIDNotInUse                 `json:"roomId" url:"roomId"`
 	IsSuccess      IsSuccess                      `json:"isSuccess" url:"isSuccess"`
 	ResponseText   ResponseText                   `json:"responseText" url:"responseText"`
 	ResponseData   *AuthCapturePayoutResponseData `json:"responseData" url:"responseData"`
@@ -73,11 +73,11 @@ func (a *AuthCapturePayoutResponse) GetPageIdentifier() *PageIdentifier {
 	return a.PageIdentifier
 }
 
-func (a *AuthCapturePayoutResponse) GetRoomId() RoomIdNotInUse {
+func (a *AuthCapturePayoutResponse) GetRoomID() RoomIDNotInUse {
 	if a == nil {
 		return 0
 	}
-	return a.RoomId
+	return a.RoomID
 }
 
 func (a *AuthCapturePayoutResponse) GetIsSuccess() IsSuccess {
@@ -129,11 +129,11 @@ func (a *AuthCapturePayoutResponse) SetPageIdentifier(pageIdentifier *PageIdenti
 	a.require(authCapturePayoutResponseFieldPageIdentifier)
 }
 
-// SetRoomId sets the RoomId field and marks it as non-optional;
+// SetRoomID sets the RoomID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AuthCapturePayoutResponse) SetRoomId(roomId RoomIdNotInUse) {
-	a.RoomId = roomId
-	a.require(authCapturePayoutResponseFieldRoomId)
+func (a *AuthCapturePayoutResponse) SetRoomID(roomID RoomIDNotInUse) {
+	a.RoomID = roomID
+	a.require(authCapturePayoutResponseFieldRoomID)
 }
 
 // SetIsSuccess sets the IsSuccess field and marks it as non-optional;
@@ -201,24 +201,24 @@ func (a *AuthCapturePayoutResponse) String() string {
 
 var (
 	authCapturePayoutResponseDataFieldAuthCode          = big.NewInt(1 << 0)
-	authCapturePayoutResponseDataFieldReferenceId       = big.NewInt(1 << 1)
+	authCapturePayoutResponseDataFieldReferenceID       = big.NewInt(1 << 1)
 	authCapturePayoutResponseDataFieldResultCode        = big.NewInt(1 << 2)
 	authCapturePayoutResponseDataFieldResultText        = big.NewInt(1 << 3)
 	authCapturePayoutResponseDataFieldAvsResponseText   = big.NewInt(1 << 4)
 	authCapturePayoutResponseDataFieldCvvResponseText   = big.NewInt(1 << 5)
-	authCapturePayoutResponseDataFieldCustomerId        = big.NewInt(1 << 6)
-	authCapturePayoutResponseDataFieldMethodReferenceId = big.NewInt(1 << 7)
+	authCapturePayoutResponseDataFieldCustomerID        = big.NewInt(1 << 6)
+	authCapturePayoutResponseDataFieldMethodReferenceID = big.NewInt(1 << 7)
 )
 
 type AuthCapturePayoutResponseData struct {
 	AuthCode          *Authcode          `json:"authCode,omitempty" url:"authCode,omitempty"`
-	ReferenceId       Referenceidtrans   `json:"referenceId" url:"referenceId"`
+	ReferenceID       Referenceidtrans   `json:"referenceId" url:"referenceId"`
 	ResultCode        ResultCode         `json:"resultCode" url:"resultCode"`
 	ResultText        Resulttext         `json:"resultText" url:"resultText"`
 	AvsResponseText   *AvsResponseText   `json:"avsResponseText,omitempty" url:"avsResponseText,omitempty"`
 	CvvResponseText   *CvvResponseText   `json:"cvvResponseText,omitempty" url:"cvvResponseText,omitempty"`
-	CustomerId        Customeridtrans    `json:"customerId" url:"customerId"`
-	MethodReferenceId *MethodReferenceId `json:"methodReferenceId,omitempty" url:"methodReferenceId,omitempty"`
+	CustomerID        Customeridtrans    `json:"customerId" url:"customerId"`
+	MethodReferenceID *MethodReferenceID `json:"methodReferenceId,omitempty" url:"methodReferenceId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -234,11 +234,11 @@ func (a *AuthCapturePayoutResponseData) GetAuthCode() *Authcode {
 	return a.AuthCode
 }
 
-func (a *AuthCapturePayoutResponseData) GetReferenceId() Referenceidtrans {
+func (a *AuthCapturePayoutResponseData) GetReferenceID() Referenceidtrans {
 	if a == nil {
 		return ""
 	}
-	return a.ReferenceId
+	return a.ReferenceID
 }
 
 func (a *AuthCapturePayoutResponseData) GetResultCode() ResultCode {
@@ -269,18 +269,18 @@ func (a *AuthCapturePayoutResponseData) GetCvvResponseText() *CvvResponseText {
 	return a.CvvResponseText
 }
 
-func (a *AuthCapturePayoutResponseData) GetCustomerId() Customeridtrans {
+func (a *AuthCapturePayoutResponseData) GetCustomerID() Customeridtrans {
 	if a == nil {
 		return 0
 	}
-	return a.CustomerId
+	return a.CustomerID
 }
 
-func (a *AuthCapturePayoutResponseData) GetMethodReferenceId() *MethodReferenceId {
+func (a *AuthCapturePayoutResponseData) GetMethodReferenceID() *MethodReferenceID {
 	if a == nil {
 		return nil
 	}
-	return a.MethodReferenceId
+	return a.MethodReferenceID
 }
 
 func (a *AuthCapturePayoutResponseData) GetExtraProperties() map[string]interface{} {
@@ -304,11 +304,11 @@ func (a *AuthCapturePayoutResponseData) SetAuthCode(authCode *Authcode) {
 	a.require(authCapturePayoutResponseDataFieldAuthCode)
 }
 
-// SetReferenceId sets the ReferenceId field and marks it as non-optional;
+// SetReferenceID sets the ReferenceID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AuthCapturePayoutResponseData) SetReferenceId(referenceId Referenceidtrans) {
-	a.ReferenceId = referenceId
-	a.require(authCapturePayoutResponseDataFieldReferenceId)
+func (a *AuthCapturePayoutResponseData) SetReferenceID(referenceID Referenceidtrans) {
+	a.ReferenceID = referenceID
+	a.require(authCapturePayoutResponseDataFieldReferenceID)
 }
 
 // SetResultCode sets the ResultCode field and marks it as non-optional;
@@ -339,18 +339,18 @@ func (a *AuthCapturePayoutResponseData) SetCvvResponseText(cvvResponseText *CvvR
 	a.require(authCapturePayoutResponseDataFieldCvvResponseText)
 }
 
-// SetCustomerId sets the CustomerId field and marks it as non-optional;
+// SetCustomerID sets the CustomerID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AuthCapturePayoutResponseData) SetCustomerId(customerId Customeridtrans) {
-	a.CustomerId = customerId
-	a.require(authCapturePayoutResponseDataFieldCustomerId)
+func (a *AuthCapturePayoutResponseData) SetCustomerID(customerID Customeridtrans) {
+	a.CustomerID = customerID
+	a.require(authCapturePayoutResponseDataFieldCustomerID)
 }
 
-// SetMethodReferenceId sets the MethodReferenceId field and marks it as non-optional;
+// SetMethodReferenceID sets the MethodReferenceID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AuthCapturePayoutResponseData) SetMethodReferenceId(methodReferenceId *MethodReferenceId) {
-	a.MethodReferenceId = methodReferenceId
-	a.require(authCapturePayoutResponseDataFieldMethodReferenceId)
+func (a *AuthCapturePayoutResponseData) SetMethodReferenceID(methodReferenceID *MethodReferenceID) {
+	a.MethodReferenceID = methodReferenceID
+	a.require(authCapturePayoutResponseDataFieldMethodReferenceID)
 }
 
 func (a *AuthCapturePayoutResponseData) UnmarshalJSON(data []byte) error {
@@ -409,7 +409,7 @@ var (
 	authorizePaymentMethodFieldAchAccountType        = big.NewInt(1 << 4)
 	authorizePaymentMethodFieldAchCode               = big.NewInt(1 << 5)
 	authorizePaymentMethodFieldAchHolderType         = big.NewInt(1 << 6)
-	authorizePaymentMethodFieldStoredMethodId        = big.NewInt(1 << 7)
+	authorizePaymentMethodFieldStoredMethodID        = big.NewInt(1 << 7)
 	authorizePaymentMethodFieldInitiator             = big.NewInt(1 << 8)
 	authorizePaymentMethodFieldStoredMethodUsageType = big.NewInt(1 << 9)
 )
@@ -428,7 +428,7 @@ type AuthorizePaymentMethod struct {
 	AchCode        *AchSecCode    `json:"achCode,omitempty" url:"achCode,omitempty"`
 	AchHolderType  *AchHolderType `json:"achHolderType,omitempty" url:"achHolderType,omitempty"`
 	// ID of the stored ACH payment method. Only applicable when method is `ach`. Use this to reference a previously saved ACH method instead of providing bank details directly.
-	StoredMethodId        *string                `json:"storedMethodId,omitempty" url:"storedMethodId,omitempty"`
+	StoredMethodID        *string                `json:"storedMethodId,omitempty" url:"storedMethodId,omitempty"`
 	Initiator             *Initiator             `json:"initiator,omitempty" url:"initiator,omitempty"`
 	StoredMethodUsageType *StoredMethodUsageType `json:"storedMethodUsageType,omitempty" url:"storedMethodUsageType,omitempty"`
 
@@ -488,11 +488,11 @@ func (a *AuthorizePaymentMethod) GetAchHolderType() *AchHolderType {
 	return a.AchHolderType
 }
 
-func (a *AuthorizePaymentMethod) GetStoredMethodId() *string {
+func (a *AuthorizePaymentMethod) GetStoredMethodID() *string {
 	if a == nil {
 		return nil
 	}
-	return a.StoredMethodId
+	return a.StoredMethodID
 }
 
 func (a *AuthorizePaymentMethod) GetInitiator() *Initiator {
@@ -572,11 +572,11 @@ func (a *AuthorizePaymentMethod) SetAchHolderType(achHolderType *AchHolderType) 
 	a.require(authorizePaymentMethodFieldAchHolderType)
 }
 
-// SetStoredMethodId sets the StoredMethodId field and marks it as non-optional;
+// SetStoredMethodID sets the StoredMethodID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AuthorizePaymentMethod) SetStoredMethodId(storedMethodId *string) {
-	a.StoredMethodId = storedMethodId
-	a.require(authorizePaymentMethodFieldStoredMethodId)
+func (a *AuthorizePaymentMethod) SetStoredMethodID(storedMethodID *string) {
+	a.StoredMethodID = storedMethodID
+	a.require(authorizePaymentMethodFieldStoredMethodID)
 }
 
 // SetInitiator sets the Initiator field and marks it as non-optional;
@@ -638,22 +638,22 @@ func (a *AuthorizePaymentMethod) String() string {
 var (
 	authorizePayoutBodyFieldEntryPoint       = big.NewInt(1 << 0)
 	authorizePayoutBodyFieldSource           = big.NewInt(1 << 1)
-	authorizePayoutBodyFieldOrderId          = big.NewInt(1 << 2)
+	authorizePayoutBodyFieldOrderID          = big.NewInt(1 << 2)
 	authorizePayoutBodyFieldOrderDescription = big.NewInt(1 << 3)
 	authorizePayoutBodyFieldPaymentMethod    = big.NewInt(1 << 4)
 	authorizePayoutBodyFieldPaymentDetails   = big.NewInt(1 << 5)
 	authorizePayoutBodyFieldVendorData       = big.NewInt(1 << 6)
 	authorizePayoutBodyFieldInvoiceData      = big.NewInt(1 << 7)
-	authorizePayoutBodyFieldAccountId        = big.NewInt(1 << 8)
+	authorizePayoutBodyFieldAccountID        = big.NewInt(1 << 8)
 	authorizePayoutBodyFieldSubdomain        = big.NewInt(1 << 9)
-	authorizePayoutBodyFieldSubscriptionId   = big.NewInt(1 << 10)
+	authorizePayoutBodyFieldSubscriptionID   = big.NewInt(1 << 10)
 	authorizePayoutBodyFieldAutoCapture      = big.NewInt(1 << 11)
 )
 
 type AuthorizePayoutBody struct {
 	EntryPoint       Entrypointfield         `json:"entryPoint" url:"entryPoint"`
 	Source           *Source                 `json:"source,omitempty" url:"source,omitempty"`
-	OrderId          *OrderId                `json:"orderId,omitempty" url:"orderId,omitempty"`
+	OrderID          *OrderID                `json:"orderId,omitempty" url:"orderId,omitempty"`
 	OrderDescription *Orderdescription       `json:"orderDescription,omitempty" url:"orderDescription,omitempty"`
 	PaymentMethod    *AuthorizePaymentMethod `json:"paymentMethod" url:"paymentMethod"`
 	// Object containing payment details.
@@ -662,9 +662,9 @@ type AuthorizePayoutBody struct {
 	VendorData *RequestOutAuthorizeVendorData `json:"vendorData" url:"vendorData"`
 	// Array of bills associated to the transaction
 	InvoiceData    []*RequestOutAuthorizeInvoiceData `json:"invoiceData" url:"invoiceData"`
-	AccountId      *AccountId                        `json:"accountId,omitempty" url:"accountId,omitempty"`
+	AccountID      *AccountID                        `json:"accountId,omitempty" url:"accountId,omitempty"`
 	Subdomain      *Subdomain                        `json:"subdomain,omitempty" url:"subdomain,omitempty"`
-	SubscriptionId *Subscriptionid                   `json:"subscriptionId,omitempty" url:"subscriptionId,omitempty"`
+	SubscriptionID *Subscriptionid                   `json:"subscriptionId,omitempty" url:"subscriptionId,omitempty"`
 	AutoCapture    *AutoCapture                      `json:"autoCapture,omitempty" url:"autoCapture,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -688,11 +688,11 @@ func (a *AuthorizePayoutBody) GetSource() *Source {
 	return a.Source
 }
 
-func (a *AuthorizePayoutBody) GetOrderId() *OrderId {
+func (a *AuthorizePayoutBody) GetOrderID() *OrderID {
 	if a == nil {
 		return nil
 	}
-	return a.OrderId
+	return a.OrderID
 }
 
 func (a *AuthorizePayoutBody) GetOrderDescription() *Orderdescription {
@@ -730,11 +730,11 @@ func (a *AuthorizePayoutBody) GetInvoiceData() []*RequestOutAuthorizeInvoiceData
 	return a.InvoiceData
 }
 
-func (a *AuthorizePayoutBody) GetAccountId() *AccountId {
+func (a *AuthorizePayoutBody) GetAccountID() *AccountID {
 	if a == nil {
 		return nil
 	}
-	return a.AccountId
+	return a.AccountID
 }
 
 func (a *AuthorizePayoutBody) GetSubdomain() *Subdomain {
@@ -744,11 +744,11 @@ func (a *AuthorizePayoutBody) GetSubdomain() *Subdomain {
 	return a.Subdomain
 }
 
-func (a *AuthorizePayoutBody) GetSubscriptionId() *Subscriptionid {
+func (a *AuthorizePayoutBody) GetSubscriptionID() *Subscriptionid {
 	if a == nil {
 		return nil
 	}
-	return a.SubscriptionId
+	return a.SubscriptionID
 }
 
 func (a *AuthorizePayoutBody) GetAutoCapture() *AutoCapture {
@@ -786,11 +786,11 @@ func (a *AuthorizePayoutBody) SetSource(source *Source) {
 	a.require(authorizePayoutBodyFieldSource)
 }
 
-// SetOrderId sets the OrderId field and marks it as non-optional;
+// SetOrderID sets the OrderID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AuthorizePayoutBody) SetOrderId(orderId *OrderId) {
-	a.OrderId = orderId
-	a.require(authorizePayoutBodyFieldOrderId)
+func (a *AuthorizePayoutBody) SetOrderID(orderID *OrderID) {
+	a.OrderID = orderID
+	a.require(authorizePayoutBodyFieldOrderID)
 }
 
 // SetOrderDescription sets the OrderDescription field and marks it as non-optional;
@@ -828,11 +828,11 @@ func (a *AuthorizePayoutBody) SetInvoiceData(invoiceData []*RequestOutAuthorizeI
 	a.require(authorizePayoutBodyFieldInvoiceData)
 }
 
-// SetAccountId sets the AccountId field and marks it as non-optional;
+// SetAccountID sets the AccountID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AuthorizePayoutBody) SetAccountId(accountId *AccountId) {
-	a.AccountId = accountId
-	a.require(authorizePayoutBodyFieldAccountId)
+func (a *AuthorizePayoutBody) SetAccountID(accountID *AccountID) {
+	a.AccountID = accountID
+	a.require(authorizePayoutBodyFieldAccountID)
 }
 
 // SetSubdomain sets the Subdomain field and marks it as non-optional;
@@ -842,11 +842,11 @@ func (a *AuthorizePayoutBody) SetSubdomain(subdomain *Subdomain) {
 	a.require(authorizePayoutBodyFieldSubdomain)
 }
 
-// SetSubscriptionId sets the SubscriptionId field and marks it as non-optional;
+// SetSubscriptionID sets the SubscriptionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AuthorizePayoutBody) SetSubscriptionId(subscriptionId *Subscriptionid) {
-	a.SubscriptionId = subscriptionId
-	a.require(authorizePayoutBodyFieldSubscriptionId)
+func (a *AuthorizePayoutBody) SetSubscriptionID(subscriptionID *Subscriptionid) {
+	a.SubscriptionID = subscriptionID
+	a.require(authorizePayoutBodyFieldSubscriptionID)
 }
 
 // SetAutoCapture sets the AutoCapture field and marks it as non-optional;
@@ -1048,16 +1048,16 @@ func (c *CaptureAllOutResponse) String() string {
 }
 
 var (
-	captureAllOutResponseResponseDataItemFieldCustomerId  = big.NewInt(1 << 0)
-	captureAllOutResponseResponseDataItemFieldReferenceId = big.NewInt(1 << 1)
+	captureAllOutResponseResponseDataItemFieldCustomerID  = big.NewInt(1 << 0)
+	captureAllOutResponseResponseDataItemFieldReferenceID = big.NewInt(1 << 1)
 	captureAllOutResponseResponseDataItemFieldResultCode  = big.NewInt(1 << 2)
 	captureAllOutResponseResponseDataItemFieldResultText  = big.NewInt(1 << 3)
 )
 
 type CaptureAllOutResponseResponseDataItem struct {
 	// Internal unique Id of vendor owner of transaction. Returns `0` if the transaction wasn't assigned to an existing vendor or no vendor was created.
-	CustomerId  *Customeridtrans  `json:"CustomerId,omitempty" url:"CustomerId,omitempty"`
-	ReferenceId *Referenceidtrans `json:"ReferenceId,omitempty" url:"ReferenceId,omitempty"`
+	CustomerID  *Customeridtrans  `json:"CustomerId,omitempty" url:"CustomerId,omitempty"`
+	ReferenceID *Referenceidtrans `json:"ReferenceId,omitempty" url:"ReferenceId,omitempty"`
 	ResultCode  *ResultCode       `json:"ResultCode,omitempty" url:"ResultCode,omitempty"`
 	// Text describing the result.
 	// If `ResultCode“ = 1, returns 'Authorized'.
@@ -1071,18 +1071,18 @@ type CaptureAllOutResponseResponseDataItem struct {
 	rawJSON         json.RawMessage
 }
 
-func (c *CaptureAllOutResponseResponseDataItem) GetCustomerId() *Customeridtrans {
+func (c *CaptureAllOutResponseResponseDataItem) GetCustomerID() *Customeridtrans {
 	if c == nil {
 		return nil
 	}
-	return c.CustomerId
+	return c.CustomerID
 }
 
-func (c *CaptureAllOutResponseResponseDataItem) GetReferenceId() *Referenceidtrans {
+func (c *CaptureAllOutResponseResponseDataItem) GetReferenceID() *Referenceidtrans {
 	if c == nil {
 		return nil
 	}
-	return c.ReferenceId
+	return c.ReferenceID
 }
 
 func (c *CaptureAllOutResponseResponseDataItem) GetResultCode() *ResultCode {
@@ -1113,18 +1113,18 @@ func (c *CaptureAllOutResponseResponseDataItem) require(field *big.Int) {
 	c.explicitFields.Or(c.explicitFields, field)
 }
 
-// SetCustomerId sets the CustomerId field and marks it as non-optional;
+// SetCustomerID sets the CustomerID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaptureAllOutResponseResponseDataItem) SetCustomerId(customerId *Customeridtrans) {
-	c.CustomerId = customerId
-	c.require(captureAllOutResponseResponseDataItemFieldCustomerId)
+func (c *CaptureAllOutResponseResponseDataItem) SetCustomerID(customerID *Customeridtrans) {
+	c.CustomerID = customerID
+	c.require(captureAllOutResponseResponseDataItemFieldCustomerID)
 }
 
-// SetReferenceId sets the ReferenceId field and marks it as non-optional;
+// SetReferenceID sets the ReferenceID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaptureAllOutResponseResponseDataItem) SetReferenceId(referenceId *Referenceidtrans) {
-	c.ReferenceId = referenceId
-	c.require(captureAllOutResponseResponseDataItemFieldReferenceId)
+func (c *CaptureAllOutResponseResponseDataItem) SetReferenceID(referenceID *Referenceidtrans) {
+	c.ReferenceID = referenceID
+	c.require(captureAllOutResponseResponseDataItemFieldReferenceID)
 }
 
 // SetResultCode sets the ResultCode field and marks it as non-optional;
@@ -2032,18 +2032,18 @@ func (r *ReissuePayoutResponse) String() string {
 }
 
 var (
-	reissuePayoutResponseDataFieldTransactionId         = big.NewInt(1 << 0)
+	reissuePayoutResponseDataFieldTransactionID         = big.NewInt(1 << 0)
 	reissuePayoutResponseDataFieldStatus                = big.NewInt(1 << 1)
-	reissuePayoutResponseDataFieldOriginalTransactionId = big.NewInt(1 << 2)
+	reissuePayoutResponseDataFieldOriginalTransactionID = big.NewInt(1 << 2)
 )
 
 type ReissuePayoutResponseData struct {
 	// The transaction ID of the newly created payout.
-	TransactionId string `json:"transactionId" url:"transactionId"`
+	TransactionID string `json:"transactionId" url:"transactionId"`
 	// The status of the new transaction.
 	Status string `json:"status" url:"status"`
 	// The transaction ID of the original payout that was reissued.
-	OriginalTransactionId *string `json:"originalTransactionId,omitempty" url:"originalTransactionId,omitempty"`
+	OriginalTransactionID *string `json:"originalTransactionId,omitempty" url:"originalTransactionId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2052,11 +2052,11 @@ type ReissuePayoutResponseData struct {
 	rawJSON         json.RawMessage
 }
 
-func (r *ReissuePayoutResponseData) GetTransactionId() string {
+func (r *ReissuePayoutResponseData) GetTransactionID() string {
 	if r == nil {
 		return ""
 	}
-	return r.TransactionId
+	return r.TransactionID
 }
 
 func (r *ReissuePayoutResponseData) GetStatus() string {
@@ -2066,11 +2066,11 @@ func (r *ReissuePayoutResponseData) GetStatus() string {
 	return r.Status
 }
 
-func (r *ReissuePayoutResponseData) GetOriginalTransactionId() *string {
+func (r *ReissuePayoutResponseData) GetOriginalTransactionID() *string {
 	if r == nil {
 		return nil
 	}
-	return r.OriginalTransactionId
+	return r.OriginalTransactionID
 }
 
 func (r *ReissuePayoutResponseData) GetExtraProperties() map[string]interface{} {
@@ -2087,11 +2087,11 @@ func (r *ReissuePayoutResponseData) require(field *big.Int) {
 	r.explicitFields.Or(r.explicitFields, field)
 }
 
-// SetTransactionId sets the TransactionId field and marks it as non-optional;
+// SetTransactionID sets the TransactionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *ReissuePayoutResponseData) SetTransactionId(transactionId string) {
-	r.TransactionId = transactionId
-	r.require(reissuePayoutResponseDataFieldTransactionId)
+func (r *ReissuePayoutResponseData) SetTransactionID(transactionID string) {
+	r.TransactionID = transactionID
+	r.require(reissuePayoutResponseDataFieldTransactionID)
 }
 
 // SetStatus sets the Status field and marks it as non-optional;
@@ -2101,11 +2101,11 @@ func (r *ReissuePayoutResponseData) SetStatus(status string) {
 	r.require(reissuePayoutResponseDataFieldStatus)
 }
 
-// SetOriginalTransactionId sets the OriginalTransactionId field and marks it as non-optional;
+// SetOriginalTransactionID sets the OriginalTransactionID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *ReissuePayoutResponseData) SetOriginalTransactionId(originalTransactionId *string) {
-	r.OriginalTransactionId = originalTransactionId
-	r.require(reissuePayoutResponseDataFieldOriginalTransactionId)
+func (r *ReissuePayoutResponseData) SetOriginalTransactionID(originalTransactionID *string) {
+	r.OriginalTransactionID = originalTransactionID
+	r.require(reissuePayoutResponseDataFieldOriginalTransactionID)
 }
 
 func (r *ReissuePayoutResponseData) UnmarshalJSON(data []byte) error {
@@ -2157,7 +2157,7 @@ var (
 	requestOutAuthorizeInvoiceDataFieldDueDate          = big.NewInt(1 << 3)
 	requestOutAuthorizeInvoiceDataFieldComments         = big.NewInt(1 << 4)
 	requestOutAuthorizeInvoiceDataFieldLotNumber        = big.NewInt(1 << 5)
-	requestOutAuthorizeInvoiceDataFieldBillId           = big.NewInt(1 << 6)
+	requestOutAuthorizeInvoiceDataFieldBillID           = big.NewInt(1 << 6)
 	requestOutAuthorizeInvoiceDataFieldDiscount         = big.NewInt(1 << 7)
 	requestOutAuthorizeInvoiceDataFieldTerms            = big.NewInt(1 << 8)
 	requestOutAuthorizeInvoiceDataFieldAccountingField1 = big.NewInt(1 << 9)
@@ -2175,7 +2175,7 @@ type RequestOutAuthorizeInvoiceData struct {
 	DueDate          *time.Time            `json:"dueDate,omitempty" url:"dueDate,omitempty" format:"date"`
 	Comments         *Comments             `json:"comments,omitempty" url:"comments,omitempty"`
 	LotNumber        *LotNumber            `json:"lotNumber,omitempty" url:"lotNumber,omitempty"`
-	BillId           *BillId               `json:"billId,omitempty" url:"billId,omitempty"`
+	BillID           *BillID               `json:"billId,omitempty" url:"billId,omitempty"`
 	Discount         *Discount             `json:"discount,omitempty" url:"discount,omitempty"`
 	Terms            *Terms                `json:"terms,omitempty" url:"terms,omitempty"`
 	AccountingField1 *AccountingField      `json:"accountingField1,omitempty" url:"accountingField1,omitempty"`
@@ -2232,11 +2232,11 @@ func (r *RequestOutAuthorizeInvoiceData) GetLotNumber() *LotNumber {
 	return r.LotNumber
 }
 
-func (r *RequestOutAuthorizeInvoiceData) GetBillId() *BillId {
+func (r *RequestOutAuthorizeInvoiceData) GetBillID() *BillID {
 	if r == nil {
 		return nil
 	}
-	return r.BillId
+	return r.BillID
 }
 
 func (r *RequestOutAuthorizeInvoiceData) GetDiscount() *Discount {
@@ -2337,11 +2337,11 @@ func (r *RequestOutAuthorizeInvoiceData) SetLotNumber(lotNumber *LotNumber) {
 	r.require(requestOutAuthorizeInvoiceDataFieldLotNumber)
 }
 
-// SetBillId sets the BillId field and marks it as non-optional;
+// SetBillID sets the BillID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeInvoiceData) SetBillId(billId *BillId) {
-	r.BillId = billId
-	r.require(requestOutAuthorizeInvoiceDataFieldBillId)
+func (r *RequestOutAuthorizeInvoiceData) SetBillID(billID *BillID) {
+	r.BillID = billID
+	r.require(requestOutAuthorizeInvoiceDataFieldBillID)
 }
 
 // SetDiscount sets the Discount field and marks it as non-optional;
@@ -2770,12 +2770,12 @@ var (
 	requestOutAuthorizeVendorDataFieldCustomField2          = big.NewInt(1 << 23)
 	requestOutAuthorizeVendorDataFieldAdditionalData        = big.NewInt(1 << 24)
 	requestOutAuthorizeVendorDataFieldAddress2              = big.NewInt(1 << 25)
-	requestOutAuthorizeVendorDataFieldInternalReferenceId   = big.NewInt(1 << 26)
+	requestOutAuthorizeVendorDataFieldInternalReferenceID   = big.NewInt(1 << 26)
 	requestOutAuthorizeVendorDataFieldLocationCode          = big.NewInt(1 << 27)
 	requestOutAuthorizeVendorDataFieldPayeeName1            = big.NewInt(1 << 28)
 	requestOutAuthorizeVendorDataFieldPayeeName2            = big.NewInt(1 << 29)
 	requestOutAuthorizeVendorDataFieldPaymentMethod         = big.NewInt(1 << 30)
-	requestOutAuthorizeVendorDataFieldVendorId              = big.NewInt(1 << 31)
+	requestOutAuthorizeVendorDataFieldVendorID              = big.NewInt(1 << 31)
 )
 
 type RequestOutAuthorizeVendorData struct {
@@ -2805,12 +2805,12 @@ type RequestOutAuthorizeVendorData struct {
 	CustomField2          *string                               `json:"customField2,omitempty" url:"customField2,omitempty"`
 	AdditionalData        *AdditionalData                       `json:"additionalData,omitempty" url:"additionalData,omitempty"`
 	Address2              *AddressAddtlNullable                 `json:"address2,omitempty" url:"address2,omitempty"`
-	InternalReferenceId   *int64                                `json:"internalReferenceId,omitempty" url:"internalReferenceId,omitempty"`
+	InternalReferenceID   *int64                                `json:"internalReferenceId,omitempty" url:"internalReferenceId,omitempty"`
 	LocationCode          *LocationCode                         `json:"locationCode,omitempty" url:"locationCode,omitempty"`
 	PayeeName1            *PayeeName                            `json:"payeeName1,omitempty" url:"payeeName1,omitempty"`
 	PayeeName2            *PayeeName                            `json:"payeeName2,omitempty" url:"payeeName2,omitempty"`
 	PaymentMethod         *VendorPaymentMethod                  `json:"paymentMethod,omitempty" url:"paymentMethod,omitempty"`
-	VendorId              *Vendorid                             `json:"vendorId,omitempty" url:"vendorId,omitempty"`
+	VendorID              *Vendorid                             `json:"vendorId,omitempty" url:"vendorId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3001,11 +3001,11 @@ func (r *RequestOutAuthorizeVendorData) GetAddress2() *AddressAddtlNullable {
 	return r.Address2
 }
 
-func (r *RequestOutAuthorizeVendorData) GetInternalReferenceId() *int64 {
+func (r *RequestOutAuthorizeVendorData) GetInternalReferenceID() *int64 {
 	if r == nil {
 		return nil
 	}
-	return r.InternalReferenceId
+	return r.InternalReferenceID
 }
 
 func (r *RequestOutAuthorizeVendorData) GetLocationCode() *LocationCode {
@@ -3036,11 +3036,11 @@ func (r *RequestOutAuthorizeVendorData) GetPaymentMethod() *VendorPaymentMethod 
 	return r.PaymentMethod
 }
 
-func (r *RequestOutAuthorizeVendorData) GetVendorId() *Vendorid {
+func (r *RequestOutAuthorizeVendorData) GetVendorID() *Vendorid {
 	if r == nil {
 		return nil
 	}
-	return r.VendorId
+	return r.VendorID
 }
 
 func (r *RequestOutAuthorizeVendorData) GetExtraProperties() map[string]interface{} {
@@ -3239,11 +3239,11 @@ func (r *RequestOutAuthorizeVendorData) SetAddress2(address2 *AddressAddtlNullab
 	r.require(requestOutAuthorizeVendorDataFieldAddress2)
 }
 
-// SetInternalReferenceId sets the InternalReferenceId field and marks it as non-optional;
+// SetInternalReferenceID sets the InternalReferenceID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetInternalReferenceId(internalReferenceId *int64) {
-	r.InternalReferenceId = internalReferenceId
-	r.require(requestOutAuthorizeVendorDataFieldInternalReferenceId)
+func (r *RequestOutAuthorizeVendorData) SetInternalReferenceID(internalReferenceID *int64) {
+	r.InternalReferenceID = internalReferenceID
+	r.require(requestOutAuthorizeVendorDataFieldInternalReferenceID)
 }
 
 // SetLocationCode sets the LocationCode field and marks it as non-optional;
@@ -3274,11 +3274,11 @@ func (r *RequestOutAuthorizeVendorData) SetPaymentMethod(paymentMethod *VendorPa
 	r.require(requestOutAuthorizeVendorDataFieldPaymentMethod)
 }
 
-// SetVendorId sets the VendorId field and marks it as non-optional;
+// SetVendorID sets the VendorID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetVendorId(vendorId *Vendorid) {
-	r.VendorId = vendorId
-	r.require(requestOutAuthorizeVendorDataFieldVendorId)
+func (r *RequestOutAuthorizeVendorData) SetVendorID(vendorID *Vendorid) {
+	r.VendorID = vendorID
+	r.require(requestOutAuthorizeVendorDataFieldVendorID)
 }
 
 func (r *RequestOutAuthorizeVendorData) UnmarshalJSON(data []byte) error {
@@ -3337,7 +3337,7 @@ var (
 	requestOutAuthorizeVendorDataOldFieldCustomField2          = big.NewInt(1 << 9)
 	requestOutAuthorizeVendorDataOldFieldEin                   = big.NewInt(1 << 10)
 	requestOutAuthorizeVendorDataOldFieldEmail                 = big.NewInt(1 << 11)
-	requestOutAuthorizeVendorDataOldFieldInternalReferenceId   = big.NewInt(1 << 12)
+	requestOutAuthorizeVendorDataOldFieldInternalReferenceID   = big.NewInt(1 << 12)
 	requestOutAuthorizeVendorDataOldFieldLocationCode          = big.NewInt(1 << 13)
 	requestOutAuthorizeVendorDataOldFieldMcc                   = big.NewInt(1 << 14)
 	requestOutAuthorizeVendorDataOldFieldName1                 = big.NewInt(1 << 15)
@@ -3353,7 +3353,7 @@ var (
 	requestOutAuthorizeVendorDataOldFieldRemitState            = big.NewInt(1 << 25)
 	requestOutAuthorizeVendorDataOldFieldRemitZip              = big.NewInt(1 << 26)
 	requestOutAuthorizeVendorDataOldFieldState                 = big.NewInt(1 << 27)
-	requestOutAuthorizeVendorDataOldFieldVendorId              = big.NewInt(1 << 28)
+	requestOutAuthorizeVendorDataOldFieldVendorID              = big.NewInt(1 << 28)
 	requestOutAuthorizeVendorDataOldFieldVendorNumber          = big.NewInt(1 << 29)
 	requestOutAuthorizeVendorDataOldFieldVendorStatus          = big.NewInt(1 << 30)
 	requestOutAuthorizeVendorDataOldFieldZip                   = big.NewInt(1 << 31)
@@ -3381,7 +3381,7 @@ type RequestOutAuthorizeVendorDataOld struct {
 	// Vendor's email address. Required for vCard.
 	Email *Email `json:"email,omitempty" url:"email,omitempty"`
 	// Internal identifier for global vendor account.
-	InternalReferenceId *int64               `json:"internalReferenceId,omitempty" url:"internalReferenceId,omitempty"`
+	InternalReferenceID *int64               `json:"internalReferenceId,omitempty" url:"internalReferenceId,omitempty"`
 	LocationCode        *LocationCode        `json:"locationCode,omitempty" url:"locationCode,omitempty"`
 	Mcc                 *Mcc                 `json:"mcc,omitempty" url:"mcc,omitempty"`
 	Name1               *VendorName1         `json:"name1,omitempty" url:"name1,omitempty"`
@@ -3399,7 +3399,7 @@ type RequestOutAuthorizeVendorDataOld struct {
 	// Vendor's state. Must be a 2 character state code.
 	State *string `json:"state,omitempty" url:"state,omitempty"`
 	// Payabli identifier for vendor record. Required when `vendorNumber` isn't included.
-	VendorId     *Vendorid     `json:"vendorId,omitempty" url:"vendorId,omitempty"`
+	VendorID     *Vendorid     `json:"vendorId,omitempty" url:"vendorId,omitempty"`
 	VendorNumber *VendorNumber `json:"vendorNumber,omitempty" url:"vendorNumber,omitempty"`
 	VendorStatus *Vendorstatus `json:"vendorStatus,omitempty" url:"vendorStatus,omitempty"`
 	// Vendor's postal code.
@@ -3496,11 +3496,11 @@ func (r *RequestOutAuthorizeVendorDataOld) GetEmail() *Email {
 	return r.Email
 }
 
-func (r *RequestOutAuthorizeVendorDataOld) GetInternalReferenceId() *int64 {
+func (r *RequestOutAuthorizeVendorDataOld) GetInternalReferenceID() *int64 {
 	if r == nil {
 		return nil
 	}
-	return r.InternalReferenceId
+	return r.InternalReferenceID
 }
 
 func (r *RequestOutAuthorizeVendorDataOld) GetLocationCode() *LocationCode {
@@ -3608,11 +3608,11 @@ func (r *RequestOutAuthorizeVendorDataOld) GetState() *string {
 	return r.State
 }
 
-func (r *RequestOutAuthorizeVendorDataOld) GetVendorId() *Vendorid {
+func (r *RequestOutAuthorizeVendorDataOld) GetVendorID() *Vendorid {
 	if r == nil {
 		return nil
 	}
-	return r.VendorId
+	return r.VendorID
 }
 
 func (r *RequestOutAuthorizeVendorDataOld) GetVendorNumber() *VendorNumber {
@@ -3734,11 +3734,11 @@ func (r *RequestOutAuthorizeVendorDataOld) SetEmail(email *Email) {
 	r.require(requestOutAuthorizeVendorDataOldFieldEmail)
 }
 
-// SetInternalReferenceId sets the InternalReferenceId field and marks it as non-optional;
+// SetInternalReferenceID sets the InternalReferenceID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorDataOld) SetInternalReferenceId(internalReferenceId *int64) {
-	r.InternalReferenceId = internalReferenceId
-	r.require(requestOutAuthorizeVendorDataOldFieldInternalReferenceId)
+func (r *RequestOutAuthorizeVendorDataOld) SetInternalReferenceID(internalReferenceID *int64) {
+	r.InternalReferenceID = internalReferenceID
+	r.require(requestOutAuthorizeVendorDataOldFieldInternalReferenceID)
 }
 
 // SetLocationCode sets the LocationCode field and marks it as non-optional;
@@ -3846,11 +3846,11 @@ func (r *RequestOutAuthorizeVendorDataOld) SetState(state *string) {
 	r.require(requestOutAuthorizeVendorDataOldFieldState)
 }
 
-// SetVendorId sets the VendorId field and marks it as non-optional;
+// SetVendorID sets the VendorID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorDataOld) SetVendorId(vendorId *Vendorid) {
-	r.VendorId = vendorId
-	r.require(requestOutAuthorizeVendorDataOldFieldVendorId)
+func (r *RequestOutAuthorizeVendorDataOld) SetVendorID(vendorID *Vendorid) {
+	r.VendorID = vendorID
+	r.require(requestOutAuthorizeVendorDataOldFieldVendorID)
 }
 
 // SetVendorNumber sets the VendorNumber field and marks it as non-optional;
@@ -3942,8 +3942,8 @@ var (
 	vCardGetResponseFieldPaypointDbaname     = big.NewInt(1 << 22)
 	vCardGetResponseFieldPaypointLegalname   = big.NewInt(1 << 23)
 	vCardGetResponseFieldPaypointEntryname   = big.NewInt(1 << 24)
-	vCardGetResponseFieldExternalPaypointId  = big.NewInt(1 << 25)
-	vCardGetResponseFieldPaypointId          = big.NewInt(1 << 26)
+	vCardGetResponseFieldExternalPaypointID  = big.NewInt(1 << 25)
+	vCardGetResponseFieldPaypointID          = big.NewInt(1 << 26)
 )
 
 type VCardGetResponse struct {
@@ -3997,9 +3997,9 @@ type VCardGetResponse struct {
 	PaypointLegalname *string `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
 	// Entry name for the Paypoint, if applicable.
 	PaypointEntryname  *string             `json:"PaypointEntryname,omitempty" url:"PaypointEntryname,omitempty"`
-	ExternalPaypointId *ExternalPaypointId `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	ExternalPaypointID *ExternalPaypointID `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
 	// The unique identifier for the paypoint.
-	PaypointId *int `json:"paypointId,omitempty" url:"paypointId,omitempty"`
+	PaypointID *int `json:"paypointId,omitempty" url:"paypointId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -4183,18 +4183,18 @@ func (v *VCardGetResponse) GetPaypointEntryname() *string {
 	return v.PaypointEntryname
 }
 
-func (v *VCardGetResponse) GetExternalPaypointId() *ExternalPaypointId {
+func (v *VCardGetResponse) GetExternalPaypointID() *ExternalPaypointID {
 	if v == nil {
 		return nil
 	}
-	return v.ExternalPaypointId
+	return v.ExternalPaypointID
 }
 
-func (v *VCardGetResponse) GetPaypointId() *int {
+func (v *VCardGetResponse) GetPaypointID() *int {
 	if v == nil {
 		return nil
 	}
-	return v.PaypointId
+	return v.PaypointID
 }
 
 func (v *VCardGetResponse) GetExtraProperties() map[string]interface{} {
@@ -4386,18 +4386,18 @@ func (v *VCardGetResponse) SetPaypointEntryname(paypointEntryname *string) {
 	v.require(vCardGetResponseFieldPaypointEntryname)
 }
 
-// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// SetExternalPaypointID sets the ExternalPaypointID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardGetResponse) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
-	v.ExternalPaypointId = externalPaypointId
-	v.require(vCardGetResponseFieldExternalPaypointId)
+func (v *VCardGetResponse) SetExternalPaypointID(externalPaypointID *ExternalPaypointID) {
+	v.ExternalPaypointID = externalPaypointID
+	v.require(vCardGetResponseFieldExternalPaypointID)
 }
 
-// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// SetPaypointID sets the PaypointID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardGetResponse) SetPaypointId(paypointId *int) {
-	v.PaypointId = paypointId
-	v.require(vCardGetResponseFieldPaypointId)
+func (v *VCardGetResponse) SetPaypointID(paypointID *int) {
+	v.PaypointID = paypointID
+	v.require(vCardGetResponseFieldPaypointID)
 }
 
 func (v *VCardGetResponse) UnmarshalJSON(data []byte) error {
@@ -4463,14 +4463,14 @@ var (
 	vCardGetResponseAssociatedVendorFieldBillingData           = big.NewInt(1 << 16)
 	vCardGetResponseAssociatedVendorFieldPaymentMethod         = big.NewInt(1 << 17)
 	vCardGetResponseAssociatedVendorFieldVendorStatus          = big.NewInt(1 << 18)
-	vCardGetResponseAssociatedVendorFieldVendorId              = big.NewInt(1 << 19)
+	vCardGetResponseAssociatedVendorFieldVendorID              = big.NewInt(1 << 19)
 	vCardGetResponseAssociatedVendorFieldEnrollmentStatus      = big.NewInt(1 << 20)
 	vCardGetResponseAssociatedVendorFieldSummary               = big.NewInt(1 << 21)
 	vCardGetResponseAssociatedVendorFieldPaypointLegalname     = big.NewInt(1 << 22)
 	vCardGetResponseAssociatedVendorFieldPaypointDbaname       = big.NewInt(1 << 23)
 	vCardGetResponseAssociatedVendorFieldPaypointEntryname     = big.NewInt(1 << 24)
 	vCardGetResponseAssociatedVendorFieldParentOrgName         = big.NewInt(1 << 25)
-	vCardGetResponseAssociatedVendorFieldParentOrgId           = big.NewInt(1 << 26)
+	vCardGetResponseAssociatedVendorFieldParentOrgID           = big.NewInt(1 << 26)
 	vCardGetResponseAssociatedVendorFieldCreatedDate           = big.NewInt(1 << 27)
 	vCardGetResponseAssociatedVendorFieldLastUpdated           = big.NewInt(1 << 28)
 	vCardGetResponseAssociatedVendorFieldRemitAddress1         = big.NewInt(1 << 29)
@@ -4484,9 +4484,9 @@ var (
 	vCardGetResponseAssociatedVendorFieldCustomField1          = big.NewInt(1 << 37)
 	vCardGetResponseAssociatedVendorFieldCustomField2          = big.NewInt(1 << 38)
 	vCardGetResponseAssociatedVendorFieldCustomerVendorAccount = big.NewInt(1 << 39)
-	vCardGetResponseAssociatedVendorFieldInternalReferenceId   = big.NewInt(1 << 40)
+	vCardGetResponseAssociatedVendorFieldInternalReferenceID   = big.NewInt(1 << 40)
 	vCardGetResponseAssociatedVendorFieldAdditionalData        = big.NewInt(1 << 41)
-	vCardGetResponseAssociatedVendorFieldExternalPaypointId    = big.NewInt(1 << 42)
+	vCardGetResponseAssociatedVendorFieldExternalPaypointID    = big.NewInt(1 << 42)
 	vCardGetResponseAssociatedVendorFieldStoredMethods         = big.NewInt(1 << 43)
 )
 
@@ -4529,7 +4529,7 @@ type VCardGetResponseAssociatedVendor struct {
 	// Status of the vendor.
 	VendorStatus *int `json:"VendorStatus,omitempty" url:"VendorStatus,omitempty"`
 	// Unique identifier for the vendor.
-	VendorId *int `json:"VendorId,omitempty" url:"VendorId,omitempty"`
+	VendorID *int `json:"VendorId,omitempty" url:"VendorId,omitempty"`
 	// Enrollment status of the vendor.
 	EnrollmentStatus *string `json:"EnrollmentStatus,omitempty" url:"EnrollmentStatus,omitempty"`
 	// Summary of vendor's billing and transaction status.
@@ -4542,7 +4542,7 @@ type VCardGetResponseAssociatedVendor struct {
 	PaypointEntryname *string        `json:"PaypointEntryname,omitempty" url:"PaypointEntryname,omitempty"`
 	ParentOrgName     *OrgParentName `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
 	// ID of the parent organization.
-	ParentOrgId *int `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
+	ParentOrgID *int `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
 	// Date when the vendor record was created.
 	CreatedDate *string `json:"CreatedDate,omitempty" url:"CreatedDate,omitempty"`
 	// Date when the vendor's information was last updated.
@@ -4564,10 +4564,10 @@ type VCardGetResponseAssociatedVendor struct {
 	// Account number of paypoint in the vendor side.
 	CustomerVendorAccount *string `json:"customerVendorAccount,omitempty" url:"customerVendorAccount,omitempty"`
 	// Internal reference ID used within the system.
-	InternalReferenceId *int `json:"InternalReferenceId,omitempty" url:"InternalReferenceId,omitempty"`
+	InternalReferenceID *int `json:"InternalReferenceId,omitempty" url:"InternalReferenceId,omitempty"`
 	// Field for additional data, if any.
 	AdditionalData     *string             `json:"additionalData,omitempty" url:"additionalData,omitempty"`
-	ExternalPaypointId *ExternalPaypointId `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	ExternalPaypointID *ExternalPaypointID `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
 	// Stored payment methods for the vendor.
 	StoredMethods *string `json:"StoredMethods,omitempty" url:"StoredMethods,omitempty"`
 
@@ -4711,11 +4711,11 @@ func (v *VCardGetResponseAssociatedVendor) GetVendorStatus() *int {
 	return v.VendorStatus
 }
 
-func (v *VCardGetResponseAssociatedVendor) GetVendorId() *int {
+func (v *VCardGetResponseAssociatedVendor) GetVendorID() *int {
 	if v == nil {
 		return nil
 	}
-	return v.VendorId
+	return v.VendorID
 }
 
 func (v *VCardGetResponseAssociatedVendor) GetEnrollmentStatus() *string {
@@ -4760,11 +4760,11 @@ func (v *VCardGetResponseAssociatedVendor) GetParentOrgName() *OrgParentName {
 	return v.ParentOrgName
 }
 
-func (v *VCardGetResponseAssociatedVendor) GetParentOrgId() *int {
+func (v *VCardGetResponseAssociatedVendor) GetParentOrgID() *int {
 	if v == nil {
 		return nil
 	}
-	return v.ParentOrgId
+	return v.ParentOrgID
 }
 
 func (v *VCardGetResponseAssociatedVendor) GetCreatedDate() *string {
@@ -4858,11 +4858,11 @@ func (v *VCardGetResponseAssociatedVendor) GetCustomerVendorAccount() *string {
 	return v.CustomerVendorAccount
 }
 
-func (v *VCardGetResponseAssociatedVendor) GetInternalReferenceId() *int {
+func (v *VCardGetResponseAssociatedVendor) GetInternalReferenceID() *int {
 	if v == nil {
 		return nil
 	}
-	return v.InternalReferenceId
+	return v.InternalReferenceID
 }
 
 func (v *VCardGetResponseAssociatedVendor) GetAdditionalData() *string {
@@ -4872,11 +4872,11 @@ func (v *VCardGetResponseAssociatedVendor) GetAdditionalData() *string {
 	return v.AdditionalData
 }
 
-func (v *VCardGetResponseAssociatedVendor) GetExternalPaypointId() *ExternalPaypointId {
+func (v *VCardGetResponseAssociatedVendor) GetExternalPaypointID() *ExternalPaypointID {
 	if v == nil {
 		return nil
 	}
-	return v.ExternalPaypointId
+	return v.ExternalPaypointID
 }
 
 func (v *VCardGetResponseAssociatedVendor) GetStoredMethods() *string {
@@ -5033,11 +5033,11 @@ func (v *VCardGetResponseAssociatedVendor) SetVendorStatus(vendorStatus *int) {
 	v.require(vCardGetResponseAssociatedVendorFieldVendorStatus)
 }
 
-// SetVendorId sets the VendorId field and marks it as non-optional;
+// SetVendorID sets the VendorID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardGetResponseAssociatedVendor) SetVendorId(vendorId *int) {
-	v.VendorId = vendorId
-	v.require(vCardGetResponseAssociatedVendorFieldVendorId)
+func (v *VCardGetResponseAssociatedVendor) SetVendorID(vendorID *int) {
+	v.VendorID = vendorID
+	v.require(vCardGetResponseAssociatedVendorFieldVendorID)
 }
 
 // SetEnrollmentStatus sets the EnrollmentStatus field and marks it as non-optional;
@@ -5082,11 +5082,11 @@ func (v *VCardGetResponseAssociatedVendor) SetParentOrgName(parentOrgName *OrgPa
 	v.require(vCardGetResponseAssociatedVendorFieldParentOrgName)
 }
 
-// SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
+// SetParentOrgID sets the ParentOrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardGetResponseAssociatedVendor) SetParentOrgId(parentOrgId *int) {
-	v.ParentOrgId = parentOrgId
-	v.require(vCardGetResponseAssociatedVendorFieldParentOrgId)
+func (v *VCardGetResponseAssociatedVendor) SetParentOrgID(parentOrgID *int) {
+	v.ParentOrgID = parentOrgID
+	v.require(vCardGetResponseAssociatedVendorFieldParentOrgID)
 }
 
 // SetCreatedDate sets the CreatedDate field and marks it as non-optional;
@@ -5180,11 +5180,11 @@ func (v *VCardGetResponseAssociatedVendor) SetCustomerVendorAccount(customerVend
 	v.require(vCardGetResponseAssociatedVendorFieldCustomerVendorAccount)
 }
 
-// SetInternalReferenceId sets the InternalReferenceId field and marks it as non-optional;
+// SetInternalReferenceID sets the InternalReferenceID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardGetResponseAssociatedVendor) SetInternalReferenceId(internalReferenceId *int) {
-	v.InternalReferenceId = internalReferenceId
-	v.require(vCardGetResponseAssociatedVendorFieldInternalReferenceId)
+func (v *VCardGetResponseAssociatedVendor) SetInternalReferenceID(internalReferenceID *int) {
+	v.InternalReferenceID = internalReferenceID
+	v.require(vCardGetResponseAssociatedVendorFieldInternalReferenceID)
 }
 
 // SetAdditionalData sets the AdditionalData field and marks it as non-optional;
@@ -5194,11 +5194,11 @@ func (v *VCardGetResponseAssociatedVendor) SetAdditionalData(additionalData *str
 	v.require(vCardGetResponseAssociatedVendorFieldAdditionalData)
 }
 
-// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// SetExternalPaypointID sets the ExternalPaypointID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardGetResponseAssociatedVendor) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
-	v.ExternalPaypointId = externalPaypointId
-	v.require(vCardGetResponseAssociatedVendorFieldExternalPaypointId)
+func (v *VCardGetResponseAssociatedVendor) SetExternalPaypointID(externalPaypointID *ExternalPaypointID) {
+	v.ExternalPaypointID = externalPaypointID
+	v.require(vCardGetResponseAssociatedVendorFieldExternalPaypointID)
 }
 
 // SetStoredMethods sets the StoredMethods field and marks it as non-optional;
@@ -5252,8 +5252,8 @@ func (v *VCardGetResponseAssociatedVendor) String() string {
 
 // Billing data for the vendor.
 var (
-	vCardGetResponseAssociatedVendorBillingDataFieldId                    = big.NewInt(1 << 0)
-	vCardGetResponseAssociatedVendorBillingDataFieldAccountId             = big.NewInt(1 << 1)
+	vCardGetResponseAssociatedVendorBillingDataFieldID                    = big.NewInt(1 << 0)
+	vCardGetResponseAssociatedVendorBillingDataFieldAccountID             = big.NewInt(1 << 1)
 	vCardGetResponseAssociatedVendorBillingDataFieldNickname              = big.NewInt(1 << 2)
 	vCardGetResponseAssociatedVendorBillingDataFieldBankName              = big.NewInt(1 << 3)
 	vCardGetResponseAssociatedVendorBillingDataFieldRoutingAccount        = big.NewInt(1 << 4)
@@ -5270,9 +5270,9 @@ var (
 
 type VCardGetResponseAssociatedVendorBillingData struct {
 	// Unique identifier for billing data.
-	Id *int `json:"id,omitempty" url:"id,omitempty"`
+	ID *int `json:"id,omitempty" url:"id,omitempty"`
 	// Account identifier.
-	AccountId *string `json:"accountId,omitempty" url:"accountId,omitempty"`
+	AccountID *string `json:"accountId,omitempty" url:"accountId,omitempty"`
 	// Nickname for the account.
 	Nickname *string `json:"nickname,omitempty" url:"nickname,omitempty"`
 	// Name of the bank used for transactions.
@@ -5305,18 +5305,18 @@ type VCardGetResponseAssociatedVendorBillingData struct {
 	rawJSON         json.RawMessage
 }
 
-func (v *VCardGetResponseAssociatedVendorBillingData) GetId() *int {
+func (v *VCardGetResponseAssociatedVendorBillingData) GetID() *int {
 	if v == nil {
 		return nil
 	}
-	return v.Id
+	return v.ID
 }
 
-func (v *VCardGetResponseAssociatedVendorBillingData) GetAccountId() *string {
+func (v *VCardGetResponseAssociatedVendorBillingData) GetAccountID() *string {
 	if v == nil {
 		return nil
 	}
-	return v.AccountId
+	return v.AccountID
 }
 
 func (v *VCardGetResponseAssociatedVendorBillingData) GetNickname() *string {
@@ -5417,18 +5417,18 @@ func (v *VCardGetResponseAssociatedVendorBillingData) require(field *big.Int) {
 	v.explicitFields.Or(v.explicitFields, field)
 }
 
-// SetId sets the Id field and marks it as non-optional;
+// SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardGetResponseAssociatedVendorBillingData) SetId(id *int) {
-	v.Id = id
-	v.require(vCardGetResponseAssociatedVendorBillingDataFieldId)
+func (v *VCardGetResponseAssociatedVendorBillingData) SetID(id *int) {
+	v.ID = id
+	v.require(vCardGetResponseAssociatedVendorBillingDataFieldID)
 }
 
-// SetAccountId sets the AccountId field and marks it as non-optional;
+// SetAccountID sets the AccountID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardGetResponseAssociatedVendorBillingData) SetAccountId(accountId *string) {
-	v.AccountId = accountId
-	v.require(vCardGetResponseAssociatedVendorBillingDataFieldAccountId)
+func (v *VCardGetResponseAssociatedVendorBillingData) SetAccountID(accountID *string) {
+	v.AccountID = accountID
+	v.require(vCardGetResponseAssociatedVendorBillingDataFieldAccountID)
 }
 
 // SetNickname sets the Nickname field and marks it as non-optional;

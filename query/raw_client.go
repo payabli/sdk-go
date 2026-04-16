@@ -85,7 +85,7 @@ func (r *RawClient) ListBatchDetails(
 func (r *RawClient) ListBatchDetailsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListBatchDetailsOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.QueryResponseSettlements], error) {
@@ -97,7 +97,7 @@ func (r *RawClient) ListBatchDetailsOrg(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/batchDetails/org/%v",
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -190,7 +190,7 @@ func (r *RawClient) ListBatches(
 func (r *RawClient) ListBatchesOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListBatchesOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.QueryBatchesResponse], error) {
@@ -202,7 +202,7 @@ func (r *RawClient) ListBatchesOrg(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/batches/org/%v",
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -295,7 +295,7 @@ func (r *RawClient) ListBatchesOut(
 func (r *RawClient) ListBatchesOutOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListBatchesOutOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.QueryBatchesOutResponse], error) {
@@ -307,7 +307,7 @@ func (r *RawClient) ListBatchesOutOrg(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/batchesOut/org/%v",
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -400,7 +400,7 @@ func (r *RawClient) ListChargebacks(
 func (r *RawClient) ListChargebacksOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListChargebacksOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.QueryChargebacksResponse], error) {
@@ -412,7 +412,7 @@ func (r *RawClient) ListChargebacksOrg(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/chargebacks/org/%v",
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -505,7 +505,7 @@ func (r *RawClient) ListCustomers(
 func (r *RawClient) ListCustomersOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListCustomersOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.QueryCustomerResponse], error) {
@@ -517,7 +517,7 @@ func (r *RawClient) ListCustomersOrg(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/customers/org/%v",
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -610,7 +610,7 @@ func (r *RawClient) ListNotificationReports(
 func (r *RawClient) ListNotificationReportsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListNotificationReportsOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.QueryResponseNotificationReports], error) {
@@ -622,7 +622,7 @@ func (r *RawClient) ListNotificationReportsOrg(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/notificationReports/org/%v",
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -715,7 +715,7 @@ func (r *RawClient) ListNotifications(
 func (r *RawClient) ListNotificationsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListNotificationsOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.QueryResponseNotifications], error) {
@@ -727,7 +727,7 @@ func (r *RawClient) ListNotificationsOrg(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/notifications/org/%v",
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -768,7 +768,7 @@ func (r *RawClient) ListNotificationsOrg(
 func (r *RawClient) ListOrganizations(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListOrganizationsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.ListOrganizationsResponse], error) {
@@ -780,7 +780,7 @@ func (r *RawClient) ListOrganizations(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/organizations/%v",
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -873,7 +873,7 @@ func (r *RawClient) ListPayout(
 func (r *RawClient) ListPayoutOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListPayoutOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.QueryPayoutTransaction], error) {
@@ -885,7 +885,7 @@ func (r *RawClient) ListPayoutOrg(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/payouts/org/%v",
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -926,7 +926,7 @@ func (r *RawClient) ListPayoutOrg(
 func (r *RawClient) ListPaypoints(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListPaypointsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.QueryEntrypointResponse], error) {
@@ -938,7 +938,7 @@ func (r *RawClient) ListPaypoints(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/paypoints/%v",
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1031,7 +1031,7 @@ func (r *RawClient) ListSettlements(
 func (r *RawClient) ListSettlementsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListSettlementsOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.QueryResponseSettlements], error) {
@@ -1043,7 +1043,7 @@ func (r *RawClient) ListSettlementsOrg(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/settlements/org/%v",
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1136,7 +1136,7 @@ func (r *RawClient) ListSubscriptions(
 func (r *RawClient) ListSubscriptionsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListSubscriptionsOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.QuerySubscriptionResponse], error) {
@@ -1148,7 +1148,7 @@ func (r *RawClient) ListSubscriptionsOrg(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/subscriptions/org/%v",
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1241,7 +1241,7 @@ func (r *RawClient) ListPayoutSubscriptions(
 func (r *RawClient) ListPayoutSubscriptionsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListPayoutSubscriptionsOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.QueryPayoutSubscriptionResponse], error) {
@@ -1253,7 +1253,7 @@ func (r *RawClient) ListPayoutSubscriptionsOrg(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/payoutsubscriptions/org/%v",
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1346,7 +1346,7 @@ func (r *RawClient) ListTransactions(
 func (r *RawClient) ListTransactionsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListTransactionsOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.QueryResponseTransactions], error) {
@@ -1358,7 +1358,7 @@ func (r *RawClient) ListTransactionsOrg(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/transactions/org/%v",
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1400,7 +1400,7 @@ func (r *RawClient) ListTransferDetails(
 	ctx context.Context,
 	entry payabli.Entry,
 	// The numeric identifier for the transfer, assigned by Payabli.
-	transferId int,
+	transferID int,
 	request *payabli.ListTransfersPaypointRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.QueryTransferDetailResponse], error) {
@@ -1413,7 +1413,7 @@ func (r *RawClient) ListTransferDetails(
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/transferDetails/%v/%v",
 		entry,
-		transferId,
+		transferID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1516,7 +1516,7 @@ func (r *RawClient) ListTransfersOrg(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/transfers/org/%v",
-		request.OrgId,
+		request.OrgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1557,7 +1557,7 @@ func (r *RawClient) ListTransfersOrg(
 func (r *RawClient) ListTransfersOutOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListTransfersOutOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.TransferOutQueryResponse], error) {
@@ -1569,7 +1569,7 @@ func (r *RawClient) ListTransfersOutOrg(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/transfersOut/org/%v",
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1663,7 +1663,7 @@ func (r *RawClient) ListTransferDetailsOut(
 	ctx context.Context,
 	entry payabli.Entry,
 	// The numeric identifier for the transfer, assigned by Payabli.
-	transferId int,
+	transferID int,
 	request *payabli.ListTransferDetailsOutRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.TransferOutDetailQueryResponse], error) {
@@ -1676,7 +1676,7 @@ func (r *RawClient) ListTransferDetailsOut(
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/transferDetailsOut/%v/%v",
 		entry,
-		transferId,
+		transferID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1717,7 +1717,7 @@ func (r *RawClient) ListTransferDetailsOut(
 func (r *RawClient) ListUsersOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListUsersOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.QueryUserResponse], error) {
@@ -1729,7 +1729,7 @@ func (r *RawClient) ListUsersOrg(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/users/org/%v",
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1876,7 +1876,7 @@ func (r *RawClient) ListVendors(
 func (r *RawClient) ListVendorsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListVendorsOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.QueryResponseVendors], error) {
@@ -1888,7 +1888,7 @@ func (r *RawClient) ListVendorsOrg(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/vendors/org/%v",
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1981,7 +1981,7 @@ func (r *RawClient) ListVcards(
 func (r *RawClient) ListVcardsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListVcardsOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.VCardQueryResponse], error) {
@@ -1993,7 +1993,7 @@ func (r *RawClient) ListVcardsOrg(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/vcards/org/%v",
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {

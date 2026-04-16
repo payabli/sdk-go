@@ -61,7 +61,7 @@ func (c *Client) UpdateCard(
 	entry payabli.Entry,
 	request *payabli.UpdateCardRequestBody,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponse, error) {
+) (*payabli.PayabliAPIResponse, error) {
 	response, err := c.WithRawResponse.UpdateCard(
 		ctx,
 		entry,

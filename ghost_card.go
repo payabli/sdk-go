@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	createGhostCardRequestBodyFieldVendorId               = big.NewInt(1 << 0)
+	createGhostCardRequestBodyFieldVendorID               = big.NewInt(1 << 0)
 	createGhostCardRequestBodyFieldExpenseLimit           = big.NewInt(1 << 1)
 	createGhostCardRequestBodyFieldExpirationDate         = big.NewInt(1 << 2)
 	createGhostCardRequestBodyFieldAmount                 = big.NewInt(1 << 3)
@@ -30,7 +30,7 @@ var (
 
 type CreateGhostCardRequestBody struct {
 	// ID of the vendor who receives the card. The vendor must belong to the paypoint and have an active status.
-	VendorId int64 `json:"vendorId" url:"-"`
+	VendorID int64 `json:"vendorId" url:"-"`
 	// Spending limit for the card. Must be greater than `0` and can't exceed the paypoint's configured payout credit limit.
 	ExpenseLimit float64 `json:"expenseLimit" url:"-"`
 	// Requested expiration date for the card. If not provided, defaults to 30 days from creation.
@@ -73,11 +73,11 @@ func (c *CreateGhostCardRequestBody) require(field *big.Int) {
 	c.explicitFields.Or(c.explicitFields, field)
 }
 
-// SetVendorId sets the VendorId field and marks it as non-optional;
+// SetVendorID sets the VendorID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateGhostCardRequestBody) SetVendorId(vendorId int64) {
-	c.VendorId = vendorId
-	c.require(createGhostCardRequestBodyFieldVendorId)
+func (c *CreateGhostCardRequestBody) SetVendorID(vendorID int64) {
+	c.VendorID = vendorID
+	c.require(createGhostCardRequestBodyFieldVendorID)
 }
 
 // SetExpenseLimit sets the ExpenseLimit field and marks it as non-optional;
@@ -410,14 +410,14 @@ func (c *CreateGhostCardResponse) String() string {
 }
 
 var (
-	createGhostCardResponseDataFieldReferenceId = big.NewInt(1 << 0)
+	createGhostCardResponseDataFieldReferenceID = big.NewInt(1 << 0)
 	createGhostCardResponseDataFieldResultCode  = big.NewInt(1 << 1)
 	createGhostCardResponseDataFieldResultText  = big.NewInt(1 << 2)
 )
 
 type CreateGhostCardResponseData struct {
 	// Card token for the ghost card. Use this value to reference the card in subsequent operations (update, cancel, etc.).
-	ReferenceId *string     `json:"ReferenceId,omitempty" url:"ReferenceId,omitempty"`
+	ReferenceID *string     `json:"ReferenceId,omitempty" url:"ReferenceId,omitempty"`
 	ResultCode  *ResultCode `json:"ResultCode,omitempty" url:"ResultCode,omitempty"`
 	ResultText  *Resulttext `json:"ResultText,omitempty" url:"ResultText,omitempty"`
 
@@ -428,11 +428,11 @@ type CreateGhostCardResponseData struct {
 	rawJSON         json.RawMessage
 }
 
-func (c *CreateGhostCardResponseData) GetReferenceId() *string {
+func (c *CreateGhostCardResponseData) GetReferenceID() *string {
 	if c == nil {
 		return nil
 	}
-	return c.ReferenceId
+	return c.ReferenceID
 }
 
 func (c *CreateGhostCardResponseData) GetResultCode() *ResultCode {
@@ -463,11 +463,11 @@ func (c *CreateGhostCardResponseData) require(field *big.Int) {
 	c.explicitFields.Or(c.explicitFields, field)
 }
 
-// SetReferenceId sets the ReferenceId field and marks it as non-optional;
+// SetReferenceID sets the ReferenceID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateGhostCardResponseData) SetReferenceId(referenceId *string) {
-	c.ReferenceId = referenceId
-	c.require(createGhostCardResponseDataFieldReferenceId)
+func (c *CreateGhostCardResponseData) SetReferenceID(referenceID *string) {
+	c.ReferenceID = referenceID
+	c.require(createGhostCardResponseDataFieldReferenceID)
 }
 
 // SetResultCode sets the ResultCode field and marks it as non-optional;

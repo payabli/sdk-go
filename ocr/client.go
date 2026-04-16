@@ -38,7 +38,7 @@ func (c *Client) OcrDocumentForm(
 	typeResult payabli.TypeResult,
 	request *payabli.FileContentImageOnly,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponseOcr, error) {
+) (*payabli.PayabliAPIResponseOcr, error) {
 	response, err := c.WithRawResponse.OcrDocumentForm(
 		ctx,
 		typeResult,
@@ -52,13 +52,13 @@ func (c *Client) OcrDocumentForm(
 }
 
 // Use this endpoint to submit a Base64-encoded image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter `typeResult`. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
-func (c *Client) OcrDocumentJson(
+func (c *Client) OcrDocumentJSON(
 	ctx context.Context,
 	typeResult payabli.TypeResult,
 	request *payabli.FileContentImageOnly,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponseOcr, error) {
-	response, err := c.WithRawResponse.OcrDocumentJson(
+) (*payabli.PayabliAPIResponseOcr, error) {
+	response, err := c.WithRawResponse.OcrDocumentJSON(
 		ctx,
 		typeResult,
 		request,

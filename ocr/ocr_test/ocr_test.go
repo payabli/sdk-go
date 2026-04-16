@@ -86,7 +86,7 @@ func TestOcrOcrDocumentFormWithWireMock(
 	VerifyRequestCount(t, "TestOcrOcrDocumentFormWithWireMock", "POST", "/Import/ocrDocumentForm/typeResult", nil, 1)
 }
 
-func TestOcrOcrDocumentJsonWithWireMock(
+func TestOcrOcrDocumentJSONWithWireMock(
 	t *testing.T,
 ) {
 	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
@@ -97,15 +97,15 @@ func TestOcrOcrDocumentJsonWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &payabli.FileContentImageOnly{}
-	_, invocationErr := client.Ocr.OcrDocumentJson(
+	_, invocationErr := client.Ocr.OcrDocumentJSON(
 		context.TODO(),
 		"typeResult",
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestOcrOcrDocumentJsonWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestOcrOcrDocumentJSONWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestOcrOcrDocumentJsonWithWireMock", "POST", "/Import/ocrDocumentJson/typeResult", nil, 1)
+	VerifyRequestCount(t, "TestOcrOcrDocumentJSONWithWireMock", "POST", "/Import/ocrDocumentJson/typeResult", nil, 1)
 }

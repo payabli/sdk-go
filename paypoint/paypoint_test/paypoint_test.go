@@ -84,7 +84,7 @@ func TestPaypointGetBasicEntryWithWireMock(
 	VerifyRequestCount(t, "TestPaypointGetBasicEntryWithWireMock", "GET", "/Paypoint/basic/8cfec329267", nil, 1)
 }
 
-func TestPaypointGetBasicEntryByIdWithWireMock(
+func TestPaypointGetBasicEntryByIDWithWireMock(
 	t *testing.T,
 ) {
 	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
@@ -94,16 +94,16 @@ func TestPaypointGetBasicEntryByIdWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	_, invocationErr := client.Paypoint.GetBasicEntryById(
+	_, invocationErr := client.Paypoint.GetBasicEntryByID(
 		context.TODO(),
 		"198",
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestPaypointGetBasicEntryByIdWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestPaypointGetBasicEntryByIDWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPaypointGetBasicEntryByIdWithWireMock", "GET", "/Paypoint/basicById/198", nil, 1)
+	VerifyRequestCount(t, "TestPaypointGetBasicEntryByIDWithWireMock", "GET", "/Paypoint/basicById/198", nil, 1)
 }
 
 func TestPaypointGetEntryConfigWithWireMock(
@@ -234,9 +234,9 @@ func TestPaypointMigrateWithWireMock(
 	)
 	request := &payabli.PaypointMoveRequest{
 		EntryPoint:              "473abc123def",
-		NewParentOrganizationId: 123,
+		NewParentOrganizationID: 123,
 		NotificationRequest: &payabli.NotificationRequest{
-			NotificationUrl: "https://webhook-test.yoursie.com",
+			NotificationURL: "https://webhook-test.yoursie.com",
 			WebHeaderParameters: []*payabli.WebHeaderParameter{
 				&payabli.WebHeaderParameter{
 					Key:   "testheader",

@@ -39,7 +39,7 @@ func (c *Client) AddItem(
 	entry string,
 	request *payabli.AddItemRequest,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponse6, error) {
+) (*payabli.PayabliAPIResponse6, error) {
 	response, err := c.WithRawResponse.AddItem(
 		ctx,
 		entry,
@@ -56,12 +56,12 @@ func (c *Client) AddItem(
 func (c *Client) DeleteItem(
 	ctx context.Context,
 	// ID for the line item (also known as a product, service, or item).
-	lineItemId int,
+	lineItemID int,
 	opts ...option.RequestOption,
 ) (*payabli.DeleteItemResponse, error) {
 	response, err := c.WithRawResponse.DeleteItem(
 		ctx,
-		lineItemId,
+		lineItemID,
 		opts...,
 	)
 	if err != nil {
@@ -74,12 +74,12 @@ func (c *Client) DeleteItem(
 func (c *Client) GetItem(
 	ctx context.Context,
 	// ID for the line item (also known as a product, service, or item).
-	lineItemId int,
+	lineItemID int,
 	opts ...option.RequestOption,
 ) (*payabli.LineItemQueryRecord, error) {
 	response, err := c.WithRawResponse.GetItem(
 		ctx,
-		lineItemId,
+		lineItemID,
 		opts...,
 	)
 	if err != nil {
@@ -112,13 +112,13 @@ func (c *Client) ListLineItems(
 func (c *Client) UpdateItem(
 	ctx context.Context,
 	// ID for the line item (also known as a product, service, or item).
-	lineItemId int,
+	lineItemID int,
 	request *payabli.LineItem,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponse6, error) {
+) (*payabli.PayabliAPIResponse6, error) {
 	response, err := c.WithRawResponse.UpdateItem(
 		ctx,
-		lineItemId,
+		lineItemID,
 		request,
 		opts...,
 	)

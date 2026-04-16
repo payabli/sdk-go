@@ -50,7 +50,7 @@ func (r *RequestPayoutSchedule) MarshalJSON() ([]byte, error) {
 }
 
 var (
-	billPayOutDataRequestFieldBillId           = big.NewInt(1 << 0)
+	billPayOutDataRequestFieldBillID           = big.NewInt(1 << 0)
 	billPayOutDataRequestFieldComments         = big.NewInt(1 << 1)
 	billPayOutDataRequestFieldDueDate          = big.NewInt(1 << 2)
 	billPayOutDataRequestFieldInvoiceDate      = big.NewInt(1 << 3)
@@ -66,7 +66,7 @@ var (
 
 type BillPayOutDataRequest struct {
 	// Bill ID in Payabli.
-	BillId *int64 `json:"billId,omitempty" url:"billId,omitempty"`
+	BillID *int64 `json:"billId,omitempty" url:"billId,omitempty"`
 	// Any comments about bill. **For managed payouts, this field has a limit of 100 characters**.
 	Comments *Comments `json:"comments,omitempty" url:"comments,omitempty"`
 	// Bill due date in format YYYY-MM-DD or MM/DD/YYYY.
@@ -94,11 +94,11 @@ type BillPayOutDataRequest struct {
 	rawJSON         json.RawMessage
 }
 
-func (b *BillPayOutDataRequest) GetBillId() *int64 {
+func (b *BillPayOutDataRequest) GetBillID() *int64 {
 	if b == nil {
 		return nil
 	}
-	return b.BillId
+	return b.BillID
 }
 
 func (b *BillPayOutDataRequest) GetComments() *Comments {
@@ -192,11 +192,11 @@ func (b *BillPayOutDataRequest) require(field *big.Int) {
 	b.explicitFields.Or(b.explicitFields, field)
 }
 
-// SetBillId sets the BillId field and marks it as non-optional;
+// SetBillID sets the BillID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillPayOutDataRequest) SetBillId(billId *int64) {
-	b.BillId = billId
-	b.require(billPayOutDataRequestFieldBillId)
+func (b *BillPayOutDataRequest) SetBillID(billID *int64) {
+	b.BillID = billID
+	b.require(billPayOutDataRequestFieldBillID)
 }
 
 // SetComments sets the Comments field and marks it as non-optional;
@@ -335,7 +335,7 @@ var (
 	addPayoutSubscriptionResponseFieldIsSuccess    = big.NewInt(1 << 0)
 	addPayoutSubscriptionResponseFieldResponseText = big.NewInt(1 << 1)
 	addPayoutSubscriptionResponseFieldResponseData = big.NewInt(1 << 2)
-	addPayoutSubscriptionResponseFieldCustomerId   = big.NewInt(1 << 3)
+	addPayoutSubscriptionResponseFieldCustomerID   = big.NewInt(1 << 3)
 )
 
 type AddPayoutSubscriptionResponse struct {
@@ -344,7 +344,7 @@ type AddPayoutSubscriptionResponse struct {
 	// The identifier of the newly created payout subscription.
 	ResponseData int `json:"responseData" url:"responseData"`
 	// The identifier of the vendor associated with the payout subscription.
-	CustomerId *CustomerId `json:"customerId,omitempty" url:"customerId,omitempty"`
+	CustomerID *CustomerID `json:"customerId,omitempty" url:"customerId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -374,11 +374,11 @@ func (a *AddPayoutSubscriptionResponse) GetResponseData() int {
 	return a.ResponseData
 }
 
-func (a *AddPayoutSubscriptionResponse) GetCustomerId() *CustomerId {
+func (a *AddPayoutSubscriptionResponse) GetCustomerID() *CustomerID {
 	if a == nil {
 		return nil
 	}
-	return a.CustomerId
+	return a.CustomerID
 }
 
 func (a *AddPayoutSubscriptionResponse) GetExtraProperties() map[string]interface{} {
@@ -416,11 +416,11 @@ func (a *AddPayoutSubscriptionResponse) SetResponseData(responseData int) {
 	a.require(addPayoutSubscriptionResponseFieldResponseData)
 }
 
-// SetCustomerId sets the CustomerId field and marks it as non-optional;
+// SetCustomerID sets the CustomerID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AddPayoutSubscriptionResponse) SetCustomerId(customerId *CustomerId) {
-	a.CustomerId = customerId
-	a.require(addPayoutSubscriptionResponseFieldCustomerId)
+func (a *AddPayoutSubscriptionResponse) SetCustomerID(customerID *CustomerID) {
+	a.CustomerID = customerID
+	a.require(addPayoutSubscriptionResponseFieldCustomerID)
 }
 
 func (a *AddPayoutSubscriptionResponse) UnmarshalJSON(data []byte) error {
@@ -710,13 +710,13 @@ var (
 	payoutPaymentDetailFieldCurrency             = big.NewInt(1 << 2)
 	payoutPaymentDetailFieldCheckNumber          = big.NewInt(1 << 3)
 	payoutPaymentDetailFieldOrderDescription     = big.NewInt(1 << 4)
-	payoutPaymentDetailFieldOrderId              = big.NewInt(1 << 5)
-	payoutPaymentDetailFieldOrderIdAlternative   = big.NewInt(1 << 6)
+	payoutPaymentDetailFieldOrderID              = big.NewInt(1 << 5)
+	payoutPaymentDetailFieldOrderIDAlternative   = big.NewInt(1 << 6)
 	payoutPaymentDetailFieldPaymentDescription   = big.NewInt(1 << 7)
 	payoutPaymentDetailFieldSettlementDescriptor = big.NewInt(1 << 8)
 	payoutPaymentDetailFieldGroupNumber          = big.NewInt(1 << 9)
 	payoutPaymentDetailFieldSource               = big.NewInt(1 << 10)
-	payoutPaymentDetailFieldPayabliTransId       = big.NewInt(1 << 11)
+	payoutPaymentDetailFieldPayabliTransID       = big.NewInt(1 << 11)
 	payoutPaymentDetailFieldUnbundled            = big.NewInt(1 << 12)
 )
 
@@ -732,9 +732,9 @@ type PayoutPaymentDetail struct {
 	// Description of the payout order.
 	OrderDescription *string `json:"orderDescription,omitempty" url:"orderDescription,omitempty"`
 	// Order identifier associated with the payout.
-	OrderId *string `json:"orderId,omitempty" url:"orderId,omitempty"`
+	OrderID *string `json:"orderId,omitempty" url:"orderId,omitempty"`
 	// Alternative order identifier.
-	OrderIdAlternative *string `json:"orderIdAlternative,omitempty" url:"orderIdAlternative,omitempty"`
+	OrderIDAlternative *string `json:"orderIdAlternative,omitempty" url:"orderIdAlternative,omitempty"`
 	// Description of the payment.
 	PaymentDescription *string `json:"paymentDescription,omitempty" url:"paymentDescription,omitempty"`
 	// Settlement descriptor for the payout.
@@ -744,7 +744,7 @@ type PayoutPaymentDetail struct {
 	// Source identifier for the payout.
 	Source *string `json:"source,omitempty" url:"source,omitempty"`
 	// Payabli transaction identifier.
-	PayabliTransId *string `json:"payabliTransId,omitempty" url:"payabliTransId,omitempty"`
+	PayabliTransID *string `json:"payabliTransId,omitempty" url:"payabliTransId,omitempty"`
 	// When `true`, each bill is processed as a separate payout. When `false` or not provided, multiple bills are paid with a single payout.
 	Unbundled *bool `json:"unbundled,omitempty" url:"unbundled,omitempty"`
 
@@ -790,18 +790,18 @@ func (p *PayoutPaymentDetail) GetOrderDescription() *string {
 	return p.OrderDescription
 }
 
-func (p *PayoutPaymentDetail) GetOrderId() *string {
+func (p *PayoutPaymentDetail) GetOrderID() *string {
 	if p == nil {
 		return nil
 	}
-	return p.OrderId
+	return p.OrderID
 }
 
-func (p *PayoutPaymentDetail) GetOrderIdAlternative() *string {
+func (p *PayoutPaymentDetail) GetOrderIDAlternative() *string {
 	if p == nil {
 		return nil
 	}
-	return p.OrderIdAlternative
+	return p.OrderIDAlternative
 }
 
 func (p *PayoutPaymentDetail) GetPaymentDescription() *string {
@@ -832,11 +832,11 @@ func (p *PayoutPaymentDetail) GetSource() *string {
 	return p.Source
 }
 
-func (p *PayoutPaymentDetail) GetPayabliTransId() *string {
+func (p *PayoutPaymentDetail) GetPayabliTransID() *string {
 	if p == nil {
 		return nil
 	}
-	return p.PayabliTransId
+	return p.PayabliTransID
 }
 
 func (p *PayoutPaymentDetail) GetUnbundled() *bool {
@@ -895,18 +895,18 @@ func (p *PayoutPaymentDetail) SetOrderDescription(orderDescription *string) {
 	p.require(payoutPaymentDetailFieldOrderDescription)
 }
 
-// SetOrderId sets the OrderId field and marks it as non-optional;
+// SetOrderID sets the OrderID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayoutPaymentDetail) SetOrderId(orderId *string) {
-	p.OrderId = orderId
-	p.require(payoutPaymentDetailFieldOrderId)
+func (p *PayoutPaymentDetail) SetOrderID(orderID *string) {
+	p.OrderID = orderID
+	p.require(payoutPaymentDetailFieldOrderID)
 }
 
-// SetOrderIdAlternative sets the OrderIdAlternative field and marks it as non-optional;
+// SetOrderIDAlternative sets the OrderIDAlternative field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayoutPaymentDetail) SetOrderIdAlternative(orderIdAlternative *string) {
-	p.OrderIdAlternative = orderIdAlternative
-	p.require(payoutPaymentDetailFieldOrderIdAlternative)
+func (p *PayoutPaymentDetail) SetOrderIDAlternative(orderIDAlternative *string) {
+	p.OrderIDAlternative = orderIDAlternative
+	p.require(payoutPaymentDetailFieldOrderIDAlternative)
 }
 
 // SetPaymentDescription sets the PaymentDescription field and marks it as non-optional;
@@ -937,11 +937,11 @@ func (p *PayoutPaymentDetail) SetSource(source *string) {
 	p.require(payoutPaymentDetailFieldSource)
 }
 
-// SetPayabliTransId sets the PayabliTransId field and marks it as non-optional;
+// SetPayabliTransID sets the PayabliTransID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayoutPaymentDetail) SetPayabliTransId(payabliTransId *string) {
-	p.PayabliTransId = payabliTransId
-	p.require(payoutPaymentDetailFieldPayabliTransId)
+func (p *PayoutPaymentDetail) SetPayabliTransID(payabliTransID *string) {
+	p.PayabliTransID = payabliTransID
+	p.require(payoutPaymentDetailFieldPayabliTransID)
 }
 
 // SetUnbundled sets the Unbundled field and marks it as non-optional;
@@ -1116,14 +1116,14 @@ func (p *PayoutScheduleDetail) String() string {
 type PayoutSetPause = bool
 
 var (
-	payoutSubscriptionQueryRecordFieldIdOutSubscription  = big.NewInt(1 << 0)
+	payoutSubscriptionQueryRecordFieldIDOutSubscription  = big.NewInt(1 << 0)
 	payoutSubscriptionQueryRecordFieldStatus             = big.NewInt(1 << 1)
 	payoutSubscriptionQueryRecordFieldEvents             = big.NewInt(1 << 2)
 	payoutSubscriptionQueryRecordFieldVendor             = big.NewInt(1 << 3)
 	payoutSubscriptionQueryRecordFieldBillData           = big.NewInt(1 << 4)
-	payoutSubscriptionQueryRecordFieldExternalPaypointId = big.NewInt(1 << 5)
+	payoutSubscriptionQueryRecordFieldExternalPaypointID = big.NewInt(1 << 5)
 	payoutSubscriptionQueryRecordFieldMethod             = big.NewInt(1 << 6)
-	payoutSubscriptionQueryRecordFieldPaypointId         = big.NewInt(1 << 7)
+	payoutSubscriptionQueryRecordFieldPaypointID         = big.NewInt(1 << 7)
 	payoutSubscriptionQueryRecordFieldTotalAmount        = big.NewInt(1 << 8)
 	payoutSubscriptionQueryRecordFieldNetAmount          = big.NewInt(1 << 9)
 	payoutSubscriptionQueryRecordFieldFeeAmount          = big.NewInt(1 << 10)
@@ -1135,7 +1135,7 @@ var (
 	payoutSubscriptionQueryRecordFieldTotalCycles        = big.NewInt(1 << 16)
 	payoutSubscriptionQueryRecordFieldLeftCycles         = big.NewInt(1 << 17)
 	payoutSubscriptionQueryRecordFieldLastRun            = big.NewInt(1 << 18)
-	payoutSubscriptionQueryRecordFieldEntrypageId        = big.NewInt(1 << 19)
+	payoutSubscriptionQueryRecordFieldEntrypageID        = big.NewInt(1 << 19)
 	payoutSubscriptionQueryRecordFieldUntilCancelled     = big.NewInt(1 << 20)
 	payoutSubscriptionQueryRecordFieldLastUpdated        = big.NewInt(1 << 21)
 	payoutSubscriptionQueryRecordFieldCreatedAt          = big.NewInt(1 << 22)
@@ -1143,13 +1143,13 @@ var (
 	payoutSubscriptionQueryRecordFieldPaypointDbaname    = big.NewInt(1 << 24)
 	payoutSubscriptionQueryRecordFieldPaypointEntryname  = big.NewInt(1 << 25)
 	payoutSubscriptionQueryRecordFieldParentOrgName      = big.NewInt(1 << 26)
-	payoutSubscriptionQueryRecordFieldParentOrgId        = big.NewInt(1 << 27)
+	payoutSubscriptionQueryRecordFieldParentOrgID        = big.NewInt(1 << 27)
 	payoutSubscriptionQueryRecordFieldSource             = big.NewInt(1 << 28)
 )
 
 type PayoutSubscriptionQueryRecord struct {
 	// The payout subscription's ID.
-	IdOutSubscription *int64 `json:"idOutSubscription,omitempty" url:"idOutSubscription,omitempty"`
+	IDOutSubscription *int64 `json:"idOutSubscription,omitempty" url:"idOutSubscription,omitempty"`
 	// The payout subscription's status.
 	// - 0: Paused
 	// - 1: Active
@@ -1159,10 +1159,10 @@ type PayoutSubscriptionQueryRecord struct {
 	Vendor *VendorQueryRecord `json:"vendor,omitempty" url:"vendor,omitempty"`
 	// Bills associated with the payout subscription.
 	BillData           []*BillPayOutData   `json:"billData,omitempty" url:"billData,omitempty"`
-	ExternalPaypointId *ExternalPaypointId `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	ExternalPaypointID *ExternalPaypointID `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
 	// The payout subscription's payment method.
 	Method     *string     `json:"method,omitempty" url:"method,omitempty"`
-	PaypointId *PaypointId `json:"paypointId,omitempty" url:"paypointId,omitempty"`
+	PaypointID *PaypointID `json:"paypointId,omitempty" url:"paypointId,omitempty"`
 	// The payout subscription amount, including any fees.
 	TotalAmount *float64 `json:"totalAmount,omitempty" url:"totalAmount,omitempty"`
 	// The payout subscription amount, minus any fees.
@@ -1184,7 +1184,7 @@ type PayoutSubscriptionQueryRecord struct {
 	LeftCycles *int `json:"leftCycles,omitempty" url:"leftCycles,omitempty"`
 	// The last time the payout subscription was processed.
 	LastRun     *time.Time   `json:"lastRun,omitempty" url:"lastRun,omitempty"`
-	EntrypageId *EntrypageId `json:"entrypageId,omitempty" url:"entrypageId,omitempty"`
+	EntrypageID *EntrypageID `json:"entrypageId,omitempty" url:"entrypageId,omitempty"`
 	// When `true`, the payout subscription has no explicit end date and runs until canceled.
 	UntilCancelled *bool `json:"untilCancelled,omitempty" url:"untilCancelled,omitempty"`
 	// The last date and time the payout subscription was updated.
@@ -1198,7 +1198,7 @@ type PayoutSubscriptionQueryRecord struct {
 	// The paypoint's entryname.
 	PaypointEntryname *Entrypointfield `json:"paypointEntryname,omitempty" url:"paypointEntryname,omitempty"`
 	ParentOrgName     *OrgParentName   `json:"parentOrgName,omitempty" url:"parentOrgName,omitempty"`
-	ParentOrgId       *OrgParentId     `json:"parentOrgId,omitempty" url:"parentOrgId,omitempty"`
+	ParentOrgID       *OrgParentID     `json:"parentOrgId,omitempty" url:"parentOrgId,omitempty"`
 	Source            *Source          `json:"source,omitempty" url:"source,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1208,11 +1208,11 @@ type PayoutSubscriptionQueryRecord struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PayoutSubscriptionQueryRecord) GetIdOutSubscription() *int64 {
+func (p *PayoutSubscriptionQueryRecord) GetIDOutSubscription() *int64 {
 	if p == nil {
 		return nil
 	}
-	return p.IdOutSubscription
+	return p.IDOutSubscription
 }
 
 func (p *PayoutSubscriptionQueryRecord) GetStatus() *int {
@@ -1243,11 +1243,11 @@ func (p *PayoutSubscriptionQueryRecord) GetBillData() []*BillPayOutData {
 	return p.BillData
 }
 
-func (p *PayoutSubscriptionQueryRecord) GetExternalPaypointId() *ExternalPaypointId {
+func (p *PayoutSubscriptionQueryRecord) GetExternalPaypointID() *ExternalPaypointID {
 	if p == nil {
 		return nil
 	}
-	return p.ExternalPaypointId
+	return p.ExternalPaypointID
 }
 
 func (p *PayoutSubscriptionQueryRecord) GetMethod() *string {
@@ -1257,11 +1257,11 @@ func (p *PayoutSubscriptionQueryRecord) GetMethod() *string {
 	return p.Method
 }
 
-func (p *PayoutSubscriptionQueryRecord) GetPaypointId() *PaypointId {
+func (p *PayoutSubscriptionQueryRecord) GetPaypointID() *PaypointID {
 	if p == nil {
 		return nil
 	}
-	return p.PaypointId
+	return p.PaypointID
 }
 
 func (p *PayoutSubscriptionQueryRecord) GetTotalAmount() *float64 {
@@ -1341,11 +1341,11 @@ func (p *PayoutSubscriptionQueryRecord) GetLastRun() *time.Time {
 	return p.LastRun
 }
 
-func (p *PayoutSubscriptionQueryRecord) GetEntrypageId() *EntrypageId {
+func (p *PayoutSubscriptionQueryRecord) GetEntrypageID() *EntrypageID {
 	if p == nil {
 		return nil
 	}
-	return p.EntrypageId
+	return p.EntrypageID
 }
 
 func (p *PayoutSubscriptionQueryRecord) GetUntilCancelled() *bool {
@@ -1397,11 +1397,11 @@ func (p *PayoutSubscriptionQueryRecord) GetParentOrgName() *OrgParentName {
 	return p.ParentOrgName
 }
 
-func (p *PayoutSubscriptionQueryRecord) GetParentOrgId() *OrgParentId {
+func (p *PayoutSubscriptionQueryRecord) GetParentOrgID() *OrgParentID {
 	if p == nil {
 		return nil
 	}
-	return p.ParentOrgId
+	return p.ParentOrgID
 }
 
 func (p *PayoutSubscriptionQueryRecord) GetSource() *Source {
@@ -1425,11 +1425,11 @@ func (p *PayoutSubscriptionQueryRecord) require(field *big.Int) {
 	p.explicitFields.Or(p.explicitFields, field)
 }
 
-// SetIdOutSubscription sets the IdOutSubscription field and marks it as non-optional;
+// SetIDOutSubscription sets the IDOutSubscription field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayoutSubscriptionQueryRecord) SetIdOutSubscription(idOutSubscription *int64) {
-	p.IdOutSubscription = idOutSubscription
-	p.require(payoutSubscriptionQueryRecordFieldIdOutSubscription)
+func (p *PayoutSubscriptionQueryRecord) SetIDOutSubscription(idOutSubscription *int64) {
+	p.IDOutSubscription = idOutSubscription
+	p.require(payoutSubscriptionQueryRecordFieldIDOutSubscription)
 }
 
 // SetStatus sets the Status field and marks it as non-optional;
@@ -1460,11 +1460,11 @@ func (p *PayoutSubscriptionQueryRecord) SetBillData(billData []*BillPayOutData) 
 	p.require(payoutSubscriptionQueryRecordFieldBillData)
 }
 
-// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// SetExternalPaypointID sets the ExternalPaypointID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayoutSubscriptionQueryRecord) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
-	p.ExternalPaypointId = externalPaypointId
-	p.require(payoutSubscriptionQueryRecordFieldExternalPaypointId)
+func (p *PayoutSubscriptionQueryRecord) SetExternalPaypointID(externalPaypointID *ExternalPaypointID) {
+	p.ExternalPaypointID = externalPaypointID
+	p.require(payoutSubscriptionQueryRecordFieldExternalPaypointID)
 }
 
 // SetMethod sets the Method field and marks it as non-optional;
@@ -1474,11 +1474,11 @@ func (p *PayoutSubscriptionQueryRecord) SetMethod(method *string) {
 	p.require(payoutSubscriptionQueryRecordFieldMethod)
 }
 
-// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// SetPaypointID sets the PaypointID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayoutSubscriptionQueryRecord) SetPaypointId(paypointId *PaypointId) {
-	p.PaypointId = paypointId
-	p.require(payoutSubscriptionQueryRecordFieldPaypointId)
+func (p *PayoutSubscriptionQueryRecord) SetPaypointID(paypointID *PaypointID) {
+	p.PaypointID = paypointID
+	p.require(payoutSubscriptionQueryRecordFieldPaypointID)
 }
 
 // SetTotalAmount sets the TotalAmount field and marks it as non-optional;
@@ -1558,11 +1558,11 @@ func (p *PayoutSubscriptionQueryRecord) SetLastRun(lastRun *time.Time) {
 	p.require(payoutSubscriptionQueryRecordFieldLastRun)
 }
 
-// SetEntrypageId sets the EntrypageId field and marks it as non-optional;
+// SetEntrypageID sets the EntrypageID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayoutSubscriptionQueryRecord) SetEntrypageId(entrypageId *EntrypageId) {
-	p.EntrypageId = entrypageId
-	p.require(payoutSubscriptionQueryRecordFieldEntrypageId)
+func (p *PayoutSubscriptionQueryRecord) SetEntrypageID(entrypageID *EntrypageID) {
+	p.EntrypageID = entrypageID
+	p.require(payoutSubscriptionQueryRecordFieldEntrypageID)
 }
 
 // SetUntilCancelled sets the UntilCancelled field and marks it as non-optional;
@@ -1614,11 +1614,11 @@ func (p *PayoutSubscriptionQueryRecord) SetParentOrgName(parentOrgName *OrgParen
 	p.require(payoutSubscriptionQueryRecordFieldParentOrgName)
 }
 
-// SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
+// SetParentOrgID sets the ParentOrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayoutSubscriptionQueryRecord) SetParentOrgId(parentOrgId *OrgParentId) {
-	p.ParentOrgId = parentOrgId
-	p.require(payoutSubscriptionQueryRecordFieldParentOrgId)
+func (p *PayoutSubscriptionQueryRecord) SetParentOrgID(parentOrgID *OrgParentID) {
+	p.ParentOrgID = parentOrgID
+	p.require(payoutSubscriptionQueryRecordFieldParentOrgID)
 }
 
 // SetSource sets the Source field and marks it as non-optional;
@@ -1699,14 +1699,14 @@ func (p *PayoutSubscriptionQueryRecord) String() string {
 }
 
 var (
-	payoutSubscriptionQueryRecordPascalFieldIdOutSubscription  = big.NewInt(1 << 0)
+	payoutSubscriptionQueryRecordPascalFieldIDOutSubscription  = big.NewInt(1 << 0)
 	payoutSubscriptionQueryRecordPascalFieldStatus             = big.NewInt(1 << 1)
 	payoutSubscriptionQueryRecordPascalFieldEvents             = big.NewInt(1 << 2)
 	payoutSubscriptionQueryRecordPascalFieldVendor             = big.NewInt(1 << 3)
 	payoutSubscriptionQueryRecordPascalFieldBillData           = big.NewInt(1 << 4)
-	payoutSubscriptionQueryRecordPascalFieldExternalPaypointId = big.NewInt(1 << 5)
+	payoutSubscriptionQueryRecordPascalFieldExternalPaypointID = big.NewInt(1 << 5)
 	payoutSubscriptionQueryRecordPascalFieldMethod             = big.NewInt(1 << 6)
-	payoutSubscriptionQueryRecordPascalFieldPaypointId         = big.NewInt(1 << 7)
+	payoutSubscriptionQueryRecordPascalFieldPaypointID         = big.NewInt(1 << 7)
 	payoutSubscriptionQueryRecordPascalFieldTotalAmount        = big.NewInt(1 << 8)
 	payoutSubscriptionQueryRecordPascalFieldNetAmount          = big.NewInt(1 << 9)
 	payoutSubscriptionQueryRecordPascalFieldFeeAmount          = big.NewInt(1 << 10)
@@ -1718,7 +1718,7 @@ var (
 	payoutSubscriptionQueryRecordPascalFieldTotalCycles        = big.NewInt(1 << 16)
 	payoutSubscriptionQueryRecordPascalFieldLeftCycles         = big.NewInt(1 << 17)
 	payoutSubscriptionQueryRecordPascalFieldLastRun            = big.NewInt(1 << 18)
-	payoutSubscriptionQueryRecordPascalFieldEntrypageId        = big.NewInt(1 << 19)
+	payoutSubscriptionQueryRecordPascalFieldEntrypageID        = big.NewInt(1 << 19)
 	payoutSubscriptionQueryRecordPascalFieldUntilCancelled     = big.NewInt(1 << 20)
 	payoutSubscriptionQueryRecordPascalFieldLastUpdated        = big.NewInt(1 << 21)
 	payoutSubscriptionQueryRecordPascalFieldCreatedAt          = big.NewInt(1 << 22)
@@ -1726,13 +1726,13 @@ var (
 	payoutSubscriptionQueryRecordPascalFieldPaypointDbaname    = big.NewInt(1 << 24)
 	payoutSubscriptionQueryRecordPascalFieldPaypointEntryname  = big.NewInt(1 << 25)
 	payoutSubscriptionQueryRecordPascalFieldParentOrgName      = big.NewInt(1 << 26)
-	payoutSubscriptionQueryRecordPascalFieldParentOrgId        = big.NewInt(1 << 27)
+	payoutSubscriptionQueryRecordPascalFieldParentOrgID        = big.NewInt(1 << 27)
 	payoutSubscriptionQueryRecordPascalFieldSource             = big.NewInt(1 << 28)
 )
 
 type PayoutSubscriptionQueryRecordPascal struct {
 	// The payout subscription's ID.
-	IdOutSubscription *int64 `json:"IdOutSubscription,omitempty" url:"IdOutSubscription,omitempty"`
+	IDOutSubscription *int64 `json:"IdOutSubscription,omitempty" url:"IdOutSubscription,omitempty"`
 	// The payout subscription's status.
 	// - 0: Paused
 	// - 1: Active
@@ -1742,10 +1742,10 @@ type PayoutSubscriptionQueryRecordPascal struct {
 	Vendor *VendorQueryRecord `json:"Vendor,omitempty" url:"Vendor,omitempty"`
 	// Bills associated with the payout subscription.
 	BillData           []*BillPayOutData   `json:"BillData,omitempty" url:"BillData,omitempty"`
-	ExternalPaypointId *ExternalPaypointId `json:"ExternalPaypointID,omitempty" url:"ExternalPaypointID,omitempty"`
+	ExternalPaypointID *ExternalPaypointID `json:"ExternalPaypointID,omitempty" url:"ExternalPaypointID,omitempty"`
 	// The payout subscription's payment method.
 	Method     *string     `json:"Method,omitempty" url:"Method,omitempty"`
-	PaypointId *PaypointId `json:"PaypointId,omitempty" url:"PaypointId,omitempty"`
+	PaypointID *PaypointID `json:"PaypointId,omitempty" url:"PaypointId,omitempty"`
 	// The payout subscription amount, including any fees.
 	TotalAmount *float64 `json:"TotalAmount,omitempty" url:"TotalAmount,omitempty"`
 	// The payout subscription amount, minus any fees.
@@ -1767,7 +1767,7 @@ type PayoutSubscriptionQueryRecordPascal struct {
 	LeftCycles *int `json:"LeftCycles,omitempty" url:"LeftCycles,omitempty"`
 	// The last time the payout subscription was processed.
 	LastRun     *time.Time   `json:"LastRun,omitempty" url:"LastRun,omitempty"`
-	EntrypageId *EntrypageId `json:"EntrypageId,omitempty" url:"EntrypageId,omitempty"`
+	EntrypageID *EntrypageID `json:"EntrypageId,omitempty" url:"EntrypageId,omitempty"`
 	// When `true`, the payout subscription has no explicit end date and runs until canceled.
 	UntilCancelled *bool `json:"UntilCancelled,omitempty" url:"UntilCancelled,omitempty"`
 	// The last date and time the payout subscription was updated.
@@ -1781,7 +1781,7 @@ type PayoutSubscriptionQueryRecordPascal struct {
 	// The paypoint's entryname.
 	PaypointEntryname *Entrypointfield `json:"PaypointEntryname,omitempty" url:"PaypointEntryname,omitempty"`
 	ParentOrgName     *OrgParentName   `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
-	ParentOrgId       *OrgParentId     `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
+	ParentOrgID       *OrgParentID     `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
 	Source            *Source          `json:"Source,omitempty" url:"Source,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1791,11 +1791,11 @@ type PayoutSubscriptionQueryRecordPascal struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PayoutSubscriptionQueryRecordPascal) GetIdOutSubscription() *int64 {
+func (p *PayoutSubscriptionQueryRecordPascal) GetIDOutSubscription() *int64 {
 	if p == nil {
 		return nil
 	}
-	return p.IdOutSubscription
+	return p.IDOutSubscription
 }
 
 func (p *PayoutSubscriptionQueryRecordPascal) GetStatus() *int {
@@ -1826,11 +1826,11 @@ func (p *PayoutSubscriptionQueryRecordPascal) GetBillData() []*BillPayOutData {
 	return p.BillData
 }
 
-func (p *PayoutSubscriptionQueryRecordPascal) GetExternalPaypointId() *ExternalPaypointId {
+func (p *PayoutSubscriptionQueryRecordPascal) GetExternalPaypointID() *ExternalPaypointID {
 	if p == nil {
 		return nil
 	}
-	return p.ExternalPaypointId
+	return p.ExternalPaypointID
 }
 
 func (p *PayoutSubscriptionQueryRecordPascal) GetMethod() *string {
@@ -1840,11 +1840,11 @@ func (p *PayoutSubscriptionQueryRecordPascal) GetMethod() *string {
 	return p.Method
 }
 
-func (p *PayoutSubscriptionQueryRecordPascal) GetPaypointId() *PaypointId {
+func (p *PayoutSubscriptionQueryRecordPascal) GetPaypointID() *PaypointID {
 	if p == nil {
 		return nil
 	}
-	return p.PaypointId
+	return p.PaypointID
 }
 
 func (p *PayoutSubscriptionQueryRecordPascal) GetTotalAmount() *float64 {
@@ -1924,11 +1924,11 @@ func (p *PayoutSubscriptionQueryRecordPascal) GetLastRun() *time.Time {
 	return p.LastRun
 }
 
-func (p *PayoutSubscriptionQueryRecordPascal) GetEntrypageId() *EntrypageId {
+func (p *PayoutSubscriptionQueryRecordPascal) GetEntrypageID() *EntrypageID {
 	if p == nil {
 		return nil
 	}
-	return p.EntrypageId
+	return p.EntrypageID
 }
 
 func (p *PayoutSubscriptionQueryRecordPascal) GetUntilCancelled() *bool {
@@ -1980,11 +1980,11 @@ func (p *PayoutSubscriptionQueryRecordPascal) GetParentOrgName() *OrgParentName 
 	return p.ParentOrgName
 }
 
-func (p *PayoutSubscriptionQueryRecordPascal) GetParentOrgId() *OrgParentId {
+func (p *PayoutSubscriptionQueryRecordPascal) GetParentOrgID() *OrgParentID {
 	if p == nil {
 		return nil
 	}
-	return p.ParentOrgId
+	return p.ParentOrgID
 }
 
 func (p *PayoutSubscriptionQueryRecordPascal) GetSource() *Source {
@@ -2008,11 +2008,11 @@ func (p *PayoutSubscriptionQueryRecordPascal) require(field *big.Int) {
 	p.explicitFields.Or(p.explicitFields, field)
 }
 
-// SetIdOutSubscription sets the IdOutSubscription field and marks it as non-optional;
+// SetIDOutSubscription sets the IDOutSubscription field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayoutSubscriptionQueryRecordPascal) SetIdOutSubscription(idOutSubscription *int64) {
-	p.IdOutSubscription = idOutSubscription
-	p.require(payoutSubscriptionQueryRecordPascalFieldIdOutSubscription)
+func (p *PayoutSubscriptionQueryRecordPascal) SetIDOutSubscription(idOutSubscription *int64) {
+	p.IDOutSubscription = idOutSubscription
+	p.require(payoutSubscriptionQueryRecordPascalFieldIDOutSubscription)
 }
 
 // SetStatus sets the Status field and marks it as non-optional;
@@ -2043,11 +2043,11 @@ func (p *PayoutSubscriptionQueryRecordPascal) SetBillData(billData []*BillPayOut
 	p.require(payoutSubscriptionQueryRecordPascalFieldBillData)
 }
 
-// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// SetExternalPaypointID sets the ExternalPaypointID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayoutSubscriptionQueryRecordPascal) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
-	p.ExternalPaypointId = externalPaypointId
-	p.require(payoutSubscriptionQueryRecordPascalFieldExternalPaypointId)
+func (p *PayoutSubscriptionQueryRecordPascal) SetExternalPaypointID(externalPaypointID *ExternalPaypointID) {
+	p.ExternalPaypointID = externalPaypointID
+	p.require(payoutSubscriptionQueryRecordPascalFieldExternalPaypointID)
 }
 
 // SetMethod sets the Method field and marks it as non-optional;
@@ -2057,11 +2057,11 @@ func (p *PayoutSubscriptionQueryRecordPascal) SetMethod(method *string) {
 	p.require(payoutSubscriptionQueryRecordPascalFieldMethod)
 }
 
-// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// SetPaypointID sets the PaypointID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayoutSubscriptionQueryRecordPascal) SetPaypointId(paypointId *PaypointId) {
-	p.PaypointId = paypointId
-	p.require(payoutSubscriptionQueryRecordPascalFieldPaypointId)
+func (p *PayoutSubscriptionQueryRecordPascal) SetPaypointID(paypointID *PaypointID) {
+	p.PaypointID = paypointID
+	p.require(payoutSubscriptionQueryRecordPascalFieldPaypointID)
 }
 
 // SetTotalAmount sets the TotalAmount field and marks it as non-optional;
@@ -2141,11 +2141,11 @@ func (p *PayoutSubscriptionQueryRecordPascal) SetLastRun(lastRun *time.Time) {
 	p.require(payoutSubscriptionQueryRecordPascalFieldLastRun)
 }
 
-// SetEntrypageId sets the EntrypageId field and marks it as non-optional;
+// SetEntrypageID sets the EntrypageID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayoutSubscriptionQueryRecordPascal) SetEntrypageId(entrypageId *EntrypageId) {
-	p.EntrypageId = entrypageId
-	p.require(payoutSubscriptionQueryRecordPascalFieldEntrypageId)
+func (p *PayoutSubscriptionQueryRecordPascal) SetEntrypageID(entrypageID *EntrypageID) {
+	p.EntrypageID = entrypageID
+	p.require(payoutSubscriptionQueryRecordPascalFieldEntrypageID)
 }
 
 // SetUntilCancelled sets the UntilCancelled field and marks it as non-optional;
@@ -2197,11 +2197,11 @@ func (p *PayoutSubscriptionQueryRecordPascal) SetParentOrgName(parentOrgName *Or
 	p.require(payoutSubscriptionQueryRecordPascalFieldParentOrgName)
 }
 
-// SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
+// SetParentOrgID sets the ParentOrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayoutSubscriptionQueryRecordPascal) SetParentOrgId(parentOrgId *OrgParentId) {
-	p.ParentOrgId = parentOrgId
-	p.require(payoutSubscriptionQueryRecordPascalFieldParentOrgId)
+func (p *PayoutSubscriptionQueryRecordPascal) SetParentOrgID(parentOrgID *OrgParentID) {
+	p.ParentOrgID = parentOrgID
+	p.require(payoutSubscriptionQueryRecordPascalFieldParentOrgID)
 }
 
 // SetSource sets the Source field and marks it as non-optional;
@@ -2284,7 +2284,7 @@ func (p *PayoutSubscriptionQueryRecordPascal) String() string {
 var (
 	payoutSubscriptionRequestBodyFieldEntryPoint      = big.NewInt(1 << 0)
 	payoutSubscriptionRequestBodyFieldSubdomain       = big.NewInt(1 << 1)
-	payoutSubscriptionRequestBodyFieldAccountId       = big.NewInt(1 << 2)
+	payoutSubscriptionRequestBodyFieldAccountID       = big.NewInt(1 << 2)
 	payoutSubscriptionRequestBodyFieldSource          = big.NewInt(1 << 3)
 	payoutSubscriptionRequestBodyFieldSetPause        = big.NewInt(1 << 4)
 	payoutSubscriptionRequestBodyFieldPaymentMethod   = big.NewInt(1 << 5)
@@ -2297,7 +2297,7 @@ var (
 type PayoutSubscriptionRequestBody struct {
 	EntryPoint Entrypointfield `json:"entryPoint" url:"entryPoint"`
 	Subdomain  *Subdomain      `json:"subdomain,omitempty" url:"subdomain,omitempty"`
-	AccountId  *AccountId      `json:"accountId,omitempty" url:"accountId,omitempty"`
+	AccountID  *AccountID      `json:"accountId,omitempty" url:"accountId,omitempty"`
 	Source     *Source         `json:"source,omitempty" url:"source,omitempty"`
 	SetPause   *PayoutSetPause `json:"setPause,omitempty" url:"setPause,omitempty"`
 	// Payment method for the payout subscription. Supports `ach`, `vcard`, and `check`. The `managed` method isn't supported for payout subscriptions.
@@ -2332,11 +2332,11 @@ func (p *PayoutSubscriptionRequestBody) GetSubdomain() *Subdomain {
 	return p.Subdomain
 }
 
-func (p *PayoutSubscriptionRequestBody) GetAccountId() *AccountId {
+func (p *PayoutSubscriptionRequestBody) GetAccountID() *AccountID {
 	if p == nil {
 		return nil
 	}
-	return p.AccountId
+	return p.AccountID
 }
 
 func (p *PayoutSubscriptionRequestBody) GetSource() *Source {
@@ -2416,11 +2416,11 @@ func (p *PayoutSubscriptionRequestBody) SetSubdomain(subdomain *Subdomain) {
 	p.require(payoutSubscriptionRequestBodyFieldSubdomain)
 }
 
-// SetAccountId sets the AccountId field and marks it as non-optional;
+// SetAccountID sets the AccountID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayoutSubscriptionRequestBody) SetAccountId(accountId *AccountId) {
-	p.AccountId = accountId
-	p.require(payoutSubscriptionRequestBodyFieldAccountId)
+func (p *PayoutSubscriptionRequestBody) SetAccountID(accountID *AccountID) {
+	p.AccountID = accountID
+	p.require(payoutSubscriptionRequestBodyFieldAccountID)
 }
 
 // SetSource sets the Source field and marks it as non-optional;
@@ -2754,7 +2754,7 @@ var (
 	updatePayoutSubscriptionResponseFieldIsSuccess    = big.NewInt(1 << 0)
 	updatePayoutSubscriptionResponseFieldResponseText = big.NewInt(1 << 1)
 	updatePayoutSubscriptionResponseFieldResponseData = big.NewInt(1 << 2)
-	updatePayoutSubscriptionResponseFieldCustomerId   = big.NewInt(1 << 3)
+	updatePayoutSubscriptionResponseFieldCustomerID   = big.NewInt(1 << 3)
 )
 
 type UpdatePayoutSubscriptionResponse struct {
@@ -2764,7 +2764,7 @@ type UpdatePayoutSubscriptionResponse struct {
 	//
 	// If `isSuccess` = false, this contains the reason for the failure.
 	ResponseData *string     `json:"responseData,omitempty" url:"responseData,omitempty"`
-	CustomerId   *CustomerId `json:"customerId,omitempty" url:"customerId,omitempty"`
+	CustomerID   *CustomerID `json:"customerId,omitempty" url:"customerId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2794,11 +2794,11 @@ func (u *UpdatePayoutSubscriptionResponse) GetResponseData() *string {
 	return u.ResponseData
 }
 
-func (u *UpdatePayoutSubscriptionResponse) GetCustomerId() *CustomerId {
+func (u *UpdatePayoutSubscriptionResponse) GetCustomerID() *CustomerID {
 	if u == nil {
 		return nil
 	}
-	return u.CustomerId
+	return u.CustomerID
 }
 
 func (u *UpdatePayoutSubscriptionResponse) GetExtraProperties() map[string]interface{} {
@@ -2836,11 +2836,11 @@ func (u *UpdatePayoutSubscriptionResponse) SetResponseData(responseData *string)
 	u.require(updatePayoutSubscriptionResponseFieldResponseData)
 }
 
-// SetCustomerId sets the CustomerId field and marks it as non-optional;
+// SetCustomerID sets the CustomerID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UpdatePayoutSubscriptionResponse) SetCustomerId(customerId *CustomerId) {
-	u.CustomerId = customerId
-	u.require(updatePayoutSubscriptionResponseFieldCustomerId)
+func (u *UpdatePayoutSubscriptionResponse) SetCustomerID(customerID *CustomerID) {
+	u.CustomerID = customerID
+	u.require(updatePayoutSubscriptionResponseFieldCustomerID)
 }
 
 func (u *UpdatePayoutSubscriptionResponse) UnmarshalJSON(data []byte) error {

@@ -648,7 +648,7 @@ var (
 	v2TransactionDetailResponseDataFieldType                = big.NewInt(1 << 11)
 	v2TransactionDetailResponseDataFieldResponseCode        = big.NewInt(1 << 12)
 	v2TransactionDetailResponseDataFieldResponseCodeText    = big.NewInt(1 << 13)
-	v2TransactionDetailResponseDataFieldCustomerVaultId     = big.NewInt(1 << 14)
+	v2TransactionDetailResponseDataFieldCustomerVaultID     = big.NewInt(1 << 14)
 	v2TransactionDetailResponseDataFieldEmvAuthResponseData = big.NewInt(1 << 15)
 )
 
@@ -664,13 +664,13 @@ type V2TransactionDetailResponseData struct {
 	AvsresponseText *AvsResponseText `json:"avsresponse_text,omitempty" url:"avsresponse_text,omitempty"`
 	Cvvresponse     *CvvResponse     `json:"cvvresponse,omitempty" url:"cvvresponse,omitempty"`
 	CvvresponseText *CvvResponseText `json:"cvvresponse_text,omitempty" url:"cvvresponse_text,omitempty"`
-	Orderid         *OrderId         `json:"orderid,omitempty" url:"orderid,omitempty"`
+	Orderid         *OrderID         `json:"orderid,omitempty" url:"orderid,omitempty"`
 	Type            *string          `json:"type,omitempty" url:"type,omitempty"`
 	// Processor-specific response code.
 	ResponseCode string `json:"response_code" url:"response_code"`
 	// Description of the response code.
 	ResponseCodeText    string               `json:"response_code_text" url:"response_code_text"`
-	CustomerVaultId     *CustomerVaultId     `json:"customer_vault_id,omitempty" url:"customer_vault_id,omitempty"`
+	CustomerVaultID     *CustomerVaultID     `json:"customer_vault_id,omitempty" url:"customer_vault_id,omitempty"`
 	EmvAuthResponseData *EmvAuthResponseData `json:"emv_auth_response_data,omitempty" url:"emv_auth_response_data,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -750,7 +750,7 @@ func (v *V2TransactionDetailResponseData) GetCvvresponseText() *CvvResponseText 
 	return v.CvvresponseText
 }
 
-func (v *V2TransactionDetailResponseData) GetOrderid() *OrderId {
+func (v *V2TransactionDetailResponseData) GetOrderid() *OrderID {
 	if v == nil {
 		return nil
 	}
@@ -778,11 +778,11 @@ func (v *V2TransactionDetailResponseData) GetResponseCodeText() string {
 	return v.ResponseCodeText
 }
 
-func (v *V2TransactionDetailResponseData) GetCustomerVaultId() *CustomerVaultId {
+func (v *V2TransactionDetailResponseData) GetCustomerVaultID() *CustomerVaultID {
 	if v == nil {
 		return nil
 	}
-	return v.CustomerVaultId
+	return v.CustomerVaultID
 }
 
 func (v *V2TransactionDetailResponseData) GetEmvAuthResponseData() *EmvAuthResponseData {
@@ -878,7 +878,7 @@ func (v *V2TransactionDetailResponseData) SetCvvresponseText(cvvresponseText *Cv
 
 // SetOrderid sets the Orderid field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TransactionDetailResponseData) SetOrderid(orderid *OrderId) {
+func (v *V2TransactionDetailResponseData) SetOrderid(orderid *OrderID) {
 	v.Orderid = orderid
 	v.require(v2TransactionDetailResponseDataFieldOrderid)
 }
@@ -904,11 +904,11 @@ func (v *V2TransactionDetailResponseData) SetResponseCodeText(responseCodeText s
 	v.require(v2TransactionDetailResponseDataFieldResponseCodeText)
 }
 
-// SetCustomerVaultId sets the CustomerVaultId field and marks it as non-optional;
+// SetCustomerVaultID sets the CustomerVaultID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TransactionDetailResponseData) SetCustomerVaultId(customerVaultId *CustomerVaultId) {
-	v.CustomerVaultId = customerVaultId
-	v.require(v2TransactionDetailResponseDataFieldCustomerVaultId)
+func (v *V2TransactionDetailResponseData) SetCustomerVaultID(customerVaultID *CustomerVaultID) {
+	v.CustomerVaultID = customerVaultID
+	v.require(v2TransactionDetailResponseDataFieldCustomerVaultID)
 }
 
 // SetEmvAuthResponseData sets the EmvAuthResponseData field and marks it as non-optional;
@@ -966,18 +966,18 @@ var (
 	v2TransactionDetailsFieldPaypointDbaname              = big.NewInt(1 << 1)
 	v2TransactionDetailsFieldPaypointLegalname            = big.NewInt(1 << 2)
 	v2TransactionDetailsFieldPaypointEntryname            = big.NewInt(1 << 3)
-	v2TransactionDetailsFieldPaymentTransId               = big.NewInt(1 << 4)
+	v2TransactionDetailsFieldPaymentTransID               = big.NewInt(1 << 4)
 	v2TransactionDetailsFieldConnectorName                = big.NewInt(1 << 5)
 	v2TransactionDetailsFieldExternalProcessorInformation = big.NewInt(1 << 6)
-	v2TransactionDetailsFieldGatewayTransId               = big.NewInt(1 << 7)
-	v2TransactionDetailsFieldOrderId                      = big.NewInt(1 << 8)
+	v2TransactionDetailsFieldGatewayTransID               = big.NewInt(1 << 7)
+	v2TransactionDetailsFieldOrderID                      = big.NewInt(1 << 8)
 	v2TransactionDetailsFieldMethod                       = big.NewInt(1 << 9)
 	v2TransactionDetailsFieldBatchNumber                  = big.NewInt(1 << 10)
 	v2TransactionDetailsFieldBatchAmount                  = big.NewInt(1 << 11)
-	v2TransactionDetailsFieldPayorId                      = big.NewInt(1 << 12)
+	v2TransactionDetailsFieldPayorID                      = big.NewInt(1 << 12)
 	v2TransactionDetailsFieldPaymentData                  = big.NewInt(1 << 13)
 	v2TransactionDetailsFieldTransStatus                  = big.NewInt(1 << 14)
-	v2TransactionDetailsFieldPaypointId                   = big.NewInt(1 << 15)
+	v2TransactionDetailsFieldPaypointID                   = big.NewInt(1 << 15)
 	v2TransactionDetailsFieldTotalAmount                  = big.NewInt(1 << 16)
 	v2TransactionDetailsFieldNetAmount                    = big.NewInt(1 << 17)
 	v2TransactionDetailsFieldFeeAmount                    = big.NewInt(1 << 18)
@@ -986,15 +986,15 @@ var (
 	v2TransactionDetailsFieldResponseData                 = big.NewInt(1 << 21)
 	v2TransactionDetailsFieldSource                       = big.NewInt(1 << 22)
 	v2TransactionDetailsFieldScheduleReference            = big.NewInt(1 << 23)
-	v2TransactionDetailsFieldOrgId                        = big.NewInt(1 << 24)
-	v2TransactionDetailsFieldRefundId                     = big.NewInt(1 << 25)
-	v2TransactionDetailsFieldReturnedId                   = big.NewInt(1 << 26)
-	v2TransactionDetailsFieldChargebackId                 = big.NewInt(1 << 27)
-	v2TransactionDetailsFieldRetrievalId                  = big.NewInt(1 << 28)
+	v2TransactionDetailsFieldOrgID                        = big.NewInt(1 << 24)
+	v2TransactionDetailsFieldRefundID                     = big.NewInt(1 << 25)
+	v2TransactionDetailsFieldReturnedID                   = big.NewInt(1 << 26)
+	v2TransactionDetailsFieldChargebackID                 = big.NewInt(1 << 27)
+	v2TransactionDetailsFieldRetrievalID                  = big.NewInt(1 << 28)
 	v2TransactionDetailsFieldTransAdditionalData          = big.NewInt(1 << 29)
 	v2TransactionDetailsFieldInvoiceData                  = big.NewInt(1 << 30)
-	v2TransactionDetailsFieldEntrypageId                  = big.NewInt(1 << 31)
-	v2TransactionDetailsFieldExternalPaypointId           = big.NewInt(1 << 32)
+	v2TransactionDetailsFieldEntrypageID                  = big.NewInt(1 << 31)
+	v2TransactionDetailsFieldExternalPaypointID           = big.NewInt(1 << 32)
 	v2TransactionDetailsFieldIsValidatedAch               = big.NewInt(1 << 33)
 	v2TransactionDetailsFieldTransactionTime              = big.NewInt(1 << 34)
 	v2TransactionDetailsFieldCustomer                     = big.NewInt(1 << 35)
@@ -1008,10 +1008,10 @@ var (
 	v2TransactionDetailsFieldRiskReason                   = big.NewInt(1 << 43)
 	v2TransactionDetailsFieldRiskAction                   = big.NewInt(1 << 44)
 	v2TransactionDetailsFieldRiskActionCode               = big.NewInt(1 << 45)
-	v2TransactionDetailsFieldDeviceId                     = big.NewInt(1 << 46)
+	v2TransactionDetailsFieldDeviceID                     = big.NewInt(1 << 46)
 	v2TransactionDetailsFieldAchSecCode                   = big.NewInt(1 << 47)
 	v2TransactionDetailsFieldAchHolderType                = big.NewInt(1 << 48)
-	v2TransactionDetailsFieldIpAddress                    = big.NewInt(1 << 49)
+	v2TransactionDetailsFieldIPAddress                    = big.NewInt(1 << 49)
 	v2TransactionDetailsFieldIsSameDayAch                 = big.NewInt(1 << 50)
 	v2TransactionDetailsFieldWalletType                   = big.NewInt(1 << 51)
 )
@@ -1022,22 +1022,22 @@ type V2TransactionDetails struct {
 	PaypointLegalname Legalname       `json:"paypointLegalname" url:"paypointLegalname"`
 	PaypointEntryname Entrypointfield `json:"paypointEntryname" url:"paypointEntryname"`
 	// Unique transaction identifier.
-	PaymentTransId string `json:"paymentTransId" url:"paymentTransId"`
+	PaymentTransID string `json:"paymentTransId" url:"paymentTransId"`
 	// Name of the payment connector used.
 	ConnectorName                string                       `json:"connectorName" url:"connectorName"`
 	ExternalProcessorInformation ExternalProcessorInformation `json:"externalProcessorInformation" url:"externalProcessorInformation"`
 	// Gateway transaction identifier.
-	GatewayTransId string   `json:"gatewayTransId" url:"gatewayTransId"`
-	OrderId        *OrderId `json:"orderId,omitempty" url:"orderId,omitempty"`
+	GatewayTransID string   `json:"gatewayTransId" url:"gatewayTransId"`
+	OrderID        *OrderID `json:"orderId,omitempty" url:"orderId,omitempty"`
 	// Payment method used for the transaction.
 	Method      string      `json:"method" url:"method"`
 	BatchNumber BatchNumber `json:"batchNumber" url:"batchNumber"`
 	// Total amount in the batch.
 	BatchAmount float64                       `json:"batchAmount" url:"batchAmount"`
-	PayorId     PayorId                       `json:"payorId" url:"payorId"`
+	PayorID     PayorID                       `json:"payorId" url:"payorId"`
 	PaymentData *TransactionDetailPaymentData `json:"paymentData" url:"paymentData"`
 	TransStatus TransStatus                   `json:"transStatus" url:"transStatus"`
-	PaypointId  PaypointId                    `json:"paypointId" url:"paypointId"`
+	PaypointID  PaypointID                    `json:"paypointId" url:"paypointId"`
 	// Total transaction amount including fees.
 	TotalAmount float64 `json:"totalAmount" url:"totalAmount"`
 	// Net transaction amount excluding fees.
@@ -1049,15 +1049,15 @@ type V2TransactionDetails struct {
 	Source           Source                           `json:"source" url:"source"`
 	// Reference to associated payment schedule if applicable.
 	ScheduleReference   int64                         `json:"scheduleReference" url:"scheduleReference"`
-	OrgId               Orgid                         `json:"orgId" url:"orgId"`
-	RefundId            RefundId                      `json:"refundId" url:"refundId"`
-	ReturnedId          ReturnedId                    `json:"returnedId" url:"returnedId"`
-	ChargebackId        ChargebackId                  `json:"chargebackId" url:"chargebackId"`
-	RetrievalId         RetrievalId                   `json:"retrievalId" url:"retrievalId"`
+	OrgID               Orgid                         `json:"orgId" url:"orgId"`
+	RefundID            RefundID                      `json:"refundId" url:"refundId"`
+	ReturnedID          ReturnedID                    `json:"returnedId" url:"returnedId"`
+	ChargebackID        ChargebackID                  `json:"chargebackId" url:"chargebackId"`
+	RetrievalID         RetrievalID                   `json:"retrievalId" url:"retrievalId"`
 	TransAdditionalData any                           `json:"transAdditionalData,omitempty" url:"transAdditionalData,omitempty"`
 	InvoiceData         *TransactionDetailInvoiceData `json:"invoiceData" url:"invoiceData"`
-	EntrypageId         EntrypageId                   `json:"entrypageId" url:"entrypageId"`
-	ExternalPaypointId  ExternalPaypointId            `json:"externalPaypointID" url:"externalPaypointID"`
+	EntrypageID         EntrypageID                   `json:"entrypageId" url:"entrypageId"`
+	ExternalPaypointID  ExternalPaypointID            `json:"externalPaypointID" url:"externalPaypointID"`
 	// Indicates if ACH account was validated in real-time.
 	IsValidatedAch bool `json:"isValidatedACH" url:"isValidatedACH"`
 	// Timestamp when transaction was created.
@@ -1073,10 +1073,10 @@ type V2TransactionDetails struct {
 	RiskReason               RiskReason                 `json:"riskReason" url:"riskReason"`
 	RiskAction               RiskAction                 `json:"riskAction" url:"riskAction"`
 	RiskActionCode           *RiskActionCode            `json:"riskActionCode,omitempty" url:"riskActionCode,omitempty"`
-	DeviceId                 Device                     `json:"deviceId" url:"deviceId"`
+	DeviceID                 Device                     `json:"deviceId" url:"deviceId"`
 	AchSecCode               AchSecCode                 `json:"achSecCode" url:"achSecCode"`
 	AchHolderType            AchHolderType              `json:"achHolderType" url:"achHolderType"`
-	IpAddress                IpAddress                  `json:"ipAddress" url:"ipAddress"`
+	IPAddress                IPAddress                  `json:"ipAddress" url:"ipAddress"`
 	// Indicates if ACH transaction uses same-day processing.
 	IsSameDayAch bool `json:"isSameDayACH" url:"isSameDayACH"`
 	// Digital wallet type if applicable.
@@ -1117,11 +1117,11 @@ func (v *V2TransactionDetails) GetPaypointEntryname() Entrypointfield {
 	return v.PaypointEntryname
 }
 
-func (v *V2TransactionDetails) GetPaymentTransId() string {
+func (v *V2TransactionDetails) GetPaymentTransID() string {
 	if v == nil {
 		return ""
 	}
-	return v.PaymentTransId
+	return v.PaymentTransID
 }
 
 func (v *V2TransactionDetails) GetConnectorName() string {
@@ -1138,18 +1138,18 @@ func (v *V2TransactionDetails) GetExternalProcessorInformation() ExternalProcess
 	return v.ExternalProcessorInformation
 }
 
-func (v *V2TransactionDetails) GetGatewayTransId() string {
+func (v *V2TransactionDetails) GetGatewayTransID() string {
 	if v == nil {
 		return ""
 	}
-	return v.GatewayTransId
+	return v.GatewayTransID
 }
 
-func (v *V2TransactionDetails) GetOrderId() *OrderId {
+func (v *V2TransactionDetails) GetOrderID() *OrderID {
 	if v == nil {
 		return nil
 	}
-	return v.OrderId
+	return v.OrderID
 }
 
 func (v *V2TransactionDetails) GetMethod() string {
@@ -1173,11 +1173,11 @@ func (v *V2TransactionDetails) GetBatchAmount() float64 {
 	return v.BatchAmount
 }
 
-func (v *V2TransactionDetails) GetPayorId() PayorId {
+func (v *V2TransactionDetails) GetPayorID() PayorID {
 	if v == nil {
 		return 0
 	}
-	return v.PayorId
+	return v.PayorID
 }
 
 func (v *V2TransactionDetails) GetPaymentData() *TransactionDetailPaymentData {
@@ -1194,11 +1194,11 @@ func (v *V2TransactionDetails) GetTransStatus() TransStatus {
 	return v.TransStatus
 }
 
-func (v *V2TransactionDetails) GetPaypointId() PaypointId {
+func (v *V2TransactionDetails) GetPaypointID() PaypointID {
 	if v == nil {
 		return 0
 	}
-	return v.PaypointId
+	return v.PaypointID
 }
 
 func (v *V2TransactionDetails) GetTotalAmount() float64 {
@@ -1257,39 +1257,39 @@ func (v *V2TransactionDetails) GetScheduleReference() int64 {
 	return v.ScheduleReference
 }
 
-func (v *V2TransactionDetails) GetOrgId() Orgid {
+func (v *V2TransactionDetails) GetOrgID() Orgid {
 	if v == nil {
 		return 0
 	}
-	return v.OrgId
+	return v.OrgID
 }
 
-func (v *V2TransactionDetails) GetRefundId() RefundId {
+func (v *V2TransactionDetails) GetRefundID() RefundID {
 	if v == nil {
 		return 0
 	}
-	return v.RefundId
+	return v.RefundID
 }
 
-func (v *V2TransactionDetails) GetReturnedId() ReturnedId {
+func (v *V2TransactionDetails) GetReturnedID() ReturnedID {
 	if v == nil {
 		return 0
 	}
-	return v.ReturnedId
+	return v.ReturnedID
 }
 
-func (v *V2TransactionDetails) GetChargebackId() ChargebackId {
+func (v *V2TransactionDetails) GetChargebackID() ChargebackID {
 	if v == nil {
 		return 0
 	}
-	return v.ChargebackId
+	return v.ChargebackID
 }
 
-func (v *V2TransactionDetails) GetRetrievalId() RetrievalId {
+func (v *V2TransactionDetails) GetRetrievalID() RetrievalID {
 	if v == nil {
 		return 0
 	}
-	return v.RetrievalId
+	return v.RetrievalID
 }
 
 func (v *V2TransactionDetails) GetTransAdditionalData() any {
@@ -1306,18 +1306,18 @@ func (v *V2TransactionDetails) GetInvoiceData() *TransactionDetailInvoiceData {
 	return v.InvoiceData
 }
 
-func (v *V2TransactionDetails) GetEntrypageId() EntrypageId {
+func (v *V2TransactionDetails) GetEntrypageID() EntrypageID {
 	if v == nil {
 		return 0
 	}
-	return v.EntrypageId
+	return v.EntrypageID
 }
 
-func (v *V2TransactionDetails) GetExternalPaypointId() ExternalPaypointId {
+func (v *V2TransactionDetails) GetExternalPaypointID() ExternalPaypointID {
 	if v == nil {
 		return ""
 	}
-	return v.ExternalPaypointId
+	return v.ExternalPaypointID
 }
 
 func (v *V2TransactionDetails) GetIsValidatedAch() bool {
@@ -1411,11 +1411,11 @@ func (v *V2TransactionDetails) GetRiskActionCode() *RiskActionCode {
 	return v.RiskActionCode
 }
 
-func (v *V2TransactionDetails) GetDeviceId() Device {
+func (v *V2TransactionDetails) GetDeviceID() Device {
 	if v == nil {
 		return ""
 	}
-	return v.DeviceId
+	return v.DeviceID
 }
 
 func (v *V2TransactionDetails) GetAchSecCode() AchSecCode {
@@ -1432,11 +1432,11 @@ func (v *V2TransactionDetails) GetAchHolderType() AchHolderType {
 	return v.AchHolderType
 }
 
-func (v *V2TransactionDetails) GetIpAddress() IpAddress {
+func (v *V2TransactionDetails) GetIPAddress() IPAddress {
 	if v == nil {
 		return ""
 	}
-	return v.IpAddress
+	return v.IPAddress
 }
 
 func (v *V2TransactionDetails) GetIsSameDayAch() bool {
@@ -1495,11 +1495,11 @@ func (v *V2TransactionDetails) SetPaypointEntryname(paypointEntryname Entrypoint
 	v.require(v2TransactionDetailsFieldPaypointEntryname)
 }
 
-// SetPaymentTransId sets the PaymentTransId field and marks it as non-optional;
+// SetPaymentTransID sets the PaymentTransID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TransactionDetails) SetPaymentTransId(paymentTransId string) {
-	v.PaymentTransId = paymentTransId
-	v.require(v2TransactionDetailsFieldPaymentTransId)
+func (v *V2TransactionDetails) SetPaymentTransID(paymentTransID string) {
+	v.PaymentTransID = paymentTransID
+	v.require(v2TransactionDetailsFieldPaymentTransID)
 }
 
 // SetConnectorName sets the ConnectorName field and marks it as non-optional;
@@ -1516,18 +1516,18 @@ func (v *V2TransactionDetails) SetExternalProcessorInformation(externalProcessor
 	v.require(v2TransactionDetailsFieldExternalProcessorInformation)
 }
 
-// SetGatewayTransId sets the GatewayTransId field and marks it as non-optional;
+// SetGatewayTransID sets the GatewayTransID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TransactionDetails) SetGatewayTransId(gatewayTransId string) {
-	v.GatewayTransId = gatewayTransId
-	v.require(v2TransactionDetailsFieldGatewayTransId)
+func (v *V2TransactionDetails) SetGatewayTransID(gatewayTransID string) {
+	v.GatewayTransID = gatewayTransID
+	v.require(v2TransactionDetailsFieldGatewayTransID)
 }
 
-// SetOrderId sets the OrderId field and marks it as non-optional;
+// SetOrderID sets the OrderID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TransactionDetails) SetOrderId(orderId *OrderId) {
-	v.OrderId = orderId
-	v.require(v2TransactionDetailsFieldOrderId)
+func (v *V2TransactionDetails) SetOrderID(orderID *OrderID) {
+	v.OrderID = orderID
+	v.require(v2TransactionDetailsFieldOrderID)
 }
 
 // SetMethod sets the Method field and marks it as non-optional;
@@ -1551,11 +1551,11 @@ func (v *V2TransactionDetails) SetBatchAmount(batchAmount float64) {
 	v.require(v2TransactionDetailsFieldBatchAmount)
 }
 
-// SetPayorId sets the PayorId field and marks it as non-optional;
+// SetPayorID sets the PayorID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TransactionDetails) SetPayorId(payorId PayorId) {
-	v.PayorId = payorId
-	v.require(v2TransactionDetailsFieldPayorId)
+func (v *V2TransactionDetails) SetPayorID(payorID PayorID) {
+	v.PayorID = payorID
+	v.require(v2TransactionDetailsFieldPayorID)
 }
 
 // SetPaymentData sets the PaymentData field and marks it as non-optional;
@@ -1572,11 +1572,11 @@ func (v *V2TransactionDetails) SetTransStatus(transStatus TransStatus) {
 	v.require(v2TransactionDetailsFieldTransStatus)
 }
 
-// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// SetPaypointID sets the PaypointID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TransactionDetails) SetPaypointId(paypointId PaypointId) {
-	v.PaypointId = paypointId
-	v.require(v2TransactionDetailsFieldPaypointId)
+func (v *V2TransactionDetails) SetPaypointID(paypointID PaypointID) {
+	v.PaypointID = paypointID
+	v.require(v2TransactionDetailsFieldPaypointID)
 }
 
 // SetTotalAmount sets the TotalAmount field and marks it as non-optional;
@@ -1635,39 +1635,39 @@ func (v *V2TransactionDetails) SetScheduleReference(scheduleReference int64) {
 	v.require(v2TransactionDetailsFieldScheduleReference)
 }
 
-// SetOrgId sets the OrgId field and marks it as non-optional;
+// SetOrgID sets the OrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TransactionDetails) SetOrgId(orgId Orgid) {
-	v.OrgId = orgId
-	v.require(v2TransactionDetailsFieldOrgId)
+func (v *V2TransactionDetails) SetOrgID(orgID Orgid) {
+	v.OrgID = orgID
+	v.require(v2TransactionDetailsFieldOrgID)
 }
 
-// SetRefundId sets the RefundId field and marks it as non-optional;
+// SetRefundID sets the RefundID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TransactionDetails) SetRefundId(refundId RefundId) {
-	v.RefundId = refundId
-	v.require(v2TransactionDetailsFieldRefundId)
+func (v *V2TransactionDetails) SetRefundID(refundID RefundID) {
+	v.RefundID = refundID
+	v.require(v2TransactionDetailsFieldRefundID)
 }
 
-// SetReturnedId sets the ReturnedId field and marks it as non-optional;
+// SetReturnedID sets the ReturnedID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TransactionDetails) SetReturnedId(returnedId ReturnedId) {
-	v.ReturnedId = returnedId
-	v.require(v2TransactionDetailsFieldReturnedId)
+func (v *V2TransactionDetails) SetReturnedID(returnedID ReturnedID) {
+	v.ReturnedID = returnedID
+	v.require(v2TransactionDetailsFieldReturnedID)
 }
 
-// SetChargebackId sets the ChargebackId field and marks it as non-optional;
+// SetChargebackID sets the ChargebackID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TransactionDetails) SetChargebackId(chargebackId ChargebackId) {
-	v.ChargebackId = chargebackId
-	v.require(v2TransactionDetailsFieldChargebackId)
+func (v *V2TransactionDetails) SetChargebackID(chargebackID ChargebackID) {
+	v.ChargebackID = chargebackID
+	v.require(v2TransactionDetailsFieldChargebackID)
 }
 
-// SetRetrievalId sets the RetrievalId field and marks it as non-optional;
+// SetRetrievalID sets the RetrievalID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TransactionDetails) SetRetrievalId(retrievalId RetrievalId) {
-	v.RetrievalId = retrievalId
-	v.require(v2TransactionDetailsFieldRetrievalId)
+func (v *V2TransactionDetails) SetRetrievalID(retrievalID RetrievalID) {
+	v.RetrievalID = retrievalID
+	v.require(v2TransactionDetailsFieldRetrievalID)
 }
 
 // SetTransAdditionalData sets the TransAdditionalData field and marks it as non-optional;
@@ -1684,18 +1684,18 @@ func (v *V2TransactionDetails) SetInvoiceData(invoiceData *TransactionDetailInvo
 	v.require(v2TransactionDetailsFieldInvoiceData)
 }
 
-// SetEntrypageId sets the EntrypageId field and marks it as non-optional;
+// SetEntrypageID sets the EntrypageID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TransactionDetails) SetEntrypageId(entrypageId EntrypageId) {
-	v.EntrypageId = entrypageId
-	v.require(v2TransactionDetailsFieldEntrypageId)
+func (v *V2TransactionDetails) SetEntrypageID(entrypageID EntrypageID) {
+	v.EntrypageID = entrypageID
+	v.require(v2TransactionDetailsFieldEntrypageID)
 }
 
-// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// SetExternalPaypointID sets the ExternalPaypointID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TransactionDetails) SetExternalPaypointId(externalPaypointId ExternalPaypointId) {
-	v.ExternalPaypointId = externalPaypointId
-	v.require(v2TransactionDetailsFieldExternalPaypointId)
+func (v *V2TransactionDetails) SetExternalPaypointID(externalPaypointID ExternalPaypointID) {
+	v.ExternalPaypointID = externalPaypointID
+	v.require(v2TransactionDetailsFieldExternalPaypointID)
 }
 
 // SetIsValidatedAch sets the IsValidatedAch field and marks it as non-optional;
@@ -1789,11 +1789,11 @@ func (v *V2TransactionDetails) SetRiskActionCode(riskActionCode *RiskActionCode)
 	v.require(v2TransactionDetailsFieldRiskActionCode)
 }
 
-// SetDeviceId sets the DeviceId field and marks it as non-optional;
+// SetDeviceID sets the DeviceID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TransactionDetails) SetDeviceId(deviceId Device) {
-	v.DeviceId = deviceId
-	v.require(v2TransactionDetailsFieldDeviceId)
+func (v *V2TransactionDetails) SetDeviceID(deviceID Device) {
+	v.DeviceID = deviceID
+	v.require(v2TransactionDetailsFieldDeviceID)
 }
 
 // SetAchSecCode sets the AchSecCode field and marks it as non-optional;
@@ -1810,11 +1810,11 @@ func (v *V2TransactionDetails) SetAchHolderType(achHolderType AchHolderType) {
 	v.require(v2TransactionDetailsFieldAchHolderType)
 }
 
-// SetIpAddress sets the IpAddress field and marks it as non-optional;
+// SetIPAddress sets the IPAddress field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TransactionDetails) SetIpAddress(ipAddress IpAddress) {
-	v.IpAddress = ipAddress
-	v.require(v2TransactionDetailsFieldIpAddress)
+func (v *V2TransactionDetails) SetIPAddress(ipAddress IPAddress) {
+	v.IPAddress = ipAddress
+	v.require(v2TransactionDetailsFieldIPAddress)
 }
 
 // SetIsSameDayAch sets the IsSameDayAch field and marks it as non-optional;

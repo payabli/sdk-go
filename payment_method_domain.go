@@ -14,7 +14,7 @@ var (
 	addPaymentMethodDomainRequestFieldApplePay   = big.NewInt(1 << 0)
 	addPaymentMethodDomainRequestFieldGooglePay  = big.NewInt(1 << 1)
 	addPaymentMethodDomainRequestFieldDomainName = big.NewInt(1 << 2)
-	addPaymentMethodDomainRequestFieldEntityId   = big.NewInt(1 << 3)
+	addPaymentMethodDomainRequestFieldEntityID   = big.NewInt(1 << 3)
 	addPaymentMethodDomainRequestFieldEntityType = big.NewInt(1 << 4)
 )
 
@@ -24,7 +24,7 @@ type AddPaymentMethodDomainRequest struct {
 	// Google Pay configuration information.
 	GooglePay  *AddPaymentMethodDomainRequestGooglePay `json:"googlePay,omitempty" url:"-"`
 	DomainName *DomainName                             `json:"domainName,omitempty" url:"-"`
-	EntityId   *EntityId                               `json:"entityId,omitempty" url:"-"`
+	EntityID   *EntityID                               `json:"entityId,omitempty" url:"-"`
 	EntityType *EntityType                             `json:"entityType,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -59,11 +59,11 @@ func (a *AddPaymentMethodDomainRequest) SetDomainName(domainName *DomainName) {
 	a.require(addPaymentMethodDomainRequestFieldDomainName)
 }
 
-// SetEntityId sets the EntityId field and marks it as non-optional;
+// SetEntityID sets the EntityID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AddPaymentMethodDomainRequest) SetEntityId(entityId *EntityId) {
-	a.EntityId = entityId
-	a.require(addPaymentMethodDomainRequestFieldEntityId)
+func (a *AddPaymentMethodDomainRequest) SetEntityID(entityID *EntityID) {
+	a.EntityID = entityID
+	a.require(addPaymentMethodDomainRequestFieldEntityID)
 }
 
 // SetEntityType sets the EntityType field and marks it as non-optional;
@@ -95,7 +95,7 @@ func (a *AddPaymentMethodDomainRequest) MarshalJSON() ([]byte, error) {
 }
 
 var (
-	listPaymentMethodDomainsRequestFieldEntityId    = big.NewInt(1 << 0)
+	listPaymentMethodDomainsRequestFieldEntityID    = big.NewInt(1 << 0)
 	listPaymentMethodDomainsRequestFieldEntityType  = big.NewInt(1 << 1)
 	listPaymentMethodDomainsRequestFieldFromRecord  = big.NewInt(1 << 2)
 	listPaymentMethodDomainsRequestFieldLimitRecord = big.NewInt(1 << 3)
@@ -104,7 +104,7 @@ var (
 type ListPaymentMethodDomainsRequest struct {
 	// Identifier for the organization or paypoint.
 	// - For organization, provide the organization ID - For paypoint, provide the paypoint ID
-	EntityId *int64 `json:"-" url:"entityId,omitempty"`
+	EntityID *int64 `json:"-" url:"entityId,omitempty"`
 	// The type of entity. Valid values:
 	//   - organization
 	//   - paypoint
@@ -126,11 +126,11 @@ func (l *ListPaymentMethodDomainsRequest) require(field *big.Int) {
 	l.explicitFields.Or(l.explicitFields, field)
 }
 
-// SetEntityId sets the EntityId field and marks it as non-optional;
+// SetEntityID sets the EntityID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListPaymentMethodDomainsRequest) SetEntityId(entityId *int64) {
-	l.EntityId = entityId
-	l.require(listPaymentMethodDomainsRequestFieldEntityId)
+func (l *ListPaymentMethodDomainsRequest) SetEntityID(entityID *int64) {
+	l.EntityID = entityID
+	l.require(listPaymentMethodDomainsRequestFieldEntityID)
 }
 
 // SetEntityType sets the EntityType field and marks it as non-optional;
@@ -211,16 +211,16 @@ func (u *UpdatePaymentMethodDomainRequest) MarshalJSON() ([]byte, error) {
 
 // Response for the add payment method domain operation.
 var (
-	addPaymentMethodDomainApiResponseFieldIsSuccess      = big.NewInt(1 << 0)
-	addPaymentMethodDomainApiResponseFieldPageidentifier = big.NewInt(1 << 1)
-	addPaymentMethodDomainApiResponseFieldResponseData   = big.NewInt(1 << 2)
-	addPaymentMethodDomainApiResponseFieldResponseText   = big.NewInt(1 << 3)
+	addPaymentMethodDomainAPIResponseFieldIsSuccess      = big.NewInt(1 << 0)
+	addPaymentMethodDomainAPIResponseFieldPageidentifier = big.NewInt(1 << 1)
+	addPaymentMethodDomainAPIResponseFieldResponseData   = big.NewInt(1 << 2)
+	addPaymentMethodDomainAPIResponseFieldResponseText   = big.NewInt(1 << 3)
 )
 
-type AddPaymentMethodDomainApiResponse struct {
+type AddPaymentMethodDomainAPIResponse struct {
 	IsSuccess      IsSuccess                       `json:"isSuccess" url:"isSuccess"`
 	Pageidentifier PageIdentifier                  `json:"pageidentifier" url:"pageidentifier"`
-	ResponseData   *PaymentMethodDomainApiResponse `json:"responseData" url:"responseData"`
+	ResponseData   *PaymentMethodDomainAPIResponse `json:"responseData" url:"responseData"`
 	ResponseText   string                          `json:"responseText" url:"responseText"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -230,42 +230,42 @@ type AddPaymentMethodDomainApiResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (a *AddPaymentMethodDomainApiResponse) GetIsSuccess() IsSuccess {
+func (a *AddPaymentMethodDomainAPIResponse) GetIsSuccess() IsSuccess {
 	if a == nil {
 		return false
 	}
 	return a.IsSuccess
 }
 
-func (a *AddPaymentMethodDomainApiResponse) GetPageidentifier() PageIdentifier {
+func (a *AddPaymentMethodDomainAPIResponse) GetPageidentifier() PageIdentifier {
 	if a == nil {
 		return ""
 	}
 	return a.Pageidentifier
 }
 
-func (a *AddPaymentMethodDomainApiResponse) GetResponseData() *PaymentMethodDomainApiResponse {
+func (a *AddPaymentMethodDomainAPIResponse) GetResponseData() *PaymentMethodDomainAPIResponse {
 	if a == nil {
 		return nil
 	}
 	return a.ResponseData
 }
 
-func (a *AddPaymentMethodDomainApiResponse) GetResponseText() string {
+func (a *AddPaymentMethodDomainAPIResponse) GetResponseText() string {
 	if a == nil {
 		return ""
 	}
 	return a.ResponseText
 }
 
-func (a *AddPaymentMethodDomainApiResponse) GetExtraProperties() map[string]interface{} {
+func (a *AddPaymentMethodDomainAPIResponse) GetExtraProperties() map[string]interface{} {
 	if a == nil {
 		return nil
 	}
 	return a.extraProperties
 }
 
-func (a *AddPaymentMethodDomainApiResponse) require(field *big.Int) {
+func (a *AddPaymentMethodDomainAPIResponse) require(field *big.Int) {
 	if a.explicitFields == nil {
 		a.explicitFields = big.NewInt(0)
 	}
@@ -274,39 +274,39 @@ func (a *AddPaymentMethodDomainApiResponse) require(field *big.Int) {
 
 // SetIsSuccess sets the IsSuccess field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AddPaymentMethodDomainApiResponse) SetIsSuccess(isSuccess IsSuccess) {
+func (a *AddPaymentMethodDomainAPIResponse) SetIsSuccess(isSuccess IsSuccess) {
 	a.IsSuccess = isSuccess
-	a.require(addPaymentMethodDomainApiResponseFieldIsSuccess)
+	a.require(addPaymentMethodDomainAPIResponseFieldIsSuccess)
 }
 
 // SetPageidentifier sets the Pageidentifier field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AddPaymentMethodDomainApiResponse) SetPageidentifier(pageidentifier PageIdentifier) {
+func (a *AddPaymentMethodDomainAPIResponse) SetPageidentifier(pageidentifier PageIdentifier) {
 	a.Pageidentifier = pageidentifier
-	a.require(addPaymentMethodDomainApiResponseFieldPageidentifier)
+	a.require(addPaymentMethodDomainAPIResponseFieldPageidentifier)
 }
 
 // SetResponseData sets the ResponseData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AddPaymentMethodDomainApiResponse) SetResponseData(responseData *PaymentMethodDomainApiResponse) {
+func (a *AddPaymentMethodDomainAPIResponse) SetResponseData(responseData *PaymentMethodDomainAPIResponse) {
 	a.ResponseData = responseData
-	a.require(addPaymentMethodDomainApiResponseFieldResponseData)
+	a.require(addPaymentMethodDomainAPIResponseFieldResponseData)
 }
 
 // SetResponseText sets the ResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AddPaymentMethodDomainApiResponse) SetResponseText(responseText string) {
+func (a *AddPaymentMethodDomainAPIResponse) SetResponseText(responseText string) {
 	a.ResponseText = responseText
-	a.require(addPaymentMethodDomainApiResponseFieldResponseText)
+	a.require(addPaymentMethodDomainAPIResponseFieldResponseText)
 }
 
-func (a *AddPaymentMethodDomainApiResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler AddPaymentMethodDomainApiResponse
+func (a *AddPaymentMethodDomainAPIResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler AddPaymentMethodDomainAPIResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*a = AddPaymentMethodDomainApiResponse(value)
+	*a = AddPaymentMethodDomainAPIResponse(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *a)
 	if err != nil {
 		return err
@@ -316,8 +316,8 @@ func (a *AddPaymentMethodDomainApiResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (a *AddPaymentMethodDomainApiResponse) MarshalJSON() ([]byte, error) {
-	type embed AddPaymentMethodDomainApiResponse
+func (a *AddPaymentMethodDomainAPIResponse) MarshalJSON() ([]byte, error) {
+	type embed AddPaymentMethodDomainAPIResponse
 	var marshaler = struct {
 		embed
 	}{
@@ -327,7 +327,7 @@ func (a *AddPaymentMethodDomainApiResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (a *AddPaymentMethodDomainApiResponse) String() string {
+func (a *AddPaymentMethodDomainAPIResponse) String() string {
 	if a == nil {
 		return "<nil>"
 	}
@@ -450,7 +450,7 @@ var (
 	applePayMetadataFieldIsFileAvailable    = big.NewInt(1 << 0)
 	applePayMetadataFieldIsFileContentValid = big.NewInt(1 << 1)
 	applePayMetadataFieldRedirectDomainName = big.NewInt(1 << 2)
-	applePayMetadataFieldRedirectUrl        = big.NewInt(1 << 3)
+	applePayMetadataFieldRedirectURL        = big.NewInt(1 << 3)
 	applePayMetadataFieldStatusCode         = big.NewInt(1 << 4)
 )
 
@@ -463,7 +463,7 @@ type ApplePayMetadata struct {
 	RedirectDomainName *string `json:"redirectDomainName,omitempty" url:"redirectDomainName,omitempty"`
 	// If the domain verification URL is redirected, this is the URL it's redirected to.
 	// For example, www.partner.com could redirect to www.partners-new-home-page.com. In this case, you should add www.partners-new-home-page.com as a domain instead of www.partner.com.
-	RedirectUrl *string `json:"redirectUrl,omitempty" url:"redirectUrl,omitempty"`
+	RedirectURL *string `json:"redirectUrl,omitempty" url:"redirectUrl,omitempty"`
 	// The status code return by the domain verification URL.
 	StatusCode *int `json:"statusCode,omitempty" url:"statusCode,omitempty"`
 
@@ -495,11 +495,11 @@ func (a *ApplePayMetadata) GetRedirectDomainName() *string {
 	return a.RedirectDomainName
 }
 
-func (a *ApplePayMetadata) GetRedirectUrl() *string {
+func (a *ApplePayMetadata) GetRedirectURL() *string {
 	if a == nil {
 		return nil
 	}
-	return a.RedirectUrl
+	return a.RedirectURL
 }
 
 func (a *ApplePayMetadata) GetStatusCode() *int {
@@ -544,11 +544,11 @@ func (a *ApplePayMetadata) SetRedirectDomainName(redirectDomainName *string) {
 	a.require(applePayMetadataFieldRedirectDomainName)
 }
 
-// SetRedirectUrl sets the RedirectUrl field and marks it as non-optional;
+// SetRedirectURL sets the RedirectURL field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplePayMetadata) SetRedirectUrl(redirectUrl *string) {
-	a.RedirectUrl = redirectUrl
-	a.require(applePayMetadataFieldRedirectUrl)
+func (a *ApplePayMetadata) SetRedirectURL(redirectURL *string) {
+	a.RedirectURL = redirectURL
+	a.require(applePayMetadataFieldRedirectURL)
 }
 
 // SetStatusCode sets the StatusCode field and marks it as non-optional;
@@ -706,7 +706,7 @@ func (a *ApplePayStatusData) String() string {
 var (
 	cascadeJobDetailsFieldCreatedAt       = big.NewInt(1 << 0)
 	cascadeJobDetailsFieldJobErrorMessage = big.NewInt(1 << 1)
-	cascadeJobDetailsFieldJobId           = big.NewInt(1 << 2)
+	cascadeJobDetailsFieldJobID           = big.NewInt(1 << 2)
 	cascadeJobDetailsFieldJobStatus       = big.NewInt(1 << 3)
 	cascadeJobDetailsFieldUpdatedAt       = big.NewInt(1 << 4)
 )
@@ -715,7 +715,7 @@ type CascadeJobDetails struct {
 	CreatedAt *CreatedAt `json:"createdAt,omitempty" url:"createdAt,omitempty"`
 	// Error message for a failed cascade process.
 	JobErrorMessage *string       `json:"jobErrorMessage,omitempty" url:"jobErrorMessage,omitempty"`
-	JobId           *JobId        `json:"jobId,omitempty" url:"jobId,omitempty"`
+	JobID           *JobID        `json:"jobId,omitempty" url:"jobId,omitempty"`
 	JobStatus       *JobStatus    `json:"jobStatus,omitempty" url:"jobStatus,omitempty"`
 	UpdatedAt       *LastModified `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
 
@@ -740,11 +740,11 @@ func (c *CascadeJobDetails) GetJobErrorMessage() *string {
 	return c.JobErrorMessage
 }
 
-func (c *CascadeJobDetails) GetJobId() *JobId {
+func (c *CascadeJobDetails) GetJobID() *JobID {
 	if c == nil {
 		return nil
 	}
-	return c.JobId
+	return c.JobID
 }
 
 func (c *CascadeJobDetails) GetJobStatus() *JobStatus {
@@ -789,11 +789,11 @@ func (c *CascadeJobDetails) SetJobErrorMessage(jobErrorMessage *string) {
 	c.require(cascadeJobDetailsFieldJobErrorMessage)
 }
 
-// SetJobId sets the JobId field and marks it as non-optional;
+// SetJobID sets the JobID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CascadeJobDetails) SetJobId(jobId *JobId) {
-	c.JobId = jobId
-	c.require(cascadeJobDetailsFieldJobId)
+func (c *CascadeJobDetails) SetJobID(jobID *JobID) {
+	c.JobID = jobID
+	c.require(cascadeJobDetailsFieldJobID)
 }
 
 // SetJobStatus sets the JobStatus field and marks it as non-optional;
@@ -976,7 +976,7 @@ func (g *GooglePayData) String() string {
 // This metadata appears only when the domain verification check fails. It gives more information about why the check failed.
 var (
 	googlePayMetadataFieldStatusCode         = big.NewInt(1 << 0)
-	googlePayMetadataFieldRedirectUrl        = big.NewInt(1 << 1)
+	googlePayMetadataFieldRedirectURL        = big.NewInt(1 << 1)
 	googlePayMetadataFieldRedirectDomainName = big.NewInt(1 << 2)
 )
 
@@ -984,7 +984,7 @@ type GooglePayMetadata struct {
 	// The status code return by the domain verification URL.
 	StatusCode *int `json:"statusCode,omitempty" url:"statusCode,omitempty"`
 	// If the domain verification URL is redirected, this is the URL it's redirected to.  For example, www.partner.com could redirect to www.partners-new-home-page.com. In this case, you should add www.partners-new-home-page.com as a domain instead of www.partner.com.
-	RedirectUrl *string `json:"redirectUrl,omitempty" url:"redirectUrl,omitempty"`
+	RedirectURL *string `json:"redirectUrl,omitempty" url:"redirectUrl,omitempty"`
 	// The domain name if the domain verification URL returns a redirect.
 	RedirectDomainName *string `json:"redirectDomainName,omitempty" url:"redirectDomainName,omitempty"`
 
@@ -1002,11 +1002,11 @@ func (g *GooglePayMetadata) GetStatusCode() *int {
 	return g.StatusCode
 }
 
-func (g *GooglePayMetadata) GetRedirectUrl() *string {
+func (g *GooglePayMetadata) GetRedirectURL() *string {
 	if g == nil {
 		return nil
 	}
-	return g.RedirectUrl
+	return g.RedirectURL
 }
 
 func (g *GooglePayMetadata) GetRedirectDomainName() *string {
@@ -1037,11 +1037,11 @@ func (g *GooglePayMetadata) SetStatusCode(statusCode *int) {
 	g.require(googlePayMetadataFieldStatusCode)
 }
 
-// SetRedirectUrl sets the RedirectUrl field and marks it as non-optional;
+// SetRedirectURL sets the RedirectURL field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GooglePayMetadata) SetRedirectUrl(redirectUrl *string) {
-	g.RedirectUrl = redirectUrl
-	g.require(googlePayMetadataFieldRedirectUrl)
+func (g *GooglePayMetadata) SetRedirectURL(redirectURL *string) {
+	g.RedirectURL = redirectURL
+	g.require(googlePayMetadataFieldRedirectURL)
 }
 
 // SetRedirectDomainName sets the RedirectDomainName field and marks it as non-optional;
@@ -1196,7 +1196,7 @@ func (g *GooglePayStatusData) String() string {
 }
 
 // The domain's owning entity's ID in Payabli. This value might be different than the `entityId`, depending on whether the domain is cascaded and whether it's inherited.`
-type OwnerEntityId = int64
+type OwnerEntityID = int64
 
 // The domain's owner's entity type. Available values:
 //   - paypoint
@@ -1206,21 +1206,21 @@ type OwnerEntityType = string
 
 // Data related to the payment method domain.
 var (
-	paymentMethodDomainApiResponseFieldType            = big.NewInt(1 << 0)
-	paymentMethodDomainApiResponseFieldApplePay        = big.NewInt(1 << 1)
-	paymentMethodDomainApiResponseFieldGooglePay       = big.NewInt(1 << 2)
-	paymentMethodDomainApiResponseFieldCascades        = big.NewInt(1 << 3)
-	paymentMethodDomainApiResponseFieldCreatedAt       = big.NewInt(1 << 4)
-	paymentMethodDomainApiResponseFieldDomainName      = big.NewInt(1 << 5)
-	paymentMethodDomainApiResponseFieldEntityId        = big.NewInt(1 << 6)
-	paymentMethodDomainApiResponseFieldEntityType      = big.NewInt(1 << 7)
-	paymentMethodDomainApiResponseFieldId              = big.NewInt(1 << 8)
-	paymentMethodDomainApiResponseFieldOwnerEntityId   = big.NewInt(1 << 9)
-	paymentMethodDomainApiResponseFieldOwnerEntityType = big.NewInt(1 << 10)
-	paymentMethodDomainApiResponseFieldUpdatedAt       = big.NewInt(1 << 11)
+	paymentMethodDomainAPIResponseFieldType            = big.NewInt(1 << 0)
+	paymentMethodDomainAPIResponseFieldApplePay        = big.NewInt(1 << 1)
+	paymentMethodDomainAPIResponseFieldGooglePay       = big.NewInt(1 << 2)
+	paymentMethodDomainAPIResponseFieldCascades        = big.NewInt(1 << 3)
+	paymentMethodDomainAPIResponseFieldCreatedAt       = big.NewInt(1 << 4)
+	paymentMethodDomainAPIResponseFieldDomainName      = big.NewInt(1 << 5)
+	paymentMethodDomainAPIResponseFieldEntityID        = big.NewInt(1 << 6)
+	paymentMethodDomainAPIResponseFieldEntityType      = big.NewInt(1 << 7)
+	paymentMethodDomainAPIResponseFieldID              = big.NewInt(1 << 8)
+	paymentMethodDomainAPIResponseFieldOwnerEntityID   = big.NewInt(1 << 9)
+	paymentMethodDomainAPIResponseFieldOwnerEntityType = big.NewInt(1 << 10)
+	paymentMethodDomainAPIResponseFieldUpdatedAt       = big.NewInt(1 << 11)
 )
 
-type PaymentMethodDomainApiResponse struct {
+type PaymentMethodDomainAPIResponse struct {
 	// The record type. For payment method domains, this is always `PaymentMethodDomain`.
 	Type      *string        `json:"type,omitempty" url:"type,omitempty"`
 	ApplePay  *ApplePayData  `json:"applePay" url:"applePay"`
@@ -1229,10 +1229,10 @@ type PaymentMethodDomainApiResponse struct {
 	Cascades        []*CascadeJobDetails  `json:"cascades,omitempty" url:"cascades,omitempty"`
 	CreatedAt       CreatedAt             `json:"createdAt" url:"createdAt"`
 	DomainName      DomainName            `json:"domainName" url:"domainName"`
-	EntityId        EntityId              `json:"entityId" url:"entityId"`
+	EntityID        EntityID              `json:"entityId" url:"entityId"`
 	EntityType      EntityType            `json:"entityType" url:"entityType"`
-	Id              PaymentMethodDomainId `json:"id" url:"id"`
-	OwnerEntityId   OwnerEntityId         `json:"ownerEntityId" url:"ownerEntityId"`
+	ID              PaymentMethodDomainID `json:"id" url:"id"`
+	OwnerEntityID   OwnerEntityID         `json:"ownerEntityId" url:"ownerEntityId"`
 	OwnerEntityType OwnerEntityType       `json:"ownerEntityType" url:"ownerEntityType"`
 	UpdatedAt       *LastModified         `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
 
@@ -1243,98 +1243,98 @@ type PaymentMethodDomainApiResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PaymentMethodDomainApiResponse) GetType() *string {
+func (p *PaymentMethodDomainAPIResponse) GetType() *string {
 	if p == nil {
 		return nil
 	}
 	return p.Type
 }
 
-func (p *PaymentMethodDomainApiResponse) GetApplePay() *ApplePayData {
+func (p *PaymentMethodDomainAPIResponse) GetApplePay() *ApplePayData {
 	if p == nil {
 		return nil
 	}
 	return p.ApplePay
 }
 
-func (p *PaymentMethodDomainApiResponse) GetGooglePay() *GooglePayData {
+func (p *PaymentMethodDomainAPIResponse) GetGooglePay() *GooglePayData {
 	if p == nil {
 		return nil
 	}
 	return p.GooglePay
 }
 
-func (p *PaymentMethodDomainApiResponse) GetCascades() []*CascadeJobDetails {
+func (p *PaymentMethodDomainAPIResponse) GetCascades() []*CascadeJobDetails {
 	if p == nil {
 		return nil
 	}
 	return p.Cascades
 }
 
-func (p *PaymentMethodDomainApiResponse) GetCreatedAt() CreatedAt {
+func (p *PaymentMethodDomainAPIResponse) GetCreatedAt() CreatedAt {
 	if p == nil {
 		return time.Time{}
 	}
 	return p.CreatedAt
 }
 
-func (p *PaymentMethodDomainApiResponse) GetDomainName() DomainName {
+func (p *PaymentMethodDomainAPIResponse) GetDomainName() DomainName {
 	if p == nil {
 		return ""
 	}
 	return p.DomainName
 }
 
-func (p *PaymentMethodDomainApiResponse) GetEntityId() EntityId {
+func (p *PaymentMethodDomainAPIResponse) GetEntityID() EntityID {
 	if p == nil {
 		return 0
 	}
-	return p.EntityId
+	return p.EntityID
 }
 
-func (p *PaymentMethodDomainApiResponse) GetEntityType() EntityType {
+func (p *PaymentMethodDomainAPIResponse) GetEntityType() EntityType {
 	if p == nil {
 		return ""
 	}
 	return p.EntityType
 }
 
-func (p *PaymentMethodDomainApiResponse) GetId() PaymentMethodDomainId {
+func (p *PaymentMethodDomainAPIResponse) GetID() PaymentMethodDomainID {
 	if p == nil {
 		return ""
 	}
-	return p.Id
+	return p.ID
 }
 
-func (p *PaymentMethodDomainApiResponse) GetOwnerEntityId() OwnerEntityId {
+func (p *PaymentMethodDomainAPIResponse) GetOwnerEntityID() OwnerEntityID {
 	if p == nil {
 		return 0
 	}
-	return p.OwnerEntityId
+	return p.OwnerEntityID
 }
 
-func (p *PaymentMethodDomainApiResponse) GetOwnerEntityType() OwnerEntityType {
+func (p *PaymentMethodDomainAPIResponse) GetOwnerEntityType() OwnerEntityType {
 	if p == nil {
 		return ""
 	}
 	return p.OwnerEntityType
 }
 
-func (p *PaymentMethodDomainApiResponse) GetUpdatedAt() *LastModified {
+func (p *PaymentMethodDomainAPIResponse) GetUpdatedAt() *LastModified {
 	if p == nil {
 		return nil
 	}
 	return p.UpdatedAt
 }
 
-func (p *PaymentMethodDomainApiResponse) GetExtraProperties() map[string]interface{} {
+func (p *PaymentMethodDomainAPIResponse) GetExtraProperties() map[string]interface{} {
 	if p == nil {
 		return nil
 	}
 	return p.extraProperties
 }
 
-func (p *PaymentMethodDomainApiResponse) require(field *big.Int) {
+func (p *PaymentMethodDomainAPIResponse) require(field *big.Int) {
 	if p.explicitFields == nil {
 		p.explicitFields = big.NewInt(0)
 	}
@@ -1343,90 +1343,90 @@ func (p *PaymentMethodDomainApiResponse) require(field *big.Int) {
 
 // SetType sets the Type field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentMethodDomainApiResponse) SetType(type_ *string) {
+func (p *PaymentMethodDomainAPIResponse) SetType(type_ *string) {
 	p.Type = type_
-	p.require(paymentMethodDomainApiResponseFieldType)
+	p.require(paymentMethodDomainAPIResponseFieldType)
 }
 
 // SetApplePay sets the ApplePay field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentMethodDomainApiResponse) SetApplePay(applePay *ApplePayData) {
+func (p *PaymentMethodDomainAPIResponse) SetApplePay(applePay *ApplePayData) {
 	p.ApplePay = applePay
-	p.require(paymentMethodDomainApiResponseFieldApplePay)
+	p.require(paymentMethodDomainAPIResponseFieldApplePay)
 }
 
 // SetGooglePay sets the GooglePay field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentMethodDomainApiResponse) SetGooglePay(googlePay *GooglePayData) {
+func (p *PaymentMethodDomainAPIResponse) SetGooglePay(googlePay *GooglePayData) {
 	p.GooglePay = googlePay
-	p.require(paymentMethodDomainApiResponseFieldGooglePay)
+	p.require(paymentMethodDomainAPIResponseFieldGooglePay)
 }
 
 // SetCascades sets the Cascades field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentMethodDomainApiResponse) SetCascades(cascades []*CascadeJobDetails) {
+func (p *PaymentMethodDomainAPIResponse) SetCascades(cascades []*CascadeJobDetails) {
 	p.Cascades = cascades
-	p.require(paymentMethodDomainApiResponseFieldCascades)
+	p.require(paymentMethodDomainAPIResponseFieldCascades)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentMethodDomainApiResponse) SetCreatedAt(createdAt CreatedAt) {
+func (p *PaymentMethodDomainAPIResponse) SetCreatedAt(createdAt CreatedAt) {
 	p.CreatedAt = createdAt
-	p.require(paymentMethodDomainApiResponseFieldCreatedAt)
+	p.require(paymentMethodDomainAPIResponseFieldCreatedAt)
 }
 
 // SetDomainName sets the DomainName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentMethodDomainApiResponse) SetDomainName(domainName DomainName) {
+func (p *PaymentMethodDomainAPIResponse) SetDomainName(domainName DomainName) {
 	p.DomainName = domainName
-	p.require(paymentMethodDomainApiResponseFieldDomainName)
+	p.require(paymentMethodDomainAPIResponseFieldDomainName)
 }
 
-// SetEntityId sets the EntityId field and marks it as non-optional;
+// SetEntityID sets the EntityID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentMethodDomainApiResponse) SetEntityId(entityId EntityId) {
-	p.EntityId = entityId
-	p.require(paymentMethodDomainApiResponseFieldEntityId)
+func (p *PaymentMethodDomainAPIResponse) SetEntityID(entityID EntityID) {
+	p.EntityID = entityID
+	p.require(paymentMethodDomainAPIResponseFieldEntityID)
 }
 
 // SetEntityType sets the EntityType field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentMethodDomainApiResponse) SetEntityType(entityType EntityType) {
+func (p *PaymentMethodDomainAPIResponse) SetEntityType(entityType EntityType) {
 	p.EntityType = entityType
-	p.require(paymentMethodDomainApiResponseFieldEntityType)
+	p.require(paymentMethodDomainAPIResponseFieldEntityType)
 }
 
-// SetId sets the Id field and marks it as non-optional;
+// SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentMethodDomainApiResponse) SetId(id PaymentMethodDomainId) {
-	p.Id = id
-	p.require(paymentMethodDomainApiResponseFieldId)
+func (p *PaymentMethodDomainAPIResponse) SetID(id PaymentMethodDomainID) {
+	p.ID = id
+	p.require(paymentMethodDomainAPIResponseFieldID)
 }
 
-// SetOwnerEntityId sets the OwnerEntityId field and marks it as non-optional;
+// SetOwnerEntityID sets the OwnerEntityID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentMethodDomainApiResponse) SetOwnerEntityId(ownerEntityId OwnerEntityId) {
-	p.OwnerEntityId = ownerEntityId
-	p.require(paymentMethodDomainApiResponseFieldOwnerEntityId)
+func (p *PaymentMethodDomainAPIResponse) SetOwnerEntityID(ownerEntityID OwnerEntityID) {
+	p.OwnerEntityID = ownerEntityID
+	p.require(paymentMethodDomainAPIResponseFieldOwnerEntityID)
 }
 
 // SetOwnerEntityType sets the OwnerEntityType field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentMethodDomainApiResponse) SetOwnerEntityType(ownerEntityType OwnerEntityType) {
+func (p *PaymentMethodDomainAPIResponse) SetOwnerEntityType(ownerEntityType OwnerEntityType) {
 	p.OwnerEntityType = ownerEntityType
-	p.require(paymentMethodDomainApiResponseFieldOwnerEntityType)
+	p.require(paymentMethodDomainAPIResponseFieldOwnerEntityType)
 }
 
 // SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentMethodDomainApiResponse) SetUpdatedAt(updatedAt *LastModified) {
+func (p *PaymentMethodDomainAPIResponse) SetUpdatedAt(updatedAt *LastModified) {
 	p.UpdatedAt = updatedAt
-	p.require(paymentMethodDomainApiResponseFieldUpdatedAt)
+	p.require(paymentMethodDomainAPIResponseFieldUpdatedAt)
 }
 
-func (p *PaymentMethodDomainApiResponse) UnmarshalJSON(data []byte) error {
-	type embed PaymentMethodDomainApiResponse
+func (p *PaymentMethodDomainAPIResponse) UnmarshalJSON(data []byte) error {
+	type embed PaymentMethodDomainAPIResponse
 	var unmarshaler = struct {
 		embed
 		CreatedAt *internal.DateTime `json:"createdAt"`
@@ -1437,7 +1437,7 @@ func (p *PaymentMethodDomainApiResponse) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &unmarshaler); err != nil {
 		return err
 	}
-	*p = PaymentMethodDomainApiResponse(unmarshaler.embed)
+	*p = PaymentMethodDomainAPIResponse(unmarshaler.embed)
 	p.CreatedAt = unmarshaler.CreatedAt.Time()
 	p.UpdatedAt = unmarshaler.UpdatedAt.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *p)
@@ -1449,8 +1449,8 @@ func (p *PaymentMethodDomainApiResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (p *PaymentMethodDomainApiResponse) MarshalJSON() ([]byte, error) {
-	type embed PaymentMethodDomainApiResponse
+func (p *PaymentMethodDomainAPIResponse) MarshalJSON() ([]byte, error) {
+	type embed PaymentMethodDomainAPIResponse
 	var marshaler = struct {
 		embed
 		CreatedAt *internal.DateTime `json:"createdAt"`
@@ -1464,7 +1464,7 @@ func (p *PaymentMethodDomainApiResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PaymentMethodDomainApiResponse) String() string {
+func (p *PaymentMethodDomainAPIResponse) String() string {
 	if p == nil {
 		return "<nil>"
 	}
@@ -1489,7 +1489,7 @@ var (
 type PaymentMethodDomainGeneralResponse struct {
 	IsSuccess      *IsSuccess                      `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	Pageidentifier *PageIdentifier                 `json:"pageidentifier,omitempty" url:"pageidentifier,omitempty"`
-	ResponseData   *PaymentMethodDomainApiResponse `json:"responseData,omitempty" url:"responseData,omitempty"`
+	ResponseData   *PaymentMethodDomainAPIResponse `json:"responseData,omitempty" url:"responseData,omitempty"`
 	ResponseText   string                          `json:"responseText" url:"responseText"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1513,7 +1513,7 @@ func (p *PaymentMethodDomainGeneralResponse) GetPageidentifier() *PageIdentifier
 	return p.Pageidentifier
 }
 
-func (p *PaymentMethodDomainGeneralResponse) GetResponseData() *PaymentMethodDomainApiResponse {
+func (p *PaymentMethodDomainGeneralResponse) GetResponseData() *PaymentMethodDomainAPIResponse {
 	if p == nil {
 		return nil
 	}
@@ -1557,7 +1557,7 @@ func (p *PaymentMethodDomainGeneralResponse) SetPageidentifier(pageidentifier *P
 
 // SetResponseData sets the ResponseData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentMethodDomainGeneralResponse) SetResponseData(responseData *PaymentMethodDomainApiResponse) {
+func (p *PaymentMethodDomainGeneralResponse) SetResponseData(responseData *PaymentMethodDomainAPIResponse) {
 	p.ResponseData = responseData
 	p.require(paymentMethodDomainGeneralResponseFieldResponseData)
 }
@@ -1612,7 +1612,7 @@ func (p *PaymentMethodDomainGeneralResponse) String() string {
 }
 
 // The payment method domain's ID in Payabli.
-type PaymentMethodDomainId = string
+type PaymentMethodDomainID = string
 
 var (
 	querySummaryNoAmtFieldPageIdentifier = big.NewInt(1 << 0)
@@ -2055,7 +2055,7 @@ var (
 )
 
 type ListPaymentMethodDomainsResponse struct {
-	Records []*PaymentMethodDomainApiResponse `json:"records" url:"records"`
+	Records []*PaymentMethodDomainAPIResponse `json:"records" url:"records"`
 	Summary *QuerySummaryNoAmt                `json:"summary" url:"summary"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2065,7 +2065,7 @@ type ListPaymentMethodDomainsResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (l *ListPaymentMethodDomainsResponse) GetRecords() []*PaymentMethodDomainApiResponse {
+func (l *ListPaymentMethodDomainsResponse) GetRecords() []*PaymentMethodDomainAPIResponse {
 	if l == nil {
 		return nil
 	}
@@ -2095,7 +2095,7 @@ func (l *ListPaymentMethodDomainsResponse) require(field *big.Int) {
 
 // SetRecords sets the Records field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListPaymentMethodDomainsResponse) SetRecords(records []*PaymentMethodDomainApiResponse) {
+func (l *ListPaymentMethodDomainsResponse) SetRecords(records []*PaymentMethodDomainAPIResponse) {
 	l.Records = records
 	l.require(listPaymentMethodDomainsResponseFieldRecords)
 }
