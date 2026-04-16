@@ -39,7 +39,7 @@ func (c *Client) AddPayLinkFromInvoice(
 	idInvoice int,
 	request *payabli.PayLinkDataInvoice,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponsePaymentLinks, error) {
+) (*payabli.PayabliAPIResponsePaymentLinks, error) {
 	response, err := c.WithRawResponse.AddPayLinkFromInvoice(
 		ctx,
 		idInvoice,
@@ -56,13 +56,13 @@ func (c *Client) AddPayLinkFromInvoice(
 func (c *Client) AddPayLinkFromBill(
 	ctx context.Context,
 	// The Payabli ID for the bill.
-	billId int,
+	billID int,
 	request *payabli.PayLinkDataBill,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponsePaymentLinks, error) {
+) (*payabli.PayabliAPIResponsePaymentLinks, error) {
 	response, err := c.WithRawResponse.AddPayLinkFromBill(
 		ctx,
-		billId,
+		billID,
 		request,
 		opts...,
 	)
@@ -73,15 +73,15 @@ func (c *Client) AddPayLinkFromBill(
 }
 
 // Deletes a payment link by ID.
-func (c *Client) DeletePayLinkFromId(
+func (c *Client) DeletePayLinkFromID(
 	ctx context.Context,
 	// ID for the payment link.
-	payLinkId string,
+	payLinkID string,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponsePaymentLinks, error) {
-	response, err := c.WithRawResponse.DeletePayLinkFromId(
+) (*payabli.PayabliAPIResponsePaymentLinks, error) {
+	response, err := c.WithRawResponse.DeletePayLinkFromID(
 		ctx,
-		payLinkId,
+		payLinkID,
 		opts...,
 	)
 	if err != nil {
@@ -91,15 +91,15 @@ func (c *Client) DeletePayLinkFromId(
 }
 
 // Retrieves a payment link by ID.
-func (c *Client) GetPayLinkFromId(
+func (c *Client) GetPayLinkFromID(
 	ctx context.Context,
 	// ID for payment link
-	paylinkId string,
+	paylinkID string,
 	opts ...option.RequestOption,
-) (*payabli.GetPayLinkFromIdResponse, error) {
-	response, err := c.WithRawResponse.GetPayLinkFromId(
+) (*payabli.GetPayLinkFromIDResponse, error) {
+	response, err := c.WithRawResponse.GetPayLinkFromID(
 		ctx,
-		paylinkId,
+		paylinkID,
 		opts...,
 	)
 	if err != nil {
@@ -109,16 +109,16 @@ func (c *Client) GetPayLinkFromId(
 }
 
 // Send a payment link to the specified email addresses or phone numbers.
-func (c *Client) PushPayLinkFromId(
+func (c *Client) PushPayLinkFromID(
 	ctx context.Context,
 	// ID for the payment link.
-	payLinkId string,
+	payLinkID string,
 	request *payabli.PushPayLinkRequest,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponsePaymentLinks, error) {
-	response, err := c.WithRawResponse.PushPayLinkFromId(
+) (*payabli.PayabliAPIResponsePaymentLinks, error) {
+	response, err := c.WithRawResponse.PushPayLinkFromID(
 		ctx,
-		payLinkId,
+		payLinkID,
 		request,
 		opts...,
 	)
@@ -129,16 +129,16 @@ func (c *Client) PushPayLinkFromId(
 }
 
 // Refresh a payment link's content after an update.
-func (c *Client) RefreshPayLinkFromId(
+func (c *Client) RefreshPayLinkFromID(
 	ctx context.Context,
 	// ID for the payment link.
-	payLinkId string,
-	request *payabli.RefreshPayLinkFromIdRequest,
+	payLinkID string,
+	request *payabli.RefreshPayLinkFromIDRequest,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponsePaymentLinks, error) {
-	response, err := c.WithRawResponse.RefreshPayLinkFromId(
+) (*payabli.PayabliAPIResponsePaymentLinks, error) {
+	response, err := c.WithRawResponse.RefreshPayLinkFromID(
 		ctx,
-		payLinkId,
+		payLinkID,
 		request,
 		opts...,
 	)
@@ -149,16 +149,16 @@ func (c *Client) RefreshPayLinkFromId(
 }
 
 // Sends a payment link to the specified email addresses.
-func (c *Client) SendPayLinkFromId(
+func (c *Client) SendPayLinkFromID(
 	ctx context.Context,
 	// ID for the payment link.
-	payLinkId string,
-	request *payabli.SendPayLinkFromIdRequest,
+	payLinkID string,
+	request *payabli.SendPayLinkFromIDRequest,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponsePaymentLinks, error) {
-	response, err := c.WithRawResponse.SendPayLinkFromId(
+) (*payabli.PayabliAPIResponsePaymentLinks, error) {
+	response, err := c.WithRawResponse.SendPayLinkFromID(
 		ctx,
-		payLinkId,
+		payLinkID,
 		request,
 		opts...,
 	)
@@ -169,16 +169,16 @@ func (c *Client) SendPayLinkFromId(
 }
 
 // Updates a payment link's details.
-func (c *Client) UpdatePayLinkFromId(
+func (c *Client) UpdatePayLinkFromID(
 	ctx context.Context,
 	// ID for the payment link.
-	payLinkId string,
+	payLinkID string,
 	request *payabli.PayLinkUpdateData,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponsePaymentLinks, error) {
-	response, err := c.WithRawResponse.UpdatePayLinkFromId(
+) (*payabli.PayabliAPIResponsePaymentLinks, error) {
+	response, err := c.WithRawResponse.UpdatePayLinkFromID(
 		ctx,
-		payLinkId,
+		payLinkID,
 		request,
 		opts...,
 	)
@@ -195,7 +195,7 @@ func (c *Client) AddPayLinkFromBillLotNumber(
 	lotNumber string,
 	request *payabli.PayLinkDataOut,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponsePaymentLinks, error) {
+) (*payabli.PayabliAPIResponsePaymentLinks, error) {
 	response, err := c.WithRawResponse.AddPayLinkFromBillLotNumber(
 		ctx,
 		lotNumber,
@@ -212,13 +212,13 @@ func (c *Client) AddPayLinkFromBillLotNumber(
 func (c *Client) PatchOutPaymentLink(
 	ctx context.Context,
 	// ID for the payment link.
-	paylinkId string,
+	paylinkID string,
 	request *payabli.PatchOutPaymentLinkRequest,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponsePaymentLinks, error) {
+) (*payabli.PayabliAPIResponsePaymentLinks, error) {
 	response, err := c.WithRawResponse.PatchOutPaymentLink(
 		ctx,
-		paylinkId,
+		paylinkID,
 		request,
 		opts...,
 	)
@@ -229,16 +229,16 @@ func (c *Client) PatchOutPaymentLink(
 }
 
 // Updates the payment page content for a Pay Out payment link. Use this to change the branding, messaging, payment methods offered, or other page configuration.
-func (c *Client) UpdatePayLinkOutFromId(
+func (c *Client) UpdatePayLinkOutFromID(
 	ctx context.Context,
 	// ID for the payment link.
-	paylinkId string,
+	paylinkID string,
 	request *payabli.PaymentPageRequestBodyOut,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponsePaymentLinks, error) {
-	response, err := c.WithRawResponse.UpdatePayLinkOutFromId(
+) (*payabli.PayabliAPIResponsePaymentLinks, error) {
+	response, err := c.WithRawResponse.UpdatePayLinkOutFromID(
 		ctx,
-		paylinkId,
+		paylinkID,
 		request,
 		opts...,
 	)

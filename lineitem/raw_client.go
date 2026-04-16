@@ -36,7 +36,7 @@ func (r *RawClient) AddItem(
 	entry string,
 	request *payabli.AddItemRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponse6], error) {
+) (*core.Response[*payabli.PayabliAPIResponse6], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -55,7 +55,7 @@ func (r *RawClient) AddItem(
 		headers.Add("idempotencyKey", *request.IdempotencyKey)
 	}
 	headers.Add("Content-Type", "application/json")
-	var response *payabli.PayabliApiResponse6
+	var response *payabli.PayabliAPIResponse6
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -74,7 +74,7 @@ func (r *RawClient) AddItem(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponse6]{
+	return &core.Response[*payabli.PayabliAPIResponse6]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -84,7 +84,7 @@ func (r *RawClient) AddItem(
 func (r *RawClient) DeleteItem(
 	ctx context.Context,
 	// ID for the line item (also known as a product, service, or item).
-	lineItemId int,
+	lineItemID int,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.DeleteItemResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -95,7 +95,7 @@ func (r *RawClient) DeleteItem(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/LineItem/%v",
-		lineItemId,
+		lineItemID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -129,7 +129,7 @@ func (r *RawClient) DeleteItem(
 func (r *RawClient) GetItem(
 	ctx context.Context,
 	// ID for the line item (also known as a product, service, or item).
-	lineItemId int,
+	lineItemID int,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.LineItemQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
@@ -140,7 +140,7 @@ func (r *RawClient) GetItem(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/LineItem/%v",
-		lineItemId,
+		lineItemID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -227,10 +227,10 @@ func (r *RawClient) ListLineItems(
 func (r *RawClient) UpdateItem(
 	ctx context.Context,
 	// ID for the line item (also known as a product, service, or item).
-	lineItemId int,
+	lineItemID int,
 	request *payabli.LineItem,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponse6], error) {
+) (*core.Response[*payabli.PayabliAPIResponse6], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -239,13 +239,13 @@ func (r *RawClient) UpdateItem(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/LineItem/%v",
-		lineItemId,
+		lineItemID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponse6
+	var response *payabli.PayabliAPIResponse6
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -263,7 +263,7 @@ func (r *RawClient) UpdateItem(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponse6]{
+	return &core.Response[*payabli.PayabliAPIResponse6]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

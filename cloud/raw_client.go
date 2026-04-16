@@ -86,9 +86,9 @@ func (r *RawClient) HistoryDevice(
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// ID of the cloud device.
-	deviceId string,
+	deviceID string,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.CloudQueryApiResponse], error) {
+) (*core.Response[*payabli.CloudQueryAPIResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -98,13 +98,13 @@ func (r *RawClient) HistoryDevice(
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Cloud/history/%v/%v",
 		entry,
-		deviceId,
+		deviceID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.CloudQueryApiResponse
+	var response *payabli.CloudQueryAPIResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -122,7 +122,7 @@ func (r *RawClient) HistoryDevice(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.CloudQueryApiResponse]{
+	return &core.Response[*payabli.CloudQueryAPIResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -135,7 +135,7 @@ func (r *RawClient) ListDevice(
 	entry string,
 	request *payabli.ListDeviceRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.CloudQueryApiResponse], error) {
+) (*core.Response[*payabli.CloudQueryAPIResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -157,7 +157,7 @@ func (r *RawClient) ListDevice(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.CloudQueryApiResponse
+	var response *payabli.CloudQueryAPIResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -175,7 +175,7 @@ func (r *RawClient) ListDevice(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.CloudQueryApiResponse]{
+	return &core.Response[*payabli.CloudQueryAPIResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -187,7 +187,7 @@ func (r *RawClient) RemoveDevice(
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// ID of the cloud device.
-	deviceId string,
+	deviceID string,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.RemoveDeviceResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -199,7 +199,7 @@ func (r *RawClient) RemoveDevice(
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Cloud/register/%v/%v",
 		entry,
-		deviceId,
+		deviceID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),

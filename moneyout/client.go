@@ -70,12 +70,12 @@ func (c *Client) CancelAllOut(
 func (c *Client) CancelOutGet(
 	ctx context.Context,
 	// The ID for the payout transaction.
-	referenceId string,
+	referenceID string,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponse0000, error) {
+) (*payabli.PayabliAPIResponse0000, error) {
 	response, err := c.WithRawResponse.CancelOutGet(
 		ctx,
-		referenceId,
+		referenceID,
 		opts...,
 	)
 	if err != nil {
@@ -88,12 +88,12 @@ func (c *Client) CancelOutGet(
 func (c *Client) CancelOutDelete(
 	ctx context.Context,
 	// The ID for the payout transaction.
-	referenceId string,
+	referenceID string,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponse0000, error) {
+) (*payabli.PayabliAPIResponse0000, error) {
 	response, err := c.WithRawResponse.CancelOutDelete(
 		ctx,
-		referenceId,
+		referenceID,
 		opts...,
 	)
 	if err != nil {
@@ -123,13 +123,13 @@ func (c *Client) CaptureAllOut(
 func (c *Client) CaptureOut(
 	ctx context.Context,
 	// The ID for the payout transaction.
-	referenceId string,
+	referenceID string,
 	request *payabli.CaptureOutRequest,
 	opts ...option.RequestOption,
 ) (*payabli.AuthCapturePayoutResponse, error) {
 	response, err := c.WithRawResponse.CaptureOut(
 		ctx,
-		referenceId,
+		referenceID,
 		request,
 		opts...,
 	)
@@ -143,12 +143,12 @@ func (c *Client) CaptureOut(
 func (c *Client) PayoutDetails(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	opts ...option.RequestOption,
 ) (*payabli.BillDetailResponse, error) {
 	response, err := c.WithRawResponse.PayoutDetails(
 		ctx,
-		transId,
+		transID,
 		opts...,
 	)
 	if err != nil {
@@ -236,14 +236,14 @@ func (c *Client) GetCheckImage(
 func (c *Client) UpdateCheckPaymentStatus(
 	ctx context.Context,
 	// The Payabli transaction ID for the check payment.
-	transId string,
+	transID string,
 	// The new status to apply to the check transaction. To mark a check as `Paid`, send 5. To mark a check as `Cancelled`, send 0.
 	checkPaymentStatus *payabli.AllowedCheckPaymentStatus,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponse00Responsedatanonobject, error) {
+) (*payabli.PayabliAPIResponse00Responsedatanonobject, error) {
 	response, err := c.WithRawResponse.UpdateCheckPaymentStatus(
 		ctx,
-		transId,
+		transID,
 		checkPaymentStatus,
 		opts...,
 	)

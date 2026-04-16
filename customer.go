@@ -69,12 +69,12 @@ func (a *AddCustomerRequest) MarshalJSON() ([]byte, error) {
 }
 
 var (
-	payabliApiResponseCustomerQueryFieldIsSuccess    = big.NewInt(1 << 0)
-	payabliApiResponseCustomerQueryFieldResponseData = big.NewInt(1 << 1)
-	payabliApiResponseCustomerQueryFieldResponseText = big.NewInt(1 << 2)
+	payabliAPIResponseCustomerQueryFieldIsSuccess    = big.NewInt(1 << 0)
+	payabliAPIResponseCustomerQueryFieldResponseData = big.NewInt(1 << 1)
+	payabliAPIResponseCustomerQueryFieldResponseText = big.NewInt(1 << 2)
 )
 
-type PayabliApiResponseCustomerQuery struct {
+type PayabliAPIResponseCustomerQuery struct {
 	IsSuccess    *IsSuccess            `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	ResponseData *CustomerQueryRecords `json:"responseData,omitempty" url:"responseData,omitempty"`
 	ResponseText ResponseText          `json:"responseText" url:"responseText"`
@@ -86,35 +86,35 @@ type PayabliApiResponseCustomerQuery struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PayabliApiResponseCustomerQuery) GetIsSuccess() *IsSuccess {
+func (p *PayabliAPIResponseCustomerQuery) GetIsSuccess() *IsSuccess {
 	if p == nil {
 		return nil
 	}
 	return p.IsSuccess
 }
 
-func (p *PayabliApiResponseCustomerQuery) GetResponseData() *CustomerQueryRecords {
+func (p *PayabliAPIResponseCustomerQuery) GetResponseData() *CustomerQueryRecords {
 	if p == nil {
 		return nil
 	}
 	return p.ResponseData
 }
 
-func (p *PayabliApiResponseCustomerQuery) GetResponseText() ResponseText {
+func (p *PayabliAPIResponseCustomerQuery) GetResponseText() ResponseText {
 	if p == nil {
 		return ""
 	}
 	return p.ResponseText
 }
 
-func (p *PayabliApiResponseCustomerQuery) GetExtraProperties() map[string]interface{} {
+func (p *PayabliAPIResponseCustomerQuery) GetExtraProperties() map[string]interface{} {
 	if p == nil {
 		return nil
 	}
 	return p.extraProperties
 }
 
-func (p *PayabliApiResponseCustomerQuery) require(field *big.Int) {
+func (p *PayabliAPIResponseCustomerQuery) require(field *big.Int) {
 	if p.explicitFields == nil {
 		p.explicitFields = big.NewInt(0)
 	}
@@ -123,32 +123,32 @@ func (p *PayabliApiResponseCustomerQuery) require(field *big.Int) {
 
 // SetIsSuccess sets the IsSuccess field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseCustomerQuery) SetIsSuccess(isSuccess *IsSuccess) {
+func (p *PayabliAPIResponseCustomerQuery) SetIsSuccess(isSuccess *IsSuccess) {
 	p.IsSuccess = isSuccess
-	p.require(payabliApiResponseCustomerQueryFieldIsSuccess)
+	p.require(payabliAPIResponseCustomerQueryFieldIsSuccess)
 }
 
 // SetResponseData sets the ResponseData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseCustomerQuery) SetResponseData(responseData *CustomerQueryRecords) {
+func (p *PayabliAPIResponseCustomerQuery) SetResponseData(responseData *CustomerQueryRecords) {
 	p.ResponseData = responseData
-	p.require(payabliApiResponseCustomerQueryFieldResponseData)
+	p.require(payabliAPIResponseCustomerQueryFieldResponseData)
 }
 
 // SetResponseText sets the ResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseCustomerQuery) SetResponseText(responseText ResponseText) {
+func (p *PayabliAPIResponseCustomerQuery) SetResponseText(responseText ResponseText) {
 	p.ResponseText = responseText
-	p.require(payabliApiResponseCustomerQueryFieldResponseText)
+	p.require(payabliAPIResponseCustomerQueryFieldResponseText)
 }
 
-func (p *PayabliApiResponseCustomerQuery) UnmarshalJSON(data []byte) error {
-	type unmarshaler PayabliApiResponseCustomerQuery
+func (p *PayabliAPIResponseCustomerQuery) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayabliAPIResponseCustomerQuery
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PayabliApiResponseCustomerQuery(value)
+	*p = PayabliAPIResponseCustomerQuery(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *p)
 	if err != nil {
 		return err
@@ -158,8 +158,8 @@ func (p *PayabliApiResponseCustomerQuery) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (p *PayabliApiResponseCustomerQuery) MarshalJSON() ([]byte, error) {
-	type embed PayabliApiResponseCustomerQuery
+func (p *PayabliAPIResponseCustomerQuery) MarshalJSON() ([]byte, error) {
+	type embed PayabliAPIResponseCustomerQuery
 	var marshaler = struct {
 		embed
 	}{
@@ -169,7 +169,7 @@ func (p *PayabliApiResponseCustomerQuery) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PayabliApiResponseCustomerQuery) String() string {
+func (p *PayabliAPIResponseCustomerQuery) String() string {
 	if p == nil {
 		return "<nil>"
 	}

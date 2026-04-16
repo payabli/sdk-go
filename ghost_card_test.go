@@ -10,11 +10,11 @@ import (
 )
 
 func TestSettersCreateGhostCardRequestBody(t *testing.T) {
-	t.Run("SetVendorId", func(t *testing.T) {
+	t.Run("SetVendorID", func(t *testing.T) {
 		obj := &CreateGhostCardRequestBody{}
-		var fernTestValueVendorId int64
-		obj.SetVendorId(fernTestValueVendorId)
-		assert.Equal(t, fernTestValueVendorId, obj.VendorId)
+		var fernTestValueVendorID int64
+		obj.SetVendorID(fernTestValueVendorID)
+		assert.Equal(t, fernTestValueVendorID, obj.VendorID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -141,14 +141,14 @@ func TestSettersCreateGhostCardRequestBody(t *testing.T) {
 }
 
 func TestSettersMarkExplicitCreateGhostCardRequestBody(t *testing.T) {
-	t.Run("SetVendorId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetVendorID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &CreateGhostCardRequestBody{}
-		var fernTestValueVendorId int64
+		var fernTestValueVendorID int64
 
 		// Act
-		obj.SetVendorId(fernTestValueVendorId)
+		obj.SetVendorID(fernTestValueVendorID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -939,11 +939,11 @@ func TestSettersMarkExplicitCreateGhostCardResponse(t *testing.T) {
 }
 
 func TestSettersCreateGhostCardResponseData(t *testing.T) {
-	t.Run("SetReferenceId", func(t *testing.T) {
+	t.Run("SetReferenceID", func(t *testing.T) {
 		obj := &CreateGhostCardResponseData{}
-		var fernTestValueReferenceId *string
-		obj.SetReferenceId(fernTestValueReferenceId)
-		assert.Equal(t, fernTestValueReferenceId, obj.ReferenceId)
+		var fernTestValueReferenceID *string
+		obj.SetReferenceID(fernTestValueReferenceID)
+		assert.Equal(t, fernTestValueReferenceID, obj.ReferenceID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -966,28 +966,28 @@ func TestSettersCreateGhostCardResponseData(t *testing.T) {
 }
 
 func TestGettersCreateGhostCardResponseData(t *testing.T) {
-	t.Run("GetReferenceId", func(t *testing.T) {
+	t.Run("GetReferenceID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &CreateGhostCardResponseData{}
 		var expected *string
-		obj.ReferenceId = expected
+		obj.ReferenceID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetReferenceId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetReferenceID(), "getter should return the property value")
 	})
 
-	t.Run("GetReferenceId_NilValue", func(t *testing.T) {
+	t.Run("GetReferenceID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &CreateGhostCardResponseData{}
-		obj.ReferenceId = nil
+		obj.ReferenceID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetReferenceId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetReferenceID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetReferenceId_NilReceiver", func(t *testing.T) {
+	t.Run("GetReferenceID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *CreateGhostCardResponseData
 		// Should not panic - getters should handle nil receiver gracefully
@@ -996,7 +996,7 @@ func TestGettersCreateGhostCardResponseData(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetReferenceId() // Should return zero value
+		_ = obj.GetReferenceID() // Should return zero value
 	})
 
 	t.Run("GetResultCode", func(t *testing.T) {
@@ -1068,14 +1068,14 @@ func TestGettersCreateGhostCardResponseData(t *testing.T) {
 }
 
 func TestSettersMarkExplicitCreateGhostCardResponseData(t *testing.T) {
-	t.Run("SetReferenceId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetReferenceID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &CreateGhostCardResponseData{}
-		var fernTestValueReferenceId *string
+		var fernTestValueReferenceID *string
 
 		// Act
-		obj.SetReferenceId(fernTestValueReferenceId)
+		obj.SetReferenceID(fernTestValueReferenceID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)

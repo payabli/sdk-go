@@ -54,9 +54,9 @@ func TestSettersMarkExplicitImportCustomerRequest(t *testing.T) {
 
 }
 
-func TestSettersPayabliApiResponseImport(t *testing.T) {
+func TestSettersPayabliAPIResponseImport(t *testing.T) {
 	t.Run("SetIsSuccess", func(t *testing.T) {
-		obj := &PayabliApiResponseImport{}
+		obj := &PayabliAPIResponseImport{}
 		var fernTestValueIsSuccess *IsSuccess
 		obj.SetIsSuccess(fernTestValueIsSuccess)
 		assert.Equal(t, fernTestValueIsSuccess, obj.IsSuccess)
@@ -64,7 +64,7 @@ func TestSettersPayabliApiResponseImport(t *testing.T) {
 	})
 
 	t.Run("SetPageIdentifier", func(t *testing.T) {
-		obj := &PayabliApiResponseImport{}
+		obj := &PayabliAPIResponseImport{}
 		var fernTestValuePageIdentifier *PageIdentifier
 		obj.SetPageIdentifier(fernTestValuePageIdentifier)
 		assert.Equal(t, fernTestValuePageIdentifier, obj.PageIdentifier)
@@ -72,7 +72,7 @@ func TestSettersPayabliApiResponseImport(t *testing.T) {
 	})
 
 	t.Run("SetResponseCode", func(t *testing.T) {
-		obj := &PayabliApiResponseImport{}
+		obj := &PayabliAPIResponseImport{}
 		var fernTestValueResponseCode *Responsecode
 		obj.SetResponseCode(fernTestValueResponseCode)
 		assert.Equal(t, fernTestValueResponseCode, obj.ResponseCode)
@@ -80,15 +80,15 @@ func TestSettersPayabliApiResponseImport(t *testing.T) {
 	})
 
 	t.Run("SetResponseData", func(t *testing.T) {
-		obj := &PayabliApiResponseImport{}
-		var fernTestValueResponseData *PayabliApiResponseImportResponseData
+		obj := &PayabliAPIResponseImport{}
+		var fernTestValueResponseData *PayabliAPIResponseImportResponseData
 		obj.SetResponseData(fernTestValueResponseData)
 		assert.Equal(t, fernTestValueResponseData, obj.ResponseData)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
 	t.Run("SetResponseText", func(t *testing.T) {
-		obj := &PayabliApiResponseImport{}
+		obj := &PayabliAPIResponseImport{}
 		var fernTestValueResponseText ResponseText
 		obj.SetResponseText(fernTestValueResponseText)
 		assert.Equal(t, fernTestValueResponseText, obj.ResponseText)
@@ -97,11 +97,11 @@ func TestSettersPayabliApiResponseImport(t *testing.T) {
 
 }
 
-func TestGettersPayabliApiResponseImport(t *testing.T) {
+func TestGettersPayabliAPIResponseImport(t *testing.T) {
 	t.Run("GetIsSuccess", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseImport{}
+		obj := &PayabliAPIResponseImport{}
 		var expected *IsSuccess
 		obj.IsSuccess = expected
 
@@ -112,7 +112,7 @@ func TestGettersPayabliApiResponseImport(t *testing.T) {
 	t.Run("GetIsSuccess_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseImport{}
+		obj := &PayabliAPIResponseImport{}
 		obj.IsSuccess = nil
 
 		// Act & Assert
@@ -121,7 +121,7 @@ func TestGettersPayabliApiResponseImport(t *testing.T) {
 
 	t.Run("GetIsSuccess_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseImport
+		var obj *PayabliAPIResponseImport
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -134,7 +134,7 @@ func TestGettersPayabliApiResponseImport(t *testing.T) {
 	t.Run("GetPageIdentifier", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseImport{}
+		obj := &PayabliAPIResponseImport{}
 		var expected *PageIdentifier
 		obj.PageIdentifier = expected
 
@@ -145,7 +145,7 @@ func TestGettersPayabliApiResponseImport(t *testing.T) {
 	t.Run("GetPageIdentifier_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseImport{}
+		obj := &PayabliAPIResponseImport{}
 		obj.PageIdentifier = nil
 
 		// Act & Assert
@@ -154,7 +154,7 @@ func TestGettersPayabliApiResponseImport(t *testing.T) {
 
 	t.Run("GetPageIdentifier_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseImport
+		var obj *PayabliAPIResponseImport
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -167,7 +167,7 @@ func TestGettersPayabliApiResponseImport(t *testing.T) {
 	t.Run("GetResponseCode", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseImport{}
+		obj := &PayabliAPIResponseImport{}
 		var expected *Responsecode
 		obj.ResponseCode = expected
 
@@ -178,7 +178,7 @@ func TestGettersPayabliApiResponseImport(t *testing.T) {
 	t.Run("GetResponseCode_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseImport{}
+		obj := &PayabliAPIResponseImport{}
 		obj.ResponseCode = nil
 
 		// Act & Assert
@@ -187,7 +187,7 @@ func TestGettersPayabliApiResponseImport(t *testing.T) {
 
 	t.Run("GetResponseCode_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseImport
+		var obj *PayabliAPIResponseImport
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -200,8 +200,8 @@ func TestGettersPayabliApiResponseImport(t *testing.T) {
 	t.Run("GetResponseData", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseImport{}
-		var expected *PayabliApiResponseImportResponseData
+		obj := &PayabliAPIResponseImport{}
+		var expected *PayabliAPIResponseImportResponseData
 		obj.ResponseData = expected
 
 		// Act & Assert
@@ -211,7 +211,7 @@ func TestGettersPayabliApiResponseImport(t *testing.T) {
 	t.Run("GetResponseData_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseImport{}
+		obj := &PayabliAPIResponseImport{}
 		obj.ResponseData = nil
 
 		// Act & Assert
@@ -220,7 +220,7 @@ func TestGettersPayabliApiResponseImport(t *testing.T) {
 
 	t.Run("GetResponseData_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseImport
+		var obj *PayabliAPIResponseImport
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -233,7 +233,7 @@ func TestGettersPayabliApiResponseImport(t *testing.T) {
 	t.Run("GetResponseText", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseImport{}
+		obj := &PayabliAPIResponseImport{}
 		var expected ResponseText
 		obj.ResponseText = expected
 
@@ -243,7 +243,7 @@ func TestGettersPayabliApiResponseImport(t *testing.T) {
 
 	t.Run("GetResponseText_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseImport
+		var obj *PayabliAPIResponseImport
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -255,11 +255,11 @@ func TestGettersPayabliApiResponseImport(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitPayabliApiResponseImport(t *testing.T) {
+func TestSettersMarkExplicitPayabliAPIResponseImport(t *testing.T) {
 	t.Run("SetIsSuccess_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseImport{}
+		obj := &PayabliAPIResponseImport{}
 		var fernTestValueIsSuccess *IsSuccess
 
 		// Act
@@ -290,7 +290,7 @@ func TestSettersMarkExplicitPayabliApiResponseImport(t *testing.T) {
 	t.Run("SetPageIdentifier_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseImport{}
+		obj := &PayabliAPIResponseImport{}
 		var fernTestValuePageIdentifier *PageIdentifier
 
 		// Act
@@ -321,7 +321,7 @@ func TestSettersMarkExplicitPayabliApiResponseImport(t *testing.T) {
 	t.Run("SetResponseCode_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseImport{}
+		obj := &PayabliAPIResponseImport{}
 		var fernTestValueResponseCode *Responsecode
 
 		// Act
@@ -352,8 +352,8 @@ func TestSettersMarkExplicitPayabliApiResponseImport(t *testing.T) {
 	t.Run("SetResponseData_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseImport{}
-		var fernTestValueResponseData *PayabliApiResponseImportResponseData
+		obj := &PayabliAPIResponseImport{}
+		var fernTestValueResponseData *PayabliAPIResponseImportResponseData
 
 		// Act
 		obj.SetResponseData(fernTestValueResponseData)
@@ -383,7 +383,7 @@ func TestSettersMarkExplicitPayabliApiResponseImport(t *testing.T) {
 	t.Run("SetResponseText_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseImport{}
+		obj := &PayabliAPIResponseImport{}
 		var fernTestValueResponseText ResponseText
 
 		// Act
@@ -413,9 +413,9 @@ func TestSettersMarkExplicitPayabliApiResponseImport(t *testing.T) {
 
 }
 
-func TestSettersPayabliApiResponseImportResponseData(t *testing.T) {
+func TestSettersPayabliAPIResponseImportResponseData(t *testing.T) {
 	t.Run("SetAdded", func(t *testing.T) {
-		obj := &PayabliApiResponseImportResponseData{}
+		obj := &PayabliAPIResponseImportResponseData{}
 		var fernTestValueAdded *int
 		obj.SetAdded(fernTestValueAdded)
 		assert.Equal(t, fernTestValueAdded, obj.Added)
@@ -423,7 +423,7 @@ func TestSettersPayabliApiResponseImportResponseData(t *testing.T) {
 	})
 
 	t.Run("SetErrors", func(t *testing.T) {
-		obj := &PayabliApiResponseImportResponseData{}
+		obj := &PayabliAPIResponseImportResponseData{}
 		var fernTestValueErrors []string
 		obj.SetErrors(fernTestValueErrors)
 		assert.Equal(t, fernTestValueErrors, obj.Errors)
@@ -431,7 +431,7 @@ func TestSettersPayabliApiResponseImportResponseData(t *testing.T) {
 	})
 
 	t.Run("SetRejected", func(t *testing.T) {
-		obj := &PayabliApiResponseImportResponseData{}
+		obj := &PayabliAPIResponseImportResponseData{}
 		var fernTestValueRejected *int
 		obj.SetRejected(fernTestValueRejected)
 		assert.Equal(t, fernTestValueRejected, obj.Rejected)
@@ -440,11 +440,11 @@ func TestSettersPayabliApiResponseImportResponseData(t *testing.T) {
 
 }
 
-func TestGettersPayabliApiResponseImportResponseData(t *testing.T) {
+func TestGettersPayabliAPIResponseImportResponseData(t *testing.T) {
 	t.Run("GetAdded", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseImportResponseData{}
+		obj := &PayabliAPIResponseImportResponseData{}
 		var expected *int
 		obj.Added = expected
 
@@ -455,7 +455,7 @@ func TestGettersPayabliApiResponseImportResponseData(t *testing.T) {
 	t.Run("GetAdded_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseImportResponseData{}
+		obj := &PayabliAPIResponseImportResponseData{}
 		obj.Added = nil
 
 		// Act & Assert
@@ -464,7 +464,7 @@ func TestGettersPayabliApiResponseImportResponseData(t *testing.T) {
 
 	t.Run("GetAdded_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseImportResponseData
+		var obj *PayabliAPIResponseImportResponseData
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -477,7 +477,7 @@ func TestGettersPayabliApiResponseImportResponseData(t *testing.T) {
 	t.Run("GetErrors", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseImportResponseData{}
+		obj := &PayabliAPIResponseImportResponseData{}
 		var expected []string
 		obj.Errors = expected
 
@@ -488,7 +488,7 @@ func TestGettersPayabliApiResponseImportResponseData(t *testing.T) {
 	t.Run("GetErrors_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseImportResponseData{}
+		obj := &PayabliAPIResponseImportResponseData{}
 		obj.Errors = nil
 
 		// Act & Assert
@@ -497,7 +497,7 @@ func TestGettersPayabliApiResponseImportResponseData(t *testing.T) {
 
 	t.Run("GetErrors_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseImportResponseData
+		var obj *PayabliAPIResponseImportResponseData
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -510,7 +510,7 @@ func TestGettersPayabliApiResponseImportResponseData(t *testing.T) {
 	t.Run("GetRejected", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseImportResponseData{}
+		obj := &PayabliAPIResponseImportResponseData{}
 		var expected *int
 		obj.Rejected = expected
 
@@ -521,7 +521,7 @@ func TestGettersPayabliApiResponseImportResponseData(t *testing.T) {
 	t.Run("GetRejected_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseImportResponseData{}
+		obj := &PayabliAPIResponseImportResponseData{}
 		obj.Rejected = nil
 
 		// Act & Assert
@@ -530,7 +530,7 @@ func TestGettersPayabliApiResponseImportResponseData(t *testing.T) {
 
 	t.Run("GetRejected_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseImportResponseData
+		var obj *PayabliAPIResponseImportResponseData
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -542,11 +542,11 @@ func TestGettersPayabliApiResponseImportResponseData(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitPayabliApiResponseImportResponseData(t *testing.T) {
+func TestSettersMarkExplicitPayabliAPIResponseImportResponseData(t *testing.T) {
 	t.Run("SetAdded_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseImportResponseData{}
+		obj := &PayabliAPIResponseImportResponseData{}
 		var fernTestValueAdded *int
 
 		// Act
@@ -577,7 +577,7 @@ func TestSettersMarkExplicitPayabliApiResponseImportResponseData(t *testing.T) {
 	t.Run("SetErrors_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseImportResponseData{}
+		obj := &PayabliAPIResponseImportResponseData{}
 		var fernTestValueErrors []string
 
 		// Act
@@ -608,7 +608,7 @@ func TestSettersMarkExplicitPayabliApiResponseImportResponseData(t *testing.T) {
 	t.Run("SetRejected_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseImportResponseData{}
+		obj := &PayabliAPIResponseImportResponseData{}
 		var fernTestValueRejected *int
 
 		// Act
@@ -638,11 +638,11 @@ func TestSettersMarkExplicitPayabliApiResponseImportResponseData(t *testing.T) {
 
 }
 
-func TestJSONMarshalingPayabliApiResponseImport(t *testing.T) {
+func TestJSONMarshalingPayabliAPIResponseImport(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseImport{}
+		obj := &PayabliAPIResponseImport{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -651,31 +651,31 @@ func TestJSONMarshalingPayabliApiResponseImport(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled PayabliApiResponseImport
+		var unmarshaled PayabliAPIResponseImport
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj PayabliApiResponseImport
+		var obj PayabliAPIResponseImport
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj PayabliApiResponseImport
+		var obj PayabliAPIResponseImport
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingPayabliApiResponseImportResponseData(t *testing.T) {
+func TestJSONMarshalingPayabliAPIResponseImportResponseData(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayabliApiResponseImportResponseData{}
+		obj := &PayabliAPIResponseImportResponseData{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -684,62 +684,62 @@ func TestJSONMarshalingPayabliApiResponseImportResponseData(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled PayabliApiResponseImportResponseData
+		var unmarshaled PayabliAPIResponseImportResponseData
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj PayabliApiResponseImportResponseData
+		var obj PayabliAPIResponseImportResponseData
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj PayabliApiResponseImportResponseData
+		var obj PayabliAPIResponseImportResponseData
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestStringPayabliApiResponseImport(t *testing.T) {
+func TestStringPayabliAPIResponseImport(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &PayabliApiResponseImport{}
+		obj := &PayabliAPIResponseImport{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseImport
+		var obj *PayabliAPIResponseImport
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringPayabliApiResponseImportResponseData(t *testing.T) {
+func TestStringPayabliAPIResponseImportResponseData(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &PayabliApiResponseImportResponseData{}
+		obj := &PayabliAPIResponseImportResponseData{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseImportResponseData
+		var obj *PayabliAPIResponseImportResponseData
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestExtraPropertiesPayabliApiResponseImport(t *testing.T) {
+func TestExtraPropertiesPayabliAPIResponseImport(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &PayabliApiResponseImport{}
+		obj := &PayabliAPIResponseImport{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -753,16 +753,16 @@ func TestExtraPropertiesPayabliApiResponseImport(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseImport
+		var obj *PayabliAPIResponseImport
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesPayabliApiResponseImportResponseData(t *testing.T) {
+func TestExtraPropertiesPayabliAPIResponseImportResponseData(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &PayabliApiResponseImportResponseData{}
+		obj := &PayabliAPIResponseImportResponseData{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -776,7 +776,7 @@ func TestExtraPropertiesPayabliApiResponseImportResponseData(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *PayabliApiResponseImportResponseData
+		var obj *PayabliAPIResponseImportResponseData
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})

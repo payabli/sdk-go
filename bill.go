@@ -413,19 +413,19 @@ var (
 	billQueryRecord2FieldDocumentsRef       = big.NewInt(1 << 12)
 	billQueryRecord2FieldDueDate            = big.NewInt(1 << 13)
 	billQueryRecord2FieldEndDate            = big.NewInt(1 << 14)
-	billQueryRecord2FieldEntityId           = big.NewInt(1 << 15)
-	billQueryRecord2FieldExternalPaypointId = big.NewInt(1 << 16)
+	billQueryRecord2FieldEntityID           = big.NewInt(1 << 15)
+	billQueryRecord2FieldExternalPaypointID = big.NewInt(1 << 16)
 	billQueryRecord2FieldFrequency          = big.NewInt(1 << 17)
-	billQueryRecord2FieldIdBill             = big.NewInt(1 << 18)
+	billQueryRecord2FieldIDBill             = big.NewInt(1 << 18)
 	billQueryRecord2FieldLastUpdated        = big.NewInt(1 << 19)
 	billQueryRecord2FieldLotNumber          = big.NewInt(1 << 20)
 	billQueryRecord2FieldMode               = big.NewInt(1 << 21)
 	billQueryRecord2FieldNetAmount          = big.NewInt(1 << 22)
-	billQueryRecord2FieldParentOrgId        = big.NewInt(1 << 23)
+	billQueryRecord2FieldParentOrgID        = big.NewInt(1 << 23)
 	billQueryRecord2FieldParentOrgName      = big.NewInt(1 << 24)
-	billQueryRecord2FieldPaymentId          = big.NewInt(1 << 25)
+	billQueryRecord2FieldPaymentID          = big.NewInt(1 << 25)
 	billQueryRecord2FieldPaymentMethod      = big.NewInt(1 << 26)
-	billQueryRecord2FieldPaylinkId          = big.NewInt(1 << 27)
+	billQueryRecord2FieldPaylinkID          = big.NewInt(1 << 27)
 	billQueryRecord2FieldPaypointDbaname    = big.NewInt(1 << 28)
 	billQueryRecord2FieldPaypointEntryname  = big.NewInt(1 << 29)
 	billQueryRecord2FieldPaypointLegalname  = big.NewInt(1 << 30)
@@ -466,12 +466,12 @@ type BillQueryRecord2 struct {
 	// End date for the bill.
 	EndDate *time.Time `json:"EndDate,omitempty" url:"EndDate,omitempty" format:"date"`
 	// Entity identifier associated with the bill.
-	EntityId           *string             `json:"EntityID,omitempty" url:"EntityID,omitempty"`
-	ExternalPaypointId *ExternalPaypointId `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	EntityID           *string             `json:"EntityID,omitempty" url:"EntityID,omitempty"`
+	ExternalPaypointID *ExternalPaypointID `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
 	// Frequency for scheduled bills. Applied only in `Mode` = 1.
 	Frequency *Frequency `json:"Frequency,omitempty" url:"Frequency,omitempty"`
 	// Identifier of the bill.
-	IdBill *int64 `json:"IdBill,omitempty" url:"IdBill,omitempty"`
+	IDBill *int64 `json:"IdBill,omitempty" url:"IdBill,omitempty"`
 	// Timestamp of when bill was last updated, in UTC.
 	LastUpdated *time.Time `json:"LastUpdated,omitempty" url:"LastUpdated,omitempty"`
 	// Lot number associated with the bill.
@@ -481,13 +481,13 @@ type BillQueryRecord2 struct {
 	// Net amount of the bill.
 	NetAmount *float64 `json:"NetAmount,omitempty" url:"NetAmount,omitempty"`
 	// Parent organization identifier.
-	ParentOrgId   *int64           `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
+	ParentOrgID   *int64           `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
 	ParentOrgName *OrgParentName   `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
-	PaymentId     *PaymentIdString `json:"PaymentId,omitempty" url:"PaymentId,omitempty"`
+	PaymentID     *PaymentIDString `json:"PaymentId,omitempty" url:"PaymentId,omitempty"`
 	// Preferred payment method used.
 	PaymentMethod *BillQueryRecord2PaymentMethod `json:"PaymentMethod,omitempty" url:"PaymentMethod,omitempty"`
 	// Paylink identifier associated with the bill.
-	PaylinkId *string `json:"paylinkId,omitempty" url:"paylinkId,omitempty"`
+	PaylinkID *string `json:"paylinkId,omitempty" url:"paylinkId,omitempty"`
 	// The paypoint's DBA name.
 	PaypointDbaname *Dbaname `json:"PaypointDbaname,omitempty" url:"PaypointDbaname,omitempty"`
 	// Entry name of the paypoint.
@@ -617,18 +617,18 @@ func (b *BillQueryRecord2) GetEndDate() *time.Time {
 	return b.EndDate
 }
 
-func (b *BillQueryRecord2) GetEntityId() *string {
+func (b *BillQueryRecord2) GetEntityID() *string {
 	if b == nil {
 		return nil
 	}
-	return b.EntityId
+	return b.EntityID
 }
 
-func (b *BillQueryRecord2) GetExternalPaypointId() *ExternalPaypointId {
+func (b *BillQueryRecord2) GetExternalPaypointID() *ExternalPaypointID {
 	if b == nil {
 		return nil
 	}
-	return b.ExternalPaypointId
+	return b.ExternalPaypointID
 }
 
 func (b *BillQueryRecord2) GetFrequency() *Frequency {
@@ -638,11 +638,11 @@ func (b *BillQueryRecord2) GetFrequency() *Frequency {
 	return b.Frequency
 }
 
-func (b *BillQueryRecord2) GetIdBill() *int64 {
+func (b *BillQueryRecord2) GetIDBill() *int64 {
 	if b == nil {
 		return nil
 	}
-	return b.IdBill
+	return b.IDBill
 }
 
 func (b *BillQueryRecord2) GetLastUpdated() *time.Time {
@@ -673,11 +673,11 @@ func (b *BillQueryRecord2) GetNetAmount() *float64 {
 	return b.NetAmount
 }
 
-func (b *BillQueryRecord2) GetParentOrgId() *int64 {
+func (b *BillQueryRecord2) GetParentOrgID() *int64 {
 	if b == nil {
 		return nil
 	}
-	return b.ParentOrgId
+	return b.ParentOrgID
 }
 
 func (b *BillQueryRecord2) GetParentOrgName() *OrgParentName {
@@ -687,11 +687,11 @@ func (b *BillQueryRecord2) GetParentOrgName() *OrgParentName {
 	return b.ParentOrgName
 }
 
-func (b *BillQueryRecord2) GetPaymentId() *PaymentIdString {
+func (b *BillQueryRecord2) GetPaymentID() *PaymentIDString {
 	if b == nil {
 		return nil
 	}
-	return b.PaymentId
+	return b.PaymentID
 }
 
 func (b *BillQueryRecord2) GetPaymentMethod() *BillQueryRecord2PaymentMethod {
@@ -701,11 +701,11 @@ func (b *BillQueryRecord2) GetPaymentMethod() *BillQueryRecord2PaymentMethod {
 	return b.PaymentMethod
 }
 
-func (b *BillQueryRecord2) GetPaylinkId() *string {
+func (b *BillQueryRecord2) GetPaylinkID() *string {
 	if b == nil {
 		return nil
 	}
-	return b.PaylinkId
+	return b.PaylinkID
 }
 
 func (b *BillQueryRecord2) GetPaypointDbaname() *Dbaname {
@@ -890,18 +890,18 @@ func (b *BillQueryRecord2) SetEndDate(endDate *time.Time) {
 	b.require(billQueryRecord2FieldEndDate)
 }
 
-// SetEntityId sets the EntityId field and marks it as non-optional;
+// SetEntityID sets the EntityID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillQueryRecord2) SetEntityId(entityId *string) {
-	b.EntityId = entityId
-	b.require(billQueryRecord2FieldEntityId)
+func (b *BillQueryRecord2) SetEntityID(entityID *string) {
+	b.EntityID = entityID
+	b.require(billQueryRecord2FieldEntityID)
 }
 
-// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// SetExternalPaypointID sets the ExternalPaypointID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillQueryRecord2) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
-	b.ExternalPaypointId = externalPaypointId
-	b.require(billQueryRecord2FieldExternalPaypointId)
+func (b *BillQueryRecord2) SetExternalPaypointID(externalPaypointID *ExternalPaypointID) {
+	b.ExternalPaypointID = externalPaypointID
+	b.require(billQueryRecord2FieldExternalPaypointID)
 }
 
 // SetFrequency sets the Frequency field and marks it as non-optional;
@@ -911,11 +911,11 @@ func (b *BillQueryRecord2) SetFrequency(frequency *Frequency) {
 	b.require(billQueryRecord2FieldFrequency)
 }
 
-// SetIdBill sets the IdBill field and marks it as non-optional;
+// SetIDBill sets the IDBill field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillQueryRecord2) SetIdBill(idBill *int64) {
-	b.IdBill = idBill
-	b.require(billQueryRecord2FieldIdBill)
+func (b *BillQueryRecord2) SetIDBill(idBill *int64) {
+	b.IDBill = idBill
+	b.require(billQueryRecord2FieldIDBill)
 }
 
 // SetLastUpdated sets the LastUpdated field and marks it as non-optional;
@@ -946,11 +946,11 @@ func (b *BillQueryRecord2) SetNetAmount(netAmount *float64) {
 	b.require(billQueryRecord2FieldNetAmount)
 }
 
-// SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
+// SetParentOrgID sets the ParentOrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillQueryRecord2) SetParentOrgId(parentOrgId *int64) {
-	b.ParentOrgId = parentOrgId
-	b.require(billQueryRecord2FieldParentOrgId)
+func (b *BillQueryRecord2) SetParentOrgID(parentOrgID *int64) {
+	b.ParentOrgID = parentOrgID
+	b.require(billQueryRecord2FieldParentOrgID)
 }
 
 // SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
@@ -960,11 +960,11 @@ func (b *BillQueryRecord2) SetParentOrgName(parentOrgName *OrgParentName) {
 	b.require(billQueryRecord2FieldParentOrgName)
 }
 
-// SetPaymentId sets the PaymentId field and marks it as non-optional;
+// SetPaymentID sets the PaymentID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillQueryRecord2) SetPaymentId(paymentId *PaymentIdString) {
-	b.PaymentId = paymentId
-	b.require(billQueryRecord2FieldPaymentId)
+func (b *BillQueryRecord2) SetPaymentID(paymentID *PaymentIDString) {
+	b.PaymentID = paymentID
+	b.require(billQueryRecord2FieldPaymentID)
 }
 
 // SetPaymentMethod sets the PaymentMethod field and marks it as non-optional;
@@ -974,11 +974,11 @@ func (b *BillQueryRecord2) SetPaymentMethod(paymentMethod *BillQueryRecord2Payme
 	b.require(billQueryRecord2FieldPaymentMethod)
 }
 
-// SetPaylinkId sets the PaylinkId field and marks it as non-optional;
+// SetPaylinkID sets the PaylinkID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillQueryRecord2) SetPaylinkId(paylinkId *string) {
-	b.PaylinkId = paylinkId
-	b.require(billQueryRecord2FieldPaylinkId)
+func (b *BillQueryRecord2) SetPaylinkID(paylinkID *string) {
+	b.PaylinkID = paylinkID
+	b.require(billQueryRecord2FieldPaylinkID)
 }
 
 // SetPaypointDbaname sets the PaypointDbaname field and marks it as non-optional;
@@ -1115,7 +1115,7 @@ var (
 	billQueryRecord2BillApprovalsItemFieldApprovedTime = big.NewInt(1 << 1)
 	billQueryRecord2BillApprovalsItemFieldComments     = big.NewInt(1 << 2)
 	billQueryRecord2BillApprovalsItemFieldEmail        = big.NewInt(1 << 3)
-	billQueryRecord2BillApprovalsItemFieldId           = big.NewInt(1 << 4)
+	billQueryRecord2BillApprovalsItemFieldID           = big.NewInt(1 << 4)
 )
 
 type BillQueryRecord2BillApprovalsItem struct {
@@ -1128,7 +1128,7 @@ type BillQueryRecord2BillApprovalsItem struct {
 	// The approving user's email address.
 	Email *Email `json:"email,omitempty" url:"email,omitempty"`
 	// The approving user's ID.
-	Id *int64 `json:"Id,omitempty" url:"Id,omitempty"`
+	ID *int64 `json:"Id,omitempty" url:"Id,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1165,11 +1165,11 @@ func (b *BillQueryRecord2BillApprovalsItem) GetEmail() *Email {
 	return b.Email
 }
 
-func (b *BillQueryRecord2BillApprovalsItem) GetId() *int64 {
+func (b *BillQueryRecord2BillApprovalsItem) GetID() *int64 {
 	if b == nil {
 		return nil
 	}
-	return b.Id
+	return b.ID
 }
 
 func (b *BillQueryRecord2BillApprovalsItem) GetExtraProperties() map[string]interface{} {
@@ -1214,11 +1214,11 @@ func (b *BillQueryRecord2BillApprovalsItem) SetEmail(email *Email) {
 	b.require(billQueryRecord2BillApprovalsItemFieldEmail)
 }
 
-// SetId sets the Id field and marks it as non-optional;
+// SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillQueryRecord2BillApprovalsItem) SetId(id *int64) {
-	b.Id = id
-	b.require(billQueryRecord2BillApprovalsItemFieldId)
+func (b *BillQueryRecord2BillApprovalsItem) SetID(id *int64) {
+	b.ID = id
+	b.require(billQueryRecord2BillApprovalsItemFieldID)
 }
 
 func (b *BillQueryRecord2BillApprovalsItem) UnmarshalJSON(data []byte) error {
@@ -1866,7 +1866,7 @@ type Billitems = []*BillItem
 type Billstatus = int
 
 var (
-	transactionOutQueryRecordFieldIdOut                = big.NewInt(1 << 0)
+	transactionOutQueryRecordFieldIDOut                = big.NewInt(1 << 0)
 	transactionOutQueryRecordFieldCreatedAt            = big.NewInt(1 << 1)
 	transactionOutQueryRecordFieldComments             = big.NewInt(1 << 2)
 	transactionOutQueryRecordFieldVendor               = big.NewInt(1 << 3)
@@ -1879,24 +1879,24 @@ var (
 	transactionOutQueryRecordFieldFeeAmount            = big.NewInt(1 << 10)
 	transactionOutQueryRecordFieldSource               = big.NewInt(1 << 11)
 	transactionOutQueryRecordFieldParentOrgName        = big.NewInt(1 << 12)
-	transactionOutQueryRecordFieldParentOrgId          = big.NewInt(1 << 13)
+	transactionOutQueryRecordFieldParentOrgID          = big.NewInt(1 << 13)
 	transactionOutQueryRecordFieldBatchNumber          = big.NewInt(1 << 14)
 	transactionOutQueryRecordFieldPaymentStatus        = big.NewInt(1 << 15)
 	transactionOutQueryRecordFieldPaymentMethod        = big.NewInt(1 << 16)
 	transactionOutQueryRecordFieldCardToken            = big.NewInt(1 << 17)
 	transactionOutQueryRecordFieldCheckNumber          = big.NewInt(1 << 18)
 	transactionOutQueryRecordFieldCheckData            = big.NewInt(1 << 19)
-	transactionOutQueryRecordFieldPaymentId            = big.NewInt(1 << 20)
+	transactionOutQueryRecordFieldPaymentID            = big.NewInt(1 << 20)
 	transactionOutQueryRecordFieldPaymentData          = big.NewInt(1 << 21)
 	transactionOutQueryRecordFieldBills                = big.NewInt(1 << 22)
 	transactionOutQueryRecordFieldEvents               = big.NewInt(1 << 23)
-	transactionOutQueryRecordFieldExternalPaypointId   = big.NewInt(1 << 24)
+	transactionOutQueryRecordFieldExternalPaypointID   = big.NewInt(1 << 24)
 	transactionOutQueryRecordFieldEntryName            = big.NewInt(1 << 25)
 	transactionOutQueryRecordFieldGateway              = big.NewInt(1 << 26)
-	transactionOutQueryRecordFieldBatchId              = big.NewInt(1 << 27)
+	transactionOutQueryRecordFieldBatchID              = big.NewInt(1 << 27)
 	transactionOutQueryRecordFieldHasVcardTransactions = big.NewInt(1 << 28)
 	transactionOutQueryRecordFieldIsSameDayAch         = big.NewInt(1 << 29)
-	transactionOutQueryRecordFieldScheduleId           = big.NewInt(1 << 30)
+	transactionOutQueryRecordFieldScheduleID           = big.NewInt(1 << 30)
 	transactionOutQueryRecordFieldSettlementStatus     = big.NewInt(1 << 31)
 	transactionOutQueryRecordFieldRiskFlagged          = big.NewInt(1 << 32)
 	transactionOutQueryRecordFieldRiskFlaggedOn        = big.NewInt(1 << 33)
@@ -1909,7 +1909,7 @@ var (
 
 type TransactionOutQueryRecord struct {
 	// Identifier of payout transaction.
-	IdOut     *int64     `json:"IdOut,omitempty" url:"IdOut,omitempty"`
+	IDOut     *int64     `json:"IdOut,omitempty" url:"IdOut,omitempty"`
 	CreatedAt *CreatedAt `json:"CreatedAt,omitempty" url:"CreatedAt,omitempty"`
 	// Any comment or description for payout transaction.
 	Comments *Comments `json:"Comments,omitempty" url:"Comments,omitempty"`
@@ -1927,7 +1927,7 @@ type TransactionOutQueryRecord struct {
 	FeeAmount     *FeeAmount         `json:"FeeAmount,omitempty" url:"FeeAmount,omitempty"`
 	Source        *Source            `json:"Source,omitempty" url:"Source,omitempty"`
 	ParentOrgName *OrgParentName     `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
-	ParentOrgId   *Orgid             `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
+	ParentOrgID   *Orgid             `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
 	// The batch number for the payout transaction.
 	BatchNumber *string `json:"BatchNumber,omitempty" url:"BatchNumber,omitempty"`
 	// Status of payout transaction.
@@ -1939,20 +1939,20 @@ type TransactionOutQueryRecord struct {
 	CheckNumber *string `json:"CheckNumber,omitempty" url:"CheckNumber,omitempty"`
 	// Object referencing to paper check image.
 	CheckData   *FileContent      `json:"CheckData,omitempty" url:"CheckData,omitempty"`
-	PaymentId   *PaymentIdString  `json:"PaymentId,omitempty" url:"PaymentId,omitempty"`
+	PaymentID   *PaymentIDString  `json:"PaymentId,omitempty" url:"PaymentId,omitempty"`
 	PaymentData *QueryPaymentData `json:"PaymentData,omitempty" url:"PaymentData,omitempty"`
 	// Bills associated with this transaction.
 	Bills []*BillPayOutData `json:"Bills,omitempty" url:"Bills,omitempty"`
 	// Events associated with this transaction.
 	Events             []*QueryTransactionEvents `json:"Events,omitempty" url:"Events,omitempty"`
-	ExternalPaypointId *ExternalPaypointId       `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	ExternalPaypointID *ExternalPaypointID       `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
 	EntryName          *Entrypointfield          `json:"EntryName,omitempty" url:"EntryName,omitempty"`
 	Gateway            *Gatewayfield             `json:"Gateway,omitempty" url:"Gateway,omitempty"`
 	// ID of the batch the transaction belongs to.
-	BatchId              *string                 `json:"BatchId,omitempty" url:"BatchId,omitempty"`
+	BatchID              *string                 `json:"BatchId,omitempty" url:"BatchId,omitempty"`
 	HasVcardTransactions *HasVcardTransactions   `json:"HasVcardTransactions,omitempty" url:"HasVcardTransactions,omitempty"`
 	IsSameDayAch         *IsSameDayAch           `json:"IsSameDayACH,omitempty" url:"IsSameDayACH,omitempty"`
-	ScheduleId           *ScheduleId             `json:"ScheduleId,omitempty" url:"ScheduleId,omitempty"`
+	ScheduleID           *ScheduleID             `json:"ScheduleId,omitempty" url:"ScheduleId,omitempty"`
 	SettlementStatus     *SettlementStatusPayout `json:"SettlementStatus,omitempty" url:"SettlementStatus,omitempty"`
 	RiskFlagged          *RiskFlagged            `json:"RiskFlagged,omitempty" url:"RiskFlagged,omitempty"`
 	RiskFlaggedOn        *RiskFlaggedOn          `json:"RiskFlaggedOn,omitempty" url:"RiskFlaggedOn,omitempty"`
@@ -1969,11 +1969,11 @@ type TransactionOutQueryRecord struct {
 	rawJSON         json.RawMessage
 }
 
-func (t *TransactionOutQueryRecord) GetIdOut() *int64 {
+func (t *TransactionOutQueryRecord) GetIDOut() *int64 {
 	if t == nil {
 		return nil
 	}
-	return t.IdOut
+	return t.IDOut
 }
 
 func (t *TransactionOutQueryRecord) GetCreatedAt() *CreatedAt {
@@ -2060,11 +2060,11 @@ func (t *TransactionOutQueryRecord) GetParentOrgName() *OrgParentName {
 	return t.ParentOrgName
 }
 
-func (t *TransactionOutQueryRecord) GetParentOrgId() *Orgid {
+func (t *TransactionOutQueryRecord) GetParentOrgID() *Orgid {
 	if t == nil {
 		return nil
 	}
-	return t.ParentOrgId
+	return t.ParentOrgID
 }
 
 func (t *TransactionOutQueryRecord) GetBatchNumber() *string {
@@ -2109,11 +2109,11 @@ func (t *TransactionOutQueryRecord) GetCheckData() *FileContent {
 	return t.CheckData
 }
 
-func (t *TransactionOutQueryRecord) GetPaymentId() *PaymentIdString {
+func (t *TransactionOutQueryRecord) GetPaymentID() *PaymentIDString {
 	if t == nil {
 		return nil
 	}
-	return t.PaymentId
+	return t.PaymentID
 }
 
 func (t *TransactionOutQueryRecord) GetPaymentData() *QueryPaymentData {
@@ -2137,11 +2137,11 @@ func (t *TransactionOutQueryRecord) GetEvents() []*QueryTransactionEvents {
 	return t.Events
 }
 
-func (t *TransactionOutQueryRecord) GetExternalPaypointId() *ExternalPaypointId {
+func (t *TransactionOutQueryRecord) GetExternalPaypointID() *ExternalPaypointID {
 	if t == nil {
 		return nil
 	}
-	return t.ExternalPaypointId
+	return t.ExternalPaypointID
 }
 
 func (t *TransactionOutQueryRecord) GetEntryName() *Entrypointfield {
@@ -2158,11 +2158,11 @@ func (t *TransactionOutQueryRecord) GetGateway() *Gatewayfield {
 	return t.Gateway
 }
 
-func (t *TransactionOutQueryRecord) GetBatchId() *string {
+func (t *TransactionOutQueryRecord) GetBatchID() *string {
 	if t == nil {
 		return nil
 	}
-	return t.BatchId
+	return t.BatchID
 }
 
 func (t *TransactionOutQueryRecord) GetHasVcardTransactions() *HasVcardTransactions {
@@ -2179,11 +2179,11 @@ func (t *TransactionOutQueryRecord) GetIsSameDayAch() *IsSameDayAch {
 	return t.IsSameDayAch
 }
 
-func (t *TransactionOutQueryRecord) GetScheduleId() *ScheduleId {
+func (t *TransactionOutQueryRecord) GetScheduleID() *ScheduleID {
 	if t == nil {
 		return nil
 	}
-	return t.ScheduleId
+	return t.ScheduleID
 }
 
 func (t *TransactionOutQueryRecord) GetSettlementStatus() *SettlementStatusPayout {
@@ -2256,11 +2256,11 @@ func (t *TransactionOutQueryRecord) require(field *big.Int) {
 	t.explicitFields.Or(t.explicitFields, field)
 }
 
-// SetIdOut sets the IdOut field and marks it as non-optional;
+// SetIDOut sets the IDOut field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionOutQueryRecord) SetIdOut(idOut *int64) {
-	t.IdOut = idOut
-	t.require(transactionOutQueryRecordFieldIdOut)
+func (t *TransactionOutQueryRecord) SetIDOut(idOut *int64) {
+	t.IDOut = idOut
+	t.require(transactionOutQueryRecordFieldIDOut)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
@@ -2347,11 +2347,11 @@ func (t *TransactionOutQueryRecord) SetParentOrgName(parentOrgName *OrgParentNam
 	t.require(transactionOutQueryRecordFieldParentOrgName)
 }
 
-// SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
+// SetParentOrgID sets the ParentOrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionOutQueryRecord) SetParentOrgId(parentOrgId *Orgid) {
-	t.ParentOrgId = parentOrgId
-	t.require(transactionOutQueryRecordFieldParentOrgId)
+func (t *TransactionOutQueryRecord) SetParentOrgID(parentOrgID *Orgid) {
+	t.ParentOrgID = parentOrgID
+	t.require(transactionOutQueryRecordFieldParentOrgID)
 }
 
 // SetBatchNumber sets the BatchNumber field and marks it as non-optional;
@@ -2396,11 +2396,11 @@ func (t *TransactionOutQueryRecord) SetCheckData(checkData *FileContent) {
 	t.require(transactionOutQueryRecordFieldCheckData)
 }
 
-// SetPaymentId sets the PaymentId field and marks it as non-optional;
+// SetPaymentID sets the PaymentID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionOutQueryRecord) SetPaymentId(paymentId *PaymentIdString) {
-	t.PaymentId = paymentId
-	t.require(transactionOutQueryRecordFieldPaymentId)
+func (t *TransactionOutQueryRecord) SetPaymentID(paymentID *PaymentIDString) {
+	t.PaymentID = paymentID
+	t.require(transactionOutQueryRecordFieldPaymentID)
 }
 
 // SetPaymentData sets the PaymentData field and marks it as non-optional;
@@ -2424,11 +2424,11 @@ func (t *TransactionOutQueryRecord) SetEvents(events []*QueryTransactionEvents) 
 	t.require(transactionOutQueryRecordFieldEvents)
 }
 
-// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// SetExternalPaypointID sets the ExternalPaypointID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionOutQueryRecord) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
-	t.ExternalPaypointId = externalPaypointId
-	t.require(transactionOutQueryRecordFieldExternalPaypointId)
+func (t *TransactionOutQueryRecord) SetExternalPaypointID(externalPaypointID *ExternalPaypointID) {
+	t.ExternalPaypointID = externalPaypointID
+	t.require(transactionOutQueryRecordFieldExternalPaypointID)
 }
 
 // SetEntryName sets the EntryName field and marks it as non-optional;
@@ -2445,11 +2445,11 @@ func (t *TransactionOutQueryRecord) SetGateway(gateway *Gatewayfield) {
 	t.require(transactionOutQueryRecordFieldGateway)
 }
 
-// SetBatchId sets the BatchId field and marks it as non-optional;
+// SetBatchID sets the BatchID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionOutQueryRecord) SetBatchId(batchId *string) {
-	t.BatchId = batchId
-	t.require(transactionOutQueryRecordFieldBatchId)
+func (t *TransactionOutQueryRecord) SetBatchID(batchID *string) {
+	t.BatchID = batchID
+	t.require(transactionOutQueryRecordFieldBatchID)
 }
 
 // SetHasVcardTransactions sets the HasVcardTransactions field and marks it as non-optional;
@@ -2466,11 +2466,11 @@ func (t *TransactionOutQueryRecord) SetIsSameDayAch(isSameDayAch *IsSameDayAch) 
 	t.require(transactionOutQueryRecordFieldIsSameDayAch)
 }
 
-// SetScheduleId sets the ScheduleId field and marks it as non-optional;
+// SetScheduleID sets the ScheduleID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionOutQueryRecord) SetScheduleId(scheduleId *ScheduleId) {
-	t.ScheduleId = scheduleId
-	t.require(transactionOutQueryRecordFieldScheduleId)
+func (t *TransactionOutQueryRecord) SetScheduleID(scheduleID *ScheduleID) {
+	t.ScheduleID = scheduleID
+	t.require(transactionOutQueryRecordFieldScheduleID)
 }
 
 // SetSettlementStatus sets the SettlementStatus field and marks it as non-optional;
@@ -2607,14 +2607,14 @@ var (
 	vendorDataResponseFieldBillingData           = big.NewInt(1 << 16)
 	vendorDataResponseFieldPaymentMethod         = big.NewInt(1 << 17)
 	vendorDataResponseFieldVendorStatus          = big.NewInt(1 << 18)
-	vendorDataResponseFieldVendorId              = big.NewInt(1 << 19)
+	vendorDataResponseFieldVendorID              = big.NewInt(1 << 19)
 	vendorDataResponseFieldEnrollmentStatus      = big.NewInt(1 << 20)
 	vendorDataResponseFieldSummary               = big.NewInt(1 << 21)
 	vendorDataResponseFieldPaypointLegalname     = big.NewInt(1 << 22)
 	vendorDataResponseFieldPaypointDbaname       = big.NewInt(1 << 23)
 	vendorDataResponseFieldPaypointEntryname     = big.NewInt(1 << 24)
 	vendorDataResponseFieldParentOrgName         = big.NewInt(1 << 25)
-	vendorDataResponseFieldParentOrgId           = big.NewInt(1 << 26)
+	vendorDataResponseFieldParentOrgID           = big.NewInt(1 << 26)
 	vendorDataResponseFieldCreatedDate           = big.NewInt(1 << 27)
 	vendorDataResponseFieldLastUpdated           = big.NewInt(1 << 28)
 	vendorDataResponseFieldRemitAddress1         = big.NewInt(1 << 29)
@@ -2628,9 +2628,9 @@ var (
 	vendorDataResponseFieldCustomField1          = big.NewInt(1 << 37)
 	vendorDataResponseFieldCustomField2          = big.NewInt(1 << 38)
 	vendorDataResponseFieldCustomerVendorAccount = big.NewInt(1 << 39)
-	vendorDataResponseFieldInternalReferenceId   = big.NewInt(1 << 40)
+	vendorDataResponseFieldInternalReferenceID   = big.NewInt(1 << 40)
 	vendorDataResponseFieldAdditionalData        = big.NewInt(1 << 41)
-	vendorDataResponseFieldExternalPaypointId    = big.NewInt(1 << 42)
+	vendorDataResponseFieldExternalPaypointID    = big.NewInt(1 << 42)
 	vendorDataResponseFieldStoredMethods         = big.NewInt(1 << 43)
 )
 
@@ -2668,7 +2668,7 @@ type VendorDataResponse struct {
 	// Preferred payment method for vendor.
 	PaymentMethod VendorDataResponsePaymentMethod `json:"PaymentMethod" url:"PaymentMethod"`
 	VendorStatus  Vendorstatus                    `json:"VendorStatus" url:"VendorStatus"`
-	VendorId      Vendorid                        `json:"VendorId" url:"VendorId"`
+	VendorID      Vendorid                        `json:"VendorId" url:"VendorId"`
 	// Vendor enrollment status
 	EnrollmentStatus *string `json:"EnrollmentStatus,omitempty" url:"EnrollmentStatus,omitempty"`
 	// Vendor bill summary statistics
@@ -2682,7 +2682,7 @@ type VendorDataResponse struct {
 	// Name of the parent organization
 	ParentOrgName string `json:"ParentOrgName" url:"ParentOrgName"`
 	// ID of the parent organization
-	ParentOrgId int `json:"ParentOrgId" url:"ParentOrgId"`
+	ParentOrgID int `json:"ParentOrgId" url:"ParentOrgId"`
 	// Date when vendor was created
 	CreatedDate time.Time `json:"CreatedDate" url:"CreatedDate"`
 	// Date when vendor was last updated
@@ -2701,10 +2701,10 @@ type VendorDataResponse struct {
 	CustomField2 string `json:"customField2" url:"customField2"`
 	// Account number of paypoint in the Vendor side.
 	CustomerVendorAccount *string             `json:"customerVendorAccount,omitempty" url:"customerVendorAccount,omitempty"`
-	InternalReferenceId   InternalReferenceId `json:"InternalReferenceId" url:"InternalReferenceId"`
+	InternalReferenceID   InternalReferenceID `json:"InternalReferenceId" url:"InternalReferenceId"`
 	AdditionalData        AdditionalDataMap   `json:"additionalData" url:"additionalData"`
 	// External paypoint identifier
-	ExternalPaypointId string `json:"externalPaypointID" url:"externalPaypointID"`
+	ExternalPaypointID string `json:"externalPaypointID" url:"externalPaypointID"`
 	// Array of stored payment methods for vendor
 	StoredMethods []*VendorResponseStoredMethod `json:"StoredMethods" url:"StoredMethods"`
 
@@ -2848,11 +2848,11 @@ func (v *VendorDataResponse) GetVendorStatus() Vendorstatus {
 	return v.VendorStatus
 }
 
-func (v *VendorDataResponse) GetVendorId() Vendorid {
+func (v *VendorDataResponse) GetVendorID() Vendorid {
 	if v == nil {
 		return 0
 	}
-	return v.VendorId
+	return v.VendorID
 }
 
 func (v *VendorDataResponse) GetEnrollmentStatus() *string {
@@ -2897,11 +2897,11 @@ func (v *VendorDataResponse) GetParentOrgName() string {
 	return v.ParentOrgName
 }
 
-func (v *VendorDataResponse) GetParentOrgId() int {
+func (v *VendorDataResponse) GetParentOrgID() int {
 	if v == nil {
 		return 0
 	}
-	return v.ParentOrgId
+	return v.ParentOrgID
 }
 
 func (v *VendorDataResponse) GetCreatedDate() time.Time {
@@ -2995,11 +2995,11 @@ func (v *VendorDataResponse) GetCustomerVendorAccount() *string {
 	return v.CustomerVendorAccount
 }
 
-func (v *VendorDataResponse) GetInternalReferenceId() InternalReferenceId {
+func (v *VendorDataResponse) GetInternalReferenceID() InternalReferenceID {
 	if v == nil {
 		return 0
 	}
-	return v.InternalReferenceId
+	return v.InternalReferenceID
 }
 
 func (v *VendorDataResponse) GetAdditionalData() AdditionalDataMap {
@@ -3009,11 +3009,11 @@ func (v *VendorDataResponse) GetAdditionalData() AdditionalDataMap {
 	return v.AdditionalData
 }
 
-func (v *VendorDataResponse) GetExternalPaypointId() string {
+func (v *VendorDataResponse) GetExternalPaypointID() string {
 	if v == nil {
 		return ""
 	}
-	return v.ExternalPaypointId
+	return v.ExternalPaypointID
 }
 
 func (v *VendorDataResponse) GetStoredMethods() []*VendorResponseStoredMethod {
@@ -3170,11 +3170,11 @@ func (v *VendorDataResponse) SetVendorStatus(vendorStatus Vendorstatus) {
 	v.require(vendorDataResponseFieldVendorStatus)
 }
 
-// SetVendorId sets the VendorId field and marks it as non-optional;
+// SetVendorID sets the VendorID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetVendorId(vendorId Vendorid) {
-	v.VendorId = vendorId
-	v.require(vendorDataResponseFieldVendorId)
+func (v *VendorDataResponse) SetVendorID(vendorID Vendorid) {
+	v.VendorID = vendorID
+	v.require(vendorDataResponseFieldVendorID)
 }
 
 // SetEnrollmentStatus sets the EnrollmentStatus field and marks it as non-optional;
@@ -3219,11 +3219,11 @@ func (v *VendorDataResponse) SetParentOrgName(parentOrgName string) {
 	v.require(vendorDataResponseFieldParentOrgName)
 }
 
-// SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
+// SetParentOrgID sets the ParentOrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetParentOrgId(parentOrgId int) {
-	v.ParentOrgId = parentOrgId
-	v.require(vendorDataResponseFieldParentOrgId)
+func (v *VendorDataResponse) SetParentOrgID(parentOrgID int) {
+	v.ParentOrgID = parentOrgID
+	v.require(vendorDataResponseFieldParentOrgID)
 }
 
 // SetCreatedDate sets the CreatedDate field and marks it as non-optional;
@@ -3317,11 +3317,11 @@ func (v *VendorDataResponse) SetCustomerVendorAccount(customerVendorAccount *str
 	v.require(vendorDataResponseFieldCustomerVendorAccount)
 }
 
-// SetInternalReferenceId sets the InternalReferenceId field and marks it as non-optional;
+// SetInternalReferenceID sets the InternalReferenceID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetInternalReferenceId(internalReferenceId InternalReferenceId) {
-	v.InternalReferenceId = internalReferenceId
-	v.require(vendorDataResponseFieldInternalReferenceId)
+func (v *VendorDataResponse) SetInternalReferenceID(internalReferenceID InternalReferenceID) {
+	v.InternalReferenceID = internalReferenceID
+	v.require(vendorDataResponseFieldInternalReferenceID)
 }
 
 // SetAdditionalData sets the AdditionalData field and marks it as non-optional;
@@ -3331,11 +3331,11 @@ func (v *VendorDataResponse) SetAdditionalData(additionalData AdditionalDataMap)
 	v.require(vendorDataResponseFieldAdditionalData)
 }
 
-// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// SetExternalPaypointID sets the ExternalPaypointID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetExternalPaypointId(externalPaypointId string) {
-	v.ExternalPaypointId = externalPaypointId
-	v.require(vendorDataResponseFieldExternalPaypointId)
+func (v *VendorDataResponse) SetExternalPaypointID(externalPaypointID string) {
+	v.ExternalPaypointID = externalPaypointID
+	v.require(vendorDataResponseFieldExternalPaypointID)
 }
 
 // SetStoredMethods sets the StoredMethods field and marks it as non-optional;
@@ -3439,7 +3439,7 @@ var (
 	vendorOutDataFieldCustomerVendorAccount = big.NewInt(1 << 7)
 	vendorOutDataFieldEin                   = big.NewInt(1 << 8)
 	vendorOutDataFieldEmail                 = big.NewInt(1 << 9)
-	vendorOutDataFieldInternalReferenceId   = big.NewInt(1 << 10)
+	vendorOutDataFieldInternalReferenceID   = big.NewInt(1 << 10)
 	vendorOutDataFieldLocationCode          = big.NewInt(1 << 11)
 	vendorOutDataFieldMcc                   = big.NewInt(1 << 12)
 	vendorOutDataFieldName1                 = big.NewInt(1 << 13)
@@ -3455,7 +3455,7 @@ var (
 	vendorOutDataFieldRemitState            = big.NewInt(1 << 23)
 	vendorOutDataFieldRemitZip              = big.NewInt(1 << 24)
 	vendorOutDataFieldState                 = big.NewInt(1 << 25)
-	vendorOutDataFieldVendorId              = big.NewInt(1 << 26)
+	vendorOutDataFieldVendorID              = big.NewInt(1 << 26)
 	vendorOutDataFieldVendorNumber          = big.NewInt(1 << 27)
 	vendorOutDataFieldVendorStatus          = big.NewInt(1 << 28)
 	vendorOutDataFieldZip                   = big.NewInt(1 << 29)
@@ -3482,7 +3482,7 @@ type VendorOutData struct {
 	// Vendor's email address. Required for vCard.
 	Email *Email `json:"Email,omitempty" url:"Email,omitempty"`
 	// Internal identifier for global vendor account.
-	InternalReferenceId *int64        `json:"InternalReferenceId,omitempty" url:"InternalReferenceId,omitempty"`
+	InternalReferenceID *int64        `json:"InternalReferenceId,omitempty" url:"InternalReferenceId,omitempty"`
 	LocationCode        *LocationCode `json:"LocationCode,omitempty" url:"LocationCode,omitempty"`
 	Mcc                 *Mcc          `json:"Mcc,omitempty" url:"Mcc,omitempty"`
 	// Primary name for vendor. Required for new vendor. Allowed characters are letters, numbers, spaces, and `. , ' & ( )
@@ -3503,7 +3503,7 @@ type VendorOutData struct {
 	// Vendor's state or province. Must be a valid US state or Canadian province abbreviation, depending on the `Country` value.
 	State string `json:"State" url:"State"`
 	// Payabli identifier for vendor record. Required when `VendorNumber` isn't included.
-	VendorId     *Vendorid     `json:"VendorId,omitempty" url:"VendorId,omitempty"`
+	VendorID     *Vendorid     `json:"VendorId,omitempty" url:"VendorId,omitempty"`
 	VendorNumber *VendorNumber `json:"VendorNumber,omitempty" url:"VendorNumber,omitempty"`
 	VendorStatus *Vendorstatus `json:"VendorStatus,omitempty" url:"VendorStatus,omitempty"`
 	// Vendor's ZIP or postal code. For US addresses, five digits (`12345`) or ZIP+4 format (`12345-6789`).
@@ -3586,11 +3586,11 @@ func (v *VendorOutData) GetEmail() *Email {
 	return v.Email
 }
 
-func (v *VendorOutData) GetInternalReferenceId() *int64 {
+func (v *VendorOutData) GetInternalReferenceID() *int64 {
 	if v == nil {
 		return nil
 	}
-	return v.InternalReferenceId
+	return v.InternalReferenceID
 }
 
 func (v *VendorOutData) GetLocationCode() *LocationCode {
@@ -3698,11 +3698,11 @@ func (v *VendorOutData) GetState() string {
 	return v.State
 }
 
-func (v *VendorOutData) GetVendorId() *Vendorid {
+func (v *VendorOutData) GetVendorID() *Vendorid {
 	if v == nil {
 		return nil
 	}
-	return v.VendorId
+	return v.VendorID
 }
 
 func (v *VendorOutData) GetVendorNumber() *VendorNumber {
@@ -3810,11 +3810,11 @@ func (v *VendorOutData) SetEmail(email *Email) {
 	v.require(vendorOutDataFieldEmail)
 }
 
-// SetInternalReferenceId sets the InternalReferenceId field and marks it as non-optional;
+// SetInternalReferenceID sets the InternalReferenceID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorOutData) SetInternalReferenceId(internalReferenceId *int64) {
-	v.InternalReferenceId = internalReferenceId
-	v.require(vendorOutDataFieldInternalReferenceId)
+func (v *VendorOutData) SetInternalReferenceID(internalReferenceID *int64) {
+	v.InternalReferenceID = internalReferenceID
+	v.require(vendorOutDataFieldInternalReferenceID)
 }
 
 // SetLocationCode sets the LocationCode field and marks it as non-optional;
@@ -3922,11 +3922,11 @@ func (v *VendorOutData) SetState(state string) {
 	v.require(vendorOutDataFieldState)
 }
 
-// SetVendorId sets the VendorId field and marks it as non-optional;
+// SetVendorID sets the VendorID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorOutData) SetVendorId(vendorId *Vendorid) {
-	v.VendorId = vendorId
-	v.require(vendorOutDataFieldVendorId)
+func (v *VendorOutData) SetVendorID(vendorID *Vendorid) {
+	v.VendorID = vendorID
+	v.require(vendorOutDataFieldVendorID)
 }
 
 // SetVendorNumber sets the VendorNumber field and marks it as non-optional;
@@ -4412,12 +4412,12 @@ func (b *BillOutData) String() string {
 }
 
 var (
-	billOutDataScheduledOptionsFieldStoredMethodId = big.NewInt(1 << 0)
+	billOutDataScheduledOptionsFieldStoredMethodID = big.NewInt(1 << 0)
 )
 
 type BillOutDataScheduledOptions struct {
 	// The ID of the stored payment method to use for the bill.
-	StoredMethodId *string `json:"storedMethodId,omitempty" url:"storedMethodId,omitempty"`
+	StoredMethodID *string `json:"storedMethodId,omitempty" url:"storedMethodId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -4426,11 +4426,11 @@ type BillOutDataScheduledOptions struct {
 	rawJSON         json.RawMessage
 }
 
-func (b *BillOutDataScheduledOptions) GetStoredMethodId() *string {
+func (b *BillOutDataScheduledOptions) GetStoredMethodID() *string {
 	if b == nil {
 		return nil
 	}
-	return b.StoredMethodId
+	return b.StoredMethodID
 }
 
 func (b *BillOutDataScheduledOptions) GetExtraProperties() map[string]interface{} {
@@ -4447,11 +4447,11 @@ func (b *BillOutDataScheduledOptions) require(field *big.Int) {
 	b.explicitFields.Or(b.explicitFields, field)
 }
 
-// SetStoredMethodId sets the StoredMethodId field and marks it as non-optional;
+// SetStoredMethodID sets the StoredMethodID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillOutDataScheduledOptions) SetStoredMethodId(storedMethodId *string) {
-	b.StoredMethodId = storedMethodId
-	b.require(billOutDataScheduledOptionsFieldStoredMethodId)
+func (b *BillOutDataScheduledOptions) SetStoredMethodID(storedMethodID *string) {
+	b.StoredMethodID = storedMethodID
+	b.require(billOutDataScheduledOptionsFieldStoredMethodID)
 }
 
 func (b *BillOutDataScheduledOptions) UnmarshalJSON(data []byte) error {
@@ -4499,7 +4499,7 @@ func (b *BillOutDataScheduledOptions) String() string {
 var (
 	billResponseFieldResponseCode   = big.NewInt(1 << 0)
 	billResponseFieldPageIdentifier = big.NewInt(1 << 1)
-	billResponseFieldRoomId         = big.NewInt(1 << 2)
+	billResponseFieldRoomID         = big.NewInt(1 << 2)
 	billResponseFieldIsSuccess      = big.NewInt(1 << 3)
 	billResponseFieldResponseText   = big.NewInt(1 << 4)
 	billResponseFieldResponseData   = big.NewInt(1 << 5)
@@ -4508,7 +4508,7 @@ var (
 type BillResponse struct {
 	ResponseCode   *Responsecode   `json:"responseCode,omitempty" url:"responseCode,omitempty"`
 	PageIdentifier *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
-	RoomId         *RoomIdNotInUse `json:"roomId,omitempty" url:"roomId,omitempty"`
+	RoomID         *RoomIDNotInUse `json:"roomId,omitempty" url:"roomId,omitempty"`
 	IsSuccess      *IsSuccess      `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	ResponseText   ResponseText    `json:"responseText" url:"responseText"`
 	// If `isSuccess` = true, this contains the bill identifier. If `isSuccess` = false, this contains the reason for the error.
@@ -4535,11 +4535,11 @@ func (b *BillResponse) GetPageIdentifier() *PageIdentifier {
 	return b.PageIdentifier
 }
 
-func (b *BillResponse) GetRoomId() *RoomIdNotInUse {
+func (b *BillResponse) GetRoomID() *RoomIDNotInUse {
 	if b == nil {
 		return nil
 	}
-	return b.RoomId
+	return b.RoomID
 }
 
 func (b *BillResponse) GetIsSuccess() *IsSuccess {
@@ -4591,11 +4591,11 @@ func (b *BillResponse) SetPageIdentifier(pageIdentifier *PageIdentifier) {
 	b.require(billResponseFieldPageIdentifier)
 }
 
-// SetRoomId sets the RoomId field and marks it as non-optional;
+// SetRoomID sets the RoomID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillResponse) SetRoomId(roomId *RoomIdNotInUse) {
-	b.RoomId = roomId
-	b.require(billResponseFieldRoomId)
+func (b *BillResponse) SetRoomID(roomID *RoomIDNotInUse) {
+	b.RoomID = roomID
+	b.require(billResponseFieldRoomID)
 }
 
 // SetIsSuccess sets the IsSuccess field and marks it as non-optional;
@@ -4662,7 +4662,7 @@ func (b *BillResponse) String() string {
 }
 
 var (
-	billResponseDataFieldIdBill             = big.NewInt(1 << 0)
+	billResponseDataFieldIDBill             = big.NewInt(1 << 0)
 	billResponseDataFieldBillNumber         = big.NewInt(1 << 1)
 	billResponseDataFieldNetAmount          = big.NewInt(1 << 2)
 	billResponseDataFieldDiscount           = big.NewInt(1 << 3)
@@ -4674,7 +4674,7 @@ var (
 	billResponseDataFieldBillItems          = big.NewInt(1 << 9)
 	billResponseDataFieldMode               = big.NewInt(1 << 10)
 	billResponseDataFieldPaymentMethod      = big.NewInt(1 << 11)
-	billResponseDataFieldPaymentId          = big.NewInt(1 << 12)
+	billResponseDataFieldPaymentID          = big.NewInt(1 << 12)
 	billResponseDataFieldAccountingField1   = big.NewInt(1 << 13)
 	billResponseDataFieldAccountingField2   = big.NewInt(1 << 14)
 	billResponseDataFieldTerms              = big.NewInt(1 << 15)
@@ -4691,18 +4691,18 @@ var (
 	billResponseDataFieldBillApprovals      = big.NewInt(1 << 26)
 	billResponseDataFieldPaypointLegalname  = big.NewInt(1 << 27)
 	billResponseDataFieldPaypointDbaname    = big.NewInt(1 << 28)
-	billResponseDataFieldParentOrgId        = big.NewInt(1 << 29)
+	billResponseDataFieldParentOrgID        = big.NewInt(1 << 29)
 	billResponseDataFieldParentOrgName      = big.NewInt(1 << 30)
 	billResponseDataFieldPaypointEntryname  = big.NewInt(1 << 31)
-	billResponseDataFieldPaylinkId          = big.NewInt(1 << 32)
+	billResponseDataFieldPaylinkID          = big.NewInt(1 << 32)
 	billResponseDataFieldDocumentsRef       = big.NewInt(1 << 33)
-	billResponseDataFieldExternalPaypointId = big.NewInt(1 << 34)
+	billResponseDataFieldExternalPaypointID = big.NewInt(1 << 34)
 	billResponseDataFieldLotNumber          = big.NewInt(1 << 35)
-	billResponseDataFieldEntityId           = big.NewInt(1 << 36)
+	billResponseDataFieldEntityID           = big.NewInt(1 << 36)
 )
 
 type BillResponseData struct {
-	IdBill *BillId `json:"IdBill,omitempty" url:"IdBill,omitempty"`
+	IDBill *BillID `json:"IdBill,omitempty" url:"IdBill,omitempty"`
 	// Unique identifier for the bill.
 	BillNumber *string `json:"BillNumber,omitempty" url:"BillNumber,omitempty"`
 	// Net amount owed in bill.
@@ -4726,7 +4726,7 @@ type BillResponseData struct {
 	// Payment method used for the bill.
 	PaymentMethod *string `json:"PaymentMethod,omitempty" url:"PaymentMethod,omitempty"`
 	// Payment ID associated with the bill.
-	PaymentId        *string          `json:"PaymentId,omitempty" url:"PaymentId,omitempty"`
+	PaymentID        *string          `json:"PaymentId,omitempty" url:"PaymentId,omitempty"`
 	AccountingField1 *AccountingField `json:"AccountingField1,omitempty" url:"AccountingField1,omitempty"`
 	AccountingField2 *AccountingField `json:"AccountingField2,omitempty" url:"AccountingField2,omitempty"`
 	Terms            *Terms           `json:"Terms,omitempty" url:"Terms,omitempty"`
@@ -4747,16 +4747,16 @@ type BillResponseData struct {
 	BillApprovals     *BillApprovals             `json:"billApprovals,omitempty" url:"billApprovals,omitempty"`
 	PaypointLegalname *Legalname                 `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
 	PaypointDbaname   *Dbaname                   `json:"PaypointDbaname,omitempty" url:"PaypointDbaname,omitempty"`
-	ParentOrgId       *OrgParentId               `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
+	ParentOrgID       *OrgParentID               `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
 	ParentOrgName     *OrgParentName             `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
 	PaypointEntryname *Entrypointfield           `json:"PaypointEntryname,omitempty" url:"PaypointEntryname,omitempty"`
-	PaylinkId         *PaylinkId                 `json:"paylinkId,omitempty" url:"paylinkId,omitempty"`
+	PaylinkID         *PaylinkID                 `json:"paylinkId,omitempty" url:"paylinkId,omitempty"`
 	// Object with the attached documents.
 	DocumentsRef       *DocumentsRef       `json:"DocumentsRef,omitempty" url:"DocumentsRef,omitempty"`
-	ExternalPaypointId *ExternalPaypointId `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	ExternalPaypointID *ExternalPaypointID `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
 	// Lot number of the bill.
 	LotNumber *string   `json:"LotNumber,omitempty" url:"LotNumber,omitempty"`
-	EntityId  *EntityId `json:"EntityID,omitempty" url:"EntityID,omitempty"`
+	EntityID  *EntityID `json:"EntityID,omitempty" url:"EntityID,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -4765,11 +4765,11 @@ type BillResponseData struct {
 	rawJSON         json.RawMessage
 }
 
-func (b *BillResponseData) GetIdBill() *BillId {
+func (b *BillResponseData) GetIDBill() *BillID {
 	if b == nil {
 		return nil
 	}
-	return b.IdBill
+	return b.IDBill
 }
 
 func (b *BillResponseData) GetBillNumber() *string {
@@ -4849,11 +4849,11 @@ func (b *BillResponseData) GetPaymentMethod() *string {
 	return b.PaymentMethod
 }
 
-func (b *BillResponseData) GetPaymentId() *string {
+func (b *BillResponseData) GetPaymentID() *string {
 	if b == nil {
 		return nil
 	}
-	return b.PaymentId
+	return b.PaymentID
 }
 
 func (b *BillResponseData) GetAccountingField1() *AccountingField {
@@ -4968,11 +4968,11 @@ func (b *BillResponseData) GetPaypointDbaname() *Dbaname {
 	return b.PaypointDbaname
 }
 
-func (b *BillResponseData) GetParentOrgId() *OrgParentId {
+func (b *BillResponseData) GetParentOrgID() *OrgParentID {
 	if b == nil {
 		return nil
 	}
-	return b.ParentOrgId
+	return b.ParentOrgID
 }
 
 func (b *BillResponseData) GetParentOrgName() *OrgParentName {
@@ -4989,11 +4989,11 @@ func (b *BillResponseData) GetPaypointEntryname() *Entrypointfield {
 	return b.PaypointEntryname
 }
 
-func (b *BillResponseData) GetPaylinkId() *PaylinkId {
+func (b *BillResponseData) GetPaylinkID() *PaylinkID {
 	if b == nil {
 		return nil
 	}
-	return b.PaylinkId
+	return b.PaylinkID
 }
 
 func (b *BillResponseData) GetDocumentsRef() *DocumentsRef {
@@ -5003,11 +5003,11 @@ func (b *BillResponseData) GetDocumentsRef() *DocumentsRef {
 	return b.DocumentsRef
 }
 
-func (b *BillResponseData) GetExternalPaypointId() *ExternalPaypointId {
+func (b *BillResponseData) GetExternalPaypointID() *ExternalPaypointID {
 	if b == nil {
 		return nil
 	}
-	return b.ExternalPaypointId
+	return b.ExternalPaypointID
 }
 
 func (b *BillResponseData) GetLotNumber() *string {
@@ -5017,11 +5017,11 @@ func (b *BillResponseData) GetLotNumber() *string {
 	return b.LotNumber
 }
 
-func (b *BillResponseData) GetEntityId() *EntityId {
+func (b *BillResponseData) GetEntityID() *EntityID {
 	if b == nil {
 		return nil
 	}
-	return b.EntityId
+	return b.EntityID
 }
 
 func (b *BillResponseData) GetExtraProperties() map[string]interface{} {
@@ -5038,11 +5038,11 @@ func (b *BillResponseData) require(field *big.Int) {
 	b.explicitFields.Or(b.explicitFields, field)
 }
 
-// SetIdBill sets the IdBill field and marks it as non-optional;
+// SetIDBill sets the IDBill field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillResponseData) SetIdBill(idBill *BillId) {
-	b.IdBill = idBill
-	b.require(billResponseDataFieldIdBill)
+func (b *BillResponseData) SetIDBill(idBill *BillID) {
+	b.IDBill = idBill
+	b.require(billResponseDataFieldIDBill)
 }
 
 // SetBillNumber sets the BillNumber field and marks it as non-optional;
@@ -5122,11 +5122,11 @@ func (b *BillResponseData) SetPaymentMethod(paymentMethod *string) {
 	b.require(billResponseDataFieldPaymentMethod)
 }
 
-// SetPaymentId sets the PaymentId field and marks it as non-optional;
+// SetPaymentID sets the PaymentID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillResponseData) SetPaymentId(paymentId *string) {
-	b.PaymentId = paymentId
-	b.require(billResponseDataFieldPaymentId)
+func (b *BillResponseData) SetPaymentID(paymentID *string) {
+	b.PaymentID = paymentID
+	b.require(billResponseDataFieldPaymentID)
 }
 
 // SetAccountingField1 sets the AccountingField1 field and marks it as non-optional;
@@ -5241,11 +5241,11 @@ func (b *BillResponseData) SetPaypointDbaname(paypointDbaname *Dbaname) {
 	b.require(billResponseDataFieldPaypointDbaname)
 }
 
-// SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
+// SetParentOrgID sets the ParentOrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillResponseData) SetParentOrgId(parentOrgId *OrgParentId) {
-	b.ParentOrgId = parentOrgId
-	b.require(billResponseDataFieldParentOrgId)
+func (b *BillResponseData) SetParentOrgID(parentOrgID *OrgParentID) {
+	b.ParentOrgID = parentOrgID
+	b.require(billResponseDataFieldParentOrgID)
 }
 
 // SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
@@ -5262,11 +5262,11 @@ func (b *BillResponseData) SetPaypointEntryname(paypointEntryname *Entrypointfie
 	b.require(billResponseDataFieldPaypointEntryname)
 }
 
-// SetPaylinkId sets the PaylinkId field and marks it as non-optional;
+// SetPaylinkID sets the PaylinkID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillResponseData) SetPaylinkId(paylinkId *PaylinkId) {
-	b.PaylinkId = paylinkId
-	b.require(billResponseDataFieldPaylinkId)
+func (b *BillResponseData) SetPaylinkID(paylinkID *PaylinkID) {
+	b.PaylinkID = paylinkID
+	b.require(billResponseDataFieldPaylinkID)
 }
 
 // SetDocumentsRef sets the DocumentsRef field and marks it as non-optional;
@@ -5276,11 +5276,11 @@ func (b *BillResponseData) SetDocumentsRef(documentsRef *DocumentsRef) {
 	b.require(billResponseDataFieldDocumentsRef)
 }
 
-// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// SetExternalPaypointID sets the ExternalPaypointID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillResponseData) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
-	b.ExternalPaypointId = externalPaypointId
-	b.require(billResponseDataFieldExternalPaypointId)
+func (b *BillResponseData) SetExternalPaypointID(externalPaypointID *ExternalPaypointID) {
+	b.ExternalPaypointID = externalPaypointID
+	b.require(billResponseDataFieldExternalPaypointID)
 }
 
 // SetLotNumber sets the LotNumber field and marks it as non-optional;
@@ -5290,11 +5290,11 @@ func (b *BillResponseData) SetLotNumber(lotNumber *string) {
 	b.require(billResponseDataFieldLotNumber)
 }
 
-// SetEntityId sets the EntityId field and marks it as non-optional;
+// SetEntityID sets the EntityID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillResponseData) SetEntityId(entityId *EntityId) {
-	b.EntityId = entityId
-	b.require(billResponseDataFieldEntityId)
+func (b *BillResponseData) SetEntityID(entityID *EntityID) {
+	b.EntityID = entityID
+	b.require(billResponseDataFieldEntityID)
 }
 
 func (b *BillResponseData) UnmarshalJSON(data []byte) error {
@@ -5366,7 +5366,7 @@ func (b *BillResponseData) String() string {
 var (
 	editBillResponseFieldResponseCode   = big.NewInt(1 << 0)
 	editBillResponseFieldPageIdentifier = big.NewInt(1 << 1)
-	editBillResponseFieldRoomId         = big.NewInt(1 << 2)
+	editBillResponseFieldRoomID         = big.NewInt(1 << 2)
 	editBillResponseFieldIsSuccess      = big.NewInt(1 << 3)
 	editBillResponseFieldResponseText   = big.NewInt(1 << 4)
 	editBillResponseFieldResponseData   = big.NewInt(1 << 5)
@@ -5375,7 +5375,7 @@ var (
 type EditBillResponse struct {
 	ResponseCode   *Responsecode   `json:"responseCode,omitempty" url:"responseCode,omitempty"`
 	PageIdentifier *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
-	RoomId         *RoomIdNotInUse `json:"roomId,omitempty" url:"roomId,omitempty"`
+	RoomID         *RoomIDNotInUse `json:"roomId,omitempty" url:"roomId,omitempty"`
 	IsSuccess      *IsSuccess      `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	ResponseText   ResponseText    `json:"responseText" url:"responseText"`
 	// If `isSuccess` = true, this contains the bill identifier. If `isSuccess` = false, this contains the reason for the error.
@@ -5402,11 +5402,11 @@ func (e *EditBillResponse) GetPageIdentifier() *PageIdentifier {
 	return e.PageIdentifier
 }
 
-func (e *EditBillResponse) GetRoomId() *RoomIdNotInUse {
+func (e *EditBillResponse) GetRoomID() *RoomIDNotInUse {
 	if e == nil {
 		return nil
 	}
-	return e.RoomId
+	return e.RoomID
 }
 
 func (e *EditBillResponse) GetIsSuccess() *IsSuccess {
@@ -5458,11 +5458,11 @@ func (e *EditBillResponse) SetPageIdentifier(pageIdentifier *PageIdentifier) {
 	e.require(editBillResponseFieldPageIdentifier)
 }
 
-// SetRoomId sets the RoomId field and marks it as non-optional;
+// SetRoomID sets the RoomID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (e *EditBillResponse) SetRoomId(roomId *RoomIdNotInUse) {
-	e.RoomId = roomId
-	e.require(editBillResponseFieldRoomId)
+func (e *EditBillResponse) SetRoomID(roomID *RoomIDNotInUse) {
+	e.RoomID = roomID
+	e.require(editBillResponseFieldRoomID)
 }
 
 // SetIsSuccess sets the IsSuccess field and marks it as non-optional;
@@ -5532,7 +5532,7 @@ func (e *EditBillResponse) String() string {
 var (
 	getBillResponseFieldResponseCode   = big.NewInt(1 << 0)
 	getBillResponseFieldPageIdentifier = big.NewInt(1 << 1)
-	getBillResponseFieldRoomId         = big.NewInt(1 << 2)
+	getBillResponseFieldRoomID         = big.NewInt(1 << 2)
 	getBillResponseFieldIsSuccess      = big.NewInt(1 << 3)
 	getBillResponseFieldResponseText   = big.NewInt(1 << 4)
 	getBillResponseFieldResponseData   = big.NewInt(1 << 5)
@@ -5541,7 +5541,7 @@ var (
 type GetBillResponse struct {
 	ResponseCode   *Responsecode     `json:"responseCode,omitempty" url:"responseCode,omitempty"`
 	PageIdentifier *PageIdentifier   `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
-	RoomId         *RoomIdNotInUse   `json:"roomId,omitempty" url:"roomId,omitempty"`
+	RoomID         *RoomIDNotInUse   `json:"roomId,omitempty" url:"roomId,omitempty"`
 	IsSuccess      *IsSuccess        `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	ResponseText   ResponseText      `json:"responseText" url:"responseText"`
 	ResponseData   *BillResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
@@ -5567,11 +5567,11 @@ func (g *GetBillResponse) GetPageIdentifier() *PageIdentifier {
 	return g.PageIdentifier
 }
 
-func (g *GetBillResponse) GetRoomId() *RoomIdNotInUse {
+func (g *GetBillResponse) GetRoomID() *RoomIDNotInUse {
 	if g == nil {
 		return nil
 	}
-	return g.RoomId
+	return g.RoomID
 }
 
 func (g *GetBillResponse) GetIsSuccess() *IsSuccess {
@@ -5623,11 +5623,11 @@ func (g *GetBillResponse) SetPageIdentifier(pageIdentifier *PageIdentifier) {
 	g.require(getBillResponseFieldPageIdentifier)
 }
 
-// SetRoomId sets the RoomId field and marks it as non-optional;
+// SetRoomID sets the RoomID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetBillResponse) SetRoomId(roomId *RoomIdNotInUse) {
-	g.RoomId = roomId
-	g.require(getBillResponseFieldRoomId)
+func (g *GetBillResponse) SetRoomID(roomID *RoomIDNotInUse) {
+	g.RoomID = roomID
+	g.require(getBillResponseFieldRoomID)
 }
 
 // SetIsSuccess sets the IsSuccess field and marks it as non-optional;

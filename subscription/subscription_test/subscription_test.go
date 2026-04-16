@@ -97,7 +97,7 @@ func TestSubscriptionNewSubscriptionWithWireMock(
 	request := &payabli.RequestSchedule{
 		Body: &payabli.SubscriptionRequestBody{
 			CustomerData: &payabli.PayorDataRequest{
-				CustomerId: payabli.Int64(
+				CustomerID: payabli.Int64(
 					int64(4440),
 				),
 			},
@@ -133,7 +133,7 @@ func TestSubscriptionNewSubscriptionWithWireMock(
 					"03-20-2025",
 				),
 				Frequency: payabli.FrequencyWeekly.Ptr(),
-				PlanId: payabli.Int(
+				PlanID: payabli.Int(
 					1,
 				),
 				StartDate: payabli.String(

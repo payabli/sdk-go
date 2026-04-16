@@ -53,12 +53,12 @@ func (c *Client) AddOrganization(
 func (c *Client) DeleteOrganization(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	opts ...option.RequestOption,
 ) (*payabli.DeleteOrganizationResponse, error) {
 	response, err := c.WithRawResponse.DeleteOrganization(
 		ctx,
-		orgId,
+		orgID,
 		opts...,
 	)
 	if err != nil {
@@ -71,13 +71,13 @@ func (c *Client) DeleteOrganization(
 func (c *Client) EditOrganization(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.OrganizationData,
 	opts ...option.RequestOption,
 ) (*payabli.EditOrganizationResponse, error) {
 	response, err := c.WithRawResponse.EditOrganization(
 		ctx,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -106,15 +106,15 @@ func (c *Client) GetBasicOrganization(
 }
 
 // Gets an organizations basic details by org ID.
-func (c *Client) GetBasicOrganizationById(
+func (c *Client) GetBasicOrganizationByID(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	opts ...option.RequestOption,
 ) (*payabli.OrganizationQueryRecord, error) {
-	response, err := c.WithRawResponse.GetBasicOrganizationById(
+	response, err := c.WithRawResponse.GetBasicOrganizationByID(
 		ctx,
-		orgId,
+		orgID,
 		opts...,
 	)
 	if err != nil {
@@ -127,12 +127,12 @@ func (c *Client) GetBasicOrganizationById(
 func (c *Client) GetOrganization(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	opts ...option.RequestOption,
 ) (*payabli.OrganizationQueryRecord, error) {
 	response, err := c.WithRawResponse.GetOrganization(
 		ctx,
-		orgId,
+		orgID,
 		opts...,
 	)
 	if err != nil {
@@ -145,12 +145,12 @@ func (c *Client) GetOrganization(
 func (c *Client) GetSettingsOrganization(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	opts ...option.RequestOption,
 ) (*payabli.SettingsQueryRecord, error) {
 	response, err := c.WithRawResponse.GetSettingsOrganization(
 		ctx,
-		orgId,
+		orgID,
 		opts...,
 	)
 	if err != nil {

@@ -80,7 +80,7 @@ func TestMoneyOutAuthorizeOutWithWireMock(
 			),
 			InvoiceData: []*payabli.RequestOutAuthorizeInvoiceData{
 				&payabli.RequestOutAuthorizeInvoiceData{
-					BillId: payabli.Int64(
+					BillID: payabli.Int64(
 						int64(54323),
 					),
 				},
@@ -297,7 +297,7 @@ func TestMoneyOutSendVCardLinkWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &payabli.SendVCardLinkRequest{
-		TransId: "01K33Z6YQZ6GD5QVKZ856MJBSC",
+		TransID: "01K33Z6YQZ6GD5QVKZ856MJBSC",
 	}
 	_, invocationErr := client.MoneyOut.SendVCardLink(
 		context.TODO(),
@@ -367,7 +367,7 @@ func TestMoneyOutReissueOutWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &payabli.ReissueOutRequest{
-		TransId: "129-219",
+		TransID: "129-219",
 		Body: &payabli.ReissuePayoutBody{
 			PaymentMethod: &payabli.ReissuePaymentMethod{
 				Method: "ach",

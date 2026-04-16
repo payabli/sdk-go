@@ -10,14 +10,14 @@ import (
 )
 
 var (
-	payabliApiResponseVendorsFieldIsSuccess      = big.NewInt(1 << 0)
-	payabliApiResponseVendorsFieldPageIdentifier = big.NewInt(1 << 1)
-	payabliApiResponseVendorsFieldResponseCode   = big.NewInt(1 << 2)
-	payabliApiResponseVendorsFieldResponseData   = big.NewInt(1 << 3)
-	payabliApiResponseVendorsFieldResponseText   = big.NewInt(1 << 4)
+	payabliAPIResponseVendorsFieldIsSuccess      = big.NewInt(1 << 0)
+	payabliAPIResponseVendorsFieldPageIdentifier = big.NewInt(1 << 1)
+	payabliAPIResponseVendorsFieldResponseCode   = big.NewInt(1 << 2)
+	payabliAPIResponseVendorsFieldResponseData   = big.NewInt(1 << 3)
+	payabliAPIResponseVendorsFieldResponseText   = big.NewInt(1 << 4)
 )
 
-type PayabliApiResponseVendors struct {
+type PayabliAPIResponseVendors struct {
 	IsSuccess      *IsSuccess      `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	PageIdentifier *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 	ResponseCode   *Responsecode   `json:"responseCode,omitempty" url:"responseCode,omitempty"`
@@ -32,49 +32,49 @@ type PayabliApiResponseVendors struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PayabliApiResponseVendors) GetIsSuccess() *IsSuccess {
+func (p *PayabliAPIResponseVendors) GetIsSuccess() *IsSuccess {
 	if p == nil {
 		return nil
 	}
 	return p.IsSuccess
 }
 
-func (p *PayabliApiResponseVendors) GetPageIdentifier() *PageIdentifier {
+func (p *PayabliAPIResponseVendors) GetPageIdentifier() *PageIdentifier {
 	if p == nil {
 		return nil
 	}
 	return p.PageIdentifier
 }
 
-func (p *PayabliApiResponseVendors) GetResponseCode() *Responsecode {
+func (p *PayabliAPIResponseVendors) GetResponseCode() *Responsecode {
 	if p == nil {
 		return nil
 	}
 	return p.ResponseCode
 }
 
-func (p *PayabliApiResponseVendors) GetResponseData() *int {
+func (p *PayabliAPIResponseVendors) GetResponseData() *int {
 	if p == nil {
 		return nil
 	}
 	return p.ResponseData
 }
 
-func (p *PayabliApiResponseVendors) GetResponseText() ResponseText {
+func (p *PayabliAPIResponseVendors) GetResponseText() ResponseText {
 	if p == nil {
 		return ""
 	}
 	return p.ResponseText
 }
 
-func (p *PayabliApiResponseVendors) GetExtraProperties() map[string]interface{} {
+func (p *PayabliAPIResponseVendors) GetExtraProperties() map[string]interface{} {
 	if p == nil {
 		return nil
 	}
 	return p.extraProperties
 }
 
-func (p *PayabliApiResponseVendors) require(field *big.Int) {
+func (p *PayabliAPIResponseVendors) require(field *big.Int) {
 	if p.explicitFields == nil {
 		p.explicitFields = big.NewInt(0)
 	}
@@ -83,46 +83,46 @@ func (p *PayabliApiResponseVendors) require(field *big.Int) {
 
 // SetIsSuccess sets the IsSuccess field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseVendors) SetIsSuccess(isSuccess *IsSuccess) {
+func (p *PayabliAPIResponseVendors) SetIsSuccess(isSuccess *IsSuccess) {
 	p.IsSuccess = isSuccess
-	p.require(payabliApiResponseVendorsFieldIsSuccess)
+	p.require(payabliAPIResponseVendorsFieldIsSuccess)
 }
 
 // SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseVendors) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+func (p *PayabliAPIResponseVendors) SetPageIdentifier(pageIdentifier *PageIdentifier) {
 	p.PageIdentifier = pageIdentifier
-	p.require(payabliApiResponseVendorsFieldPageIdentifier)
+	p.require(payabliAPIResponseVendorsFieldPageIdentifier)
 }
 
 // SetResponseCode sets the ResponseCode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseVendors) SetResponseCode(responseCode *Responsecode) {
+func (p *PayabliAPIResponseVendors) SetResponseCode(responseCode *Responsecode) {
 	p.ResponseCode = responseCode
-	p.require(payabliApiResponseVendorsFieldResponseCode)
+	p.require(payabliAPIResponseVendorsFieldResponseCode)
 }
 
 // SetResponseData sets the ResponseData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseVendors) SetResponseData(responseData *int) {
+func (p *PayabliAPIResponseVendors) SetResponseData(responseData *int) {
 	p.ResponseData = responseData
-	p.require(payabliApiResponseVendorsFieldResponseData)
+	p.require(payabliAPIResponseVendorsFieldResponseData)
 }
 
 // SetResponseText sets the ResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseVendors) SetResponseText(responseText ResponseText) {
+func (p *PayabliAPIResponseVendors) SetResponseText(responseText ResponseText) {
 	p.ResponseText = responseText
-	p.require(payabliApiResponseVendorsFieldResponseText)
+	p.require(payabliAPIResponseVendorsFieldResponseText)
 }
 
-func (p *PayabliApiResponseVendors) UnmarshalJSON(data []byte) error {
-	type unmarshaler PayabliApiResponseVendors
+func (p *PayabliAPIResponseVendors) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayabliAPIResponseVendors
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PayabliApiResponseVendors(value)
+	*p = PayabliAPIResponseVendors(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *p)
 	if err != nil {
 		return err
@@ -132,8 +132,8 @@ func (p *PayabliApiResponseVendors) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (p *PayabliApiResponseVendors) MarshalJSON() ([]byte, error) {
-	type embed PayabliApiResponseVendors
+func (p *PayabliAPIResponseVendors) MarshalJSON() ([]byte, error) {
+	type embed PayabliAPIResponseVendors
 	var marshaler = struct {
 		embed
 	}{
@@ -143,7 +143,7 @@ func (p *PayabliApiResponseVendors) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PayabliApiResponseVendors) String() string {
+func (p *PayabliAPIResponseVendors) String() string {
 	if p == nil {
 		return "<nil>"
 	}
@@ -160,18 +160,18 @@ func (p *PayabliApiResponseVendors) String() string {
 
 // Request body for the vendor enrichment endpoint.
 var (
-	vendorEnrichRequestFieldVendorId             = big.NewInt(1 << 0)
+	vendorEnrichRequestFieldVendorID             = big.NewInt(1 << 0)
 	vendorEnrichRequestFieldScope                = big.NewInt(1 << 1)
 	vendorEnrichRequestFieldApplyEnrichmentData  = big.NewInt(1 << 2)
 	vendorEnrichRequestFieldScheduleCallIfNeeded = big.NewInt(1 << 3)
 	vendorEnrichRequestFieldInvoiceFile          = big.NewInt(1 << 4)
-	vendorEnrichRequestFieldBillId               = big.NewInt(1 << 5)
+	vendorEnrichRequestFieldBillID               = big.NewInt(1 << 5)
 	vendorEnrichRequestFieldFallbackMethod       = big.NewInt(1 << 6)
 )
 
 type VendorEnrichRequest struct {
 	// ID of the vendor to enrich. Must be active and belong to the given entrypoint.
-	VendorId int64 `json:"vendorId" url:"vendorId"`
+	VendorID int64 `json:"vendorId" url:"vendorId"`
 	// Enrichment stages to run. Valid values are `invoice_scan` and `web_search`. Stages run in order: invoice scan first, then web search. If the vendor becomes payout-ready after invoice scan, web search is skipped.
 	Scope []string `json:"scope,omitempty" url:"scope,omitempty"`
 	// When `true` (the default), extracted data is automatically written to the vendor record. Only empty fields are populated, existing values are never overwritten. When `false`, the vendor record isn't modified. In both cases, `enrichmentData` in the response contains the extracted results. Use `false` for UI flows where users review and confirm changes before applying them with the update vendor endpoint.
@@ -181,7 +181,7 @@ type VendorEnrichRequest struct {
 	// PDF invoice file, Base64-encoded. Required when `scope` includes `invoice_scan`.
 	InvoiceFile *FileContent `json:"invoiceFile,omitempty" url:"invoiceFile,omitempty"`
 	// Bill ID to associate with this enrichment request.
-	BillId *int64 `json:"billId,omitempty" url:"billId,omitempty"`
+	BillID *int64 `json:"billId,omitempty" url:"billId,omitempty"`
 	// Payment method to apply if enrichment can't find payment details. Values are `check`, `ach`, or `card`.
 	FallbackMethod *string `json:"fallbackMethod,omitempty" url:"fallbackMethod,omitempty"`
 
@@ -192,11 +192,11 @@ type VendorEnrichRequest struct {
 	rawJSON         json.RawMessage
 }
 
-func (v *VendorEnrichRequest) GetVendorId() int64 {
+func (v *VendorEnrichRequest) GetVendorID() int64 {
 	if v == nil {
 		return 0
 	}
-	return v.VendorId
+	return v.VendorID
 }
 
 func (v *VendorEnrichRequest) GetScope() []string {
@@ -227,11 +227,11 @@ func (v *VendorEnrichRequest) GetInvoiceFile() *FileContent {
 	return v.InvoiceFile
 }
 
-func (v *VendorEnrichRequest) GetBillId() *int64 {
+func (v *VendorEnrichRequest) GetBillID() *int64 {
 	if v == nil {
 		return nil
 	}
-	return v.BillId
+	return v.BillID
 }
 
 func (v *VendorEnrichRequest) GetFallbackMethod() *string {
@@ -255,11 +255,11 @@ func (v *VendorEnrichRequest) require(field *big.Int) {
 	v.explicitFields.Or(v.explicitFields, field)
 }
 
-// SetVendorId sets the VendorId field and marks it as non-optional;
+// SetVendorID sets the VendorID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorEnrichRequest) SetVendorId(vendorId int64) {
-	v.VendorId = vendorId
-	v.require(vendorEnrichRequestFieldVendorId)
+func (v *VendorEnrichRequest) SetVendorID(vendorID int64) {
+	v.VendorID = vendorID
+	v.require(vendorEnrichRequestFieldVendorID)
 }
 
 // SetScope sets the Scope field and marks it as non-optional;
@@ -290,11 +290,11 @@ func (v *VendorEnrichRequest) SetInvoiceFile(invoiceFile *FileContent) {
 	v.require(vendorEnrichRequestFieldInvoiceFile)
 }
 
-// SetBillId sets the BillId field and marks it as non-optional;
+// SetBillID sets the BillID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorEnrichRequest) SetBillId(billId *int64) {
-	v.BillId = billId
-	v.require(vendorEnrichRequestFieldBillId)
+func (v *VendorEnrichRequest) SetBillID(billID *int64) {
+	v.BillID = billID
+	v.require(vendorEnrichRequestFieldBillID)
 }
 
 // SetFallbackMethod sets the FallbackMethod field and marks it as non-optional;
@@ -350,7 +350,7 @@ func (v *VendorEnrichRequest) String() string {
 var (
 	vendorEnrichResponseFieldResponseCode   = big.NewInt(1 << 0)
 	vendorEnrichResponseFieldPageIdentifier = big.NewInt(1 << 1)
-	vendorEnrichResponseFieldRoomId         = big.NewInt(1 << 2)
+	vendorEnrichResponseFieldRoomID         = big.NewInt(1 << 2)
 	vendorEnrichResponseFieldIsSuccess      = big.NewInt(1 << 3)
 	vendorEnrichResponseFieldResponseText   = big.NewInt(1 << 4)
 	vendorEnrichResponseFieldResponseData   = big.NewInt(1 << 5)
@@ -359,7 +359,7 @@ var (
 type VendorEnrichResponse struct {
 	ResponseCode   *Responsecode             `json:"responseCode,omitempty" url:"responseCode,omitempty"`
 	PageIdentifier *PageIdentifier           `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
-	RoomId         *RoomIdNotInUse           `json:"roomId,omitempty" url:"roomId,omitempty"`
+	RoomID         *RoomIDNotInUse           `json:"roomId,omitempty" url:"roomId,omitempty"`
 	IsSuccess      *IsSuccess                `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	ResponseText   ResponseText              `json:"responseText" url:"responseText"`
 	ResponseData   *VendorEnrichResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
@@ -385,11 +385,11 @@ func (v *VendorEnrichResponse) GetPageIdentifier() *PageIdentifier {
 	return v.PageIdentifier
 }
 
-func (v *VendorEnrichResponse) GetRoomId() *RoomIdNotInUse {
+func (v *VendorEnrichResponse) GetRoomID() *RoomIDNotInUse {
 	if v == nil {
 		return nil
 	}
-	return v.RoomId
+	return v.RoomID
 }
 
 func (v *VendorEnrichResponse) GetIsSuccess() *IsSuccess {
@@ -441,11 +441,11 @@ func (v *VendorEnrichResponse) SetPageIdentifier(pageIdentifier *PageIdentifier)
 	v.require(vendorEnrichResponseFieldPageIdentifier)
 }
 
-// SetRoomId sets the RoomId field and marks it as non-optional;
+// SetRoomID sets the RoomID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorEnrichResponse) SetRoomId(roomId *RoomIdNotInUse) {
-	v.RoomId = roomId
-	v.require(vendorEnrichResponseFieldRoomId)
+func (v *VendorEnrichResponse) SetRoomID(roomID *RoomIDNotInUse) {
+	v.RoomID = roomID
+	v.require(vendorEnrichResponseFieldRoomID)
 }
 
 // SetIsSuccess sets the IsSuccess field and marks it as non-optional;
@@ -513,7 +513,7 @@ func (v *VendorEnrichResponse) String() string {
 
 // Enrichment result details.
 var (
-	vendorEnrichResponseDataFieldEnrichmentId      = big.NewInt(1 << 0)
+	vendorEnrichResponseDataFieldEnrichmentID      = big.NewInt(1 << 0)
 	vendorEnrichResponseDataFieldStatus            = big.NewInt(1 << 1)
 	vendorEnrichResponseDataFieldStagesTriggered   = big.NewInt(1 << 2)
 	vendorEnrichResponseDataFieldVendorPayoutReady = big.NewInt(1 << 3)
@@ -522,7 +522,7 @@ var (
 
 type VendorEnrichResponseData struct {
 	// Unique identifier for this enrichment run. Format: `enrich-{vendorId}-{8-char hex}`.
-	EnrichmentId *string `json:"enrichmentId,omitempty" url:"enrichmentId,omitempty"`
+	EnrichmentID *string `json:"enrichmentId,omitempty" url:"enrichmentId,omitempty"`
 	// Final enrichment status. Values are `completed` (vendor is payout-ready), `completed_from_network` (vendor was already enriched in the Payabli vendor network, no AI processing needed), or `insufficient` (all stages ran but the vendor still lacks sufficient payment data).
 	Status *string `json:"status,omitempty" url:"status,omitempty"`
 	// Stages that ran successfully. A stage is only listed here if it returned a successful response. Failed stages are excluded.
@@ -539,11 +539,11 @@ type VendorEnrichResponseData struct {
 	rawJSON         json.RawMessage
 }
 
-func (v *VendorEnrichResponseData) GetEnrichmentId() *string {
+func (v *VendorEnrichResponseData) GetEnrichmentID() *string {
 	if v == nil {
 		return nil
 	}
-	return v.EnrichmentId
+	return v.EnrichmentID
 }
 
 func (v *VendorEnrichResponseData) GetStatus() *string {
@@ -588,11 +588,11 @@ func (v *VendorEnrichResponseData) require(field *big.Int) {
 	v.explicitFields.Or(v.explicitFields, field)
 }
 
-// SetEnrichmentId sets the EnrichmentId field and marks it as non-optional;
+// SetEnrichmentID sets the EnrichmentID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorEnrichResponseData) SetEnrichmentId(enrichmentId *string) {
-	v.EnrichmentId = enrichmentId
-	v.require(vendorEnrichResponseDataFieldEnrichmentId)
+func (v *VendorEnrichResponseData) SetEnrichmentID(enrichmentID *string) {
+	v.EnrichmentID = enrichmentID
+	v.require(vendorEnrichResponseDataFieldEnrichmentID)
 }
 
 // SetStatus sets the Status field and marks it as non-optional;

@@ -132,7 +132,7 @@ func TestVendorAddVendorWithWireMock(
 			},
 		},
 		BillingData: &payabli.BillingData{
-			Id: payabli.Int(
+			ID: payabli.Int(
 				123,
 			),
 			BankName: payabli.String(
@@ -186,7 +186,7 @@ func TestVendorAddVendorWithWireMock(
 		CustomerVendorAccount: payabli.String(
 			"A-37622",
 		),
-		InternalReferenceId: payabli.Int64(
+		InternalReferenceID: payabli.Int64(
 			int64(123),
 		),
 	}
@@ -286,7 +286,7 @@ func TestVendorEnrichVendorWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &payabli.VendorEnrichRequest{
-		VendorId: int64(3890),
+		VendorID: int64(3890),
 		Scope: []string{
 			"invoice_scan",
 		},

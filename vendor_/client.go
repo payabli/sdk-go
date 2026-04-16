@@ -39,7 +39,7 @@ func (c *Client) AddVendor(
 	entry string,
 	request *payabli.VendorData,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponseVendors, error) {
+) (*payabli.PayabliAPIResponseVendors, error) {
 	response, err := c.WithRawResponse.AddVendor(
 		ctx,
 		entry,
@@ -58,7 +58,7 @@ func (c *Client) DeleteVendor(
 	// Vendor ID.
 	idVendor int,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponseVendors, error) {
+) (*payabli.PayabliAPIResponseVendors, error) {
 	response, err := c.WithRawResponse.DeleteVendor(
 		ctx,
 		idVendor,
@@ -77,7 +77,7 @@ func (c *Client) EditVendor(
 	idVendor int,
 	request *payabli.VendorData,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponseVendors, error) {
+) (*payabli.PayabliAPIResponseVendors, error) {
 	response, err := c.WithRawResponse.EditVendor(
 		ctx,
 		idVendor,

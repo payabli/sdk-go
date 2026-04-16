@@ -129,7 +129,7 @@ func TestOrganizationAddOrganizationWithWireMock(
 		OrgEntryName: payabli.String(
 			"pilgrim-planner",
 		),
-		OrgId: payabli.String(
+		OrgID: payabli.String(
 			"123",
 		),
 		OrgLogo: &payabli.FileContent{
@@ -145,7 +145,7 @@ func TestOrganizationAddOrganizationWithWireMock(
 			),
 		},
 		OrgName: "Pilgrim Planner",
-		OrgParentId: payabli.Int64(
+		OrgParentID: payabli.Int64(
 			int64(236),
 		),
 		OrgState: payabli.String(
@@ -236,7 +236,7 @@ func TestOrganizationEditOrganizationWithWireMock(
 		OrgEntryName: payabli.String(
 			"pilgrim-planner",
 		),
-		OrganizationDataOrgId: payabli.String(
+		OrganizationDataOrgID: payabli.String(
 			"123",
 		),
 		OrgName: payabli.String(
@@ -293,7 +293,7 @@ func TestOrganizationGetBasicOrganizationWithWireMock(
 	VerifyRequestCount(t, "TestOrganizationGetBasicOrganizationWithWireMock", "GET", "/Organization/basic/8cfec329267", nil, 1)
 }
 
-func TestOrganizationGetBasicOrganizationByIdWithWireMock(
+func TestOrganizationGetBasicOrganizationByIDWithWireMock(
 	t *testing.T,
 ) {
 	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
@@ -303,16 +303,16 @@ func TestOrganizationGetBasicOrganizationByIdWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	_, invocationErr := client.Organization.GetBasicOrganizationById(
+	_, invocationErr := client.Organization.GetBasicOrganizationByID(
 		context.TODO(),
 		123,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestOrganizationGetBasicOrganizationByIdWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestOrganizationGetBasicOrganizationByIDWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestOrganizationGetBasicOrganizationByIdWithWireMock", "GET", "/Organization/basicById/123", nil, 1)
+	VerifyRequestCount(t, "TestOrganizationGetBasicOrganizationByIDWithWireMock", "GET", "/Organization/basicById/123", nil, 1)
 }
 
 func TestOrganizationGetOrganizationWithWireMock(

@@ -100,7 +100,7 @@ func TestPayoutSubscriptionCreatePayoutSubscriptionWithWireMock(
 				),
 			},
 			VendorData: &payabli.RequestOutAuthorizeVendorData{
-				VendorId: payabli.Int(
+				VendorID: payabli.Int(
 					1501,
 				),
 			},

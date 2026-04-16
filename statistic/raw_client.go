@@ -62,7 +62,7 @@ func (r *RawClient) BasicStats(
 	//   - 2 for Paypoint
 	level int,
 	// Identifier in Payabli for the entity.
-	entryId int64,
+	entryID int64,
 	request *payabli.BasicStatsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*payabli.StatBasicExtendedQueryRecord], error) {
@@ -77,7 +77,7 @@ func (r *RawClient) BasicStats(
 		mode,
 		freq,
 		level,
-		entryId,
+		entryID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -141,7 +141,7 @@ func (r *RawClient) CustomerBasicStats(
 	// For example, `w` groups the results by week.
 	freq string,
 	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
-	customerId int,
+	customerID int,
 	request *payabli.CustomerBasicStatsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*payabli.SubscriptionStatsQueryRecord], error) {
@@ -155,7 +155,7 @@ func (r *RawClient) CustomerBasicStats(
 		baseURL+"/Statistic/customerbasic/%v/%v/%v",
 		mode,
 		freq,
-		customerId,
+		customerID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -208,7 +208,7 @@ func (r *RawClient) SubStats(
 	//   - 2 for Paypoint
 	level int,
 	// Identifier in Payabli for the entity.
-	entryId int64,
+	entryID int64,
 	request *payabli.SubStatsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*payabli.StatBasicQueryRecord], error) {
@@ -222,7 +222,7 @@ func (r *RawClient) SubStats(
 		baseURL+"/Statistic/subscriptions/%v/%v/%v",
 		interval,
 		level,
-		entryId,
+		entryID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {

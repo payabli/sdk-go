@@ -37,7 +37,7 @@ func (c *Client) AddPaymentMethodDomain(
 	ctx context.Context,
 	request *payabli.AddPaymentMethodDomainRequest,
 	opts ...option.RequestOption,
-) (*payabli.AddPaymentMethodDomainApiResponse, error) {
+) (*payabli.AddPaymentMethodDomainAPIResponse, error) {
 	response, err := c.WithRawResponse.AddPaymentMethodDomain(
 		ctx,
 		request,
@@ -53,12 +53,12 @@ func (c *Client) AddPaymentMethodDomain(
 func (c *Client) CascadePaymentMethodDomain(
 	ctx context.Context,
 	// The payment method domain's ID in Payabli.
-	domainId string,
+	domainID string,
 	opts ...option.RequestOption,
 ) (*payabli.PaymentMethodDomainGeneralResponse, error) {
 	response, err := c.WithRawResponse.CascadePaymentMethodDomain(
 		ctx,
-		domainId,
+		domainID,
 		opts...,
 	)
 	if err != nil {
@@ -71,12 +71,12 @@ func (c *Client) CascadePaymentMethodDomain(
 func (c *Client) DeletePaymentMethodDomain(
 	ctx context.Context,
 	// The payment method domain's ID in Payabli.
-	domainId string,
+	domainID string,
 	opts ...option.RequestOption,
 ) (*payabli.DeletePaymentMethodDomainResponse, error) {
 	response, err := c.WithRawResponse.DeletePaymentMethodDomain(
 		ctx,
-		domainId,
+		domainID,
 		opts...,
 	)
 	if err != nil {
@@ -89,12 +89,12 @@ func (c *Client) DeletePaymentMethodDomain(
 func (c *Client) GetPaymentMethodDomain(
 	ctx context.Context,
 	// The payment method domain's ID in Payabli.
-	domainId string,
+	domainID string,
 	opts ...option.RequestOption,
-) (*payabli.PaymentMethodDomainApiResponse, error) {
+) (*payabli.PaymentMethodDomainAPIResponse, error) {
 	response, err := c.WithRawResponse.GetPaymentMethodDomain(
 		ctx,
-		domainId,
+		domainID,
 		opts...,
 	)
 	if err != nil {
@@ -124,13 +124,13 @@ func (c *Client) ListPaymentMethodDomains(
 func (c *Client) UpdatePaymentMethodDomain(
 	ctx context.Context,
 	// The payment method domain's ID in Payabli.
-	domainId string,
+	domainID string,
 	request *payabli.UpdatePaymentMethodDomainRequest,
 	opts ...option.RequestOption,
 ) (*payabli.PaymentMethodDomainGeneralResponse, error) {
 	response, err := c.WithRawResponse.UpdatePaymentMethodDomain(
 		ctx,
-		domainId,
+		domainID,
 		request,
 		opts...,
 	)
@@ -144,12 +144,12 @@ func (c *Client) UpdatePaymentMethodDomain(
 func (c *Client) VerifyPaymentMethodDomain(
 	ctx context.Context,
 	// The payment method domain's ID in Payabli.
-	domainId string,
+	domainID string,
 	opts ...option.RequestOption,
 ) (*payabli.PaymentMethodDomainGeneralResponse, error) {
 	response, err := c.WithRawResponse.VerifyPaymentMethodDomain(
 		ctx,
-		domainId,
+		domainID,
 		opts...,
 	)
 	if err != nil {

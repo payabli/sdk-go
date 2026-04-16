@@ -53,13 +53,13 @@ func (c *Client) AddMethod(
 func (c *Client) GetMethod(
 	ctx context.Context,
 	// The saved payment method ID.
-	methodId string,
+	methodID string,
 	request *payabli.GetMethodRequest,
 	opts ...option.RequestOption,
 ) (*payabli.GetMethodResponse, error) {
 	response, err := c.WithRawResponse.GetMethod(
 		ctx,
-		methodId,
+		methodID,
 		request,
 		opts...,
 	)
@@ -73,12 +73,12 @@ func (c *Client) GetMethod(
 func (c *Client) RemoveMethod(
 	ctx context.Context,
 	// The saved payment method ID.
-	methodId string,
+	methodID string,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponsePaymethodDelete, error) {
+) (*payabli.PayabliAPIResponsePaymethodDelete, error) {
 	response, err := c.WithRawResponse.RemoveMethod(
 		ctx,
-		methodId,
+		methodID,
 		opts...,
 	)
 	if err != nil {
@@ -91,13 +91,13 @@ func (c *Client) RemoveMethod(
 func (c *Client) UpdateMethod(
 	ctx context.Context,
 	// The saved payment method ID.
-	methodId string,
+	methodID string,
 	request *payabli.UpdateMethodRequest,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponsePaymethodDelete, error) {
+) (*payabli.PayabliAPIResponsePaymethodDelete, error) {
 	response, err := c.WithRawResponse.UpdateMethod(
 		ctx,
-		methodId,
+		methodID,
 		request,
 		opts...,
 	)

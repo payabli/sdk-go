@@ -128,9 +128,9 @@ func (r *RawClient) CancelAllOut(
 func (r *RawClient) CancelOutGet(
 	ctx context.Context,
 	// The ID for the payout transaction.
-	referenceId string,
+	referenceID string,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponse0000], error) {
+) (*core.Response[*payabli.PayabliAPIResponse0000], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -139,13 +139,13 @@ func (r *RawClient) CancelOutGet(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/MoneyOut/cancel/%v",
-		referenceId,
+		referenceID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponse0000
+	var response *payabli.PayabliAPIResponse0000
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -163,7 +163,7 @@ func (r *RawClient) CancelOutGet(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponse0000]{
+	return &core.Response[*payabli.PayabliAPIResponse0000]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -173,9 +173,9 @@ func (r *RawClient) CancelOutGet(
 func (r *RawClient) CancelOutDelete(
 	ctx context.Context,
 	// The ID for the payout transaction.
-	referenceId string,
+	referenceID string,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponse0000], error) {
+) (*core.Response[*payabli.PayabliAPIResponse0000], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -184,13 +184,13 @@ func (r *RawClient) CancelOutDelete(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/MoneyOut/cancel/%v",
-		referenceId,
+		referenceID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponse0000
+	var response *payabli.PayabliAPIResponse0000
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -208,7 +208,7 @@ func (r *RawClient) CancelOutDelete(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponse0000]{
+	return &core.Response[*payabli.PayabliAPIResponse0000]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -264,7 +264,7 @@ func (r *RawClient) CaptureAllOut(
 func (r *RawClient) CaptureOut(
 	ctx context.Context,
 	// The ID for the payout transaction.
-	referenceId string,
+	referenceID string,
 	request *payabli.CaptureOutRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.AuthCapturePayoutResponse], error) {
@@ -276,7 +276,7 @@ func (r *RawClient) CaptureOut(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/MoneyOut/capture/%v",
-		referenceId,
+		referenceID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -314,7 +314,7 @@ func (r *RawClient) CaptureOut(
 func (r *RawClient) PayoutDetails(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.BillDetailResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -325,7 +325,7 @@ func (r *RawClient) PayoutDetails(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/MoneyOut/details/%v",
-		transId,
+		transID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -500,11 +500,11 @@ func (r *RawClient) GetCheckImage(
 func (r *RawClient) UpdateCheckPaymentStatus(
 	ctx context.Context,
 	// The Payabli transaction ID for the check payment.
-	transId string,
+	transID string,
 	// The new status to apply to the check transaction. To mark a check as `Paid`, send 5. To mark a check as `Cancelled`, send 0.
 	checkPaymentStatus *payabli.AllowedCheckPaymentStatus,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponse00Responsedatanonobject], error) {
+) (*core.Response[*payabli.PayabliAPIResponse00Responsedatanonobject], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -513,14 +513,14 @@ func (r *RawClient) UpdateCheckPaymentStatus(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/MoneyOut/status/%v/%v",
-		transId,
+		transID,
 		checkPaymentStatus,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponse00Responsedatanonobject
+	var response *payabli.PayabliAPIResponse00Responsedatanonobject
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -538,7 +538,7 @@ func (r *RawClient) UpdateCheckPaymentStatus(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponse00Responsedatanonobject]{
+	return &core.Response[*payabli.PayabliAPIResponse00Responsedatanonobject]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

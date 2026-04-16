@@ -216,13 +216,13 @@ func (c *Client) ListInvoices(
 func (c *Client) ListInvoicesOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListInvoicesOrgRequest,
 	opts ...option.RequestOption,
 ) (*payabli.QueryInvoiceResponse, error) {
 	response, err := c.WithRawResponse.ListInvoicesOrg(
 		ctx,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)

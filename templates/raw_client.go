@@ -33,9 +33,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 func (r *RawClient) DeleteTemplate(
 	ctx context.Context,
 	// The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
-	templateId float64,
+	templateID float64,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponseTemplateId], error) {
+) (*core.Response[*payabli.PayabliAPIResponseTemplateID], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -44,13 +44,13 @@ func (r *RawClient) DeleteTemplate(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Templates/%v",
-		templateId,
+		templateID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponseTemplateId
+	var response *payabli.PayabliAPIResponseTemplateID
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -68,7 +68,7 @@ func (r *RawClient) DeleteTemplate(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponseTemplateId]{
+	return &core.Response[*payabli.PayabliAPIResponseTemplateID]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -78,11 +78,11 @@ func (r *RawClient) DeleteTemplate(
 func (r *RawClient) GetlinkTemplate(
 	ctx context.Context,
 	// The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
-	templateId float64,
+	templateID float64,
 	// Ignore read-only and empty fields Default is `false`. If `ignoreEmpty` = `false` and any field is empty, then the request returns a failure response. If `ignoreEmpty` = `true`, the request returns the boarding link name regardless of whether fields are empty.
 	ignoreEmpty bool,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.BoardingLinkApiResponse], error) {
+) (*core.Response[*payabli.BoardingLinkAPIResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -91,14 +91,14 @@ func (r *RawClient) GetlinkTemplate(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Templates/getlink/%v/%v",
-		templateId,
+		templateID,
 		ignoreEmpty,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.BoardingLinkApiResponse
+	var response *payabli.BoardingLinkAPIResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -116,7 +116,7 @@ func (r *RawClient) GetlinkTemplate(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.BoardingLinkApiResponse]{
+	return &core.Response[*payabli.BoardingLinkAPIResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -126,7 +126,7 @@ func (r *RawClient) GetlinkTemplate(
 func (r *RawClient) GetTemplate(
 	ctx context.Context,
 	// The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
-	templateId float64,
+	templateID float64,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.TemplateQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
@@ -137,7 +137,7 @@ func (r *RawClient) GetTemplate(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Templates/get/%v",
-		templateId,
+		templateID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -171,7 +171,7 @@ func (r *RawClient) GetTemplate(
 func (r *RawClient) ListTemplates(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListTemplatesRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.TemplateQueryResponse], error) {
@@ -183,7 +183,7 @@ func (r *RawClient) ListTemplates(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/templates/%v",
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {

@@ -34,7 +34,7 @@ func (r *RawClient) ConfigureApplePayOrganization(
 	ctx context.Context,
 	request *payabli.ConfigureOrganizationRequestApplePay,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.ConfigureApplePayOrganizationApiResponse], error) {
+) (*core.Response[*payabli.ConfigureApplePayOrganizationAPIResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -47,7 +47,7 @@ func (r *RawClient) ConfigureApplePayOrganization(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *payabli.ConfigureApplePayOrganizationApiResponse
+	var response *payabli.ConfigureApplePayOrganizationAPIResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -66,7 +66,7 @@ func (r *RawClient) ConfigureApplePayOrganization(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.ConfigureApplePayOrganizationApiResponse]{
+	return &core.Response[*payabli.ConfigureApplePayOrganizationAPIResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -77,7 +77,7 @@ func (r *RawClient) ConfigureApplePayPaypoint(
 	ctx context.Context,
 	request *payabli.ConfigurePaypointRequestApplePay,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.ConfigureApplePaypointApiResponse], error) {
+) (*core.Response[*payabli.ConfigureApplePaypointAPIResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -90,7 +90,7 @@ func (r *RawClient) ConfigureApplePayPaypoint(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *payabli.ConfigureApplePaypointApiResponse
+	var response *payabli.ConfigureApplePaypointAPIResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -109,7 +109,7 @@ func (r *RawClient) ConfigureApplePayPaypoint(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.ConfigureApplePaypointApiResponse]{
+	return &core.Response[*payabli.ConfigureApplePaypointAPIResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -120,7 +120,7 @@ func (r *RawClient) ConfigureGooglePayOrganization(
 	ctx context.Context,
 	request *payabli.ConfigureOrganizationRequestGooglePay,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.ConfigureApplePayOrganizationApiResponse], error) {
+) (*core.Response[*payabli.ConfigureApplePayOrganizationAPIResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -133,7 +133,7 @@ func (r *RawClient) ConfigureGooglePayOrganization(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *payabli.ConfigureApplePayOrganizationApiResponse
+	var response *payabli.ConfigureApplePayOrganizationAPIResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -152,7 +152,7 @@ func (r *RawClient) ConfigureGooglePayOrganization(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.ConfigureApplePayOrganizationApiResponse]{
+	return &core.Response[*payabli.ConfigureApplePayOrganizationAPIResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -163,7 +163,7 @@ func (r *RawClient) ConfigureGooglePayPaypoint(
 	ctx context.Context,
 	request *payabli.ConfigurePaypointRequestGooglePay,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.ConfigureGooglePaypointApiResponse], error) {
+) (*core.Response[*payabli.ConfigureGooglePaypointAPIResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -176,7 +176,7 @@ func (r *RawClient) ConfigureGooglePayPaypoint(
 		options.ToHeader(),
 	)
 	headers.Add("Content-Type", "application/json")
-	var response *payabli.ConfigureGooglePaypointApiResponse
+	var response *payabli.ConfigureGooglePaypointAPIResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -194,7 +194,7 @@ func (r *RawClient) ConfigureGooglePayPaypoint(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.ConfigureGooglePaypointApiResponse]{
+	return &core.Response[*payabli.ConfigureGooglePaypointAPIResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

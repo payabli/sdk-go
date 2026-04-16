@@ -131,7 +131,7 @@ func TestBoardingAddApplicationWithWireMock(
 						"123123123",
 					),
 					TypeAccount: payabli.TypeAccountChecking.Ptr(),
-					AccountId: payabli.String(
+					AccountID: payabli.String(
 						"123-456",
 					),
 				},
@@ -156,7 +156,7 @@ func TestBoardingAddApplicationWithWireMock(
 						"123123123",
 					),
 					TypeAccount: payabli.TypeAccountChecking.Ptr(),
-					AccountId: payabli.String(
+					AccountID: payabli.String(
 						"123-456",
 					),
 				},
@@ -247,7 +247,7 @@ func TestBoardingAddApplicationWithWireMock(
 			Mzip: payabli.String(
 				"37615",
 			),
-			OrgId: payabli.Int64(
+			OrgID: payabli.Int64(
 				int64(123),
 			),
 			Ownership: []*payabli.ApplicationDataPayInOwnershipItem{
@@ -368,7 +368,7 @@ func TestBoardingAddApplicationWithWireMock(
 			TaxFillName: payabli.String(
 				"Sunshine LLC",
 			),
-			TemplateId: payabli.Int64(
+			TemplateID: payabli.Int64(
 				int64(22),
 			),
 			Ticketamt: payabli.Float64(
@@ -453,7 +453,7 @@ func TestBoardingGetApplicationByAuthWithWireMock(
 		Email: payabli.String(
 			"admin@email.com",
 		),
-		ReferenceId: payabli.String(
+		ReferenceID: payabli.String(
 			"n6UCd1f1ygG7",
 		),
 	}
@@ -470,7 +470,7 @@ func TestBoardingGetApplicationByAuthWithWireMock(
 	VerifyRequestCount(t, "TestBoardingGetApplicationByAuthWithWireMock", "POST", "/Boarding/read/17E", nil, 1)
 }
 
-func TestBoardingGetByIdLinkApplicationWithWireMock(
+func TestBoardingGetByIDLinkApplicationWithWireMock(
 	t *testing.T,
 ) {
 	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
@@ -480,19 +480,19 @@ func TestBoardingGetByIdLinkApplicationWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	_, invocationErr := client.Boarding.GetByIdLinkApplication(
+	_, invocationErr := client.Boarding.GetByIDLinkApplication(
 		context.TODO(),
 		91,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestBoardingGetByIdLinkApplicationWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestBoardingGetByIDLinkApplicationWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestBoardingGetByIdLinkApplicationWithWireMock", "GET", "/Boarding/linkbyId/91", nil, 1)
+	VerifyRequestCount(t, "TestBoardingGetByIDLinkApplicationWithWireMock", "GET", "/Boarding/linkbyId/91", nil, 1)
 }
 
-func TestBoardingGetByTemplateIdLinkApplicationWithWireMock(
+func TestBoardingGetByTemplateIDLinkApplicationWithWireMock(
 	t *testing.T,
 ) {
 	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
@@ -502,16 +502,16 @@ func TestBoardingGetByTemplateIdLinkApplicationWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	_, invocationErr := client.Boarding.GetByTemplateIdLinkApplication(
+	_, invocationErr := client.Boarding.GetByTemplateIDLinkApplication(
 		context.TODO(),
 		80,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestBoardingGetByTemplateIdLinkApplicationWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestBoardingGetByTemplateIDLinkApplicationWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestBoardingGetByTemplateIdLinkApplicationWithWireMock", "GET", "/Boarding/linkbyTemplate/80", nil, 1)
+	VerifyRequestCount(t, "TestBoardingGetByTemplateIDLinkApplicationWithWireMock", "GET", "/Boarding/linkbyTemplate/80", nil, 1)
 }
 
 func TestBoardingGetExternalApplicationWithWireMock(

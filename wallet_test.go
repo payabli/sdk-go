@@ -27,11 +27,11 @@ func TestSettersConfigureOrganizationRequestApplePay(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetOrgId", func(t *testing.T) {
+	t.Run("SetOrgID", func(t *testing.T) {
 		obj := &ConfigureOrganizationRequestApplePay{}
-		var fernTestValueOrgId *OrganizationId
-		obj.SetOrgId(fernTestValueOrgId)
-		assert.Equal(t, fernTestValueOrgId, obj.OrgId)
+		var fernTestValueOrgID *OrganizationID
+		obj.SetOrgID(fernTestValueOrgID)
+		assert.Equal(t, fernTestValueOrgID, obj.OrgID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -100,14 +100,14 @@ func TestSettersMarkExplicitConfigureOrganizationRequestApplePay(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetOrgId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetOrgID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &ConfigureOrganizationRequestApplePay{}
-		var fernTestValueOrgId *OrganizationId
+		var fernTestValueOrgID *OrganizationID
 
 		// Act
-		obj.SetOrgId(fernTestValueOrgId)
+		obj.SetOrgID(fernTestValueOrgID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -234,11 +234,11 @@ func TestSettersConfigureOrganizationRequestGooglePay(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetOrgId", func(t *testing.T) {
+	t.Run("SetOrgID", func(t *testing.T) {
 		obj := &ConfigureOrganizationRequestGooglePay{}
-		var fernTestValueOrgId *OrganizationId
-		obj.SetOrgId(fernTestValueOrgId)
-		assert.Equal(t, fernTestValueOrgId, obj.OrgId)
+		var fernTestValueOrgID *OrganizationID
+		obj.SetOrgID(fernTestValueOrgID)
+		assert.Equal(t, fernTestValueOrgID, obj.OrgID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -307,14 +307,14 @@ func TestSettersMarkExplicitConfigureOrganizationRequestGooglePay(t *testing.T) 
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetOrgId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetOrgID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &ConfigureOrganizationRequestGooglePay{}
-		var fernTestValueOrgId *OrganizationId
+		var fernTestValueOrgID *OrganizationID
 
 		// Act
-		obj.SetOrgId(fernTestValueOrgId)
+		obj.SetOrgID(fernTestValueOrgID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -433,19 +433,19 @@ func TestSettersApplePayOrganizationUpdateData(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetId", func(t *testing.T) {
+	t.Run("SetID", func(t *testing.T) {
 		obj := &ApplePayOrganizationUpdateData{}
-		var fernTestValueId *ApplePayId
-		obj.SetId(fernTestValueId)
-		assert.Equal(t, fernTestValueId, obj.Id)
+		var fernTestValueID *ApplePayID
+		obj.SetID(fernTestValueID)
+		assert.Equal(t, fernTestValueID, obj.ID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetJobId", func(t *testing.T) {
+	t.Run("SetJobID", func(t *testing.T) {
 		obj := &ApplePayOrganizationUpdateData{}
-		var fernTestValueJobId *JobId
-		obj.SetJobId(fernTestValueJobId)
-		assert.Equal(t, fernTestValueJobId, obj.JobId)
+		var fernTestValueJobID *JobID
+		obj.SetJobID(fernTestValueJobID)
+		assert.Equal(t, fernTestValueJobID, obj.JobID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -457,11 +457,11 @@ func TestSettersApplePayOrganizationUpdateData(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetOrganizationId", func(t *testing.T) {
+	t.Run("SetOrganizationID", func(t *testing.T) {
 		obj := &ApplePayOrganizationUpdateData{}
-		var fernTestValueOrganizationId *OrganizationId
-		obj.SetOrganizationId(fernTestValueOrganizationId)
-		assert.Equal(t, fernTestValueOrganizationId, obj.OrganizationId)
+		var fernTestValueOrganizationID *OrganizationID
+		obj.SetOrganizationID(fernTestValueOrganizationID)
+		assert.Equal(t, fernTestValueOrganizationID, obj.OrganizationID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -525,28 +525,28 @@ func TestGettersApplePayOrganizationUpdateData(t *testing.T) {
 		_ = obj.GetCreatedAt() // Should return zero value
 	})
 
-	t.Run("GetId", func(t *testing.T) {
+	t.Run("GetID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &ApplePayOrganizationUpdateData{}
-		var expected *ApplePayId
-		obj.Id = expected
+		var expected *ApplePayID
+		obj.ID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetID(), "getter should return the property value")
 	})
 
-	t.Run("GetId_NilValue", func(t *testing.T) {
+	t.Run("GetID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &ApplePayOrganizationUpdateData{}
-		obj.Id = nil
+		obj.ID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetId_NilReceiver", func(t *testing.T) {
+	t.Run("GetID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *ApplePayOrganizationUpdateData
 		// Should not panic - getters should handle nil receiver gracefully
@@ -555,31 +555,31 @@ func TestGettersApplePayOrganizationUpdateData(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetId() // Should return zero value
+		_ = obj.GetID() // Should return zero value
 	})
 
-	t.Run("GetJobId", func(t *testing.T) {
+	t.Run("GetJobID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &ApplePayOrganizationUpdateData{}
-		var expected *JobId
-		obj.JobId = expected
+		var expected *JobID
+		obj.JobID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetJobId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetJobID(), "getter should return the property value")
 	})
 
-	t.Run("GetJobId_NilValue", func(t *testing.T) {
+	t.Run("GetJobID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &ApplePayOrganizationUpdateData{}
-		obj.JobId = nil
+		obj.JobID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetJobId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetJobID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetJobId_NilReceiver", func(t *testing.T) {
+	t.Run("GetJobID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *ApplePayOrganizationUpdateData
 		// Should not panic - getters should handle nil receiver gracefully
@@ -588,7 +588,7 @@ func TestGettersApplePayOrganizationUpdateData(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetJobId() // Should return zero value
+		_ = obj.GetJobID() // Should return zero value
 	})
 
 	t.Run("GetJobStatus", func(t *testing.T) {
@@ -624,28 +624,28 @@ func TestGettersApplePayOrganizationUpdateData(t *testing.T) {
 		_ = obj.GetJobStatus() // Should return zero value
 	})
 
-	t.Run("GetOrganizationId", func(t *testing.T) {
+	t.Run("GetOrganizationID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &ApplePayOrganizationUpdateData{}
-		var expected *OrganizationId
-		obj.OrganizationId = expected
+		var expected *OrganizationID
+		obj.OrganizationID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetOrganizationId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetOrganizationID(), "getter should return the property value")
 	})
 
-	t.Run("GetOrganizationId_NilValue", func(t *testing.T) {
+	t.Run("GetOrganizationID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &ApplePayOrganizationUpdateData{}
-		obj.OrganizationId = nil
+		obj.OrganizationID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetOrganizationId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetOrganizationID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetOrganizationId_NilReceiver", func(t *testing.T) {
+	t.Run("GetOrganizationID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *ApplePayOrganizationUpdateData
 		// Should not panic - getters should handle nil receiver gracefully
@@ -654,7 +654,7 @@ func TestGettersApplePayOrganizationUpdateData(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetOrganizationId() // Should return zero value
+		_ = obj.GetOrganizationID() // Should return zero value
 	})
 
 	t.Run("GetType", func(t *testing.T) {
@@ -790,14 +790,14 @@ func TestSettersMarkExplicitApplePayOrganizationUpdateData(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &ApplePayOrganizationUpdateData{}
-		var fernTestValueId *ApplePayId
+		var fernTestValueID *ApplePayID
 
 		// Act
-		obj.SetId(fernTestValueId)
+		obj.SetID(fernTestValueID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -821,14 +821,14 @@ func TestSettersMarkExplicitApplePayOrganizationUpdateData(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetJobId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetJobID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &ApplePayOrganizationUpdateData{}
-		var fernTestValueJobId *JobId
+		var fernTestValueJobID *JobID
 
 		// Act
-		obj.SetJobId(fernTestValueJobId)
+		obj.SetJobID(fernTestValueJobID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -883,14 +883,14 @@ func TestSettersMarkExplicitApplePayOrganizationUpdateData(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetOrganizationId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetOrganizationID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &ApplePayOrganizationUpdateData{}
-		var fernTestValueOrganizationId *OrganizationId
+		var fernTestValueOrganizationID *OrganizationID
 
 		// Act
-		obj.SetOrganizationId(fernTestValueOrganizationId)
+		obj.SetOrganizationID(fernTestValueOrganizationID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -1315,11 +1315,11 @@ func TestSettersAppleWalletData(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetApplePayMerchantId", func(t *testing.T) {
+	t.Run("SetApplePayMerchantID", func(t *testing.T) {
 		obj := &AppleWalletData{}
-		var fernTestValueApplePayMerchantId *string
-		obj.SetApplePayMerchantId(fernTestValueApplePayMerchantId)
-		assert.Equal(t, fernTestValueApplePayMerchantId, obj.ApplePayMerchantId)
+		var fernTestValueApplePayMerchantID *string
+		obj.SetApplePayMerchantID(fernTestValueApplePayMerchantID)
+		assert.Equal(t, fernTestValueApplePayMerchantID, obj.ApplePayMerchantID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -1339,11 +1339,11 @@ func TestSettersAppleWalletData(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetPaypointUrl", func(t *testing.T) {
+	t.Run("SetPaypointURL", func(t *testing.T) {
 		obj := &AppleWalletData{}
-		var fernTestValuePaypointUrl *string
-		obj.SetPaypointUrl(fernTestValuePaypointUrl)
-		assert.Equal(t, fernTestValuePaypointUrl, obj.PaypointUrl)
+		var fernTestValuePaypointURL *string
+		obj.SetPaypointURL(fernTestValuePaypointURL)
+		assert.Equal(t, fernTestValuePaypointURL, obj.PaypointURL)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -1371,11 +1371,11 @@ func TestSettersAppleWalletData(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetId", func(t *testing.T) {
+	t.Run("SetID", func(t *testing.T) {
 		obj := &AppleWalletData{}
-		var fernTestValueId *ApplePayId
-		obj.SetId(fernTestValueId)
-		assert.Equal(t, fernTestValueId, obj.Id)
+		var fernTestValueID *ApplePayID
+		obj.SetID(fernTestValueID)
+		assert.Equal(t, fernTestValueID, obj.ID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -1423,28 +1423,28 @@ func TestGettersAppleWalletData(t *testing.T) {
 		_ = obj.GetEntry() // Should return zero value
 	})
 
-	t.Run("GetApplePayMerchantId", func(t *testing.T) {
+	t.Run("GetApplePayMerchantID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &AppleWalletData{}
 		var expected *string
-		obj.ApplePayMerchantId = expected
+		obj.ApplePayMerchantID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetApplePayMerchantId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetApplePayMerchantID(), "getter should return the property value")
 	})
 
-	t.Run("GetApplePayMerchantId_NilValue", func(t *testing.T) {
+	t.Run("GetApplePayMerchantID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &AppleWalletData{}
-		obj.ApplePayMerchantId = nil
+		obj.ApplePayMerchantID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetApplePayMerchantId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetApplePayMerchantID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetApplePayMerchantId_NilReceiver", func(t *testing.T) {
+	t.Run("GetApplePayMerchantID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *AppleWalletData
 		// Should not panic - getters should handle nil receiver gracefully
@@ -1453,7 +1453,7 @@ func TestGettersAppleWalletData(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetApplePayMerchantId() // Should return zero value
+		_ = obj.GetApplePayMerchantID() // Should return zero value
 	})
 
 	t.Run("GetDomainNames", func(t *testing.T) {
@@ -1522,28 +1522,28 @@ func TestGettersAppleWalletData(t *testing.T) {
 		_ = obj.GetPaypointName() // Should return zero value
 	})
 
-	t.Run("GetPaypointUrl", func(t *testing.T) {
+	t.Run("GetPaypointURL", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &AppleWalletData{}
 		var expected *string
-		obj.PaypointUrl = expected
+		obj.PaypointURL = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetPaypointUrl(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetPaypointURL(), "getter should return the property value")
 	})
 
-	t.Run("GetPaypointUrl_NilValue", func(t *testing.T) {
+	t.Run("GetPaypointURL_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &AppleWalletData{}
-		obj.PaypointUrl = nil
+		obj.PaypointURL = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetPaypointUrl(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetPaypointURL(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetPaypointUrl_NilReceiver", func(t *testing.T) {
+	t.Run("GetPaypointURL_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *AppleWalletData
 		// Should not panic - getters should handle nil receiver gracefully
@@ -1552,7 +1552,7 @@ func TestGettersAppleWalletData(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetPaypointUrl() // Should return zero value
+		_ = obj.GetPaypointURL() // Should return zero value
 	})
 
 	t.Run("GetMarkedForDeletionAt", func(t *testing.T) {
@@ -1654,28 +1654,28 @@ func TestGettersAppleWalletData(t *testing.T) {
 		_ = obj.GetUpdatedAt() // Should return zero value
 	})
 
-	t.Run("GetId", func(t *testing.T) {
+	t.Run("GetID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &AppleWalletData{}
-		var expected *ApplePayId
-		obj.Id = expected
+		var expected *ApplePayID
+		obj.ID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetID(), "getter should return the property value")
 	})
 
-	t.Run("GetId_NilValue", func(t *testing.T) {
+	t.Run("GetID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &AppleWalletData{}
-		obj.Id = nil
+		obj.ID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetId_NilReceiver", func(t *testing.T) {
+	t.Run("GetID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *AppleWalletData
 		// Should not panic - getters should handle nil receiver gracefully
@@ -1684,7 +1684,7 @@ func TestGettersAppleWalletData(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetId() // Should return zero value
+		_ = obj.GetID() // Should return zero value
 	})
 
 	t.Run("GetType", func(t *testing.T) {
@@ -1754,14 +1754,14 @@ func TestSettersMarkExplicitAppleWalletData(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetApplePayMerchantId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetApplePayMerchantID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &AppleWalletData{}
-		var fernTestValueApplePayMerchantId *string
+		var fernTestValueApplePayMerchantID *string
 
 		// Act
-		obj.SetApplePayMerchantId(fernTestValueApplePayMerchantId)
+		obj.SetApplePayMerchantID(fernTestValueApplePayMerchantID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -1847,14 +1847,14 @@ func TestSettersMarkExplicitAppleWalletData(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetPaypointUrl_MarksExplicit", func(t *testing.T) {
+	t.Run("SetPaypointURL_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &AppleWalletData{}
-		var fernTestValuePaypointUrl *string
+		var fernTestValuePaypointURL *string
 
 		// Act
-		obj.SetPaypointUrl(fernTestValuePaypointUrl)
+		obj.SetPaypointURL(fernTestValuePaypointURL)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -1971,14 +1971,14 @@ func TestSettersMarkExplicitAppleWalletData(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &AppleWalletData{}
-		var fernTestValueId *ApplePayId
+		var fernTestValueID *ApplePayID
 
 		// Act
-		obj.SetId(fernTestValueId)
+		obj.SetID(fernTestValueID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -2035,9 +2035,9 @@ func TestSettersMarkExplicitAppleWalletData(t *testing.T) {
 
 }
 
-func TestSettersConfigureApplePayOrganizationApiResponse(t *testing.T) {
+func TestSettersConfigureApplePayOrganizationAPIResponse(t *testing.T) {
 	t.Run("SetIsSuccess", func(t *testing.T) {
-		obj := &ConfigureApplePayOrganizationApiResponse{}
+		obj := &ConfigureApplePayOrganizationAPIResponse{}
 		var fernTestValueIsSuccess *IsSuccess
 		obj.SetIsSuccess(fernTestValueIsSuccess)
 		assert.Equal(t, fernTestValueIsSuccess, obj.IsSuccess)
@@ -2045,7 +2045,7 @@ func TestSettersConfigureApplePayOrganizationApiResponse(t *testing.T) {
 	})
 
 	t.Run("SetPageIdentifier", func(t *testing.T) {
-		obj := &ConfigureApplePayOrganizationApiResponse{}
+		obj := &ConfigureApplePayOrganizationAPIResponse{}
 		var fernTestValuePageIdentifier *PageIdentifier
 		obj.SetPageIdentifier(fernTestValuePageIdentifier)
 		assert.Equal(t, fernTestValuePageIdentifier, obj.PageIdentifier)
@@ -2053,7 +2053,7 @@ func TestSettersConfigureApplePayOrganizationApiResponse(t *testing.T) {
 	})
 
 	t.Run("SetResponseCode", func(t *testing.T) {
-		obj := &ConfigureApplePayOrganizationApiResponse{}
+		obj := &ConfigureApplePayOrganizationAPIResponse{}
 		var fernTestValueResponseCode *Responsecode
 		obj.SetResponseCode(fernTestValueResponseCode)
 		assert.Equal(t, fernTestValueResponseCode, obj.ResponseCode)
@@ -2061,7 +2061,7 @@ func TestSettersConfigureApplePayOrganizationApiResponse(t *testing.T) {
 	})
 
 	t.Run("SetResponseData", func(t *testing.T) {
-		obj := &ConfigureApplePayOrganizationApiResponse{}
+		obj := &ConfigureApplePayOrganizationAPIResponse{}
 		var fernTestValueResponseData *ApplePayOrganizationUpdateData
 		obj.SetResponseData(fernTestValueResponseData)
 		assert.Equal(t, fernTestValueResponseData, obj.ResponseData)
@@ -2069,7 +2069,7 @@ func TestSettersConfigureApplePayOrganizationApiResponse(t *testing.T) {
 	})
 
 	t.Run("SetResponseText", func(t *testing.T) {
-		obj := &ConfigureApplePayOrganizationApiResponse{}
+		obj := &ConfigureApplePayOrganizationAPIResponse{}
 		var fernTestValueResponseText ResponseText
 		obj.SetResponseText(fernTestValueResponseText)
 		assert.Equal(t, fernTestValueResponseText, obj.ResponseText)
@@ -2078,11 +2078,11 @@ func TestSettersConfigureApplePayOrganizationApiResponse(t *testing.T) {
 
 }
 
-func TestGettersConfigureApplePayOrganizationApiResponse(t *testing.T) {
+func TestGettersConfigureApplePayOrganizationAPIResponse(t *testing.T) {
 	t.Run("GetIsSuccess", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePayOrganizationApiResponse{}
+		obj := &ConfigureApplePayOrganizationAPIResponse{}
 		var expected *IsSuccess
 		obj.IsSuccess = expected
 
@@ -2093,7 +2093,7 @@ func TestGettersConfigureApplePayOrganizationApiResponse(t *testing.T) {
 	t.Run("GetIsSuccess_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePayOrganizationApiResponse{}
+		obj := &ConfigureApplePayOrganizationAPIResponse{}
 		obj.IsSuccess = nil
 
 		// Act & Assert
@@ -2102,7 +2102,7 @@ func TestGettersConfigureApplePayOrganizationApiResponse(t *testing.T) {
 
 	t.Run("GetIsSuccess_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *ConfigureApplePayOrganizationApiResponse
+		var obj *ConfigureApplePayOrganizationAPIResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2115,7 +2115,7 @@ func TestGettersConfigureApplePayOrganizationApiResponse(t *testing.T) {
 	t.Run("GetPageIdentifier", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePayOrganizationApiResponse{}
+		obj := &ConfigureApplePayOrganizationAPIResponse{}
 		var expected *PageIdentifier
 		obj.PageIdentifier = expected
 
@@ -2126,7 +2126,7 @@ func TestGettersConfigureApplePayOrganizationApiResponse(t *testing.T) {
 	t.Run("GetPageIdentifier_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePayOrganizationApiResponse{}
+		obj := &ConfigureApplePayOrganizationAPIResponse{}
 		obj.PageIdentifier = nil
 
 		// Act & Assert
@@ -2135,7 +2135,7 @@ func TestGettersConfigureApplePayOrganizationApiResponse(t *testing.T) {
 
 	t.Run("GetPageIdentifier_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *ConfigureApplePayOrganizationApiResponse
+		var obj *ConfigureApplePayOrganizationAPIResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2148,7 +2148,7 @@ func TestGettersConfigureApplePayOrganizationApiResponse(t *testing.T) {
 	t.Run("GetResponseCode", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePayOrganizationApiResponse{}
+		obj := &ConfigureApplePayOrganizationAPIResponse{}
 		var expected *Responsecode
 		obj.ResponseCode = expected
 
@@ -2159,7 +2159,7 @@ func TestGettersConfigureApplePayOrganizationApiResponse(t *testing.T) {
 	t.Run("GetResponseCode_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePayOrganizationApiResponse{}
+		obj := &ConfigureApplePayOrganizationAPIResponse{}
 		obj.ResponseCode = nil
 
 		// Act & Assert
@@ -2168,7 +2168,7 @@ func TestGettersConfigureApplePayOrganizationApiResponse(t *testing.T) {
 
 	t.Run("GetResponseCode_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *ConfigureApplePayOrganizationApiResponse
+		var obj *ConfigureApplePayOrganizationAPIResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2181,7 +2181,7 @@ func TestGettersConfigureApplePayOrganizationApiResponse(t *testing.T) {
 	t.Run("GetResponseData", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePayOrganizationApiResponse{}
+		obj := &ConfigureApplePayOrganizationAPIResponse{}
 		var expected *ApplePayOrganizationUpdateData
 		obj.ResponseData = expected
 
@@ -2192,7 +2192,7 @@ func TestGettersConfigureApplePayOrganizationApiResponse(t *testing.T) {
 	t.Run("GetResponseData_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePayOrganizationApiResponse{}
+		obj := &ConfigureApplePayOrganizationAPIResponse{}
 		obj.ResponseData = nil
 
 		// Act & Assert
@@ -2201,7 +2201,7 @@ func TestGettersConfigureApplePayOrganizationApiResponse(t *testing.T) {
 
 	t.Run("GetResponseData_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *ConfigureApplePayOrganizationApiResponse
+		var obj *ConfigureApplePayOrganizationAPIResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2214,7 +2214,7 @@ func TestGettersConfigureApplePayOrganizationApiResponse(t *testing.T) {
 	t.Run("GetResponseText", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePayOrganizationApiResponse{}
+		obj := &ConfigureApplePayOrganizationAPIResponse{}
 		var expected ResponseText
 		obj.ResponseText = expected
 
@@ -2224,7 +2224,7 @@ func TestGettersConfigureApplePayOrganizationApiResponse(t *testing.T) {
 
 	t.Run("GetResponseText_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *ConfigureApplePayOrganizationApiResponse
+		var obj *ConfigureApplePayOrganizationAPIResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2236,11 +2236,11 @@ func TestGettersConfigureApplePayOrganizationApiResponse(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitConfigureApplePayOrganizationApiResponse(t *testing.T) {
+func TestSettersMarkExplicitConfigureApplePayOrganizationAPIResponse(t *testing.T) {
 	t.Run("SetIsSuccess_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePayOrganizationApiResponse{}
+		obj := &ConfigureApplePayOrganizationAPIResponse{}
 		var fernTestValueIsSuccess *IsSuccess
 
 		// Act
@@ -2271,7 +2271,7 @@ func TestSettersMarkExplicitConfigureApplePayOrganizationApiResponse(t *testing.
 	t.Run("SetPageIdentifier_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePayOrganizationApiResponse{}
+		obj := &ConfigureApplePayOrganizationAPIResponse{}
 		var fernTestValuePageIdentifier *PageIdentifier
 
 		// Act
@@ -2302,7 +2302,7 @@ func TestSettersMarkExplicitConfigureApplePayOrganizationApiResponse(t *testing.
 	t.Run("SetResponseCode_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePayOrganizationApiResponse{}
+		obj := &ConfigureApplePayOrganizationAPIResponse{}
 		var fernTestValueResponseCode *Responsecode
 
 		// Act
@@ -2333,7 +2333,7 @@ func TestSettersMarkExplicitConfigureApplePayOrganizationApiResponse(t *testing.
 	t.Run("SetResponseData_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePayOrganizationApiResponse{}
+		obj := &ConfigureApplePayOrganizationAPIResponse{}
 		var fernTestValueResponseData *ApplePayOrganizationUpdateData
 
 		// Act
@@ -2364,7 +2364,7 @@ func TestSettersMarkExplicitConfigureApplePayOrganizationApiResponse(t *testing.
 	t.Run("SetResponseText_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePayOrganizationApiResponse{}
+		obj := &ConfigureApplePayOrganizationAPIResponse{}
 		var fernTestValueResponseText ResponseText
 
 		// Act
@@ -2394,9 +2394,9 @@ func TestSettersMarkExplicitConfigureApplePayOrganizationApiResponse(t *testing.
 
 }
 
-func TestSettersConfigureApplePaypointApiResponse(t *testing.T) {
+func TestSettersConfigureApplePaypointAPIResponse(t *testing.T) {
 	t.Run("SetIsSuccess", func(t *testing.T) {
-		obj := &ConfigureApplePaypointApiResponse{}
+		obj := &ConfigureApplePaypointAPIResponse{}
 		var fernTestValueIsSuccess *IsSuccess
 		obj.SetIsSuccess(fernTestValueIsSuccess)
 		assert.Equal(t, fernTestValueIsSuccess, obj.IsSuccess)
@@ -2404,7 +2404,7 @@ func TestSettersConfigureApplePaypointApiResponse(t *testing.T) {
 	})
 
 	t.Run("SetPageIdentifier", func(t *testing.T) {
-		obj := &ConfigureApplePaypointApiResponse{}
+		obj := &ConfigureApplePaypointAPIResponse{}
 		var fernTestValuePageIdentifier *PageIdentifier
 		obj.SetPageIdentifier(fernTestValuePageIdentifier)
 		assert.Equal(t, fernTestValuePageIdentifier, obj.PageIdentifier)
@@ -2412,7 +2412,7 @@ func TestSettersConfigureApplePaypointApiResponse(t *testing.T) {
 	})
 
 	t.Run("SetResponseCode", func(t *testing.T) {
-		obj := &ConfigureApplePaypointApiResponse{}
+		obj := &ConfigureApplePaypointAPIResponse{}
 		var fernTestValueResponseCode *Responsecode
 		obj.SetResponseCode(fernTestValueResponseCode)
 		assert.Equal(t, fernTestValueResponseCode, obj.ResponseCode)
@@ -2420,7 +2420,7 @@ func TestSettersConfigureApplePaypointApiResponse(t *testing.T) {
 	})
 
 	t.Run("SetResponseData", func(t *testing.T) {
-		obj := &ConfigureApplePaypointApiResponse{}
+		obj := &ConfigureApplePaypointAPIResponse{}
 		var fernTestValueResponseData *ApplePayPaypointRegistrationData
 		obj.SetResponseData(fernTestValueResponseData)
 		assert.Equal(t, fernTestValueResponseData, obj.ResponseData)
@@ -2428,28 +2428,28 @@ func TestSettersConfigureApplePaypointApiResponse(t *testing.T) {
 	})
 
 	t.Run("SetResponseText", func(t *testing.T) {
-		obj := &ConfigureApplePaypointApiResponse{}
+		obj := &ConfigureApplePaypointAPIResponse{}
 		var fernTestValueResponseText ResponseText
 		obj.SetResponseText(fernTestValueResponseText)
 		assert.Equal(t, fernTestValueResponseText, obj.ResponseText)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetRoomId", func(t *testing.T) {
-		obj := &ConfigureApplePaypointApiResponse{}
-		var fernTestValueRoomId *int64
-		obj.SetRoomId(fernTestValueRoomId)
-		assert.Equal(t, fernTestValueRoomId, obj.RoomId)
+	t.Run("SetRoomID", func(t *testing.T) {
+		obj := &ConfigureApplePaypointAPIResponse{}
+		var fernTestValueRoomID *int64
+		obj.SetRoomID(fernTestValueRoomID)
+		assert.Equal(t, fernTestValueRoomID, obj.RoomID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
 }
 
-func TestGettersConfigureApplePaypointApiResponse(t *testing.T) {
+func TestGettersConfigureApplePaypointAPIResponse(t *testing.T) {
 	t.Run("GetIsSuccess", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePaypointApiResponse{}
+		obj := &ConfigureApplePaypointAPIResponse{}
 		var expected *IsSuccess
 		obj.IsSuccess = expected
 
@@ -2460,7 +2460,7 @@ func TestGettersConfigureApplePaypointApiResponse(t *testing.T) {
 	t.Run("GetIsSuccess_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePaypointApiResponse{}
+		obj := &ConfigureApplePaypointAPIResponse{}
 		obj.IsSuccess = nil
 
 		// Act & Assert
@@ -2469,7 +2469,7 @@ func TestGettersConfigureApplePaypointApiResponse(t *testing.T) {
 
 	t.Run("GetIsSuccess_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *ConfigureApplePaypointApiResponse
+		var obj *ConfigureApplePaypointAPIResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2482,7 +2482,7 @@ func TestGettersConfigureApplePaypointApiResponse(t *testing.T) {
 	t.Run("GetPageIdentifier", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePaypointApiResponse{}
+		obj := &ConfigureApplePaypointAPIResponse{}
 		var expected *PageIdentifier
 		obj.PageIdentifier = expected
 
@@ -2493,7 +2493,7 @@ func TestGettersConfigureApplePaypointApiResponse(t *testing.T) {
 	t.Run("GetPageIdentifier_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePaypointApiResponse{}
+		obj := &ConfigureApplePaypointAPIResponse{}
 		obj.PageIdentifier = nil
 
 		// Act & Assert
@@ -2502,7 +2502,7 @@ func TestGettersConfigureApplePaypointApiResponse(t *testing.T) {
 
 	t.Run("GetPageIdentifier_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *ConfigureApplePaypointApiResponse
+		var obj *ConfigureApplePaypointAPIResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2515,7 +2515,7 @@ func TestGettersConfigureApplePaypointApiResponse(t *testing.T) {
 	t.Run("GetResponseCode", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePaypointApiResponse{}
+		obj := &ConfigureApplePaypointAPIResponse{}
 		var expected *Responsecode
 		obj.ResponseCode = expected
 
@@ -2526,7 +2526,7 @@ func TestGettersConfigureApplePaypointApiResponse(t *testing.T) {
 	t.Run("GetResponseCode_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePaypointApiResponse{}
+		obj := &ConfigureApplePaypointAPIResponse{}
 		obj.ResponseCode = nil
 
 		// Act & Assert
@@ -2535,7 +2535,7 @@ func TestGettersConfigureApplePaypointApiResponse(t *testing.T) {
 
 	t.Run("GetResponseCode_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *ConfigureApplePaypointApiResponse
+		var obj *ConfigureApplePaypointAPIResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2548,7 +2548,7 @@ func TestGettersConfigureApplePaypointApiResponse(t *testing.T) {
 	t.Run("GetResponseData", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePaypointApiResponse{}
+		obj := &ConfigureApplePaypointAPIResponse{}
 		var expected *ApplePayPaypointRegistrationData
 		obj.ResponseData = expected
 
@@ -2559,7 +2559,7 @@ func TestGettersConfigureApplePaypointApiResponse(t *testing.T) {
 	t.Run("GetResponseData_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePaypointApiResponse{}
+		obj := &ConfigureApplePaypointAPIResponse{}
 		obj.ResponseData = nil
 
 		// Act & Assert
@@ -2568,7 +2568,7 @@ func TestGettersConfigureApplePaypointApiResponse(t *testing.T) {
 
 	t.Run("GetResponseData_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *ConfigureApplePaypointApiResponse
+		var obj *ConfigureApplePaypointAPIResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2581,7 +2581,7 @@ func TestGettersConfigureApplePaypointApiResponse(t *testing.T) {
 	t.Run("GetResponseText", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePaypointApiResponse{}
+		obj := &ConfigureApplePaypointAPIResponse{}
 		var expected ResponseText
 		obj.ResponseText = expected
 
@@ -2591,7 +2591,7 @@ func TestGettersConfigureApplePaypointApiResponse(t *testing.T) {
 
 	t.Run("GetResponseText_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *ConfigureApplePaypointApiResponse
+		var obj *ConfigureApplePaypointAPIResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2601,46 +2601,46 @@ func TestGettersConfigureApplePaypointApiResponse(t *testing.T) {
 		_ = obj.GetResponseText() // Should return zero value
 	})
 
-	t.Run("GetRoomId", func(t *testing.T) {
+	t.Run("GetRoomID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePaypointApiResponse{}
+		obj := &ConfigureApplePaypointAPIResponse{}
 		var expected *int64
-		obj.RoomId = expected
+		obj.RoomID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetRoomId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetRoomID(), "getter should return the property value")
 	})
 
-	t.Run("GetRoomId_NilValue", func(t *testing.T) {
+	t.Run("GetRoomID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePaypointApiResponse{}
-		obj.RoomId = nil
+		obj := &ConfigureApplePaypointAPIResponse{}
+		obj.RoomID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetRoomId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetRoomID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetRoomId_NilReceiver", func(t *testing.T) {
+	t.Run("GetRoomID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *ConfigureApplePaypointApiResponse
+		var obj *ConfigureApplePaypointAPIResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetRoomId() // Should return zero value
+		_ = obj.GetRoomID() // Should return zero value
 	})
 
 }
 
-func TestSettersMarkExplicitConfigureApplePaypointApiResponse(t *testing.T) {
+func TestSettersMarkExplicitConfigureApplePaypointAPIResponse(t *testing.T) {
 	t.Run("SetIsSuccess_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePaypointApiResponse{}
+		obj := &ConfigureApplePaypointAPIResponse{}
 		var fernTestValueIsSuccess *IsSuccess
 
 		// Act
@@ -2671,7 +2671,7 @@ func TestSettersMarkExplicitConfigureApplePaypointApiResponse(t *testing.T) {
 	t.Run("SetPageIdentifier_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePaypointApiResponse{}
+		obj := &ConfigureApplePaypointAPIResponse{}
 		var fernTestValuePageIdentifier *PageIdentifier
 
 		// Act
@@ -2702,7 +2702,7 @@ func TestSettersMarkExplicitConfigureApplePaypointApiResponse(t *testing.T) {
 	t.Run("SetResponseCode_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePaypointApiResponse{}
+		obj := &ConfigureApplePaypointAPIResponse{}
 		var fernTestValueResponseCode *Responsecode
 
 		// Act
@@ -2733,7 +2733,7 @@ func TestSettersMarkExplicitConfigureApplePaypointApiResponse(t *testing.T) {
 	t.Run("SetResponseData_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePaypointApiResponse{}
+		obj := &ConfigureApplePaypointAPIResponse{}
 		var fernTestValueResponseData *ApplePayPaypointRegistrationData
 
 		// Act
@@ -2764,7 +2764,7 @@ func TestSettersMarkExplicitConfigureApplePaypointApiResponse(t *testing.T) {
 	t.Run("SetResponseText_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePaypointApiResponse{}
+		obj := &ConfigureApplePaypointAPIResponse{}
 		var fernTestValueResponseText ResponseText
 
 		// Act
@@ -2792,14 +2792,14 @@ func TestSettersMarkExplicitConfigureApplePaypointApiResponse(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetRoomId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetRoomID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePaypointApiResponse{}
-		var fernTestValueRoomId *int64
+		obj := &ConfigureApplePaypointAPIResponse{}
+		var fernTestValueRoomID *int64
 
 		// Act
-		obj.SetRoomId(fernTestValueRoomId)
+		obj.SetRoomID(fernTestValueRoomID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -2825,9 +2825,9 @@ func TestSettersMarkExplicitConfigureApplePaypointApiResponse(t *testing.T) {
 
 }
 
-func TestSettersConfigureGooglePaypointApiResponse(t *testing.T) {
+func TestSettersConfigureGooglePaypointAPIResponse(t *testing.T) {
 	t.Run("SetIsSuccess", func(t *testing.T) {
-		obj := &ConfigureGooglePaypointApiResponse{}
+		obj := &ConfigureGooglePaypointAPIResponse{}
 		var fernTestValueIsSuccess IsSuccess
 		obj.SetIsSuccess(fernTestValueIsSuccess)
 		assert.Equal(t, fernTestValueIsSuccess, obj.IsSuccess)
@@ -2835,7 +2835,7 @@ func TestSettersConfigureGooglePaypointApiResponse(t *testing.T) {
 	})
 
 	t.Run("SetPageIdentifier", func(t *testing.T) {
-		obj := &ConfigureGooglePaypointApiResponse{}
+		obj := &ConfigureGooglePaypointAPIResponse{}
 		var fernTestValuePageIdentifier PageIdentifier
 		obj.SetPageIdentifier(fernTestValuePageIdentifier)
 		assert.Equal(t, fernTestValuePageIdentifier, obj.PageIdentifier)
@@ -2843,7 +2843,7 @@ func TestSettersConfigureGooglePaypointApiResponse(t *testing.T) {
 	})
 
 	t.Run("SetResponseCode", func(t *testing.T) {
-		obj := &ConfigureGooglePaypointApiResponse{}
+		obj := &ConfigureGooglePaypointAPIResponse{}
 		var fernTestValueResponseCode Responsecode
 		obj.SetResponseCode(fernTestValueResponseCode)
 		assert.Equal(t, fernTestValueResponseCode, obj.ResponseCode)
@@ -2851,7 +2851,7 @@ func TestSettersConfigureGooglePaypointApiResponse(t *testing.T) {
 	})
 
 	t.Run("SetResponseData", func(t *testing.T) {
-		obj := &ConfigureGooglePaypointApiResponse{}
+		obj := &ConfigureGooglePaypointAPIResponse{}
 		var fernTestValueResponseData *GooglePayPaypointRegistrationData
 		obj.SetResponseData(fernTestValueResponseData)
 		assert.Equal(t, fernTestValueResponseData, obj.ResponseData)
@@ -2859,28 +2859,28 @@ func TestSettersConfigureGooglePaypointApiResponse(t *testing.T) {
 	})
 
 	t.Run("SetResponseText", func(t *testing.T) {
-		obj := &ConfigureGooglePaypointApiResponse{}
+		obj := &ConfigureGooglePaypointAPIResponse{}
 		var fernTestValueResponseText ResponseText
 		obj.SetResponseText(fernTestValueResponseText)
 		assert.Equal(t, fernTestValueResponseText, obj.ResponseText)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetRoomId", func(t *testing.T) {
-		obj := &ConfigureGooglePaypointApiResponse{}
-		var fernTestValueRoomId *int64
-		obj.SetRoomId(fernTestValueRoomId)
-		assert.Equal(t, fernTestValueRoomId, obj.RoomId)
+	t.Run("SetRoomID", func(t *testing.T) {
+		obj := &ConfigureGooglePaypointAPIResponse{}
+		var fernTestValueRoomID *int64
+		obj.SetRoomID(fernTestValueRoomID)
+		assert.Equal(t, fernTestValueRoomID, obj.RoomID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
 }
 
-func TestGettersConfigureGooglePaypointApiResponse(t *testing.T) {
+func TestGettersConfigureGooglePaypointAPIResponse(t *testing.T) {
 	t.Run("GetIsSuccess", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureGooglePaypointApiResponse{}
+		obj := &ConfigureGooglePaypointAPIResponse{}
 		var expected IsSuccess
 		obj.IsSuccess = expected
 
@@ -2890,7 +2890,7 @@ func TestGettersConfigureGooglePaypointApiResponse(t *testing.T) {
 
 	t.Run("GetIsSuccess_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *ConfigureGooglePaypointApiResponse
+		var obj *ConfigureGooglePaypointAPIResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2903,7 +2903,7 @@ func TestGettersConfigureGooglePaypointApiResponse(t *testing.T) {
 	t.Run("GetPageIdentifier", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureGooglePaypointApiResponse{}
+		obj := &ConfigureGooglePaypointAPIResponse{}
 		var expected PageIdentifier
 		obj.PageIdentifier = expected
 
@@ -2913,7 +2913,7 @@ func TestGettersConfigureGooglePaypointApiResponse(t *testing.T) {
 
 	t.Run("GetPageIdentifier_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *ConfigureGooglePaypointApiResponse
+		var obj *ConfigureGooglePaypointAPIResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2926,7 +2926,7 @@ func TestGettersConfigureGooglePaypointApiResponse(t *testing.T) {
 	t.Run("GetResponseCode", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureGooglePaypointApiResponse{}
+		obj := &ConfigureGooglePaypointAPIResponse{}
 		var expected Responsecode
 		obj.ResponseCode = expected
 
@@ -2936,7 +2936,7 @@ func TestGettersConfigureGooglePaypointApiResponse(t *testing.T) {
 
 	t.Run("GetResponseCode_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *ConfigureGooglePaypointApiResponse
+		var obj *ConfigureGooglePaypointAPIResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2949,7 +2949,7 @@ func TestGettersConfigureGooglePaypointApiResponse(t *testing.T) {
 	t.Run("GetResponseData", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureGooglePaypointApiResponse{}
+		obj := &ConfigureGooglePaypointAPIResponse{}
 		var expected *GooglePayPaypointRegistrationData
 		obj.ResponseData = expected
 
@@ -2960,7 +2960,7 @@ func TestGettersConfigureGooglePaypointApiResponse(t *testing.T) {
 	t.Run("GetResponseData_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureGooglePaypointApiResponse{}
+		obj := &ConfigureGooglePaypointAPIResponse{}
 		obj.ResponseData = nil
 
 		// Act & Assert
@@ -2969,7 +2969,7 @@ func TestGettersConfigureGooglePaypointApiResponse(t *testing.T) {
 
 	t.Run("GetResponseData_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *ConfigureGooglePaypointApiResponse
+		var obj *ConfigureGooglePaypointAPIResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -2982,7 +2982,7 @@ func TestGettersConfigureGooglePaypointApiResponse(t *testing.T) {
 	t.Run("GetResponseText", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureGooglePaypointApiResponse{}
+		obj := &ConfigureGooglePaypointAPIResponse{}
 		var expected ResponseText
 		obj.ResponseText = expected
 
@@ -2992,7 +2992,7 @@ func TestGettersConfigureGooglePaypointApiResponse(t *testing.T) {
 
 	t.Run("GetResponseText_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *ConfigureGooglePaypointApiResponse
+		var obj *ConfigureGooglePaypointAPIResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -3002,46 +3002,46 @@ func TestGettersConfigureGooglePaypointApiResponse(t *testing.T) {
 		_ = obj.GetResponseText() // Should return zero value
 	})
 
-	t.Run("GetRoomId", func(t *testing.T) {
+	t.Run("GetRoomID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureGooglePaypointApiResponse{}
+		obj := &ConfigureGooglePaypointAPIResponse{}
 		var expected *int64
-		obj.RoomId = expected
+		obj.RoomID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetRoomId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetRoomID(), "getter should return the property value")
 	})
 
-	t.Run("GetRoomId_NilValue", func(t *testing.T) {
+	t.Run("GetRoomID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureGooglePaypointApiResponse{}
-		obj.RoomId = nil
+		obj := &ConfigureGooglePaypointAPIResponse{}
+		obj.RoomID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetRoomId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetRoomID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetRoomId_NilReceiver", func(t *testing.T) {
+	t.Run("GetRoomID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *ConfigureGooglePaypointApiResponse
+		var obj *ConfigureGooglePaypointAPIResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetRoomId() // Should return zero value
+		_ = obj.GetRoomID() // Should return zero value
 	})
 
 }
 
-func TestSettersMarkExplicitConfigureGooglePaypointApiResponse(t *testing.T) {
+func TestSettersMarkExplicitConfigureGooglePaypointAPIResponse(t *testing.T) {
 	t.Run("SetIsSuccess_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureGooglePaypointApiResponse{}
+		obj := &ConfigureGooglePaypointAPIResponse{}
 		var fernTestValueIsSuccess IsSuccess
 
 		// Act
@@ -3072,7 +3072,7 @@ func TestSettersMarkExplicitConfigureGooglePaypointApiResponse(t *testing.T) {
 	t.Run("SetPageIdentifier_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureGooglePaypointApiResponse{}
+		obj := &ConfigureGooglePaypointAPIResponse{}
 		var fernTestValuePageIdentifier PageIdentifier
 
 		// Act
@@ -3103,7 +3103,7 @@ func TestSettersMarkExplicitConfigureGooglePaypointApiResponse(t *testing.T) {
 	t.Run("SetResponseCode_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureGooglePaypointApiResponse{}
+		obj := &ConfigureGooglePaypointAPIResponse{}
 		var fernTestValueResponseCode Responsecode
 
 		// Act
@@ -3134,7 +3134,7 @@ func TestSettersMarkExplicitConfigureGooglePaypointApiResponse(t *testing.T) {
 	t.Run("SetResponseData_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureGooglePaypointApiResponse{}
+		obj := &ConfigureGooglePaypointAPIResponse{}
 		var fernTestValueResponseData *GooglePayPaypointRegistrationData
 
 		// Act
@@ -3165,7 +3165,7 @@ func TestSettersMarkExplicitConfigureGooglePaypointApiResponse(t *testing.T) {
 	t.Run("SetResponseText_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureGooglePaypointApiResponse{}
+		obj := &ConfigureGooglePaypointAPIResponse{}
 		var fernTestValueResponseText ResponseText
 
 		// Act
@@ -3193,14 +3193,14 @@ func TestSettersMarkExplicitConfigureGooglePaypointApiResponse(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetRoomId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetRoomID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureGooglePaypointApiResponse{}
-		var fernTestValueRoomId *int64
+		obj := &ConfigureGooglePaypointAPIResponse{}
+		var fernTestValueRoomID *int64
 
 		// Act
-		obj.SetRoomId(fernTestValueRoomId)
+		obj.SetRoomID(fernTestValueRoomID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -3524,47 +3524,47 @@ func TestSettersMarkExplicitGooglePayPaypointRegistrationData(t *testing.T) {
 }
 
 func TestSettersGoogleWalletData(t *testing.T) {
-	t.Run("SetGatewayMerchantId", func(t *testing.T) {
+	t.Run("SetGatewayMerchantID", func(t *testing.T) {
 		obj := &GoogleWalletData{}
-		var fernTestValueGatewayMerchantId *string
-		obj.SetGatewayMerchantId(fernTestValueGatewayMerchantId)
-		assert.Equal(t, fernTestValueGatewayMerchantId, obj.GatewayMerchantId)
+		var fernTestValueGatewayMerchantID *string
+		obj.SetGatewayMerchantID(fernTestValueGatewayMerchantID)
+		assert.Equal(t, fernTestValueGatewayMerchantID, obj.GatewayMerchantID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetGatewayId", func(t *testing.T) {
+	t.Run("SetGatewayID", func(t *testing.T) {
 		obj := &GoogleWalletData{}
-		var fernTestValueGatewayId *string
-		obj.SetGatewayId(fernTestValueGatewayId)
-		assert.Equal(t, fernTestValueGatewayId, obj.GatewayId)
+		var fernTestValueGatewayID *string
+		obj.SetGatewayID(fernTestValueGatewayID)
+		assert.Equal(t, fernTestValueGatewayID, obj.GatewayID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
 }
 
 func TestGettersGoogleWalletData(t *testing.T) {
-	t.Run("GetGatewayMerchantId", func(t *testing.T) {
+	t.Run("GetGatewayMerchantID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &GoogleWalletData{}
 		var expected *string
-		obj.GatewayMerchantId = expected
+		obj.GatewayMerchantID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetGatewayMerchantId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetGatewayMerchantID(), "getter should return the property value")
 	})
 
-	t.Run("GetGatewayMerchantId_NilValue", func(t *testing.T) {
+	t.Run("GetGatewayMerchantID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &GoogleWalletData{}
-		obj.GatewayMerchantId = nil
+		obj.GatewayMerchantID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetGatewayMerchantId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetGatewayMerchantID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetGatewayMerchantId_NilReceiver", func(t *testing.T) {
+	t.Run("GetGatewayMerchantID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *GoogleWalletData
 		// Should not panic - getters should handle nil receiver gracefully
@@ -3573,31 +3573,31 @@ func TestGettersGoogleWalletData(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetGatewayMerchantId() // Should return zero value
+		_ = obj.GetGatewayMerchantID() // Should return zero value
 	})
 
-	t.Run("GetGatewayId", func(t *testing.T) {
+	t.Run("GetGatewayID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &GoogleWalletData{}
 		var expected *string
-		obj.GatewayId = expected
+		obj.GatewayID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetGatewayId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetGatewayID(), "getter should return the property value")
 	})
 
-	t.Run("GetGatewayId_NilValue", func(t *testing.T) {
+	t.Run("GetGatewayID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &GoogleWalletData{}
-		obj.GatewayId = nil
+		obj.GatewayID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetGatewayId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetGatewayID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetGatewayId_NilReceiver", func(t *testing.T) {
+	t.Run("GetGatewayID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *GoogleWalletData
 		// Should not panic - getters should handle nil receiver gracefully
@@ -3606,20 +3606,20 @@ func TestGettersGoogleWalletData(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetGatewayId() // Should return zero value
+		_ = obj.GetGatewayID() // Should return zero value
 	})
 
 }
 
 func TestSettersMarkExplicitGoogleWalletData(t *testing.T) {
-	t.Run("SetGatewayMerchantId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetGatewayMerchantID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &GoogleWalletData{}
-		var fernTestValueGatewayMerchantId *string
+		var fernTestValueGatewayMerchantID *string
 
 		// Act
-		obj.SetGatewayMerchantId(fernTestValueGatewayMerchantId)
+		obj.SetGatewayMerchantID(fernTestValueGatewayMerchantID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -3643,14 +3643,14 @@ func TestSettersMarkExplicitGoogleWalletData(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetGatewayId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetGatewayID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &GoogleWalletData{}
-		var fernTestValueGatewayId *string
+		var fernTestValueGatewayID *string
 
 		// Act
-		obj.SetGatewayId(fernTestValueGatewayId)
+		obj.SetGatewayID(fernTestValueGatewayID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -3928,11 +3928,11 @@ func TestJSONMarshalingAppleWalletData(t *testing.T) {
 	})
 }
 
-func TestJSONMarshalingConfigureApplePayOrganizationApiResponse(t *testing.T) {
+func TestJSONMarshalingConfigureApplePayOrganizationAPIResponse(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePayOrganizationApiResponse{}
+		obj := &ConfigureApplePayOrganizationAPIResponse{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -3941,31 +3941,31 @@ func TestJSONMarshalingConfigureApplePayOrganizationApiResponse(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled ConfigureApplePayOrganizationApiResponse
+		var unmarshaled ConfigureApplePayOrganizationAPIResponse
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj ConfigureApplePayOrganizationApiResponse
+		var obj ConfigureApplePayOrganizationAPIResponse
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj ConfigureApplePayOrganizationApiResponse
+		var obj ConfigureApplePayOrganizationAPIResponse
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingConfigureApplePaypointApiResponse(t *testing.T) {
+func TestJSONMarshalingConfigureApplePaypointAPIResponse(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureApplePaypointApiResponse{}
+		obj := &ConfigureApplePaypointAPIResponse{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -3974,31 +3974,31 @@ func TestJSONMarshalingConfigureApplePaypointApiResponse(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled ConfigureApplePaypointApiResponse
+		var unmarshaled ConfigureApplePaypointAPIResponse
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj ConfigureApplePaypointApiResponse
+		var obj ConfigureApplePaypointAPIResponse
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj ConfigureApplePaypointApiResponse
+		var obj ConfigureApplePaypointAPIResponse
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
 }
 
-func TestJSONMarshalingConfigureGooglePaypointApiResponse(t *testing.T) {
+func TestJSONMarshalingConfigureGooglePaypointAPIResponse(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &ConfigureGooglePaypointApiResponse{}
+		obj := &ConfigureGooglePaypointAPIResponse{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -4007,21 +4007,21 @@ func TestJSONMarshalingConfigureGooglePaypointApiResponse(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled ConfigureGooglePaypointApiResponse
+		var unmarshaled ConfigureGooglePaypointAPIResponse
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj ConfigureGooglePaypointApiResponse
+		var obj ConfigureGooglePaypointAPIResponse
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj ConfigureGooglePaypointApiResponse
+		var obj ConfigureGooglePaypointAPIResponse
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
@@ -4174,49 +4174,49 @@ func TestStringAppleWalletData(t *testing.T) {
 	})
 }
 
-func TestStringConfigureApplePayOrganizationApiResponse(t *testing.T) {
+func TestStringConfigureApplePayOrganizationAPIResponse(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &ConfigureApplePayOrganizationApiResponse{}
+		obj := &ConfigureApplePayOrganizationAPIResponse{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *ConfigureApplePayOrganizationApiResponse
+		var obj *ConfigureApplePayOrganizationAPIResponse
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringConfigureApplePaypointApiResponse(t *testing.T) {
+func TestStringConfigureApplePaypointAPIResponse(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &ConfigureApplePaypointApiResponse{}
+		obj := &ConfigureApplePaypointAPIResponse{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *ConfigureApplePaypointApiResponse
+		var obj *ConfigureApplePaypointAPIResponse
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
 }
 
-func TestStringConfigureGooglePaypointApiResponse(t *testing.T) {
+func TestStringConfigureGooglePaypointAPIResponse(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &ConfigureGooglePaypointApiResponse{}
+		obj := &ConfigureGooglePaypointAPIResponse{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *ConfigureGooglePaypointApiResponse
+		var obj *ConfigureGooglePaypointAPIResponse
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
@@ -4339,10 +4339,10 @@ func TestExtraPropertiesAppleWalletData(t *testing.T) {
 	})
 }
 
-func TestExtraPropertiesConfigureApplePayOrganizationApiResponse(t *testing.T) {
+func TestExtraPropertiesConfigureApplePayOrganizationAPIResponse(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &ConfigureApplePayOrganizationApiResponse{}
+		obj := &ConfigureApplePayOrganizationAPIResponse{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -4356,16 +4356,16 @@ func TestExtraPropertiesConfigureApplePayOrganizationApiResponse(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *ConfigureApplePayOrganizationApiResponse
+		var obj *ConfigureApplePayOrganizationAPIResponse
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesConfigureApplePaypointApiResponse(t *testing.T) {
+func TestExtraPropertiesConfigureApplePaypointAPIResponse(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &ConfigureApplePaypointApiResponse{}
+		obj := &ConfigureApplePaypointAPIResponse{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -4379,16 +4379,16 @@ func TestExtraPropertiesConfigureApplePaypointApiResponse(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *ConfigureApplePaypointApiResponse
+		var obj *ConfigureApplePaypointAPIResponse
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 
-func TestExtraPropertiesConfigureGooglePaypointApiResponse(t *testing.T) {
+func TestExtraPropertiesConfigureGooglePaypointAPIResponse(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &ConfigureGooglePaypointApiResponse{}
+		obj := &ConfigureGooglePaypointAPIResponse{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -4402,7 +4402,7 @@ func TestExtraPropertiesConfigureGooglePaypointApiResponse(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *ConfigureGooglePaypointApiResponse
+		var obj *ConfigureGooglePaypointAPIResponse
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})

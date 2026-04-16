@@ -460,7 +460,7 @@ func (r *RawClient) ListInvoices(
 func (r *RawClient) ListInvoicesOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListInvoicesOrgRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.QueryInvoiceResponse], error) {
@@ -472,7 +472,7 @@ func (r *RawClient) ListInvoicesOrg(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/invoices/org/%v",
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {

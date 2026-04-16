@@ -310,7 +310,7 @@ func TestPaymentLinkAddPayLinkFromInvoiceWithWireMock(
 				RedirectAfterApprove: payabli.Bool(
 					true,
 				),
-				RedirectAfterApproveUrl: payabli.String(
+				RedirectAfterApproveURL: payabli.String(
 					"https://example.com/success",
 				),
 			},
@@ -493,7 +493,7 @@ func TestPaymentLinkAddPayLinkFromBillWithWireMock(
 	VerifyRequestCount(t, "TestPaymentLinkAddPayLinkFromBillWithWireMock", "POST", "/PaymentLink/bill/23548884", map[string]string{"mail2": "jo@example.com; ceo@example.com"}, 1)
 }
 
-func TestPaymentLinkDeletePayLinkFromIdWithWireMock(
+func TestPaymentLinkDeletePayLinkFromIDWithWireMock(
 	t *testing.T,
 ) {
 	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
@@ -503,19 +503,19 @@ func TestPaymentLinkDeletePayLinkFromIdWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	_, invocationErr := client.PaymentLink.DeletePayLinkFromId(
+	_, invocationErr := client.PaymentLink.DeletePayLinkFromID(
 		context.TODO(),
 		"2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestPaymentLinkDeletePayLinkFromIdWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestPaymentLinkDeletePayLinkFromIDWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPaymentLinkDeletePayLinkFromIdWithWireMock", "DELETE", "/PaymentLink/2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234", nil, 1)
+	VerifyRequestCount(t, "TestPaymentLinkDeletePayLinkFromIDWithWireMock", "DELETE", "/PaymentLink/2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234", nil, 1)
 }
 
-func TestPaymentLinkGetPayLinkFromIdWithWireMock(
+func TestPaymentLinkGetPayLinkFromIDWithWireMock(
 	t *testing.T,
 ) {
 	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
@@ -525,19 +525,19 @@ func TestPaymentLinkGetPayLinkFromIdWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	_, invocationErr := client.PaymentLink.GetPayLinkFromId(
+	_, invocationErr := client.PaymentLink.GetPayLinkFromID(
 		context.TODO(),
 		"paylinkId",
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestPaymentLinkGetPayLinkFromIdWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestPaymentLinkGetPayLinkFromIDWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPaymentLinkGetPayLinkFromIdWithWireMock", "GET", "/PaymentLink/load/paylinkId", nil, 1)
+	VerifyRequestCount(t, "TestPaymentLinkGetPayLinkFromIDWithWireMock", "GET", "/PaymentLink/load/paylinkId", nil, 1)
 }
 
-func TestPaymentLinkPushPayLinkFromIdWithWireMock(
+func TestPaymentLinkPushPayLinkFromIDWithWireMock(
 	t *testing.T,
 ) {
 	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
@@ -550,20 +550,20 @@ func TestPaymentLinkPushPayLinkFromIdWithWireMock(
 	request := &payabli.PushPayLinkRequest{
 		Sms: &payabli.PushPayLinkRequestSms{},
 	}
-	_, invocationErr := client.PaymentLink.PushPayLinkFromId(
+	_, invocationErr := client.PaymentLink.PushPayLinkFromID(
 		context.TODO(),
 		"payLinkId",
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestPaymentLinkPushPayLinkFromIdWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestPaymentLinkPushPayLinkFromIDWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPaymentLinkPushPayLinkFromIdWithWireMock", "POST", "/PaymentLink/push/payLinkId", nil, 1)
+	VerifyRequestCount(t, "TestPaymentLinkPushPayLinkFromIDWithWireMock", "POST", "/PaymentLink/push/payLinkId", nil, 1)
 }
 
-func TestPaymentLinkRefreshPayLinkFromIdWithWireMock(
+func TestPaymentLinkRefreshPayLinkFromIDWithWireMock(
 	t *testing.T,
 ) {
 	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
@@ -573,21 +573,21 @@ func TestPaymentLinkRefreshPayLinkFromIdWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &payabli.RefreshPayLinkFromIdRequest{}
-	_, invocationErr := client.PaymentLink.RefreshPayLinkFromId(
+	request := &payabli.RefreshPayLinkFromIDRequest{}
+	_, invocationErr := client.PaymentLink.RefreshPayLinkFromID(
 		context.TODO(),
 		"payLinkId",
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestPaymentLinkRefreshPayLinkFromIdWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestPaymentLinkRefreshPayLinkFromIDWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPaymentLinkRefreshPayLinkFromIdWithWireMock", "GET", "/PaymentLink/refresh/payLinkId", nil, 1)
+	VerifyRequestCount(t, "TestPaymentLinkRefreshPayLinkFromIDWithWireMock", "GET", "/PaymentLink/refresh/payLinkId", nil, 1)
 }
 
-func TestPaymentLinkSendPayLinkFromIdWithWireMock(
+func TestPaymentLinkSendPayLinkFromIDWithWireMock(
 	t *testing.T,
 ) {
 	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
@@ -597,25 +597,25 @@ func TestPaymentLinkSendPayLinkFromIdWithWireMock(
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
 	)
-	request := &payabli.SendPayLinkFromIdRequest{
+	request := &payabli.SendPayLinkFromIDRequest{
 		Mail2: payabli.String(
 			"jo@example.com; ceo@example.com",
 		),
 	}
-	_, invocationErr := client.PaymentLink.SendPayLinkFromId(
+	_, invocationErr := client.PaymentLink.SendPayLinkFromID(
 		context.TODO(),
 		"payLinkId",
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestPaymentLinkSendPayLinkFromIdWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestPaymentLinkSendPayLinkFromIDWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPaymentLinkSendPayLinkFromIdWithWireMock", "GET", "/PaymentLink/send/payLinkId", map[string]string{"mail2": "jo@example.com; ceo@example.com"}, 1)
+	VerifyRequestCount(t, "TestPaymentLinkSendPayLinkFromIDWithWireMock", "GET", "/PaymentLink/send/payLinkId", map[string]string{"mail2": "jo@example.com; ceo@example.com"}, 1)
 }
 
-func TestPaymentLinkUpdatePayLinkFromIdWithWireMock(
+func TestPaymentLinkUpdatePayLinkFromIDWithWireMock(
 	t *testing.T,
 ) {
 	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
@@ -655,17 +655,17 @@ func TestPaymentLinkUpdatePayLinkFromIdWithWireMock(
 			),
 		},
 	}
-	_, invocationErr := client.PaymentLink.UpdatePayLinkFromId(
+	_, invocationErr := client.PaymentLink.UpdatePayLinkFromID(
 		context.TODO(),
 		"332-c277b704-1301",
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestPaymentLinkUpdatePayLinkFromIdWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestPaymentLinkUpdatePayLinkFromIDWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPaymentLinkUpdatePayLinkFromIdWithWireMock", "PUT", "/PaymentLink/update/332-c277b704-1301", nil, 1)
+	VerifyRequestCount(t, "TestPaymentLinkUpdatePayLinkFromIDWithWireMock", "PUT", "/PaymentLink/update/332-c277b704-1301", nil, 1)
 }
 
 func TestPaymentLinkAddPayLinkFromBillLotNumberWithWireMock(
@@ -866,7 +866,7 @@ func TestPaymentLinkPatchOutPaymentLinkWithWireMock(
 	VerifyRequestCount(t, "TestPaymentLinkPatchOutPaymentLinkWithWireMock", "PATCH", "/PaymentLink/out/2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234", nil, 1)
 }
 
-func TestPaymentLinkUpdatePayLinkOutFromIdWithWireMock(
+func TestPaymentLinkUpdatePayLinkOutFromIDWithWireMock(
 	t *testing.T,
 ) {
 	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
@@ -1012,15 +1012,15 @@ func TestPaymentLinkUpdatePayLinkOutFromIdWithWireMock(
 			),
 		},
 	}
-	_, invocationErr := client.PaymentLink.UpdatePayLinkOutFromId(
+	_, invocationErr := client.PaymentLink.UpdatePayLinkOutFromID(
 		context.TODO(),
 		"2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
 		request,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestPaymentLinkUpdatePayLinkOutFromIdWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestPaymentLinkUpdatePayLinkOutFromIDWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPaymentLinkUpdatePayLinkOutFromIdWithWireMock", "PATCH", "/PaymentLink/updateOut/2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234", nil, 1)
+	VerifyRequestCount(t, "TestPaymentLinkUpdatePayLinkOutFromIDWithWireMock", "PATCH", "/PaymentLink/updateOut/2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234", nil, 1)
 }

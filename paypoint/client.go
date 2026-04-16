@@ -51,13 +51,13 @@ func (c *Client) GetBasicEntry(
 }
 
 // Retrieves the basic details for a paypoint by ID.
-func (c *Client) GetBasicEntryById(
+func (c *Client) GetBasicEntryByID(
 	ctx context.Context,
 	// Paypoint ID. You can find this value by querying `/api/Query/paypoints/{orgId}`
 	idPaypoint string,
 	opts ...option.RequestOption,
-) (*payabli.GetBasicEntryByIdResponse, error) {
-	response, err := c.WithRawResponse.GetBasicEntryById(
+) (*payabli.GetBasicEntryByIDResponse, error) {
+	response, err := c.WithRawResponse.GetBasicEntryByID(
 		ctx,
 		idPaypoint,
 		opts...,
@@ -117,7 +117,7 @@ func (c *Client) RemovePage(
 	// Payment page identifier. The subdomain value is the last portion of the payment page URL. For example, in`https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
 	subdomain string,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponseGeneric2Part, error) {
+) (*payabli.PayabliAPIResponseGeneric2Part, error) {
 	response, err := c.WithRawResponse.RemovePage(
 		ctx,
 		entry,
@@ -137,7 +137,7 @@ func (c *Client) SaveLogo(
 	entry string,
 	request *payabli.FileContent,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponse00Responsedatanonobject, error) {
+) (*payabli.PayabliAPIResponse00Responsedatanonobject, error) {
 	response, err := c.WithRawResponse.SaveLogo(
 		ctx,
 		entry,

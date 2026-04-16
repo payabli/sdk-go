@@ -178,9 +178,9 @@ func TestSettersMarkExplicitDeviceEntry(t *testing.T) {
 
 }
 
-func TestSettersCloudQueryApiResponse(t *testing.T) {
+func TestSettersCloudQueryAPIResponse(t *testing.T) {
 	t.Run("SetIsSuccess", func(t *testing.T) {
-		obj := &CloudQueryApiResponse{}
+		obj := &CloudQueryAPIResponse{}
 		var fernTestValueIsSuccess *IsSuccess
 		obj.SetIsSuccess(fernTestValueIsSuccess)
 		assert.Equal(t, fernTestValueIsSuccess, obj.IsSuccess)
@@ -188,7 +188,7 @@ func TestSettersCloudQueryApiResponse(t *testing.T) {
 	})
 
 	t.Run("SetResponseList", func(t *testing.T) {
-		obj := &CloudQueryApiResponse{}
+		obj := &CloudQueryAPIResponse{}
 		var fernTestValueResponseList []*PoiDevice
 		obj.SetResponseList(fernTestValueResponseList)
 		assert.Equal(t, fernTestValueResponseList, obj.ResponseList)
@@ -196,7 +196,7 @@ func TestSettersCloudQueryApiResponse(t *testing.T) {
 	})
 
 	t.Run("SetResponseText", func(t *testing.T) {
-		obj := &CloudQueryApiResponse{}
+		obj := &CloudQueryAPIResponse{}
 		var fernTestValueResponseText ResponseText
 		obj.SetResponseText(fernTestValueResponseText)
 		assert.Equal(t, fernTestValueResponseText, obj.ResponseText)
@@ -205,11 +205,11 @@ func TestSettersCloudQueryApiResponse(t *testing.T) {
 
 }
 
-func TestGettersCloudQueryApiResponse(t *testing.T) {
+func TestGettersCloudQueryAPIResponse(t *testing.T) {
 	t.Run("GetIsSuccess", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CloudQueryApiResponse{}
+		obj := &CloudQueryAPIResponse{}
 		var expected *IsSuccess
 		obj.IsSuccess = expected
 
@@ -220,7 +220,7 @@ func TestGettersCloudQueryApiResponse(t *testing.T) {
 	t.Run("GetIsSuccess_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CloudQueryApiResponse{}
+		obj := &CloudQueryAPIResponse{}
 		obj.IsSuccess = nil
 
 		// Act & Assert
@@ -229,7 +229,7 @@ func TestGettersCloudQueryApiResponse(t *testing.T) {
 
 	t.Run("GetIsSuccess_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *CloudQueryApiResponse
+		var obj *CloudQueryAPIResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -242,7 +242,7 @@ func TestGettersCloudQueryApiResponse(t *testing.T) {
 	t.Run("GetResponseList", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CloudQueryApiResponse{}
+		obj := &CloudQueryAPIResponse{}
 		var expected []*PoiDevice
 		obj.ResponseList = expected
 
@@ -253,7 +253,7 @@ func TestGettersCloudQueryApiResponse(t *testing.T) {
 	t.Run("GetResponseList_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CloudQueryApiResponse{}
+		obj := &CloudQueryAPIResponse{}
 		obj.ResponseList = nil
 
 		// Act & Assert
@@ -262,7 +262,7 @@ func TestGettersCloudQueryApiResponse(t *testing.T) {
 
 	t.Run("GetResponseList_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *CloudQueryApiResponse
+		var obj *CloudQueryAPIResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -275,7 +275,7 @@ func TestGettersCloudQueryApiResponse(t *testing.T) {
 	t.Run("GetResponseText", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CloudQueryApiResponse{}
+		obj := &CloudQueryAPIResponse{}
 		var expected ResponseText
 		obj.ResponseText = expected
 
@@ -285,7 +285,7 @@ func TestGettersCloudQueryApiResponse(t *testing.T) {
 
 	t.Run("GetResponseText_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *CloudQueryApiResponse
+		var obj *CloudQueryAPIResponse
 		// Should not panic - getters should handle nil receiver gracefully
 		defer func() {
 			if r := recover(); r != nil {
@@ -297,11 +297,11 @@ func TestGettersCloudQueryApiResponse(t *testing.T) {
 
 }
 
-func TestSettersMarkExplicitCloudQueryApiResponse(t *testing.T) {
+func TestSettersMarkExplicitCloudQueryAPIResponse(t *testing.T) {
 	t.Run("SetIsSuccess_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CloudQueryApiResponse{}
+		obj := &CloudQueryAPIResponse{}
 		var fernTestValueIsSuccess *IsSuccess
 
 		// Act
@@ -332,7 +332,7 @@ func TestSettersMarkExplicitCloudQueryApiResponse(t *testing.T) {
 	t.Run("SetResponseList_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CloudQueryApiResponse{}
+		obj := &CloudQueryAPIResponse{}
 		var fernTestValueResponseList []*PoiDevice
 
 		// Act
@@ -363,7 +363,7 @@ func TestSettersMarkExplicitCloudQueryApiResponse(t *testing.T) {
 	t.Run("SetResponseText_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CloudQueryApiResponse{}
+		obj := &CloudQueryAPIResponse{}
 		var fernTestValueResponseText ResponseText
 
 		// Act
@@ -418,11 +418,11 @@ func TestSettersPoiDevice(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetDeviceId", func(t *testing.T) {
+	t.Run("SetDeviceID", func(t *testing.T) {
 		obj := &PoiDevice{}
-		var fernTestValueDeviceId *string
-		obj.SetDeviceId(fernTestValueDeviceId)
-		assert.Equal(t, fernTestValueDeviceId, obj.DeviceId)
+		var fernTestValueDeviceID *string
+		obj.SetDeviceID(fernTestValueDeviceID)
+		assert.Equal(t, fernTestValueDeviceID, obj.DeviceID)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -600,28 +600,28 @@ func TestGettersPoiDevice(t *testing.T) {
 		_ = obj.GetDateRegistered() // Should return zero value
 	})
 
-	t.Run("GetDeviceId", func(t *testing.T) {
+	t.Run("GetDeviceID", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &PoiDevice{}
 		var expected *string
-		obj.DeviceId = expected
+		obj.DeviceID = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetDeviceId(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetDeviceID(), "getter should return the property value")
 	})
 
-	t.Run("GetDeviceId_NilValue", func(t *testing.T) {
+	t.Run("GetDeviceID_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &PoiDevice{}
-		obj.DeviceId = nil
+		obj.DeviceID = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetDeviceId(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetDeviceID(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetDeviceId_NilReceiver", func(t *testing.T) {
+	t.Run("GetDeviceID_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *PoiDevice
 		// Should not panic - getters should handle nil receiver gracefully
@@ -630,7 +630,7 @@ func TestGettersPoiDevice(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetDeviceId() // Should return zero value
+		_ = obj.GetDeviceID() // Should return zero value
 	})
 
 	t.Run("GetDeviceLicense", func(t *testing.T) {
@@ -1026,14 +1026,14 @@ func TestSettersMarkExplicitPoiDevice(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetDeviceId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetDeviceID_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &PoiDevice{}
-		var fernTestValueDeviceId *string
+		var fernTestValueDeviceID *string
 
 		// Act
-		obj.SetDeviceId(fernTestValueDeviceId)
+		obj.SetDeviceID(fernTestValueDeviceID)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -1945,11 +1945,11 @@ func TestJSONMarshalingAddDeviceResponse(t *testing.T) {
 	})
 }
 
-func TestJSONMarshalingCloudQueryApiResponse(t *testing.T) {
+func TestJSONMarshalingCloudQueryAPIResponse(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &CloudQueryApiResponse{}
+		obj := &CloudQueryAPIResponse{}
 
 		// Act - Marshal to JSON
 		data, err := json.Marshal(obj)
@@ -1958,21 +1958,21 @@ func TestJSONMarshalingCloudQueryApiResponse(t *testing.T) {
 		assert.NotEmpty(t, data, "marshaled data should not be empty")
 
 		// Unmarshal back and verify round-trip
-		var unmarshaled CloudQueryApiResponse
+		var unmarshaled CloudQueryAPIResponse
 		err = json.Unmarshal(data, &unmarshaled)
 		assert.NoError(t, err, "round-trip unmarshal should succeed")
 	})
 
 	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
 		t.Parallel()
-		var obj CloudQueryApiResponse
+		var obj CloudQueryAPIResponse
 		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
 		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
 	})
 
 	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
 		t.Parallel()
-		var obj CloudQueryApiResponse
+		var obj CloudQueryAPIResponse
 		err := json.Unmarshal([]byte(`{}`), &obj)
 		assert.NoError(t, err, "unmarshaling empty object should succeed")
 	})
@@ -2060,17 +2060,17 @@ func TestStringAddDeviceResponse(t *testing.T) {
 	})
 }
 
-func TestStringCloudQueryApiResponse(t *testing.T) {
+func TestStringCloudQueryAPIResponse(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
-		obj := &CloudQueryApiResponse{}
+		obj := &CloudQueryAPIResponse{}
 		result := obj.String()
 		assert.NotEmpty(t, result, "String() should return a non-empty representation")
 	})
 
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *CloudQueryApiResponse
+		var obj *CloudQueryAPIResponse
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
@@ -2131,10 +2131,10 @@ func TestExtraPropertiesAddDeviceResponse(t *testing.T) {
 	})
 }
 
-func TestExtraPropertiesCloudQueryApiResponse(t *testing.T) {
+func TestExtraPropertiesCloudQueryAPIResponse(t *testing.T) {
 	t.Run("GetExtraProperties", func(t *testing.T) {
 		t.Parallel()
-		obj := &CloudQueryApiResponse{}
+		obj := &CloudQueryAPIResponse{}
 		// Should not panic when calling GetExtraProperties()
 		defer func() {
 			if r := recover(); r != nil {
@@ -2148,7 +2148,7 @@ func TestExtraPropertiesCloudQueryApiResponse(t *testing.T) {
 
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
-		var obj *CloudQueryApiResponse
+		var obj *CloudQueryAPIResponse
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})

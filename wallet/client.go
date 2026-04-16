@@ -37,7 +37,7 @@ func (c *Client) ConfigureApplePayOrganization(
 	ctx context.Context,
 	request *payabli.ConfigureOrganizationRequestApplePay,
 	opts ...option.RequestOption,
-) (*payabli.ConfigureApplePayOrganizationApiResponse, error) {
+) (*payabli.ConfigureApplePayOrganizationAPIResponse, error) {
 	response, err := c.WithRawResponse.ConfigureApplePayOrganization(
 		ctx,
 		request,
@@ -54,7 +54,7 @@ func (c *Client) ConfigureApplePayPaypoint(
 	ctx context.Context,
 	request *payabli.ConfigurePaypointRequestApplePay,
 	opts ...option.RequestOption,
-) (*payabli.ConfigureApplePaypointApiResponse, error) {
+) (*payabli.ConfigureApplePaypointAPIResponse, error) {
 	response, err := c.WithRawResponse.ConfigureApplePayPaypoint(
 		ctx,
 		request,
@@ -71,7 +71,7 @@ func (c *Client) ConfigureGooglePayOrganization(
 	ctx context.Context,
 	request *payabli.ConfigureOrganizationRequestGooglePay,
 	opts ...option.RequestOption,
-) (*payabli.ConfigureApplePayOrganizationApiResponse, error) {
+) (*payabli.ConfigureApplePayOrganizationAPIResponse, error) {
 	response, err := c.WithRawResponse.ConfigureGooglePayOrganization(
 		ctx,
 		request,
@@ -88,7 +88,7 @@ func (c *Client) ConfigureGooglePayPaypoint(
 	ctx context.Context,
 	request *payabli.ConfigurePaypointRequestGooglePay,
 	opts ...option.RequestOption,
-) (*payabli.ConfigureGooglePaypointApiResponse, error) {
+) (*payabli.ConfigureGooglePaypointAPIResponse, error) {
 	response, err := c.WithRawResponse.ConfigureGooglePayPaypoint(
 		ctx,
 		request,

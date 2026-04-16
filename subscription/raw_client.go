@@ -33,7 +33,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 func (r *RawClient) GetSubscription(
 	ctx context.Context,
 	// The subscription ID.
-	subId int,
+	subID int,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.SubscriptionQueryRecords], error) {
 	options := core.NewRequestOptions(opts...)
@@ -44,7 +44,7 @@ func (r *RawClient) GetSubscription(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Subscription/%v",
-		subId,
+		subID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -131,7 +131,7 @@ func (r *RawClient) NewSubscription(
 func (r *RawClient) RemoveSubscription(
 	ctx context.Context,
 	// The subscription ID.
-	subId int,
+	subID int,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.RemoveSubscriptionResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -142,7 +142,7 @@ func (r *RawClient) RemoveSubscription(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Subscription/%v",
-		subId,
+		subID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -176,7 +176,7 @@ func (r *RawClient) RemoveSubscription(
 func (r *RawClient) UpdateSubscription(
 	ctx context.Context,
 	// The subscription ID.
-	subId int,
+	subID int,
 	request *payabli.RequestUpdateSchedule,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.UpdateSubscriptionResponse], error) {
@@ -188,7 +188,7 @@ func (r *RawClient) UpdateSubscription(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Subscription/%v",
-		subId,
+		subID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),

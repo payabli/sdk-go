@@ -34,7 +34,7 @@ func (r *RawClient) AddApplication(
 	ctx context.Context,
 	request *payabli.AddApplicationRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponse00Responsedatanonobject], error) {
+) (*core.Response[*payabli.PayabliAPIResponse00Responsedatanonobject], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -46,7 +46,7 @@ func (r *RawClient) AddApplication(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponse00Responsedatanonobject
+	var response *payabli.PayabliAPIResponse00Responsedatanonobject
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -65,7 +65,7 @@ func (r *RawClient) AddApplication(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponse00Responsedatanonobject]{
+	return &core.Response[*payabli.PayabliAPIResponse00Responsedatanonobject]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -75,9 +75,9 @@ func (r *RawClient) AddApplication(
 func (r *RawClient) DeleteApplication(
 	ctx context.Context,
 	// Boarding application ID.
-	appId int,
+	appID int,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponse00Responsedatanonobject], error) {
+) (*core.Response[*payabli.PayabliAPIResponse00Responsedatanonobject], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -86,13 +86,13 @@ func (r *RawClient) DeleteApplication(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Boarding/app/%v",
-		appId,
+		appID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponse00Responsedatanonobject
+	var response *payabli.PayabliAPIResponse00Responsedatanonobject
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -110,7 +110,7 @@ func (r *RawClient) DeleteApplication(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponse00Responsedatanonobject]{
+	return &core.Response[*payabli.PayabliAPIResponse00Responsedatanonobject]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -120,7 +120,7 @@ func (r *RawClient) DeleteApplication(
 func (r *RawClient) GetApplication(
 	ctx context.Context,
 	// Boarding application ID.
-	appId int,
+	appID int,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.ApplicationDetailsRecord], error) {
 	options := core.NewRequestOptions(opts...)
@@ -131,7 +131,7 @@ func (r *RawClient) GetApplication(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Boarding/read/%v",
-		appId,
+		appID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -165,7 +165,7 @@ func (r *RawClient) GetApplication(
 func (r *RawClient) GetApplicationByAuth(
 	ctx context.Context,
 	// The application ID in Hex format. Find this at the end of the boarding link URL returned in a call to api/Boarding/applink/{appId}/{mail2}. For example in:  `https://boarding-sandbox.payabli.com/boarding/externalapp/load/17E`, the xId is `17E`.
-	xId string,
+	xID string,
 	request *payabli.RequestAppByAuth,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.ApplicationQueryRecord], error) {
@@ -177,7 +177,7 @@ func (r *RawClient) GetApplicationByAuth(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Boarding/read/%v",
-		xId,
+		xID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -210,10 +210,10 @@ func (r *RawClient) GetApplicationByAuth(
 	}, nil
 }
 
-func (r *RawClient) GetByIdLinkApplication(
+func (r *RawClient) GetByIDLinkApplication(
 	ctx context.Context,
 	// The boarding link ID. You can find this at the end of the boarding link reference name. For example `https://boarding.payabli.com/boarding/app/myorgaccountname-00091`. The ID is `91`.
-	boardingLinkId int,
+	boardingLinkID int,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.BoardingLinkQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
@@ -224,7 +224,7 @@ func (r *RawClient) GetByIdLinkApplication(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Boarding/linkbyId/%v",
-		boardingLinkId,
+		boardingLinkID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -255,10 +255,10 @@ func (r *RawClient) GetByIdLinkApplication(
 	}, nil
 }
 
-func (r *RawClient) GetByTemplateIdLinkApplication(
+func (r *RawClient) GetByTemplateIDLinkApplication(
 	ctx context.Context,
 	// The boarding template ID. You can find this at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
-	templateId float64,
+	templateID float64,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.BoardingLinkQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
@@ -269,7 +269,7 @@ func (r *RawClient) GetByTemplateIdLinkApplication(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Boarding/linkbyTemplate/%v",
-		templateId,
+		templateID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -303,12 +303,12 @@ func (r *RawClient) GetByTemplateIdLinkApplication(
 func (r *RawClient) GetExternalApplication(
 	ctx context.Context,
 	// Boarding application ID.
-	appId int,
+	appID int,
 	// Email address used to access the application. If `sendEmail` parameter is true, a link to the application is sent to this email address.
 	mail2 string,
 	request *payabli.GetExternalApplicationRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponse00], error) {
+) (*core.Response[*payabli.PayabliAPIResponse00], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -317,7 +317,7 @@ func (r *RawClient) GetExternalApplication(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Boarding/applink/%v/%v",
-		appId,
+		appID,
 		mail2,
 	)
 	queryParams, err := internal.QueryValues(request)
@@ -331,7 +331,7 @@ func (r *RawClient) GetExternalApplication(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponse00
+	var response *payabli.PayabliAPIResponse00
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -349,7 +349,7 @@ func (r *RawClient) GetExternalApplication(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponse00]{
+	return &core.Response[*payabli.PayabliAPIResponse00]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -404,7 +404,7 @@ func (r *RawClient) GetLinkApplication(
 func (r *RawClient) ListApplications(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListApplicationsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.QueryBoardingAppsListResponse], error) {
@@ -416,7 +416,7 @@ func (r *RawClient) ListApplications(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/boarding/%v",
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -457,7 +457,7 @@ func (r *RawClient) ListApplications(
 func (r *RawClient) ListBoardingLinks(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListBoardingLinksRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.QueryBoardingLinksResponse], error) {
@@ -469,7 +469,7 @@ func (r *RawClient) ListBoardingLinks(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/boardinglinks/%v",
-		orgId,
+		orgID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -510,10 +510,10 @@ func (r *RawClient) ListBoardingLinks(
 func (r *RawClient) UpdateApplication(
 	ctx context.Context,
 	// Boarding application ID.
-	appId int,
+	appID int,
 	request *payabli.ApplicationData,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponse00Responsedatanonobject], error) {
+) (*core.Response[*payabli.PayabliAPIResponse00Responsedatanonobject], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -522,13 +522,13 @@ func (r *RawClient) UpdateApplication(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Boarding/app/%v",
-		appId,
+		appID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponse00Responsedatanonobject
+	var response *payabli.PayabliAPIResponse00Responsedatanonobject
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -547,7 +547,7 @@ func (r *RawClient) UpdateApplication(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponse00Responsedatanonobject]{
+	return &core.Response[*payabli.PayabliAPIResponse00Responsedatanonobject]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

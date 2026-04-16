@@ -39,7 +39,7 @@ func (c *Client) ImportBills(
 	entry string,
 	request *payabli.ImportBillsRequest,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponseImport, error) {
+) (*payabli.PayabliAPIResponseImport, error) {
 	response, err := c.WithRawResponse.ImportBills(
 		ctx,
 		entry,
@@ -58,7 +58,7 @@ func (c *Client) ImportCustomer(
 	entry payabli.Entrypointfield,
 	request *payabli.ImportCustomerRequest,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponseImport, error) {
+) (*payabli.PayabliAPIResponseImport, error) {
 	response, err := c.WithRawResponse.ImportCustomer(
 		ctx,
 		entry,
@@ -77,7 +77,7 @@ func (c *Client) ImportVendor(
 	entry payabli.Entrypointfield,
 	request *payabli.ImportVendorRequest,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponseImport, error) {
+) (*payabli.PayabliAPIResponseImport, error) {
 	response, err := c.WithRawResponse.ImportVendor(
 		ctx,
 		entry,

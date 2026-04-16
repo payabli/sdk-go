@@ -56,13 +56,13 @@ func (c *Client) ListBatchDetails(
 func (c *Client) ListBatchDetailsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListBatchDetailsOrgRequest,
 	opts ...option.RequestOption,
 ) (*payabli.QueryResponseSettlements, error) {
 	response, err := c.WithRawResponse.ListBatchDetailsOrg(
 		ctx,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -95,13 +95,13 @@ func (c *Client) ListBatches(
 func (c *Client) ListBatchesOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListBatchesOrgRequest,
 	opts ...option.RequestOption,
 ) (*payabli.QueryBatchesResponse, error) {
 	response, err := c.WithRawResponse.ListBatchesOrg(
 		ctx,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -134,13 +134,13 @@ func (c *Client) ListBatchesOut(
 func (c *Client) ListBatchesOutOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListBatchesOutOrgRequest,
 	opts ...option.RequestOption,
 ) (*payabli.QueryBatchesOutResponse, error) {
 	response, err := c.WithRawResponse.ListBatchesOutOrg(
 		ctx,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -173,13 +173,13 @@ func (c *Client) ListChargebacks(
 func (c *Client) ListChargebacksOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListChargebacksOrgRequest,
 	opts ...option.RequestOption,
 ) (*payabli.QueryChargebacksResponse, error) {
 	response, err := c.WithRawResponse.ListChargebacksOrg(
 		ctx,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -212,13 +212,13 @@ func (c *Client) ListCustomers(
 func (c *Client) ListCustomersOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListCustomersOrgRequest,
 	opts ...option.RequestOption,
 ) (*payabli.QueryCustomerResponse, error) {
 	response, err := c.WithRawResponse.ListCustomersOrg(
 		ctx,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -251,13 +251,13 @@ func (c *Client) ListNotificationReports(
 func (c *Client) ListNotificationReportsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListNotificationReportsOrgRequest,
 	opts ...option.RequestOption,
 ) (*payabli.QueryResponseNotificationReports, error) {
 	response, err := c.WithRawResponse.ListNotificationReportsOrg(
 		ctx,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -290,13 +290,13 @@ func (c *Client) ListNotifications(
 func (c *Client) ListNotificationsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListNotificationsOrgRequest,
 	opts ...option.RequestOption,
 ) (*payabli.QueryResponseNotifications, error) {
 	response, err := c.WithRawResponse.ListNotificationsOrg(
 		ctx,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -310,13 +310,13 @@ func (c *Client) ListNotificationsOrg(
 func (c *Client) ListOrganizations(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListOrganizationsRequest,
 	opts ...option.RequestOption,
 ) (*payabli.ListOrganizationsResponse, error) {
 	response, err := c.WithRawResponse.ListOrganizations(
 		ctx,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -349,13 +349,13 @@ func (c *Client) ListPayout(
 func (c *Client) ListPayoutOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListPayoutOrgRequest,
 	opts ...option.RequestOption,
 ) (*payabli.QueryPayoutTransaction, error) {
 	response, err := c.WithRawResponse.ListPayoutOrg(
 		ctx,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -369,13 +369,13 @@ func (c *Client) ListPayoutOrg(
 func (c *Client) ListPaypoints(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListPaypointsRequest,
 	opts ...option.RequestOption,
 ) (*payabli.QueryEntrypointResponse, error) {
 	response, err := c.WithRawResponse.ListPaypoints(
 		ctx,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -408,13 +408,13 @@ func (c *Client) ListSettlements(
 func (c *Client) ListSettlementsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListSettlementsOrgRequest,
 	opts ...option.RequestOption,
 ) (*payabli.QueryResponseSettlements, error) {
 	response, err := c.WithRawResponse.ListSettlementsOrg(
 		ctx,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -447,13 +447,13 @@ func (c *Client) ListSubscriptions(
 func (c *Client) ListSubscriptionsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListSubscriptionsOrgRequest,
 	opts ...option.RequestOption,
 ) (*payabli.QuerySubscriptionResponse, error) {
 	response, err := c.WithRawResponse.ListSubscriptionsOrg(
 		ctx,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -486,13 +486,13 @@ func (c *Client) ListPayoutSubscriptions(
 func (c *Client) ListPayoutSubscriptionsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListPayoutSubscriptionsOrgRequest,
 	opts ...option.RequestOption,
 ) (*payabli.QueryPayoutSubscriptionResponse, error) {
 	response, err := c.WithRawResponse.ListPayoutSubscriptionsOrg(
 		ctx,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -544,13 +544,13 @@ func (c *Client) ListTransactions(
 func (c *Client) ListTransactionsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListTransactionsOrgRequest,
 	opts ...option.RequestOption,
 ) (*payabli.QueryResponseTransactions, error) {
 	response, err := c.WithRawResponse.ListTransactionsOrg(
 		ctx,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -565,14 +565,14 @@ func (c *Client) ListTransferDetails(
 	ctx context.Context,
 	entry payabli.Entry,
 	// The numeric identifier for the transfer, assigned by Payabli.
-	transferId int,
+	transferID int,
 	request *payabli.ListTransfersPaypointRequest,
 	opts ...option.RequestOption,
 ) (*payabli.QueryTransferDetailResponse, error) {
 	response, err := c.WithRawResponse.ListTransferDetails(
 		ctx,
 		entry,
-		transferId,
+		transferID,
 		request,
 		opts...,
 	)
@@ -622,13 +622,13 @@ func (c *Client) ListTransfersOrg(
 func (c *Client) ListTransfersOutOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListTransfersOutOrgRequest,
 	opts ...option.RequestOption,
 ) (*payabli.TransferOutQueryResponse, error) {
 	response, err := c.WithRawResponse.ListTransfersOutOrg(
 		ctx,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -662,14 +662,14 @@ func (c *Client) ListTransferDetailsOut(
 	ctx context.Context,
 	entry payabli.Entry,
 	// The numeric identifier for the transfer, assigned by Payabli.
-	transferId int,
+	transferID int,
 	request *payabli.ListTransferDetailsOutRequest,
 	opts ...option.RequestOption,
 ) (*payabli.TransferOutDetailQueryResponse, error) {
 	response, err := c.WithRawResponse.ListTransferDetailsOut(
 		ctx,
 		entry,
-		transferId,
+		transferID,
 		request,
 		opts...,
 	)
@@ -683,13 +683,13 @@ func (c *Client) ListTransferDetailsOut(
 func (c *Client) ListUsersOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListUsersOrgRequest,
 	opts ...option.RequestOption,
 ) (*payabli.QueryUserResponse, error) {
 	response, err := c.WithRawResponse.ListUsersOrg(
 		ctx,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -743,13 +743,13 @@ func (c *Client) ListVendors(
 func (c *Client) ListVendorsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListVendorsOrgRequest,
 	opts ...option.RequestOption,
 ) (*payabli.QueryResponseVendors, error) {
 	response, err := c.WithRawResponse.ListVendorsOrg(
 		ctx,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -782,13 +782,13 @@ func (c *Client) ListVcards(
 func (c *Client) ListVcardsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ListVcardsOrgRequest,
 	opts ...option.RequestOption,
 ) (*payabli.VCardQueryResponse, error) {
 	response, err := c.WithRawResponse.ListVcardsOrg(
 		ctx,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)

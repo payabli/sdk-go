@@ -79,7 +79,7 @@ func TestNotificationAddNotificationWithWireMock(
 			},
 			Frequency: payabli.NotificationStandardRequestFrequencyUntilcancelled,
 			Method:    payabli.NotificationStandardRequestMethodWeb,
-			OwnerId: payabli.Int(
+			OwnerID: payabli.Int(
 				236,
 			),
 			OwnerType: 0,
@@ -162,7 +162,7 @@ func TestNotificationUpdateNotificationWithWireMock(
 			},
 			Frequency: payabli.NotificationStandardRequestFrequencyUntilcancelled,
 			Method:    payabli.NotificationStandardRequestMethodEmail,
-			OwnerId: payabli.Int(
+			OwnerID: payabli.Int(
 				136,
 			),
 			OwnerType: 0,

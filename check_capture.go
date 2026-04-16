@@ -223,7 +223,7 @@ func (c *CheckCaptureRequest) String() string {
 
 // Response model for check capture processing.
 var (
-	checkCaptureResponseFieldId                        = big.NewInt(1 << 0)
+	checkCaptureResponseFieldID                        = big.NewInt(1 << 0)
 	checkCaptureResponseFieldSuccess                   = big.NewInt(1 << 1)
 	checkCaptureResponseFieldProcessDate               = big.NewInt(1 << 2)
 	checkCaptureResponseFieldOcrMicr                   = big.NewInt(1 << 3)
@@ -251,7 +251,7 @@ var (
 
 type CheckCaptureResponse struct {
 	// Unique ID for the check capture, to be used with the /api/MoneyIn/getpaid endpoint.
-	Id *string `json:"id,omitempty" url:"id,omitempty"`
+	ID *string `json:"id,omitempty" url:"id,omitempty"`
 	// Indicates whether the check processing was successful.
 	Success bool `json:"success" url:"success"`
 	// The date and time when the check was processed (ISO 8601 format).
@@ -308,11 +308,11 @@ type CheckCaptureResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (c *CheckCaptureResponse) GetId() *string {
+func (c *CheckCaptureResponse) GetID() *string {
 	if c == nil {
 		return nil
 	}
-	return c.Id
+	return c.ID
 }
 
 func (c *CheckCaptureResponse) GetSuccess() bool {
@@ -490,11 +490,11 @@ func (c *CheckCaptureResponse) require(field *big.Int) {
 	c.explicitFields.Or(c.explicitFields, field)
 }
 
-// SetId sets the Id field and marks it as non-optional;
+// SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CheckCaptureResponse) SetId(id *string) {
-	c.Id = id
-	c.require(checkCaptureResponseFieldId)
+func (c *CheckCaptureResponse) SetID(id *string) {
+	c.ID = id
+	c.require(checkCaptureResponseFieldID)
 }
 
 // SetSuccess sets the Success field and marks it as non-optional;

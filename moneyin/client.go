@@ -67,14 +67,14 @@ func (c *Client) Authorize(
 func (c *Client) Capture(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	// Amount to be captured. The amount can't be greater the original total amount of the transaction. `0` captures the total amount authorized in the transaction. Partial captures aren't supported.
 	amount float64,
 	opts ...option.RequestOption,
 ) (*payabli.CaptureResponse, error) {
 	response, err := c.WithRawResponse.Capture(
 		ctx,
-		transId,
+		transID,
 		amount,
 		opts...,
 	)
@@ -94,13 +94,13 @@ func (c *Client) Capture(
 func (c *Client) CaptureAuth(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	request *payabli.CaptureRequest,
 	opts ...option.RequestOption,
 ) (*payabli.CaptureResponse, error) {
 	response, err := c.WithRawResponse.CaptureAuth(
 		ctx,
-		transId,
+		transID,
 		request,
 		opts...,
 	)
@@ -117,7 +117,7 @@ func (c *Client) Credit(
 	ctx context.Context,
 	request *payabli.RequestCredit,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponse0, error) {
+) (*payabli.PayabliAPIResponse0, error) {
 	response, err := c.WithRawResponse.Credit(
 		ctx,
 		request,
@@ -133,12 +133,12 @@ func (c *Client) Credit(
 func (c *Client) Details(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	opts ...option.RequestOption,
 ) (*payabli.TransactionQueryRecordsCustomer, error) {
 	response, err := c.WithRawResponse.Details(
 		ctx,
-		transId,
+		transID,
 		opts...,
 	)
 	if err != nil {
@@ -156,7 +156,7 @@ func (c *Client) Getpaid(
 	ctx context.Context,
 	request *payabli.RequestPayment,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponseGetPaid, error) {
+) (*payabli.PayabliAPIResponseGetPaid, error) {
 	response, err := c.WithRawResponse.Getpaid(
 		ctx,
 		request,
@@ -172,7 +172,7 @@ func (c *Client) Getpaid(
 func (c *Client) Reverse(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	//
 	// Amount to reverse from original transaction, minus any service fees charged on the original transaction.
 	//
@@ -184,7 +184,7 @@ func (c *Client) Reverse(
 ) (*payabli.ReverseResponse, error) {
 	response, err := c.WithRawResponse.Reverse(
 		ctx,
-		transId,
+		transID,
 		amount,
 		opts...,
 	)
@@ -202,7 +202,7 @@ func (c *Client) Reverse(
 func (c *Client) Refund(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	//
 	// Amount to refund from original transaction, minus any service fees charged on the original transaction.
 	//
@@ -214,7 +214,7 @@ func (c *Client) Refund(
 ) (*payabli.RefundResponse, error) {
 	response, err := c.WithRawResponse.Refund(
 		ctx,
-		transId,
+		transID,
 		amount,
 		opts...,
 	)
@@ -228,13 +228,13 @@ func (c *Client) Refund(
 func (c *Client) RefundWithInstructions(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	request *payabli.RequestRefund,
 	opts ...option.RequestOption,
 ) (*payabli.RefundWithInstructionsResponse, error) {
 	response, err := c.WithRawResponse.RefundWithInstructions(
 		ctx,
-		transId,
+		transID,
 		request,
 		opts...,
 	)
@@ -248,12 +248,12 @@ func (c *Client) RefundWithInstructions(
 func (c *Client) ReverseCredit(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponse, error) {
+) (*payabli.PayabliAPIResponse, error) {
 	response, err := c.WithRawResponse.ReverseCredit(
 		ctx,
-		transId,
+		transID,
 		opts...,
 	)
 	if err != nil {
@@ -266,13 +266,13 @@ func (c *Client) ReverseCredit(
 func (c *Client) SendReceipt2Trans(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	request *payabli.SendReceipt2TransRequest,
 	opts ...option.RequestOption,
 ) (*payabli.ReceiptResponse, error) {
 	response, err := c.WithRawResponse.SendReceipt2Trans(
 		ctx,
-		transId,
+		transID,
 		request,
 		opts...,
 	)
@@ -307,12 +307,12 @@ func (c *Client) Validate(
 func (c *Client) Void(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	opts ...option.RequestOption,
 ) (*payabli.VoidResponse, error) {
 	response, err := c.WithRawResponse.Void(
 		ctx,
-		transId,
+		transID,
 		opts...,
 	)
 	if err != nil {
@@ -361,13 +361,13 @@ func (c *Client) Authorizev2(
 func (c *Client) Capturev2(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	request *payabli.CaptureRequest,
 	opts ...option.RequestOption,
 ) (*payabli.V2TransactionResponseWrapper, error) {
 	response, err := c.WithRawResponse.Capturev2(
 		ctx,
-		transId,
+		transID,
 		request,
 		opts...,
 	)
@@ -383,12 +383,12 @@ func (c *Client) Capturev2(
 func (c *Client) Refundv2(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	opts ...option.RequestOption,
 ) (*payabli.V2TransactionResponseWrapper, error) {
 	response, err := c.WithRawResponse.Refundv2(
 		ctx,
-		transId,
+		transID,
 		opts...,
 	)
 	if err != nil {
@@ -403,14 +403,14 @@ func (c *Client) Refundv2(
 func (c *Client) Refundv2Amount(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	// Amount to refund from original transaction, minus any service fees charged on the original transaction. If omitted or set to 0, performs a full refund.
 	amount float64,
 	opts ...option.RequestOption,
 ) (*payabli.V2TransactionResponseWrapper, error) {
 	response, err := c.WithRawResponse.Refundv2Amount(
 		ctx,
-		transId,
+		transID,
 		amount,
 		opts...,
 	)
@@ -424,12 +424,12 @@ func (c *Client) Refundv2Amount(
 func (c *Client) Voidv2(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	opts ...option.RequestOption,
 ) (*payabli.V2TransactionResponseWrapper, error) {
 	response, err := c.WithRawResponse.Voidv2(
 		ctx,
-		transId,
+		transID,
 		opts...,
 	)
 	if err != nil {

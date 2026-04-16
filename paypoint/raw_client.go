@@ -75,12 +75,12 @@ func (r *RawClient) GetBasicEntry(
 	}, nil
 }
 
-func (r *RawClient) GetBasicEntryById(
+func (r *RawClient) GetBasicEntryByID(
 	ctx context.Context,
 	// Paypoint ID. You can find this value by querying `/api/Query/paypoints/{orgId}`
 	idPaypoint string,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.GetBasicEntryByIdResponse], error) {
+) (*core.Response[*payabli.GetBasicEntryByIDResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -95,7 +95,7 @@ func (r *RawClient) GetBasicEntryById(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.GetBasicEntryByIdResponse
+	var response *payabli.GetBasicEntryByIDResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -113,7 +113,7 @@ func (r *RawClient) GetBasicEntryById(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.GetBasicEntryByIdResponse]{
+	return &core.Response[*payabli.GetBasicEntryByIDResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -228,7 +228,7 @@ func (r *RawClient) RemovePage(
 	// Payment page identifier. The subdomain value is the last portion of the payment page URL. For example, in`https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
 	subdomain string,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponseGeneric2Part], error) {
+) (*core.Response[*payabli.PayabliAPIResponseGeneric2Part], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -244,7 +244,7 @@ func (r *RawClient) RemovePage(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponseGeneric2Part
+	var response *payabli.PayabliAPIResponseGeneric2Part
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -262,7 +262,7 @@ func (r *RawClient) RemovePage(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponseGeneric2Part]{
+	return &core.Response[*payabli.PayabliAPIResponseGeneric2Part]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -275,7 +275,7 @@ func (r *RawClient) SaveLogo(
 	entry string,
 	request *payabli.FileContent,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponse00Responsedatanonobject], error) {
+) (*core.Response[*payabli.PayabliAPIResponse00Responsedatanonobject], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -290,7 +290,7 @@ func (r *RawClient) SaveLogo(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponse00Responsedatanonobject
+	var response *payabli.PayabliAPIResponse00Responsedatanonobject
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -309,7 +309,7 @@ func (r *RawClient) SaveLogo(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponse00Responsedatanonobject]{
+	return &core.Response[*payabli.PayabliAPIResponse00Responsedatanonobject]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

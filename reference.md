@@ -172,7 +172,7 @@ client.Bill.AddBill(
 </dl>
 </details>
 
-<details><summary><code>client.Bill.DeleteAttachedFromBill(IdBill, Filename) -> *payabli.BillResponse</code></summary>
+<details><summary><code>client.Bill.DeleteAttachedFromBill(IDBill, Filename) -> *payabli.BillResponse</code></summary>
 <dl>
 <dd>
 
@@ -266,7 +266,7 @@ request to `/api/Invoice/{idInvoice}`. Here, the filename is
 </dl>
 </details>
 
-<details><summary><code>client.Bill.DeleteBill(IdBill) -> *payabli.BillResponse</code></summary>
+<details><summary><code>client.Bill.DeleteBill(IDBill) -> *payabli.BillResponse</code></summary>
 <dl>
 <dd>
 
@@ -324,7 +324,7 @@ client.Bill.DeleteBill(
 </dl>
 </details>
 
-<details><summary><code>client.Bill.EditBill(IdBill, request) -> *payabli.EditBillResponse</code></summary>
+<details><summary><code>client.Bill.EditBill(IDBill, request) -> *payabli.EditBillResponse</code></summary>
 <dl>
 <dd>
 
@@ -401,7 +401,7 @@ client.Bill.EditBill(
 </dl>
 </details>
 
-<details><summary><code>client.Bill.GetAttachedFromBill(IdBill, Filename) -> *payabli.FileContent</code></summary>
+<details><summary><code>client.Bill.GetAttachedFromBill(IDBill, Filename) -> *payabli.FileContent</code></summary>
 <dl>
 <dd>
 
@@ -494,7 +494,7 @@ The filename in Payabli. Filename is `zipName` in response to a request to `/api
 </dl>
 </details>
 
-<details><summary><code>client.Bill.GetBill(IdBill) -> *payabli.GetBillResponse</code></summary>
+<details><summary><code>client.Bill.GetBill(IDBill) -> *payabli.GetBillResponse</code></summary>
 <dl>
 <dd>
 
@@ -706,7 +706,7 @@ Example: `totalAmount(gt)=20` returns all records with a `totalAmount` that's gr
 </dl>
 </details>
 
-<details><summary><code>client.Bill.ListBillsOrg(OrgId) -> *payabli.BillQueryResponse</code></summary>
+<details><summary><code>client.Bill.ListBillsOrg(OrgID) -> *payabli.BillQueryResponse</code></summary>
 <dl>
 <dd>
 
@@ -764,7 +764,7 @@ client.Bill.ListBillsOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -860,7 +860,7 @@ Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.
 </dl>
 </details>
 
-<details><summary><code>client.Bill.ModifyApprovalBill(IdBill, request) -> *payabli.ModifyApprovalBillResponse</code></summary>
+<details><summary><code>client.Bill.ModifyApprovalBill(IDBill, request) -> *payabli.ModifyApprovalBillResponse</code></summary>
 <dl>
 <dd>
 
@@ -930,7 +930,7 @@ client.Bill.ModifyApprovalBill(
 </dl>
 </details>
 
-<details><summary><code>client.Bill.SendToApprovalBill(IdBill, request) -> *payabli.BillResponse</code></summary>
+<details><summary><code>client.Bill.SendToApprovalBill(IDBill, request) -> *payabli.BillResponse</code></summary>
 <dl>
 <dd>
 
@@ -1021,7 +1021,7 @@ client.Bill.SendToApprovalBill(
 </dl>
 </details>
 
-<details><summary><code>client.Bill.SetApprovedBill(IdBill, Approved) -> *payabli.SetApprovedBillResponse</code></summary>
+<details><summary><code>client.Bill.SetApprovedBill(IDBill, Approved) -> *payabli.SetApprovedBillResponse</code></summary>
 <dl>
 <dd>
 
@@ -1099,7 +1099,7 @@ client.Bill.SetApprovedBill(
 </details>
 
 ## Boarding
-<details><summary><code>client.Boarding.AddApplication(request) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
+<details><summary><code>client.Boarding.AddApplication(request) -> *payabli.PayabliAPIResponse00Responsedatanonobject</code></summary>
 <dl>
 <dd>
 
@@ -1185,7 +1185,7 @@ request := &payabli.AddApplicationRequest{
                         "123123123",
                     ),
                     TypeAccount: payabli.TypeAccountChecking.Ptr(),
-                    AccountId: payabli.String(
+                    AccountID: payabli.String(
                         "123-456",
                     ),
                 },
@@ -1210,7 +1210,7 @@ request := &payabli.AddApplicationRequest{
                         "123123123",
                     ),
                     TypeAccount: payabli.TypeAccountChecking.Ptr(),
-                    AccountId: payabli.String(
+                    AccountID: payabli.String(
                         "123-456",
                     ),
                 },
@@ -1301,7 +1301,7 @@ request := &payabli.AddApplicationRequest{
             Mzip: payabli.String(
                 "37615",
             ),
-            OrgId: payabli.Int64(
+            OrgID: payabli.Int64(
                 int64(123),
             ),
             Ownership: []*payabli.ApplicationDataPayInOwnershipItem{
@@ -1422,7 +1422,7 @@ request := &payabli.AddApplicationRequest{
             TaxFillName: payabli.String(
                 "Sunshine LLC",
             ),
-            TemplateId: payabli.Int64(
+            TemplateID: payabli.Int64(
                 int64(22),
             ),
             Ticketamt: payabli.Float64(
@@ -1468,7 +1468,7 @@ client.Boarding.AddApplication(
 </dl>
 </details>
 
-<details><summary><code>client.Boarding.DeleteApplication(AppId) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
+<details><summary><code>client.Boarding.DeleteApplication(AppID) -> *payabli.PayabliAPIResponse00Responsedatanonobject</code></summary>
 <dl>
 <dd>
 
@@ -1514,7 +1514,7 @@ client.Boarding.DeleteApplication(
 <dl>
 <dd>
 
-**appId:** `int` — Boarding application ID. 
+**appID:** `int` — Boarding application ID. 
     
 </dd>
 </dl>
@@ -1526,7 +1526,7 @@ client.Boarding.DeleteApplication(
 </dl>
 </details>
 
-<details><summary><code>client.Boarding.GetApplication(AppId) -> *payabli.ApplicationDetailsRecord</code></summary>
+<details><summary><code>client.Boarding.GetApplication(AppID) -> *payabli.ApplicationDetailsRecord</code></summary>
 <dl>
 <dd>
 
@@ -1572,7 +1572,7 @@ client.Boarding.GetApplication(
 <dl>
 <dd>
 
-**appId:** `int` — Boarding application ID.
+**appID:** `int` — Boarding application ID.
     
 </dd>
 </dl>
@@ -1584,7 +1584,7 @@ client.Boarding.GetApplication(
 </dl>
 </details>
 
-<details><summary><code>client.Boarding.GetApplicationByAuth(XId, request) -> *payabli.ApplicationQueryRecord</code></summary>
+<details><summary><code>client.Boarding.GetApplicationByAuth(XID, request) -> *payabli.ApplicationQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -1615,7 +1615,7 @@ request := &payabli.RequestAppByAuth{
         Email: payabli.String(
             "admin@email.com",
         ),
-        ReferenceId: payabli.String(
+        ReferenceID: payabli.String(
             "n6UCd1f1ygG7",
         ),
     }
@@ -1639,7 +1639,7 @@ client.Boarding.GetApplicationByAuth(
 <dl>
 <dd>
 
-**xId:** `string` — The application ID in Hex format. Find this at the end of the boarding link URL returned in a call to api/Boarding/applink/{appId}/{mail2}. For example in:  `https://boarding-sandbox.payabli.com/boarding/externalapp/load/17E`, the xId is `17E`. 
+**xID:** `string` — The application ID in Hex format. Find this at the end of the boarding link URL returned in a call to api/Boarding/applink/{appId}/{mail2}. For example in:  `https://boarding-sandbox.payabli.com/boarding/externalapp/load/17E`, the xId is `17E`. 
     
 </dd>
 </dl>
@@ -1655,7 +1655,7 @@ client.Boarding.GetApplicationByAuth(
 <dl>
 <dd>
 
-**referenceId:** `*string` — The referenceId is sent to the applicant via email when they save the application.
+**referenceID:** `*string` — The referenceId is sent to the applicant via email when they save the application.
     
 </dd>
 </dl>
@@ -1667,7 +1667,7 @@ client.Boarding.GetApplicationByAuth(
 </dl>
 </details>
 
-<details><summary><code>client.Boarding.GetByIdLinkApplication(BoardingLinkId) -> *payabli.BoardingLinkQueryRecord</code></summary>
+<details><summary><code>client.Boarding.GetByIDLinkApplication(BoardingLinkID) -> *payabli.BoardingLinkQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -1694,7 +1694,7 @@ Retrieves details for a boarding link, by ID.
 <dd>
 
 ```go
-client.Boarding.GetByIdLinkApplication(
+client.Boarding.GetByIDLinkApplication(
         context.TODO(),
         91,
     )
@@ -1713,7 +1713,7 @@ client.Boarding.GetByIdLinkApplication(
 <dl>
 <dd>
 
-**boardingLinkId:** `int` — The boarding link ID. You can find this at the end of the boarding link reference name. For example `https://boarding.payabli.com/boarding/app/myorgaccountname-00091`. The ID is `91`.
+**boardingLinkID:** `int` — The boarding link ID. You can find this at the end of the boarding link reference name. For example `https://boarding.payabli.com/boarding/app/myorgaccountname-00091`. The ID is `91`.
     
 </dd>
 </dl>
@@ -1725,7 +1725,7 @@ client.Boarding.GetByIdLinkApplication(
 </dl>
 </details>
 
-<details><summary><code>client.Boarding.GetByTemplateIdLinkApplication(TemplateId) -> *payabli.BoardingLinkQueryRecord</code></summary>
+<details><summary><code>client.Boarding.GetByTemplateIDLinkApplication(TemplateID) -> *payabli.BoardingLinkQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -1752,7 +1752,7 @@ Get details for a boarding link using the boarding template ID. This endpoint re
 <dd>
 
 ```go
-client.Boarding.GetByTemplateIdLinkApplication(
+client.Boarding.GetByTemplateIDLinkApplication(
         context.TODO(),
         80,
     )
@@ -1771,7 +1771,7 @@ client.Boarding.GetByTemplateIdLinkApplication(
 <dl>
 <dd>
 
-**templateId:** `float64` — The boarding template ID. You can find this at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
+**templateID:** `float64` — The boarding template ID. You can find this at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
     
 </dd>
 </dl>
@@ -1783,7 +1783,7 @@ client.Boarding.GetByTemplateIdLinkApplication(
 </dl>
 </details>
 
-<details><summary><code>client.Boarding.GetExternalApplication(AppId, Mail2) -> *payabli.PayabliApiResponse00</code></summary>
+<details><summary><code>client.Boarding.GetExternalApplication(AppID, Mail2) -> *payabli.PayabliAPIResponse00</code></summary>
 <dl>
 <dd>
 
@@ -1832,7 +1832,7 @@ client.Boarding.GetExternalApplication(
 <dl>
 <dd>
 
-**appId:** `int` — Boarding application ID. 
+**appID:** `int` — Boarding application ID. 
     
 </dd>
 </dl>
@@ -1918,7 +1918,7 @@ client.Boarding.GetLinkApplication(
 </dl>
 </details>
 
-<details><summary><code>client.Boarding.ListApplications(OrgId) -> *payabli.QueryBoardingAppsListResponse</code></summary>
+<details><summary><code>client.Boarding.ListApplications(OrgID) -> *payabli.QueryBoardingAppsListResponse</code></summary>
 <dl>
 <dd>
 
@@ -1976,7 +1976,7 @@ client.Boarding.ListApplications(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -2064,7 +2064,7 @@ List of comparison accepted - enclosed between parentheses:
 </dl>
 </details>
 
-<details><summary><code>client.Boarding.ListBoardingLinks(OrgId) -> *payabli.QueryBoardingLinksResponse</code></summary>
+<details><summary><code>client.Boarding.ListBoardingLinks(OrgID) -> *payabli.QueryBoardingLinksResponse</code></summary>
 <dl>
 <dd>
 
@@ -2122,7 +2122,7 @@ client.Boarding.ListBoardingLinks(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -2198,7 +2198,7 @@ Example: templateName(ct)=hoa return all records with template title containing 
 </dl>
 </details>
 
-<details><summary><code>client.Boarding.UpdateApplication(AppId, request) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
+<details><summary><code>client.Boarding.UpdateApplication(AppID, request) -> *payabli.PayabliAPIResponse00Responsedatanonobject</code></summary>
 <dl>
 <dd>
 
@@ -2246,7 +2246,7 @@ client.Boarding.UpdateApplication(
 <dl>
 <dd>
 
-**appId:** `int` — Boarding application ID. 
+**appID:** `int` — Boarding application ID. 
     
 </dd>
 </dl>
@@ -2267,7 +2267,7 @@ client.Boarding.UpdateApplication(
 </details>
 
 ## ChargeBacks
-<details><summary><code>client.ChargeBacks.AddResponse(Id, request) -> *payabli.AddResponseResponse</code></summary>
+<details><summary><code>client.ChargeBacks.AddResponse(ID, request) -> *payabli.AddResponseResponse</code></summary>
 <dl>
 <dd>
 
@@ -2371,7 +2371,7 @@ client.ChargeBacks.AddResponse(
 </dl>
 </details>
 
-<details><summary><code>client.ChargeBacks.GetChargeback(Id) -> *payabli.ChargebackQueryRecords</code></summary>
+<details><summary><code>client.ChargeBacks.GetChargeback(ID) -> *payabli.ChargebackQueryRecords</code></summary>
 <dl>
 <dd>
 
@@ -2429,7 +2429,7 @@ client.ChargeBacks.GetChargeback(
 </dl>
 </details>
 
-<details><summary><code>client.ChargeBacks.GetChargebackAttachment(Id, FileName) -> string</code></summary>
+<details><summary><code>client.ChargeBacks.GetChargebackAttachment(ID, FileName) -> string</code></summary>
 <dl>
 <dd>
 
@@ -2683,7 +2683,7 @@ The device registration code or serial number, depending on the model.
 </dl>
 </details>
 
-<details><summary><code>client.Cloud.HistoryDevice(Entry, DeviceId) -> *payabli.CloudQueryApiResponse</code></summary>
+<details><summary><code>client.Cloud.HistoryDevice(Entry, DeviceID) -> *payabli.CloudQueryAPIResponse</code></summary>
 <dl>
 <dd>
 
@@ -2738,7 +2738,7 @@ client.Cloud.HistoryDevice(
 <dl>
 <dd>
 
-**deviceId:** `string` — ID of the cloud device. 
+**deviceID:** `string` — ID of the cloud device. 
     
 </dd>
 </dl>
@@ -2750,7 +2750,7 @@ client.Cloud.HistoryDevice(
 </dl>
 </details>
 
-<details><summary><code>client.Cloud.ListDevice(Entry) -> *payabli.CloudQueryApiResponse</code></summary>
+<details><summary><code>client.Cloud.ListDevice(Entry) -> *payabli.CloudQueryAPIResponse</code></summary>
 <dl>
 <dd>
 
@@ -2818,7 +2818,7 @@ client.Cloud.ListDevice(
 </dl>
 </details>
 
-<details><summary><code>client.Cloud.RemoveDevice(Entry, DeviceId) -> *payabli.RemoveDeviceResponse</code></summary>
+<details><summary><code>client.Cloud.RemoveDevice(Entry, DeviceID) -> *payabli.RemoveDeviceResponse</code></summary>
 <dl>
 <dd>
 
@@ -2873,7 +2873,7 @@ client.Cloud.RemoveDevice(
 <dl>
 <dd>
 
-**deviceId:** `string` — ID of the cloud device. 
+**deviceID:** `string` — ID of the cloud device. 
     
 </dd>
 </dl>
@@ -2886,7 +2886,7 @@ client.Cloud.RemoveDevice(
 </details>
 
 ## Customer
-<details><summary><code>client.Customer.AddCustomer(Entry, request) -> *payabli.PayabliApiResponseCustomerQuery</code></summary>
+<details><summary><code>client.Customer.AddCustomer(Entry, request) -> *payabli.PayabliAPIResponseCustomerQuery</code></summary>
 <dl>
 <dd>
 
@@ -3017,7 +3017,7 @@ client.Customer.AddCustomer(
 </dl>
 </details>
 
-<details><summary><code>client.Customer.DeleteCustomer(CustomerId) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
+<details><summary><code>client.Customer.DeleteCustomer(CustomerID) -> *payabli.PayabliAPIResponse00Responsedatanonobject</code></summary>
 <dl>
 <dd>
 
@@ -3063,7 +3063,7 @@ client.Customer.DeleteCustomer(
 <dl>
 <dd>
 
-**customerId:** `int` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
+**customerID:** `int` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
     
 </dd>
 </dl>
@@ -3075,7 +3075,7 @@ client.Customer.DeleteCustomer(
 </dl>
 </details>
 
-<details><summary><code>client.Customer.GetCustomer(CustomerId) -> *payabli.CustomerQueryRecords</code></summary>
+<details><summary><code>client.Customer.GetCustomer(CustomerID) -> *payabli.CustomerQueryRecords</code></summary>
 <dl>
 <dd>
 
@@ -3121,7 +3121,7 @@ client.Customer.GetCustomer(
 <dl>
 <dd>
 
-**customerId:** `int` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
+**customerID:** `int` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
     
 </dd>
 </dl>
@@ -3133,7 +3133,7 @@ client.Customer.GetCustomer(
 </dl>
 </details>
 
-<details><summary><code>client.Customer.LinkCustomerTransaction(CustomerId, TransId) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
+<details><summary><code>client.Customer.LinkCustomerTransaction(CustomerID, TransID) -> *payabli.PayabliAPIResponse00Responsedatanonobject</code></summary>
 <dl>
 <dd>
 
@@ -3180,7 +3180,7 @@ client.Customer.LinkCustomerTransaction(
 <dl>
 <dd>
 
-**customerId:** `int` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
+**customerID:** `int` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
     
 </dd>
 </dl>
@@ -3188,7 +3188,7 @@ client.Customer.LinkCustomerTransaction(
 <dl>
 <dd>
 
-**transId:** `string` — ReferenceId for the transaction (PaymentId).
+**transID:** `string` — ReferenceId for the transaction (PaymentId).
     
 </dd>
 </dl>
@@ -3200,7 +3200,7 @@ client.Customer.LinkCustomerTransaction(
 </dl>
 </details>
 
-<details><summary><code>client.Customer.RequestConsent(CustomerId) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
+<details><summary><code>client.Customer.RequestConsent(CustomerID) -> *payabli.PayabliAPIResponse00Responsedatanonobject</code></summary>
 <dl>
 <dd>
 
@@ -3246,7 +3246,7 @@ client.Customer.RequestConsent(
 <dl>
 <dd>
 
-**customerId:** `int` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
+**customerID:** `int` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
     
 </dd>
 </dl>
@@ -3258,7 +3258,7 @@ client.Customer.RequestConsent(
 </dl>
 </details>
 
-<details><summary><code>client.Customer.UpdateCustomer(CustomerId, request) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
+<details><summary><code>client.Customer.UpdateCustomer(CustomerID, request) -> *payabli.PayabliAPIResponse00Responsedatanonobject</code></summary>
 <dl>
 <dd>
 
@@ -3328,7 +3328,7 @@ client.Customer.UpdateCustomer(
 <dl>
 <dd>
 
-**customerId:** `int` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
+**customerID:** `int` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
     
 </dd>
 </dl>
@@ -3349,7 +3349,7 @@ client.Customer.UpdateCustomer(
 </details>
 
 ## Export
-<details><summary><code>client.Export.ExportApplications(Format, OrgId) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportApplications(Format, OrgID) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -3416,7 +3416,7 @@ client.Export.ExportApplications(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -3688,7 +3688,7 @@ Example: `amount(gt)=20` return all records with amount greater than 20.00
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportBatchDetailsOrg(Format, OrgId) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportBatchDetailsOrg(Format, OrgID) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -3755,7 +3755,7 @@ client.Export.ExportBatchDetailsOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -4028,7 +4028,7 @@ Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater t
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportBatchesOrg(Format, OrgId) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportBatchesOrg(Format, OrgID) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -4095,7 +4095,7 @@ client.Export.ExportBatchesOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -4336,7 +4336,7 @@ Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater t
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportBatchesOutOrg(Format, OrgId) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportBatchesOutOrg(Format, OrgID) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -4403,7 +4403,7 @@ client.Export.ExportBatchesOutOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -4644,7 +4644,7 @@ Example: totalAmount(gt)=20  return all records with totalAmount greater than 20
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportBillsOrg(Format, OrgId) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportBillsOrg(Format, OrgID) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -4711,7 +4711,7 @@ client.Export.ExportBillsOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -4991,7 +4991,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportChargebacksOrg(Format, OrgId) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportChargebacksOrg(Format, OrgID) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -5058,7 +5058,7 @@ client.Export.ExportChargebacksOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -5352,7 +5352,7 @@ balance(gt)=20 return all records with balance greater than 20.00
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportCustomersOrg(Format, OrgId) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportCustomersOrg(Format, OrgID) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -5419,7 +5419,7 @@ client.Export.ExportCustomersOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -5716,7 +5716,7 @@ Example: `totalAmount(gt)=20` returns all records with `totalAmount` greater tha
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportInvoicesOrg(Format, OrgId) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportInvoicesOrg(Format, OrgID) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -5783,7 +5783,7 @@ client.Export.ExportInvoicesOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -5903,7 +5903,7 @@ Example: totalAmount(gt)=20  return all records with totalAmount greater than 20
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportOrganizations(Format, OrgId) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportOrganizations(Format, OrgID) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -5970,7 +5970,7 @@ client.Export.ExportOrganizations(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -6226,7 +6226,7 @@ Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportPayoutOrg(Format, OrgId) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportPayoutOrg(Format, OrgID) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -6293,7 +6293,7 @@ client.Export.ExportPayoutOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -6387,7 +6387,7 @@ Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportPaypoints(Format, OrgId) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportPaypoints(Format, OrgID) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -6454,7 +6454,7 @@ client.Export.ExportPaypoints(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -6733,7 +6733,7 @@ Example: `settledAmount(gt)=20` returns all records with a `settledAmount` great
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportSettlementsOrg(Format, OrgId) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportSettlementsOrg(Format, OrgID) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -6800,7 +6800,7 @@ client.Export.ExportSettlementsOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -7101,7 +7101,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportSubscriptionsOrg(Format, OrgId) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportSubscriptionsOrg(Format, OrgID) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -7168,7 +7168,7 @@ client.Export.ExportSubscriptionsOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -7475,7 +7475,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportTransactionsOrg(Format, OrgId) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportTransactionsOrg(Format, OrgID) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -7542,7 +7542,7 @@ client.Export.ExportTransactionsOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -7664,7 +7664,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportTransferDetails(Format, Entry, TransferId) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportTransferDetails(Format, Entry, TransferID) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -7743,7 +7743,7 @@ client.Export.ExportTransferDetails(
 <dl>
 <dd>
 
-**transferId:** `int64` — Transfer identifier.
+**transferID:** `int64` — Transfer identifier.
     
 </dd>
 </dl>
@@ -8160,7 +8160,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.Export.ExportVendorsOrg(Format, OrgId) -> payabli.File</code></summary>
+<details><summary><code>client.Export.ExportVendorsOrg(Format, OrgID) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -8227,7 +8227,7 @@ client.Export.ExportVendorsOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -8360,7 +8360,7 @@ Only one ghost card can exist per vendor per paypoint. To issue a new card to th
 
 ```go
 request := &payabli.CreateGhostCardRequestBody{
-        VendorId: int64(42),
+        VendorID: int64(42),
         ExpenseLimit: 500,
         Amount: 500,
         MaxNumberOfUses: 3,
@@ -8412,7 +8412,7 @@ client.GhostCard.CreateGhostCard(
 <dl>
 <dd>
 
-**vendorId:** `int64` — ID of the vendor who receives the card. The vendor must belong to the paypoint and have an active status.
+**vendorID:** `int64` — ID of the vendor who receives the card. The vendor must belong to the paypoint and have an active status.
     
 </dd>
 </dl>
@@ -8544,7 +8544,7 @@ client.GhostCard.CreateGhostCard(
 </dl>
 </details>
 
-<details><summary><code>client.GhostCard.UpdateCard(Entry, request) -> *payabli.PayabliApiResponse</code></summary>
+<details><summary><code>client.GhostCard.UpdateCard(Entry, request) -> *payabli.PayabliAPIResponse</code></summary>
 <dl>
 <dd>
 
@@ -8691,7 +8691,7 @@ client.HostedPaymentPages.LoadPage(
 </dl>
 </details>
 
-<details><summary><code>client.HostedPaymentPages.NewPage(Entry, request) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
+<details><summary><code>client.HostedPaymentPages.NewPage(Entry, request) -> *payabli.PayabliAPIResponse00Responsedatanonobject</code></summary>
 <dl>
 <dd>
 
@@ -8774,7 +8774,7 @@ client.HostedPaymentPages.NewPage(
 </dl>
 </details>
 
-<details><summary><code>client.HostedPaymentPages.SavePage(Entry, Subdomain, request) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
+<details><summary><code>client.HostedPaymentPages.SavePage(Entry, Subdomain, request) -> *payabli.PayabliAPIResponse00Responsedatanonobject</code></summary>
 <dl>
 <dd>
 
@@ -8852,7 +8852,7 @@ client.HostedPaymentPages.SavePage(
 </details>
 
 ## Import
-<details><summary><code>client.Import.ImportBills(Entry, request) -> *payabli.PayabliApiResponseImport</code></summary>
+<details><summary><code>client.Import.ImportBills(Entry, request) -> *payabli.PayabliAPIResponseImport</code></summary>
 <dl>
 <dd>
 
@@ -8916,7 +8916,7 @@ client.Import.ImportBills(
 </dl>
 </details>
 
-<details><summary><code>client.Import.ImportCustomer(Entry, request) -> *payabli.PayabliApiResponseImport</code></summary>
+<details><summary><code>client.Import.ImportCustomer(Entry, request) -> *payabli.PayabliAPIResponseImport</code></summary>
 <dl>
 <dd>
 
@@ -8988,7 +8988,7 @@ client.Import.ImportCustomer(
 </dl>
 </details>
 
-<details><summary><code>client.Import.ImportVendor(Entry, request) -> *payabli.PayabliApiResponseImport</code></summary>
+<details><summary><code>client.Import.ImportVendor(Entry, request) -> *payabli.PayabliAPIResponseImport</code></summary>
 <dl>
 <dd>
 
@@ -9209,7 +9209,7 @@ client.Invoice.AddInvoice(
 </dl>
 </details>
 
-<details><summary><code>client.Invoice.DeleteAttachedFromInvoice(IdInvoice, Filename) -> *payabli.InvoiceResponseWithoutData</code></summary>
+<details><summary><code>client.Invoice.DeleteAttachedFromInvoice(IDInvoice, Filename) -> *payabli.InvoiceResponseWithoutData</code></summary>
 <dl>
 <dd>
 
@@ -9288,7 +9288,7 @@ The filename in Payabli. Filename is `zipName` in response to a request to `/api
 </dl>
 </details>
 
-<details><summary><code>client.Invoice.DeleteInvoice(IdInvoice) -> *payabli.InvoiceResponseWithoutData</code></summary>
+<details><summary><code>client.Invoice.DeleteInvoice(IDInvoice) -> *payabli.InvoiceResponseWithoutData</code></summary>
 <dl>
 <dd>
 
@@ -9346,7 +9346,7 @@ client.Invoice.DeleteInvoice(
 </dl>
 </details>
 
-<details><summary><code>client.Invoice.EditInvoice(IdInvoice, request) -> *payabli.InvoiceResponseWithoutData</code></summary>
+<details><summary><code>client.Invoice.EditInvoice(IDInvoice, request) -> *payabli.InvoiceResponseWithoutData</code></summary>
 <dl>
 <dd>
 
@@ -9452,7 +9452,7 @@ client.Invoice.EditInvoice(
 </dl>
 </details>
 
-<details><summary><code>client.Invoice.GetAttachedFileFromInvoice(IdInvoice, Filename) -> *payabli.FileContent</code></summary>
+<details><summary><code>client.Invoice.GetAttachedFileFromInvoice(IDInvoice, Filename) -> *payabli.FileContent</code></summary>
 <dl>
 <dd>
 
@@ -9543,7 +9543,7 @@ The filename in Payabli. Filename is `zipName` in the response to a request to `
 </dl>
 </details>
 
-<details><summary><code>client.Invoice.GetInvoice(IdInvoice) -> *payabli.GetInvoiceRecord</code></summary>
+<details><summary><code>client.Invoice.GetInvoice(IDInvoice) -> *payabli.GetInvoiceRecord</code></summary>
 <dl>
 <dd>
 
@@ -9833,7 +9833,7 @@ Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.
 </dl>
 </details>
 
-<details><summary><code>client.Invoice.ListInvoicesOrg(OrgId) -> *payabli.QueryInvoiceResponse</code></summary>
+<details><summary><code>client.Invoice.ListInvoicesOrg(OrgID) -> *payabli.QueryInvoiceResponse</code></summary>
 <dl>
 <dd>
 
@@ -9891,7 +9891,7 @@ client.Invoice.ListInvoicesOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -10007,7 +10007,7 @@ Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.
 </dl>
 </details>
 
-<details><summary><code>client.Invoice.SendInvoice(IdInvoice) -> *payabli.SendInvoiceResponse</code></summary>
+<details><summary><code>client.Invoice.SendInvoice(IDInvoice) -> *payabli.SendInvoiceResponse</code></summary>
 <dl>
 <dd>
 
@@ -10090,7 +10090,7 @@ client.Invoice.SendInvoice(
 </dl>
 </details>
 
-<details><summary><code>client.Invoice.GetInvoicePdf(IdInvoice) -> payabli.File</code></summary>
+<details><summary><code>client.Invoice.GetInvoicePdf(IDInvoice) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -10149,7 +10149,7 @@ client.Invoice.GetInvoicePdf(
 </details>
 
 ## LineItem
-<details><summary><code>client.LineItem.AddItem(Entry, request) -> *payabli.PayabliApiResponse6</code></summary>
+<details><summary><code>client.LineItem.AddItem(Entry, request) -> *payabli.PayabliAPIResponse6</code></summary>
 <dl>
 <dd>
 
@@ -10248,7 +10248,7 @@ client.LineItem.AddItem(
 </dl>
 </details>
 
-<details><summary><code>client.LineItem.DeleteItem(LineItemId) -> *payabli.DeleteItemResponse</code></summary>
+<details><summary><code>client.LineItem.DeleteItem(LineItemID) -> *payabli.DeleteItemResponse</code></summary>
 <dl>
 <dd>
 
@@ -10294,7 +10294,7 @@ client.LineItem.DeleteItem(
 <dl>
 <dd>
 
-**lineItemId:** `int` — ID for the line item (also known as a product, service, or item).
+**lineItemID:** `int` — ID for the line item (also known as a product, service, or item).
     
 </dd>
 </dl>
@@ -10306,7 +10306,7 @@ client.LineItem.DeleteItem(
 </dl>
 </details>
 
-<details><summary><code>client.LineItem.GetItem(LineItemId) -> *payabli.LineItemQueryRecord</code></summary>
+<details><summary><code>client.LineItem.GetItem(LineItemID) -> *payabli.LineItemQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -10352,7 +10352,7 @@ client.LineItem.GetItem(
 <dl>
 <dd>
 
-**lineItemId:** `int` — ID for the line item (also known as a product, service, or item).
+**lineItemID:** `int` — ID for the line item (also known as a product, service, or item).
     
 </dd>
 </dl>
@@ -10522,7 +10522,7 @@ Example: name(ct)=john return all records with name containing john
 </dl>
 </details>
 
-<details><summary><code>client.LineItem.UpdateItem(LineItemId, request) -> *payabli.PayabliApiResponse6</code></summary>
+<details><summary><code>client.LineItem.UpdateItem(LineItemID, request) -> *payabli.PayabliAPIResponse6</code></summary>
 <dl>
 <dd>
 
@@ -10573,7 +10573,7 @@ client.LineItem.UpdateItem(
 <dl>
 <dd>
 
-**lineItemId:** `int` — ID for the line item (also known as a product, service, or item).
+**lineItemID:** `int` — ID for the line item (also known as a product, service, or item).
     
 </dd>
 </dl>
@@ -10628,7 +10628,7 @@ Only card transactions can be authorized. This endpoint can't be used for ACH tr
 request := &payabli.RequestPaymentAuthorize{
         Body: &payabli.TransRequestBody{
             CustomerData: &payabli.PayorDataRequest{
-                CustomerId: payabli.Int64(
+                CustomerID: payabli.Int64(
                     int64(4440),
                 ),
             },
@@ -10711,7 +10711,7 @@ client.MoneyIn.Authorize(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.Capture(TransId, Amount) -> *payabli.CaptureResponse</code></summary>
+<details><summary><code>client.MoneyIn.Capture(TransID, Amount) -> *payabli.CaptureResponse</code></summary>
 <dl>
 <dd>
 
@@ -10763,7 +10763,7 @@ client.MoneyIn.Capture(
 <dl>
 <dd>
 
-**transId:** `string` — ReferenceId for the transaction (PaymentId).
+**transID:** `string` — ReferenceId for the transaction (PaymentId).
     
 </dd>
 </dl>
@@ -10783,7 +10783,7 @@ client.MoneyIn.Capture(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.CaptureAuth(TransId, request) -> *payabli.CaptureResponse</code></summary>
+<details><summary><code>client.MoneyIn.CaptureAuth(TransID, request) -> *payabli.CaptureResponse</code></summary>
 <dl>
 <dd>
 
@@ -10844,7 +10844,7 @@ client.MoneyIn.CaptureAuth(
 <dl>
 <dd>
 
-**transId:** `string` — ReferenceId for the transaction (PaymentId).
+**transID:** `string` — ReferenceId for the transaction (PaymentId).
     
 </dd>
 </dl>
@@ -10864,7 +10864,7 @@ client.MoneyIn.CaptureAuth(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.Credit(request) -> *payabli.PayabliApiResponse0</code></summary>
+<details><summary><code>client.MoneyIn.Credit(request) -> *payabli.PayabliAPIResponse0</code></summary>
 <dl>
 <dd>
 
@@ -10962,7 +10962,7 @@ client.MoneyIn.Credit(
 <dl>
 <dd>
 
-**accountId:** `*payabli.AccountId` 
+**accountID:** `*payabli.AccountID` 
     
 </dd>
 </dl>
@@ -10994,7 +10994,7 @@ client.MoneyIn.Credit(
 <dl>
 <dd>
 
-**orderId:** `*payabli.OrderId` 
+**orderID:** `*payabli.OrderID` 
     
 </dd>
 </dl>
@@ -11038,7 +11038,7 @@ client.MoneyIn.Credit(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.Details(TransId) -> *payabli.TransactionQueryRecordsCustomer</code></summary>
+<details><summary><code>client.MoneyIn.Details(TransID) -> *payabli.TransactionQueryRecordsCustomer</code></summary>
 <dl>
 <dd>
 
@@ -11084,7 +11084,7 @@ client.MoneyIn.Details(
 <dl>
 <dd>
 
-**transId:** `string` — ReferenceId for the transaction (PaymentId).
+**transID:** `string` — ReferenceId for the transaction (PaymentId).
     
 </dd>
 </dl>
@@ -11096,7 +11096,7 @@ client.MoneyIn.Details(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.Getpaid(request) -> *payabli.PayabliApiResponseGetPaid</code></summary>
+<details><summary><code>client.MoneyIn.Getpaid(request) -> *payabli.PayabliAPIResponseGetPaid</code></summary>
 <dl>
 <dd>
 
@@ -11130,7 +11130,7 @@ Make a single transaction. This method authorizes and captures a payment in one 
 request := &payabli.RequestPayment{
         Body: &payabli.TransRequestBody{
             CustomerData: &payabli.PayorDataRequest{
-                CustomerId: payabli.Int64(
+                CustomerID: payabli.Int64(
                     int64(4440),
                 ),
             },
@@ -11237,7 +11237,7 @@ client.MoneyIn.Getpaid(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.Reverse(TransId, Amount) -> *payabli.ReverseResponse</code></summary>
+<details><summary><code>client.MoneyIn.Reverse(TransID, Amount) -> *payabli.ReverseResponse</code></summary>
 <dl>
 <dd>
 
@@ -11284,7 +11284,7 @@ client.MoneyIn.Reverse(
 <dl>
 <dd>
 
-**transId:** `string` — ReferenceId for the transaction (PaymentId).
+**transID:** `string` — ReferenceId for the transaction (PaymentId).
     
 </dd>
 </dl>
@@ -11311,7 +11311,7 @@ An amount equal to zero will refunds the total amount authorized minus any servi
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.Refund(TransId, Amount) -> *payabli.RefundResponse</code></summary>
+<details><summary><code>client.MoneyIn.Refund(TransID, Amount) -> *payabli.RefundResponse</code></summary>
 <dl>
 <dd>
 
@@ -11362,7 +11362,7 @@ client.MoneyIn.Refund(
 <dl>
 <dd>
 
-**transId:** `string` — ReferenceId for the transaction (PaymentId).
+**transID:** `string` — ReferenceId for the transaction (PaymentId).
     
 </dd>
 </dl>
@@ -11389,7 +11389,7 @@ An amount equal to zero will refund the total amount authorized minus any servic
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.RefundWithInstructions(TransId, request) -> *payabli.RefundWithInstructionsResponse</code></summary>
+<details><summary><code>client.MoneyIn.RefundWithInstructions(TransID, request) -> *payabli.RefundWithInstructionsResponse</code></summary>
 <dl>
 <dd>
 
@@ -11435,7 +11435,7 @@ request := &payabli.RequestRefund{
                     OriginationEntryPoint: payabli.String(
                         "7f1a381696",
                     ),
-                    AccountId: payabli.String(
+                    AccountID: payabli.String(
                         "187-342",
                     ),
                     Description: payabli.String(
@@ -11449,7 +11449,7 @@ request := &payabli.RequestRefund{
                     OriginationEntryPoint: payabli.String(
                         "7f1a381696",
                     ),
-                    AccountId: payabli.String(
+                    AccountID: payabli.String(
                         "187-343",
                     ),
                     Description: payabli.String(
@@ -11482,7 +11482,7 @@ client.MoneyIn.RefundWithInstructions(
 <dl>
 <dd>
 
-**transId:** `string` — ReferenceId for the transaction (PaymentId).
+**transID:** `string` — ReferenceId for the transaction (PaymentId).
     
 </dd>
 </dl>
@@ -11513,7 +11513,7 @@ An amount equal to zero will refund the total amount authorized minus any servic
 <dl>
 <dd>
 
-**ipaddress:** `*payabli.IpAddress` 
+**ipaddress:** `*payabli.IPAddress` 
     
 </dd>
 </dl>
@@ -11529,7 +11529,7 @@ An amount equal to zero will refund the total amount authorized minus any servic
 <dl>
 <dd>
 
-**orderId:** `*payabli.OrderId` 
+**orderID:** `*payabli.OrderID` 
     
 </dd>
 </dl>
@@ -11557,7 +11557,7 @@ An amount equal to zero will refund the total amount authorized minus any servic
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.ReverseCredit(TransId) -> *payabli.PayabliApiResponse</code></summary>
+<details><summary><code>client.MoneyIn.ReverseCredit(TransID) -> *payabli.PayabliAPIResponse</code></summary>
 <dl>
 <dd>
 
@@ -11603,7 +11603,7 @@ client.MoneyIn.ReverseCredit(
 <dl>
 <dd>
 
-**transId:** `string` — ReferenceId for the transaction (PaymentId).
+**transID:** `string` — ReferenceId for the transaction (PaymentId).
     
 </dd>
 </dl>
@@ -11615,7 +11615,7 @@ client.MoneyIn.ReverseCredit(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.SendReceipt2Trans(TransId) -> *payabli.ReceiptResponse</code></summary>
+<details><summary><code>client.MoneyIn.SendReceipt2Trans(TransID) -> *payabli.ReceiptResponse</code></summary>
 <dl>
 <dd>
 
@@ -11667,7 +11667,7 @@ client.MoneyIn.SendReceipt2Trans(
 <dl>
 <dd>
 
-**transId:** `string` — ReferenceId for the transaction (PaymentId).
+**transID:** `string` — ReferenceId for the transaction (PaymentId).
     
 </dd>
 </dl>
@@ -11758,7 +11758,7 @@ client.MoneyIn.Validate(
 <dl>
 <dd>
 
-**accountId:** `*payabli.AccountId` 
+**accountID:** `*payabli.AccountID` 
     
 </dd>
 </dl>
@@ -11782,7 +11782,7 @@ client.MoneyIn.Validate(
 <dl>
 <dd>
 
-**orderId:** `*payabli.OrderId` 
+**orderID:** `*payabli.OrderID` 
     
 </dd>
 </dl>
@@ -11802,7 +11802,7 @@ client.MoneyIn.Validate(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.Void(TransId) -> *payabli.VoidResponse</code></summary>
+<details><summary><code>client.MoneyIn.Void(TransID) -> *payabli.VoidResponse</code></summary>
 <dl>
 <dd>
 
@@ -11852,7 +11852,7 @@ client.MoneyIn.Void(
 <dl>
 <dd>
 
-**transId:** `string` — ReferenceId for the transaction (PaymentId).
+**transID:** `string` — ReferenceId for the transaction (PaymentId).
     
 </dd>
 </dl>
@@ -11894,7 +11894,7 @@ Make a single transaction. This method authorizes and captures a payment in one 
 request := &payabli.RequestPaymentV2{
         Body: &payabli.TransRequestBody{
             CustomerData: &payabli.PayorDataRequest{
-                CustomerId: payabli.Int64(
+                CustomerID: payabli.Int64(
                     int64(4440),
                 ),
             },
@@ -12025,7 +12025,7 @@ Authorize a card transaction. This returns an authorization code and reserves fu
 request := &payabli.RequestPaymentAuthorizeV2{
         Body: &payabli.TransRequestBody{
             CustomerData: &payabli.PayorDataRequest{
-                CustomerId: payabli.Int64(
+                CustomerID: payabli.Int64(
                     int64(4440),
                 ),
             },
@@ -12108,7 +12108,7 @@ client.MoneyIn.Authorizev2(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.Capturev2(TransId, request) -> *payabli.V2TransactionResponseWrapper</code></summary>
+<details><summary><code>client.MoneyIn.Capturev2(TransID, request) -> *payabli.V2TransactionResponseWrapper</code></summary>
 <dl>
 <dd>
 
@@ -12163,7 +12163,7 @@ client.MoneyIn.Capturev2(
 <dl>
 <dd>
 
-**transId:** `string` — ReferenceId for the transaction (PaymentId).
+**transID:** `string` — ReferenceId for the transaction (PaymentId).
     
 </dd>
 </dl>
@@ -12183,7 +12183,7 @@ client.MoneyIn.Capturev2(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.Refundv2(TransId) -> *payabli.V2TransactionResponseWrapper</code></summary>
+<details><summary><code>client.MoneyIn.Refundv2(TransID) -> *payabli.V2TransactionResponseWrapper</code></summary>
 <dl>
 <dd>
 
@@ -12231,7 +12231,7 @@ client.MoneyIn.Refundv2(
 <dl>
 <dd>
 
-**transId:** `string` — ReferenceId for the transaction (PaymentId).
+**transID:** `string` — ReferenceId for the transaction (PaymentId).
     
 </dd>
 </dl>
@@ -12243,7 +12243,7 @@ client.MoneyIn.Refundv2(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.Refundv2Amount(TransId, Amount) -> *payabli.V2TransactionResponseWrapper</code></summary>
+<details><summary><code>client.MoneyIn.Refundv2Amount(TransID, Amount) -> *payabli.V2TransactionResponseWrapper</code></summary>
 <dl>
 <dd>
 
@@ -12292,7 +12292,7 @@ client.MoneyIn.Refundv2Amount(
 <dl>
 <dd>
 
-**transId:** `string` — ReferenceId for the transaction (PaymentId).
+**transID:** `string` — ReferenceId for the transaction (PaymentId).
     
 </dd>
 </dl>
@@ -12312,7 +12312,7 @@ client.MoneyIn.Refundv2Amount(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.Voidv2(TransId) -> *payabli.V2TransactionResponseWrapper</code></summary>
+<details><summary><code>client.MoneyIn.Voidv2(TransID) -> *payabli.V2TransactionResponseWrapper</code></summary>
 <dl>
 <dd>
 
@@ -12358,7 +12358,7 @@ client.MoneyIn.Voidv2(
 <dl>
 <dd>
 
-**transId:** `string` — ReferenceId for the transaction (PaymentId).
+**transID:** `string` — ReferenceId for the transaction (PaymentId).
     
 </dd>
 </dl>
@@ -12406,7 +12406,7 @@ request := &payabli.MoneyOutTypesRequestOutAuthorize{
             ),
             InvoiceData: []*payabli.RequestOutAuthorizeInvoiceData{
                 &payabli.RequestOutAuthorizeInvoiceData{
-                    BillId: payabli.Int64(
+                    BillID: payabli.Int64(
                         int64(54323),
                     ),
                 },
@@ -12558,7 +12558,7 @@ client.MoneyOut.CancelAllOut(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyOut.CancelOutGet(ReferenceId) -> *payabli.PayabliApiResponse0000</code></summary>
+<details><summary><code>client.MoneyOut.CancelOutGet(ReferenceID) -> *payabli.PayabliAPIResponse0000</code></summary>
 <dl>
 <dd>
 
@@ -12604,7 +12604,7 @@ client.MoneyOut.CancelOutGet(
 <dl>
 <dd>
 
-**referenceId:** `string` — The ID for the payout transaction. 
+**referenceID:** `string` — The ID for the payout transaction. 
     
 </dd>
 </dl>
@@ -12616,7 +12616,7 @@ client.MoneyOut.CancelOutGet(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyOut.CancelOutDelete(ReferenceId) -> *payabli.PayabliApiResponse0000</code></summary>
+<details><summary><code>client.MoneyOut.CancelOutDelete(ReferenceID) -> *payabli.PayabliAPIResponse0000</code></summary>
 <dl>
 <dd>
 
@@ -12662,7 +12662,7 @@ client.MoneyOut.CancelOutDelete(
 <dl>
 <dd>
 
-**referenceId:** `string` — The ID for the payout transaction. 
+**referenceID:** `string` — The ID for the payout transaction. 
     
 </dd>
 </dl>
@@ -12747,7 +12747,7 @@ client.MoneyOut.CaptureAllOut(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyOut.CaptureOut(ReferenceId) -> *payabli.AuthCapturePayoutResponse</code></summary>
+<details><summary><code>client.MoneyOut.CaptureOut(ReferenceID) -> *payabli.AuthCapturePayoutResponse</code></summary>
 <dl>
 <dd>
 
@@ -12795,7 +12795,7 @@ client.MoneyOut.CaptureOut(
 <dl>
 <dd>
 
-**referenceId:** `string` — The ID for the payout transaction. 
+**referenceID:** `string` — The ID for the payout transaction. 
     
 </dd>
 </dl>
@@ -12815,7 +12815,7 @@ client.MoneyOut.CaptureOut(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyOut.PayoutDetails(TransId) -> *payabli.BillDetailResponse</code></summary>
+<details><summary><code>client.MoneyOut.PayoutDetails(TransID) -> *payabli.BillDetailResponse</code></summary>
 <dl>
 <dd>
 
@@ -12861,7 +12861,7 @@ client.MoneyOut.PayoutDetails(
 <dl>
 <dd>
 
-**transId:** `string` — ReferenceId for the transaction (PaymentId).
+**transID:** `string` — ReferenceId for the transaction (PaymentId).
     
 </dd>
 </dl>
@@ -12959,7 +12959,7 @@ Sends a virtual card link via email to the vendor associated with the `transId`.
 
 ```go
 request := &payabli.SendVCardLinkRequest{
-        TransId: "01K33Z6YQZ6GD5QVKZ856MJBSC",
+        TransID: "01K33Z6YQZ6GD5QVKZ856MJBSC",
     }
 client.MoneyOut.SendVCardLink(
         context.TODO(),
@@ -12980,7 +12980,7 @@ client.MoneyOut.SendVCardLink(
 <dl>
 <dd>
 
-**transId:** `string` — The transaction ID of the virtual card payout. The ID is returned as `ReferenceId` in the response when you authorize a payout with POST /MoneyOut/authorize.
+**transID:** `string` — The transaction ID of the virtual card payout. The ID is returned as `ReferenceId` in the response when you authorize a payout with POST /MoneyOut/authorize.
     
 </dd>
 </dl>
@@ -13063,7 +13063,7 @@ in the response when you make a GET request to `/MoneyOut/details/{transId}`.
 </dl>
 </details>
 
-<details><summary><code>client.MoneyOut.UpdateCheckPaymentStatus(TransId, CheckPaymentStatus) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
+<details><summary><code>client.MoneyOut.UpdateCheckPaymentStatus(TransID, CheckPaymentStatus) -> *payabli.PayabliAPIResponse00Responsedatanonobject</code></summary>
 <dl>
 <dd>
 
@@ -13121,7 +13121,7 @@ client.MoneyOut.UpdateCheckPaymentStatus(
 <dl>
 <dd>
 
-**transId:** `string` — The Payabli transaction ID for the check payment.
+**transID:** `string` — The Payabli transaction ID for the check payment.
     
 </dd>
 </dl>
@@ -13173,7 +13173,7 @@ The new transaction goes through the standard authorize-and-capture flow automat
 
 ```go
 request := &payabli.ReissueOutRequest{
-        TransId: "129-219",
+        TransID: "129-219",
         Body: &payabli.ReissuePayoutBody{
             PaymentMethod: &payabli.ReissuePaymentMethod{
                 Method: "ach",
@@ -13212,7 +13212,7 @@ client.MoneyOut.ReissueOut(
 <dl>
 <dd>
 
-**transId:** `string` — The transaction ID of the payout to reissue.
+**transID:** `string` — The transaction ID of the payout to reissue.
     
 </dd>
 </dl>
@@ -13241,7 +13241,7 @@ client.MoneyOut.ReissueOut(
 </details>
 
 ## Notification
-<details><summary><code>client.Notification.AddNotification(request) -> *payabli.PayabliApiResponseNotifications</code></summary>
+<details><summary><code>client.Notification.AddNotification(request) -> *payabli.PayabliAPIResponseNotifications</code></summary>
 <dl>
 <dd>
 
@@ -13275,7 +13275,7 @@ request := &payabli.AddNotificationRequest{
             },
             Frequency: payabli.NotificationStandardRequestFrequencyUntilcancelled,
             Method: payabli.NotificationStandardRequestMethodWeb,
-            OwnerId: payabli.Int(
+            OwnerID: payabli.Int(
                 236,
             ),
             OwnerType: 0,
@@ -13316,7 +13316,7 @@ client.Notification.AddNotification(
 </dl>
 </details>
 
-<details><summary><code>client.Notification.DeleteNotification(NId) -> *payabli.PayabliApiResponseNotifications</code></summary>
+<details><summary><code>client.Notification.DeleteNotification(NID) -> *payabli.PayabliAPIResponseNotifications</code></summary>
 <dl>
 <dd>
 
@@ -13362,7 +13362,7 @@ client.Notification.DeleteNotification(
 <dl>
 <dd>
 
-**nId:** `string` — Notification ID. 
+**nID:** `string` — Notification ID. 
     
 </dd>
 </dl>
@@ -13374,7 +13374,7 @@ client.Notification.DeleteNotification(
 </dl>
 </details>
 
-<details><summary><code>client.Notification.GetNotification(NId) -> *payabli.NotificationQueryRecord</code></summary>
+<details><summary><code>client.Notification.GetNotification(NID) -> *payabli.NotificationQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -13420,7 +13420,7 @@ client.Notification.GetNotification(
 <dl>
 <dd>
 
-**nId:** `string` — Notification ID. 
+**nID:** `string` — Notification ID. 
     
 </dd>
 </dl>
@@ -13432,7 +13432,7 @@ client.Notification.GetNotification(
 </dl>
 </details>
 
-<details><summary><code>client.Notification.UpdateNotification(NId, request) -> *payabli.PayabliApiResponseNotifications</code></summary>
+<details><summary><code>client.Notification.UpdateNotification(NID, request) -> *payabli.PayabliAPIResponseNotifications</code></summary>
 <dl>
 <dd>
 
@@ -13466,7 +13466,7 @@ request := &payabli.UpdateNotificationRequest{
             },
             Frequency: payabli.NotificationStandardRequestFrequencyUntilcancelled,
             Method: payabli.NotificationStandardRequestMethodEmail,
-            OwnerId: payabli.Int(
+            OwnerID: payabli.Int(
                 136,
             ),
             OwnerType: 0,
@@ -13496,7 +13496,7 @@ client.Notification.UpdateNotification(
 <dl>
 <dd>
 
-**nId:** `string` — Notification ID. 
+**nID:** `string` — Notification ID. 
     
 </dd>
 </dl>
@@ -13516,7 +13516,7 @@ client.Notification.UpdateNotification(
 </dl>
 </details>
 
-<details><summary><code>client.Notification.GetReportFile(Id) -> payabli.File</code></summary>
+<details><summary><code>client.Notification.GetReportFile(ID) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -13617,7 +13617,7 @@ request := &payabli.SearchNotificationLogsRequest{
             EndDate: payabli.MustParseDateTime(
                 "2024-01-31T23:59:59Z",
             ),
-            OrgId: payabli.Int64(
+            OrgID: payabli.Int64(
                 int64(12345),
             ),
             NotificationEvent: payabli.String(
@@ -13675,7 +13675,7 @@ client.Notificationlogs.SearchNotificationLogs(
 </dl>
 </details>
 
-<details><summary><code>client.Notificationlogs.GetNotificationLog(Uuid) -> *payabli.NotificationLogDetail</code></summary>
+<details><summary><code>client.Notificationlogs.GetNotificationLog(UUID) -> *payabli.NotificationLogDetail</code></summary>
 <dl>
 <dd>
 
@@ -13736,7 +13736,7 @@ client.Notificationlogs.GetNotificationLog(
 </dl>
 </details>
 
-<details><summary><code>client.Notificationlogs.RetryNotificationLog(Uuid) -> *payabli.NotificationLogDetail</code></summary>
+<details><summary><code>client.Notificationlogs.RetryNotificationLog(UUID) -> *payabli.NotificationLogDetail</code></summary>
 <dl>
 <dd>
 
@@ -13871,7 +13871,7 @@ client.Notificationlogs.BulkRetryNotificationLogs(
 </details>
 
 ## Ocr
-<details><summary><code>client.Ocr.OcrDocumentForm(TypeResult, request) -> *payabli.PayabliApiResponseOcr</code></summary>
+<details><summary><code>client.Ocr.OcrDocumentForm(TypeResult, request) -> *payabli.PayabliAPIResponseOcr</code></summary>
 <dl>
 <dd>
 
@@ -13939,7 +13939,7 @@ client.Ocr.OcrDocumentForm(
 </dl>
 </details>
 
-<details><summary><code>client.Ocr.OcrDocumentJson(TypeResult, request) -> *payabli.PayabliApiResponseOcr</code></summary>
+<details><summary><code>client.Ocr.OcrDocumentJSON(TypeResult, request) -> *payabli.PayabliAPIResponseOcr</code></summary>
 <dl>
 <dd>
 
@@ -13967,7 +13967,7 @@ Use this endpoint to submit a Base64-encoded image file for OCR processing. The 
 
 ```go
 request := &payabli.FileContentImageOnly{}
-client.Ocr.OcrDocumentJson(
+client.Ocr.OcrDocumentJSON(
         context.TODO(),
         "typeResult",
         request,
@@ -14092,7 +14092,7 @@ request := &payabli.AddOrganizationRequest{
         OrgEntryName: payabli.String(
             "pilgrim-planner",
         ),
-        OrgId: payabli.String(
+        OrgID: payabli.String(
             "123",
         ),
         OrgLogo: &payabli.FileContent{
@@ -14108,7 +14108,7 @@ request := &payabli.AddOrganizationRequest{
             ),
         },
         OrgName: "Pilgrim Planner",
-        OrgParentId: payabli.Int64(
+        OrgParentID: payabli.Int64(
             int64(236),
         ),
         OrgState: payabli.String(
@@ -14225,7 +14225,7 @@ client.Organization.AddOrganization(
 <dl>
 <dd>
 
-**orgId:** `*payabli.Orgidstring` 
+**orgID:** `*payabli.Orgidstring` 
     
 </dd>
 </dl>
@@ -14249,7 +14249,7 @@ client.Organization.AddOrganization(
 <dl>
 <dd>
 
-**orgParentId:** `*payabli.OrgParentId` 
+**orgParentID:** `*payabli.OrgParentID` 
     
 </dd>
 </dl>
@@ -14309,7 +14309,7 @@ client.Organization.AddOrganization(
 </dl>
 </details>
 
-<details><summary><code>client.Organization.DeleteOrganization(OrgId) -> *payabli.DeleteOrganizationResponse</code></summary>
+<details><summary><code>client.Organization.DeleteOrganization(OrgID) -> *payabli.DeleteOrganizationResponse</code></summary>
 <dl>
 <dd>
 
@@ -14355,7 +14355,7 @@ client.Organization.DeleteOrganization(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -14367,7 +14367,7 @@ client.Organization.DeleteOrganization(
 </dl>
 </details>
 
-<details><summary><code>client.Organization.EditOrganization(OrgId, request) -> *payabli.EditOrganizationResponse</code></summary>
+<details><summary><code>client.Organization.EditOrganization(OrgID, request) -> *payabli.EditOrganizationResponse</code></summary>
 <dl>
 <dd>
 
@@ -14423,7 +14423,7 @@ request := &payabli.OrganizationData{
         OrgEntryName: payabli.String(
             "pilgrim-planner",
         ),
-        OrganizationDataOrgId: payabli.String(
+        OrganizationDataOrgID: payabli.String(
             "123",
         ),
         OrgName: payabli.String(
@@ -14465,7 +14465,7 @@ client.Organization.EditOrganization(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -14545,7 +14545,7 @@ client.Organization.EditOrganization(
 <dl>
 <dd>
 
-**organizationDataOrgId:** `*payabli.Orgidstring` 
+**organizationDataOrgID:** `*payabli.Orgidstring` 
     
 </dd>
 </dl>
@@ -14569,7 +14569,7 @@ client.Organization.EditOrganization(
 <dl>
 <dd>
 
-**orgParentId:** `*payabli.OrgParentId` 
+**orgParentID:** `*payabli.OrgParentID` 
     
 </dd>
 </dl>
@@ -14687,7 +14687,7 @@ client.Organization.GetBasicOrganization(
 </dl>
 </details>
 
-<details><summary><code>client.Organization.GetBasicOrganizationById(OrgId) -> *payabli.OrganizationQueryRecord</code></summary>
+<details><summary><code>client.Organization.GetBasicOrganizationByID(OrgID) -> *payabli.OrganizationQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -14714,7 +14714,7 @@ Gets an organizations basic details by org ID.
 <dd>
 
 ```go
-client.Organization.GetBasicOrganizationById(
+client.Organization.GetBasicOrganizationByID(
         context.TODO(),
         123,
     )
@@ -14733,7 +14733,7 @@ client.Organization.GetBasicOrganizationById(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -14745,7 +14745,7 @@ client.Organization.GetBasicOrganizationById(
 </dl>
 </details>
 
-<details><summary><code>client.Organization.GetOrganization(OrgId) -> *payabli.OrganizationQueryRecord</code></summary>
+<details><summary><code>client.Organization.GetOrganization(OrgID) -> *payabli.OrganizationQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -14791,7 +14791,7 @@ client.Organization.GetOrganization(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -14803,7 +14803,7 @@ client.Organization.GetOrganization(
 </dl>
 </details>
 
-<details><summary><code>client.Organization.GetSettingsOrganization(OrgId) -> *payabli.SettingsQueryRecord</code></summary>
+<details><summary><code>client.Organization.GetSettingsOrganization(OrgID) -> *payabli.SettingsQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -14849,7 +14849,7 @@ client.Organization.GetSettingsOrganization(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -14862,7 +14862,7 @@ client.Organization.GetSettingsOrganization(
 </details>
 
 ## PaymentLink
-<details><summary><code>client.PaymentLink.AddPayLinkFromInvoice(IdInvoice, request) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
+<details><summary><code>client.PaymentLink.AddPayLinkFromInvoice(IDInvoice, request) -> *payabli.PayabliAPIResponsePaymentLinks</code></summary>
 <dl>
 <dd>
 
@@ -15127,7 +15127,7 @@ request := &payabli.PayLinkDataInvoice{
                 RedirectAfterApprove: payabli.Bool(
                     true,
                 ),
-                RedirectAfterApproveUrl: payabli.String(
+                RedirectAfterApproveURL: payabli.String(
                     "https://example.com/success",
                 ),
             },
@@ -15197,7 +15197,7 @@ client.PaymentLink.AddPayLinkFromInvoice(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentLink.AddPayLinkFromBill(BillId, request) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
+<details><summary><code>client.PaymentLink.AddPayLinkFromBill(BillID, request) -> *payabli.PayabliAPIResponsePaymentLinks</code></summary>
 <dl>
 <dd>
 
@@ -15385,7 +15385,7 @@ client.PaymentLink.AddPayLinkFromBill(
 <dl>
 <dd>
 
-**billId:** `int` — The Payabli ID for the bill.
+**billID:** `int` — The Payabli ID for the bill.
     
 </dd>
 </dl>
@@ -15429,7 +15429,7 @@ client.PaymentLink.AddPayLinkFromBill(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentLink.DeletePayLinkFromId(PayLinkId) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
+<details><summary><code>client.PaymentLink.DeletePayLinkFromID(PayLinkID) -> *payabli.PayabliAPIResponsePaymentLinks</code></summary>
 <dl>
 <dd>
 
@@ -15456,7 +15456,7 @@ Deletes a payment link by ID.
 <dd>
 
 ```go
-client.PaymentLink.DeletePayLinkFromId(
+client.PaymentLink.DeletePayLinkFromID(
         context.TODO(),
         "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
     )
@@ -15475,7 +15475,7 @@ client.PaymentLink.DeletePayLinkFromId(
 <dl>
 <dd>
 
-**payLinkId:** `string` — ID for the payment link.
+**payLinkID:** `string` — ID for the payment link.
     
 </dd>
 </dl>
@@ -15487,7 +15487,7 @@ client.PaymentLink.DeletePayLinkFromId(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentLink.GetPayLinkFromId(PaylinkId) -> *payabli.GetPayLinkFromIdResponse</code></summary>
+<details><summary><code>client.PaymentLink.GetPayLinkFromID(PaylinkID) -> *payabli.GetPayLinkFromIDResponse</code></summary>
 <dl>
 <dd>
 
@@ -15514,7 +15514,7 @@ Retrieves a payment link by ID.
 <dd>
 
 ```go
-client.PaymentLink.GetPayLinkFromId(
+client.PaymentLink.GetPayLinkFromID(
         context.TODO(),
         "paylinkId",
     )
@@ -15533,7 +15533,7 @@ client.PaymentLink.GetPayLinkFromId(
 <dl>
 <dd>
 
-**paylinkId:** `string` — ID for payment link
+**paylinkID:** `string` — ID for payment link
     
 </dd>
 </dl>
@@ -15545,7 +15545,7 @@ client.PaymentLink.GetPayLinkFromId(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentLink.PushPayLinkFromId(PayLinkId, request) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
+<details><summary><code>client.PaymentLink.PushPayLinkFromID(PayLinkID, request) -> *payabli.PayabliAPIResponsePaymentLinks</code></summary>
 <dl>
 <dd>
 
@@ -15575,7 +15575,7 @@ Send a payment link to the specified email addresses or phone numbers.
 request := &payabli.PushPayLinkRequest{
         Sms: &payabli.PushPayLinkRequestSms{},
     }
-client.PaymentLink.PushPayLinkFromId(
+client.PaymentLink.PushPayLinkFromID(
         context.TODO(),
         "payLinkId",
         request,
@@ -15595,7 +15595,7 @@ client.PaymentLink.PushPayLinkFromId(
 <dl>
 <dd>
 
-**payLinkId:** `string` — ID for the payment link.
+**payLinkID:** `string` — ID for the payment link.
     
 </dd>
 </dl>
@@ -15615,7 +15615,7 @@ client.PaymentLink.PushPayLinkFromId(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentLink.RefreshPayLinkFromId(PayLinkId) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
+<details><summary><code>client.PaymentLink.RefreshPayLinkFromID(PayLinkID) -> *payabli.PayabliAPIResponsePaymentLinks</code></summary>
 <dl>
 <dd>
 
@@ -15642,8 +15642,8 @@ Refresh a payment link's content after an update.
 <dd>
 
 ```go
-request := &payabli.RefreshPayLinkFromIdRequest{}
-client.PaymentLink.RefreshPayLinkFromId(
+request := &payabli.RefreshPayLinkFromIDRequest{}
+client.PaymentLink.RefreshPayLinkFromID(
         context.TODO(),
         "payLinkId",
         request,
@@ -15663,7 +15663,7 @@ client.PaymentLink.RefreshPayLinkFromId(
 <dl>
 <dd>
 
-**payLinkId:** `string` — ID for the payment link.
+**payLinkID:** `string` — ID for the payment link.
     
 </dd>
 </dl>
@@ -15683,7 +15683,7 @@ client.PaymentLink.RefreshPayLinkFromId(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentLink.SendPayLinkFromId(PayLinkId) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
+<details><summary><code>client.PaymentLink.SendPayLinkFromID(PayLinkID) -> *payabli.PayabliAPIResponsePaymentLinks</code></summary>
 <dl>
 <dd>
 
@@ -15710,12 +15710,12 @@ Sends a payment link to the specified email addresses.
 <dd>
 
 ```go
-request := &payabli.SendPayLinkFromIdRequest{
+request := &payabli.SendPayLinkFromIDRequest{
         Mail2: payabli.String(
             "jo@example.com; ceo@example.com",
         ),
     }
-client.PaymentLink.SendPayLinkFromId(
+client.PaymentLink.SendPayLinkFromID(
         context.TODO(),
         "payLinkId",
         request,
@@ -15735,7 +15735,7 @@ client.PaymentLink.SendPayLinkFromId(
 <dl>
 <dd>
 
-**payLinkId:** `string` — ID for the payment link.
+**payLinkID:** `string` — ID for the payment link.
     
 </dd>
 </dl>
@@ -15763,7 +15763,7 @@ client.PaymentLink.SendPayLinkFromId(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentLink.UpdatePayLinkFromId(PayLinkId, request) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
+<details><summary><code>client.PaymentLink.UpdatePayLinkFromID(PayLinkID, request) -> *payabli.PayabliAPIResponsePaymentLinks</code></summary>
 <dl>
 <dd>
 
@@ -15820,7 +15820,7 @@ request := &payabli.PayLinkUpdateData{
             ),
         },
     }
-client.PaymentLink.UpdatePayLinkFromId(
+client.PaymentLink.UpdatePayLinkFromID(
         context.TODO(),
         "332-c277b704-1301",
         request,
@@ -15840,7 +15840,7 @@ client.PaymentLink.UpdatePayLinkFromId(
 <dl>
 <dd>
 
-**payLinkId:** `string` — ID for the payment link.
+**payLinkID:** `string` — ID for the payment link.
     
 </dd>
 </dl>
@@ -15924,7 +15924,7 @@ client.PaymentLink.UpdatePayLinkFromId(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentLink.AddPayLinkFromBillLotNumber(LotNumber, request) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
+<details><summary><code>client.PaymentLink.AddPayLinkFromBillLotNumber(LotNumber, request) -> *payabli.PayabliAPIResponsePaymentLinks</code></summary>
 <dl>
 <dd>
 
@@ -16169,7 +16169,7 @@ client.PaymentLink.AddPayLinkFromBillLotNumber(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentLink.PatchOutPaymentLink(PaylinkId, request) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
+<details><summary><code>client.PaymentLink.PatchOutPaymentLink(PaylinkID, request) -> *payabli.PayabliAPIResponsePaymentLinks</code></summary>
 <dl>
 <dd>
 
@@ -16222,7 +16222,7 @@ client.PaymentLink.PatchOutPaymentLink(
 <dl>
 <dd>
 
-**paylinkId:** `string` — ID for the payment link.
+**paylinkID:** `string` — ID for the payment link.
     
 </dd>
 </dl>
@@ -16242,7 +16242,7 @@ client.PaymentLink.PatchOutPaymentLink(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentLink.UpdatePayLinkOutFromId(PaylinkId, request) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
+<details><summary><code>client.PaymentLink.UpdatePayLinkOutFromID(PaylinkID, request) -> *payabli.PayabliAPIResponsePaymentLinks</code></summary>
 <dl>
 <dd>
 
@@ -16405,7 +16405,7 @@ request := &payabli.PaymentPageRequestBodyOut{
             ),
         },
     }
-client.PaymentLink.UpdatePayLinkOutFromId(
+client.PaymentLink.UpdatePayLinkOutFromID(
         context.TODO(),
         "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
         request,
@@ -16425,7 +16425,7 @@ client.PaymentLink.UpdatePayLinkOutFromId(
 <dl>
 <dd>
 
-**paylinkId:** `string` — ID for the payment link.
+**paylinkID:** `string` — ID for the payment link.
     
 </dd>
 </dl>
@@ -16446,7 +16446,7 @@ client.PaymentLink.UpdatePayLinkOutFromId(
 </details>
 
 ## PaymentMethodDomain
-<details><summary><code>client.PaymentMethodDomain.AddPaymentMethodDomain(request) -> *payabli.AddPaymentMethodDomainApiResponse</code></summary>
+<details><summary><code>client.PaymentMethodDomain.AddPaymentMethodDomain(request) -> *payabli.AddPaymentMethodDomainAPIResponse</code></summary>
 <dl>
 <dd>
 
@@ -16477,7 +16477,7 @@ request := &payabli.AddPaymentMethodDomainRequest{
         DomainName: payabli.String(
             "checkout.example.com",
         ),
-        EntityId: payabli.Int64(
+        EntityID: payabli.Int64(
             int64(109),
         ),
         EntityType: payabli.String(
@@ -16537,7 +16537,7 @@ client.PaymentMethodDomain.AddPaymentMethodDomain(
 <dl>
 <dd>
 
-**entityId:** `*payabli.EntityId` 
+**entityID:** `*payabli.EntityID` 
     
 </dd>
 </dl>
@@ -16557,7 +16557,7 @@ client.PaymentMethodDomain.AddPaymentMethodDomain(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentMethodDomain.CascadePaymentMethodDomain(DomainId) -> *payabli.PaymentMethodDomainGeneralResponse</code></summary>
+<details><summary><code>client.PaymentMethodDomain.CascadePaymentMethodDomain(DomainID) -> *payabli.PaymentMethodDomainGeneralResponse</code></summary>
 <dl>
 <dd>
 
@@ -16603,7 +16603,7 @@ client.PaymentMethodDomain.CascadePaymentMethodDomain(
 <dl>
 <dd>
 
-**domainId:** `string` — The payment method domain's ID in Payabli.
+**domainID:** `string` — The payment method domain's ID in Payabli.
     
 </dd>
 </dl>
@@ -16615,7 +16615,7 @@ client.PaymentMethodDomain.CascadePaymentMethodDomain(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentMethodDomain.DeletePaymentMethodDomain(DomainId) -> *payabli.DeletePaymentMethodDomainResponse</code></summary>
+<details><summary><code>client.PaymentMethodDomain.DeletePaymentMethodDomain(DomainID) -> *payabli.DeletePaymentMethodDomainResponse</code></summary>
 <dl>
 <dd>
 
@@ -16661,7 +16661,7 @@ client.PaymentMethodDomain.DeletePaymentMethodDomain(
 <dl>
 <dd>
 
-**domainId:** `string` — The payment method domain's ID in Payabli.
+**domainID:** `string` — The payment method domain's ID in Payabli.
     
 </dd>
 </dl>
@@ -16673,7 +16673,7 @@ client.PaymentMethodDomain.DeletePaymentMethodDomain(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentMethodDomain.GetPaymentMethodDomain(DomainId) -> *payabli.PaymentMethodDomainApiResponse</code></summary>
+<details><summary><code>client.PaymentMethodDomain.GetPaymentMethodDomain(DomainID) -> *payabli.PaymentMethodDomainAPIResponse</code></summary>
 <dl>
 <dd>
 
@@ -16719,7 +16719,7 @@ client.PaymentMethodDomain.GetPaymentMethodDomain(
 <dl>
 <dd>
 
-**domainId:** `string` — The payment method domain's ID in Payabli.
+**domainID:** `string` — The payment method domain's ID in Payabli.
     
 </dd>
 </dl>
@@ -16759,7 +16759,7 @@ Get a list of payment method domains that belong to a PSP, organization, or payp
 
 ```go
 request := &payabli.ListPaymentMethodDomainsRequest{
-        EntityId: payabli.Int64(
+        EntityID: payabli.Int64(
             int64(1147),
         ),
         EntityType: payabli.String(
@@ -16785,7 +16785,7 @@ client.PaymentMethodDomain.ListPaymentMethodDomains(
 <dl>
 <dd>
 
-**entityId:** `*int64` 
+**entityID:** `*int64` 
 
 Identifier for the organization or paypoint. 
 - For organization, provide the organization ID - For paypoint, provide the paypoint ID
@@ -16829,7 +16829,7 @@ The type of entity. Valid values:
 </dl>
 </details>
 
-<details><summary><code>client.PaymentMethodDomain.UpdatePaymentMethodDomain(DomainId, request) -> *payabli.PaymentMethodDomainGeneralResponse</code></summary>
+<details><summary><code>client.PaymentMethodDomain.UpdatePaymentMethodDomain(DomainID, request) -> *payabli.PaymentMethodDomainGeneralResponse</code></summary>
 <dl>
 <dd>
 
@@ -16888,7 +16888,7 @@ client.PaymentMethodDomain.UpdatePaymentMethodDomain(
 <dl>
 <dd>
 
-**domainId:** `string` — The payment method domain's ID in Payabli.
+**domainID:** `string` — The payment method domain's ID in Payabli.
     
 </dd>
 </dl>
@@ -16916,7 +16916,7 @@ client.PaymentMethodDomain.UpdatePaymentMethodDomain(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentMethodDomain.VerifyPaymentMethodDomain(DomainId) -> *payabli.PaymentMethodDomainGeneralResponse</code></summary>
+<details><summary><code>client.PaymentMethodDomain.VerifyPaymentMethodDomain(DomainID) -> *payabli.PaymentMethodDomainGeneralResponse</code></summary>
 <dl>
 <dd>
 
@@ -16962,7 +16962,7 @@ client.PaymentMethodDomain.VerifyPaymentMethodDomain(
 <dl>
 <dd>
 
-**domainId:** `string` — The payment method domain's ID in Payabli.
+**domainID:** `string` — The payment method domain's ID in Payabli.
     
 </dd>
 </dl>
@@ -17030,7 +17030,7 @@ request := &payabli.RequestPayoutSchedule{
                 ),
             },
             VendorData: &payabli.RequestOutAuthorizeVendorData{
-                VendorId: payabli.Int(
+                VendorID: payabli.Int(
                     1501,
                 ),
             },
@@ -17104,7 +17104,7 @@ client.PayoutSubscription.CreatePayoutSubscription(
 </dl>
 </details>
 
-<details><summary><code>client.PayoutSubscription.GetPayoutSubscription(Id) -> *payabli.GetPayoutSubscriptionResponse</code></summary>
+<details><summary><code>client.PayoutSubscription.GetPayoutSubscription(ID) -> *payabli.GetPayoutSubscriptionResponse</code></summary>
 <dl>
 <dd>
 
@@ -17162,7 +17162,7 @@ client.PayoutSubscription.GetPayoutSubscription(
 </dl>
 </details>
 
-<details><summary><code>client.PayoutSubscription.UpdatePayoutSubscription(Id, request) -> *payabli.UpdatePayoutSubscriptionResponse</code></summary>
+<details><summary><code>client.PayoutSubscription.UpdatePayoutSubscription(ID, request) -> *payabli.UpdatePayoutSubscriptionResponse</code></summary>
 <dl>
 <dd>
 
@@ -17234,7 +17234,7 @@ client.PayoutSubscription.UpdatePayoutSubscription(
 </dl>
 </details>
 
-<details><summary><code>client.PayoutSubscription.DeletePayoutSubscription(Id) -> *payabli.DeletePayoutSubscriptionResponse</code></summary>
+<details><summary><code>client.PayoutSubscription.DeletePayoutSubscription(ID) -> *payabli.DeletePayoutSubscriptionResponse</code></summary>
 <dl>
 <dd>
 
@@ -17351,7 +17351,7 @@ client.Paypoint.GetBasicEntry(
 </dl>
 </details>
 
-<details><summary><code>client.Paypoint.GetBasicEntryById(IdPaypoint) -> *payabli.GetBasicEntryByIdResponse</code></summary>
+<details><summary><code>client.Paypoint.GetBasicEntryByID(IDPaypoint) -> *payabli.GetBasicEntryByIDResponse</code></summary>
 <dl>
 <dd>
 
@@ -17378,7 +17378,7 @@ Retrieves the basic details for a paypoint by ID.
 <dd>
 
 ```go
-client.Paypoint.GetBasicEntryById(
+client.Paypoint.GetBasicEntryByID(
         context.TODO(),
         "198",
     )
@@ -17544,7 +17544,7 @@ client.Paypoint.GetPage(
 </dl>
 </details>
 
-<details><summary><code>client.Paypoint.RemovePage(Entry, Subdomain) -> *payabli.PayabliApiResponseGeneric2Part</code></summary>
+<details><summary><code>client.Paypoint.RemovePage(Entry, Subdomain) -> *payabli.PayabliAPIResponseGeneric2Part</code></summary>
 <dl>
 <dd>
 
@@ -17611,7 +17611,7 @@ client.Paypoint.RemovePage(
 </dl>
 </details>
 
-<details><summary><code>client.Paypoint.SaveLogo(Entry, request) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
+<details><summary><code>client.Paypoint.SaveLogo(Entry, request) -> *payabli.PayabliAPIResponse00Responsedatanonobject</code></summary>
 <dl>
 <dd>
 
@@ -17766,9 +17766,9 @@ Migrates a paypoint to a new parent organization.
 ```go
 request := &payabli.PaypointMoveRequest{
         EntryPoint: "473abc123def",
-        NewParentOrganizationId: 123,
+        NewParentOrganizationID: 123,
         NotificationRequest: &payabli.NotificationRequest{
-            NotificationUrl: "https://webhook-test.yoursie.com",
+            NotificationURL: "https://webhook-test.yoursie.com",
             WebHeaderParameters: []*payabli.WebHeaderParameter{
                 &payabli.WebHeaderParameter{
                     Key: "testheader",
@@ -17997,7 +17997,7 @@ Example: `settledAmount(gt)=20` returns all records with a `settledAmount` great
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListBatchDetailsOrg(OrgId) -> *payabli.QueryResponseSettlements</code></summary>
+<details><summary><code>client.Query.ListBatchDetailsOrg(OrgID) -> *payabli.QueryResponseSettlements</code></summary>
 <dl>
 <dd>
 
@@ -18055,7 +18055,7 @@ client.Query.ListBatchDetailsOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -18348,7 +18348,7 @@ Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater t
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListBatchesOrg(OrgId) -> *payabli.QueryBatchesResponse</code></summary>
+<details><summary><code>client.Query.ListBatchesOrg(OrgID) -> *payabli.QueryBatchesResponse</code></summary>
 <dl>
 <dd>
 
@@ -18406,7 +18406,7 @@ client.Query.ListBatchesOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -18640,7 +18640,7 @@ Collection of field names, conditions, and values used to filter the query. See 
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListBatchesOutOrg(OrgId) -> *payabli.QueryBatchesOutResponse</code></summary>
+<details><summary><code>client.Query.ListBatchesOutOrg(OrgID) -> *payabli.QueryBatchesOutResponse</code></summary>
 <dl>
 <dd>
 
@@ -18698,7 +18698,7 @@ client.Query.ListBatchesOutOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -18964,7 +18964,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListChargebacksOrg(OrgId) -> *payabli.QueryChargebacksResponse</code></summary>
+<details><summary><code>client.Query.ListChargebacksOrg(OrgID) -> *payabli.QueryChargebacksResponse</code></summary>
 <dl>
 <dd>
 
@@ -19022,7 +19022,7 @@ client.Query.ListChargebacksOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -19324,7 +19324,7 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListCustomersOrg(OrgId) -> *payabli.QueryCustomerResponse</code></summary>
+<details><summary><code>client.Query.ListCustomersOrg(OrgID) -> *payabli.QueryCustomerResponse</code></summary>
 <dl>
 <dd>
 
@@ -19382,7 +19382,7 @@ client.Query.ListCustomersOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -19641,7 +19641,7 @@ Example: reportName(ct)=tr  return all records containing the string "tr"
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListNotificationReportsOrg(OrgId) -> *payabli.QueryResponseNotificationReports</code></summary>
+<details><summary><code>client.Query.ListNotificationReportsOrg(OrgID) -> *payabli.QueryResponseNotificationReports</code></summary>
 <dl>
 <dd>
 
@@ -19699,7 +19699,7 @@ client.Query.ListNotificationReportsOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -19923,7 +19923,7 @@ Example: totalAmount(gt)=20  return all records with totalAmount greater than 20
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListNotificationsOrg(OrgId) -> *payabli.QueryResponseNotifications</code></summary>
+<details><summary><code>client.Query.ListNotificationsOrg(OrgID) -> *payabli.QueryResponseNotifications</code></summary>
 <dl>
 <dd>
 
@@ -19981,7 +19981,7 @@ client.Query.ListNotificationsOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -20066,7 +20066,7 @@ Example: totalAmount(gt)=20  return all records with totalAmount greater than 20
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListOrganizations(OrgId) -> *payabli.ListOrganizationsResponse</code></summary>
+<details><summary><code>client.Query.ListOrganizations(OrgID) -> *payabli.ListOrganizationsResponse</code></summary>
 <dl>
 <dd>
 
@@ -20124,7 +20124,7 @@ client.Query.ListOrganizations(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -20419,7 +20419,7 @@ List of field names accepted:
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListPayoutOrg(OrgId) -> *payabli.QueryPayoutTransaction</code></summary>
+<details><summary><code>client.Query.ListPayoutOrg(OrgID) -> *payabli.QueryPayoutTransaction</code></summary>
 <dl>
 <dd>
 
@@ -20477,7 +20477,7 @@ client.Query.ListPayoutOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -20608,7 +20608,7 @@ List of field names accepted:
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListPaypoints(OrgId) -> *payabli.QueryEntrypointResponse</code></summary>
+<details><summary><code>client.Query.ListPaypoints(OrgID) -> *payabli.QueryEntrypointResponse</code></summary>
 <dl>
 <dd>
 
@@ -20666,7 +20666,7 @@ client.Query.ListPaypoints(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -20963,7 +20963,7 @@ Example: `settledAmount(gt)=20` returns all records with a `settledAmount` great
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListSettlementsOrg(OrgId) -> *payabli.QueryResponseSettlements</code></summary>
+<details><summary><code>client.Query.ListSettlementsOrg(OrgID) -> *payabli.QueryResponseSettlements</code></summary>
 <dl>
 <dd>
 
@@ -21021,7 +21021,7 @@ client.Query.ListSettlementsOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -21337,7 +21337,7 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListSubscriptionsOrg(OrgId) -> *payabli.QuerySubscriptionResponse</code></summary>
+<details><summary><code>client.Query.ListSubscriptionsOrg(OrgID) -> *payabli.QuerySubscriptionResponse</code></summary>
 <dl>
 <dd>
 
@@ -21395,7 +21395,7 @@ client.Query.ListSubscriptionsOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -21699,7 +21699,7 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListPayoutSubscriptionsOrg(OrgId) -> *payabli.QueryPayoutSubscriptionResponse</code></summary>
+<details><summary><code>client.Query.ListPayoutSubscriptionsOrg(OrgID) -> *payabli.QueryPayoutSubscriptionResponse</code></summary>
 <dl>
 <dd>
 
@@ -21757,7 +21757,7 @@ client.Query.ListPayoutSubscriptionsOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -22075,7 +22075,7 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListTransactionsOrg(OrgId) -> *payabli.QueryResponseTransactions</code></summary>
+<details><summary><code>client.Query.ListTransactionsOrg(OrgID) -> *payabli.QueryResponseTransactions</code></summary>
 <dl>
 <dd>
 
@@ -22146,7 +22146,7 @@ client.Query.ListTransactionsOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -22282,7 +22282,7 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListTransferDetails(Entry, TransferId) -> *payabli.QueryTransferDetailResponse</code></summary>
+<details><summary><code>client.Query.ListTransferDetails(Entry, TransferID) -> *payabli.QueryTransferDetailResponse</code></summary>
 <dl>
 <dd>
 
@@ -22339,7 +22339,7 @@ client.Query.ListTransferDetails(
 <dl>
 <dd>
 
-**transferId:** `int` — The numeric identifier for the transfer, assigned by Payabli.
+**transferID:** `int` — The numeric identifier for the transfer, assigned by Payabli.
     
 </dd>
 </dl>
@@ -22573,7 +22573,7 @@ List of field names accepted:
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListTransfersOrg(OrgId) -> *payabli.TransferQueryResponse</code></summary>
+<details><summary><code>client.Query.ListTransfersOrg(OrgID) -> *payabli.TransferQueryResponse</code></summary>
 <dl>
 <dd>
 
@@ -22601,7 +22601,7 @@ Retrieve a list of transfers for an org. Use filters to limit results. Include t
 
 ```go
 request := &payabli.ListTransfersRequestOrg{
-        OrgId: int64(123),
+        OrgID: int64(123),
         FromRecord: payabli.Int(
             0,
         ),
@@ -22628,7 +22628,7 @@ client.Query.ListTransfersOrg(
 <dl>
 <dd>
 
-**orgId:** `payabli.Orgid` 
+**orgID:** `payabli.Orgid` 
     
 </dd>
 </dl>
@@ -22713,7 +22713,7 @@ List of field names accepted:
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListTransfersOutOrg(OrgId) -> *payabli.TransferOutQueryResponse</code></summary>
+<details><summary><code>client.Query.ListTransfersOutOrg(OrgID) -> *payabli.TransferOutQueryResponse</code></summary>
 <dl>
 <dd>
 
@@ -22768,7 +22768,7 @@ client.Query.ListTransfersOutOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -22969,7 +22969,7 @@ List of field names accepted:
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListTransferDetailsOut(Entry, TransferId) -> *payabli.TransferOutDetailQueryResponse</code></summary>
+<details><summary><code>client.Query.ListTransferDetailsOut(Entry, TransferID) -> *payabli.TransferOutDetailQueryResponse</code></summary>
 <dl>
 <dd>
 
@@ -23033,7 +23033,7 @@ client.Query.ListTransferDetailsOut(
 <dl>
 <dd>
 
-**transferId:** `int` — The numeric identifier for the transfer, assigned by Payabli.
+**transferID:** `int` — The numeric identifier for the transfer, assigned by Payabli.
     
 </dd>
 </dl>
@@ -23105,7 +23105,7 @@ List of field names accepted:
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListUsersOrg(OrgId) -> *payabli.QueryUserResponse</code></summary>
+<details><summary><code>client.Query.ListUsersOrg(OrgID) -> *payabli.QueryUserResponse</code></summary>
 <dl>
 <dd>
 
@@ -23163,7 +23163,7 @@ client.Query.ListUsersOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -23560,7 +23560,7 @@ Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListVendorsOrg(OrgId) -> *payabli.QueryResponseVendors</code></summary>
+<details><summary><code>client.Query.ListVendorsOrg(OrgID) -> *payabli.QueryResponseVendors</code></summary>
 <dl>
 <dd>
 
@@ -23618,7 +23618,7 @@ client.Query.ListVendorsOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -23882,7 +23882,7 @@ List of comparison accepted - enclosed between parentheses:
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListVcardsOrg(OrgId) -> *payabli.VCardQueryResponse</code></summary>
+<details><summary><code>client.Query.ListVcardsOrg(OrgID) -> *payabli.VCardQueryResponse</code></summary>
 <dl>
 <dd>
 
@@ -23940,7 +23940,7 @@ client.Query.ListVcardsOrg(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -24040,7 +24040,7 @@ List of comparison accepted - enclosed between parentheses:
 </details>
 
 ## Statistic
-<details><summary><code>client.Statistic.BasicStats(Mode, Freq, Level, EntryId) -> []*payabli.StatBasicExtendedQueryRecord</code></summary>
+<details><summary><code>client.Statistic.BasicStats(Mode, Freq, Level, EntryID) -> []*payabli.StatBasicExtendedQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -24151,7 +24151,7 @@ The entry level for the request:
 <dl>
 <dd>
 
-**entryId:** `int64` — Identifier in Payabli for the entity.
+**entryID:** `int64` — Identifier in Payabli for the entity.
     
 </dd>
 </dl>
@@ -24201,7 +24201,7 @@ Valid formats:
 </dl>
 </details>
 
-<details><summary><code>client.Statistic.CustomerBasicStats(Mode, Freq, CustomerId) -> []*payabli.SubscriptionStatsQueryRecord</code></summary>
+<details><summary><code>client.Statistic.CustomerBasicStats(Mode, Freq, CustomerID) -> []*payabli.SubscriptionStatsQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -24290,7 +24290,7 @@ For example, `w` groups the results by week.
 <dl>
 <dd>
 
-**customerId:** `int` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
+**customerID:** `int` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
     
 </dd>
 </dl>
@@ -24310,7 +24310,7 @@ For example, `w` groups the results by week.
 </dl>
 </details>
 
-<details><summary><code>client.Statistic.SubStats(Interval, Level, EntryId) -> []*payabli.StatBasicQueryRecord</code></summary>
+<details><summary><code>client.Statistic.SubStats(Interval, Level, EntryID) -> []*payabli.StatBasicQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -24388,7 +24388,7 @@ The entry level for the request:
 <dl>
 <dd>
 
-**entryId:** `int64` — Identifier in Payabli for the entity.
+**entryID:** `int64` — Identifier in Payabli for the entity.
     
 </dd>
 </dl>
@@ -24408,7 +24408,7 @@ The entry level for the request:
 </dl>
 </details>
 
-<details><summary><code>client.Statistic.VendorBasicStats(Mode, Freq, IdVendor) -> []*payabli.StatisticsVendorQueryRecord</code></summary>
+<details><summary><code>client.Statistic.VendorBasicStats(Mode, Freq, IDVendor) -> []*payabli.StatisticsVendorQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -24518,7 +24518,7 @@ For example, `w` groups the results by week.
 </details>
 
 ## Subscription
-<details><summary><code>client.Subscription.GetSubscription(SubId) -> *payabli.SubscriptionQueryRecords</code></summary>
+<details><summary><code>client.Subscription.GetSubscription(SubID) -> *payabli.SubscriptionQueryRecords</code></summary>
 <dl>
 <dd>
 
@@ -24564,7 +24564,7 @@ client.Subscription.GetSubscription(
 <dl>
 <dd>
 
-**subId:** `int` — The subscription ID. 
+**subID:** `int` — The subscription ID. 
     
 </dd>
 </dl>
@@ -24606,7 +24606,7 @@ Creates a subscription or scheduled payment to run at a specified time and frequ
 request := &payabli.RequestSchedule{
         Body: &payabli.SubscriptionRequestBody{
             CustomerData: &payabli.PayorDataRequest{
-                CustomerId: payabli.Int64(
+                CustomerID: payabli.Int64(
                     int64(4440),
                 ),
             },
@@ -24642,7 +24642,7 @@ request := &payabli.RequestSchedule{
                     "03-20-2025",
                 ),
                 Frequency: payabli.FrequencyWeekly.Ptr(),
-                PlanId: payabli.Int(
+                PlanID: payabli.Int(
                     1,
                 ),
                 StartDate: payabli.String(
@@ -24698,7 +24698,7 @@ client.Subscription.NewSubscription(
 </dl>
 </details>
 
-<details><summary><code>client.Subscription.RemoveSubscription(SubId) -> *payabli.RemoveSubscriptionResponse</code></summary>
+<details><summary><code>client.Subscription.RemoveSubscription(SubID) -> *payabli.RemoveSubscriptionResponse</code></summary>
 <dl>
 <dd>
 
@@ -24744,7 +24744,7 @@ client.Subscription.RemoveSubscription(
 <dl>
 <dd>
 
-**subId:** `int` — The subscription ID. 
+**subID:** `int` — The subscription ID. 
     
 </dd>
 </dl>
@@ -24756,7 +24756,7 @@ client.Subscription.RemoveSubscription(
 </dl>
 </details>
 
-<details><summary><code>client.Subscription.UpdateSubscription(SubId, request) -> *payabli.UpdateSubscriptionResponse</code></summary>
+<details><summary><code>client.Subscription.UpdateSubscription(SubID, request) -> *payabli.UpdateSubscriptionResponse</code></summary>
 <dl>
 <dd>
 
@@ -24808,7 +24808,7 @@ client.Subscription.UpdateSubscription(
 <dl>
 <dd>
 
-**subId:** `int` — The subscription ID. 
+**subID:** `int` — The subscription ID. 
     
 </dd>
 </dl>
@@ -24845,7 +24845,7 @@ client.Subscription.UpdateSubscription(
 </details>
 
 ## Templates
-<details><summary><code>client.Templates.DeleteTemplate(TemplateId) -> *payabli.PayabliApiResponseTemplateId</code></summary>
+<details><summary><code>client.Templates.DeleteTemplate(TemplateID) -> *payabli.PayabliAPIResponseTemplateID</code></summary>
 <dl>
 <dd>
 
@@ -24891,7 +24891,7 @@ client.Templates.DeleteTemplate(
 <dl>
 <dd>
 
-**templateId:** `float64` — The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
+**templateID:** `float64` — The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
     
 </dd>
 </dl>
@@ -24903,7 +24903,7 @@ client.Templates.DeleteTemplate(
 </dl>
 </details>
 
-<details><summary><code>client.Templates.GetlinkTemplate(TemplateId, IgnoreEmpty) -> *payabli.BoardingLinkApiResponse</code></summary>
+<details><summary><code>client.Templates.GetlinkTemplate(TemplateID, IgnoreEmpty) -> *payabli.BoardingLinkAPIResponse</code></summary>
 <dl>
 <dd>
 
@@ -24950,7 +24950,7 @@ client.Templates.GetlinkTemplate(
 <dl>
 <dd>
 
-**templateId:** `float64` — The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
+**templateID:** `float64` — The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
     
 </dd>
 </dl>
@@ -24970,7 +24970,7 @@ client.Templates.GetlinkTemplate(
 </dl>
 </details>
 
-<details><summary><code>client.Templates.GetTemplate(TemplateId) -> *payabli.TemplateQueryRecord</code></summary>
+<details><summary><code>client.Templates.GetTemplate(TemplateID) -> *payabli.TemplateQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -25016,7 +25016,7 @@ client.Templates.GetTemplate(
 <dl>
 <dd>
 
-**templateId:** `float64` — The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
+**templateID:** `float64` — The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
     
 </dd>
 </dl>
@@ -25028,7 +25028,7 @@ client.Templates.GetTemplate(
 </dl>
 </details>
 
-<details><summary><code>client.Templates.ListTemplates(OrgId) -> *payabli.TemplateQueryResponse</code></summary>
+<details><summary><code>client.Templates.ListTemplates(OrgID) -> *payabli.TemplateQueryResponse</code></summary>
 <dl>
 <dd>
 
@@ -25086,7 +25086,7 @@ client.Templates.ListTemplates(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**orgID:** `int` — The numeric identifier for organization, assigned by Payabli.
     
 </dd>
 </dl>
@@ -25206,7 +25206,7 @@ Saves a payment method for reuse. This call exchanges sensitive payment informat
 request := &payabli.AddMethodRequest{
         Body: &payabli.RequestTokenStorage{
             CustomerData: &payabli.PayorDataRequest{
-                CustomerId: payabli.Int64(
+                CustomerID: payabli.Int64(
                     int64(4440),
                 ),
             },
@@ -25312,7 +25312,7 @@ client.TokenStorage.AddMethod(
 </dl>
 </details>
 
-<details><summary><code>client.TokenStorage.GetMethod(MethodId) -> *payabli.GetMethodResponse</code></summary>
+<details><summary><code>client.TokenStorage.GetMethod(MethodID) -> *payabli.GetMethodResponse</code></summary>
 <dl>
 <dd>
 
@@ -25367,7 +25367,7 @@ client.TokenStorage.GetMethod(
 <dl>
 <dd>
 
-**methodId:** `string` — The saved payment method ID.
+**methodID:** `string` — The saved payment method ID.
     
 </dd>
 </dl>
@@ -25405,7 +25405,7 @@ Accepted values:
 </dl>
 </details>
 
-<details><summary><code>client.TokenStorage.RemoveMethod(MethodId) -> *payabli.PayabliApiResponsePaymethodDelete</code></summary>
+<details><summary><code>client.TokenStorage.RemoveMethod(MethodID) -> *payabli.PayabliAPIResponsePaymethodDelete</code></summary>
 <dl>
 <dd>
 
@@ -25451,7 +25451,7 @@ client.TokenStorage.RemoveMethod(
 <dl>
 <dd>
 
-**methodId:** `string` — The saved payment method ID.
+**methodID:** `string` — The saved payment method ID.
     
 </dd>
 </dl>
@@ -25463,7 +25463,7 @@ client.TokenStorage.RemoveMethod(
 </dl>
 </details>
 
-<details><summary><code>client.TokenStorage.UpdateMethod(MethodId, request) -> *payabli.PayabliApiResponsePaymethodDelete</code></summary>
+<details><summary><code>client.TokenStorage.UpdateMethod(MethodID, request) -> *payabli.PayabliAPIResponsePaymethodDelete</code></summary>
 <dl>
 <dd>
 
@@ -25493,7 +25493,7 @@ Updates a saved payment method.
 request := &payabli.UpdateMethodRequest{
         Body: &payabli.RequestTokenStorage{
             CustomerData: &payabli.PayorDataRequest{
-                CustomerId: payabli.Int64(
+                CustomerID: payabli.Int64(
                     int64(4440),
                 ),
             },
@@ -25539,7 +25539,7 @@ client.TokenStorage.UpdateMethod(
 <dl>
 <dd>
 
-**methodId:** `string` — The saved payment method ID.
+**methodID:** `string` — The saved payment method ID.
     
 </dd>
 </dl>
@@ -25627,7 +25627,7 @@ client.User.AddUser(
 </dl>
 </details>
 
-<details><summary><code>client.User.AuthRefreshUser() -> *payabli.PayabliApiResponseUserMfa</code></summary>
+<details><summary><code>client.User.AuthRefreshUser() -> *payabli.PayabliAPIResponseUserMfa</code></summary>
 <dl>
 <dd>
 
@@ -25744,7 +25744,7 @@ client.User.AuthResetUser(
 </dl>
 </details>
 
-<details><summary><code>client.User.AuthUser(Provider, request) -> *payabli.PayabliApiResponseMfaBasic</code></summary>
+<details><summary><code>client.User.AuthUser(Provider, request) -> *payabli.PayabliAPIResponseMfaBasic</code></summary>
 <dl>
 <dd>
 
@@ -25832,7 +25832,7 @@ client.User.AuthUser(
 <dl>
 <dd>
 
-**userId:** `*int64` 
+**userID:** `*int64` 
     
 </dd>
 </dl>
@@ -25840,7 +25840,7 @@ client.User.AuthUser(
 <dl>
 <dd>
 
-**userTokenId:** `*string` 
+**userTokenID:** `*string` 
     
 </dd>
 </dl>
@@ -25911,7 +25911,7 @@ client.User.ChangePswUser(
 </dl>
 </details>
 
-<details><summary><code>client.User.DeleteUser(UserId) -> *payabli.DeleteUserResponse</code></summary>
+<details><summary><code>client.User.DeleteUser(UserID) -> *payabli.DeleteUserResponse</code></summary>
 <dl>
 <dd>
 
@@ -25957,7 +25957,7 @@ client.User.DeleteUser(
 <dl>
 <dd>
 
-**userId:** `int64` — The Payabli-generated `userId` value.
+**userID:** `int64` — The Payabli-generated `userId` value.
     
 </dd>
 </dl>
@@ -25969,7 +25969,7 @@ client.User.DeleteUser(
 </dl>
 </details>
 
-<details><summary><code>client.User.EditMfaUser(UserId, request) -> *payabli.EditMfaUserResponse</code></summary>
+<details><summary><code>client.User.EditMfaUser(UserID, request) -> *payabli.EditMfaUserResponse</code></summary>
 <dl>
 <dd>
 
@@ -26017,7 +26017,7 @@ client.User.EditMfaUser(
 <dl>
 <dd>
 
-**userId:** `int64` — User Identifier
+**userID:** `int64` — User Identifier
     
 </dd>
 </dl>
@@ -26037,7 +26037,7 @@ client.User.EditMfaUser(
 </dl>
 </details>
 
-<details><summary><code>client.User.EditUser(UserId, request) -> *payabli.PayabliApiResponse</code></summary>
+<details><summary><code>client.User.EditUser(UserID, request) -> *payabli.PayabliAPIResponse</code></summary>
 <dl>
 <dd>
 
@@ -26085,7 +26085,7 @@ client.User.EditUser(
 <dl>
 <dd>
 
-**userId:** `int64` — User Identifier
+**userID:** `int64` — User Identifier
     
 </dd>
 </dl>
@@ -26105,7 +26105,7 @@ client.User.EditUser(
 </dl>
 </details>
 
-<details><summary><code>client.User.GetUser(UserId) -> *payabli.UserQueryRecord</code></summary>
+<details><summary><code>client.User.GetUser(UserID) -> *payabli.UserQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -26157,7 +26157,7 @@ client.User.GetUser(
 <dl>
 <dd>
 
-**userId:** `int64` — The Payabli-generated `userId` value.
+**userID:** `int64` — The Payabli-generated `userId` value.
     
 </dd>
 </dl>
@@ -26227,7 +26227,7 @@ client.User.LogoutUser(
 </dl>
 </details>
 
-<details><summary><code>client.User.ResendMfaCode(Usrname, Entry, EntryType) -> *payabli.PayabliApiResponseMfaBasic</code></summary>
+<details><summary><code>client.User.ResendMfaCode(Usrname, Entry, EntryType) -> *payabli.PayabliAPIResponseMfaBasic</code></summary>
 <dl>
 <dd>
 
@@ -26303,7 +26303,7 @@ client.User.ResendMfaCode(
 </dl>
 </details>
 
-<details><summary><code>client.User.ValidateMfaUser(request) -> *payabli.PayabliApiResponseUserMfa</code></summary>
+<details><summary><code>client.User.ValidateMfaUser(request) -> *payabli.PayabliAPIResponseUserMfa</code></summary>
 <dl>
 <dd>
 
@@ -26371,7 +26371,7 @@ client.User.ValidateMfaUser(
 </details>
 
 ## Vendor
-<details><summary><code>client.Vendor.AddVendor(Entry, request) -> *payabli.PayabliApiResponseVendors</code></summary>
+<details><summary><code>client.Vendor.AddVendor(Entry, request) -> *payabli.PayabliAPIResponseVendors</code></summary>
 <dl>
 <dd>
 
@@ -26458,7 +26458,7 @@ request := &payabli.VendorData{
             },
         },
         BillingData: &payabli.BillingData{
-            Id: payabli.Int(
+            ID: payabli.Int(
                 123,
             ),
             BankName: payabli.String(
@@ -26512,7 +26512,7 @@ request := &payabli.VendorData{
         CustomerVendorAccount: payabli.String(
             "A-37622",
         ),
-        InternalReferenceId: payabli.Int64(
+        InternalReferenceID: payabli.Int64(
             int64(123),
         ),
     }
@@ -26556,7 +26556,7 @@ client.Vendor.AddVendor(
 </dl>
 </details>
 
-<details><summary><code>client.Vendor.DeleteVendor(IdVendor) -> *payabli.PayabliApiResponseVendors</code></summary>
+<details><summary><code>client.Vendor.DeleteVendor(IDVendor) -> *payabli.PayabliAPIResponseVendors</code></summary>
 <dl>
 <dd>
 
@@ -26614,7 +26614,7 @@ client.Vendor.DeleteVendor(
 </dl>
 </details>
 
-<details><summary><code>client.Vendor.EditVendor(IdVendor, request) -> *payabli.PayabliApiResponseVendors</code></summary>
+<details><summary><code>client.Vendor.EditVendor(IDVendor, request) -> *payabli.PayabliAPIResponseVendors</code></summary>
 <dl>
 <dd>
 
@@ -26686,7 +26686,7 @@ client.Vendor.EditVendor(
 </dl>
 </details>
 
-<details><summary><code>client.Vendor.GetVendor(IdVendor) -> *payabli.VendorQueryRecord</code></summary>
+<details><summary><code>client.Vendor.GetVendor(IDVendor) -> *payabli.VendorQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -26772,7 +26772,7 @@ Triggers AI-powered vendor enrichment for an existing vendor. Runs one or more e
 
 ```go
 request := &payabli.VendorEnrichRequest{
-        VendorId: int64(3890),
+        VendorID: int64(3890),
         Scope: []string{
             "invoice_scan",
         },
@@ -26833,7 +26833,7 @@ client.Vendor.EnrichVendor(
 </details>
 
 ## Wallet
-<details><summary><code>client.Wallet.ConfigureApplePayOrganization(request) -> *payabli.ConfigureApplePayOrganizationApiResponse</code></summary>
+<details><summary><code>client.Wallet.ConfigureApplePayOrganization(request) -> *payabli.ConfigureApplePayOrganizationAPIResponse</code></summary>
 <dl>
 <dd>
 
@@ -26867,7 +26867,7 @@ request := &payabli.ConfigureOrganizationRequestApplePay{
         IsEnabled: payabli.Bool(
             true,
         ),
-        OrgId: payabli.Int64(
+        OrgID: payabli.Int64(
             int64(901),
         ),
     }
@@ -26906,7 +26906,7 @@ client.Wallet.ConfigureApplePayOrganization(
 <dl>
 <dd>
 
-**orgId:** `*payabli.OrganizationId` 
+**orgID:** `*payabli.OrganizationID` 
     
 </dd>
 </dl>
@@ -26918,7 +26918,7 @@ client.Wallet.ConfigureApplePayOrganization(
 </dl>
 </details>
 
-<details><summary><code>client.Wallet.ConfigureApplePayPaypoint(request) -> *payabli.ConfigureApplePaypointApiResponse</code></summary>
+<details><summary><code>client.Wallet.ConfigureApplePayPaypoint(request) -> *payabli.ConfigureApplePaypointAPIResponse</code></summary>
 <dl>
 <dd>
 
@@ -26992,7 +26992,7 @@ client.Wallet.ConfigureApplePayPaypoint(
 </dl>
 </details>
 
-<details><summary><code>client.Wallet.ConfigureGooglePayOrganization(request) -> *payabli.ConfigureApplePayOrganizationApiResponse</code></summary>
+<details><summary><code>client.Wallet.ConfigureGooglePayOrganization(request) -> *payabli.ConfigureApplePayOrganizationAPIResponse</code></summary>
 <dl>
 <dd>
 
@@ -27026,7 +27026,7 @@ request := &payabli.ConfigureOrganizationRequestGooglePay{
         IsEnabled: payabli.Bool(
             true,
         ),
-        OrgId: payabli.Int64(
+        OrgID: payabli.Int64(
             int64(901),
         ),
     }
@@ -27065,7 +27065,7 @@ client.Wallet.ConfigureGooglePayOrganization(
 <dl>
 <dd>
 
-**orgId:** `*payabli.OrganizationId` 
+**orgID:** `*payabli.OrganizationID` 
     
 </dd>
 </dl>
@@ -27077,7 +27077,7 @@ client.Wallet.ConfigureGooglePayOrganization(
 </dl>
 </details>
 
-<details><summary><code>client.Wallet.ConfigureGooglePayPaypoint(request) -> *payabli.ConfigureGooglePaypointApiResponse</code></summary>
+<details><summary><code>client.Wallet.ConfigureGooglePayPaypoint(request) -> *payabli.ConfigureGooglePaypointAPIResponse</code></summary>
 <dl>
 <dd>
 

@@ -38,14 +38,14 @@ func (c *Client) ExportApplications(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportApplicationsRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportApplications(
 		ctx,
 		format,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -84,14 +84,14 @@ func (c *Client) ExportBatchDetailsOrg(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportBatchDetailsOrgRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportBatchDetailsOrg(
 		ctx,
 		format,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -130,14 +130,14 @@ func (c *Client) ExportBatchesOrg(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportBatchesOrgRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportBatchesOrg(
 		ctx,
 		format,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -176,14 +176,14 @@ func (c *Client) ExportBatchesOutOrg(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportBatchesOutOrgRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportBatchesOutOrg(
 		ctx,
 		format,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -222,14 +222,14 @@ func (c *Client) ExportBillsOrg(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportBillsOrgRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportBillsOrg(
 		ctx,
 		format,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -268,14 +268,14 @@ func (c *Client) ExportChargebacksOrg(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportChargebacksOrgRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportChargebacksOrg(
 		ctx,
 		format,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -314,14 +314,14 @@ func (c *Client) ExportCustomersOrg(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportCustomersOrgRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportCustomersOrg(
 		ctx,
 		format,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -360,14 +360,14 @@ func (c *Client) ExportInvoicesOrg(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportInvoicesOrgRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportInvoicesOrg(
 		ctx,
 		format,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -383,14 +383,14 @@ func (c *Client) ExportOrganizations(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportOrganizationsRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportOrganizations(
 		ctx,
 		format,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -429,14 +429,14 @@ func (c *Client) ExportPayoutOrg(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportPayoutOrgRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportPayoutOrg(
 		ctx,
 		format,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -452,14 +452,14 @@ func (c *Client) ExportPaypoints(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportPaypointsRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportPaypoints(
 		ctx,
 		format,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -498,14 +498,14 @@ func (c *Client) ExportSettlementsOrg(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportSettlementsOrgRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportSettlementsOrg(
 		ctx,
 		format,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -544,14 +544,14 @@ func (c *Client) ExportSubscriptionsOrg(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportSubscriptionsOrgRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportSubscriptionsOrg(
 		ctx,
 		format,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -590,14 +590,14 @@ func (c *Client) ExportTransactionsOrg(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportTransactionsOrgRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportTransactionsOrg(
 		ctx,
 		format,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)
@@ -615,7 +615,7 @@ func (c *Client) ExportTransferDetails(
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// Transfer identifier.
-	transferId int64,
+	transferID int64,
 	request *payabli.ExportTransferDetailsRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
@@ -623,7 +623,7 @@ func (c *Client) ExportTransferDetails(
 		ctx,
 		format,
 		entry,
-		transferId,
+		transferID,
 		request,
 		opts...,
 	)
@@ -682,14 +682,14 @@ func (c *Client) ExportVendorsOrg(
 	// Format for the export, either XLSX or CSV.
 	format *payabli.ExportFormat1,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgID int,
 	request *payabli.ExportVendorsOrgRequest,
 	opts ...option.RequestOption,
 ) (payabli.File, error) {
 	response, err := c.WithRawResponse.ExportVendorsOrg(
 		ctx,
 		format,
-		orgId,
+		orgID,
 		request,
 		opts...,
 	)

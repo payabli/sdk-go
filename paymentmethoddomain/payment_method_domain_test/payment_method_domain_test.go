@@ -76,7 +76,7 @@ func TestPaymentMethodDomainAddPaymentMethodDomainWithWireMock(
 		DomainName: payabli.String(
 			"checkout.example.com",
 		),
-		EntityId: payabli.Int64(
+		EntityID: payabli.Int64(
 			int64(109),
 		),
 		EntityType: payabli.String(
@@ -182,7 +182,7 @@ func TestPaymentMethodDomainListPaymentMethodDomainsWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 	)
 	request := &payabli.ListPaymentMethodDomainsRequest{
-		EntityId: payabli.Int64(
+		EntityID: payabli.Int64(
 			int64(1147),
 		),
 		EntityType: payabli.String(

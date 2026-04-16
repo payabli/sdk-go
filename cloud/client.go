@@ -58,13 +58,13 @@ func (c *Client) HistoryDevice(
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// ID of the cloud device.
-	deviceId string,
+	deviceID string,
 	opts ...option.RequestOption,
-) (*payabli.CloudQueryApiResponse, error) {
+) (*payabli.CloudQueryAPIResponse, error) {
 	response, err := c.WithRawResponse.HistoryDevice(
 		ctx,
 		entry,
-		deviceId,
+		deviceID,
 		opts...,
 	)
 	if err != nil {
@@ -80,7 +80,7 @@ func (c *Client) ListDevice(
 	entry string,
 	request *payabli.ListDeviceRequest,
 	opts ...option.RequestOption,
-) (*payabli.CloudQueryApiResponse, error) {
+) (*payabli.CloudQueryAPIResponse, error) {
 	response, err := c.WithRawResponse.ListDevice(
 		ctx,
 		entry,
@@ -99,13 +99,13 @@ func (c *Client) RemoveDevice(
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry string,
 	// ID of the cloud device.
-	deviceId string,
+	deviceID string,
 	opts ...option.RequestOption,
 ) (*payabli.RemoveDeviceResponse, error) {
 	response, err := c.WithRawResponse.RemoveDevice(
 		ctx,
 		entry,
-		deviceId,
+		deviceID,
 		opts...,
 	)
 	if err != nil {

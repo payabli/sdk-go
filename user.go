@@ -81,8 +81,8 @@ var (
 	userAuthRequestFieldEntry       = big.NewInt(1 << 1)
 	userAuthRequestFieldEntryType   = big.NewInt(1 << 2)
 	userAuthRequestFieldPsw         = big.NewInt(1 << 3)
-	userAuthRequestFieldUserId      = big.NewInt(1 << 4)
-	userAuthRequestFieldUserTokenId = big.NewInt(1 << 5)
+	userAuthRequestFieldUserID      = big.NewInt(1 << 4)
+	userAuthRequestFieldUserTokenID = big.NewInt(1 << 5)
 )
 
 type UserAuthRequest struct {
@@ -92,8 +92,8 @@ type UserAuthRequest struct {
 	// Type of entry identifier: 0 - partner, 2 - paypoint. This is used by front-end apps, required if an Entry is indicated.
 	EntryType   *int    `json:"entryType,omitempty" url:"-"`
 	Psw         *string `json:"psw,omitempty" url:"-"`
-	UserId      *int64  `json:"userId,omitempty" url:"-"`
-	UserTokenId *string `json:"userTokenId,omitempty" url:"-"`
+	UserID      *int64  `json:"userId,omitempty" url:"-"`
+	UserTokenID *string `json:"userTokenId,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -134,18 +134,18 @@ func (u *UserAuthRequest) SetPsw(psw *string) {
 	u.require(userAuthRequestFieldPsw)
 }
 
-// SetUserId sets the UserId field and marks it as non-optional;
+// SetUserID sets the UserID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UserAuthRequest) SetUserId(userId *int64) {
-	u.UserId = userId
-	u.require(userAuthRequestFieldUserId)
+func (u *UserAuthRequest) SetUserID(userID *int64) {
+	u.UserID = userID
+	u.require(userAuthRequestFieldUserID)
 }
 
-// SetUserTokenId sets the UserTokenId field and marks it as non-optional;
+// SetUserTokenID sets the UserTokenID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UserAuthRequest) SetUserTokenId(userTokenId *string) {
-	u.UserTokenId = userTokenId
-	u.require(userAuthRequestFieldUserTokenId)
+func (u *UserAuthRequest) SetUserTokenID(userTokenID *string) {
+	u.UserTokenID = userTokenID
+	u.require(userAuthRequestFieldUserTokenID)
 }
 
 func (u *UserAuthRequest) UnmarshalJSON(data []byte) error {
@@ -411,12 +411,12 @@ func (m *MfaData) String() string {
 type MfaValidationCode = string
 
 var (
-	orgScopeFieldOrgId   = big.NewInt(1 << 0)
+	orgScopeFieldOrgID   = big.NewInt(1 << 0)
 	orgScopeFieldOrgType = big.NewInt(1 << 1)
 )
 
 type OrgScope struct {
-	OrgId   *Orgid   `json:"orgId,omitempty" url:"orgId,omitempty"`
+	OrgID   *Orgid   `json:"orgId,omitempty" url:"orgId,omitempty"`
 	OrgType *Orgtype `json:"orgType,omitempty" url:"orgType,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -426,11 +426,11 @@ type OrgScope struct {
 	rawJSON         json.RawMessage
 }
 
-func (o *OrgScope) GetOrgId() *Orgid {
+func (o *OrgScope) GetOrgID() *Orgid {
 	if o == nil {
 		return nil
 	}
-	return o.OrgId
+	return o.OrgID
 }
 
 func (o *OrgScope) GetOrgType() *Orgtype {
@@ -454,11 +454,11 @@ func (o *OrgScope) require(field *big.Int) {
 	o.explicitFields.Or(o.explicitFields, field)
 }
 
-// SetOrgId sets the OrgId field and marks it as non-optional;
+// SetOrgID sets the OrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (o *OrgScope) SetOrgId(orgId *Orgid) {
-	o.OrgId = orgId
-	o.require(orgScopeFieldOrgId)
+func (o *OrgScope) SetOrgID(orgID *Orgid) {
+	o.OrgID = orgID
+	o.require(orgScopeFieldOrgID)
 }
 
 // SetOrgType sets the OrgType field and marks it as non-optional;
@@ -511,15 +511,15 @@ func (o *OrgScope) String() string {
 }
 
 var (
-	payabliApiResponseMfaBasicFieldIsSuccess         = big.NewInt(1 << 0)
-	payabliApiResponseMfaBasicFieldMfa               = big.NewInt(1 << 1)
-	payabliApiResponseMfaBasicFieldMfaMode           = big.NewInt(1 << 2)
-	payabliApiResponseMfaBasicFieldMfaValidationCode = big.NewInt(1 << 3)
-	payabliApiResponseMfaBasicFieldResponseData      = big.NewInt(1 << 4)
-	payabliApiResponseMfaBasicFieldResponseText      = big.NewInt(1 << 5)
+	payabliAPIResponseMfaBasicFieldIsSuccess         = big.NewInt(1 << 0)
+	payabliAPIResponseMfaBasicFieldMfa               = big.NewInt(1 << 1)
+	payabliAPIResponseMfaBasicFieldMfaMode           = big.NewInt(1 << 2)
+	payabliAPIResponseMfaBasicFieldMfaValidationCode = big.NewInt(1 << 3)
+	payabliAPIResponseMfaBasicFieldResponseData      = big.NewInt(1 << 4)
+	payabliAPIResponseMfaBasicFieldResponseText      = big.NewInt(1 << 5)
 )
 
-type PayabliApiResponseMfaBasic struct {
+type PayabliAPIResponseMfaBasic struct {
 	IsSuccess *IsSuccess `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	Mfa       *Mfa       `json:"mfa,omitempty" url:"mfa,omitempty"`
 	// The mode of multi-factor authentication used.
@@ -536,56 +536,56 @@ type PayabliApiResponseMfaBasic struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PayabliApiResponseMfaBasic) GetIsSuccess() *IsSuccess {
+func (p *PayabliAPIResponseMfaBasic) GetIsSuccess() *IsSuccess {
 	if p == nil {
 		return nil
 	}
 	return p.IsSuccess
 }
 
-func (p *PayabliApiResponseMfaBasic) GetMfa() *Mfa {
+func (p *PayabliAPIResponseMfaBasic) GetMfa() *Mfa {
 	if p == nil {
 		return nil
 	}
 	return p.Mfa
 }
 
-func (p *PayabliApiResponseMfaBasic) GetMfaMode() *string {
+func (p *PayabliAPIResponseMfaBasic) GetMfaMode() *string {
 	if p == nil {
 		return nil
 	}
 	return p.MfaMode
 }
 
-func (p *PayabliApiResponseMfaBasic) GetMfaValidationCode() *MfaValidationCode {
+func (p *PayabliAPIResponseMfaBasic) GetMfaValidationCode() *MfaValidationCode {
 	if p == nil {
 		return nil
 	}
 	return p.MfaValidationCode
 }
 
-func (p *PayabliApiResponseMfaBasic) GetResponseData() *string {
+func (p *PayabliAPIResponseMfaBasic) GetResponseData() *string {
 	if p == nil {
 		return nil
 	}
 	return p.ResponseData
 }
 
-func (p *PayabliApiResponseMfaBasic) GetResponseText() ResponseText {
+func (p *PayabliAPIResponseMfaBasic) GetResponseText() ResponseText {
 	if p == nil {
 		return ""
 	}
 	return p.ResponseText
 }
 
-func (p *PayabliApiResponseMfaBasic) GetExtraProperties() map[string]interface{} {
+func (p *PayabliAPIResponseMfaBasic) GetExtraProperties() map[string]interface{} {
 	if p == nil {
 		return nil
 	}
 	return p.extraProperties
 }
 
-func (p *PayabliApiResponseMfaBasic) require(field *big.Int) {
+func (p *PayabliAPIResponseMfaBasic) require(field *big.Int) {
 	if p.explicitFields == nil {
 		p.explicitFields = big.NewInt(0)
 	}
@@ -594,53 +594,53 @@ func (p *PayabliApiResponseMfaBasic) require(field *big.Int) {
 
 // SetIsSuccess sets the IsSuccess field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseMfaBasic) SetIsSuccess(isSuccess *IsSuccess) {
+func (p *PayabliAPIResponseMfaBasic) SetIsSuccess(isSuccess *IsSuccess) {
 	p.IsSuccess = isSuccess
-	p.require(payabliApiResponseMfaBasicFieldIsSuccess)
+	p.require(payabliAPIResponseMfaBasicFieldIsSuccess)
 }
 
 // SetMfa sets the Mfa field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseMfaBasic) SetMfa(mfa *Mfa) {
+func (p *PayabliAPIResponseMfaBasic) SetMfa(mfa *Mfa) {
 	p.Mfa = mfa
-	p.require(payabliApiResponseMfaBasicFieldMfa)
+	p.require(payabliAPIResponseMfaBasicFieldMfa)
 }
 
 // SetMfaMode sets the MfaMode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseMfaBasic) SetMfaMode(mfaMode *string) {
+func (p *PayabliAPIResponseMfaBasic) SetMfaMode(mfaMode *string) {
 	p.MfaMode = mfaMode
-	p.require(payabliApiResponseMfaBasicFieldMfaMode)
+	p.require(payabliAPIResponseMfaBasicFieldMfaMode)
 }
 
 // SetMfaValidationCode sets the MfaValidationCode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseMfaBasic) SetMfaValidationCode(mfaValidationCode *MfaValidationCode) {
+func (p *PayabliAPIResponseMfaBasic) SetMfaValidationCode(mfaValidationCode *MfaValidationCode) {
 	p.MfaValidationCode = mfaValidationCode
-	p.require(payabliApiResponseMfaBasicFieldMfaValidationCode)
+	p.require(payabliAPIResponseMfaBasicFieldMfaValidationCode)
 }
 
 // SetResponseData sets the ResponseData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseMfaBasic) SetResponseData(responseData *string) {
+func (p *PayabliAPIResponseMfaBasic) SetResponseData(responseData *string) {
 	p.ResponseData = responseData
-	p.require(payabliApiResponseMfaBasicFieldResponseData)
+	p.require(payabliAPIResponseMfaBasicFieldResponseData)
 }
 
 // SetResponseText sets the ResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseMfaBasic) SetResponseText(responseText ResponseText) {
+func (p *PayabliAPIResponseMfaBasic) SetResponseText(responseText ResponseText) {
 	p.ResponseText = responseText
-	p.require(payabliApiResponseMfaBasicFieldResponseText)
+	p.require(payabliAPIResponseMfaBasicFieldResponseText)
 }
 
-func (p *PayabliApiResponseMfaBasic) UnmarshalJSON(data []byte) error {
-	type unmarshaler PayabliApiResponseMfaBasic
+func (p *PayabliAPIResponseMfaBasic) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayabliAPIResponseMfaBasic
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PayabliApiResponseMfaBasic(value)
+	*p = PayabliAPIResponseMfaBasic(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *p)
 	if err != nil {
 		return err
@@ -650,8 +650,8 @@ func (p *PayabliApiResponseMfaBasic) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (p *PayabliApiResponseMfaBasic) MarshalJSON() ([]byte, error) {
-	type embed PayabliApiResponseMfaBasic
+func (p *PayabliAPIResponseMfaBasic) MarshalJSON() ([]byte, error) {
+	type embed PayabliAPIResponseMfaBasic
 	var marshaler = struct {
 		embed
 	}{
@@ -661,7 +661,7 @@ func (p *PayabliApiResponseMfaBasic) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PayabliApiResponseMfaBasic) String() string {
+func (p *PayabliAPIResponseMfaBasic) String() string {
 	if p == nil {
 		return "<nil>"
 	}
@@ -677,14 +677,14 @@ func (p *PayabliApiResponseMfaBasic) String() string {
 }
 
 var (
-	payabliApiResponseUserMfaFieldInactiveTokenTime = big.NewInt(1 << 0)
-	payabliApiResponseUserMfaFieldIsSuccess         = big.NewInt(1 << 1)
-	payabliApiResponseUserMfaFieldRemaining         = big.NewInt(1 << 2)
-	payabliApiResponseUserMfaFieldResponseData      = big.NewInt(1 << 3)
-	payabliApiResponseUserMfaFieldResponseText      = big.NewInt(1 << 4)
+	payabliAPIResponseUserMfaFieldInactiveTokenTime = big.NewInt(1 << 0)
+	payabliAPIResponseUserMfaFieldIsSuccess         = big.NewInt(1 << 1)
+	payabliAPIResponseUserMfaFieldRemaining         = big.NewInt(1 << 2)
+	payabliAPIResponseUserMfaFieldResponseData      = big.NewInt(1 << 3)
+	payabliAPIResponseUserMfaFieldResponseText      = big.NewInt(1 << 4)
 )
 
-type PayabliApiResponseUserMfa struct {
+type PayabliAPIResponseUserMfa struct {
 	InactiveTokenTime *int                   `json:"inactiveTokenTime,omitempty" url:"inactiveTokenTime,omitempty"`
 	IsSuccess         *IsSuccess             `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	Remaining         *int                   `json:"remaining,omitempty" url:"remaining,omitempty"`
@@ -698,49 +698,49 @@ type PayabliApiResponseUserMfa struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PayabliApiResponseUserMfa) GetInactiveTokenTime() *int {
+func (p *PayabliAPIResponseUserMfa) GetInactiveTokenTime() *int {
 	if p == nil {
 		return nil
 	}
 	return p.InactiveTokenTime
 }
 
-func (p *PayabliApiResponseUserMfa) GetIsSuccess() *IsSuccess {
+func (p *PayabliAPIResponseUserMfa) GetIsSuccess() *IsSuccess {
 	if p == nil {
 		return nil
 	}
 	return p.IsSuccess
 }
 
-func (p *PayabliApiResponseUserMfa) GetRemaining() *int {
+func (p *PayabliAPIResponseUserMfa) GetRemaining() *int {
 	if p == nil {
 		return nil
 	}
 	return p.Remaining
 }
 
-func (p *PayabliApiResponseUserMfa) GetResponseData() *Responsedatanonobject {
+func (p *PayabliAPIResponseUserMfa) GetResponseData() *Responsedatanonobject {
 	if p == nil {
 		return nil
 	}
 	return p.ResponseData
 }
 
-func (p *PayabliApiResponseUserMfa) GetResponseText() ResponseText {
+func (p *PayabliAPIResponseUserMfa) GetResponseText() ResponseText {
 	if p == nil {
 		return ""
 	}
 	return p.ResponseText
 }
 
-func (p *PayabliApiResponseUserMfa) GetExtraProperties() map[string]interface{} {
+func (p *PayabliAPIResponseUserMfa) GetExtraProperties() map[string]interface{} {
 	if p == nil {
 		return nil
 	}
 	return p.extraProperties
 }
 
-func (p *PayabliApiResponseUserMfa) require(field *big.Int) {
+func (p *PayabliAPIResponseUserMfa) require(field *big.Int) {
 	if p.explicitFields == nil {
 		p.explicitFields = big.NewInt(0)
 	}
@@ -749,46 +749,46 @@ func (p *PayabliApiResponseUserMfa) require(field *big.Int) {
 
 // SetInactiveTokenTime sets the InactiveTokenTime field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseUserMfa) SetInactiveTokenTime(inactiveTokenTime *int) {
+func (p *PayabliAPIResponseUserMfa) SetInactiveTokenTime(inactiveTokenTime *int) {
 	p.InactiveTokenTime = inactiveTokenTime
-	p.require(payabliApiResponseUserMfaFieldInactiveTokenTime)
+	p.require(payabliAPIResponseUserMfaFieldInactiveTokenTime)
 }
 
 // SetIsSuccess sets the IsSuccess field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseUserMfa) SetIsSuccess(isSuccess *IsSuccess) {
+func (p *PayabliAPIResponseUserMfa) SetIsSuccess(isSuccess *IsSuccess) {
 	p.IsSuccess = isSuccess
-	p.require(payabliApiResponseUserMfaFieldIsSuccess)
+	p.require(payabliAPIResponseUserMfaFieldIsSuccess)
 }
 
 // SetRemaining sets the Remaining field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseUserMfa) SetRemaining(remaining *int) {
+func (p *PayabliAPIResponseUserMfa) SetRemaining(remaining *int) {
 	p.Remaining = remaining
-	p.require(payabliApiResponseUserMfaFieldRemaining)
+	p.require(payabliAPIResponseUserMfaFieldRemaining)
 }
 
 // SetResponseData sets the ResponseData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseUserMfa) SetResponseData(responseData *Responsedatanonobject) {
+func (p *PayabliAPIResponseUserMfa) SetResponseData(responseData *Responsedatanonobject) {
 	p.ResponseData = responseData
-	p.require(payabliApiResponseUserMfaFieldResponseData)
+	p.require(payabliAPIResponseUserMfaFieldResponseData)
 }
 
 // SetResponseText sets the ResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponseUserMfa) SetResponseText(responseText ResponseText) {
+func (p *PayabliAPIResponseUserMfa) SetResponseText(responseText ResponseText) {
 	p.ResponseText = responseText
-	p.require(payabliApiResponseUserMfaFieldResponseText)
+	p.require(payabliAPIResponseUserMfaFieldResponseText)
 }
 
-func (p *PayabliApiResponseUserMfa) UnmarshalJSON(data []byte) error {
-	type unmarshaler PayabliApiResponseUserMfa
+func (p *PayabliAPIResponseUserMfa) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayabliAPIResponseUserMfa
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PayabliApiResponseUserMfa(value)
+	*p = PayabliAPIResponseUserMfa(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *p)
 	if err != nil {
 		return err
@@ -798,8 +798,8 @@ func (p *PayabliApiResponseUserMfa) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (p *PayabliApiResponseUserMfa) MarshalJSON() ([]byte, error) {
-	type embed PayabliApiResponseUserMfa
+func (p *PayabliAPIResponseUserMfa) MarshalJSON() ([]byte, error) {
+	type embed PayabliAPIResponseUserMfa
 	var marshaler = struct {
 		embed
 	}{
@@ -809,7 +809,7 @@ func (p *PayabliApiResponseUserMfa) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PayabliApiResponseUserMfa) String() string {
+func (p *PayabliAPIResponseUserMfa) String() string {
 	if p == nil {
 		return "<nil>"
 	}

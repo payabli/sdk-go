@@ -36,7 +36,7 @@ func (r *RawClient) AddVendor(
 	entry string,
 	request *payabli.VendorData,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponseVendors], error) {
+) (*core.Response[*payabli.PayabliAPIResponseVendors], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -51,7 +51,7 @@ func (r *RawClient) AddVendor(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponseVendors
+	var response *payabli.PayabliAPIResponseVendors
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -70,7 +70,7 @@ func (r *RawClient) AddVendor(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponseVendors]{
+	return &core.Response[*payabli.PayabliAPIResponseVendors]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -82,7 +82,7 @@ func (r *RawClient) DeleteVendor(
 	// Vendor ID.
 	idVendor int,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponseVendors], error) {
+) (*core.Response[*payabli.PayabliAPIResponseVendors], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -97,7 +97,7 @@ func (r *RawClient) DeleteVendor(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponseVendors
+	var response *payabli.PayabliAPIResponseVendors
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -115,7 +115,7 @@ func (r *RawClient) DeleteVendor(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponseVendors]{
+	return &core.Response[*payabli.PayabliAPIResponseVendors]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -128,7 +128,7 @@ func (r *RawClient) EditVendor(
 	idVendor int,
 	request *payabli.VendorData,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponseVendors], error) {
+) (*core.Response[*payabli.PayabliAPIResponseVendors], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -143,7 +143,7 @@ func (r *RawClient) EditVendor(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponseVendors
+	var response *payabli.PayabliAPIResponseVendors
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -162,7 +162,7 @@ func (r *RawClient) EditVendor(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponseVendors]{
+	return &core.Response[*payabli.PayabliAPIResponseVendors]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

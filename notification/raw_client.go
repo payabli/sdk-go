@@ -34,7 +34,7 @@ func (r *RawClient) AddNotification(
 	ctx context.Context,
 	request *payabli.AddNotificationRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponseNotifications], error) {
+) (*core.Response[*payabli.PayabliAPIResponseNotifications], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -46,7 +46,7 @@ func (r *RawClient) AddNotification(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponseNotifications
+	var response *payabli.PayabliAPIResponseNotifications
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -65,7 +65,7 @@ func (r *RawClient) AddNotification(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponseNotifications]{
+	return &core.Response[*payabli.PayabliAPIResponseNotifications]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -75,9 +75,9 @@ func (r *RawClient) AddNotification(
 func (r *RawClient) DeleteNotification(
 	ctx context.Context,
 	// Notification ID.
-	nId string,
+	nID string,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponseNotifications], error) {
+) (*core.Response[*payabli.PayabliAPIResponseNotifications], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -86,13 +86,13 @@ func (r *RawClient) DeleteNotification(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Notification/%v",
-		nId,
+		nID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponseNotifications
+	var response *payabli.PayabliAPIResponseNotifications
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -110,7 +110,7 @@ func (r *RawClient) DeleteNotification(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponseNotifications]{
+	return &core.Response[*payabli.PayabliAPIResponseNotifications]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -120,7 +120,7 @@ func (r *RawClient) DeleteNotification(
 func (r *RawClient) GetNotification(
 	ctx context.Context,
 	// Notification ID.
-	nId string,
+	nID string,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.NotificationQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
@@ -131,7 +131,7 @@ func (r *RawClient) GetNotification(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Notification/%v",
-		nId,
+		nID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -165,10 +165,10 @@ func (r *RawClient) GetNotification(
 func (r *RawClient) UpdateNotification(
 	ctx context.Context,
 	// Notification ID.
-	nId string,
+	nID string,
 	request *payabli.UpdateNotificationRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponseNotifications], error) {
+) (*core.Response[*payabli.PayabliAPIResponseNotifications], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -177,13 +177,13 @@ func (r *RawClient) UpdateNotification(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Notification/%v",
-		nId,
+		nID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponseNotifications
+	var response *payabli.PayabliAPIResponseNotifications
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -202,7 +202,7 @@ func (r *RawClient) UpdateNotification(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponseNotifications]{
+	return &core.Response[*payabli.PayabliAPIResponseNotifications]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

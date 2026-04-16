@@ -35,7 +35,7 @@ func (r *RawClient) OcrDocumentForm(
 	typeResult payabli.TypeResult,
 	request *payabli.FileContentImageOnly,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponseOcr], error) {
+) (*core.Response[*payabli.PayabliAPIResponseOcr], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -50,7 +50,7 @@ func (r *RawClient) OcrDocumentForm(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponseOcr
+	var response *payabli.PayabliAPIResponseOcr
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -69,19 +69,19 @@ func (r *RawClient) OcrDocumentForm(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponseOcr]{
+	return &core.Response[*payabli.PayabliAPIResponseOcr]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
 	}, nil
 }
 
-func (r *RawClient) OcrDocumentJson(
+func (r *RawClient) OcrDocumentJSON(
 	ctx context.Context,
 	typeResult payabli.TypeResult,
 	request *payabli.FileContentImageOnly,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponseOcr], error) {
+) (*core.Response[*payabli.PayabliAPIResponseOcr], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -96,7 +96,7 @@ func (r *RawClient) OcrDocumentJson(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponseOcr
+	var response *payabli.PayabliAPIResponseOcr
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -114,7 +114,7 @@ func (r *RawClient) OcrDocumentJson(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponseOcr]{
+	return &core.Response[*payabli.PayabliAPIResponseOcr]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

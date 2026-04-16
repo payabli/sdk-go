@@ -39,7 +39,7 @@ func (c *Client) AddCustomer(
 	entry payabli.Entrypointfield,
 	request *payabli.AddCustomerRequest,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponseCustomerQuery, error) {
+) (*payabli.PayabliAPIResponseCustomerQuery, error) {
 	response, err := c.WithRawResponse.AddCustomer(
 		ctx,
 		entry,
@@ -56,12 +56,12 @@ func (c *Client) AddCustomer(
 func (c *Client) DeleteCustomer(
 	ctx context.Context,
 	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
-	customerId int,
+	customerID int,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponse00Responsedatanonobject, error) {
+) (*payabli.PayabliAPIResponse00Responsedatanonobject, error) {
 	response, err := c.WithRawResponse.DeleteCustomer(
 		ctx,
-		customerId,
+		customerID,
 		opts...,
 	)
 	if err != nil {
@@ -74,12 +74,12 @@ func (c *Client) DeleteCustomer(
 func (c *Client) GetCustomer(
 	ctx context.Context,
 	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
-	customerId int,
+	customerID int,
 	opts ...option.RequestOption,
 ) (*payabli.CustomerQueryRecords, error) {
 	response, err := c.WithRawResponse.GetCustomer(
 		ctx,
-		customerId,
+		customerID,
 		opts...,
 	)
 	if err != nil {
@@ -92,15 +92,15 @@ func (c *Client) GetCustomer(
 func (c *Client) LinkCustomerTransaction(
 	ctx context.Context,
 	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
-	customerId int,
+	customerID int,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponse00Responsedatanonobject, error) {
+) (*payabli.PayabliAPIResponse00Responsedatanonobject, error) {
 	response, err := c.WithRawResponse.LinkCustomerTransaction(
 		ctx,
-		customerId,
-		transId,
+		customerID,
+		transID,
 		opts...,
 	)
 	if err != nil {
@@ -113,12 +113,12 @@ func (c *Client) LinkCustomerTransaction(
 func (c *Client) RequestConsent(
 	ctx context.Context,
 	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
-	customerId int,
+	customerID int,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponse00Responsedatanonobject, error) {
+) (*payabli.PayabliAPIResponse00Responsedatanonobject, error) {
 	response, err := c.WithRawResponse.RequestConsent(
 		ctx,
-		customerId,
+		customerID,
 		opts...,
 	)
 	if err != nil {
@@ -131,13 +131,13 @@ func (c *Client) RequestConsent(
 func (c *Client) UpdateCustomer(
 	ctx context.Context,
 	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
-	customerId int,
+	customerID int,
 	request *payabli.CustomerData,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponse00Responsedatanonobject, error) {
+) (*payabli.PayabliAPIResponse00Responsedatanonobject, error) {
 	response, err := c.WithRawResponse.UpdateCustomer(
 		ctx,
-		customerId,
+		customerID,
 		request,
 		opts...,
 	)

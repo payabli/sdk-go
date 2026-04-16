@@ -71,14 +71,14 @@ import (
 
 func do() {
     client := client.NewClient(
-        option.WithApiKey(
+        option.WithAPIKey(
             "<value>",
         ),
     )
     request := &payabli.RequestPayment{
         Body: &payabli.TransRequestBody{
             CustomerData: &payabli.PayorDataRequest{
-                CustomerId: payabli.Int64(
+                CustomerID: payabli.Int64(
                     int64(4440),
                 ),
             },

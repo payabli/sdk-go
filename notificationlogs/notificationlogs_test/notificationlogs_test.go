@@ -84,7 +84,7 @@ func TestNotificationlogsSearchNotificationLogsWithWireMock(
 			EndDate: payabli.MustParseDateTime(
 				"2024-01-31T23:59:59Z",
 			),
-			OrgId: payabli.Int64(
+			OrgID: payabli.Int64(
 				int64(12345),
 			),
 			NotificationEvent: payabli.String(

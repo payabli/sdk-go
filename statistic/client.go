@@ -65,7 +65,7 @@ func (c *Client) BasicStats(
 	//   - 2 for Paypoint
 	level int,
 	// Identifier in Payabli for the entity.
-	entryId int64,
+	entryID int64,
 	request *payabli.BasicStatsRequest,
 	opts ...option.RequestOption,
 ) ([]*payabli.StatBasicExtendedQueryRecord, error) {
@@ -74,7 +74,7 @@ func (c *Client) BasicStats(
 		mode,
 		freq,
 		level,
-		entryId,
+		entryID,
 		request,
 		opts...,
 	)
@@ -111,7 +111,7 @@ func (c *Client) CustomerBasicStats(
 	// For example, `w` groups the results by week.
 	freq string,
 	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
-	customerId int,
+	customerID int,
 	request *payabli.CustomerBasicStatsRequest,
 	opts ...option.RequestOption,
 ) ([]*payabli.SubscriptionStatsQueryRecord, error) {
@@ -119,7 +119,7 @@ func (c *Client) CustomerBasicStats(
 		ctx,
 		mode,
 		freq,
-		customerId,
+		customerID,
 		request,
 		opts...,
 	)
@@ -145,7 +145,7 @@ func (c *Client) SubStats(
 	//   - 2 for Paypoint
 	level int,
 	// Identifier in Payabli for the entity.
-	entryId int64,
+	entryID int64,
 	request *payabli.SubStatsRequest,
 	opts ...option.RequestOption,
 ) ([]*payabli.StatBasicQueryRecord, error) {
@@ -153,7 +153,7 @@ func (c *Client) SubStats(
 		ctx,
 		interval,
 		level,
-		entryId,
+		entryID,
 		request,
 		opts...,
 	)

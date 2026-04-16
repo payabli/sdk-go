@@ -11,14 +11,14 @@ import (
 
 var (
 	requestAppByAuthFieldEmail       = big.NewInt(1 << 0)
-	requestAppByAuthFieldReferenceId = big.NewInt(1 << 1)
+	requestAppByAuthFieldReferenceID = big.NewInt(1 << 1)
 )
 
 type RequestAppByAuth struct {
 	// The email address the applicant used to save the application.
 	Email *Email `json:"email,omitempty" url:"-"`
 	// The referenceId is sent to the applicant via email when they save the application.
-	ReferenceId *string `json:"referenceId,omitempty" url:"-"`
+	ReferenceID *string `json:"referenceId,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -38,11 +38,11 @@ func (r *RequestAppByAuth) SetEmail(email *Email) {
 	r.require(requestAppByAuthFieldEmail)
 }
 
-// SetReferenceId sets the ReferenceId field and marks it as non-optional;
+// SetReferenceID sets the ReferenceID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestAppByAuth) SetReferenceId(referenceId *string) {
-	r.ReferenceId = referenceId
-	r.require(requestAppByAuthFieldReferenceId)
+func (r *RequestAppByAuth) SetReferenceID(referenceID *string) {
+	r.ReferenceID = referenceID
+	r.require(requestAppByAuthFieldReferenceID)
 }
 
 func (r *RequestAppByAuth) UnmarshalJSON(data []byte) error {
@@ -629,7 +629,7 @@ func (a *AchSection) String() string {
 type Annualrevenue = float64
 
 // Boarding application ID.
-type AppId = int
+type AppID = int
 
 var (
 	applicationDataFieldServices                   = big.NewInt(1 << 0)
@@ -651,7 +651,7 @@ var (
 	applicationDataFieldContacts                   = big.NewInt(1 << 16)
 	applicationDataFieldDbaname                    = big.NewInt(1 << 17)
 	applicationDataFieldEin                        = big.NewInt(1 << 18)
-	applicationDataFieldExternalPaypointId         = big.NewInt(1 << 19)
+	applicationDataFieldExternalPaypointID         = big.NewInt(1 << 19)
 	applicationDataFieldFaxnumber                  = big.NewInt(1 << 20)
 	applicationDataFieldHighticketamt              = big.NewInt(1 << 21)
 	applicationDataFieldLegalname                  = big.NewInt(1 << 22)
@@ -664,7 +664,7 @@ var (
 	applicationDataFieldMcountry                   = big.NewInt(1 << 29)
 	applicationDataFieldMstate                     = big.NewInt(1 << 30)
 	applicationDataFieldMzip                       = big.NewInt(1 << 31)
-	applicationDataFieldOrgId                      = big.NewInt(1 << 32)
+	applicationDataFieldOrgID                      = big.NewInt(1 << 32)
 	applicationDataFieldOwnership                  = big.NewInt(1 << 33)
 	applicationDataFieldPayoutAverageMonthlyVolume = big.NewInt(1 << 34)
 	applicationDataFieldPayoutAverageTicketLimit   = big.NewInt(1 << 35)
@@ -677,7 +677,7 @@ var (
 	applicationDataFieldSigner                     = big.NewInt(1 << 42)
 	applicationDataFieldStartdate                  = big.NewInt(1 << 43)
 	applicationDataFieldTaxfillname                = big.NewInt(1 << 44)
-	applicationDataFieldTemplateId                 = big.NewInt(1 << 45)
+	applicationDataFieldTemplateID                 = big.NewInt(1 << 45)
 	applicationDataFieldTicketamt                  = big.NewInt(1 << 46)
 	applicationDataFieldWebsite                    = big.NewInt(1 << 47)
 	applicationDataFieldWhenCharged                = big.NewInt(1 << 48)
@@ -710,7 +710,7 @@ type ApplicationData struct {
 	Contacts                   *ContactsField              `json:"contacts,omitempty" url:"contacts,omitempty"`
 	Dbaname                    *Dbaname                    `json:"dbaname,omitempty" url:"dbaname,omitempty"`
 	Ein                        *Ein                        `json:"ein,omitempty" url:"ein,omitempty"`
-	ExternalPaypointId         *ExternalPaypointId         `json:"externalPaypointId,omitempty" url:"externalPaypointId,omitempty"`
+	ExternalPaypointID         *ExternalPaypointID         `json:"externalPaypointId,omitempty" url:"externalPaypointId,omitempty"`
 	Faxnumber                  *BoardingBusinessFax        `json:"faxnumber,omitempty" url:"faxnumber,omitempty"`
 	Highticketamt              *Highticketamt              `json:"highticketamt,omitempty" url:"highticketamt,omitempty"`
 	Legalname                  *Legalname                  `json:"legalname,omitempty" url:"legalname,omitempty"`
@@ -723,7 +723,7 @@ type ApplicationData struct {
 	Mcountry                   *Mcountry                   `json:"mcountry,omitempty" url:"mcountry,omitempty"`
 	Mstate                     *Mstate                     `json:"mstate,omitempty" url:"mstate,omitempty"`
 	Mzip                       *Mzip                       `json:"mzip,omitempty" url:"mzip,omitempty"`
-	OrgId                      *Orgid                      `json:"orgId,omitempty" url:"orgId,omitempty"`
+	OrgID                      *Orgid                      `json:"orgId,omitempty" url:"orgId,omitempty"`
 	Ownership                  *Ownership                  `json:"ownership,omitempty" url:"ownership,omitempty"`
 	PayoutAverageMonthlyVolume *PayoutAverageMonthlyVolume `json:"payoutAverageMonthlyVolume,omitempty" url:"payoutAverageMonthlyVolume,omitempty"`
 	PayoutAverageTicketLimit   *PayoutAverageTicketLimit   `json:"payoutAverageTicketLimit,omitempty" url:"payoutAverageTicketLimit,omitempty"`
@@ -737,7 +737,7 @@ type ApplicationData struct {
 	Signer                     *SignerDataRequest          `json:"signer,omitempty" url:"signer,omitempty"`
 	Startdate                  *Busstartdate               `json:"startdate,omitempty" url:"startdate,omitempty"`
 	Taxfillname                *Taxfillname                `json:"taxfillname,omitempty" url:"taxfillname,omitempty"`
-	TemplateId                 *TemplateId                 `json:"templateId,omitempty" url:"templateId,omitempty"`
+	TemplateID                 *TemplateID                 `json:"templateId,omitempty" url:"templateId,omitempty"`
 	Ticketamt                  *Ticketamt                  `json:"ticketamt,omitempty" url:"ticketamt,omitempty"`
 	Website                    *Website                    `json:"website,omitempty" url:"website,omitempty"`
 	WhenCharged                *Whencharged                `json:"whenCharged,omitempty" url:"whenCharged,omitempty"`
@@ -889,11 +889,11 @@ func (a *ApplicationData) GetEin() *Ein {
 	return a.Ein
 }
 
-func (a *ApplicationData) GetExternalPaypointId() *ExternalPaypointId {
+func (a *ApplicationData) GetExternalPaypointID() *ExternalPaypointID {
 	if a == nil {
 		return nil
 	}
-	return a.ExternalPaypointId
+	return a.ExternalPaypointID
 }
 
 func (a *ApplicationData) GetFaxnumber() *BoardingBusinessFax {
@@ -980,11 +980,11 @@ func (a *ApplicationData) GetMzip() *Mzip {
 	return a.Mzip
 }
 
-func (a *ApplicationData) GetOrgId() *Orgid {
+func (a *ApplicationData) GetOrgID() *Orgid {
 	if a == nil {
 		return nil
 	}
-	return a.OrgId
+	return a.OrgID
 }
 
 func (a *ApplicationData) GetOwnership() *Ownership {
@@ -1071,11 +1071,11 @@ func (a *ApplicationData) GetTaxfillname() *Taxfillname {
 	return a.Taxfillname
 }
 
-func (a *ApplicationData) GetTemplateId() *TemplateId {
+func (a *ApplicationData) GetTemplateID() *TemplateID {
 	if a == nil {
 		return nil
 	}
-	return a.TemplateId
+	return a.TemplateID
 }
 
 func (a *ApplicationData) GetTicketamt() *Ticketamt {
@@ -1295,11 +1295,11 @@ func (a *ApplicationData) SetEin(ein *Ein) {
 	a.require(applicationDataFieldEin)
 }
 
-// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// SetExternalPaypointID sets the ExternalPaypointID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationData) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
-	a.ExternalPaypointId = externalPaypointId
-	a.require(applicationDataFieldExternalPaypointId)
+func (a *ApplicationData) SetExternalPaypointID(externalPaypointID *ExternalPaypointID) {
+	a.ExternalPaypointID = externalPaypointID
+	a.require(applicationDataFieldExternalPaypointID)
 }
 
 // SetFaxnumber sets the Faxnumber field and marks it as non-optional;
@@ -1386,11 +1386,11 @@ func (a *ApplicationData) SetMzip(mzip *Mzip) {
 	a.require(applicationDataFieldMzip)
 }
 
-// SetOrgId sets the OrgId field and marks it as non-optional;
+// SetOrgID sets the OrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationData) SetOrgId(orgId *Orgid) {
-	a.OrgId = orgId
-	a.require(applicationDataFieldOrgId)
+func (a *ApplicationData) SetOrgID(orgID *Orgid) {
+	a.OrgID = orgID
+	a.require(applicationDataFieldOrgID)
 }
 
 // SetOwnership sets the Ownership field and marks it as non-optional;
@@ -1477,11 +1477,11 @@ func (a *ApplicationData) SetTaxfillname(taxfillname *Taxfillname) {
 	a.require(applicationDataFieldTaxfillname)
 }
 
-// SetTemplateId sets the TemplateId field and marks it as non-optional;
+// SetTemplateID sets the TemplateID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationData) SetTemplateId(templateId *TemplateId) {
-	a.TemplateId = templateId
-	a.require(applicationDataFieldTemplateId)
+func (a *ApplicationData) SetTemplateID(templateID *TemplateID) {
+	a.TemplateID = templateID
+	a.require(applicationDataFieldTemplateID)
 }
 
 // SetTicketamt sets the Ticketamt field and marks it as non-optional;
@@ -1604,7 +1604,7 @@ var (
 	applicationDataManagedFieldBankData                   = big.NewInt(1 << 4)
 	applicationDataManagedFieldBcity                      = big.NewInt(1 << 5)
 	applicationDataManagedFieldBcountry                   = big.NewInt(1 << 6)
-	applicationDataManagedFieldBoardingLinkId             = big.NewInt(1 << 7)
+	applicationDataManagedFieldBoardingLinkID             = big.NewInt(1 << 7)
 	applicationDataManagedFieldBstate                     = big.NewInt(1 << 8)
 	applicationDataManagedFieldBsummary                   = big.NewInt(1 << 9)
 	applicationDataManagedFieldBtype                      = big.NewInt(1 << 10)
@@ -1623,7 +1623,7 @@ var (
 	applicationDataManagedFieldMcountry                   = big.NewInt(1 << 23)
 	applicationDataManagedFieldMstate                     = big.NewInt(1 << 24)
 	applicationDataManagedFieldMzip                       = big.NewInt(1 << 25)
-	applicationDataManagedFieldOrgId                      = big.NewInt(1 << 26)
+	applicationDataManagedFieldOrgID                      = big.NewInt(1 << 26)
 	applicationDataManagedFieldOwnership                  = big.NewInt(1 << 27)
 	applicationDataManagedFieldPhonenumber                = big.NewInt(1 << 28)
 	applicationDataManagedFieldRecipientEmail             = big.NewInt(1 << 29)
@@ -1632,7 +1632,7 @@ var (
 	applicationDataManagedFieldSigner                     = big.NewInt(1 << 32)
 	applicationDataManagedFieldStartdate                  = big.NewInt(1 << 33)
 	applicationDataManagedFieldTaxfillname                = big.NewInt(1 << 34)
-	applicationDataManagedFieldTemplateId                 = big.NewInt(1 << 35)
+	applicationDataManagedFieldTemplateID                 = big.NewInt(1 << 35)
 	applicationDataManagedFieldWebsite                    = big.NewInt(1 << 36)
 	applicationDataManagedFieldRepCode                    = big.NewInt(1 << 37)
 	applicationDataManagedFieldRepName                    = big.NewInt(1 << 38)
@@ -1650,7 +1650,7 @@ type ApplicationDataManaged struct {
 	Bcity         *Bcity         `json:"bcity,omitempty" url:"bcity,omitempty"`
 	Bcountry      *Bcountry      `json:"bcountry,omitempty" url:"bcountry,omitempty"`
 	// Boarding link ID for the application. Either `templateId` or `boardingLinkId` are required.
-	BoardingLinkId *string   `json:"boardingLinkId,omitempty" url:"boardingLinkId,omitempty"`
+	BoardingLinkID *string   `json:"boardingLinkId,omitempty" url:"boardingLinkId,omitempty"`
 	Bstate         *Bstate   `json:"bstate,omitempty" url:"bstate,omitempty"`
 	Bsummary       *Bsummary `json:"bsummary,omitempty" url:"bsummary,omitempty"`
 	Btype          *OwnType  `json:"btype,omitempty" url:"btype,omitempty"`
@@ -1670,7 +1670,7 @@ type ApplicationDataManaged struct {
 	Mcountry  *Mcountry                             `json:"mcountry,omitempty" url:"mcountry,omitempty"`
 	Mstate    *Mstate                               `json:"mstate,omitempty" url:"mstate,omitempty"`
 	Mzip      *Mzip                                 `json:"mzip,omitempty" url:"mzip,omitempty"`
-	OrgId     *Orgid                                `json:"orgId,omitempty" url:"orgId,omitempty"`
+	OrgID     *Orgid                                `json:"orgId,omitempty" url:"orgId,omitempty"`
 	// List of Owners with at least a 25% ownership.
 	Ownership   []*ApplicationDataManagedOwnershipItem `json:"ownership,omitempty" url:"ownership,omitempty"`
 	Phonenumber *BoardingBusinessPhone                 `json:"phonenumber,omitempty" url:"phonenumber,omitempty"`
@@ -1682,7 +1682,7 @@ type ApplicationDataManaged struct {
 	Startdate                  *Busstartdate               `json:"startdate,omitempty" url:"startdate,omitempty"`
 	Taxfillname                *Taxfillname                `json:"taxfillname,omitempty" url:"taxfillname,omitempty"`
 	// The associated boarding template's ID in Payabli. Either `templateId` or `boardingLinkId` are required.
-	TemplateId *TemplateId `json:"templateId,omitempty" url:"templateId,omitempty"`
+	TemplateID *TemplateID `json:"templateId,omitempty" url:"templateId,omitempty"`
 	Website    *Website    `json:"website,omitempty" url:"website,omitempty"`
 	RepCode    *RepCode    `json:"RepCode,omitempty" url:"RepCode,omitempty"`
 	RepName    *RepName    `json:"RepName,omitempty" url:"RepName,omitempty"`
@@ -1745,11 +1745,11 @@ func (a *ApplicationDataManaged) GetBcountry() *Bcountry {
 	return a.Bcountry
 }
 
-func (a *ApplicationDataManaged) GetBoardingLinkId() *string {
+func (a *ApplicationDataManaged) GetBoardingLinkID() *string {
 	if a == nil {
 		return nil
 	}
-	return a.BoardingLinkId
+	return a.BoardingLinkID
 }
 
 func (a *ApplicationDataManaged) GetBstate() *Bstate {
@@ -1878,11 +1878,11 @@ func (a *ApplicationDataManaged) GetMzip() *Mzip {
 	return a.Mzip
 }
 
-func (a *ApplicationDataManaged) GetOrgId() *Orgid {
+func (a *ApplicationDataManaged) GetOrgID() *Orgid {
 	if a == nil {
 		return nil
 	}
-	return a.OrgId
+	return a.OrgID
 }
 
 func (a *ApplicationDataManaged) GetOwnership() []*ApplicationDataManagedOwnershipItem {
@@ -1941,11 +1941,11 @@ func (a *ApplicationDataManaged) GetTaxfillname() *Taxfillname {
 	return a.Taxfillname
 }
 
-func (a *ApplicationDataManaged) GetTemplateId() *TemplateId {
+func (a *ApplicationDataManaged) GetTemplateID() *TemplateID {
 	if a == nil {
 		return nil
 	}
-	return a.TemplateId
+	return a.TemplateID
 }
 
 func (a *ApplicationDataManaged) GetWebsite() *Website {
@@ -2046,11 +2046,11 @@ func (a *ApplicationDataManaged) SetBcountry(bcountry *Bcountry) {
 	a.require(applicationDataManagedFieldBcountry)
 }
 
-// SetBoardingLinkId sets the BoardingLinkId field and marks it as non-optional;
+// SetBoardingLinkID sets the BoardingLinkID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataManaged) SetBoardingLinkId(boardingLinkId *string) {
-	a.BoardingLinkId = boardingLinkId
-	a.require(applicationDataManagedFieldBoardingLinkId)
+func (a *ApplicationDataManaged) SetBoardingLinkID(boardingLinkID *string) {
+	a.BoardingLinkID = boardingLinkID
+	a.require(applicationDataManagedFieldBoardingLinkID)
 }
 
 // SetBstate sets the Bstate field and marks it as non-optional;
@@ -2179,11 +2179,11 @@ func (a *ApplicationDataManaged) SetMzip(mzip *Mzip) {
 	a.require(applicationDataManagedFieldMzip)
 }
 
-// SetOrgId sets the OrgId field and marks it as non-optional;
+// SetOrgID sets the OrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataManaged) SetOrgId(orgId *Orgid) {
-	a.OrgId = orgId
-	a.require(applicationDataManagedFieldOrgId)
+func (a *ApplicationDataManaged) SetOrgID(orgID *Orgid) {
+	a.OrgID = orgID
+	a.require(applicationDataManagedFieldOrgID)
 }
 
 // SetOwnership sets the Ownership field and marks it as non-optional;
@@ -2242,11 +2242,11 @@ func (a *ApplicationDataManaged) SetTaxfillname(taxfillname *Taxfillname) {
 	a.require(applicationDataManagedFieldTaxfillname)
 }
 
-// SetTemplateId sets the TemplateId field and marks it as non-optional;
+// SetTemplateID sets the TemplateID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataManaged) SetTemplateId(templateId *TemplateId) {
-	a.TemplateId = templateId
-	a.require(applicationDataManagedFieldTemplateId)
+func (a *ApplicationDataManaged) SetTemplateID(templateID *TemplateID) {
+	a.TemplateID = templateID
+	a.require(applicationDataManagedFieldTemplateID)
 }
 
 // SetWebsite sets the Website field and marks it as non-optional;
@@ -2826,7 +2826,7 @@ var (
 	applicationDataOdpFieldBankData                   = big.NewInt(1 << 5)
 	applicationDataOdpFieldBcity                      = big.NewInt(1 << 6)
 	applicationDataOdpFieldBcountry                   = big.NewInt(1 << 7)
-	applicationDataOdpFieldBoardingLinkId             = big.NewInt(1 << 8)
+	applicationDataOdpFieldBoardingLinkID             = big.NewInt(1 << 8)
 	applicationDataOdpFieldBstate                     = big.NewInt(1 << 9)
 	applicationDataOdpFieldBsummary                   = big.NewInt(1 << 10)
 	applicationDataOdpFieldBtype                      = big.NewInt(1 << 11)
@@ -2846,7 +2846,7 @@ var (
 	applicationDataOdpFieldMcountry                   = big.NewInt(1 << 25)
 	applicationDataOdpFieldMstate                     = big.NewInt(1 << 26)
 	applicationDataOdpFieldMzip                       = big.NewInt(1 << 27)
-	applicationDataOdpFieldOrgId                      = big.NewInt(1 << 28)
+	applicationDataOdpFieldOrgID                      = big.NewInt(1 << 28)
 	applicationDataOdpFieldOwnership                  = big.NewInt(1 << 29)
 	applicationDataOdpFieldPayoutAverageMonthlyVolume = big.NewInt(1 << 30)
 	applicationDataOdpFieldPayoutAverageTicketAmount  = big.NewInt(1 << 31)
@@ -2859,7 +2859,7 @@ var (
 	applicationDataOdpFieldSigner                     = big.NewInt(1 << 38)
 	applicationDataOdpFieldStartdate                  = big.NewInt(1 << 39)
 	applicationDataOdpFieldTaxfillname                = big.NewInt(1 << 40)
-	applicationDataOdpFieldTemplateId                 = big.NewInt(1 << 41)
+	applicationDataOdpFieldTemplateID                 = big.NewInt(1 << 41)
 	applicationDataOdpFieldWebsite                    = big.NewInt(1 << 42)
 	applicationDataOdpFieldRepCode                    = big.NewInt(1 << 43)
 	applicationDataOdpFieldRepName                    = big.NewInt(1 << 44)
@@ -2878,7 +2878,7 @@ type ApplicationDataOdp struct {
 	Bcity         *Bcity         `json:"bcity,omitempty" url:"bcity,omitempty"`
 	Bcountry      *Bcountry      `json:"bcountry,omitempty" url:"bcountry,omitempty"`
 	// Boarding link ID for the application. Either `templateId` or `boardingLinkId` are required.
-	BoardingLinkId *string   `json:"boardingLinkId,omitempty" url:"boardingLinkId,omitempty"`
+	BoardingLinkID *string   `json:"boardingLinkId,omitempty" url:"boardingLinkId,omitempty"`
 	Bstate         *Bstate   `json:"bstate,omitempty" url:"bstate,omitempty"`
 	Bsummary       *Bsummary `json:"bsummary,omitempty" url:"bsummary,omitempty"`
 	Btype          *OwnType  `json:"btype,omitempty" url:"btype,omitempty"`
@@ -2899,7 +2899,7 @@ type ApplicationDataOdp struct {
 	Mcountry      *Mcountry                         `json:"mcountry,omitempty" url:"mcountry,omitempty"`
 	Mstate        *Mstate                           `json:"mstate,omitempty" url:"mstate,omitempty"`
 	Mzip          *Mzip                             `json:"mzip,omitempty" url:"mzip,omitempty"`
-	OrgId         *Orgid                            `json:"orgId,omitempty" url:"orgId,omitempty"`
+	OrgID         *Orgid                            `json:"orgId,omitempty" url:"orgId,omitempty"`
 	// List of Owners with at least a 25% ownership.
 	Ownership                  []*ApplicationDataOdpOwnershipItem `json:"ownership,omitempty" url:"ownership,omitempty"`
 	PayoutAverageMonthlyVolume PayoutAverageMonthlyVolume         `json:"payoutAverageMonthlyVolume" url:"payoutAverageMonthlyVolume"`
@@ -2915,7 +2915,7 @@ type ApplicationDataOdp struct {
 	Startdate                  *Busstartdate               `json:"startdate,omitempty" url:"startdate,omitempty"`
 	Taxfillname                *Taxfillname                `json:"taxfillname,omitempty" url:"taxfillname,omitempty"`
 	// The associated boarding template's ID in Payabli. Either `templateId` or `boardingLinkId` are required.
-	TemplateId *TemplateId `json:"templateId,omitempty" url:"templateId,omitempty"`
+	TemplateID *TemplateID `json:"templateId,omitempty" url:"templateId,omitempty"`
 	Website    *Website    `json:"website,omitempty" url:"website,omitempty"`
 	RepCode    *RepCode    `json:"RepCode,omitempty" url:"RepCode,omitempty"`
 	RepName    *RepName    `json:"RepName,omitempty" url:"RepName,omitempty"`
@@ -2985,11 +2985,11 @@ func (a *ApplicationDataOdp) GetBcountry() *Bcountry {
 	return a.Bcountry
 }
 
-func (a *ApplicationDataOdp) GetBoardingLinkId() *string {
+func (a *ApplicationDataOdp) GetBoardingLinkID() *string {
 	if a == nil {
 		return nil
 	}
-	return a.BoardingLinkId
+	return a.BoardingLinkID
 }
 
 func (a *ApplicationDataOdp) GetBstate() *Bstate {
@@ -3125,11 +3125,11 @@ func (a *ApplicationDataOdp) GetMzip() *Mzip {
 	return a.Mzip
 }
 
-func (a *ApplicationDataOdp) GetOrgId() *Orgid {
+func (a *ApplicationDataOdp) GetOrgID() *Orgid {
 	if a == nil {
 		return nil
 	}
-	return a.OrgId
+	return a.OrgID
 }
 
 func (a *ApplicationDataOdp) GetOwnership() []*ApplicationDataOdpOwnershipItem {
@@ -3216,11 +3216,11 @@ func (a *ApplicationDataOdp) GetTaxfillname() *Taxfillname {
 	return a.Taxfillname
 }
 
-func (a *ApplicationDataOdp) GetTemplateId() *TemplateId {
+func (a *ApplicationDataOdp) GetTemplateID() *TemplateID {
 	if a == nil {
 		return nil
 	}
-	return a.TemplateId
+	return a.TemplateID
 }
 
 func (a *ApplicationDataOdp) GetWebsite() *Website {
@@ -3328,11 +3328,11 @@ func (a *ApplicationDataOdp) SetBcountry(bcountry *Bcountry) {
 	a.require(applicationDataOdpFieldBcountry)
 }
 
-// SetBoardingLinkId sets the BoardingLinkId field and marks it as non-optional;
+// SetBoardingLinkID sets the BoardingLinkID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataOdp) SetBoardingLinkId(boardingLinkId *string) {
-	a.BoardingLinkId = boardingLinkId
-	a.require(applicationDataOdpFieldBoardingLinkId)
+func (a *ApplicationDataOdp) SetBoardingLinkID(boardingLinkID *string) {
+	a.BoardingLinkID = boardingLinkID
+	a.require(applicationDataOdpFieldBoardingLinkID)
 }
 
 // SetBstate sets the Bstate field and marks it as non-optional;
@@ -3468,11 +3468,11 @@ func (a *ApplicationDataOdp) SetMzip(mzip *Mzip) {
 	a.require(applicationDataOdpFieldMzip)
 }
 
-// SetOrgId sets the OrgId field and marks it as non-optional;
+// SetOrgID sets the OrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataOdp) SetOrgId(orgId *Orgid) {
-	a.OrgId = orgId
-	a.require(applicationDataOdpFieldOrgId)
+func (a *ApplicationDataOdp) SetOrgID(orgID *Orgid) {
+	a.OrgID = orgID
+	a.require(applicationDataOdpFieldOrgID)
 }
 
 // SetOwnership sets the Ownership field and marks it as non-optional;
@@ -3559,11 +3559,11 @@ func (a *ApplicationDataOdp) SetTaxfillname(taxfillname *Taxfillname) {
 	a.require(applicationDataOdpFieldTaxfillname)
 }
 
-// SetTemplateId sets the TemplateId field and marks it as non-optional;
+// SetTemplateID sets the TemplateID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataOdp) SetTemplateId(templateId *TemplateId) {
-	a.TemplateId = templateId
-	a.require(applicationDataOdpFieldTemplateId)
+func (a *ApplicationDataOdp) SetTemplateID(templateID *TemplateID) {
+	a.TemplateID = templateID
+	a.require(applicationDataOdpFieldTemplateID)
 }
 
 // SetWebsite sets the Website field and marks it as non-optional;
@@ -4149,7 +4149,7 @@ var (
 	applicationDataPayInFieldBinperson                  = big.NewInt(1 << 10)
 	applicationDataPayInFieldBinphone                   = big.NewInt(1 << 11)
 	applicationDataPayInFieldBinweb                     = big.NewInt(1 << 12)
-	applicationDataPayInFieldBoardingLinkId             = big.NewInt(1 << 13)
+	applicationDataPayInFieldBoardingLinkID             = big.NewInt(1 << 13)
 	applicationDataPayInFieldBstate                     = big.NewInt(1 << 14)
 	applicationDataPayInFieldBsummary                   = big.NewInt(1 << 15)
 	applicationDataPayInFieldBtype                      = big.NewInt(1 << 16)
@@ -4158,7 +4158,7 @@ var (
 	applicationDataPayInFieldCreditLimit                = big.NewInt(1 << 19)
 	applicationDataPayInFieldDbaName                    = big.NewInt(1 << 20)
 	applicationDataPayInFieldEin                        = big.NewInt(1 << 21)
-	applicationDataPayInFieldExternalpaypointId         = big.NewInt(1 << 22)
+	applicationDataPayInFieldExternalpaypointID         = big.NewInt(1 << 22)
 	applicationDataPayInFieldFaxnumber                  = big.NewInt(1 << 23)
 	applicationDataPayInFieldHighticketamt              = big.NewInt(1 << 24)
 	applicationDataPayInFieldLegalName                  = big.NewInt(1 << 25)
@@ -4171,7 +4171,7 @@ var (
 	applicationDataPayInFieldMcountry                   = big.NewInt(1 << 32)
 	applicationDataPayInFieldMstate                     = big.NewInt(1 << 33)
 	applicationDataPayInFieldMzip                       = big.NewInt(1 << 34)
-	applicationDataPayInFieldOrgId                      = big.NewInt(1 << 35)
+	applicationDataPayInFieldOrgID                      = big.NewInt(1 << 35)
 	applicationDataPayInFieldOwnership                  = big.NewInt(1 << 36)
 	applicationDataPayInFieldPhonenumber                = big.NewInt(1 << 37)
 	applicationDataPayInFieldProcessingRegion           = big.NewInt(1 << 38)
@@ -4181,7 +4181,7 @@ var (
 	applicationDataPayInFieldSigner                     = big.NewInt(1 << 42)
 	applicationDataPayInFieldStartdate                  = big.NewInt(1 << 43)
 	applicationDataPayInFieldTaxFillName                = big.NewInt(1 << 44)
-	applicationDataPayInFieldTemplateId                 = big.NewInt(1 << 45)
+	applicationDataPayInFieldTemplateID                 = big.NewInt(1 << 45)
 	applicationDataPayInFieldTicketamt                  = big.NewInt(1 << 46)
 	applicationDataPayInFieldWebsite                    = big.NewInt(1 << 47)
 	applicationDataPayInFieldWhenCharged                = big.NewInt(1 << 48)
@@ -4210,7 +4210,7 @@ type ApplicationDataPayIn struct {
 	Binphone           *Binphone                     `json:"binphone,omitempty" url:"binphone,omitempty"`
 	Binweb             *Binweb                       `json:"binweb,omitempty" url:"binweb,omitempty"`
 	// Boarding link ID for the application. Either `templateId` or `boardingLinkId` are required.
-	BoardingLinkId *string   `json:"boardingLinkId,omitempty" url:"boardingLinkId,omitempty"`
+	BoardingLinkID *string   `json:"boardingLinkId,omitempty" url:"boardingLinkId,omitempty"`
 	Bstate         *Bstate   `json:"bstate,omitempty" url:"bstate,omitempty"`
 	Bsummary       *Bsummary `json:"bsummary,omitempty" url:"bsummary,omitempty"`
 	Btype          *OwnType  `json:"btype,omitempty" url:"btype,omitempty"`
@@ -4222,7 +4222,7 @@ type ApplicationDataPayIn struct {
 	// The alternate or common name that this business is doing business under usually referred to as a DBA name. Payabli strongly recommends including this information.
 	DbaName            *Dbaname            `json:"dbaName,omitempty" url:"dbaName,omitempty"`
 	Ein                *Ein                `json:"ein,omitempty" url:"ein,omitempty"`
-	ExternalpaypointId *ExternalPaypointId `json:"externalpaypointID,omitempty" url:"externalpaypointID,omitempty"`
+	ExternalpaypointID *ExternalPaypointID `json:"externalpaypointID,omitempty" url:"externalpaypointID,omitempty"`
 	// The business's fax number.
 	Faxnumber     *FaxNumber     `json:"faxnumber,omitempty" url:"faxnumber,omitempty"`
 	Highticketamt *Highticketamt `json:"highticketamt,omitempty" url:"highticketamt,omitempty"`
@@ -4236,7 +4236,7 @@ type ApplicationDataPayIn struct {
 	Mcountry      *Mcountry      `json:"mcountry,omitempty" url:"mcountry,omitempty"`
 	Mstate        *Mstate        `json:"mstate,omitempty" url:"mstate,omitempty"`
 	Mzip          *Mzip          `json:"mzip,omitempty" url:"mzip,omitempty"`
-	OrgId         *Orgid         `json:"orgId,omitempty" url:"orgId,omitempty"`
+	OrgID         *Orgid         `json:"orgId,omitempty" url:"orgId,omitempty"`
 	// List of Owners with at least a 25% ownership.
 	Ownership []*ApplicationDataPayInOwnershipItem `json:"ownership,omitempty" url:"ownership,omitempty"`
 	// The business's phone number.
@@ -4251,7 +4251,7 @@ type ApplicationDataPayIn struct {
 	Startdate                  *Busstartdate               `json:"startdate,omitempty" url:"startdate,omitempty"`
 	TaxFillName                *Taxfillname                `json:"taxFillName,omitempty" url:"taxFillName,omitempty"`
 	// The associated boarding template's ID in Payabli. Either `templateId` or `boardingLinkId` are required.
-	TemplateId     *TemplateId        `json:"templateId,omitempty" url:"templateId,omitempty"`
+	TemplateID     *TemplateID        `json:"templateId,omitempty" url:"templateId,omitempty"`
 	Ticketamt      *Ticketamt         `json:"ticketamt,omitempty" url:"ticketamt,omitempty"`
 	Website        *Website           `json:"website,omitempty" url:"website,omitempty"`
 	WhenCharged    Whencharged        `json:"whenCharged" url:"whenCharged"`
@@ -4362,11 +4362,11 @@ func (a *ApplicationDataPayIn) GetBinweb() *Binweb {
 	return a.Binweb
 }
 
-func (a *ApplicationDataPayIn) GetBoardingLinkId() *string {
+func (a *ApplicationDataPayIn) GetBoardingLinkID() *string {
 	if a == nil {
 		return nil
 	}
-	return a.BoardingLinkId
+	return a.BoardingLinkID
 }
 
 func (a *ApplicationDataPayIn) GetBstate() *Bstate {
@@ -4425,11 +4425,11 @@ func (a *ApplicationDataPayIn) GetEin() *Ein {
 	return a.Ein
 }
 
-func (a *ApplicationDataPayIn) GetExternalpaypointId() *ExternalPaypointId {
+func (a *ApplicationDataPayIn) GetExternalpaypointID() *ExternalPaypointID {
 	if a == nil {
 		return nil
 	}
-	return a.ExternalpaypointId
+	return a.ExternalpaypointID
 }
 
 func (a *ApplicationDataPayIn) GetFaxnumber() *FaxNumber {
@@ -4516,11 +4516,11 @@ func (a *ApplicationDataPayIn) GetMzip() *Mzip {
 	return a.Mzip
 }
 
-func (a *ApplicationDataPayIn) GetOrgId() *Orgid {
+func (a *ApplicationDataPayIn) GetOrgID() *Orgid {
 	if a == nil {
 		return nil
 	}
-	return a.OrgId
+	return a.OrgID
 }
 
 func (a *ApplicationDataPayIn) GetOwnership() []*ApplicationDataPayInOwnershipItem {
@@ -4586,11 +4586,11 @@ func (a *ApplicationDataPayIn) GetTaxFillName() *Taxfillname {
 	return a.TaxFillName
 }
 
-func (a *ApplicationDataPayIn) GetTemplateId() *TemplateId {
+func (a *ApplicationDataPayIn) GetTemplateID() *TemplateID {
 	if a == nil {
 		return nil
 	}
-	return a.TemplateId
+	return a.TemplateID
 }
 
 func (a *ApplicationDataPayIn) GetTicketamt() *Ticketamt {
@@ -4775,11 +4775,11 @@ func (a *ApplicationDataPayIn) SetBinweb(binweb *Binweb) {
 	a.require(applicationDataPayInFieldBinweb)
 }
 
-// SetBoardingLinkId sets the BoardingLinkId field and marks it as non-optional;
+// SetBoardingLinkID sets the BoardingLinkID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayIn) SetBoardingLinkId(boardingLinkId *string) {
-	a.BoardingLinkId = boardingLinkId
-	a.require(applicationDataPayInFieldBoardingLinkId)
+func (a *ApplicationDataPayIn) SetBoardingLinkID(boardingLinkID *string) {
+	a.BoardingLinkID = boardingLinkID
+	a.require(applicationDataPayInFieldBoardingLinkID)
 }
 
 // SetBstate sets the Bstate field and marks it as non-optional;
@@ -4838,11 +4838,11 @@ func (a *ApplicationDataPayIn) SetEin(ein *Ein) {
 	a.require(applicationDataPayInFieldEin)
 }
 
-// SetExternalpaypointId sets the ExternalpaypointId field and marks it as non-optional;
+// SetExternalpaypointID sets the ExternalpaypointID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayIn) SetExternalpaypointId(externalpaypointId *ExternalPaypointId) {
-	a.ExternalpaypointId = externalpaypointId
-	a.require(applicationDataPayInFieldExternalpaypointId)
+func (a *ApplicationDataPayIn) SetExternalpaypointID(externalpaypointID *ExternalPaypointID) {
+	a.ExternalpaypointID = externalpaypointID
+	a.require(applicationDataPayInFieldExternalpaypointID)
 }
 
 // SetFaxnumber sets the Faxnumber field and marks it as non-optional;
@@ -4929,11 +4929,11 @@ func (a *ApplicationDataPayIn) SetMzip(mzip *Mzip) {
 	a.require(applicationDataPayInFieldMzip)
 }
 
-// SetOrgId sets the OrgId field and marks it as non-optional;
+// SetOrgID sets the OrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayIn) SetOrgId(orgId *Orgid) {
-	a.OrgId = orgId
-	a.require(applicationDataPayInFieldOrgId)
+func (a *ApplicationDataPayIn) SetOrgID(orgID *Orgid) {
+	a.OrgID = orgID
+	a.require(applicationDataPayInFieldOrgID)
 }
 
 // SetOwnership sets the Ownership field and marks it as non-optional;
@@ -4999,11 +4999,11 @@ func (a *ApplicationDataPayIn) SetTaxFillName(taxFillName *Taxfillname) {
 	a.require(applicationDataPayInFieldTaxFillName)
 }
 
-// SetTemplateId sets the TemplateId field and marks it as non-optional;
+// SetTemplateID sets the TemplateID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayIn) SetTemplateId(templateId *TemplateId) {
-	a.TemplateId = templateId
-	a.require(applicationDataPayInFieldTemplateId)
+func (a *ApplicationDataPayIn) SetTemplateID(templateID *TemplateID) {
+	a.TemplateID = templateID
+	a.require(applicationDataPayInFieldTemplateID)
 }
 
 // SetTicketamt sets the Ticketamt field and marks it as non-optional;
@@ -6000,7 +6000,7 @@ var (
 	applicationDetailsRecordFieldBinPerson                  = big.NewInt(1 << 9)
 	applicationDetailsRecordFieldBinPhone                   = big.NewInt(1 << 10)
 	applicationDetailsRecordFieldBinWeb                     = big.NewInt(1 << 11)
-	applicationDetailsRecordFieldBoardingLinkId             = big.NewInt(1 << 12)
+	applicationDetailsRecordFieldBoardingLinkID             = big.NewInt(1 << 12)
 	applicationDetailsRecordFieldBoardingStatus             = big.NewInt(1 << 13)
 	applicationDetailsRecordFieldBoardingSubStatus          = big.NewInt(1 << 14)
 	applicationDetailsRecordFieldBPhone                     = big.NewInt(1 << 15)
@@ -6014,10 +6014,10 @@ var (
 	applicationDetailsRecordFieldDbaName                    = big.NewInt(1 << 23)
 	applicationDetailsRecordFieldDocumentsRef               = big.NewInt(1 << 24)
 	applicationDetailsRecordFieldEin                        = big.NewInt(1 << 25)
-	applicationDetailsRecordFieldExternalPaypointId         = big.NewInt(1 << 26)
+	applicationDetailsRecordFieldExternalPaypointID         = big.NewInt(1 << 26)
 	applicationDetailsRecordFieldGeneralEvents              = big.NewInt(1 << 27)
 	applicationDetailsRecordFieldHighTicketAmount           = big.NewInt(1 << 28)
-	applicationDetailsRecordFieldIdApplication              = big.NewInt(1 << 29)
+	applicationDetailsRecordFieldIDApplication              = big.NewInt(1 << 29)
 	applicationDetailsRecordFieldLastModified               = big.NewInt(1 << 30)
 	applicationDetailsRecordFieldLegalName                  = big.NewInt(1 << 31)
 	applicationDetailsRecordFieldLicense                    = big.NewInt(1 << 32)
@@ -6031,7 +6031,7 @@ var (
 	applicationDetailsRecordFieldMessages                   = big.NewInt(1 << 40)
 	applicationDetailsRecordFieldMState                     = big.NewInt(1 << 41)
 	applicationDetailsRecordFieldMZip                       = big.NewInt(1 << 42)
-	applicationDetailsRecordFieldOrgId                      = big.NewInt(1 << 43)
+	applicationDetailsRecordFieldOrgID                      = big.NewInt(1 << 43)
 	applicationDetailsRecordFieldOrgParentName              = big.NewInt(1 << 44)
 	applicationDetailsRecordFieldOwnerData                  = big.NewInt(1 << 45)
 	applicationDetailsRecordFieldOwnType                    = big.NewInt(1 << 46)
@@ -6042,7 +6042,7 @@ var (
 	applicationDetailsRecordFieldServiceData                = big.NewInt(1 << 51)
 	applicationDetailsRecordFieldSigner                     = big.NewInt(1 << 52)
 	applicationDetailsRecordFieldTaxfillname                = big.NewInt(1 << 53)
-	applicationDetailsRecordFieldTemplateId                 = big.NewInt(1 << 54)
+	applicationDetailsRecordFieldTemplateID                 = big.NewInt(1 << 54)
 	applicationDetailsRecordFieldWebsiteAddress             = big.NewInt(1 << 55)
 	applicationDetailsRecordFieldWhencharged                = big.NewInt(1 << 56)
 	applicationDetailsRecordFieldWhendelivered              = big.NewInt(1 << 57)
@@ -6065,7 +6065,7 @@ type ApplicationDetailsRecord struct {
 	BinPerson          *Binperson                      `json:"binPerson,omitempty" url:"binPerson,omitempty"`
 	BinPhone           *Binphone                       `json:"binPhone,omitempty" url:"binPhone,omitempty"`
 	BinWeb             *Binweb                         `json:"binWeb,omitempty" url:"binWeb,omitempty"`
-	BoardingLinkId     *BoardingLinkId                 `json:"boardingLinkId,omitempty" url:"boardingLinkId,omitempty"`
+	BoardingLinkID     *BoardingLinkID                 `json:"boardingLinkId,omitempty" url:"boardingLinkId,omitempty"`
 	BoardingStatus     *BoardingStatus                 `json:"boardingStatus,omitempty" url:"boardingStatus,omitempty"`
 	BoardingSubStatus  *BoardingStatus                 `json:"boardingSubStatus,omitempty" url:"boardingSubStatus,omitempty"`
 	BPhone             *Bphone                         `json:"bPhone,omitempty" url:"bPhone,omitempty"`
@@ -6079,11 +6079,11 @@ type ApplicationDetailsRecord struct {
 	DbaName            *Dbaname                        `json:"dbaName,omitempty" url:"dbaName,omitempty"`
 	DocumentsRef       *BoardingApplicationAttachments `json:"documentsRef,omitempty" url:"documentsRef,omitempty"`
 	Ein                *Ein                            `json:"ein,omitempty" url:"ein,omitempty"`
-	ExternalPaypointId *ExternalPaypointId             `json:"externalPaypointId,omitempty" url:"externalPaypointId,omitempty"`
+	ExternalPaypointID *ExternalPaypointID             `json:"externalPaypointId,omitempty" url:"externalPaypointId,omitempty"`
 	// Events associated with the application.
 	GeneralEvents    []*GeneralEvents `json:"generalEvents,omitempty" url:"generalEvents,omitempty"`
 	HighTicketAmount *Highticketamt   `json:"highTicketAmount,omitempty" url:"highTicketAmount,omitempty"`
-	IdApplication    *AppId           `json:"idApplication,omitempty" url:"idApplication,omitempty"`
+	IDApplication    *AppID           `json:"idApplication,omitempty" url:"idApplication,omitempty"`
 	LastModified     *LastModified    `json:"lastModified,omitempty" url:"lastModified,omitempty"`
 	LegalName        *Legalname       `json:"legalName,omitempty" url:"legalName,omitempty"`
 	License          *License         `json:"license,omitempty" url:"license,omitempty"`
@@ -6098,7 +6098,7 @@ type ApplicationDetailsRecord struct {
 	Messages                   []*ApplicationDetailsRecordMessagesItem `json:"messages,omitempty" url:"messages,omitempty"`
 	MState                     *Mstate                                 `json:"mState,omitempty" url:"mState,omitempty"`
 	MZip                       *Mzip                                   `json:"mZip,omitempty" url:"mZip,omitempty"`
-	OrgId                      *Orgid                                  `json:"orgId,omitempty" url:"orgId,omitempty"`
+	OrgID                      *Orgid                                  `json:"orgId,omitempty" url:"orgId,omitempty"`
 	OrgParentName              *OrgParentName                          `json:"orgParentName,omitempty" url:"orgParentName,omitempty"`
 	OwnerData                  *Ownership                              `json:"ownerData,omitempty" url:"ownerData,omitempty"`
 	OwnType                    *OwnType                                `json:"ownType,omitempty" url:"ownType,omitempty"`
@@ -6109,7 +6109,7 @@ type ApplicationDetailsRecord struct {
 	ServiceData                *Services                               `json:"serviceData,omitempty" url:"serviceData,omitempty"`
 	Signer                     *SignerData                             `json:"signer,omitempty" url:"signer,omitempty"`
 	Taxfillname                *Taxfillname                            `json:"taxfillname,omitempty" url:"taxfillname,omitempty"`
-	TemplateId                 *TemplateId                             `json:"templateId,omitempty" url:"templateId,omitempty"`
+	TemplateID                 *TemplateID                             `json:"templateId,omitempty" url:"templateId,omitempty"`
 	WebsiteAddress             *Website                                `json:"websiteAddress,omitempty" url:"websiteAddress,omitempty"`
 	Whencharged                *Whencharged                            `json:"whencharged,omitempty" url:"whencharged,omitempty"`
 	Whendelivered              *Whendelivered                          `json:"whendelivered,omitempty" url:"whendelivered,omitempty"`
@@ -6208,11 +6208,11 @@ func (a *ApplicationDetailsRecord) GetBinWeb() *Binweb {
 	return a.BinWeb
 }
 
-func (a *ApplicationDetailsRecord) GetBoardingLinkId() *BoardingLinkId {
+func (a *ApplicationDetailsRecord) GetBoardingLinkID() *BoardingLinkID {
 	if a == nil {
 		return nil
 	}
-	return a.BoardingLinkId
+	return a.BoardingLinkID
 }
 
 func (a *ApplicationDetailsRecord) GetBoardingStatus() *BoardingStatus {
@@ -6306,11 +6306,11 @@ func (a *ApplicationDetailsRecord) GetEin() *Ein {
 	return a.Ein
 }
 
-func (a *ApplicationDetailsRecord) GetExternalPaypointId() *ExternalPaypointId {
+func (a *ApplicationDetailsRecord) GetExternalPaypointID() *ExternalPaypointID {
 	if a == nil {
 		return nil
 	}
-	return a.ExternalPaypointId
+	return a.ExternalPaypointID
 }
 
 func (a *ApplicationDetailsRecord) GetGeneralEvents() []*GeneralEvents {
@@ -6327,11 +6327,11 @@ func (a *ApplicationDetailsRecord) GetHighTicketAmount() *Highticketamt {
 	return a.HighTicketAmount
 }
 
-func (a *ApplicationDetailsRecord) GetIdApplication() *AppId {
+func (a *ApplicationDetailsRecord) GetIDApplication() *AppID {
 	if a == nil {
 		return nil
 	}
-	return a.IdApplication
+	return a.IDApplication
 }
 
 func (a *ApplicationDetailsRecord) GetLastModified() *LastModified {
@@ -6425,11 +6425,11 @@ func (a *ApplicationDetailsRecord) GetMZip() *Mzip {
 	return a.MZip
 }
 
-func (a *ApplicationDetailsRecord) GetOrgId() *Orgid {
+func (a *ApplicationDetailsRecord) GetOrgID() *Orgid {
 	if a == nil {
 		return nil
 	}
-	return a.OrgId
+	return a.OrgID
 }
 
 func (a *ApplicationDetailsRecord) GetOrgParentName() *OrgParentName {
@@ -6502,11 +6502,11 @@ func (a *ApplicationDetailsRecord) GetTaxfillname() *Taxfillname {
 	return a.Taxfillname
 }
 
-func (a *ApplicationDetailsRecord) GetTemplateId() *TemplateId {
+func (a *ApplicationDetailsRecord) GetTemplateID() *TemplateID {
 	if a == nil {
 		return nil
 	}
-	return a.TemplateId
+	return a.TemplateID
 }
 
 func (a *ApplicationDetailsRecord) GetWebsiteAddress() *Website {
@@ -6649,11 +6649,11 @@ func (a *ApplicationDetailsRecord) SetBinWeb(binWeb *Binweb) {
 	a.require(applicationDetailsRecordFieldBinWeb)
 }
 
-// SetBoardingLinkId sets the BoardingLinkId field and marks it as non-optional;
+// SetBoardingLinkID sets the BoardingLinkID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDetailsRecord) SetBoardingLinkId(boardingLinkId *BoardingLinkId) {
-	a.BoardingLinkId = boardingLinkId
-	a.require(applicationDetailsRecordFieldBoardingLinkId)
+func (a *ApplicationDetailsRecord) SetBoardingLinkID(boardingLinkID *BoardingLinkID) {
+	a.BoardingLinkID = boardingLinkID
+	a.require(applicationDetailsRecordFieldBoardingLinkID)
 }
 
 // SetBoardingStatus sets the BoardingStatus field and marks it as non-optional;
@@ -6747,11 +6747,11 @@ func (a *ApplicationDetailsRecord) SetEin(ein *Ein) {
 	a.require(applicationDetailsRecordFieldEin)
 }
 
-// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// SetExternalPaypointID sets the ExternalPaypointID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDetailsRecord) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
-	a.ExternalPaypointId = externalPaypointId
-	a.require(applicationDetailsRecordFieldExternalPaypointId)
+func (a *ApplicationDetailsRecord) SetExternalPaypointID(externalPaypointID *ExternalPaypointID) {
+	a.ExternalPaypointID = externalPaypointID
+	a.require(applicationDetailsRecordFieldExternalPaypointID)
 }
 
 // SetGeneralEvents sets the GeneralEvents field and marks it as non-optional;
@@ -6768,11 +6768,11 @@ func (a *ApplicationDetailsRecord) SetHighTicketAmount(highTicketAmount *Hightic
 	a.require(applicationDetailsRecordFieldHighTicketAmount)
 }
 
-// SetIdApplication sets the IdApplication field and marks it as non-optional;
+// SetIDApplication sets the IDApplication field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDetailsRecord) SetIdApplication(idApplication *AppId) {
-	a.IdApplication = idApplication
-	a.require(applicationDetailsRecordFieldIdApplication)
+func (a *ApplicationDetailsRecord) SetIDApplication(idApplication *AppID) {
+	a.IDApplication = idApplication
+	a.require(applicationDetailsRecordFieldIDApplication)
 }
 
 // SetLastModified sets the LastModified field and marks it as non-optional;
@@ -6866,11 +6866,11 @@ func (a *ApplicationDetailsRecord) SetMZip(mZip *Mzip) {
 	a.require(applicationDetailsRecordFieldMZip)
 }
 
-// SetOrgId sets the OrgId field and marks it as non-optional;
+// SetOrgID sets the OrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDetailsRecord) SetOrgId(orgId *Orgid) {
-	a.OrgId = orgId
-	a.require(applicationDetailsRecordFieldOrgId)
+func (a *ApplicationDetailsRecord) SetOrgID(orgID *Orgid) {
+	a.OrgID = orgID
+	a.require(applicationDetailsRecordFieldOrgID)
 }
 
 // SetOrgParentName sets the OrgParentName field and marks it as non-optional;
@@ -6943,11 +6943,11 @@ func (a *ApplicationDetailsRecord) SetTaxfillname(taxfillname *Taxfillname) {
 	a.require(applicationDetailsRecordFieldTaxfillname)
 }
 
-// SetTemplateId sets the TemplateId field and marks it as non-optional;
+// SetTemplateID sets the TemplateID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDetailsRecord) SetTemplateId(templateId *TemplateId) {
-	a.TemplateId = templateId
-	a.require(applicationDetailsRecordFieldTemplateId)
+func (a *ApplicationDetailsRecord) SetTemplateID(templateID *TemplateID) {
+	a.TemplateID = templateID
+	a.require(applicationDetailsRecordFieldTemplateID)
 }
 
 // SetWebsiteAddress sets the WebsiteAddress field and marks it as non-optional;
@@ -7051,12 +7051,12 @@ var (
 	applicationDetailsRecordMessagesItemFieldCreatedAt                    = big.NewInt(1 << 1)
 	applicationDetailsRecordMessagesItemFieldCurrentApplicationStatus     = big.NewInt(1 << 2)
 	applicationDetailsRecordMessagesItemFieldCurrentApplicationSubStatus  = big.NewInt(1 << 3)
-	applicationDetailsRecordMessagesItemFieldId                           = big.NewInt(1 << 4)
+	applicationDetailsRecordMessagesItemFieldID                           = big.NewInt(1 << 4)
 	applicationDetailsRecordMessagesItemFieldMessageType                  = big.NewInt(1 << 5)
 	applicationDetailsRecordMessagesItemFieldOriginalApplicationStatus    = big.NewInt(1 << 6)
 	applicationDetailsRecordMessagesItemFieldOriginalApplicationSubStatus = big.NewInt(1 << 7)
-	applicationDetailsRecordMessagesItemFieldRoomId                       = big.NewInt(1 << 8)
-	applicationDetailsRecordMessagesItemFieldUserId                       = big.NewInt(1 << 9)
+	applicationDetailsRecordMessagesItemFieldRoomID                       = big.NewInt(1 << 8)
+	applicationDetailsRecordMessagesItemFieldUserID                       = big.NewInt(1 << 9)
 	applicationDetailsRecordMessagesItemFieldUserName                     = big.NewInt(1 << 10)
 )
 
@@ -7065,12 +7065,12 @@ type ApplicationDetailsRecordMessagesItem struct {
 	CreatedAt                    *CreatedAt `json:"createdAt,omitempty" url:"createdAt,omitempty"`
 	CurrentApplicationStatus     *int       `json:"currentApplicationStatus,omitempty" url:"currentApplicationStatus,omitempty"`
 	CurrentApplicationSubStatus  *int       `json:"currentApplicationSubStatus,omitempty" url:"currentApplicationSubStatus,omitempty"`
-	Id                           *int       `json:"id,omitempty" url:"id,omitempty"`
+	ID                           *int       `json:"id,omitempty" url:"id,omitempty"`
 	MessageType                  *int       `json:"messageType,omitempty" url:"messageType,omitempty"`
 	OriginalApplicationStatus    *int       `json:"originalApplicationStatus,omitempty" url:"originalApplicationStatus,omitempty"`
 	OriginalApplicationSubStatus *int       `json:"originalApplicationSubStatus,omitempty" url:"originalApplicationSubStatus,omitempty"`
-	RoomId                       *int       `json:"roomId,omitempty" url:"roomId,omitempty"`
-	UserId                       *int       `json:"userId,omitempty" url:"userId,omitempty"`
+	RoomID                       *int       `json:"roomId,omitempty" url:"roomId,omitempty"`
+	UserID                       *int       `json:"userId,omitempty" url:"userId,omitempty"`
 	UserName                     *string    `json:"userName,omitempty" url:"userName,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -7108,11 +7108,11 @@ func (a *ApplicationDetailsRecordMessagesItem) GetCurrentApplicationSubStatus() 
 	return a.CurrentApplicationSubStatus
 }
 
-func (a *ApplicationDetailsRecordMessagesItem) GetId() *int {
+func (a *ApplicationDetailsRecordMessagesItem) GetID() *int {
 	if a == nil {
 		return nil
 	}
-	return a.Id
+	return a.ID
 }
 
 func (a *ApplicationDetailsRecordMessagesItem) GetMessageType() *int {
@@ -7136,18 +7136,18 @@ func (a *ApplicationDetailsRecordMessagesItem) GetOriginalApplicationSubStatus()
 	return a.OriginalApplicationSubStatus
 }
 
-func (a *ApplicationDetailsRecordMessagesItem) GetRoomId() *int {
+func (a *ApplicationDetailsRecordMessagesItem) GetRoomID() *int {
 	if a == nil {
 		return nil
 	}
-	return a.RoomId
+	return a.RoomID
 }
 
-func (a *ApplicationDetailsRecordMessagesItem) GetUserId() *int {
+func (a *ApplicationDetailsRecordMessagesItem) GetUserID() *int {
 	if a == nil {
 		return nil
 	}
-	return a.UserId
+	return a.UserID
 }
 
 func (a *ApplicationDetailsRecordMessagesItem) GetUserName() *string {
@@ -7199,11 +7199,11 @@ func (a *ApplicationDetailsRecordMessagesItem) SetCurrentApplicationSubStatus(cu
 	a.require(applicationDetailsRecordMessagesItemFieldCurrentApplicationSubStatus)
 }
 
-// SetId sets the Id field and marks it as non-optional;
+// SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDetailsRecordMessagesItem) SetId(id *int) {
-	a.Id = id
-	a.require(applicationDetailsRecordMessagesItemFieldId)
+func (a *ApplicationDetailsRecordMessagesItem) SetID(id *int) {
+	a.ID = id
+	a.require(applicationDetailsRecordMessagesItemFieldID)
 }
 
 // SetMessageType sets the MessageType field and marks it as non-optional;
@@ -7227,18 +7227,18 @@ func (a *ApplicationDetailsRecordMessagesItem) SetOriginalApplicationSubStatus(o
 	a.require(applicationDetailsRecordMessagesItemFieldOriginalApplicationSubStatus)
 }
 
-// SetRoomId sets the RoomId field and marks it as non-optional;
+// SetRoomID sets the RoomID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDetailsRecordMessagesItem) SetRoomId(roomId *int) {
-	a.RoomId = roomId
-	a.require(applicationDetailsRecordMessagesItemFieldRoomId)
+func (a *ApplicationDetailsRecordMessagesItem) SetRoomID(roomID *int) {
+	a.RoomID = roomID
+	a.require(applicationDetailsRecordMessagesItemFieldRoomID)
 }
 
-// SetUserId sets the UserId field and marks it as non-optional;
+// SetUserID sets the UserID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDetailsRecordMessagesItem) SetUserId(userId *int) {
-	a.UserId = userId
-	a.require(applicationDetailsRecordMessagesItemFieldUserId)
+func (a *ApplicationDetailsRecordMessagesItem) SetUserID(userID *int) {
+	a.UserID = userID
+	a.require(applicationDetailsRecordMessagesItemFieldUserID)
 }
 
 // SetUserName sets the UserName field and marks it as non-optional;
@@ -7311,7 +7311,7 @@ var (
 	applicationQueryRecordFieldBinPerson                  = big.NewInt(1 << 9)
 	applicationQueryRecordFieldBinPhone                   = big.NewInt(1 << 10)
 	applicationQueryRecordFieldBinWeb                     = big.NewInt(1 << 11)
-	applicationQueryRecordFieldBoardingLinkId             = big.NewInt(1 << 12)
+	applicationQueryRecordFieldBoardingLinkID             = big.NewInt(1 << 12)
 	applicationQueryRecordFieldBoardingStatus             = big.NewInt(1 << 13)
 	applicationQueryRecordFieldBoardingSubStatus          = big.NewInt(1 << 14)
 	applicationQueryRecordFieldBPhone                     = big.NewInt(1 << 15)
@@ -7325,10 +7325,10 @@ var (
 	applicationQueryRecordFieldDbaName                    = big.NewInt(1 << 23)
 	applicationQueryRecordFieldDocumentsRef               = big.NewInt(1 << 24)
 	applicationQueryRecordFieldEin                        = big.NewInt(1 << 25)
-	applicationQueryRecordFieldExternalPaypointId         = big.NewInt(1 << 26)
+	applicationQueryRecordFieldExternalPaypointID         = big.NewInt(1 << 26)
 	applicationQueryRecordFieldGeneralEvents              = big.NewInt(1 << 27)
 	applicationQueryRecordFieldHighTicketAmount           = big.NewInt(1 << 28)
-	applicationQueryRecordFieldIdApplication              = big.NewInt(1 << 29)
+	applicationQueryRecordFieldIDApplication              = big.NewInt(1 << 29)
 	applicationQueryRecordFieldLastModified               = big.NewInt(1 << 30)
 	applicationQueryRecordFieldLegalName                  = big.NewInt(1 << 31)
 	applicationQueryRecordFieldLicense                    = big.NewInt(1 << 32)
@@ -7341,7 +7341,7 @@ var (
 	applicationQueryRecordFieldMCountry                   = big.NewInt(1 << 39)
 	applicationQueryRecordFieldMState                     = big.NewInt(1 << 40)
 	applicationQueryRecordFieldMZip                       = big.NewInt(1 << 41)
-	applicationQueryRecordFieldOrgId                      = big.NewInt(1 << 42)
+	applicationQueryRecordFieldOrgID                      = big.NewInt(1 << 42)
 	applicationQueryRecordFieldOrgParentName              = big.NewInt(1 << 43)
 	applicationQueryRecordFieldOwnerData                  = big.NewInt(1 << 44)
 	applicationQueryRecordFieldOwnType                    = big.NewInt(1 << 45)
@@ -7352,7 +7352,7 @@ var (
 	applicationQueryRecordFieldServiceData                = big.NewInt(1 << 50)
 	applicationQueryRecordFieldSigner                     = big.NewInt(1 << 51)
 	applicationQueryRecordFieldTaxfillname                = big.NewInt(1 << 52)
-	applicationQueryRecordFieldTemplateId                 = big.NewInt(1 << 53)
+	applicationQueryRecordFieldTemplateID                 = big.NewInt(1 << 53)
 	applicationQueryRecordFieldWebsiteAddress             = big.NewInt(1 << 54)
 	applicationQueryRecordFieldWhencharged                = big.NewInt(1 << 55)
 	applicationQueryRecordFieldWhendelivered              = big.NewInt(1 << 56)
@@ -7378,7 +7378,7 @@ type ApplicationQueryRecord struct {
 	BinPerson          *Binperson                      `json:"binPerson,omitempty" url:"binPerson,omitempty"`
 	BinPhone           *Binphone                       `json:"binPhone,omitempty" url:"binPhone,omitempty"`
 	BinWeb             *Binweb                         `json:"binWeb,omitempty" url:"binWeb,omitempty"`
-	BoardingLinkId     *BoardingLinkId                 `json:"boardingLinkId,omitempty" url:"boardingLinkId,omitempty"`
+	BoardingLinkID     *BoardingLinkID                 `json:"boardingLinkId,omitempty" url:"boardingLinkId,omitempty"`
 	BoardingStatus     *BoardingStatus                 `json:"boardingStatus,omitempty" url:"boardingStatus,omitempty"`
 	BoardingSubStatus  *BoardingStatus                 `json:"boardingSubStatus,omitempty" url:"boardingSubStatus,omitempty"`
 	BPhone             *Bphone                         `json:"bPhone,omitempty" url:"bPhone,omitempty"`
@@ -7392,11 +7392,11 @@ type ApplicationQueryRecord struct {
 	DbaName            *Dbaname                        `json:"dbaName,omitempty" url:"dbaName,omitempty"`
 	DocumentsRef       *BoardingApplicationAttachments `json:"documentsRef,omitempty" url:"documentsRef,omitempty"`
 	Ein                *Ein                            `json:"ein,omitempty" url:"ein,omitempty"`
-	ExternalPaypointId *ExternalPaypointId             `json:"externalPaypointId,omitempty" url:"externalPaypointId,omitempty"`
+	ExternalPaypointID *ExternalPaypointID             `json:"externalPaypointId,omitempty" url:"externalPaypointId,omitempty"`
 	// Events associated with the application.
 	GeneralEvents    []*GeneralEvents `json:"generalEvents,omitempty" url:"generalEvents,omitempty"`
 	HighTicketAmount *Highticketamt   `json:"highTicketAmount,omitempty" url:"highTicketAmount,omitempty"`
-	IdApplication    *AppId           `json:"idApplication,omitempty" url:"idApplication,omitempty"`
+	IDApplication    *AppID           `json:"idApplication,omitempty" url:"idApplication,omitempty"`
 	LastModified     *LastModified    `json:"lastModified,omitempty" url:"lastModified,omitempty"`
 	LegalName        *Legalname       `json:"legalName,omitempty" url:"legalName,omitempty"`
 	License          *License         `json:"license,omitempty" url:"license,omitempty"`
@@ -7410,7 +7410,7 @@ type ApplicationQueryRecord struct {
 	MCountry                   *Mcountry                   `json:"mCountry,omitempty" url:"mCountry,omitempty"`
 	MState                     *Mstate                     `json:"mState,omitempty" url:"mState,omitempty"`
 	MZip                       *Mzip                       `json:"mZip,omitempty" url:"mZip,omitempty"`
-	OrgId                      *Orgid                      `json:"orgId,omitempty" url:"orgId,omitempty"`
+	OrgID                      *Orgid                      `json:"orgId,omitempty" url:"orgId,omitempty"`
 	OrgParentName              *OrgParentName              `json:"orgParentName,omitempty" url:"orgParentName,omitempty"`
 	OwnerData                  *Ownership                  `json:"ownerData,omitempty" url:"ownerData,omitempty"`
 	OwnType                    *OwnType                    `json:"ownType,omitempty" url:"ownType,omitempty"`
@@ -7421,7 +7421,7 @@ type ApplicationQueryRecord struct {
 	ServiceData                *Services                   `json:"serviceData,omitempty" url:"serviceData,omitempty"`
 	Signer                     *SignerData                 `json:"signer,omitempty" url:"signer,omitempty"`
 	Taxfillname                *Taxfillname                `json:"taxfillname,omitempty" url:"taxfillname,omitempty"`
-	TemplateId                 *TemplateId                 `json:"templateId,omitempty" url:"templateId,omitempty"`
+	TemplateID                 *TemplateID                 `json:"templateId,omitempty" url:"templateId,omitempty"`
 	WebsiteAddress             *Website                    `json:"websiteAddress,omitempty" url:"websiteAddress,omitempty"`
 	Whencharged                *Whencharged                `json:"whencharged,omitempty" url:"whencharged,omitempty"`
 	Whendelivered              *Whendelivered              `json:"whendelivered,omitempty" url:"whendelivered,omitempty"`
@@ -7523,11 +7523,11 @@ func (a *ApplicationQueryRecord) GetBinWeb() *Binweb {
 	return a.BinWeb
 }
 
-func (a *ApplicationQueryRecord) GetBoardingLinkId() *BoardingLinkId {
+func (a *ApplicationQueryRecord) GetBoardingLinkID() *BoardingLinkID {
 	if a == nil {
 		return nil
 	}
-	return a.BoardingLinkId
+	return a.BoardingLinkID
 }
 
 func (a *ApplicationQueryRecord) GetBoardingStatus() *BoardingStatus {
@@ -7621,11 +7621,11 @@ func (a *ApplicationQueryRecord) GetEin() *Ein {
 	return a.Ein
 }
 
-func (a *ApplicationQueryRecord) GetExternalPaypointId() *ExternalPaypointId {
+func (a *ApplicationQueryRecord) GetExternalPaypointID() *ExternalPaypointID {
 	if a == nil {
 		return nil
 	}
-	return a.ExternalPaypointId
+	return a.ExternalPaypointID
 }
 
 func (a *ApplicationQueryRecord) GetGeneralEvents() []*GeneralEvents {
@@ -7642,11 +7642,11 @@ func (a *ApplicationQueryRecord) GetHighTicketAmount() *Highticketamt {
 	return a.HighTicketAmount
 }
 
-func (a *ApplicationQueryRecord) GetIdApplication() *AppId {
+func (a *ApplicationQueryRecord) GetIDApplication() *AppID {
 	if a == nil {
 		return nil
 	}
-	return a.IdApplication
+	return a.IDApplication
 }
 
 func (a *ApplicationQueryRecord) GetLastModified() *LastModified {
@@ -7733,11 +7733,11 @@ func (a *ApplicationQueryRecord) GetMZip() *Mzip {
 	return a.MZip
 }
 
-func (a *ApplicationQueryRecord) GetOrgId() *Orgid {
+func (a *ApplicationQueryRecord) GetOrgID() *Orgid {
 	if a == nil {
 		return nil
 	}
-	return a.OrgId
+	return a.OrgID
 }
 
 func (a *ApplicationQueryRecord) GetOrgParentName() *OrgParentName {
@@ -7810,11 +7810,11 @@ func (a *ApplicationQueryRecord) GetTaxfillname() *Taxfillname {
 	return a.Taxfillname
 }
 
-func (a *ApplicationQueryRecord) GetTemplateId() *TemplateId {
+func (a *ApplicationQueryRecord) GetTemplateID() *TemplateID {
 	if a == nil {
 		return nil
 	}
-	return a.TemplateId
+	return a.TemplateID
 }
 
 func (a *ApplicationQueryRecord) GetWebsiteAddress() *Website {
@@ -7978,11 +7978,11 @@ func (a *ApplicationQueryRecord) SetBinWeb(binWeb *Binweb) {
 	a.require(applicationQueryRecordFieldBinWeb)
 }
 
-// SetBoardingLinkId sets the BoardingLinkId field and marks it as non-optional;
+// SetBoardingLinkID sets the BoardingLinkID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationQueryRecord) SetBoardingLinkId(boardingLinkId *BoardingLinkId) {
-	a.BoardingLinkId = boardingLinkId
-	a.require(applicationQueryRecordFieldBoardingLinkId)
+func (a *ApplicationQueryRecord) SetBoardingLinkID(boardingLinkID *BoardingLinkID) {
+	a.BoardingLinkID = boardingLinkID
+	a.require(applicationQueryRecordFieldBoardingLinkID)
 }
 
 // SetBoardingStatus sets the BoardingStatus field and marks it as non-optional;
@@ -8076,11 +8076,11 @@ func (a *ApplicationQueryRecord) SetEin(ein *Ein) {
 	a.require(applicationQueryRecordFieldEin)
 }
 
-// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// SetExternalPaypointID sets the ExternalPaypointID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationQueryRecord) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
-	a.ExternalPaypointId = externalPaypointId
-	a.require(applicationQueryRecordFieldExternalPaypointId)
+func (a *ApplicationQueryRecord) SetExternalPaypointID(externalPaypointID *ExternalPaypointID) {
+	a.ExternalPaypointID = externalPaypointID
+	a.require(applicationQueryRecordFieldExternalPaypointID)
 }
 
 // SetGeneralEvents sets the GeneralEvents field and marks it as non-optional;
@@ -8097,11 +8097,11 @@ func (a *ApplicationQueryRecord) SetHighTicketAmount(highTicketAmount *Highticke
 	a.require(applicationQueryRecordFieldHighTicketAmount)
 }
 
-// SetIdApplication sets the IdApplication field and marks it as non-optional;
+// SetIDApplication sets the IDApplication field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationQueryRecord) SetIdApplication(idApplication *AppId) {
-	a.IdApplication = idApplication
-	a.require(applicationQueryRecordFieldIdApplication)
+func (a *ApplicationQueryRecord) SetIDApplication(idApplication *AppID) {
+	a.IDApplication = idApplication
+	a.require(applicationQueryRecordFieldIDApplication)
 }
 
 // SetLastModified sets the LastModified field and marks it as non-optional;
@@ -8188,11 +8188,11 @@ func (a *ApplicationQueryRecord) SetMZip(mZip *Mzip) {
 	a.require(applicationQueryRecordFieldMZip)
 }
 
-// SetOrgId sets the OrgId field and marks it as non-optional;
+// SetOrgID sets the OrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationQueryRecord) SetOrgId(orgId *Orgid) {
-	a.OrgId = orgId
-	a.require(applicationQueryRecordFieldOrgId)
+func (a *ApplicationQueryRecord) SetOrgID(orgID *Orgid) {
+	a.OrgID = orgID
+	a.require(applicationQueryRecordFieldOrgID)
 }
 
 // SetOrgParentName sets the OrgParentName field and marks it as non-optional;
@@ -8265,11 +8265,11 @@ func (a *ApplicationQueryRecord) SetTaxfillname(taxfillname *Taxfillname) {
 	a.require(applicationQueryRecordFieldTaxfillname)
 }
 
-// SetTemplateId sets the TemplateId field and marks it as non-optional;
+// SetTemplateID sets the TemplateID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationQueryRecord) SetTemplateId(templateId *TemplateId) {
-	a.TemplateId = templateId
-	a.require(applicationQueryRecordFieldTemplateId)
+func (a *ApplicationQueryRecord) SetTemplateID(templateID *TemplateID) {
+	a.TemplateID = templateID
+	a.require(applicationQueryRecordFieldTemplateID)
 }
 
 // SetWebsiteAddress sets the WebsiteAddress field and marks it as non-optional;
@@ -9245,13 +9245,13 @@ var (
 	boardingLinkQueryRecordFieldAcceptRegister             = big.NewInt(1 << 1)
 	boardingLinkQueryRecordFieldBuilderData                = big.NewInt(1 << 2)
 	boardingLinkQueryRecordFieldEntryAttributes            = big.NewInt(1 << 3)
-	boardingLinkQueryRecordFieldId                         = big.NewInt(1 << 4)
+	boardingLinkQueryRecordFieldID                         = big.NewInt(1 << 4)
 	boardingLinkQueryRecordFieldLogo                       = big.NewInt(1 << 5)
-	boardingLinkQueryRecordFieldOrgId                      = big.NewInt(1 << 6)
+	boardingLinkQueryRecordFieldOrgID                      = big.NewInt(1 << 6)
 	boardingLinkQueryRecordFieldPageIdentifier             = big.NewInt(1 << 7)
 	boardingLinkQueryRecordFieldRecipientEmailNotification = big.NewInt(1 << 8)
 	boardingLinkQueryRecordFieldReferenceName              = big.NewInt(1 << 9)
-	boardingLinkQueryRecordFieldReferenceTemplateId        = big.NewInt(1 << 10)
+	boardingLinkQueryRecordFieldReferenceTemplateID        = big.NewInt(1 << 10)
 	boardingLinkQueryRecordFieldResumable                  = big.NewInt(1 << 11)
 )
 
@@ -9260,14 +9260,14 @@ type BoardingLinkQueryRecord struct {
 	AcceptRegister  *AcceptRegister  `json:"acceptRegister,omitempty" url:"acceptRegister,omitempty"`
 	BuilderData     *BuilderData     `json:"builderData,omitempty" url:"builderData,omitempty"`
 	EntryAttributes *EntryAttributes `json:"entryAttributes,omitempty" url:"entryAttributes,omitempty"`
-	Id              *int64           `json:"id,omitempty" url:"id,omitempty"`
+	ID              *int64           `json:"id,omitempty" url:"id,omitempty"`
 	// Object containing logo file.
 	Logo                       *FileContent                `json:"logo,omitempty" url:"logo,omitempty"`
-	OrgId                      *Orgid                      `json:"orgId,omitempty" url:"orgId,omitempty"`
+	OrgID                      *Orgid                      `json:"orgId,omitempty" url:"orgId,omitempty"`
 	PageIdentifier             *PageIdentifier             `json:"pageIdentifier:,omitempty" url:"pageIdentifier:,omitempty"`
 	RecipientEmailNotification *RecipientEmailNotification `json:"recipientEmailNotification,omitempty" url:"recipientEmailNotification,omitempty"`
 	ReferenceName              *ReferenceName              `json:"referenceName,omitempty" url:"referenceName,omitempty"`
-	ReferenceTemplateId        *ReferenceTemplateId        `json:"referenceTemplateId,omitempty" url:"referenceTemplateId,omitempty"`
+	ReferenceTemplateID        *ReferenceTemplateID        `json:"referenceTemplateId,omitempty" url:"referenceTemplateId,omitempty"`
 	Resumable                  *Resumable                  `json:"resumable,omitempty" url:"resumable,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -9305,11 +9305,11 @@ func (b *BoardingLinkQueryRecord) GetEntryAttributes() *EntryAttributes {
 	return b.EntryAttributes
 }
 
-func (b *BoardingLinkQueryRecord) GetId() *int64 {
+func (b *BoardingLinkQueryRecord) GetID() *int64 {
 	if b == nil {
 		return nil
 	}
-	return b.Id
+	return b.ID
 }
 
 func (b *BoardingLinkQueryRecord) GetLogo() *FileContent {
@@ -9319,11 +9319,11 @@ func (b *BoardingLinkQueryRecord) GetLogo() *FileContent {
 	return b.Logo
 }
 
-func (b *BoardingLinkQueryRecord) GetOrgId() *Orgid {
+func (b *BoardingLinkQueryRecord) GetOrgID() *Orgid {
 	if b == nil {
 		return nil
 	}
-	return b.OrgId
+	return b.OrgID
 }
 
 func (b *BoardingLinkQueryRecord) GetPageIdentifier() *PageIdentifier {
@@ -9347,11 +9347,11 @@ func (b *BoardingLinkQueryRecord) GetReferenceName() *ReferenceName {
 	return b.ReferenceName
 }
 
-func (b *BoardingLinkQueryRecord) GetReferenceTemplateId() *ReferenceTemplateId {
+func (b *BoardingLinkQueryRecord) GetReferenceTemplateID() *ReferenceTemplateID {
 	if b == nil {
 		return nil
 	}
-	return b.ReferenceTemplateId
+	return b.ReferenceTemplateID
 }
 
 func (b *BoardingLinkQueryRecord) GetResumable() *Resumable {
@@ -9403,11 +9403,11 @@ func (b *BoardingLinkQueryRecord) SetEntryAttributes(entryAttributes *EntryAttri
 	b.require(boardingLinkQueryRecordFieldEntryAttributes)
 }
 
-// SetId sets the Id field and marks it as non-optional;
+// SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BoardingLinkQueryRecord) SetId(id *int64) {
-	b.Id = id
-	b.require(boardingLinkQueryRecordFieldId)
+func (b *BoardingLinkQueryRecord) SetID(id *int64) {
+	b.ID = id
+	b.require(boardingLinkQueryRecordFieldID)
 }
 
 // SetLogo sets the Logo field and marks it as non-optional;
@@ -9417,11 +9417,11 @@ func (b *BoardingLinkQueryRecord) SetLogo(logo *FileContent) {
 	b.require(boardingLinkQueryRecordFieldLogo)
 }
 
-// SetOrgId sets the OrgId field and marks it as non-optional;
+// SetOrgID sets the OrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BoardingLinkQueryRecord) SetOrgId(orgId *Orgid) {
-	b.OrgId = orgId
-	b.require(boardingLinkQueryRecordFieldOrgId)
+func (b *BoardingLinkQueryRecord) SetOrgID(orgID *Orgid) {
+	b.OrgID = orgID
+	b.require(boardingLinkQueryRecordFieldOrgID)
 }
 
 // SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
@@ -9445,11 +9445,11 @@ func (b *BoardingLinkQueryRecord) SetReferenceName(referenceName *ReferenceName)
 	b.require(boardingLinkQueryRecordFieldReferenceName)
 }
 
-// SetReferenceTemplateId sets the ReferenceTemplateId field and marks it as non-optional;
+// SetReferenceTemplateID sets the ReferenceTemplateID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BoardingLinkQueryRecord) SetReferenceTemplateId(referenceTemplateId *ReferenceTemplateId) {
-	b.ReferenceTemplateId = referenceTemplateId
-	b.require(boardingLinkQueryRecordFieldReferenceTemplateId)
+func (b *BoardingLinkQueryRecord) SetReferenceTemplateID(referenceTemplateID *ReferenceTemplateID) {
+	b.ReferenceTemplateID = referenceTemplateID
+	b.require(boardingLinkQueryRecordFieldReferenceTemplateID)
 }
 
 // SetResumable sets the Resumable field and marks it as non-optional;
@@ -11052,14 +11052,14 @@ func (p *PSection) String() string {
 }
 
 var (
-	payabliApiResponse00FieldIsSuccess      = big.NewInt(1 << 0)
-	payabliApiResponse00FieldPageIdentifier = big.NewInt(1 << 1)
-	payabliApiResponse00FieldResponseCode   = big.NewInt(1 << 2)
-	payabliApiResponse00FieldResponseData   = big.NewInt(1 << 3)
-	payabliApiResponse00FieldResponseText   = big.NewInt(1 << 4)
+	payabliAPIResponse00FieldIsSuccess      = big.NewInt(1 << 0)
+	payabliAPIResponse00FieldPageIdentifier = big.NewInt(1 << 1)
+	payabliAPIResponse00FieldResponseCode   = big.NewInt(1 << 2)
+	payabliAPIResponse00FieldResponseData   = big.NewInt(1 << 3)
+	payabliAPIResponse00FieldResponseText   = big.NewInt(1 << 4)
 )
 
-type PayabliApiResponse00 struct {
+type PayabliAPIResponse00 struct {
 	IsSuccess      *IsSuccess      `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	PageIdentifier *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 	ResponseCode   *Responsecode   `json:"responseCode,omitempty" url:"responseCode,omitempty"`
@@ -11073,49 +11073,49 @@ type PayabliApiResponse00 struct {
 	rawJSON         json.RawMessage
 }
 
-func (p *PayabliApiResponse00) GetIsSuccess() *IsSuccess {
+func (p *PayabliAPIResponse00) GetIsSuccess() *IsSuccess {
 	if p == nil {
 		return nil
 	}
 	return p.IsSuccess
 }
 
-func (p *PayabliApiResponse00) GetPageIdentifier() *PageIdentifier {
+func (p *PayabliAPIResponse00) GetPageIdentifier() *PageIdentifier {
 	if p == nil {
 		return nil
 	}
 	return p.PageIdentifier
 }
 
-func (p *PayabliApiResponse00) GetResponseCode() *Responsecode {
+func (p *PayabliAPIResponse00) GetResponseCode() *Responsecode {
 	if p == nil {
 		return nil
 	}
 	return p.ResponseCode
 }
 
-func (p *PayabliApiResponse00) GetResponseData() *Responsedata {
+func (p *PayabliAPIResponse00) GetResponseData() *Responsedata {
 	if p == nil {
 		return nil
 	}
 	return p.ResponseData
 }
 
-func (p *PayabliApiResponse00) GetResponseText() ResponseText {
+func (p *PayabliAPIResponse00) GetResponseText() ResponseText {
 	if p == nil {
 		return ""
 	}
 	return p.ResponseText
 }
 
-func (p *PayabliApiResponse00) GetExtraProperties() map[string]interface{} {
+func (p *PayabliAPIResponse00) GetExtraProperties() map[string]interface{} {
 	if p == nil {
 		return nil
 	}
 	return p.extraProperties
 }
 
-func (p *PayabliApiResponse00) require(field *big.Int) {
+func (p *PayabliAPIResponse00) require(field *big.Int) {
 	if p.explicitFields == nil {
 		p.explicitFields = big.NewInt(0)
 	}
@@ -11124,46 +11124,46 @@ func (p *PayabliApiResponse00) require(field *big.Int) {
 
 // SetIsSuccess sets the IsSuccess field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponse00) SetIsSuccess(isSuccess *IsSuccess) {
+func (p *PayabliAPIResponse00) SetIsSuccess(isSuccess *IsSuccess) {
 	p.IsSuccess = isSuccess
-	p.require(payabliApiResponse00FieldIsSuccess)
+	p.require(payabliAPIResponse00FieldIsSuccess)
 }
 
 // SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponse00) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+func (p *PayabliAPIResponse00) SetPageIdentifier(pageIdentifier *PageIdentifier) {
 	p.PageIdentifier = pageIdentifier
-	p.require(payabliApiResponse00FieldPageIdentifier)
+	p.require(payabliAPIResponse00FieldPageIdentifier)
 }
 
 // SetResponseCode sets the ResponseCode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponse00) SetResponseCode(responseCode *Responsecode) {
+func (p *PayabliAPIResponse00) SetResponseCode(responseCode *Responsecode) {
 	p.ResponseCode = responseCode
-	p.require(payabliApiResponse00FieldResponseCode)
+	p.require(payabliAPIResponse00FieldResponseCode)
 }
 
 // SetResponseData sets the ResponseData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponse00) SetResponseData(responseData *Responsedata) {
+func (p *PayabliAPIResponse00) SetResponseData(responseData *Responsedata) {
 	p.ResponseData = responseData
-	p.require(payabliApiResponse00FieldResponseData)
+	p.require(payabliAPIResponse00FieldResponseData)
 }
 
 // SetResponseText sets the ResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponse00) SetResponseText(responseText ResponseText) {
+func (p *PayabliAPIResponse00) SetResponseText(responseText ResponseText) {
 	p.ResponseText = responseText
-	p.require(payabliApiResponse00FieldResponseText)
+	p.require(payabliAPIResponse00FieldResponseText)
 }
 
-func (p *PayabliApiResponse00) UnmarshalJSON(data []byte) error {
-	type unmarshaler PayabliApiResponse00
+func (p *PayabliAPIResponse00) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayabliAPIResponse00
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*p = PayabliApiResponse00(value)
+	*p = PayabliAPIResponse00(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *p)
 	if err != nil {
 		return err
@@ -11173,8 +11173,8 @@ func (p *PayabliApiResponse00) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (p *PayabliApiResponse00) MarshalJSON() ([]byte, error) {
-	type embed PayabliApiResponse00
+func (p *PayabliAPIResponse00) MarshalJSON() ([]byte, error) {
+	type embed PayabliAPIResponse00
 	var marshaler = struct {
 		embed
 	}{
@@ -11184,7 +11184,7 @@ func (p *PayabliApiResponse00) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (p *PayabliApiResponse00) String() string {
+func (p *PayabliAPIResponse00) String() string {
 	if p == nil {
 		return "<nil>"
 	}
@@ -11418,11 +11418,11 @@ var (
 	queryBoardingLinksResponseRecordsItemFieldAcceptOauth         = big.NewInt(1 << 0)
 	queryBoardingLinksResponseRecordsItemFieldAcceptRegister      = big.NewInt(1 << 1)
 	queryBoardingLinksResponseRecordsItemFieldEntryAttributes     = big.NewInt(1 << 2)
-	queryBoardingLinksResponseRecordsItemFieldId                  = big.NewInt(1 << 3)
+	queryBoardingLinksResponseRecordsItemFieldID                  = big.NewInt(1 << 3)
 	queryBoardingLinksResponseRecordsItemFieldLastUpdated         = big.NewInt(1 << 4)
 	queryBoardingLinksResponseRecordsItemFieldOrgParentName       = big.NewInt(1 << 5)
 	queryBoardingLinksResponseRecordsItemFieldReferenceName       = big.NewInt(1 << 6)
-	queryBoardingLinksResponseRecordsItemFieldReferenceTemplateId = big.NewInt(1 << 7)
+	queryBoardingLinksResponseRecordsItemFieldReferenceTemplateID = big.NewInt(1 << 7)
 	queryBoardingLinksResponseRecordsItemFieldTemplateCode        = big.NewInt(1 << 8)
 	queryBoardingLinksResponseRecordsItemFieldTemplateName        = big.NewInt(1 << 9)
 )
@@ -11432,11 +11432,11 @@ type QueryBoardingLinksResponseRecordsItem struct {
 	AcceptRegister  *AcceptRegister  `json:"AcceptRegister,omitempty" url:"AcceptRegister,omitempty"`
 	EntryAttributes *EntryAttributes `json:"EntryAttributes,omitempty" url:"EntryAttributes,omitempty"`
 	// The record ID.
-	Id                  *int                 `json:"Id,omitempty" url:"Id,omitempty"`
+	ID                  *int                 `json:"Id,omitempty" url:"Id,omitempty"`
 	LastUpdated         *LastModified        `json:"LastUpdated,omitempty" url:"LastUpdated,omitempty"`
 	OrgParentName       *OrgParentName       `json:"OrgParentName,omitempty" url:"OrgParentName,omitempty"`
 	ReferenceName       *ReferenceName       `json:"ReferenceName,omitempty" url:"ReferenceName,omitempty"`
-	ReferenceTemplateId *ReferenceTemplateId `json:"ReferenceTemplateId,omitempty" url:"ReferenceTemplateId,omitempty"`
+	ReferenceTemplateID *ReferenceTemplateID `json:"ReferenceTemplateId,omitempty" url:"ReferenceTemplateId,omitempty"`
 	TemplateCode        *TemplateCode        `json:"TemplateCode,omitempty" url:"TemplateCode,omitempty"`
 	TemplateName        *TemplateName        `json:"TemplateName,omitempty" url:"TemplateName,omitempty"`
 
@@ -11468,11 +11468,11 @@ func (q *QueryBoardingLinksResponseRecordsItem) GetEntryAttributes() *EntryAttri
 	return q.EntryAttributes
 }
 
-func (q *QueryBoardingLinksResponseRecordsItem) GetId() *int {
+func (q *QueryBoardingLinksResponseRecordsItem) GetID() *int {
 	if q == nil {
 		return nil
 	}
-	return q.Id
+	return q.ID
 }
 
 func (q *QueryBoardingLinksResponseRecordsItem) GetLastUpdated() *LastModified {
@@ -11496,11 +11496,11 @@ func (q *QueryBoardingLinksResponseRecordsItem) GetReferenceName() *ReferenceNam
 	return q.ReferenceName
 }
 
-func (q *QueryBoardingLinksResponseRecordsItem) GetReferenceTemplateId() *ReferenceTemplateId {
+func (q *QueryBoardingLinksResponseRecordsItem) GetReferenceTemplateID() *ReferenceTemplateID {
 	if q == nil {
 		return nil
 	}
-	return q.ReferenceTemplateId
+	return q.ReferenceTemplateID
 }
 
 func (q *QueryBoardingLinksResponseRecordsItem) GetTemplateCode() *TemplateCode {
@@ -11552,11 +11552,11 @@ func (q *QueryBoardingLinksResponseRecordsItem) SetEntryAttributes(entryAttribut
 	q.require(queryBoardingLinksResponseRecordsItemFieldEntryAttributes)
 }
 
-// SetId sets the Id field and marks it as non-optional;
+// SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryBoardingLinksResponseRecordsItem) SetId(id *int) {
-	q.Id = id
-	q.require(queryBoardingLinksResponseRecordsItemFieldId)
+func (q *QueryBoardingLinksResponseRecordsItem) SetID(id *int) {
+	q.ID = id
+	q.require(queryBoardingLinksResponseRecordsItemFieldID)
 }
 
 // SetLastUpdated sets the LastUpdated field and marks it as non-optional;
@@ -11580,11 +11580,11 @@ func (q *QueryBoardingLinksResponseRecordsItem) SetReferenceName(referenceName *
 	q.require(queryBoardingLinksResponseRecordsItemFieldReferenceName)
 }
 
-// SetReferenceTemplateId sets the ReferenceTemplateId field and marks it as non-optional;
+// SetReferenceTemplateID sets the ReferenceTemplateID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryBoardingLinksResponseRecordsItem) SetReferenceTemplateId(referenceTemplateId *ReferenceTemplateId) {
-	q.ReferenceTemplateId = referenceTemplateId
-	q.require(queryBoardingLinksResponseRecordsItemFieldReferenceTemplateId)
+func (q *QueryBoardingLinksResponseRecordsItem) SetReferenceTemplateID(referenceTemplateID *ReferenceTemplateID) {
+	q.ReferenceTemplateID = referenceTemplateID
+	q.require(queryBoardingLinksResponseRecordsItemFieldReferenceTemplateID)
 }
 
 // SetTemplateCode sets the TemplateCode field and marks it as non-optional;
@@ -11781,7 +11781,7 @@ type SignerCountry = string
 
 // Information about the application's signer.
 var (
-	signerDataFieldSignerUuid              = big.NewInt(1 << 0)
+	signerDataFieldSignerUUID              = big.NewInt(1 << 0)
 	signerDataFieldName                    = big.NewInt(1 << 1)
 	signerDataFieldSsn                     = big.NewInt(1 << 2)
 	signerDataFieldDob                     = big.NewInt(1 << 3)
@@ -11803,7 +11803,7 @@ var (
 
 type SignerData struct {
 	// The signer's ID. This is automatically generated by Payabli.
-	SignerUuid *string      `json:"signerUuid,omitempty" url:"signerUuid,omitempty"`
+	SignerUUID *string      `json:"signerUuid,omitempty" url:"signerUuid,omitempty"`
 	Name       *SignerName  `json:"name,omitempty" url:"name,omitempty"`
 	Ssn        *SignerSsn   `json:"ssn,omitempty" url:"ssn,omitempty"`
 	Dob        *SignerDob   `json:"dob,omitempty" url:"dob,omitempty"`
@@ -11831,11 +11831,11 @@ type SignerData struct {
 	rawJSON         json.RawMessage
 }
 
-func (s *SignerData) GetSignerUuid() *string {
+func (s *SignerData) GetSignerUUID() *string {
 	if s == nil {
 		return nil
 	}
-	return s.SignerUuid
+	return s.SignerUUID
 }
 
 func (s *SignerData) GetName() *SignerName {
@@ -11971,11 +11971,11 @@ func (s *SignerData) require(field *big.Int) {
 	s.explicitFields.Or(s.explicitFields, field)
 }
 
-// SetSignerUuid sets the SignerUuid field and marks it as non-optional;
+// SetSignerUUID sets the SignerUUID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SignerData) SetSignerUuid(signerUuid *string) {
-	s.SignerUuid = signerUuid
-	s.require(signerDataFieldSignerUuid)
+func (s *SignerData) SetSignerUUID(signerUUID *string) {
+	s.SignerUUID = signerUUID
+	s.require(signerDataFieldSignerUUID)
 }
 
 // SetName sets the Name field and marks it as non-optional;

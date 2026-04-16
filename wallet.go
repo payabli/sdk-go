@@ -13,13 +13,13 @@ import (
 var (
 	configureOrganizationRequestApplePayFieldCascade   = big.NewInt(1 << 0)
 	configureOrganizationRequestApplePayFieldIsEnabled = big.NewInt(1 << 1)
-	configureOrganizationRequestApplePayFieldOrgId     = big.NewInt(1 << 2)
+	configureOrganizationRequestApplePayFieldOrgID     = big.NewInt(1 << 2)
 )
 
 type ConfigureOrganizationRequestApplePay struct {
 	Cascade   *Cascade        `json:"cascade,omitempty" url:"-"`
 	IsEnabled *IsEnabled      `json:"isEnabled,omitempty" url:"-"`
-	OrgId     *OrganizationId `json:"orgId,omitempty" url:"-"`
+	OrgID     *OrganizationID `json:"orgId,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -46,11 +46,11 @@ func (c *ConfigureOrganizationRequestApplePay) SetIsEnabled(isEnabled *IsEnabled
 	c.require(configureOrganizationRequestApplePayFieldIsEnabled)
 }
 
-// SetOrgId sets the OrgId field and marks it as non-optional;
+// SetOrgID sets the OrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConfigureOrganizationRequestApplePay) SetOrgId(orgId *OrganizationId) {
-	c.OrgId = orgId
-	c.require(configureOrganizationRequestApplePayFieldOrgId)
+func (c *ConfigureOrganizationRequestApplePay) SetOrgID(orgID *OrganizationID) {
+	c.OrgID = orgID
+	c.require(configureOrganizationRequestApplePayFieldOrgID)
 }
 
 func (c *ConfigureOrganizationRequestApplePay) UnmarshalJSON(data []byte) error {
@@ -133,13 +133,13 @@ func (c *ConfigurePaypointRequestApplePay) MarshalJSON() ([]byte, error) {
 var (
 	configureOrganizationRequestGooglePayFieldCascade   = big.NewInt(1 << 0)
 	configureOrganizationRequestGooglePayFieldIsEnabled = big.NewInt(1 << 1)
-	configureOrganizationRequestGooglePayFieldOrgId     = big.NewInt(1 << 2)
+	configureOrganizationRequestGooglePayFieldOrgID     = big.NewInt(1 << 2)
 )
 
 type ConfigureOrganizationRequestGooglePay struct {
 	Cascade   *Cascade        `json:"cascade,omitempty" url:"-"`
 	IsEnabled *IsEnabled      `json:"isEnabled,omitempty" url:"-"`
-	OrgId     *OrganizationId `json:"orgId,omitempty" url:"-"`
+	OrgID     *OrganizationID `json:"orgId,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -166,11 +166,11 @@ func (c *ConfigureOrganizationRequestGooglePay) SetIsEnabled(isEnabled *IsEnable
 	c.require(configureOrganizationRequestGooglePayFieldIsEnabled)
 }
 
-// SetOrgId sets the OrgId field and marks it as non-optional;
+// SetOrgID sets the OrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConfigureOrganizationRequestGooglePay) SetOrgId(orgId *OrganizationId) {
-	c.OrgId = orgId
-	c.require(configureOrganizationRequestGooglePayFieldOrgId)
+func (c *ConfigureOrganizationRequestGooglePay) SetOrgID(orgID *OrganizationID) {
+	c.OrgID = orgID
+	c.require(configureOrganizationRequestGooglePayFieldOrgID)
 }
 
 func (c *ConfigureOrganizationRequestGooglePay) UnmarshalJSON(data []byte) error {
@@ -251,14 +251,14 @@ func (c *ConfigurePaypointRequestGooglePay) MarshalJSON() ([]byte, error) {
 }
 
 // The internal identifier for Apple Pay-related information.
-type ApplePayId = string
+type ApplePayID = string
 
 var (
 	applePayOrganizationUpdateDataFieldCreatedAt      = big.NewInt(1 << 0)
-	applePayOrganizationUpdateDataFieldId             = big.NewInt(1 << 1)
-	applePayOrganizationUpdateDataFieldJobId          = big.NewInt(1 << 2)
+	applePayOrganizationUpdateDataFieldID             = big.NewInt(1 << 1)
+	applePayOrganizationUpdateDataFieldJobID          = big.NewInt(1 << 2)
 	applePayOrganizationUpdateDataFieldJobStatus      = big.NewInt(1 << 3)
-	applePayOrganizationUpdateDataFieldOrganizationId = big.NewInt(1 << 4)
+	applePayOrganizationUpdateDataFieldOrganizationID = big.NewInt(1 << 4)
 	applePayOrganizationUpdateDataFieldType           = big.NewInt(1 << 5)
 	applePayOrganizationUpdateDataFieldUpdatedAt      = big.NewInt(1 << 6)
 	applePayOrganizationUpdateDataFieldUpdates        = big.NewInt(1 << 7)
@@ -267,10 +267,10 @@ var (
 type ApplePayOrganizationUpdateData struct {
 	CreatedAt *CreatedAt `json:"createdAt,omitempty" url:"createdAt,omitempty"`
 	// Internal ID for the Apple Pay organization update.
-	Id             *ApplePayId     `json:"id,omitempty" url:"id,omitempty"`
-	JobId          *JobId          `json:"jobId,omitempty" url:"jobId,omitempty"`
+	ID             *ApplePayID     `json:"id,omitempty" url:"id,omitempty"`
+	JobID          *JobID          `json:"jobId,omitempty" url:"jobId,omitempty"`
 	JobStatus      *JobStatus      `json:"jobStatus,omitempty" url:"jobStatus,omitempty"`
-	OrganizationId *OrganizationId `json:"organizationId,omitempty" url:"organizationId,omitempty"`
+	OrganizationID *OrganizationID `json:"organizationId,omitempty" url:"organizationId,omitempty"`
 	// The record type, in this context it will always be `ApplePayOrganizationUpdate`.
 	Type      *ApplePayType        `json:"type,omitempty" url:"type,omitempty"`
 	UpdatedAt *LastModified        `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
@@ -290,18 +290,18 @@ func (a *ApplePayOrganizationUpdateData) GetCreatedAt() *CreatedAt {
 	return a.CreatedAt
 }
 
-func (a *ApplePayOrganizationUpdateData) GetId() *ApplePayId {
+func (a *ApplePayOrganizationUpdateData) GetID() *ApplePayID {
 	if a == nil {
 		return nil
 	}
-	return a.Id
+	return a.ID
 }
 
-func (a *ApplePayOrganizationUpdateData) GetJobId() *JobId {
+func (a *ApplePayOrganizationUpdateData) GetJobID() *JobID {
 	if a == nil {
 		return nil
 	}
-	return a.JobId
+	return a.JobID
 }
 
 func (a *ApplePayOrganizationUpdateData) GetJobStatus() *JobStatus {
@@ -311,11 +311,11 @@ func (a *ApplePayOrganizationUpdateData) GetJobStatus() *JobStatus {
 	return a.JobStatus
 }
 
-func (a *ApplePayOrganizationUpdateData) GetOrganizationId() *OrganizationId {
+func (a *ApplePayOrganizationUpdateData) GetOrganizationID() *OrganizationID {
 	if a == nil {
 		return nil
 	}
-	return a.OrganizationId
+	return a.OrganizationID
 }
 
 func (a *ApplePayOrganizationUpdateData) GetType() *ApplePayType {
@@ -360,18 +360,18 @@ func (a *ApplePayOrganizationUpdateData) SetCreatedAt(createdAt *CreatedAt) {
 	a.require(applePayOrganizationUpdateDataFieldCreatedAt)
 }
 
-// SetId sets the Id field and marks it as non-optional;
+// SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplePayOrganizationUpdateData) SetId(id *ApplePayId) {
-	a.Id = id
-	a.require(applePayOrganizationUpdateDataFieldId)
+func (a *ApplePayOrganizationUpdateData) SetID(id *ApplePayID) {
+	a.ID = id
+	a.require(applePayOrganizationUpdateDataFieldID)
 }
 
-// SetJobId sets the JobId field and marks it as non-optional;
+// SetJobID sets the JobID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplePayOrganizationUpdateData) SetJobId(jobId *JobId) {
-	a.JobId = jobId
-	a.require(applePayOrganizationUpdateDataFieldJobId)
+func (a *ApplePayOrganizationUpdateData) SetJobID(jobID *JobID) {
+	a.JobID = jobID
+	a.require(applePayOrganizationUpdateDataFieldJobID)
 }
 
 // SetJobStatus sets the JobStatus field and marks it as non-optional;
@@ -381,11 +381,11 @@ func (a *ApplePayOrganizationUpdateData) SetJobStatus(jobStatus *JobStatus) {
 	a.require(applePayOrganizationUpdateDataFieldJobStatus)
 }
 
-// SetOrganizationId sets the OrganizationId field and marks it as non-optional;
+// SetOrganizationID sets the OrganizationID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplePayOrganizationUpdateData) SetOrganizationId(organizationId *OrganizationId) {
-	a.OrganizationId = organizationId
-	a.require(applePayOrganizationUpdateDataFieldOrganizationId)
+func (a *ApplePayOrganizationUpdateData) SetOrganizationID(organizationID *OrganizationID) {
+	a.OrganizationID = organizationID
+	a.require(applePayOrganizationUpdateDataFieldOrganizationID)
 }
 
 // SetType sets the Type field and marks it as non-optional;
@@ -602,32 +602,32 @@ type ApplePayType = string
 // The wallet data.
 var (
 	appleWalletDataFieldEntry               = big.NewInt(1 << 0)
-	appleWalletDataFieldApplePayMerchantId  = big.NewInt(1 << 1)
+	appleWalletDataFieldApplePayMerchantID  = big.NewInt(1 << 1)
 	appleWalletDataFieldDomainNames         = big.NewInt(1 << 2)
 	appleWalletDataFieldPaypointName        = big.NewInt(1 << 3)
-	appleWalletDataFieldPaypointUrl         = big.NewInt(1 << 4)
+	appleWalletDataFieldPaypointURL         = big.NewInt(1 << 4)
 	appleWalletDataFieldMarkedForDeletionAt = big.NewInt(1 << 5)
 	appleWalletDataFieldCreatedAt           = big.NewInt(1 << 6)
 	appleWalletDataFieldUpdatedAt           = big.NewInt(1 << 7)
-	appleWalletDataFieldId                  = big.NewInt(1 << 8)
+	appleWalletDataFieldID                  = big.NewInt(1 << 8)
 	appleWalletDataFieldType                = big.NewInt(1 << 9)
 )
 
 type AppleWalletData struct {
 	Entry *Entry `json:"entry,omitempty" url:"entry,omitempty"`
 	// The Apple Pay merchant identifier.
-	ApplePayMerchantId *string `json:"applePayMerchantId,omitempty" url:"applePayMerchantId,omitempty"`
+	ApplePayMerchantID *string `json:"applePayMerchantId,omitempty" url:"applePayMerchantId,omitempty"`
 	// A list of domain names that are enabled for this paypoint.
 	DomainNames  []DomainName  `json:"domainNames,omitempty" url:"domainNames,omitempty"`
 	PaypointName *PaypointName `json:"paypointName,omitempty" url:"paypointName,omitempty"`
 	// The paypoint URL.
-	PaypointUrl *string `json:"paypointUrl,omitempty" url:"paypointUrl,omitempty"`
+	PaypointURL *string `json:"paypointUrl,omitempty" url:"paypointUrl,omitempty"`
 	// The date and time a paypoint's Apple Pay registration was scheduled for deletion. The paypoint will be unregistered from Apple Pay permanently 30 days from this value.
 	MarkedForDeletionAt *time.Time    `json:"markedForDeletionAt,omitempty" url:"markedForDeletionAt,omitempty"`
 	CreatedAt           *CreatedAt    `json:"createdAt,omitempty" url:"createdAt,omitempty"`
 	UpdatedAt           *LastModified `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
 	// Internal ID for the Apple Pay paypoint registration update.
-	Id *ApplePayId `json:"id,omitempty" url:"id,omitempty"`
+	ID *ApplePayID `json:"id,omitempty" url:"id,omitempty"`
 	// The record type, in this context it will always be `ApplePayRegistration`.
 	Type *ApplePayType `json:"type,omitempty" url:"type,omitempty"`
 
@@ -645,11 +645,11 @@ func (a *AppleWalletData) GetEntry() *Entry {
 	return a.Entry
 }
 
-func (a *AppleWalletData) GetApplePayMerchantId() *string {
+func (a *AppleWalletData) GetApplePayMerchantID() *string {
 	if a == nil {
 		return nil
 	}
-	return a.ApplePayMerchantId
+	return a.ApplePayMerchantID
 }
 
 func (a *AppleWalletData) GetDomainNames() []DomainName {
@@ -666,11 +666,11 @@ func (a *AppleWalletData) GetPaypointName() *PaypointName {
 	return a.PaypointName
 }
 
-func (a *AppleWalletData) GetPaypointUrl() *string {
+func (a *AppleWalletData) GetPaypointURL() *string {
 	if a == nil {
 		return nil
 	}
-	return a.PaypointUrl
+	return a.PaypointURL
 }
 
 func (a *AppleWalletData) GetMarkedForDeletionAt() *time.Time {
@@ -694,11 +694,11 @@ func (a *AppleWalletData) GetUpdatedAt() *LastModified {
 	return a.UpdatedAt
 }
 
-func (a *AppleWalletData) GetId() *ApplePayId {
+func (a *AppleWalletData) GetID() *ApplePayID {
 	if a == nil {
 		return nil
 	}
-	return a.Id
+	return a.ID
 }
 
 func (a *AppleWalletData) GetType() *ApplePayType {
@@ -729,11 +729,11 @@ func (a *AppleWalletData) SetEntry(entry *Entry) {
 	a.require(appleWalletDataFieldEntry)
 }
 
-// SetApplePayMerchantId sets the ApplePayMerchantId field and marks it as non-optional;
+// SetApplePayMerchantID sets the ApplePayMerchantID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AppleWalletData) SetApplePayMerchantId(applePayMerchantId *string) {
-	a.ApplePayMerchantId = applePayMerchantId
-	a.require(appleWalletDataFieldApplePayMerchantId)
+func (a *AppleWalletData) SetApplePayMerchantID(applePayMerchantID *string) {
+	a.ApplePayMerchantID = applePayMerchantID
+	a.require(appleWalletDataFieldApplePayMerchantID)
 }
 
 // SetDomainNames sets the DomainNames field and marks it as non-optional;
@@ -750,11 +750,11 @@ func (a *AppleWalletData) SetPaypointName(paypointName *PaypointName) {
 	a.require(appleWalletDataFieldPaypointName)
 }
 
-// SetPaypointUrl sets the PaypointUrl field and marks it as non-optional;
+// SetPaypointURL sets the PaypointURL field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AppleWalletData) SetPaypointUrl(paypointUrl *string) {
-	a.PaypointUrl = paypointUrl
-	a.require(appleWalletDataFieldPaypointUrl)
+func (a *AppleWalletData) SetPaypointURL(paypointURL *string) {
+	a.PaypointURL = paypointURL
+	a.require(appleWalletDataFieldPaypointURL)
 }
 
 // SetMarkedForDeletionAt sets the MarkedForDeletionAt field and marks it as non-optional;
@@ -778,11 +778,11 @@ func (a *AppleWalletData) SetUpdatedAt(updatedAt *LastModified) {
 	a.require(appleWalletDataFieldUpdatedAt)
 }
 
-// SetId sets the Id field and marks it as non-optional;
+// SetID sets the ID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AppleWalletData) SetId(id *ApplePayId) {
-	a.Id = id
-	a.require(appleWalletDataFieldId)
+func (a *AppleWalletData) SetID(id *ApplePayID) {
+	a.ID = id
+	a.require(appleWalletDataFieldID)
 }
 
 // SetType sets the Type field and marks it as non-optional;
@@ -854,14 +854,14 @@ func (a *AppleWalletData) String() string {
 type Cascade = bool
 
 var (
-	configureApplePayOrganizationApiResponseFieldIsSuccess      = big.NewInt(1 << 0)
-	configureApplePayOrganizationApiResponseFieldPageIdentifier = big.NewInt(1 << 1)
-	configureApplePayOrganizationApiResponseFieldResponseCode   = big.NewInt(1 << 2)
-	configureApplePayOrganizationApiResponseFieldResponseData   = big.NewInt(1 << 3)
-	configureApplePayOrganizationApiResponseFieldResponseText   = big.NewInt(1 << 4)
+	configureApplePayOrganizationAPIResponseFieldIsSuccess      = big.NewInt(1 << 0)
+	configureApplePayOrganizationAPIResponseFieldPageIdentifier = big.NewInt(1 << 1)
+	configureApplePayOrganizationAPIResponseFieldResponseCode   = big.NewInt(1 << 2)
+	configureApplePayOrganizationAPIResponseFieldResponseData   = big.NewInt(1 << 3)
+	configureApplePayOrganizationAPIResponseFieldResponseText   = big.NewInt(1 << 4)
 )
 
-type ConfigureApplePayOrganizationApiResponse struct {
+type ConfigureApplePayOrganizationAPIResponse struct {
 	IsSuccess      *IsSuccess                      `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	PageIdentifier *PageIdentifier                 `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 	ResponseCode   *Responsecode                   `json:"responseCode,omitempty" url:"responseCode,omitempty"`
@@ -875,49 +875,49 @@ type ConfigureApplePayOrganizationApiResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (c *ConfigureApplePayOrganizationApiResponse) GetIsSuccess() *IsSuccess {
+func (c *ConfigureApplePayOrganizationAPIResponse) GetIsSuccess() *IsSuccess {
 	if c == nil {
 		return nil
 	}
 	return c.IsSuccess
 }
 
-func (c *ConfigureApplePayOrganizationApiResponse) GetPageIdentifier() *PageIdentifier {
+func (c *ConfigureApplePayOrganizationAPIResponse) GetPageIdentifier() *PageIdentifier {
 	if c == nil {
 		return nil
 	}
 	return c.PageIdentifier
 }
 
-func (c *ConfigureApplePayOrganizationApiResponse) GetResponseCode() *Responsecode {
+func (c *ConfigureApplePayOrganizationAPIResponse) GetResponseCode() *Responsecode {
 	if c == nil {
 		return nil
 	}
 	return c.ResponseCode
 }
 
-func (c *ConfigureApplePayOrganizationApiResponse) GetResponseData() *ApplePayOrganizationUpdateData {
+func (c *ConfigureApplePayOrganizationAPIResponse) GetResponseData() *ApplePayOrganizationUpdateData {
 	if c == nil {
 		return nil
 	}
 	return c.ResponseData
 }
 
-func (c *ConfigureApplePayOrganizationApiResponse) GetResponseText() ResponseText {
+func (c *ConfigureApplePayOrganizationAPIResponse) GetResponseText() ResponseText {
 	if c == nil {
 		return ""
 	}
 	return c.ResponseText
 }
 
-func (c *ConfigureApplePayOrganizationApiResponse) GetExtraProperties() map[string]interface{} {
+func (c *ConfigureApplePayOrganizationAPIResponse) GetExtraProperties() map[string]interface{} {
 	if c == nil {
 		return nil
 	}
 	return c.extraProperties
 }
 
-func (c *ConfigureApplePayOrganizationApiResponse) require(field *big.Int) {
+func (c *ConfigureApplePayOrganizationAPIResponse) require(field *big.Int) {
 	if c.explicitFields == nil {
 		c.explicitFields = big.NewInt(0)
 	}
@@ -926,46 +926,46 @@ func (c *ConfigureApplePayOrganizationApiResponse) require(field *big.Int) {
 
 // SetIsSuccess sets the IsSuccess field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConfigureApplePayOrganizationApiResponse) SetIsSuccess(isSuccess *IsSuccess) {
+func (c *ConfigureApplePayOrganizationAPIResponse) SetIsSuccess(isSuccess *IsSuccess) {
 	c.IsSuccess = isSuccess
-	c.require(configureApplePayOrganizationApiResponseFieldIsSuccess)
+	c.require(configureApplePayOrganizationAPIResponseFieldIsSuccess)
 }
 
 // SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConfigureApplePayOrganizationApiResponse) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+func (c *ConfigureApplePayOrganizationAPIResponse) SetPageIdentifier(pageIdentifier *PageIdentifier) {
 	c.PageIdentifier = pageIdentifier
-	c.require(configureApplePayOrganizationApiResponseFieldPageIdentifier)
+	c.require(configureApplePayOrganizationAPIResponseFieldPageIdentifier)
 }
 
 // SetResponseCode sets the ResponseCode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConfigureApplePayOrganizationApiResponse) SetResponseCode(responseCode *Responsecode) {
+func (c *ConfigureApplePayOrganizationAPIResponse) SetResponseCode(responseCode *Responsecode) {
 	c.ResponseCode = responseCode
-	c.require(configureApplePayOrganizationApiResponseFieldResponseCode)
+	c.require(configureApplePayOrganizationAPIResponseFieldResponseCode)
 }
 
 // SetResponseData sets the ResponseData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConfigureApplePayOrganizationApiResponse) SetResponseData(responseData *ApplePayOrganizationUpdateData) {
+func (c *ConfigureApplePayOrganizationAPIResponse) SetResponseData(responseData *ApplePayOrganizationUpdateData) {
 	c.ResponseData = responseData
-	c.require(configureApplePayOrganizationApiResponseFieldResponseData)
+	c.require(configureApplePayOrganizationAPIResponseFieldResponseData)
 }
 
 // SetResponseText sets the ResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConfigureApplePayOrganizationApiResponse) SetResponseText(responseText ResponseText) {
+func (c *ConfigureApplePayOrganizationAPIResponse) SetResponseText(responseText ResponseText) {
 	c.ResponseText = responseText
-	c.require(configureApplePayOrganizationApiResponseFieldResponseText)
+	c.require(configureApplePayOrganizationAPIResponseFieldResponseText)
 }
 
-func (c *ConfigureApplePayOrganizationApiResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConfigureApplePayOrganizationApiResponse
+func (c *ConfigureApplePayOrganizationAPIResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConfigureApplePayOrganizationAPIResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*c = ConfigureApplePayOrganizationApiResponse(value)
+	*c = ConfigureApplePayOrganizationAPIResponse(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *c)
 	if err != nil {
 		return err
@@ -975,8 +975,8 @@ func (c *ConfigureApplePayOrganizationApiResponse) UnmarshalJSON(data []byte) er
 	return nil
 }
 
-func (c *ConfigureApplePayOrganizationApiResponse) MarshalJSON() ([]byte, error) {
-	type embed ConfigureApplePayOrganizationApiResponse
+func (c *ConfigureApplePayOrganizationAPIResponse) MarshalJSON() ([]byte, error) {
+	type embed ConfigureApplePayOrganizationAPIResponse
 	var marshaler = struct {
 		embed
 	}{
@@ -986,7 +986,7 @@ func (c *ConfigureApplePayOrganizationApiResponse) MarshalJSON() ([]byte, error)
 	return json.Marshal(explicitMarshaler)
 }
 
-func (c *ConfigureApplePayOrganizationApiResponse) String() string {
+func (c *ConfigureApplePayOrganizationAPIResponse) String() string {
 	if c == nil {
 		return "<nil>"
 	}
@@ -1002,22 +1002,22 @@ func (c *ConfigureApplePayOrganizationApiResponse) String() string {
 }
 
 var (
-	configureApplePaypointApiResponseFieldIsSuccess      = big.NewInt(1 << 0)
-	configureApplePaypointApiResponseFieldPageIdentifier = big.NewInt(1 << 1)
-	configureApplePaypointApiResponseFieldResponseCode   = big.NewInt(1 << 2)
-	configureApplePaypointApiResponseFieldResponseData   = big.NewInt(1 << 3)
-	configureApplePaypointApiResponseFieldResponseText   = big.NewInt(1 << 4)
-	configureApplePaypointApiResponseFieldRoomId         = big.NewInt(1 << 5)
+	configureApplePaypointAPIResponseFieldIsSuccess      = big.NewInt(1 << 0)
+	configureApplePaypointAPIResponseFieldPageIdentifier = big.NewInt(1 << 1)
+	configureApplePaypointAPIResponseFieldResponseCode   = big.NewInt(1 << 2)
+	configureApplePaypointAPIResponseFieldResponseData   = big.NewInt(1 << 3)
+	configureApplePaypointAPIResponseFieldResponseText   = big.NewInt(1 << 4)
+	configureApplePaypointAPIResponseFieldRoomID         = big.NewInt(1 << 5)
 )
 
-type ConfigureApplePaypointApiResponse struct {
+type ConfigureApplePaypointAPIResponse struct {
 	IsSuccess      *IsSuccess                        `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	PageIdentifier *PageIdentifier                   `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
 	ResponseCode   *Responsecode                     `json:"responseCode,omitempty" url:"responseCode,omitempty"`
 	ResponseData   *ApplePayPaypointRegistrationData `json:"responseData,omitempty" url:"responseData,omitempty"`
 	ResponseText   ResponseText                      `json:"responseText" url:"responseText"`
 	// Field not in use on this endpoint
-	RoomId *int64 `json:"roomId,omitempty" url:"roomId,omitempty"`
+	RoomID *int64 `json:"roomId,omitempty" url:"roomId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1026,56 +1026,56 @@ type ConfigureApplePaypointApiResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (c *ConfigureApplePaypointApiResponse) GetIsSuccess() *IsSuccess {
+func (c *ConfigureApplePaypointAPIResponse) GetIsSuccess() *IsSuccess {
 	if c == nil {
 		return nil
 	}
 	return c.IsSuccess
 }
 
-func (c *ConfigureApplePaypointApiResponse) GetPageIdentifier() *PageIdentifier {
+func (c *ConfigureApplePaypointAPIResponse) GetPageIdentifier() *PageIdentifier {
 	if c == nil {
 		return nil
 	}
 	return c.PageIdentifier
 }
 
-func (c *ConfigureApplePaypointApiResponse) GetResponseCode() *Responsecode {
+func (c *ConfigureApplePaypointAPIResponse) GetResponseCode() *Responsecode {
 	if c == nil {
 		return nil
 	}
 	return c.ResponseCode
 }
 
-func (c *ConfigureApplePaypointApiResponse) GetResponseData() *ApplePayPaypointRegistrationData {
+func (c *ConfigureApplePaypointAPIResponse) GetResponseData() *ApplePayPaypointRegistrationData {
 	if c == nil {
 		return nil
 	}
 	return c.ResponseData
 }
 
-func (c *ConfigureApplePaypointApiResponse) GetResponseText() ResponseText {
+func (c *ConfigureApplePaypointAPIResponse) GetResponseText() ResponseText {
 	if c == nil {
 		return ""
 	}
 	return c.ResponseText
 }
 
-func (c *ConfigureApplePaypointApiResponse) GetRoomId() *int64 {
+func (c *ConfigureApplePaypointAPIResponse) GetRoomID() *int64 {
 	if c == nil {
 		return nil
 	}
-	return c.RoomId
+	return c.RoomID
 }
 
-func (c *ConfigureApplePaypointApiResponse) GetExtraProperties() map[string]interface{} {
+func (c *ConfigureApplePaypointAPIResponse) GetExtraProperties() map[string]interface{} {
 	if c == nil {
 		return nil
 	}
 	return c.extraProperties
 }
 
-func (c *ConfigureApplePaypointApiResponse) require(field *big.Int) {
+func (c *ConfigureApplePaypointAPIResponse) require(field *big.Int) {
 	if c.explicitFields == nil {
 		c.explicitFields = big.NewInt(0)
 	}
@@ -1084,53 +1084,53 @@ func (c *ConfigureApplePaypointApiResponse) require(field *big.Int) {
 
 // SetIsSuccess sets the IsSuccess field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConfigureApplePaypointApiResponse) SetIsSuccess(isSuccess *IsSuccess) {
+func (c *ConfigureApplePaypointAPIResponse) SetIsSuccess(isSuccess *IsSuccess) {
 	c.IsSuccess = isSuccess
-	c.require(configureApplePaypointApiResponseFieldIsSuccess)
+	c.require(configureApplePaypointAPIResponseFieldIsSuccess)
 }
 
 // SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConfigureApplePaypointApiResponse) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+func (c *ConfigureApplePaypointAPIResponse) SetPageIdentifier(pageIdentifier *PageIdentifier) {
 	c.PageIdentifier = pageIdentifier
-	c.require(configureApplePaypointApiResponseFieldPageIdentifier)
+	c.require(configureApplePaypointAPIResponseFieldPageIdentifier)
 }
 
 // SetResponseCode sets the ResponseCode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConfigureApplePaypointApiResponse) SetResponseCode(responseCode *Responsecode) {
+func (c *ConfigureApplePaypointAPIResponse) SetResponseCode(responseCode *Responsecode) {
 	c.ResponseCode = responseCode
-	c.require(configureApplePaypointApiResponseFieldResponseCode)
+	c.require(configureApplePaypointAPIResponseFieldResponseCode)
 }
 
 // SetResponseData sets the ResponseData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConfigureApplePaypointApiResponse) SetResponseData(responseData *ApplePayPaypointRegistrationData) {
+func (c *ConfigureApplePaypointAPIResponse) SetResponseData(responseData *ApplePayPaypointRegistrationData) {
 	c.ResponseData = responseData
-	c.require(configureApplePaypointApiResponseFieldResponseData)
+	c.require(configureApplePaypointAPIResponseFieldResponseData)
 }
 
 // SetResponseText sets the ResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConfigureApplePaypointApiResponse) SetResponseText(responseText ResponseText) {
+func (c *ConfigureApplePaypointAPIResponse) SetResponseText(responseText ResponseText) {
 	c.ResponseText = responseText
-	c.require(configureApplePaypointApiResponseFieldResponseText)
+	c.require(configureApplePaypointAPIResponseFieldResponseText)
 }
 
-// SetRoomId sets the RoomId field and marks it as non-optional;
+// SetRoomID sets the RoomID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConfigureApplePaypointApiResponse) SetRoomId(roomId *int64) {
-	c.RoomId = roomId
-	c.require(configureApplePaypointApiResponseFieldRoomId)
+func (c *ConfigureApplePaypointAPIResponse) SetRoomID(roomID *int64) {
+	c.RoomID = roomID
+	c.require(configureApplePaypointAPIResponseFieldRoomID)
 }
 
-func (c *ConfigureApplePaypointApiResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConfigureApplePaypointApiResponse
+func (c *ConfigureApplePaypointAPIResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConfigureApplePaypointAPIResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*c = ConfigureApplePaypointApiResponse(value)
+	*c = ConfigureApplePaypointAPIResponse(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *c)
 	if err != nil {
 		return err
@@ -1140,8 +1140,8 @@ func (c *ConfigureApplePaypointApiResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (c *ConfigureApplePaypointApiResponse) MarshalJSON() ([]byte, error) {
-	type embed ConfigureApplePaypointApiResponse
+func (c *ConfigureApplePaypointAPIResponse) MarshalJSON() ([]byte, error) {
+	type embed ConfigureApplePaypointAPIResponse
 	var marshaler = struct {
 		embed
 	}{
@@ -1151,7 +1151,7 @@ func (c *ConfigureApplePaypointApiResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (c *ConfigureApplePaypointApiResponse) String() string {
+func (c *ConfigureApplePaypointAPIResponse) String() string {
 	if c == nil {
 		return "<nil>"
 	}
@@ -1167,22 +1167,22 @@ func (c *ConfigureApplePaypointApiResponse) String() string {
 }
 
 var (
-	configureGooglePaypointApiResponseFieldIsSuccess      = big.NewInt(1 << 0)
-	configureGooglePaypointApiResponseFieldPageIdentifier = big.NewInt(1 << 1)
-	configureGooglePaypointApiResponseFieldResponseCode   = big.NewInt(1 << 2)
-	configureGooglePaypointApiResponseFieldResponseData   = big.NewInt(1 << 3)
-	configureGooglePaypointApiResponseFieldResponseText   = big.NewInt(1 << 4)
-	configureGooglePaypointApiResponseFieldRoomId         = big.NewInt(1 << 5)
+	configureGooglePaypointAPIResponseFieldIsSuccess      = big.NewInt(1 << 0)
+	configureGooglePaypointAPIResponseFieldPageIdentifier = big.NewInt(1 << 1)
+	configureGooglePaypointAPIResponseFieldResponseCode   = big.NewInt(1 << 2)
+	configureGooglePaypointAPIResponseFieldResponseData   = big.NewInt(1 << 3)
+	configureGooglePaypointAPIResponseFieldResponseText   = big.NewInt(1 << 4)
+	configureGooglePaypointAPIResponseFieldRoomID         = big.NewInt(1 << 5)
 )
 
-type ConfigureGooglePaypointApiResponse struct {
+type ConfigureGooglePaypointAPIResponse struct {
 	IsSuccess      IsSuccess                          `json:"isSuccess" url:"isSuccess"`
 	PageIdentifier PageIdentifier                     `json:"pageIdentifier" url:"pageIdentifier"`
 	ResponseCode   Responsecode                       `json:"responseCode" url:"responseCode"`
 	ResponseData   *GooglePayPaypointRegistrationData `json:"responseData" url:"responseData"`
 	ResponseText   ResponseText                       `json:"responseText" url:"responseText"`
 	// Field not in use on this endpoint
-	RoomId *int64 `json:"roomId,omitempty" url:"roomId,omitempty"`
+	RoomID *int64 `json:"roomId,omitempty" url:"roomId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1191,56 +1191,56 @@ type ConfigureGooglePaypointApiResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (c *ConfigureGooglePaypointApiResponse) GetIsSuccess() IsSuccess {
+func (c *ConfigureGooglePaypointAPIResponse) GetIsSuccess() IsSuccess {
 	if c == nil {
 		return false
 	}
 	return c.IsSuccess
 }
 
-func (c *ConfigureGooglePaypointApiResponse) GetPageIdentifier() PageIdentifier {
+func (c *ConfigureGooglePaypointAPIResponse) GetPageIdentifier() PageIdentifier {
 	if c == nil {
 		return ""
 	}
 	return c.PageIdentifier
 }
 
-func (c *ConfigureGooglePaypointApiResponse) GetResponseCode() Responsecode {
+func (c *ConfigureGooglePaypointAPIResponse) GetResponseCode() Responsecode {
 	if c == nil {
 		return 0
 	}
 	return c.ResponseCode
 }
 
-func (c *ConfigureGooglePaypointApiResponse) GetResponseData() *GooglePayPaypointRegistrationData {
+func (c *ConfigureGooglePaypointAPIResponse) GetResponseData() *GooglePayPaypointRegistrationData {
 	if c == nil {
 		return nil
 	}
 	return c.ResponseData
 }
 
-func (c *ConfigureGooglePaypointApiResponse) GetResponseText() ResponseText {
+func (c *ConfigureGooglePaypointAPIResponse) GetResponseText() ResponseText {
 	if c == nil {
 		return ""
 	}
 	return c.ResponseText
 }
 
-func (c *ConfigureGooglePaypointApiResponse) GetRoomId() *int64 {
+func (c *ConfigureGooglePaypointAPIResponse) GetRoomID() *int64 {
 	if c == nil {
 		return nil
 	}
-	return c.RoomId
+	return c.RoomID
 }
 
-func (c *ConfigureGooglePaypointApiResponse) GetExtraProperties() map[string]interface{} {
+func (c *ConfigureGooglePaypointAPIResponse) GetExtraProperties() map[string]interface{} {
 	if c == nil {
 		return nil
 	}
 	return c.extraProperties
 }
 
-func (c *ConfigureGooglePaypointApiResponse) require(field *big.Int) {
+func (c *ConfigureGooglePaypointAPIResponse) require(field *big.Int) {
 	if c.explicitFields == nil {
 		c.explicitFields = big.NewInt(0)
 	}
@@ -1249,53 +1249,53 @@ func (c *ConfigureGooglePaypointApiResponse) require(field *big.Int) {
 
 // SetIsSuccess sets the IsSuccess field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConfigureGooglePaypointApiResponse) SetIsSuccess(isSuccess IsSuccess) {
+func (c *ConfigureGooglePaypointAPIResponse) SetIsSuccess(isSuccess IsSuccess) {
 	c.IsSuccess = isSuccess
-	c.require(configureGooglePaypointApiResponseFieldIsSuccess)
+	c.require(configureGooglePaypointAPIResponseFieldIsSuccess)
 }
 
 // SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConfigureGooglePaypointApiResponse) SetPageIdentifier(pageIdentifier PageIdentifier) {
+func (c *ConfigureGooglePaypointAPIResponse) SetPageIdentifier(pageIdentifier PageIdentifier) {
 	c.PageIdentifier = pageIdentifier
-	c.require(configureGooglePaypointApiResponseFieldPageIdentifier)
+	c.require(configureGooglePaypointAPIResponseFieldPageIdentifier)
 }
 
 // SetResponseCode sets the ResponseCode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConfigureGooglePaypointApiResponse) SetResponseCode(responseCode Responsecode) {
+func (c *ConfigureGooglePaypointAPIResponse) SetResponseCode(responseCode Responsecode) {
 	c.ResponseCode = responseCode
-	c.require(configureGooglePaypointApiResponseFieldResponseCode)
+	c.require(configureGooglePaypointAPIResponseFieldResponseCode)
 }
 
 // SetResponseData sets the ResponseData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConfigureGooglePaypointApiResponse) SetResponseData(responseData *GooglePayPaypointRegistrationData) {
+func (c *ConfigureGooglePaypointAPIResponse) SetResponseData(responseData *GooglePayPaypointRegistrationData) {
 	c.ResponseData = responseData
-	c.require(configureGooglePaypointApiResponseFieldResponseData)
+	c.require(configureGooglePaypointAPIResponseFieldResponseData)
 }
 
 // SetResponseText sets the ResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConfigureGooglePaypointApiResponse) SetResponseText(responseText ResponseText) {
+func (c *ConfigureGooglePaypointAPIResponse) SetResponseText(responseText ResponseText) {
 	c.ResponseText = responseText
-	c.require(configureGooglePaypointApiResponseFieldResponseText)
+	c.require(configureGooglePaypointAPIResponseFieldResponseText)
 }
 
-// SetRoomId sets the RoomId field and marks it as non-optional;
+// SetRoomID sets the RoomID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ConfigureGooglePaypointApiResponse) SetRoomId(roomId *int64) {
-	c.RoomId = roomId
-	c.require(configureGooglePaypointApiResponseFieldRoomId)
+func (c *ConfigureGooglePaypointAPIResponse) SetRoomID(roomID *int64) {
+	c.RoomID = roomID
+	c.require(configureGooglePaypointAPIResponseFieldRoomID)
 }
 
-func (c *ConfigureGooglePaypointApiResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler ConfigureGooglePaypointApiResponse
+func (c *ConfigureGooglePaypointAPIResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ConfigureGooglePaypointAPIResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*c = ConfigureGooglePaypointApiResponse(value)
+	*c = ConfigureGooglePaypointAPIResponse(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *c)
 	if err != nil {
 		return err
@@ -1305,8 +1305,8 @@ func (c *ConfigureGooglePaypointApiResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (c *ConfigureGooglePaypointApiResponse) MarshalJSON() ([]byte, error) {
-	type embed ConfigureGooglePaypointApiResponse
+func (c *ConfigureGooglePaypointAPIResponse) MarshalJSON() ([]byte, error) {
+	type embed ConfigureGooglePaypointAPIResponse
 	var marshaler = struct {
 		embed
 	}{
@@ -1316,7 +1316,7 @@ func (c *ConfigureGooglePaypointApiResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (c *ConfigureGooglePaypointApiResponse) String() string {
+func (c *ConfigureGooglePaypointAPIResponse) String() string {
 	if c == nil {
 		return "<nil>"
 	}
@@ -1466,15 +1466,15 @@ func (g *GooglePayPaypointRegistrationData) String() string {
 
 // The wallet data.
 var (
-	googleWalletDataFieldGatewayMerchantId = big.NewInt(1 << 0)
-	googleWalletDataFieldGatewayId         = big.NewInt(1 << 1)
+	googleWalletDataFieldGatewayMerchantID = big.NewInt(1 << 0)
+	googleWalletDataFieldGatewayID         = big.NewInt(1 << 1)
 )
 
 type GoogleWalletData struct {
 	// The Google Pay merchant identifier.
-	GatewayMerchantId *string `json:"gatewayMerchantId,omitempty" url:"gatewayMerchantId,omitempty"`
+	GatewayMerchantID *string `json:"gatewayMerchantId,omitempty" url:"gatewayMerchantId,omitempty"`
 	// The Google Pay gateway identifier.
-	GatewayId *string `json:"gatewayId,omitempty" url:"gatewayId,omitempty"`
+	GatewayID *string `json:"gatewayId,omitempty" url:"gatewayId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1483,18 +1483,18 @@ type GoogleWalletData struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GoogleWalletData) GetGatewayMerchantId() *string {
+func (g *GoogleWalletData) GetGatewayMerchantID() *string {
 	if g == nil {
 		return nil
 	}
-	return g.GatewayMerchantId
+	return g.GatewayMerchantID
 }
 
-func (g *GoogleWalletData) GetGatewayId() *string {
+func (g *GoogleWalletData) GetGatewayID() *string {
 	if g == nil {
 		return nil
 	}
-	return g.GatewayId
+	return g.GatewayID
 }
 
 func (g *GoogleWalletData) GetExtraProperties() map[string]interface{} {
@@ -1511,18 +1511,18 @@ func (g *GoogleWalletData) require(field *big.Int) {
 	g.explicitFields.Or(g.explicitFields, field)
 }
 
-// SetGatewayMerchantId sets the GatewayMerchantId field and marks it as non-optional;
+// SetGatewayMerchantID sets the GatewayMerchantID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GoogleWalletData) SetGatewayMerchantId(gatewayMerchantId *string) {
-	g.GatewayMerchantId = gatewayMerchantId
-	g.require(googleWalletDataFieldGatewayMerchantId)
+func (g *GoogleWalletData) SetGatewayMerchantID(gatewayMerchantID *string) {
+	g.GatewayMerchantID = gatewayMerchantID
+	g.require(googleWalletDataFieldGatewayMerchantID)
 }
 
-// SetGatewayId sets the GatewayId field and marks it as non-optional;
+// SetGatewayID sets the GatewayID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GoogleWalletData) SetGatewayId(gatewayId *string) {
-	g.GatewayId = gatewayId
-	g.require(googleWalletDataFieldGatewayId)
+func (g *GoogleWalletData) SetGatewayID(gatewayID *string) {
+	g.GatewayID = gatewayID
+	g.require(googleWalletDataFieldGatewayID)
 }
 
 func (g *GoogleWalletData) UnmarshalJSON(data []byte) error {
@@ -1568,7 +1568,7 @@ func (g *GoogleWalletData) String() string {
 }
 
 // Organization ID for the target organization.
-type OrganizationId = int64
+type OrganizationID = int64
 
 var (
 	organizationUpdatesFieldCascade   = big.NewInt(1 << 0)

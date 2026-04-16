@@ -20,10 +20,10 @@ var (
 	addOrganizationRequestFieldOrgCity        = big.NewInt(1 << 7)
 	addOrganizationRequestFieldOrgCountry     = big.NewInt(1 << 8)
 	addOrganizationRequestFieldOrgEntryName   = big.NewInt(1 << 9)
-	addOrganizationRequestFieldOrgId          = big.NewInt(1 << 10)
+	addOrganizationRequestFieldOrgID          = big.NewInt(1 << 10)
 	addOrganizationRequestFieldOrgLogo        = big.NewInt(1 << 11)
 	addOrganizationRequestFieldOrgName        = big.NewInt(1 << 12)
-	addOrganizationRequestFieldOrgParentId    = big.NewInt(1 << 13)
+	addOrganizationRequestFieldOrgParentID    = big.NewInt(1 << 13)
 	addOrganizationRequestFieldOrgState       = big.NewInt(1 << 14)
 	addOrganizationRequestFieldOrgTimezone    = big.NewInt(1 << 15)
 	addOrganizationRequestFieldOrgType        = big.NewInt(1 << 16)
@@ -43,10 +43,10 @@ type AddOrganizationRequest struct {
 	OrgCity        *Orgcity        `json:"orgCity,omitempty" url:"-"`
 	OrgCountry     *Orgcountry     `json:"orgCountry,omitempty" url:"-"`
 	OrgEntryName   *Orgentryname   `json:"orgEntryName,omitempty" url:"-"`
-	OrgId          *Orgidstring    `json:"orgId,omitempty" url:"-"`
+	OrgID          *Orgidstring    `json:"orgId,omitempty" url:"-"`
 	OrgLogo        *FileContent    `json:"orgLogo,omitempty" url:"-"`
 	OrgName        Orgname         `json:"orgName" url:"-"`
-	OrgParentId    *OrgParentId    `json:"orgParentId,omitempty" url:"-"`
+	OrgParentID    *OrgParentID    `json:"orgParentId,omitempty" url:"-"`
 	OrgState       *Orgstate       `json:"orgState,omitempty" url:"-"`
 	OrgTimezone    *Orgtimezone    `json:"orgTimezone,omitempty" url:"-"`
 	OrgType        Orgtype         `json:"orgType" url:"-"`
@@ -135,11 +135,11 @@ func (a *AddOrganizationRequest) SetOrgEntryName(orgEntryName *Orgentryname) {
 	a.require(addOrganizationRequestFieldOrgEntryName)
 }
 
-// SetOrgId sets the OrgId field and marks it as non-optional;
+// SetOrgID sets the OrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AddOrganizationRequest) SetOrgId(orgId *Orgidstring) {
-	a.OrgId = orgId
-	a.require(addOrganizationRequestFieldOrgId)
+func (a *AddOrganizationRequest) SetOrgID(orgID *Orgidstring) {
+	a.OrgID = orgID
+	a.require(addOrganizationRequestFieldOrgID)
 }
 
 // SetOrgLogo sets the OrgLogo field and marks it as non-optional;
@@ -156,11 +156,11 @@ func (a *AddOrganizationRequest) SetOrgName(orgName Orgname) {
 	a.require(addOrganizationRequestFieldOrgName)
 }
 
-// SetOrgParentId sets the OrgParentId field and marks it as non-optional;
+// SetOrgParentID sets the OrgParentID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AddOrganizationRequest) SetOrgParentId(orgParentId *OrgParentId) {
-	a.OrgParentId = orgParentId
-	a.require(addOrganizationRequestFieldOrgParentId)
+func (a *AddOrganizationRequest) SetOrgParentID(orgParentID *OrgParentID) {
+	a.OrgParentID = orgParentID
+	a.require(addOrganizationRequestFieldOrgParentID)
 }
 
 // SetOrgState sets the OrgState field and marks it as non-optional;
@@ -236,10 +236,10 @@ var (
 	organizationDataFieldOrgCity               = big.NewInt(1 << 6)
 	organizationDataFieldOrgCountry            = big.NewInt(1 << 7)
 	organizationDataFieldOrgEntryName          = big.NewInt(1 << 8)
-	organizationDataFieldOrganizationDataOrgId = big.NewInt(1 << 9)
+	organizationDataFieldOrganizationDataOrgID = big.NewInt(1 << 9)
 	organizationDataFieldOrgLogo               = big.NewInt(1 << 10)
 	organizationDataFieldOrgName               = big.NewInt(1 << 11)
-	organizationDataFieldOrgParentId           = big.NewInt(1 << 12)
+	organizationDataFieldOrgParentID           = big.NewInt(1 << 12)
 	organizationDataFieldOrgState              = big.NewInt(1 << 13)
 	organizationDataFieldOrgTimezone           = big.NewInt(1 << 14)
 	organizationDataFieldOrgType               = big.NewInt(1 << 15)
@@ -258,10 +258,10 @@ type OrganizationData struct {
 	OrgCity               *Orgcity       `json:"orgCity,omitempty" url:"-"`
 	OrgCountry            *Orgcountry    `json:"orgCountry,omitempty" url:"-"`
 	OrgEntryName          *Orgentryname  `json:"orgEntryName,omitempty" url:"-"`
-	OrganizationDataOrgId *Orgidstring   `json:"orgId,omitempty" url:"-"`
+	OrganizationDataOrgID *Orgidstring   `json:"orgId,omitempty" url:"-"`
 	OrgLogo               *FileContent   `json:"orgLogo,omitempty" url:"-"`
 	OrgName               *Orgname       `json:"orgName,omitempty" url:"-"`
-	OrgParentId           *OrgParentId   `json:"orgParentId,omitempty" url:"-"`
+	OrgParentID           *OrgParentID   `json:"orgParentId,omitempty" url:"-"`
 	OrgState              *Orgstate      `json:"orgState,omitempty" url:"-"`
 	OrgTimezone           *Orgtimezone   `json:"orgTimezone,omitempty" url:"-"`
 	OrgType               *Orgtype       `json:"orgType,omitempty" url:"-"`
@@ -343,11 +343,11 @@ func (o *OrganizationData) SetOrgEntryName(orgEntryName *Orgentryname) {
 	o.require(organizationDataFieldOrgEntryName)
 }
 
-// SetOrganizationDataOrgId sets the OrganizationDataOrgId field and marks it as non-optional;
+// SetOrganizationDataOrgID sets the OrganizationDataOrgID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (o *OrganizationData) SetOrganizationDataOrgId(organizationDataOrgId *Orgidstring) {
-	o.OrganizationDataOrgId = organizationDataOrgId
-	o.require(organizationDataFieldOrganizationDataOrgId)
+func (o *OrganizationData) SetOrganizationDataOrgID(organizationDataOrgID *Orgidstring) {
+	o.OrganizationDataOrgID = organizationDataOrgID
+	o.require(organizationDataFieldOrganizationDataOrgID)
 }
 
 // SetOrgLogo sets the OrgLogo field and marks it as non-optional;
@@ -364,11 +364,11 @@ func (o *OrganizationData) SetOrgName(orgName *Orgname) {
 	o.require(organizationDataFieldOrgName)
 }
 
-// SetOrgParentId sets the OrgParentId field and marks it as non-optional;
+// SetOrgParentID sets the OrgParentID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (o *OrganizationData) SetOrgParentId(orgParentId *OrgParentId) {
-	o.OrgParentId = orgParentId
-	o.require(organizationDataFieldOrgParentId)
+func (o *OrganizationData) SetOrgParentID(orgParentID *OrgParentID) {
+	o.OrgParentID = orgParentID
+	o.require(organizationDataFieldOrgParentID)
 }
 
 // SetOrgState sets the OrgState field and marks it as non-optional;

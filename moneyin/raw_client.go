@@ -86,7 +86,7 @@ func (r *RawClient) Authorize(
 func (r *RawClient) Capture(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	// Amount to be captured. The amount can't be greater the original total amount of the transaction. `0` captures the total amount authorized in the transaction. Partial captures aren't supported.
 	amount float64,
 	opts ...option.RequestOption,
@@ -99,7 +99,7 @@ func (r *RawClient) Capture(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/MoneyIn/capture/%v/%v",
-		transId,
+		transID,
 		amount,
 	)
 	headers := internal.MergeHeaders(
@@ -134,7 +134,7 @@ func (r *RawClient) Capture(
 func (r *RawClient) CaptureAuth(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	request *payabli.CaptureRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.CaptureResponse], error) {
@@ -146,7 +146,7 @@ func (r *RawClient) CaptureAuth(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/MoneyIn/capture/%v",
-		transId,
+		transID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -182,7 +182,7 @@ func (r *RawClient) Credit(
 	ctx context.Context,
 	request *payabli.RequestCredit,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponse0], error) {
+) (*core.Response[*payabli.PayabliAPIResponse0], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -205,7 +205,7 @@ func (r *RawClient) Credit(
 		headers.Add("idempotencyKey", *request.IdempotencyKey)
 	}
 	headers.Add("Content-Type", "application/json")
-	var response *payabli.PayabliApiResponse0
+	var response *payabli.PayabliAPIResponse0
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -224,7 +224,7 @@ func (r *RawClient) Credit(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponse0]{
+	return &core.Response[*payabli.PayabliAPIResponse0]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -234,7 +234,7 @@ func (r *RawClient) Credit(
 func (r *RawClient) Details(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.TransactionQueryRecordsCustomer], error) {
 	options := core.NewRequestOptions(opts...)
@@ -245,7 +245,7 @@ func (r *RawClient) Details(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/MoneyIn/details/%v",
-		transId,
+		transID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -280,7 +280,7 @@ func (r *RawClient) Getpaid(
 	ctx context.Context,
 	request *payabli.RequestPayment,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponseGetPaid], error) {
+) (*core.Response[*payabli.PayabliAPIResponseGetPaid], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -306,7 +306,7 @@ func (r *RawClient) Getpaid(
 		headers.Add("validationCode", *request.ValidationCode)
 	}
 	headers.Add("Content-Type", "application/json")
-	var response *payabli.PayabliApiResponseGetPaid
+	var response *payabli.PayabliAPIResponseGetPaid
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -325,7 +325,7 @@ func (r *RawClient) Getpaid(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponseGetPaid]{
+	return &core.Response[*payabli.PayabliAPIResponseGetPaid]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -335,7 +335,7 @@ func (r *RawClient) Getpaid(
 func (r *RawClient) Reverse(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	//
 	// Amount to reverse from original transaction, minus any service fees charged on the original transaction.
 	//
@@ -353,7 +353,7 @@ func (r *RawClient) Reverse(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/MoneyIn/reverse/%v/%v",
-		transId,
+		transID,
 		amount,
 	)
 	headers := internal.MergeHeaders(
@@ -388,7 +388,7 @@ func (r *RawClient) Reverse(
 func (r *RawClient) Refund(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	//
 	// Amount to refund from original transaction, minus any service fees charged on the original transaction.
 	//
@@ -406,7 +406,7 @@ func (r *RawClient) Refund(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/MoneyIn/refund/%v/%v",
-		transId,
+		transID,
 		amount,
 	)
 	headers := internal.MergeHeaders(
@@ -441,7 +441,7 @@ func (r *RawClient) Refund(
 func (r *RawClient) RefundWithInstructions(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	request *payabli.RequestRefund,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.RefundWithInstructionsResponse], error) {
@@ -453,7 +453,7 @@ func (r *RawClient) RefundWithInstructions(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/MoneyIn/refund/%v",
-		transId,
+		transID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -492,9 +492,9 @@ func (r *RawClient) RefundWithInstructions(
 func (r *RawClient) ReverseCredit(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponse], error) {
+) (*core.Response[*payabli.PayabliAPIResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -503,13 +503,13 @@ func (r *RawClient) ReverseCredit(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/MoneyIn/reverseCredit/%v",
-		transId,
+		transID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.PayabliApiResponse
+	var response *payabli.PayabliAPIResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -527,7 +527,7 @@ func (r *RawClient) ReverseCredit(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.PayabliApiResponse]{
+	return &core.Response[*payabli.PayabliAPIResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -537,7 +537,7 @@ func (r *RawClient) ReverseCredit(
 func (r *RawClient) SendReceipt2Trans(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	request *payabli.SendReceipt2TransRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.ReceiptResponse], error) {
@@ -549,7 +549,7 @@ func (r *RawClient) SendReceipt2Trans(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/MoneyIn/sendreceipt/%v",
-		transId,
+		transID,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -636,7 +636,7 @@ func (r *RawClient) Validate(
 func (r *RawClient) Void(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.VoidResponse], error) {
 	options := core.NewRequestOptions(opts...)
@@ -647,7 +647,7 @@ func (r *RawClient) Void(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/MoneyIn/void/%v",
-		transId,
+		transID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -790,7 +790,7 @@ func (r *RawClient) Authorizev2(
 func (r *RawClient) Capturev2(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	request *payabli.CaptureRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.V2TransactionResponseWrapper], error) {
@@ -802,7 +802,7 @@ func (r *RawClient) Capturev2(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/MoneyIn/capture/%v",
-		transId,
+		transID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -837,7 +837,7 @@ func (r *RawClient) Capturev2(
 func (r *RawClient) Refundv2(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.V2TransactionResponseWrapper], error) {
 	options := core.NewRequestOptions(opts...)
@@ -848,7 +848,7 @@ func (r *RawClient) Refundv2(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/MoneyIn/refund/%v",
-		transId,
+		transID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -882,7 +882,7 @@ func (r *RawClient) Refundv2(
 func (r *RawClient) Refundv2Amount(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	// Amount to refund from original transaction, minus any service fees charged on the original transaction. If omitted or set to 0, performs a full refund.
 	amount float64,
 	opts ...option.RequestOption,
@@ -895,7 +895,7 @@ func (r *RawClient) Refundv2Amount(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/MoneyIn/refund/%v/%v",
-		transId,
+		transID,
 		amount,
 	)
 	headers := internal.MergeHeaders(
@@ -930,7 +930,7 @@ func (r *RawClient) Refundv2Amount(
 func (r *RawClient) Voidv2(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	transID string,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.V2TransactionResponseWrapper], error) {
 	options := core.NewRequestOptions(opts...)
@@ -941,7 +941,7 @@ func (r *RawClient) Voidv2(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/v2/MoneyIn/void/%v",
-		transId,
+		transID,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),

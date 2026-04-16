@@ -108,12 +108,12 @@ func (d *DeviceEntry) MarshalJSON() ([]byte, error) {
 
 // Object containing details about cloud devices and their registration history.
 var (
-	cloudQueryApiResponseFieldIsSuccess    = big.NewInt(1 << 0)
-	cloudQueryApiResponseFieldResponseList = big.NewInt(1 << 1)
-	cloudQueryApiResponseFieldResponseText = big.NewInt(1 << 2)
+	cloudQueryAPIResponseFieldIsSuccess    = big.NewInt(1 << 0)
+	cloudQueryAPIResponseFieldResponseList = big.NewInt(1 << 1)
+	cloudQueryAPIResponseFieldResponseText = big.NewInt(1 << 2)
 )
 
-type CloudQueryApiResponse struct {
+type CloudQueryAPIResponse struct {
 	IsSuccess *IsSuccess `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	// List of devices and history of registration.
 	ResponseList []*PoiDevice `json:"responseList,omitempty" url:"responseList,omitempty"`
@@ -126,35 +126,35 @@ type CloudQueryApiResponse struct {
 	rawJSON         json.RawMessage
 }
 
-func (c *CloudQueryApiResponse) GetIsSuccess() *IsSuccess {
+func (c *CloudQueryAPIResponse) GetIsSuccess() *IsSuccess {
 	if c == nil {
 		return nil
 	}
 	return c.IsSuccess
 }
 
-func (c *CloudQueryApiResponse) GetResponseList() []*PoiDevice {
+func (c *CloudQueryAPIResponse) GetResponseList() []*PoiDevice {
 	if c == nil {
 		return nil
 	}
 	return c.ResponseList
 }
 
-func (c *CloudQueryApiResponse) GetResponseText() ResponseText {
+func (c *CloudQueryAPIResponse) GetResponseText() ResponseText {
 	if c == nil {
 		return ""
 	}
 	return c.ResponseText
 }
 
-func (c *CloudQueryApiResponse) GetExtraProperties() map[string]interface{} {
+func (c *CloudQueryAPIResponse) GetExtraProperties() map[string]interface{} {
 	if c == nil {
 		return nil
 	}
 	return c.extraProperties
 }
 
-func (c *CloudQueryApiResponse) require(field *big.Int) {
+func (c *CloudQueryAPIResponse) require(field *big.Int) {
 	if c.explicitFields == nil {
 		c.explicitFields = big.NewInt(0)
 	}
@@ -163,32 +163,32 @@ func (c *CloudQueryApiResponse) require(field *big.Int) {
 
 // SetIsSuccess sets the IsSuccess field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CloudQueryApiResponse) SetIsSuccess(isSuccess *IsSuccess) {
+func (c *CloudQueryAPIResponse) SetIsSuccess(isSuccess *IsSuccess) {
 	c.IsSuccess = isSuccess
-	c.require(cloudQueryApiResponseFieldIsSuccess)
+	c.require(cloudQueryAPIResponseFieldIsSuccess)
 }
 
 // SetResponseList sets the ResponseList field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CloudQueryApiResponse) SetResponseList(responseList []*PoiDevice) {
+func (c *CloudQueryAPIResponse) SetResponseList(responseList []*PoiDevice) {
 	c.ResponseList = responseList
-	c.require(cloudQueryApiResponseFieldResponseList)
+	c.require(cloudQueryAPIResponseFieldResponseList)
 }
 
 // SetResponseText sets the ResponseText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CloudQueryApiResponse) SetResponseText(responseText ResponseText) {
+func (c *CloudQueryAPIResponse) SetResponseText(responseText ResponseText) {
 	c.ResponseText = responseText
-	c.require(cloudQueryApiResponseFieldResponseText)
+	c.require(cloudQueryAPIResponseFieldResponseText)
 }
 
-func (c *CloudQueryApiResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler CloudQueryApiResponse
+func (c *CloudQueryAPIResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler CloudQueryAPIResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*c = CloudQueryApiResponse(value)
+	*c = CloudQueryAPIResponse(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *c)
 	if err != nil {
 		return err
@@ -198,8 +198,8 @@ func (c *CloudQueryApiResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (c *CloudQueryApiResponse) MarshalJSON() ([]byte, error) {
-	type embed CloudQueryApiResponse
+func (c *CloudQueryAPIResponse) MarshalJSON() ([]byte, error) {
+	type embed CloudQueryAPIResponse
 	var marshaler = struct {
 		embed
 	}{
@@ -209,7 +209,7 @@ func (c *CloudQueryApiResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (c *CloudQueryApiResponse) String() string {
+func (c *CloudQueryAPIResponse) String() string {
 	if c == nil {
 		return "<nil>"
 	}
@@ -229,7 +229,7 @@ var (
 	poiDeviceFieldConnected            = big.NewInt(1 << 0)
 	poiDeviceFieldDateDeRegistered     = big.NewInt(1 << 1)
 	poiDeviceFieldDateRegistered       = big.NewInt(1 << 2)
-	poiDeviceFieldDeviceId             = big.NewInt(1 << 3)
+	poiDeviceFieldDeviceID             = big.NewInt(1 << 3)
 	poiDeviceFieldDeviceLicense        = big.NewInt(1 << 4)
 	poiDeviceFieldDeviceNickName       = big.NewInt(1 << 5)
 	poiDeviceFieldLastConnectedDate    = big.NewInt(1 << 6)
@@ -249,7 +249,7 @@ type PoiDevice struct {
 	// The date the device was registered.
 	DateRegistered *time.Time `json:"dateRegistered,omitempty" url:"dateRegistered,omitempty"`
 	// The device identifier.
-	DeviceId *string `json:"deviceId,omitempty" url:"deviceId,omitempty"`
+	DeviceID *string `json:"deviceId,omitempty" url:"deviceId,omitempty"`
 	// Device license. This is typically the same as `deviceId`.
 	DeviceLicense *string `json:"deviceLicense,omitempty" url:"deviceLicense,omitempty"`
 	// Device description provided during registration.
@@ -297,11 +297,11 @@ func (p *PoiDevice) GetDateRegistered() *time.Time {
 	return p.DateRegistered
 }
 
-func (p *PoiDevice) GetDeviceId() *string {
+func (p *PoiDevice) GetDeviceID() *string {
 	if p == nil {
 		return nil
 	}
-	return p.DeviceId
+	return p.DeviceID
 }
 
 func (p *PoiDevice) GetDeviceLicense() *string {
@@ -402,11 +402,11 @@ func (p *PoiDevice) SetDateRegistered(dateRegistered *time.Time) {
 	p.require(poiDeviceFieldDateRegistered)
 }
 
-// SetDeviceId sets the DeviceId field and marks it as non-optional;
+// SetDeviceID sets the DeviceID field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PoiDevice) SetDeviceId(deviceId *string) {
-	p.DeviceId = deviceId
-	p.require(poiDeviceFieldDeviceId)
+func (p *PoiDevice) SetDeviceID(deviceID *string) {
+	p.DeviceID = deviceID
+	p.require(poiDeviceFieldDeviceID)
 }
 
 // SetDeviceLicense sets the DeviceLicense field and marks it as non-optional;
