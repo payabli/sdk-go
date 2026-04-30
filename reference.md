@@ -2762,6 +2762,8 @@ client.Cloud.HistoryDevice(
 <dl>
 <dd>
 
+Use [List devices by paypoint](/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint) instead, which supports filters, sorting, and pagination.
+
 Get a list of cloud devices registered to an entrypoint.
 </dd>
 </dl>
@@ -10593,6 +10595,134 @@ client.LineItem.UpdateItem(
 </dl>
 </details>
 
+## Management
+<details><summary><code>client.Management.VerifyAccountDetails(Entry, request) -> *payabli.VerifyAccountDetailsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Verifies a bank account and returns detailed verification results from the verification network, including bank name, account status, and response codes. Unlike a pass/fail verification, this endpoint returns granular data to support decision-making and troubleshooting.
+
+When bank authentication is enabled for the paypoint's organization, the endpoint performs an identity verification check on the account holder. Otherwise, it performs an account existence check. When bank authentication is enabled, the `accountHolderType` and `holderName` fields are required.
+
+Requires `inboundpayments_create` or `outboundpayments_create` permission.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.VerifyAccountDetailsRequest{
+        RoutingNumber: "122105278",
+        AccountNumber: "0000000016",
+        AccountType: payabli.String(
+            "Checking",
+        ),
+        Country: payabli.String(
+            "US",
+        ),
+        AccountHolderType: payabli.String(
+            "personal",
+        ),
+        HolderName: payabli.String(
+            "Jane Doe",
+        ),
+    }
+client.Management.VerifyAccountDetails(
+        context.TODO(),
+        "entry752",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entry name identifier.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**routingNumber:** `string` — The bank routing number to verify.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountNumber:** `string` — The bank account number to verify.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountType:** `*string` — The type of bank account, such as `Checking` or `Savings`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**country:** `*string` — The ISO country code for the bank account, such as `US`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountHolderType:** `*string` — The type of account holder. Accepted values are `personal` or `business`. Required when bank authentication is enabled for the paypoint's organization.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**holderName:** `*string` — The name of the bank account holder. For personal accounts, provide the holder's full name (for example, `Jane Doe`); the value is split on the first space into first and last name. For business accounts, provide the legal business name. Required when bank authentication is enabled for the paypoint's organization.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## MoneyIn
 <details><summary><code>client.MoneyIn.Authorize(request) -> *payabli.AuthResponse</code></summary>
 <dl>
@@ -11249,7 +11379,7 @@ client.MoneyIn.Getpaid(
 <dl>
 <dd>
 
-A reversal either refunds or voids a transaction independent of the transaction's settlement status. Send a reversal request for a transaction, and Payabli automatically determines whether it's a refund or void. You don't need to know whether the transaction is settled or not.
+A reversal either refunds or voids a transaction independent of the transaction's settlement status. Send a reversal request for a transaction, and Payabli automatically determines whether it's a refund or void. You don't need to know whether the transaction is settled or not. This endpoint only works on transactions made with the v1 API. For v2 transactions, check the transaction's settlement status and call v2 void or v2 refund based on the result.
 </dd>
 </dl>
 </dd>
@@ -19500,6 +19630,414 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 </dl>
 </details>
 
+<details><summary><code>client.Query.ListDevices(Entry) -> *payabli.QueryDeviceResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ListDevicesRequest{
+        FromRecord: payabli.Int(
+            0,
+        ),
+        LimitRecord: payabli.Int(
+            20,
+        ),
+        SortBy: payabli.String(
+            "desc(createdAt)",
+        ),
+    }
+client.Query.ListDevices(
+        context.TODO(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `payabli.Entry` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exportFormat:** `*payabli.ExportFormat` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — Max number of records to return for the query. Use `0` or negative value to return all records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+
+Collection of field names, conditions, and values used to filter
+the query.
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/devices/8cfec329267?parameters=status=1&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/devices/8cfec329267?status=1&limitRecord=20
+</Info>
+
+See [Filters and Conditions
+Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference)
+for more information.
+
+**List of field names accepted:**
+
+
+- `deviceId` (eq, ne, ct, nct)
+
+- `serialNumber` (eq, ne, ct, nct)
+
+- `friendlyName` (eq, ne, ct, nct)
+
+- `description` (eq, ne, ct, nct)
+
+- `model` (eq, ne, ct, nct)
+
+- `make` (eq, ne, ct, nct)
+
+- `macAddress` (eq, ne, ct, nct)
+
+- `registrationCode` (eq, ne, ct, nct)
+
+- `status` (eq, ne, in, nin)
+
+- `deviceType` (eq, ne, in, nin)
+
+- `deviceOs` (eq, ne, in, nin)
+
+- `activationAttempts` (eq, ne, gt, ge, lt, le)
+
+- `createdDate` (gt, ge, lt, le, eq, ne)
+
+- `updatedDate` (gt, ge, lt, le, eq, ne)
+
+- `lastHealthCheck` (gt, ge, lt, le, eq, ne)
+
+- `activationExpiry` (gt, ge, lt, le, eq, ne). This filter corresponds to the `activationCodeExpiry` response field.
+
+- `paypointId` (eq, ne)
+
+- `paypointDba` (eq, ne, ct, nct)
+
+- `paypointLegal` (eq, ne, ct, nct)
+
+- `paypointEntry` (eq, ne, ct, nct)
+
+- `externalPaypointId` (eq, ne, ct, nct)
+
+- `parentOrgId` (eq, ne)
+
+- `parentOrgName` (eq, ne, ct, nct)
+
+
+**List of comparison operators accepted:**
+
+- `eq` or empty => equal
+
+- `gt` => greater than
+
+- `ge` => greater or equal
+
+- `lt` => less than
+
+- `le` => less or equal
+
+- `ne` => not equal
+
+- `ct` => contains
+
+- `nct` => not contains
+
+- `in` => inside array
+
+- `nin` => not inside array
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `*string` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Query.ListDevicesOrg(OrgId) -> *payabli.QueryDeviceResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a list of cloud devices for a single organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ListDevicesOrgRequest{
+        FromRecord: payabli.Int(
+            0,
+        ),
+        LimitRecord: payabli.Int(
+            20,
+        ),
+        SortBy: payabli.String(
+            "desc(createdAt)",
+        ),
+    }
+client.Query.ListDevicesOrg(
+        context.TODO(),
+        100,
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exportFormat:** `*payabli.ExportFormat` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — Max number of records to return for the query. Use `0` or negative value to return all records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+
+Collection of field names, conditions, and values used to filter
+the query.
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/devices/org/236?parameters=status=1&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/devices/org/236?status=1&limitRecord=20
+</Info>
+
+See [Filters and Conditions
+Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference)
+for more information.
+
+**List of field names accepted:**
+
+
+- `deviceId` (eq, ne, ct, nct)
+
+- `serialNumber` (eq, ne, ct, nct)
+
+- `friendlyName` (eq, ne, ct, nct)
+
+- `description` (eq, ne, ct, nct)
+
+- `model` (eq, ne, ct, nct)
+
+- `make` (eq, ne, ct, nct)
+
+- `macAddress` (eq, ne, ct, nct)
+
+- `registrationCode` (eq, ne, ct, nct)
+
+- `status` (eq, ne, in, nin)
+
+- `deviceType` (eq, ne, in, nin)
+
+- `deviceOs` (eq, ne, in, nin)
+
+- `activationAttempts` (eq, ne, gt, ge, lt, le)
+
+- `createdDate` (gt, ge, lt, le, eq, ne)
+
+- `updatedDate` (gt, ge, lt, le, eq, ne)
+
+- `lastHealthCheck` (gt, ge, lt, le, eq, ne)
+
+- `activationExpiry` (gt, ge, lt, le, eq, ne). This filter corresponds to the `activationCodeExpiry` response field.
+
+- `paypointId` (eq, ne)
+
+- `paypointDba` (eq, ne, ct, nct)
+
+- `paypointLegal` (eq, ne, ct, nct)
+
+- `paypointEntry` (eq, ne, ct, nct)
+
+- `externalPaypointId` (eq, ne, ct, nct)
+
+- `parentOrgId` (eq, ne)
+
+- `parentOrgName` (eq, ne, ct, nct)
+
+
+**List of comparison operators accepted:**
+
+- `eq` or empty => equal
+
+- `gt` => greater than
+
+- `ge` => greater or equal
+
+- `lt` => less than
+
+- `le` => less or equal
+
+- `ne` => not equal
+
+- `ct` => contains
+
+- `nct` => not contains
+
+- `in` => inside array
+
+- `nin` => not inside array
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `*string` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Query.ListNotificationReports(Entry) -> *payabli.QueryResponseNotificationReports</code></summary>
 <dl>
 <dd>
@@ -23850,6 +24388,7 @@ List of field names accepted:
   - `orgName` (ne, eq, ct, nct)  
   - `externalPaypointId` (ct, nct, eq, ne)  
   - `paypointId` (in, nin, eq, ne)  
+  - `cardType` (eq)  
 
 List of comparison accepted - enclosed between parentheses:  
 
@@ -24007,6 +24546,7 @@ List of field names accepted:
   - `orgName` (ne, eq, ct, nct)  
   - `externalPaypointId` (ct, nct, eq, ne)  
   - `paypointId` (in, nin, eq, ne)  
+  - `cardType` (eq)  
 
 List of comparison accepted - enclosed between parentheses:  
 

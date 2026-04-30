@@ -17,6 +17,7 @@ import (
 	internal "github.com/payabli/sdk-go/internal"
 	invoice "github.com/payabli/sdk-go/invoice"
 	lineitem "github.com/payabli/sdk-go/lineitem"
+	management "github.com/payabli/sdk-go/management"
 	moneyin "github.com/payabli/sdk-go/moneyin"
 	moneyout "github.com/payabli/sdk-go/moneyout"
 	notification "github.com/payabli/sdk-go/notification"
@@ -51,6 +52,7 @@ type Client struct {
 	Import              *import_.Client
 	Invoice             *invoice.Client
 	LineItem            *lineitem.Client
+	Management          *management.Client
 	MoneyIn             *moneyin.Client
 	MoneyOut            *moneyout.Client
 	Notification        *notification.Client
@@ -90,6 +92,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Import:              import_.NewClient(options),
 		Invoice:             invoice.NewClient(options),
 		LineItem:            lineitem.NewClient(options),
+		Management:          management.NewClient(options),
 		MoneyIn:             moneyin.NewClient(options),
 		MoneyOut:            moneyout.NewClient(options),
 		Notification:        notification.NewClient(options),

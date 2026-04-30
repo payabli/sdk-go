@@ -5350,39 +5350,49 @@ type PosCol = int
 type PosRow = int
 
 var (
-	processingSectionFieldAvgmonthly    = big.NewInt(1 << 0)
-	processingSectionFieldBinperson     = big.NewInt(1 << 1)
-	processingSectionFieldBinphone      = big.NewInt(1 << 2)
-	processingSectionFieldBinweb        = big.NewInt(1 << 3)
-	processingSectionFieldBsummary      = big.NewInt(1 << 4)
-	processingSectionFieldHighticketamt = big.NewInt(1 << 5)
-	processingSectionFieldMcc           = big.NewInt(1 << 6)
-	processingSectionFieldSubFooter     = big.NewInt(1 << 7)
-	processingSectionFieldSubHeader     = big.NewInt(1 << 8)
-	processingSectionFieldTicketamt     = big.NewInt(1 << 9)
-	processingSectionFieldVisible       = big.NewInt(1 << 10)
-	processingSectionFieldWhenCharged   = big.NewInt(1 << 11)
-	processingSectionFieldWhenDelivered = big.NewInt(1 << 12)
-	processingSectionFieldWhenProvided  = big.NewInt(1 << 13)
-	processingSectionFieldWhenRefunded  = big.NewInt(1 << 14)
+	processingSectionFieldAvgmonthly                 = big.NewInt(1 << 0)
+	processingSectionFieldBinperson                  = big.NewInt(1 << 1)
+	processingSectionFieldBinphone                   = big.NewInt(1 << 2)
+	processingSectionFieldBinweb                     = big.NewInt(1 << 3)
+	processingSectionFieldBsummary                   = big.NewInt(1 << 4)
+	processingSectionFieldHighticketamt              = big.NewInt(1 << 5)
+	processingSectionFieldMcc                        = big.NewInt(1 << 6)
+	processingSectionFieldSubFooter                  = big.NewInt(1 << 7)
+	processingSectionFieldSubHeader                  = big.NewInt(1 << 8)
+	processingSectionFieldTicketamt                  = big.NewInt(1 << 9)
+	processingSectionFieldVisible                    = big.NewInt(1 << 10)
+	processingSectionFieldWhenCharged                = big.NewInt(1 << 11)
+	processingSectionFieldWhenDelivered              = big.NewInt(1 << 12)
+	processingSectionFieldWhenProvided               = big.NewInt(1 << 13)
+	processingSectionFieldWhenRefunded               = big.NewInt(1 << 14)
+	processingSectionFieldCombinedBatches            = big.NewInt(1 << 15)
+	processingSectionFieldPayoutAverageMonthlyVolume = big.NewInt(1 << 16)
+	processingSectionFieldPayoutHighTicketAmount     = big.NewInt(1 << 17)
+	processingSectionFieldPayoutAverageTicketAmount  = big.NewInt(1 << 18)
+	processingSectionFieldPayoutCreditLimit          = big.NewInt(1 << 19)
 )
 
 type ProcessingSection struct {
-	Avgmonthly    *TemplateElement `json:"avgmonthly,omitempty" url:"avgmonthly,omitempty"`
-	Binperson     *TemplateElement `json:"binperson,omitempty" url:"binperson,omitempty"`
-	Binphone      *TemplateElement `json:"binphone,omitempty" url:"binphone,omitempty"`
-	Binweb        *TemplateElement `json:"binweb,omitempty" url:"binweb,omitempty"`
-	Bsummary      *TemplateElement `json:"bsummary,omitempty" url:"bsummary,omitempty"`
-	Highticketamt *TemplateElement `json:"highticketamt,omitempty" url:"highticketamt,omitempty"`
-	Mcc           *TemplateElement `json:"mcc,omitempty" url:"mcc,omitempty"`
-	SubFooter     *SubFooter       `json:"subFooter,omitempty" url:"subFooter,omitempty"`
-	SubHeader     *SubHeader       `json:"subHeader,omitempty" url:"subHeader,omitempty"`
-	Ticketamt     *TemplateElement `json:"ticketamt,omitempty" url:"ticketamt,omitempty"`
-	Visible       *Visible         `json:"visible,omitempty" url:"visible,omitempty"`
-	WhenCharged   *TemplateElement `json:"whenCharged,omitempty" url:"whenCharged,omitempty"`
-	WhenDelivered *TemplateElement `json:"whenDelivered,omitempty" url:"whenDelivered,omitempty"`
-	WhenProvided  *TemplateElement `json:"whenProvided,omitempty" url:"whenProvided,omitempty"`
-	WhenRefunded  *TemplateElement `json:"whenRefunded,omitempty" url:"whenRefunded,omitempty"`
+	Avgmonthly                 *TemplateElement `json:"avgmonthly,omitempty" url:"avgmonthly,omitempty"`
+	Binperson                  *TemplateElement `json:"binperson,omitempty" url:"binperson,omitempty"`
+	Binphone                   *TemplateElement `json:"binphone,omitempty" url:"binphone,omitempty"`
+	Binweb                     *TemplateElement `json:"binweb,omitempty" url:"binweb,omitempty"`
+	Bsummary                   *TemplateElement `json:"bsummary,omitempty" url:"bsummary,omitempty"`
+	Highticketamt              *TemplateElement `json:"highticketamt,omitempty" url:"highticketamt,omitempty"`
+	Mcc                        *TemplateElement `json:"mcc,omitempty" url:"mcc,omitempty"`
+	SubFooter                  *SubFooter       `json:"subFooter,omitempty" url:"subFooter,omitempty"`
+	SubHeader                  *SubHeader       `json:"subHeader,omitempty" url:"subHeader,omitempty"`
+	Ticketamt                  *TemplateElement `json:"ticketamt,omitempty" url:"ticketamt,omitempty"`
+	Visible                    *Visible         `json:"visible,omitempty" url:"visible,omitempty"`
+	WhenCharged                *TemplateElement `json:"whenCharged,omitempty" url:"whenCharged,omitempty"`
+	WhenDelivered              *TemplateElement `json:"whenDelivered,omitempty" url:"whenDelivered,omitempty"`
+	WhenProvided               *TemplateElement `json:"whenProvided,omitempty" url:"whenProvided,omitempty"`
+	WhenRefunded               *TemplateElement `json:"whenRefunded,omitempty" url:"whenRefunded,omitempty"`
+	CombinedBatches            *TemplateElement `json:"CombinedBatches,omitempty" url:"CombinedBatches,omitempty"`
+	PayoutAverageMonthlyVolume *TemplateElement `json:"payoutAverageMonthlyVolume,omitempty" url:"payoutAverageMonthlyVolume,omitempty"`
+	PayoutHighTicketAmount     *TemplateElement `json:"payoutHighTicketAmount,omitempty" url:"payoutHighTicketAmount,omitempty"`
+	PayoutAverageTicketAmount  *TemplateElement `json:"payoutAverageTicketAmount,omitempty" url:"payoutAverageTicketAmount,omitempty"`
+	PayoutCreditLimit          *TemplateElement `json:"payoutCreditLimit,omitempty" url:"payoutCreditLimit,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -5494,6 +5504,41 @@ func (p *ProcessingSection) GetWhenRefunded() *TemplateElement {
 		return nil
 	}
 	return p.WhenRefunded
+}
+
+func (p *ProcessingSection) GetCombinedBatches() *TemplateElement {
+	if p == nil {
+		return nil
+	}
+	return p.CombinedBatches
+}
+
+func (p *ProcessingSection) GetPayoutAverageMonthlyVolume() *TemplateElement {
+	if p == nil {
+		return nil
+	}
+	return p.PayoutAverageMonthlyVolume
+}
+
+func (p *ProcessingSection) GetPayoutHighTicketAmount() *TemplateElement {
+	if p == nil {
+		return nil
+	}
+	return p.PayoutHighTicketAmount
+}
+
+func (p *ProcessingSection) GetPayoutAverageTicketAmount() *TemplateElement {
+	if p == nil {
+		return nil
+	}
+	return p.PayoutAverageTicketAmount
+}
+
+func (p *ProcessingSection) GetPayoutCreditLimit() *TemplateElement {
+	if p == nil {
+		return nil
+	}
+	return p.PayoutCreditLimit
 }
 
 func (p *ProcessingSection) GetExtraProperties() map[string]interface{} {
@@ -5613,6 +5658,41 @@ func (p *ProcessingSection) SetWhenProvided(whenProvided *TemplateElement) {
 func (p *ProcessingSection) SetWhenRefunded(whenRefunded *TemplateElement) {
 	p.WhenRefunded = whenRefunded
 	p.require(processingSectionFieldWhenRefunded)
+}
+
+// SetCombinedBatches sets the CombinedBatches field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *ProcessingSection) SetCombinedBatches(combinedBatches *TemplateElement) {
+	p.CombinedBatches = combinedBatches
+	p.require(processingSectionFieldCombinedBatches)
+}
+
+// SetPayoutAverageMonthlyVolume sets the PayoutAverageMonthlyVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *ProcessingSection) SetPayoutAverageMonthlyVolume(payoutAverageMonthlyVolume *TemplateElement) {
+	p.PayoutAverageMonthlyVolume = payoutAverageMonthlyVolume
+	p.require(processingSectionFieldPayoutAverageMonthlyVolume)
+}
+
+// SetPayoutHighTicketAmount sets the PayoutHighTicketAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *ProcessingSection) SetPayoutHighTicketAmount(payoutHighTicketAmount *TemplateElement) {
+	p.PayoutHighTicketAmount = payoutHighTicketAmount
+	p.require(processingSectionFieldPayoutHighTicketAmount)
+}
+
+// SetPayoutAverageTicketAmount sets the PayoutAverageTicketAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *ProcessingSection) SetPayoutAverageTicketAmount(payoutAverageTicketAmount *TemplateElement) {
+	p.PayoutAverageTicketAmount = payoutAverageTicketAmount
+	p.require(processingSectionFieldPayoutAverageTicketAmount)
+}
+
+// SetPayoutCreditLimit sets the PayoutCreditLimit field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *ProcessingSection) SetPayoutCreditLimit(payoutCreditLimit *TemplateElement) {
+	p.PayoutCreditLimit = payoutCreditLimit
+	p.require(processingSectionFieldPayoutCreditLimit)
 }
 
 func (p *ProcessingSection) UnmarshalJSON(data []byte) error {
@@ -6700,14 +6780,16 @@ var (
 	templateElementFieldReadOnly = big.NewInt(1 << 2)
 	templateElementFieldValue    = big.NewInt(1 << 3)
 	templateElementFieldVisible  = big.NewInt(1 << 4)
+	templateElementFieldRequired = big.NewInt(1 << 5)
 )
 
 type TemplateElement struct {
-	PosCol   *PosCol         `json:"posCol,omitempty" url:"posCol,omitempty"`
-	PosRow   *PosRow         `json:"posRow,omitempty" url:"posRow,omitempty"`
-	ReadOnly *ReadOnly       `json:"readOnly,omitempty" url:"readOnly,omitempty"`
-	Value    *ValueTemplates `json:"value,omitempty" url:"value,omitempty"`
-	Visible  *Visible        `json:"visible,omitempty" url:"visible,omitempty"`
+	PosCol   *PosCol          `json:"posCol,omitempty" url:"posCol,omitempty"`
+	PosRow   *PosRow          `json:"posRow,omitempty" url:"posRow,omitempty"`
+	ReadOnly *ReadOnly        `json:"readOnly,omitempty" url:"readOnly,omitempty"`
+	Value    *ValueTemplates  `json:"value,omitempty" url:"value,omitempty"`
+	Visible  *Visible         `json:"visible,omitempty" url:"visible,omitempty"`
+	Required *RequiredElement `json:"required,omitempty" url:"required,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -6749,6 +6831,13 @@ func (t *TemplateElement) GetVisible() *Visible {
 		return nil
 	}
 	return t.Visible
+}
+
+func (t *TemplateElement) GetRequired() *RequiredElement {
+	if t == nil {
+		return nil
+	}
+	return t.Required
 }
 
 func (t *TemplateElement) GetExtraProperties() map[string]interface{} {
@@ -6798,6 +6887,13 @@ func (t *TemplateElement) SetValue(value *ValueTemplates) {
 func (t *TemplateElement) SetVisible(visible *Visible) {
 	t.Visible = visible
 	t.require(templateElementFieldVisible)
+}
+
+// SetRequired sets the Required field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TemplateElement) SetRequired(required *RequiredElement) {
+	t.Required = required
+	t.require(templateElementFieldRequired)
 }
 
 func (t *TemplateElement) UnmarshalJSON(data []byte) error {

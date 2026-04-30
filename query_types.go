@@ -1211,6 +1211,482 @@ func (b *BatchDetailResponseSummary) String() string {
 }
 
 var (
+	deviceQueryRecordFieldDeviceId             = big.NewInt(1 << 0)
+	deviceQueryRecordFieldIdCloud              = big.NewInt(1 << 1)
+	deviceQueryRecordFieldDescription          = big.NewInt(1 << 2)
+	deviceQueryRecordFieldSerialNumber         = big.NewInt(1 << 3)
+	deviceQueryRecordFieldFriendlyName         = big.NewInt(1 << 4)
+	deviceQueryRecordFieldMake                 = big.NewInt(1 << 5)
+	deviceQueryRecordFieldModel                = big.NewInt(1 << 6)
+	deviceQueryRecordFieldDeviceType           = big.NewInt(1 << 7)
+	deviceQueryRecordFieldDeviceStatus         = big.NewInt(1 << 8)
+	deviceQueryRecordFieldDeviceOs             = big.NewInt(1 << 9)
+	deviceQueryRecordFieldMacAddress           = big.NewInt(1 << 10)
+	deviceQueryRecordFieldLastHealthCheck      = big.NewInt(1 << 11)
+	deviceQueryRecordFieldRegistrationCode     = big.NewInt(1 << 12)
+	deviceQueryRecordFieldActivationAttempts   = big.NewInt(1 << 13)
+	deviceQueryRecordFieldActivationCodeExpiry = big.NewInt(1 << 14)
+	deviceQueryRecordFieldCreatedAt            = big.NewInt(1 << 15)
+	deviceQueryRecordFieldUpdatedAt            = big.NewInt(1 << 16)
+	deviceQueryRecordFieldPaypointId           = big.NewInt(1 << 17)
+	deviceQueryRecordFieldPaypointDba          = big.NewInt(1 << 18)
+	deviceQueryRecordFieldPaypointLegal        = big.NewInt(1 << 19)
+	deviceQueryRecordFieldPaypointEntry        = big.NewInt(1 << 20)
+	deviceQueryRecordFieldExternalPaypointId   = big.NewInt(1 << 21)
+	deviceQueryRecordFieldParentOrgId          = big.NewInt(1 << 22)
+	deviceQueryRecordFieldParentOrgName        = big.NewInt(1 << 23)
+)
+
+type DeviceQueryRecord struct {
+	// Unique identifier for the cloud device.
+	DeviceId *string `json:"deviceId,omitempty" url:"deviceId,omitempty"`
+	// Internal cloud device record ID.
+	IdCloud *int `json:"idCloud,omitempty" url:"idCloud,omitempty"`
+	// Description of the device.
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	// Serial number of the device.
+	SerialNumber *string `json:"serialNumber,omitempty" url:"serialNumber,omitempty"`
+	// Human-readable name for the device.
+	FriendlyName *string `json:"friendlyName,omitempty" url:"friendlyName,omitempty"`
+	// Manufacturer of the device.
+	Make *string `json:"make,omitempty" url:"make,omitempty"`
+	// Model name of the device.
+	Model *string `json:"model,omitempty" url:"model,omitempty"`
+	// Type of device.
+	DeviceType *int `json:"deviceType,omitempty" url:"deviceType,omitempty"`
+	// Current status of the device.
+	DeviceStatus *int `json:"deviceStatus,omitempty" url:"deviceStatus,omitempty"`
+	// Operating system of the device.
+	DeviceOs *int `json:"deviceOs,omitempty" url:"deviceOs,omitempty"`
+	// MAC address of the device.
+	MacAddress *string `json:"macAddress,omitempty" url:"macAddress,omitempty"`
+	// Timestamp of the last health check from the device.
+	LastHealthCheck *string `json:"lastHealthCheck,omitempty" url:"lastHealthCheck,omitempty"`
+	// Registration code used to activate the device.
+	RegistrationCode *string `json:"registrationCode,omitempty" url:"registrationCode,omitempty"`
+	// Number of activation attempts for the device.
+	ActivationAttempts *int `json:"activationAttempts,omitempty" url:"activationAttempts,omitempty"`
+	// Expiration timestamp for the device activation code.
+	ActivationCodeExpiry *string `json:"activationCodeExpiry,omitempty" url:"activationCodeExpiry,omitempty"`
+	// Timestamp when the device record was created.
+	CreatedAt *string `json:"createdAt,omitempty" url:"createdAt,omitempty"`
+	// Timestamp when the device record was last updated.
+	UpdatedAt *string `json:"updatedAt,omitempty" url:"updatedAt,omitempty"`
+	// Numeric identifier for the paypoint.
+	PaypointId *int `json:"paypointId,omitempty" url:"paypointId,omitempty"`
+	// DBA name for the paypoint.
+	PaypointDba *string `json:"paypointDba,omitempty" url:"paypointDba,omitempty"`
+	// Legal name for the paypoint.
+	PaypointLegal *string `json:"paypointLegal,omitempty" url:"paypointLegal,omitempty"`
+	// Entry identifier for the paypoint.
+	PaypointEntry *string `json:"paypointEntry,omitempty" url:"paypointEntry,omitempty"`
+	// External identifier for the paypoint.
+	ExternalPaypointId *string `json:"externalPaypointId,omitempty" url:"externalPaypointId,omitempty"`
+	// Numeric identifier for the parent organization.
+	ParentOrgId *int `json:"parentOrgId,omitempty" url:"parentOrgId,omitempty"`
+	// Name of the parent organization.
+	ParentOrgName *string `json:"parentOrgName,omitempty" url:"parentOrgName,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (d *DeviceQueryRecord) GetDeviceId() *string {
+	if d == nil {
+		return nil
+	}
+	return d.DeviceId
+}
+
+func (d *DeviceQueryRecord) GetIdCloud() *int {
+	if d == nil {
+		return nil
+	}
+	return d.IdCloud
+}
+
+func (d *DeviceQueryRecord) GetDescription() *string {
+	if d == nil {
+		return nil
+	}
+	return d.Description
+}
+
+func (d *DeviceQueryRecord) GetSerialNumber() *string {
+	if d == nil {
+		return nil
+	}
+	return d.SerialNumber
+}
+
+func (d *DeviceQueryRecord) GetFriendlyName() *string {
+	if d == nil {
+		return nil
+	}
+	return d.FriendlyName
+}
+
+func (d *DeviceQueryRecord) GetMake() *string {
+	if d == nil {
+		return nil
+	}
+	return d.Make
+}
+
+func (d *DeviceQueryRecord) GetModel() *string {
+	if d == nil {
+		return nil
+	}
+	return d.Model
+}
+
+func (d *DeviceQueryRecord) GetDeviceType() *int {
+	if d == nil {
+		return nil
+	}
+	return d.DeviceType
+}
+
+func (d *DeviceQueryRecord) GetDeviceStatus() *int {
+	if d == nil {
+		return nil
+	}
+	return d.DeviceStatus
+}
+
+func (d *DeviceQueryRecord) GetDeviceOs() *int {
+	if d == nil {
+		return nil
+	}
+	return d.DeviceOs
+}
+
+func (d *DeviceQueryRecord) GetMacAddress() *string {
+	if d == nil {
+		return nil
+	}
+	return d.MacAddress
+}
+
+func (d *DeviceQueryRecord) GetLastHealthCheck() *string {
+	if d == nil {
+		return nil
+	}
+	return d.LastHealthCheck
+}
+
+func (d *DeviceQueryRecord) GetRegistrationCode() *string {
+	if d == nil {
+		return nil
+	}
+	return d.RegistrationCode
+}
+
+func (d *DeviceQueryRecord) GetActivationAttempts() *int {
+	if d == nil {
+		return nil
+	}
+	return d.ActivationAttempts
+}
+
+func (d *DeviceQueryRecord) GetActivationCodeExpiry() *string {
+	if d == nil {
+		return nil
+	}
+	return d.ActivationCodeExpiry
+}
+
+func (d *DeviceQueryRecord) GetCreatedAt() *string {
+	if d == nil {
+		return nil
+	}
+	return d.CreatedAt
+}
+
+func (d *DeviceQueryRecord) GetUpdatedAt() *string {
+	if d == nil {
+		return nil
+	}
+	return d.UpdatedAt
+}
+
+func (d *DeviceQueryRecord) GetPaypointId() *int {
+	if d == nil {
+		return nil
+	}
+	return d.PaypointId
+}
+
+func (d *DeviceQueryRecord) GetPaypointDba() *string {
+	if d == nil {
+		return nil
+	}
+	return d.PaypointDba
+}
+
+func (d *DeviceQueryRecord) GetPaypointLegal() *string {
+	if d == nil {
+		return nil
+	}
+	return d.PaypointLegal
+}
+
+func (d *DeviceQueryRecord) GetPaypointEntry() *string {
+	if d == nil {
+		return nil
+	}
+	return d.PaypointEntry
+}
+
+func (d *DeviceQueryRecord) GetExternalPaypointId() *string {
+	if d == nil {
+		return nil
+	}
+	return d.ExternalPaypointId
+}
+
+func (d *DeviceQueryRecord) GetParentOrgId() *int {
+	if d == nil {
+		return nil
+	}
+	return d.ParentOrgId
+}
+
+func (d *DeviceQueryRecord) GetParentOrgName() *string {
+	if d == nil {
+		return nil
+	}
+	return d.ParentOrgName
+}
+
+func (d *DeviceQueryRecord) GetExtraProperties() map[string]interface{} {
+	if d == nil {
+		return nil
+	}
+	return d.extraProperties
+}
+
+func (d *DeviceQueryRecord) require(field *big.Int) {
+	if d.explicitFields == nil {
+		d.explicitFields = big.NewInt(0)
+	}
+	d.explicitFields.Or(d.explicitFields, field)
+}
+
+// SetDeviceId sets the DeviceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetDeviceId(deviceId *string) {
+	d.DeviceId = deviceId
+	d.require(deviceQueryRecordFieldDeviceId)
+}
+
+// SetIdCloud sets the IdCloud field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetIdCloud(idCloud *int) {
+	d.IdCloud = idCloud
+	d.require(deviceQueryRecordFieldIdCloud)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetDescription(description *string) {
+	d.Description = description
+	d.require(deviceQueryRecordFieldDescription)
+}
+
+// SetSerialNumber sets the SerialNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetSerialNumber(serialNumber *string) {
+	d.SerialNumber = serialNumber
+	d.require(deviceQueryRecordFieldSerialNumber)
+}
+
+// SetFriendlyName sets the FriendlyName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetFriendlyName(friendlyName *string) {
+	d.FriendlyName = friendlyName
+	d.require(deviceQueryRecordFieldFriendlyName)
+}
+
+// SetMake sets the Make field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetMake(make_ *string) {
+	d.Make = make_
+	d.require(deviceQueryRecordFieldMake)
+}
+
+// SetModel sets the Model field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetModel(model *string) {
+	d.Model = model
+	d.require(deviceQueryRecordFieldModel)
+}
+
+// SetDeviceType sets the DeviceType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetDeviceType(deviceType *int) {
+	d.DeviceType = deviceType
+	d.require(deviceQueryRecordFieldDeviceType)
+}
+
+// SetDeviceStatus sets the DeviceStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetDeviceStatus(deviceStatus *int) {
+	d.DeviceStatus = deviceStatus
+	d.require(deviceQueryRecordFieldDeviceStatus)
+}
+
+// SetDeviceOs sets the DeviceOs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetDeviceOs(deviceOs *int) {
+	d.DeviceOs = deviceOs
+	d.require(deviceQueryRecordFieldDeviceOs)
+}
+
+// SetMacAddress sets the MacAddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetMacAddress(macAddress *string) {
+	d.MacAddress = macAddress
+	d.require(deviceQueryRecordFieldMacAddress)
+}
+
+// SetLastHealthCheck sets the LastHealthCheck field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetLastHealthCheck(lastHealthCheck *string) {
+	d.LastHealthCheck = lastHealthCheck
+	d.require(deviceQueryRecordFieldLastHealthCheck)
+}
+
+// SetRegistrationCode sets the RegistrationCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetRegistrationCode(registrationCode *string) {
+	d.RegistrationCode = registrationCode
+	d.require(deviceQueryRecordFieldRegistrationCode)
+}
+
+// SetActivationAttempts sets the ActivationAttempts field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetActivationAttempts(activationAttempts *int) {
+	d.ActivationAttempts = activationAttempts
+	d.require(deviceQueryRecordFieldActivationAttempts)
+}
+
+// SetActivationCodeExpiry sets the ActivationCodeExpiry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetActivationCodeExpiry(activationCodeExpiry *string) {
+	d.ActivationCodeExpiry = activationCodeExpiry
+	d.require(deviceQueryRecordFieldActivationCodeExpiry)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetCreatedAt(createdAt *string) {
+	d.CreatedAt = createdAt
+	d.require(deviceQueryRecordFieldCreatedAt)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetUpdatedAt(updatedAt *string) {
+	d.UpdatedAt = updatedAt
+	d.require(deviceQueryRecordFieldUpdatedAt)
+}
+
+// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetPaypointId(paypointId *int) {
+	d.PaypointId = paypointId
+	d.require(deviceQueryRecordFieldPaypointId)
+}
+
+// SetPaypointDba sets the PaypointDba field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetPaypointDba(paypointDba *string) {
+	d.PaypointDba = paypointDba
+	d.require(deviceQueryRecordFieldPaypointDba)
+}
+
+// SetPaypointLegal sets the PaypointLegal field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetPaypointLegal(paypointLegal *string) {
+	d.PaypointLegal = paypointLegal
+	d.require(deviceQueryRecordFieldPaypointLegal)
+}
+
+// SetPaypointEntry sets the PaypointEntry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetPaypointEntry(paypointEntry *string) {
+	d.PaypointEntry = paypointEntry
+	d.require(deviceQueryRecordFieldPaypointEntry)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetExternalPaypointId(externalPaypointId *string) {
+	d.ExternalPaypointId = externalPaypointId
+	d.require(deviceQueryRecordFieldExternalPaypointId)
+}
+
+// SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetParentOrgId(parentOrgId *int) {
+	d.ParentOrgId = parentOrgId
+	d.require(deviceQueryRecordFieldParentOrgId)
+}
+
+// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetParentOrgName(parentOrgName *string) {
+	d.ParentOrgName = parentOrgName
+	d.require(deviceQueryRecordFieldParentOrgName)
+}
+
+func (d *DeviceQueryRecord) UnmarshalJSON(data []byte) error {
+	type unmarshaler DeviceQueryRecord
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*d = DeviceQueryRecord(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *d)
+	if err != nil {
+		return err
+	}
+	d.extraProperties = extraProperties
+	d.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (d *DeviceQueryRecord) MarshalJSON() ([]byte, error) {
+	type embed DeviceQueryRecord
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*d),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (d *DeviceQueryRecord) String() string {
+	if d == nil {
+		return "<nil>"
+	}
+	if len(d.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(d); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", d)
+}
+
+var (
 	listOrganizationsResponseFieldRecords = big.NewInt(1 << 0)
 	listOrganizationsResponseFieldSummary = big.NewInt(1 << 1)
 )
@@ -2400,6 +2876,107 @@ func (q *QueryBatchesTransfer) MarshalJSON() ([]byte, error) {
 }
 
 func (q *QueryBatchesTransfer) String() string {
+	if q == nil {
+		return "<nil>"
+	}
+	if len(q.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(q); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", q)
+}
+
+// Response body for queries about cloud devices.
+var (
+	queryDeviceResponseFieldSummary = big.NewInt(1 << 0)
+	queryDeviceResponseFieldRecords = big.NewInt(1 << 1)
+)
+
+type QueryDeviceResponse struct {
+	Summary *QuerySummary        `json:"Summary" url:"Summary"`
+	Records []*DeviceQueryRecord `json:"Records" url:"Records"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (q *QueryDeviceResponse) GetSummary() *QuerySummary {
+	if q == nil {
+		return nil
+	}
+	return q.Summary
+}
+
+func (q *QueryDeviceResponse) GetRecords() []*DeviceQueryRecord {
+	if q == nil {
+		return nil
+	}
+	return q.Records
+}
+
+func (q *QueryDeviceResponse) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
+	return q.extraProperties
+}
+
+func (q *QueryDeviceResponse) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryDeviceResponse) SetSummary(summary *QuerySummary) {
+	q.Summary = summary
+	q.require(queryDeviceResponseFieldSummary)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryDeviceResponse) SetRecords(records []*DeviceQueryRecord) {
+	q.Records = records
+	q.require(queryDeviceResponseFieldRecords)
+}
+
+func (q *QueryDeviceResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler QueryDeviceResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*q = QueryDeviceResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *q)
+	if err != nil {
+		return err
+	}
+	q.extraProperties = extraProperties
+	q.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (q *QueryDeviceResponse) MarshalJSON() ([]byte, error) {
+	type embed QueryDeviceResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (q *QueryDeviceResponse) String() string {
 	if q == nil {
 		return "<nil>"
 	}

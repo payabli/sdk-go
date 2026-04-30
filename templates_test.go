@@ -15707,6 +15707,46 @@ func TestSettersProcessingSection(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetCombinedBatches", func(t *testing.T) {
+		obj := &ProcessingSection{}
+		var fernTestValueCombinedBatches *TemplateElement
+		obj.SetCombinedBatches(fernTestValueCombinedBatches)
+		assert.Equal(t, fernTestValueCombinedBatches, obj.CombinedBatches)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetPayoutAverageMonthlyVolume", func(t *testing.T) {
+		obj := &ProcessingSection{}
+		var fernTestValuePayoutAverageMonthlyVolume *TemplateElement
+		obj.SetPayoutAverageMonthlyVolume(fernTestValuePayoutAverageMonthlyVolume)
+		assert.Equal(t, fernTestValuePayoutAverageMonthlyVolume, obj.PayoutAverageMonthlyVolume)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetPayoutHighTicketAmount", func(t *testing.T) {
+		obj := &ProcessingSection{}
+		var fernTestValuePayoutHighTicketAmount *TemplateElement
+		obj.SetPayoutHighTicketAmount(fernTestValuePayoutHighTicketAmount)
+		assert.Equal(t, fernTestValuePayoutHighTicketAmount, obj.PayoutHighTicketAmount)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetPayoutAverageTicketAmount", func(t *testing.T) {
+		obj := &ProcessingSection{}
+		var fernTestValuePayoutAverageTicketAmount *TemplateElement
+		obj.SetPayoutAverageTicketAmount(fernTestValuePayoutAverageTicketAmount)
+		assert.Equal(t, fernTestValuePayoutAverageTicketAmount, obj.PayoutAverageTicketAmount)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetPayoutCreditLimit", func(t *testing.T) {
+		obj := &ProcessingSection{}
+		var fernTestValuePayoutCreditLimit *TemplateElement
+		obj.SetPayoutCreditLimit(fernTestValuePayoutCreditLimit)
+		assert.Equal(t, fernTestValuePayoutCreditLimit, obj.PayoutCreditLimit)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 }
 
 func TestGettersProcessingSection(t *testing.T) {
@@ -16205,6 +16245,171 @@ func TestGettersProcessingSection(t *testing.T) {
 		_ = obj.GetWhenRefunded() // Should return zero value
 	})
 
+	t.Run("GetCombinedBatches", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &ProcessingSection{}
+		var expected *TemplateElement
+		obj.CombinedBatches = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetCombinedBatches(), "getter should return the property value")
+	})
+
+	t.Run("GetCombinedBatches_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &ProcessingSection{}
+		obj.CombinedBatches = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetCombinedBatches(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetCombinedBatches_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *ProcessingSection
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetCombinedBatches() // Should return zero value
+	})
+
+	t.Run("GetPayoutAverageMonthlyVolume", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &ProcessingSection{}
+		var expected *TemplateElement
+		obj.PayoutAverageMonthlyVolume = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetPayoutAverageMonthlyVolume(), "getter should return the property value")
+	})
+
+	t.Run("GetPayoutAverageMonthlyVolume_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &ProcessingSection{}
+		obj.PayoutAverageMonthlyVolume = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetPayoutAverageMonthlyVolume(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetPayoutAverageMonthlyVolume_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *ProcessingSection
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetPayoutAverageMonthlyVolume() // Should return zero value
+	})
+
+	t.Run("GetPayoutHighTicketAmount", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &ProcessingSection{}
+		var expected *TemplateElement
+		obj.PayoutHighTicketAmount = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetPayoutHighTicketAmount(), "getter should return the property value")
+	})
+
+	t.Run("GetPayoutHighTicketAmount_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &ProcessingSection{}
+		obj.PayoutHighTicketAmount = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetPayoutHighTicketAmount(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetPayoutHighTicketAmount_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *ProcessingSection
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetPayoutHighTicketAmount() // Should return zero value
+	})
+
+	t.Run("GetPayoutAverageTicketAmount", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &ProcessingSection{}
+		var expected *TemplateElement
+		obj.PayoutAverageTicketAmount = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetPayoutAverageTicketAmount(), "getter should return the property value")
+	})
+
+	t.Run("GetPayoutAverageTicketAmount_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &ProcessingSection{}
+		obj.PayoutAverageTicketAmount = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetPayoutAverageTicketAmount(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetPayoutAverageTicketAmount_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *ProcessingSection
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetPayoutAverageTicketAmount() // Should return zero value
+	})
+
+	t.Run("GetPayoutCreditLimit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &ProcessingSection{}
+		var expected *TemplateElement
+		obj.PayoutCreditLimit = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetPayoutCreditLimit(), "getter should return the property value")
+	})
+
+	t.Run("GetPayoutCreditLimit_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &ProcessingSection{}
+		obj.PayoutCreditLimit = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetPayoutCreditLimit(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetPayoutCreditLimit_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *ProcessingSection
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetPayoutCreditLimit() // Should return zero value
+	})
+
 }
 
 func TestSettersMarkExplicitProcessingSection(t *testing.T) {
@@ -16650,6 +16855,161 @@ func TestSettersMarkExplicitProcessingSection(t *testing.T) {
 
 		// Act
 		obj.SetWhenRefunded(fernTestValueWhenRefunded)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetCombinedBatches_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &ProcessingSection{}
+		var fernTestValueCombinedBatches *TemplateElement
+
+		// Act
+		obj.SetCombinedBatches(fernTestValueCombinedBatches)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetPayoutAverageMonthlyVolume_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &ProcessingSection{}
+		var fernTestValuePayoutAverageMonthlyVolume *TemplateElement
+
+		// Act
+		obj.SetPayoutAverageMonthlyVolume(fernTestValuePayoutAverageMonthlyVolume)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetPayoutHighTicketAmount_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &ProcessingSection{}
+		var fernTestValuePayoutHighTicketAmount *TemplateElement
+
+		// Act
+		obj.SetPayoutHighTicketAmount(fernTestValuePayoutHighTicketAmount)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetPayoutAverageTicketAmount_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &ProcessingSection{}
+		var fernTestValuePayoutAverageTicketAmount *TemplateElement
+
+		// Act
+		obj.SetPayoutAverageTicketAmount(fernTestValuePayoutAverageTicketAmount)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetPayoutCreditLimit_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &ProcessingSection{}
+		var fernTestValuePayoutCreditLimit *TemplateElement
+
+		// Act
+		obj.SetPayoutCreditLimit(fernTestValuePayoutCreditLimit)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -19578,6 +19938,14 @@ func TestSettersTemplateElement(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetRequired", func(t *testing.T) {
+		obj := &TemplateElement{}
+		var fernTestValueRequired *RequiredElement
+		obj.SetRequired(fernTestValueRequired)
+		assert.Equal(t, fernTestValueRequired, obj.Required)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 }
 
 func TestGettersTemplateElement(t *testing.T) {
@@ -19746,6 +20114,39 @@ func TestGettersTemplateElement(t *testing.T) {
 		_ = obj.GetVisible() // Should return zero value
 	})
 
+	t.Run("GetRequired", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TemplateElement{}
+		var expected *RequiredElement
+		obj.Required = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetRequired(), "getter should return the property value")
+	})
+
+	t.Run("GetRequired_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TemplateElement{}
+		obj.Required = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetRequired(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetRequired_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *TemplateElement
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetRequired() // Should return zero value
+	})
+
 }
 
 func TestSettersMarkExplicitTemplateElement(t *testing.T) {
@@ -19881,6 +20282,37 @@ func TestSettersMarkExplicitTemplateElement(t *testing.T) {
 
 		// Act
 		obj.SetVisible(fernTestValueVisible)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetRequired_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TemplateElement{}
+		var fernTestValueRequired *RequiredElement
+
+		// Act
+		obj.SetRequired(fernTestValueRequired)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)

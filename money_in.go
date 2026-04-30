@@ -7172,7 +7172,7 @@ type TransactionDetailPaymentData struct {
 	Initiator             *Initiator                       `json:"initiator,omitempty" url:"initiator,omitempty"`
 	StoredMethodUsageType *StoredMethodUsageType           `json:"storedMethodUsageType,omitempty" url:"storedMethodUsageType,omitempty"`
 	Sequence              *Sequence                        `json:"sequence,omitempty" url:"sequence,omitempty"`
-	OrderDescription      Orderdescription                 `json:"orderDescription" url:"orderDescription"`
+	OrderDescription      *Orderdescription                `json:"orderDescription,omitempty" url:"orderDescription,omitempty"`
 	AccountId             *AccountId                       `json:"accountId,omitempty" url:"accountId,omitempty"`
 	SignatureData         *Signaturedata                   `json:"signatureData,omitempty" url:"signatureData,omitempty"`
 	BinData               *BinData                         `json:"binData,omitempty" url:"binData,omitempty"`
@@ -7241,9 +7241,9 @@ func (t *TransactionDetailPaymentData) GetSequence() *Sequence {
 	return t.Sequence
 }
 
-func (t *TransactionDetailPaymentData) GetOrderDescription() Orderdescription {
+func (t *TransactionDetailPaymentData) GetOrderDescription() *Orderdescription {
 	if t == nil {
-		return ""
+		return nil
 	}
 	return t.OrderDescription
 }
@@ -7348,7 +7348,7 @@ func (t *TransactionDetailPaymentData) SetSequence(sequence *Sequence) {
 
 // SetOrderDescription sets the OrderDescription field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailPaymentData) SetOrderDescription(orderDescription Orderdescription) {
+func (t *TransactionDetailPaymentData) SetOrderDescription(orderDescription *Orderdescription) {
 	t.OrderDescription = orderDescription
 	t.require(transactionDetailPaymentDataFieldOrderDescription)
 }

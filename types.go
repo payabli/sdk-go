@@ -3074,7 +3074,8 @@ type BinData struct {
 	// The card brand. For example, Visa, Mastercard, American Express,
 	// Discover.
 	BinCardBrand *string `json:"binCardBrand,omitempty" url:"binCardBrand,omitempty"`
-	// The type of card: Credit or Debit.
+	// The type of card: `Credit` or `Debit`. Case can vary between
+	// processors, so compare this value case-insensitively.
 	BinCardType *string `json:"binCardType,omitempty" url:"binCardType,omitempty"`
 	// The category of the card, which indicates the card product. For example: Standard, Gold, Platinum, etc. The binCardCategory for prepaid cards is marked `PREPAID`.
 	BinCardCategory *string `json:"binCardCategory,omitempty" url:"binCardCategory,omitempty"`

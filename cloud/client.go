@@ -73,6 +73,8 @@ func (c *Client) HistoryDevice(
 	return response.Body, nil
 }
 
+// Use [List devices by paypoint](/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint) instead, which supports filters, sorting, and pagination.
+//
 // Get a list of cloud devices registered to an entrypoint.
 func (c *Client) ListDevice(
 	ctx context.Context,

@@ -402,6 +402,74 @@ func TestQueryListCustomersOrgWithWireMock(
 	VerifyRequestCount(t, "TestQueryListCustomersOrgWithWireMock", "GET", "/Query/customers/org/123", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
+func TestQueryListDevicesWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &payabli.ListDevicesRequest{
+		FromRecord: payabli.Int(
+			0,
+		),
+		LimitRecord: payabli.Int(
+			20,
+		),
+		SortBy: payabli.String(
+			"desc(createdAt)",
+		),
+	}
+	_, invocationErr := client.Query.ListDevices(
+		context.TODO(),
+		"8cfec329267",
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestQueryListDevicesWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestQueryListDevicesWithWireMock", "GET", "/Query/devices/8cfec329267", map[string]string{"fromRecord": "0", "limitRecord": "20", "sortBy": "desc(createdAt)"}, 1)
+}
+
+func TestQueryListDevicesOrgWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &payabli.ListDevicesOrgRequest{
+		FromRecord: payabli.Int(
+			0,
+		),
+		LimitRecord: payabli.Int(
+			20,
+		),
+		SortBy: payabli.String(
+			"desc(createdAt)",
+		),
+	}
+	_, invocationErr := client.Query.ListDevicesOrg(
+		context.TODO(),
+		100,
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestQueryListDevicesOrgWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestQueryListDevicesOrgWithWireMock", "GET", "/Query/devices/org/100", map[string]string{"fromRecord": "0", "limitRecord": "20", "sortBy": "desc(createdAt)"}, 1)
+}
+
 func TestQueryListNotificationReportsWithWireMock(
 	t *testing.T,
 ) {

@@ -1245,6 +1245,318 @@ func (l *ListCustomersOrgRequest) SetSortBy(sortBy *string) {
 }
 
 var (
+	listDevicesRequestFieldExportFormat = big.NewInt(1 << 0)
+	listDevicesRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listDevicesRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listDevicesRequestFieldParameters   = big.NewInt(1 << 3)
+	listDevicesRequestFieldSortBy       = big.NewInt(1 << 4)
+)
+
+type ListDevicesRequest struct {
+	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
+	// The number of records to skip before starting to collect the result set.
+	FromRecord *int `json:"-" url:"fromRecord,omitempty"`
+	// Max number of records to return for the query. Use `0` or negative value to return all records.
+	LimitRecord *int `json:"-" url:"limitRecord,omitempty"`
+	// Collection of field names, conditions, and values used to filter
+	// the query.
+	//
+	// <Info>
+	//
+	//	**You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+	//
+	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+	//
+	//	For example:
+	//
+	//	--url https://api-sandbox.payabli.com/api/Query/devices/8cfec329267?parameters=status=1&limitRecord=20
+	//
+	//	should become:
+	//
+	//	--url https://api-sandbox.payabli.com/api/Query/devices/8cfec329267?status=1&limitRecord=20
+	//
+	// </Info>
+	//
+	// See [Filters and Conditions
+	// Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference)
+	// for more information.
+	//
+	// **List of field names accepted:**
+	//
+	// - `deviceId` (eq, ne, ct, nct)
+	//
+	// - `serialNumber` (eq, ne, ct, nct)
+	//
+	// - `friendlyName` (eq, ne, ct, nct)
+	//
+	// - `description` (eq, ne, ct, nct)
+	//
+	// - `model` (eq, ne, ct, nct)
+	//
+	// - `make` (eq, ne, ct, nct)
+	//
+	// - `macAddress` (eq, ne, ct, nct)
+	//
+	// - `registrationCode` (eq, ne, ct, nct)
+	//
+	// - `status` (eq, ne, in, nin)
+	//
+	// - `deviceType` (eq, ne, in, nin)
+	//
+	// - `deviceOs` (eq, ne, in, nin)
+	//
+	// - `activationAttempts` (eq, ne, gt, ge, lt, le)
+	//
+	// - `createdDate` (gt, ge, lt, le, eq, ne)
+	//
+	// - `updatedDate` (gt, ge, lt, le, eq, ne)
+	//
+	// - `lastHealthCheck` (gt, ge, lt, le, eq, ne)
+	//
+	// - `activationExpiry` (gt, ge, lt, le, eq, ne). This filter corresponds to the `activationCodeExpiry` response field.
+	//
+	// - `paypointId` (eq, ne)
+	//
+	// - `paypointDba` (eq, ne, ct, nct)
+	//
+	// - `paypointLegal` (eq, ne, ct, nct)
+	//
+	// - `paypointEntry` (eq, ne, ct, nct)
+	//
+	// - `externalPaypointId` (eq, ne, ct, nct)
+	//
+	// - `parentOrgId` (eq, ne)
+	//
+	// - `parentOrgName` (eq, ne, ct, nct)
+	//
+	// **List of comparison operators accepted:**
+	//
+	// - `eq` or empty => equal
+	//
+	// - `gt` => greater than
+	//
+	// - `ge` => greater or equal
+	//
+	// - `lt` => less than
+	//
+	// - `le` => less or equal
+	//
+	// - `ne` => not equal
+	//
+	// - `ct` => contains
+	//
+	// - `nct` => not contains
+	//
+	// - `in` => inside array
+	//
+	// - `nin` => not inside array
+	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (l *ListDevicesRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListDevicesRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listDevicesRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListDevicesRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listDevicesRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListDevicesRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listDevicesRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListDevicesRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listDevicesRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListDevicesRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listDevicesRequestFieldSortBy)
+}
+
+var (
+	listDevicesOrgRequestFieldExportFormat = big.NewInt(1 << 0)
+	listDevicesOrgRequestFieldFromRecord   = big.NewInt(1 << 1)
+	listDevicesOrgRequestFieldLimitRecord  = big.NewInt(1 << 2)
+	listDevicesOrgRequestFieldParameters   = big.NewInt(1 << 3)
+	listDevicesOrgRequestFieldSortBy       = big.NewInt(1 << 4)
+)
+
+type ListDevicesOrgRequest struct {
+	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
+	// The number of records to skip before starting to collect the result set.
+	FromRecord *int `json:"-" url:"fromRecord,omitempty"`
+	// Max number of records to return for the query. Use `0` or negative value to return all records.
+	LimitRecord *int `json:"-" url:"limitRecord,omitempty"`
+	// Collection of field names, conditions, and values used to filter
+	// the query.
+	//
+	// <Info>
+	//
+	//	**You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+	//
+	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+	//
+	//	For example:
+	//
+	//	--url https://api-sandbox.payabli.com/api/Query/devices/org/236?parameters=status=1&limitRecord=20
+	//
+	//	should become:
+	//
+	//	--url https://api-sandbox.payabli.com/api/Query/devices/org/236?status=1&limitRecord=20
+	//
+	// </Info>
+	//
+	// See [Filters and Conditions
+	// Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference)
+	// for more information.
+	//
+	// **List of field names accepted:**
+	//
+	// - `deviceId` (eq, ne, ct, nct)
+	//
+	// - `serialNumber` (eq, ne, ct, nct)
+	//
+	// - `friendlyName` (eq, ne, ct, nct)
+	//
+	// - `description` (eq, ne, ct, nct)
+	//
+	// - `model` (eq, ne, ct, nct)
+	//
+	// - `make` (eq, ne, ct, nct)
+	//
+	// - `macAddress` (eq, ne, ct, nct)
+	//
+	// - `registrationCode` (eq, ne, ct, nct)
+	//
+	// - `status` (eq, ne, in, nin)
+	//
+	// - `deviceType` (eq, ne, in, nin)
+	//
+	// - `deviceOs` (eq, ne, in, nin)
+	//
+	// - `activationAttempts` (eq, ne, gt, ge, lt, le)
+	//
+	// - `createdDate` (gt, ge, lt, le, eq, ne)
+	//
+	// - `updatedDate` (gt, ge, lt, le, eq, ne)
+	//
+	// - `lastHealthCheck` (gt, ge, lt, le, eq, ne)
+	//
+	// - `activationExpiry` (gt, ge, lt, le, eq, ne). This filter corresponds to the `activationCodeExpiry` response field.
+	//
+	// - `paypointId` (eq, ne)
+	//
+	// - `paypointDba` (eq, ne, ct, nct)
+	//
+	// - `paypointLegal` (eq, ne, ct, nct)
+	//
+	// - `paypointEntry` (eq, ne, ct, nct)
+	//
+	// - `externalPaypointId` (eq, ne, ct, nct)
+	//
+	// - `parentOrgId` (eq, ne)
+	//
+	// - `parentOrgName` (eq, ne, ct, nct)
+	//
+	// **List of comparison operators accepted:**
+	//
+	// - `eq` or empty => equal
+	//
+	// - `gt` => greater than
+	//
+	// - `ge` => greater or equal
+	//
+	// - `lt` => less than
+	//
+	// - `le` => less or equal
+	//
+	// - `ne` => not equal
+	//
+	// - `ct` => contains
+	//
+	// - `nct` => not contains
+	//
+	// - `in` => inside array
+	//
+	// - `nin` => not inside array
+	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (l *ListDevicesOrgRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetExportFormat sets the ExportFormat field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListDevicesOrgRequest) SetExportFormat(exportFormat *ExportFormat) {
+	l.ExportFormat = exportFormat
+	l.require(listDevicesOrgRequestFieldExportFormat)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListDevicesOrgRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listDevicesOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListDevicesOrgRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listDevicesOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListDevicesOrgRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listDevicesOrgRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListDevicesOrgRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listDevicesOrgRequestFieldSortBy)
+}
+
+var (
 	listNotificationReportsRequestFieldFromRecord  = big.NewInt(1 << 0)
 	listNotificationReportsRequestFieldLimitRecord = big.NewInt(1 << 1)
 	listNotificationReportsRequestFieldParameters  = big.NewInt(1 << 2)
@@ -4187,6 +4499,7 @@ type ListVcardsRequest struct {
 	//   - `orgName` (ne, eq, ct, nct)
 	//   - `externalPaypointId` (ct, nct, eq, ne)
 	//   - `paypointId` (in, nin, eq, ne)
+	//   - `cardType` (eq)
 	//
 	// List of comparison accepted - enclosed between parentheses:
 	//
@@ -4299,6 +4612,7 @@ type ListVcardsOrgRequest struct {
 	//   - `orgName` (ne, eq, ct, nct)
 	//   - `externalPaypointId` (ct, nct, eq, ne)
 	//   - `paypointId` (in, nin, eq, ne)
+	//   - `cardType` (eq)
 	//
 	// List of comparison accepted - enclosed between parentheses:
 	//
@@ -7019,7 +7333,14 @@ type QueryChargebacksResponseRecordsItem struct {
 	Responses *string `json:"Responses,omitempty" url:"Responses,omitempty"`
 	// Reference for any scheduled transactions.
 	ScheduleReference *int `json:"ScheduleReference,omitempty" url:"ScheduleReference,omitempty"`
-	// Status of the transaction.
+	// Status of the chargeback or ACH return.
+	//
+	// - 0: Open (chargebacks only)
+	// - 1: Pending (chargebacks only)
+	// - 2: ClosedWon (chargebacks only)
+	// - 3: ClosedLost (chargebacks only)
+	// - 4: ACH return (any Nacha return code except R29)
+	// - 5: AchDispute (R29 only — debit block)
 	Status          *int                     `json:"Status,omitempty" url:"Status,omitempty"`
 	Transaction     *TransactionQueryRecords `json:"Transaction,omitempty" url:"Transaction,omitempty"`
 	TransactionTime *TransactionTime         `json:"TransactionTime,omitempty" url:"TransactionTime,omitempty"`
@@ -13461,6 +13782,11 @@ func (t *TransferSummary) String() string {
 	return fmt.Sprintf("%#v", t)
 }
 
+// The type of virtual card:
+//   - Single-use virtual card:	0
+//   - Ghost card:	2
+type VCardCardType = int
+
 var (
 	vCardQueryResponseFieldSummary = big.NewInt(1 << 0)
 	vCardQueryResponseFieldRecords = big.NewInt(1 << 1)
@@ -13563,38 +13889,40 @@ func (v *VCardQueryResponse) String() string {
 
 var (
 	vCardRecordFieldVcardSent           = big.NewInt(1 << 0)
-	vCardRecordFieldCardToken           = big.NewInt(1 << 1)
-	vCardRecordFieldCardNumber          = big.NewInt(1 << 2)
-	vCardRecordFieldCvc                 = big.NewInt(1 << 3)
-	vCardRecordFieldExpirationDate      = big.NewInt(1 << 4)
-	vCardRecordFieldStatus              = big.NewInt(1 << 5)
-	vCardRecordFieldAmount              = big.NewInt(1 << 6)
-	vCardRecordFieldCurrentBalance      = big.NewInt(1 << 7)
-	vCardRecordFieldExpenseLimit        = big.NewInt(1 << 8)
-	vCardRecordFieldExpenseLimitPeriod  = big.NewInt(1 << 9)
-	vCardRecordFieldMaxNumberOfUses     = big.NewInt(1 << 10)
-	vCardRecordFieldCurrentNumberOfUses = big.NewInt(1 << 11)
-	vCardRecordFieldExactAmount         = big.NewInt(1 << 12)
-	vCardRecordFieldMcc                 = big.NewInt(1 << 13)
-	vCardRecordFieldTcc                 = big.NewInt(1 << 14)
-	vCardRecordFieldMisc1               = big.NewInt(1 << 15)
-	vCardRecordFieldMisc2               = big.NewInt(1 << 16)
-	vCardRecordFieldDateCreated         = big.NewInt(1 << 17)
-	vCardRecordFieldDateModified        = big.NewInt(1 << 18)
-	vCardRecordFieldAssociatedVendor    = big.NewInt(1 << 19)
-	vCardRecordFieldAssociatedCustomer  = big.NewInt(1 << 20)
-	vCardRecordFieldParentOrgName       = big.NewInt(1 << 21)
-	vCardRecordFieldPaypointDbaname     = big.NewInt(1 << 22)
-	vCardRecordFieldPaypointLegalname   = big.NewInt(1 << 23)
-	vCardRecordFieldPaypointEntryname   = big.NewInt(1 << 24)
-	vCardRecordFieldExternalPaypointId  = big.NewInt(1 << 25)
-	vCardRecordFieldPaypointId          = big.NewInt(1 << 26)
+	vCardRecordFieldCardType            = big.NewInt(1 << 1)
+	vCardRecordFieldCardToken           = big.NewInt(1 << 2)
+	vCardRecordFieldCardNumber          = big.NewInt(1 << 3)
+	vCardRecordFieldCvc                 = big.NewInt(1 << 4)
+	vCardRecordFieldExpirationDate      = big.NewInt(1 << 5)
+	vCardRecordFieldStatus              = big.NewInt(1 << 6)
+	vCardRecordFieldAmount              = big.NewInt(1 << 7)
+	vCardRecordFieldCurrentBalance      = big.NewInt(1 << 8)
+	vCardRecordFieldExpenseLimit        = big.NewInt(1 << 9)
+	vCardRecordFieldExpenseLimitPeriod  = big.NewInt(1 << 10)
+	vCardRecordFieldMaxNumberOfUses     = big.NewInt(1 << 11)
+	vCardRecordFieldCurrentNumberOfUses = big.NewInt(1 << 12)
+	vCardRecordFieldExactAmount         = big.NewInt(1 << 13)
+	vCardRecordFieldMcc                 = big.NewInt(1 << 14)
+	vCardRecordFieldTcc                 = big.NewInt(1 << 15)
+	vCardRecordFieldMisc1               = big.NewInt(1 << 16)
+	vCardRecordFieldMisc2               = big.NewInt(1 << 17)
+	vCardRecordFieldDateCreated         = big.NewInt(1 << 18)
+	vCardRecordFieldDateModified        = big.NewInt(1 << 19)
+	vCardRecordFieldAssociatedVendor    = big.NewInt(1 << 20)
+	vCardRecordFieldAssociatedCustomer  = big.NewInt(1 << 21)
+	vCardRecordFieldParentOrgName       = big.NewInt(1 << 22)
+	vCardRecordFieldPaypointDbaname     = big.NewInt(1 << 23)
+	vCardRecordFieldPaypointLegalname   = big.NewInt(1 << 24)
+	vCardRecordFieldPaypointEntryname   = big.NewInt(1 << 25)
+	vCardRecordFieldExternalPaypointId  = big.NewInt(1 << 26)
+	vCardRecordFieldPaypointId          = big.NewInt(1 << 27)
 )
 
 type VCardRecord struct {
 	// When `true`, the vCard has been sent.
-	VcardSent *bool   `json:"vcardSent,omitempty" url:"vcardSent,omitempty"`
-	CardToken *string `json:"cardToken,omitempty" url:"cardToken,omitempty"`
+	VcardSent *bool          `json:"vcardSent,omitempty" url:"vcardSent,omitempty"`
+	CardType  *VCardCardType `json:"cardType,omitempty" url:"cardType,omitempty"`
+	CardToken *string        `json:"cardToken,omitempty" url:"cardToken,omitempty"`
 	// The vCard number.
 	CardNumber *string `json:"cardNumber,omitempty" url:"cardNumber,omitempty"`
 	// The vCard CVC number.
@@ -13646,6 +13974,13 @@ func (v *VCardRecord) GetVcardSent() *bool {
 		return nil
 	}
 	return v.VcardSent
+}
+
+func (v *VCardRecord) GetCardType() *VCardCardType {
+	if v == nil {
+		return nil
+	}
+	return v.CardType
 }
 
 func (v *VCardRecord) GetCardToken() *string {
@@ -13849,6 +14184,13 @@ func (v *VCardRecord) require(field *big.Int) {
 func (v *VCardRecord) SetVcardSent(vcardSent *bool) {
 	v.VcardSent = vcardSent
 	v.require(vCardRecordFieldVcardSent)
+}
+
+// SetCardType sets the CardType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardRecord) SetCardType(cardType *VCardCardType) {
+	v.CardType = cardType
+	v.require(vCardRecordFieldCardType)
 }
 
 // SetCardToken sets the CardToken field and marks it as non-optional;

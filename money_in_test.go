@@ -19093,7 +19093,7 @@ func TestSettersTransactionDetailPaymentData(t *testing.T) {
 
 	t.Run("SetOrderDescription", func(t *testing.T) {
 		obj := &TransactionDetailPaymentData{}
-		var fernTestValueOrderDescription Orderdescription
+		var fernTestValueOrderDescription *Orderdescription
 		obj.SetOrderDescription(fernTestValueOrderDescription)
 		assert.Equal(t, fernTestValueOrderDescription, obj.OrderDescription)
 		assert.NotNil(t, obj.explicitFields)
@@ -19372,11 +19372,21 @@ func TestGettersTransactionDetailPaymentData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailPaymentData{}
-		var expected Orderdescription
+		var expected *Orderdescription
 		obj.OrderDescription = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetOrderDescription(), "getter should return the property value")
+	})
+
+	t.Run("GetOrderDescription_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionDetailPaymentData{}
+		obj.OrderDescription = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetOrderDescription(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetOrderDescription_NilReceiver", func(t *testing.T) {
@@ -19778,7 +19788,7 @@ func TestSettersMarkExplicitTransactionDetailPaymentData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailPaymentData{}
-		var fernTestValueOrderDescription Orderdescription
+		var fernTestValueOrderDescription *Orderdescription
 
 		// Act
 		obj.SetOrderDescription(fernTestValueOrderDescription)

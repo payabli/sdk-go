@@ -228,6 +228,45 @@ func (c *Client) ListCustomersOrg(
 	return response.Body, nil
 }
 
+// Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+func (c *Client) ListDevices(
+	ctx context.Context,
+	entry payabli.Entry,
+	request *payabli.ListDevicesRequest,
+	opts ...option.RequestOption,
+) (*payabli.QueryDeviceResponse, error) {
+	response, err := c.WithRawResponse.ListDevices(
+		ctx,
+		entry,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Returns a list of cloud devices for a single organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+func (c *Client) ListDevicesOrg(
+	ctx context.Context,
+	// The numeric identifier for organization, assigned by Payabli.
+	orgId int,
+	request *payabli.ListDevicesOrgRequest,
+	opts ...option.RequestOption,
+) (*payabli.QueryDeviceResponse, error) {
+	response, err := c.WithRawResponse.ListDevicesOrg(
+		ctx,
+		orgId,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 // Returns a list of all reports generated in the last 60 days for a single entrypoint. Use filters to limit results.
 func (c *Client) ListNotificationReports(
 	ctx context.Context,
