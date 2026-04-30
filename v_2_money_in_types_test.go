@@ -2685,7 +2685,7 @@ func TestSettersV2TransactionDetails(t *testing.T) {
 
 	t.Run("SetExternalPaypointId", func(t *testing.T) {
 		obj := &V2TransactionDetails{}
-		var fernTestValueExternalPaypointId ExternalPaypointId
+		var fernTestValueExternalPaypointId *ExternalPaypointId
 		obj.SetExternalPaypointId(fernTestValueExternalPaypointId)
 		assert.Equal(t, fernTestValueExternalPaypointId, obj.ExternalPaypointId)
 		assert.NotNil(t, obj.explicitFields)
@@ -3626,11 +3626,21 @@ func TestGettersV2TransactionDetails(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &V2TransactionDetails{}
-		var expected ExternalPaypointId
+		var expected *ExternalPaypointId
 		obj.ExternalPaypointId = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetExternalPaypointId(), "getter should return the property value")
+	})
+
+	t.Run("GetExternalPaypointId_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2TransactionDetails{}
+		obj.ExternalPaypointId = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetExternalPaypointId(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetExternalPaypointId_NilReceiver", func(t *testing.T) {
@@ -5171,7 +5181,7 @@ func TestSettersMarkExplicitV2TransactionDetails(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &V2TransactionDetails{}
-		var fernTestValueExternalPaypointId ExternalPaypointId
+		var fernTestValueExternalPaypointId *ExternalPaypointId
 
 		// Act
 		obj.SetExternalPaypointId(fernTestValueExternalPaypointId)

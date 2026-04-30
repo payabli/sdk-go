@@ -6038,28 +6038,28 @@ var (
 )
 
 type TransactionDetailCustomer struct {
-	Identifiers      *Identifierfields           `json:"identifiers,omitempty" url:"identifiers,omitempty"`
-	FirstName        string                      `json:"firstName" url:"firstName"`
-	LastName         string                      `json:"lastName" url:"lastName"`
-	CompanyName      string                      `json:"companyName" url:"companyName"`
-	BillingAddress1  BillingAddressNullable      `json:"billingAddress1" url:"billingAddress1"`
-	BillingAddress2  BillingAddressAddtlNullable `json:"billingAddress2" url:"billingAddress2"`
-	BillingCity      BillingCityNullable         `json:"billingCity" url:"billingCity"`
-	BillingState     BillingStateNullable        `json:"billingState" url:"billingState"`
-	BillingZip       BillingZip                  `json:"billingZip" url:"billingZip"`
-	BillingCountry   BillingCountryNullable      `json:"billingCountry" url:"billingCountry"`
-	BillingPhone     PhoneNumber                 `json:"billingPhone" url:"billingPhone"`
-	BillingEmail     Email                       `json:"billingEmail" url:"billingEmail"`
-	CustomerNumber   CustomerNumberNullable      `json:"customerNumber" url:"customerNumber"`
-	ShippingAddress1 Shippingaddress             `json:"shippingAddress1" url:"shippingAddress1"`
-	ShippingAddress2 Shippingaddressadditional   `json:"shippingAddress2" url:"shippingAddress2"`
-	ShippingCity     Shippingcity                `json:"shippingCity" url:"shippingCity"`
-	ShippingState    Shippingstate               `json:"shippingState" url:"shippingState"`
-	ShippingZip      Shippingzip                 `json:"shippingZip" url:"shippingZip"`
-	ShippingCountry  Shippingcountry             `json:"shippingCountry" url:"shippingCountry"`
-	CustomerId       CustomerId                  `json:"customerId" url:"customerId"`
-	CustomerStatus   CustomerStatus              `json:"customerStatus" url:"customerStatus"`
-	AdditionalData   *AdditionalDataMap          `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	Identifiers      *Identifierfields            `json:"identifiers,omitempty" url:"identifiers,omitempty"`
+	FirstName        string                       `json:"firstName" url:"firstName"`
+	LastName         string                       `json:"lastName" url:"lastName"`
+	CompanyName      *string                      `json:"companyName,omitempty" url:"companyName,omitempty"`
+	BillingAddress1  *BillingAddressNullable      `json:"billingAddress1,omitempty" url:"billingAddress1,omitempty"`
+	BillingAddress2  *BillingAddressAddtlNullable `json:"billingAddress2,omitempty" url:"billingAddress2,omitempty"`
+	BillingCity      *BillingCityNullable         `json:"billingCity,omitempty" url:"billingCity,omitempty"`
+	BillingState     *BillingStateNullable        `json:"billingState,omitempty" url:"billingState,omitempty"`
+	BillingZip       *BillingZip                  `json:"billingZip,omitempty" url:"billingZip,omitempty"`
+	BillingCountry   *BillingCountryNullable      `json:"billingCountry,omitempty" url:"billingCountry,omitempty"`
+	BillingPhone     *PhoneNumber                 `json:"billingPhone,omitempty" url:"billingPhone,omitempty"`
+	BillingEmail     *Email                       `json:"billingEmail,omitempty" url:"billingEmail,omitempty"`
+	CustomerNumber   *CustomerNumberNullable      `json:"customerNumber,omitempty" url:"customerNumber,omitempty"`
+	ShippingAddress1 *Shippingaddress             `json:"shippingAddress1,omitempty" url:"shippingAddress1,omitempty"`
+	ShippingAddress2 *Shippingaddressadditional   `json:"shippingAddress2,omitempty" url:"shippingAddress2,omitempty"`
+	ShippingCity     *Shippingcity                `json:"shippingCity,omitempty" url:"shippingCity,omitempty"`
+	ShippingState    *Shippingstate               `json:"shippingState,omitempty" url:"shippingState,omitempty"`
+	ShippingZip      *Shippingzip                 `json:"shippingZip,omitempty" url:"shippingZip,omitempty"`
+	ShippingCountry  *Shippingcountry             `json:"shippingCountry,omitempty" url:"shippingCountry,omitempty"`
+	CustomerId       CustomerId                   `json:"customerId" url:"customerId"`
+	CustomerStatus   CustomerStatus               `json:"customerStatus" url:"customerStatus"`
+	AdditionalData   *AdditionalDataMap           `json:"additionalData,omitempty" url:"additionalData,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -6089,114 +6089,114 @@ func (t *TransactionDetailCustomer) GetLastName() string {
 	return t.LastName
 }
 
-func (t *TransactionDetailCustomer) GetCompanyName() string {
+func (t *TransactionDetailCustomer) GetCompanyName() *string {
 	if t == nil {
-		return ""
+		return nil
 	}
 	return t.CompanyName
 }
 
-func (t *TransactionDetailCustomer) GetBillingAddress1() BillingAddressNullable {
+func (t *TransactionDetailCustomer) GetBillingAddress1() *BillingAddressNullable {
 	if t == nil {
-		return ""
+		return nil
 	}
 	return t.BillingAddress1
 }
 
-func (t *TransactionDetailCustomer) GetBillingAddress2() BillingAddressAddtlNullable {
+func (t *TransactionDetailCustomer) GetBillingAddress2() *BillingAddressAddtlNullable {
 	if t == nil {
-		return ""
+		return nil
 	}
 	return t.BillingAddress2
 }
 
-func (t *TransactionDetailCustomer) GetBillingCity() BillingCityNullable {
+func (t *TransactionDetailCustomer) GetBillingCity() *BillingCityNullable {
 	if t == nil {
-		return ""
+		return nil
 	}
 	return t.BillingCity
 }
 
-func (t *TransactionDetailCustomer) GetBillingState() BillingStateNullable {
+func (t *TransactionDetailCustomer) GetBillingState() *BillingStateNullable {
 	if t == nil {
-		return ""
+		return nil
 	}
 	return t.BillingState
 }
 
-func (t *TransactionDetailCustomer) GetBillingZip() BillingZip {
+func (t *TransactionDetailCustomer) GetBillingZip() *BillingZip {
 	if t == nil {
-		return ""
+		return nil
 	}
 	return t.BillingZip
 }
 
-func (t *TransactionDetailCustomer) GetBillingCountry() BillingCountryNullable {
+func (t *TransactionDetailCustomer) GetBillingCountry() *BillingCountryNullable {
 	if t == nil {
-		return ""
+		return nil
 	}
 	return t.BillingCountry
 }
 
-func (t *TransactionDetailCustomer) GetBillingPhone() PhoneNumber {
+func (t *TransactionDetailCustomer) GetBillingPhone() *PhoneNumber {
 	if t == nil {
-		return ""
+		return nil
 	}
 	return t.BillingPhone
 }
 
-func (t *TransactionDetailCustomer) GetBillingEmail() Email {
+func (t *TransactionDetailCustomer) GetBillingEmail() *Email {
 	if t == nil {
-		return ""
+		return nil
 	}
 	return t.BillingEmail
 }
 
-func (t *TransactionDetailCustomer) GetCustomerNumber() CustomerNumberNullable {
+func (t *TransactionDetailCustomer) GetCustomerNumber() *CustomerNumberNullable {
 	if t == nil {
-		return ""
+		return nil
 	}
 	return t.CustomerNumber
 }
 
-func (t *TransactionDetailCustomer) GetShippingAddress1() Shippingaddress {
+func (t *TransactionDetailCustomer) GetShippingAddress1() *Shippingaddress {
 	if t == nil {
-		return ""
+		return nil
 	}
 	return t.ShippingAddress1
 }
 
-func (t *TransactionDetailCustomer) GetShippingAddress2() Shippingaddressadditional {
+func (t *TransactionDetailCustomer) GetShippingAddress2() *Shippingaddressadditional {
 	if t == nil {
-		return ""
+		return nil
 	}
 	return t.ShippingAddress2
 }
 
-func (t *TransactionDetailCustomer) GetShippingCity() Shippingcity {
+func (t *TransactionDetailCustomer) GetShippingCity() *Shippingcity {
 	if t == nil {
-		return ""
+		return nil
 	}
 	return t.ShippingCity
 }
 
-func (t *TransactionDetailCustomer) GetShippingState() Shippingstate {
+func (t *TransactionDetailCustomer) GetShippingState() *Shippingstate {
 	if t == nil {
-		return ""
+		return nil
 	}
 	return t.ShippingState
 }
 
-func (t *TransactionDetailCustomer) GetShippingZip() Shippingzip {
+func (t *TransactionDetailCustomer) GetShippingZip() *Shippingzip {
 	if t == nil {
-		return ""
+		return nil
 	}
 	return t.ShippingZip
 }
 
-func (t *TransactionDetailCustomer) GetShippingCountry() Shippingcountry {
+func (t *TransactionDetailCustomer) GetShippingCountry() *Shippingcountry {
 	if t == nil {
-		return ""
+		return nil
 	}
 	return t.ShippingCountry
 }
@@ -6259,112 +6259,112 @@ func (t *TransactionDetailCustomer) SetLastName(lastName string) {
 
 // SetCompanyName sets the CompanyName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailCustomer) SetCompanyName(companyName string) {
+func (t *TransactionDetailCustomer) SetCompanyName(companyName *string) {
 	t.CompanyName = companyName
 	t.require(transactionDetailCustomerFieldCompanyName)
 }
 
 // SetBillingAddress1 sets the BillingAddress1 field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailCustomer) SetBillingAddress1(billingAddress1 BillingAddressNullable) {
+func (t *TransactionDetailCustomer) SetBillingAddress1(billingAddress1 *BillingAddressNullable) {
 	t.BillingAddress1 = billingAddress1
 	t.require(transactionDetailCustomerFieldBillingAddress1)
 }
 
 // SetBillingAddress2 sets the BillingAddress2 field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailCustomer) SetBillingAddress2(billingAddress2 BillingAddressAddtlNullable) {
+func (t *TransactionDetailCustomer) SetBillingAddress2(billingAddress2 *BillingAddressAddtlNullable) {
 	t.BillingAddress2 = billingAddress2
 	t.require(transactionDetailCustomerFieldBillingAddress2)
 }
 
 // SetBillingCity sets the BillingCity field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailCustomer) SetBillingCity(billingCity BillingCityNullable) {
+func (t *TransactionDetailCustomer) SetBillingCity(billingCity *BillingCityNullable) {
 	t.BillingCity = billingCity
 	t.require(transactionDetailCustomerFieldBillingCity)
 }
 
 // SetBillingState sets the BillingState field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailCustomer) SetBillingState(billingState BillingStateNullable) {
+func (t *TransactionDetailCustomer) SetBillingState(billingState *BillingStateNullable) {
 	t.BillingState = billingState
 	t.require(transactionDetailCustomerFieldBillingState)
 }
 
 // SetBillingZip sets the BillingZip field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailCustomer) SetBillingZip(billingZip BillingZip) {
+func (t *TransactionDetailCustomer) SetBillingZip(billingZip *BillingZip) {
 	t.BillingZip = billingZip
 	t.require(transactionDetailCustomerFieldBillingZip)
 }
 
 // SetBillingCountry sets the BillingCountry field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailCustomer) SetBillingCountry(billingCountry BillingCountryNullable) {
+func (t *TransactionDetailCustomer) SetBillingCountry(billingCountry *BillingCountryNullable) {
 	t.BillingCountry = billingCountry
 	t.require(transactionDetailCustomerFieldBillingCountry)
 }
 
 // SetBillingPhone sets the BillingPhone field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailCustomer) SetBillingPhone(billingPhone PhoneNumber) {
+func (t *TransactionDetailCustomer) SetBillingPhone(billingPhone *PhoneNumber) {
 	t.BillingPhone = billingPhone
 	t.require(transactionDetailCustomerFieldBillingPhone)
 }
 
 // SetBillingEmail sets the BillingEmail field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailCustomer) SetBillingEmail(billingEmail Email) {
+func (t *TransactionDetailCustomer) SetBillingEmail(billingEmail *Email) {
 	t.BillingEmail = billingEmail
 	t.require(transactionDetailCustomerFieldBillingEmail)
 }
 
 // SetCustomerNumber sets the CustomerNumber field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailCustomer) SetCustomerNumber(customerNumber CustomerNumberNullable) {
+func (t *TransactionDetailCustomer) SetCustomerNumber(customerNumber *CustomerNumberNullable) {
 	t.CustomerNumber = customerNumber
 	t.require(transactionDetailCustomerFieldCustomerNumber)
 }
 
 // SetShippingAddress1 sets the ShippingAddress1 field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailCustomer) SetShippingAddress1(shippingAddress1 Shippingaddress) {
+func (t *TransactionDetailCustomer) SetShippingAddress1(shippingAddress1 *Shippingaddress) {
 	t.ShippingAddress1 = shippingAddress1
 	t.require(transactionDetailCustomerFieldShippingAddress1)
 }
 
 // SetShippingAddress2 sets the ShippingAddress2 field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailCustomer) SetShippingAddress2(shippingAddress2 Shippingaddressadditional) {
+func (t *TransactionDetailCustomer) SetShippingAddress2(shippingAddress2 *Shippingaddressadditional) {
 	t.ShippingAddress2 = shippingAddress2
 	t.require(transactionDetailCustomerFieldShippingAddress2)
 }
 
 // SetShippingCity sets the ShippingCity field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailCustomer) SetShippingCity(shippingCity Shippingcity) {
+func (t *TransactionDetailCustomer) SetShippingCity(shippingCity *Shippingcity) {
 	t.ShippingCity = shippingCity
 	t.require(transactionDetailCustomerFieldShippingCity)
 }
 
 // SetShippingState sets the ShippingState field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailCustomer) SetShippingState(shippingState Shippingstate) {
+func (t *TransactionDetailCustomer) SetShippingState(shippingState *Shippingstate) {
 	t.ShippingState = shippingState
 	t.require(transactionDetailCustomerFieldShippingState)
 }
 
 // SetShippingZip sets the ShippingZip field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailCustomer) SetShippingZip(shippingZip Shippingzip) {
+func (t *TransactionDetailCustomer) SetShippingZip(shippingZip *Shippingzip) {
 	t.ShippingZip = shippingZip
 	t.require(transactionDetailCustomerFieldShippingZip)
 }
 
 // SetShippingCountry sets the ShippingCountry field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailCustomer) SetShippingCountry(shippingCountry Shippingcountry) {
+func (t *TransactionDetailCustomer) SetShippingCountry(shippingCountry *Shippingcountry) {
 	t.ShippingCountry = shippingCountry
 	t.require(transactionDetailCustomerFieldShippingCountry)
 }

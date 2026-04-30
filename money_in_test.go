@@ -15152,7 +15152,7 @@ func TestSettersTransactionDetailCustomer(t *testing.T) {
 
 	t.Run("SetCompanyName", func(t *testing.T) {
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueCompanyName string
+		var fernTestValueCompanyName *string
 		obj.SetCompanyName(fernTestValueCompanyName)
 		assert.Equal(t, fernTestValueCompanyName, obj.CompanyName)
 		assert.NotNil(t, obj.explicitFields)
@@ -15160,7 +15160,7 @@ func TestSettersTransactionDetailCustomer(t *testing.T) {
 
 	t.Run("SetBillingAddress1", func(t *testing.T) {
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueBillingAddress1 BillingAddressNullable
+		var fernTestValueBillingAddress1 *BillingAddressNullable
 		obj.SetBillingAddress1(fernTestValueBillingAddress1)
 		assert.Equal(t, fernTestValueBillingAddress1, obj.BillingAddress1)
 		assert.NotNil(t, obj.explicitFields)
@@ -15168,7 +15168,7 @@ func TestSettersTransactionDetailCustomer(t *testing.T) {
 
 	t.Run("SetBillingAddress2", func(t *testing.T) {
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueBillingAddress2 BillingAddressAddtlNullable
+		var fernTestValueBillingAddress2 *BillingAddressAddtlNullable
 		obj.SetBillingAddress2(fernTestValueBillingAddress2)
 		assert.Equal(t, fernTestValueBillingAddress2, obj.BillingAddress2)
 		assert.NotNil(t, obj.explicitFields)
@@ -15176,7 +15176,7 @@ func TestSettersTransactionDetailCustomer(t *testing.T) {
 
 	t.Run("SetBillingCity", func(t *testing.T) {
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueBillingCity BillingCityNullable
+		var fernTestValueBillingCity *BillingCityNullable
 		obj.SetBillingCity(fernTestValueBillingCity)
 		assert.Equal(t, fernTestValueBillingCity, obj.BillingCity)
 		assert.NotNil(t, obj.explicitFields)
@@ -15184,7 +15184,7 @@ func TestSettersTransactionDetailCustomer(t *testing.T) {
 
 	t.Run("SetBillingState", func(t *testing.T) {
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueBillingState BillingStateNullable
+		var fernTestValueBillingState *BillingStateNullable
 		obj.SetBillingState(fernTestValueBillingState)
 		assert.Equal(t, fernTestValueBillingState, obj.BillingState)
 		assert.NotNil(t, obj.explicitFields)
@@ -15192,7 +15192,7 @@ func TestSettersTransactionDetailCustomer(t *testing.T) {
 
 	t.Run("SetBillingZip", func(t *testing.T) {
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueBillingZip BillingZip
+		var fernTestValueBillingZip *BillingZip
 		obj.SetBillingZip(fernTestValueBillingZip)
 		assert.Equal(t, fernTestValueBillingZip, obj.BillingZip)
 		assert.NotNil(t, obj.explicitFields)
@@ -15200,7 +15200,7 @@ func TestSettersTransactionDetailCustomer(t *testing.T) {
 
 	t.Run("SetBillingCountry", func(t *testing.T) {
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueBillingCountry BillingCountryNullable
+		var fernTestValueBillingCountry *BillingCountryNullable
 		obj.SetBillingCountry(fernTestValueBillingCountry)
 		assert.Equal(t, fernTestValueBillingCountry, obj.BillingCountry)
 		assert.NotNil(t, obj.explicitFields)
@@ -15208,7 +15208,7 @@ func TestSettersTransactionDetailCustomer(t *testing.T) {
 
 	t.Run("SetBillingPhone", func(t *testing.T) {
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueBillingPhone PhoneNumber
+		var fernTestValueBillingPhone *PhoneNumber
 		obj.SetBillingPhone(fernTestValueBillingPhone)
 		assert.Equal(t, fernTestValueBillingPhone, obj.BillingPhone)
 		assert.NotNil(t, obj.explicitFields)
@@ -15216,7 +15216,7 @@ func TestSettersTransactionDetailCustomer(t *testing.T) {
 
 	t.Run("SetBillingEmail", func(t *testing.T) {
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueBillingEmail Email
+		var fernTestValueBillingEmail *Email
 		obj.SetBillingEmail(fernTestValueBillingEmail)
 		assert.Equal(t, fernTestValueBillingEmail, obj.BillingEmail)
 		assert.NotNil(t, obj.explicitFields)
@@ -15224,7 +15224,7 @@ func TestSettersTransactionDetailCustomer(t *testing.T) {
 
 	t.Run("SetCustomerNumber", func(t *testing.T) {
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueCustomerNumber CustomerNumberNullable
+		var fernTestValueCustomerNumber *CustomerNumberNullable
 		obj.SetCustomerNumber(fernTestValueCustomerNumber)
 		assert.Equal(t, fernTestValueCustomerNumber, obj.CustomerNumber)
 		assert.NotNil(t, obj.explicitFields)
@@ -15232,7 +15232,7 @@ func TestSettersTransactionDetailCustomer(t *testing.T) {
 
 	t.Run("SetShippingAddress1", func(t *testing.T) {
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueShippingAddress1 Shippingaddress
+		var fernTestValueShippingAddress1 *Shippingaddress
 		obj.SetShippingAddress1(fernTestValueShippingAddress1)
 		assert.Equal(t, fernTestValueShippingAddress1, obj.ShippingAddress1)
 		assert.NotNil(t, obj.explicitFields)
@@ -15240,7 +15240,7 @@ func TestSettersTransactionDetailCustomer(t *testing.T) {
 
 	t.Run("SetShippingAddress2", func(t *testing.T) {
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueShippingAddress2 Shippingaddressadditional
+		var fernTestValueShippingAddress2 *Shippingaddressadditional
 		obj.SetShippingAddress2(fernTestValueShippingAddress2)
 		assert.Equal(t, fernTestValueShippingAddress2, obj.ShippingAddress2)
 		assert.NotNil(t, obj.explicitFields)
@@ -15248,7 +15248,7 @@ func TestSettersTransactionDetailCustomer(t *testing.T) {
 
 	t.Run("SetShippingCity", func(t *testing.T) {
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueShippingCity Shippingcity
+		var fernTestValueShippingCity *Shippingcity
 		obj.SetShippingCity(fernTestValueShippingCity)
 		assert.Equal(t, fernTestValueShippingCity, obj.ShippingCity)
 		assert.NotNil(t, obj.explicitFields)
@@ -15256,7 +15256,7 @@ func TestSettersTransactionDetailCustomer(t *testing.T) {
 
 	t.Run("SetShippingState", func(t *testing.T) {
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueShippingState Shippingstate
+		var fernTestValueShippingState *Shippingstate
 		obj.SetShippingState(fernTestValueShippingState)
 		assert.Equal(t, fernTestValueShippingState, obj.ShippingState)
 		assert.NotNil(t, obj.explicitFields)
@@ -15264,7 +15264,7 @@ func TestSettersTransactionDetailCustomer(t *testing.T) {
 
 	t.Run("SetShippingZip", func(t *testing.T) {
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueShippingZip Shippingzip
+		var fernTestValueShippingZip *Shippingzip
 		obj.SetShippingZip(fernTestValueShippingZip)
 		assert.Equal(t, fernTestValueShippingZip, obj.ShippingZip)
 		assert.NotNil(t, obj.explicitFields)
@@ -15272,7 +15272,7 @@ func TestSettersTransactionDetailCustomer(t *testing.T) {
 
 	t.Run("SetShippingCountry", func(t *testing.T) {
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueShippingCountry Shippingcountry
+		var fernTestValueShippingCountry *Shippingcountry
 		obj.SetShippingCountry(fernTestValueShippingCountry)
 		assert.Equal(t, fernTestValueShippingCountry, obj.ShippingCountry)
 		assert.NotNil(t, obj.explicitFields)
@@ -15388,11 +15388,21 @@ func TestGettersTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var expected string
+		var expected *string
 		obj.CompanyName = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetCompanyName(), "getter should return the property value")
+	})
+
+	t.Run("GetCompanyName_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionDetailCustomer{}
+		obj.CompanyName = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetCompanyName(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetCompanyName_NilReceiver", func(t *testing.T) {
@@ -15411,11 +15421,21 @@ func TestGettersTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var expected BillingAddressNullable
+		var expected *BillingAddressNullable
 		obj.BillingAddress1 = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetBillingAddress1(), "getter should return the property value")
+	})
+
+	t.Run("GetBillingAddress1_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionDetailCustomer{}
+		obj.BillingAddress1 = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetBillingAddress1(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetBillingAddress1_NilReceiver", func(t *testing.T) {
@@ -15434,11 +15454,21 @@ func TestGettersTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var expected BillingAddressAddtlNullable
+		var expected *BillingAddressAddtlNullable
 		obj.BillingAddress2 = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetBillingAddress2(), "getter should return the property value")
+	})
+
+	t.Run("GetBillingAddress2_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionDetailCustomer{}
+		obj.BillingAddress2 = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetBillingAddress2(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetBillingAddress2_NilReceiver", func(t *testing.T) {
@@ -15457,11 +15487,21 @@ func TestGettersTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var expected BillingCityNullable
+		var expected *BillingCityNullable
 		obj.BillingCity = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetBillingCity(), "getter should return the property value")
+	})
+
+	t.Run("GetBillingCity_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionDetailCustomer{}
+		obj.BillingCity = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetBillingCity(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetBillingCity_NilReceiver", func(t *testing.T) {
@@ -15480,11 +15520,21 @@ func TestGettersTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var expected BillingStateNullable
+		var expected *BillingStateNullable
 		obj.BillingState = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetBillingState(), "getter should return the property value")
+	})
+
+	t.Run("GetBillingState_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionDetailCustomer{}
+		obj.BillingState = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetBillingState(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetBillingState_NilReceiver", func(t *testing.T) {
@@ -15503,11 +15553,21 @@ func TestGettersTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var expected BillingZip
+		var expected *BillingZip
 		obj.BillingZip = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetBillingZip(), "getter should return the property value")
+	})
+
+	t.Run("GetBillingZip_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionDetailCustomer{}
+		obj.BillingZip = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetBillingZip(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetBillingZip_NilReceiver", func(t *testing.T) {
@@ -15526,11 +15586,21 @@ func TestGettersTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var expected BillingCountryNullable
+		var expected *BillingCountryNullable
 		obj.BillingCountry = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetBillingCountry(), "getter should return the property value")
+	})
+
+	t.Run("GetBillingCountry_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionDetailCustomer{}
+		obj.BillingCountry = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetBillingCountry(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetBillingCountry_NilReceiver", func(t *testing.T) {
@@ -15549,11 +15619,21 @@ func TestGettersTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var expected PhoneNumber
+		var expected *PhoneNumber
 		obj.BillingPhone = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetBillingPhone(), "getter should return the property value")
+	})
+
+	t.Run("GetBillingPhone_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionDetailCustomer{}
+		obj.BillingPhone = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetBillingPhone(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetBillingPhone_NilReceiver", func(t *testing.T) {
@@ -15572,11 +15652,21 @@ func TestGettersTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var expected Email
+		var expected *Email
 		obj.BillingEmail = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetBillingEmail(), "getter should return the property value")
+	})
+
+	t.Run("GetBillingEmail_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionDetailCustomer{}
+		obj.BillingEmail = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetBillingEmail(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetBillingEmail_NilReceiver", func(t *testing.T) {
@@ -15595,11 +15685,21 @@ func TestGettersTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var expected CustomerNumberNullable
+		var expected *CustomerNumberNullable
 		obj.CustomerNumber = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetCustomerNumber(), "getter should return the property value")
+	})
+
+	t.Run("GetCustomerNumber_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionDetailCustomer{}
+		obj.CustomerNumber = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetCustomerNumber(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetCustomerNumber_NilReceiver", func(t *testing.T) {
@@ -15618,11 +15718,21 @@ func TestGettersTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var expected Shippingaddress
+		var expected *Shippingaddress
 		obj.ShippingAddress1 = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetShippingAddress1(), "getter should return the property value")
+	})
+
+	t.Run("GetShippingAddress1_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionDetailCustomer{}
+		obj.ShippingAddress1 = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetShippingAddress1(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetShippingAddress1_NilReceiver", func(t *testing.T) {
@@ -15641,11 +15751,21 @@ func TestGettersTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var expected Shippingaddressadditional
+		var expected *Shippingaddressadditional
 		obj.ShippingAddress2 = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetShippingAddress2(), "getter should return the property value")
+	})
+
+	t.Run("GetShippingAddress2_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionDetailCustomer{}
+		obj.ShippingAddress2 = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetShippingAddress2(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetShippingAddress2_NilReceiver", func(t *testing.T) {
@@ -15664,11 +15784,21 @@ func TestGettersTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var expected Shippingcity
+		var expected *Shippingcity
 		obj.ShippingCity = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetShippingCity(), "getter should return the property value")
+	})
+
+	t.Run("GetShippingCity_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionDetailCustomer{}
+		obj.ShippingCity = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetShippingCity(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetShippingCity_NilReceiver", func(t *testing.T) {
@@ -15687,11 +15817,21 @@ func TestGettersTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var expected Shippingstate
+		var expected *Shippingstate
 		obj.ShippingState = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetShippingState(), "getter should return the property value")
+	})
+
+	t.Run("GetShippingState_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionDetailCustomer{}
+		obj.ShippingState = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetShippingState(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetShippingState_NilReceiver", func(t *testing.T) {
@@ -15710,11 +15850,21 @@ func TestGettersTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var expected Shippingzip
+		var expected *Shippingzip
 		obj.ShippingZip = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetShippingZip(), "getter should return the property value")
+	})
+
+	t.Run("GetShippingZip_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionDetailCustomer{}
+		obj.ShippingZip = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetShippingZip(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetShippingZip_NilReceiver", func(t *testing.T) {
@@ -15733,11 +15883,21 @@ func TestGettersTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var expected Shippingcountry
+		var expected *Shippingcountry
 		obj.ShippingCountry = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetShippingCountry(), "getter should return the property value")
+	})
+
+	t.Run("GetShippingCountry_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionDetailCustomer{}
+		obj.ShippingCountry = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetShippingCountry(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetShippingCountry_NilReceiver", func(t *testing.T) {
@@ -15931,7 +16091,7 @@ func TestSettersMarkExplicitTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueCompanyName string
+		var fernTestValueCompanyName *string
 
 		// Act
 		obj.SetCompanyName(fernTestValueCompanyName)
@@ -15962,7 +16122,7 @@ func TestSettersMarkExplicitTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueBillingAddress1 BillingAddressNullable
+		var fernTestValueBillingAddress1 *BillingAddressNullable
 
 		// Act
 		obj.SetBillingAddress1(fernTestValueBillingAddress1)
@@ -15993,7 +16153,7 @@ func TestSettersMarkExplicitTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueBillingAddress2 BillingAddressAddtlNullable
+		var fernTestValueBillingAddress2 *BillingAddressAddtlNullable
 
 		// Act
 		obj.SetBillingAddress2(fernTestValueBillingAddress2)
@@ -16024,7 +16184,7 @@ func TestSettersMarkExplicitTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueBillingCity BillingCityNullable
+		var fernTestValueBillingCity *BillingCityNullable
 
 		// Act
 		obj.SetBillingCity(fernTestValueBillingCity)
@@ -16055,7 +16215,7 @@ func TestSettersMarkExplicitTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueBillingState BillingStateNullable
+		var fernTestValueBillingState *BillingStateNullable
 
 		// Act
 		obj.SetBillingState(fernTestValueBillingState)
@@ -16086,7 +16246,7 @@ func TestSettersMarkExplicitTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueBillingZip BillingZip
+		var fernTestValueBillingZip *BillingZip
 
 		// Act
 		obj.SetBillingZip(fernTestValueBillingZip)
@@ -16117,7 +16277,7 @@ func TestSettersMarkExplicitTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueBillingCountry BillingCountryNullable
+		var fernTestValueBillingCountry *BillingCountryNullable
 
 		// Act
 		obj.SetBillingCountry(fernTestValueBillingCountry)
@@ -16148,7 +16308,7 @@ func TestSettersMarkExplicitTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueBillingPhone PhoneNumber
+		var fernTestValueBillingPhone *PhoneNumber
 
 		// Act
 		obj.SetBillingPhone(fernTestValueBillingPhone)
@@ -16179,7 +16339,7 @@ func TestSettersMarkExplicitTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueBillingEmail Email
+		var fernTestValueBillingEmail *Email
 
 		// Act
 		obj.SetBillingEmail(fernTestValueBillingEmail)
@@ -16210,7 +16370,7 @@ func TestSettersMarkExplicitTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueCustomerNumber CustomerNumberNullable
+		var fernTestValueCustomerNumber *CustomerNumberNullable
 
 		// Act
 		obj.SetCustomerNumber(fernTestValueCustomerNumber)
@@ -16241,7 +16401,7 @@ func TestSettersMarkExplicitTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueShippingAddress1 Shippingaddress
+		var fernTestValueShippingAddress1 *Shippingaddress
 
 		// Act
 		obj.SetShippingAddress1(fernTestValueShippingAddress1)
@@ -16272,7 +16432,7 @@ func TestSettersMarkExplicitTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueShippingAddress2 Shippingaddressadditional
+		var fernTestValueShippingAddress2 *Shippingaddressadditional
 
 		// Act
 		obj.SetShippingAddress2(fernTestValueShippingAddress2)
@@ -16303,7 +16463,7 @@ func TestSettersMarkExplicitTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueShippingCity Shippingcity
+		var fernTestValueShippingCity *Shippingcity
 
 		// Act
 		obj.SetShippingCity(fernTestValueShippingCity)
@@ -16334,7 +16494,7 @@ func TestSettersMarkExplicitTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueShippingState Shippingstate
+		var fernTestValueShippingState *Shippingstate
 
 		// Act
 		obj.SetShippingState(fernTestValueShippingState)
@@ -16365,7 +16525,7 @@ func TestSettersMarkExplicitTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueShippingZip Shippingzip
+		var fernTestValueShippingZip *Shippingzip
 
 		// Act
 		obj.SetShippingZip(fernTestValueShippingZip)
@@ -16396,7 +16556,7 @@ func TestSettersMarkExplicitTransactionDetailCustomer(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailCustomer{}
-		var fernTestValueShippingCountry Shippingcountry
+		var fernTestValueShippingCountry *Shippingcountry
 
 		// Act
 		obj.SetShippingCountry(fernTestValueShippingCountry)

@@ -1057,7 +1057,7 @@ type V2TransactionDetails struct {
 	TransAdditionalData any                           `json:"transAdditionalData,omitempty" url:"transAdditionalData,omitempty"`
 	InvoiceData         *TransactionDetailInvoiceData `json:"invoiceData" url:"invoiceData"`
 	EntrypageId         EntrypageId                   `json:"entrypageId" url:"entrypageId"`
-	ExternalPaypointId  ExternalPaypointId            `json:"externalPaypointID" url:"externalPaypointID"`
+	ExternalPaypointId  *ExternalPaypointId           `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
 	// Indicates if ACH account was validated in real-time.
 	IsValidatedAch bool `json:"isValidatedACH" url:"isValidatedACH"`
 	// Timestamp when transaction was created.
@@ -1313,9 +1313,9 @@ func (v *V2TransactionDetails) GetEntrypageId() EntrypageId {
 	return v.EntrypageId
 }
 
-func (v *V2TransactionDetails) GetExternalPaypointId() ExternalPaypointId {
+func (v *V2TransactionDetails) GetExternalPaypointId() *ExternalPaypointId {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.ExternalPaypointId
 }
@@ -1693,7 +1693,7 @@ func (v *V2TransactionDetails) SetEntrypageId(entrypageId EntrypageId) {
 
 // SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TransactionDetails) SetExternalPaypointId(externalPaypointId ExternalPaypointId) {
+func (v *V2TransactionDetails) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
 	v.ExternalPaypointId = externalPaypointId
 	v.require(v2TransactionDetailsFieldExternalPaypointId)
 }
