@@ -12612,3 +12612,424 @@ func (a *AddApplicationRequest) Accept(visitor AddApplicationRequestVisitor) err
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", a)
 }
+
+// Request to create a boarding application linked to an existing paypoint. Used for adding new services to a paypoint without creating a duplicate record.
+var (
+	createApplicationFromPaypointRequestFieldPaypointId                     = big.NewInt(1 << 0)
+	createApplicationFromPaypointRequestFieldTemplateId                     = big.NewInt(1 << 1)
+	createApplicationFromPaypointRequestFieldRecipientEmail                 = big.NewInt(1 << 2)
+	createApplicationFromPaypointRequestFieldReturnBoardingAccessInfoInLine = big.NewInt(1 << 3)
+	createApplicationFromPaypointRequestFieldOnCreate                       = big.NewInt(1 << 4)
+)
+
+type CreateApplicationFromPaypointRequest struct {
+	// ID of the existing paypoint to link to this application.
+	PaypointId int64 `json:"paypointId" url:"paypointId"`
+	// ID of the boarding template to use for the new application.
+	TemplateId int64 `json:"templateId" url:"templateId"`
+	// Email address where the boarding link is sent. Required. If you don't want to email the merchant, send to an internal address and use `returnBoardingAccessInfoInLine` to retrieve the link from the response instead.
+	RecipientEmail string `json:"recipientEmail" url:"recipientEmail"`
+	// When `true`, returns the boarding access information directly in the response.
+	ReturnBoardingAccessInfoInLine *bool `json:"returnBoardingAccessInfoInLine,omitempty" url:"returnBoardingAccessInfoInLine,omitempty"`
+	// Additional actions to trigger when the application is created. Currently only `submitApplication` is supported, which automatically submits the application on creation and skips the draft state.
+	OnCreate []string `json:"onCreate,omitempty" url:"onCreate,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CreateApplicationFromPaypointRequest) GetPaypointId() int64 {
+	if c == nil {
+		return 0
+	}
+	return c.PaypointId
+}
+
+func (c *CreateApplicationFromPaypointRequest) GetTemplateId() int64 {
+	if c == nil {
+		return 0
+	}
+	return c.TemplateId
+}
+
+func (c *CreateApplicationFromPaypointRequest) GetRecipientEmail() string {
+	if c == nil {
+		return ""
+	}
+	return c.RecipientEmail
+}
+
+func (c *CreateApplicationFromPaypointRequest) GetReturnBoardingAccessInfoInLine() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.ReturnBoardingAccessInfoInLine
+}
+
+func (c *CreateApplicationFromPaypointRequest) GetOnCreate() []string {
+	if c == nil {
+		return nil
+	}
+	return c.OnCreate
+}
+
+func (c *CreateApplicationFromPaypointRequest) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *CreateApplicationFromPaypointRequest) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateApplicationFromPaypointRequest) SetPaypointId(paypointId int64) {
+	c.PaypointId = paypointId
+	c.require(createApplicationFromPaypointRequestFieldPaypointId)
+}
+
+// SetTemplateId sets the TemplateId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateApplicationFromPaypointRequest) SetTemplateId(templateId int64) {
+	c.TemplateId = templateId
+	c.require(createApplicationFromPaypointRequestFieldTemplateId)
+}
+
+// SetRecipientEmail sets the RecipientEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateApplicationFromPaypointRequest) SetRecipientEmail(recipientEmail string) {
+	c.RecipientEmail = recipientEmail
+	c.require(createApplicationFromPaypointRequestFieldRecipientEmail)
+}
+
+// SetReturnBoardingAccessInfoInLine sets the ReturnBoardingAccessInfoInLine field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateApplicationFromPaypointRequest) SetReturnBoardingAccessInfoInLine(returnBoardingAccessInfoInLine *bool) {
+	c.ReturnBoardingAccessInfoInLine = returnBoardingAccessInfoInLine
+	c.require(createApplicationFromPaypointRequestFieldReturnBoardingAccessInfoInLine)
+}
+
+// SetOnCreate sets the OnCreate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateApplicationFromPaypointRequest) SetOnCreate(onCreate []string) {
+	c.OnCreate = onCreate
+	c.require(createApplicationFromPaypointRequestFieldOnCreate)
+}
+
+func (c *CreateApplicationFromPaypointRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateApplicationFromPaypointRequest
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CreateApplicationFromPaypointRequest(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreateApplicationFromPaypointRequest) MarshalJSON() ([]byte, error) {
+	type embed CreateApplicationFromPaypointRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CreateApplicationFromPaypointRequest) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+// Response returned when creating a boarding application linked to an existing paypoint.
+var (
+	createApplicationFromPaypointResponseFieldResponseCode   = big.NewInt(1 << 0)
+	createApplicationFromPaypointResponseFieldPageIdentifier = big.NewInt(1 << 1)
+	createApplicationFromPaypointResponseFieldRoomId         = big.NewInt(1 << 2)
+	createApplicationFromPaypointResponseFieldIsSuccess      = big.NewInt(1 << 3)
+	createApplicationFromPaypointResponseFieldResponseText   = big.NewInt(1 << 4)
+	createApplicationFromPaypointResponseFieldResponseData   = big.NewInt(1 << 5)
+)
+
+type CreateApplicationFromPaypointResponse struct {
+	ResponseCode   *Responsecode                              `json:"responseCode,omitempty" url:"responseCode,omitempty"`
+	PageIdentifier *PageIdentifier                            `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
+	RoomId         *RoomIdNotInUse                            `json:"roomId,omitempty" url:"roomId,omitempty"`
+	IsSuccess      *IsSuccess                                 `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	ResponseText   ResponseText                               `json:"responseText" url:"responseText"`
+	ResponseData   *CreateApplicationFromPaypointResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CreateApplicationFromPaypointResponse) GetResponseCode() *Responsecode {
+	if c == nil {
+		return nil
+	}
+	return c.ResponseCode
+}
+
+func (c *CreateApplicationFromPaypointResponse) GetPageIdentifier() *PageIdentifier {
+	if c == nil {
+		return nil
+	}
+	return c.PageIdentifier
+}
+
+func (c *CreateApplicationFromPaypointResponse) GetRoomId() *RoomIdNotInUse {
+	if c == nil {
+		return nil
+	}
+	return c.RoomId
+}
+
+func (c *CreateApplicationFromPaypointResponse) GetIsSuccess() *IsSuccess {
+	if c == nil {
+		return nil
+	}
+	return c.IsSuccess
+}
+
+func (c *CreateApplicationFromPaypointResponse) GetResponseText() ResponseText {
+	if c == nil {
+		return ""
+	}
+	return c.ResponseText
+}
+
+func (c *CreateApplicationFromPaypointResponse) GetResponseData() *CreateApplicationFromPaypointResponseData {
+	if c == nil {
+		return nil
+	}
+	return c.ResponseData
+}
+
+func (c *CreateApplicationFromPaypointResponse) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *CreateApplicationFromPaypointResponse) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetResponseCode sets the ResponseCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateApplicationFromPaypointResponse) SetResponseCode(responseCode *Responsecode) {
+	c.ResponseCode = responseCode
+	c.require(createApplicationFromPaypointResponseFieldResponseCode)
+}
+
+// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateApplicationFromPaypointResponse) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+	c.PageIdentifier = pageIdentifier
+	c.require(createApplicationFromPaypointResponseFieldPageIdentifier)
+}
+
+// SetRoomId sets the RoomId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateApplicationFromPaypointResponse) SetRoomId(roomId *RoomIdNotInUse) {
+	c.RoomId = roomId
+	c.require(createApplicationFromPaypointResponseFieldRoomId)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateApplicationFromPaypointResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	c.IsSuccess = isSuccess
+	c.require(createApplicationFromPaypointResponseFieldIsSuccess)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateApplicationFromPaypointResponse) SetResponseText(responseText ResponseText) {
+	c.ResponseText = responseText
+	c.require(createApplicationFromPaypointResponseFieldResponseText)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateApplicationFromPaypointResponse) SetResponseData(responseData *CreateApplicationFromPaypointResponseData) {
+	c.ResponseData = responseData
+	c.require(createApplicationFromPaypointResponseFieldResponseData)
+}
+
+func (c *CreateApplicationFromPaypointResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateApplicationFromPaypointResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CreateApplicationFromPaypointResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreateApplicationFromPaypointResponse) MarshalJSON() ([]byte, error) {
+	type embed CreateApplicationFromPaypointResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CreateApplicationFromPaypointResponse) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	createApplicationFromPaypointResponseDataFieldAppId        = big.NewInt(1 << 0)
+	createApplicationFromPaypointResponseDataFieldBoardingLink = big.NewInt(1 << 1)
+)
+
+type CreateApplicationFromPaypointResponseData struct {
+	// Unique identifier for the created application.
+	AppId *int64 `json:"appId,omitempty" url:"appId,omitempty"`
+	// URL where the merchant can complete the boarding process.
+	BoardingLink *string `json:"boardingLink,omitempty" url:"boardingLink,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CreateApplicationFromPaypointResponseData) GetAppId() *int64 {
+	if c == nil {
+		return nil
+	}
+	return c.AppId
+}
+
+func (c *CreateApplicationFromPaypointResponseData) GetBoardingLink() *string {
+	if c == nil {
+		return nil
+	}
+	return c.BoardingLink
+}
+
+func (c *CreateApplicationFromPaypointResponseData) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *CreateApplicationFromPaypointResponseData) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetAppId sets the AppId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateApplicationFromPaypointResponseData) SetAppId(appId *int64) {
+	c.AppId = appId
+	c.require(createApplicationFromPaypointResponseDataFieldAppId)
+}
+
+// SetBoardingLink sets the BoardingLink field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateApplicationFromPaypointResponseData) SetBoardingLink(boardingLink *string) {
+	c.BoardingLink = boardingLink
+	c.require(createApplicationFromPaypointResponseDataFieldBoardingLink)
+}
+
+func (c *CreateApplicationFromPaypointResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateApplicationFromPaypointResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CreateApplicationFromPaypointResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreateApplicationFromPaypointResponseData) MarshalJSON() ([]byte, error) {
+	type embed CreateApplicationFromPaypointResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CreateApplicationFromPaypointResponseData) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}

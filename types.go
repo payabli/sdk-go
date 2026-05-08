@@ -5852,13 +5852,13 @@ var (
 
 type CustomerSummaryRecord struct {
 	// Number total of transactions or payments
-	NumberofTransactions *int `json:"numberofTransactions,omitempty" url:"numberofTransactions,omitempty"`
+	NumberofTransactions *int `json:"NumberofTransactions,omitempty" url:"NumberofTransactions,omitempty"`
 	// List of more recent 5 transactions belonging to the customer
-	RecentTransactions []*TransactionQueryRecords `json:"recentTransactions,omitempty" url:"recentTransactions,omitempty"`
+	RecentTransactions []*TransactionQueryRecords `json:"RecentTransactions,omitempty" url:"RecentTransactions,omitempty"`
 	// Total amount in transactions
-	TotalAmountTransactions *float64 `json:"totalAmountTransactions,omitempty" url:"totalAmountTransactions,omitempty"`
+	TotalAmountTransactions *float64 `json:"TotalAmountTransactions,omitempty" url:"TotalAmountTransactions,omitempty"`
 	// Total net amount in transactions
-	TotalNetAmountTransactions *float64 `json:"totalNetAmountTransactions,omitempty" url:"totalNetAmountTransactions,omitempty"`
+	TotalNetAmountTransactions *float64 `json:"TotalNetAmountTransactions,omitempty" url:"TotalNetAmountTransactions,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -19434,7 +19434,7 @@ type SubscriptionQueryRecords struct {
 	Frequency *string `json:"Frequency,omitempty" url:"Frequency,omitempty"`
 	// The subscription's ID.
 	IdSub       *int64    `json:"IdSub,omitempty" url:"IdSub,omitempty"`
-	InvoiceData *BillData `json:"InvoiceData,omitempty" url:"InvoiceData,omitempty"`
+	InvoiceData *BillData `json:"invoiceData,omitempty" url:"invoiceData,omitempty"`
 	// The last time the subscription was processed.
 	LastRun *time.Time `json:"LastRun,omitempty" url:"LastRun,omitempty"`
 	// The last date and time the subscription was updated.
@@ -20633,7 +20633,7 @@ type TransactionQueryRecords struct {
 	FeeAmount                    *FeeAmount                    `json:"FeeAmount,omitempty" url:"FeeAmount,omitempty"`
 	// Internal identifier used for processing.
 	GatewayTransId *string   `json:"GatewayTransId,omitempty" url:"GatewayTransId,omitempty"`
-	InvoiceData    *BillData `json:"InvoiceData,omitempty" url:"InvoiceData,omitempty"`
+	InvoiceData    *BillData `json:"invoiceData,omitempty" url:"invoiceData,omitempty"`
 	// Payment method used: card, ach, or wallet.
 	Method *string `json:"Method,omitempty" url:"Method,omitempty"`
 	// Net amount paid.

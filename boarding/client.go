@@ -241,3 +241,38 @@ func (c *Client) UpdateApplication(
 	}
 	return response.Body, nil
 }
+
+// Creates a new boarding application linked to an existing paypoint as part of the multi-product boarding flow. Use this endpoint to add new services to a paypoint without creating a duplicate record. The system copies eligible business, contact, banking, and address data from the paypoint to the new application based on 1:1 field matching. The merchant only needs to provide fields that are specific to the new service. See the [Multi-product boarding](/guides/pay-ops-developer-boarding-multi-product) guide for the full flow.
+func (c *Client) AddServiceToPaypointFromApp(
+	ctx context.Context,
+	request *payabli.CreateApplicationFromPaypointRequest,
+	opts ...option.RequestOption,
+) (*payabli.CreateApplicationFromPaypointResponse, error) {
+	response, err := c.WithRawResponse.AddServiceToPaypointFromApp(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Returns all boarding applications associated with a specific paypoint, including those created through the multi-product boarding flow. Use this endpoint to track underwriting progress across multiple service additions or to build reporting views. See the [Multi-product boarding](/guides/pay-ops-developer-boarding-multi-product) guide for the full flow.
+func (c *Client) GetApplicationsByPaypointId(
+	ctx context.Context,
+	// ID of the paypoint to retrieve applications for.
+	paypointId int64,
+	opts ...option.RequestOption,
+) (*payabli.QueryBoardingAppsListResponse, error) {
+	response, err := c.WithRawResponse.GetApplicationsByPaypointId(
+		ctx,
+		paypointId,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}

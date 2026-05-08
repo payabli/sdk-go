@@ -2813,7 +2813,7 @@ func TestSettersV2TransactionDetails(t *testing.T) {
 
 	t.Run("SetAchHolderType", func(t *testing.T) {
 		obj := &V2TransactionDetails{}
-		var fernTestValueAchHolderType AchHolderType
+		var fernTestValueAchHolderType *AchHolderType
 		obj.SetAchHolderType(fernTestValueAchHolderType)
 		assert.Equal(t, fernTestValueAchHolderType, obj.AchHolderType)
 		assert.NotNil(t, obj.explicitFields)
@@ -4084,11 +4084,21 @@ func TestGettersV2TransactionDetails(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &V2TransactionDetails{}
-		var expected AchHolderType
+		var expected *AchHolderType
 		obj.AchHolderType = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetAchHolderType(), "getter should return the property value")
+	})
+
+	t.Run("GetAchHolderType_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2TransactionDetails{}
+		obj.AchHolderType = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetAchHolderType(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetAchHolderType_NilReceiver", func(t *testing.T) {
@@ -5677,7 +5687,7 @@ func TestSettersMarkExplicitV2TransactionDetails(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &V2TransactionDetails{}
-		var fernTestValueAchHolderType AchHolderType
+		var fernTestValueAchHolderType *AchHolderType
 
 		// Act
 		obj.SetAchHolderType(fernTestValueAchHolderType)

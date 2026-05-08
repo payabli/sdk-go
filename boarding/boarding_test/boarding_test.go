@@ -652,3 +652,58 @@ func TestBoardingUpdateApplicationWithWireMock(
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestBoardingUpdateApplicationWithWireMock", "PUT", "/Boarding/app/352", nil, 1)
 }
+
+func TestBoardingAddServiceToPaypointFromAppWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	request := &payabli.CreateApplicationFromPaypointRequest{
+		PaypointId:     int64(123),
+		TemplateId:     int64(456),
+		RecipientEmail: "merchant@example.com",
+		ReturnBoardingAccessInfoInLine: payabli.Bool(
+			true,
+		),
+		OnCreate: []string{
+			"submitApplication",
+		},
+	}
+	_, invocationErr := client.Boarding.AddServiceToPaypointFromApp(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestBoardingAddServiceToPaypointFromAppWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestBoardingAddServiceToPaypointFromAppWithWireMock", "POST", "/Boarding/applications", nil, 1)
+}
+
+func TestBoardingGetApplicationsByPaypointIdWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+	)
+	_, invocationErr := client.Boarding.GetApplicationsByPaypointId(
+		context.TODO(),
+		int64(12345),
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestBoardingGetApplicationsByPaypointIdWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestBoardingGetApplicationsByPaypointIdWithWireMock", "GET", "/Boarding/applications/12345", nil, 1)
+}

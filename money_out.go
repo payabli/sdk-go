@@ -239,7 +239,11 @@ func (s *SendVCardLinkRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-// When `true`, the transaction is automatically captured after a successful authorization. When `false`, you must manually capture the transaction after a successful authorization. Defaults to `false`. See [Manage payouts with the API](/guides/pay-out-developer-payouts-manage) for more information.
+// When `true`, Payabli captures the transaction asynchronously after a successful authorization. The authorization request returns once the transaction is authorized; capture happens later, and the response doesn't confirm capture. To confirm capture succeeded, listen for the [`payout_transaction_approvedcaptured`](/developers/webhooks/payout-transaction-approved-captured) webhook event.
+//
+// When `false`, you must manually capture the transaction after a successful authorization. Defaults to `false`.
+//
+// See [Manage payouts with the API](/guides/pay-out-developer-payouts-manage) for more information.
 type AutoCapture = bool
 
 var (

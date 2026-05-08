@@ -32,7 +32,11 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
-// Authorizes transaction for payout.  If you don't pass the `autoCapture` field with a value of `true`, authorized transactions aren't flagged for settlement until captured.  Use `referenceId` returned in the response to capture the transaction.
+// Authorizes a transaction for payout.
+//
+// If you don't pass `autoCapture` with a value of `true`, authorized transactions aren't flagged for settlement until captured. Use the `referenceId` returned in the response to capture the transaction.
+//
+// When `autoCapture` is `true`, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the [`payout_transaction_approvedcaptured`](/developers/webhooks/payout-transaction-approved-captured) webhook event.
 func (c *Client) AuthorizeOut(
 	ctx context.Context,
 	request *payabli.MoneyOutTypesRequestOutAuthorize,

@@ -1,5 +1,5 @@
 {
-  "cliVersion": "4.94.0",
+  "cliVersion": "5.7.9",
   "generatorName": "fernapi/fern-go-sdk",
   "generatorVersion": "1.30.3",
   "generatorConfig": {
@@ -9,6 +9,6 @@
       "path": "github.com/payabli/sdk-go"
     }
   },
-  "originGitCommit": "0f665390a3f1683396943781707e30c613db2f3d",
-  "sdkVersion": "v0.0.454"
+  "originGitCommit": "72fdff3484316d01ba20c78f02c52cde8b292f54",
+  "sdkVersion": "v0.0.455"
 }

@@ -1075,7 +1075,7 @@ type V2TransactionDetails struct {
 	RiskActionCode           *RiskActionCode            `json:"riskActionCode,omitempty" url:"riskActionCode,omitempty"`
 	DeviceId                 Device                     `json:"deviceId" url:"deviceId"`
 	AchSecCode               AchSecCode                 `json:"achSecCode" url:"achSecCode"`
-	AchHolderType            AchHolderType              `json:"achHolderType" url:"achHolderType"`
+	AchHolderType            *AchHolderType             `json:"achHolderType,omitempty" url:"achHolderType,omitempty"`
 	IpAddress                IpAddress                  `json:"ipAddress" url:"ipAddress"`
 	// Indicates if ACH transaction uses same-day processing.
 	IsSameDayAch bool `json:"isSameDayACH" url:"isSameDayACH"`
@@ -1425,9 +1425,9 @@ func (v *V2TransactionDetails) GetAchSecCode() AchSecCode {
 	return v.AchSecCode
 }
 
-func (v *V2TransactionDetails) GetAchHolderType() AchHolderType {
+func (v *V2TransactionDetails) GetAchHolderType() *AchHolderType {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.AchHolderType
 }
@@ -1805,7 +1805,7 @@ func (v *V2TransactionDetails) SetAchSecCode(achSecCode AchSecCode) {
 
 // SetAchHolderType sets the AchHolderType field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TransactionDetails) SetAchHolderType(achHolderType AchHolderType) {
+func (v *V2TransactionDetails) SetAchHolderType(achHolderType *AchHolderType) {
 	v.AchHolderType = achHolderType
 	v.require(v2TransactionDetailsFieldAchHolderType)
 }
