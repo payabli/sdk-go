@@ -6,14 +6,13 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	http "net/http"
-	os "os"
-	testing "testing"
-
 	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
+	http "net/http"
+	os "os"
+	testing "testing"
 )
 
 func VerifyRequestCount(
@@ -21,7 +20,7 @@ func VerifyRequestCount(
 	testId string,
 	method string,
 	urlPath string,
-	queryParams map[string]any,
+	queryParams map[string]string,
 	expected int,
 ) {
 	wiremockURL := os.Getenv("WIREMOCK_URL")
@@ -46,23 +45,9 @@ func VerifyRequestCount(
 			}
 			reqBody.WriteString(`"`)
 			reqBody.WriteString(key)
-			switch v := value.(type) {
-			case string:
-				reqBody.WriteString(`":{"equalTo":"`)
-				reqBody.WriteString(v)
-				reqBody.WriteString(`"}`)
-			case []string:
-				reqBody.WriteString(`":{"hasExactly":[`)
-				for i, item := range v {
-					if i > 0 {
-						reqBody.WriteString(",")
-					}
-					reqBody.WriteString(`{"equalTo":"`)
-					reqBody.WriteString(item)
-					reqBody.WriteString(`"}`)
-				}
-				reqBody.WriteString(`]}`)
-			}
+			reqBody.WriteString(`":{"equalTo":"`)
+			reqBody.WriteString(value)
+			reqBody.WriteString(`"}`)
 			first = false
 		}
 		reqBody.WriteString("}")
@@ -86,7 +71,6 @@ func TestMoneyOutAuthorizeOutWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.MoneyOutTypesRequestOutAuthorize{
 		Body: &payabli.AuthorizePayoutBody{
@@ -143,7 +127,6 @@ func TestMoneyOutCancelAllOutWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := []string{
 		"2-29",
@@ -171,7 +154,6 @@ func TestMoneyOutCancelOutGetWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.MoneyOut.CancelOutGet(
 		context.TODO(),
@@ -194,7 +176,6 @@ func TestMoneyOutCancelOutDeleteWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.MoneyOut.CancelOutDelete(
 		context.TODO(),
@@ -217,7 +198,6 @@ func TestMoneyOutCaptureAllOutWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.CaptureAllOutRequest{
 		Body: []string{
@@ -247,7 +227,6 @@ func TestMoneyOutCaptureOutWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.CaptureOutRequest{}
 	_, invocationErr := client.MoneyOut.CaptureOut(
@@ -272,7 +251,6 @@ func TestMoneyOutPayoutDetailsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.MoneyOut.PayoutDetails(
 		context.TODO(),
@@ -295,7 +273,6 @@ func TestMoneyOutVCardGetWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.MoneyOut.VCardGet(
 		context.TODO(),
@@ -318,7 +295,6 @@ func TestMoneyOutSendVCardLinkWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.SendVCardLinkRequest{
 		TransId: "01K33Z6YQZ6GD5QVKZ856MJBSC",
@@ -344,7 +320,6 @@ func TestMoneyOutGetCheckImageWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.MoneyOut.GetCheckImage(
 		context.TODO(),
@@ -367,7 +342,6 @@ func TestMoneyOutUpdateCheckPaymentStatusWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.MoneyOut.UpdateCheckPaymentStatus(
 		context.TODO(),
@@ -391,7 +365,6 @@ func TestMoneyOutReissueOutWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ReissueOutRequest{
 		TransId: "129-219",
@@ -423,5 +396,5 @@ func TestMoneyOutReissueOutWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestMoneyOutReissueOutWithWireMock", "POST", "/MoneyOut/reissue", map[string]interface{}{"transId": "129-219"}, 1)
+	VerifyRequestCount(t, "TestMoneyOutReissueOutWithWireMock", "POST", "/MoneyOut/reissue", map[string]string{"transId": "129-219"}, 1)
 }

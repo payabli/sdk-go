@@ -4,13 +4,12 @@ package notificationlogs
 
 import (
 	context "context"
-	http "net/http"
-
 	uuid "github.com/google/uuid"
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
+	http "net/http"
 )
 
 type RawClient struct {

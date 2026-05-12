@@ -6,14 +6,13 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	http "net/http"
-	os "os"
-	testing "testing"
-
 	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
+	http "net/http"
+	os "os"
+	testing "testing"
 )
 
 func VerifyRequestCount(
@@ -21,7 +20,7 @@ func VerifyRequestCount(
 	testId string,
 	method string,
 	urlPath string,
-	queryParams map[string]any,
+	queryParams map[string]string,
 	expected int,
 ) {
 	wiremockURL := os.Getenv("WIREMOCK_URL")
@@ -46,23 +45,9 @@ func VerifyRequestCount(
 			}
 			reqBody.WriteString(`"`)
 			reqBody.WriteString(key)
-			switch v := value.(type) {
-			case string:
-				reqBody.WriteString(`":{"equalTo":"`)
-				reqBody.WriteString(v)
-				reqBody.WriteString(`"}`)
-			case []string:
-				reqBody.WriteString(`":{"hasExactly":[`)
-				for i, item := range v {
-					if i > 0 {
-						reqBody.WriteString(",")
-					}
-					reqBody.WriteString(`{"equalTo":"`)
-					reqBody.WriteString(item)
-					reqBody.WriteString(`"}`)
-				}
-				reqBody.WriteString(`]}`)
-			}
+			reqBody.WriteString(`":{"equalTo":"`)
+			reqBody.WriteString(value)
+			reqBody.WriteString(`"}`)
 			first = false
 		}
 		reqBody.WriteString("}")
@@ -86,7 +71,6 @@ func TestPayoutSubscriptionCreatePayoutSubscriptionWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.RequestPayoutSchedule{
 		Body: &payabli.PayoutSubscriptionRequestBody{
@@ -172,7 +156,6 @@ func TestPayoutSubscriptionGetPayoutSubscriptionWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.PayoutSubscription.GetPayoutSubscription(
 		context.TODO(),
@@ -195,7 +178,6 @@ func TestPayoutSubscriptionUpdatePayoutSubscriptionWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.UpdatePayoutSubscriptionBody{
 		SetPause: payabli.Bool(
@@ -224,7 +206,6 @@ func TestPayoutSubscriptionDeletePayoutSubscriptionWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.PayoutSubscription.DeletePayoutSubscription(
 		context.TODO(),

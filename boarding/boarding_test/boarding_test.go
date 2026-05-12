@@ -6,14 +6,13 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	http "net/http"
-	os "os"
-	testing "testing"
-
 	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
+	http "net/http"
+	os "os"
+	testing "testing"
 )
 
 func VerifyRequestCount(
@@ -21,7 +20,7 @@ func VerifyRequestCount(
 	testId string,
 	method string,
 	urlPath string,
-	queryParams map[string]any,
+	queryParams map[string]string,
 	expected int,
 ) {
 	wiremockURL := os.Getenv("WIREMOCK_URL")
@@ -46,23 +45,9 @@ func VerifyRequestCount(
 			}
 			reqBody.WriteString(`"`)
 			reqBody.WriteString(key)
-			switch v := value.(type) {
-			case string:
-				reqBody.WriteString(`":{"equalTo":"`)
-				reqBody.WriteString(v)
-				reqBody.WriteString(`"}`)
-			case []string:
-				reqBody.WriteString(`":{"hasExactly":[`)
-				for i, item := range v {
-					if i > 0 {
-						reqBody.WriteString(",")
-					}
-					reqBody.WriteString(`{"equalTo":"`)
-					reqBody.WriteString(item)
-					reqBody.WriteString(`"}`)
-				}
-				reqBody.WriteString(`]}`)
-			}
+			reqBody.WriteString(`":{"equalTo":"`)
+			reqBody.WriteString(value)
+			reqBody.WriteString(`"}`)
 			first = false
 		}
 		reqBody.WriteString("}")
@@ -86,7 +71,6 @@ func TestBoardingAddApplicationWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.AddApplicationRequest{
 		ApplicationDataPayIn: &payabli.ApplicationDataPayIn{
@@ -420,7 +404,6 @@ func TestBoardingDeleteApplicationWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.Boarding.DeleteApplication(
 		context.TODO(),
@@ -443,7 +426,6 @@ func TestBoardingGetApplicationWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.Boarding.GetApplication(
 		context.TODO(),
@@ -466,7 +448,6 @@ func TestBoardingGetApplicationByAuthWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.RequestAppByAuth{
 		Email: payabli.String(
@@ -498,7 +479,6 @@ func TestBoardingGetByIdLinkApplicationWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.Boarding.GetByIdLinkApplication(
 		context.TODO(),
@@ -521,7 +501,6 @@ func TestBoardingGetByTemplateIdLinkApplicationWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.Boarding.GetByTemplateIdLinkApplication(
 		context.TODO(),
@@ -544,7 +523,6 @@ func TestBoardingGetExternalApplicationWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.GetExternalApplicationRequest{}
 	_, invocationErr := client.Boarding.GetExternalApplication(
@@ -570,7 +548,6 @@ func TestBoardingGetLinkApplicationWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.Boarding.GetLinkApplication(
 		context.TODO(),
@@ -593,7 +570,6 @@ func TestBoardingListApplicationsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListApplicationsRequest{
 		FromRecord: payabli.Int(
@@ -616,7 +592,7 @@ func TestBoardingListApplicationsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestBoardingListApplicationsWithWireMock", "GET", "/Query/boarding/123", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestBoardingListApplicationsWithWireMock", "GET", "/Query/boarding/123", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestBoardingListBoardingLinksWithWireMock(
@@ -628,7 +604,6 @@ func TestBoardingListBoardingLinksWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListBoardingLinksRequest{
 		FromRecord: payabli.Int(
@@ -651,7 +626,7 @@ func TestBoardingListBoardingLinksWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestBoardingListBoardingLinksWithWireMock", "GET", "/Query/boardinglinks/123", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestBoardingListBoardingLinksWithWireMock", "GET", "/Query/boardinglinks/123", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestBoardingUpdateApplicationWithWireMock(
@@ -663,7 +638,6 @@ func TestBoardingUpdateApplicationWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ApplicationData{}
 	_, invocationErr := client.Boarding.UpdateApplication(
@@ -688,7 +662,6 @@ func TestBoardingAddServiceToPaypointFromAppWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.CreateApplicationFromPaypointRequest{
 		PaypointId:     int64(123),
@@ -722,7 +695,6 @@ func TestBoardingGetApplicationsByPaypointIdWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.Boarding.GetApplicationsByPaypointId(
 		context.TODO(),

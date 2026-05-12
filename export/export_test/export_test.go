@@ -6,14 +6,13 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	http "net/http"
-	os "os"
-	testing "testing"
-
 	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
+	http "net/http"
+	os "os"
+	testing "testing"
 )
 
 func VerifyRequestCount(
@@ -21,7 +20,7 @@ func VerifyRequestCount(
 	testId string,
 	method string,
 	urlPath string,
-	queryParams map[string]any,
+	queryParams map[string]string,
 	expected int,
 ) {
 	wiremockURL := os.Getenv("WIREMOCK_URL")
@@ -46,23 +45,9 @@ func VerifyRequestCount(
 			}
 			reqBody.WriteString(`"`)
 			reqBody.WriteString(key)
-			switch v := value.(type) {
-			case string:
-				reqBody.WriteString(`":{"equalTo":"`)
-				reqBody.WriteString(v)
-				reqBody.WriteString(`"}`)
-			case []string:
-				reqBody.WriteString(`":{"hasExactly":[`)
-				for i, item := range v {
-					if i > 0 {
-						reqBody.WriteString(",")
-					}
-					reqBody.WriteString(`{"equalTo":"`)
-					reqBody.WriteString(item)
-					reqBody.WriteString(`"}`)
-				}
-				reqBody.WriteString(`]}`)
-			}
+			reqBody.WriteString(`":{"equalTo":"`)
+			reqBody.WriteString(value)
+			reqBody.WriteString(`"}`)
 			first = false
 		}
 		reqBody.WriteString("}")
@@ -86,7 +71,6 @@ func TestExportExportApplicationsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportApplicationsRequest{
 		ColumnsExport: payabli.String(
@@ -110,7 +94,7 @@ func TestExportExportApplicationsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportApplicationsWithWireMock", "GET", "/Export/boarding/csv/123", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportApplicationsWithWireMock", "GET", "/Export/boarding/csv/123", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }
 
 func TestExportExportBatchDetailsWithWireMock(
@@ -122,7 +106,6 @@ func TestExportExportBatchDetailsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportBatchDetailsRequest{
 		ColumnsExport: payabli.String(
@@ -146,7 +129,7 @@ func TestExportExportBatchDetailsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportBatchDetailsWithWireMock", "GET", "/Export/batchDetails/csv/8cfec329267", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportBatchDetailsWithWireMock", "GET", "/Export/batchDetails/csv/8cfec329267", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }
 
 func TestExportExportBatchDetailsOrgWithWireMock(
@@ -158,7 +141,6 @@ func TestExportExportBatchDetailsOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportBatchDetailsOrgRequest{
 		ColumnsExport: payabli.String(
@@ -182,7 +164,7 @@ func TestExportExportBatchDetailsOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportBatchDetailsOrgWithWireMock", "GET", "/Export/batchDetails/csv/org/123", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportBatchDetailsOrgWithWireMock", "GET", "/Export/batchDetails/csv/org/123", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }
 
 func TestExportExportBatchesWithWireMock(
@@ -194,7 +176,6 @@ func TestExportExportBatchesWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportBatchesRequest{
 		ColumnsExport: payabli.String(
@@ -218,7 +199,7 @@ func TestExportExportBatchesWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportBatchesWithWireMock", "GET", "/Export/batches/csv/8cfec329267", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportBatchesWithWireMock", "GET", "/Export/batches/csv/8cfec329267", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }
 
 func TestExportExportBatchesOrgWithWireMock(
@@ -230,7 +211,6 @@ func TestExportExportBatchesOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportBatchesOrgRequest{
 		ColumnsExport: payabli.String(
@@ -254,7 +234,7 @@ func TestExportExportBatchesOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportBatchesOrgWithWireMock", "GET", "/Export/batches/csv/org/123", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportBatchesOrgWithWireMock", "GET", "/Export/batches/csv/org/123", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }
 
 func TestExportExportBatchesOutWithWireMock(
@@ -266,7 +246,6 @@ func TestExportExportBatchesOutWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportBatchesOutRequest{
 		ColumnsExport: payabli.String(
@@ -290,7 +269,7 @@ func TestExportExportBatchesOutWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportBatchesOutWithWireMock", "GET", "/Export/batchesOut/csv/8cfec329267", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportBatchesOutWithWireMock", "GET", "/Export/batchesOut/csv/8cfec329267", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }
 
 func TestExportExportBatchesOutOrgWithWireMock(
@@ -302,7 +281,6 @@ func TestExportExportBatchesOutOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportBatchesOutOrgRequest{
 		ColumnsExport: payabli.String(
@@ -326,7 +304,7 @@ func TestExportExportBatchesOutOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportBatchesOutOrgWithWireMock", "GET", "/Export/batchesOut/csv/org/123", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportBatchesOutOrgWithWireMock", "GET", "/Export/batchesOut/csv/org/123", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }
 
 func TestExportExportBillsWithWireMock(
@@ -338,7 +316,6 @@ func TestExportExportBillsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportBillsRequest{
 		ColumnsExport: payabli.String(
@@ -362,7 +339,7 @@ func TestExportExportBillsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportBillsWithWireMock", "GET", "/Export/bills/csv/8cfec329267", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportBillsWithWireMock", "GET", "/Export/bills/csv/8cfec329267", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }
 
 func TestExportExportBillsOrgWithWireMock(
@@ -374,7 +351,6 @@ func TestExportExportBillsOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportBillsOrgRequest{
 		ColumnsExport: payabli.String(
@@ -398,7 +374,7 @@ func TestExportExportBillsOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportBillsOrgWithWireMock", "GET", "/Export/bills/csv/org/123", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportBillsOrgWithWireMock", "GET", "/Export/bills/csv/org/123", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }
 
 func TestExportExportChargebacksWithWireMock(
@@ -410,7 +386,6 @@ func TestExportExportChargebacksWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportChargebacksRequest{
 		ColumnsExport: payabli.String(
@@ -434,7 +409,7 @@ func TestExportExportChargebacksWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportChargebacksWithWireMock", "GET", "/Export/chargebacks/csv/8cfec329267", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportChargebacksWithWireMock", "GET", "/Export/chargebacks/csv/8cfec329267", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }
 
 func TestExportExportChargebacksOrgWithWireMock(
@@ -446,7 +421,6 @@ func TestExportExportChargebacksOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportChargebacksOrgRequest{
 		ColumnsExport: payabli.String(
@@ -470,7 +444,7 @@ func TestExportExportChargebacksOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportChargebacksOrgWithWireMock", "GET", "/Export/chargebacks/csv/org/123", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportChargebacksOrgWithWireMock", "GET", "/Export/chargebacks/csv/org/123", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }
 
 func TestExportExportCustomersWithWireMock(
@@ -482,7 +456,6 @@ func TestExportExportCustomersWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportCustomersRequest{
 		ColumnsExport: payabli.String(
@@ -506,7 +479,7 @@ func TestExportExportCustomersWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportCustomersWithWireMock", "GET", "/Export/customers/csv/8cfec329267", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportCustomersWithWireMock", "GET", "/Export/customers/csv/8cfec329267", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }
 
 func TestExportExportCustomersOrgWithWireMock(
@@ -518,7 +491,6 @@ func TestExportExportCustomersOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportCustomersOrgRequest{
 		ColumnsExport: payabli.String(
@@ -542,7 +514,7 @@ func TestExportExportCustomersOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportCustomersOrgWithWireMock", "GET", "/Export/customers/csv/org/123", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportCustomersOrgWithWireMock", "GET", "/Export/customers/csv/org/123", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }
 
 func TestExportExportInvoicesWithWireMock(
@@ -554,7 +526,6 @@ func TestExportExportInvoicesWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportInvoicesRequest{
 		ColumnsExport: payabli.String(
@@ -578,7 +549,7 @@ func TestExportExportInvoicesWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportInvoicesWithWireMock", "GET", "/Export/invoices/csv/8cfec329267", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportInvoicesWithWireMock", "GET", "/Export/invoices/csv/8cfec329267", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }
 
 func TestExportExportInvoicesOrgWithWireMock(
@@ -590,7 +561,6 @@ func TestExportExportInvoicesOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportInvoicesOrgRequest{
 		ColumnsExport: payabli.String(
@@ -614,7 +584,7 @@ func TestExportExportInvoicesOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportInvoicesOrgWithWireMock", "GET", "/Export/invoices/csv/org/123", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportInvoicesOrgWithWireMock", "GET", "/Export/invoices/csv/org/123", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }
 
 func TestExportExportOrganizationsWithWireMock(
@@ -626,7 +596,6 @@ func TestExportExportOrganizationsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportOrganizationsRequest{
 		ColumnsExport: payabli.String(
@@ -650,7 +619,7 @@ func TestExportExportOrganizationsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportOrganizationsWithWireMock", "GET", "/Export/organizations/csv/org/123", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportOrganizationsWithWireMock", "GET", "/Export/organizations/csv/org/123", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }
 
 func TestExportExportPayoutWithWireMock(
@@ -662,7 +631,6 @@ func TestExportExportPayoutWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportPayoutRequest{
 		ColumnsExport: payabli.String(
@@ -686,7 +654,7 @@ func TestExportExportPayoutWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportPayoutWithWireMock", "GET", "/Export/payouts/csv/8cfec329267", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportPayoutWithWireMock", "GET", "/Export/payouts/csv/8cfec329267", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }
 
 func TestExportExportPayoutOrgWithWireMock(
@@ -698,7 +666,6 @@ func TestExportExportPayoutOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportPayoutOrgRequest{
 		ColumnsExport: payabli.String(
@@ -722,7 +689,7 @@ func TestExportExportPayoutOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportPayoutOrgWithWireMock", "GET", "/Export/payouts/csv/org/123", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportPayoutOrgWithWireMock", "GET", "/Export/payouts/csv/org/123", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }
 
 func TestExportExportPaypointsWithWireMock(
@@ -734,7 +701,6 @@ func TestExportExportPaypointsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportPaypointsRequest{
 		ColumnsExport: payabli.String(
@@ -758,7 +724,7 @@ func TestExportExportPaypointsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportPaypointsWithWireMock", "GET", "/Export/paypoints/csv/123", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportPaypointsWithWireMock", "GET", "/Export/paypoints/csv/123", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }
 
 func TestExportExportSettlementsWithWireMock(
@@ -770,7 +736,6 @@ func TestExportExportSettlementsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportSettlementsRequest{
 		ColumnsExport: payabli.String(
@@ -794,7 +759,7 @@ func TestExportExportSettlementsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportSettlementsWithWireMock", "GET", "/Export/settlements/csv/8cfec329267", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportSettlementsWithWireMock", "GET", "/Export/settlements/csv/8cfec329267", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }
 
 func TestExportExportSettlementsOrgWithWireMock(
@@ -806,7 +771,6 @@ func TestExportExportSettlementsOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportSettlementsOrgRequest{
 		ColumnsExport: payabli.String(
@@ -830,7 +794,7 @@ func TestExportExportSettlementsOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportSettlementsOrgWithWireMock", "GET", "/Export/settlements/csv/org/123", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportSettlementsOrgWithWireMock", "GET", "/Export/settlements/csv/org/123", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }
 
 func TestExportExportSubscriptionsWithWireMock(
@@ -842,7 +806,6 @@ func TestExportExportSubscriptionsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportSubscriptionsRequest{
 		ColumnsExport: payabli.String(
@@ -866,7 +829,7 @@ func TestExportExportSubscriptionsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportSubscriptionsWithWireMock", "GET", "/Export/subscriptions/csv/8cfec329267", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportSubscriptionsWithWireMock", "GET", "/Export/subscriptions/csv/8cfec329267", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }
 
 func TestExportExportSubscriptionsOrgWithWireMock(
@@ -878,7 +841,6 @@ func TestExportExportSubscriptionsOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportSubscriptionsOrgRequest{
 		ColumnsExport: payabli.String(
@@ -902,7 +864,7 @@ func TestExportExportSubscriptionsOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportSubscriptionsOrgWithWireMock", "GET", "/Export/subscriptions/csv/org/123", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportSubscriptionsOrgWithWireMock", "GET", "/Export/subscriptions/csv/org/123", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }
 
 func TestExportExportTransactionsWithWireMock(
@@ -914,7 +876,6 @@ func TestExportExportTransactionsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportTransactionsRequest{
 		ColumnsExport: payabli.String(
@@ -938,7 +899,7 @@ func TestExportExportTransactionsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportTransactionsWithWireMock", "GET", "/Export/transactions/csv/8cfec329267", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportTransactionsWithWireMock", "GET", "/Export/transactions/csv/8cfec329267", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }
 
 func TestExportExportTransactionsOrgWithWireMock(
@@ -950,7 +911,6 @@ func TestExportExportTransactionsOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportTransactionsOrgRequest{
 		ColumnsExport: payabli.String(
@@ -974,7 +934,7 @@ func TestExportExportTransactionsOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportTransactionsOrgWithWireMock", "GET", "/Export/transactions/csv/org/123", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportTransactionsOrgWithWireMock", "GET", "/Export/transactions/csv/org/123", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }
 
 func TestExportExportTransferDetailsWithWireMock(
@@ -986,7 +946,6 @@ func TestExportExportTransferDetailsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportTransferDetailsRequest{
 		ColumnsExport: payabli.String(
@@ -1014,7 +973,7 @@ func TestExportExportTransferDetailsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportTransferDetailsWithWireMock", "GET", "/Export/transferDetails/csv/8cfec329267/1000000", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestExportExportTransferDetailsWithWireMock", "GET", "/Export/transferDetails/csv/8cfec329267/1000000", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestExportExportTransfersWithWireMock(
@@ -1026,7 +985,6 @@ func TestExportExportTransfersWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportTransfersRequest{
 		ColumnsExport: payabli.String(
@@ -1052,7 +1010,7 @@ func TestExportExportTransfersWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportTransfersWithWireMock", "GET", "/Export/transfers/8cfec329267", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestExportExportTransfersWithWireMock", "GET", "/Export/transfers/8cfec329267", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestExportExportVendorsWithWireMock(
@@ -1064,7 +1022,6 @@ func TestExportExportVendorsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportVendorsRequest{
 		ColumnsExport: payabli.String(
@@ -1088,7 +1045,7 @@ func TestExportExportVendorsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportVendorsWithWireMock", "GET", "/Export/vendors/csv/8cfec329267", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportVendorsWithWireMock", "GET", "/Export/vendors/csv/8cfec329267", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }
 
 func TestExportExportVendorsOrgWithWireMock(
@@ -1100,7 +1057,6 @@ func TestExportExportVendorsOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ExportVendorsOrgRequest{
 		ColumnsExport: payabli.String(
@@ -1124,5 +1080,5 @@ func TestExportExportVendorsOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestExportExportVendorsOrgWithWireMock", "GET", "/Export/vendors/csv/org/123", map[string]interface{}{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
+	VerifyRequestCount(t, "TestExportExportVendorsOrgWithWireMock", "GET", "/Export/vendors/csv/org/123", map[string]string{"columnsExport": "BatchDate:Batch_Date,PaypointName:Legal_name", "fromRecord": "251", "limitRecord": "1000"}, 1)
 }

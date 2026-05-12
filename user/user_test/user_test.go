@@ -6,14 +6,13 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	http "net/http"
-	os "os"
-	testing "testing"
-
 	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
+	http "net/http"
+	os "os"
+	testing "testing"
 )
 
 func VerifyRequestCount(
@@ -21,7 +20,7 @@ func VerifyRequestCount(
 	testId string,
 	method string,
 	urlPath string,
-	queryParams map[string]any,
+	queryParams map[string]string,
 	expected int,
 ) {
 	wiremockURL := os.Getenv("WIREMOCK_URL")
@@ -46,23 +45,9 @@ func VerifyRequestCount(
 			}
 			reqBody.WriteString(`"`)
 			reqBody.WriteString(key)
-			switch v := value.(type) {
-			case string:
-				reqBody.WriteString(`":{"equalTo":"`)
-				reqBody.WriteString(v)
-				reqBody.WriteString(`"}`)
-			case []string:
-				reqBody.WriteString(`":{"hasExactly":[`)
-				for i, item := range v {
-					if i > 0 {
-						reqBody.WriteString(",")
-					}
-					reqBody.WriteString(`{"equalTo":"`)
-					reqBody.WriteString(item)
-					reqBody.WriteString(`"}`)
-				}
-				reqBody.WriteString(`]}`)
-			}
+			reqBody.WriteString(`":{"equalTo":"`)
+			reqBody.WriteString(value)
+			reqBody.WriteString(`"}`)
 			first = false
 		}
 		reqBody.WriteString("}")
@@ -86,7 +71,6 @@ func TestUserAddUserWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.UserData{}
 	_, invocationErr := client.User.AddUser(
@@ -110,7 +94,6 @@ func TestUserAuthRefreshUserWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.User.AuthRefreshUser(
 		context.TODO(),
@@ -132,7 +115,6 @@ func TestUserAuthResetUserWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.UserAuthResetRequest{}
 	_, invocationErr := client.User.AuthResetUser(
@@ -156,7 +138,6 @@ func TestUserAuthUserWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.UserAuthRequest{}
 	_, invocationErr := client.User.AuthUser(
@@ -181,7 +162,6 @@ func TestUserChangePswUserWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.UserAuthPswResetRequest{}
 	_, invocationErr := client.User.ChangePswUser(
@@ -205,7 +185,6 @@ func TestUserDeleteUserWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.User.DeleteUser(
 		context.TODO(),
@@ -228,7 +207,6 @@ func TestUserEditMfaUserWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.MfaData{}
 	_, invocationErr := client.User.EditMfaUser(
@@ -253,7 +231,6 @@ func TestUserEditUserWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.UserData{}
 	_, invocationErr := client.User.EditUser(
@@ -278,7 +255,6 @@ func TestUserGetUserWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.GetUserRequest{
 		Entry: payabli.String(
@@ -295,7 +271,7 @@ func TestUserGetUserWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestUserGetUserWithWireMock", "GET", "/User/1000000", map[string]interface{}{"entry": "478ae1234"}, 1)
+	VerifyRequestCount(t, "TestUserGetUserWithWireMock", "GET", "/User/1000000", map[string]string{"entry": "478ae1234"}, 1)
 }
 
 func TestUserLogoutUserWithWireMock(
@@ -307,7 +283,6 @@ func TestUserLogoutUserWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.User.LogoutUser(
 		context.TODO(),
@@ -329,7 +304,6 @@ func TestUserResendMfaCodeWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.User.ResendMfaCode(
 		context.TODO(),
@@ -354,7 +328,6 @@ func TestUserValidateMfaUserWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
-		option.WithApiKey("test-value"),
 	)
 	request := &payabli.MfaValidationData{}
 	_, invocationErr := client.User.ValidateMfaUser(
