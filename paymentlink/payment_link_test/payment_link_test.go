@@ -6,13 +6,14 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
+	http "net/http"
+	os "os"
+	testing "testing"
+
 	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
-	http "net/http"
-	os "os"
-	testing "testing"
 )
 
 func VerifyRequestCount(
@@ -20,7 +21,7 @@ func VerifyRequestCount(
 	testId string,
 	method string,
 	urlPath string,
-	queryParams map[string]string,
+	queryParams map[string]any,
 	expected int,
 ) {
 	wiremockURL := os.Getenv("WIREMOCK_URL")
@@ -45,9 +46,23 @@ func VerifyRequestCount(
 			}
 			reqBody.WriteString(`"`)
 			reqBody.WriteString(key)
-			reqBody.WriteString(`":{"equalTo":"`)
-			reqBody.WriteString(value)
-			reqBody.WriteString(`"}`)
+			switch v := value.(type) {
+			case string:
+				reqBody.WriteString(`":{"equalTo":"`)
+				reqBody.WriteString(v)
+				reqBody.WriteString(`"}`)
+			case []string:
+				reqBody.WriteString(`":{"hasExactly":[`)
+				for i, item := range v {
+					if i > 0 {
+						reqBody.WriteString(",")
+					}
+					reqBody.WriteString(`{"equalTo":"`)
+					reqBody.WriteString(item)
+					reqBody.WriteString(`"}`)
+				}
+				reqBody.WriteString(`]}`)
+			}
 			first = false
 		}
 		reqBody.WriteString("}")
@@ -71,6 +86,7 @@ func TestPaymentLinkAddPayLinkFromInvoiceWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.PayLinkDataInvoice{
 		Mail2: payabli.String(
@@ -326,7 +342,7 @@ func TestPaymentLinkAddPayLinkFromInvoiceWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPaymentLinkAddPayLinkFromInvoiceWithWireMock", "POST", "/PaymentLink/23548884", map[string]string{"mail2": "jo@example.com; ceo@example.com"}, 1)
+	VerifyRequestCount(t, "TestPaymentLinkAddPayLinkFromInvoiceWithWireMock", "POST", "/PaymentLink/23548884", map[string]interface{}{"mail2": "jo@example.com; ceo@example.com"}, 1)
 }
 
 func TestPaymentLinkAddPayLinkFromBillWithWireMock(
@@ -338,6 +354,7 @@ func TestPaymentLinkAddPayLinkFromBillWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.PayLinkDataBill{
 		Mail2: payabli.String(
@@ -490,7 +507,7 @@ func TestPaymentLinkAddPayLinkFromBillWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPaymentLinkAddPayLinkFromBillWithWireMock", "POST", "/PaymentLink/bill/23548884", map[string]string{"mail2": "jo@example.com; ceo@example.com"}, 1)
+	VerifyRequestCount(t, "TestPaymentLinkAddPayLinkFromBillWithWireMock", "POST", "/PaymentLink/bill/23548884", map[string]interface{}{"mail2": "jo@example.com; ceo@example.com"}, 1)
 }
 
 func TestPaymentLinkDeletePayLinkFromIdWithWireMock(
@@ -502,6 +519,7 @@ func TestPaymentLinkDeletePayLinkFromIdWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.PaymentLink.DeletePayLinkFromId(
 		context.TODO(),
@@ -524,6 +542,7 @@ func TestPaymentLinkGetPayLinkFromIdWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.PaymentLink.GetPayLinkFromId(
 		context.TODO(),
@@ -546,6 +565,7 @@ func TestPaymentLinkPushPayLinkFromIdWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.PushPayLinkRequest{
 		Sms: &payabli.PushPayLinkRequestSms{},
@@ -572,6 +592,7 @@ func TestPaymentLinkRefreshPayLinkFromIdWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.RefreshPayLinkFromIdRequest{}
 	_, invocationErr := client.PaymentLink.RefreshPayLinkFromId(
@@ -596,6 +617,7 @@ func TestPaymentLinkSendPayLinkFromIdWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.SendPayLinkFromIdRequest{
 		Mail2: payabli.String(
@@ -612,7 +634,7 @@ func TestPaymentLinkSendPayLinkFromIdWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPaymentLinkSendPayLinkFromIdWithWireMock", "GET", "/PaymentLink/send/payLinkId", map[string]string{"mail2": "jo@example.com; ceo@example.com"}, 1)
+	VerifyRequestCount(t, "TestPaymentLinkSendPayLinkFromIdWithWireMock", "GET", "/PaymentLink/send/payLinkId", map[string]interface{}{"mail2": "jo@example.com; ceo@example.com"}, 1)
 }
 
 func TestPaymentLinkUpdatePayLinkFromIdWithWireMock(
@@ -624,6 +646,7 @@ func TestPaymentLinkUpdatePayLinkFromIdWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.PayLinkUpdateData{
 		Notes: &payabli.NoteElement{
@@ -677,6 +700,7 @@ func TestPaymentLinkAddPayLinkFromBillLotNumberWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.PayLinkDataOut{
 		EntryPoint:   "billing",
@@ -834,7 +858,7 @@ func TestPaymentLinkAddPayLinkFromBillLotNumberWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPaymentLinkAddPayLinkFromBillLotNumberWithWireMock", "POST", "/PaymentLink/bill/lotNumber/LOT-2024-001", map[string]string{"entryPoint": "billing", "vendorNumber": "VENDOR-123", "mail2": "customer@example.com; billing@example.com", "amountFixed": "true"}, 1)
+	VerifyRequestCount(t, "TestPaymentLinkAddPayLinkFromBillLotNumberWithWireMock", "POST", "/PaymentLink/bill/lotNumber/LOT-2024-001", map[string]interface{}{"entryPoint": "billing", "vendorNumber": "VENDOR-123", "mail2": "customer@example.com; billing@example.com", "amountFixed": "true"}, 1)
 }
 
 func TestPaymentLinkPatchOutPaymentLinkWithWireMock(
@@ -846,6 +870,7 @@ func TestPaymentLinkPatchOutPaymentLinkWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.PatchOutPaymentLinkRequest{
 		ExpirationDate: payabli.String(
@@ -875,6 +900,7 @@ func TestPaymentLinkUpdatePayLinkOutFromIdWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.PaymentPageRequestBodyOut{
 		ContactUs: &payabli.ContactElement{

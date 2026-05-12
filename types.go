@@ -19123,6 +19123,9 @@ type Signaturedata = string
 // Custom identifier to indicate the transaction or request source.
 type Source = string
 
+// Number of split funding instructions associated with the transaction. Returns `0` when the transaction has no splits.
+type SplitCount = int
+
 // Split funding instructions for the transaction. The total amount of the splits must match the total amount of the transaction.
 type SplitFunding = []*SplitFundingContent
 
@@ -19413,11 +19416,12 @@ var (
 	subscriptionQueryRecordsFieldPlanId             = big.NewInt(1 << 21)
 	subscriptionQueryRecordsFieldSource             = big.NewInt(1 << 22)
 	subscriptionQueryRecordsFieldStartDate          = big.NewInt(1 << 23)
-	subscriptionQueryRecordsFieldSubEvents          = big.NewInt(1 << 24)
-	subscriptionQueryRecordsFieldSubStatus          = big.NewInt(1 << 25)
-	subscriptionQueryRecordsFieldTotalAmount        = big.NewInt(1 << 26)
-	subscriptionQueryRecordsFieldTotalCycles        = big.NewInt(1 << 27)
-	subscriptionQueryRecordsFieldUntilCancelled     = big.NewInt(1 << 28)
+	subscriptionQueryRecordsFieldStoredMethod       = big.NewInt(1 << 24)
+	subscriptionQueryRecordsFieldSubEvents          = big.NewInt(1 << 25)
+	subscriptionQueryRecordsFieldSubStatus          = big.NewInt(1 << 26)
+	subscriptionQueryRecordsFieldTotalAmount        = big.NewInt(1 << 27)
+	subscriptionQueryRecordsFieldTotalCycles        = big.NewInt(1 << 28)
+	subscriptionQueryRecordsFieldUntilCancelled     = big.NewInt(1 << 29)
 )
 
 type SubscriptionQueryRecords struct {
@@ -19461,6 +19465,14 @@ type SubscriptionQueryRecords struct {
 	Source *Source `json:"Source,omitempty" url:"Source,omitempty"`
 	// The subscription start date.
 	StartDate *time.Time `json:"StartDate,omitempty" url:"StartDate,omitempty"`
+	// The full stored payment method record linked to the subscription
+	// and charged on each billing cycle. Returned as `null` for legacy
+	// subscriptions that don't have a linked stored method.
+	//
+	// The shape is the same across payment vehicles (card, ACH, check).
+	// Only the populated fields differ. For example, `ABA` is populated
+	// for ACH, while `ExpDate` and `binData` are populated for card.
+	StoredMethod *VendorResponseStoredMethod `json:"StoredMethod,omitempty" url:"StoredMethod,omitempty"`
 	// Events associated with the subscription.
 	SubEvents []*GeneralEvents `json:"SubEvents,omitempty" url:"SubEvents,omitempty"`
 	// The subscription's status.
@@ -19647,6 +19659,13 @@ func (s *SubscriptionQueryRecords) GetStartDate() *time.Time {
 		return nil
 	}
 	return s.StartDate
+}
+
+func (s *SubscriptionQueryRecords) GetStoredMethod() *VendorResponseStoredMethod {
+	if s == nil {
+		return nil
+	}
+	return s.StoredMethod
 }
 
 func (s *SubscriptionQueryRecords) GetSubEvents() []*GeneralEvents {
@@ -19864,6 +19883,13 @@ func (s *SubscriptionQueryRecords) SetSource(source *Source) {
 func (s *SubscriptionQueryRecords) SetStartDate(startDate *time.Time) {
 	s.StartDate = startDate
 	s.require(subscriptionQueryRecordsFieldStartDate)
+}
+
+// SetStoredMethod sets the StoredMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SubscriptionQueryRecords) SetStoredMethod(storedMethod *VendorResponseStoredMethod) {
+	s.StoredMethod = storedMethod
+	s.require(subscriptionQueryRecordsFieldStoredMethod)
 }
 
 // SetSubEvents sets the SubEvents field and marks it as non-optional;
@@ -20609,11 +20635,12 @@ var (
 	transactionQueryRecordsFieldSettlementStatus             = big.NewInt(1 << 31)
 	transactionQueryRecordsFieldSource                       = big.NewInt(1 << 32)
 	transactionQueryRecordsFieldSplitFundingInstructions     = big.NewInt(1 << 33)
-	transactionQueryRecordsFieldTotalAmount                  = big.NewInt(1 << 34)
-	transactionQueryRecordsFieldTransactionEvents            = big.NewInt(1 << 35)
-	transactionQueryRecordsFieldTransactionTime              = big.NewInt(1 << 36)
-	transactionQueryRecordsFieldTransAdditionalData          = big.NewInt(1 << 37)
-	transactionQueryRecordsFieldTransStatus                  = big.NewInt(1 << 38)
+	transactionQueryRecordsFieldSplitCount                   = big.NewInt(1 << 34)
+	transactionQueryRecordsFieldTotalAmount                  = big.NewInt(1 << 35)
+	transactionQueryRecordsFieldTransactionEvents            = big.NewInt(1 << 36)
+	transactionQueryRecordsFieldTransactionTime              = big.NewInt(1 << 37)
+	transactionQueryRecordsFieldTransAdditionalData          = big.NewInt(1 << 38)
+	transactionQueryRecordsFieldTransStatus                  = big.NewInt(1 << 39)
 )
 
 type TransactionQueryRecords struct {
@@ -20665,6 +20692,7 @@ type TransactionQueryRecords struct {
 	SettlementStatus         *int          `json:"SettlementStatus,omitempty" url:"SettlementStatus,omitempty"`
 	Source                   *Source       `json:"Source,omitempty" url:"Source,omitempty"`
 	SplitFundingInstructions *SplitFunding `json:"splitFundingInstructions,omitempty" url:"splitFundingInstructions,omitempty"`
+	SplitCount               SplitCount    `json:"splitCount" url:"splitCount"`
 	// Transaction total amount (including service fee or sub-charge)
 	TotalAmount *float64 `json:"TotalAmount,omitempty" url:"TotalAmount,omitempty"`
 	// Events associated with this transaction.
@@ -20918,6 +20946,13 @@ func (t *TransactionQueryRecords) GetSplitFundingInstructions() *SplitFunding {
 		return nil
 	}
 	return t.SplitFundingInstructions
+}
+
+func (t *TransactionQueryRecords) GetSplitCount() SplitCount {
+	if t == nil {
+		return 0
+	}
+	return t.SplitCount
 }
 
 func (t *TransactionQueryRecords) GetTotalAmount() *float64 {
@@ -21205,6 +21240,13 @@ func (t *TransactionQueryRecords) SetSource(source *Source) {
 func (t *TransactionQueryRecords) SetSplitFundingInstructions(splitFundingInstructions *SplitFunding) {
 	t.SplitFundingInstructions = splitFundingInstructions
 	t.require(transactionQueryRecordsFieldSplitFundingInstructions)
+}
+
+// SetSplitCount sets the SplitCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecords) SetSplitCount(splitCount SplitCount) {
+	t.SplitCount = splitCount
+	t.require(transactionQueryRecordsFieldSplitCount)
 }
 
 // SetTotalAmount sets the TotalAmount field and marks it as non-optional;
@@ -23881,7 +23923,7 @@ type VendorResponseStoredMethod struct {
 	AchHolderType  *string    `json:"AchHolderType,omitempty" url:"AchHolderType,omitempty"`
 	IsValidatedAch *bool      `json:"IsValidatedACH,omitempty" url:"IsValidatedACH,omitempty"`
 	Bin            *string    `json:"BIN,omitempty" url:"BIN,omitempty"`
-	BinData        *string    `json:"binData,omitempty" url:"binData,omitempty"`
+	BinData        *BinData   `json:"binData,omitempty" url:"binData,omitempty"`
 	Aba            *string    `json:"ABA,omitempty" url:"ABA,omitempty"`
 	PostalCode     *string    `json:"PostalCode,omitempty" url:"PostalCode,omitempty"`
 	MethodType     *string    `json:"MethodType,omitempty" url:"MethodType,omitempty"`
@@ -23965,7 +24007,7 @@ func (v *VendorResponseStoredMethod) GetBin() *string {
 	return v.Bin
 }
 
-func (v *VendorResponseStoredMethod) GetBinData() *string {
+func (v *VendorResponseStoredMethod) GetBinData() *BinData {
 	if v == nil {
 		return nil
 	}
@@ -24093,7 +24135,7 @@ func (v *VendorResponseStoredMethod) SetBin(bin *string) {
 
 // SetBinData sets the BinData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorResponseStoredMethod) SetBinData(binData *string) {
+func (v *VendorResponseStoredMethod) SetBinData(binData *BinData) {
 	v.BinData = binData
 	v.require(vendorResponseStoredMethodFieldBinData)
 }

@@ -3210,12 +3210,13 @@ var (
 	queryTransferSummaryFieldTransferAmount         = big.NewInt(1 << 11)
 	queryTransferSummaryFieldRefunds                = big.NewInt(1 << 12)
 	queryTransferSummaryFieldHeldAmount             = big.NewInt(1 << 13)
-	queryTransferSummaryFieldTotalRecords           = big.NewInt(1 << 14)
-	queryTransferSummaryFieldTotalAmount            = big.NewInt(1 << 15)
-	queryTransferSummaryFieldTotalNetAmount         = big.NewInt(1 << 16)
-	queryTransferSummaryFieldTotalPages             = big.NewInt(1 << 17)
-	queryTransferSummaryFieldPageSize               = big.NewInt(1 << 18)
-	queryTransferSummaryFieldPageidentifier         = big.NewInt(1 << 19)
+	queryTransferSummaryFieldCardRejectedAmount     = big.NewInt(1 << 14)
+	queryTransferSummaryFieldTotalRecords           = big.NewInt(1 << 15)
+	queryTransferSummaryFieldTotalAmount            = big.NewInt(1 << 16)
+	queryTransferSummaryFieldTotalNetAmount         = big.NewInt(1 << 17)
+	queryTransferSummaryFieldTotalPages             = big.NewInt(1 << 18)
+	queryTransferSummaryFieldPageSize               = big.NewInt(1 << 19)
+	queryTransferSummaryFieldPageidentifier         = big.NewInt(1 << 20)
 )
 
 type QueryTransferSummary struct {
@@ -3248,6 +3249,8 @@ type QueryTransferSummary struct {
 	Refunds *float64 `json:"refunds,omitempty" url:"refunds,omitempty"`
 	// Funds being held for fraud or risk concerns.
 	HeldAmount *float64 `json:"heldAmount,omitempty" url:"heldAmount,omitempty"`
+	// Total amount rejected by card networks or issuing banks after authorization or settling. This value is the sum of all rejected amounts for transactions in the transfer.
+	CardRejectedAmount *float64 `json:"cardRejectedAmount,omitempty" url:"cardRejectedAmount,omitempty"`
 	// Number of records in the response.
 	TotalRecords *Totalrecords `json:"totalRecords,omitempty" url:"totalRecords,omitempty"`
 	// The total sum of the transfers in the response.
@@ -3364,6 +3367,13 @@ func (q *QueryTransferSummary) GetHeldAmount() *float64 {
 		return nil
 	}
 	return q.HeldAmount
+}
+
+func (q *QueryTransferSummary) GetCardRejectedAmount() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.CardRejectedAmount
 }
 
 func (q *QueryTransferSummary) GetTotalRecords() *Totalrecords {
@@ -3520,6 +3530,13 @@ func (q *QueryTransferSummary) SetHeldAmount(heldAmount *float64) {
 	q.require(queryTransferSummaryFieldHeldAmount)
 }
 
+// SetCardRejectedAmount sets the CardRejectedAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryTransferSummary) SetCardRejectedAmount(cardRejectedAmount *float64) {
+	q.CardRejectedAmount = cardRejectedAmount
+	q.require(queryTransferSummaryFieldCardRejectedAmount)
+}
+
 // SetTotalRecords sets the TotalRecords field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (q *QueryTransferSummary) SetTotalRecords(totalRecords *Totalrecords) {
@@ -3622,59 +3639,60 @@ var (
 	transferDetailRecordFieldAdjustmentsAmount            = big.NewInt(1 << 14)
 	transferDetailRecordFieldNetTransferAmount            = big.NewInt(1 << 15)
 	transferDetailRecordFieldSplitFundingAmount           = big.NewInt(1 << 16)
-	transferDetailRecordFieldBillingFeesDetails           = big.NewInt(1 << 17)
-	transferDetailRecordFieldParentOrgName                = big.NewInt(1 << 18)
-	transferDetailRecordFieldPaypointDbaname              = big.NewInt(1 << 19)
-	transferDetailRecordFieldPaypointLegalname            = big.NewInt(1 << 20)
-	transferDetailRecordFieldPaypointEntryname            = big.NewInt(1 << 21)
-	transferDetailRecordFieldPaymentTransId               = big.NewInt(1 << 22)
-	transferDetailRecordFieldConnectorName                = big.NewInt(1 << 23)
-	transferDetailRecordFieldExternalProcessorInformation = big.NewInt(1 << 24)
-	transferDetailRecordFieldGatewayTransId               = big.NewInt(1 << 25)
-	transferDetailRecordFieldOrderId                      = big.NewInt(1 << 26)
-	transferDetailRecordFieldMethod                       = big.NewInt(1 << 27)
-	transferDetailRecordFieldBatchNumber                  = big.NewInt(1 << 28)
-	transferDetailRecordFieldBatchAmount                  = big.NewInt(1 << 29)
-	transferDetailRecordFieldPayorId                      = big.NewInt(1 << 30)
-	transferDetailRecordFieldPaymentData                  = big.NewInt(1 << 31)
-	transferDetailRecordFieldTransStatus                  = big.NewInt(1 << 32)
-	transferDetailRecordFieldPaypointId                   = big.NewInt(1 << 33)
-	transferDetailRecordFieldTotalAmount                  = big.NewInt(1 << 34)
-	transferDetailRecordFieldNetAmount                    = big.NewInt(1 << 35)
-	transferDetailRecordFieldFeeAmount                    = big.NewInt(1 << 36)
-	transferDetailRecordFieldSettlementStatus             = big.NewInt(1 << 37)
-	transferDetailRecordFieldOperation                    = big.NewInt(1 << 38)
-	transferDetailRecordFieldResponseData                 = big.NewInt(1 << 39)
-	transferDetailRecordFieldSource                       = big.NewInt(1 << 40)
-	transferDetailRecordFieldScheduleReference            = big.NewInt(1 << 41)
-	transferDetailRecordFieldOrgId                        = big.NewInt(1 << 42)
-	transferDetailRecordFieldRefundId                     = big.NewInt(1 << 43)
-	transferDetailRecordFieldReturnedId                   = big.NewInt(1 << 44)
-	transferDetailRecordFieldChargebackId                 = big.NewInt(1 << 45)
-	transferDetailRecordFieldRetrievalId                  = big.NewInt(1 << 46)
-	transferDetailRecordFieldTransAdditionalData          = big.NewInt(1 << 47)
-	transferDetailRecordFieldInvoiceData                  = big.NewInt(1 << 48)
-	transferDetailRecordFieldEntrypageId                  = big.NewInt(1 << 49)
-	transferDetailRecordFieldExternalPaypointId           = big.NewInt(1 << 50)
-	transferDetailRecordFieldIsValidatedAch               = big.NewInt(1 << 51)
-	transferDetailRecordFieldTransactionTime              = big.NewInt(1 << 52)
-	transferDetailRecordFieldCustomer                     = big.NewInt(1 << 53)
-	transferDetailRecordFieldSplitFundingInstructions     = big.NewInt(1 << 54)
-	transferDetailRecordFieldCfeeTransactions             = big.NewInt(1 << 55)
-	transferDetailRecordFieldTransactionEvents            = big.NewInt(1 << 56)
-	transferDetailRecordFieldPendingFeeAmount             = big.NewInt(1 << 57)
-	transferDetailRecordFieldRiskFlagged                  = big.NewInt(1 << 58)
-	transferDetailRecordFieldRiskFlaggedOn                = big.NewInt(1 << 59)
-	transferDetailRecordFieldRiskStatus                   = big.NewInt(1 << 60)
-	transferDetailRecordFieldRiskReason                   = big.NewInt(1 << 61)
-	transferDetailRecordFieldRiskAction                   = big.NewInt(1 << 62)
-	transferDetailRecordFieldRiskActionCode               = big.NewInt(0).Lsh(big.NewInt(1), 63)
-	transferDetailRecordFieldDeviceId                     = big.NewInt(0).Lsh(big.NewInt(1), 64)
-	transferDetailRecordFieldAchSecCode                   = big.NewInt(0).Lsh(big.NewInt(1), 65)
-	transferDetailRecordFieldAchHolderType                = big.NewInt(0).Lsh(big.NewInt(1), 66)
-	transferDetailRecordFieldIpAddress                    = big.NewInt(0).Lsh(big.NewInt(1), 67)
-	transferDetailRecordFieldIsSameDayAch                 = big.NewInt(0).Lsh(big.NewInt(1), 68)
-	transferDetailRecordFieldWalletType                   = big.NewInt(0).Lsh(big.NewInt(1), 69)
+	transferDetailRecordFieldCardRejectedAmount           = big.NewInt(1 << 17)
+	transferDetailRecordFieldBillingFeesDetails           = big.NewInt(1 << 18)
+	transferDetailRecordFieldParentOrgName                = big.NewInt(1 << 19)
+	transferDetailRecordFieldPaypointDbaname              = big.NewInt(1 << 20)
+	transferDetailRecordFieldPaypointLegalname            = big.NewInt(1 << 21)
+	transferDetailRecordFieldPaypointEntryname            = big.NewInt(1 << 22)
+	transferDetailRecordFieldPaymentTransId               = big.NewInt(1 << 23)
+	transferDetailRecordFieldConnectorName                = big.NewInt(1 << 24)
+	transferDetailRecordFieldExternalProcessorInformation = big.NewInt(1 << 25)
+	transferDetailRecordFieldGatewayTransId               = big.NewInt(1 << 26)
+	transferDetailRecordFieldOrderId                      = big.NewInt(1 << 27)
+	transferDetailRecordFieldMethod                       = big.NewInt(1 << 28)
+	transferDetailRecordFieldBatchNumber                  = big.NewInt(1 << 29)
+	transferDetailRecordFieldBatchAmount                  = big.NewInt(1 << 30)
+	transferDetailRecordFieldPayorId                      = big.NewInt(1 << 31)
+	transferDetailRecordFieldPaymentData                  = big.NewInt(1 << 32)
+	transferDetailRecordFieldTransStatus                  = big.NewInt(1 << 33)
+	transferDetailRecordFieldPaypointId                   = big.NewInt(1 << 34)
+	transferDetailRecordFieldTotalAmount                  = big.NewInt(1 << 35)
+	transferDetailRecordFieldNetAmount                    = big.NewInt(1 << 36)
+	transferDetailRecordFieldFeeAmount                    = big.NewInt(1 << 37)
+	transferDetailRecordFieldSettlementStatus             = big.NewInt(1 << 38)
+	transferDetailRecordFieldOperation                    = big.NewInt(1 << 39)
+	transferDetailRecordFieldResponseData                 = big.NewInt(1 << 40)
+	transferDetailRecordFieldSource                       = big.NewInt(1 << 41)
+	transferDetailRecordFieldScheduleReference            = big.NewInt(1 << 42)
+	transferDetailRecordFieldOrgId                        = big.NewInt(1 << 43)
+	transferDetailRecordFieldRefundId                     = big.NewInt(1 << 44)
+	transferDetailRecordFieldReturnedId                   = big.NewInt(1 << 45)
+	transferDetailRecordFieldChargebackId                 = big.NewInt(1 << 46)
+	transferDetailRecordFieldRetrievalId                  = big.NewInt(1 << 47)
+	transferDetailRecordFieldTransAdditionalData          = big.NewInt(1 << 48)
+	transferDetailRecordFieldInvoiceData                  = big.NewInt(1 << 49)
+	transferDetailRecordFieldEntrypageId                  = big.NewInt(1 << 50)
+	transferDetailRecordFieldExternalPaypointId           = big.NewInt(1 << 51)
+	transferDetailRecordFieldIsValidatedAch               = big.NewInt(1 << 52)
+	transferDetailRecordFieldTransactionTime              = big.NewInt(1 << 53)
+	transferDetailRecordFieldCustomer                     = big.NewInt(1 << 54)
+	transferDetailRecordFieldSplitFundingInstructions     = big.NewInt(1 << 55)
+	transferDetailRecordFieldCfeeTransactions             = big.NewInt(1 << 56)
+	transferDetailRecordFieldTransactionEvents            = big.NewInt(1 << 57)
+	transferDetailRecordFieldPendingFeeAmount             = big.NewInt(1 << 58)
+	transferDetailRecordFieldRiskFlagged                  = big.NewInt(1 << 59)
+	transferDetailRecordFieldRiskFlaggedOn                = big.NewInt(1 << 60)
+	transferDetailRecordFieldRiskStatus                   = big.NewInt(1 << 61)
+	transferDetailRecordFieldRiskReason                   = big.NewInt(1 << 62)
+	transferDetailRecordFieldRiskAction                   = big.NewInt(0).Lsh(big.NewInt(1), 63)
+	transferDetailRecordFieldRiskActionCode               = big.NewInt(0).Lsh(big.NewInt(1), 64)
+	transferDetailRecordFieldDeviceId                     = big.NewInt(0).Lsh(big.NewInt(1), 65)
+	transferDetailRecordFieldAchSecCode                   = big.NewInt(0).Lsh(big.NewInt(1), 66)
+	transferDetailRecordFieldAchHolderType                = big.NewInt(0).Lsh(big.NewInt(1), 67)
+	transferDetailRecordFieldIpAddress                    = big.NewInt(0).Lsh(big.NewInt(1), 68)
+	transferDetailRecordFieldIsSameDayAch                 = big.NewInt(0).Lsh(big.NewInt(1), 69)
+	transferDetailRecordFieldWalletType                   = big.NewInt(0).Lsh(big.NewInt(1), 70)
 )
 
 type TransferDetailRecord struct {
@@ -3711,7 +3729,9 @@ type TransferDetailRecord struct {
 	// The net amount after all deductions
 	NetTransferAmount *float64 `json:"netTransferAmount,omitempty" url:"netTransferAmount,omitempty"`
 	// Total amount directed to split funding destinations
-	SplitFundingAmount *float64            `json:"splitFundingAmount,omitempty" url:"splitFundingAmount,omitempty"`
+	SplitFundingAmount *float64 `json:"splitFundingAmount,omitempty" url:"splitFundingAmount,omitempty"`
+	// Total amount rejected by card networks or issuing banks after authorization or settling in this transaction
+	CardRejectedAmount *float64            `json:"cardRejectedAmount,omitempty" url:"cardRejectedAmount,omitempty"`
 	BillingFeesDetails []*BillingFeeDetail `json:"billingFeesDetails,omitempty" url:"billingFeesDetails,omitempty"`
 	ParentOrgName      *OrgParentName      `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
 	PaypointDbaname    *Dbaname            `json:"PaypointDbaname,omitempty" url:"PaypointDbaname,omitempty"`
@@ -3910,6 +3930,13 @@ func (t *TransferDetailRecord) GetSplitFundingAmount() *float64 {
 		return nil
 	}
 	return t.SplitFundingAmount
+}
+
+func (t *TransferDetailRecord) GetCardRejectedAmount() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.CardRejectedAmount
 }
 
 func (t *TransferDetailRecord) GetBillingFeesDetails() []*BillingFeeDetail {
@@ -4414,6 +4441,13 @@ func (t *TransferDetailRecord) SetNetTransferAmount(netTransferAmount *float64) 
 func (t *TransferDetailRecord) SetSplitFundingAmount(splitFundingAmount *float64) {
 	t.SplitFundingAmount = splitFundingAmount
 	t.require(transferDetailRecordFieldSplitFundingAmount)
+}
+
+// SetCardRejectedAmount sets the CardRejectedAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferDetailRecord) SetCardRejectedAmount(cardRejectedAmount *float64) {
+	t.CardRejectedAmount = cardRejectedAmount
+	t.require(transferDetailRecordFieldCardRejectedAmount)
 }
 
 // SetBillingFeesDetails sets the BillingFeesDetails field and marks it as non-optional;
@@ -9776,6 +9810,630 @@ func (t *TransferOutSummary) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", t)
+}
+
+// Response body for queries about virtual card transactions.
+var (
+	vCardTransactionQueryResponseFieldSummary = big.NewInt(1 << 0)
+	vCardTransactionQueryResponseFieldRecords = big.NewInt(1 << 1)
+)
+
+type VCardTransactionQueryResponse struct {
+	Summary *VCardSummary             `json:"Summary" url:"Summary"`
+	Records []*VCardTransactionRecord `json:"Records" url:"Records"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *VCardTransactionQueryResponse) GetSummary() *VCardSummary {
+	if v == nil {
+		return nil
+	}
+	return v.Summary
+}
+
+func (v *VCardTransactionQueryResponse) GetRecords() []*VCardTransactionRecord {
+	if v == nil {
+		return nil
+	}
+	return v.Records
+}
+
+func (v *VCardTransactionQueryResponse) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *VCardTransactionQueryResponse) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionQueryResponse) SetSummary(summary *VCardSummary) {
+	v.Summary = summary
+	v.require(vCardTransactionQueryResponseFieldSummary)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionQueryResponse) SetRecords(records []*VCardTransactionRecord) {
+	v.Records = records
+	v.require(vCardTransactionQueryResponseFieldRecords)
+}
+
+func (v *VCardTransactionQueryResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler VCardTransactionQueryResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VCardTransactionQueryResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VCardTransactionQueryResponse) MarshalJSON() ([]byte, error) {
+	type embed VCardTransactionQueryResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *VCardTransactionQueryResponse) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+// A virtual card transaction record returned by the query.
+var (
+	vCardTransactionRecordFieldIdentifier          = big.NewInt(1 << 0)
+	vCardTransactionRecordFieldCardToken           = big.NewInt(1 << 1)
+	vCardTransactionRecordFieldLastFour            = big.NewInt(1 << 2)
+	vCardTransactionRecordFieldExpirationDate      = big.NewInt(1 << 3)
+	vCardTransactionRecordFieldMcc                 = big.NewInt(1 << 4)
+	vCardTransactionRecordFieldPayoutId            = big.NewInt(1 << 5)
+	vCardTransactionRecordFieldCustomerId          = big.NewInt(1 << 6)
+	vCardTransactionRecordFieldVendorId            = big.NewInt(1 << 7)
+	vCardTransactionRecordFieldMiscData1           = big.NewInt(1 << 8)
+	vCardTransactionRecordFieldMiscData2           = big.NewInt(1 << 9)
+	vCardTransactionRecordFieldCurrentUses         = big.NewInt(1 << 10)
+	vCardTransactionRecordFieldAmount              = big.NewInt(1 << 11)
+	vCardTransactionRecordFieldBalance             = big.NewInt(1 << 12)
+	vCardTransactionRecordFieldPaypointId          = big.NewInt(1 << 13)
+	vCardTransactionRecordFieldPaypointLegal       = big.NewInt(1 << 14)
+	vCardTransactionRecordFieldPaypointDba         = big.NewInt(1 << 15)
+	vCardTransactionRecordFieldExternalPaypointId  = big.NewInt(1 << 16)
+	vCardTransactionRecordFieldOrgName             = big.NewInt(1 << 17)
+	vCardTransactionRecordFieldType                = big.NewInt(1 << 18)
+	vCardTransactionRecordFieldStatus              = big.NewInt(1 << 19)
+	vCardTransactionRecordFieldCreatedOn           = big.NewInt(1 << 20)
+	vCardTransactionRecordFieldTransactionAmount   = big.NewInt(1 << 21)
+	vCardTransactionRecordFieldPostedAmount        = big.NewInt(1 << 22)
+	vCardTransactionRecordFieldPostedOn            = big.NewInt(1 << 23)
+	vCardTransactionRecordFieldMerchantName        = big.NewInt(1 << 24)
+	vCardTransactionRecordFieldAuthorizationStatus = big.NewInt(1 << 25)
+	vCardTransactionRecordFieldReasonToDecline     = big.NewInt(1 << 26)
+)
+
+type VCardTransactionRecord struct {
+	// Unique identifier for the transaction.
+	Identifier *string `json:"Identifier,omitempty" url:"Identifier,omitempty"`
+	// Token of the virtual card associated with the transaction.
+	CardToken *string `json:"CardToken,omitempty" url:"CardToken,omitempty"`
+	// Last four digits of the masked virtual card number.
+	LastFour *string `json:"LastFour,omitempty" url:"LastFour,omitempty"`
+	// Expiration date of the virtual card used for the transaction.
+	ExpirationDate *string `json:"ExpirationDate,omitempty" url:"ExpirationDate,omitempty"`
+	Mcc            *Mcc    `json:"Mcc,omitempty" url:"Mcc,omitempty"`
+	// Identifier of the payout linked to this transaction.
+	PayoutId *int64 `json:"PayoutId,omitempty" url:"PayoutId,omitempty"`
+	// Identifier of the customer linked to this transaction.
+	CustomerId *int64 `json:"CustomerId,omitempty" url:"CustomerId,omitempty"`
+	// Identifier of the vendor linked to this transaction.
+	VendorId *int64 `json:"VendorId,omitempty" url:"VendorId,omitempty"`
+	// Custom field 1 from the virtual card.
+	MiscData1 *string `json:"MiscData1,omitempty" url:"MiscData1,omitempty"`
+	// Custom field 2 from the virtual card.
+	MiscData2 *string `json:"MiscData2,omitempty" url:"MiscData2,omitempty"`
+	// Number of times the virtual card has been used.
+	CurrentUses *int `json:"CurrentUses,omitempty" url:"CurrentUses,omitempty"`
+	// Authorized amount on the virtual card.
+	Amount *float64 `json:"Amount,omitempty" url:"Amount,omitempty"`
+	// Current balance remaining on the virtual card.
+	Balance *float64 `json:"Balance,omitempty" url:"Balance,omitempty"`
+	// Numeric identifier of the paypoint that issued the virtual card.
+	PaypointId         *int64              `json:"PaypointId,omitempty" url:"PaypointId,omitempty"`
+	PaypointLegal      *Legalname          `json:"PaypointLegal,omitempty" url:"PaypointLegal,omitempty"`
+	PaypointDba        *Dbaname            `json:"PaypointDba,omitempty" url:"PaypointDba,omitempty"`
+	ExternalPaypointId *ExternalPaypointId `json:"ExternalPaypointID,omitempty" url:"ExternalPaypointID,omitempty"`
+	OrgName            *OrgParentName      `json:"OrgName,omitempty" url:"OrgName,omitempty"`
+	// Transaction type, such as `AUTHORIZATION`.
+	Type *string `json:"Type,omitempty" url:"Type,omitempty"`
+	// Transaction status, such as `AUTHORIZATION`.
+	Status *string `json:"Status,omitempty" url:"Status,omitempty"`
+	// Date and time the transaction was created. Format: `YYYY-MM-DD HH:MM:SS.ffffff`.
+	CreatedOn *string `json:"CreatedOn,omitempty" url:"CreatedOn,omitempty"`
+	// Amount of the transaction, as a string value.
+	TransactionAmount *string `json:"TransactionAmount,omitempty" url:"TransactionAmount,omitempty"`
+	// Posted amount of the transaction, as a string value.
+	PostedAmount *string `json:"PostedAmount,omitempty" url:"PostedAmount,omitempty"`
+	// Date and time the transaction was posted, in format `YYYY-MM-DD HH:MM:SS.ffffff`. Null when the transaction hasn't posted yet.
+	PostedOn *string `json:"PostedOn,omitempty" url:"PostedOn,omitempty"`
+	// Name of the merchant where the virtual card was used.
+	MerchantName *string `json:"MerchantName,omitempty" url:"MerchantName,omitempty"`
+	// Authorization status of the transaction.
+	AuthorizationStatus *string `json:"AuthorizationStatus,omitempty" url:"AuthorizationStatus,omitempty"`
+	// Reason the transaction was declined, when applicable.
+	ReasonToDecline *string `json:"ReasonToDecline,omitempty" url:"ReasonToDecline,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *VCardTransactionRecord) GetIdentifier() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Identifier
+}
+
+func (v *VCardTransactionRecord) GetCardToken() *string {
+	if v == nil {
+		return nil
+	}
+	return v.CardToken
+}
+
+func (v *VCardTransactionRecord) GetLastFour() *string {
+	if v == nil {
+		return nil
+	}
+	return v.LastFour
+}
+
+func (v *VCardTransactionRecord) GetExpirationDate() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ExpirationDate
+}
+
+func (v *VCardTransactionRecord) GetMcc() *Mcc {
+	if v == nil {
+		return nil
+	}
+	return v.Mcc
+}
+
+func (v *VCardTransactionRecord) GetPayoutId() *int64 {
+	if v == nil {
+		return nil
+	}
+	return v.PayoutId
+}
+
+func (v *VCardTransactionRecord) GetCustomerId() *int64 {
+	if v == nil {
+		return nil
+	}
+	return v.CustomerId
+}
+
+func (v *VCardTransactionRecord) GetVendorId() *int64 {
+	if v == nil {
+		return nil
+	}
+	return v.VendorId
+}
+
+func (v *VCardTransactionRecord) GetMiscData1() *string {
+	if v == nil {
+		return nil
+	}
+	return v.MiscData1
+}
+
+func (v *VCardTransactionRecord) GetMiscData2() *string {
+	if v == nil {
+		return nil
+	}
+	return v.MiscData2
+}
+
+func (v *VCardTransactionRecord) GetCurrentUses() *int {
+	if v == nil {
+		return nil
+	}
+	return v.CurrentUses
+}
+
+func (v *VCardTransactionRecord) GetAmount() *float64 {
+	if v == nil {
+		return nil
+	}
+	return v.Amount
+}
+
+func (v *VCardTransactionRecord) GetBalance() *float64 {
+	if v == nil {
+		return nil
+	}
+	return v.Balance
+}
+
+func (v *VCardTransactionRecord) GetPaypointId() *int64 {
+	if v == nil {
+		return nil
+	}
+	return v.PaypointId
+}
+
+func (v *VCardTransactionRecord) GetPaypointLegal() *Legalname {
+	if v == nil {
+		return nil
+	}
+	return v.PaypointLegal
+}
+
+func (v *VCardTransactionRecord) GetPaypointDba() *Dbaname {
+	if v == nil {
+		return nil
+	}
+	return v.PaypointDba
+}
+
+func (v *VCardTransactionRecord) GetExternalPaypointId() *ExternalPaypointId {
+	if v == nil {
+		return nil
+	}
+	return v.ExternalPaypointId
+}
+
+func (v *VCardTransactionRecord) GetOrgName() *OrgParentName {
+	if v == nil {
+		return nil
+	}
+	return v.OrgName
+}
+
+func (v *VCardTransactionRecord) GetType() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Type
+}
+
+func (v *VCardTransactionRecord) GetStatus() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Status
+}
+
+func (v *VCardTransactionRecord) GetCreatedOn() *string {
+	if v == nil {
+		return nil
+	}
+	return v.CreatedOn
+}
+
+func (v *VCardTransactionRecord) GetTransactionAmount() *string {
+	if v == nil {
+		return nil
+	}
+	return v.TransactionAmount
+}
+
+func (v *VCardTransactionRecord) GetPostedAmount() *string {
+	if v == nil {
+		return nil
+	}
+	return v.PostedAmount
+}
+
+func (v *VCardTransactionRecord) GetPostedOn() *string {
+	if v == nil {
+		return nil
+	}
+	return v.PostedOn
+}
+
+func (v *VCardTransactionRecord) GetMerchantName() *string {
+	if v == nil {
+		return nil
+	}
+	return v.MerchantName
+}
+
+func (v *VCardTransactionRecord) GetAuthorizationStatus() *string {
+	if v == nil {
+		return nil
+	}
+	return v.AuthorizationStatus
+}
+
+func (v *VCardTransactionRecord) GetReasonToDecline() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ReasonToDecline
+}
+
+func (v *VCardTransactionRecord) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *VCardTransactionRecord) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetIdentifier sets the Identifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetIdentifier(identifier *string) {
+	v.Identifier = identifier
+	v.require(vCardTransactionRecordFieldIdentifier)
+}
+
+// SetCardToken sets the CardToken field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetCardToken(cardToken *string) {
+	v.CardToken = cardToken
+	v.require(vCardTransactionRecordFieldCardToken)
+}
+
+// SetLastFour sets the LastFour field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetLastFour(lastFour *string) {
+	v.LastFour = lastFour
+	v.require(vCardTransactionRecordFieldLastFour)
+}
+
+// SetExpirationDate sets the ExpirationDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetExpirationDate(expirationDate *string) {
+	v.ExpirationDate = expirationDate
+	v.require(vCardTransactionRecordFieldExpirationDate)
+}
+
+// SetMcc sets the Mcc field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetMcc(mcc *Mcc) {
+	v.Mcc = mcc
+	v.require(vCardTransactionRecordFieldMcc)
+}
+
+// SetPayoutId sets the PayoutId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetPayoutId(payoutId *int64) {
+	v.PayoutId = payoutId
+	v.require(vCardTransactionRecordFieldPayoutId)
+}
+
+// SetCustomerId sets the CustomerId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetCustomerId(customerId *int64) {
+	v.CustomerId = customerId
+	v.require(vCardTransactionRecordFieldCustomerId)
+}
+
+// SetVendorId sets the VendorId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetVendorId(vendorId *int64) {
+	v.VendorId = vendorId
+	v.require(vCardTransactionRecordFieldVendorId)
+}
+
+// SetMiscData1 sets the MiscData1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetMiscData1(miscData1 *string) {
+	v.MiscData1 = miscData1
+	v.require(vCardTransactionRecordFieldMiscData1)
+}
+
+// SetMiscData2 sets the MiscData2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetMiscData2(miscData2 *string) {
+	v.MiscData2 = miscData2
+	v.require(vCardTransactionRecordFieldMiscData2)
+}
+
+// SetCurrentUses sets the CurrentUses field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetCurrentUses(currentUses *int) {
+	v.CurrentUses = currentUses
+	v.require(vCardTransactionRecordFieldCurrentUses)
+}
+
+// SetAmount sets the Amount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetAmount(amount *float64) {
+	v.Amount = amount
+	v.require(vCardTransactionRecordFieldAmount)
+}
+
+// SetBalance sets the Balance field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetBalance(balance *float64) {
+	v.Balance = balance
+	v.require(vCardTransactionRecordFieldBalance)
+}
+
+// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetPaypointId(paypointId *int64) {
+	v.PaypointId = paypointId
+	v.require(vCardTransactionRecordFieldPaypointId)
+}
+
+// SetPaypointLegal sets the PaypointLegal field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetPaypointLegal(paypointLegal *Legalname) {
+	v.PaypointLegal = paypointLegal
+	v.require(vCardTransactionRecordFieldPaypointLegal)
+}
+
+// SetPaypointDba sets the PaypointDba field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetPaypointDba(paypointDba *Dbaname) {
+	v.PaypointDba = paypointDba
+	v.require(vCardTransactionRecordFieldPaypointDba)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
+	v.ExternalPaypointId = externalPaypointId
+	v.require(vCardTransactionRecordFieldExternalPaypointId)
+}
+
+// SetOrgName sets the OrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetOrgName(orgName *OrgParentName) {
+	v.OrgName = orgName
+	v.require(vCardTransactionRecordFieldOrgName)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetType(type_ *string) {
+	v.Type = type_
+	v.require(vCardTransactionRecordFieldType)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetStatus(status *string) {
+	v.Status = status
+	v.require(vCardTransactionRecordFieldStatus)
+}
+
+// SetCreatedOn sets the CreatedOn field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetCreatedOn(createdOn *string) {
+	v.CreatedOn = createdOn
+	v.require(vCardTransactionRecordFieldCreatedOn)
+}
+
+// SetTransactionAmount sets the TransactionAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetTransactionAmount(transactionAmount *string) {
+	v.TransactionAmount = transactionAmount
+	v.require(vCardTransactionRecordFieldTransactionAmount)
+}
+
+// SetPostedAmount sets the PostedAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetPostedAmount(postedAmount *string) {
+	v.PostedAmount = postedAmount
+	v.require(vCardTransactionRecordFieldPostedAmount)
+}
+
+// SetPostedOn sets the PostedOn field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetPostedOn(postedOn *string) {
+	v.PostedOn = postedOn
+	v.require(vCardTransactionRecordFieldPostedOn)
+}
+
+// SetMerchantName sets the MerchantName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetMerchantName(merchantName *string) {
+	v.MerchantName = merchantName
+	v.require(vCardTransactionRecordFieldMerchantName)
+}
+
+// SetAuthorizationStatus sets the AuthorizationStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetAuthorizationStatus(authorizationStatus *string) {
+	v.AuthorizationStatus = authorizationStatus
+	v.require(vCardTransactionRecordFieldAuthorizationStatus)
+}
+
+// SetReasonToDecline sets the ReasonToDecline field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardTransactionRecord) SetReasonToDecline(reasonToDecline *string) {
+	v.ReasonToDecline = reasonToDecline
+	v.require(vCardTransactionRecordFieldReasonToDecline)
+}
+
+func (v *VCardTransactionRecord) UnmarshalJSON(data []byte) error {
+	type unmarshaler VCardTransactionRecord
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VCardTransactionRecord(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VCardTransactionRecord) MarshalJSON() ([]byte, error) {
+	type embed VCardTransactionRecord
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *VCardTransactionRecord) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
 }
 
 // Max number of records to return for the query. Use `0` or negative value to return all records. Defaults to 20.

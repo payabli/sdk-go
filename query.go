@@ -3182,6 +3182,7 @@ type ListSubscriptionsRequest struct {
 	// - `orgName` (ne, eq, ct, nct)
 	// - `externalPaypointId` (ct, nct, ne, eq)
 	// - `subId` (eq, ne)
+	// - `idPmethod` (eq, ne, ct, nct, in, nin). Filters by the subscription's linked stored method identifier (the value returned in `StoredMethod.IdPmethod`). Case-insensitive. Subscriptions without a linked stored method are excluded from matches. Example: `idPmethod(eq,6edcbb56-9c0e-4003-b3d1-99abf149ba0e)`.
 	// - `orderDescription` (ct, nct)
 	// - `cycles` (eq, ne, gt, ge, lt, le)
 	// - `leftcycles` (eq, ne, gt, ge, lt, le)
@@ -3323,6 +3324,7 @@ type ListSubscriptionsOrgRequest struct {
 	// - `orgName` (ne, eq, ct, nct)
 	// - `externalPaypointId` (ct, nct, ne, eq)
 	// - `subId` (eq, ne)
+	// - `idPmethod` (eq, ne, ct, nct, in, nin). Filters by the subscription's linked stored method identifier (the value returned in `StoredMethod.IdPmethod`). Case-insensitive. Subscriptions without a linked stored method are excluded from matches. Example: `idPmethod(eq,6edcbb56-9c0e-4003-b3d1-99abf149ba0e)`.
 	// - `orderDescription` (ct, nct)
 	// - `cycles` (eq, ne, gt, ge, lt, le)
 	// - `leftcycles` (eq, ne, gt, ge, lt, le)
@@ -3433,6 +3435,7 @@ type ListTransactionsRequest struct {
 	// - `scheduleId` (ne, eq)
 	// - `returnId` (ne, eq)
 	// - `refundId` (ne, eq)
+	// - `rejectId` (ne, eq)
 	// - `idTrans` (ne, eq)
 	// - `orgId` (ne, eq)
 	// - `paypointId` (ne, eq)
@@ -3582,6 +3585,7 @@ type ListTransactionsOrgRequest struct {
 	// - `scheduleId` (ne, eq)
 	// - `returnId` (ne, eq)
 	// - `refundId` (ne, eq)
+	// - `rejectId` (ne, eq)
 	// - `idTrans` (ne, eq)
 	// - `orgId` (ne, eq)
 	// - `paypointId` (ne, eq)
@@ -4482,13 +4486,13 @@ type ListVcardsRequest struct {
 	// </Info>
 	// List of field names accepted:
 	//
-	//   - `status` (in, nin, eq, ne)
+	//   - `status` (eq, ne, ct, nct, sw, ew)
 	//   - `createdAt` (gt, ge, lt, le, eq, ne)
 	//   - `cardToken` (ct, nct, eq, ne)
 	//   - `lastFour` (ct, nct, eq, ne)
 	//   - `expirationDate` (ct, nct, eq, ne)
-	//   - `payoutId` (ct, nct, eq, ne, in, nin)
-	//   - `vendorId` (ct, nct, eq, ne, in, nin)
+	//   - `payoutId` (eq, ne, gt, ge, lt, le)
+	//   - `vendorId` (eq, ne, gt, ge, lt, le)
 	//   - `miscData1` (ct, nct, eq, ne)
 	//   - `miscData2` (ct, nct, eq, ne)
 	//   - `currentUses` (gt, ge, lt, le, eq, ne)
@@ -4496,10 +4500,10 @@ type ListVcardsRequest struct {
 	//   - `balance` (gt, ge, lt, le, eq, ne)
 	//   - `paypointLegal` (ne, eq, ct, nct)
 	//   - `paypointDba` (ne, eq, ct, nct)
-	//   - `orgName` (ne, eq, ct, nct)
+	//   - `orgName` (eq, ne, ct, nct, sw, ew)
 	//   - `externalPaypointId` (ct, nct, eq, ne)
-	//   - `paypointId` (in, nin, eq, ne)
-	//   - `cardType` (eq)
+	//   - `paypointId` (eq, ne, gt, ge, lt, le)
+	//   - `cardType` (eq, ne, gt, ge, lt, le)
 	//
 	// List of comparison accepted - enclosed between parentheses:
 	//
@@ -4511,6 +4515,8 @@ type ListVcardsRequest struct {
 	//   - ne => not equal
 	//   - ct => contains
 	//   - nct => not contains
+	//   - sw => starts with
+	//   - ew => ends with
 	//   - in => inside array separated by "|"
 	//   - nin => not inside array separated by "|"
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
@@ -4595,13 +4601,13 @@ type ListVcardsOrgRequest struct {
 	// </Info>
 	// List of field names accepted:
 	//
-	//   - `status` (in, nin, eq, ne)
+	//   - `status` (eq, ne, ct, nct, sw, ew)
 	//   - `createdAt` (gt, ge, lt, le, eq, ne)
 	//   - `cardToken` (ct, nct, eq, ne)
 	//   - `lastFour` (ct, nct, eq, ne)
 	//   - `expirationDate` (ct, nct, eq, ne)
-	//   - `payoutId` (ct, nct, eq, ne, in, nin)
-	//   - `vendorId` (ct, nct, eq, ne, in, nin)
+	//   - `payoutId` (eq, ne, gt, ge, lt, le)
+	//   - `vendorId` (eq, ne, gt, ge, lt, le)
 	//   - `miscData1` (ct, nct, eq, ne)
 	//   - `miscData2` (ct, nct, eq, ne)
 	//   - `currentUses` (gt, ge, lt, le, eq, ne)
@@ -4609,10 +4615,10 @@ type ListVcardsOrgRequest struct {
 	//   - `balance` (gt, ge, lt, le, eq, ne)
 	//   - `paypointLegal` (ne, eq, ct, nct)
 	//   - `paypointDba` (ne, eq, ct, nct)
-	//   - `orgName` (ne, eq, ct, nct)
+	//   - `orgName` (eq, ne, ct, nct, sw, ew)
 	//   - `externalPaypointId` (ct, nct, eq, ne)
-	//   - `paypointId` (in, nin, eq, ne)
-	//   - `cardType` (eq)
+	//   - `paypointId` (eq, ne, gt, ge, lt, le)
+	//   - `cardType` (eq, ne, gt, ge, lt, le)
 	//
 	// List of comparison accepted - enclosed between parentheses:
 	//
@@ -4624,6 +4630,8 @@ type ListVcardsOrgRequest struct {
 	//   - ne => not equal
 	//   - ct => contains
 	//   - nct => not contains
+	//   - sw => starts with
+	//   - ew => ends with
 	//   - in => inside array separated by "|"
 	//   - nin => not inside array separated by "|"
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
@@ -4677,6 +4685,226 @@ func (l *ListVcardsOrgRequest) SetSortBy(sortBy *string) {
 }
 
 var (
+	listVcardsTransactionsRequestFieldFromRecord  = big.NewInt(1 << 0)
+	listVcardsTransactionsRequestFieldLimitRecord = big.NewInt(1 << 1)
+	listVcardsTransactionsRequestFieldParameters  = big.NewInt(1 << 2)
+	listVcardsTransactionsRequestFieldSortBy      = big.NewInt(1 << 3)
+)
+
+type ListVcardsTransactionsRequest struct {
+	// The number of records to skip before starting to collect the result set.
+	FromRecord *int `json:"-" url:"fromRecord,omitempty"`
+	// Max number of records to return for the query. Use `0` or negative value to return all records.
+	LimitRecord *int `json:"-" url:"limitRecord,omitempty"`
+	// Collection of field names, conditions, and values used to filter the query.
+	//
+	// <Info>
+	//
+	//	**You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+	//
+	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+	//
+	//	For example:
+	//
+	//	--url https://api-sandbox.payabli.com/api/Query/vcardsTransactions/8cfec329267?parameters=transactionAmount(gt)=100&limitRecord=20
+	//
+	//	should become:
+	//
+	//	--url https://api-sandbox.payabli.com/api/Query/vcardsTransactions/8cfec329267?transactionAmount(gt)=100&limitRecord=20
+	//
+	// </Info>
+	//
+	// List of field names accepted:
+	//
+	//   - `identifier` (eq, ne, ct, nct)
+	//   - `transactionType` (eq, ne, ct, nct)
+	//   - `transactionStatus` (eq, ne, ct, nct, in, nin)
+	//   - `transactionAmount` (eq, ne, gt, ge, lt, le, ct, nct)
+	//   - `transactionCreatedOn` (eq, ne, gt, ge, lt, le)
+	//   - `cardToken` (ct, nct, eq, ne)
+	//   - `lastFour` (ct, nct, eq, ne)
+	//   - `expirationDate` (ct, nct, eq, ne)
+	//   - `mcc` (ct, nct, eq, ne)
+	//   - `payoutId` (gt, lt, eq, ne)
+	//   - `customerId` (gt, lt, eq, ne)
+	//   - `vendorId` (gt, lt, eq, ne)
+	//   - `miscData1` (ct, nct, eq, ne)
+	//   - `miscData2` (ct, nct, eq, ne)
+	//   - `currentUses` (gt, ge, lt, le, eq, ne)
+	//   - `amount` (gt, ge, lt, le, eq, ne)
+	//   - `balance` (gt, ge, lt, le, eq, ne)
+	//   - `paypointLegal` (ne, eq, ct, nct)
+	//   - `paypointDba` (ne, eq, ct, nct)
+	//   - `orgName` (ne, eq, ct, nct, in, nin)
+	//   - `externalPaypointID` (ct, nct, eq, ne)
+	//   - `paypointId` (gt, lt, eq, ne)
+	//
+	// List of comparison accepted - enclosed between parentheses:
+	//
+	//   - eq or empty => equal
+	//   - gt => greater than
+	//   - ge => greater or equal
+	//   - lt => less than
+	//   - le => less or equal
+	//   - ne => not equal
+	//   - ct => contains
+	//   - nct => not contains
+	//   - in => inside array separated by "|"
+	//   - nin => not inside array separated by "|"
+	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (l *ListVcardsTransactionsRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVcardsTransactionsRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listVcardsTransactionsRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVcardsTransactionsRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listVcardsTransactionsRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVcardsTransactionsRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listVcardsTransactionsRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVcardsTransactionsRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listVcardsTransactionsRequestFieldSortBy)
+}
+
+var (
+	listVcardsTransactionsOrgRequestFieldFromRecord  = big.NewInt(1 << 0)
+	listVcardsTransactionsOrgRequestFieldLimitRecord = big.NewInt(1 << 1)
+	listVcardsTransactionsOrgRequestFieldParameters  = big.NewInt(1 << 2)
+	listVcardsTransactionsOrgRequestFieldSortBy      = big.NewInt(1 << 3)
+)
+
+type ListVcardsTransactionsOrgRequest struct {
+	// The number of records to skip before starting to collect the result set.
+	FromRecord *int `json:"-" url:"fromRecord,omitempty"`
+	// Max number of records to return for the query. Use `0` or negative value to return all records.
+	LimitRecord *int `json:"-" url:"limitRecord,omitempty"`
+	// Collection of field names, conditions, and values used to filter the query.
+	//
+	// <Info>
+	//
+	//	**You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+	//
+	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+	//
+	//	For example:
+	//
+	//	--url https://api-sandbox.payabli.com/api/Query/vcardsTransactions/org/236?parameters=transactionAmount(gt)=100&limitRecord=20
+	//
+	//	should become:
+	//
+	//	--url https://api-sandbox.payabli.com/api/Query/vcardsTransactions/org/236?transactionAmount(gt)=100&limitRecord=20
+	//
+	// </Info>
+	//
+	// List of field names accepted:
+	//
+	//   - `identifier` (eq, ne, ct, nct)
+	//   - `transactionType` (eq, ne, ct, nct)
+	//   - `transactionStatus` (eq, ne, ct, nct, in, nin)
+	//   - `transactionAmount` (eq, ne, gt, ge, lt, le, ct, nct)
+	//   - `transactionCreatedOn` (eq, ne, gt, ge, lt, le)
+	//   - `cardToken` (ct, nct, eq, ne)
+	//   - `lastFour` (ct, nct, eq, ne)
+	//   - `expirationDate` (ct, nct, eq, ne)
+	//   - `mcc` (ct, nct, eq, ne)
+	//   - `payoutId` (gt, lt, eq, ne)
+	//   - `customerId` (gt, lt, eq, ne)
+	//   - `vendorId` (gt, lt, eq, ne)
+	//   - `miscData1` (ct, nct, eq, ne)
+	//   - `miscData2` (ct, nct, eq, ne)
+	//   - `currentUses` (gt, ge, lt, le, eq, ne)
+	//   - `amount` (gt, ge, lt, le, eq, ne)
+	//   - `balance` (gt, ge, lt, le, eq, ne)
+	//   - `paypointLegal` (ne, eq, ct, nct)
+	//   - `paypointDba` (ne, eq, ct, nct)
+	//   - `orgName` (ne, eq, ct, nct, in, nin)
+	//   - `externalPaypointID` (ct, nct, eq, ne)
+	//   - `paypointId` (gt, lt, eq, ne)
+	//
+	// List of comparison accepted - enclosed between parentheses:
+	//
+	//   - eq or empty => equal
+	//   - gt => greater than
+	//   - ge => greater or equal
+	//   - lt => less than
+	//   - le => less or equal
+	//   - ne => not equal
+	//   - ct => contains
+	//   - nct => not contains
+	//   - in => inside array separated by "|"
+	//   - nin => not inside array separated by "|"
+	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
+	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+	SortBy *string `json:"-" url:"sortBy,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (l *ListVcardsTransactionsOrgRequest) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetFromRecord sets the FromRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVcardsTransactionsOrgRequest) SetFromRecord(fromRecord *int) {
+	l.FromRecord = fromRecord
+	l.require(listVcardsTransactionsOrgRequestFieldFromRecord)
+}
+
+// SetLimitRecord sets the LimitRecord field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVcardsTransactionsOrgRequest) SetLimitRecord(limitRecord *int) {
+	l.LimitRecord = limitRecord
+	l.require(listVcardsTransactionsOrgRequestFieldLimitRecord)
+}
+
+// SetParameters sets the Parameters field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVcardsTransactionsOrgRequest) SetParameters(parameters map[string]*string) {
+	l.Parameters = parameters
+	l.require(listVcardsTransactionsOrgRequestFieldParameters)
+}
+
+// SetSortBy sets the SortBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListVcardsTransactionsOrgRequest) SetSortBy(sortBy *string) {
+	l.SortBy = sortBy
+	l.require(listVcardsTransactionsOrgRequestFieldSortBy)
+}
+
+var (
 	listVendorsRequestFieldExportFormat = big.NewInt(1 << 0)
 	listVendorsRequestFieldFromRecord   = big.NewInt(1 << 1)
 	listVendorsRequestFieldLimitRecord  = big.NewInt(1 << 2)
@@ -4717,6 +4945,7 @@ type ListVendorsRequest struct {
 	// - `ein` (ct, nct, eq, ne)
 	// - `phone` (ct, nct, eq, ne)
 	// - `email` (ct, nct, eq, ne)
+	// - `remitEmail` (ct, nct, eq, ne)
 	// - `address` (ct, nct, eq, ne)
 	// - `city` (ct, nct, eq, ne)
 	// - `state` (ct, nct, eq, ne)
@@ -4837,6 +5066,7 @@ type ListVendorsOrgRequest struct {
 	// - `ein` (ct, nct, eq, ne)
 	// - `phone` (ct, nct, eq, ne)
 	// - `email` (ct, nct, eq, ne)
+	// - `remitEmail` (ct, nct, eq, ne)
 	// - `address` (ct, nct, eq, ne)
 	// - `city` (ct, nct, eq, ne)
 	// - `state` (ct, nct, eq, ne)
@@ -14433,11 +14663,12 @@ var (
 	vCardSummaryFieldTotalPages         = big.NewInt(1 << 0)
 	vCardSummaryFieldTotalRecords       = big.NewInt(1 << 1)
 	vCardSummaryFieldTotalAmount        = big.NewInt(1 << 2)
-	vCardSummaryFieldTotalactive        = big.NewInt(1 << 3)
-	vCardSummaryFieldTotalamounteactive = big.NewInt(1 << 4)
-	vCardSummaryFieldTotalbalanceactive = big.NewInt(1 << 5)
-	vCardSummaryFieldPageIdentifier     = big.NewInt(1 << 6)
-	vCardSummaryFieldPageSize           = big.NewInt(1 << 7)
+	vCardSummaryFieldTotalNetAmount     = big.NewInt(1 << 3)
+	vCardSummaryFieldTotalactive        = big.NewInt(1 << 4)
+	vCardSummaryFieldTotalamountactive  = big.NewInt(1 << 5)
+	vCardSummaryFieldTotalbalanceactive = big.NewInt(1 << 6)
+	vCardSummaryFieldPageidentifier     = big.NewInt(1 << 7)
+	vCardSummaryFieldPageSize           = big.NewInt(1 << 8)
 )
 
 type VCardSummary struct {
@@ -14445,13 +14676,15 @@ type VCardSummary struct {
 	TotalRecords Totalrecords `json:"totalRecords" url:"totalRecords"`
 	// Total amount for the records.
 	TotalAmount float64 `json:"totalAmount" url:"totalAmount"`
+	// Total net amount for the records.
+	TotalNetAmount *float64 `json:"totalNetAmount,omitempty" url:"totalNetAmount,omitempty"`
 	// Total number of active vCards.
 	Totalactive int `json:"totalactive" url:"totalactive"`
 	// Total amount of active vCards.
-	Totalamounteactive float64 `json:"totalamounteactive" url:"totalamounteactive"`
+	Totalamountactive float64 `json:"totalamountactive" url:"totalamountactive"`
 	// Total balance of active vCards.
 	Totalbalanceactive float64         `json:"totalbalanceactive" url:"totalbalanceactive"`
-	PageIdentifier     *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
+	Pageidentifier     *PageIdentifier `json:"pageidentifier,omitempty" url:"pageidentifier,omitempty"`
 	PageSize           *Pagesize       `json:"pageSize,omitempty" url:"pageSize,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -14482,6 +14715,13 @@ func (v *VCardSummary) GetTotalAmount() float64 {
 	return v.TotalAmount
 }
 
+func (v *VCardSummary) GetTotalNetAmount() *float64 {
+	if v == nil {
+		return nil
+	}
+	return v.TotalNetAmount
+}
+
 func (v *VCardSummary) GetTotalactive() int {
 	if v == nil {
 		return 0
@@ -14489,11 +14729,11 @@ func (v *VCardSummary) GetTotalactive() int {
 	return v.Totalactive
 }
 
-func (v *VCardSummary) GetTotalamounteactive() float64 {
+func (v *VCardSummary) GetTotalamountactive() float64 {
 	if v == nil {
 		return 0
 	}
-	return v.Totalamounteactive
+	return v.Totalamountactive
 }
 
 func (v *VCardSummary) GetTotalbalanceactive() float64 {
@@ -14503,11 +14743,11 @@ func (v *VCardSummary) GetTotalbalanceactive() float64 {
 	return v.Totalbalanceactive
 }
 
-func (v *VCardSummary) GetPageIdentifier() *PageIdentifier {
+func (v *VCardSummary) GetPageidentifier() *PageIdentifier {
 	if v == nil {
 		return nil
 	}
-	return v.PageIdentifier
+	return v.Pageidentifier
 }
 
 func (v *VCardSummary) GetPageSize() *Pagesize {
@@ -14552,6 +14792,13 @@ func (v *VCardSummary) SetTotalAmount(totalAmount float64) {
 	v.require(vCardSummaryFieldTotalAmount)
 }
 
+// SetTotalNetAmount sets the TotalNetAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardSummary) SetTotalNetAmount(totalNetAmount *float64) {
+	v.TotalNetAmount = totalNetAmount
+	v.require(vCardSummaryFieldTotalNetAmount)
+}
+
 // SetTotalactive sets the Totalactive field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (v *VCardSummary) SetTotalactive(totalactive int) {
@@ -14559,11 +14806,11 @@ func (v *VCardSummary) SetTotalactive(totalactive int) {
 	v.require(vCardSummaryFieldTotalactive)
 }
 
-// SetTotalamounteactive sets the Totalamounteactive field and marks it as non-optional;
+// SetTotalamountactive sets the Totalamountactive field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardSummary) SetTotalamounteactive(totalamounteactive float64) {
-	v.Totalamounteactive = totalamounteactive
-	v.require(vCardSummaryFieldTotalamounteactive)
+func (v *VCardSummary) SetTotalamountactive(totalamountactive float64) {
+	v.Totalamountactive = totalamountactive
+	v.require(vCardSummaryFieldTotalamountactive)
 }
 
 // SetTotalbalanceactive sets the Totalbalanceactive field and marks it as non-optional;
@@ -14573,11 +14820,11 @@ func (v *VCardSummary) SetTotalbalanceactive(totalbalanceactive float64) {
 	v.require(vCardSummaryFieldTotalbalanceactive)
 }
 
-// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
+// SetPageidentifier sets the Pageidentifier field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardSummary) SetPageIdentifier(pageIdentifier *PageIdentifier) {
-	v.PageIdentifier = pageIdentifier
-	v.require(vCardSummaryFieldPageIdentifier)
+func (v *VCardSummary) SetPageidentifier(pageidentifier *PageIdentifier) {
+	v.Pageidentifier = pageidentifier
+	v.require(vCardSummaryFieldPageidentifier)
 }
 
 // SetPageSize sets the PageSize field and marks it as non-optional;

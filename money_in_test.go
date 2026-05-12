@@ -6234,6 +6234,14 @@ func TestSettersTransactionQueryRecordsCustomer(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetSplitCount", func(t *testing.T) {
+		obj := &TransactionQueryRecordsCustomer{}
+		var fernTestValueSplitCount SplitCount
+		obj.SetSplitCount(fernTestValueSplitCount)
+		assert.Equal(t, fernTestValueSplitCount, obj.SplitCount)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetTotalAmount", func(t *testing.T) {
 		obj := &TransactionQueryRecordsCustomer{}
 		var fernTestValueTotalAmount *float64
@@ -7397,6 +7405,29 @@ func TestGettersTransactionQueryRecordsCustomer(t *testing.T) {
 			}
 		}()
 		_ = obj.GetSplitFundingInstructions() // Should return zero value
+	})
+
+	t.Run("GetSplitCount", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionQueryRecordsCustomer{}
+		var expected SplitCount
+		obj.SplitCount = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetSplitCount(), "getter should return the property value")
+	})
+
+	t.Run("GetSplitCount_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *TransactionQueryRecordsCustomer
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetSplitCount() // Should return zero value
 	})
 
 	t.Run("GetTotalAmount", func(t *testing.T) {
@@ -8588,6 +8619,37 @@ func TestSettersMarkExplicitTransactionQueryRecordsCustomer(t *testing.T) {
 
 		// Act
 		obj.SetSplitFundingInstructions(fernTestValueSplitFundingInstructions)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetSplitCount_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionQueryRecordsCustomer{}
+		var fernTestValueSplitCount SplitCount
+
+		// Act
+		obj.SetSplitCount(fernTestValueSplitCount)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)

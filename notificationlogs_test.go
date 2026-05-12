@@ -4,6 +4,7 @@ package payabli
 
 import (
 	json "encoding/json"
+	uuid "github.com/google/uuid"
 	assert "github.com/stretchr/testify/assert"
 	require "github.com/stretchr/testify/require"
 	testing "testing"
@@ -248,6 +249,14 @@ func TestSettersMarkExplicitKeyValueArray(t *testing.T) {
 }
 
 func TestSettersNotificationLog(t *testing.T) {
+	t.Run("SetId", func(t *testing.T) {
+		obj := &NotificationLog{}
+		var fernTestValueId uuid.UUID
+		obj.SetId(fernTestValueId)
+		assert.Equal(t, fernTestValueId, obj.Id)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetOrgId", func(t *testing.T) {
 		obj := &NotificationLog{}
 		var fernTestValueOrgId *int64
@@ -339,6 +348,29 @@ func TestSettersNotificationLog(t *testing.T) {
 }
 
 func TestGettersNotificationLog(t *testing.T) {
+	t.Run("GetId", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &NotificationLog{}
+		var expected uuid.UUID
+		obj.Id = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetId(), "getter should return the property value")
+	})
+
+	t.Run("GetId_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *NotificationLog
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetId() // Should return zero value
+	})
+
 	t.Run("GetOrgId", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
@@ -675,6 +707,37 @@ func TestGettersNotificationLog(t *testing.T) {
 }
 
 func TestSettersMarkExplicitNotificationLog(t *testing.T) {
+	t.Run("SetId_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &NotificationLog{}
+		var fernTestValueId uuid.UUID
+
+		// Act
+		obj.SetId(fernTestValueId)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
 	t.Run("SetOrgId_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
@@ -1019,6 +1082,14 @@ func TestSettersMarkExplicitNotificationLog(t *testing.T) {
 }
 
 func TestSettersNotificationLogDetail(t *testing.T) {
+	t.Run("SetId", func(t *testing.T) {
+		obj := &NotificationLogDetail{}
+		var fernTestValueId uuid.UUID
+		obj.SetId(fernTestValueId)
+		assert.Equal(t, fernTestValueId, obj.Id)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetOrgId", func(t *testing.T) {
 		obj := &NotificationLogDetail{}
 		var fernTestValueOrgId *int64
@@ -1134,6 +1205,29 @@ func TestSettersNotificationLogDetail(t *testing.T) {
 }
 
 func TestGettersNotificationLogDetail(t *testing.T) {
+	t.Run("GetId", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &NotificationLogDetail{}
+		var expected uuid.UUID
+		obj.Id = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetId(), "getter should return the property value")
+	})
+
+	t.Run("GetId_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *NotificationLogDetail
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetId() // Should return zero value
+	})
+
 	t.Run("GetOrgId", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
@@ -1569,6 +1663,37 @@ func TestGettersNotificationLogDetail(t *testing.T) {
 }
 
 func TestSettersMarkExplicitNotificationLogDetail(t *testing.T) {
+	t.Run("SetId_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &NotificationLogDetail{}
+		var fernTestValueId uuid.UUID
+
+		// Act
+		obj.SetId(fernTestValueId)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
 	t.Run("SetOrgId_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange

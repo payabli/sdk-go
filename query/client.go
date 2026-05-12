@@ -4,6 +4,7 @@ package query
 
 import (
 	context "context"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
@@ -808,6 +809,45 @@ func (c *Client) ListVcards(
 	response, err := c.WithRawResponse.ListVcards(
 		ctx,
 		entry,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Retrieve a list of virtual card transactions for an entrypoint. Use filters to limit results.
+func (c *Client) ListVcardsTransactions(
+	ctx context.Context,
+	entry payabli.Entry,
+	request *payabli.ListVcardsTransactionsRequest,
+	opts ...option.RequestOption,
+) (*payabli.VCardTransactionQueryResponse, error) {
+	response, err := c.WithRawResponse.ListVcardsTransactions(
+		ctx,
+		entry,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Retrieve a list of virtual card transactions for an organization. Use filters to limit results.
+func (c *Client) ListVcardsTransactionsOrg(
+	ctx context.Context,
+	// The numeric identifier for organization, assigned by Payabli.
+	orgId int,
+	request *payabli.ListVcardsTransactionsOrgRequest,
+	opts ...option.RequestOption,
+) (*payabli.VCardTransactionQueryResponse, error) {
+	response, err := c.WithRawResponse.ListVcardsTransactionsOrg(
+		ctx,
+		orgId,
 		request,
 		opts...,
 	)

@@ -2560,11 +2560,12 @@ var (
 	transactionQueryRecordsCustomerFieldSettlementStatus             = big.NewInt(1 << 31)
 	transactionQueryRecordsCustomerFieldSource                       = big.NewInt(1 << 32)
 	transactionQueryRecordsCustomerFieldSplitFundingInstructions     = big.NewInt(1 << 33)
-	transactionQueryRecordsCustomerFieldTotalAmount                  = big.NewInt(1 << 34)
-	transactionQueryRecordsCustomerFieldTransactionEvents            = big.NewInt(1 << 35)
-	transactionQueryRecordsCustomerFieldTransactionTime              = big.NewInt(1 << 36)
-	transactionQueryRecordsCustomerFieldTransAdditionalData          = big.NewInt(1 << 37)
-	transactionQueryRecordsCustomerFieldTransStatus                  = big.NewInt(1 << 38)
+	transactionQueryRecordsCustomerFieldSplitCount                   = big.NewInt(1 << 34)
+	transactionQueryRecordsCustomerFieldTotalAmount                  = big.NewInt(1 << 35)
+	transactionQueryRecordsCustomerFieldTransactionEvents            = big.NewInt(1 << 36)
+	transactionQueryRecordsCustomerFieldTransactionTime              = big.NewInt(1 << 37)
+	transactionQueryRecordsCustomerFieldTransAdditionalData          = big.NewInt(1 << 38)
+	transactionQueryRecordsCustomerFieldTransStatus                  = big.NewInt(1 << 39)
 )
 
 type TransactionQueryRecordsCustomer struct {
@@ -2616,6 +2617,7 @@ type TransactionQueryRecordsCustomer struct {
 	SettlementStatus         *int          `json:"SettlementStatus,omitempty" url:"SettlementStatus,omitempty"`
 	Source                   *Source       `json:"Source,omitempty" url:"Source,omitempty"`
 	SplitFundingInstructions *SplitFunding `json:"splitFundingInstructions,omitempty" url:"splitFundingInstructions,omitempty"`
+	SplitCount               SplitCount    `json:"splitCount" url:"splitCount"`
 	// Transaction total amount (including service fee or sub-charge)
 	TotalAmount *float64 `json:"TotalAmount,omitempty" url:"TotalAmount,omitempty"`
 	// Events associated with this transaction.
@@ -2869,6 +2871,13 @@ func (t *TransactionQueryRecordsCustomer) GetSplitFundingInstructions() *SplitFu
 		return nil
 	}
 	return t.SplitFundingInstructions
+}
+
+func (t *TransactionQueryRecordsCustomer) GetSplitCount() SplitCount {
+	if t == nil {
+		return 0
+	}
+	return t.SplitCount
 }
 
 func (t *TransactionQueryRecordsCustomer) GetTotalAmount() *float64 {
@@ -3156,6 +3165,13 @@ func (t *TransactionQueryRecordsCustomer) SetSource(source *Source) {
 func (t *TransactionQueryRecordsCustomer) SetSplitFundingInstructions(splitFundingInstructions *SplitFunding) {
 	t.SplitFundingInstructions = splitFundingInstructions
 	t.require(transactionQueryRecordsCustomerFieldSplitFundingInstructions)
+}
+
+// SetSplitCount sets the SplitCount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetSplitCount(splitCount SplitCount) {
+	t.SplitCount = splitCount
+	t.require(transactionQueryRecordsCustomerFieldSplitCount)
 }
 
 // SetTotalAmount sets the TotalAmount field and marks it as non-optional;
