@@ -17769,7 +17769,7 @@ func TestSettersGeneralEvents(t *testing.T) {
 
 	t.Run("SetExtraData", func(t *testing.T) {
 		obj := &GeneralEvents{}
-		var fernTestValueExtraData map[string]any
+		var fernTestValueExtraData *string
 		obj.SetExtraData(fernTestValueExtraData)
 		assert.Equal(t, fernTestValueExtraData, obj.ExtraData)
 		assert.NotNil(t, obj.explicitFields)
@@ -17864,7 +17864,7 @@ func TestGettersGeneralEvents(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &GeneralEvents{}
-		var expected map[string]any
+		var expected *string
 		obj.ExtraData = expected
 
 		// Act & Assert
@@ -18028,7 +18028,7 @@ func TestSettersMarkExplicitGeneralEvents(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &GeneralEvents{}
-		var fernTestValueExtraData map[string]any
+		var fernTestValueExtraData *string
 
 		// Act
 		obj.SetExtraData(fernTestValueExtraData)

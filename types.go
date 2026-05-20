@@ -6980,7 +6980,7 @@ type GeneralEvents struct {
 	// Event timestamp, in UTC.
 	EventTime *time.Time `json:"eventTime,omitempty" url:"eventTime,omitempty"`
 	// Extra data.
-	ExtraData map[string]any `json:"extraData,omitempty" url:"extraData,omitempty"`
+	ExtraData *string `json:"extraData,omitempty" url:"extraData,omitempty"`
 	// Reference data.
 	RefData *string `json:"refData,omitempty" url:"refData,omitempty"`
 	// The event source.
@@ -7007,7 +7007,7 @@ func (g *GeneralEvents) GetEventTime() *time.Time {
 	return g.EventTime
 }
 
-func (g *GeneralEvents) GetExtraData() map[string]any {
+func (g *GeneralEvents) GetExtraData() *string {
 	if g == nil {
 		return nil
 	}
@@ -7058,7 +7058,7 @@ func (g *GeneralEvents) SetEventTime(eventTime *time.Time) {
 
 // SetExtraData sets the ExtraData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GeneralEvents) SetExtraData(extraData map[string]any) {
+func (g *GeneralEvents) SetExtraData(extraData *string) {
 	g.ExtraData = extraData
 	g.require(generalEventsFieldExtraData)
 }
