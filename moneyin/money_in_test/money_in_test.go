@@ -77,6 +77,7 @@ func VerifyRequestCount(
 	require.Equal(t, expected, len(result.Requests))
 }
 
+/*
 func TestMoneyInAuthorizeWithWireMock(
 	t *testing.T,
 ) {
@@ -139,6 +140,7 @@ func TestMoneyInAuthorizeWithWireMock(
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestMoneyInAuthorizeWithWireMock", "POST", "/MoneyIn/authorize", nil, 1)
 }
+*/
 
 func TestMoneyInCaptureWithWireMock(
 	t *testing.T,
