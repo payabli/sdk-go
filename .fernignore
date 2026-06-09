@@ -1,4 +1,5 @@
 # Specify files that shouldn't be modified by Fern
 moneyin/money_in_test/money_in_test.go
+internal/time.go
 LICENSE.md
 CONTRIBUTING.md
