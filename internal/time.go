@@ -152,14 +152,22 @@ func (d *DateTime) UnmarshalJSON(data []byte) error {
 	}
 	iso8601Err := err
 
-	// Fall back to date-only format.
+	// Fall back to date-only format 1
 	parsedTime, err = time.Parse("2006-01-02", raw)
 	if err == nil {
 		parsedTime = parsedTime.UTC()
 		*d = DateTime{t: &parsedTime}
 		return nil
 	}
-	dateOnlyErr := err
+	dateOnly1Err := err
 
-	return fmt.Errorf("unable to parse datetime string %q: tried RFC3339Nano (%v), ISO8601 (%v), date-only (%v)", raw, rfc3339NanoErr, iso8601Err, dateOnlyErr)
+	parsedTime, err = time.Parse("01-02-2006", raw)
+	if err == nil {
+		parsedTime = parsedTime.UTC()
+		*d = DateTime{t: &parsedTime}
+		return nil
+	}
+	dateOnly2Err := err
+
+	return fmt.Errorf("unable to parse datetime string %q: tried RFC3339Nano (%v), ISO8601 (%v), YYYY-MM-DD (%v), MM-DD-YYYY (%v)", raw, rfc3339NanoErr, iso8601Err, dateOnly1Err, dateOnly2Err)
 }
