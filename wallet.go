@@ -473,7 +473,7 @@ var (
 type ApplePayPaypointRegistrationData struct {
 	Entry     *Entry     `json:"entry,omitempty" url:"entry,omitempty"`
 	IsEnabled *IsEnabled `json:"isEnabled,omitempty" url:"isEnabled,omitempty"`
-	// The wallet type. In this context it will always be `applePay`.
+	// The wallet type. In this context it will always be `applepay`.
 	WalletType *string          `json:"walletType,omitempty" url:"walletType,omitempty"`
 	WalletData *AppleWalletData `json:"walletData,omitempty" url:"walletData,omitempty"`
 
@@ -850,7 +850,8 @@ func (a *AppleWalletData) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
-// When `true`, the wallet service configuration cascades to all paypoints and suborganizations belonging to the parent entity.
+// When `true`, the wallet service configuration cascades to all paypoints
+// and suborganizations belonging to the parent entity.
 type Cascade = bool
 
 var (
@@ -1341,7 +1342,7 @@ var (
 type GooglePayPaypointRegistrationData struct {
 	Entry     *Entry     `json:"entry,omitempty" url:"entry,omitempty"`
 	IsEnabled *IsEnabled `json:"isEnabled,omitempty" url:"isEnabled,omitempty"`
-	// The wallet type. In this context it will always be `googlePay`.
+	// The wallet type. In this context it will always be `googlepay`.
 	WalletType *string           `json:"walletType,omitempty" url:"walletType,omitempty"`
 	WalletData *GoogleWalletData `json:"walletData,omitempty" url:"walletData,omitempty"`
 
@@ -1670,7 +1671,8 @@ func (o *OrganizationUpdates) String() string {
 	return fmt.Sprintf("%#v", o)
 }
 
-// When `true`, the wallet service configuration cascades to all paypoints and suborganizations belonging to the parent entity.
+// When `true`, the wallet service configuration cascades to all paypoints
+// and suborganizations belonging to the parent entity.
 type WalletCascade = bool
 
 // When `true`, wallet service is enabled.

@@ -4,6 +4,7 @@ package bill
 
 import (
 	context "context"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
@@ -25,8 +26,9 @@ func NewClient(options *core.RequestOptions) *Client {
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -52,52 +54,14 @@ func (c *Client) AddBill(
 	return response.Body, nil
 }
 
-// Delete a file attached to a bill.
-func (c *Client) DeleteAttachedFromBill(
-	ctx context.Context,
-	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
-	idBill int,
-	// The filename in Payabli. Filename is `zipName` in response to a
-	// request to `/api/Invoice/{idInvoice}`. Here, the filename is
-	// `0_Bill.pdf`.
-	//
-	// ```json
-	//   "DocumentsRef": {
-	//     "zipfile": "inva_269.zip",
-	//     "filelist": [
-	//       {
-	//         "originalName": "Bill.pdf",
-	//         "zipName": "0_Bill.pdf",
-	//         "descriptor": null
-	//       }
-	//     ]
-	//   }
-	//   ```
-	filename string,
-	request *payabli.DeleteAttachedFromBillRequest,
-	opts ...option.RequestOption,
-) (*payabli.BillResponse, error) {
-	response, err := c.WithRawResponse.DeleteAttachedFromBill(
-		ctx,
-		idBill,
-		filename,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// Deletes a bill by ID.
-func (c *Client) DeleteBill(
+// Retrieves a bill by ID from an entrypoint.
+func (c *Client) GetBill(
 	ctx context.Context,
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
 	idBill int,
 	opts ...option.RequestOption,
-) (*payabli.BillResponse, error) {
-	response, err := c.WithRawResponse.DeleteBill(
+) (*payabli.GetBillResponse, error) {
+	response, err := c.WithRawResponse.GetBill(
 		ctx,
 		idBill,
 		opts...,
@@ -128,22 +92,32 @@ func (c *Client) EditBill(
 	return response.Body, nil
 }
 
+// Deletes a bill by ID.
+func (c *Client) DeleteBill(
+	ctx context.Context,
+	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+	idBill int,
+	opts ...option.RequestOption,
+) (*payabli.BillResponse, error) {
+	response, err := c.WithRawResponse.DeleteBill(
+		ctx,
+		idBill,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 // Retrieves a file attached to a bill, either as a binary file or as a Base64-encoded string.
 func (c *Client) GetAttachedFromBill(
 	ctx context.Context,
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
 	idBill int,
-	// The filename in Payabli. Filename is `zipName` in response to a request to `/api/Invoice/{idInvoice}`. Here, the filename is `0_Bill.pdf``.
-	// "DocumentsRef": {
-	//   "zipfile": "inva_269.zip",
-	//   "filelist": [
-	//     {
-	//       "originalName": "Bill.pdf",
-	//       "zipName": "0_Bill.pdf",
-	//       "descriptor": null
-	//     }
-	//   ]
-	// }
+	// The filename in Payabli. Get this from the `zipName` field
+	// in the `DocumentsRef.filelist` array returned by
+	// `/api/Bill/{idBill}`. Example: `0_Bill.pdf`.
 	filename string,
 	request *payabli.GetAttachedFromBillRequest,
 	opts ...option.RequestOption,
@@ -161,16 +135,86 @@ func (c *Client) GetAttachedFromBill(
 	return response.Body, nil
 }
 
-// Retrieves a bill by ID from an entrypoint.
-func (c *Client) GetBill(
+// Delete a file attached to a bill.
+func (c *Client) DeleteAttachedFromBill(
 	ctx context.Context,
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
 	idBill int,
+	// The filename in Payabli. Get this from the `zipName` field
+	// in the `DocumentsRef.filelist` array returned by
+	// `/api/Bill/{idBill}`. Example: `0_Bill.pdf`.
+	filename string,
+	request *payabli.DeleteAttachedFromBillRequest,
 	opts ...option.RequestOption,
-) (*payabli.GetBillResponse, error) {
-	response, err := c.WithRawResponse.GetBill(
+) (*payabli.BillResponse, error) {
+	response, err := c.WithRawResponse.DeleteAttachedFromBill(
 		ctx,
 		idBill,
+		filename,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Send a bill to a user or list of users to approve.
+func (c *Client) SendToApprovalBill(
+	ctx context.Context,
+	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+	idBill int,
+	request *payabli.SendToApprovalBillRequest,
+	opts ...option.RequestOption,
+) (*payabli.BillResponse, error) {
+	response, err := c.WithRawResponse.SendToApprovalBill(
+		ctx,
+		idBill,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Modify the list of users the bill is sent to for approval.
+func (c *Client) ModifyApprovalBill(
+	ctx context.Context,
+	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+	idBill int,
+	request []string,
+	opts ...option.RequestOption,
+) (*payabli.ModifyApprovalBillResponse, error) {
+	response, err := c.WithRawResponse.ModifyApprovalBill(
+		ctx,
+		idBill,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Approve or disapprove a bill by ID.
+func (c *Client) SetApprovedBill(
+	ctx context.Context,
+	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+	idBill int,
+	// String representing the approved status. Accepted values: 'true' or 'false'.
+	approved string,
+	request *payabli.SetApprovedBillRequest,
+	opts ...option.RequestOption,
+) (*payabli.SetApprovedBillResponse, error) {
+	response, err := c.WithRawResponse.SetApprovedBill(
+		ctx,
+		idBill,
+		approved,
+		request,
 		opts...,
 	)
 	if err != nil {
@@ -210,69 +254,6 @@ func (c *Client) ListBillsOrg(
 	response, err := c.WithRawResponse.ListBillsOrg(
 		ctx,
 		orgId,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// Modify the list of users the bill is sent to for approval.
-func (c *Client) ModifyApprovalBill(
-	ctx context.Context,
-	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
-	idBill int,
-	request []string,
-	opts ...option.RequestOption,
-) (*payabli.ModifyApprovalBillResponse, error) {
-	response, err := c.WithRawResponse.ModifyApprovalBill(
-		ctx,
-		idBill,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// Send a bill to a user or list of users to approve.
-func (c *Client) SendToApprovalBill(
-	ctx context.Context,
-	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
-	idBill int,
-	request *payabli.SendToApprovalBillRequest,
-	opts ...option.RequestOption,
-) (*payabli.BillResponse, error) {
-	response, err := c.WithRawResponse.SendToApprovalBill(
-		ctx,
-		idBill,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// Approve or disapprove a bill by ID.
-func (c *Client) SetApprovedBill(
-	ctx context.Context,
-	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
-	idBill int,
-	// String representing the approved status. Accepted values: 'true' or 'false'.
-	approved string,
-	request *payabli.SetApprovedBillRequest,
-	opts ...option.RequestOption,
-) (*payabli.SetApprovedBillResponse, error) {
-	response, err := c.WithRawResponse.SetApprovedBill(
-		ctx,
-		idBill,
-		approved,
 		request,
 		opts...,
 	)

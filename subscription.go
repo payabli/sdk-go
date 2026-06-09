@@ -12,12 +12,39 @@ import (
 var (
 	requestScheduleFieldIdempotencyKey        = big.NewInt(1 << 0)
 	requestScheduleFieldForceCustomerCreation = big.NewInt(1 << 1)
+	requestScheduleFieldCustomerData          = big.NewInt(1 << 2)
+	requestScheduleFieldEntryPoint            = big.NewInt(1 << 3)
+	requestScheduleFieldInvoiceData           = big.NewInt(1 << 4)
+	requestScheduleFieldPaymentDetails        = big.NewInt(1 << 5)
+	requestScheduleFieldPaymentMethod         = big.NewInt(1 << 6)
+	requestScheduleFieldScheduleDetails       = big.NewInt(1 << 7)
+	requestScheduleFieldSetPause              = big.NewInt(1 << 8)
+	requestScheduleFieldSource                = big.NewInt(1 << 9)
+	requestScheduleFieldSubdomain             = big.NewInt(1 << 10)
+	requestScheduleFieldSubscriptionType      = big.NewInt(1 << 11)
 )
 
 type RequestSchedule struct {
-	IdempotencyKey        *IdempotencyKey          `json:"-" url:"-"`
-	ForceCustomerCreation *ForceCustomerCreation   `json:"-" url:"forceCustomerCreation,omitempty"`
-	Body                  *SubscriptionRequestBody `json:"-" url:"-"`
+	// _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+	IdempotencyKey *IdempotencyKey `json:"-" url:"-"`
+	// When `true`, the request creates a new customer record, regardless of whether customer identifiers match an existing customer. Defaults to `false`.
+	ForceCustomerCreation *ForceCustomerCreation `json:"-" url:"forceCustomerCreation,omitempty"`
+	// Object describing the customer/payor.
+	CustomerData *PayorDataRequest `json:"customerData,omitempty" url:"-"`
+	EntryPoint   *Entrypointfield  `json:"entryPoint,omitempty" url:"-"`
+	// Object describing an Invoice linked to the subscription.
+	InvoiceData *BillData `json:"invoiceData,omitempty" url:"-"`
+	// Object describing details of the payment. For Regular subscriptions, skip a payment by setting `totalAmount` to 0; payments pause until you update it to a non-zero value, and `serviceFee` must also be 0 when `totalAmount` is 0. For BalanceDriven subscriptions, any `totalAmount` you send is accepted but ignored at run time. Each run charges the payor's live balance, and a zero balance is skipped.
+	PaymentDetails *PaymentDetail `json:"paymentDetails,omitempty" url:"-"`
+	// Information about the payment method for the transaction. Required and recommended fields for each payment method type are described in each schema below.
+	PaymentMethod *RequestSchedulePaymentMethod `json:"paymentMethod,omitempty" url:"-"`
+	// Object describing the schedule for subscription.
+	ScheduleDetails *ScheduleDetail `json:"scheduleDetails,omitempty" url:"-"`
+	SetPause        *SetPause       `json:"setPause,omitempty" url:"-"`
+	Source          *Source         `json:"source,omitempty" url:"-"`
+	Subdomain       *Subdomain      `json:"subdomain,omitempty" url:"-"`
+	// Subscription type. Defaults to `Regular` when omitted. Can't be changed after the subscription is created. If you send it to the update endpoint, it's ignored.
+	SubscriptionType *SubscriptionType `json:"subscriptionType,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -44,17 +71,95 @@ func (r *RequestSchedule) SetForceCustomerCreation(forceCustomerCreation *ForceC
 	r.require(requestScheduleFieldForceCustomerCreation)
 }
 
+// SetCustomerData sets the CustomerData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RequestSchedule) SetCustomerData(customerData *PayorDataRequest) {
+	r.CustomerData = customerData
+	r.require(requestScheduleFieldCustomerData)
+}
+
+// SetEntryPoint sets the EntryPoint field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RequestSchedule) SetEntryPoint(entryPoint *Entrypointfield) {
+	r.EntryPoint = entryPoint
+	r.require(requestScheduleFieldEntryPoint)
+}
+
+// SetInvoiceData sets the InvoiceData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RequestSchedule) SetInvoiceData(invoiceData *BillData) {
+	r.InvoiceData = invoiceData
+	r.require(requestScheduleFieldInvoiceData)
+}
+
+// SetPaymentDetails sets the PaymentDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RequestSchedule) SetPaymentDetails(paymentDetails *PaymentDetail) {
+	r.PaymentDetails = paymentDetails
+	r.require(requestScheduleFieldPaymentDetails)
+}
+
+// SetPaymentMethod sets the PaymentMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RequestSchedule) SetPaymentMethod(paymentMethod *RequestSchedulePaymentMethod) {
+	r.PaymentMethod = paymentMethod
+	r.require(requestScheduleFieldPaymentMethod)
+}
+
+// SetScheduleDetails sets the ScheduleDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RequestSchedule) SetScheduleDetails(scheduleDetails *ScheduleDetail) {
+	r.ScheduleDetails = scheduleDetails
+	r.require(requestScheduleFieldScheduleDetails)
+}
+
+// SetSetPause sets the SetPause field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RequestSchedule) SetSetPause(setPause *SetPause) {
+	r.SetPause = setPause
+	r.require(requestScheduleFieldSetPause)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RequestSchedule) SetSource(source *Source) {
+	r.Source = source
+	r.require(requestScheduleFieldSource)
+}
+
+// SetSubdomain sets the Subdomain field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RequestSchedule) SetSubdomain(subdomain *Subdomain) {
+	r.Subdomain = subdomain
+	r.require(requestScheduleFieldSubdomain)
+}
+
+// SetSubscriptionType sets the SubscriptionType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RequestSchedule) SetSubscriptionType(subscriptionType *SubscriptionType) {
+	r.SubscriptionType = subscriptionType
+	r.require(requestScheduleFieldSubscriptionType)
+}
+
 func (r *RequestSchedule) UnmarshalJSON(data []byte) error {
-	body := new(SubscriptionRequestBody)
+	type unmarshaler RequestSchedule
+	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	r.Body = body
+	*r = RequestSchedule(body)
 	return nil
 }
 
 func (r *RequestSchedule) MarshalJSON() ([]byte, error) {
-	return json.Marshal(r.Body)
+	type embed RequestSchedule
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -64,7 +169,7 @@ var (
 )
 
 type RequestUpdateSchedule struct {
-	// Object describing details of the payment. To skip the payment, set the `totalAmount` to 0. Payments will be paused until the amount is updated to a non-zero value. When `totalAmount` is set to 0, the `serviceFee` must also be set to 0.
+	// Object describing details of the payment. For Regular subscriptions, skip a payment by setting `totalAmount` to 0; payments pause until you update it to a non-zero value, and `serviceFee` must also be 0 when `totalAmount` is 0. For BalanceDriven subscriptions, any `totalAmount` you send is accepted but ignored at run time. Each run charges the payor's live balance, and a zero balance is skipped.
 	PaymentDetails *PaymentDetail `json:"paymentDetails,omitempty" url:"-"`
 	// Object describing the schedule for subscription
 	ScheduleDetails *ScheduleDetail `json:"scheduleDetails,omitempty" url:"-"`
@@ -121,142 +226,6 @@ func (r *RequestUpdateSchedule) MarshalJSON() ([]byte, error) {
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
 	return json.Marshal(explicitMarshaler)
-}
-
-var (
-	scheduleDetailFieldEndDate   = big.NewInt(1 << 0)
-	scheduleDetailFieldFrequency = big.NewInt(1 << 1)
-	scheduleDetailFieldPlanId    = big.NewInt(1 << 2)
-	scheduleDetailFieldStartDate = big.NewInt(1 << 3)
-)
-
-type ScheduleDetail struct {
-	// Subscription end date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY or the value `untilcancelled` to indicate a scheduled payment with infinite cycle.
-	EndDate *string `json:"endDate,omitempty" url:"endDate,omitempty"`
-	// Frequency of the subscription.
-	Frequency *Frequency `json:"frequency,omitempty" url:"frequency,omitempty"`
-	// This field is for future development, leave null. Identifier of subscription plan applied in the scheduled payment/subscription.
-	PlanId *int `json:"planId,omitempty" url:"planId,omitempty"`
-	// Subscription start date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY. This must be a future date.
-	StartDate *string `json:"startDate,omitempty" url:"startDate,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (s *ScheduleDetail) GetEndDate() *string {
-	if s == nil {
-		return nil
-	}
-	return s.EndDate
-}
-
-func (s *ScheduleDetail) GetFrequency() *Frequency {
-	if s == nil {
-		return nil
-	}
-	return s.Frequency
-}
-
-func (s *ScheduleDetail) GetPlanId() *int {
-	if s == nil {
-		return nil
-	}
-	return s.PlanId
-}
-
-func (s *ScheduleDetail) GetStartDate() *string {
-	if s == nil {
-		return nil
-	}
-	return s.StartDate
-}
-
-func (s *ScheduleDetail) GetExtraProperties() map[string]interface{} {
-	if s == nil {
-		return nil
-	}
-	return s.extraProperties
-}
-
-func (s *ScheduleDetail) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
-	}
-	s.explicitFields.Or(s.explicitFields, field)
-}
-
-// SetEndDate sets the EndDate field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *ScheduleDetail) SetEndDate(endDate *string) {
-	s.EndDate = endDate
-	s.require(scheduleDetailFieldEndDate)
-}
-
-// SetFrequency sets the Frequency field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *ScheduleDetail) SetFrequency(frequency *Frequency) {
-	s.Frequency = frequency
-	s.require(scheduleDetailFieldFrequency)
-}
-
-// SetPlanId sets the PlanId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *ScheduleDetail) SetPlanId(planId *int) {
-	s.PlanId = planId
-	s.require(scheduleDetailFieldPlanId)
-}
-
-// SetStartDate sets the StartDate field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *ScheduleDetail) SetStartDate(startDate *string) {
-	s.StartDate = startDate
-	s.require(scheduleDetailFieldStartDate)
-}
-
-func (s *ScheduleDetail) UnmarshalJSON(data []byte) error {
-	type unmarshaler ScheduleDetail
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*s = ScheduleDetail(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *s)
-	if err != nil {
-		return err
-	}
-	s.extraProperties = extraProperties
-	s.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (s *ScheduleDetail) MarshalJSON() ([]byte, error) {
-	type embed ScheduleDetail
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*s),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (s *ScheduleDetail) String() string {
-	if s == nil {
-		return "<nil>"
-	}
-	if len(s.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(s); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", s)
 }
 
 // Success response
@@ -515,9 +484,8 @@ func (r *RemoveSubscriptionResponse) String() string {
 
 // Information about the payment method for the transaction. Required and recommended fields for each payment method type are described in each schema below.
 type RequestSchedulePaymentMethod struct {
-	PayMethodCredit *PayMethodCredit
-	PayMethodAch    *PayMethodAch
-	// The required and recommended fields for a payment made with a stored payment method.
+	PayMethodCredit                       *PayMethodCredit
+	PayMethodAch                          *PayMethodAch
 	RequestSchedulePaymentMethodInitiator *RequestSchedulePaymentMethodInitiator
 
 	typ string
@@ -716,36 +684,28 @@ func (r *RequestSchedulePaymentMethodInitiator) String() string {
 	return fmt.Sprintf("%#v", r)
 }
 
-// Flag indicating if subscription is paused. When a subscription is paused, no payments are processed until the subscription is unpaused, and the next payment date isn't calculated automatically. If you want to skip a payment instead, set the `totalAmount` to 0 in the `paymentDetails` object.
-type SetPause = bool
-
 var (
-	subscriptionRequestBodyFieldCustomerData    = big.NewInt(1 << 0)
-	subscriptionRequestBodyFieldEntryPoint      = big.NewInt(1 << 1)
-	subscriptionRequestBodyFieldInvoiceData     = big.NewInt(1 << 2)
-	subscriptionRequestBodyFieldPaymentDetails  = big.NewInt(1 << 3)
-	subscriptionRequestBodyFieldPaymentMethod   = big.NewInt(1 << 4)
-	subscriptionRequestBodyFieldScheduleDetails = big.NewInt(1 << 5)
-	subscriptionRequestBodyFieldSetPause        = big.NewInt(1 << 6)
-	subscriptionRequestBodyFieldSource          = big.NewInt(1 << 7)
-	subscriptionRequestBodyFieldSubdomain       = big.NewInt(1 << 8)
+	scheduleDetailFieldEndDate   = big.NewInt(1 << 0)
+	scheduleDetailFieldFrequency = big.NewInt(1 << 1)
+	scheduleDetailFieldPlanId    = big.NewInt(1 << 2)
+	scheduleDetailFieldStartDate = big.NewInt(1 << 3)
 )
 
-type SubscriptionRequestBody struct {
-	// Object describing the customer/payor.
-	CustomerData *PayorDataRequest `json:"customerData,omitempty" url:"customerData,omitempty"`
-	EntryPoint   *Entrypointfield  `json:"entryPoint,omitempty" url:"entryPoint,omitempty"`
-	// Object describing an Invoice linked to the subscription.
-	InvoiceData *BillData `json:"invoiceData,omitempty" url:"invoiceData,omitempty"`
-	// Object describing details of the payment. To skip the payment, set the `totalAmount` to 0. Payments will be paused until the amount is updated to a non-zero value. When `totalAmount` is set to 0, the `serviceFee` must also be set to 0.
-	PaymentDetails *PaymentDetail `json:"paymentDetails,omitempty" url:"paymentDetails,omitempty"`
-	// Information about the payment method for the transaction. Required and recommended fields for each payment method type are described in each schema below.
-	PaymentMethod *RequestSchedulePaymentMethod `json:"paymentMethod,omitempty" url:"paymentMethod,omitempty"`
-	// Object describing the schedule for subscription.
-	ScheduleDetails *ScheduleDetail `json:"scheduleDetails,omitempty" url:"scheduleDetails,omitempty"`
-	SetPause        *SetPause       `json:"setPause,omitempty" url:"setPause,omitempty"`
-	Source          *Source         `json:"source,omitempty" url:"source,omitempty"`
-	Subdomain       *Subdomain      `json:"subdomain,omitempty" url:"subdomain,omitempty"`
+type ScheduleDetail struct {
+	// Subscription end date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY or the value `untilcancelled` to indicate a scheduled payment with infinite cycle.
+	//
+	// Not applicable for `BalanceDriven` subscriptions, which run until cancelled.
+	EndDate *string `json:"endDate,omitempty" url:"endDate,omitempty"`
+	// Frequency of the subscription.
+	//
+	// `BalanceDriven` subscriptions only accept the monthly cadences `firstofmonth`, `fifteenthofmonth`, and `endofmonth`.
+	Frequency *Frequency `json:"frequency,omitempty" url:"frequency,omitempty"`
+	// This field is for future development, leave null. Identifier of subscription plan applied in the scheduled payment/subscription.
+	PlanId *int `json:"planId,omitempty" url:"planId,omitempty"`
+	// Subscription start date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY. This must be a future date.
+	//
+	// Not applicable for `BalanceDriven` subscriptions, where the start date is calculated automatically from `frequency`.
+	StartDate *string `json:"startDate,omitempty" url:"startDate,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -754,153 +714,83 @@ type SubscriptionRequestBody struct {
 	rawJSON         json.RawMessage
 }
 
-func (s *SubscriptionRequestBody) GetCustomerData() *PayorDataRequest {
+func (s *ScheduleDetail) GetEndDate() *string {
 	if s == nil {
 		return nil
 	}
-	return s.CustomerData
+	return s.EndDate
 }
 
-func (s *SubscriptionRequestBody) GetEntryPoint() *Entrypointfield {
+func (s *ScheduleDetail) GetFrequency() *Frequency {
 	if s == nil {
 		return nil
 	}
-	return s.EntryPoint
+	return s.Frequency
 }
 
-func (s *SubscriptionRequestBody) GetInvoiceData() *BillData {
+func (s *ScheduleDetail) GetPlanId() *int {
 	if s == nil {
 		return nil
 	}
-	return s.InvoiceData
+	return s.PlanId
 }
 
-func (s *SubscriptionRequestBody) GetPaymentDetails() *PaymentDetail {
+func (s *ScheduleDetail) GetStartDate() *string {
 	if s == nil {
 		return nil
 	}
-	return s.PaymentDetails
+	return s.StartDate
 }
 
-func (s *SubscriptionRequestBody) GetPaymentMethod() *RequestSchedulePaymentMethod {
-	if s == nil {
-		return nil
-	}
-	return s.PaymentMethod
-}
-
-func (s *SubscriptionRequestBody) GetScheduleDetails() *ScheduleDetail {
-	if s == nil {
-		return nil
-	}
-	return s.ScheduleDetails
-}
-
-func (s *SubscriptionRequestBody) GetSetPause() *SetPause {
-	if s == nil {
-		return nil
-	}
-	return s.SetPause
-}
-
-func (s *SubscriptionRequestBody) GetSource() *Source {
-	if s == nil {
-		return nil
-	}
-	return s.Source
-}
-
-func (s *SubscriptionRequestBody) GetSubdomain() *Subdomain {
-	if s == nil {
-		return nil
-	}
-	return s.Subdomain
-}
-
-func (s *SubscriptionRequestBody) GetExtraProperties() map[string]interface{} {
+func (s *ScheduleDetail) GetExtraProperties() map[string]interface{} {
 	if s == nil {
 		return nil
 	}
 	return s.extraProperties
 }
 
-func (s *SubscriptionRequestBody) require(field *big.Int) {
+func (s *ScheduleDetail) require(field *big.Int) {
 	if s.explicitFields == nil {
 		s.explicitFields = big.NewInt(0)
 	}
 	s.explicitFields.Or(s.explicitFields, field)
 }
 
-// SetCustomerData sets the CustomerData field and marks it as non-optional;
+// SetEndDate sets the EndDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SubscriptionRequestBody) SetCustomerData(customerData *PayorDataRequest) {
-	s.CustomerData = customerData
-	s.require(subscriptionRequestBodyFieldCustomerData)
+func (s *ScheduleDetail) SetEndDate(endDate *string) {
+	s.EndDate = endDate
+	s.require(scheduleDetailFieldEndDate)
 }
 
-// SetEntryPoint sets the EntryPoint field and marks it as non-optional;
+// SetFrequency sets the Frequency field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SubscriptionRequestBody) SetEntryPoint(entryPoint *Entrypointfield) {
-	s.EntryPoint = entryPoint
-	s.require(subscriptionRequestBodyFieldEntryPoint)
+func (s *ScheduleDetail) SetFrequency(frequency *Frequency) {
+	s.Frequency = frequency
+	s.require(scheduleDetailFieldFrequency)
 }
 
-// SetInvoiceData sets the InvoiceData field and marks it as non-optional;
+// SetPlanId sets the PlanId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SubscriptionRequestBody) SetInvoiceData(invoiceData *BillData) {
-	s.InvoiceData = invoiceData
-	s.require(subscriptionRequestBodyFieldInvoiceData)
+func (s *ScheduleDetail) SetPlanId(planId *int) {
+	s.PlanId = planId
+	s.require(scheduleDetailFieldPlanId)
 }
 
-// SetPaymentDetails sets the PaymentDetails field and marks it as non-optional;
+// SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SubscriptionRequestBody) SetPaymentDetails(paymentDetails *PaymentDetail) {
-	s.PaymentDetails = paymentDetails
-	s.require(subscriptionRequestBodyFieldPaymentDetails)
+func (s *ScheduleDetail) SetStartDate(startDate *string) {
+	s.StartDate = startDate
+	s.require(scheduleDetailFieldStartDate)
 }
 
-// SetPaymentMethod sets the PaymentMethod field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SubscriptionRequestBody) SetPaymentMethod(paymentMethod *RequestSchedulePaymentMethod) {
-	s.PaymentMethod = paymentMethod
-	s.require(subscriptionRequestBodyFieldPaymentMethod)
-}
-
-// SetScheduleDetails sets the ScheduleDetails field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SubscriptionRequestBody) SetScheduleDetails(scheduleDetails *ScheduleDetail) {
-	s.ScheduleDetails = scheduleDetails
-	s.require(subscriptionRequestBodyFieldScheduleDetails)
-}
-
-// SetSetPause sets the SetPause field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SubscriptionRequestBody) SetSetPause(setPause *SetPause) {
-	s.SetPause = setPause
-	s.require(subscriptionRequestBodyFieldSetPause)
-}
-
-// SetSource sets the Source field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SubscriptionRequestBody) SetSource(source *Source) {
-	s.Source = source
-	s.require(subscriptionRequestBodyFieldSource)
-}
-
-// SetSubdomain sets the Subdomain field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SubscriptionRequestBody) SetSubdomain(subdomain *Subdomain) {
-	s.Subdomain = subdomain
-	s.require(subscriptionRequestBodyFieldSubdomain)
-}
-
-func (s *SubscriptionRequestBody) UnmarshalJSON(data []byte) error {
-	type unmarshaler SubscriptionRequestBody
+func (s *ScheduleDetail) UnmarshalJSON(data []byte) error {
+	type unmarshaler ScheduleDetail
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*s = SubscriptionRequestBody(value)
+	*s = ScheduleDetail(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *s)
 	if err != nil {
 		return err
@@ -910,8 +800,8 @@ func (s *SubscriptionRequestBody) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (s *SubscriptionRequestBody) MarshalJSON() ([]byte, error) {
-	type embed SubscriptionRequestBody
+func (s *ScheduleDetail) MarshalJSON() ([]byte, error) {
+	type embed ScheduleDetail
 	var marshaler = struct {
 		embed
 	}{
@@ -921,7 +811,7 @@ func (s *SubscriptionRequestBody) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (s *SubscriptionRequestBody) String() string {
+func (s *ScheduleDetail) String() string {
 	if s == nil {
 		return "<nil>"
 	}
@@ -935,6 +825,9 @@ func (s *SubscriptionRequestBody) String() string {
 	}
 	return fmt.Sprintf("%#v", s)
 }
+
+// Flag indicating if subscription is paused. When a subscription is paused, no payments are processed until the subscription is unpaused, and the next payment date isn't calculated automatically. If you want to skip a payment instead, set the `totalAmount` to 0 in the `paymentDetails` object.
+type SetPause = bool
 
 // Success response
 var (

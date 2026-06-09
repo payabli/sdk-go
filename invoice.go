@@ -16,7 +16,9 @@ var (
 )
 
 type AddInvoiceRequest struct {
-	IdempotencyKey        *IdempotencyKey        `json:"-" url:"-"`
+	// _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+	IdempotencyKey *IdempotencyKey `json:"-" url:"-"`
+	// When `true`, the request creates a new customer record, regardless of whether customer identifiers match an existing customer. Defaults to `false`.
 	ForceCustomerCreation *ForceCustomerCreation `json:"-" url:"forceCustomerCreation,omitempty"`
 	Body                  *InvoiceDataRequest    `json:"-" url:"-"`
 
@@ -133,6 +135,7 @@ var (
 )
 
 type ListInvoicesRequest struct {
+	// Export format for file downloads. When specified, returns data as a file instead of JSON.
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
 	// The number of records to skip before starting to collect the result set.
 	FromRecord *int `json:"-" url:"fromRecord,omitempty"`
@@ -260,6 +263,7 @@ var (
 )
 
 type ListInvoicesOrgRequest struct {
+	// Export format for file downloads. When specified, returns data as a file instead of JSON.
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
 	// The number of records to skip before starting to collect the result set.
 	FromRecord *int `json:"-" url:"fromRecord,omitempty"`
@@ -514,432 +518,6 @@ func (b *BillOptions) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", b)
-}
-
-// Customer information.
-var (
-	payorDataResponseFieldAdditionalData   = big.NewInt(1 << 0)
-	payorDataResponseFieldBillingAddress1  = big.NewInt(1 << 1)
-	payorDataResponseFieldBillingAddress2  = big.NewInt(1 << 2)
-	payorDataResponseFieldBillingCity      = big.NewInt(1 << 3)
-	payorDataResponseFieldBillingCountry   = big.NewInt(1 << 4)
-	payorDataResponseFieldBillingEmail     = big.NewInt(1 << 5)
-	payorDataResponseFieldBillingPhone     = big.NewInt(1 << 6)
-	payorDataResponseFieldBillingState     = big.NewInt(1 << 7)
-	payorDataResponseFieldBillingZip       = big.NewInt(1 << 8)
-	payorDataResponseFieldCompanyName      = big.NewInt(1 << 9)
-	payorDataResponseFieldCustomerId       = big.NewInt(1 << 10)
-	payorDataResponseFieldCustomerNumber   = big.NewInt(1 << 11)
-	payorDataResponseFieldCustomerStatus   = big.NewInt(1 << 12)
-	payorDataResponseFieldFirstName        = big.NewInt(1 << 13)
-	payorDataResponseFieldIdentifiers      = big.NewInt(1 << 14)
-	payorDataResponseFieldLastName         = big.NewInt(1 << 15)
-	payorDataResponseFieldShippingAddress1 = big.NewInt(1 << 16)
-	payorDataResponseFieldShippingAddress2 = big.NewInt(1 << 17)
-	payorDataResponseFieldShippingCity     = big.NewInt(1 << 18)
-	payorDataResponseFieldShippingCountry  = big.NewInt(1 << 19)
-	payorDataResponseFieldShippingState    = big.NewInt(1 << 20)
-	payorDataResponseFieldShippingZip      = big.NewInt(1 << 21)
-)
-
-type PayorDataResponse struct {
-	AdditionalData  *AdditionalDataMap           `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
-	BillingAddress1 *BillingAddressNullable      `json:"BillingAddress1,omitempty" url:"BillingAddress1,omitempty"`
-	BillingAddress2 *BillingAddressAddtlNullable `json:"BillingAddress2,omitempty" url:"BillingAddress2,omitempty"`
-	BillingCity     *BillingCityNullable         `json:"BillingCity,omitempty" url:"BillingCity,omitempty"`
-	BillingCountry  *BillingCountryNullable      `json:"BillingCountry,omitempty" url:"BillingCountry,omitempty"`
-	BillingEmail    *Email                       `json:"BillingEmail,omitempty" url:"BillingEmail,omitempty"`
-	BillingPhone    *PhoneNumber                 `json:"BillingPhone,omitempty" url:"BillingPhone,omitempty"`
-	BillingState    *BillingStateNullable        `json:"BillingState,omitempty" url:"BillingState,omitempty"`
-	// Customer's billing ZIP code. For Pay In functions, this field supports 5-digit and 9-digit ZIP codes and alphanumeric Canadian postal codes. For example: "37615-1234" or "37615".
-	BillingZip *BillingZip `json:"BillingZip,omitempty" url:"BillingZip,omitempty"`
-	// Customer's company name.
-	CompanyName    *string                 `json:"CompanyName,omitempty" url:"CompanyName,omitempty"`
-	CustomerId     *CustomerId             `json:"customerId,omitempty" url:"customerId,omitempty"`
-	CustomerNumber *CustomerNumberNullable `json:"CustomerNumber,omitempty" url:"CustomerNumber,omitempty"`
-	// Customer status. This is used to determine if the customer is active or inactive.
-	CustomerStatus *CustomerStatus `json:"customerStatus,omitempty" url:"customerStatus,omitempty"`
-	// Customer/Payor first name.
-	FirstName   *string           `json:"FirstName,omitempty" url:"FirstName,omitempty"`
-	Identifiers *Identifierfields `json:"Identifiers,omitempty" url:"Identifiers,omitempty"`
-	// Customer/Payor last name.
-	LastName         *string                    `json:"LastName,omitempty" url:"LastName,omitempty"`
-	ShippingAddress1 *Shippingaddress           `json:"ShippingAddress1,omitempty" url:"ShippingAddress1,omitempty"`
-	ShippingAddress2 *Shippingaddressadditional `json:"ShippingAddress2,omitempty" url:"ShippingAddress2,omitempty"`
-	ShippingCity     *Shippingcity              `json:"ShippingCity,omitempty" url:"ShippingCity,omitempty"`
-	ShippingCountry  *Shippingcountry           `json:"ShippingCountry,omitempty" url:"ShippingCountry,omitempty"`
-	ShippingState    *Shippingstate             `json:"ShippingState,omitempty" url:"ShippingState,omitempty"`
-	ShippingZip      *Shippingzip               `json:"ShippingZip,omitempty" url:"ShippingZip,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PayorDataResponse) GetAdditionalData() *AdditionalDataMap {
-	if p == nil {
-		return nil
-	}
-	return p.AdditionalData
-}
-
-func (p *PayorDataResponse) GetBillingAddress1() *BillingAddressNullable {
-	if p == nil {
-		return nil
-	}
-	return p.BillingAddress1
-}
-
-func (p *PayorDataResponse) GetBillingAddress2() *BillingAddressAddtlNullable {
-	if p == nil {
-		return nil
-	}
-	return p.BillingAddress2
-}
-
-func (p *PayorDataResponse) GetBillingCity() *BillingCityNullable {
-	if p == nil {
-		return nil
-	}
-	return p.BillingCity
-}
-
-func (p *PayorDataResponse) GetBillingCountry() *BillingCountryNullable {
-	if p == nil {
-		return nil
-	}
-	return p.BillingCountry
-}
-
-func (p *PayorDataResponse) GetBillingEmail() *Email {
-	if p == nil {
-		return nil
-	}
-	return p.BillingEmail
-}
-
-func (p *PayorDataResponse) GetBillingPhone() *PhoneNumber {
-	if p == nil {
-		return nil
-	}
-	return p.BillingPhone
-}
-
-func (p *PayorDataResponse) GetBillingState() *BillingStateNullable {
-	if p == nil {
-		return nil
-	}
-	return p.BillingState
-}
-
-func (p *PayorDataResponse) GetBillingZip() *BillingZip {
-	if p == nil {
-		return nil
-	}
-	return p.BillingZip
-}
-
-func (p *PayorDataResponse) GetCompanyName() *string {
-	if p == nil {
-		return nil
-	}
-	return p.CompanyName
-}
-
-func (p *PayorDataResponse) GetCustomerId() *CustomerId {
-	if p == nil {
-		return nil
-	}
-	return p.CustomerId
-}
-
-func (p *PayorDataResponse) GetCustomerNumber() *CustomerNumberNullable {
-	if p == nil {
-		return nil
-	}
-	return p.CustomerNumber
-}
-
-func (p *PayorDataResponse) GetCustomerStatus() *CustomerStatus {
-	if p == nil {
-		return nil
-	}
-	return p.CustomerStatus
-}
-
-func (p *PayorDataResponse) GetFirstName() *string {
-	if p == nil {
-		return nil
-	}
-	return p.FirstName
-}
-
-func (p *PayorDataResponse) GetIdentifiers() *Identifierfields {
-	if p == nil {
-		return nil
-	}
-	return p.Identifiers
-}
-
-func (p *PayorDataResponse) GetLastName() *string {
-	if p == nil {
-		return nil
-	}
-	return p.LastName
-}
-
-func (p *PayorDataResponse) GetShippingAddress1() *Shippingaddress {
-	if p == nil {
-		return nil
-	}
-	return p.ShippingAddress1
-}
-
-func (p *PayorDataResponse) GetShippingAddress2() *Shippingaddressadditional {
-	if p == nil {
-		return nil
-	}
-	return p.ShippingAddress2
-}
-
-func (p *PayorDataResponse) GetShippingCity() *Shippingcity {
-	if p == nil {
-		return nil
-	}
-	return p.ShippingCity
-}
-
-func (p *PayorDataResponse) GetShippingCountry() *Shippingcountry {
-	if p == nil {
-		return nil
-	}
-	return p.ShippingCountry
-}
-
-func (p *PayorDataResponse) GetShippingState() *Shippingstate {
-	if p == nil {
-		return nil
-	}
-	return p.ShippingState
-}
-
-func (p *PayorDataResponse) GetShippingZip() *Shippingzip {
-	if p == nil {
-		return nil
-	}
-	return p.ShippingZip
-}
-
-func (p *PayorDataResponse) GetExtraProperties() map[string]interface{} {
-	if p == nil {
-		return nil
-	}
-	return p.extraProperties
-}
-
-func (p *PayorDataResponse) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
-	}
-	p.explicitFields.Or(p.explicitFields, field)
-}
-
-// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayorDataResponse) SetAdditionalData(additionalData *AdditionalDataMap) {
-	p.AdditionalData = additionalData
-	p.require(payorDataResponseFieldAdditionalData)
-}
-
-// SetBillingAddress1 sets the BillingAddress1 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayorDataResponse) SetBillingAddress1(billingAddress1 *BillingAddressNullable) {
-	p.BillingAddress1 = billingAddress1
-	p.require(payorDataResponseFieldBillingAddress1)
-}
-
-// SetBillingAddress2 sets the BillingAddress2 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayorDataResponse) SetBillingAddress2(billingAddress2 *BillingAddressAddtlNullable) {
-	p.BillingAddress2 = billingAddress2
-	p.require(payorDataResponseFieldBillingAddress2)
-}
-
-// SetBillingCity sets the BillingCity field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayorDataResponse) SetBillingCity(billingCity *BillingCityNullable) {
-	p.BillingCity = billingCity
-	p.require(payorDataResponseFieldBillingCity)
-}
-
-// SetBillingCountry sets the BillingCountry field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayorDataResponse) SetBillingCountry(billingCountry *BillingCountryNullable) {
-	p.BillingCountry = billingCountry
-	p.require(payorDataResponseFieldBillingCountry)
-}
-
-// SetBillingEmail sets the BillingEmail field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayorDataResponse) SetBillingEmail(billingEmail *Email) {
-	p.BillingEmail = billingEmail
-	p.require(payorDataResponseFieldBillingEmail)
-}
-
-// SetBillingPhone sets the BillingPhone field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayorDataResponse) SetBillingPhone(billingPhone *PhoneNumber) {
-	p.BillingPhone = billingPhone
-	p.require(payorDataResponseFieldBillingPhone)
-}
-
-// SetBillingState sets the BillingState field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayorDataResponse) SetBillingState(billingState *BillingStateNullable) {
-	p.BillingState = billingState
-	p.require(payorDataResponseFieldBillingState)
-}
-
-// SetBillingZip sets the BillingZip field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayorDataResponse) SetBillingZip(billingZip *BillingZip) {
-	p.BillingZip = billingZip
-	p.require(payorDataResponseFieldBillingZip)
-}
-
-// SetCompanyName sets the CompanyName field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayorDataResponse) SetCompanyName(companyName *string) {
-	p.CompanyName = companyName
-	p.require(payorDataResponseFieldCompanyName)
-}
-
-// SetCustomerId sets the CustomerId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayorDataResponse) SetCustomerId(customerId *CustomerId) {
-	p.CustomerId = customerId
-	p.require(payorDataResponseFieldCustomerId)
-}
-
-// SetCustomerNumber sets the CustomerNumber field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayorDataResponse) SetCustomerNumber(customerNumber *CustomerNumberNullable) {
-	p.CustomerNumber = customerNumber
-	p.require(payorDataResponseFieldCustomerNumber)
-}
-
-// SetCustomerStatus sets the CustomerStatus field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayorDataResponse) SetCustomerStatus(customerStatus *CustomerStatus) {
-	p.CustomerStatus = customerStatus
-	p.require(payorDataResponseFieldCustomerStatus)
-}
-
-// SetFirstName sets the FirstName field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayorDataResponse) SetFirstName(firstName *string) {
-	p.FirstName = firstName
-	p.require(payorDataResponseFieldFirstName)
-}
-
-// SetIdentifiers sets the Identifiers field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayorDataResponse) SetIdentifiers(identifiers *Identifierfields) {
-	p.Identifiers = identifiers
-	p.require(payorDataResponseFieldIdentifiers)
-}
-
-// SetLastName sets the LastName field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayorDataResponse) SetLastName(lastName *string) {
-	p.LastName = lastName
-	p.require(payorDataResponseFieldLastName)
-}
-
-// SetShippingAddress1 sets the ShippingAddress1 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayorDataResponse) SetShippingAddress1(shippingAddress1 *Shippingaddress) {
-	p.ShippingAddress1 = shippingAddress1
-	p.require(payorDataResponseFieldShippingAddress1)
-}
-
-// SetShippingAddress2 sets the ShippingAddress2 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayorDataResponse) SetShippingAddress2(shippingAddress2 *Shippingaddressadditional) {
-	p.ShippingAddress2 = shippingAddress2
-	p.require(payorDataResponseFieldShippingAddress2)
-}
-
-// SetShippingCity sets the ShippingCity field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayorDataResponse) SetShippingCity(shippingCity *Shippingcity) {
-	p.ShippingCity = shippingCity
-	p.require(payorDataResponseFieldShippingCity)
-}
-
-// SetShippingCountry sets the ShippingCountry field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayorDataResponse) SetShippingCountry(shippingCountry *Shippingcountry) {
-	p.ShippingCountry = shippingCountry
-	p.require(payorDataResponseFieldShippingCountry)
-}
-
-// SetShippingState sets the ShippingState field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayorDataResponse) SetShippingState(shippingState *Shippingstate) {
-	p.ShippingState = shippingState
-	p.require(payorDataResponseFieldShippingState)
-}
-
-// SetShippingZip sets the ShippingZip field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayorDataResponse) SetShippingZip(shippingZip *Shippingzip) {
-	p.ShippingZip = shippingZip
-	p.require(payorDataResponseFieldShippingZip)
-}
-
-func (p *PayorDataResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler PayorDataResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PayorDataResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PayorDataResponse) MarshalJSON() ([]byte, error) {
-	type embed PayorDataResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*p),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (p *PayorDataResponse) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
 }
 
 var (
@@ -2216,6 +1794,432 @@ func (i *InvoiceResponseWithoutData) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", i)
+}
+
+// Customer information.
+var (
+	payorDataResponseFieldAdditionalData   = big.NewInt(1 << 0)
+	payorDataResponseFieldBillingAddress1  = big.NewInt(1 << 1)
+	payorDataResponseFieldBillingAddress2  = big.NewInt(1 << 2)
+	payorDataResponseFieldBillingCity      = big.NewInt(1 << 3)
+	payorDataResponseFieldBillingCountry   = big.NewInt(1 << 4)
+	payorDataResponseFieldBillingEmail     = big.NewInt(1 << 5)
+	payorDataResponseFieldBillingPhone     = big.NewInt(1 << 6)
+	payorDataResponseFieldBillingState     = big.NewInt(1 << 7)
+	payorDataResponseFieldBillingZip       = big.NewInt(1 << 8)
+	payorDataResponseFieldCompanyName      = big.NewInt(1 << 9)
+	payorDataResponseFieldCustomerId       = big.NewInt(1 << 10)
+	payorDataResponseFieldCustomerNumber   = big.NewInt(1 << 11)
+	payorDataResponseFieldCustomerStatus   = big.NewInt(1 << 12)
+	payorDataResponseFieldFirstName        = big.NewInt(1 << 13)
+	payorDataResponseFieldIdentifiers      = big.NewInt(1 << 14)
+	payorDataResponseFieldLastName         = big.NewInt(1 << 15)
+	payorDataResponseFieldShippingAddress1 = big.NewInt(1 << 16)
+	payorDataResponseFieldShippingAddress2 = big.NewInt(1 << 17)
+	payorDataResponseFieldShippingCity     = big.NewInt(1 << 18)
+	payorDataResponseFieldShippingCountry  = big.NewInt(1 << 19)
+	payorDataResponseFieldShippingState    = big.NewInt(1 << 20)
+	payorDataResponseFieldShippingZip      = big.NewInt(1 << 21)
+)
+
+type PayorDataResponse struct {
+	AdditionalData  *AdditionalDataMap           `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
+	BillingAddress1 *BillingAddressNullable      `json:"BillingAddress1,omitempty" url:"BillingAddress1,omitempty"`
+	BillingAddress2 *BillingAddressAddtlNullable `json:"BillingAddress2,omitempty" url:"BillingAddress2,omitempty"`
+	BillingCity     *BillingCityNullable         `json:"BillingCity,omitempty" url:"BillingCity,omitempty"`
+	BillingCountry  *BillingCountryNullable      `json:"BillingCountry,omitempty" url:"BillingCountry,omitempty"`
+	BillingEmail    *Email                       `json:"BillingEmail,omitempty" url:"BillingEmail,omitempty"`
+	BillingPhone    *PhoneNumber                 `json:"BillingPhone,omitempty" url:"BillingPhone,omitempty"`
+	BillingState    *BillingStateNullable        `json:"BillingState,omitempty" url:"BillingState,omitempty"`
+	// Customer's billing ZIP code. For Pay In functions, this field supports 5-digit and 9-digit ZIP codes and alphanumeric Canadian postal codes. For example: "37615-1234" or "37615".
+	BillingZip *BillingZip `json:"BillingZip,omitempty" url:"BillingZip,omitempty"`
+	// Customer's company name.
+	CompanyName    *string                 `json:"CompanyName,omitempty" url:"CompanyName,omitempty"`
+	CustomerId     *CustomerId             `json:"customerId,omitempty" url:"customerId,omitempty"`
+	CustomerNumber *CustomerNumberNullable `json:"CustomerNumber,omitempty" url:"CustomerNumber,omitempty"`
+	// Customer status. This is used to determine if the customer is active or inactive.
+	CustomerStatus *CustomerStatus `json:"customerStatus,omitempty" url:"customerStatus,omitempty"`
+	// Customer/Payor first name.
+	FirstName   *string           `json:"FirstName,omitempty" url:"FirstName,omitempty"`
+	Identifiers *Identifierfields `json:"Identifiers,omitempty" url:"Identifiers,omitempty"`
+	// Customer/Payor last name.
+	LastName         *string                    `json:"LastName,omitempty" url:"LastName,omitempty"`
+	ShippingAddress1 *Shippingaddress           `json:"ShippingAddress1,omitempty" url:"ShippingAddress1,omitempty"`
+	ShippingAddress2 *Shippingaddressadditional `json:"ShippingAddress2,omitempty" url:"ShippingAddress2,omitempty"`
+	ShippingCity     *Shippingcity              `json:"ShippingCity,omitempty" url:"ShippingCity,omitempty"`
+	ShippingCountry  *Shippingcountry           `json:"ShippingCountry,omitempty" url:"ShippingCountry,omitempty"`
+	ShippingState    *Shippingstate             `json:"ShippingState,omitempty" url:"ShippingState,omitempty"`
+	ShippingZip      *Shippingzip               `json:"ShippingZip,omitempty" url:"ShippingZip,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PayorDataResponse) GetAdditionalData() *AdditionalDataMap {
+	if p == nil {
+		return nil
+	}
+	return p.AdditionalData
+}
+
+func (p *PayorDataResponse) GetBillingAddress1() *BillingAddressNullable {
+	if p == nil {
+		return nil
+	}
+	return p.BillingAddress1
+}
+
+func (p *PayorDataResponse) GetBillingAddress2() *BillingAddressAddtlNullable {
+	if p == nil {
+		return nil
+	}
+	return p.BillingAddress2
+}
+
+func (p *PayorDataResponse) GetBillingCity() *BillingCityNullable {
+	if p == nil {
+		return nil
+	}
+	return p.BillingCity
+}
+
+func (p *PayorDataResponse) GetBillingCountry() *BillingCountryNullable {
+	if p == nil {
+		return nil
+	}
+	return p.BillingCountry
+}
+
+func (p *PayorDataResponse) GetBillingEmail() *Email {
+	if p == nil {
+		return nil
+	}
+	return p.BillingEmail
+}
+
+func (p *PayorDataResponse) GetBillingPhone() *PhoneNumber {
+	if p == nil {
+		return nil
+	}
+	return p.BillingPhone
+}
+
+func (p *PayorDataResponse) GetBillingState() *BillingStateNullable {
+	if p == nil {
+		return nil
+	}
+	return p.BillingState
+}
+
+func (p *PayorDataResponse) GetBillingZip() *BillingZip {
+	if p == nil {
+		return nil
+	}
+	return p.BillingZip
+}
+
+func (p *PayorDataResponse) GetCompanyName() *string {
+	if p == nil {
+		return nil
+	}
+	return p.CompanyName
+}
+
+func (p *PayorDataResponse) GetCustomerId() *CustomerId {
+	if p == nil {
+		return nil
+	}
+	return p.CustomerId
+}
+
+func (p *PayorDataResponse) GetCustomerNumber() *CustomerNumberNullable {
+	if p == nil {
+		return nil
+	}
+	return p.CustomerNumber
+}
+
+func (p *PayorDataResponse) GetCustomerStatus() *CustomerStatus {
+	if p == nil {
+		return nil
+	}
+	return p.CustomerStatus
+}
+
+func (p *PayorDataResponse) GetFirstName() *string {
+	if p == nil {
+		return nil
+	}
+	return p.FirstName
+}
+
+func (p *PayorDataResponse) GetIdentifiers() *Identifierfields {
+	if p == nil {
+		return nil
+	}
+	return p.Identifiers
+}
+
+func (p *PayorDataResponse) GetLastName() *string {
+	if p == nil {
+		return nil
+	}
+	return p.LastName
+}
+
+func (p *PayorDataResponse) GetShippingAddress1() *Shippingaddress {
+	if p == nil {
+		return nil
+	}
+	return p.ShippingAddress1
+}
+
+func (p *PayorDataResponse) GetShippingAddress2() *Shippingaddressadditional {
+	if p == nil {
+		return nil
+	}
+	return p.ShippingAddress2
+}
+
+func (p *PayorDataResponse) GetShippingCity() *Shippingcity {
+	if p == nil {
+		return nil
+	}
+	return p.ShippingCity
+}
+
+func (p *PayorDataResponse) GetShippingCountry() *Shippingcountry {
+	if p == nil {
+		return nil
+	}
+	return p.ShippingCountry
+}
+
+func (p *PayorDataResponse) GetShippingState() *Shippingstate {
+	if p == nil {
+		return nil
+	}
+	return p.ShippingState
+}
+
+func (p *PayorDataResponse) GetShippingZip() *Shippingzip {
+	if p == nil {
+		return nil
+	}
+	return p.ShippingZip
+}
+
+func (p *PayorDataResponse) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PayorDataResponse) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayorDataResponse) SetAdditionalData(additionalData *AdditionalDataMap) {
+	p.AdditionalData = additionalData
+	p.require(payorDataResponseFieldAdditionalData)
+}
+
+// SetBillingAddress1 sets the BillingAddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayorDataResponse) SetBillingAddress1(billingAddress1 *BillingAddressNullable) {
+	p.BillingAddress1 = billingAddress1
+	p.require(payorDataResponseFieldBillingAddress1)
+}
+
+// SetBillingAddress2 sets the BillingAddress2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayorDataResponse) SetBillingAddress2(billingAddress2 *BillingAddressAddtlNullable) {
+	p.BillingAddress2 = billingAddress2
+	p.require(payorDataResponseFieldBillingAddress2)
+}
+
+// SetBillingCity sets the BillingCity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayorDataResponse) SetBillingCity(billingCity *BillingCityNullable) {
+	p.BillingCity = billingCity
+	p.require(payorDataResponseFieldBillingCity)
+}
+
+// SetBillingCountry sets the BillingCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayorDataResponse) SetBillingCountry(billingCountry *BillingCountryNullable) {
+	p.BillingCountry = billingCountry
+	p.require(payorDataResponseFieldBillingCountry)
+}
+
+// SetBillingEmail sets the BillingEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayorDataResponse) SetBillingEmail(billingEmail *Email) {
+	p.BillingEmail = billingEmail
+	p.require(payorDataResponseFieldBillingEmail)
+}
+
+// SetBillingPhone sets the BillingPhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayorDataResponse) SetBillingPhone(billingPhone *PhoneNumber) {
+	p.BillingPhone = billingPhone
+	p.require(payorDataResponseFieldBillingPhone)
+}
+
+// SetBillingState sets the BillingState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayorDataResponse) SetBillingState(billingState *BillingStateNullable) {
+	p.BillingState = billingState
+	p.require(payorDataResponseFieldBillingState)
+}
+
+// SetBillingZip sets the BillingZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayorDataResponse) SetBillingZip(billingZip *BillingZip) {
+	p.BillingZip = billingZip
+	p.require(payorDataResponseFieldBillingZip)
+}
+
+// SetCompanyName sets the CompanyName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayorDataResponse) SetCompanyName(companyName *string) {
+	p.CompanyName = companyName
+	p.require(payorDataResponseFieldCompanyName)
+}
+
+// SetCustomerId sets the CustomerId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayorDataResponse) SetCustomerId(customerId *CustomerId) {
+	p.CustomerId = customerId
+	p.require(payorDataResponseFieldCustomerId)
+}
+
+// SetCustomerNumber sets the CustomerNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayorDataResponse) SetCustomerNumber(customerNumber *CustomerNumberNullable) {
+	p.CustomerNumber = customerNumber
+	p.require(payorDataResponseFieldCustomerNumber)
+}
+
+// SetCustomerStatus sets the CustomerStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayorDataResponse) SetCustomerStatus(customerStatus *CustomerStatus) {
+	p.CustomerStatus = customerStatus
+	p.require(payorDataResponseFieldCustomerStatus)
+}
+
+// SetFirstName sets the FirstName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayorDataResponse) SetFirstName(firstName *string) {
+	p.FirstName = firstName
+	p.require(payorDataResponseFieldFirstName)
+}
+
+// SetIdentifiers sets the Identifiers field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayorDataResponse) SetIdentifiers(identifiers *Identifierfields) {
+	p.Identifiers = identifiers
+	p.require(payorDataResponseFieldIdentifiers)
+}
+
+// SetLastName sets the LastName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayorDataResponse) SetLastName(lastName *string) {
+	p.LastName = lastName
+	p.require(payorDataResponseFieldLastName)
+}
+
+// SetShippingAddress1 sets the ShippingAddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayorDataResponse) SetShippingAddress1(shippingAddress1 *Shippingaddress) {
+	p.ShippingAddress1 = shippingAddress1
+	p.require(payorDataResponseFieldShippingAddress1)
+}
+
+// SetShippingAddress2 sets the ShippingAddress2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayorDataResponse) SetShippingAddress2(shippingAddress2 *Shippingaddressadditional) {
+	p.ShippingAddress2 = shippingAddress2
+	p.require(payorDataResponseFieldShippingAddress2)
+}
+
+// SetShippingCity sets the ShippingCity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayorDataResponse) SetShippingCity(shippingCity *Shippingcity) {
+	p.ShippingCity = shippingCity
+	p.require(payorDataResponseFieldShippingCity)
+}
+
+// SetShippingCountry sets the ShippingCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayorDataResponse) SetShippingCountry(shippingCountry *Shippingcountry) {
+	p.ShippingCountry = shippingCountry
+	p.require(payorDataResponseFieldShippingCountry)
+}
+
+// SetShippingState sets the ShippingState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayorDataResponse) SetShippingState(shippingState *Shippingstate) {
+	p.ShippingState = shippingState
+	p.require(payorDataResponseFieldShippingState)
+}
+
+// SetShippingZip sets the ShippingZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayorDataResponse) SetShippingZip(shippingZip *Shippingzip) {
+	p.ShippingZip = shippingZip
+	p.require(payorDataResponseFieldShippingZip)
+}
+
+func (p *PayorDataResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayorDataResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PayorDataResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PayorDataResponse) MarshalJSON() ([]byte, error) {
+	type embed PayorDataResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PayorDataResponse) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
 }
 
 var (

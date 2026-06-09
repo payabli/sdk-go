@@ -35,6 +35,72 @@ func (g *GetEntryConfigRequest) SetEntrypages(entrypages *string) {
 }
 
 var (
+	paypointMoveRequestFieldEntryPoint              = big.NewInt(1 << 0)
+	paypointMoveRequestFieldNewParentOrganizationId = big.NewInt(1 << 1)
+	paypointMoveRequestFieldNotificationRequest     = big.NewInt(1 << 2)
+)
+
+type PaypointMoveRequest struct {
+	EntryPoint Entrypointfield `json:"entryPoint" url:"-"`
+	// The ID for the paypoint's new parent organization.
+	NewParentOrganizationId int `json:"newParentOrganizationId" url:"-"`
+	// Optional notification request object for a webhook
+	NotificationRequest *NotificationRequest `json:"notificationRequest,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (p *PaypointMoveRequest) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetEntryPoint sets the EntryPoint field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointMoveRequest) SetEntryPoint(entryPoint Entrypointfield) {
+	p.EntryPoint = entryPoint
+	p.require(paypointMoveRequestFieldEntryPoint)
+}
+
+// SetNewParentOrganizationId sets the NewParentOrganizationId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointMoveRequest) SetNewParentOrganizationId(newParentOrganizationId int) {
+	p.NewParentOrganizationId = newParentOrganizationId
+	p.require(paypointMoveRequestFieldNewParentOrganizationId)
+}
+
+// SetNotificationRequest sets the NotificationRequest field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointMoveRequest) SetNotificationRequest(notificationRequest *NotificationRequest) {
+	p.NotificationRequest = notificationRequest
+	p.require(paypointMoveRequestFieldNotificationRequest)
+}
+
+func (p *PaypointMoveRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler PaypointMoveRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*p = PaypointMoveRequest(body)
+	return nil
+}
+
+func (p *PaypointMoveRequest) MarshalJSON() ([]byte, error) {
+	type embed PaypointMoveRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+var (
 	getBasicEntryByIdResponseFieldIsSuccess      = big.NewInt(1 << 0)
 	getBasicEntryByIdResponseFieldPageIdentifier = big.NewInt(1 << 1)
 	getBasicEntryByIdResponseFieldResponseCode   = big.NewInt(1 << 2)
@@ -602,7 +668,7 @@ var (
 type NotificationRequest struct {
 	// Complete HTTP URL receiving the notification
 	NotificationUrl string `json:"notificationUrl" url:"notificationUrl"`
-	// A dictionary of key-value pairs to be inserted in the header when the notification request is submitted
+	// List of key-value header parameters to include in the notification request
 	WebHeaderParameters []*WebHeaderParameter `json:"webHeaderParameters,omitempty" url:"webHeaderParameters,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -694,124 +760,6 @@ func (n *NotificationRequest) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", n)
-}
-
-var (
-	paypointMoveRequestFieldEntryPoint              = big.NewInt(1 << 0)
-	paypointMoveRequestFieldNewParentOrganizationId = big.NewInt(1 << 1)
-	paypointMoveRequestFieldNotificationRequest     = big.NewInt(1 << 2)
-)
-
-type PaypointMoveRequest struct {
-	EntryPoint Entrypointfield `json:"entryPoint" url:"entryPoint"`
-	// The ID for the paypoint's new parent organization.
-	NewParentOrganizationId int `json:"newParentOrganizationId" url:"newParentOrganizationId"`
-	// Optional notification request object for a webhook
-	NotificationRequest *NotificationRequest `json:"notificationRequest,omitempty" url:"notificationRequest,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PaypointMoveRequest) GetEntryPoint() Entrypointfield {
-	if p == nil {
-		return ""
-	}
-	return p.EntryPoint
-}
-
-func (p *PaypointMoveRequest) GetNewParentOrganizationId() int {
-	if p == nil {
-		return 0
-	}
-	return p.NewParentOrganizationId
-}
-
-func (p *PaypointMoveRequest) GetNotificationRequest() *NotificationRequest {
-	if p == nil {
-		return nil
-	}
-	return p.NotificationRequest
-}
-
-func (p *PaypointMoveRequest) GetExtraProperties() map[string]interface{} {
-	if p == nil {
-		return nil
-	}
-	return p.extraProperties
-}
-
-func (p *PaypointMoveRequest) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
-	}
-	p.explicitFields.Or(p.explicitFields, field)
-}
-
-// SetEntryPoint sets the EntryPoint field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaypointMoveRequest) SetEntryPoint(entryPoint Entrypointfield) {
-	p.EntryPoint = entryPoint
-	p.require(paypointMoveRequestFieldEntryPoint)
-}
-
-// SetNewParentOrganizationId sets the NewParentOrganizationId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaypointMoveRequest) SetNewParentOrganizationId(newParentOrganizationId int) {
-	p.NewParentOrganizationId = newParentOrganizationId
-	p.require(paypointMoveRequestFieldNewParentOrganizationId)
-}
-
-// SetNotificationRequest sets the NotificationRequest field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaypointMoveRequest) SetNotificationRequest(notificationRequest *NotificationRequest) {
-	p.NotificationRequest = notificationRequest
-	p.require(paypointMoveRequestFieldNotificationRequest)
-}
-
-func (p *PaypointMoveRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler PaypointMoveRequest
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PaypointMoveRequest(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PaypointMoveRequest) MarshalJSON() ([]byte, error) {
-	type embed PaypointMoveRequest
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*p),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (p *PaypointMoveRequest) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
 }
 
 var (

@@ -4,6 +4,7 @@ package chargebacks
 
 import (
 	context "context"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
@@ -25,8 +26,9 @@ func NewClient(options *core.RequestOptions) *Client {
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -55,7 +57,7 @@ func (c *Client) AddResponse(
 // Retrieves a chargeback record and its details.
 func (c *Client) GetChargeback(
 	ctx context.Context,
-	// ID of the chargeback or return record. This is returned as `chargebackId` in the [RecievedChargeback](/developers/developer-guides/webhook-payloads#receivedChargeback) and [ReceivedAchReturn](/developers/developer-guides/webhook-payloads#receivedachreturn) webhook notifications.
+	// ID of the chargeback or return record. This is returned as `chargebackID` in the [ReceivedChargeBack](/guides/pay-ops-webhooks-payloads#receivedchargeback) and [ReceivedAchReturn](/guides/pay-ops-webhooks-payloads#receivedachreturn) webhook notifications.
 	id int64,
 	opts ...option.RequestOption,
 ) (*payabli.ChargebackQueryRecords, error) {

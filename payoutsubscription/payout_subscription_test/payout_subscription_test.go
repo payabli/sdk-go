@@ -6,13 +6,14 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
+	http "net/http"
+	os "os"
+	testing "testing"
+
 	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
-	http "net/http"
-	os "os"
-	testing "testing"
 )
 
 func VerifyRequestCount(
@@ -20,7 +21,7 @@ func VerifyRequestCount(
 	testId string,
 	method string,
 	urlPath string,
-	queryParams map[string]string,
+	queryParams map[string]any,
 	expected int,
 ) {
 	wiremockURL := os.Getenv("WIREMOCK_URL")
@@ -45,9 +46,23 @@ func VerifyRequestCount(
 			}
 			reqBody.WriteString(`"`)
 			reqBody.WriteString(key)
-			reqBody.WriteString(`":{"equalTo":"`)
-			reqBody.WriteString(value)
-			reqBody.WriteString(`"}`)
+			switch v := value.(type) {
+			case string:
+				reqBody.WriteString(`":{"equalTo":"`)
+				reqBody.WriteString(v)
+				reqBody.WriteString(`"}`)
+			case []string:
+				reqBody.WriteString(`":{"hasExactly":[`)
+				for i, item := range v {
+					if i > 0 {
+						reqBody.WriteString(",")
+					}
+					reqBody.WriteString(`{"equalTo":"`)
+					reqBody.WriteString(item)
+					reqBody.WriteString(`"}`)
+				}
+				reqBody.WriteString(`]}`)
+			}
 			first = false
 		}
 		reqBody.WriteString("}")
@@ -71,68 +86,67 @@ func TestPayoutSubscriptionCreatePayoutSubscriptionWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.RequestPayoutSchedule{
-		Body: &payabli.PayoutSubscriptionRequestBody{
-			EntryPoint: "d193cf9a46",
-			PaymentMethod: &payabli.AuthorizePaymentMethod{
-				Method: "ach",
-				AchHolder: payabli.String(
-					"Herman Coatings",
-				),
-				AchRouting: payabli.String(
-					"021000021",
-				),
-				AchAccount: payabli.String(
-					"3453445666",
-				),
-				AchAccountType: payabli.String(
-					"checking",
-				),
-			},
-			PaymentDetails: &payabli.PayoutPaymentDetail{
-				TotalAmount: 500,
-				ServiceFee: payabli.Float64(
-					0,
-				),
-				Currency: payabli.String(
-					"USD",
-				),
-			},
-			VendorData: &payabli.RequestOutAuthorizeVendorData{
-				VendorId: payabli.Int(
-					1501,
-				),
-			},
-			BillData: []*payabli.BillPayOutDataRequest{
-				&payabli.BillPayOutDataRequest{
-					InvoiceNumber: payabli.String(
-						"INV-5001",
+		EntryPoint: "8cfec329267",
+		PaymentMethod: &payabli.AuthorizePaymentMethod{
+			Method: "ach",
+			AchHolder: payabli.String(
+				"Herman Coatings",
+			),
+			AchRouting: payabli.String(
+				"021000021",
+			),
+			AchAccount: payabli.String(
+				"3453445666",
+			),
+			AchAccountType: payabli.String(
+				"checking",
+			),
+		},
+		PaymentDetails: &payabli.PayoutPaymentDetail{
+			TotalAmount: 500,
+			ServiceFee: payabli.Float64(
+				0,
+			),
+			Currency: payabli.String(
+				"USD",
+			),
+		},
+		VendorData: &payabli.RequestOutAuthorizeVendorData{
+			VendorId: payabli.Int(
+				456,
+			),
+		},
+		BillData: []*payabli.BillPayOutDataRequest{
+			&payabli.BillPayOutDataRequest{
+				DueDate: payabli.Time(
+					payabli.MustParseDate(
+						"2025-08-15",
 					),
-					NetAmount: payabli.String(
-						"500",
-					),
-					InvoiceDate: payabli.Time(
-						payabli.MustParseDate(
-							"2025-08-01",
-						),
-					),
-					DueDate: payabli.Time(
-						payabli.MustParseDate(
-							"2025-08-15",
-						),
-					),
-				},
-			},
-			ScheduleDetails: &payabli.PayoutScheduleDetail{
-				StartDate: payabli.String(
-					"09/01/2025",
 				),
-				EndDate: payabli.String(
-					"09/01/2026",
+				InvoiceDate: payabli.Time(
+					payabli.MustParseDate(
+						"2025-08-01",
+					),
 				),
-				Frequency: payabli.FrequencyMonthly.Ptr(),
+				InvoiceNumber: payabli.String(
+					"INV-2345",
+				),
+				NetAmount: payabli.String(
+					"500",
+				),
 			},
+		},
+		ScheduleDetails: &payabli.PayoutScheduleDetail{
+			StartDate: payabli.String(
+				"09/01/2027",
+			),
+			EndDate: payabli.String(
+				"09/01/2026",
+			),
+			Frequency: payabli.FrequencyMonthly.Ptr(),
 		},
 	}
 	_, invocationErr := client.PayoutSubscription.CreatePayoutSubscription(
@@ -156,6 +170,7 @@ func TestPayoutSubscriptionGetPayoutSubscriptionWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.PayoutSubscription.GetPayoutSubscription(
 		context.TODO(),
@@ -178,6 +193,7 @@ func TestPayoutSubscriptionUpdatePayoutSubscriptionWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.UpdatePayoutSubscriptionBody{
 		SetPause: payabli.Bool(
@@ -206,6 +222,7 @@ func TestPayoutSubscriptionDeletePayoutSubscriptionWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.PayoutSubscription.DeletePayoutSubscription(
 		context.TODO(),

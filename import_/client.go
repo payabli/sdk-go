@@ -4,6 +4,7 @@ package import_
 
 import (
 	context "context"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
@@ -25,8 +26,9 @@ func NewClient(options *core.RequestOptions) *Client {
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -55,6 +57,7 @@ func (c *Client) ImportBills(
 // Import a list of customers from a CSV file. See the [Import Guide](/developers/developer-guides/entities-customers#import-customers) for more help and example files.
 func (c *Client) ImportCustomer(
 	ctx context.Context,
+	// The entrypoint identifier.
 	entry payabli.Entrypointfield,
 	request *payabli.ImportCustomerRequest,
 	opts ...option.RequestOption,
@@ -74,6 +77,7 @@ func (c *Client) ImportCustomer(
 // Import a list of vendors from a CSV file. See the [Import Guide](/developers/developer-guides/entities-vendors#import-vendors) for more help and example files.
 func (c *Client) ImportVendor(
 	ctx context.Context,
+	// The entrypoint identifier.
 	entry payabli.Entrypointfield,
 	request *payabli.ImportVendorRequest,
 	opts ...option.RequestOption,

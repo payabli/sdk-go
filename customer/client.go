@@ -4,6 +4,7 @@ package customer
 
 import (
 	context "context"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
@@ -25,8 +26,9 @@ func NewClient(options *core.RequestOptions) *Client {
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -36,6 +38,7 @@ func NewClient(options *core.RequestOptions) *Client {
 // If you don't include an identifier, the record is rejected.
 func (c *Client) AddCustomer(
 	ctx context.Context,
+	// The entrypoint identifier.
 	entry payabli.Entrypointfield,
 	request *payabli.AddCustomerRequest,
 	opts ...option.RequestOption,
@@ -43,6 +46,44 @@ func (c *Client) AddCustomer(
 	response, err := c.WithRawResponse.AddCustomer(
 		ctx,
 		entry,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Retrieves a customer's record and details.
+func (c *Client) GetCustomer(
+	ctx context.Context,
+	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
+	customerId int,
+	opts ...option.RequestOption,
+) (*payabli.CustomerQueryRecords, error) {
+	response, err := c.WithRawResponse.GetCustomer(
+		ctx,
+		customerId,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Update a customer record. Include only the fields you want to change.
+func (c *Client) UpdateCustomer(
+	ctx context.Context,
+	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
+	customerId int,
+	request *payabli.CustomerData,
+	opts ...option.RequestOption,
+) (*payabli.PayabliApiResponse00Responsedatanonobject, error) {
+	response, err := c.WithRawResponse.UpdateCustomer(
+		ctx,
+		customerId,
 		request,
 		opts...,
 	)
@@ -70,14 +111,14 @@ func (c *Client) DeleteCustomer(
 	return response.Body, nil
 }
 
-// Retrieves a customer's record and details.
-func (c *Client) GetCustomer(
+// Sends the consent opt-in email to the customer email address in the customer record.
+func (c *Client) RequestConsent(
 	ctx context.Context,
 	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
 	customerId int,
 	opts ...option.RequestOption,
-) (*payabli.CustomerQueryRecords, error) {
-	response, err := c.WithRawResponse.GetCustomer(
+) (*payabli.PayabliApiResponse00Responsedatanonobject, error) {
+	response, err := c.WithRawResponse.RequestConsent(
 		ctx,
 		customerId,
 		opts...,
@@ -101,44 +142,6 @@ func (c *Client) LinkCustomerTransaction(
 		ctx,
 		customerId,
 		transId,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// Sends the consent opt-in email to the customer email address in the customer record.
-func (c *Client) RequestConsent(
-	ctx context.Context,
-	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
-	customerId int,
-	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponse00Responsedatanonobject, error) {
-	response, err := c.WithRawResponse.RequestConsent(
-		ctx,
-		customerId,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// Update a customer record. Include only the fields you want to change.
-func (c *Client) UpdateCustomer(
-	ctx context.Context,
-	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
-	customerId int,
-	request *payabli.CustomerData,
-	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponse00Responsedatanonobject, error) {
-	response, err := c.WithRawResponse.UpdateCustomer(
-		ctx,
-		customerId,
-		request,
 		opts...,
 	)
 	if err != nil {

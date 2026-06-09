@@ -6,13 +6,14 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
+	http "net/http"
+	os "os"
+	testing "testing"
+
 	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
-	http "net/http"
-	os "os"
-	testing "testing"
 )
 
 func VerifyRequestCount(
@@ -20,7 +21,7 @@ func VerifyRequestCount(
 	testId string,
 	method string,
 	urlPath string,
-	queryParams map[string]string,
+	queryParams map[string]any,
 	expected int,
 ) {
 	wiremockURL := os.Getenv("WIREMOCK_URL")
@@ -45,9 +46,23 @@ func VerifyRequestCount(
 			}
 			reqBody.WriteString(`"`)
 			reqBody.WriteString(key)
-			reqBody.WriteString(`":{"equalTo":"`)
-			reqBody.WriteString(value)
-			reqBody.WriteString(`"}`)
+			switch v := value.(type) {
+			case string:
+				reqBody.WriteString(`":{"equalTo":"`)
+				reqBody.WriteString(v)
+				reqBody.WriteString(`"}`)
+			case []string:
+				reqBody.WriteString(`":{"hasExactly":[`)
+				for i, item := range v {
+					if i > 0 {
+						reqBody.WriteString(",")
+					}
+					reqBody.WriteString(`{"equalTo":"`)
+					reqBody.WriteString(item)
+					reqBody.WriteString(`"}`)
+				}
+				reqBody.WriteString(`]}`)
+			}
 			first = false
 		}
 		reqBody.WriteString("}")
@@ -71,17 +86,9 @@ func TestPaymentMethodDomainAddPaymentMethodDomainWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.AddPaymentMethodDomainRequest{
-		DomainName: payabli.String(
-			"checkout.example.com",
-		),
-		EntityId: payabli.Int64(
-			int64(109),
-		),
-		EntityType: payabli.String(
-			"paypoint",
-		),
 		ApplePay: &payabli.AddPaymentMethodDomainRequestApplePay{
 			IsEnabled: payabli.Bool(
 				true,
@@ -92,6 +99,15 @@ func TestPaymentMethodDomainAddPaymentMethodDomainWithWireMock(
 				true,
 			),
 		},
+		DomainName: payabli.String(
+			"checkout.example.com",
+		),
+		EntityId: payabli.Int64(
+			int64(109),
+		),
+		EntityType: payabli.String(
+			"paypoint",
+		),
 	}
 	_, invocationErr := client.PaymentMethodDomain.AddPaymentMethodDomain(
 		context.TODO(),
@@ -114,6 +130,7 @@ func TestPaymentMethodDomainCascadePaymentMethodDomainWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.PaymentMethodDomain.CascadePaymentMethodDomain(
 		context.TODO(),
@@ -127,28 +144,6 @@ func TestPaymentMethodDomainCascadePaymentMethodDomainWithWireMock(
 	VerifyRequestCount(t, "TestPaymentMethodDomainCascadePaymentMethodDomainWithWireMock", "POST", "/PaymentMethodDomain/pmd_b8237fa45c964d8a9ef27160cd42b8c5/cascade", nil, 1)
 }
 
-func TestPaymentMethodDomainDeletePaymentMethodDomainWithWireMock(
-	t *testing.T,
-) {
-	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
-	if WireMockBaseURL == "" {
-		WireMockBaseURL = "http://localhost:8080"
-	}
-	client := client.NewClient(
-		option.WithBaseURL(WireMockBaseURL),
-	)
-	_, invocationErr := client.PaymentMethodDomain.DeletePaymentMethodDomain(
-		context.TODO(),
-		"pmd_b8237fa45c964d8a9ef27160cd42b8c5",
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestPaymentMethodDomainDeletePaymentMethodDomainWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPaymentMethodDomainDeletePaymentMethodDomainWithWireMock", "DELETE", "/PaymentMethodDomain/pmd_b8237fa45c964d8a9ef27160cd42b8c5", nil, 1)
-}
-
 func TestPaymentMethodDomainGetPaymentMethodDomainWithWireMock(
 	t *testing.T,
 ) {
@@ -158,6 +153,7 @@ func TestPaymentMethodDomainGetPaymentMethodDomainWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.PaymentMethodDomain.GetPaymentMethodDomain(
 		context.TODO(),
@@ -171,7 +167,7 @@ func TestPaymentMethodDomainGetPaymentMethodDomainWithWireMock(
 	VerifyRequestCount(t, "TestPaymentMethodDomainGetPaymentMethodDomainWithWireMock", "GET", "/PaymentMethodDomain/pmd_b8237fa45c964d8a9ef27160cd42b8c5", nil, 1)
 }
 
-func TestPaymentMethodDomainListPaymentMethodDomainsWithWireMock(
+func TestPaymentMethodDomainDeletePaymentMethodDomainWithWireMock(
 	t *testing.T,
 ) {
 	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
@@ -180,25 +176,18 @@ func TestPaymentMethodDomainListPaymentMethodDomainsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
-	request := &payabli.ListPaymentMethodDomainsRequest{
-		EntityId: payabli.Int64(
-			int64(1147),
-		),
-		EntityType: payabli.String(
-			"paypoint",
-		),
-	}
-	_, invocationErr := client.PaymentMethodDomain.ListPaymentMethodDomains(
+	_, invocationErr := client.PaymentMethodDomain.DeletePaymentMethodDomain(
 		context.TODO(),
-		request,
+		"pmd_b8237fa45c964d8a9ef27160cd42b8c5",
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestPaymentMethodDomainListPaymentMethodDomainsWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestPaymentMethodDomainDeletePaymentMethodDomainWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPaymentMethodDomainListPaymentMethodDomainsWithWireMock", "GET", "/PaymentMethodDomain/list", map[string]string{"entityId": "1147", "entityType": "paypoint"}, 1)
+	VerifyRequestCount(t, "TestPaymentMethodDomainDeletePaymentMethodDomainWithWireMock", "DELETE", "/PaymentMethodDomain/pmd_b8237fa45c964d8a9ef27160cd42b8c5", nil, 1)
 }
 
 func TestPaymentMethodDomainUpdatePaymentMethodDomainWithWireMock(
@@ -210,6 +199,7 @@ func TestPaymentMethodDomainUpdatePaymentMethodDomainWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.UpdatePaymentMethodDomainRequest{
 		ApplePay: &payabli.UpdatePaymentMethodDomainRequestWallet{
@@ -236,6 +226,37 @@ func TestPaymentMethodDomainUpdatePaymentMethodDomainWithWireMock(
 	VerifyRequestCount(t, "TestPaymentMethodDomainUpdatePaymentMethodDomainWithWireMock", "PATCH", "/PaymentMethodDomain/pmd_b8237fa45c964d8a9ef27160cd42b8c5", nil, 1)
 }
 
+func TestPaymentMethodDomainListPaymentMethodDomainsWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
+	)
+	request := &payabli.ListPaymentMethodDomainsRequest{
+		EntityId: payabli.Int64(
+			int64(1147),
+		),
+		EntityType: payabli.String(
+			"paypoint",
+		),
+	}
+	_, invocationErr := client.PaymentMethodDomain.ListPaymentMethodDomains(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestPaymentMethodDomainListPaymentMethodDomainsWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestPaymentMethodDomainListPaymentMethodDomainsWithWireMock", "GET", "/PaymentMethodDomain/list", map[string]interface{}{"entityId": "1147", "entityType": "paypoint"}, 1)
+}
+
 func TestPaymentMethodDomainVerifyPaymentMethodDomainWithWireMock(
 	t *testing.T,
 ) {
@@ -245,6 +266,7 @@ func TestPaymentMethodDomainVerifyPaymentMethodDomainWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.PaymentMethodDomain.VerifyPaymentMethodDomain(
 		context.TODO(),

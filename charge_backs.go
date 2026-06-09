@@ -19,6 +19,7 @@ var (
 )
 
 type ResponseChargeBack struct {
+	// _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
 	IdempotencyKey *IdempotencyKey `json:"-" url:"-"`
 	// Array of attached files to response.
 	Attachments *Attachments `json:"attachments,omitempty" url:"-"`
@@ -105,7 +106,8 @@ var (
 type AddResponseResponse struct {
 	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	ResponseText ResponseText `json:"responseText" url:"responseText"`
-	// If `isSuccess` = true, this contains the chargeback identifier. If `isSuccess` = false, this contains the reason for the error.
+	// If `isSuccess` = true, this contains the chargeback identifier. If
+	// `isSuccess` = false, this contains the reason for the error.
 	ResponseData *int `json:"responseData,omitempty" url:"responseData,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted

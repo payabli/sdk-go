@@ -4,11 +4,12 @@ package query
 
 import (
 	context "context"
+	http "net/http"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
-	http "net/http"
 )
 
 type RawClient struct {
@@ -23,8 +24,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 		baseURL: options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -32,6 +34,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) ListBatchDetails(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListBatchDetailsRequest,
 	opts ...option.RequestOption,
@@ -65,6 +68,7 @@ func (r *RawClient) ListBatchDetails(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -88,7 +92,7 @@ func (r *RawClient) ListBatchDetailsOrg(
 	orgId int,
 	request *payabli.ListBatchDetailsOrgRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.QueryResponseSettlements], error) {
+) (*core.Response[*payabli.QueryBatchesDetailResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -110,7 +114,7 @@ func (r *RawClient) ListBatchDetailsOrg(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.QueryResponseSettlements
+	var response *payabli.QueryBatchesDetailResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -118,6 +122,7 @@ func (r *RawClient) ListBatchDetailsOrg(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -128,7 +133,7 @@ func (r *RawClient) ListBatchDetailsOrg(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.QueryResponseSettlements]{
+	return &core.Response[*payabli.QueryBatchesDetailResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -137,6 +142,7 @@ func (r *RawClient) ListBatchDetailsOrg(
 
 func (r *RawClient) ListBatches(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListBatchesRequest,
 	opts ...option.RequestOption,
@@ -170,6 +176,7 @@ func (r *RawClient) ListBatches(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -223,6 +230,7 @@ func (r *RawClient) ListBatchesOrg(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -242,6 +250,7 @@ func (r *RawClient) ListBatchesOrg(
 
 func (r *RawClient) ListBatchesOut(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListBatchesOutRequest,
 	opts ...option.RequestOption,
@@ -275,6 +284,7 @@ func (r *RawClient) ListBatchesOut(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -328,6 +338,7 @@ func (r *RawClient) ListBatchesOutOrg(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -347,6 +358,7 @@ func (r *RawClient) ListBatchesOutOrg(
 
 func (r *RawClient) ListChargebacks(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListChargebacksRequest,
 	opts ...option.RequestOption,
@@ -380,6 +392,7 @@ func (r *RawClient) ListChargebacks(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -433,6 +446,7 @@ func (r *RawClient) ListChargebacksOrg(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -452,6 +466,7 @@ func (r *RawClient) ListChargebacksOrg(
 
 func (r *RawClient) ListCustomers(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListCustomersRequest,
 	opts ...option.RequestOption,
@@ -485,6 +500,7 @@ func (r *RawClient) ListCustomers(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -538,6 +554,7 @@ func (r *RawClient) ListCustomersOrg(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -557,6 +574,7 @@ func (r *RawClient) ListCustomersOrg(
 
 func (r *RawClient) ListDevices(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListDevicesRequest,
 	opts ...option.RequestOption,
@@ -590,6 +608,7 @@ func (r *RawClient) ListDevices(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -643,6 +662,7 @@ func (r *RawClient) ListDevicesOrg(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -662,6 +682,7 @@ func (r *RawClient) ListDevicesOrg(
 
 func (r *RawClient) ListNotificationReports(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListNotificationReportsRequest,
 	opts ...option.RequestOption,
@@ -695,6 +716,7 @@ func (r *RawClient) ListNotificationReports(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -748,6 +770,7 @@ func (r *RawClient) ListNotificationReportsOrg(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -767,6 +790,7 @@ func (r *RawClient) ListNotificationReportsOrg(
 
 func (r *RawClient) ListNotifications(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListNotificationsRequest,
 	opts ...option.RequestOption,
@@ -800,6 +824,7 @@ func (r *RawClient) ListNotifications(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -853,6 +878,7 @@ func (r *RawClient) ListNotificationsOrg(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -906,6 +932,7 @@ func (r *RawClient) ListOrganizations(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -925,6 +952,7 @@ func (r *RawClient) ListOrganizations(
 
 func (r *RawClient) ListPayout(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListPayoutRequest,
 	opts ...option.RequestOption,
@@ -958,6 +986,7 @@ func (r *RawClient) ListPayout(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -1011,6 +1040,7 @@ func (r *RawClient) ListPayoutOrg(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -1064,6 +1094,7 @@ func (r *RawClient) ListPaypoints(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -1083,6 +1114,7 @@ func (r *RawClient) ListPaypoints(
 
 func (r *RawClient) ListSettlements(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListSettlementsRequest,
 	opts ...option.RequestOption,
@@ -1116,6 +1148,7 @@ func (r *RawClient) ListSettlements(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -1169,6 +1202,7 @@ func (r *RawClient) ListSettlementsOrg(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -1188,6 +1222,7 @@ func (r *RawClient) ListSettlementsOrg(
 
 func (r *RawClient) ListSubscriptions(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListSubscriptionsRequest,
 	opts ...option.RequestOption,
@@ -1221,6 +1256,7 @@ func (r *RawClient) ListSubscriptions(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -1274,6 +1310,7 @@ func (r *RawClient) ListSubscriptionsOrg(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -1293,6 +1330,7 @@ func (r *RawClient) ListSubscriptionsOrg(
 
 func (r *RawClient) ListPayoutSubscriptions(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListPayoutSubscriptionsRequest,
 	opts ...option.RequestOption,
@@ -1326,6 +1364,7 @@ func (r *RawClient) ListPayoutSubscriptions(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -1379,6 +1418,7 @@ func (r *RawClient) ListPayoutSubscriptionsOrg(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -1398,6 +1438,7 @@ func (r *RawClient) ListPayoutSubscriptionsOrg(
 
 func (r *RawClient) ListTransactions(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListTransactionsRequest,
 	opts ...option.RequestOption,
@@ -1431,6 +1472,7 @@ func (r *RawClient) ListTransactions(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -1484,6 +1526,7 @@ func (r *RawClient) ListTransactionsOrg(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -1503,6 +1546,7 @@ func (r *RawClient) ListTransactionsOrg(
 
 func (r *RawClient) ListTransferDetails(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	// The numeric identifier for the transfer, assigned by Payabli.
 	transferId int,
@@ -1539,6 +1583,7 @@ func (r *RawClient) ListTransferDetails(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -1558,6 +1603,7 @@ func (r *RawClient) ListTransferDetails(
 
 func (r *RawClient) ListTransfers(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListTransfersRequest,
 	opts ...option.RequestOption,
@@ -1591,6 +1637,7 @@ func (r *RawClient) ListTransfers(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -1610,6 +1657,8 @@ func (r *RawClient) ListTransfers(
 
 func (r *RawClient) ListTransfersOrg(
 	ctx context.Context,
+	// Organization ID. Unique identifier assigned to an org by Payabli.
+	orgId payabli.Orgid,
 	request *payabli.ListTransfersRequestOrg,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.TransferQueryResponse], error) {
@@ -1621,7 +1670,7 @@ func (r *RawClient) ListTransfersOrg(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Query/transfers/org/%v",
-		request.OrgId,
+		orgId,
 	)
 	queryParams, err := internal.QueryValues(request)
 	if err != nil {
@@ -1642,6 +1691,7 @@ func (r *RawClient) ListTransfersOrg(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -1695,6 +1745,7 @@ func (r *RawClient) ListTransfersOutOrg(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -1714,6 +1765,7 @@ func (r *RawClient) ListTransfersOutOrg(
 
 func (r *RawClient) ListTransfersOutPaypoint(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListTransfersOutPaypointRequest,
 	opts ...option.RequestOption,
@@ -1747,6 +1799,7 @@ func (r *RawClient) ListTransfersOutPaypoint(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -1766,6 +1819,7 @@ func (r *RawClient) ListTransfersOutPaypoint(
 
 func (r *RawClient) ListTransferDetailsOut(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	// The numeric identifier for the transfer, assigned by Payabli.
 	transferId int,
@@ -1802,6 +1856,7 @@ func (r *RawClient) ListTransferDetailsOut(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -1855,6 +1910,7 @@ func (r *RawClient) ListUsersOrg(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -1908,6 +1964,7 @@ func (r *RawClient) ListUsersPaypoint(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -1961,6 +2018,7 @@ func (r *RawClient) ListVendors(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -2014,6 +2072,7 @@ func (r *RawClient) ListVendorsOrg(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -2033,6 +2092,7 @@ func (r *RawClient) ListVendorsOrg(
 
 func (r *RawClient) ListVcards(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListVcardsRequest,
 	opts ...option.RequestOption,
@@ -2066,6 +2126,7 @@ func (r *RawClient) ListVcards(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -2085,6 +2146,7 @@ func (r *RawClient) ListVcards(
 
 func (r *RawClient) ListVcardsTransactions(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListVcardsTransactionsRequest,
 	opts ...option.RequestOption,
@@ -2118,6 +2180,7 @@ func (r *RawClient) ListVcardsTransactions(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -2171,6 +2234,7 @@ func (r *RawClient) ListVcardsTransactionsOrg(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -2224,6 +2288,7 @@ func (r *RawClient) ListVcardsOrg(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,

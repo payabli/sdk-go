@@ -252,7 +252,7 @@ type StatBasicExtendedQueryRecord struct {
 	InCheckVolume float64 `json:"inCheckVolume" url:"inCheckVolume"`
 	// Inbound cash volume recognized.
 	InCashVolume float64 `json:"inCashVolume" url:"inCashVolume"`
-	// Inbound wallet transactions.
+	// Inbound wallet transactions volume.
 	InWalletVolume float64 `json:"inWalletVolume" url:"inWalletVolume"`
 	// Inbound Card chargebacks and returns volume.
 	InCardChargeBackVolume float64 `json:"inCardChargeBackVolume" url:"inCardChargeBackVolume"`

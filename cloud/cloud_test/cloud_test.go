@@ -6,13 +6,14 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
+	http "net/http"
+	os "os"
+	testing "testing"
+
 	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
-	http "net/http"
-	os "os"
-	testing "testing"
 )
 
 func VerifyRequestCount(
@@ -20,7 +21,7 @@ func VerifyRequestCount(
 	testId string,
 	method string,
 	urlPath string,
-	queryParams map[string]string,
+	queryParams map[string]any,
 	expected int,
 ) {
 	wiremockURL := os.Getenv("WIREMOCK_URL")
@@ -45,9 +46,23 @@ func VerifyRequestCount(
 			}
 			reqBody.WriteString(`"`)
 			reqBody.WriteString(key)
-			reqBody.WriteString(`":{"equalTo":"`)
-			reqBody.WriteString(value)
-			reqBody.WriteString(`"}`)
+			switch v := value.(type) {
+			case string:
+				reqBody.WriteString(`":{"equalTo":"`)
+				reqBody.WriteString(v)
+				reqBody.WriteString(`"}`)
+			case []string:
+				reqBody.WriteString(`":{"hasExactly":[`)
+				for i, item := range v {
+					if i > 0 {
+						reqBody.WriteString(",")
+					}
+					reqBody.WriteString(`{"equalTo":"`)
+					reqBody.WriteString(item)
+					reqBody.WriteString(`"}`)
+				}
+				reqBody.WriteString(`]}`)
+			}
 			first = false
 		}
 		reqBody.WriteString("}")
@@ -71,13 +86,14 @@ func TestCloudAddDeviceWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.DeviceEntry{
-		RegistrationCode: payabli.String(
-			"YS7DS5",
-		),
 		Description: payabli.String(
 			"Front Desk POS",
+		),
+		RegistrationCode: payabli.String(
+			"YS7DS5",
 		),
 	}
 	_, invocationErr := client.Cloud.AddDevice(
@@ -93,6 +109,30 @@ func TestCloudAddDeviceWithWireMock(
 	VerifyRequestCount(t, "TestCloudAddDeviceWithWireMock", "POST", "/Cloud/register/8cfec329267", nil, 1)
 }
 
+func TestCloudRemoveDeviceWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
+	)
+	_, invocationErr := client.Cloud.RemoveDevice(
+		context.TODO(),
+		"8cfec329267",
+		"499585-389fj484-3jcj8hj3",
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestCloudRemoveDeviceWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestCloudRemoveDeviceWithWireMock", "DELETE", "/Cloud/register/8cfec329267/499585-389fj484-3jcj8hj3", nil, 1)
+}
+
 func TestCloudHistoryDeviceWithWireMock(
 	t *testing.T,
 ) {
@@ -102,18 +142,19 @@ func TestCloudHistoryDeviceWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.Cloud.HistoryDevice(
 		context.TODO(),
 		"8cfec329267",
-		"WXGDWB",
+		"499585-389fj484-3jcj8hj3",
 		option.WithHTTPHeader(
 			http.Header{"X-Test-Id": []string{"TestCloudHistoryDeviceWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestCloudHistoryDeviceWithWireMock", "GET", "/Cloud/history/8cfec329267/WXGDWB", nil, 1)
+	VerifyRequestCount(t, "TestCloudHistoryDeviceWithWireMock", "GET", "/Cloud/history/8cfec329267/499585-389fj484-3jcj8hj3", nil, 1)
 }
 
 func TestCloudListDeviceWithWireMock(
@@ -125,6 +166,7 @@ func TestCloudListDeviceWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListDeviceRequest{}
 	_, invocationErr := client.Cloud.ListDevice(
@@ -138,27 +180,4 @@ func TestCloudListDeviceWithWireMock(
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestCloudListDeviceWithWireMock", "GET", "/Cloud/list/8cfec329267", nil, 1)
-}
-
-func TestCloudRemoveDeviceWithWireMock(
-	t *testing.T,
-) {
-	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
-	if WireMockBaseURL == "" {
-		WireMockBaseURL = "http://localhost:8080"
-	}
-	client := client.NewClient(
-		option.WithBaseURL(WireMockBaseURL),
-	)
-	_, invocationErr := client.Cloud.RemoveDevice(
-		context.TODO(),
-		"8cfec329267",
-		"6c361c7d-674c-44cc-b790-382b75d1xxx",
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestCloudRemoveDeviceWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestCloudRemoveDeviceWithWireMock", "DELETE", "/Cloud/register/8cfec329267/6c361c7d-674c-44cc-b790-382b75d1xxx", nil, 1)
 }

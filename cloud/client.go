@@ -4,6 +4,7 @@ package cloud
 
 import (
 	context "context"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
@@ -25,8 +26,9 @@ func NewClient(options *core.RequestOptions) *Client {
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -44,6 +46,27 @@ func (c *Client) AddDevice(
 		ctx,
 		entry,
 		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Remove a cloud device from an entrypoint.
+func (c *Client) RemoveDevice(
+	ctx context.Context,
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
+	// ID of the cloud device.
+	deviceId string,
+	opts ...option.RequestOption,
+) (*payabli.RemoveDeviceResponse, error) {
+	response, err := c.WithRawResponse.RemoveDevice(
+		ctx,
+		entry,
+		deviceId,
 		opts...,
 	)
 	if err != nil {
@@ -87,27 +110,6 @@ func (c *Client) ListDevice(
 		ctx,
 		entry,
 		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// Remove a cloud device from an entrypoint.
-func (c *Client) RemoveDevice(
-	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
-	// ID of the cloud device.
-	deviceId string,
-	opts ...option.RequestOption,
-) (*payabli.RemoveDeviceResponse, error) {
-	response, err := c.WithRawResponse.RemoveDevice(
-		ctx,
-		entry,
-		deviceId,
 		opts...,
 	)
 	if err != nil {

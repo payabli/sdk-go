@@ -4,6 +4,7 @@ package lineitem
 
 import (
 	context "context"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
@@ -25,8 +26,9 @@ func NewClient(options *core.RequestOptions) *Client {
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -43,6 +45,44 @@ func (c *Client) AddItem(
 	response, err := c.WithRawResponse.AddItem(
 		ctx,
 		entry,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Gets an item by ID.
+func (c *Client) GetItem(
+	ctx context.Context,
+	// ID for the line item (also known as a product, service, or item).
+	lineItemId int,
+	opts ...option.RequestOption,
+) (*payabli.LineItemQueryRecord, error) {
+	response, err := c.WithRawResponse.GetItem(
+		ctx,
+		lineItemId,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Updates an item.
+func (c *Client) UpdateItem(
+	ctx context.Context,
+	// ID for the line item (also known as a product, service, or item).
+	lineItemId int,
+	request *payabli.LineItem,
+	opts ...option.RequestOption,
+) (*payabli.PayabliApiResponse6, error) {
+	response, err := c.WithRawResponse.UpdateItem(
+		ctx,
+		lineItemId,
 		request,
 		opts...,
 	)
@@ -70,24 +110,6 @@ func (c *Client) DeleteItem(
 	return response.Body, nil
 }
 
-// Gets an item by ID.
-func (c *Client) GetItem(
-	ctx context.Context,
-	// ID for the line item (also known as a product, service, or item).
-	lineItemId int,
-	opts ...option.RequestOption,
-) (*payabli.LineItemQueryRecord, error) {
-	response, err := c.WithRawResponse.GetItem(
-		ctx,
-		lineItemId,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
 // Retrieves a list of line items and their details from an entrypoint. Line items are also known as items, products, and services. Use filters to limit results.
 func (c *Client) ListLineItems(
 	ctx context.Context,
@@ -99,26 +121,6 @@ func (c *Client) ListLineItems(
 	response, err := c.WithRawResponse.ListLineItems(
 		ctx,
 		entry,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// Updates an item.
-func (c *Client) UpdateItem(
-	ctx context.Context,
-	// ID for the line item (also known as a product, service, or item).
-	lineItemId int,
-	request *payabli.LineItem,
-	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponse6, error) {
-	response, err := c.WithRawResponse.UpdateItem(
-		ctx,
-		lineItemId,
 		request,
 		opts...,
 	)

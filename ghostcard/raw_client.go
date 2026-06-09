@@ -4,11 +4,12 @@ package ghostcard
 
 import (
 	context "context"
+	http "net/http"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
-	http "net/http"
 )
 
 type RawClient struct {
@@ -23,8 +24,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 		baseURL: options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -32,6 +34,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) CreateGhostCard(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.CreateGhostCardRequestBody,
 	opts ...option.RequestOption,
@@ -59,6 +62,7 @@ func (r *RawClient) CreateGhostCard(
 			Method:          http.MethodPost,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -79,6 +83,7 @@ func (r *RawClient) CreateGhostCard(
 
 func (r *RawClient) UpdateCard(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.UpdateCardRequestBody,
 	opts ...option.RequestOption,
@@ -106,6 +111,7 @@ func (r *RawClient) UpdateCard(
 			Method:          http.MethodPatch,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,

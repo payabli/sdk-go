@@ -9,6 +9,75 @@ import (
 	testing "testing"
 )
 
+func TestGettersAddNotificationRequest(t *testing.T) {
+	t.Run("GetNotificationStandardRequest", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &AddNotificationRequest{}
+		var expected *NotificationStandardRequest
+		obj.NotificationStandardRequest = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetNotificationStandardRequest(), "getter should return the property value")
+	})
+
+	t.Run("GetNotificationStandardRequest_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &AddNotificationRequest{}
+		obj.NotificationStandardRequest = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetNotificationStandardRequest(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetNotificationStandardRequest_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *AddNotificationRequest
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetNotificationStandardRequest() // Should return zero value
+	})
+
+	t.Run("GetNotificationReportRequest", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &AddNotificationRequest{}
+		var expected *NotificationReportRequest
+		obj.NotificationReportRequest = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetNotificationReportRequest(), "getter should return the property value")
+	})
+
+	t.Run("GetNotificationReportRequest_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &AddNotificationRequest{}
+		obj.NotificationReportRequest = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetNotificationReportRequest(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetNotificationReportRequest_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *AddNotificationRequest
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetNotificationReportRequest() // Should return zero value
+	})
+
+}
+
 func TestSettersNotificationQueryRecord(t *testing.T) {
 	t.Run("SetContent", func(t *testing.T) {
 		obj := &NotificationQueryRecord{}
@@ -1356,6 +1425,14 @@ func TestSettersMarkExplicitNotificationReportRequest(t *testing.T) {
 }
 
 func TestSettersNotificationReportRequestContent(t *testing.T) {
+	t.Run("SetEventType", func(t *testing.T) {
+		obj := &NotificationReportRequestContent{}
+		var fernTestValueEventType *NotificationReportRequestContentEventType
+		obj.SetEventType(fernTestValueEventType)
+		assert.Equal(t, fernTestValueEventType, obj.EventType)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetFileFormat", func(t *testing.T) {
 		obj := &NotificationReportRequestContent{}
 		var fernTestValueFileFormat *NotificationReportRequestContentFileFormat
@@ -1407,6 +1484,39 @@ func TestSettersNotificationReportRequestContent(t *testing.T) {
 }
 
 func TestGettersNotificationReportRequestContent(t *testing.T) {
+	t.Run("GetEventType", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &NotificationReportRequestContent{}
+		var expected *NotificationReportRequestContentEventType
+		obj.EventType = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetEventType(), "getter should return the property value")
+	})
+
+	t.Run("GetEventType_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &NotificationReportRequestContent{}
+		obj.EventType = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetEventType(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetEventType_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *NotificationReportRequestContent
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetEventType() // Should return zero value
+	})
+
 	t.Run("GetFileFormat", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
@@ -1608,6 +1718,37 @@ func TestGettersNotificationReportRequestContent(t *testing.T) {
 }
 
 func TestSettersMarkExplicitNotificationReportRequestContent(t *testing.T) {
+	t.Run("SetEventType_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &NotificationReportRequestContent{}
+		var fernTestValueEventType *NotificationReportRequestContentEventType
+
+		// Act
+		obj.SetEventType(fernTestValueEventType)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
 	t.Run("SetFileFormat_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
@@ -2974,75 +3115,6 @@ func TestGettersPayabliApiResponseNotificationsResponseData(t *testing.T) {
 
 }
 
-func TestGettersAddNotificationRequest(t *testing.T) {
-	t.Run("GetNotificationStandardRequest", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &AddNotificationRequest{}
-		var expected *NotificationStandardRequest
-		obj.NotificationStandardRequest = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetNotificationStandardRequest(), "getter should return the property value")
-	})
-
-	t.Run("GetNotificationStandardRequest_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &AddNotificationRequest{}
-		obj.NotificationStandardRequest = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetNotificationStandardRequest(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetNotificationStandardRequest_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *AddNotificationRequest
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetNotificationStandardRequest() // Should return zero value
-	})
-
-	t.Run("GetNotificationReportRequest", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &AddNotificationRequest{}
-		var expected *NotificationReportRequest
-		obj.NotificationReportRequest = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetNotificationReportRequest(), "getter should return the property value")
-	})
-
-	t.Run("GetNotificationReportRequest_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &AddNotificationRequest{}
-		obj.NotificationReportRequest = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetNotificationReportRequest(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetNotificationReportRequest_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *AddNotificationRequest
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetNotificationReportRequest() // Should return zero value
-	})
-
-}
-
 func TestGettersUpdateNotificationRequest(t *testing.T) {
 	t.Run("GetNotificationStandardRequest", func(t *testing.T) {
 		t.Parallel()
@@ -3403,6 +3475,28 @@ func TestStringPayabliApiResponseNotifications(t *testing.T) {
 		var obj *PayabliApiResponseNotifications
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
+	})
+}
+
+func TestEnumNotificationReportRequestContentEventType(t *testing.T) {
+	t.Run("NewFromString_Report", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewNotificationReportRequestContentEventTypeFromString("Report")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, NotificationReportRequestContentEventType("Report"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_Invalid", func(t *testing.T) {
+		_, err := NewNotificationReportRequestContentEventTypeFromString("invalid_value_that_does_not_exist")
+		assert.Error(t, err)
+	})
+
+	t.Run("Ptr", func(t *testing.T) {
+		val, err := NewNotificationReportRequestContentEventTypeFromString("Report")
+		assert.NoError(t, err)
+		ptr := val.Ptr()
+		assert.NotNil(t, ptr)
+		assert.Equal(t, val, *ptr)
 	})
 }
 
@@ -4081,6 +4175,13 @@ func TestEnumNotificationStandardRequestContentEventType(t *testing.T) {
 		val, err := NewNotificationStandardRequestContentEventTypeFromString("RecoveredTransaction")
 		assert.NoError(t, err, "valid enum value should not return error")
 		assert.Equal(t, NotificationStandardRequestContentEventType("RecoveredTransaction"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_CardUpdaterComplete", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewNotificationStandardRequestContentEventTypeFromString("CardUpdaterComplete")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, NotificationStandardRequestContentEventType("CardUpdaterComplete"), val, "enum value should match expected wire value")
 	})
 
 	t.Run("NewFromString_CreatedApplication", func(t *testing.T) {

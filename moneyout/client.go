@@ -4,6 +4,7 @@ package moneyout
 
 import (
 	context "context"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
@@ -25,8 +26,9 @@ func NewClient(options *core.RequestOptions) *Client {
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -39,7 +41,7 @@ func NewClient(options *core.RequestOptions) *Client {
 // When `autoCapture` is `true`, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the [`payout_transaction_approvedcaptured`](/developers/webhooks/payout-transaction-approved-captured) webhook event.
 func (c *Client) AuthorizeOut(
 	ctx context.Context,
-	request *payabli.MoneyOutTypesRequestOutAuthorize,
+	request *payabli.RequestOutAuthorize,
 	opts ...option.RequestOption,
 ) (*payabli.AuthCapturePayoutResponse, error) {
 	response, err := c.WithRawResponse.AuthorizeOut(

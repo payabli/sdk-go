@@ -4,6 +4,7 @@ package paymentmethoddomain
 
 import (
 	context "context"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
@@ -25,8 +26,9 @@ func NewClient(options *core.RequestOptions) *Client {
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -67,24 +69,6 @@ func (c *Client) CascadePaymentMethodDomain(
 	return response.Body, nil
 }
 
-// Delete a payment method domain. You can't delete an inherited domain, you must delete a domain at the organization level.
-func (c *Client) DeletePaymentMethodDomain(
-	ctx context.Context,
-	// The payment method domain's ID in Payabli.
-	domainId string,
-	opts ...option.RequestOption,
-) (*payabli.DeletePaymentMethodDomainResponse, error) {
-	response, err := c.WithRawResponse.DeletePaymentMethodDomain(
-		ctx,
-		domainId,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
 // Get the details for a payment method domain.
 func (c *Client) GetPaymentMethodDomain(
 	ctx context.Context,
@@ -103,15 +87,16 @@ func (c *Client) GetPaymentMethodDomain(
 	return response.Body, nil
 }
 
-// Get a list of payment method domains that belong to a PSP, organization, or paypoint.
-func (c *Client) ListPaymentMethodDomains(
+// Delete a payment method domain. You can't delete an inherited domain, you must delete a domain at the organization level.
+func (c *Client) DeletePaymentMethodDomain(
 	ctx context.Context,
-	request *payabli.ListPaymentMethodDomainsRequest,
+	// The payment method domain's ID in Payabli.
+	domainId string,
 	opts ...option.RequestOption,
-) (*payabli.ListPaymentMethodDomainsResponse, error) {
-	response, err := c.WithRawResponse.ListPaymentMethodDomains(
+) (*payabli.DeletePaymentMethodDomainResponse, error) {
+	response, err := c.WithRawResponse.DeletePaymentMethodDomain(
 		ctx,
-		request,
+		domainId,
 		opts...,
 	)
 	if err != nil {
@@ -131,6 +116,23 @@ func (c *Client) UpdatePaymentMethodDomain(
 	response, err := c.WithRawResponse.UpdatePaymentMethodDomain(
 		ctx,
 		domainId,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Get a list of payment method domains that belong to a PSP, organization, or paypoint.
+func (c *Client) ListPaymentMethodDomains(
+	ctx context.Context,
+	request *payabli.ListPaymentMethodDomainsRequest,
+	opts ...option.RequestOption,
+) (*payabli.ListPaymentMethodDomainsResponse, error) {
+	response, err := c.WithRawResponse.ListPaymentMethodDomains(
+		ctx,
 		request,
 		opts...,
 	)

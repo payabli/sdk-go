@@ -4,6 +4,7 @@ package query
 
 import (
 	context "context"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
@@ -25,8 +26,9 @@ func NewClient(options *core.RequestOptions) *Client {
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -36,6 +38,7 @@ func NewClient(options *core.RequestOptions) *Client {
 // unsettled transactions for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListBatchDetails(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListBatchDetailsRequest,
 	opts ...option.RequestOption,
@@ -59,7 +62,7 @@ func (c *Client) ListBatchDetailsOrg(
 	orgId int,
 	request *payabli.ListBatchDetailsOrgRequest,
 	opts ...option.RequestOption,
-) (*payabli.QueryResponseSettlements, error) {
+) (*payabli.QueryBatchesDetailResponse, error) {
 	response, err := c.WithRawResponse.ListBatchDetailsOrg(
 		ctx,
 		orgId,
@@ -75,6 +78,7 @@ func (c *Client) ListBatchDetailsOrg(
 // Retrieve a list of batches for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListBatches(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListBatchesRequest,
 	opts ...option.RequestOption,
@@ -114,6 +118,7 @@ func (c *Client) ListBatchesOrg(
 // Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListBatchesOut(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListBatchesOutRequest,
 	opts ...option.RequestOption,
@@ -153,6 +158,7 @@ func (c *Client) ListBatchesOutOrg(
 // Retrieves a list of chargebacks and returned transactions for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListChargebacks(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListChargebacksRequest,
 	opts ...option.RequestOption,
@@ -192,6 +198,7 @@ func (c *Client) ListChargebacksOrg(
 // Retrieves a list of customers for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListCustomers(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListCustomersRequest,
 	opts ...option.RequestOption,
@@ -231,6 +238,7 @@ func (c *Client) ListCustomersOrg(
 // Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListDevices(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListDevicesRequest,
 	opts ...option.RequestOption,
@@ -270,6 +278,7 @@ func (c *Client) ListDevicesOrg(
 // Returns a list of all reports generated in the last 60 days for a single entrypoint. Use filters to limit results.
 func (c *Client) ListNotificationReports(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListNotificationReportsRequest,
 	opts ...option.RequestOption,
@@ -309,6 +318,7 @@ func (c *Client) ListNotificationReportsOrg(
 // Returns a list of notifications for an entrypoint. Use filters to limit results.
 func (c *Client) ListNotifications(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListNotificationsRequest,
 	opts ...option.RequestOption,
@@ -368,6 +378,7 @@ func (c *Client) ListOrganizations(
 // Retrieves a list of money out transactions (payouts) for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListPayout(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListPayoutRequest,
 	opts ...option.RequestOption,
@@ -427,6 +438,7 @@ func (c *Client) ListPaypoints(
 // Retrieve a list of settled transactions for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListSettlements(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListSettlementsRequest,
 	opts ...option.RequestOption,
@@ -466,6 +478,7 @@ func (c *Client) ListSettlementsOrg(
 // Returns a list of subscriptions for a single paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListSubscriptions(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListSubscriptionsRequest,
 	opts ...option.RequestOption,
@@ -505,6 +518,7 @@ func (c *Client) ListSubscriptionsOrg(
 // Returns a list of payout subscriptions for a single paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
 func (c *Client) ListPayoutSubscriptions(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListPayoutSubscriptionsRequest,
 	opts ...option.RequestOption,
@@ -542,15 +556,20 @@ func (c *Client) ListPayoutSubscriptionsOrg(
 }
 
 // Retrieve a list of transactions for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
-// By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include `transactionDate` filters.
-// For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.
 //
-//	``` curl -X GET https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&fromRecord=0&transactionDate(ge)=2024-04-01T00:00:00&transactionDate(le)=2024-04-09T23:59:59\
+// By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include `transactionDate` filters.
+//
+// These request parameters filter for transactions between April 1, 2024 and April 9, 2024.
+//
+// ```bash
+//
+//	curl -X GET https://api-sandbox.payabli.com/api/Query/transactions/8cfec329267?limitRecord=20&fromRecord=0&transactionDate(ge)=2024-04-01T00:00:00&transactionDate(le)=2024-04-09T23:59:59 \
 //	  -H 'requestToken: <API TOKEN>'
 //
-//	  ```
+// ```
 func (c *Client) ListTransactions(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListTransactionsRequest,
 	opts ...option.RequestOption,
@@ -567,19 +586,18 @@ func (c *Client) ListTransactions(
 	return response.Body, nil
 }
 
-// Retrieve a list of transactions for an organization. Use filters to
-// limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+// Retrieve a list of transactions for an organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 //
 // By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include `transactionDate` filters.
 //
-// For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024.
+// These request parameters filter for transactions between April 1, 2024 and April 9, 2024.
 //
-// ```
+// ```bash
 //
-//	curl -X GET "https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&fromRecord=0&transactionDate(ge)=2024-04-01T00:00:00&transactionDate(le)=2024-04-09T23:59:59"\
+//	curl -X GET "https://api-sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&fromRecord=0&transactionDate(ge)=2024-04-01T00:00:00&transactionDate(le)=2024-04-09T23:59:59" \
 //	  -H 'requestToken: <API TOKEN>'
 //
-//	  ```
+// ```
 func (c *Client) ListTransactionsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -602,6 +620,7 @@ func (c *Client) ListTransactionsOrg(
 // Retrieve a list of transfer details records for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListTransferDetails(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	// The numeric identifier for the transfer, assigned by Payabli.
 	transferId int,
@@ -624,6 +643,7 @@ func (c *Client) ListTransferDetails(
 // Retrieve a list of transfers for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListTransfers(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListTransfersRequest,
 	opts ...option.RequestOption,
@@ -643,11 +663,14 @@ func (c *Client) ListTransfers(
 // Retrieve a list of transfers for an org. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListTransfersOrg(
 	ctx context.Context,
+	// Organization ID. Unique identifier assigned to an org by Payabli.
+	orgId payabli.Orgid,
 	request *payabli.ListTransfersRequestOrg,
 	opts ...option.RequestOption,
 ) (*payabli.TransferQueryResponse, error) {
 	response, err := c.WithRawResponse.ListTransfersOrg(
 		ctx,
+		orgId,
 		request,
 		opts...,
 	)
@@ -680,6 +703,7 @@ func (c *Client) ListTransfersOutOrg(
 // Retrieve a list of outbound transfers for a paypoint. Use filters to limit results.
 func (c *Client) ListTransfersOutPaypoint(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListTransfersOutPaypointRequest,
 	opts ...option.RequestOption,
@@ -699,6 +723,7 @@ func (c *Client) ListTransfersOutPaypoint(
 // Retrieve details for a specific outbound transfer. Use filters to limit results.
 func (c *Client) ListTransferDetailsOut(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	// The numeric identifier for the transfer, assigned by Payabli.
 	transferId int,
@@ -801,6 +826,7 @@ func (c *Client) ListVendorsOrg(
 // Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 func (c *Client) ListVcards(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListVcardsRequest,
 	opts ...option.RequestOption,
@@ -820,6 +846,7 @@ func (c *Client) ListVcards(
 // Retrieve a list of virtual card transactions for an entrypoint. Use filters to limit results.
 func (c *Client) ListVcardsTransactions(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.ListVcardsTransactionsRequest,
 	opts ...option.RequestOption,

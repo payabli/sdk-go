@@ -33,6 +33,7 @@ var (
 )
 
 type AddOrganizationRequest struct {
+	// _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
 	IdempotencyKey *IdempotencyKey `json:"-" url:"-"`
 	Services       []*ServiceCost  `json:"services,omitempty" url:"-"`
 	BillingInfo    *Instrument     `json:"billingInfo,omitempty" url:"-"`
@@ -435,202 +436,6 @@ func (o *OrganizationData) MarshalJSON() ([]byte, error) {
 }
 
 var (
-	serviceCostFieldDescription   = big.NewInt(1 << 0)
-	serviceCostFieldEnabled       = big.NewInt(1 << 1)
-	serviceCostFieldMonthlyCost   = big.NewInt(1 << 2)
-	serviceCostFieldName          = big.NewInt(1 << 3)
-	serviceCostFieldReseller      = big.NewInt(1 << 4)
-	serviceCostFieldSetupCost     = big.NewInt(1 << 5)
-	serviceCostFieldTxCost        = big.NewInt(1 << 6)
-	serviceCostFieldTxPercentCost = big.NewInt(1 << 7)
-)
-
-type ServiceCost struct {
-	Description   *string  `json:"description,omitempty" url:"description,omitempty"`
-	Enabled       *Enabled `json:"enabled,omitempty" url:"enabled,omitempty"`
-	MonthlyCost   *float64 `json:"monthlyCost,omitempty" url:"monthlyCost,omitempty"`
-	Name          *string  `json:"name,omitempty" url:"name,omitempty"`
-	Reseller      *bool    `json:"reseller,omitempty" url:"reseller,omitempty"`
-	SetupCost     *float64 `json:"setupCost,omitempty" url:"setupCost,omitempty"`
-	TxCost        *float64 `json:"txCost,omitempty" url:"txCost,omitempty"`
-	TxPercentCost *float64 `json:"txPercentCost,omitempty" url:"txPercentCost,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (s *ServiceCost) GetDescription() *string {
-	if s == nil {
-		return nil
-	}
-	return s.Description
-}
-
-func (s *ServiceCost) GetEnabled() *Enabled {
-	if s == nil {
-		return nil
-	}
-	return s.Enabled
-}
-
-func (s *ServiceCost) GetMonthlyCost() *float64 {
-	if s == nil {
-		return nil
-	}
-	return s.MonthlyCost
-}
-
-func (s *ServiceCost) GetName() *string {
-	if s == nil {
-		return nil
-	}
-	return s.Name
-}
-
-func (s *ServiceCost) GetReseller() *bool {
-	if s == nil {
-		return nil
-	}
-	return s.Reseller
-}
-
-func (s *ServiceCost) GetSetupCost() *float64 {
-	if s == nil {
-		return nil
-	}
-	return s.SetupCost
-}
-
-func (s *ServiceCost) GetTxCost() *float64 {
-	if s == nil {
-		return nil
-	}
-	return s.TxCost
-}
-
-func (s *ServiceCost) GetTxPercentCost() *float64 {
-	if s == nil {
-		return nil
-	}
-	return s.TxPercentCost
-}
-
-func (s *ServiceCost) GetExtraProperties() map[string]interface{} {
-	if s == nil {
-		return nil
-	}
-	return s.extraProperties
-}
-
-func (s *ServiceCost) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
-	}
-	s.explicitFields.Or(s.explicitFields, field)
-}
-
-// SetDescription sets the Description field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *ServiceCost) SetDescription(description *string) {
-	s.Description = description
-	s.require(serviceCostFieldDescription)
-}
-
-// SetEnabled sets the Enabled field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *ServiceCost) SetEnabled(enabled *Enabled) {
-	s.Enabled = enabled
-	s.require(serviceCostFieldEnabled)
-}
-
-// SetMonthlyCost sets the MonthlyCost field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *ServiceCost) SetMonthlyCost(monthlyCost *float64) {
-	s.MonthlyCost = monthlyCost
-	s.require(serviceCostFieldMonthlyCost)
-}
-
-// SetName sets the Name field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *ServiceCost) SetName(name *string) {
-	s.Name = name
-	s.require(serviceCostFieldName)
-}
-
-// SetReseller sets the Reseller field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *ServiceCost) SetReseller(reseller *bool) {
-	s.Reseller = reseller
-	s.require(serviceCostFieldReseller)
-}
-
-// SetSetupCost sets the SetupCost field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *ServiceCost) SetSetupCost(setupCost *float64) {
-	s.SetupCost = setupCost
-	s.require(serviceCostFieldSetupCost)
-}
-
-// SetTxCost sets the TxCost field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *ServiceCost) SetTxCost(txCost *float64) {
-	s.TxCost = txCost
-	s.require(serviceCostFieldTxCost)
-}
-
-// SetTxPercentCost sets the TxPercentCost field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *ServiceCost) SetTxPercentCost(txPercentCost *float64) {
-	s.TxPercentCost = txPercentCost
-	s.require(serviceCostFieldTxPercentCost)
-}
-
-func (s *ServiceCost) UnmarshalJSON(data []byte) error {
-	type unmarshaler ServiceCost
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*s = ServiceCost(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *s)
-	if err != nil {
-		return err
-	}
-	s.extraProperties = extraProperties
-	s.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (s *ServiceCost) MarshalJSON() ([]byte, error) {
-	type embed ServiceCost
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*s),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (s *ServiceCost) String() string {
-	if s == nil {
-		return "<nil>"
-	}
-	if len(s.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(s); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", s)
-}
-
-var (
 	addOrganizationResponseFieldIsSuccess    = big.NewInt(1 << 0)
 	addOrganizationResponseFieldResponseData = big.NewInt(1 << 1)
 	addOrganizationResponseFieldResponseText = big.NewInt(1 << 2)
@@ -1011,4 +816,200 @@ func (e *EditOrganizationResponse) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", e)
+}
+
+var (
+	serviceCostFieldDescription   = big.NewInt(1 << 0)
+	serviceCostFieldEnabled       = big.NewInt(1 << 1)
+	serviceCostFieldMonthlyCost   = big.NewInt(1 << 2)
+	serviceCostFieldName          = big.NewInt(1 << 3)
+	serviceCostFieldReseller      = big.NewInt(1 << 4)
+	serviceCostFieldSetupCost     = big.NewInt(1 << 5)
+	serviceCostFieldTxCost        = big.NewInt(1 << 6)
+	serviceCostFieldTxPercentCost = big.NewInt(1 << 7)
+)
+
+type ServiceCost struct {
+	Description   *string  `json:"description,omitempty" url:"description,omitempty"`
+	Enabled       *Enabled `json:"enabled,omitempty" url:"enabled,omitempty"`
+	MonthlyCost   *float64 `json:"monthlyCost,omitempty" url:"monthlyCost,omitempty"`
+	Name          *string  `json:"name,omitempty" url:"name,omitempty"`
+	Reseller      *bool    `json:"reseller,omitempty" url:"reseller,omitempty"`
+	SetupCost     *float64 `json:"setupCost,omitempty" url:"setupCost,omitempty"`
+	TxCost        *float64 `json:"txCost,omitempty" url:"txCost,omitempty"`
+	TxPercentCost *float64 `json:"txPercentCost,omitempty" url:"txPercentCost,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *ServiceCost) GetDescription() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Description
+}
+
+func (s *ServiceCost) GetEnabled() *Enabled {
+	if s == nil {
+		return nil
+	}
+	return s.Enabled
+}
+
+func (s *ServiceCost) GetMonthlyCost() *float64 {
+	if s == nil {
+		return nil
+	}
+	return s.MonthlyCost
+}
+
+func (s *ServiceCost) GetName() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Name
+}
+
+func (s *ServiceCost) GetReseller() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.Reseller
+}
+
+func (s *ServiceCost) GetSetupCost() *float64 {
+	if s == nil {
+		return nil
+	}
+	return s.SetupCost
+}
+
+func (s *ServiceCost) GetTxCost() *float64 {
+	if s == nil {
+		return nil
+	}
+	return s.TxCost
+}
+
+func (s *ServiceCost) GetTxPercentCost() *float64 {
+	if s == nil {
+		return nil
+	}
+	return s.TxPercentCost
+}
+
+func (s *ServiceCost) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
+	return s.extraProperties
+}
+
+func (s *ServiceCost) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ServiceCost) SetDescription(description *string) {
+	s.Description = description
+	s.require(serviceCostFieldDescription)
+}
+
+// SetEnabled sets the Enabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ServiceCost) SetEnabled(enabled *Enabled) {
+	s.Enabled = enabled
+	s.require(serviceCostFieldEnabled)
+}
+
+// SetMonthlyCost sets the MonthlyCost field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ServiceCost) SetMonthlyCost(monthlyCost *float64) {
+	s.MonthlyCost = monthlyCost
+	s.require(serviceCostFieldMonthlyCost)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ServiceCost) SetName(name *string) {
+	s.Name = name
+	s.require(serviceCostFieldName)
+}
+
+// SetReseller sets the Reseller field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ServiceCost) SetReseller(reseller *bool) {
+	s.Reseller = reseller
+	s.require(serviceCostFieldReseller)
+}
+
+// SetSetupCost sets the SetupCost field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ServiceCost) SetSetupCost(setupCost *float64) {
+	s.SetupCost = setupCost
+	s.require(serviceCostFieldSetupCost)
+}
+
+// SetTxCost sets the TxCost field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ServiceCost) SetTxCost(txCost *float64) {
+	s.TxCost = txCost
+	s.require(serviceCostFieldTxCost)
+}
+
+// SetTxPercentCost sets the TxPercentCost field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ServiceCost) SetTxPercentCost(txPercentCost *float64) {
+	s.TxPercentCost = txPercentCost
+	s.require(serviceCostFieldTxPercentCost)
+}
+
+func (s *ServiceCost) UnmarshalJSON(data []byte) error {
+	type unmarshaler ServiceCost
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = ServiceCost(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *ServiceCost) MarshalJSON() ([]byte, error) {
+	type embed ServiceCost
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *ServiceCost) String() string {
+	if s == nil {
+		return "<nil>"
+	}
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
 }

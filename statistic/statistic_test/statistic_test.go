@@ -6,13 +6,14 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
+	http "net/http"
+	os "os"
+	testing "testing"
+
 	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
-	http "net/http"
-	os "os"
-	testing "testing"
 )
 
 func VerifyRequestCount(
@@ -20,7 +21,7 @@ func VerifyRequestCount(
 	testId string,
 	method string,
 	urlPath string,
-	queryParams map[string]string,
+	queryParams map[string]any,
 	expected int,
 ) {
 	wiremockURL := os.Getenv("WIREMOCK_URL")
@@ -45,9 +46,23 @@ func VerifyRequestCount(
 			}
 			reqBody.WriteString(`"`)
 			reqBody.WriteString(key)
-			reqBody.WriteString(`":{"equalTo":"`)
-			reqBody.WriteString(value)
-			reqBody.WriteString(`"}`)
+			switch v := value.(type) {
+			case string:
+				reqBody.WriteString(`":{"equalTo":"`)
+				reqBody.WriteString(v)
+				reqBody.WriteString(`"}`)
+			case []string:
+				reqBody.WriteString(`":{"hasExactly":[`)
+				for i, item := range v {
+					if i > 0 {
+						reqBody.WriteString(",")
+					}
+					reqBody.WriteString(`{"equalTo":"`)
+					reqBody.WriteString(item)
+					reqBody.WriteString(`"}`)
+				}
+				reqBody.WriteString(`]}`)
+			}
 			first = false
 		}
 		reqBody.WriteString("}")
@@ -71,20 +86,21 @@ func TestStatisticBasicStatsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.BasicStatsRequest{
-		EndDate: payabli.String(
+		StartDate: payabli.String(
 			"2025-11-01",
 		),
-		StartDate: payabli.String(
+		EndDate: payabli.String(
 			"2025-11-30",
 		),
 	}
 	_, invocationErr := client.Statistic.BasicStats(
 		context.TODO(),
-		"ytd",
+		"custom",
 		"m",
-		1,
+		2,
 		int64(1000000),
 		request,
 		option.WithHTTPHeader(
@@ -93,7 +109,7 @@ func TestStatisticBasicStatsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestStatisticBasicStatsWithWireMock", "GET", "/Statistic/basic/ytd/m/1/1000000", map[string]string{"endDate": "2025-11-01", "startDate": "2025-11-30"}, 1)
+	VerifyRequestCount(t, "TestStatisticBasicStatsWithWireMock", "GET", "/Statistic/basic/custom/m/2/1000000", map[string]interface{}{"startDate": "2025-11-01", "endDate": "2025-11-30"}, 1)
 }
 
 func TestStatisticCustomerBasicStatsWithWireMock(
@@ -105,13 +121,14 @@ func TestStatisticCustomerBasicStatsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.CustomerBasicStatsRequest{}
 	_, invocationErr := client.Statistic.CustomerBasicStats(
 		context.TODO(),
 		"ytd",
 		"m",
-		998,
+		4440,
 		request,
 		option.WithHTTPHeader(
 			http.Header{"X-Test-Id": []string{"TestStatisticCustomerBasicStatsWithWireMock"}},
@@ -119,7 +136,7 @@ func TestStatisticCustomerBasicStatsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestStatisticCustomerBasicStatsWithWireMock", "GET", "/Statistic/customerbasic/ytd/m/998", nil, 1)
+	VerifyRequestCount(t, "TestStatisticCustomerBasicStatsWithWireMock", "GET", "/Statistic/customerbasic/ytd/m/4440", nil, 1)
 }
 
 func TestStatisticSubStatsWithWireMock(
@@ -131,12 +148,13 @@ func TestStatisticSubStatsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.SubStatsRequest{}
 	_, invocationErr := client.Statistic.SubStats(
 		context.TODO(),
 		"30",
-		1,
+		2,
 		int64(1000000),
 		request,
 		option.WithHTTPHeader(
@@ -145,7 +163,7 @@ func TestStatisticSubStatsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestStatisticSubStatsWithWireMock", "GET", "/Statistic/subscriptions/30/1/1000000", nil, 1)
+	VerifyRequestCount(t, "TestStatisticSubStatsWithWireMock", "GET", "/Statistic/subscriptions/30/2/1000000", nil, 1)
 }
 
 func TestStatisticVendorBasicStatsWithWireMock(
@@ -157,6 +175,7 @@ func TestStatisticVendorBasicStatsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.VendorBasicStatsRequest{}
 	_, invocationErr := client.Statistic.VendorBasicStats(

@@ -3,13 +3,13 @@
 package chargebacks
 
 import (
-	bytes "bytes"
 	context "context"
+	http "net/http"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
-	http "net/http"
 )
 
 type RawClient struct {
@@ -24,8 +24,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 		baseURL: options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -64,6 +65,7 @@ func (r *RawClient) AddResponse(
 			Method:          http.MethodPost,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -84,7 +86,7 @@ func (r *RawClient) AddResponse(
 
 func (r *RawClient) GetChargeback(
 	ctx context.Context,
-	// ID of the chargeback or return record. This is returned as `chargebackId` in the [RecievedChargeback](/developers/developer-guides/webhook-payloads#receivedChargeback) and [ReceivedAchReturn](/developers/developer-guides/webhook-payloads#receivedachreturn) webhook notifications.
+	// ID of the chargeback or return record. This is returned as `chargebackID` in the [ReceivedChargeBack](/guides/pay-ops-webhooks-payloads#receivedchargeback) and [ReceivedAchReturn](/guides/pay-ops-webhooks-payloads#receivedachreturn) webhook notifications.
 	id int64,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.ChargebackQueryRecords], error) {
@@ -110,6 +112,7 @@ func (r *RawClient) GetChargeback(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -150,7 +153,7 @@ func (r *RawClient) GetChargebackAttachment(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	response := bytes.NewBuffer(nil)
+	var response string
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -158,10 +161,11 @@ func (r *RawClient) GetChargebackAttachment(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			Response:        response,
+			Response:        &response,
 			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
 	)
@@ -171,6 +175,6 @@ func (r *RawClient) GetChargebackAttachment(
 	return &core.Response[string]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
-		Body:       response.String(),
+		Body:       response,
 	}, nil
 }

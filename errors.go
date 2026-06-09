@@ -7,7 +7,7 @@ import (
 	core "github.com/payabli/sdk-go/core"
 )
 
-// Bad request/ invalid data
+// Bad request / invalid data.
 type BadRequestError struct {
 	*core.APIError
 	Body any
@@ -31,38 +31,14 @@ func (b *BadRequestError) Unwrap() error {
 	return b.APIError
 }
 
-// Opt in pending
-type ConflictError struct {
-	*core.APIError
-	Body *PayabliApiResponsePaylinks
-}
-
-func (c *ConflictError) UnmarshalJSON(data []byte) error {
-	var body *PayabliApiResponsePaylinks
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	c.StatusCode = 409
-	c.Body = body
-	return nil
-}
-
-func (c *ConflictError) MarshalJSON() ([]byte, error) {
-	return json.Marshal(c.Body)
-}
-
-func (c *ConflictError) Unwrap() error {
-	return c.APIError
-}
-
-// Consent error
+// Consent error.
 type ForbiddenError struct {
 	*core.APIError
-	Body *PayabliApiResponsePaylinks
+	Body *PayabliErrorBody
 }
 
 func (f *ForbiddenError) UnmarshalJSON(data []byte) error {
-	var body *PayabliApiResponsePaylinks
+	var body *PayabliErrorBody
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
@@ -79,7 +55,7 @@ func (f *ForbiddenError) Unwrap() error {
 	return f.APIError
 }
 
-// Internal API Error
+// Internal server error.
 type InternalServerError struct {
 	*core.APIError
 	Body any
@@ -103,14 +79,38 @@ func (i *InternalServerError) Unwrap() error {
 	return i.APIError
 }
 
-// Database connection error
+// Auth or sale decline error for v2 Money In endpoints (HTTP 402). Returned when an authorization or sale operation is declined for a transaction. Uses unified response codes starting with 'D'. See the [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for the complete list of codes.
+type PaymentRequiredError struct {
+	*core.APIError
+	Body *V2DeclinedTransactionResponseWrapper
+}
+
+func (p *PaymentRequiredError) UnmarshalJSON(data []byte) error {
+	var body *V2DeclinedTransactionResponseWrapper
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	p.StatusCode = 402
+	p.Body = body
+	return nil
+}
+
+func (p *PaymentRequiredError) MarshalJSON() ([]byte, error) {
+	return json.Marshal(p.Body)
+}
+
+func (p *PaymentRequiredError) Unwrap() error {
+	return p.APIError
+}
+
+// Database connection error.
 type ServiceUnavailableError struct {
 	*core.APIError
-	Body *PayabliApiResponse
+	Body *PayabliErrorBody
 }
 
 func (s *ServiceUnavailableError) UnmarshalJSON(data []byte) error {
-	var body *PayabliApiResponse
+	var body *PayabliErrorBody
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
@@ -130,11 +130,11 @@ func (s *ServiceUnavailableError) Unwrap() error {
 // Unauthorized request.
 type UnauthorizedError struct {
 	*core.APIError
-	Body any
+	Body *PayabliErrorBody
 }
 
 func (u *UnauthorizedError) UnmarshalJSON(data []byte) error {
-	var body any
+	var body *PayabliErrorBody
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
@@ -149,267 +149,4 @@ func (u *UnauthorizedError) MarshalJSON() ([]byte, error) {
 
 func (u *UnauthorizedError) Unwrap() error {
 	return u.APIError
-}
-
-// Bad request error for v2 Money In auth endpoint (HTTP 400). Returned when request validation fails. Follows RFC 7807 Problem Details format with Payabli-specific unified response codes. See the [Pay In unified response codes reference](/developers/references/pay-in-unified-response-codes-reference) for the complete list of codes.
-type BadRequestAuthResponseErrorV2 struct {
-	*core.APIError
-	Body *V2BadRequestError
-}
-
-func (b *BadRequestAuthResponseErrorV2) UnmarshalJSON(data []byte) error {
-	var body *V2BadRequestError
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	b.StatusCode = 400
-	b.Body = body
-	return nil
-}
-
-func (b *BadRequestAuthResponseErrorV2) MarshalJSON() ([]byte, error) {
-	return json.Marshal(b.Body)
-}
-
-func (b *BadRequestAuthResponseErrorV2) Unwrap() error {
-	return b.APIError
-}
-
-// Bad request error for v2 Money In capture endpoint (HTTP 400). Returned when request validation fails. Follows RFC 7807 Problem Details format with Payabli-specific unified response codes. See the [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for the complete list of codes.
-type BadRequestCaptureResponseErrorV2 struct {
-	*core.APIError
-	Body *V2BadRequestError
-}
-
-func (b *BadRequestCaptureResponseErrorV2) UnmarshalJSON(data []byte) error {
-	var body *V2BadRequestError
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	b.StatusCode = 400
-	b.Body = body
-	return nil
-}
-
-func (b *BadRequestCaptureResponseErrorV2) MarshalJSON() ([]byte, error) {
-	return json.Marshal(b.Body)
-}
-
-func (b *BadRequestCaptureResponseErrorV2) Unwrap() error {
-	return b.APIError
-}
-
-// Bad request error for v2 Money In refund endpoint (HTTP 400). Returned when request validation fails. Follows RFC 7807 Problem Details format with Payabli-specific unified response codes. See the [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for the complete list of codes.
-type BadRequestRefundResponseErrorV2 struct {
-	*core.APIError
-	Body *V2BadRequestError
-}
-
-func (b *BadRequestRefundResponseErrorV2) UnmarshalJSON(data []byte) error {
-	var body *V2BadRequestError
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	b.StatusCode = 400
-	b.Body = body
-	return nil
-}
-
-func (b *BadRequestRefundResponseErrorV2) MarshalJSON() ([]byte, error) {
-	return json.Marshal(b.Body)
-}
-
-func (b *BadRequestRefundResponseErrorV2) Unwrap() error {
-	return b.APIError
-}
-
-// Bad request error for v2 Money In void endpoint (HTTP 400). Returned when request validation fails. Follows RFC 7807 Problem Details format with Payabli-specific unified response codes. See the [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for the complete list of codes.
-type BadRequestVoidResponseErrorV2 struct {
-	*core.APIError
-	Body *V2BadRequestError
-}
-
-func (b *BadRequestVoidResponseErrorV2) UnmarshalJSON(data []byte) error {
-	var body *V2BadRequestError
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	b.StatusCode = 400
-	b.Body = body
-	return nil
-}
-
-func (b *BadRequestVoidResponseErrorV2) MarshalJSON() ([]byte, error) {
-	return json.Marshal(b.Body)
-}
-
-func (b *BadRequestVoidResponseErrorV2) Unwrap() error {
-	return b.APIError
-}
-
-// Auth or sale decline error for v2 Money In endpoints (HTTP 402). Returned when an authorization or sale operation is declined for a transaction. Uses unified response codes starting with 'D'. See the [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for the complete list of codes.
-type DeclinedAuthResponseErrorV2 struct {
-	*core.APIError
-	Body *V2DeclinedTransactionResponseWrapper
-}
-
-func (d *DeclinedAuthResponseErrorV2) UnmarshalJSON(data []byte) error {
-	var body *V2DeclinedTransactionResponseWrapper
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	d.StatusCode = 402
-	d.Body = body
-	return nil
-}
-
-func (d *DeclinedAuthResponseErrorV2) MarshalJSON() ([]byte, error) {
-	return json.Marshal(d.Body)
-}
-
-func (d *DeclinedAuthResponseErrorV2) Unwrap() error {
-	return d.APIError
-}
-
-// Capture decline error for v2 Money In endpoints (HTTP 402). Returned when a capture operation is declined for a transaction. Uses unified response codes starting with 'D'. See the [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for the complete list of codes.
-type DeclinedCaptureResponseErrorV2 struct {
-	*core.APIError
-	Body *V2DeclinedTransactionResponseWrapper
-}
-
-func (d *DeclinedCaptureResponseErrorV2) UnmarshalJSON(data []byte) error {
-	var body *V2DeclinedTransactionResponseWrapper
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	d.StatusCode = 402
-	d.Body = body
-	return nil
-}
-
-func (d *DeclinedCaptureResponseErrorV2) MarshalJSON() ([]byte, error) {
-	return json.Marshal(d.Body)
-}
-
-func (d *DeclinedCaptureResponseErrorV2) Unwrap() error {
-	return d.APIError
-}
-
-// Refund decline error for v2 Money In endpoints (HTTP 402). Returned when a refund operation is declined for a transaction. Uses unified response codes starting with 'D'. See the [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for the complete list of codes.
-type DeclinedRefundResponseErrorV2 struct {
-	*core.APIError
-	Body *V2DeclinedTransactionResponseWrapper
-}
-
-func (d *DeclinedRefundResponseErrorV2) UnmarshalJSON(data []byte) error {
-	var body *V2DeclinedTransactionResponseWrapper
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	d.StatusCode = 402
-	d.Body = body
-	return nil
-}
-
-func (d *DeclinedRefundResponseErrorV2) MarshalJSON() ([]byte, error) {
-	return json.Marshal(d.Body)
-}
-
-func (d *DeclinedRefundResponseErrorV2) Unwrap() error {
-	return d.APIError
-}
-
-// Void decline error for v2 Money In endpoints (HTTP 402). Returned when a void operation is declined for a transaction. Uses unified response codes starting with 'D'. See the [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for the complete list of codes.
-type DeclinedVoidResponseErrorV2 struct {
-	*core.APIError
-	Body *V2DeclinedTransactionResponseWrapper
-}
-
-func (d *DeclinedVoidResponseErrorV2) UnmarshalJSON(data []byte) error {
-	var body *V2DeclinedTransactionResponseWrapper
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	d.StatusCode = 402
-	d.Body = body
-	return nil
-}
-
-func (d *DeclinedVoidResponseErrorV2) MarshalJSON() ([]byte, error) {
-	return json.Marshal(d.Body)
-}
-
-func (d *DeclinedVoidResponseErrorV2) Unwrap() error {
-	return d.APIError
-}
-
-// Internal server error for v2 Money In endpoints (HTTP 500). Returned when an unexpected error occurs. Follows RFC 7807 Problem Details format.
-type InternalServerResponseErrorV2 struct {
-	*core.APIError
-	Body *V2InternalServerError
-}
-
-func (i *InternalServerResponseErrorV2) UnmarshalJSON(data []byte) error {
-	var body *V2InternalServerError
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	i.StatusCode = 500
-	i.Body = body
-	return nil
-}
-
-func (i *InternalServerResponseErrorV2) MarshalJSON() ([]byte, error) {
-	return json.Marshal(i.Body)
-}
-
-func (i *InternalServerResponseErrorV2) Unwrap() error {
-	return i.APIError
-}
-
-// Validation errors for capture requests. Possible response codes include: 3014, 3015, 3016.
-type CaptureError struct {
-	*core.APIError
-	Body *PayabliApiResponseError400
-}
-
-func (c *CaptureError) UnmarshalJSON(data []byte) error {
-	var body *PayabliApiResponseError400
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	c.StatusCode = 400
-	c.Body = body
-	return nil
-}
-
-func (c *CaptureError) MarshalJSON() ([]byte, error) {
-	return json.Marshal(c.Body)
-}
-
-func (c *CaptureError) Unwrap() error {
-	return c.APIError
-}
-
-type InvalidTransStatusError struct {
-	*core.APIError
-	Body *InvalidTransStatusErrorType
-}
-
-func (i *InvalidTransStatusError) UnmarshalJSON(data []byte) error {
-	var body *InvalidTransStatusErrorType
-	if err := json.Unmarshal(data, &body); err != nil {
-		return err
-	}
-	i.StatusCode = 400
-	i.Body = body
-	return nil
-}
-
-func (i *InvalidTransStatusError) MarshalJSON() ([]byte, error) {
-	return json.Marshal(i.Body)
-}
-
-func (i *InvalidTransStatusError) Unwrap() error {
-	return i.APIError
 }

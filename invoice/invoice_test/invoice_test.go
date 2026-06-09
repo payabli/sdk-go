@@ -6,13 +6,14 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
+	http "net/http"
+	os "os"
+	testing "testing"
+
 	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
-	http "net/http"
-	os "os"
-	testing "testing"
 )
 
 func VerifyRequestCount(
@@ -20,7 +21,7 @@ func VerifyRequestCount(
 	testId string,
 	method string,
 	urlPath string,
-	queryParams map[string]string,
+	queryParams map[string]any,
 	expected int,
 ) {
 	wiremockURL := os.Getenv("WIREMOCK_URL")
@@ -45,9 +46,23 @@ func VerifyRequestCount(
 			}
 			reqBody.WriteString(`"`)
 			reqBody.WriteString(key)
-			reqBody.WriteString(`":{"equalTo":"`)
-			reqBody.WriteString(value)
-			reqBody.WriteString(`"}`)
+			switch v := value.(type) {
+			case string:
+				reqBody.WriteString(`":{"equalTo":"`)
+				reqBody.WriteString(v)
+				reqBody.WriteString(`"}`)
+			case []string:
+				reqBody.WriteString(`":{"hasExactly":[`)
+				for i, item := range v {
+					if i > 0 {
+						reqBody.WriteString(",")
+					}
+					reqBody.WriteString(`{"equalTo":"`)
+					reqBody.WriteString(item)
+					reqBody.WriteString(`"}`)
+				}
+				reqBody.WriteString(`]}`)
+			}
 			first = false
 		}
 		reqBody.WriteString("}")
@@ -71,77 +86,85 @@ func TestInvoiceAddInvoiceWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.AddInvoiceRequest{
 		Body: &payabli.InvoiceDataRequest{
 			CustomerData: &payabli.PayorDataRequest{
+				CustomerNumber: payabli.String(
+					"C-90010",
+				),
 				FirstName: payabli.String(
 					"Tamara",
 				),
 				LastName: payabli.String(
 					"Bagratoni",
 				),
-				CustomerNumber: payabli.String(
-					"3",
-				),
 			},
 			InvoiceData: &payabli.BillData{
-				Items: []*payabli.BillItem{
-					&payabli.BillItem{
-						ItemProductName: payabli.String(
-							"Adventure Consult",
-						),
-						ItemDescription: payabli.String(
-							"Consultation for Georgian tours",
-						),
-						ItemCost: 100,
-						ItemQty: payabli.Int(
-							1,
-						),
-						ItemMode: payabli.Int(
-							1,
-						),
-						ItemTotalAmount: payabli.Float64(
-							1,
-						),
-					},
-					&payabli.BillItem{
-						ItemProductName: payabli.String(
-							"Deposit ",
-						),
-						ItemDescription: payabli.String(
-							"Deposit for trip planning",
-						),
-						ItemCost: 882.37,
-						ItemQty: payabli.Int(
-							1,
-						),
-						ItemTotalAmount: payabli.Float64(
-							1,
-						),
-					},
-				},
+				Discount: payabli.Float64(
+					10,
+				),
+				Frequency: payabli.FrequencyOneTime.Ptr(),
+				InvoiceAmount: payabli.Float64(
+					1082.37,
+				),
 				InvoiceDate: payabli.Time(
 					payabli.MustParseDate(
 						"2025-10-19",
 					),
 				),
-				InvoiceType: payabli.Int(
-					0,
+				InvoiceNumber: payabli.String(
+					"INV-2345",
 				),
 				InvoiceStatus: payabli.Int(
 					1,
 				),
-				Frequency: payabli.FrequencyOneTime.Ptr(),
-				InvoiceAmount: payabli.Float64(
-					982.37,
+				InvoiceType: payabli.Int(
+					0,
 				),
-				Discount: payabli.Float64(
-					10,
-				),
-				InvoiceNumber: payabli.String(
-					"INV-3",
-				),
+				Items: []*payabli.BillItem{
+					&payabli.BillItem{
+						ItemCost: payabli.Float64(
+							100,
+						),
+						ItemDescription: payabli.String(
+							"Consultation for Georgian tours",
+						),
+						ItemMode: payabli.Int(
+							2,
+						),
+						ItemProductName: payabli.String(
+							"Adventure Consult",
+						),
+						ItemQty: payabli.Int(
+							2,
+						),
+						ItemTotalAmount: payabli.Float64(
+							200,
+						),
+					},
+					&payabli.BillItem{
+						ItemCost: payabli.Float64(
+							882.37,
+						),
+						ItemDescription: payabli.String(
+							"Deposit for trip planning",
+						),
+						ItemMode: payabli.Int(
+							2,
+						),
+						ItemProductName: payabli.String(
+							"Deposit ",
+						),
+						ItemQty: payabli.Int(
+							1,
+						),
+						ItemTotalAmount: payabli.Float64(
+							882.37,
+						),
+					},
+				},
 			},
 		},
 	}
@@ -158,105 +181,6 @@ func TestInvoiceAddInvoiceWithWireMock(
 	VerifyRequestCount(t, "TestInvoiceAddInvoiceWithWireMock", "POST", "/Invoice/8cfec329267", nil, 1)
 }
 
-func TestInvoiceDeleteAttachedFromInvoiceWithWireMock(
-	t *testing.T,
-) {
-	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
-	if WireMockBaseURL == "" {
-		WireMockBaseURL = "http://localhost:8080"
-	}
-	client := client.NewClient(
-		option.WithBaseURL(WireMockBaseURL),
-	)
-	_, invocationErr := client.Invoice.DeleteAttachedFromInvoice(
-		context.TODO(),
-		23548884,
-		"0_Bill.pdf",
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestInvoiceDeleteAttachedFromInvoiceWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestInvoiceDeleteAttachedFromInvoiceWithWireMock", "DELETE", "/Invoice/attachedFileFromInvoice/23548884/0_Bill.pdf", nil, 1)
-}
-
-func TestInvoiceDeleteInvoiceWithWireMock(
-	t *testing.T,
-) {
-	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
-	if WireMockBaseURL == "" {
-		WireMockBaseURL = "http://localhost:8080"
-	}
-	client := client.NewClient(
-		option.WithBaseURL(WireMockBaseURL),
-	)
-	_, invocationErr := client.Invoice.DeleteInvoice(
-		context.TODO(),
-		23548884,
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestInvoiceDeleteInvoiceWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestInvoiceDeleteInvoiceWithWireMock", "DELETE", "/Invoice/23548884", nil, 1)
-}
-
-func TestInvoiceEditInvoiceWithWireMock(
-	t *testing.T,
-) {
-	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
-	if WireMockBaseURL == "" {
-		WireMockBaseURL = "http://localhost:8080"
-	}
-	client := client.NewClient(
-		option.WithBaseURL(WireMockBaseURL),
-	)
-	request := &payabli.EditInvoiceRequest{
-		Body: &payabli.InvoiceDataRequest{
-			InvoiceData: &payabli.BillData{
-				Items: []*payabli.BillItem{
-					&payabli.BillItem{
-						ItemProductName: payabli.String(
-							"Deposit",
-						),
-						ItemDescription: payabli.String(
-							"Deposit for trip planning",
-						),
-						ItemCost: 882.37,
-						ItemQty: payabli.Int(
-							1,
-						),
-					},
-				},
-				InvoiceDate: payabli.Time(
-					payabli.MustParseDate(
-						"2025-10-19",
-					),
-				),
-				InvoiceAmount: payabli.Float64(
-					982.37,
-				),
-				InvoiceNumber: payabli.String(
-					"INV-6",
-				),
-			},
-		},
-	}
-	_, invocationErr := client.Invoice.EditInvoice(
-		context.TODO(),
-		332,
-		request,
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestInvoiceEditInvoiceWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestInvoiceEditInvoiceWithWireMock", "PUT", "/Invoice/332", nil, 1)
-}
-
 func TestInvoiceGetAttachedFileFromInvoiceWithWireMock(
 	t *testing.T,
 ) {
@@ -266,6 +190,7 @@ func TestInvoiceGetAttachedFileFromInvoiceWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.GetAttachedFileFromInvoiceRequest{}
 	_, invocationErr := client.Invoice.GetAttachedFileFromInvoice(
@@ -282,6 +207,30 @@ func TestInvoiceGetAttachedFileFromInvoiceWithWireMock(
 	VerifyRequestCount(t, "TestInvoiceGetAttachedFileFromInvoiceWithWireMock", "GET", "/Invoice/attachedFileFromInvoice/1/filename", nil, 1)
 }
 
+func TestInvoiceDeleteAttachedFromInvoiceWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
+	)
+	_, invocationErr := client.Invoice.DeleteAttachedFromInvoice(
+		context.TODO(),
+		23548884,
+		"0_Bill.pdf",
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestInvoiceDeleteAttachedFromInvoiceWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestInvoiceDeleteAttachedFromInvoiceWithWireMock", "DELETE", "/Invoice/attachedFileFromInvoice/23548884/0_Bill.pdf", nil, 1)
+}
+
 func TestInvoiceGetInvoiceWithWireMock(
 	t *testing.T,
 ) {
@@ -291,6 +240,7 @@ func TestInvoiceGetInvoiceWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.Invoice.GetInvoice(
 		context.TODO(),
@@ -304,6 +254,86 @@ func TestInvoiceGetInvoiceWithWireMock(
 	VerifyRequestCount(t, "TestInvoiceGetInvoiceWithWireMock", "GET", "/Invoice/23548884", nil, 1)
 }
 
+func TestInvoiceEditInvoiceWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
+	)
+	request := &payabli.EditInvoiceRequest{
+		Body: &payabli.InvoiceDataRequest{
+			InvoiceData: &payabli.BillData{
+				InvoiceAmount: payabli.Float64(
+					982.37,
+				),
+				InvoiceDate: payabli.Time(
+					payabli.MustParseDate(
+						"2025-10-19",
+					),
+				),
+				InvoiceNumber: payabli.String(
+					"INV-2345",
+				),
+				Items: []*payabli.BillItem{
+					&payabli.BillItem{
+						ItemCost: payabli.Float64(
+							882.37,
+						),
+						ItemDescription: payabli.String(
+							"Deposit for trip planning",
+						),
+						ItemProductName: payabli.String(
+							"Deposit",
+						),
+						ItemQty: payabli.Int(
+							1,
+						),
+					},
+				},
+			},
+		},
+	}
+	_, invocationErr := client.Invoice.EditInvoice(
+		context.TODO(),
+		23548884,
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestInvoiceEditInvoiceWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestInvoiceEditInvoiceWithWireMock", "PUT", "/Invoice/23548884", nil, 1)
+}
+
+func TestInvoiceDeleteInvoiceWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
+	)
+	_, invocationErr := client.Invoice.DeleteInvoice(
+		context.TODO(),
+		23548884,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestInvoiceDeleteInvoiceWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestInvoiceDeleteInvoiceWithWireMock", "DELETE", "/Invoice/23548884", nil, 1)
+}
+
 func TestInvoiceGetInvoiceNumberWithWireMock(
 	t *testing.T,
 ) {
@@ -313,6 +343,7 @@ func TestInvoiceGetInvoiceNumberWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.Invoice.GetInvoiceNumber(
 		context.TODO(),
@@ -335,6 +366,7 @@ func TestInvoiceListInvoicesWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListInvoicesRequest{
 		FromRecord: payabli.Int(
@@ -357,7 +389,7 @@ func TestInvoiceListInvoicesWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestInvoiceListInvoicesWithWireMock", "GET", "/Query/invoices/8cfec329267", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestInvoiceListInvoicesWithWireMock", "GET", "/Query/invoices/8cfec329267", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestInvoiceListInvoicesOrgWithWireMock(
@@ -369,6 +401,7 @@ func TestInvoiceListInvoicesOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListInvoicesOrgRequest{
 		FromRecord: payabli.Int(
@@ -391,7 +424,7 @@ func TestInvoiceListInvoicesOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestInvoiceListInvoicesOrgWithWireMock", "GET", "/Query/invoices/org/123", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestInvoiceListInvoicesOrgWithWireMock", "GET", "/Query/invoices/org/123", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestInvoiceSendInvoiceWithWireMock(
@@ -403,6 +436,7 @@ func TestInvoiceSendInvoiceWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.SendInvoiceRequest{
 		Attachfile: payabli.Bool(
@@ -422,7 +456,7 @@ func TestInvoiceSendInvoiceWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestInvoiceSendInvoiceWithWireMock", "GET", "/Invoice/send/23548884", map[string]string{"attachfile": "true", "mail2": "tamara@example.com"}, 1)
+	VerifyRequestCount(t, "TestInvoiceSendInvoiceWithWireMock", "GET", "/Invoice/send/23548884", map[string]interface{}{"attachfile": "true", "mail2": "tamara@example.com"}, 1)
 }
 
 func TestInvoiceGetInvoicePdfWithWireMock(
@@ -434,6 +468,7 @@ func TestInvoiceGetInvoicePdfWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.Invoice.GetInvoicePdf(
 		context.TODO(),

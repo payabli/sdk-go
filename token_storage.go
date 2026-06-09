@@ -19,12 +19,17 @@ var (
 )
 
 type AddMethodRequest struct {
-	IdempotencyKey        *IdempotencyKey        `json:"-" url:"-"`
-	AchValidation         *AchValidation         `json:"-" url:"achValidation,omitempty"`
-	CreateAnonymous       *CreateAnonymous       `json:"-" url:"createAnonymous,omitempty"`
+	// _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+	IdempotencyKey *IdempotencyKey `json:"-" url:"-"`
+	// When `true`, enables real-time validation of ACH account and routing numbers. This is an add-on feature, contact Payabli for more information.
+	AchValidation *AchValidation `json:"-" url:"achValidation,omitempty"`
+	// When `true`, creates a saved method with no associated customer information. The token will be associated with customer information the first time it's used to make a payment. Defaults to `false`.
+	CreateAnonymous *CreateAnonymous `json:"-" url:"createAnonymous,omitempty"`
+	// When `true`, the request creates a new customer record, regardless of whether customer identifiers match an existing customer. Defaults to `false`.
 	ForceCustomerCreation *ForceCustomerCreation `json:"-" url:"forceCustomerCreation,omitempty"`
-	Temporary             *Temporary             `json:"-" url:"temporary,omitempty"`
-	Body                  *RequestTokenStorage   `json:"-" url:"-"`
+	// Creates a temporary, one-time-use token for the payment method that expires in 12 hours. Defaults to `false`.
+	Temporary *Temporary           `json:"-" url:"temporary,omitempty"`
+	Body      *RequestTokenStorage `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -134,6 +139,7 @@ var (
 )
 
 type UpdateMethodRequest struct {
+	// When `true`, enables real-time validation of ACH account and routing numbers. This is an add-on feature, contact Payabli for more information.
 	AchValidation *AchValidation       `json:"-" url:"achValidation,omitempty"`
 	Body          *RequestTokenStorage `json:"-" url:"-"`
 
@@ -166,240 +172,6 @@ func (u *UpdateMethodRequest) UnmarshalJSON(data []byte) error {
 
 func (u *UpdateMethodRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(u.Body)
-}
-
-// Response body for payment method deletion.
-var (
-	payabliApiResponsePaymethodDeleteFieldIsSuccess    = big.NewInt(1 << 0)
-	payabliApiResponsePaymethodDeleteFieldResponseData = big.NewInt(1 << 1)
-	payabliApiResponsePaymethodDeleteFieldResponseText = big.NewInt(1 << 2)
-)
-
-type PayabliApiResponsePaymethodDelete struct {
-	IsSuccess    *IsSuccess                                     `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseData *PayabliApiResponsePaymethodDeleteResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText ResponseText                                   `json:"responseText" url:"responseText"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PayabliApiResponsePaymethodDelete) GetIsSuccess() *IsSuccess {
-	if p == nil {
-		return nil
-	}
-	return p.IsSuccess
-}
-
-func (p *PayabliApiResponsePaymethodDelete) GetResponseData() *PayabliApiResponsePaymethodDeleteResponseData {
-	if p == nil {
-		return nil
-	}
-	return p.ResponseData
-}
-
-func (p *PayabliApiResponsePaymethodDelete) GetResponseText() ResponseText {
-	if p == nil {
-		return ""
-	}
-	return p.ResponseText
-}
-
-func (p *PayabliApiResponsePaymethodDelete) GetExtraProperties() map[string]interface{} {
-	if p == nil {
-		return nil
-	}
-	return p.extraProperties
-}
-
-func (p *PayabliApiResponsePaymethodDelete) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
-	}
-	p.explicitFields.Or(p.explicitFields, field)
-}
-
-// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponsePaymethodDelete) SetIsSuccess(isSuccess *IsSuccess) {
-	p.IsSuccess = isSuccess
-	p.require(payabliApiResponsePaymethodDeleteFieldIsSuccess)
-}
-
-// SetResponseData sets the ResponseData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponsePaymethodDelete) SetResponseData(responseData *PayabliApiResponsePaymethodDeleteResponseData) {
-	p.ResponseData = responseData
-	p.require(payabliApiResponsePaymethodDeleteFieldResponseData)
-}
-
-// SetResponseText sets the ResponseText field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponsePaymethodDelete) SetResponseText(responseText ResponseText) {
-	p.ResponseText = responseText
-	p.require(payabliApiResponsePaymethodDeleteFieldResponseText)
-}
-
-func (p *PayabliApiResponsePaymethodDelete) UnmarshalJSON(data []byte) error {
-	type unmarshaler PayabliApiResponsePaymethodDelete
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PayabliApiResponsePaymethodDelete(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PayabliApiResponsePaymethodDelete) MarshalJSON() ([]byte, error) {
-	type embed PayabliApiResponsePaymethodDelete
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*p),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (p *PayabliApiResponsePaymethodDelete) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
-var (
-	payabliApiResponsePaymethodDeleteResponseDataFieldReferenceId = big.NewInt(1 << 0)
-	payabliApiResponsePaymethodDeleteResponseDataFieldResultCode  = big.NewInt(1 << 1)
-	payabliApiResponsePaymethodDeleteResponseDataFieldResultText  = big.NewInt(1 << 2)
-)
-
-type PayabliApiResponsePaymethodDeleteResponseData struct {
-	// The method's reference ID.
-	ReferenceId *MethodReferenceId `json:"referenceId,omitempty" url:"referenceId,omitempty"`
-	ResultCode  *ResultCode        `json:"resultCode,omitempty" url:"resultCode,omitempty"`
-	ResultText  *Resulttext        `json:"resultText,omitempty" url:"resultText,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PayabliApiResponsePaymethodDeleteResponseData) GetReferenceId() *MethodReferenceId {
-	if p == nil {
-		return nil
-	}
-	return p.ReferenceId
-}
-
-func (p *PayabliApiResponsePaymethodDeleteResponseData) GetResultCode() *ResultCode {
-	if p == nil {
-		return nil
-	}
-	return p.ResultCode
-}
-
-func (p *PayabliApiResponsePaymethodDeleteResponseData) GetResultText() *Resulttext {
-	if p == nil {
-		return nil
-	}
-	return p.ResultText
-}
-
-func (p *PayabliApiResponsePaymethodDeleteResponseData) GetExtraProperties() map[string]interface{} {
-	if p == nil {
-		return nil
-	}
-	return p.extraProperties
-}
-
-func (p *PayabliApiResponsePaymethodDeleteResponseData) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
-	}
-	p.explicitFields.Or(p.explicitFields, field)
-}
-
-// SetReferenceId sets the ReferenceId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponsePaymethodDeleteResponseData) SetReferenceId(referenceId *MethodReferenceId) {
-	p.ReferenceId = referenceId
-	p.require(payabliApiResponsePaymethodDeleteResponseDataFieldReferenceId)
-}
-
-// SetResultCode sets the ResultCode field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponsePaymethodDeleteResponseData) SetResultCode(resultCode *ResultCode) {
-	p.ResultCode = resultCode
-	p.require(payabliApiResponsePaymethodDeleteResponseDataFieldResultCode)
-}
-
-// SetResultText sets the ResultText field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponsePaymethodDeleteResponseData) SetResultText(resultText *Resulttext) {
-	p.ResultText = resultText
-	p.require(payabliApiResponsePaymethodDeleteResponseDataFieldResultText)
-}
-
-func (p *PayabliApiResponsePaymethodDeleteResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler PayabliApiResponsePaymethodDeleteResponseData
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PayabliApiResponsePaymethodDeleteResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PayabliApiResponsePaymethodDeleteResponseData) MarshalJSON() ([]byte, error) {
-	type embed PayabliApiResponsePaymethodDeleteResponseData
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*p),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (p *PayabliApiResponsePaymethodDeleteResponseData) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
 }
 
 var (
@@ -533,7 +305,7 @@ type AddMethodResponseResponseData struct {
 	ResultText  *Resulttext        `json:"resultText,omitempty" url:"resultText,omitempty"`
 	// Internal unique ID of customer owner of the stored method.
 	//
-	// Returns `0` if the method wasn't assigned to an existing customer or no customer was created."
+	// Returns `0` if the method wasn't assigned to an existing customer or no customer was created.
 	CustomerId        *CustomerId        `json:"customerId,omitempty" url:"customerId,omitempty"`
 	MethodReferenceId *MethodReferenceId `json:"methodReferenceId,omitempty" url:"methodReferenceId,omitempty"`
 
@@ -2904,6 +2676,240 @@ func (g *GetMethodResponseResponseDataVendorsItem) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+// Response body for payment method deletion.
+var (
+	payabliApiResponsePaymethodDeleteFieldIsSuccess    = big.NewInt(1 << 0)
+	payabliApiResponsePaymethodDeleteFieldResponseData = big.NewInt(1 << 1)
+	payabliApiResponsePaymethodDeleteFieldResponseText = big.NewInt(1 << 2)
+)
+
+type PayabliApiResponsePaymethodDelete struct {
+	IsSuccess    *IsSuccess                                     `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	ResponseData *PayabliApiResponsePaymethodDeleteResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
+	ResponseText ResponseText                                   `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PayabliApiResponsePaymethodDelete) GetIsSuccess() *IsSuccess {
+	if p == nil {
+		return nil
+	}
+	return p.IsSuccess
+}
+
+func (p *PayabliApiResponsePaymethodDelete) GetResponseData() *PayabliApiResponsePaymethodDeleteResponseData {
+	if p == nil {
+		return nil
+	}
+	return p.ResponseData
+}
+
+func (p *PayabliApiResponsePaymethodDelete) GetResponseText() ResponseText {
+	if p == nil {
+		return ""
+	}
+	return p.ResponseText
+}
+
+func (p *PayabliApiResponsePaymethodDelete) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PayabliApiResponsePaymethodDelete) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponsePaymethodDelete) SetIsSuccess(isSuccess *IsSuccess) {
+	p.IsSuccess = isSuccess
+	p.require(payabliApiResponsePaymethodDeleteFieldIsSuccess)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponsePaymethodDelete) SetResponseData(responseData *PayabliApiResponsePaymethodDeleteResponseData) {
+	p.ResponseData = responseData
+	p.require(payabliApiResponsePaymethodDeleteFieldResponseData)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponsePaymethodDelete) SetResponseText(responseText ResponseText) {
+	p.ResponseText = responseText
+	p.require(payabliApiResponsePaymethodDeleteFieldResponseText)
+}
+
+func (p *PayabliApiResponsePaymethodDelete) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayabliApiResponsePaymethodDelete
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PayabliApiResponsePaymethodDelete(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PayabliApiResponsePaymethodDelete) MarshalJSON() ([]byte, error) {
+	type embed PayabliApiResponsePaymethodDelete
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PayabliApiResponsePaymethodDelete) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+var (
+	payabliApiResponsePaymethodDeleteResponseDataFieldReferenceId = big.NewInt(1 << 0)
+	payabliApiResponsePaymethodDeleteResponseDataFieldResultCode  = big.NewInt(1 << 1)
+	payabliApiResponsePaymethodDeleteResponseDataFieldResultText  = big.NewInt(1 << 2)
+)
+
+type PayabliApiResponsePaymethodDeleteResponseData struct {
+	// The method's reference ID.
+	ReferenceId *MethodReferenceId `json:"referenceId,omitempty" url:"referenceId,omitempty"`
+	ResultCode  *ResultCode        `json:"resultCode,omitempty" url:"resultCode,omitempty"`
+	ResultText  *Resulttext        `json:"resultText,omitempty" url:"resultText,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PayabliApiResponsePaymethodDeleteResponseData) GetReferenceId() *MethodReferenceId {
+	if p == nil {
+		return nil
+	}
+	return p.ReferenceId
+}
+
+func (p *PayabliApiResponsePaymethodDeleteResponseData) GetResultCode() *ResultCode {
+	if p == nil {
+		return nil
+	}
+	return p.ResultCode
+}
+
+func (p *PayabliApiResponsePaymethodDeleteResponseData) GetResultText() *Resulttext {
+	if p == nil {
+		return nil
+	}
+	return p.ResultText
+}
+
+func (p *PayabliApiResponsePaymethodDeleteResponseData) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PayabliApiResponsePaymethodDeleteResponseData) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetReferenceId sets the ReferenceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponsePaymethodDeleteResponseData) SetReferenceId(referenceId *MethodReferenceId) {
+	p.ReferenceId = referenceId
+	p.require(payabliApiResponsePaymethodDeleteResponseDataFieldReferenceId)
+}
+
+// SetResultCode sets the ResultCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponsePaymethodDeleteResponseData) SetResultCode(resultCode *ResultCode) {
+	p.ResultCode = resultCode
+	p.require(payabliApiResponsePaymethodDeleteResponseDataFieldResultCode)
+}
+
+// SetResultText sets the ResultText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponsePaymethodDeleteResponseData) SetResultText(resultText *Resulttext) {
+	p.ResultText = resultText
+	p.require(payabliApiResponsePaymethodDeleteResponseDataFieldResultText)
+}
+
+func (p *PayabliApiResponsePaymethodDeleteResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayabliApiResponsePaymethodDeleteResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PayabliApiResponsePaymethodDeleteResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PayabliApiResponsePaymethodDeleteResponseData) MarshalJSON() ([]byte, error) {
+	type embed PayabliApiResponsePaymethodDeleteResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PayabliApiResponsePaymethodDeleteResponseData) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
 var (
 	requestTokenStorageFieldCustomerData       = big.NewInt(1 << 0)
 	requestTokenStorageFieldEntryPoint         = big.NewInt(1 << 1)
@@ -3125,11 +3131,8 @@ func (r *RequestTokenStorage) String() string {
 
 // Information about the payment method for the transaction.
 type RequestTokenStoragePaymentMethod struct {
-	// Tokenize a card payment method.
 	TokenizeCard *TokenizeCard
-	// Tokenize an ACH payment method.
-	TokenizeAch *TokenizeAch
-	// Converts a temporary token to a permanent token.
+	TokenizeAch  *TokenizeAch
 	ConvertToken *ConvertToken
 
 	typ string

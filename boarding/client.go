@@ -4,6 +4,7 @@ package boarding
 
 import (
 	context "context"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
@@ -25,8 +26,9 @@ func NewClient(options *core.RequestOptions) *Client {
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -40,6 +42,26 @@ func (c *Client) AddApplication(
 ) (*payabli.PayabliApiResponse00Responsedatanonobject, error) {
 	response, err := c.WithRawResponse.AddApplication(
 		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Updates a boarding application by ID. This endpoint requires an application API token.
+func (c *Client) UpdateApplication(
+	ctx context.Context,
+	// Boarding application ID.
+	appId int,
+	request *payabli.ApplicationData,
+	opts ...option.RequestOption,
+) (*payabli.PayabliApiResponse00Responsedatanonobject, error) {
+	response, err := c.WithRawResponse.UpdateApplication(
+		ctx,
+		appId,
 		request,
 		opts...,
 	)
@@ -213,26 +235,6 @@ func (c *Client) ListBoardingLinks(
 	response, err := c.WithRawResponse.ListBoardingLinks(
 		ctx,
 		orgId,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// Updates a boarding application by ID. This endpoint requires an application API token.
-func (c *Client) UpdateApplication(
-	ctx context.Context,
-	// Boarding application ID.
-	appId int,
-	request *payabli.ApplicationData,
-	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponse00Responsedatanonobject, error) {
-	response, err := c.WithRawResponse.UpdateApplication(
-		ctx,
-		appId,
 		request,
 		opts...,
 	)

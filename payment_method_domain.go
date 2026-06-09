@@ -342,6 +342,176 @@ func (a *AddPaymentMethodDomainApiResponse) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
+// Apple Pay configuration information.
+var (
+	addPaymentMethodDomainRequestApplePayFieldIsEnabled = big.NewInt(1 << 0)
+)
+
+type AddPaymentMethodDomainRequestApplePay struct {
+	IsEnabled *IsEnabled `json:"isEnabled,omitempty" url:"isEnabled,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AddPaymentMethodDomainRequestApplePay) GetIsEnabled() *IsEnabled {
+	if a == nil {
+		return nil
+	}
+	return a.IsEnabled
+}
+
+func (a *AddPaymentMethodDomainRequestApplePay) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
+	return a.extraProperties
+}
+
+func (a *AddPaymentMethodDomainRequestApplePay) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetIsEnabled sets the IsEnabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddPaymentMethodDomainRequestApplePay) SetIsEnabled(isEnabled *IsEnabled) {
+	a.IsEnabled = isEnabled
+	a.require(addPaymentMethodDomainRequestApplePayFieldIsEnabled)
+}
+
+func (a *AddPaymentMethodDomainRequestApplePay) UnmarshalJSON(data []byte) error {
+	type unmarshaler AddPaymentMethodDomainRequestApplePay
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AddPaymentMethodDomainRequestApplePay(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AddPaymentMethodDomainRequestApplePay) MarshalJSON() ([]byte, error) {
+	type embed AddPaymentMethodDomainRequestApplePay
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AddPaymentMethodDomainRequestApplePay) String() string {
+	if a == nil {
+		return "<nil>"
+	}
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+// Google Pay configuration information.
+var (
+	addPaymentMethodDomainRequestGooglePayFieldIsEnabled = big.NewInt(1 << 0)
+)
+
+type AddPaymentMethodDomainRequestGooglePay struct {
+	IsEnabled *IsEnabled `json:"isEnabled,omitempty" url:"isEnabled,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AddPaymentMethodDomainRequestGooglePay) GetIsEnabled() *IsEnabled {
+	if a == nil {
+		return nil
+	}
+	return a.IsEnabled
+}
+
+func (a *AddPaymentMethodDomainRequestGooglePay) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
+	return a.extraProperties
+}
+
+func (a *AddPaymentMethodDomainRequestGooglePay) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetIsEnabled sets the IsEnabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddPaymentMethodDomainRequestGooglePay) SetIsEnabled(isEnabled *IsEnabled) {
+	a.IsEnabled = isEnabled
+	a.require(addPaymentMethodDomainRequestGooglePayFieldIsEnabled)
+}
+
+func (a *AddPaymentMethodDomainRequestGooglePay) UnmarshalJSON(data []byte) error {
+	type unmarshaler AddPaymentMethodDomainRequestGooglePay
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AddPaymentMethodDomainRequestGooglePay(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AddPaymentMethodDomainRequestGooglePay) MarshalJSON() ([]byte, error) {
+	type embed AddPaymentMethodDomainRequestGooglePay
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AddPaymentMethodDomainRequestGooglePay) String() string {
+	if a == nil {
+		return "<nil>"
+	}
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
 // Details about the status of the Apple Pay service.
 var (
 	applePayDataFieldData      = big.NewInt(1 << 0)
@@ -349,10 +519,11 @@ var (
 )
 
 type ApplePayData struct {
-	// This object is only returned when the domain verification check fails. If a domain has failed validation, this object contains information about the failure.
-	Data *ApplePayStatusData `json:"data,omitempty" url:"data,omitempty"`
-	// When `true`, Apple Pay is enabled.
-	IsEnabled *IsEnabled `json:"isEnabled,omitempty" url:"isEnabled,omitempty"`
+	// This object is only returned when the domain verification check
+	// fails. If a domain has failed validation, this object contains
+	// information about the failure.
+	Data      *ApplePayStatusData `json:"data,omitempty" url:"data,omitempty"`
+	IsEnabled *IsEnabled          `json:"isEnabled,omitempty" url:"isEnabled,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -445,7 +616,8 @@ func (a *ApplePayData) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
-// This metadata appears only when the domain verification check fails. It gives more information about why the check failed.
+// This metadata appears only when the domain verification check fails. It
+// gives more information about why the check failed.
 var (
 	applePayMetadataFieldIsFileAvailable    = big.NewInt(1 << 0)
 	applePayMetadataFieldIsFileContentValid = big.NewInt(1 << 1)
@@ -455,16 +627,24 @@ var (
 )
 
 type ApplePayMetadata struct {
-	// When `true`, indicates whether the domain verification file is available at the expected path. When `false`, Payabli was unable to find the file at the expected path. If the file is missing, make sure it's hosted at the correct path: `/.well-known/apple-developer-merchantid-domain-association`
+	// When `true`, indicates whether the domain verification file is
+	// available at the expected path. When `false`, Payabli was unable to
+	// find the file at the expected path. If the file is missing, make
+	// sure it's hosted at the correct path:
+	// `/.well-known/apple-developer-merchantid-domain-association`.
 	IsFileAvailable *bool `json:"isFileAvailable,omitempty" url:"isFileAvailable,omitempty"`
-	// Indicates whether the domain verification file content is valid. If the file is invalid, try downloading it and hosting it again.
+	// Indicates whether the domain verification file content is valid. If
+	// the file is invalid, try downloading it and hosting it again.
 	IsFileContentValid *bool `json:"isFileContentValid,omitempty" url:"isFileContentValid,omitempty"`
 	// The domain name if the domain verification URL returns a redirect.
 	RedirectDomainName *string `json:"redirectDomainName,omitempty" url:"redirectDomainName,omitempty"`
-	// If the domain verification URL is redirected, this is the URL it's redirected to.
-	// For example, www.partner.com could redirect to www.partners-new-home-page.com. In this case, you should add www.partners-new-home-page.com as a domain instead of www.partner.com.
+	// If the domain verification URL is redirected, this is the URL it's
+	// redirected to. For example, `www.partner.com` could redirect to
+	// `www.partners-new-home-page.com`. In this case, you should add
+	// `www.partners-new-home-page.com` as a domain instead of
+	// `www.partner.com`.
 	RedirectUrl *string `json:"redirectUrl,omitempty" url:"redirectUrl,omitempty"`
-	// The status code return by the domain verification URL.
+	// The status code returned by the domain verification URL.
 	StatusCode *int `json:"statusCode,omitempty" url:"statusCode,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -864,10 +1044,144 @@ func (c *CascadeJobDetails) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+var (
+	deletePaymentMethodDomainResponseFieldIsSuccess      = big.NewInt(1 << 0)
+	deletePaymentMethodDomainResponseFieldPageIdentifier = big.NewInt(1 << 1)
+	deletePaymentMethodDomainResponseFieldResponseData   = big.NewInt(1 << 2)
+	deletePaymentMethodDomainResponseFieldResponseText   = big.NewInt(1 << 3)
+)
+
+type DeletePaymentMethodDomainResponse struct {
+	IsSuccess      IsSuccess      `json:"isSuccess" url:"isSuccess"`
+	PageIdentifier PageIdentifier `json:"pageIdentifier" url:"pageIdentifier"`
+	// The deleted domain's domain ID.
+	ResponseData *Responsedatanonobject `json:"responseData" url:"responseData"`
+	ResponseText ResponseText           `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (d *DeletePaymentMethodDomainResponse) GetIsSuccess() IsSuccess {
+	if d == nil {
+		return false
+	}
+	return d.IsSuccess
+}
+
+func (d *DeletePaymentMethodDomainResponse) GetPageIdentifier() PageIdentifier {
+	if d == nil {
+		return ""
+	}
+	return d.PageIdentifier
+}
+
+func (d *DeletePaymentMethodDomainResponse) GetResponseData() *Responsedatanonobject {
+	if d == nil {
+		return nil
+	}
+	return d.ResponseData
+}
+
+func (d *DeletePaymentMethodDomainResponse) GetResponseText() ResponseText {
+	if d == nil {
+		return ""
+	}
+	return d.ResponseText
+}
+
+func (d *DeletePaymentMethodDomainResponse) GetExtraProperties() map[string]interface{} {
+	if d == nil {
+		return nil
+	}
+	return d.extraProperties
+}
+
+func (d *DeletePaymentMethodDomainResponse) require(field *big.Int) {
+	if d.explicitFields == nil {
+		d.explicitFields = big.NewInt(0)
+	}
+	d.explicitFields.Or(d.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeletePaymentMethodDomainResponse) SetIsSuccess(isSuccess IsSuccess) {
+	d.IsSuccess = isSuccess
+	d.require(deletePaymentMethodDomainResponseFieldIsSuccess)
+}
+
+// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeletePaymentMethodDomainResponse) SetPageIdentifier(pageIdentifier PageIdentifier) {
+	d.PageIdentifier = pageIdentifier
+	d.require(deletePaymentMethodDomainResponseFieldPageIdentifier)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeletePaymentMethodDomainResponse) SetResponseData(responseData *Responsedatanonobject) {
+	d.ResponseData = responseData
+	d.require(deletePaymentMethodDomainResponseFieldResponseData)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeletePaymentMethodDomainResponse) SetResponseText(responseText ResponseText) {
+	d.ResponseText = responseText
+	d.require(deletePaymentMethodDomainResponseFieldResponseText)
+}
+
+func (d *DeletePaymentMethodDomainResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler DeletePaymentMethodDomainResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*d = DeletePaymentMethodDomainResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *d)
+	if err != nil {
+		return err
+	}
+	d.extraProperties = extraProperties
+	d.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (d *DeletePaymentMethodDomainResponse) MarshalJSON() ([]byte, error) {
+	type embed DeletePaymentMethodDomainResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*d),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (d *DeletePaymentMethodDomainResponse) String() string {
+	if d == nil {
+		return "<nil>"
+	}
+	if len(d.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(d); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", d)
+}
+
 // The entity type. Available values:
-//   - paypoint
-//   - organization
-//   - psp (payment service provider)
+//
+// - `paypoint`
+// - `organization`
+// - `psp` (payment service provider)
 type EntityType = string
 
 // Details about the status of the Google Pay service.
@@ -877,10 +1191,11 @@ var (
 )
 
 type GooglePayData struct {
-	// This object is only returned when the domain verification check fails. If a domain has failed validation, this object contains information about the failure.
-	Data *GooglePayStatusData `json:"data,omitempty" url:"data,omitempty"`
-	// When `true`, Google Pay is enabled.
-	IsEnabled *IsEnabled `json:"isEnabled,omitempty" url:"isEnabled,omitempty"`
+	// This object is only returned when the domain verification check
+	// fails. If a domain has failed validation, this object contains
+	// information about the failure.
+	Data      *GooglePayStatusData `json:"data,omitempty" url:"data,omitempty"`
+	IsEnabled *IsEnabled           `json:"isEnabled,omitempty" url:"isEnabled,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -973,7 +1288,8 @@ func (g *GooglePayData) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
-// This metadata appears only when the domain verification check fails. It gives more information about why the check failed.
+// This metadata appears only when the domain verification check fails. It
+// gives more information about why the check failed.
 var (
 	googlePayMetadataFieldStatusCode         = big.NewInt(1 << 0)
 	googlePayMetadataFieldRedirectUrl        = big.NewInt(1 << 1)
@@ -981,9 +1297,13 @@ var (
 )
 
 type GooglePayMetadata struct {
-	// The status code return by the domain verification URL.
+	// The status code returned by the domain verification URL.
 	StatusCode *int `json:"statusCode,omitempty" url:"statusCode,omitempty"`
-	// If the domain verification URL is redirected, this is the URL it's redirected to.  For example, www.partner.com could redirect to www.partners-new-home-page.com. In this case, you should add www.partners-new-home-page.com as a domain instead of www.partner.com.
+	// If the domain verification URL is redirected, this is the URL it's
+	// redirected to. For example, `www.partner.com` could redirect to
+	// `www.partners-new-home-page.com`. In this case, you should add
+	// `www.partners-new-home-page.com` as a domain instead of
+	// `www.partner.com`.
 	RedirectUrl *string `json:"redirectUrl,omitempty" url:"redirectUrl,omitempty"`
 	// The domain name if the domain verification URL returns a redirect.
 	RedirectDomainName *string `json:"redirectDomainName,omitempty" url:"redirectDomainName,omitempty"`
@@ -1195,13 +1515,116 @@ func (g *GooglePayStatusData) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
-// The domain's owning entity's ID in Payabli. This value might be different than the `entityId`, depending on whether the domain is cascaded and whether it's inherited.`
+var (
+	listPaymentMethodDomainsResponseFieldRecords = big.NewInt(1 << 0)
+	listPaymentMethodDomainsResponseFieldSummary = big.NewInt(1 << 1)
+)
+
+type ListPaymentMethodDomainsResponse struct {
+	Records []*PaymentMethodDomainApiResponse `json:"records" url:"records"`
+	Summary *QuerySummaryNoAmt                `json:"summary" url:"summary"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListPaymentMethodDomainsResponse) GetRecords() []*PaymentMethodDomainApiResponse {
+	if l == nil {
+		return nil
+	}
+	return l.Records
+}
+
+func (l *ListPaymentMethodDomainsResponse) GetSummary() *QuerySummaryNoAmt {
+	if l == nil {
+		return nil
+	}
+	return l.Summary
+}
+
+func (l *ListPaymentMethodDomainsResponse) GetExtraProperties() map[string]interface{} {
+	if l == nil {
+		return nil
+	}
+	return l.extraProperties
+}
+
+func (l *ListPaymentMethodDomainsResponse) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetRecords sets the Records field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPaymentMethodDomainsResponse) SetRecords(records []*PaymentMethodDomainApiResponse) {
+	l.Records = records
+	l.require(listPaymentMethodDomainsResponseFieldRecords)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPaymentMethodDomainsResponse) SetSummary(summary *QuerySummaryNoAmt) {
+	l.Summary = summary
+	l.require(listPaymentMethodDomainsResponseFieldSummary)
+}
+
+func (l *ListPaymentMethodDomainsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListPaymentMethodDomainsResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListPaymentMethodDomainsResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListPaymentMethodDomainsResponse) MarshalJSON() ([]byte, error) {
+	type embed ListPaymentMethodDomainsResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListPaymentMethodDomainsResponse) String() string {
+	if l == nil {
+		return "<nil>"
+	}
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+// The domain's owning entity's ID in Payabli. This value might be different
+// than the `entityId`, depending on whether the domain is cascaded and
+// whether it's inherited.
 type OwnerEntityId = int64
 
 // The domain's owner's entity type. Available values:
-//   - paypoint
-//   - organization
-//   - psp (payment service provider).
+//
+// - `paypoint`
+// - `organization`
+// - `psp` (payment service provider)
 type OwnerEntityType = string
 
 // Data related to the payment method domain.
@@ -1744,409 +2167,6 @@ func (q *QuerySummaryNoAmt) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", q)
-}
-
-// Apple Pay configuration information.
-var (
-	addPaymentMethodDomainRequestApplePayFieldIsEnabled = big.NewInt(1 << 0)
-)
-
-type AddPaymentMethodDomainRequestApplePay struct {
-	IsEnabled *IsEnabled `json:"isEnabled,omitempty" url:"isEnabled,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (a *AddPaymentMethodDomainRequestApplePay) GetIsEnabled() *IsEnabled {
-	if a == nil {
-		return nil
-	}
-	return a.IsEnabled
-}
-
-func (a *AddPaymentMethodDomainRequestApplePay) GetExtraProperties() map[string]interface{} {
-	if a == nil {
-		return nil
-	}
-	return a.extraProperties
-}
-
-func (a *AddPaymentMethodDomainRequestApplePay) require(field *big.Int) {
-	if a.explicitFields == nil {
-		a.explicitFields = big.NewInt(0)
-	}
-	a.explicitFields.Or(a.explicitFields, field)
-}
-
-// SetIsEnabled sets the IsEnabled field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AddPaymentMethodDomainRequestApplePay) SetIsEnabled(isEnabled *IsEnabled) {
-	a.IsEnabled = isEnabled
-	a.require(addPaymentMethodDomainRequestApplePayFieldIsEnabled)
-}
-
-func (a *AddPaymentMethodDomainRequestApplePay) UnmarshalJSON(data []byte) error {
-	type unmarshaler AddPaymentMethodDomainRequestApplePay
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*a = AddPaymentMethodDomainRequestApplePay(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *a)
-	if err != nil {
-		return err
-	}
-	a.extraProperties = extraProperties
-	a.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (a *AddPaymentMethodDomainRequestApplePay) MarshalJSON() ([]byte, error) {
-	type embed AddPaymentMethodDomainRequestApplePay
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*a),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (a *AddPaymentMethodDomainRequestApplePay) String() string {
-	if a == nil {
-		return "<nil>"
-	}
-	if len(a.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(a); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", a)
-}
-
-// Google Pay configuration information.
-var (
-	addPaymentMethodDomainRequestGooglePayFieldIsEnabled = big.NewInt(1 << 0)
-)
-
-type AddPaymentMethodDomainRequestGooglePay struct {
-	IsEnabled *IsEnabled `json:"isEnabled,omitempty" url:"isEnabled,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (a *AddPaymentMethodDomainRequestGooglePay) GetIsEnabled() *IsEnabled {
-	if a == nil {
-		return nil
-	}
-	return a.IsEnabled
-}
-
-func (a *AddPaymentMethodDomainRequestGooglePay) GetExtraProperties() map[string]interface{} {
-	if a == nil {
-		return nil
-	}
-	return a.extraProperties
-}
-
-func (a *AddPaymentMethodDomainRequestGooglePay) require(field *big.Int) {
-	if a.explicitFields == nil {
-		a.explicitFields = big.NewInt(0)
-	}
-	a.explicitFields.Or(a.explicitFields, field)
-}
-
-// SetIsEnabled sets the IsEnabled field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AddPaymentMethodDomainRequestGooglePay) SetIsEnabled(isEnabled *IsEnabled) {
-	a.IsEnabled = isEnabled
-	a.require(addPaymentMethodDomainRequestGooglePayFieldIsEnabled)
-}
-
-func (a *AddPaymentMethodDomainRequestGooglePay) UnmarshalJSON(data []byte) error {
-	type unmarshaler AddPaymentMethodDomainRequestGooglePay
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*a = AddPaymentMethodDomainRequestGooglePay(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *a)
-	if err != nil {
-		return err
-	}
-	a.extraProperties = extraProperties
-	a.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (a *AddPaymentMethodDomainRequestGooglePay) MarshalJSON() ([]byte, error) {
-	type embed AddPaymentMethodDomainRequestGooglePay
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*a),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (a *AddPaymentMethodDomainRequestGooglePay) String() string {
-	if a == nil {
-		return "<nil>"
-	}
-	if len(a.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(a); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", a)
-}
-
-var (
-	deletePaymentMethodDomainResponseFieldIsSuccess      = big.NewInt(1 << 0)
-	deletePaymentMethodDomainResponseFieldPageIdentifier = big.NewInt(1 << 1)
-	deletePaymentMethodDomainResponseFieldResponseData   = big.NewInt(1 << 2)
-	deletePaymentMethodDomainResponseFieldResponseText   = big.NewInt(1 << 3)
-)
-
-type DeletePaymentMethodDomainResponse struct {
-	IsSuccess      IsSuccess      `json:"isSuccess" url:"isSuccess"`
-	PageIdentifier PageIdentifier `json:"pageIdentifier" url:"pageIdentifier"`
-	// The deleted domain's domain ID.
-	ResponseData *Responsedatanonobject `json:"responseData" url:"responseData"`
-	ResponseText ResponseText           `json:"responseText" url:"responseText"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (d *DeletePaymentMethodDomainResponse) GetIsSuccess() IsSuccess {
-	if d == nil {
-		return false
-	}
-	return d.IsSuccess
-}
-
-func (d *DeletePaymentMethodDomainResponse) GetPageIdentifier() PageIdentifier {
-	if d == nil {
-		return ""
-	}
-	return d.PageIdentifier
-}
-
-func (d *DeletePaymentMethodDomainResponse) GetResponseData() *Responsedatanonobject {
-	if d == nil {
-		return nil
-	}
-	return d.ResponseData
-}
-
-func (d *DeletePaymentMethodDomainResponse) GetResponseText() ResponseText {
-	if d == nil {
-		return ""
-	}
-	return d.ResponseText
-}
-
-func (d *DeletePaymentMethodDomainResponse) GetExtraProperties() map[string]interface{} {
-	if d == nil {
-		return nil
-	}
-	return d.extraProperties
-}
-
-func (d *DeletePaymentMethodDomainResponse) require(field *big.Int) {
-	if d.explicitFields == nil {
-		d.explicitFields = big.NewInt(0)
-	}
-	d.explicitFields.Or(d.explicitFields, field)
-}
-
-// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeletePaymentMethodDomainResponse) SetIsSuccess(isSuccess IsSuccess) {
-	d.IsSuccess = isSuccess
-	d.require(deletePaymentMethodDomainResponseFieldIsSuccess)
-}
-
-// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeletePaymentMethodDomainResponse) SetPageIdentifier(pageIdentifier PageIdentifier) {
-	d.PageIdentifier = pageIdentifier
-	d.require(deletePaymentMethodDomainResponseFieldPageIdentifier)
-}
-
-// SetResponseData sets the ResponseData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeletePaymentMethodDomainResponse) SetResponseData(responseData *Responsedatanonobject) {
-	d.ResponseData = responseData
-	d.require(deletePaymentMethodDomainResponseFieldResponseData)
-}
-
-// SetResponseText sets the ResponseText field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeletePaymentMethodDomainResponse) SetResponseText(responseText ResponseText) {
-	d.ResponseText = responseText
-	d.require(deletePaymentMethodDomainResponseFieldResponseText)
-}
-
-func (d *DeletePaymentMethodDomainResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler DeletePaymentMethodDomainResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*d = DeletePaymentMethodDomainResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *d)
-	if err != nil {
-		return err
-	}
-	d.extraProperties = extraProperties
-	d.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (d *DeletePaymentMethodDomainResponse) MarshalJSON() ([]byte, error) {
-	type embed DeletePaymentMethodDomainResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*d),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (d *DeletePaymentMethodDomainResponse) String() string {
-	if d == nil {
-		return "<nil>"
-	}
-	if len(d.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(d); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", d)
-}
-
-var (
-	listPaymentMethodDomainsResponseFieldRecords = big.NewInt(1 << 0)
-	listPaymentMethodDomainsResponseFieldSummary = big.NewInt(1 << 1)
-)
-
-type ListPaymentMethodDomainsResponse struct {
-	Records []*PaymentMethodDomainApiResponse `json:"records" url:"records"`
-	Summary *QuerySummaryNoAmt                `json:"summary" url:"summary"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (l *ListPaymentMethodDomainsResponse) GetRecords() []*PaymentMethodDomainApiResponse {
-	if l == nil {
-		return nil
-	}
-	return l.Records
-}
-
-func (l *ListPaymentMethodDomainsResponse) GetSummary() *QuerySummaryNoAmt {
-	if l == nil {
-		return nil
-	}
-	return l.Summary
-}
-
-func (l *ListPaymentMethodDomainsResponse) GetExtraProperties() map[string]interface{} {
-	if l == nil {
-		return nil
-	}
-	return l.extraProperties
-}
-
-func (l *ListPaymentMethodDomainsResponse) require(field *big.Int) {
-	if l.explicitFields == nil {
-		l.explicitFields = big.NewInt(0)
-	}
-	l.explicitFields.Or(l.explicitFields, field)
-}
-
-// SetRecords sets the Records field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListPaymentMethodDomainsResponse) SetRecords(records []*PaymentMethodDomainApiResponse) {
-	l.Records = records
-	l.require(listPaymentMethodDomainsResponseFieldRecords)
-}
-
-// SetSummary sets the Summary field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *ListPaymentMethodDomainsResponse) SetSummary(summary *QuerySummaryNoAmt) {
-	l.Summary = summary
-	l.require(listPaymentMethodDomainsResponseFieldSummary)
-}
-
-func (l *ListPaymentMethodDomainsResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler ListPaymentMethodDomainsResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*l = ListPaymentMethodDomainsResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *l)
-	if err != nil {
-		return err
-	}
-	l.extraProperties = extraProperties
-	l.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (l *ListPaymentMethodDomainsResponse) MarshalJSON() ([]byte, error) {
-	type embed ListPaymentMethodDomainsResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*l),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (l *ListPaymentMethodDomainsResponse) String() string {
-	if l == nil {
-		return "<nil>"
-	}
-	if len(l.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(l); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", l)
 }
 
 var (

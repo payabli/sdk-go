@@ -4,6 +4,7 @@ package invoice
 
 import (
 	context "context"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
@@ -25,8 +26,9 @@ func NewClient(options *core.RequestOptions) *Client {
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -52,22 +54,39 @@ func (c *Client) AddInvoice(
 	return response.Body, nil
 }
 
-// Deletes an invoice that's attached to a file.
+// Retrieves a file attached to an invoice.
+func (c *Client) GetAttachedFileFromInvoice(
+	ctx context.Context,
+	// Invoice ID
+	idInvoice int,
+	// The filename in Payabli. Get this from the `zipName` field
+	// in the `DocumentsRef.filelist` array returned by
+	// `/api/Invoice/{idInvoice}`. Example: `0_Bill.pdf`.
+	filename string,
+	request *payabli.GetAttachedFileFromInvoiceRequest,
+	opts ...option.RequestOption,
+) (*payabli.FileContent, error) {
+	response, err := c.WithRawResponse.GetAttachedFileFromInvoice(
+		ctx,
+		idInvoice,
+		filename,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Deletes a file attached to an invoice.
 func (c *Client) DeleteAttachedFromInvoice(
 	ctx context.Context,
 	// Invoice ID
 	idInvoice int,
-	// The filename in Payabli. Filename is `zipName` in response to a request to `/api/Invoice/{idInvoice}`. Here, the filename is `0_Bill.pdf``.
-	// "DocumentsRef": {
-	//   "zipfile": "inva_269.zip",
-	//   "filelist": [
-	//     {
-	//       "originalName": "Bill.pdf",
-	//       "zipName": "0_Bill.pdf",
-	//       "descriptor": null
-	//     }
-	//   ]
-	// }
+	// The filename in Payabli. Get this from the `zipName` field
+	// in the `DocumentsRef.filelist` array returned by
+	// `/api/Invoice/{idInvoice}`. Example: `0_Bill.pdf`.
 	filename string,
 	opts ...option.RequestOption,
 ) (*payabli.InvoiceResponseWithoutData, error) {
@@ -83,14 +102,14 @@ func (c *Client) DeleteAttachedFromInvoice(
 	return response.Body, nil
 }
 
-// Deletes a single invoice from an entrypoint.
-func (c *Client) DeleteInvoice(
+// Retrieves a single invoice by ID.
+func (c *Client) GetInvoice(
 	ctx context.Context,
 	// Invoice ID
 	idInvoice int,
 	opts ...option.RequestOption,
-) (*payabli.InvoiceResponseWithoutData, error) {
-	response, err := c.WithRawResponse.DeleteInvoice(
+) (*payabli.GetInvoiceRecord, error) {
+	response, err := c.WithRawResponse.GetInvoice(
 		ctx,
 		idInvoice,
 		opts...,
@@ -121,49 +140,14 @@ func (c *Client) EditInvoice(
 	return response.Body, nil
 }
 
-// Retrieves a file attached to an invoice.
-func (c *Client) GetAttachedFileFromInvoice(
-	ctx context.Context,
-	// Invoice ID
-	idInvoice int,
-	// The filename in Payabli. Filename is `zipName` in the response to a request to `/api/Invoice/{idInvoice}`. Here, the filename is `0_Bill.pdf``.
-	// ```
-	//   "DocumentsRef": {
-	//     "zipfile": "inva_269.zip",
-	//     "filelist": [
-	//       {
-	//         "originalName": "Bill.pdf",
-	//         "zipName": "0_Bill.pdf",
-	//         "descriptor": null
-	//       }
-	//     ]
-	//   }
-	//   ```
-	filename string,
-	request *payabli.GetAttachedFileFromInvoiceRequest,
-	opts ...option.RequestOption,
-) (*payabli.FileContent, error) {
-	response, err := c.WithRawResponse.GetAttachedFileFromInvoice(
-		ctx,
-		idInvoice,
-		filename,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// Retrieves a single invoice by ID.
-func (c *Client) GetInvoice(
+// Deletes a single invoice from an entrypoint.
+func (c *Client) DeleteInvoice(
 	ctx context.Context,
 	// Invoice ID
 	idInvoice int,
 	opts ...option.RequestOption,
-) (*payabli.GetInvoiceRecord, error) {
-	response, err := c.WithRawResponse.GetInvoice(
+) (*payabli.InvoiceResponseWithoutData, error) {
+	response, err := c.WithRawResponse.DeleteInvoice(
 		ctx,
 		idInvoice,
 		opts...,

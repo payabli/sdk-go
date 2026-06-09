@@ -811,7 +811,8 @@ type AchService struct {
 	AchPassHighPayRange   *TemplateElement       `json:"achPass_highPayRange,omitempty" url:"achPass_highPayRange,omitempty"`
 	AchPassLowPayRange    *TemplateElement       `json:"achPass_lowPayRange,omitempty" url:"achPass_lowPayRange,omitempty"`
 	AchPassThrough        *AchPassThroughSection `json:"achPassThrough,omitempty" url:"achPassThrough,omitempty"`
-	// Controls how to present the `batchCutoffTime` field on the application. If this field isn't sent, batch cut off time defaults to 5 ET.
+	// Controls how to present the `batchCutoffTime` field on the application.
+	// If this field isn't sent, batch cutoff time defaults to 5 ET.
 	BatchCutoffTime   *TemplateElement `json:"batchCutoffTime,omitempty" url:"batchCutoffTime,omitempty"`
 	DiscountFrequency *TemplateElement `json:"discountFrequency,omitempty" url:"discountFrequency,omitempty"`
 	FundingRollup     *TemplateElement `json:"fundingRollup,omitempty" url:"fundingRollup,omitempty"`
@@ -3348,7 +3349,7 @@ var (
 )
 
 type CardService struct {
-	// Controls how to present the `batchCutoffTime` field on the application. If this field isn't sent, batch cut off time defaults to 5 ET.
+	// Controls how to present the `batchCutoffTime` field on the application. If this field isn't sent, batch cutoff time defaults to 5 ET.
 	BatchCutoffTime                 *TemplateElement        `json:"batchCutoffTime,omitempty" url:"batchCutoffTime,omitempty"`
 	CardAcceptance                  *CardAcceptanceElement  `json:"cardAcceptance,omitempty" url:"cardAcceptance,omitempty"`
 	CardFees                        *CardFeeSection         `json:"cardFees,omitempty" url:"cardFees,omitempty"`
@@ -5340,7 +5341,9 @@ func (p *PayabliApiResponseTemplateId) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
-// Used to identify the risk workflow used to review this account. Policy IDs must be created before using automatic underwriting, and is **required** when `method` is `automatic`.
+// Used to identify the risk workflow used to review this account. Policy
+// IDs must be created before using automatic underwriting, and is
+// **required** when `method` is `automatic`.
 type PolicyId = string
 
 // The element's column position.
@@ -7619,9 +7622,14 @@ func (t *TierItemPass) String() string {
 }
 
 // This field controls which method is used to handle risk orchestration.
-//   - `automatic`: Sends the application through the automatic underwriting workflow using the provided `policyId`.
-//   - `manual`: Puts the application into the pending review status. An analyst must manually change it's final status to approved or declined.
-//   - `bypass`: The application won't go through Payabli's review, and proceeds directly to boarding products and services.
+//
+//   - `automatic`: Sends the application through the automatic
+//     underwriting workflow using the provided `policyId`.
+//   - `manual`: Puts the application into the pending review status. An
+//     analyst must manually change its final status to approved or
+//     declined.
+//   - `bypass`: The application won't go through Payabli's review, and
+//     proceeds directly to boarding products and services.
 type UnderWritingMethod string
 
 const (

@@ -4,11 +4,12 @@ package customer
 
 import (
 	context "context"
+	http "net/http"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
-	http "net/http"
 )
 
 type RawClient struct {
@@ -23,8 +24,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 		baseURL: options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -32,6 +34,7 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 
 func (r *RawClient) AddCustomer(
 	ctx context.Context,
+	// The entrypoint identifier.
 	entry payabli.Entrypointfield,
 	request *payabli.AddCustomerRequest,
 	opts ...option.RequestOption,
@@ -69,6 +72,7 @@ func (r *RawClient) AddCustomer(
 			Method:          http.MethodPost,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -81,51 +85,6 @@ func (r *RawClient) AddCustomer(
 		return nil, err
 	}
 	return &core.Response[*payabli.PayabliApiResponseCustomerQuery]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       response,
-	}, nil
-}
-
-func (r *RawClient) DeleteCustomer(
-	ctx context.Context,
-	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
-	customerId int,
-	opts ...option.RequestOption,
-) (*core.Response[*payabli.PayabliApiResponse00Responsedatanonobject], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"https://api-sandbox.payabli.com/api",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/Customer/%v",
-		customerId,
-	)
-	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
-	)
-	var response *payabli.PayabliApiResponse00Responsedatanonobject
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodDelete,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[*payabli.PayabliApiResponse00Responsedatanonobject]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -160,6 +119,7 @@ func (r *RawClient) GetCustomer(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -177,12 +137,11 @@ func (r *RawClient) GetCustomer(
 	}, nil
 }
 
-func (r *RawClient) LinkCustomerTransaction(
+func (r *RawClient) UpdateCustomer(
 	ctx context.Context,
 	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
 	customerId int,
-	// ReferenceId for the transaction (PaymentId).
-	transId string,
+	request *payabli.CustomerData,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.PayabliApiResponse00Responsedatanonobject], error) {
 	options := core.NewRequestOptions(opts...)
@@ -192,9 +151,8 @@ func (r *RawClient) LinkCustomerTransaction(
 		"https://api-sandbox.payabli.com/api",
 	)
 	endpointURL := internal.EncodeURL(
-		baseURL+"/Customer/link/%v/%v",
+		baseURL+"/Customer/%v",
 		customerId,
-		transId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -205,9 +163,57 @@ func (r *RawClient) LinkCustomerTransaction(
 		ctx,
 		&internal.CallParams{
 			URL:             endpointURL,
-			Method:          http.MethodGet,
+			Method:          http.MethodPut,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*payabli.PayabliApiResponse00Responsedatanonobject]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) DeleteCustomer(
+	ctx context.Context,
+	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
+	customerId int,
+	opts ...option.RequestOption,
+) (*core.Response[*payabli.PayabliApiResponse00Responsedatanonobject], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://api-sandbox.payabli.com/api",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/Customer/%v",
+		customerId,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *payabli.PayabliApiResponse00Responsedatanonobject
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodDelete,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -253,6 +259,7 @@ func (r *RawClient) RequestConsent(
 			Method:          http.MethodPost,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -270,11 +277,12 @@ func (r *RawClient) RequestConsent(
 	}, nil
 }
 
-func (r *RawClient) UpdateCustomer(
+func (r *RawClient) LinkCustomerTransaction(
 	ctx context.Context,
 	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
 	customerId int,
-	request *payabli.CustomerData,
+	// ReferenceId for the transaction (PaymentId).
+	transId string,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.PayabliApiResponse00Responsedatanonobject], error) {
 	options := core.NewRequestOptions(opts...)
@@ -284,8 +292,9 @@ func (r *RawClient) UpdateCustomer(
 		"https://api-sandbox.payabli.com/api",
 	)
 	endpointURL := internal.EncodeURL(
-		baseURL+"/Customer/%v",
+		baseURL+"/Customer/link/%v/%v",
 		customerId,
+		transId,
 	)
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
@@ -296,13 +305,13 @@ func (r *RawClient) UpdateCustomer(
 		ctx,
 		&internal.CallParams{
 			URL:             endpointURL,
-			Method:          http.MethodPut,
+			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			Request:         request,
 			Response:        &response,
 			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},

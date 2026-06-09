@@ -7,7 +7,6 @@ import (
 	fmt "fmt"
 	internal "github.com/payabli/sdk-go/internal"
 	big "math/big"
-	time "time"
 )
 
 var (
@@ -17,6 +16,7 @@ var (
 )
 
 type PayLinkDataBill struct {
+	// _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
 	IdempotencyKey *IdempotencyKey `json:"-" url:"-"`
 	// Indicates whether customer can modify the payment amount. A value of `true` means the amount isn't modifiable, a value `false` means the payor can modify the amount to pay.
 	AmountFixed *bool `json:"-" url:"amountFixed,omitempty"`
@@ -77,6 +77,7 @@ var (
 )
 
 type PayLinkDataOut struct {
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	EntryPoint Entry `json:"-" url:"entryPoint"`
 	// The vendor number for the vendor being paid with this payment link.
 	VendorNumber string `json:"-" url:"vendorNumber"`
@@ -139,18 +140,51 @@ func (p *PayLinkDataOut) MarshalJSON() ([]byte, error) {
 }
 
 var (
-	payLinkDataInvoiceFieldIdempotencyKey = big.NewInt(1 << 0)
-	payLinkDataInvoiceFieldAmountFixed    = big.NewInt(1 << 1)
-	payLinkDataInvoiceFieldMail2          = big.NewInt(1 << 2)
+	payLinkDataInvoiceFieldIdempotencyKey      = big.NewInt(1 << 0)
+	payLinkDataInvoiceFieldAmountFixed         = big.NewInt(1 << 1)
+	payLinkDataInvoiceFieldMail2               = big.NewInt(1 << 2)
+	payLinkDataInvoiceFieldContactUs           = big.NewInt(1 << 3)
+	payLinkDataInvoiceFieldInvoices            = big.NewInt(1 << 4)
+	payLinkDataInvoiceFieldLogo                = big.NewInt(1 << 5)
+	payLinkDataInvoiceFieldMessageBeforePaying = big.NewInt(1 << 6)
+	payLinkDataInvoiceFieldNotes               = big.NewInt(1 << 7)
+	payLinkDataInvoiceFieldPage                = big.NewInt(1 << 8)
+	payLinkDataInvoiceFieldPaymentButton       = big.NewInt(1 << 9)
+	payLinkDataInvoiceFieldPaymentMethods      = big.NewInt(1 << 10)
+	payLinkDataInvoiceFieldPayor               = big.NewInt(1 << 11)
+	payLinkDataInvoiceFieldReview              = big.NewInt(1 << 12)
+	payLinkDataInvoiceFieldSettings            = big.NewInt(1 << 13)
 )
 
 type PayLinkDataInvoice struct {
+	// _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
 	IdempotencyKey *IdempotencyKey `json:"-" url:"-"`
 	// Indicates whether customer can modify the payment amount. A value of `true` means the amount isn't modifiable, a value `false` means the payor can modify the amount to pay.
 	AmountFixed *bool `json:"-" url:"amountFixed,omitempty"`
 	// List of recipient email addresses. When there is more than one, separate them by a semicolon (;).
-	Mail2 *string                 `json:"-" url:"mail2,omitempty"`
-	Body  *PaymentPageRequestBody `json:"-" url:"-"`
+	Mail2 *string `json:"-" url:"mail2,omitempty"`
+	// ContactUs section of payment link page
+	ContactUs *ContactElement `json:"contactUs,omitempty" url:"-"`
+	// Invoices section of payment link page
+	Invoices *InvoiceElement `json:"invoices,omitempty" url:"-"`
+	// Logo section of payment link page
+	Logo *Element `json:"logo,omitempty" url:"-"`
+	// Message section of payment link page
+	MessageBeforePaying *LabelElement `json:"messageBeforePaying,omitempty" url:"-"`
+	// Notes section of payment link page
+	Notes *NoteElement `json:"notes,omitempty" url:"-"`
+	// Page header section of payment link page
+	Page *PageElement `json:"page,omitempty" url:"-"`
+	// Payment button section of payment link page
+	PaymentButton *LabelElement `json:"paymentButton,omitempty" url:"-"`
+	// Payment methods section of payment link page
+	PaymentMethods *MethodElement `json:"paymentMethods,omitempty" url:"-"`
+	// Customer/Payor section of payment link page
+	Payor *PayorElement `json:"payor,omitempty" url:"-"`
+	// Review section of payment link page
+	Review *HeaderElement `json:"review,omitempty" url:"-"`
+	// Settings section of payment link page
+	Settings *PagelinkSetting `json:"settings,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -184,17 +218,169 @@ func (p *PayLinkDataInvoice) SetMail2(mail2 *string) {
 	p.require(payLinkDataInvoiceFieldMail2)
 }
 
+// SetContactUs sets the ContactUs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayLinkDataInvoice) SetContactUs(contactUs *ContactElement) {
+	p.ContactUs = contactUs
+	p.require(payLinkDataInvoiceFieldContactUs)
+}
+
+// SetInvoices sets the Invoices field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayLinkDataInvoice) SetInvoices(invoices *InvoiceElement) {
+	p.Invoices = invoices
+	p.require(payLinkDataInvoiceFieldInvoices)
+}
+
+// SetLogo sets the Logo field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayLinkDataInvoice) SetLogo(logo *Element) {
+	p.Logo = logo
+	p.require(payLinkDataInvoiceFieldLogo)
+}
+
+// SetMessageBeforePaying sets the MessageBeforePaying field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayLinkDataInvoice) SetMessageBeforePaying(messageBeforePaying *LabelElement) {
+	p.MessageBeforePaying = messageBeforePaying
+	p.require(payLinkDataInvoiceFieldMessageBeforePaying)
+}
+
+// SetNotes sets the Notes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayLinkDataInvoice) SetNotes(notes *NoteElement) {
+	p.Notes = notes
+	p.require(payLinkDataInvoiceFieldNotes)
+}
+
+// SetPage sets the Page field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayLinkDataInvoice) SetPage(page *PageElement) {
+	p.Page = page
+	p.require(payLinkDataInvoiceFieldPage)
+}
+
+// SetPaymentButton sets the PaymentButton field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayLinkDataInvoice) SetPaymentButton(paymentButton *LabelElement) {
+	p.PaymentButton = paymentButton
+	p.require(payLinkDataInvoiceFieldPaymentButton)
+}
+
+// SetPaymentMethods sets the PaymentMethods field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayLinkDataInvoice) SetPaymentMethods(paymentMethods *MethodElement) {
+	p.PaymentMethods = paymentMethods
+	p.require(payLinkDataInvoiceFieldPaymentMethods)
+}
+
+// SetPayor sets the Payor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayLinkDataInvoice) SetPayor(payor *PayorElement) {
+	p.Payor = payor
+	p.require(payLinkDataInvoiceFieldPayor)
+}
+
+// SetReview sets the Review field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayLinkDataInvoice) SetReview(review *HeaderElement) {
+	p.Review = review
+	p.require(payLinkDataInvoiceFieldReview)
+}
+
+// SetSettings sets the Settings field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayLinkDataInvoice) SetSettings(settings *PagelinkSetting) {
+	p.Settings = settings
+	p.require(payLinkDataInvoiceFieldSettings)
+}
+
 func (p *PayLinkDataInvoice) UnmarshalJSON(data []byte) error {
-	body := new(PaymentPageRequestBody)
+	type unmarshaler PayLinkDataInvoice
+	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	p.Body = body
+	*p = PayLinkDataInvoice(body)
 	return nil
 }
 
 func (p *PayLinkDataInvoice) MarshalJSON() ([]byte, error) {
-	return json.Marshal(p.Body)
+	type embed PayLinkDataInvoice
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+var (
+	patchOutPaymentLinkRequestFieldBillPageData   = big.NewInt(1 << 0)
+	patchOutPaymentLinkRequestFieldExpirationDate = big.NewInt(1 << 1)
+	patchOutPaymentLinkRequestFieldStatus         = big.NewInt(1 << 2)
+)
+
+type PatchOutPaymentLinkRequest struct {
+	// Updated payment link page configuration.
+	BillPageData *PaymentPageRequestBodyOut `json:"billPageData,omitempty" url:"-"`
+	// New expiration date for the payment link. Must be a future date. If null and the link is expired, uses the default expiration from settings. Updating the expiration date reactivates an expired payment link to Active status.
+	ExpirationDate *string `json:"expirationDate,omitempty" url:"-"`
+	// Updated status for the payment link.
+	Status *PaymentLinkStatus `json:"status,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (p *PatchOutPaymentLinkRequest) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetBillPageData sets the BillPageData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PatchOutPaymentLinkRequest) SetBillPageData(billPageData *PaymentPageRequestBodyOut) {
+	p.BillPageData = billPageData
+	p.require(patchOutPaymentLinkRequestFieldBillPageData)
+}
+
+// SetExpirationDate sets the ExpirationDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PatchOutPaymentLinkRequest) SetExpirationDate(expirationDate *string) {
+	p.ExpirationDate = expirationDate
+	p.require(patchOutPaymentLinkRequestFieldExpirationDate)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PatchOutPaymentLinkRequest) SetStatus(status *PaymentLinkStatus) {
+	p.Status = status
+	p.require(patchOutPaymentLinkRequestFieldStatus)
+}
+
+func (p *PatchOutPaymentLinkRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler PatchOutPaymentLinkRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*p = PatchOutPaymentLinkRequest(body)
+	return nil
+}
+
+func (p *PatchOutPaymentLinkRequest) MarshalJSON() ([]byte, error) {
+	type embed PatchOutPaymentLinkRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 var (
@@ -257,6 +443,448 @@ func (s *SendPayLinkFromIdRequest) SetAttachfile(attachfile *bool) {
 func (s *SendPayLinkFromIdRequest) SetMail2(mail2 *string) {
 	s.Mail2 = mail2
 	s.require(sendPayLinkFromIdRequestFieldMail2)
+}
+
+var (
+	getPayLinkFromIdResponseFieldIsSuccess    = big.NewInt(1 << 0)
+	getPayLinkFromIdResponseFieldResponseText = big.NewInt(1 << 1)
+	getPayLinkFromIdResponseFieldResponseData = big.NewInt(1 << 2)
+)
+
+type GetPayLinkFromIdResponse struct {
+	IsSuccess    *IsSuccess                            `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	ResponseText ResponseText                          `json:"responseText" url:"responseText"`
+	ResponseData *GetPayLinkFromIdResponseResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetPayLinkFromIdResponse) GetIsSuccess() *IsSuccess {
+	if g == nil {
+		return nil
+	}
+	return g.IsSuccess
+}
+
+func (g *GetPayLinkFromIdResponse) GetResponseText() ResponseText {
+	if g == nil {
+		return ""
+	}
+	return g.ResponseText
+}
+
+func (g *GetPayLinkFromIdResponse) GetResponseData() *GetPayLinkFromIdResponseResponseData {
+	if g == nil {
+		return nil
+	}
+	return g.ResponseData
+}
+
+func (g *GetPayLinkFromIdResponse) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
+	return g.extraProperties
+}
+
+func (g *GetPayLinkFromIdResponse) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPayLinkFromIdResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	g.IsSuccess = isSuccess
+	g.require(getPayLinkFromIdResponseFieldIsSuccess)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPayLinkFromIdResponse) SetResponseText(responseText ResponseText) {
+	g.ResponseText = responseText
+	g.require(getPayLinkFromIdResponseFieldResponseText)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetPayLinkFromIdResponse) SetResponseData(responseData *GetPayLinkFromIdResponseResponseData) {
+	g.ResponseData = responseData
+	g.require(getPayLinkFromIdResponseFieldResponseData)
+}
+
+func (g *GetPayLinkFromIdResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetPayLinkFromIdResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetPayLinkFromIdResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetPayLinkFromIdResponse) MarshalJSON() ([]byte, error) {
+	type embed GetPayLinkFromIdResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetPayLinkFromIdResponse) String() string {
+	if g == nil {
+		return "<nil>"
+	}
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GetPayLinkFromIdResponseResponseData = *PayabliPages
+
+// Configuration for payment method selection on Pay Out payment links.
+var (
+	methodElementOutFieldAllMethodsChecked      = big.NewInt(1 << 0)
+	methodElementOutFieldAllowMultipleMethods   = big.NewInt(1 << 1)
+	methodElementOutFieldDefaultMethod          = big.NewInt(1 << 2)
+	methodElementOutFieldEnabled                = big.NewInt(1 << 3)
+	methodElementOutFieldHeader                 = big.NewInt(1 << 4)
+	methodElementOutFieldMethods                = big.NewInt(1 << 5)
+	methodElementOutFieldOrder                  = big.NewInt(1 << 6)
+	methodElementOutFieldShowPreviewVirtualCard = big.NewInt(1 << 7)
+)
+
+type MethodElementOut struct {
+	// Flag indicating if all allowed payment methods will be pre-selected.
+	AllMethodsChecked *bool `json:"allMethodsChecked,omitempty" url:"allMethodsChecked,omitempty"`
+	// When `true`, the vendor can select from multiple payment methods. When `false`, only the default method is shown.
+	AllowMultipleMethods *bool `json:"allowMultipleMethods,omitempty" url:"allowMultipleMethods,omitempty"`
+	// The default payment method to highlight on the payment link page. For example, `"vcard"`, `"ach"`, or `"check"`.
+	DefaultMethod *string `json:"defaultMethod,omitempty" url:"defaultMethod,omitempty"`
+	// When `true`, the payment methods section is displayed on the payment link page.
+	Enabled *bool `json:"enabled,omitempty" url:"enabled,omitempty"`
+	// Header text for the payment methods section.
+	Header  *string         `json:"header,omitempty" url:"header,omitempty"`
+	Methods *MethodsListOut `json:"methods,omitempty" url:"methods,omitempty"`
+	// Display order of the payment methods section on the page.
+	Order *int `json:"order,omitempty" url:"order,omitempty"`
+	// When `true`, a preview of the virtual card is shown on the payment link page.
+	ShowPreviewVirtualCard *bool `json:"showPreviewVirtualCard,omitempty" url:"showPreviewVirtualCard,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *MethodElementOut) GetAllMethodsChecked() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.AllMethodsChecked
+}
+
+func (m *MethodElementOut) GetAllowMultipleMethods() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.AllowMultipleMethods
+}
+
+func (m *MethodElementOut) GetDefaultMethod() *string {
+	if m == nil {
+		return nil
+	}
+	return m.DefaultMethod
+}
+
+func (m *MethodElementOut) GetEnabled() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.Enabled
+}
+
+func (m *MethodElementOut) GetHeader() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Header
+}
+
+func (m *MethodElementOut) GetMethods() *MethodsListOut {
+	if m == nil {
+		return nil
+	}
+	return m.Methods
+}
+
+func (m *MethodElementOut) GetOrder() *int {
+	if m == nil {
+		return nil
+	}
+	return m.Order
+}
+
+func (m *MethodElementOut) GetShowPreviewVirtualCard() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.ShowPreviewVirtualCard
+}
+
+func (m *MethodElementOut) GetExtraProperties() map[string]interface{} {
+	if m == nil {
+		return nil
+	}
+	return m.extraProperties
+}
+
+func (m *MethodElementOut) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetAllMethodsChecked sets the AllMethodsChecked field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodElementOut) SetAllMethodsChecked(allMethodsChecked *bool) {
+	m.AllMethodsChecked = allMethodsChecked
+	m.require(methodElementOutFieldAllMethodsChecked)
+}
+
+// SetAllowMultipleMethods sets the AllowMultipleMethods field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodElementOut) SetAllowMultipleMethods(allowMultipleMethods *bool) {
+	m.AllowMultipleMethods = allowMultipleMethods
+	m.require(methodElementOutFieldAllowMultipleMethods)
+}
+
+// SetDefaultMethod sets the DefaultMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodElementOut) SetDefaultMethod(defaultMethod *string) {
+	m.DefaultMethod = defaultMethod
+	m.require(methodElementOutFieldDefaultMethod)
+}
+
+// SetEnabled sets the Enabled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodElementOut) SetEnabled(enabled *bool) {
+	m.Enabled = enabled
+	m.require(methodElementOutFieldEnabled)
+}
+
+// SetHeader sets the Header field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodElementOut) SetHeader(header *string) {
+	m.Header = header
+	m.require(methodElementOutFieldHeader)
+}
+
+// SetMethods sets the Methods field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodElementOut) SetMethods(methods *MethodsListOut) {
+	m.Methods = methods
+	m.require(methodElementOutFieldMethods)
+}
+
+// SetOrder sets the Order field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodElementOut) SetOrder(order *int) {
+	m.Order = order
+	m.require(methodElementOutFieldOrder)
+}
+
+// SetShowPreviewVirtualCard sets the ShowPreviewVirtualCard field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodElementOut) SetShowPreviewVirtualCard(showPreviewVirtualCard *bool) {
+	m.ShowPreviewVirtualCard = showPreviewVirtualCard
+	m.require(methodElementOutFieldShowPreviewVirtualCard)
+}
+
+func (m *MethodElementOut) UnmarshalJSON(data []byte) error {
+	type unmarshaler MethodElementOut
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = MethodElementOut(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *MethodElementOut) MarshalJSON() ([]byte, error) {
+	type embed MethodElementOut
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *MethodElementOut) String() string {
+	if m == nil {
+		return "<nil>"
+	}
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+// Payment methods available for Pay Out payment links. Controls which payout options are offered to the vendor.
+var (
+	methodsListOutFieldAch   = big.NewInt(1 << 0)
+	methodsListOutFieldCheck = big.NewInt(1 << 1)
+	methodsListOutFieldVcard = big.NewInt(1 << 2)
+)
+
+type MethodsListOut struct {
+	// When `true`, ACH bank transfer is offered as a payout method.
+	Ach *bool `json:"ach,omitempty" url:"ach,omitempty"`
+	// When `true`, physical check is offered as a payout method.
+	Check *bool `json:"check,omitempty" url:"check,omitempty"`
+	// When `true`, virtual card (vCard) is offered as a payout method.
+	Vcard *bool `json:"vcard,omitempty" url:"vcard,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *MethodsListOut) GetAch() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.Ach
+}
+
+func (m *MethodsListOut) GetCheck() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.Check
+}
+
+func (m *MethodsListOut) GetVcard() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.Vcard
+}
+
+func (m *MethodsListOut) GetExtraProperties() map[string]interface{} {
+	if m == nil {
+		return nil
+	}
+	return m.extraProperties
+}
+
+func (m *MethodsListOut) require(field *big.Int) {
+	if m.explicitFields == nil {
+		m.explicitFields = big.NewInt(0)
+	}
+	m.explicitFields.Or(m.explicitFields, field)
+}
+
+// SetAch sets the Ach field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodsListOut) SetAch(ach *bool) {
+	m.Ach = ach
+	m.require(methodsListOutFieldAch)
+}
+
+// SetCheck sets the Check field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodsListOut) SetCheck(check *bool) {
+	m.Check = check
+	m.require(methodsListOutFieldCheck)
+}
+
+// SetVcard sets the Vcard field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodsListOut) SetVcard(vcard *bool) {
+	m.Vcard = vcard
+	m.require(methodsListOutFieldVcard)
+}
+
+func (m *MethodsListOut) UnmarshalJSON(data []byte) error {
+	type unmarshaler MethodsListOut
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = MethodsListOut(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *MethodsListOut) MarshalJSON() ([]byte, error) {
+	type embed MethodsListOut
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*m),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, m.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (m *MethodsListOut) String() string {
+	if m == nil {
+		return "<nil>"
+	}
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
 }
 
 var (
@@ -415,6 +1043,391 @@ func (p *PagelinkSetting) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PagelinkSetting) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+var (
+	payabliApiResponsePaymentLinksFieldIsSuccess    = big.NewInt(1 << 0)
+	payabliApiResponsePaymentLinksFieldResponseData = big.NewInt(1 << 1)
+	payabliApiResponsePaymentLinksFieldResponseText = big.NewInt(1 << 2)
+)
+
+type PayabliApiResponsePaymentLinks struct {
+	IsSuccess IsSuccess `json:"isSuccess" url:"isSuccess"`
+	// If `isSuccess` = true, this contains the payment link identifier. If `isSuccess` = false, this contains the reason of the error.
+	ResponseData *string      `json:"responseData,omitempty" url:"responseData,omitempty"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PayabliApiResponsePaymentLinks) GetIsSuccess() IsSuccess {
+	if p == nil {
+		return false
+	}
+	return p.IsSuccess
+}
+
+func (p *PayabliApiResponsePaymentLinks) GetResponseData() *string {
+	if p == nil {
+		return nil
+	}
+	return p.ResponseData
+}
+
+func (p *PayabliApiResponsePaymentLinks) GetResponseText() ResponseText {
+	if p == nil {
+		return ""
+	}
+	return p.ResponseText
+}
+
+func (p *PayabliApiResponsePaymentLinks) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PayabliApiResponsePaymentLinks) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponsePaymentLinks) SetIsSuccess(isSuccess IsSuccess) {
+	p.IsSuccess = isSuccess
+	p.require(payabliApiResponsePaymentLinksFieldIsSuccess)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponsePaymentLinks) SetResponseData(responseData *string) {
+	p.ResponseData = responseData
+	p.require(payabliApiResponsePaymentLinksFieldResponseData)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponsePaymentLinks) SetResponseText(responseText ResponseText) {
+	p.ResponseText = responseText
+	p.require(payabliApiResponsePaymentLinksFieldResponseText)
+}
+
+func (p *PayabliApiResponsePaymentLinks) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayabliApiResponsePaymentLinks
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PayabliApiResponsePaymentLinks(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PayabliApiResponsePaymentLinks) MarshalJSON() ([]byte, error) {
+	type embed PayabliApiResponsePaymentLinks
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PayabliApiResponsePaymentLinks) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+// The status of a payment link.
+type PaymentLinkStatus string
+
+const (
+	PaymentLinkStatusActive   PaymentLinkStatus = "Active"
+	PaymentLinkStatusExpired  PaymentLinkStatus = "Expired"
+	PaymentLinkStatusCanceled PaymentLinkStatus = "Canceled"
+	PaymentLinkStatusDeleted  PaymentLinkStatus = "Deleted"
+)
+
+func NewPaymentLinkStatusFromString(s string) (PaymentLinkStatus, error) {
+	switch s {
+	case "Active":
+		return PaymentLinkStatusActive, nil
+	case "Expired":
+		return PaymentLinkStatusExpired, nil
+	case "Canceled":
+		return PaymentLinkStatusCanceled, nil
+	case "Deleted":
+		return PaymentLinkStatusDeleted, nil
+	}
+	var t PaymentLinkStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (p PaymentLinkStatus) Ptr() *PaymentLinkStatus {
+	return &p
+}
+
+// Configuration for the Pay Out payment link page. Controls branding, messaging, vendor fields, and which payout methods are offered to the vendor.
+var (
+	paymentPageRequestBodyOutFieldContactUs           = big.NewInt(1 << 0)
+	paymentPageRequestBodyOutFieldLogo                = big.NewInt(1 << 1)
+	paymentPageRequestBodyOutFieldMessageBeforePaying = big.NewInt(1 << 2)
+	paymentPageRequestBodyOutFieldNotes               = big.NewInt(1 << 3)
+	paymentPageRequestBodyOutFieldPage                = big.NewInt(1 << 4)
+	paymentPageRequestBodyOutFieldPaymentButton       = big.NewInt(1 << 5)
+	paymentPageRequestBodyOutFieldPaymentMethods      = big.NewInt(1 << 6)
+	paymentPageRequestBodyOutFieldReview              = big.NewInt(1 << 7)
+	paymentPageRequestBodyOutFieldBills               = big.NewInt(1 << 8)
+	paymentPageRequestBodyOutFieldSettings            = big.NewInt(1 << 9)
+)
+
+type PaymentPageRequestBodyOut struct {
+	// ContactUs section of payment link page.
+	ContactUs *ContactElement `json:"contactUs,omitempty" url:"contactUs,omitempty"`
+	// Logo section of payment link page.
+	Logo *Element `json:"logo,omitempty" url:"logo,omitempty"`
+	// Message section of payment link page.
+	MessageBeforePaying *LabelElement `json:"messageBeforePaying,omitempty" url:"messageBeforePaying,omitempty"`
+	// Notes section of payment link page.
+	Notes *NoteElement `json:"notes,omitempty" url:"notes,omitempty"`
+	// Page header section of payment link page.
+	Page *PageElement `json:"page,omitempty" url:"page,omitempty"`
+	// Payment button section of payment link page.
+	PaymentButton *LabelElement `json:"paymentButton,omitempty" url:"paymentButton,omitempty"`
+	// Payment methods section of payment link page. Use this to configure which payout methods (ACH, vCard, check) are offered to the vendor.
+	PaymentMethods *MethodElementOut `json:"paymentMethods,omitempty" url:"paymentMethods,omitempty"`
+	// Review section of payment link page.
+	Review *HeaderElement `json:"review,omitempty" url:"review,omitempty"`
+	// Bills section of payment link page.
+	Bills *Element `json:"bills,omitempty" url:"bills,omitempty"`
+	// Settings section of payment link page.
+	Settings *PagelinkSetting `json:"settings,omitempty" url:"settings,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PaymentPageRequestBodyOut) GetContactUs() *ContactElement {
+	if p == nil {
+		return nil
+	}
+	return p.ContactUs
+}
+
+func (p *PaymentPageRequestBodyOut) GetLogo() *Element {
+	if p == nil {
+		return nil
+	}
+	return p.Logo
+}
+
+func (p *PaymentPageRequestBodyOut) GetMessageBeforePaying() *LabelElement {
+	if p == nil {
+		return nil
+	}
+	return p.MessageBeforePaying
+}
+
+func (p *PaymentPageRequestBodyOut) GetNotes() *NoteElement {
+	if p == nil {
+		return nil
+	}
+	return p.Notes
+}
+
+func (p *PaymentPageRequestBodyOut) GetPage() *PageElement {
+	if p == nil {
+		return nil
+	}
+	return p.Page
+}
+
+func (p *PaymentPageRequestBodyOut) GetPaymentButton() *LabelElement {
+	if p == nil {
+		return nil
+	}
+	return p.PaymentButton
+}
+
+func (p *PaymentPageRequestBodyOut) GetPaymentMethods() *MethodElementOut {
+	if p == nil {
+		return nil
+	}
+	return p.PaymentMethods
+}
+
+func (p *PaymentPageRequestBodyOut) GetReview() *HeaderElement {
+	if p == nil {
+		return nil
+	}
+	return p.Review
+}
+
+func (p *PaymentPageRequestBodyOut) GetBills() *Element {
+	if p == nil {
+		return nil
+	}
+	return p.Bills
+}
+
+func (p *PaymentPageRequestBodyOut) GetSettings() *PagelinkSetting {
+	if p == nil {
+		return nil
+	}
+	return p.Settings
+}
+
+func (p *PaymentPageRequestBodyOut) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PaymentPageRequestBodyOut) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetContactUs sets the ContactUs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaymentPageRequestBodyOut) SetContactUs(contactUs *ContactElement) {
+	p.ContactUs = contactUs
+	p.require(paymentPageRequestBodyOutFieldContactUs)
+}
+
+// SetLogo sets the Logo field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaymentPageRequestBodyOut) SetLogo(logo *Element) {
+	p.Logo = logo
+	p.require(paymentPageRequestBodyOutFieldLogo)
+}
+
+// SetMessageBeforePaying sets the MessageBeforePaying field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaymentPageRequestBodyOut) SetMessageBeforePaying(messageBeforePaying *LabelElement) {
+	p.MessageBeforePaying = messageBeforePaying
+	p.require(paymentPageRequestBodyOutFieldMessageBeforePaying)
+}
+
+// SetNotes sets the Notes field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaymentPageRequestBodyOut) SetNotes(notes *NoteElement) {
+	p.Notes = notes
+	p.require(paymentPageRequestBodyOutFieldNotes)
+}
+
+// SetPage sets the Page field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaymentPageRequestBodyOut) SetPage(page *PageElement) {
+	p.Page = page
+	p.require(paymentPageRequestBodyOutFieldPage)
+}
+
+// SetPaymentButton sets the PaymentButton field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaymentPageRequestBodyOut) SetPaymentButton(paymentButton *LabelElement) {
+	p.PaymentButton = paymentButton
+	p.require(paymentPageRequestBodyOutFieldPaymentButton)
+}
+
+// SetPaymentMethods sets the PaymentMethods field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaymentPageRequestBodyOut) SetPaymentMethods(paymentMethods *MethodElementOut) {
+	p.PaymentMethods = paymentMethods
+	p.require(paymentPageRequestBodyOutFieldPaymentMethods)
+}
+
+// SetReview sets the Review field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaymentPageRequestBodyOut) SetReview(review *HeaderElement) {
+	p.Review = review
+	p.require(paymentPageRequestBodyOutFieldReview)
+}
+
+// SetBills sets the Bills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaymentPageRequestBodyOut) SetBills(bills *Element) {
+	p.Bills = bills
+	p.require(paymentPageRequestBodyOutFieldBills)
+}
+
+// SetSettings sets the Settings field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaymentPageRequestBodyOut) SetSettings(settings *PagelinkSetting) {
+	p.Settings = settings
+	p.require(paymentPageRequestBodyOutFieldSettings)
+}
+
+func (p *PaymentPageRequestBodyOut) UnmarshalJSON(data []byte) error {
+	type unmarshaler PaymentPageRequestBodyOut
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PaymentPageRequestBodyOut(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PaymentPageRequestBodyOut) MarshalJSON() ([]byte, error) {
+	type embed PaymentPageRequestBodyOut
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PaymentPageRequestBodyOut) String() string {
 	if p == nil {
 		return "<nil>"
 	}
@@ -702,1114 +1715,6 @@ func (p *PushPayLinkRequestSms) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PushPayLinkRequestSms) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
-var (
-	getPayLinkFromIdResponseFieldIsSuccess    = big.NewInt(1 << 0)
-	getPayLinkFromIdResponseFieldResponseText = big.NewInt(1 << 1)
-	getPayLinkFromIdResponseFieldResponseData = big.NewInt(1 << 2)
-)
-
-type GetPayLinkFromIdResponse struct {
-	IsSuccess    *IsSuccess                            `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText ResponseText                          `json:"responseText" url:"responseText"`
-	ResponseData *GetPayLinkFromIdResponseResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetPayLinkFromIdResponse) GetIsSuccess() *IsSuccess {
-	if g == nil {
-		return nil
-	}
-	return g.IsSuccess
-}
-
-func (g *GetPayLinkFromIdResponse) GetResponseText() ResponseText {
-	if g == nil {
-		return ""
-	}
-	return g.ResponseText
-}
-
-func (g *GetPayLinkFromIdResponse) GetResponseData() *GetPayLinkFromIdResponseResponseData {
-	if g == nil {
-		return nil
-	}
-	return g.ResponseData
-}
-
-func (g *GetPayLinkFromIdResponse) GetExtraProperties() map[string]interface{} {
-	if g == nil {
-		return nil
-	}
-	return g.extraProperties
-}
-
-func (g *GetPayLinkFromIdResponse) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPayLinkFromIdResponse) SetIsSuccess(isSuccess *IsSuccess) {
-	g.IsSuccess = isSuccess
-	g.require(getPayLinkFromIdResponseFieldIsSuccess)
-}
-
-// SetResponseText sets the ResponseText field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPayLinkFromIdResponse) SetResponseText(responseText ResponseText) {
-	g.ResponseText = responseText
-	g.require(getPayLinkFromIdResponseFieldResponseText)
-}
-
-// SetResponseData sets the ResponseData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPayLinkFromIdResponse) SetResponseData(responseData *GetPayLinkFromIdResponseResponseData) {
-	g.ResponseData = responseData
-	g.require(getPayLinkFromIdResponseFieldResponseData)
-}
-
-func (g *GetPayLinkFromIdResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler GetPayLinkFromIdResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*g = GetPayLinkFromIdResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetPayLinkFromIdResponse) MarshalJSON() ([]byte, error) {
-	type embed GetPayLinkFromIdResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*g),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetPayLinkFromIdResponse) String() string {
-	if g == nil {
-		return "<nil>"
-	}
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
-}
-
-var (
-	getPayLinkFromIdResponseResponseDataFieldAdditionalData = big.NewInt(1 << 0)
-	getPayLinkFromIdResponseResponseDataFieldCredentials    = big.NewInt(1 << 1)
-	getPayLinkFromIdResponseResponseDataFieldLastAccess     = big.NewInt(1 << 2)
-	getPayLinkFromIdResponseResponseDataFieldPageContent    = big.NewInt(1 << 3)
-	getPayLinkFromIdResponseResponseDataFieldPageIdentifier = big.NewInt(1 << 4)
-	getPayLinkFromIdResponseResponseDataFieldPageSettings   = big.NewInt(1 << 5)
-	getPayLinkFromIdResponseResponseDataFieldPublished      = big.NewInt(1 << 6)
-	getPayLinkFromIdResponseResponseDataFieldReceiptContent = big.NewInt(1 << 7)
-	getPayLinkFromIdResponseResponseDataFieldSubdomain      = big.NewInt(1 << 8)
-	getPayLinkFromIdResponseResponseDataFieldTotalAmount    = big.NewInt(1 << 9)
-	getPayLinkFromIdResponseResponseDataFieldValidationCode = big.NewInt(1 << 10)
-)
-
-type GetPayLinkFromIdResponseResponseData struct {
-	AdditionalData *AdditionalData `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
-	// Array of credential objects with active services for the page
-	Credentials []*PayabliCredentials `json:"credentials,omitempty" url:"credentials,omitempty"`
-	// Timestamp of last access to page structure
-	LastAccess *time.Time `json:"lastAccess,omitempty" url:"lastAccess,omitempty"`
-	// Sections of page
-	PageContent    *PageContent    `json:"pageContent,omitempty" url:"pageContent,omitempty"`
-	PageIdentifier *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
-	// Settings of page
-	PageSettings *PageSetting `json:"pageSettings,omitempty" url:"pageSettings,omitempty"`
-	// Flag indicating if page is active to accept payments. `0` for false, `1` for true.
-	Published *int `json:"published,omitempty" url:"published,omitempty"`
-	// Sections of payment receipt
-	ReceiptContent *ReceiptContent `json:"receiptContent,omitempty" url:"receiptContent,omitempty"`
-	// Page identifier. Must be unique in platform.
-	Subdomain *Subdomain `json:"subdomain,omitempty" url:"subdomain,omitempty"`
-	// Total amount to pay in this page
-	TotalAmount *float64 `json:"totalAmount,omitempty" url:"totalAmount,omitempty"`
-	// Base64 encoded image of CAPTCHA associated to this page load
-	ValidationCode *string `json:"validationCode,omitempty" url:"validationCode,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (g *GetPayLinkFromIdResponseResponseData) GetAdditionalData() *AdditionalData {
-	if g == nil {
-		return nil
-	}
-	return g.AdditionalData
-}
-
-func (g *GetPayLinkFromIdResponseResponseData) GetCredentials() []*PayabliCredentials {
-	if g == nil {
-		return nil
-	}
-	return g.Credentials
-}
-
-func (g *GetPayLinkFromIdResponseResponseData) GetLastAccess() *time.Time {
-	if g == nil {
-		return nil
-	}
-	return g.LastAccess
-}
-
-func (g *GetPayLinkFromIdResponseResponseData) GetPageContent() *PageContent {
-	if g == nil {
-		return nil
-	}
-	return g.PageContent
-}
-
-func (g *GetPayLinkFromIdResponseResponseData) GetPageIdentifier() *PageIdentifier {
-	if g == nil {
-		return nil
-	}
-	return g.PageIdentifier
-}
-
-func (g *GetPayLinkFromIdResponseResponseData) GetPageSettings() *PageSetting {
-	if g == nil {
-		return nil
-	}
-	return g.PageSettings
-}
-
-func (g *GetPayLinkFromIdResponseResponseData) GetPublished() *int {
-	if g == nil {
-		return nil
-	}
-	return g.Published
-}
-
-func (g *GetPayLinkFromIdResponseResponseData) GetReceiptContent() *ReceiptContent {
-	if g == nil {
-		return nil
-	}
-	return g.ReceiptContent
-}
-
-func (g *GetPayLinkFromIdResponseResponseData) GetSubdomain() *Subdomain {
-	if g == nil {
-		return nil
-	}
-	return g.Subdomain
-}
-
-func (g *GetPayLinkFromIdResponseResponseData) GetTotalAmount() *float64 {
-	if g == nil {
-		return nil
-	}
-	return g.TotalAmount
-}
-
-func (g *GetPayLinkFromIdResponseResponseData) GetValidationCode() *string {
-	if g == nil {
-		return nil
-	}
-	return g.ValidationCode
-}
-
-func (g *GetPayLinkFromIdResponseResponseData) GetExtraProperties() map[string]interface{} {
-	if g == nil {
-		return nil
-	}
-	return g.extraProperties
-}
-
-func (g *GetPayLinkFromIdResponseResponseData) require(field *big.Int) {
-	if g.explicitFields == nil {
-		g.explicitFields = big.NewInt(0)
-	}
-	g.explicitFields.Or(g.explicitFields, field)
-}
-
-// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPayLinkFromIdResponseResponseData) SetAdditionalData(additionalData *AdditionalData) {
-	g.AdditionalData = additionalData
-	g.require(getPayLinkFromIdResponseResponseDataFieldAdditionalData)
-}
-
-// SetCredentials sets the Credentials field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPayLinkFromIdResponseResponseData) SetCredentials(credentials []*PayabliCredentials) {
-	g.Credentials = credentials
-	g.require(getPayLinkFromIdResponseResponseDataFieldCredentials)
-}
-
-// SetLastAccess sets the LastAccess field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPayLinkFromIdResponseResponseData) SetLastAccess(lastAccess *time.Time) {
-	g.LastAccess = lastAccess
-	g.require(getPayLinkFromIdResponseResponseDataFieldLastAccess)
-}
-
-// SetPageContent sets the PageContent field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPayLinkFromIdResponseResponseData) SetPageContent(pageContent *PageContent) {
-	g.PageContent = pageContent
-	g.require(getPayLinkFromIdResponseResponseDataFieldPageContent)
-}
-
-// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPayLinkFromIdResponseResponseData) SetPageIdentifier(pageIdentifier *PageIdentifier) {
-	g.PageIdentifier = pageIdentifier
-	g.require(getPayLinkFromIdResponseResponseDataFieldPageIdentifier)
-}
-
-// SetPageSettings sets the PageSettings field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPayLinkFromIdResponseResponseData) SetPageSettings(pageSettings *PageSetting) {
-	g.PageSettings = pageSettings
-	g.require(getPayLinkFromIdResponseResponseDataFieldPageSettings)
-}
-
-// SetPublished sets the Published field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPayLinkFromIdResponseResponseData) SetPublished(published *int) {
-	g.Published = published
-	g.require(getPayLinkFromIdResponseResponseDataFieldPublished)
-}
-
-// SetReceiptContent sets the ReceiptContent field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPayLinkFromIdResponseResponseData) SetReceiptContent(receiptContent *ReceiptContent) {
-	g.ReceiptContent = receiptContent
-	g.require(getPayLinkFromIdResponseResponseDataFieldReceiptContent)
-}
-
-// SetSubdomain sets the Subdomain field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPayLinkFromIdResponseResponseData) SetSubdomain(subdomain *Subdomain) {
-	g.Subdomain = subdomain
-	g.require(getPayLinkFromIdResponseResponseDataFieldSubdomain)
-}
-
-// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPayLinkFromIdResponseResponseData) SetTotalAmount(totalAmount *float64) {
-	g.TotalAmount = totalAmount
-	g.require(getPayLinkFromIdResponseResponseDataFieldTotalAmount)
-}
-
-// SetValidationCode sets the ValidationCode field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetPayLinkFromIdResponseResponseData) SetValidationCode(validationCode *string) {
-	g.ValidationCode = validationCode
-	g.require(getPayLinkFromIdResponseResponseDataFieldValidationCode)
-}
-
-func (g *GetPayLinkFromIdResponseResponseData) UnmarshalJSON(data []byte) error {
-	type embed GetPayLinkFromIdResponseResponseData
-	var unmarshaler = struct {
-		embed
-		LastAccess *internal.DateTime `json:"lastAccess,omitempty"`
-	}{
-		embed: embed(*g),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*g = GetPayLinkFromIdResponseResponseData(unmarshaler.embed)
-	g.LastAccess = unmarshaler.LastAccess.TimePtr()
-	extraProperties, err := internal.ExtractExtraProperties(data, *g)
-	if err != nil {
-		return err
-	}
-	g.extraProperties = extraProperties
-	g.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (g *GetPayLinkFromIdResponseResponseData) MarshalJSON() ([]byte, error) {
-	type embed GetPayLinkFromIdResponseResponseData
-	var marshaler = struct {
-		embed
-		LastAccess *internal.DateTime `json:"lastAccess,omitempty"`
-	}{
-		embed:      embed(*g),
-		LastAccess: internal.NewOptionalDateTime(g.LastAccess),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (g *GetPayLinkFromIdResponseResponseData) String() string {
-	if g == nil {
-		return "<nil>"
-	}
-	if len(g.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(g); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", g)
-}
-
-// Request body for partially updating a Pay Out payment link.
-var (
-	patchOutPaymentLinkRequestFieldBillPageData   = big.NewInt(1 << 0)
-	patchOutPaymentLinkRequestFieldExpirationDate = big.NewInt(1 << 1)
-	patchOutPaymentLinkRequestFieldStatus         = big.NewInt(1 << 2)
-)
-
-type PatchOutPaymentLinkRequest struct {
-	// Updated payment link page configuration.
-	BillPageData *PaymentPageRequestBodyOut `json:"billPageData,omitempty" url:"billPageData,omitempty"`
-	// New expiration date for the payment link. Must be a future date. If null and the link is expired, uses the default expiration from settings. Updating the expiration date reactivates an expired payment link to Active status.
-	ExpirationDate *string `json:"expirationDate,omitempty" url:"expirationDate,omitempty"`
-	// Updated status for the payment link.
-	Status *PaymentLinkStatus `json:"status,omitempty" url:"status,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PatchOutPaymentLinkRequest) GetBillPageData() *PaymentPageRequestBodyOut {
-	if p == nil {
-		return nil
-	}
-	return p.BillPageData
-}
-
-func (p *PatchOutPaymentLinkRequest) GetExpirationDate() *string {
-	if p == nil {
-		return nil
-	}
-	return p.ExpirationDate
-}
-
-func (p *PatchOutPaymentLinkRequest) GetStatus() *PaymentLinkStatus {
-	if p == nil {
-		return nil
-	}
-	return p.Status
-}
-
-func (p *PatchOutPaymentLinkRequest) GetExtraProperties() map[string]interface{} {
-	if p == nil {
-		return nil
-	}
-	return p.extraProperties
-}
-
-func (p *PatchOutPaymentLinkRequest) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
-	}
-	p.explicitFields.Or(p.explicitFields, field)
-}
-
-// SetBillPageData sets the BillPageData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchOutPaymentLinkRequest) SetBillPageData(billPageData *PaymentPageRequestBodyOut) {
-	p.BillPageData = billPageData
-	p.require(patchOutPaymentLinkRequestFieldBillPageData)
-}
-
-// SetExpirationDate sets the ExpirationDate field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchOutPaymentLinkRequest) SetExpirationDate(expirationDate *string) {
-	p.ExpirationDate = expirationDate
-	p.require(patchOutPaymentLinkRequestFieldExpirationDate)
-}
-
-// SetStatus sets the Status field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PatchOutPaymentLinkRequest) SetStatus(status *PaymentLinkStatus) {
-	p.Status = status
-	p.require(patchOutPaymentLinkRequestFieldStatus)
-}
-
-func (p *PatchOutPaymentLinkRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler PatchOutPaymentLinkRequest
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PatchOutPaymentLinkRequest(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PatchOutPaymentLinkRequest) MarshalJSON() ([]byte, error) {
-	type embed PatchOutPaymentLinkRequest
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*p),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (p *PatchOutPaymentLinkRequest) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
-var (
-	payabliApiResponsePaymentLinksFieldIsSuccess    = big.NewInt(1 << 0)
-	payabliApiResponsePaymentLinksFieldResponseData = big.NewInt(1 << 1)
-	payabliApiResponsePaymentLinksFieldResponseText = big.NewInt(1 << 2)
-)
-
-type PayabliApiResponsePaymentLinks struct {
-	IsSuccess IsSuccess `json:"isSuccess" url:"isSuccess"`
-	// If `isSuccess` = true, this contains the payment link identifier. If `isSuccess` = false, this contains the reason of the error.
-	ResponseData *string      `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText ResponseText `json:"responseText" url:"responseText"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PayabliApiResponsePaymentLinks) GetIsSuccess() IsSuccess {
-	if p == nil {
-		return false
-	}
-	return p.IsSuccess
-}
-
-func (p *PayabliApiResponsePaymentLinks) GetResponseData() *string {
-	if p == nil {
-		return nil
-	}
-	return p.ResponseData
-}
-
-func (p *PayabliApiResponsePaymentLinks) GetResponseText() ResponseText {
-	if p == nil {
-		return ""
-	}
-	return p.ResponseText
-}
-
-func (p *PayabliApiResponsePaymentLinks) GetExtraProperties() map[string]interface{} {
-	if p == nil {
-		return nil
-	}
-	return p.extraProperties
-}
-
-func (p *PayabliApiResponsePaymentLinks) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
-	}
-	p.explicitFields.Or(p.explicitFields, field)
-}
-
-// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponsePaymentLinks) SetIsSuccess(isSuccess IsSuccess) {
-	p.IsSuccess = isSuccess
-	p.require(payabliApiResponsePaymentLinksFieldIsSuccess)
-}
-
-// SetResponseData sets the ResponseData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponsePaymentLinks) SetResponseData(responseData *string) {
-	p.ResponseData = responseData
-	p.require(payabliApiResponsePaymentLinksFieldResponseData)
-}
-
-// SetResponseText sets the ResponseText field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponsePaymentLinks) SetResponseText(responseText ResponseText) {
-	p.ResponseText = responseText
-	p.require(payabliApiResponsePaymentLinksFieldResponseText)
-}
-
-func (p *PayabliApiResponsePaymentLinks) UnmarshalJSON(data []byte) error {
-	type unmarshaler PayabliApiResponsePaymentLinks
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PayabliApiResponsePaymentLinks(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PayabliApiResponsePaymentLinks) MarshalJSON() ([]byte, error) {
-	type embed PayabliApiResponsePaymentLinks
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*p),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (p *PayabliApiResponsePaymentLinks) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
-var (
-	paymentPageRequestBodyFieldContactUs           = big.NewInt(1 << 0)
-	paymentPageRequestBodyFieldInvoices            = big.NewInt(1 << 1)
-	paymentPageRequestBodyFieldLogo                = big.NewInt(1 << 2)
-	paymentPageRequestBodyFieldMessageBeforePaying = big.NewInt(1 << 3)
-	paymentPageRequestBodyFieldNotes               = big.NewInt(1 << 4)
-	paymentPageRequestBodyFieldPage                = big.NewInt(1 << 5)
-	paymentPageRequestBodyFieldPaymentButton       = big.NewInt(1 << 6)
-	paymentPageRequestBodyFieldPaymentMethods      = big.NewInt(1 << 7)
-	paymentPageRequestBodyFieldPayor               = big.NewInt(1 << 8)
-	paymentPageRequestBodyFieldReview              = big.NewInt(1 << 9)
-	paymentPageRequestBodyFieldSettings            = big.NewInt(1 << 10)
-)
-
-type PaymentPageRequestBody struct {
-	// ContactUs section of payment link page
-	ContactUs *ContactElement `json:"contactUs,omitempty" url:"contactUs,omitempty"`
-	// Invoices section of payment link page
-	Invoices *InvoiceElement `json:"invoices,omitempty" url:"invoices,omitempty"`
-	// Logo section of payment link page
-	Logo *Element `json:"logo,omitempty" url:"logo,omitempty"`
-	// Message section of payment link page
-	MessageBeforePaying *LabelElement `json:"messageBeforePaying,omitempty" url:"messageBeforePaying,omitempty"`
-	// Notes section of payment link page
-	Notes *NoteElement `json:"notes,omitempty" url:"notes,omitempty"`
-	// Page header section of payment link page
-	Page *PageElement `json:"page,omitempty" url:"page,omitempty"`
-	// Payment button section of payment link page
-	PaymentButton *LabelElement `json:"paymentButton,omitempty" url:"paymentButton,omitempty"`
-	// Payment methods section of payment link page
-	PaymentMethods *MethodElement `json:"paymentMethods,omitempty" url:"paymentMethods,omitempty"`
-	// Customer/Payor section of payment link page
-	Payor *PayorElement `json:"payor,omitempty" url:"payor,omitempty"`
-	// Review section of payment link page
-	Review *HeaderElement `json:"review,omitempty" url:"review,omitempty"`
-	// Settings section of payment link page
-	Settings *PagelinkSetting `json:"settings,omitempty" url:"settings,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PaymentPageRequestBody) GetContactUs() *ContactElement {
-	if p == nil {
-		return nil
-	}
-	return p.ContactUs
-}
-
-func (p *PaymentPageRequestBody) GetInvoices() *InvoiceElement {
-	if p == nil {
-		return nil
-	}
-	return p.Invoices
-}
-
-func (p *PaymentPageRequestBody) GetLogo() *Element {
-	if p == nil {
-		return nil
-	}
-	return p.Logo
-}
-
-func (p *PaymentPageRequestBody) GetMessageBeforePaying() *LabelElement {
-	if p == nil {
-		return nil
-	}
-	return p.MessageBeforePaying
-}
-
-func (p *PaymentPageRequestBody) GetNotes() *NoteElement {
-	if p == nil {
-		return nil
-	}
-	return p.Notes
-}
-
-func (p *PaymentPageRequestBody) GetPage() *PageElement {
-	if p == nil {
-		return nil
-	}
-	return p.Page
-}
-
-func (p *PaymentPageRequestBody) GetPaymentButton() *LabelElement {
-	if p == nil {
-		return nil
-	}
-	return p.PaymentButton
-}
-
-func (p *PaymentPageRequestBody) GetPaymentMethods() *MethodElement {
-	if p == nil {
-		return nil
-	}
-	return p.PaymentMethods
-}
-
-func (p *PaymentPageRequestBody) GetPayor() *PayorElement {
-	if p == nil {
-		return nil
-	}
-	return p.Payor
-}
-
-func (p *PaymentPageRequestBody) GetReview() *HeaderElement {
-	if p == nil {
-		return nil
-	}
-	return p.Review
-}
-
-func (p *PaymentPageRequestBody) GetSettings() *PagelinkSetting {
-	if p == nil {
-		return nil
-	}
-	return p.Settings
-}
-
-func (p *PaymentPageRequestBody) GetExtraProperties() map[string]interface{} {
-	if p == nil {
-		return nil
-	}
-	return p.extraProperties
-}
-
-func (p *PaymentPageRequestBody) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
-	}
-	p.explicitFields.Or(p.explicitFields, field)
-}
-
-// SetContactUs sets the ContactUs field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentPageRequestBody) SetContactUs(contactUs *ContactElement) {
-	p.ContactUs = contactUs
-	p.require(paymentPageRequestBodyFieldContactUs)
-}
-
-// SetInvoices sets the Invoices field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentPageRequestBody) SetInvoices(invoices *InvoiceElement) {
-	p.Invoices = invoices
-	p.require(paymentPageRequestBodyFieldInvoices)
-}
-
-// SetLogo sets the Logo field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentPageRequestBody) SetLogo(logo *Element) {
-	p.Logo = logo
-	p.require(paymentPageRequestBodyFieldLogo)
-}
-
-// SetMessageBeforePaying sets the MessageBeforePaying field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentPageRequestBody) SetMessageBeforePaying(messageBeforePaying *LabelElement) {
-	p.MessageBeforePaying = messageBeforePaying
-	p.require(paymentPageRequestBodyFieldMessageBeforePaying)
-}
-
-// SetNotes sets the Notes field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentPageRequestBody) SetNotes(notes *NoteElement) {
-	p.Notes = notes
-	p.require(paymentPageRequestBodyFieldNotes)
-}
-
-// SetPage sets the Page field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentPageRequestBody) SetPage(page *PageElement) {
-	p.Page = page
-	p.require(paymentPageRequestBodyFieldPage)
-}
-
-// SetPaymentButton sets the PaymentButton field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentPageRequestBody) SetPaymentButton(paymentButton *LabelElement) {
-	p.PaymentButton = paymentButton
-	p.require(paymentPageRequestBodyFieldPaymentButton)
-}
-
-// SetPaymentMethods sets the PaymentMethods field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentPageRequestBody) SetPaymentMethods(paymentMethods *MethodElement) {
-	p.PaymentMethods = paymentMethods
-	p.require(paymentPageRequestBodyFieldPaymentMethods)
-}
-
-// SetPayor sets the Payor field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentPageRequestBody) SetPayor(payor *PayorElement) {
-	p.Payor = payor
-	p.require(paymentPageRequestBodyFieldPayor)
-}
-
-// SetReview sets the Review field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentPageRequestBody) SetReview(review *HeaderElement) {
-	p.Review = review
-	p.require(paymentPageRequestBodyFieldReview)
-}
-
-// SetSettings sets the Settings field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentPageRequestBody) SetSettings(settings *PagelinkSetting) {
-	p.Settings = settings
-	p.require(paymentPageRequestBodyFieldSettings)
-}
-
-func (p *PaymentPageRequestBody) UnmarshalJSON(data []byte) error {
-	type unmarshaler PaymentPageRequestBody
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PaymentPageRequestBody(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PaymentPageRequestBody) MarshalJSON() ([]byte, error) {
-	type embed PaymentPageRequestBody
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*p),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (p *PaymentPageRequestBody) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
-// Configuration for the Pay Out payment link page. Controls branding, messaging, vendor fields, and which payout methods are offered to the vendor.
-var (
-	paymentPageRequestBodyOutFieldContactUs           = big.NewInt(1 << 0)
-	paymentPageRequestBodyOutFieldLogo                = big.NewInt(1 << 1)
-	paymentPageRequestBodyOutFieldMessageBeforePaying = big.NewInt(1 << 2)
-	paymentPageRequestBodyOutFieldNotes               = big.NewInt(1 << 3)
-	paymentPageRequestBodyOutFieldPage                = big.NewInt(1 << 4)
-	paymentPageRequestBodyOutFieldPaymentButton       = big.NewInt(1 << 5)
-	paymentPageRequestBodyOutFieldPaymentMethods      = big.NewInt(1 << 6)
-	paymentPageRequestBodyOutFieldReview              = big.NewInt(1 << 7)
-	paymentPageRequestBodyOutFieldBills               = big.NewInt(1 << 8)
-	paymentPageRequestBodyOutFieldSettings            = big.NewInt(1 << 9)
-)
-
-type PaymentPageRequestBodyOut struct {
-	// ContactUs section of payment link page.
-	ContactUs *ContactElement `json:"contactUs,omitempty" url:"contactUs,omitempty"`
-	// Logo section of payment link page.
-	Logo *Element `json:"logo,omitempty" url:"logo,omitempty"`
-	// Message section of payment link page.
-	MessageBeforePaying *LabelElement `json:"messageBeforePaying,omitempty" url:"messageBeforePaying,omitempty"`
-	// Notes section of payment link page.
-	Notes *NoteElement `json:"notes,omitempty" url:"notes,omitempty"`
-	// Page header section of payment link page.
-	Page *PageElement `json:"page,omitempty" url:"page,omitempty"`
-	// Payment button section of payment link page.
-	PaymentButton *LabelElement `json:"paymentButton,omitempty" url:"paymentButton,omitempty"`
-	// Payment methods section of payment link page. Use this to configure which payout methods (ACH, vCard, check) are offered to the vendor.
-	PaymentMethods *MethodElementOut `json:"paymentMethods,omitempty" url:"paymentMethods,omitempty"`
-	// Review section of payment link page.
-	Review *HeaderElement `json:"review,omitempty" url:"review,omitempty"`
-	// Bills section of payment link page.
-	Bills *Element `json:"bills,omitempty" url:"bills,omitempty"`
-	// Settings section of payment link page.
-	Settings *PagelinkSetting `json:"settings,omitempty" url:"settings,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PaymentPageRequestBodyOut) GetContactUs() *ContactElement {
-	if p == nil {
-		return nil
-	}
-	return p.ContactUs
-}
-
-func (p *PaymentPageRequestBodyOut) GetLogo() *Element {
-	if p == nil {
-		return nil
-	}
-	return p.Logo
-}
-
-func (p *PaymentPageRequestBodyOut) GetMessageBeforePaying() *LabelElement {
-	if p == nil {
-		return nil
-	}
-	return p.MessageBeforePaying
-}
-
-func (p *PaymentPageRequestBodyOut) GetNotes() *NoteElement {
-	if p == nil {
-		return nil
-	}
-	return p.Notes
-}
-
-func (p *PaymentPageRequestBodyOut) GetPage() *PageElement {
-	if p == nil {
-		return nil
-	}
-	return p.Page
-}
-
-func (p *PaymentPageRequestBodyOut) GetPaymentButton() *LabelElement {
-	if p == nil {
-		return nil
-	}
-	return p.PaymentButton
-}
-
-func (p *PaymentPageRequestBodyOut) GetPaymentMethods() *MethodElementOut {
-	if p == nil {
-		return nil
-	}
-	return p.PaymentMethods
-}
-
-func (p *PaymentPageRequestBodyOut) GetReview() *HeaderElement {
-	if p == nil {
-		return nil
-	}
-	return p.Review
-}
-
-func (p *PaymentPageRequestBodyOut) GetBills() *Element {
-	if p == nil {
-		return nil
-	}
-	return p.Bills
-}
-
-func (p *PaymentPageRequestBodyOut) GetSettings() *PagelinkSetting {
-	if p == nil {
-		return nil
-	}
-	return p.Settings
-}
-
-func (p *PaymentPageRequestBodyOut) GetExtraProperties() map[string]interface{} {
-	if p == nil {
-		return nil
-	}
-	return p.extraProperties
-}
-
-func (p *PaymentPageRequestBodyOut) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
-	}
-	p.explicitFields.Or(p.explicitFields, field)
-}
-
-// SetContactUs sets the ContactUs field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentPageRequestBodyOut) SetContactUs(contactUs *ContactElement) {
-	p.ContactUs = contactUs
-	p.require(paymentPageRequestBodyOutFieldContactUs)
-}
-
-// SetLogo sets the Logo field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentPageRequestBodyOut) SetLogo(logo *Element) {
-	p.Logo = logo
-	p.require(paymentPageRequestBodyOutFieldLogo)
-}
-
-// SetMessageBeforePaying sets the MessageBeforePaying field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentPageRequestBodyOut) SetMessageBeforePaying(messageBeforePaying *LabelElement) {
-	p.MessageBeforePaying = messageBeforePaying
-	p.require(paymentPageRequestBodyOutFieldMessageBeforePaying)
-}
-
-// SetNotes sets the Notes field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentPageRequestBodyOut) SetNotes(notes *NoteElement) {
-	p.Notes = notes
-	p.require(paymentPageRequestBodyOutFieldNotes)
-}
-
-// SetPage sets the Page field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentPageRequestBodyOut) SetPage(page *PageElement) {
-	p.Page = page
-	p.require(paymentPageRequestBodyOutFieldPage)
-}
-
-// SetPaymentButton sets the PaymentButton field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentPageRequestBodyOut) SetPaymentButton(paymentButton *LabelElement) {
-	p.PaymentButton = paymentButton
-	p.require(paymentPageRequestBodyOutFieldPaymentButton)
-}
-
-// SetPaymentMethods sets the PaymentMethods field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentPageRequestBodyOut) SetPaymentMethods(paymentMethods *MethodElementOut) {
-	p.PaymentMethods = paymentMethods
-	p.require(paymentPageRequestBodyOutFieldPaymentMethods)
-}
-
-// SetReview sets the Review field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentPageRequestBodyOut) SetReview(review *HeaderElement) {
-	p.Review = review
-	p.require(paymentPageRequestBodyOutFieldReview)
-}
-
-// SetBills sets the Bills field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentPageRequestBodyOut) SetBills(bills *Element) {
-	p.Bills = bills
-	p.require(paymentPageRequestBodyOutFieldBills)
-}
-
-// SetSettings sets the Settings field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PaymentPageRequestBodyOut) SetSettings(settings *PagelinkSetting) {
-	p.Settings = settings
-	p.require(paymentPageRequestBodyOutFieldSettings)
-}
-
-func (p *PaymentPageRequestBodyOut) UnmarshalJSON(data []byte) error {
-	type unmarshaler PaymentPageRequestBodyOut
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PaymentPageRequestBodyOut(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PaymentPageRequestBodyOut) MarshalJSON() ([]byte, error) {
-	type embed PaymentPageRequestBodyOut
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*p),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (p *PaymentPageRequestBodyOut) String() string {
 	if p == nil {
 		return "<nil>"
 	}

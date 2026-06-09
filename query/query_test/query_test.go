@@ -6,13 +6,14 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
+	http "net/http"
+	os "os"
+	testing "testing"
+
 	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
-	http "net/http"
-	os "os"
-	testing "testing"
 )
 
 func VerifyRequestCount(
@@ -20,7 +21,7 @@ func VerifyRequestCount(
 	testId string,
 	method string,
 	urlPath string,
-	queryParams map[string]string,
+	queryParams map[string]any,
 	expected int,
 ) {
 	wiremockURL := os.Getenv("WIREMOCK_URL")
@@ -45,9 +46,23 @@ func VerifyRequestCount(
 			}
 			reqBody.WriteString(`"`)
 			reqBody.WriteString(key)
-			reqBody.WriteString(`":{"equalTo":"`)
-			reqBody.WriteString(value)
-			reqBody.WriteString(`"}`)
+			switch v := value.(type) {
+			case string:
+				reqBody.WriteString(`":{"equalTo":"`)
+				reqBody.WriteString(v)
+				reqBody.WriteString(`"}`)
+			case []string:
+				reqBody.WriteString(`":{"hasExactly":[`)
+				for i, item := range v {
+					if i > 0 {
+						reqBody.WriteString(",")
+					}
+					reqBody.WriteString(`{"equalTo":"`)
+					reqBody.WriteString(item)
+					reqBody.WriteString(`"}`)
+				}
+				reqBody.WriteString(`]}`)
+			}
 			first = false
 		}
 		reqBody.WriteString("}")
@@ -71,6 +86,7 @@ func TestQueryListBatchDetailsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListBatchDetailsRequest{
 		FromRecord: payabli.Int(
@@ -93,7 +109,7 @@ func TestQueryListBatchDetailsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListBatchDetailsWithWireMock", "GET", "/Query/batchDetails/8cfec329267", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListBatchDetailsWithWireMock", "GET", "/Query/batchDetails/8cfec329267", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListBatchDetailsOrgWithWireMock(
@@ -105,6 +121,7 @@ func TestQueryListBatchDetailsOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListBatchDetailsOrgRequest{
 		FromRecord: payabli.Int(
@@ -127,7 +144,7 @@ func TestQueryListBatchDetailsOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListBatchDetailsOrgWithWireMock", "GET", "/Query/batchDetails/org/123", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListBatchDetailsOrgWithWireMock", "GET", "/Query/batchDetails/org/123", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListBatchesWithWireMock(
@@ -139,6 +156,7 @@ func TestQueryListBatchesWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListBatchesRequest{
 		FromRecord: payabli.Int(
@@ -161,7 +179,7 @@ func TestQueryListBatchesWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListBatchesWithWireMock", "GET", "/Query/batches/8cfec329267", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListBatchesWithWireMock", "GET", "/Query/batches/8cfec329267", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListBatchesOrgWithWireMock(
@@ -173,6 +191,7 @@ func TestQueryListBatchesOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListBatchesOrgRequest{
 		FromRecord: payabli.Int(
@@ -195,7 +214,7 @@ func TestQueryListBatchesOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListBatchesOrgWithWireMock", "GET", "/Query/batches/org/123", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListBatchesOrgWithWireMock", "GET", "/Query/batches/org/123", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListBatchesOutWithWireMock(
@@ -207,6 +226,7 @@ func TestQueryListBatchesOutWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListBatchesOutRequest{
 		FromRecord: payabli.Int(
@@ -229,7 +249,7 @@ func TestQueryListBatchesOutWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListBatchesOutWithWireMock", "GET", "/Query/batchesOut/8cfec329267", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListBatchesOutWithWireMock", "GET", "/Query/batchesOut/8cfec329267", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListBatchesOutOrgWithWireMock(
@@ -241,6 +261,7 @@ func TestQueryListBatchesOutOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListBatchesOutOrgRequest{
 		FromRecord: payabli.Int(
@@ -263,7 +284,7 @@ func TestQueryListBatchesOutOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListBatchesOutOrgWithWireMock", "GET", "/Query/batchesOut/org/123", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListBatchesOutOrgWithWireMock", "GET", "/Query/batchesOut/org/123", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListChargebacksWithWireMock(
@@ -275,6 +296,7 @@ func TestQueryListChargebacksWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListChargebacksRequest{
 		FromRecord: payabli.Int(
@@ -297,7 +319,7 @@ func TestQueryListChargebacksWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListChargebacksWithWireMock", "GET", "/Query/chargebacks/8cfec329267", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListChargebacksWithWireMock", "GET", "/Query/chargebacks/8cfec329267", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListChargebacksOrgWithWireMock(
@@ -309,6 +331,7 @@ func TestQueryListChargebacksOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListChargebacksOrgRequest{
 		FromRecord: payabli.Int(
@@ -331,7 +354,7 @@ func TestQueryListChargebacksOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListChargebacksOrgWithWireMock", "GET", "/Query/chargebacks/org/123", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListChargebacksOrgWithWireMock", "GET", "/Query/chargebacks/org/123", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListCustomersWithWireMock(
@@ -343,6 +366,7 @@ func TestQueryListCustomersWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListCustomersRequest{
 		FromRecord: payabli.Int(
@@ -365,7 +389,7 @@ func TestQueryListCustomersWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListCustomersWithWireMock", "GET", "/Query/customers/8cfec329267", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListCustomersWithWireMock", "GET", "/Query/customers/8cfec329267", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListCustomersOrgWithWireMock(
@@ -377,6 +401,7 @@ func TestQueryListCustomersOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListCustomersOrgRequest{
 		FromRecord: payabli.Int(
@@ -399,7 +424,7 @@ func TestQueryListCustomersOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListCustomersOrgWithWireMock", "GET", "/Query/customers/org/123", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListCustomersOrgWithWireMock", "GET", "/Query/customers/org/123", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListDevicesWithWireMock(
@@ -411,6 +436,7 @@ func TestQueryListDevicesWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListDevicesRequest{
 		FromRecord: payabli.Int(
@@ -433,7 +459,7 @@ func TestQueryListDevicesWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListDevicesWithWireMock", "GET", "/Query/devices/8cfec329267", map[string]string{"fromRecord": "0", "limitRecord": "20", "sortBy": "desc(createdAt)"}, 1)
+	VerifyRequestCount(t, "TestQueryListDevicesWithWireMock", "GET", "/Query/devices/8cfec329267", map[string]interface{}{"fromRecord": "0", "limitRecord": "20", "sortBy": "desc(createdAt)"}, 1)
 }
 
 func TestQueryListDevicesOrgWithWireMock(
@@ -445,6 +471,7 @@ func TestQueryListDevicesOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListDevicesOrgRequest{
 		FromRecord: payabli.Int(
@@ -459,7 +486,7 @@ func TestQueryListDevicesOrgWithWireMock(
 	}
 	_, invocationErr := client.Query.ListDevicesOrg(
 		context.TODO(),
-		100,
+		123,
 		request,
 		option.WithHTTPHeader(
 			http.Header{"X-Test-Id": []string{"TestQueryListDevicesOrgWithWireMock"}},
@@ -467,7 +494,7 @@ func TestQueryListDevicesOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListDevicesOrgWithWireMock", "GET", "/Query/devices/org/100", map[string]string{"fromRecord": "0", "limitRecord": "20", "sortBy": "desc(createdAt)"}, 1)
+	VerifyRequestCount(t, "TestQueryListDevicesOrgWithWireMock", "GET", "/Query/devices/org/123", map[string]interface{}{"fromRecord": "0", "limitRecord": "20", "sortBy": "desc(createdAt)"}, 1)
 }
 
 func TestQueryListNotificationReportsWithWireMock(
@@ -479,6 +506,7 @@ func TestQueryListNotificationReportsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListNotificationReportsRequest{
 		FromRecord: payabli.Int(
@@ -501,7 +529,7 @@ func TestQueryListNotificationReportsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListNotificationReportsWithWireMock", "GET", "/Query/notificationReports/8cfec329267", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListNotificationReportsWithWireMock", "GET", "/Query/notificationReports/8cfec329267", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListNotificationReportsOrgWithWireMock(
@@ -513,6 +541,7 @@ func TestQueryListNotificationReportsOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListNotificationReportsOrgRequest{
 		FromRecord: payabli.Int(
@@ -535,7 +564,7 @@ func TestQueryListNotificationReportsOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListNotificationReportsOrgWithWireMock", "GET", "/Query/notificationReports/org/123", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListNotificationReportsOrgWithWireMock", "GET", "/Query/notificationReports/org/123", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListNotificationsWithWireMock(
@@ -547,6 +576,7 @@ func TestQueryListNotificationsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListNotificationsRequest{
 		FromRecord: payabli.Int(
@@ -569,7 +599,7 @@ func TestQueryListNotificationsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListNotificationsWithWireMock", "GET", "/Query/notifications/8cfec329267", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListNotificationsWithWireMock", "GET", "/Query/notifications/8cfec329267", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListNotificationsOrgWithWireMock(
@@ -581,6 +611,7 @@ func TestQueryListNotificationsOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListNotificationsOrgRequest{
 		FromRecord: payabli.Int(
@@ -603,7 +634,7 @@ func TestQueryListNotificationsOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListNotificationsOrgWithWireMock", "GET", "/Query/notifications/org/123", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListNotificationsOrgWithWireMock", "GET", "/Query/notifications/org/123", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListOrganizationsWithWireMock(
@@ -615,6 +646,7 @@ func TestQueryListOrganizationsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListOrganizationsRequest{
 		FromRecord: payabli.Int(
@@ -637,7 +669,7 @@ func TestQueryListOrganizationsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListOrganizationsWithWireMock", "GET", "/Query/organizations/123", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListOrganizationsWithWireMock", "GET", "/Query/organizations/123", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListPayoutWithWireMock(
@@ -649,6 +681,7 @@ func TestQueryListPayoutWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListPayoutRequest{
 		FromRecord: payabli.Int(
@@ -671,7 +704,7 @@ func TestQueryListPayoutWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListPayoutWithWireMock", "GET", "/Query/payouts/8cfec329267", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListPayoutWithWireMock", "GET", "/Query/payouts/8cfec329267", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListPayoutOrgWithWireMock(
@@ -683,6 +716,7 @@ func TestQueryListPayoutOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListPayoutOrgRequest{
 		FromRecord: payabli.Int(
@@ -705,7 +739,7 @@ func TestQueryListPayoutOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListPayoutOrgWithWireMock", "GET", "/Query/payouts/org/123", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListPayoutOrgWithWireMock", "GET", "/Query/payouts/org/123", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListPaypointsWithWireMock(
@@ -717,6 +751,7 @@ func TestQueryListPaypointsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListPaypointsRequest{
 		FromRecord: payabli.Int(
@@ -739,7 +774,7 @@ func TestQueryListPaypointsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListPaypointsWithWireMock", "GET", "/Query/paypoints/123", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListPaypointsWithWireMock", "GET", "/Query/paypoints/123", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListSettlementsWithWireMock(
@@ -751,6 +786,7 @@ func TestQueryListSettlementsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListSettlementsRequest{
 		FromRecord: payabli.Int(
@@ -773,7 +809,7 @@ func TestQueryListSettlementsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListSettlementsWithWireMock", "GET", "/Query/settlements/8cfec329267", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListSettlementsWithWireMock", "GET", "/Query/settlements/8cfec329267", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListSettlementsOrgWithWireMock(
@@ -785,6 +821,7 @@ func TestQueryListSettlementsOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListSettlementsOrgRequest{
 		FromRecord: payabli.Int(
@@ -807,7 +844,7 @@ func TestQueryListSettlementsOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListSettlementsOrgWithWireMock", "GET", "/Query/settlements/org/123", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListSettlementsOrgWithWireMock", "GET", "/Query/settlements/org/123", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListSubscriptionsWithWireMock(
@@ -819,6 +856,7 @@ func TestQueryListSubscriptionsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListSubscriptionsRequest{
 		FromRecord: payabli.Int(
@@ -841,7 +879,7 @@ func TestQueryListSubscriptionsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListSubscriptionsWithWireMock", "GET", "/Query/subscriptions/8cfec329267", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListSubscriptionsWithWireMock", "GET", "/Query/subscriptions/8cfec329267", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListSubscriptionsOrgWithWireMock(
@@ -853,6 +891,7 @@ func TestQueryListSubscriptionsOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListSubscriptionsOrgRequest{
 		FromRecord: payabli.Int(
@@ -875,7 +914,7 @@ func TestQueryListSubscriptionsOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListSubscriptionsOrgWithWireMock", "GET", "/Query/subscriptions/org/123", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListSubscriptionsOrgWithWireMock", "GET", "/Query/subscriptions/org/123", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListPayoutSubscriptionsWithWireMock(
@@ -887,6 +926,7 @@ func TestQueryListPayoutSubscriptionsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListPayoutSubscriptionsRequest{
 		FromRecord: payabli.Int(
@@ -909,7 +949,7 @@ func TestQueryListPayoutSubscriptionsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListPayoutSubscriptionsWithWireMock", "GET", "/Query/payoutsubscriptions/8cfec329267", map[string]string{"fromRecord": "0", "limitRecord": "20", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListPayoutSubscriptionsWithWireMock", "GET", "/Query/payoutsubscriptions/8cfec329267", map[string]interface{}{"fromRecord": "0", "limitRecord": "20", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListPayoutSubscriptionsOrgWithWireMock(
@@ -921,6 +961,7 @@ func TestQueryListPayoutSubscriptionsOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListPayoutSubscriptionsOrgRequest{
 		FromRecord: payabli.Int(
@@ -943,7 +984,7 @@ func TestQueryListPayoutSubscriptionsOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListPayoutSubscriptionsOrgWithWireMock", "GET", "/Query/payoutsubscriptions/org/123", map[string]string{"fromRecord": "0", "limitRecord": "20", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListPayoutSubscriptionsOrgWithWireMock", "GET", "/Query/payoutsubscriptions/org/123", map[string]interface{}{"fromRecord": "0", "limitRecord": "20", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListTransactionsWithWireMock(
@@ -955,6 +996,7 @@ func TestQueryListTransactionsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListTransactionsRequest{
 		FromRecord: payabli.Int(
@@ -977,7 +1019,7 @@ func TestQueryListTransactionsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListTransactionsWithWireMock", "GET", "/Query/transactions/8cfec329267", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListTransactionsWithWireMock", "GET", "/Query/transactions/8cfec329267", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListTransactionsOrgWithWireMock(
@@ -989,6 +1031,7 @@ func TestQueryListTransactionsOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListTransactionsOrgRequest{
 		FromRecord: payabli.Int(
@@ -1011,7 +1054,7 @@ func TestQueryListTransactionsOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListTransactionsOrgWithWireMock", "GET", "/Query/transactions/org/123", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListTransactionsOrgWithWireMock", "GET", "/Query/transactions/org/123", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListTransferDetailsWithWireMock(
@@ -1023,12 +1066,13 @@ func TestQueryListTransferDetailsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListTransfersPaypointRequest{}
 	_, invocationErr := client.Query.ListTransferDetails(
 		context.TODO(),
-		"47862acd",
-		123456,
+		"8cfec329267",
+		4521,
 		request,
 		option.WithHTTPHeader(
 			http.Header{"X-Test-Id": []string{"TestQueryListTransferDetailsWithWireMock"}},
@@ -1036,7 +1080,7 @@ func TestQueryListTransferDetailsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListTransferDetailsWithWireMock", "GET", "/Query/transferDetails/47862acd/123456", nil, 1)
+	VerifyRequestCount(t, "TestQueryListTransferDetailsWithWireMock", "GET", "/Query/transferDetails/8cfec329267/4521", nil, 1)
 }
 
 func TestQueryListTransfersWithWireMock(
@@ -1048,6 +1092,7 @@ func TestQueryListTransfersWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListTransfersRequest{
 		FromRecord: payabli.Int(
@@ -1059,7 +1104,7 @@ func TestQueryListTransfersWithWireMock(
 	}
 	_, invocationErr := client.Query.ListTransfers(
 		context.TODO(),
-		"47862acd",
+		"8cfec329267",
 		request,
 		option.WithHTTPHeader(
 			http.Header{"X-Test-Id": []string{"TestQueryListTransfersWithWireMock"}},
@@ -1067,7 +1112,7 @@ func TestQueryListTransfersWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListTransfersWithWireMock", "GET", "/Query/transfers/47862acd", map[string]string{"fromRecord": "0", "limitRecord": "20"}, 1)
+	VerifyRequestCount(t, "TestQueryListTransfersWithWireMock", "GET", "/Query/transfers/8cfec329267", map[string]interface{}{"fromRecord": "0", "limitRecord": "20"}, 1)
 }
 
 func TestQueryListTransfersOrgWithWireMock(
@@ -1079,9 +1124,9 @@ func TestQueryListTransfersOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListTransfersRequestOrg{
-		OrgId: int64(123),
 		FromRecord: payabli.Int(
 			0,
 		),
@@ -1091,6 +1136,7 @@ func TestQueryListTransfersOrgWithWireMock(
 	}
 	_, invocationErr := client.Query.ListTransfersOrg(
 		context.TODO(),
+		int64(123),
 		request,
 		option.WithHTTPHeader(
 			http.Header{"X-Test-Id": []string{"TestQueryListTransfersOrgWithWireMock"}},
@@ -1098,7 +1144,7 @@ func TestQueryListTransfersOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListTransfersOrgWithWireMock", "GET", "/Query/transfers/org/123", map[string]string{"fromRecord": "0", "limitRecord": "20"}, 1)
+	VerifyRequestCount(t, "TestQueryListTransfersOrgWithWireMock", "GET", "/Query/transfers/org/123", map[string]interface{}{"fromRecord": "0", "limitRecord": "20"}, 1)
 }
 
 func TestQueryListTransfersOutOrgWithWireMock(
@@ -1110,6 +1156,7 @@ func TestQueryListTransfersOutOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListTransfersOutOrgRequest{
 		FromRecord: payabli.Int(
@@ -1121,7 +1168,7 @@ func TestQueryListTransfersOutOrgWithWireMock(
 	}
 	_, invocationErr := client.Query.ListTransfersOutOrg(
 		context.TODO(),
-		77,
+		123,
 		request,
 		option.WithHTTPHeader(
 			http.Header{"X-Test-Id": []string{"TestQueryListTransfersOutOrgWithWireMock"}},
@@ -1129,7 +1176,7 @@ func TestQueryListTransfersOutOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListTransfersOutOrgWithWireMock", "GET", "/Query/transfersOut/org/77", map[string]string{"fromRecord": "0", "limitRecord": "20"}, 1)
+	VerifyRequestCount(t, "TestQueryListTransfersOutOrgWithWireMock", "GET", "/Query/transfersOut/org/123", map[string]interface{}{"fromRecord": "0", "limitRecord": "20"}, 1)
 }
 
 func TestQueryListTransfersOutPaypointWithWireMock(
@@ -1141,6 +1188,7 @@ func TestQueryListTransfersOutPaypointWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListTransfersOutPaypointRequest{
 		FromRecord: payabli.Int(
@@ -1152,7 +1200,7 @@ func TestQueryListTransfersOutPaypointWithWireMock(
 	}
 	_, invocationErr := client.Query.ListTransfersOutPaypoint(
 		context.TODO(),
-		"47cade237",
+		"8cfec329267",
 		request,
 		option.WithHTTPHeader(
 			http.Header{"X-Test-Id": []string{"TestQueryListTransfersOutPaypointWithWireMock"}},
@@ -1160,7 +1208,7 @@ func TestQueryListTransfersOutPaypointWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListTransfersOutPaypointWithWireMock", "GET", "/Query/transfersOut/47cade237", map[string]string{"fromRecord": "0", "limitRecord": "20"}, 1)
+	VerifyRequestCount(t, "TestQueryListTransfersOutPaypointWithWireMock", "GET", "/Query/transfersOut/8cfec329267", map[string]interface{}{"fromRecord": "0", "limitRecord": "20"}, 1)
 }
 
 func TestQueryListTransferDetailsOutWithWireMock(
@@ -1172,6 +1220,7 @@ func TestQueryListTransferDetailsOutWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListTransferDetailsOutRequest{
 		FromRecord: payabli.Int(
@@ -1183,7 +1232,7 @@ func TestQueryListTransferDetailsOutWithWireMock(
 	}
 	_, invocationErr := client.Query.ListTransferDetailsOut(
 		context.TODO(),
-		"47ace2b25",
+		"8cfec329267",
 		4521,
 		request,
 		option.WithHTTPHeader(
@@ -1192,7 +1241,7 @@ func TestQueryListTransferDetailsOutWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListTransferDetailsOutWithWireMock", "GET", "/Query/transferDetailsOut/47ace2b25/4521", map[string]string{"fromRecord": "0", "limitRecord": "20"}, 1)
+	VerifyRequestCount(t, "TestQueryListTransferDetailsOutWithWireMock", "GET", "/Query/transferDetailsOut/8cfec329267/4521", map[string]interface{}{"fromRecord": "0", "limitRecord": "20"}, 1)
 }
 
 func TestQueryListUsersOrgWithWireMock(
@@ -1204,6 +1253,7 @@ func TestQueryListUsersOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListUsersOrgRequest{
 		FromRecord: payabli.Int(
@@ -1226,7 +1276,7 @@ func TestQueryListUsersOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListUsersOrgWithWireMock", "GET", "/Query/users/org/123", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListUsersOrgWithWireMock", "GET", "/Query/users/org/123", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListUsersPaypointWithWireMock(
@@ -1238,6 +1288,7 @@ func TestQueryListUsersPaypointWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListUsersPaypointRequest{
 		FromRecord: payabli.Int(
@@ -1260,7 +1311,7 @@ func TestQueryListUsersPaypointWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListUsersPaypointWithWireMock", "GET", "/Query/users/point/8cfec329267", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListUsersPaypointWithWireMock", "GET", "/Query/users/point/8cfec329267", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListVendorsWithWireMock(
@@ -1272,6 +1323,7 @@ func TestQueryListVendorsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListVendorsRequest{
 		FromRecord: payabli.Int(
@@ -1294,7 +1346,7 @@ func TestQueryListVendorsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListVendorsWithWireMock", "GET", "/Query/vendors/8cfec329267", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListVendorsWithWireMock", "GET", "/Query/vendors/8cfec329267", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListVendorsOrgWithWireMock(
@@ -1306,6 +1358,7 @@ func TestQueryListVendorsOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListVendorsOrgRequest{
 		FromRecord: payabli.Int(
@@ -1328,7 +1381,7 @@ func TestQueryListVendorsOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListVendorsOrgWithWireMock", "GET", "/Query/vendors/org/123", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListVendorsOrgWithWireMock", "GET", "/Query/vendors/org/123", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListVcardsWithWireMock(
@@ -1340,6 +1393,7 @@ func TestQueryListVcardsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListVcardsRequest{
 		FromRecord: payabli.Int(
@@ -1362,7 +1416,7 @@ func TestQueryListVcardsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListVcardsWithWireMock", "GET", "/Query/vcards/8cfec329267", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListVcardsWithWireMock", "GET", "/Query/vcards/8cfec329267", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestQueryListVcardsTransactionsWithWireMock(
@@ -1374,6 +1428,7 @@ func TestQueryListVcardsTransactionsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListVcardsTransactionsRequest{
 		FromRecord: payabli.Int(
@@ -1396,7 +1451,7 @@ func TestQueryListVcardsTransactionsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListVcardsTransactionsWithWireMock", "GET", "/Query/vcardsTransactions/8cfec329267", map[string]string{"fromRecord": "0", "limitRecord": "20", "sortBy": "desc(CreatedOn)"}, 1)
+	VerifyRequestCount(t, "TestQueryListVcardsTransactionsWithWireMock", "GET", "/Query/vcardsTransactions/8cfec329267", map[string]interface{}{"fromRecord": "0", "limitRecord": "20", "sortBy": "desc(CreatedOn)"}, 1)
 }
 
 func TestQueryListVcardsTransactionsOrgWithWireMock(
@@ -1408,6 +1463,7 @@ func TestQueryListVcardsTransactionsOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListVcardsTransactionsOrgRequest{
 		FromRecord: payabli.Int(
@@ -1430,7 +1486,7 @@ func TestQueryListVcardsTransactionsOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListVcardsTransactionsOrgWithWireMock", "GET", "/Query/vcardsTransactions/org/123", map[string]string{"fromRecord": "0", "limitRecord": "20", "sortBy": "desc(CreatedOn)"}, 1)
+	VerifyRequestCount(t, "TestQueryListVcardsTransactionsOrgWithWireMock", "GET", "/Query/vcardsTransactions/org/123", map[string]interface{}{"fromRecord": "0", "limitRecord": "20", "sortBy": "desc(CreatedOn)"}, 1)
 }
 
 func TestQueryListVcardsOrgWithWireMock(
@@ -1442,6 +1498,7 @@ func TestQueryListVcardsOrgWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListVcardsOrgRequest{
 		FromRecord: payabli.Int(
@@ -1464,5 +1521,5 @@ func TestQueryListVcardsOrgWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestQueryListVcardsOrgWithWireMock", "GET", "/Query/vcards/org/123", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestQueryListVcardsOrgWithWireMock", "GET", "/Query/vcards/org/123", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }

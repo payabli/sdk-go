@@ -4,6 +4,7 @@ package tokenstorage
 
 import (
 	context "context"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
@@ -25,8 +26,9 @@ func NewClient(options *core.RequestOptions) *Client {
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -69,24 +71,6 @@ func (c *Client) GetMethod(
 	return response.Body, nil
 }
 
-// Deletes a saved payment method.
-func (c *Client) RemoveMethod(
-	ctx context.Context,
-	// The saved payment method ID.
-	methodId string,
-	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponsePaymethodDelete, error) {
-	response, err := c.WithRawResponse.RemoveMethod(
-		ctx,
-		methodId,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
 // Updates a saved payment method.
 func (c *Client) UpdateMethod(
 	ctx context.Context,
@@ -99,6 +83,24 @@ func (c *Client) UpdateMethod(
 		ctx,
 		methodId,
 		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Deletes a saved payment method.
+func (c *Client) RemoveMethod(
+	ctx context.Context,
+	// The saved payment method ID.
+	methodId string,
+	opts ...option.RequestOption,
+) (*payabli.PayabliApiResponsePaymethodDelete, error) {
+	response, err := c.WithRawResponse.RemoveMethod(
+		ctx,
+		methodId,
 		opts...,
 	)
 	if err != nil {

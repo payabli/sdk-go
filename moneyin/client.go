@@ -4,6 +4,7 @@ package moneyin
 
 import (
 	context "context"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
@@ -25,8 +26,9 @@ func NewClient(options *core.RequestOptions) *Client {
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -173,7 +175,6 @@ func (c *Client) Reverse(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
-	//
 	// Amount to reverse from original transaction, minus any service fees charged on the original transaction.
 	//
 	// The amount provided can't be greater than the original total amount of the transaction, minus service fees. For example, if a transaction was $90 plus a $10 service fee, you can reverse up to $90.
@@ -203,7 +204,6 @@ func (c *Client) Refund(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
-	//
 	// Amount to refund from original transaction, minus any service fees charged on the original transaction.
 	//
 	// The amount provided can't be greater than the original total amount of the transaction, minus service fees. For example, if a transaction was \$90 plus a \$10 service fee, you can refund up to \$90.

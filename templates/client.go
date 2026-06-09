@@ -4,6 +4,7 @@ package templates
 
 import (
 	context "context"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
@@ -25,8 +26,9 @@ func NewClient(options *core.RequestOptions) *Client {
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -35,7 +37,7 @@ func NewClient(options *core.RequestOptions) *Client {
 // Deletes a template by ID.
 func (c *Client) DeleteTemplate(
 	ctx context.Context,
-	// The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
+	// The boarding template ID. You can find this at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
 	templateId float64,
 	opts ...option.RequestOption,
 ) (*payabli.PayabliApiResponseTemplateId, error) {
@@ -53,9 +55,9 @@ func (c *Client) DeleteTemplate(
 // Generates a boarding link from a boarding template.
 func (c *Client) GetlinkTemplate(
 	ctx context.Context,
-	// The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
+	// The boarding template ID. You can find this at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
 	templateId float64,
-	// Ignore read-only and empty fields Default is `false`. If `ignoreEmpty` = `false` and any field is empty, then the request returns a failure response. If `ignoreEmpty` = `true`, the request returns the boarding link name regardless of whether fields are empty.
+	// Ignore read-only and empty fields. Default is `false`. If `ignoreEmpty` = `false` and any field is empty, then the request returns a failure response. If `ignoreEmpty` = `true`, the request returns the boarding link name regardless of whether fields are empty.
 	ignoreEmpty bool,
 	opts ...option.RequestOption,
 ) (*payabli.BoardingLinkApiResponse, error) {
@@ -74,7 +76,7 @@ func (c *Client) GetlinkTemplate(
 // Retrieves a boarding template's details by ID.
 func (c *Client) GetTemplate(
 	ctx context.Context,
-	// The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
+	// The boarding template ID. You can find this at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
 	templateId float64,
 	opts ...option.RequestOption,
 ) (*payabli.TemplateQueryRecord, error) {

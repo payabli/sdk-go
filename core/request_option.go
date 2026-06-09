@@ -18,14 +18,17 @@ type RequestOption interface {
 // This type is primarily used by the generated code and is not meant
 // to be used directly; use the option package instead.
 type RequestOptions struct {
-	BaseURL         string
-	HTTPClient      HTTPClient
-	HTTPHeader      http.Header
-	BodyProperties  map[string]interface{}
-	QueryParameters url.Values
-	MaxAttempts     uint
-	MaxBufSize      int
-	ApiKey          string
+	BaseURL                    string
+	HTTPClient                 HTTPClient
+	HTTPHeader                 http.Header
+	BodyProperties             map[string]interface{}
+	QueryParameters            url.Values
+	MaxAttempts                uint
+	MaxBufSize                 int
+	MaxStreamReconnectAttempts uint
+	DisableStreamReconnection  bool
+	DisableRetries             bool
+	ApiKey                     string
 }
 
 // NewRequestOptions returns a new *RequestOptions value.
@@ -58,8 +61,8 @@ func (r *RequestOptions) cloneHeader() http.Header {
 	headers := r.HTTPHeader.Clone()
 	headers.Set("X-Fern-Language", "Go")
 	headers.Set("X-Fern-SDK-Name", "github.com/payabli/sdk-go")
-	headers.Set("X-Fern-SDK-Version", "v0.0.458")
-	headers.Set("User-Agent", "github.com/payabli/sdk-go/0.0.458")
+	headers.Set("X-Fern-SDK-Version", "v1.0.0")
+	headers.Set("User-Agent", "github.com/payabli/sdk-go/1.0.0")
 	return headers
 }
 
@@ -124,6 +127,29 @@ type MaxBufSizeOption struct {
 
 func (m *MaxBufSizeOption) applyRequestOptions(opts *RequestOptions) {
 	opts.MaxBufSize = m.MaxBufSize
+}
+
+// MaxStreamReconnectAttemptsOption implements the RequestOption interface.
+type MaxStreamReconnectAttemptsOption struct {
+	MaxStreamReconnectAttempts uint
+}
+
+func (m *MaxStreamReconnectAttemptsOption) applyRequestOptions(opts *RequestOptions) {
+	opts.MaxStreamReconnectAttempts = m.MaxStreamReconnectAttempts
+}
+
+// WithoutStreamReconnectionOption implements the RequestOption interface.
+type WithoutStreamReconnectionOption struct{}
+
+func (w *WithoutStreamReconnectionOption) applyRequestOptions(opts *RequestOptions) {
+	opts.DisableStreamReconnection = true
+}
+
+// WithoutRetriesOption implements the RequestOption interface.
+type WithoutRetriesOption struct{}
+
+func (w *WithoutRetriesOption) applyRequestOptions(opts *RequestOptions) {
+	opts.DisableRetries = true
 }
 
 // ApiKeyOption implements the RequestOption interface.

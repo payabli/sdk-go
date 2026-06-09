@@ -4,6 +4,7 @@ package subscription
 
 import (
 	context "context"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
@@ -25,8 +26,9 @@ func NewClient(options *core.RequestOptions) *Client {
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -50,14 +52,17 @@ func (c *Client) GetSubscription(
 	return response.Body, nil
 }
 
-// Creates a subscription or scheduled payment to run at a specified time and frequency.
-func (c *Client) NewSubscription(
+// Updates a subscription's details.
+func (c *Client) UpdateSubscription(
 	ctx context.Context,
-	request *payabli.RequestSchedule,
+	// The subscription ID.
+	subId int,
+	request *payabli.RequestUpdateSchedule,
 	opts ...option.RequestOption,
-) (*payabli.AddSubscriptionResponse, error) {
-	response, err := c.WithRawResponse.NewSubscription(
+) (*payabli.UpdateSubscriptionResponse, error) {
+	response, err := c.WithRawResponse.UpdateSubscription(
 		ctx,
+		subId,
 		request,
 		opts...,
 	)
@@ -85,17 +90,14 @@ func (c *Client) RemoveSubscription(
 	return response.Body, nil
 }
 
-// Updates a subscription's details.
-func (c *Client) UpdateSubscription(
+// Creates a subscription or scheduled payment to run at a specified time and frequency. You can use stored payment method tokens for card, ACH, and digital wallets by passing them into the `paymentMethod.storedMethodId` field.
+func (c *Client) NewSubscription(
 	ctx context.Context,
-	// The subscription ID.
-	subId int,
-	request *payabli.RequestUpdateSchedule,
+	request *payabli.RequestSchedule,
 	opts ...option.RequestOption,
-) (*payabli.UpdateSubscriptionResponse, error) {
-	response, err := c.WithRawResponse.UpdateSubscription(
+) (*payabli.AddSubscriptionResponse, error) {
+	response, err := c.WithRawResponse.NewSubscription(
 		ctx,
-		subId,
 		request,
 		opts...,
 	)

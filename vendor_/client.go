@@ -4,6 +4,7 @@ package vendor_
 
 import (
 	context "context"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
@@ -25,8 +26,9 @@ func NewClient(options *core.RequestOptions) *Client {
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -52,14 +54,14 @@ func (c *Client) AddVendor(
 	return response.Body, nil
 }
 
-// Delete a vendor.
-func (c *Client) DeleteVendor(
+// Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
+func (c *Client) GetVendor(
 	ctx context.Context,
 	// Vendor ID.
 	idVendor int,
 	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponseVendors, error) {
-	response, err := c.WithRawResponse.DeleteVendor(
+) (*payabli.VendorQueryRecord, error) {
+	response, err := c.WithRawResponse.GetVendor(
 		ctx,
 		idVendor,
 		opts...,
@@ -90,14 +92,14 @@ func (c *Client) EditVendor(
 	return response.Body, nil
 }
 
-// Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
-func (c *Client) GetVendor(
+// Delete a vendor.
+func (c *Client) DeleteVendor(
 	ctx context.Context,
 	// Vendor ID.
 	idVendor int,
 	opts ...option.RequestOption,
-) (*payabli.VendorQueryRecord, error) {
-	response, err := c.WithRawResponse.GetVendor(
+) (*payabli.PayabliApiResponseVendors, error) {
+	response, err := c.WithRawResponse.DeleteVendor(
 		ctx,
 		idVendor,
 		opts...,

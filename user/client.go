@@ -4,6 +4,7 @@ package user
 
 import (
 	context "context"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
@@ -25,8 +26,9 @@ func NewClient(options *core.RequestOptions) *Client {
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -40,6 +42,84 @@ func (c *Client) AddUser(
 ) (*payabli.AddUserResponse, error) {
 	response, err := c.WithRawResponse.AddUser(
 		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Use this endpoint to retrieve information about a specific user within an organization.
+func (c *Client) GetUser(
+	ctx context.Context,
+	// The Payabli-generated `userId` value.
+	userId int64,
+	request *payabli.GetUserRequest,
+	opts ...option.RequestOption,
+) (*payabli.UserQueryRecord, error) {
+	response, err := c.WithRawResponse.GetUser(
+		ctx,
+		userId,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Use this endpoint to modify the details of a specific user within an organization.
+func (c *Client) EditUser(
+	ctx context.Context,
+	// User Identifier
+	userId int64,
+	request *payabli.UserData,
+	opts ...option.RequestOption,
+) (*payabli.PayabliApiResponse, error) {
+	response, err := c.WithRawResponse.EditUser(
+		ctx,
+		userId,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Use this endpoint to delete a specific user within an organization.
+func (c *Client) DeleteUser(
+	ctx context.Context,
+	// The Payabli-generated `userId` value.
+	userId int64,
+	opts ...option.RequestOption,
+) (*payabli.DeleteUserResponse, error) {
+	response, err := c.WithRawResponse.DeleteUser(
+		ctx,
+		userId,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// This endpoint requires an application API token.
+func (c *Client) AuthUser(
+	ctx context.Context,
+	// Auth provider. Pass `null` to use the built-in provider.
+	provider string,
+	request *payabli.UserAuthRequest,
+	opts ...option.RequestOption,
+) (*payabli.PayabliApiResponseMfaBasic, error) {
+	response, err := c.WithRawResponse.AuthUser(
+		ctx,
+		provider,
 		request,
 		opts...,
 	)
@@ -81,26 +161,6 @@ func (c *Client) AuthResetUser(
 	return response.Body, nil
 }
 
-// This endpoint requires an application API token.
-func (c *Client) AuthUser(
-	ctx context.Context,
-	// Auth provider. This fields is optional and defaults to null for the built-in provider.
-	provider string,
-	request *payabli.UserAuthRequest,
-	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponseMfaBasic, error) {
-	response, err := c.WithRawResponse.AuthUser(
-		ctx,
-		provider,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
 // Use this endpoint to change the password for a user within an organization.
 func (c *Client) ChangePswUser(
 	ctx context.Context,
@@ -118,16 +178,30 @@ func (c *Client) ChangePswUser(
 	return response.Body, nil
 }
 
-// Use this endpoint to delete a specific user within an organization.
-func (c *Client) DeleteUser(
+// Use this endpoint to log a user out from the system.
+func (c *Client) LogoutUser(
 	ctx context.Context,
-	// The Payabli-generated `userId` value.
-	userId int64,
 	opts ...option.RequestOption,
-) (*payabli.DeleteUserResponse, error) {
-	response, err := c.WithRawResponse.DeleteUser(
+) (*payabli.LogoutUserResponse, error) {
+	response, err := c.WithRawResponse.LogoutUser(
 		ctx,
-		userId,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
+func (c *Client) ValidateMfaUser(
+	ctx context.Context,
+	request *payabli.MfaValidationData,
+	opts ...option.RequestOption,
+) (*payabli.PayabliApiResponseUserMfa, error) {
+	response, err := c.WithRawResponse.ValidateMfaUser(
+		ctx,
+		request,
 		opts...,
 	)
 	if err != nil {
@@ -156,61 +230,6 @@ func (c *Client) EditMfaUser(
 	return response.Body, nil
 }
 
-// Use this endpoint to modify the details of a specific user within an organization.
-func (c *Client) EditUser(
-	ctx context.Context,
-	// User Identifier
-	userId int64,
-	request *payabli.UserData,
-	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponse, error) {
-	response, err := c.WithRawResponse.EditUser(
-		ctx,
-		userId,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// Use this endpoint to retrieve information about a specific user within an organization.
-func (c *Client) GetUser(
-	ctx context.Context,
-	// The Payabli-generated `userId` value.
-	userId int64,
-	request *payabli.GetUserRequest,
-	opts ...option.RequestOption,
-) (*payabli.UserQueryRecord, error) {
-	response, err := c.WithRawResponse.GetUser(
-		ctx,
-		userId,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// Use this endpoint to log a user out from the system.
-func (c *Client) LogoutUser(
-	ctx context.Context,
-	opts ...option.RequestOption,
-) (*payabli.LogoutUserResponse, error) {
-	response, err := c.WithRawResponse.LogoutUser(
-		ctx,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
 // Resends the MFA code to the user via the selected MFA mode (email or SMS).
 func (c *Client) ResendMfaCode(
 	ctx context.Context,
@@ -227,23 +246,6 @@ func (c *Client) ResendMfaCode(
 		usrname,
 		entry,
 		entryType,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
-func (c *Client) ValidateMfaUser(
-	ctx context.Context,
-	request *payabli.MfaValidationData,
-	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponseUserMfa, error) {
-	response, err := c.WithRawResponse.ValidateMfaUser(
-		ctx,
-		request,
 		opts...,
 	)
 	if err != nil {

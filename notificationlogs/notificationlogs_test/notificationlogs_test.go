@@ -6,14 +6,14 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
-	uuid "github.com/google/uuid"
+	http "net/http"
+	os "os"
+	testing "testing"
+
 	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
-	http "net/http"
-	os "os"
-	testing "testing"
 )
 
 func VerifyRequestCount(
@@ -21,7 +21,7 @@ func VerifyRequestCount(
 	testId string,
 	method string,
 	urlPath string,
-	queryParams map[string]string,
+	queryParams map[string]any,
 	expected int,
 ) {
 	wiremockURL := os.Getenv("WIREMOCK_URL")
@@ -46,9 +46,23 @@ func VerifyRequestCount(
 			}
 			reqBody.WriteString(`"`)
 			reqBody.WriteString(key)
-			reqBody.WriteString(`":{"equalTo":"`)
-			reqBody.WriteString(value)
-			reqBody.WriteString(`"}`)
+			switch v := value.(type) {
+			case string:
+				reqBody.WriteString(`":{"equalTo":"`)
+				reqBody.WriteString(v)
+				reqBody.WriteString(`"}`)
+			case []string:
+				reqBody.WriteString(`":{"hasExactly":[`)
+				for i, item := range v {
+					if i > 0 {
+						reqBody.WriteString(",")
+					}
+					reqBody.WriteString(`{"equalTo":"`)
+					reqBody.WriteString(item)
+					reqBody.WriteString(`"}`)
+				}
+				reqBody.WriteString(`]}`)
+			}
 			first = false
 		}
 		reqBody.WriteString("}")
@@ -72,28 +86,27 @@ func TestNotificationlogsSearchNotificationLogsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.SearchNotificationLogsRequest{
 		PageSize: payabli.Int(
 			20,
 		),
-		Body: &payabli.NotificationLogSearchRequest{
-			StartDate: payabli.MustParseDateTime(
-				"2024-01-01T00:00:00Z",
-			),
-			EndDate: payabli.MustParseDateTime(
-				"2024-01-31T23:59:59Z",
-			),
-			OrgId: payabli.Int64(
-				int64(12345),
-			),
-			NotificationEvent: payabli.String(
-				"ActivatedMerchant",
-			),
-			Succeeded: payabli.Bool(
-				true,
-			),
-		},
+		StartDate: payabli.MustParseDateTime(
+			"2024-01-01T00:00:00Z",
+		),
+		EndDate: payabli.MustParseDateTime(
+			"2024-01-31T23:59:59Z",
+		),
+		NotificationEvent: payabli.String(
+			"ActivatedMerchant",
+		),
+		Succeeded: payabli.Bool(
+			true,
+		),
+		OrgId: payabli.Int64(
+			int64(123),
+		),
 	}
 	_, invocationErr := client.Notificationlogs.SearchNotificationLogs(
 		context.TODO(),
@@ -104,7 +117,7 @@ func TestNotificationlogsSearchNotificationLogsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestNotificationlogsSearchNotificationLogsWithWireMock", "POST", "/v2/notificationlogs", map[string]string{"PageSize": "20"}, 1)
+	VerifyRequestCount(t, "TestNotificationlogsSearchNotificationLogsWithWireMock", "POST", "/v2/notificationlogs", map[string]interface{}{"PageSize": "20"}, 1)
 }
 
 func TestNotificationlogsGetNotificationLogWithWireMock(
@@ -116,12 +129,11 @@ func TestNotificationlogsGetNotificationLogWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.Notificationlogs.GetNotificationLog(
 		context.TODO(),
-		uuid.MustParse(
-			"550e8400-e29b-41d4-a716-446655440000",
-		),
+		"550e8400-e29b-41d4-a716-446655440000",
 		option.WithHTTPHeader(
 			http.Header{"X-Test-Id": []string{"TestNotificationlogsGetNotificationLogWithWireMock"}},
 		),
@@ -140,12 +152,11 @@ func TestNotificationlogsRetryNotificationLogWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.Notificationlogs.RetryNotificationLog(
 		context.TODO(),
-		uuid.MustParse(
-			"550e8400-e29b-41d4-a716-446655440000",
-		),
+		"550e8400-e29b-41d4-a716-446655440000",
 		option.WithHTTPHeader(
 			http.Header{"X-Test-Id": []string{"TestNotificationlogsRetryNotificationLogWithWireMock"}},
 		),
@@ -164,17 +175,12 @@ func TestNotificationlogsBulkRetryNotificationLogsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
-	request := []uuid.UUID{
-		uuid.MustParse(
-			"550e8400-e29b-41d4-a716-446655440000",
-		),
-		uuid.MustParse(
-			"550e8400-e29b-41d4-a716-446655440001",
-		),
-		uuid.MustParse(
-			"550e8400-e29b-41d4-a716-446655440002",
-		),
+	request := []string{
+		"550e8400-e29b-41d4-a716-446655440000",
+		"550e8400-e29b-41d4-a716-446655440001",
+		"550e8400-e29b-41d4-a716-446655440002",
 	}
 	invocationErr := client.Notificationlogs.BulkRetryNotificationLogs(
 		context.TODO(),

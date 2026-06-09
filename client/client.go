@@ -41,36 +41,36 @@ import (
 
 type Client struct {
 	Bill                *bill.Client
-	Boarding            *boarding.Client
-	ChargeBacks         *chargebacks.Client
-	CheckCapture        *checkcapture.Client
-	Cloud               *cloud.Client
 	Customer            *customer.Client
-	Export              *export.Client
-	GhostCard           *ghostcard.Client
-	HostedPaymentPages  *hostedpaymentpages.Client
-	Import              *import_.Client
-	Invoice             *invoice.Client
-	LineItem            *lineitem.Client
-	Management          *management.Client
+	CheckCapture        *checkcapture.Client
 	MoneyIn             *moneyin.Client
-	MoneyOut            *moneyout.Client
-	Notification        *notification.Client
-	Notificationlogs    *notificationlogs.Client
-	Ocr                 *ocr.Client
-	Organization        *organization.Client
-	PaymentLink         *paymentlink.Client
-	PaymentMethodDomain *paymentmethoddomain.Client
-	PayoutSubscription  *payoutsubscription.Client
-	Paypoint            *paypoint.Client
-	Query               *query.Client
-	Statistic           *statistic.Client
 	Subscription        *subscription.Client
-	Templates           *templates.Client
+	Invoice             *invoice.Client
+	PaymentLink         *paymentlink.Client
 	TokenStorage        *tokenstorage.Client
+	Paypoint            *paypoint.Client
+	HostedPaymentPages  *hostedpaymentpages.Client
+	PaymentMethodDomain *paymentmethoddomain.Client
+	Import              *import_.Client
+	Query               *query.Client
+	Ocr                 *ocr.Client
+	Notificationlogs    *notificationlogs.Client
+	Cloud               *cloud.Client
+	LineItem            *lineitem.Client
+	Boarding            *boarding.Client
+	Templates           *templates.Client
+	Export              *export.Client
+	Organization        *organization.Client
+	Management          *management.Client
+	Statistic           *statistic.Client
+	Notification        *notification.Client
 	User                *user.Client
 	Vendor              *vendor_.Client
+	GhostCard           *ghostcard.Client
+	MoneyOut            *moneyout.Client
 	Wallet              *wallet.Client
+	PayoutSubscription  *payoutsubscription.Client
+	ChargeBacks         *chargebacks.Client
 
 	options *core.RequestOptions
 	baseURL string
@@ -81,42 +81,43 @@ func NewClient(opts ...option.RequestOption) *Client {
 	options := core.NewRequestOptions(opts...)
 	return &Client{
 		Bill:                bill.NewClient(options),
-		Boarding:            boarding.NewClient(options),
-		ChargeBacks:         chargebacks.NewClient(options),
-		CheckCapture:        checkcapture.NewClient(options),
-		Cloud:               cloud.NewClient(options),
 		Customer:            customer.NewClient(options),
-		Export:              export.NewClient(options),
-		GhostCard:           ghostcard.NewClient(options),
-		HostedPaymentPages:  hostedpaymentpages.NewClient(options),
-		Import:              import_.NewClient(options),
-		Invoice:             invoice.NewClient(options),
-		LineItem:            lineitem.NewClient(options),
-		Management:          management.NewClient(options),
+		CheckCapture:        checkcapture.NewClient(options),
 		MoneyIn:             moneyin.NewClient(options),
-		MoneyOut:            moneyout.NewClient(options),
-		Notification:        notification.NewClient(options),
-		Notificationlogs:    notificationlogs.NewClient(options),
-		Ocr:                 ocr.NewClient(options),
-		Organization:        organization.NewClient(options),
-		PaymentLink:         paymentlink.NewClient(options),
-		PaymentMethodDomain: paymentmethoddomain.NewClient(options),
-		PayoutSubscription:  payoutsubscription.NewClient(options),
-		Paypoint:            paypoint.NewClient(options),
-		Query:               query.NewClient(options),
-		Statistic:           statistic.NewClient(options),
 		Subscription:        subscription.NewClient(options),
-		Templates:           templates.NewClient(options),
+		Invoice:             invoice.NewClient(options),
+		PaymentLink:         paymentlink.NewClient(options),
 		TokenStorage:        tokenstorage.NewClient(options),
+		Paypoint:            paypoint.NewClient(options),
+		HostedPaymentPages:  hostedpaymentpages.NewClient(options),
+		PaymentMethodDomain: paymentmethoddomain.NewClient(options),
+		Import:              import_.NewClient(options),
+		Query:               query.NewClient(options),
+		Ocr:                 ocr.NewClient(options),
+		Notificationlogs:    notificationlogs.NewClient(options),
+		Cloud:               cloud.NewClient(options),
+		LineItem:            lineitem.NewClient(options),
+		Boarding:            boarding.NewClient(options),
+		Templates:           templates.NewClient(options),
+		Export:              export.NewClient(options),
+		Organization:        organization.NewClient(options),
+		Management:          management.NewClient(options),
+		Statistic:           statistic.NewClient(options),
+		Notification:        notification.NewClient(options),
 		User:                user.NewClient(options),
 		Vendor:              vendor_.NewClient(options),
+		GhostCard:           ghostcard.NewClient(options),
+		MoneyOut:            moneyout.NewClient(options),
 		Wallet:              wallet.NewClient(options),
+		PayoutSubscription:  payoutsubscription.NewClient(options),
+		ChargeBacks:         chargebacks.NewClient(options),
 		options:             options,
 		baseURL:             options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}

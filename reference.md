@@ -29,56 +29,50 @@ Creates a bill in an entrypoint.
 ```go
 request := &payabli.AddBillRequest{
         Body: &payabli.BillOutData{
-            BillNumber: payabli.String(
-                "ABC-123",
+            AccountingField1: payabli.String(
+                "MyInternalId",
             ),
-            NetAmount: payabli.Float64(
-                3762.87,
-            ),
+            Attachments: &payabli.Attachments{
+                &payabli.FileContent{
+                    Filename: payabli.String(
+                        "my-doc.pdf",
+                    ),
+                    Ftype: payabli.FileContentFtypePdf.Ptr(),
+                    Furl: payabli.String(
+                        "https://mysite.com/my-doc.pdf",
+                    ),
+                },
+            },
             BillDate: payabli.Time(
                 payabli.MustParseDate(
                     "2024-07-01",
                 ),
             ),
-            DueDate: payabli.Time(
-                payabli.MustParseDate(
-                    "2024-07-01",
-                ),
-            ),
-            Comments: payabli.String(
-                "Deposit for materials",
-            ),
             BillItems: &payabli.Billitems{
                 &payabli.BillItem{
+                    ItemCategories: []string{
+                        "deposits",
+                    },
+                    ItemCommodityCode: payabli.String(
+                        "010",
+                    ),
+                    ItemCost: payabli.Float64(
+                        5,
+                    ),
+                    ItemDescription: payabli.String(
+                        "Deposit for materials",
+                    ),
+                    ItemMode: payabli.Int(
+                        0,
+                    ),
                     ItemProductCode: payabli.String(
                         "M-DEPOSIT",
                     ),
                     ItemProductName: payabli.String(
                         "Materials deposit",
                     ),
-                    ItemDescription: payabli.String(
-                        "Deposit for materials",
-                    ),
-                    ItemCommodityCode: payabli.String(
-                        "010",
-                    ),
-                    ItemUnitOfMeasure: payabli.String(
-                        "SqFt",
-                    ),
-                    ItemCost: 5,
                     ItemQty: payabli.Int(
                         1,
-                    ),
-                    ItemMode: payabli.Int(
-                        0,
-                    ),
-                    ItemCategories: []*string{
-                        payabli.String(
-                            "deposits",
-                        ),
-                    },
-                    ItemTotalAmount: payabli.Float64(
-                        123,
                     ),
                     ItemTaxAmount: payabli.Float64(
                         7,
@@ -86,41 +80,45 @@ request := &payabli.AddBillRequest{
                     ItemTaxRate: payabli.Float64(
                         0.075,
                     ),
+                    ItemTotalAmount: payabli.Float64(
+                        123,
+                    ),
+                    ItemUnitOfMeasure: payabli.String(
+                        "SqFt",
+                    ),
                 },
             },
-            Mode: payabli.Int(
-                0,
+            BillNumber: payabli.String(
+                "ABC-123",
             ),
-            AccountingField1: payabli.String(
-                "MyInternalId",
+            Comments: payabli.String(
+                "Deposit for materials",
             ),
-            Vendor: &payabli.VendorData{
-                VendorNumber: payabli.String(
-                    "1234-A",
+            DueDate: payabli.Time(
+                payabli.MustParseDate(
+                    "2024-07-01",
                 ),
-            },
+            ),
             EndDate: payabli.Time(
                 payabli.MustParseDate(
                     "2024-07-01",
                 ),
             ),
             Frequency: payabli.FrequencyMonthly.Ptr(),
-            Terms: payabli.String(
-                "NET30",
+            Mode: payabli.Int(
+                0,
+            ),
+            NetAmount: payabli.Float64(
+                3762.87,
             ),
             Status: payabli.Int(
-                -99,
+                1,
             ),
-            Attachments: &payabli.Attachments{
-                &payabli.FileContent{
-                    Ftype: payabli.FileContentFtypePdf.Ptr(),
-                    Filename: payabli.String(
-                        "my-doc.pdf",
-                    ),
-                    Furl: payabli.String(
-                        "https://mysite.com/my-doc.pdf",
-                    ),
-                },
+            Terms: payabli.TermsNet30.Ptr(),
+            Vendor: &payabli.BillOutDataVendor{
+                VendorNumber: payabli.String(
+                    "VEN-123",
+                ),
             },
         },
     }
@@ -152,7 +150,7 @@ client.Bill.AddBill(
 <dl>
 <dd>
 
-**idempotencyKey:** `*payabli.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
     
 </dd>
 </dl>
@@ -172,7 +170,7 @@ client.Bill.AddBill(
 </dl>
 </details>
 
-<details><summary><code>client.Bill.DeleteAttachedFromBill(IdBill, Filename) -> *payabli.BillResponse</code></summary>
+<details><summary><code>client.Bill.GetBill(IdBill) -> *payabli.GetBillResponse</code></summary>
 <dl>
 <dd>
 
@@ -184,7 +182,7 @@ client.Bill.AddBill(
 <dl>
 <dd>
 
-Delete a file attached to a bill.
+Retrieves a bill by ID from an entrypoint.
 </dd>
 </dl>
 </dd>
@@ -199,101 +197,7 @@ Delete a file attached to a bill.
 <dd>
 
 ```go
-request := &payabli.DeleteAttachedFromBillRequest{}
-client.Bill.DeleteAttachedFromBill(
-        context.TODO(),
-        285,
-        "0_Bill.pdf",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idBill:** `int` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**filename:** `string` 
-
-The filename in Payabli. Filename is `zipName` in response to a
-request to `/api/Invoice/{idInvoice}`. Here, the filename is
-`0_Bill.pdf`. 
-
-```json
-  "DocumentsRef": {
-    "zipfile": "inva_269.zip",
-    "filelist": [
-      {
-        "originalName": "Bill.pdf",
-        "zipName": "0_Bill.pdf",
-        "descriptor": null
-      }
-    ]
-  }
-  ```
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**returnObject:** `*bool` — When `true`, the request returns the file content as a Base64-encoded string.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Bill.DeleteBill(IdBill) -> *payabli.BillResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Deletes a bill by ID.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Bill.DeleteBill(
+client.Bill.GetBill(
         context.TODO(),
         285,
     )
@@ -352,13 +256,13 @@ Updates a bill by ID.
 
 ```go
 request := &payabli.BillOutData{
-        NetAmount: payabli.Float64(
-            3762.87,
-        ),
         BillDate: payabli.Time(
             payabli.MustParseDate(
                 "2025-07-01",
             ),
+        ),
+        NetAmount: payabli.Float64(
+            3762.87,
         ),
     }
 client.Bill.EditBill(
@@ -390,6 +294,64 @@ client.Bill.EditBill(
 <dd>
 
 **request:** `*payabli.BillOutData` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Bill.DeleteBill(IdBill) -> *payabli.BillResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes a bill by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Bill.DeleteBill(
+        context.TODO(),
+        285,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**idBill:** `int` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
     
 </dd>
 </dl>
@@ -464,17 +426,9 @@ client.Bill.GetAttachedFromBill(
 
 **filename:** `string` 
 
-The filename in Payabli. Filename is `zipName` in response to a request to `/api/Invoice/{idInvoice}`. Here, the filename is `0_Bill.pdf``. 
-"DocumentsRef": {
-  "zipfile": "inva_269.zip",
-  "filelist": [
-    {
-      "originalName": "Bill.pdf",
-      "zipName": "0_Bill.pdf",
-      "descriptor": null
-    }
-  ]
-}
+The filename in Payabli. Get this from the `zipName` field
+in the `DocumentsRef.filelist` array returned by
+`/api/Bill/{idBill}`. Example: `0_Bill.pdf`.
     
 </dd>
 </dl>
@@ -494,7 +448,7 @@ The filename in Payabli. Filename is `zipName` in response to a request to `/api
 </dl>
 </details>
 
-<details><summary><code>client.Bill.GetBill(IdBill) -> *payabli.GetBillResponse</code></summary>
+<details><summary><code>client.Bill.DeleteAttachedFromBill(IdBill, Filename) -> *payabli.BillResponse</code></summary>
 <dl>
 <dd>
 
@@ -506,7 +460,7 @@ The filename in Payabli. Filename is `zipName` in response to a request to `/api
 <dl>
 <dd>
 
-Retrieves a bill by ID from an entrypoint.
+Delete a file attached to a bill.
 </dd>
 </dl>
 </dd>
@@ -521,9 +475,12 @@ Retrieves a bill by ID from an entrypoint.
 <dd>
 
 ```go
-client.Bill.GetBill(
+request := &payabli.DeleteAttachedFromBillRequest{}
+client.Bill.DeleteAttachedFromBill(
         context.TODO(),
         285,
+        "0_Bill.pdf",
+        request,
     )
 }
 ```
@@ -541,6 +498,265 @@ client.Bill.GetBill(
 <dd>
 
 **idBill:** `int` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**filename:** `string` 
+
+The filename in Payabli. Get this from the `zipName` field
+in the `DocumentsRef.filelist` array returned by
+`/api/Bill/{idBill}`. Example: `0_Bill.pdf`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**returnObject:** `*bool` — When `true`, the response includes the full bill object.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Bill.SendToApprovalBill(IdBill, request) -> *payabli.BillResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Send a bill to a user or list of users to approve.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.SendToApprovalBillRequest{
+        IdempotencyKey: payabli.String(
+            "6B29FC40-CA47-1067-B31D-00DD010662DA",
+        ),
+        Body: []string{
+            "approver@example.com",
+        },
+    }
+client.Bill.SendToApprovalBill(
+        context.TODO(),
+        285,
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**idBill:** `int` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**autocreateUser:** `*bool` — Automatically create the target user for approval if they don't exist.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `[]string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Bill.ModifyApprovalBill(IdBill, request) -> *payabli.ModifyApprovalBillResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Modify the list of users the bill is sent to for approval.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := []string{
+        "approver1@example.com",
+        "approver2@example.com",
+    }
+client.Bill.ModifyApprovalBill(
+        context.TODO(),
+        285,
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**idBill:** `int` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `[]string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Bill.SetApprovedBill(IdBill, Approved) -> *payabli.SetApprovedBillResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Approve or disapprove a bill by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.SetApprovedBillRequest{}
+client.Bill.SetApprovedBill(
+        context.TODO(),
+        285,
+        "true",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**idBill:** `int` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**approved:** `string` — String representing the approved status. Accepted values: 'true' or 'false'.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**email:** `*string` — Email or username of user modifying approval status.
     
 </dd>
 </dl>
@@ -618,7 +834,7 @@ client.Bill.ListBills(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -626,7 +842,7 @@ client.Bill.ListBills(
 <dl>
 <dd>
 
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set. 
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
     
 </dd>
 </dl>
@@ -772,7 +988,7 @@ client.Bill.ListBillsOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -860,2160 +1076,6 @@ Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.
 </dl>
 </details>
 
-<details><summary><code>client.Bill.ModifyApprovalBill(IdBill, request) -> *payabli.ModifyApprovalBillResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Modify the list of users the bill is sent to for approval.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := []string{
-        "string",
-    }
-client.Bill.ModifyApprovalBill(
-        context.TODO(),
-        285,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idBill:** `int` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `[]string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Bill.SendToApprovalBill(IdBill, request) -> *payabli.BillResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Send a bill to a user or list of users to approve.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.SendToApprovalBillRequest{
-        IdempotencyKey: payabli.String(
-            "6B29FC40-CA47-1067-B31D-00DD010662DA",
-        ),
-        Body: []string{
-            "string",
-        },
-    }
-client.Bill.SendToApprovalBill(
-        context.TODO(),
-        285,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idBill:** `int` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**autocreateUser:** `*bool` — Automatically create the target user for approval if they don't exist.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idempotencyKey:** `*payabli.IdempotencyKey` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `[]string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Bill.SetApprovedBill(IdBill, Approved) -> *payabli.SetApprovedBillResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Approve or disapprove a bill by ID.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.SetApprovedBillRequest{}
-client.Bill.SetApprovedBill(
-        context.TODO(),
-        285,
-        "true",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idBill:** `int` — Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**approved:** `string` — String representing the approved status. Accepted values: 'true' or 'false'.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**email:** `*string` — Email or username of user modifying approval status.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Boarding
-<details><summary><code>client.Boarding.AddApplication(request) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Creates a boarding application in an organization. This endpoint requires an application API token.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.AddApplicationRequest{
-        ApplicationDataPayIn: &payabli.ApplicationDataPayIn{
-            Services: &payabli.ApplicationDataPayInServices{
-                Ach: &payabli.ApplicationDataPayInServicesAch{},
-                Card: &payabli.ApplicationDataPayInServicesCard{
-                    AcceptAmex: payabli.Bool(
-                        true,
-                    ),
-                    AcceptDiscover: payabli.Bool(
-                        true,
-                    ),
-                    AcceptMastercard: payabli.Bool(
-                        true,
-                    ),
-                    AcceptVisa: payabli.Bool(
-                        true,
-                    ),
-                },
-            },
-            AnnualRevenue: payabli.Float64(
-                1000,
-            ),
-            AverageBillSize: payabli.String(
-                "500",
-            ),
-            AverageMonthlyBill: payabli.String(
-                "5650",
-            ),
-            Avgmonthly: payabli.Float64(
-                1000,
-            ),
-            Baddress: payabli.String(
-                "123 Walnut Street",
-            ),
-            Baddress1: payabli.String(
-                "Suite 103",
-            ),
-            BankData: []*payabli.Bank{
-                &payabli.Bank{
-                    AccountNumber: payabli.String(
-                        "123123123",
-                    ),
-                    BankAccountFunction: payabli.Int(
-                        1,
-                    ),
-                    BankAccountHolderName: payabli.String(
-                        "Gruzya Adventure Outfitters LLC",
-                    ),
-                    BankAccountHolderType: payabli.BankAccountHolderTypeBusiness.Ptr(),
-                    BankName: payabli.String(
-                        "Test Bank",
-                    ),
-                    Nickname: payabli.String(
-                        "Withdrawal Account",
-                    ),
-                    RoutingAccount: payabli.String(
-                        "123123123",
-                    ),
-                    TypeAccount: payabli.TypeAccountChecking.Ptr(),
-                    AccountId: payabli.String(
-                        "123-456",
-                    ),
-                },
-                &payabli.Bank{
-                    AccountNumber: payabli.String(
-                        "123123123",
-                    ),
-                    BankAccountFunction: payabli.Int(
-                        0,
-                    ),
-                    BankAccountHolderName: payabli.String(
-                        "Gruzya Adventure Outfitters LLC",
-                    ),
-                    BankAccountHolderType: payabli.BankAccountHolderTypeBusiness.Ptr(),
-                    BankName: payabli.String(
-                        "Test Bank",
-                    ),
-                    Nickname: payabli.String(
-                        "Deposit Account",
-                    ),
-                    RoutingAccount: payabli.String(
-                        "123123123",
-                    ),
-                    TypeAccount: payabli.TypeAccountChecking.Ptr(),
-                    AccountId: payabli.String(
-                        "123-456",
-                    ),
-                },
-            },
-            Bcity: payabli.String(
-                "New Vegas",
-            ),
-            Bcountry: payabli.String(
-                "US",
-            ),
-            Binperson: payabli.Int(
-                60,
-            ),
-            Binphone: payabli.Int(
-                20,
-            ),
-            Binweb: payabli.Int(
-                20,
-            ),
-            Bstate: payabli.String(
-                "FL",
-            ),
-            Bsummary: payabli.String(
-                "Brick and mortar store that sells office supplies",
-            ),
-            Btype: payabli.OwnTypeLimitedLiabilityCompany.Ptr(),
-            Bzip: payabli.String(
-                "33000",
-            ),
-            Contacts: []*payabli.ApplicationDataPayInContactsItem{
-                &payabli.ApplicationDataPayInContactsItem{
-                    ContactEmail: payabli.String(
-                        "herman@hermanscoatings.com",
-                    ),
-                    ContactName: payabli.String(
-                        "Herman Martinez",
-                    ),
-                    ContactPhone: payabli.String(
-                        "3055550000",
-                    ),
-                    ContactTitle: payabli.String(
-                        "Owner",
-                    ),
-                },
-            },
-            CreditLimit: payabli.String(
-                "creditLimit",
-            ),
-            DbaName: payabli.String(
-                "Sunshine Gutters",
-            ),
-            Ein: payabli.String(
-                "123456789",
-            ),
-            Faxnumber: payabli.String(
-                "1234567890",
-            ),
-            Highticketamt: payabli.Float64(
-                1000,
-            ),
-            LegalName: payabli.String(
-                "Sunshine Services, LLC",
-            ),
-            License: payabli.String(
-                "2222222FFG",
-            ),
-            Licstate: payabli.String(
-                "CA",
-            ),
-            Maddress: payabli.String(
-                "123 Walnut Street",
-            ),
-            Maddress1: payabli.String(
-                "STE 900",
-            ),
-            Mcc: payabli.String(
-                "7777",
-            ),
-            Mcity: payabli.String(
-                "Johnson City",
-            ),
-            Mcountry: payabli.String(
-                "US",
-            ),
-            Mstate: payabli.String(
-                "TN",
-            ),
-            Mzip: payabli.String(
-                "37615",
-            ),
-            OrgId: payabli.Int64(
-                int64(123),
-            ),
-            Ownership: []*payabli.ApplicationDataPayInOwnershipItem{
-                &payabli.ApplicationDataPayInOwnershipItem{
-                    Oaddress: payabli.String(
-                        "33 North St",
-                    ),
-                    Ocity: payabli.String(
-                        "Any City",
-                    ),
-                    Ocountry: payabli.String(
-                        "US",
-                    ),
-                    Odriverstate: payabli.String(
-                        "CA",
-                    ),
-                    Ostate: payabli.String(
-                        "CA",
-                    ),
-                    Ownerdob: payabli.String(
-                        "01/01/1990",
-                    ),
-                    Ownerdriver: payabli.String(
-                        "CA6677778",
-                    ),
-                    Owneremail: payabli.String(
-                        "test@email.com",
-                    ),
-                    Ownername: payabli.String(
-                        "John Smith",
-                    ),
-                    Ownerpercent: payabli.Int(
-                        100,
-                    ),
-                    Ownerphone1: payabli.String(
-                        "555888111",
-                    ),
-                    Ownerphone2: payabli.String(
-                        "555888111",
-                    ),
-                    Ownerssn: payabli.String(
-                        "123456789",
-                    ),
-                    Ownertitle: payabli.String(
-                        "CEO",
-                    ),
-                    Ozip: payabli.String(
-                        "55555",
-                    ),
-                },
-            },
-            Phonenumber: "1234567890",
-            ProcessingRegion: "US",
-            RecipientEmail: payabli.String(
-                "josephray@example.com",
-            ),
-            RecipientEmailNotification: payabli.Bool(
-                true,
-            ),
-            Resumable: payabli.Bool(
-                true,
-            ),
-            Signer: &payabli.SignerDataRequest{
-                Address: payabli.String(
-                    "33 North St",
-                ),
-                Address1: payabli.String(
-                    "STE 900",
-                ),
-                City: payabli.String(
-                    "Bristol",
-                ),
-                Country: payabli.String(
-                    "US",
-                ),
-                Dob: payabli.String(
-                    "01/01/1976",
-                ),
-                Email: payabli.String(
-                    "test@email.com",
-                ),
-                Name: payabli.String(
-                    "John Smith",
-                ),
-                Phone: payabli.String(
-                    "555888111",
-                ),
-                Ssn: payabli.String(
-                    "123456789",
-                ),
-                State: payabli.String(
-                    "TN",
-                ),
-                Zip: payabli.String(
-                    "55555",
-                ),
-                PciAttestation: payabli.Bool(
-                    true,
-                ),
-                SignedDocumentReference: payabli.String(
-                    "https://example.com/signed-document.pdf",
-                ),
-                AttestationDate: payabli.String(
-                    "04/20/2025",
-                ),
-                SignDate: payabli.String(
-                    "04/20/2025",
-                ),
-                AdditionalData: &payabli.AdditionalDataMap{
-                    "deviceId": "499585-389fj484-3jcj8hj3",
-                    "session": "fifji4-fiu443-fn4843",
-                    "timeWithCompany": "6 Years",
-                },
-            },
-            Startdate: payabli.String(
-                "01/01/1990",
-            ),
-            TaxFillName: payabli.String(
-                "Sunshine LLC",
-            ),
-            TemplateId: payabli.Int64(
-                int64(22),
-            ),
-            Ticketamt: payabli.Float64(
-                1000,
-            ),
-            Website: payabli.String(
-                "www.example.com",
-            ),
-            WhenCharged: payabli.WhenchargedWhenServiceProvided,
-            WhenDelivered: payabli.WhendeliveredOver30Days,
-            WhenProvided: payabli.WhenprovidedThirtyDaysOrLess,
-            WhenRefunded: payabli.WhenrefundedThirtyDaysOrLess,
-        },
-    }
-client.Boarding.AddApplication(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `*payabli.AddApplicationRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Boarding.DeleteApplication(AppId) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Deletes a boarding application by ID.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Boarding.DeleteApplication(
-        context.TODO(),
-        352,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**appId:** `int` — Boarding application ID. 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Boarding.GetApplication(AppId) -> *payabli.ApplicationDetailsRecord</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves the details for a boarding application by ID. 
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Boarding.GetApplication(
-        context.TODO(),
-        352,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**appId:** `int` — Boarding application ID.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Boarding.GetApplicationByAuth(XId, request) -> *payabli.ApplicationQueryRecord</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Gets a boarding application by authentication information. This endpoint requires an `application` API token. 
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.RequestAppByAuth{
-        Email: payabli.String(
-            "admin@email.com",
-        ),
-        ReferenceId: payabli.String(
-            "n6UCd1f1ygG7",
-        ),
-    }
-client.Boarding.GetApplicationByAuth(
-        context.TODO(),
-        "17E",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**xId:** `string` — The application ID in Hex format. Find this at the end of the boarding link URL returned in a call to api/Boarding/applink/{appId}/{mail2}. For example in:  `https://boarding-sandbox.payabli.com/boarding/externalapp/load/17E`, the xId is `17E`. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**email:** `*payabli.Email` — The email address the applicant used to save the application.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**referenceId:** `*string` — The referenceId is sent to the applicant via email when they save the application.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Boarding.GetByIdLinkApplication(BoardingLinkId) -> *payabli.BoardingLinkQueryRecord</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves details for a boarding link, by ID. 
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Boarding.GetByIdLinkApplication(
-        context.TODO(),
-        91,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**boardingLinkId:** `int` — The boarding link ID. You can find this at the end of the boarding link reference name. For example `https://boarding.payabli.com/boarding/app/myorgaccountname-00091`. The ID is `91`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Boarding.GetByTemplateIdLinkApplication(TemplateId) -> *payabli.BoardingLinkQueryRecord</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Get details for a boarding link using the boarding template ID. This endpoint requires an application API token.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Boarding.GetByTemplateIdLinkApplication(
-        context.TODO(),
-        80,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**templateId:** `float64` — The boarding template ID. You can find this at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Boarding.GetExternalApplication(AppId, Mail2) -> *payabli.PayabliApiResponse00</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves a link and the verification code used to log into an existing boarding application. You can also use this endpoint to send a link and referenceId for an existing boarding application to an email address. The recipient can use the referenceId and email address to access and edit the application.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.GetExternalApplicationRequest{}
-client.Boarding.GetExternalApplication(
-        context.TODO(),
-        352,
-        "mail2",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**appId:** `int` — Boarding application ID. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**mail2:** `string` — Email address used to access the application. If `sendEmail` parameter is true, a link to the application is sent to this email address.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sendEmail:** `*bool` — If `true`, sends an email that includes the link to the application to the `mail2` address. Defaults to `false`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Boarding.GetLinkApplication(BoardingLinkReference) -> *payabli.BoardingLinkQueryRecord</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves the details for a boarding link, by reference name. This endpoint requires an application API token.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Boarding.GetLinkApplication(
-        context.TODO(),
-        "myorgaccountname-00091",
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**boardingLinkReference:** `string` — The boarding link reference name. You can find this at the end of the boarding link URL. For example `https://boarding.payabli.com/boarding/app/myorgaccountname-00091`
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Boarding.ListApplications(OrgId) -> *payabli.QueryBoardingAppsListResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Returns a list of boarding applications for an organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ListApplicationsRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Boarding.ListApplications(
-        context.TODO(),
-        123,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**exportFormat:** `*payabli.ExportFormat` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — Max number of records to return for the query. Use `0` or negative value to return all records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query 
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `createdAt` (gt, ge, lt, le, eq, ne)
-- `startDate` (gt, ge, lt, le, eq, ne)
-- `dbaname` (ct, nct)
-- `legalname` (ct, nct)
-- `ein` (ct, nct)
-- `address` (ct, nct)
-- `city` (ct, nct)
-- `state` (ct, nct)
-- `phone` (ct, nct)
-- `mcc` (ct, nct)
-- `owntype` (ct, nct)
-- `ownerName` (ct, nct)
-- `contactName` (ct, nct)
-- `status` (in, nin, eq,ne)
-- `orgParentname` (ct, nct)
-- `externalpaypointID` (ct, nct, eq, ne)
-- `repCode` (ct, nct, eq, ne)
-- `repName` (ct, nct, eq, ne)
-- `repOffice` (ct, nct, eq, ne)
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array
-- nin => not inside array
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sortBy:** `*string` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Boarding.ListBoardingLinks(OrgId) -> *payabli.QueryBoardingLinksResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Return a list of boarding links for an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ListBoardingLinksRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Boarding.ListBoardingLinks(
-        context.TODO(),
-        123,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — Max number of records to return for the query. Use `0` or negative value to return all records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query 
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `lastUpdated` (gt, ge, lt, le, eq, ne)
-- `templateName` (ct, nct)
-- `referenceName` (ct, nct)
-- `acceptRegister` (eq, ne)
-- `acceptAuth` (eq, ne)
-- `templateCode` (ct, nct)
-- `templateId` (eq, ne)
-- `orgParentname` (ct, nct)
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than 
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array
-- nin => not inside array
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: templateName(ct)=hoa return all records with template title containing "hoa"
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sortBy:** `*string` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Boarding.UpdateApplication(AppId, request) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates a boarding application by ID. This endpoint requires an application API token.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ApplicationData{}
-client.Boarding.UpdateApplication(
-        context.TODO(),
-        352,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**appId:** `int` — Boarding application ID. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `*payabli.ApplicationData` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Boarding.AddServiceToPaypointFromApp(request) -> *payabli.CreateApplicationFromPaypointResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Creates a new boarding application linked to an existing paypoint as part of the multi-product boarding flow. Use this endpoint to add new services to a paypoint without creating a duplicate record. The system copies eligible business, contact, banking, and address data from the paypoint to the new application based on 1:1 field matching. The merchant only needs to provide fields that are specific to the new service. See the [Multi-product boarding](/guides/pay-ops-developer-boarding-multi-product) guide for the full flow.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.CreateApplicationFromPaypointRequest{
-        PaypointId: int64(123),
-        TemplateId: int64(456),
-        RecipientEmail: "merchant@example.com",
-        ReturnBoardingAccessInfoInLine: payabli.Bool(
-            true,
-        ),
-        OnCreate: []string{
-            "submitApplication",
-        },
-    }
-client.Boarding.AddServiceToPaypointFromApp(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `*payabli.CreateApplicationFromPaypointRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Boarding.GetApplicationsByPaypointId(PaypointId) -> *payabli.QueryBoardingAppsListResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Returns all boarding applications associated with a specific paypoint, including those created through the multi-product boarding flow. Use this endpoint to track underwriting progress across multiple service additions or to build reporting views. See the [Multi-product boarding](/guides/pay-ops-developer-boarding-multi-product) guide for the full flow.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Boarding.GetApplicationsByPaypointId(
-        context.TODO(),
-        int64(12345),
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**paypointId:** `int64` — ID of the paypoint to retrieve applications for.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## ChargeBacks
-<details><summary><code>client.ChargeBacks.AddResponse(Id, request) -> *payabli.AddResponseResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Add a response to a chargeback or ACH return.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ResponseChargeBack{
-        IdempotencyKey: payabli.String(
-            "6B29FC40-CA47-1067-B31D-00DD010662DA",
-        ),
-    }
-client.ChargeBacks.AddResponse(
-        context.TODO(),
-        int64(1000000),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `int64` — ID of the chargeback or return record.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idempotencyKey:** `*payabli.IdempotencyKey` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**attachments:** `*payabli.Attachments` — Array of attached files to response.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**contactEmail:** `*payabli.Email` — Email of response submitter.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**contactName:** `*string` — Name of response submitter
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**notes:** `*string` — Response notes
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.ChargeBacks.GetChargeback(Id) -> *payabli.ChargebackQueryRecords</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves a chargeback record and its details.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.ChargeBacks.GetChargeback(
-        context.TODO(),
-        int64(1000000),
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `int64` — ID of the chargeback or return record. This is returned as `chargebackId` in the [RecievedChargeback](/developers/developer-guides/webhook-payloads#receivedChargeback) and [ReceivedAchReturn](/developers/developer-guides/webhook-payloads#receivedachreturn) webhook notifications.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.ChargeBacks.GetChargebackAttachment(Id, FileName) -> string</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves a chargeback attachment file by its file name.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.ChargeBacks.GetChargebackAttachment(
-        context.TODO(),
-        int64(1000000),
-        "fileName",
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `int64` — The ID of chargeback or return record.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fileName:** `string` — The chargeback attachment's file name.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## CheckCapture
-<details><summary><code>client.CheckCapture.CheckProcessing(request) -> *payabli.CheckCaptureResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Captures a check for Remote Deposit Capture (RDC) using the provided check images and details. This endpoint handles the OCR extraction of check data including MICR, routing number, account number, and amount. See the [RDC guide](/developers/developer-guides/pay-in-rdc) for more details.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.CheckCaptureRequestBody{
-        EntryPoint: "47abcfea12",
-        FrontImage: "/9j/4AAQSkZJRgABAQEASABIAAD...",
-        RearImage: "/9j/4AAQSkZJRgABAQEASABIAAD...",
-        CheckAmount: 12550,
-    }
-client.CheckCapture.CheckProcessing(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entryPoint:** `payabli.Entry` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**frontImage:** `string` — Base64-encoded front check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check clearly with no partial, blurry, or illegible portions.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**rearImage:** `string` — Base64-encoded rear check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check clearly with no partial, blurry, or illegible portions.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**checkAmount:** `int` — Check amount in cents (maximum 32-bit integer value).
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Cloud
-<details><summary><code>client.Cloud.AddDevice(Entry, request) -> *payabli.AddDeviceResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Register a cloud device to an entrypoint. See [Devices Quickstart](/developers/developer-guides/devices-quickstart#devices-quickstart) for a complete guide.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.DeviceEntry{
-        RegistrationCode: payabli.String(
-            "YS7DS5",
-        ),
-        Description: payabli.String(
-            "Front Desk POS",
-        ),
-    }
-client.Cloud.AddDevice(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idempotencyKey:** `*payabli.IdempotencyKey` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**description:** `*string` — Description or name for the device. This can be anything, but Payabli recommends entering the name of the paypoint, or some other easy to identify descriptor. If you have several devices for one paypoint, you can give them descriptions like "Cashier 1" and "Cashier 2", or "Front Desk" and "Back Office"
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**registrationCode:** `*string` 
-
-The device registration code or serial number, depending on the model.
-
-- Ingenico devices: This is the activation code that's displayed on the device screen during setup.
-
-- PAX A920 device: This code is the serial number on the back of the device.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Cloud.HistoryDevice(Entry, DeviceId) -> *payabli.CloudQueryApiResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieve the registration history for a device. 
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Cloud.HistoryDevice(
-        context.TODO(),
-        "8cfec329267",
-        "WXGDWB",
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**deviceId:** `string` — ID of the cloud device. 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Cloud.ListDevice(Entry) -> *payabli.CloudQueryApiResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Use [List devices by paypoint](/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint) instead, which supports filters, sorting, and pagination.
-
-Get a list of cloud devices registered to an entrypoint.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ListDeviceRequest{}
-client.Cloud.ListDevice(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**forceRefresh:** `*bool` — When `true`, the request retrieves an updated list of devices from the processor instead of returning a cached list of devices.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Cloud.RemoveDevice(Entry, DeviceId) -> *payabli.RemoveDeviceResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Remove a cloud device from an entrypoint.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Cloud.RemoveDevice(
-        context.TODO(),
-        "8cfec329267",
-        "6c361c7d-674c-44cc-b790-382b75d1xxx",
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**deviceId:** `string` — ID of the cloud device. 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 ## Customer
 <details><summary><code>client.Customer.AddCustomer(Entry, request) -> *payabli.PayabliApiResponseCustomerQuery</code></summary>
 <dl>
@@ -3027,7 +1089,7 @@ client.Cloud.RemoveDevice(
 <dl>
 <dd>
 
-Creates a customer in an entrypoint. An identifier is required to create customer records. Change your identifier settings in Settings > Custom Fields in PartnerHub. 
+Creates a customer in an entrypoint. An identifier is required to create customer records. Change your identifier settings in Settings > Custom Fields in PartnerHub.
 If you don't include an identifier, the record is rejected.
 </dd>
 </dl>
@@ -3046,13 +1108,16 @@ If you don't include an identifier, the record is rejected.
 request := &payabli.AddCustomerRequest{
         Body: &payabli.CustomerData{
             CustomerNumber: payabli.String(
-                "12356ACB",
+                "C-90010",
             ),
             Firstname: payabli.String(
                 "Irene",
             ),
             Lastname: payabli.String(
                 "Canizales",
+            ),
+            Email: payabli.String(
+                "irene@canizalesconcrete.com",
             ),
             Address1: payabli.String(
                 "123 Bishop's Trail",
@@ -3069,17 +1134,12 @@ request := &payabli.AddCustomerRequest{
             Country: payabli.String(
                 "US",
             ),
-            Email: payabli.String(
-                "irene@canizalesconcrete.com",
-            ),
-            IdentifierFields: &payabli.Identifierfields{
-                payabli.String(
-                    "email",
-                ),
-            },
             TimeZone: payabli.Int(
                 -5,
             ),
+            IdentifierFields: &payabli.Identifierfields{
+                "email",
+            },
         },
     }
 client.Customer.AddCustomer(
@@ -3102,7 +1162,7 @@ client.Customer.AddCustomer(
 <dl>
 <dd>
 
-**entry:** `payabli.Entrypointfield` 
+**entry:** `payabli.Entrypointfield` — The entrypoint identifier.
     
 </dd>
 </dl>
@@ -3126,7 +1186,7 @@ client.Customer.AddCustomer(
 <dl>
 <dd>
 
-**idempotencyKey:** `*payabli.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
     
 </dd>
 </dl>
@@ -3135,64 +1195,6 @@ client.Customer.AddCustomer(
 <dd>
 
 **request:** `*payabli.CustomerData` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Customer.DeleteCustomer(CustomerId) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Delete a customer record.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Customer.DeleteCustomer(
-        context.TODO(),
-        998,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**customerId:** `int` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
     
 </dd>
 </dl>
@@ -3233,7 +1235,7 @@ Retrieves a customer's record and details.
 ```go
 client.Customer.GetCustomer(
         context.TODO(),
-        998,
+        4440,
     )
 }
 ```
@@ -3250,132 +1252,7 @@ client.Customer.GetCustomer(
 <dl>
 <dd>
 
-**customerId:** `int` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Customer.LinkCustomerTransaction(CustomerId, TransId) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Links a customer to a transaction by ID.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Customer.LinkCustomerTransaction(
-        context.TODO(),
-        998,
-        "45-as456777hhhhhhhhhh77777777-324",
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**customerId:** `int` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**transId:** `string` — ReferenceId for the transaction (PaymentId).
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Customer.RequestConsent(CustomerId) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Sends the consent opt-in email to the customer email address in the customer record.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Customer.RequestConsent(
-        context.TODO(),
-        998,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**customerId:** `int` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
+**customerId:** `int` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
     
 </dd>
 </dl>
@@ -3439,7 +1316,7 @@ request := &payabli.CustomerData{
     }
 client.Customer.UpdateCustomer(
         context.TODO(),
-        998,
+        4440,
         request,
     )
 }
@@ -3457,7 +1334,7 @@ client.Customer.UpdateCustomer(
 <dl>
 <dd>
 
-**customerId:** `int` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
+**customerId:** `int` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
     
 </dd>
 </dl>
@@ -3477,8 +1354,7 @@ client.Customer.UpdateCustomer(
 </dl>
 </details>
 
-## Export
-<details><summary><code>client.Export.ExportApplications(Format, OrgId) -> payabli.File</code></summary>
+<details><summary><code>client.Customer.DeleteCustomer(CustomerId) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
 <dl>
 <dd>
 
@@ -3490,7 +1366,7 @@ client.Customer.UpdateCustomer(
 <dl>
 <dd>
 
-Export a list of boarding applications for an organization. Use filters to limit results.
+Delete a customer record.
 </dd>
 </dl>
 </dd>
@@ -3505,21 +1381,198 @@ Export a list of boarding applications for an organization. Use filters to limit
 <dd>
 
 ```go
-request := &payabli.ExportApplicationsRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
+client.Customer.DeleteCustomer(
+        context.TODO(),
+        4440,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**customerId:** `int` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Customer.RequestConsent(CustomerId) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Sends the consent opt-in email to the customer email address in the customer record.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Customer.RequestConsent(
+        context.TODO(),
+        4440,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**customerId:** `int` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Customer.LinkCustomerTransaction(CustomerId, TransId) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Links a customer to a transaction by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Customer.LinkCustomerTransaction(
+        context.TODO(),
+        4440,
+        "45-as456777hhhhhhhhhh77777777-324",
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**customerId:** `int` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**transId:** `string` — ReferenceId for the transaction (PaymentId).
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## CheckCapture
+<details><summary><code>client.CheckCapture.CheckProcessing(request) -> *payabli.CheckCaptureResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Captures a check for Remote Deposit Capture (RDC) using the provided check images and details. This endpoint handles the OCR extraction of check data including MICR, routing number, account number, and amount. See the [RDC guide](/developers/developer-guides/pay-in-rdc) for more details.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.CheckCaptureRequestBody{
+        EntryPoint: "8cfec329267",
+        FrontImage: "/9j/4AAQSkZJRgABAQEASABIAAD...",
+        RearImage: "/9j/4AAQSkZJRgABAQEASABIAAD...",
+        CheckAmount: 12550,
     }
-client.Export.ExportApplications(
+client.CheckCapture.CheckProcessing(
         context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
         request,
     )
 }
@@ -3537,7 +1590,7 @@ client.Export.ExportApplications(
 <dl>
 <dd>
 
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
+**entryPoint:** `payabli.Entry` 
     
 </dd>
 </dl>
@@ -3545,7 +1598,7 @@ client.Export.ExportApplications(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**frontImage:** `string` — Base64-encoded front check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check clearly with no partial, blurry, or illegible portions.
     
 </dd>
 </dl>
@@ -3553,7 +1606,7 @@ client.Export.ExportApplications(
 <dl>
 <dd>
 
-**columnsExport:** `*string` 
+**rearImage:** `string` — Base64-encoded rear check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check clearly with no partial, blurry, or illegible portions.
     
 </dd>
 </dl>
@@ -3561,7284 +1614,7 @@ client.Export.ExportApplications(
 <dl>
 <dd>
 
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query 
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help. 
-
-List of field names accepted:
-- `createdAt` (gt, ge, lt, le, eq, ne)
-- `startDate` (gt, ge, lt, le, eq, ne)
-- `dbaname`  (ct, nct)
-- `legalname`  (ct, nct)
-- `ein`  (ct, nct)
-- `address`  (ct, nct)
-- `city`  (ct, nct)
-- `state`  (ct, nct)
-- `phone`  (ct, nct)
-- `mcc`  (ct, nct)
-- `owntype`  (ct, nct)
-- `ownerName`  (ct, nct)
-- `contactName`  (ct, nct)
-- `status`  (eq, ne)
-- `orgParentname`  (ct, nct)
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array
-- nin => not inside array
-
-List of parameters accepted:
-- `limitRecord` : max number of records for query (default="20", "0" or negative value for all)
-- `fromRecord` : initial record in query
-
-Example: `dbaname(ct)=hoa` returns all records with a `dbaname` containing "hoa"
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportBatchDetails(Format, Entry) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-This endpoint is deprecated. Export batch details for a paypoint. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportBatchDetailsRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportBatchDetails(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        "8cfec329267",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-**List of field names accepted:**
-
-  - `settlementDate` (gt, ge, lt, le, eq, ne)
-  - `depositDate` (gt, ge, lt, le, eq, ne)
-  - `transId`  (ne, eq, ct, nct)
-  - `gatewayTransId`  (ne, eq, ct, nct)
-  - `method`   (in, nin, eq, ne)
-  - `settledAmount`  (gt, ge, lt, le, eq, ne)
-  - `operation`    (in, nin, eq, ne)
-  - `source`   (in, nin, eq, ne)
-  - `batchNumber`  (ct, nct, eq, ne)
-  - `payaccountLastfour`   (nct, ct)
-  - `payaccountType`   (ne, eq, in, nin)
-  - `customerFirstname`   (ct, nct, eq, ne)
-  - `customerLastname`    (ct, nct, eq, ne)
-  - `customerName`   (ct, nct)
-  - `customerId`  (eq, ne)
-  - `customerNumber`  (ct, nct, eq, ne)
-  - `customerCompanyname`    (ct, nct, eq, ne)
-  - `customerAddress` (ct, nct, eq, ne)
-  - `customerCity`    (ct, nct, eq, ne)
-  - `customerZip` (ct, nct, eq, ne)
-  - `customerState` (ct, nct, eq, ne)
-  - `customerCountry` (ct, nct, eq, ne)
-  - `customerPhone` (ct, nct, eq, ne)
-  - `customerEmail` (ct, nct, eq, ne)
-  - `customerShippingAddress` (ct, nct, eq, ne)
-  - `customerShippingCity`    (ct, nct, eq, ne)
-  - `customerShippingZip` (ct, nct, eq, ne)
-  - `customerShippingState` (ct, nct, eq, ne)
-  - `customerShippingCountry` (ct, nct, eq, ne)
-  - `orgId`  (eq) *mandatory when entry=org*
-  - `isHold` (eq, ne)
-  - `paypointId`  (ne, eq)
-  - `paypointLegal`  (ne, eq, ct, nct)
-  - `paypointDba`  (ne, eq, ct, nct)
-  - `orgName`  (ne, eq, ct, nct)
-  - `batchId` (ct, nct, eq, neq)
-  - `additional-xxx`  (ne, eq, ct, nct) where xxx is the additional field name
-
-List of parameters accepted:
-- limitRecord: max number of records for query (default="20", "0" or negative value for all)
-- fromRecord: initial record in query
-
-Example: `amount(gt)=20` return all records with amount greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportBatchDetailsOrg(Format, OrgId) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-This endpoint is deprecated. Export batch details for an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportBatchDetailsOrgRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportBatchDetailsOrg(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-**List of field names accepted:**
-
-  - `settlementDate` (gt, ge, lt, le, eq, ne)
-  - `depositDate` (gt, ge, lt, le, eq, ne)
-  - `transId`  (ne, eq, ct, nct)
-  - `gatewayTransId`  (ne, eq, ct, nct)
-  - `method`   (in, nin, eq, ne)
-  - `settledAmount`  (gt, ge, lt, le, eq, ne)
-  - `operation`    (in, nin, eq, ne)
-  - `source`   (in, nin, eq, ne)
-  - `batchNumber`  (ct, nct, eq, ne)
-  - `payaccountLastfour`   (nct, ct)
-  - `payaccountType`   (ne, eq, in, nin)
-  - `customerFirstname`   (ct, nct, eq, ne)
-  - `customerLastname`    (ct, nct, eq, ne)
-  - `customerName`   (ct, nct)
-  - `customerId`  (eq, ne)
-  - `customerNumber`  (ct, nct, eq, ne)
-  - `customerCompanyname`    (ct, nct, eq, ne)
-  - `customerAddress` (ct, nct, eq, ne)
-  - `customerCity`    (ct, nct, eq, ne)
-  - `customerZip` (ct, nct, eq, ne)
-  - `customerState` (ct, nct, eq, ne)
-  - `customerCountry` (ct, nct, eq, ne)
-  - `customerPhone` (ct, nct, eq, ne)
-  - `customerEmail` (ct, nct, eq, ne)
-  - `customerShippingAddress` (ct, nct, eq, ne)
-  - `customerShippingCity`    (ct, nct, eq, ne)
-  - `customerShippingZip` (ct, nct, eq, ne)
-  - `customerShippingState` (ct, nct, eq, ne)
-  - `customerShippingCountry` (ct, nct, eq, ne)
-  - `orgId`  (eq) *mandatory when entry=org*
-  - `isHold` (eq, ne)
-  - `paypointId`  (ne, eq)
-  - `paypointLegal`  (ne, eq, ct, nct)
-  - `paypointDba`  (ne, eq, ct, nct)
-  - `orgName`  (ne, eq, ct, nct)
-  - `batchId` (ct, nct, eq, neq)
-  - `additional-xxx`  (ne, eq, ct, nct) where xxx is the additional field name
-
-List of parameters accepted:
-- limitRecord: max number of records for query (default="20", "0" or negative value for all)
-- fromRecord: initial record in query
-
-Example: `amount(gt)=20` return all records with amount greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportBatches(Format, Entry) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of batches for an entrypoint. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportBatchesRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportBatches(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        "8cfec329267",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `batchDate` (gt, ge, lt, le, eq, ne)
-- `batchNumber` (ne, eq)
-- `connectorName` (ne, eq, ct, nct)
-- `method` (in, nin, eq, ne)
-- `batchAmount` (gt, ge, lt, le, eq, ne)
-- `feeBatchAmount` (gt, ge, lt, le, eq, ne)
-- `netBatchAmount` (gt, ge, lt, le, eq, ne)
-- `releaseAmount` (gt, ge, lt, le, eq, ne)
-- `heldAmount` (gt, ge, lt, le, eq, ne)
-- `status` (in, nin, eq, ne)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-- `paypointId` (ne, eq)
-- `externalPaypointID` (ct, nct, eq, ne)
-- `expectedDepositDate` (gt, ge, lt, le, eq, ne)
-- `batchRecords` (gt, ge, lt, le, eq, ne)
-- `transferId` (ne, eq)
-- `transferDate` (gt, ge, lt, le, eq, ne)
-- `grossAmount` (gt, ge, lt, le, eq, ne)
-- `chargeBackAmount` (gt, ge, lt, le, eq, ne)
-- `returnedAmount` (gt, ge, lt, le, eq, ne)
-- `billingFeeAmount` (gt, ge, lt, le, eq, ne)
-- `thirdPartyPaidAmount` (gt, ge, lt, le, eq, ne)
-- `netFundedAmount` (gt, ge, lt, le, eq, ne)
-- `adjustmentAmount` (gt, ge, lt, le, eq, ne)
-- `processor` (ne, eq, ct, nct)
-- `transferStatus` (ne, eq, in, nin)
-
-List of parameters accepted:
-- limitRecord: max number of records for query (default="20", "0" or negative value for all)
-- fromRecord: initial record in query
-
-Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportBatchesOrg(Format, OrgId) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of batches for an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportBatchesOrgRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportBatchesOrg(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `batchDate` (gt, ge, lt, le, eq, ne)
-- `batchNumber` (ne, eq)
-- `connectorName` (ne, eq, ct, nct)
-- `method` (in, nin, eq, ne)
-- `batchAmount` (gt, ge, lt, le, eq, ne)
-- `feeBatchAmount` (gt, ge, lt, le, eq, ne)
-- `netBatchAmount` (gt, ge, lt, le, eq, ne)
-- `releaseAmount` (gt, ge, lt, le, eq, ne)
-- `heldAmount` (gt, ge, lt, le, eq, ne)
-- `status` (in, nin, eq, ne)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-- `paypointId` (ne, eq)
-- `externalPaypointID` (ct, nct, eq, ne)
-- `expectedDepositDate` (gt, ge, lt, le, eq, ne)
-- `batchRecords` (gt, ge, lt, le, eq, ne)
-- `transferId` (ne, eq)
-- `transferDate` (gt, ge, lt, le, eq, ne)
-- `grossAmount` (gt, ge, lt, le, eq, ne)
-- `chargeBackAmount` (gt, ge, lt, le, eq, ne)
-- `returnedAmount` (gt, ge, lt, le, eq, ne)
-- `billingFeeAmount` (gt, ge, lt, le, eq, ne)
-- `thirdPartyPaidAmount` (gt, ge, lt, le, eq, ne)
-- `netFundedAmount` (gt, ge, lt, le, eq, ne)
-- `adjustmentAmount` (gt, ge, lt, le, eq, ne)
-- `processor` (ne, eq, ct, nct)
-- `transferStatus` (ne, eq, in, nin)
-
-List of parameters accepted:
-- `limitRecord`: max number of records for query (default="20", "0" or negative value for all)
-- `fromRecord`: initial record in query
-Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportBatchesOut(Format, Entry) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of money out batches for a paypoint. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportBatchesOutRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportBatchesOut(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        "8cfec329267",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-  - `batchDate` (gt, ge, lt, le, eq, ne)
-  - `batchNumber` (ne, eq)
-  - `batchAmount` (gt, ge, lt, le, eq, ne)
-  - `status` (in, nin, eq, ne)
-  - `paypointLegal` (ne, eq, ct, nct)
-  - `paypointDba` (ne, eq, ct, nct)
-  - `orgName` (ne, eq, ct, nct, nin, in)
-  - `paypointId` (ne, eq)
-  - `externalPaypointID` (ct, nct, eq, ne)
-List of parameters accepted:
-- limitRecord: max number of records for query (default="20", "0" or negative value for all)
-- fromRecord: initial record in query
-
-Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater than 20.00"
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportBatchesOutOrg(Format, OrgId) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of money out batches for an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportBatchesOutOrgRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportBatchesOutOrg(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-  - `batchDate` (gt, ge, lt, le, eq, ne)
-  - `batchNumber` (ne, eq)
-  - `batchAmount` (gt, ge, lt, le, eq, ne)
-  - `status` (in, nin, eq, ne)
-  - `paypointLegal` (ne, eq, ct, nct)
-  - `paypointDba` (ne, eq, ct, nct)
-  - `orgName` (ne, eq, ct, nct, nin, in)
-  - `paypointId` (ne, eq)
-  - `externalPaypointID` (ct, nct, eq, ne)
-List of parameters accepted:
-- limitRecord: max number of records for query (default="20", "0" or negative value for all)
-- fromRecord: initial record in query
-
-Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater than 20.00"
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportBills(Format, Entry) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of bills for an entrypoint. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportBillsRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportBills(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        "8cfec329267",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query 
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help. 
-
-List of field names accepted:
-- `status` (in, nin, eq, ne)
-- `billNumber` (ct, nct, eq, ne)
-- `billDate` (gt, ge, lt, le, eq, ne)
-- `billDueDate` (gt, ge, lt, le, eq, ne)
-- `vendorNumber` (ct, nct, eq, ne)
-- `vendorName` (ct, nct, eq, ne)
-- `ein` (ct, nct, eq, ne)
-- `paymentMethod` (ct, nct, eq, ne)
-- `paymentId` (ct, nct, eq, ne)
-- `paymentgroup` (ct, nct, eq, ne)
-- `totalAmount` (gt, ge, lt, le, eq, ne)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array separated by "|"
-- nin => not inside array separated by "|"
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: totalAmount(gt)=20  return all records with totalAmount greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportBillsOrg(Format, OrgId) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of bills for an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportBillsOrgRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportBillsOrg(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query 
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help. 
-
-List of field names accepted:
-- `status` (in, nin, eq, ne)
-- `billNumber` (ct, nct, eq, ne)
-- `billDate` (gt, ge, lt, le, eq, ne)
-- `billDueDate` (gt, ge, lt, le, eq, ne)
-- `vendorNumber` (ct, nct, eq, ne)
-- `vendorName` (ct, nct, eq, ne)
-- `ein` (ct, nct, eq, ne)
-- `paymentMethod` (ct, nct, eq, ne)
-- `paymentId` (ct, nct, eq, ne)
-- `paymentgroup` (ct, nct, eq, ne)
-- `totalAmount` (gt, ge, lt, le, eq, ne)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array separated by "|"
-- nin => not inside array separated by "|"
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: totalAmount(gt)=20  return all records with totalAmount greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportChargebacks(Format, Entry) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of chargebacks and ACH returns for an entrypoint. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportChargebacksRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportChargebacks(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        "8cfec329267",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query 
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help. 
-
-List of field names accepted:
-- `chargebackDate` (gt, ge, lt, le, eq, ne)
-- `transId` (ne, eq, ct, nct)
-- `method` (in, nin, eq, ne)
-- `netAmount` (gt, ge, lt, le, eq, ne)
-- `reasonCode` (in, nin, eq, ne)
-- `reason` (ct, nct, eq, ne)
-- `caseNumber` (ct, nct, eq, ne)
-- `status` (in, nin, eq, ne)
-- `accountType` (in, nin, eq, ne)
-- `payaccountLastfour` (nct, ct)
-- `payaccountType` (ne, eq, in, nin)
-- `customerFirstname` (ct, nct, eq, ne)
-- `customerLastname` (ct, nct, eq, ne)
-- `customerName` (ct, nct)
-- `customerId` (eq, ne)
-- `customerNumber` (ct, nct, eq, ne)
-- `customerCompanyname` (ct, nct, eq, ne)
-- `customerAddress` (ct, nct, eq, ne)
-- `customerCity` (ct, nct, eq, ne)
-- `customerZip` (ct, nct, eq, ne)
-- `customerState` (ct, nct, eq, ne)
-- `customerCountry` (ct, nct, eq, ne)
-- `customerPhone` (ct, nct, eq, ne)
-- `customerEmail` (ct, nct, eq, ne)
-- `customerShippingAddress` (ct, nct, eq, ne)
-- `customerShippingCity` (ct, nct, eq, ne)
-- `customerShippingZip` (ct, nct, eq, ne)
-- `customerShippingState` (ct, nct, eq, ne)
-- `customerShippingCountry` (ct, nct, eq, ne)
-- `orgId` (eq) *mandatory when entry=org*
-- `paypointId` (ne, eq)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array separated by "|"
-- nin => not inside array separated by "|"
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportChargebacksOrg(Format, OrgId) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of chargebacks and ACH returns for an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportChargebacksOrgRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportChargebacksOrg(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query 
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help. 
-
-List of field names accepted:
-- `chargebackDate` (gt, ge, lt, le, eq, ne)
-- `transId` (ne, eq, ct, nct)
-- `method` (in, nin, eq, ne)
-- `netAmount` (gt, ge, lt, le, eq, ne)
-- `reasonCode` (in, nin, eq, ne)
-- `reason` (ct, nct, eq, ne)
-- `caseNumber` (ct, nct, eq, ne)
-- `status` (in, nin, eq, ne)
-- `accountType` (in, nin, eq, ne)
-- `payaccountLastfour` (nct, ct)
-- `payaccountType` (ne, eq, in, nin)
-- `customerFirstname` (ct, nct, eq, ne)
-- `customerLastname` (ct, nct, eq, ne)
-- `customerName` (ct, nct)
-- `customerId` (eq, ne)
-- `customerNumber` (ct, nct, eq, ne)
-- `customerCompanyname` (ct, nct, eq, ne)
-- `customerAddress` (ct, nct, eq, ne)
-- `customerCity` (ct, nct, eq, ne)
-- `customerZip` (ct, nct, eq, ne)
-- `customerState` (ct, nct, eq, ne)
-- `customerCountry` (ct, nct, eq, ne)
-- `customerPhone` (ct, nct, eq, ne)
-- `customerEmail` (ct, nct, eq, ne)
-- `customerShippingAddress` (ct, nct, eq, ne)
-- `customerShippingCity` (ct, nct, eq, ne)
-- `customerShippingZip` (ct, nct, eq, ne)
-- `customerShippingState` (ct, nct, eq, ne)
-- `customerShippingCountry` (ct, nct, eq, ne)
-- `orgId` (eq) *mandatory when entry=org*
-- `paypointId` (ne, eq)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array separated by "|"
-- nin => not inside array separated by "|"
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportCustomers(Format, Entry) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of customers for an entrypoint. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportCustomersRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportCustomers(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        "8cfec329267",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query.
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-**List of field names accepted:**
-- `createdDate` (gt, ge, lt, le, eq, ne)
-- `customernumber` (ne, eq, ct, nct)
-- `firstname` (ne, eq, ct, nct)
-- `lastname` (ne, eq, ct, nct)
-- `name` (ct, nct)
-- `address` (ne, eq, ct, nct)
-- `city` (ne, eq, ct, nct)
-- `country` (ne, eq, ct, nct)
-- `zip` (ne, eq, ct, nct)
-- `state` (ne, eq, ct, nct)
-- `shippingaddress` (ne, eq, ct, nct)
-- `shippingcity` (ne, eq, ct, nct)
-- `shippingcountry` (ne, eq, ct, nct)
-- `shippingzip` (ne, eq, ct, nct)
-- `shippingstate` (ne, eq, ct, nct)
-- `phone` (ne, eq, ct, nct)
-- `email` (ne, eq, ct, nct)
-- `company` (ne, eq, ct, nct)
-- `username` (ne, eq, ct, nct)
-- `balance` (gt, ge, lt, le, eq, ne)
-- `status` (in, nin, eq, ne)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
-- `orgId` (eq) *mandatory when entry=org*
-- `paypointId` (ne, eq)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-
-**List of comparison accepted - enclosed between parentheses:**
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array separated by "|"
-- nin => not inside array separated by "|"
-
-**List of parameters accepted:**
-- limitRecord: max number of records for query (default="20", "0" or negative value for all)
-- fromRecord: initial record in query
-
-**Example:**
-balance(gt)=20 return all records with balance greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportCustomersOrg(Format, OrgId) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Exports a list of customers for an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportCustomersOrgRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportCustomersOrg(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query.
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-**List of field names accepted:**
-- `createdDate` (gt, ge, lt, le, eq, ne)
-- `customernumber` (ne, eq, ct, nct)
-- `firstname` (ne, eq, ct, nct)
-- `lastname` (ne, eq, ct, nct)
-- `name` (ct, nct)
-- `address` (ne, eq, ct, nct)
-- `city` (ne, eq, ct, nct)
-- `country` (ne, eq, ct, nct)
-- `zip` (ne, eq, ct, nct)
-- `state` (ne, eq, ct, nct)
-- `shippingaddress` (ne, eq, ct, nct)
-- `shippingcity` (ne, eq, ct, nct)
-- `shippingcountry` (ne, eq, ct, nct)
-- `shippingzip` (ne, eq, ct, nct)
-- `shippingstate` (ne, eq, ct, nct)
-- `phone` (ne, eq, ct, nct)
-- `email` (ne, eq, ct, nct)
-- `company` (ne, eq, ct, nct)
-- `username` (ne, eq, ct, nct)
-- `balance` (gt, ge, lt, le, eq, ne)
-- `status` (in, nin, eq, ne)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
-- `orgId` (eq) *mandatory when entry=org*
-- `paypointId` (ne, eq)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-
-**List of comparison accepted - enclosed between parentheses:**
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array separated by "|"
-- nin => not inside array separated by "|"
-
-**List of parameters accepted:**
-- limitRecord: max number of records for query (default="20", "0" or negative value for all)
-- fromRecord: initial record in query
-
-**Example:**
-balance(gt)=20 return all records with balance greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportInvoices(Format, Entry) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export list of invoices for an entrypoint. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportInvoicesRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportInvoices(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        "8cfec329267",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query 
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help. 
-
-List of field names accepted:
- - `invoiceDate` (gt, ge, lt, le, eq, ne)
- - `dueDate` (gt, ge, lt, le, eq, ne)
- - `sentDate` (gt, ge, lt, le, eq, ne)
- - `frequency`  (in, nin,ne, eq)
- - `invoiceType`   (eq, ne)
- - `payTerms`   (in, nin, eq, ne)
- - `paypointId`  (ne, eq)
- - `totalAmount`  (gt, ge, lt, le, eq, ne)
- - `paidAmount`  (gt, ge, lt, le, eq, ne)
- - `status`   (in, nin, eq, ne)
- - `invoiceNumber`   (ct, nct, eq, ne)
- - `purchaseOrder`   (ct, nct, eq, ne)
- - `itemProductCode` (ct, nct)
- - `itemDescription` (ct, nct)
- - `customerFirstname`   (ct, nct, eq, ne)
- - `customerLastname`    (ct, nct, eq, ne)
- - `customerName`   (ct, nct)
- - `customerId`  (eq, ne)
- - `customerNumber`  (ct, nct, eq, ne)
- - `customerCompanyname`    (ct, nct, eq, ne)
- - `customerAddress` (ct, nct, eq, ne)
- - `customerCity`    (ct, nct, eq, ne)
- - `customerZip` (ct, nct, eq, ne)
- - `customerState` (ct, nct, eq, ne)
- - `customerCountry` (ct, nct, eq, ne)
- - `customerPhone` (ct, nct, eq, ne)
- - `customerEmail` (ct, nct, eq, ne)
- - `customerShippingAddress` (ct, nct, eq, ne)
- - `customerShippingCity` (ct, nct, eq, ne)
- - `customerShippingZip` (ct, nct, eq, ne)
- - `customerShippingState` (ct, nct, eq, ne)
- - `customerShippingCountry` (ct, nct, eq, ne)
- - `orgId`  (eq) 
- - `paylinkId`  (ne, eq)
- - `paypointLegal`  (ne, eq, ct, nct)
- - `paypointDba`  (ne, eq, ct, nct)
- - `orgName`  (ne, eq, ct, nct)
- - `additional-xxx`  (ne, eq, ct, nct) where xxx is the additional field name
-
-List of comparison accepted - enclosed between parentheses:
- - eq or empty => equal
- - gt => greater than
- - ge => greater or equal
- - lt => less than
- - le => less or equal
- - ne => not equal
- - ct => contains
- - nct => not contains
- - in => inside array
- - nin => not inside array
- 
-List of parameters accepted:
- - `limitRecord` : max number of records for query (default="20", "0" or negative value for all)
- - `fromRecord` : initial record in query
- 
-Example: `totalAmount(gt)=20` returns all records with `totalAmount` greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportInvoicesOrg(Format, OrgId) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of invoices for an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportInvoicesOrgRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportInvoicesOrg(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query 
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help. 
-
-List of field names accepted:
- - `invoiceDate` (gt, ge, lt, le, eq, ne)
- - `dueDate` (gt, ge, lt, le, eq, ne)
- - `sentDate` (gt, ge, lt, le, eq, ne)
- - `frequency` (in, nin,ne, eq)
- - `invoiceType` (eq, ne)
- - `payTerms` (in, nin, eq, ne)
- - `paypointId` (ne, eq)
- - `totalAmount` (gt, ge, lt, le, eq, ne)
- - `paidAmount` (gt, ge, lt, le, eq, ne)
- - `status` (in, nin, eq, ne)
- - `invoiceNumber` (ct, nct, eq, ne)
- - `purchaseOrder` (ct, nct, eq, ne)
- - `itemProductCode` (ct, nct)
- - `itemDescription` (ct, nct)
- - `customerFirstname` (ct, nct, eq, ne)
- - `customerLastname` (ct, nct, eq, ne)
- - `customerName` (ct, nct)
- - `customerId` (eq, ne)
- - `customerNumber` (ct, nct, eq, ne)
- - `customerCompanyname` (ct, nct, eq, ne)
- - `customerAddress` (ct, nct, eq, ne)
- - `customerCity` (ct, nct, eq, ne)
- - `customerZip` (ct, nct, eq, ne)
- - `customerState` (ct, nct, eq, ne)
- - `customerCountry` (ct, nct, eq, ne)
- - `customerPhone` (ct, nct, eq, ne)
- - `customerEmail` (ct, nct, eq, ne)
- - `customerShippingAddress` (ct, nct, eq, ne)
- - `customerShippingCity` (ct, nct, eq, ne)
- - `customerShippingZip` (ct, nct, eq, ne)
- - `customerShippingState` (ct, nct, eq, ne)
- - `customerShippingCountry` (ct, nct, eq, ne)
- - `orgId` (eq) 
- - `paylinkId` (ne, eq)
- - `paypointLegal` (ne, eq, ct, nct)
- - `paypointDba` (ne, eq, ct, nct)
- - `orgName` (ne, eq, ct, nct)
- - `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
- 
-List of comparison accepted - enclosed between parentheses:
- - eq or empty => equal
- - gt => greater than
- - ge => greater or equal
- - lt => less than
- - le => less or equal
- - ne => not equal
- - ct => contains
- - nct => not contains
- - in => inside array
- - nin => not inside array
- 
-List of parameters accepted:
- - limitRecord : max number of records for query (default="20", "0" or negative value for all)
- - fromRecord : initial record in query
- 
-Example: totalAmount(gt)=20  return all records with totalAmount greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportOrganizations(Format, OrgId) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of child organizations (suborganizations) for a parent organization.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportOrganizationsRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportOrganizations(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help. 
-
-List of field names accepted:
-- `name` (ct, nct, eq, ne)
-- `type` (ne, eq)
-- `contactName` (ct, nct, eq, ne)
-- `contactTitle` (ct, nct, eq, ne)
-- `contactEmail` (ct, nct, eq, ne)
-- `contactPhone` (ct, nct, eq, ne)
-- `city` (ct, nct, eq, ne)
-- `state` (in, nin, eq, ne)
-- `address` (ct, nct, eq, ne)
-- `country` (ct, nct, eq, ne)
-- `zip` (ct, nct, eq, ne)
-- `hasBilling` any value greater than zero is taken as TRUE otherwise is FALSE
-- `hasResidual` any value greater than zero is taken as TRUE otherwise is FALSE
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array
-- nin => not inside array
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: name(ct)=hoa  return all records where name contains "hoa"
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportPayout(Format, Entry) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of payouts and their statuses for an entrypoint. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportPayoutRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportPayout(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        "8cfec329267",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query.
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `status` (in, nin, eq, ne)
-- `transactionDate` (gt, ge, lt, le, eq, ne)
-- `billNumber` (ct, nct)
-- `vendorNumber` (ct, nct, eq, ne)
-- `vendorName` (ct, nct, eq, ne)
-- `paymentMethod` (ct, nct, eq, ne)
-- `paymentId` (ct, nct, eq, ne)
-- `paymentgroup` (ct, nct, eq, ne)
-- `totalAmount` (gt, ge, lt, le, eq, ne)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array separated by "|"
-- nin => not inside array separated by "|"
-
-List of parameters accepted:
-- limitRecord: max number of records for query (default="20", "0" or negative value for all)
-- fromRecord: initial record in query
-
-Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportPayoutOrg(Format, OrgId) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of payouts and their details for an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportPayoutOrgRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportPayoutOrg(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query.
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `status` (in, nin, eq, ne)
-- `transactionDate` (gt, ge, lt, le, eq, ne)
-- `billNumber` (ct, nct)
-- `vendorNumber` (ct, nct, eq, ne)
-- `vendorName` (ct, nct, eq, ne)
-- `paymentMethod` (ct, nct, eq, ne)
-- `paymentId` (ct, nct, eq, ne)
-- `paymentgroup` (ct, nct, eq, ne)
-- `totalAmount` (gt, ge, lt, le, eq, ne)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array separated by "|"
-- nin => not inside array separated by "|"
-
-List of parameters accepted:
-- limitRecord: max number of records for query (default="20", "0" or negative value for all)
-- fromRecord: initial record in query
-
-Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportPaypoints(Format, OrgId) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of paypoints in an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportPaypointsRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportPaypoints(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query.
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `createdAt` (gt, ge, lt, le, eq, ne)
-- `startDate` (gt, ge, lt, le, eq, ne)
-- `dbaname` (ct, nct)
-- `legalname` (ct, nct)
-- `ein` (ct, nct)
-- `address` (ct, nct)
-- `city` (ct, nct)
-- `state` (ct, nct)
-- `phone` (ct, nct)
-- `mcc` (ct, nct)
-- `owntype` (ct, nct)
-- `ownerName` (ct, nct)
-- `contactName` (ct, nct)
-- `orgParentname` (ct, nct)
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array
-- nin => not inside array
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: `dbaname(ct)=hoa` returns all records with `dbaname` containing "hoa"
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportSettlements(Format, Entry) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of settled transactions for an entrypoint. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportSettlementsRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportSettlements(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        "8cfec329267",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query 
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `settlementDate` (gt, ge, lt, le, eq, ne)
-- `transId` (ne, eq, ct, nct)
-- `gatewayTransId` (ne, eq, ct, nct)
-- `method` (in, nin, eq, ne)
-- `settledAmount` (gt, ge, lt, le, eq, ne)
-- `operation` (in, nin, eq, ne)
-- `source` (in, nin, eq, ne)
-- `batchNumber` (ct, nct, eq, ne)
-- `payaccountLastfour` (nct, ct)
-- `payaccountType` (ne, eq, in, nin)
-- `customerFirstname` (ct, nct, eq, ne)
-- `customerLastname` (ct, nct, eq, ne)
-- `customerName` (ct, nct)
-- `customerId` (eq, ne)
-- `customerNumber` (ct, nct, eq, ne)
-- `customerCompanyname` (ct, nct, eq, ne)
-- `customerAddress` (ct, nct, eq, ne)
-- `customerCity` (ct, nct, eq, ne)
-- `customerZip` (ct, nct, eq, ne)
-- `customerState` (ct, nct, eq, ne)
-- `customerCountry` (ct, nct, eq, ne)
-- `customerPhone` (ct, nct, eq, ne)
-- `customerEmail` (ct, nct, eq, ne)
-- `customerShippingAddress` (ct, nct, eq, ne)
-- `customerShippingCity` (ct, nct, eq, ne)
-- `customerShippingZip` (ct, nct, eq, ne)
-- `customerShippingState` (ct, nct, eq, ne)
-- `customerShippingCountry` (ct, nct, eq, ne)
-- `orgId` (eq) *mandatory when entry=org*
-- `paypointId` (ne, eq)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array separated by "|"
-- nin => not inside array separated by "|"
-
-List of parameters accepted:
-- limitRecord: max number of records for query (default="20", "0" or negative value for all)
-- fromRecord: initial record in query
-
-Example: `settledAmount(gt)=20` returns all records with a `settledAmount` greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportSettlementsOrg(Format, OrgId) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of settled transactions for an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportSettlementsOrgRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportSettlementsOrg(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query 
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `settlementDate` (gt, ge, lt, le, eq, ne)
-- `transId` (ne, eq, ct, nct)
-- `gatewayTransId` (ne, eq, ct, nct)
-- `method` (in, nin, eq, ne)
-- `settledAmount` (gt, ge, lt, le, eq, ne)
-- `operation` (in, nin, eq, ne)
-- `source` (in, nin, eq, ne)
-- `batchNumber` (ct, nct, eq, ne)
-- `payaccountLastfour` (nct, ct)
-- `payaccountType` (ne, eq, in, nin)
-- `customerFirstname` (ct, nct, eq, ne)
-- `customerLastname` (ct, nct, eq, ne)
-- `customerName` (ct, nct)
-- `customerId` (eq, ne)
-- `customerNumber` (ct, nct, eq, ne)
-- `customerCompanyname` (ct, nct, eq, ne)
-- `customerAddress` (ct, nct, eq, ne)
-- `customerCity` (ct, nct, eq, ne)
-- `customerZip` (ct, nct, eq, ne)
-- `customerState` (ct, nct, eq, ne)
-- `customerCountry` (ct, nct, eq, ne)
-- `customerPhone` (ct, nct, eq, ne)
-- `customerEmail` (ct, nct, eq, ne)
-- `customerShippingAddress` (ct, nct, eq, ne)
-- `customerShippingCity` (ct, nct, eq, ne)
-- `customerShippingZip` (ct, nct, eq, ne)
-- `customerShippingState` (ct, nct, eq, ne)
-- `customerShippingCountry` (ct, nct, eq, ne)
-- `orgId` (eq) *mandatory when entry=org*
-- `paypointId` (ne, eq)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array separated by "|"
-- nin => not inside array separated by "|"
-
-List of parameters accepted:
-- limitRecord: max number of records for query (default="20", "0" or negative value for all)
-- fromRecord: initial record in query
-
-Example: `settledAmount(gt)=20` returns all records with a `settledAmount` greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportSubscriptions(Format, Entry) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of subscriptions for an entrypoint. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportSubscriptionsRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportSubscriptions(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        "8cfec329267",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `startDate` (gt, ge, lt, le, eq, ne)
-- `endDate` (gt, ge, lt, le, eq, ne)
-- `nextDate` (gt, ge, lt, le, eq, ne)
-- `frequency` (in, nin, ne, eq)
-- `method` (in, nin, eq, ne)
-- `totalAmount` (gt, ge, lt, le, eq, ne)
-- `netAmount` (gt, ge, lt, le, eq, ne)
-- `feeAmount` (gt, ge, lt, le, eq, ne)
-- `status` (in, nin, eq, ne)
-- `untilcancelled` (eq, ne)
-- `payaccountLastfour` (nct, ct)
-- `payaccountType` (ne, eq, in, nin)
-- `customerFirstname` (ct, nct, eq, ne)
-- `customerLastname` (ct, nct, eq, ne)
-- `customerName` (ct, nct)
-- `customerId` (eq, ne)
-- `customerNumber` (ct, nct, eq, ne)
-- `customerCompanyname` (ct, nct, eq, ne)
-- `customerAddress` (ct, nct, eq, ne)
-- `customerCity` (ct, nct, eq, ne)
-- `customerZip` (ct, nct, eq, ne)
-- `customerState` (ct, nct, eq, ne)
-- `customerCountry` (ct, nct, eq, ne)
-- `customerPhone` (ct, nct, eq, ne)
-- `customerEmail` (ct, nct, eq, ne)
-- `customerShippingAddress` (ct, nct, eq, ne)
-- `customerShippingCity` (ct, nct, eq, ne)
-- `customerShippingZip` (ct, nct, eq, ne)
-- `customerShippingState` (ct, nct, eq, ne)
-- `customerShippingCountry` (ct, nct, eq, ne)
-- `orgId` (eq) 
-- `paypointId` (ne, eq)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array
-- nin => not inside array
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportSubscriptionsOrg(Format, OrgId) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of subscriptions for an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportSubscriptionsOrgRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportSubscriptionsOrg(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `startDate` (gt, ge, lt, le, eq, ne)
-- `endDate` (gt, ge, lt, le, eq, ne)
-- `nextDate` (gt, ge, lt, le, eq, ne)
-- `frequency` (in, nin, ne, eq)
-- `method` (in, nin, eq, ne)
-- `totalAmount` (gt, ge, lt, le, eq, ne)
-- `netAmount` (gt, ge, lt, le, eq, ne)
-- `feeAmount` (gt, ge, lt, le, eq, ne)
-- `status` (in, nin, eq, ne)
-- `untilcancelled` (eq, ne)
-- `payaccountLastfour` (nct, ct)
-- `payaccountType` (ne, eq, in, nin)
-- `customerFirstname` (ct, nct, eq, ne)
-- `customerLastname` (ct, nct, eq, ne)
-- `customerName` (ct, nct)
-- `customerId` (eq, ne)
-- `customerNumber` (ct, nct, eq, ne)
-- `customerCompanyname` (ct, nct, eq, ne)
-- `customerAddress` (ct, nct, eq, ne)
-- `customerCity` (ct, nct, eq, ne)
-- `customerZip` (ct, nct, eq, ne)
-- `customerState` (ct, nct, eq, ne)
-- `customerCountry` (ct, nct, eq, ne)
-- `customerPhone` (ct, nct, eq, ne)
-- `customerEmail` (ct, nct, eq, ne)
-- `customerShippingAddress` (ct, nct, eq, ne)
-- `customerShippingCity` (ct, nct, eq, ne)
-- `customerShippingZip` (ct, nct, eq, ne)
-- `customerShippingState` (ct, nct, eq, ne)
-- `customerShippingCountry` (ct, nct, eq, ne)
-- `orgId` (eq) 
-- `paypointId` (ne, eq)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array
-- nin => not inside array
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportTransactions(Format, Entry) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of transactions for an entrypoint in a file in XLXS or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportTransactionsRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportTransactions(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        "8cfec329267",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query 
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help. 
-
-List of field names accepted:
-- `transactionDate` (gt, ge, lt, le, eq, ne)
-- `transId` (ne, eq, ct, nct)
-- `gatewayTransId` (ne, eq, ct, nct)
-- `orderId` (ne, eq)
-- `idTrans` (ne, eq)
-- `orgId` (ne, eq)
-- `paypointId` (ne, eq)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-- `method` (in, nin, eq, ne)
-- `totalAmount` (gt, ge, lt, le, eq, ne)
-- `netAmount` (gt, ge, lt, le, eq, ne)
-- `feeAmount` (gt, ge, lt, le, eq, ne)
-- `operation` (in, nin, eq, ne)
-- `source` (in, nin, eq, ne)
-- `status` (in, nin, eq, ne)
-- `settlementStatus` (in, nin, eq, ne)
-- `batchNumber` (nct, ct)
-- `payaccountLastfour` (nct, ct)
-- `payaccountType` (ne, eq, in, nin)
-- `customerFirstname` (ct, nct, eq, ne)
-- `customerLastname` (ct, nct, eq, ne)
-- `customerName` (ct, nct)
-- `customerId` (eq, ne)
-- `customerNumber` (ct, nct, eq, ne)
-- `customerCompanyname` (ct, nct, eq, ne)
-- `customerAddress` (ct, nct, eq, ne)
-- `customerCity` (ct, nct, eq, ne)
-- `customerZip` (ct, nct, eq, ne)
-- `customerState` (ct, nct, eq, ne)
-- `customerCountry` (ct, nct, eq, ne)
-- `customerPhone` (ct, nct, eq, ne)
-- `customerEmail` (ct, nct, eq, ne)
-- `customerShippingAddress` (ct, nct, eq, ne)
-- `customerShippingCity` (ct, nct, eq, ne)
-- `customerShippingZip` (ct, nct, eq, ne)
-- `customerShippingState` (ct, nct, eq, ne)
-- `customerShippingCountry` (ct, nct, eq, ne)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array
-- nin => not inside array
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportTransactionsOrg(Format, OrgId) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of transactions for an org in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportTransactionsOrgRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportTransactionsOrg(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query 
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help. 
-
-List of field names accepted:
-- `transactionDate` (gt, ge, lt, le, eq, ne)
-- `transId` (ne, eq, ct, nct)
-- `gatewayTransId` (ne, eq, ct, nct)
-- `orderId` (ne, eq)
-- `idTrans` (ne, eq)
-- `orgId` (ne, eq)
-- `paypointId` (ne, eq)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-- `method` (in, nin, eq, ne)
-- `totalAmount` (gt, ge, lt, le, eq, ne)
-- `netAmount` (gt, ge, lt, le, eq, ne)
-- `feeAmount` (gt, ge, lt, le, eq, ne)
-- `operation` (in, nin, eq, ne)
-- `source` (in, nin, eq, ne)
-- `status` (in, nin, eq, ne)
-- `settlementStatus` (in, nin, eq, ne)
-- `batchNumber` (nct, ct)
-- `payaccountLastfour` (nct, ct)
-- `payaccountType` (ne, eq, in, nin)
-- `customerFirstname` (ct, nct, eq, ne)
-- `customerLastname` (ct, nct, eq, ne)
-- `customerName` (ct, nct)
-- `customerId` (eq, ne)
-- `customerNumber` (ct, nct, eq, ne)
-- `customerCompanyname` (ct, nct, eq, ne)
-- `customerAddress` (ct, nct, eq, ne)
-- `customerCity` (ct, nct, eq, ne)
-- `customerZip` (ct, nct, eq, ne)
-- `customerState` (ct, nct, eq, ne)
-- `customerCountry` (ct, nct, eq, ne)
-- `customerPhone` (ct, nct, eq, ne)
-- `customerEmail` (ct, nct, eq, ne)
-- `customerShippingAddress` (ct, nct, eq, ne)
-- `customerShippingCity` (ct, nct, eq, ne)
-- `customerShippingZip` (ct, nct, eq, ne)
-- `customerShippingState` (ct, nct, eq, ne)
-- `customerShippingCountry` (ct, nct, eq, ne)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array
-- nin => not inside array
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportTransferDetails(Format, Entry, TransferId) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of transfer details for an entrypoint. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportTransferDetailsRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Export.ExportTransferDetails(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        "8cfec329267",
-        int64(1000000),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**transferId:** `int64` — Transfer identifier.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help. 
-
-List of field names accepted:
-
-  - `grossAmount` (gt, ge, lt, le, eq, ne)
-
-  - `chargeBackAmount` (gt, ge, lt, le, eq, ne)
-
-  - `returnedAmount` (gt, ge, lt, le, eq, ne)
-
-  - `billingFeeAmount` (gt, ge, lt, le, eq, ne)
-
-  - `thirdPartyPaidAmount` (gt, ge, lt, le, eq, ne)
-
-  - `netFundedAmount` (gt, ge, lt, le, eq, ne)
-
-  - `adjustmentAmount` (gt, ge, lt, le, eq, ne)
-
-  - `transactionId` (eq, ne, in, nin)
-
-  - `category` (eq, ne, ct, nct)
-
-  - `type` (eq, ne, in, nin)
-
-  - `method` (eq, ne, in, nin)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sortBy:** `*string` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportTransfers(Entry) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Get a list of transfers for an entrypoint. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportTransfersRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Export.ExportTransfers(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help. 
-
-List of field names accepted:
-  - `transferDate` (gt, ge, lt, le, eq, ne)
-
-  - `grossAmount` (gt, ge, lt, le, eq, ne)
-
-  - `chargeBackAmount` (gt, ge, lt, le, eq, ne)
-
-  - `returnedAmount` (gt, ge, lt, le, eq, ne)
-
-  - `billingFeeAmount` (gt, ge, lt, le, eq, ne)
-
-  - `thirdPartyPaidAmount` (gt, ge, lt, le, eq, ne)
-
-  - `netFundedAmount` (gt, ge, lt, le, eq, ne)
-
-  - `adjustmentAmount` (gt, ge, lt, le, eq, ne)
-
-  - `processor` (ne, eq, ct, nct)
-
-  - `transferStatus` (ne, eq, in, nin)
-
-  - `batchNumber` (ne, eq, ct, nct)
-
-  - `batchId` (ne, eq, in, nin)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sortBy:** `*string` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportVendors(Format, Entry) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of vendors for an entrypoint. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportVendorsRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportVendors(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        "8cfec329267",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query.
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `method` (in, nin, eq, ne)
-- `enrollmentStatus` (in, nin, eq, ne)
-- `status` (in, nin, eq, ne)
-- `vendorNumber` (ct, nct, eq, ne)
-- `name` (ct, nct, eq, ne)
-- `ein` (ct, nct, eq, ne)
-- `phone` (ct, nct, eq, ne)
-- `email` (ct, nct, eq, ne)
-- `address` (ct, nct, eq, ne)
-- `city` (ct, nct, eq, ne)
-- `state` (ct, nct, eq, ne)
-- `country` (ct, nct, eq, ne)
-- `zip` (ct, nct, eq, ne)
-- `mcc` (ct, nct, eq, ne)
-- `locationCode` (ct, nct, eq, ne)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array separated by "|"
-- nin => not inside array separated by "|"
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Export.ExportVendorsOrg(Format, OrgId) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a list of vendors for an organization. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ExportVendorsOrgRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportVendorsOrg(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**columnsExport:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query.
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `method` (in, nin, eq, ne)
-- `enrollmentStatus` (in, nin, eq, ne)
-- `status` (in, nin, eq, ne)
-- `vendorNumber` (ct, nct, eq, ne)
-- `name` (ct, nct, eq, ne)
-- `ein` (ct, nct, eq, ne)
-- `phone` (ct, nct, eq, ne)
-- `email` (ct, nct, eq, ne)
-- `address` (ct, nct, eq, ne)
-- `city` (ct, nct, eq, ne)
-- `state` (ct, nct, eq, ne)
-- `country` (ct, nct, eq, ne)
-- `zip` (ct, nct, eq, ne)
-- `mcc` (ct, nct, eq, ne)
-- `locationCode` (ct, nct, eq, ne)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array separated by "|"
-- nin => not inside array separated by "|"
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## GhostCard
-<details><summary><code>client.GhostCard.CreateGhostCard(Entry, request) -> *payabli.CreateGhostCardResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Creates a ghost card, a multi-use virtual debit card issued to a vendor for recurring or discretionary spend.
-
-Unlike single-use virtual cards issued as part of a payout transaction, ghost cards aren't tied to a specific payout. They're issued directly to a vendor and can be reused up to a configurable number of times within the card's spending limits.
-
-Only one ghost card can exist per vendor per paypoint. To issue a new card to the same vendor, cancel the existing card first.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.CreateGhostCardRequestBody{
-        VendorId: int64(42),
-        ExpenseLimit: 500,
-        Amount: 500,
-        MaxNumberOfUses: 3,
-        ExactAmount: false,
-        ExpenseLimitPeriod: "monthly",
-        BillingCycle: "monthly",
-        BillingCycleDay: "1",
-        DailyTransactionCount: 5,
-        DailyAmountLimit: 200,
-        TransactionAmountLimit: 100,
-        Mcc: payabli.String(
-            "5411",
-        ),
-        Tcc: payabli.String(
-            "R",
-        ),
-        Misc1: payabli.String(
-            "PO-98765",
-        ),
-        Misc2: payabli.String(
-            "Dept-Finance",
-        ),
-    }
-client.GhostCard.CreateGhostCard(
-        context.TODO(),
-        "8cfec2e0fa",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `payabli.Entry` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**vendorId:** `int64` — ID of the vendor who receives the card. The vendor must belong to the paypoint and have an active status.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**expenseLimit:** `float64` — Spending limit for the card. Must be greater than `0` and can't exceed the paypoint's configured payout credit limit.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**expirationDate:** `*string` — Requested expiration date for the card. If not provided, defaults to 30 days from creation.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**amount:** `float64` — Initial load amount for the card.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**maxNumberOfUses:** `int` — Maximum number of times the card can be used. Ignored and set to `1` when `exactAmount` is `true`.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**exactAmount:** `bool` — When `true`, restricts the card to a single use. `maxNumberOfUses` is automatically set to `1` regardless of any other value provided.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**expenseLimitPeriod:** `string` — Time period over which `expenseLimit` applies (for example, `monthly` or `weekly`).
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**billingCycle:** `string` — Billing cycle identifier.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**billingCycleDay:** `string` — Day within the billing cycle.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**dailyTransactionCount:** `int` — Maximum number of transactions allowed per day.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**dailyAmountLimit:** `float64` — Maximum total spend allowed per day.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**transactionAmountLimit:** `int` — Maximum spend allowed per single transaction.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**mcc:** `*string` — Merchant Category Code to restrict where the card can be used. Must be a valid MCC if provided.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**tcc:** `*string` — Transaction Category Code to restrict where the card can be used. Must be a valid TCC if provided.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**misc1:** `*string` — Custom metadata field. Stored on the card record.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**misc2:** `*string` — Custom metadata field. Stored on the card record.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.GhostCard.UpdateCard(Entry, request) -> *payabli.PayabliApiResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates the status of a virtual card (including ghost cards) under a paypoint.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.UpdateCardRequestBody{
-        CardToken: "gc_abc123def456",
-        Status: payabli.CardStatusCancelled.Ptr(),
-    }
-client.GhostCard.UpdateCard(
-        context.TODO(),
-        "8cfec2e0fa",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `payabli.Entry` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**cardToken:** `string` — Token that uniquely identifies the card. This is the `ReferenceId` returned when the card was created.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**status:** `*payabli.CardStatus` — The new status to set on the card.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## HostedPaymentPages
-<details><summary><code>client.HostedPaymentPages.LoadPage(Entry, Subdomain) -> *payabli.PayabliPages</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Loads all of a payment page's details including `pageIdentifier` and `validationCode`. This endpoint requires an `application` API token.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.HostedPaymentPages.LoadPage(
-        context.TODO(),
-        "8cfec329267",
-        "pay-your-fees-1",
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**subdomain:** `string` — Payment page identifier. The subdomain value is the last part of the payment page URL. For example, in`https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.HostedPaymentPages.NewPage(Entry, request) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-
-Creates a new payment page for a paypoint. 
-Note: this operation doesn't create a new paypoint, just a payment page for an existing paypoint. Paypoints are created by the Payabli team when a boarding application is approved.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.NewPageRequest{
-        IdempotencyKey: payabli.String(
-            "6B29FC40-CA47-1067-B31D-00DD010662DA",
-        ),
-        Body: &payabli.PayabliPages{},
-    }
-client.HostedPaymentPages.NewPage(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idempotencyKey:** `*payabli.IdempotencyKey` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `*payabli.PayabliPages` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.HostedPaymentPages.SavePage(Entry, Subdomain, request) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates a payment page in a paypoint.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.PayabliPages{}
-client.HostedPaymentPages.SavePage(
-        context.TODO(),
-        "8cfec329267",
-        "pay-your-fees-1",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**subdomain:** `string` — Payment page identifier. The subdomain value is the last part of the payment page URL. For example, in`https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `*payabli.PayabliPages` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Import
-<details><summary><code>client.Import.ImportBills(Entry, request) -> *payabli.PayabliApiResponseImport</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Import a list of bills from a CSV file. See the [Import Guide](/developers/developer-guides/bills-add#import-bills) for more help and an example file.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ImportBillsRequest{
-        File: strings.NewReader(
-            "",
-        ),
-    }
-client.Import.ImportBills(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Import.ImportCustomer(Entry, request) -> *payabli.PayabliApiResponseImport</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Import a list of customers from a CSV file. See the [Import Guide](/developers/developer-guides/entities-customers#import-customers) for more help and example files.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ImportCustomerRequest{
-        File: strings.NewReader(
-            "",
-        ),
-    }
-client.Import.ImportCustomer(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `payabli.Entrypointfield` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**replaceExisting:** `*int` — Flag indicating to replace existing customer with a new record. Possible values: 0 (do not replace), 1 (replace). Default is 0
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Import.ImportVendor(Entry, request) -> *payabli.PayabliApiResponseImport</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Import a list of vendors from a CSV file. See the [Import Guide](/developers/developer-guides/entities-vendors#import-vendors) for more help and example files.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ImportVendorRequest{
-        File: strings.NewReader(
-            "",
-        ),
-    }
-client.Import.ImportVendor(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `payabli.Entrypointfield` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Invoice
-<details><summary><code>client.Invoice.AddInvoice(Entry, request) -> *payabli.InvoiceResponseWithoutData</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Creates an invoice in an entrypoint.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.AddInvoiceRequest{
-        Body: &payabli.InvoiceDataRequest{
-            CustomerData: &payabli.PayorDataRequest{
-                FirstName: payabli.String(
-                    "Tamara",
-                ),
-                LastName: payabli.String(
-                    "Bagratoni",
-                ),
-                CustomerNumber: payabli.String(
-                    "3",
-                ),
-            },
-            InvoiceData: &payabli.BillData{
-                Items: []*payabli.BillItem{
-                    &payabli.BillItem{
-                        ItemProductName: payabli.String(
-                            "Adventure Consult",
-                        ),
-                        ItemDescription: payabli.String(
-                            "Consultation for Georgian tours",
-                        ),
-                        ItemCost: 100,
-                        ItemQty: payabli.Int(
-                            1,
-                        ),
-                        ItemMode: payabli.Int(
-                            1,
-                        ),
-                        ItemTotalAmount: payabli.Float64(
-                            1,
-                        ),
-                    },
-                    &payabli.BillItem{
-                        ItemProductName: payabli.String(
-                            "Deposit ",
-                        ),
-                        ItemDescription: payabli.String(
-                            "Deposit for trip planning",
-                        ),
-                        ItemCost: 882.37,
-                        ItemQty: payabli.Int(
-                            1,
-                        ),
-                        ItemTotalAmount: payabli.Float64(
-                            1,
-                        ),
-                    },
-                },
-                InvoiceDate: payabli.Time(
-                    payabli.MustParseDate(
-                        "2025-10-19",
-                    ),
-                ),
-                InvoiceType: payabli.Int(
-                    0,
-                ),
-                InvoiceStatus: payabli.Int(
-                    1,
-                ),
-                Frequency: payabli.FrequencyOneTime.Ptr(),
-                InvoiceAmount: payabli.Float64(
-                    982.37,
-                ),
-                Discount: payabli.Float64(
-                    10,
-                ),
-                InvoiceNumber: payabli.String(
-                    "INV-3",
-                ),
-            },
-        },
-    }
-client.Invoice.AddInvoice(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**forceCustomerCreation:** `*payabli.ForceCustomerCreation` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idempotencyKey:** `*payabli.IdempotencyKey` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `*payabli.InvoiceDataRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Invoice.DeleteAttachedFromInvoice(IdInvoice, Filename) -> *payabli.InvoiceResponseWithoutData</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Deletes an invoice that's attached to a file.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Invoice.DeleteAttachedFromInvoice(
-        context.TODO(),
-        23548884,
-        "0_Bill.pdf",
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idInvoice:** `int` — Invoice ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**filename:** `string` 
-
-The filename in Payabli. Filename is `zipName` in response to a request to `/api/Invoice/{idInvoice}`. Here, the filename is `0_Bill.pdf``. 
-"DocumentsRef": {
-  "zipfile": "inva_269.zip",
-  "filelist": [
-    {
-      "originalName": "Bill.pdf",
-      "zipName": "0_Bill.pdf",
-      "descriptor": null
-    }
-  ]
-}
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Invoice.DeleteInvoice(IdInvoice) -> *payabli.InvoiceResponseWithoutData</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Deletes a single invoice from an entrypoint.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Invoice.DeleteInvoice(
-        context.TODO(),
-        23548884,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idInvoice:** `int` — Invoice ID
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Invoice.EditInvoice(IdInvoice, request) -> *payabli.InvoiceResponseWithoutData</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates details for a single invoice in an entrypoint.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.EditInvoiceRequest{
-        Body: &payabli.InvoiceDataRequest{
-            InvoiceData: &payabli.BillData{
-                Items: []*payabli.BillItem{
-                    &payabli.BillItem{
-                        ItemProductName: payabli.String(
-                            "Deposit",
-                        ),
-                        ItemDescription: payabli.String(
-                            "Deposit for trip planning",
-                        ),
-                        ItemCost: 882.37,
-                        ItemQty: payabli.Int(
-                            1,
-                        ),
-                    },
-                },
-                InvoiceDate: payabli.Time(
-                    payabli.MustParseDate(
-                        "2025-10-19",
-                    ),
-                ),
-                InvoiceAmount: payabli.Float64(
-                    982.37,
-                ),
-                InvoiceNumber: payabli.String(
-                    "INV-6",
-                ),
-            },
-        },
-    }
-client.Invoice.EditInvoice(
-        context.TODO(),
-        332,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idInvoice:** `int` — Invoice ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**forceCustomerCreation:** `*bool` — When `true`, the request creates a new customer record, regardless of whether customer identifiers match an existing customer.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `*payabli.InvoiceDataRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Invoice.GetAttachedFileFromInvoice(IdInvoice, Filename) -> *payabli.FileContent</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves a file attached to an invoice.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.GetAttachedFileFromInvoiceRequest{}
-client.Invoice.GetAttachedFileFromInvoice(
-        context.TODO(),
-        1,
-        "filename",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idInvoice:** `int` — Invoice ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**filename:** `string` 
-
-The filename in Payabli. Filename is `zipName` in the response to a request to `/api/Invoice/{idInvoice}`. Here, the filename is `0_Bill.pdf``. 
-```
-  "DocumentsRef": {
-    "zipfile": "inva_269.zip",
-    "filelist": [
-      {
-        "originalName": "Bill.pdf",
-        "zipName": "0_Bill.pdf",
-        "descriptor": null
-      }
-    ]
-  }
-  ```
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**returnObject:** `*bool` — When `true`, the request returns the file content as a Base64-encoded string.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Invoice.GetInvoice(IdInvoice) -> *payabli.GetInvoiceRecord</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves a single invoice by ID.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Invoice.GetInvoice(
-        context.TODO(),
-        23548884,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idInvoice:** `int` — Invoice ID
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Invoice.GetInvoiceNumber(Entry) -> *payabli.InvoiceNumberResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves the next available invoice number for a paypoint.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Invoice.GetInvoiceNumber(
-        context.TODO(),
-        "8cfec329267",
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Invoice.ListInvoices(Entry) -> *payabli.QueryInvoiceResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Returns a list of invoices for an entrypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ListInvoicesRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Invoice.ListInvoices(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**exportFormat:** `*payabli.ExportFormat` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — Max number of records to return for the query. Use `0` or negative value to return all records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-
-- `invoiceDate` (gt, ge, lt, le, eq, ne)
-- `dueDate` (gt, ge, lt, le, eq, ne)
-- `sentDate` (gt, ge, lt, le, eq, ne)
-- `frequency` (in, nin,ne, eq)
-- `invoiceType` (eq, ne)
-- `payTerms` (in, nin, eq, ne)
-- `paypointId` (ne, eq)
-- `totalAmount` (gt, ge, lt, le, eq, ne)
-- `paidAmount` (gt, ge, lt, le, eq, ne)
-- `status` (in, nin, eq, ne)
-- `invoiceNumber` (ct, nct, eq, ne)
-- `purchaseOrder` (ct, nct, eq, ne)
-- `itemProductCode` (ct, nct)
-- `itemDescription` (ct, nct)
-- `customerFirstname` (ct, nct, eq, ne)
-- `customerLastname` (ct, nct, eq, ne)
-- `customerName` (ct, nct)
-- `customerId` (eq, ne)
-- `customerNumber` (ct, nct, eq, ne)
-- `customerCompanyname` (ct, nct, eq, ne)
-- `customerAddress` (ct, nct, eq, ne)
-- `customerCity` (ct, nct, eq, ne)
-- `customerZip` (ct, nct, eq, ne)
-- `customerState` (ct, nct, eq, ne)
-- `customerCountry` (ct, nct, eq, ne)
-- `customerPhone` (ct, nct, eq, ne)
-- `customerEmail` (ct, nct, eq, ne)
-- `customerShippingAddress` (ct, nct, eq, ne)
-- `customerShippingCity` (ct, nct, eq, ne)
-- `customerShippingZip` (ct, nct, eq, ne)
-- `customerShippingState` (ct, nct, eq, ne)
-- `customerShippingCountry` (ct, nct, eq, ne)
-- `orgId` (eq)
-- `paylinkId` (ne, eq)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
-
-List of comparison accepted - enclosed between parentheses:
-  
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array
-- nin => not inside array
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.00
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sortBy:** `*string` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Invoice.ListInvoicesOrg(OrgId) -> *payabli.QueryInvoiceResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Returns a list of invoices for an org. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ListInvoicesOrgRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Invoice.ListInvoicesOrg(
-        context.TODO(),
-        123,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**exportFormat:** `*payabli.ExportFormat` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — Max number of records to return for the query. Use `0` or negative value to return all records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-Collection of field names, conditions, and values used to filter the query
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-
-- `invoiceDate` (gt, ge, lt, le, eq, ne)
-- `dueDate` (gt, ge, lt, le, eq, ne)
-- `sentDate` (gt, ge, lt, le, eq, ne)
-- `frequency` (in, nin,ne, eq)
-- `invoiceType` (eq, ne)
-- `payTerms` (in, nin, eq, ne)
-- `paypointId` (ne, eq)
-- `totalAmount` (gt, ge, lt, le, eq, ne)
-- `paidAmount` (gt, ge, lt, le, eq, ne)
-- `status` (in, nin, eq, ne)
-- `invoiceNumber` (ct, nct, eq, ne)
-- `purchaseOrder` (ct, nct, eq, ne)
-- `itemProductCode` (ct, nct)
-- `itemDescription` (ct, nct)
-- `customerFirstname` (ct, nct, eq, ne)
-- `customerLastname` (ct, nct, eq, ne)
-- `customerName` (ct, nct)
-- `customerId` (eq, ne)
-- `customerNumber` (ct, nct, eq, ne)
-- `customerCompanyname` (ct, nct, eq, ne)
-- `customerAddress` (ct, nct, eq, ne)
-- `customerCity` (ct, nct, eq, ne)
-- `customerZip` (ct, nct, eq, ne)
-- `customerState` (ct, nct, eq, ne)
-- `customerCountry` (ct, nct, eq, ne)
-- `customerPhone` (ct, nct, eq, ne)
-- `customerEmail` (ct, nct, eq, ne)
-- `customerShippingAddress` (ct, nct, eq, ne)
-- `customerShippingCity` (ct, nct, eq, ne)
-- `customerShippingZip` (ct, nct, eq, ne)
-- `customerShippingState` (ct, nct, eq, ne)
-- `customerShippingCountry` (ct, nct, eq, ne)
-- `orgId` (eq)
-- `paylinkId` (ne, eq)
-- `paypointLegal` (ne, eq, ct, nct)
-- `paypointDba` (ne, eq, ct, nct)
-- `orgName` (ne, eq, ct, nct)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
-
-List of comparison accepted - enclosed between parentheses:
-
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array
-- nin => not inside array
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.00
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sortBy:** `*string` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Invoice.SendInvoice(IdInvoice) -> *payabli.SendInvoiceResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Sends an invoice from an entrypoint via email.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.SendInvoiceRequest{
-        Attachfile: payabli.Bool(
-            true,
-        ),
-        Mail2: payabli.String(
-            "tamara@example.com",
-        ),
-    }
-client.Invoice.SendInvoice(
-        context.TODO(),
-        23548884,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idInvoice:** `int` — Invoice ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**attachfile:** `*bool` — When `true`, attaches a PDF version of invoice to the email.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**mail2:** `*string` — Email address where the invoice will be sent to. If this parameter isn't included, Payabli uses the email address on file for the customer owner of the invoice.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Invoice.GetInvoicePdf(IdInvoice) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Export a single invoice in PDF format.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Invoice.GetInvoicePdf(
-        context.TODO(),
-        23548884,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idInvoice:** `int` — Invoice ID
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## LineItem
-<details><summary><code>client.LineItem.AddItem(Entry, request) -> *payabli.PayabliApiResponse6</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Adds products and services to an entrypoint's catalog. These are used as line items for invoicing and transactions. In the response, "responseData" displays the item's code.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.AddItemRequest{
-        Body: &payabli.LineItem{
-            ItemProductCode: payabli.String(
-                "M-DEPOSIT",
-            ),
-            ItemProductName: payabli.String(
-                "Materials deposit",
-            ),
-            ItemDescription: payabli.String(
-                "Deposit for materials",
-            ),
-            ItemCommodityCode: payabli.String(
-                "010",
-            ),
-            ItemUnitOfMeasure: payabli.String(
-                "SqFt",
-            ),
-            ItemCost: 12.45,
-            ItemQty: 1,
-            ItemMode: payabli.Int(
-                0,
-            ),
-        },
-    }
-client.LineItem.AddItem(
-        context.TODO(),
-        "47cae3d74",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idempotencyKey:** `*string` — A unique ID you can include to prevent duplicating objects or transactions if a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `*payabli.LineItem` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.LineItem.DeleteItem(LineItemId) -> *payabli.DeleteItemResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Deletes an item.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.LineItem.DeleteItem(
-        context.TODO(),
-        700,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**lineItemId:** `int` — ID for the line item (also known as a product, service, or item).
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.LineItem.GetItem(LineItemId) -> *payabli.LineItemQueryRecord</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Gets an item by ID. 
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.LineItem.GetItem(
-        context.TODO(),
-        700,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**lineItemId:** `int` — ID for the line item (also known as a product, service, or item).
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.LineItem.ListLineItems(Entry) -> *payabli.QueryResponseItems</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves a list of line items and their details from an entrypoint. Line items are also known as items, products, and services. Use filters to limit results.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ListLineItemsRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.LineItem.ListLineItems(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — Max number of records to return for the query. Use `0` or negative value to return all records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-
-Collection of field names, conditions, and values used to filter the query
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-
-</Info>
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-
-  - `categories` (ct, nct)
-  - `code` (ne, eq, ct, nct)
-  - `commodityCode` (ne, eq, ct, nct)
-  - `createdDate` (gt, ge, lt, le, eq, ne)
-  - `description` (ne, eq, ct, nct)
-  - `externalPaypointID` (ct, nct, ne, eq)
-  - `mode` (eq, ne)
-  - `name` (ne, eq, ct, nct)
-  - `orgName` (ne, eq, ct, nct)
-  - `paypointDba` (ne, eq, ct, nct)
-  - `paypointId` (ne, eq)
-  - `paypointLegal` (ne, eq, ct, nct)
-  - `quantity` (gt, ge, lt, le, eq, ne)
-  - `uom` (ne, eq, ct, nct)
-  - `updatedDate` (gt, ge, lt, le, eq, ne)
-  - `value` (gt, ge, lt, le, eq, ne)
-
-List of comparison accepted - enclosed between parentheses:
-
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array separated by "|"
-- nin => not inside array separated by "|"
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: name(ct)=john return all records with name containing john
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sortBy:** `*string` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.LineItem.UpdateItem(LineItemId, request) -> *payabli.PayabliApiResponse6</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates an item.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.LineItem{
-        ItemCost: 12.45,
-        ItemQty: 1,
-    }
-client.LineItem.UpdateItem(
-        context.TODO(),
-        700,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**lineItemId:** `int` — ID for the line item (also known as a product, service, or item).
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `*payabli.LineItem` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Management
-<details><summary><code>client.Management.VerifyAccountDetails(Entry, request) -> *payabli.VerifyAccountDetailsResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Verifies a bank account and returns detailed verification results from the verification network, including bank name, account status, and response codes. Unlike a pass/fail verification, this endpoint returns granular data to support decision-making and troubleshooting.
-
-When bank authentication is enabled for the paypoint's organization, the endpoint performs an identity verification check on the account holder. Otherwise, it performs an account existence check. When bank authentication is enabled, the `accountHolderType` and `holderName` fields are required.
-
-Requires `inboundpayments_create` or `outboundpayments_create` permission.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.VerifyAccountDetailsRequest{
-        RoutingNumber: "122105278",
-        AccountNumber: "0000000016",
-        AccountType: payabli.String(
-            "Checking",
-        ),
-        Country: payabli.String(
-            "US",
-        ),
-        AccountHolderType: payabli.String(
-            "personal",
-        ),
-        HolderName: payabli.String(
-            "Jane Doe",
-        ),
-    }
-client.Management.VerifyAccountDetails(
-        context.TODO(),
-        "entry752",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entry name identifier.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**routingNumber:** `string` — The bank routing number to verify.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**accountNumber:** `string` — The bank account number to verify.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**accountType:** `*string` — The type of bank account, such as `Checking` or `Savings`.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**country:** `*string` — The ISO country code for the bank account, such as `US`.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**accountHolderType:** `*string` — The type of account holder. Accepted values are `personal` or `business`. Required when bank authentication is enabled for the paypoint's organization.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**holderName:** `*string` — The name of the bank account holder. For personal accounts, provide the holder's full name (for example, `Jane Doe`); the value is split on the first space into first and last name. For business accounts, provide the legal business name. Required when bank authentication is enabled for the paypoint's organization.
+**checkAmount:** `int` — Check amount in cents (maximum 32-bit integer value).
     
 </dd>
 </dl>
@@ -10890,7 +1666,7 @@ request := &payabli.RequestPaymentAuthorize{
                 ),
             },
             EntryPoint: payabli.String(
-                "f743aed24a",
+                "8cfec329267",
             ),
             Ipaddress: payabli.String(
                 "255.255.255.255",
@@ -10917,6 +1693,7 @@ request := &payabli.RequestPaymentAuthorize{
                     Initiator: payabli.String(
                         "payor",
                     ),
+                    Method: payabli.PayMethodCreditMethodCard,
                 },
             },
         },
@@ -10940,7 +1717,7 @@ client.MoneyIn.Authorize(
 <dl>
 <dd>
 
-**forceCustomerCreation:** `*payabli.ForceCustomerCreation` 
+**forceCustomerCreation:** `*payabli.ForceCustomerCreation` — When `true`, the request creates a new customer record, regardless of whether customer identifiers match an existing customer. Defaults to `false`.
     
 </dd>
 </dl>
@@ -10948,7 +1725,7 @@ client.MoneyIn.Authorize(
 <dl>
 <dd>
 
-**idempotencyKey:** `*payabli.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
     
 </dd>
 </dl>
@@ -10983,7 +1760,7 @@ client.MoneyIn.Authorize(
 <Warning>
   This endpoint is deprecated and will be sunset on November 24, 2025. Migrate to [POST `/capture/{transId}`](/developers/api-reference/moneyin/capture-an-authorized-transaction)`.
 </Warning>
-  
+
   Capture an [authorized
 transaction](/developers/api-reference/moneyin/authorize-a-transaction) to complete the transaction and move funds from the customer to merchant account.
 </dd>
@@ -11052,7 +1829,7 @@ client.MoneyIn.Capture(
 <dl>
 <dd>
 
-Capture an [authorized transaction](/developers/api-reference/moneyin/authorize-a-transaction) to complete the transaction and move funds from the customer to merchant account. 
+Capture an [authorized transaction](/developers/api-reference/moneyin/authorize-a-transaction) to complete the transaction and move funds from the customer to merchant account.
 
 You can use this endpoint to capture both full and partial amounts of the original authorized transaction. See [Capture an authorized transaction](/developers/developer-guides/pay-in-auth-and-capture) for more information about this endpoint.
 
@@ -11135,7 +1912,7 @@ client.MoneyIn.CaptureAuth(
 
 Make a temporary microdeposit in a customer account to verify the customer's ownership and access to the target account. Reverse the microdeposit with `reverseCredit`. Payabli doesn't automatically make microdeposits when you add a bank account, you must manually make the requests.
 
-This feature must be enabled by Payabli on a per-merchant basis. Contact support for help. 
+This feature must be enabled by Payabli on a per-merchant basis. Contact support for help.
 </dd>
 </dl>
 </dd>
@@ -11159,11 +1936,11 @@ request := &payabli.RequestCredit{
                 "5127 Linkwood ave",
             ),
             CustomerNumber: payabli.String(
-                "100",
+                "C-90010",
             ),
         },
         Entrypoint: payabli.String(
-            "my-entrypoint",
+            "8cfec329267",
         ),
         PaymentDetails: &payabli.PaymentDetailCredit{
             ServiceFee: payabli.Float64(
@@ -11182,6 +1959,7 @@ request := &payabli.RequestCredit{
             AchRouting: payabli.String(
                 "021000021",
             ),
+            Method: payabli.RequestCreditPaymentMethodMethodAch,
         },
     }
 client.MoneyIn.Credit(
@@ -11203,7 +1981,7 @@ client.MoneyIn.Credit(
 <dl>
 <dd>
 
-**forceCustomerCreation:** `*payabli.ForceCustomerCreation` 
+**forceCustomerCreation:** `*payabli.ForceCustomerCreation` — When `true`, the request creates a new customer record, regardless of whether customer identifiers match an existing customer. Defaults to `false`.
     
 </dd>
 </dl>
@@ -11211,7 +1989,7 @@ client.MoneyIn.Credit(
 <dl>
 <dd>
 
-**idempotencyKey:** `*payabli.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
     
 </dd>
 </dl>
@@ -11392,7 +2170,7 @@ request := &payabli.RequestPayment{
                 ),
             },
             EntryPoint: payabli.String(
-                "f743aed24a",
+                "8cfec329267",
             ),
             Ipaddress: payabli.String(
                 "255.255.255.255",
@@ -11419,6 +2197,7 @@ request := &payabli.RequestPayment{
                     Initiator: payabli.String(
                         "payor",
                     ),
+                    Method: payabli.PayMethodCreditMethodCard,
                 },
             },
         },
@@ -11442,7 +2221,7 @@ client.MoneyIn.Getpaid(
 <dl>
 <dd>
 
-**achValidation:** `*payabli.AchValidation` 
+**achValidation:** `*payabli.AchValidation` — When `true`, enables real-time validation of ACH account and routing numbers. This is an add-on feature, contact Payabli for more information.
     
 </dd>
 </dl>
@@ -11450,7 +2229,7 @@ client.MoneyIn.Getpaid(
 <dl>
 <dd>
 
-**forceCustomerCreation:** `*payabli.ForceCustomerCreation` 
+**forceCustomerCreation:** `*payabli.ForceCustomerCreation` — When `true`, the request creates a new customer record, regardless of whether customer identifiers match an existing customer. Defaults to `false`.
     
 </dd>
 </dl>
@@ -11466,7 +2245,7 @@ client.MoneyIn.Getpaid(
 <dl>
 <dd>
 
-**idempotencyKey:** `*payabli.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
     
 </dd>
 </dl>
@@ -11551,10 +2330,9 @@ client.MoneyIn.Reverse(
 
 **amount:** `float64` 
 
-
 Amount to reverse from original transaction, minus any service fees charged on the original transaction.
 
-The amount provided can't be greater than the original total amount of the transaction, minus service fees. For example, if a transaction was $90 plus a $10 service fee, you can reverse up to $90. 
+The amount provided can't be greater than the original total amount of the transaction, minus service fees. For example, if a transaction was $90 plus a $10 service fee, you can reverse up to $90.
 
 An amount equal to zero will refunds the total amount authorized minus any service fee.
     
@@ -11629,8 +2407,7 @@ client.MoneyIn.Refund(
 
 **amount:** `float64` 
 
-
-Amount to refund from original transaction, minus any service fees charged on the original transaction. 
+Amount to refund from original transaction, minus any service fees charged on the original transaction.
 
 The amount provided can't be greater than the original total amount of the transaction, minus service fees. For example, if a transaction was \$90 plus a \$10 service fee, you can refund up to \$90.
 
@@ -11677,47 +2454,47 @@ request := &payabli.RequestRefund{
         IdempotencyKey: payabli.String(
             "8A29FC40-CA47-1067-B31D-00DD010662DB",
         ),
-        Source: payabli.String(
-            "api",
+        Amount: payabli.Float64(
+            100,
         ),
         OrderDescription: payabli.String(
             "Materials deposit",
         ),
-        Amount: payabli.Float64(
-            100,
-        ),
         RefundDetails: &payabli.RefundDetail{
             SplitRefunding: []*payabli.SplitFundingRefundContent{
                 &payabli.SplitFundingRefundContent{
-                    OriginationEntryPoint: payabli.String(
-                        "7f1a381696",
-                    ),
                     AccountId: payabli.String(
                         "187-342",
-                    ),
-                    Description: payabli.String(
-                        "Refunding undelivered materials",
                     ),
                     Amount: payabli.Float64(
                         60,
                     ),
-                },
-                &payabli.SplitFundingRefundContent{
+                    Description: payabli.String(
+                        "Refunding undelivered materials",
+                    ),
                     OriginationEntryPoint: payabli.String(
                         "7f1a381696",
                     ),
+                },
+                &payabli.SplitFundingRefundContent{
                     AccountId: payabli.String(
                         "187-343",
-                    ),
-                    Description: payabli.String(
-                        "Refunding deposit for undelivered materials",
                     ),
                     Amount: payabli.Float64(
                         40,
                     ),
+                    Description: payabli.String(
+                        "Refunding deposit for undelivered materials",
+                    ),
+                    OriginationEntryPoint: payabli.String(
+                        "7f1a381696",
+                    ),
                 },
             },
         },
+        Source: payabli.String(
+            "api",
+        ),
     }
 client.MoneyIn.RefundWithInstructions(
         context.TODO(),
@@ -11747,7 +2524,7 @@ client.MoneyIn.RefundWithInstructions(
 <dl>
 <dd>
 
-**idempotencyKey:** `*payabli.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
     
 </dd>
 </dl>
@@ -11757,10 +2534,9 @@ client.MoneyIn.RefundWithInstructions(
 
 **amount:** `*float64` 
 
+Amount to refund from original transaction, minus any service fees charged on the original transaction.
 
-Amount to refund from original transaction, minus any service fees charged on the original transaction. 
-
-The amount provided can't be greater than the original total amount of the transaction, minus service fees. For example, if a transaction was $90 plus a $10 service fee, you can refund up to $90. 
+The amount provided can't be greater than the original total amount of the transaction, minus service fees. For example, if a transaction was $90 plus a $10 service fee, you can refund up to $90.
 
 An amount equal to zero will refund the total amount authorized minus any service fee.
     
@@ -11934,7 +2710,7 @@ client.MoneyIn.SendReceipt2Trans(
 
 **email:** `*string` 
 
-Email address where the payment receipt should be sent. 
+Email address where the payment receipt should be sent.
 
 If not provided, the email address on file for the user owner of the transaction is used.
     
@@ -11979,7 +2755,7 @@ request := &payabli.RequestPaymentValidate{
         IdempotencyKey: payabli.String(
             "6B29FC40-CA47-1067-B31D-00DD010662DA",
         ),
-        EntryPoint: "entry132",
+        EntryPoint: "8cfec329267",
         PaymentMethod: &payabli.RequestPaymentValidatePaymentMethod{
             Method: payabli.RequestPaymentValidatePaymentMethodMethodCard,
             Cardnumber: "4360000001000005",
@@ -12007,7 +2783,7 @@ client.MoneyIn.Validate(
 <dl>
 <dd>
 
-**idempotencyKey:** `*payabli.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
     
 </dd>
 </dl>
@@ -12156,7 +2932,7 @@ request := &payabli.RequestPaymentV2{
                 ),
             },
             EntryPoint: payabli.String(
-                "f743aed24a",
+                "8cfec329267",
             ),
             Ipaddress: payabli.String(
                 "255.255.255.255",
@@ -12183,6 +2959,7 @@ request := &payabli.RequestPaymentV2{
                     Initiator: payabli.String(
                         "payor",
                     ),
+                    Method: payabli.PayMethodCreditMethodCard,
                 },
             },
         },
@@ -12206,7 +2983,7 @@ client.MoneyIn.Getpaidv2(
 <dl>
 <dd>
 
-**achValidation:** `*payabli.AchValidation` 
+**achValidation:** `*payabli.AchValidation` — When `true`, enables real-time validation of ACH account and routing numbers. This is an add-on feature, contact Payabli for more information.
     
 </dd>
 </dl>
@@ -12214,7 +2991,7 @@ client.MoneyIn.Getpaidv2(
 <dl>
 <dd>
 
-**forceCustomerCreation:** `*payabli.ForceCustomerCreation` 
+**forceCustomerCreation:** `*payabli.ForceCustomerCreation` — When `true`, the request creates a new customer record, regardless of whether customer identifiers match an existing customer. Defaults to `false`.
     
 </dd>
 </dl>
@@ -12222,7 +2999,7 @@ client.MoneyIn.Getpaidv2(
 <dl>
 <dd>
 
-**idempotencyKey:** `*payabli.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
     
 </dd>
 </dl>
@@ -12287,7 +3064,7 @@ request := &payabli.RequestPaymentAuthorizeV2{
                 ),
             },
             EntryPoint: payabli.String(
-                "f743aed24a",
+                "8cfec329267",
             ),
             Ipaddress: payabli.String(
                 "255.255.255.255",
@@ -12314,6 +3091,7 @@ request := &payabli.RequestPaymentAuthorizeV2{
                     Initiator: payabli.String(
                         "payor",
                     ),
+                    Method: payabli.PayMethodCreditMethodCard,
                 },
             },
         },
@@ -12337,7 +3115,7 @@ client.MoneyIn.Authorizev2(
 <dl>
 <dd>
 
-**forceCustomerCreation:** `*payabli.ForceCustomerCreation` 
+**forceCustomerCreation:** `*payabli.ForceCustomerCreation` — When `true`, the request creates a new customer record, regardless of whether customer identifiers match an existing customer. Defaults to `false`.
     
 </dd>
 </dl>
@@ -12345,7 +3123,7 @@ client.MoneyIn.Authorizev2(
 <dl>
 <dd>
 
-**idempotencyKey:** `*payabli.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
     
 </dd>
 </dl>
@@ -12627,8 +3405,8 @@ client.MoneyIn.Voidv2(
 </dl>
 </details>
 
-## MoneyOut
-<details><summary><code>client.MoneyOut.AuthorizeOut(request) -> *payabli.AuthCapturePayoutResponse</code></summary>
+## Subscription
+<details><summary><code>client.Subscription.GetSubscription(SubId) -> *payabli.SubscriptionQueryRecords</code></summary>
 <dl>
 <dd>
 
@@ -12640,11 +3418,7 @@ client.MoneyIn.Voidv2(
 <dl>
 <dd>
 
-Authorizes a transaction for payout.
-
-If you don't pass `autoCapture` with a value of `true`, authorized transactions aren't flagged for settlement until captured. Use the `referenceId` returned in the response to capture the transaction.
-
-When `autoCapture` is `true`, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the [`payout_transaction_approvedcaptured`](/developers/webhooks/payout-transaction-approved-captured) webhook event.
+Retrieves a single subscription's details.
 </dd>
 </dl>
 </dd>
@@ -12659,42 +3433,487 @@ When `autoCapture` is `true`, Payabli captures the transaction asynchronously af
 <dd>
 
 ```go
-request := &payabli.MoneyOutTypesRequestOutAuthorize{
-        Body: &payabli.AuthorizePayoutBody{
-            EntryPoint: "48acde49",
-            AutoCapture: payabli.Bool(
-                true,
+client.Subscription.GetSubscription(
+        context.TODO(),
+        231,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**subId:** `int` — The subscription ID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Subscription.UpdateSubscription(SubId, request) -> *payabli.UpdateSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates a subscription's details.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.RequestUpdateSchedule{
+        SetPause: payabli.Bool(
+            true,
+        ),
+    }
+client.Subscription.UpdateSubscription(
+        context.TODO(),
+        231,
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**subId:** `int` — The subscription ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentDetails:** `*payabli.PaymentDetail` — Object describing details of the payment. For Regular subscriptions, skip a payment by setting `totalAmount` to 0; payments pause until you update it to a non-zero value, and `serviceFee` must also be 0 when `totalAmount` is 0. For BalanceDriven subscriptions, any `totalAmount` you send is accepted but ignored at run time. Each run charges the payor's live balance, and a zero balance is skipped.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scheduleDetails:** `*payabli.ScheduleDetail` — Object describing the schedule for subscription
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**setPause:** `*payabli.SetPause` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Subscription.RemoveSubscription(SubId) -> *payabli.RemoveSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes a subscription, autopay, or recurring payment and prevents future charges.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Subscription.RemoveSubscription(
+        context.TODO(),
+        231,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**subId:** `int` — The subscription ID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Subscription.NewSubscription(request) -> *payabli.AddSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a subscription or scheduled payment to run at a specified time and frequency. You can use stored payment method tokens for card, ACH, and digital wallets by passing them into the `paymentMethod.storedMethodId` field.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.RequestSchedule{
+        CustomerData: &payabli.PayorDataRequest{
+            CustomerId: payabli.Int64(
+                int64(4440),
             ),
-            InvoiceData: []*payabli.RequestOutAuthorizeInvoiceData{
-                &payabli.RequestOutAuthorizeInvoiceData{
-                    BillId: payabli.Int64(
-                        int64(54323),
+        },
+        EntryPoint: payabli.String(
+            "8cfec329267",
+        ),
+        PaymentDetails: &payabli.PaymentDetail{
+            ServiceFee: payabli.Float64(
+                0,
+            ),
+            TotalAmount: 100,
+        },
+        PaymentMethod: &payabli.RequestSchedulePaymentMethod{
+            PayMethodCredit: &payabli.PayMethodCredit{
+                Cardcvv: payabli.String(
+                    "123",
+                ),
+                Cardexp: "02/25",
+                CardHolder: payabli.String(
+                    "John Cassian",
+                ),
+                Cardnumber: "4111111111111111",
+                Cardzip: payabli.String(
+                    "37615",
+                ),
+                Initiator: payabli.String(
+                    "payor",
+                ),
+                Method: payabli.PayMethodCreditMethodCard,
+            },
+        },
+        ScheduleDetails: &payabli.ScheduleDetail{
+            EndDate: payabli.String(
+                "2025-03-20",
+            ),
+            Frequency: payabli.FrequencyWeekly.Ptr(),
+            PlanId: payabli.Int(
+                1,
+            ),
+            StartDate: payabli.String(
+                "2024-09-20",
+            ),
+        },
+    }
+client.Subscription.NewSubscription(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**forceCustomerCreation:** `*payabli.ForceCustomerCreation` — When `true`, the request creates a new customer record, regardless of whether customer identifiers match an existing customer. Defaults to `false`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**customerData:** `*payabli.PayorDataRequest` — Object describing the customer/payor.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entryPoint:** `*payabli.Entrypointfield` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**invoiceData:** `*payabli.BillData` — Object describing an Invoice linked to the subscription.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentDetails:** `*payabli.PaymentDetail` — Object describing details of the payment. For Regular subscriptions, skip a payment by setting `totalAmount` to 0; payments pause until you update it to a non-zero value, and `serviceFee` must also be 0 when `totalAmount` is 0. For BalanceDriven subscriptions, any `totalAmount` you send is accepted but ignored at run time. Each run charges the payor's live balance, and a zero balance is skipped.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentMethod:** `*payabli.RequestSchedulePaymentMethod` — Information about the payment method for the transaction. Required and recommended fields for each payment method type are described in each schema below.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scheduleDetails:** `*payabli.ScheduleDetail` — Object describing the schedule for subscription.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**setPause:** `*payabli.SetPause` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**source:** `*payabli.Source` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**subdomain:** `*payabli.Subdomain` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**subscriptionType:** `*payabli.SubscriptionType` — Subscription type. Defaults to `Regular` when omitted. Can't be changed after the subscription is created. If you send it to the update endpoint, it's ignored.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Invoice
+<details><summary><code>client.Invoice.AddInvoice(Entry, request) -> *payabli.InvoiceResponseWithoutData</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates an invoice in an entrypoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.AddInvoiceRequest{
+        Body: &payabli.InvoiceDataRequest{
+            CustomerData: &payabli.PayorDataRequest{
+                CustomerNumber: payabli.String(
+                    "C-90010",
+                ),
+                FirstName: payabli.String(
+                    "Tamara",
+                ),
+                LastName: payabli.String(
+                    "Bagratoni",
+                ),
+            },
+            InvoiceData: &payabli.BillData{
+                Discount: payabli.Float64(
+                    10,
+                ),
+                Frequency: payabli.FrequencyOneTime.Ptr(),
+                InvoiceAmount: payabli.Float64(
+                    1082.37,
+                ),
+                InvoiceDate: payabli.Time(
+                    payabli.MustParseDate(
+                        "2025-10-19",
                     ),
+                ),
+                InvoiceNumber: payabli.String(
+                    "INV-2345",
+                ),
+                InvoiceStatus: payabli.Int(
+                    1,
+                ),
+                InvoiceType: payabli.Int(
+                    0,
+                ),
+                Items: []*payabli.BillItem{
+                    &payabli.BillItem{
+                        ItemCost: payabli.Float64(
+                            100,
+                        ),
+                        ItemDescription: payabli.String(
+                            "Consultation for Georgian tours",
+                        ),
+                        ItemMode: payabli.Int(
+                            2,
+                        ),
+                        ItemProductName: payabli.String(
+                            "Adventure Consult",
+                        ),
+                        ItemQty: payabli.Int(
+                            2,
+                        ),
+                        ItemTotalAmount: payabli.Float64(
+                            200,
+                        ),
+                    },
+                    &payabli.BillItem{
+                        ItemCost: payabli.Float64(
+                            882.37,
+                        ),
+                        ItemDescription: payabli.String(
+                            "Deposit for trip planning",
+                        ),
+                        ItemMode: payabli.Int(
+                            2,
+                        ),
+                        ItemProductName: payabli.String(
+                            "Deposit ",
+                        ),
+                        ItemQty: payabli.Int(
+                            1,
+                        ),
+                        ItemTotalAmount: payabli.Float64(
+                            882.37,
+                        ),
+                    },
                 },
             },
-            OrderDescription: payabli.String(
-                "Window Painting",
-            ),
-            PaymentDetails: &payabli.RequestOutAuthorizePaymentDetails{
-                TotalAmount: payabli.Float64(
-                    47,
-                ),
-                Unbundled: payabli.Bool(
-                    false,
-                ),
-            },
-            PaymentMethod: &payabli.AuthorizePaymentMethod{
-                Method: "managed",
-            },
-            VendorData: &payabli.RequestOutAuthorizeVendorData{
-                VendorNumber: payabli.String(
-                    "7895433",
-                ),
-            },
         },
     }
-client.MoneyOut.AuthorizeOut(
+client.Invoice.AddInvoice(
         context.TODO(),
+        "8cfec329267",
         request,
     )
 }
@@ -12712,7 +3931,7 @@ client.MoneyOut.AuthorizeOut(
 <dl>
 <dd>
 
-**allowDuplicatedBills:** `*bool` — When `true`, the authorization bypasses the requirement for unique bills, identified by vendor invoice number. This allows you to make more than one payout authorization for a bill, like a split payment.
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -12720,7 +3939,7 @@ client.MoneyOut.AuthorizeOut(
 <dl>
 <dd>
 
-**doNotCreateBills:** `*bool` — When `true`, Payabli won't automatically create a bill for this payout transaction.
+**forceCustomerCreation:** `*payabli.ForceCustomerCreation` — When `true`, the request creates a new customer record, regardless of whether customer identifiers match an existing customer. Defaults to `false`.
     
 </dd>
 </dl>
@@ -12728,7 +3947,7 @@ client.MoneyOut.AuthorizeOut(
 <dl>
 <dd>
 
-**forceVendorCreation:** `*bool` — When `true`, the request creates a new vendor record, regardless of whether the vendor already exists.
+**idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
     
 </dd>
 </dl>
@@ -12736,15 +3955,7 @@ client.MoneyOut.AuthorizeOut(
 <dl>
 <dd>
 
-**idempotencyKey:** `*payabli.IdempotencyKey` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `*payabli.AuthorizePayoutBody` 
+**request:** `*payabli.InvoiceDataRequest` 
     
 </dd>
 </dl>
@@ -12756,7 +3967,7 @@ client.MoneyOut.AuthorizeOut(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyOut.CancelAllOut(request) -> *payabli.CaptureAllOutResponse</code></summary>
+<details><summary><code>client.Invoice.GetAttachedFileFromInvoice(IdInvoice, Filename) -> *payabli.FileContent</code></summary>
 <dl>
 <dd>
 
@@ -12768,7 +3979,7 @@ client.MoneyOut.AuthorizeOut(
 <dl>
 <dd>
 
-Cancels an array of payout transactions.
+Retrieves a file attached to an invoice.
 </dd>
 </dl>
 </dd>
@@ -12783,13 +3994,11 @@ Cancels an array of payout transactions.
 <dd>
 
 ```go
-request := []string{
-        "2-29",
-        "2-28",
-        "2-27",
-    }
-client.MoneyOut.CancelAllOut(
+request := &payabli.GetAttachedFileFromInvoiceRequest{}
+client.Invoice.GetAttachedFileFromInvoice(
         context.TODO(),
+        1,
+        "filename",
         request,
     )
 }
@@ -12807,7 +4016,27 @@ client.MoneyOut.CancelAllOut(
 <dl>
 <dd>
 
-**request:** `[]string` — Array of identifiers of payout transactions to cancel.
+**idInvoice:** `int` — Invoice ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**filename:** `string` 
+
+The filename in Payabli. Get this from the `zipName` field
+in the `DocumentsRef.filelist` array returned by
+`/api/Invoice/{idInvoice}`. Example: `0_Bill.pdf`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**returnObject:** `*bool` — When `true`, the request returns the file content as a Base64-encoded string.
     
 </dd>
 </dl>
@@ -12819,7 +4048,7 @@ client.MoneyOut.CancelAllOut(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyOut.CancelOutGet(ReferenceId) -> *payabli.PayabliApiResponse0000</code></summary>
+<details><summary><code>client.Invoice.DeleteAttachedFromInvoice(IdInvoice, Filename) -> *payabli.InvoiceResponseWithoutData</code></summary>
 <dl>
 <dd>
 
@@ -12831,7 +4060,7 @@ client.MoneyOut.CancelAllOut(
 <dl>
 <dd>
 
-Cancel a payout transaction by ID.
+Deletes a file attached to an invoice.
 </dd>
 </dl>
 </dd>
@@ -12846,9 +4075,10 @@ Cancel a payout transaction by ID.
 <dd>
 
 ```go
-client.MoneyOut.CancelOutGet(
+client.Invoice.DeleteAttachedFromInvoice(
         context.TODO(),
-        "129-219",
+        23548884,
+        "0_Bill.pdf",
     )
 }
 ```
@@ -12865,7 +4095,19 @@ client.MoneyOut.CancelOutGet(
 <dl>
 <dd>
 
-**referenceId:** `string` — The ID for the payout transaction. 
+**idInvoice:** `int` — Invoice ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**filename:** `string` 
+
+The filename in Payabli. Get this from the `zipName` field
+in the `DocumentsRef.filelist` array returned by
+`/api/Invoice/{idInvoice}`. Example: `0_Bill.pdf`.
     
 </dd>
 </dl>
@@ -12877,7 +4119,7 @@ client.MoneyOut.CancelOutGet(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyOut.CancelOutDelete(ReferenceId) -> *payabli.PayabliApiResponse0000</code></summary>
+<details><summary><code>client.Invoice.GetInvoice(IdInvoice) -> *payabli.GetInvoiceRecord</code></summary>
 <dl>
 <dd>
 
@@ -12889,7 +4131,7 @@ client.MoneyOut.CancelOutGet(
 <dl>
 <dd>
 
-Cancel a payout transaction by ID.
+Retrieves a single invoice by ID.
 </dd>
 </dl>
 </dd>
@@ -12904,9 +4146,9 @@ Cancel a payout transaction by ID.
 <dd>
 
 ```go
-client.MoneyOut.CancelOutDelete(
+client.Invoice.GetInvoice(
         context.TODO(),
-        "129-219",
+        23548884,
     )
 }
 ```
@@ -12923,7 +4165,7 @@ client.MoneyOut.CancelOutDelete(
 <dl>
 <dd>
 
-**referenceId:** `string` — The ID for the payout transaction. 
+**idInvoice:** `int` — Invoice ID
     
 </dd>
 </dl>
@@ -12935,7 +4177,7 @@ client.MoneyOut.CancelOutDelete(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyOut.CaptureAllOut(request) -> *payabli.CaptureAllOutResponse</code></summary>
+<details><summary><code>client.Invoice.EditInvoice(IdInvoice, request) -> *payabli.InvoiceResponseWithoutData</code></summary>
 <dl>
 <dd>
 
@@ -12947,7 +4189,7 @@ client.MoneyOut.CancelOutDelete(
 <dl>
 <dd>
 
-Captures an array of authorized payout transactions for settlement. The maximum number of transactions that can be captured in a single request is 500.
+Updates details for a single invoice in an entrypoint.
 </dd>
 </dl>
 </dd>
@@ -12962,500 +4204,42 @@ Captures an array of authorized payout transactions for settlement. The maximum 
 <dd>
 
 ```go
-request := &payabli.CaptureAllOutRequest{
-        Body: []string{
-            "2-29",
-            "2-28",
-            "2-27",
-        },
-    }
-client.MoneyOut.CaptureAllOut(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idempotencyKey:** `*payabli.IdempotencyKey` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `[]string` — Array of identifiers of payout transactions to capture.  
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.MoneyOut.CaptureOut(ReferenceId) -> *payabli.AuthCapturePayoutResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Captures a single authorized payout transaction by ID. If the transaction was authorized with `autoCapture` set to `true`,  you don't need to call this endpoint to capture the transaction for processing.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.CaptureOutRequest{}
-client.MoneyOut.CaptureOut(
-        context.TODO(),
-        "129-219",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**referenceId:** `string` — The ID for the payout transaction. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idempotencyKey:** `*payabli.IdempotencyKey` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.MoneyOut.PayoutDetails(TransId) -> *payabli.BillDetailResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Returns details for a processed money out transaction.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.MoneyOut.PayoutDetails(
-        context.TODO(),
-        "45-as456777hhhhhhhhhh77777777-324",
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**transId:** `string` — ReferenceId for the transaction (PaymentId).
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.MoneyOut.VCardGet(CardToken) -> *payabli.VCardGetResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves vCard details for a single card in an entrypoint.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.MoneyOut.VCardGet(
-        context.TODO(),
-        "20230403315245421165",
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**cardToken:** `string` — ID for a virtual card.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.MoneyOut.SendVCardLink(request) -> *payabli.OperationResult</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Sends a virtual card link via email to the vendor associated with the `transId`.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.SendVCardLinkRequest{
-        TransId: "01K33Z6YQZ6GD5QVKZ856MJBSC",
-    }
-client.MoneyOut.SendVCardLink(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**transId:** `string` — The transaction ID of the virtual card payout. The ID is returned as `ReferenceId` in the response when you authorize a payout with POST /MoneyOut/authorize.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.MoneyOut.GetCheckImage(AssetName) -> string</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieve the image of a check associated with a processed transaction. 
-The check image is returned in the response body as a base64-encoded string. 
-The check image is only available for payouts that have been processed.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.MoneyOut.GetCheckImage(
-        context.TODO(),
-        "check133832686289732320_01JKBNZ5P32JPTZY8XXXX000000.pdf",
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**assetName:** `string` 
-
-Name of the check asset to retrieve. This is returned as `filename` in the `CheckData` object 
-in the response when you make a GET request to `/MoneyOut/details/{transId}`.
-```
-    "CheckData": {
-      "ftype": "PDF",
-      "filename": "check133832686289732320_01JKBNZ5P32JPTZY8XXXX000000.pdf",
-      "furl": "",
-      "fContent": ""
-  }
-```
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.MoneyOut.UpdateCheckPaymentStatus(TransId, CheckPaymentStatus) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates the status of a processed check payment transaction. This endpoint handles the status transition, updates related bills, creates audit events, and triggers notifications.
-
-The transaction must meet all of the following criteria:
-- **Status**: Must be in Processing or Processed status.
-- **Payment method**: Must be a check payment method.
-
-### Allowed status values
-
-| Value | Status | Description |
-|-------|--------|-------------|
-| `0` | Cancelled/Voided | Cancels the check transaction. Reverts associated bills to their previous state (Approved or Active), creates "Cancelled" events, and sends a `payout_transaction_voidedcancelled` notification if the notification is enabled. |
-| `5` | Paid | Marks the check transaction as paid. Updates associated bills to "Paid" status, creates "Paid" events, and sends a `payout_transaction_paid` notification if the notification is enabled. |
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.MoneyOut.UpdateCheckPaymentStatus(
-        context.TODO(),
-        "TRANS123456",
-        payabli.AllowedCheckPaymentStatusPaid.Ptr(),
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**transId:** `string` — The Payabli transaction ID for the check payment.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**checkPaymentStatus:** `*payabli.AllowedCheckPaymentStatus` — The new status to apply to the check transaction. To mark a check as `Paid`, send 5. To mark a check as `Cancelled`, send 0.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.MoneyOut.ReissueOut(request) -> *payabli.ReissuePayoutResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Reissues a payout transaction with a new payment method. This creates a new transaction linked to the original and marks the original transaction as reissued.
-
-The original transaction must be in **Processing** or **Processed** status. The payment method in the request body is used directly. The endpoint doesn't fall back to vendor-managed payment methods.
-
-The new transaction goes through the standard authorize-and-capture flow automatically. Both the original and new transactions are linked through their event histories for audit purposes.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ReissueOutRequest{
-        TransId: "129-219",
-        Body: &payabli.ReissuePayoutBody{
-            PaymentMethod: &payabli.ReissuePaymentMethod{
-                Method: "ach",
-                AchAccount: payabli.String(
-                    "9876543210",
+request := &payabli.EditInvoiceRequest{
+        Body: &payabli.InvoiceDataRequest{
+            InvoiceData: &payabli.BillData{
+                InvoiceAmount: payabli.Float64(
+                    982.37,
                 ),
-                AchAccountType: payabli.String(
-                    "savings",
+                InvoiceDate: payabli.Time(
+                    payabli.MustParseDate(
+                        "2025-10-19",
+                    ),
                 ),
-                AchRouting: payabli.String(
-                    "021000021",
+                InvoiceNumber: payabli.String(
+                    "INV-2345",
                 ),
-                AchHolder: payabli.String(
-                    "Acme Corp",
-                ),
-                AchHolderType: payabli.AchHolderTypeBusiness.Ptr(),
+                Items: []*payabli.BillItem{
+                    &payabli.BillItem{
+                        ItemCost: payabli.Float64(
+                            882.37,
+                        ),
+                        ItemDescription: payabli.String(
+                            "Deposit for trip planning",
+                        ),
+                        ItemProductName: payabli.String(
+                            "Deposit",
+                        ),
+                        ItemQty: payabli.Int(
+                            1,
+                        ),
+                    },
+                },
             },
         },
     }
-client.MoneyOut.ReissueOut(
+client.Invoice.EditInvoice(
         context.TODO(),
+        23548884,
         request,
     )
 }
@@ -13473,7 +4257,7 @@ client.MoneyOut.ReissueOut(
 <dl>
 <dd>
 
-**transId:** `string` — The transaction ID of the payout to reissue.
+**idInvoice:** `int` — Invoice ID
     
 </dd>
 </dl>
@@ -13481,7 +4265,7 @@ client.MoneyOut.ReissueOut(
 <dl>
 <dd>
 
-**idempotencyKey:** `*payabli.IdempotencyKey` 
+**forceCustomerCreation:** `*bool` — When `true`, the request creates a new customer record, regardless of whether customer identifiers match an existing customer.
     
 </dd>
 </dl>
@@ -13489,7 +4273,7 @@ client.MoneyOut.ReissueOut(
 <dl>
 <dd>
 
-**request:** `*payabli.ReissuePayoutBody` 
+**request:** `*payabli.InvoiceDataRequest` 
     
 </dd>
 </dl>
@@ -13501,8 +4285,7 @@ client.MoneyOut.ReissueOut(
 </dl>
 </details>
 
-## Notification
-<details><summary><code>client.Notification.AddNotification(request) -> *payabli.PayabliApiResponseNotifications</code></summary>
+<details><summary><code>client.Invoice.DeleteInvoice(IdInvoice) -> *payabli.InvoiceResponseWithoutData</code></summary>
 <dl>
 <dd>
 
@@ -13514,7 +4297,7 @@ client.MoneyOut.ReissueOut(
 <dl>
 <dd>
 
-Create a new notification or autogenerated report. 
+Deletes a single invoice from an entrypoint.
 </dd>
 </dl>
 </dd>
@@ -13529,26 +4312,9 @@ Create a new notification or autogenerated report.
 <dd>
 
 ```go
-request := &payabli.AddNotificationRequest{
-        NotificationStandardRequest: &payabli.NotificationStandardRequest{
-            Content: &payabli.NotificationStandardRequestContent{
-                EventType: payabli.NotificationStandardRequestContentEventTypeCreatedApplication.Ptr(),
-            },
-            Frequency: payabli.NotificationStandardRequestFrequencyUntilcancelled,
-            Method: payabli.NotificationStandardRequestMethodWeb,
-            OwnerId: payabli.Int(
-                236,
-            ),
-            OwnerType: 0,
-            Status: payabli.Int(
-                1,
-            ),
-            Target: "https://webhook.site/2871b8f8-edc7-441a-b376-98d8c8e33275",
-        },
-    }
-client.Notification.AddNotification(
+client.Invoice.DeleteInvoice(
         context.TODO(),
-        request,
+        23548884,
     )
 }
 ```
@@ -13565,7 +4331,7 @@ client.Notification.AddNotification(
 <dl>
 <dd>
 
-**request:** `*payabli.AddNotificationRequest` 
+**idInvoice:** `int` — Invoice ID
     
 </dd>
 </dl>
@@ -13577,7 +4343,7 @@ client.Notification.AddNotification(
 </dl>
 </details>
 
-<details><summary><code>client.Notification.DeleteNotification(NId) -> *payabli.PayabliApiResponseNotifications</code></summary>
+<details><summary><code>client.Invoice.GetInvoiceNumber(Entry) -> *payabli.InvoiceNumberResponse</code></summary>
 <dl>
 <dd>
 
@@ -13589,7 +4355,7 @@ client.Notification.AddNotification(
 <dl>
 <dd>
 
-Deletes a single notification or autogenerated report.
+Retrieves the next available invoice number for a paypoint.
 </dd>
 </dl>
 </dd>
@@ -13604,1320 +4370,7 @@ Deletes a single notification or autogenerated report.
 <dd>
 
 ```go
-client.Notification.DeleteNotification(
-        context.TODO(),
-        "1717",
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**nId:** `string` — Notification ID. 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Notification.GetNotification(NId) -> *payabli.NotificationQueryRecord</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves a single notification or autogenerated report's details.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Notification.GetNotification(
-        context.TODO(),
-        "1717",
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**nId:** `string` — Notification ID. 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Notification.UpdateNotification(NId, request) -> *payabli.PayabliApiResponseNotifications</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Update a notification or autogenerated report. 
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.UpdateNotificationRequest{
-        NotificationStandardRequest: &payabli.NotificationStandardRequest{
-            Content: &payabli.NotificationStandardRequestContent{
-                EventType: payabli.NotificationStandardRequestContentEventTypeApprovedPayment.Ptr(),
-            },
-            Frequency: payabli.NotificationStandardRequestFrequencyUntilcancelled,
-            Method: payabli.NotificationStandardRequestMethodEmail,
-            OwnerId: payabli.Int(
-                136,
-            ),
-            OwnerType: 0,
-            Status: payabli.Int(
-                1,
-            ),
-            Target: "newemail@email.com",
-        },
-    }
-client.Notification.UpdateNotification(
-        context.TODO(),
-        "1717",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**nId:** `string` — Notification ID. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `*payabli.UpdateNotificationRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Notification.GetReportFile(Id) -> payabli.File</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Gets a copy of a generated report by ID.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Notification.GetReportFile(
-        context.TODO(),
-        int64(1000000),
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `int64` — Report ID
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Notificationlogs
-<details><summary><code>client.Notificationlogs.SearchNotificationLogs(request) -> []*payabli.NotificationLog</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Search notification logs with filtering and pagination.
-  - Start date and end date cannot be more than 30 days apart
-  - Either `orgId` or `paypointId` must be provided
-
-This endpoint requires the `notifications_create` OR `notifications_read` permission.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.SearchNotificationLogsRequest{
-        PageSize: payabli.Int(
-            20,
-        ),
-        Body: &payabli.NotificationLogSearchRequest{
-            StartDate: payabli.MustParseDateTime(
-                "2024-01-01T00:00:00Z",
-            ),
-            EndDate: payabli.MustParseDateTime(
-                "2024-01-31T23:59:59Z",
-            ),
-            OrgId: payabli.Int64(
-                int64(12345),
-            ),
-            NotificationEvent: payabli.String(
-                "ActivatedMerchant",
-            ),
-            Succeeded: payabli.Bool(
-                true,
-            ),
-        },
-    }
-client.Notificationlogs.SearchNotificationLogs(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**pageSize:** `*payabli.Pagesize` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**page:** `*int` — The page number to retrieve. Defaults to 1 if not provided.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `*payabli.NotificationLogSearchRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Notificationlogs.GetNotificationLog(Uuid) -> *payabli.NotificationLogDetail</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Get detailed information for a specific notification log entry.
-This endpoint requires the `notifications_create` OR `notifications_read` permission.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Notificationlogs.GetNotificationLog(
-        context.TODO(),
-        uuid.MustParse(
-            "550e8400-e29b-41d4-a716-446655440000",
-        ),
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**uuid:** `uuid.UUID` — The notification log entry.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Notificationlogs.RetryNotificationLog(Uuid) -> *payabli.NotificationLogDetail</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retry sending a specific notification.
-
-**Permissions:** notifications_create
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Notificationlogs.RetryNotificationLog(
-        context.TODO(),
-        uuid.MustParse(
-            "550e8400-e29b-41d4-a716-446655440000",
-        ),
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**uuid:** `uuid.UUID` — Unique id
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Notificationlogs.BulkRetryNotificationLogs(request) -> error</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retry sending multiple notifications (maximum 50 IDs).
-This is an async process, so use the search endpoint again to check the notification status.
-
-This endpoint requires the `notifications_create` permission.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := []uuid.UUID{
-        uuid.MustParse(
-            "550e8400-e29b-41d4-a716-446655440000",
-        ),
-        uuid.MustParse(
-            "550e8400-e29b-41d4-a716-446655440001",
-        ),
-        uuid.MustParse(
-            "550e8400-e29b-41d4-a716-446655440002",
-        ),
-    }
-client.Notificationlogs.BulkRetryNotificationLogs(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `payabli.BulkRetryRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Ocr
-<details><summary><code>client.Ocr.OcrDocumentForm(TypeResult, request) -> *payabli.PayabliApiResponseOcr</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Use this endpoint to upload an image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter `typeResult`. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.FileContentImageOnly{}
-client.Ocr.OcrDocumentForm(
-        context.TODO(),
-        "typeResult",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**typeResult:** `payabli.TypeResult` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `*payabli.FileContentImageOnly` — The image file to OCR. Accepted formats include PDF, JPG, JPEG, PNG, GIF.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Ocr.OcrDocumentJson(TypeResult, request) -> *payabli.PayabliApiResponseOcr</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Use this endpoint to submit a Base64-encoded image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter `typeResult`. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.FileContentImageOnly{}
-client.Ocr.OcrDocumentJson(
-        context.TODO(),
-        "typeResult",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**typeResult:** `payabli.TypeResult` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `*payabli.FileContentImageOnly` — Base64-encoded file content for OCR processing
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Organization
-<details><summary><code>client.Organization.AddOrganization(request) -> *payabli.AddOrganizationResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Creates an organization under a parent organization. This is also referred to as a suborganization.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.AddOrganizationRequest{
-        IdempotencyKey: payabli.String(
-            "6B29FC40-CA47-1067-B31D-00DD010662DA",
-        ),
-        BillingInfo: &payabli.Instrument{
-            AchAccount: "123123123",
-            AchRouting: "123123123",
-            BillingAddress: payabli.String(
-                "123 Walnut Street",
-            ),
-            BillingCity: payabli.String(
-                "Johnson City",
-            ),
-            BillingCountry: payabli.String(
-                "US",
-            ),
-            BillingState: payabli.String(
-                "TN",
-            ),
-            BillingZip: payabli.String(
-                "37615",
-            ),
-        },
-        Contacts: &payabli.ContactsField{
-            &payabli.Contacts{
-                ContactEmail: payabli.String(
-                    "herman@hermanscoatings.com",
-                ),
-                ContactName: payabli.String(
-                    "Herman Martinez",
-                ),
-                ContactPhone: payabli.String(
-                    "3055550000",
-                ),
-                ContactTitle: payabli.String(
-                    "Owner",
-                ),
-            },
-        },
-        HasBilling: payabli.Bool(
-            true,
-        ),
-        HasResidual: payabli.Bool(
-            true,
-        ),
-        OrgAddress: payabli.String(
-            "123 Walnut Street",
-        ),
-        OrgCity: payabli.String(
-            "Johnson City",
-        ),
-        OrgCountry: payabli.String(
-            "US",
-        ),
-        OrgEntryName: payabli.String(
-            "pilgrim-planner",
-        ),
-        OrgId: payabli.String(
-            "123",
-        ),
-        OrgLogo: &payabli.FileContent{
-            FContent: payabli.String(
-                "TXkgdGVzdCBmaWxlHJ==...",
-            ),
-            Filename: payabli.String(
-                "my-doc.pdf",
-            ),
-            Ftype: payabli.FileContentFtypePdf.Ptr(),
-            Furl: payabli.String(
-                "https://mysite.com/my-doc.pdf",
-            ),
-        },
-        OrgName: "Pilgrim Planner",
-        OrgParentId: payabli.Int64(
-            int64(236),
-        ),
-        OrgState: payabli.String(
-            "TN",
-        ),
-        OrgTimezone: payabli.Int(
-            -5,
-        ),
-        OrgType: 0,
-        OrgWebsite: payabli.String(
-            "www.pilgrimageplanner.com",
-        ),
-        OrgZip: payabli.String(
-            "37615",
-        ),
-        ReplyToEmail: "email@example.com",
-    }
-client.Organization.AddOrganization(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idempotencyKey:** `*payabli.IdempotencyKey` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**services:** `[]*payabli.ServiceCost` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**billingInfo:** `*payabli.Instrument` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**contacts:** `*payabli.ContactsField` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**hasBilling:** `*bool` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**hasResidual:** `*bool` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgAddress:** `*payabli.Orgaddress` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgCity:** `*payabli.Orgcity` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgCountry:** `*payabli.Orgcountry` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgEntryName:** `*payabli.Orgentryname` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgId:** `*payabli.Orgidstring` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgLogo:** `*payabli.FileContent` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgName:** `payabli.Orgname` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgParentId:** `*payabli.OrgParentId` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgState:** `*payabli.Orgstate` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgTimezone:** `*payabli.Orgtimezone` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgType:** `payabli.Orgtype` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgWebsite:** `*payabli.Orgwebsite` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgZip:** `*payabli.Orgzip` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**replyToEmail:** `payabli.ReplyToEmail` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Organization.DeleteOrganization(OrgId) -> *payabli.DeleteOrganizationResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Delete an organization by ID. 
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Organization.DeleteOrganization(
-        context.TODO(),
-        123,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Organization.EditOrganization(OrgId, request) -> *payabli.EditOrganizationResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates an organization's details by ID.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.OrganizationData{
-        Contacts: &payabli.ContactsField{
-            &payabli.Contacts{
-                ContactEmail: payabli.String(
-                    "herman@hermanscoatings.com",
-                ),
-                ContactName: payabli.String(
-                    "Herman Martinez",
-                ),
-                ContactPhone: payabli.String(
-                    "3055550000",
-                ),
-                ContactTitle: payabli.String(
-                    "Owner",
-                ),
-            },
-        },
-        OrgAddress: payabli.String(
-            "123 Walnut Street",
-        ),
-        OrgCity: payabli.String(
-            "Johnson City",
-        ),
-        OrgCountry: payabli.String(
-            "US",
-        ),
-        OrgEntryName: payabli.String(
-            "pilgrim-planner",
-        ),
-        OrganizationDataOrgId: payabli.String(
-            "123",
-        ),
-        OrgName: payabli.String(
-            "Pilgrim Planner",
-        ),
-        OrgState: payabli.String(
-            "TN",
-        ),
-        OrgTimezone: payabli.Int(
-            -5,
-        ),
-        OrgType: payabli.Int(
-            0,
-        ),
-        OrgWebsite: payabli.String(
-            "www.pilgrimageplanner.com",
-        ),
-        OrgZip: payabli.String(
-            "37615",
-        ),
-    }
-client.Organization.EditOrganization(
-        context.TODO(),
-        123,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**services:** `[]*payabli.ServiceCost` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**billingInfo:** `*payabli.Instrument` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**contacts:** `*payabli.ContactsField` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**hasBilling:** `*bool` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**hasResidual:** `*bool` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgAddress:** `*payabli.Orgaddress` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgCity:** `*payabli.Orgcity` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgCountry:** `*payabli.Orgcountry` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgEntryName:** `*payabli.Orgentryname` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**organizationDataOrgId:** `*payabli.Orgidstring` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgLogo:** `*payabli.FileContent` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgName:** `*payabli.Orgname` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgParentId:** `*payabli.OrgParentId` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgState:** `*payabli.Orgstate` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgTimezone:** `*payabli.Orgtimezone` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgType:** `*payabli.Orgtype` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgWebsite:** `*payabli.Orgwebsite` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**orgZip:** `*payabli.Orgzip` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**replyToEmail:** `*payabli.ReplyToEmail` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Organization.GetBasicOrganization(Entry) -> *payabli.OrganizationQueryRecord</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Gets an organization's basic information by entry name (entrypoint identifier).
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Organization.GetBasicOrganization(
+client.Invoice.GetInvoiceNumber(
         context.TODO(),
         "8cfec329267",
     )
@@ -14948,7 +4401,7 @@ client.Organization.GetBasicOrganization(
 </dl>
 </details>
 
-<details><summary><code>client.Organization.GetBasicOrganizationById(OrgId) -> *payabli.OrganizationQueryRecord</code></summary>
+<details><summary><code>client.Invoice.ListInvoices(Entry) -> *payabli.QueryInvoiceResponse</code></summary>
 <dl>
 <dd>
 
@@ -14960,7 +4413,7 @@ client.Organization.GetBasicOrganization(
 <dl>
 <dd>
 
-Gets an organizations basic details by org ID.
+Returns a list of invoices for an entrypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 </dd>
 </dl>
 </dd>
@@ -14975,9 +4428,195 @@ Gets an organizations basic details by org ID.
 <dd>
 
 ```go
-client.Organization.GetBasicOrganizationById(
+request := &payabli.ListInvoicesRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
+client.Invoice.ListInvoices(
+        context.TODO(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — Max number of records to return for the query. Use `0` or negative value to return all records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+
+- `invoiceDate` (gt, ge, lt, le, eq, ne)
+- `dueDate` (gt, ge, lt, le, eq, ne)
+- `sentDate` (gt, ge, lt, le, eq, ne)
+- `frequency` (in, nin,ne, eq)
+- `invoiceType` (eq, ne)
+- `payTerms` (in, nin, eq, ne)
+- `paypointId` (ne, eq)
+- `totalAmount` (gt, ge, lt, le, eq, ne)
+- `paidAmount` (gt, ge, lt, le, eq, ne)
+- `status` (in, nin, eq, ne)
+- `invoiceNumber` (ct, nct, eq, ne)
+- `purchaseOrder` (ct, nct, eq, ne)
+- `itemProductCode` (ct, nct)
+- `itemDescription` (ct, nct)
+- `customerFirstname` (ct, nct, eq, ne)
+- `customerLastname` (ct, nct, eq, ne)
+- `customerName` (ct, nct)
+- `customerId` (eq, ne)
+- `customerNumber` (ct, nct, eq, ne)
+- `customerCompanyname` (ct, nct, eq, ne)
+- `customerAddress` (ct, nct, eq, ne)
+- `customerCity` (ct, nct, eq, ne)
+- `customerZip` (ct, nct, eq, ne)
+- `customerState` (ct, nct, eq, ne)
+- `customerCountry` (ct, nct, eq, ne)
+- `customerPhone` (ct, nct, eq, ne)
+- `customerEmail` (ct, nct, eq, ne)
+- `customerShippingAddress` (ct, nct, eq, ne)
+- `customerShippingCity` (ct, nct, eq, ne)
+- `customerShippingZip` (ct, nct, eq, ne)
+- `customerShippingState` (ct, nct, eq, ne)
+- `customerShippingCountry` (ct, nct, eq, ne)
+- `orgId` (eq)
+- `paylinkId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
+
+List of comparison accepted - enclosed between parentheses:
+
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array
+- nin => not inside array
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.00
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `*string` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Invoice.ListInvoicesOrg(OrgId) -> *payabli.QueryInvoiceResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a list of invoices for an org. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ListInvoicesOrgRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
+client.Invoice.ListInvoicesOrg(
         context.TODO(),
         123,
+        request,
     )
 }
 ```
@@ -14998,61 +4637,107 @@ client.Organization.GetBasicOrganizationById(
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
+    
 </dd>
 </dl>
 
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Organization.GetOrganization(OrgId) -> *payabli.OrganizationQueryRecord</code></summary>
 <dl>
 <dd>
 
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves details for an organization by ID. 
-</dd>
-</dl>
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
 </dd>
 </dl>
 
-#### 🔌 Usage
-
 <dl>
 <dd>
 
-<dl>
-<dd>
-
-```go
-client.Organization.GetOrganization(
-        context.TODO(),
-        123,
-    )
-}
-```
-</dd>
-</dl>
+**limitRecord:** `*int` — Max number of records to return for the query. Use `0` or negative value to return all records.
+    
 </dd>
 </dl>
 
-#### ⚙️ Parameters
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+
+- `invoiceDate` (gt, ge, lt, le, eq, ne)
+- `dueDate` (gt, ge, lt, le, eq, ne)
+- `sentDate` (gt, ge, lt, le, eq, ne)
+- `frequency` (in, nin,ne, eq)
+- `invoiceType` (eq, ne)
+- `payTerms` (in, nin, eq, ne)
+- `paypointId` (ne, eq)
+- `totalAmount` (gt, ge, lt, le, eq, ne)
+- `paidAmount` (gt, ge, lt, le, eq, ne)
+- `status` (in, nin, eq, ne)
+- `invoiceNumber` (ct, nct, eq, ne)
+- `purchaseOrder` (ct, nct, eq, ne)
+- `itemProductCode` (ct, nct)
+- `itemDescription` (ct, nct)
+- `customerFirstname` (ct, nct, eq, ne)
+- `customerLastname` (ct, nct, eq, ne)
+- `customerName` (ct, nct)
+- `customerId` (eq, ne)
+- `customerNumber` (ct, nct, eq, ne)
+- `customerCompanyname` (ct, nct, eq, ne)
+- `customerAddress` (ct, nct, eq, ne)
+- `customerCity` (ct, nct, eq, ne)
+- `customerZip` (ct, nct, eq, ne)
+- `customerState` (ct, nct, eq, ne)
+- `customerCountry` (ct, nct, eq, ne)
+- `customerPhone` (ct, nct, eq, ne)
+- `customerEmail` (ct, nct, eq, ne)
+- `customerShippingAddress` (ct, nct, eq, ne)
+- `customerShippingCity` (ct, nct, eq, ne)
+- `customerShippingZip` (ct, nct, eq, ne)
+- `customerShippingState` (ct, nct, eq, ne)
+- `customerShippingCountry` (ct, nct, eq, ne)
+- `orgId` (eq)
+- `paylinkId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
+
+List of comparison accepted - enclosed between parentheses:
+
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array
+- nin => not inside array
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.00
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
 
-<dl>
-<dd>
-
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**sortBy:** `*string` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
     
 </dd>
 </dl>
@@ -15064,7 +4749,7 @@ client.Organization.GetOrganization(
 </dl>
 </details>
 
-<details><summary><code>client.Organization.GetSettingsOrganization(OrgId) -> *payabli.SettingsQueryRecord</code></summary>
+<details><summary><code>client.Invoice.SendInvoice(IdInvoice) -> *payabli.SendInvoiceResponse</code></summary>
 <dl>
 <dd>
 
@@ -15076,7 +4761,7 @@ client.Organization.GetOrganization(
 <dl>
 <dd>
 
-Retrieves an organization's settings.
+Sends an invoice from an entrypoint via email.
 </dd>
 </dl>
 </dd>
@@ -15091,9 +4776,18 @@ Retrieves an organization's settings.
 <dd>
 
 ```go
-client.Organization.GetSettingsOrganization(
+request := &payabli.SendInvoiceRequest{
+        Attachfile: payabli.Bool(
+            true,
+        ),
+        Mail2: payabli.String(
+            "tamara@example.com",
+        ),
+    }
+client.Invoice.SendInvoice(
         context.TODO(),
-        123,
+        23548884,
+        request,
     )
 }
 ```
@@ -15110,7 +4804,81 @@ client.Organization.GetSettingsOrganization(
 <dl>
 <dd>
 
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+**idInvoice:** `int` — Invoice ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**attachfile:** `*bool` — When `true`, attaches a PDF version of invoice to the email.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**mail2:** `*string` — Email address where the invoice will be sent to. If this parameter isn't included, Payabli uses the email address on file for the customer owner of the invoice.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Invoice.GetInvoicePdf(IdInvoice) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Export a single invoice in PDF format.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Invoice.GetInvoicePdf(
+        context.TODO(),
+        23548884,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**idInvoice:** `int` — Invoice ID
     
 </dd>
 </dl>
@@ -15135,7 +4903,7 @@ client.Organization.GetSettingsOrganization(
 <dl>
 <dd>
 
-Generates a payment link for an invoice from the invoice ID. 
+Generates a payment link for an invoice from the invoice ID.
 </dd>
 </dl>
 </dd>
@@ -15154,244 +4922,242 @@ request := &payabli.PayLinkDataInvoice{
         Mail2: payabli.String(
             "jo@example.com; ceo@example.com",
         ),
-        Body: &payabli.PaymentPageRequestBody{
-            ContactUs: &payabli.ContactElement{
-                EmailLabel: payabli.String(
-                    "Email",
-                ),
-                Enabled: payabli.Bool(
-                    true,
-                ),
-                Header: payabli.String(
-                    "Contact Us",
-                ),
-                Order: payabli.Int(
-                    0,
-                ),
-                PaymentIcons: payabli.Bool(
-                    true,
-                ),
-                PhoneLabel: payabli.String(
-                    "Phone",
-                ),
-            },
-            Invoices: &payabli.InvoiceElement{
-                Enabled: payabli.Bool(
-                    true,
-                ),
-                InvoiceLink: &payabli.LabelElement{
-                    Enabled: payabli.Bool(
-                        true,
-                    ),
-                    Label: payabli.String(
-                        "View Invoice",
-                    ),
-                    Order: payabli.Int(
-                        0,
-                    ),
-                },
-                Order: payabli.Int(
-                    0,
-                ),
-                ViewInvoiceDetails: &payabli.LabelElement{
-                    Enabled: payabli.Bool(
-                        true,
-                    ),
-                    Label: payabli.String(
-                        "Invoice Details",
-                    ),
-                    Order: payabli.Int(
-                        0,
-                    ),
-                },
-            },
-            Logo: &payabli.Element{
-                Enabled: payabli.Bool(
-                    true,
-                ),
-                Order: payabli.Int(
-                    0,
-                ),
-            },
-            MessageBeforePaying: &payabli.LabelElement{
+        ContactUs: &payabli.ContactElement{
+            EmailLabel: payabli.String(
+                "Email",
+            ),
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Header: payabli.String(
+                "Contact Us",
+            ),
+            Order: payabli.Int(
+                0,
+            ),
+            PaymentIcons: payabli.Bool(
+                true,
+            ),
+            PhoneLabel: payabli.String(
+                "Phone",
+            ),
+        },
+        Invoices: &payabli.InvoiceElement{
+            Enabled: payabli.Bool(
+                true,
+            ),
+            InvoiceLink: &payabli.LabelElement{
                 Enabled: payabli.Bool(
                     true,
                 ),
                 Label: payabli.String(
-                    "Please review your payment details",
+                    "View Invoice",
                 ),
                 Order: payabli.Int(
                     0,
                 ),
             },
-            Notes: &payabli.NoteElement{
+            Order: payabli.Int(
+                0,
+            ),
+            ViewInvoiceDetails: &payabli.LabelElement{
                 Enabled: payabli.Bool(
                     true,
                 ),
-                Header: payabli.String(
-                    "Additional Notes",
+                Label: payabli.String(
+                    "Invoice Details",
                 ),
                 Order: payabli.Int(
                     0,
                 ),
-                Placeholder: payabli.String(
-                    "Enter any additional notes here",
+            },
+        },
+        Logo: &payabli.Element{
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Order: payabli.Int(
+                0,
+            ),
+        },
+        MessageBeforePaying: &payabli.LabelElement{
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Label: payabli.String(
+                "Please review your payment details",
+            ),
+            Order: payabli.Int(
+                0,
+            ),
+        },
+        Notes: &payabli.NoteElement{
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Header: payabli.String(
+                "Additional Notes",
+            ),
+            Order: payabli.Int(
+                0,
+            ),
+            Placeholder: payabli.String(
+                "Enter any additional notes here",
+            ),
+            Value: payabli.String(
+                "",
+            ),
+        },
+        Page: &payabli.PageElement{
+            Description: payabli.String(
+                "Complete your payment securely",
+            ),
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Header: payabli.String(
+                "Payment Page",
+            ),
+            Order: payabli.Int(
+                0,
+            ),
+        },
+        PaymentButton: &payabli.LabelElement{
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Label: payabli.String(
+                "Pay Now",
+            ),
+            Order: payabli.Int(
+                0,
+            ),
+        },
+        PaymentMethods: &payabli.MethodElement{
+            AllMethodsChecked: payabli.Bool(
+                true,
+            ),
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Header: payabli.String(
+                "Payment Methods",
+            ),
+            Methods: &payabli.MethodsList{
+                Amex: payabli.Bool(
+                    true,
                 ),
-                Value: payabli.String(
+                ApplePay: payabli.Bool(
+                    true,
+                ),
+                Discover: payabli.Bool(
+                    true,
+                ),
+                ECheck: payabli.Bool(
+                    true,
+                ),
+                Mastercard: payabli.Bool(
+                    true,
+                ),
+                Visa: payabli.Bool(
+                    true,
+                ),
+            },
+            Order: payabli.Int(
+                0,
+            ),
+            Settings: &payabli.MethodElementSettings{
+                ApplePay: &payabli.MethodElementSettingsApplePay{
+                    ButtonStyle: payabli.MethodElementSettingsApplePayButtonStyleBlack.Ptr(),
+                    ButtonType: payabli.MethodElementSettingsApplePayButtonTypePay.Ptr(),
+                    Language: payabli.MethodElementSettingsApplePayLanguageEnUs.Ptr(),
+                },
+            },
+        },
+        Payor: &payabli.PayorElement{
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Fields: []*payabli.PayorFields{
+                &payabli.PayorFields{
+                    Display: payabli.Bool(
+                        true,
+                    ),
+                    Fixed: payabli.Bool(
+                        true,
+                    ),
+                    Identifier: payabli.Bool(
+                        true,
+                    ),
+                    Label: payabli.String(
+                        "Full Name",
+                    ),
+                    Name: payabli.String(
+                        "fullName",
+                    ),
+                    Order: payabli.Int(
+                        0,
+                    ),
+                    Required: payabli.Bool(
+                        true,
+                    ),
+                    Validation: payabli.String(
+                        "alpha",
+                    ),
+                    Value: payabli.String(
+                        "",
+                    ),
+                    Width: payabli.Int(
+                        0,
+                    ),
+                },
+            },
+            Header: payabli.String(
+                "Payor Information",
+            ),
+            Order: payabli.Int(
+                0,
+            ),
+        },
+        Review: &payabli.HeaderElement{
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Header: payabli.String(
+                "Review Payment",
+            ),
+            Order: payabli.Int(
+                0,
+            ),
+        },
+        Settings: &payabli.PagelinkSetting{
+            Color: payabli.String(
+                "#000000",
+            ),
+            CustomCssUrl: payabli.String(
+                "https://example.com/custom.css",
+            ),
+            Language: payabli.String(
+                "en",
+            ),
+            PageLogo: &payabli.FileContent{
+                FContent: payabli.String(
+                    "PHN2ZyB2aWV3Qm94PSIwIDAgODAwIDEwMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPCEtLSBCYWNrZ3JvdW5kIC0tPgogIDxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iMTAwMCIgZmlsbD0id2hpdGUiLz4KICAKICA8IS0tIENvbXBhbnkgSGVhZGVyIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI2MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+R3J1enlhIEFkdmVudHVyZSBPdXRmaXR0ZXJzPC90ZXh0PgogIDxsaW5lIHgxPSI0MCIgeTE9IjgwIiB4Mj0iNzYwIiB5Mj0iODAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgCiAgPCEtLSBDb21wYW55IERldGFpbHMgLS0+CiAgPHRleHQgeD0iNDAiIHk9IjExMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4xMjMgTW91bnRhaW4gVmlldyBSb2FkPC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+VGJpbGlzaSwgR2VvcmdpYSAwMTA1PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxNTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+VGVsOiArOTk1IDMyIDEyMyA0NTY3PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxNzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+RW1haWw6IGluZm9AZ3J1enlhYWR2ZW50dXJlcy5jb208L3RleHQ+CgogIDwhLS0gSW52b2ljZSBUaXRsZSAtLT4KICA8dGV4dCB4PSI2MDAiIHk9IjExMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+SU5WT0lDRTwvdGV4dD4KICA8dGV4dCB4PSI2MDAiIHk9IjE0MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5EYXRlOiAxMi8xMS8yMDI0PC90ZXh0PgogIDx0ZXh0IHg9IjYwMCIgeT0iMTYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPkludm9pY2UgIzogR1JaLTIwMjQtMTEyMzwvdGV4dD4KCiAgPCEtLSBCaWxsIFRvIFNlY3Rpb24gLS0+CiAgPHRleHQgeD0iNDAiIHk9IjIyMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+QklMTCBUTzo8L3RleHQ+CiAgPHJlY3QgeD0iNDAiIHk9IjIzNSIgd2lkdGg9IjMwMCIgaGVpZ2h0PSI4MCIgZmlsbD0iI2Y3ZjlmYSIvPgogIDx0ZXh0IHg9IjUwIiB5PSIyNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+W0N1c3RvbWVyIE5hbWVdPC90ZXh0PgogIDx0ZXh0IHg9IjUwIiB5PSIyODAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+W0FkZHJlc3MgTGluZSAxXTwvdGV4dD4KICA8dGV4dCB4PSI1MCIgeT0iMzAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPltDaXR5LCBDb3VudHJ5XTwvdGV4dD4KCiAgPCEtLSBUYWJsZSBIZWFkZXJzIC0tPgogIDxyZWN0IHg9IjQwIiB5PSIzNDAiIHdpZHRoPSI3MjAiIGhlaWdodD0iMzAiIGZpbGw9IiMyYzNlNTAiLz4KICA8dGV4dCB4PSI1MCIgeT0iMzYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSI+RGVzY3JpcHRpb248L3RleHQ+CiAgPHRleHQgeD0iNDUwIiB5PSIzNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIj5RdWFudGl0eTwvdGV4dD4KICA8dGV4dCB4PSI1NTAiIHk9IjM2MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiPlJhdGU8L3RleHQ+CiAgPHRleHQgeD0iNjgwIiB5PSIzNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIj5BbW91bnQ8L3RleHQ+CgogIDwhLS0gVGFibGUgUm93cyAtLT4KICA8cmVjdCB4PSI0MCIgeT0iMzcwIiB3aWR0aD0iNzIwIiBoZWlnaHQ9IjMwIiBmaWxsPSIjZjdmOWZhIi8+CiAgPHRleHQgeD0iNTAiIHk9IjM5MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5Nb3VudGFpbiBDbGltYmluZyBFcXVpcG1lbnQgUmVudGFsPC90ZXh0PgogIDx0ZXh0IHg9IjQ1MCIgeT0iMzkwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPjE8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSIzOTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDI1MC4wMDwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjM5MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kMjUwLjAwPC90ZXh0PgoKICA8cmVjdCB4PSI0MCIgeT0iNDAwIiB3aWR0aD0iNzIwIiBoZWlnaHQ9IjMwIiBmaWxsPSJ3aGl0ZSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI0MjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+R3VpZGVkIFRyZWsgUGFja2FnZSAtIDIgRGF5czwvdGV4dD4KICA8dGV4dCB4PSI0NTAiIHk9IjQyMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4xPC90ZXh0PgogIDx0ZXh0IHg9IjU1MCIgeT0iNDIwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPiQ0MDAuMDA8L3RleHQ+CiAgPHRleHQgeD0iNjgwIiB5PSI0MjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDQwMC4wMDwvdGV4dD4KCiAgPHJlY3QgeD0iNDAiIHk9IjQzMCIgd2lkdGg9IjcyMCIgaGVpZ2h0PSIzMCIgZmlsbD0iI2Y3ZjlmYSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI0NTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+U2FmZXR5IEVxdWlwbWVudCBQYWNrYWdlPC90ZXh0PgogIDx0ZXh0IHg9IjQ1MCIgeT0iNDUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPjE8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSI0NTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDE1MC4wMDwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjQ1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kMTUwLjAwPC90ZXh0PgoKICA8IS0tIFRvdGFscyAtLT4KICA8bGluZSB4MT0iNDAiIHkxPSI0ODAiIHgyPSI3NjAiIHkyPSI0ODAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgPHRleHQgeD0iNTUwIiB5PSI1MTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMzNDQ5NWUiPlN1YnRvdGFsOjwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjUxMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kODAwLjAwPC90ZXh0PgogIDx0ZXh0IHg9IjU1MCIgeT0iNTM1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjMzQ0OTVlIj5UYXggKDE4JSk6PC90ZXh0PgogIDx0ZXh0IHg9IjY4MCIgeT0iNTM1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPiQxNDQuMDA8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSI1NzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPlRvdGFsOjwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjU3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+JDk0NC4wMDwvdGV4dD4KCiAgPCEtLSBQYXltZW50IFRlcm1zIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI2NDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPlBheW1lbnQgVGVybXM8L3RleHQ+CiAgPHRleHQgeD0iNDAiIHk9IjY3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5QYXltZW50IGlzIGR1ZSB3aXRoaW4gMzAgZGF5czwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNjkwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPlBsZWFzZSBpbmNsdWRlIGludm9pY2UgbnVtYmVyIG9uIHBheW1lbnQ8L3RleHQ+CgogIDwhLS0gQmFuayBEZXRhaWxzIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI3MzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPkJhbmsgRGV0YWlsczwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNzYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPkJhbms6IEJhbmsgb2YgR2VvcmdpYTwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNzgwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPklCQU46IEdFMTIzNDU2Nzg5MDEyMzQ1Njc4PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSI4MDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+U1dJRlQ6IEJBR0FHRTIyPC90ZXh0PgoKICA8IS0tIEZvb3RlciAtLT4KICA8bGluZSB4MT0iNDAiIHkxPSI5MDAiIHgyPSI3NjAiIHkyPSI5MDAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgPHRleHQgeD0iNDAiIHk9IjkzMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjN2Y4YzhkIj5UaGFuayB5b3UgZm9yIGNob29zaW5nIEdydXp5YSBBZHZlbnR1cmUgT3V0Zml0dGVyczwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iOTUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM3ZjhjOGQiPnd3dy5ncnV6eWFhZHZlbnR1cmVzLmNvbTwvdGV4dD4KPC9zdmc+Cg==",
+                ),
+                Filename: payabli.String(
+                    "logo.jpg",
+                ),
+                Ftype: payabli.FileContentFtypeJpg.Ptr(),
+                Furl: payabli.String(
                     "",
                 ),
             },
-            Page: &payabli.PageElement{
-                Description: payabli.String(
-                    "Complete your payment securely",
-                ),
-                Enabled: payabli.Bool(
-                    true,
-                ),
-                Header: payabli.String(
-                    "Payment Page",
-                ),
-                Order: payabli.Int(
-                    0,
-                ),
-            },
-            PaymentButton: &payabli.LabelElement{
-                Enabled: payabli.Bool(
-                    true,
-                ),
-                Label: payabli.String(
-                    "Pay Now",
-                ),
-                Order: payabli.Int(
-                    0,
-                ),
-            },
-            PaymentMethods: &payabli.MethodElement{
-                AllMethodsChecked: payabli.Bool(
-                    true,
-                ),
-                Enabled: payabli.Bool(
-                    true,
-                ),
-                Header: payabli.String(
-                    "Payment Methods",
-                ),
-                Methods: &payabli.MethodsList{
-                    Amex: payabli.Bool(
-                        true,
-                    ),
-                    ApplePay: payabli.Bool(
-                        true,
-                    ),
-                    Discover: payabli.Bool(
-                        true,
-                    ),
-                    ECheck: payabli.Bool(
-                        true,
-                    ),
-                    Mastercard: payabli.Bool(
-                        true,
-                    ),
-                    Visa: payabli.Bool(
-                        true,
-                    ),
-                },
-                Order: payabli.Int(
-                    0,
-                ),
-                Settings: &payabli.MethodElementSettings{
-                    ApplePay: &payabli.MethodElementSettingsApplePay{
-                        ButtonStyle: payabli.MethodElementSettingsApplePayButtonStyleBlack.Ptr(),
-                        ButtonType: payabli.MethodElementSettingsApplePayButtonTypePay.Ptr(),
-                        Language: payabli.MethodElementSettingsApplePayLanguageEnUs.Ptr(),
-                    },
-                },
-            },
-            Payor: &payabli.PayorElement{
-                Enabled: payabli.Bool(
-                    true,
-                ),
-                Fields: []*payabli.PayorFields{
-                    &payabli.PayorFields{
-                        Display: payabli.Bool(
-                            true,
-                        ),
-                        Fixed: payabli.Bool(
-                            true,
-                        ),
-                        Identifier: payabli.Bool(
-                            true,
-                        ),
-                        Label: payabli.String(
-                            "Full Name",
-                        ),
-                        Name: payabli.String(
-                            "fullName",
-                        ),
-                        Order: payabli.Int(
-                            0,
-                        ),
-                        Required: payabli.Bool(
-                            true,
-                        ),
-                        Validation: payabli.String(
-                            "alpha",
-                        ),
-                        Value: payabli.String(
-                            "",
-                        ),
-                        Width: payabli.Int(
-                            0,
-                        ),
-                    },
-                },
-                Header: payabli.String(
-                    "Payor Information",
-                ),
-                Order: payabli.Int(
-                    0,
-                ),
-            },
-            Review: &payabli.HeaderElement{
-                Enabled: payabli.Bool(
-                    true,
-                ),
-                Header: payabli.String(
-                    "Review Payment",
-                ),
-                Order: payabli.Int(
-                    0,
-                ),
-            },
-            Settings: &payabli.PagelinkSetting{
-                Color: payabli.String(
-                    "#000000",
-                ),
-                CustomCssUrl: payabli.String(
-                    "https://example.com/custom.css",
-                ),
-                Language: payabli.String(
-                    "en",
-                ),
-                PageLogo: &payabli.FileContent{
-                    FContent: payabli.String(
-                        "PHN2ZyB2aWV3Qm94PSIwIDAgODAwIDEwMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPCEtLSBCYWNrZ3JvdW5kIC0tPgogIDxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iMTAwMCIgZmlsbD0id2hpdGUiLz4KICAKICA8IS0tIENvbXBhbnkgSGVhZGVyIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI2MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+R3J1enlhIEFkdmVudHVyZSBPdXRmaXR0ZXJzPC90ZXh0PgogIDxsaW5lIHgxPSI0MCIgeTE9IjgwIiB4Mj0iNzYwIiB5Mj0iODAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgCiAgPCEtLSBDb21wYW55IERldGFpbHMgLS0+CiAgPHRleHQgeD0iNDAiIHk9IjExMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4xMjMgTW91bnRhaW4gVmlldyBSb2FkPC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+VGJpbGlzaSwgR2VvcmdpYSAwMTA1PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxNTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+VGVsOiArOTk1IDMyIDEyMyA0NTY3PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxNzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+RW1haWw6IGluZm9AZ3J1enlhYWR2ZW50dXJlcy5jb208L3RleHQ+CgogIDwhLS0gSW52b2ljZSBUaXRsZSAtLT4KICA8dGV4dCB4PSI2MDAiIHk9IjExMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+SU5WT0lDRTwvdGV4dD4KICA8dGV4dCB4PSI2MDAiIHk9IjE0MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5EYXRlOiAxMi8xMS8yMDI0PC90ZXh0PgogIDx0ZXh0IHg9IjYwMCIgeT0iMTYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPkludm9pY2UgIzogR1JaLTIwMjQtMTEyMzwvdGV4dD4KCiAgPCEtLSBCaWxsIFRvIFNlY3Rpb24gLS0+CiAgPHRleHQgeD0iNDAiIHk9IjIyMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+QklMTCBUTzo8L3RleHQ+CiAgPHJlY3QgeD0iNDAiIHk9IjIzNSIgd2lkdGg9IjMwMCIgaGVpZ2h0PSI4MCIgZmlsbD0iI2Y3ZjlmYSIvPgogIDx0ZXh0IHg9IjUwIiB5PSIyNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+W0N1c3RvbWVyIE5hbWVdPC90ZXh0PgogIDx0ZXh0IHg9IjUwIiB5PSIyODAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+W0FkZHJlc3MgTGluZSAxXTwvdGV4dD4KICA8dGV4dCB4PSI1MCIgeT0iMzAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPltDaXR5LCBDb3VudHJ5XTwvdGV4dD4KCiAgPCEtLSBUYWJsZSBIZWFkZXJzIC0tPgogIDxyZWN0IHg9IjQwIiB5PSIzNDAiIHdpZHRoPSI3MjAiIGhlaWdodD0iMzAiIGZpbGw9IiMyYzNlNTAiLz4KICA8dGV4dCB4PSI1MCIgeT0iMzYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSI+RGVzY3JpcHRpb248L3RleHQ+CiAgPHRleHQgeD0iNDUwIiB5PSIzNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIj5RdWFudGl0eTwvdGV4dD4KICA8dGV4dCB4PSI1NTAiIHk9IjM2MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiPlJhdGU8L3RleHQ+CiAgPHRleHQgeD0iNjgwIiB5PSIzNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIj5BbW91bnQ8L3RleHQ+CgogIDwhLS0gVGFibGUgUm93cyAtLT4KICA8cmVjdCB4PSI0MCIgeT0iMzcwIiB3aWR0aD0iNzIwIiBoZWlnaHQ9IjMwIiBmaWxsPSIjZjdmOWZhIi8+CiAgPHRleHQgeD0iNTAiIHk9IjM5MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5Nb3VudGFpbiBDbGltYmluZyBFcXVpcG1lbnQgUmVudGFsPC90ZXh0PgogIDx0ZXh0IHg9IjQ1MCIgeT0iMzkwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPjE8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSIzOTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDI1MC4wMDwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjM5MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kMjUwLjAwPC90ZXh0PgoKICA8cmVjdCB4PSI0MCIgeT0iNDAwIiB3aWR0aD0iNzIwIiBoZWlnaHQ9IjMwIiBmaWxsPSJ3aGl0ZSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI0MjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+R3VpZGVkIFRyZWsgUGFja2FnZSAtIDIgRGF5czwvdGV4dD4KICA8dGV4dCB4PSI0NTAiIHk9IjQyMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4xPC90ZXh0PgogIDx0ZXh0IHg9IjU1MCIgeT0iNDIwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPiQ0MDAuMDA8L3RleHQ+CiAgPHRleHQgeD0iNjgwIiB5PSI0MjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDQwMC4wMDwvdGV4dD4KCiAgPHJlY3QgeD0iNDAiIHk9IjQzMCIgd2lkdGg9IjcyMCIgaGVpZ2h0PSIzMCIgZmlsbD0iI2Y3ZjlmYSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI0NTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+U2FmZXR5IEVxdWlwbWVudCBQYWNrYWdlPC90ZXh0PgogIDx0ZXh0IHg9IjQ1MCIgeT0iNDUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPjE8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSI0NTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDE1MC4wMDwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjQ1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kMTUwLjAwPC90ZXh0PgoKICA8IS0tIFRvdGFscyAtLT4KICA8bGluZSB4MT0iNDAiIHkxPSI0ODAiIHgyPSI3NjAiIHkyPSI0ODAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgPHRleHQgeD0iNTUwIiB5PSI1MTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMzNDQ5NWUiPlN1YnRvdGFsOjwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjUxMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kODAwLjAwPC90ZXh0PgogIDx0ZXh0IHg9IjU1MCIgeT0iNTM1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjMzQ0OTVlIj5UYXggKDE4JSk6PC90ZXh0PgogIDx0ZXh0IHg9IjY4MCIgeT0iNTM1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPiQxNDQuMDA8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSI1NzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPlRvdGFsOjwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjU3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+JDk0NC4wMDwvdGV4dD4KCiAgPCEtLSBQYXltZW50IFRlcm1zIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI2NDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPlBheW1lbnQgVGVybXM8L3RleHQ+CiAgPHRleHQgeD0iNDAiIHk9IjY3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5QYXltZW50IGlzIGR1ZSB3aXRoaW4gMzAgZGF5czwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNjkwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPlBsZWFzZSBpbmNsdWRlIGludm9pY2UgbnVtYmVyIG9uIHBheW1lbnQ8L3RleHQ+CgogIDwhLS0gQmFuayBEZXRhaWxzIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI3MzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPkJhbmsgRGV0YWlsczwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNzYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPkJhbms6IEJhbmsgb2YgR2VvcmdpYTwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNzgwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPklCQU46IEdFMTIzNDU2Nzg5MDEyMzQ1Njc4PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSI4MDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+U1dJRlQ6IEJBR0FHRTIyPC90ZXh0PgoKICA8IS0tIEZvb3RlciAtLT4KICA8bGluZSB4MT0iNDAiIHkxPSI5MDAiIHgyPSI3NjAiIHkyPSI5MDAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgPHRleHQgeD0iNDAiIHk9IjkzMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjN2Y4YzhkIj5UaGFuayB5b3UgZm9yIGNob29zaW5nIEdydXp5YSBBZHZlbnR1cmUgT3V0Zml0dGVyczwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iOTUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM3ZjhjOGQiPnd3dy5ncnV6eWFhZHZlbnR1cmVzLmNvbTwvdGV4dD4KPC9zdmc+Cg==",
-                    ),
-                    Filename: payabli.String(
-                        "logo.jpg",
-                    ),
-                    Ftype: payabli.FileContentFtypeJpg.Ptr(),
-                    Furl: payabli.String(
-                        "",
-                    ),
-                },
-                RedirectAfterApprove: payabli.Bool(
-                    true,
-                ),
-                RedirectAfterApproveUrl: payabli.String(
-                    "https://example.com/success",
-                ),
-            },
+            RedirectAfterApprove: payabli.Bool(
+                true,
+            ),
+            RedirectAfterApproveUrl: payabli.String(
+                "https://example.com/success",
+            ),
         },
     }
 client.PaymentLink.AddPayLinkFromInvoice(
@@ -15438,7 +5204,7 @@ client.PaymentLink.AddPayLinkFromInvoice(
 <dl>
 <dd>
 
-**idempotencyKey:** `*payabli.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
     
 </dd>
 </dl>
@@ -15446,7 +5212,87 @@ client.PaymentLink.AddPayLinkFromInvoice(
 <dl>
 <dd>
 
-**request:** `*payabli.PaymentPageRequestBody` 
+**contactUs:** `*payabli.ContactElement` — ContactUs section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**invoices:** `*payabli.InvoiceElement` — Invoices section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**logo:** `*payabli.Element` — Logo section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**messageBeforePaying:** `*payabli.LabelElement` — Message section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**notes:** `*payabli.NoteElement` — Notes section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page:** `*payabli.PageElement` — Page header section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentButton:** `*payabli.LabelElement` — Payment button section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentMethods:** `*payabli.MethodElement` — Payment methods section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**payor:** `*payabli.PayorElement` — Customer/Payor section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**review:** `*payabli.HeaderElement` — Review section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**settings:** `*payabli.PagelinkSetting` — Settings section of payment link page
     
 </dd>
 </dl>
@@ -15628,7 +5474,7 @@ request := &payabli.PayLinkDataBill{
     }
 client.PaymentLink.AddPayLinkFromBill(
         context.TODO(),
-        23548884,
+        54323,
         request,
     )
 }
@@ -15670,7 +5516,7 @@ client.PaymentLink.AddPayLinkFromBill(
 <dl>
 <dd>
 
-**idempotencyKey:** `*payabli.IdempotencyKey` 
+**idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
     
 </dd>
 </dl>
@@ -15777,7 +5623,7 @@ Retrieves a payment link by ID.
 ```go
 client.PaymentLink.GetPayLinkFromId(
         context.TODO(),
-        "paylinkId",
+        "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
     )
 }
 ```
@@ -15838,7 +5684,7 @@ request := &payabli.PushPayLinkRequest{
     }
 client.PaymentLink.PushPayLinkFromId(
         context.TODO(),
-        "payLinkId",
+        "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
         request,
     )
 }
@@ -15906,7 +5752,7 @@ Refresh a payment link's content after an update.
 request := &payabli.RefreshPayLinkFromIdRequest{}
 client.PaymentLink.RefreshPayLinkFromId(
         context.TODO(),
-        "payLinkId",
+        "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
         request,
     )
 }
@@ -15956,7 +5802,7 @@ client.PaymentLink.RefreshPayLinkFromId(
 <dl>
 <dd>
 
-Sends a payment link to the specified email addresses. 
+Sends a payment link to the specified email addresses.
 </dd>
 </dl>
 </dd>
@@ -15978,7 +5824,7 @@ request := &payabli.SendPayLinkFromIdRequest{
     }
 client.PaymentLink.SendPayLinkFromId(
         context.TODO(),
-        "payLinkId",
+        "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
         request,
     )
 }
@@ -16083,7 +5929,7 @@ request := &payabli.PayLinkUpdateData{
     }
 client.PaymentLink.UpdatePayLinkFromId(
         context.TODO(),
-        "332-c277b704-1301",
+        "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
         request,
     )
 }
@@ -16213,8 +6059,8 @@ Generates a vendor payment link for a specific bill lot number. This allows you 
 
 ```go
 request := &payabli.PayLinkDataOut{
-        EntryPoint: "billing",
-        VendorNumber: "VENDOR-123",
+        EntryPoint: "8cfec329267",
+        VendorNumber: "VEN-123",
         Mail2: payabli.String(
             "customer@example.com; billing@example.com",
         ),
@@ -16386,7 +6232,7 @@ client.PaymentLink.AddPayLinkFromBillLotNumber(
 <dl>
 <dd>
 
-**entryPoint:** `payabli.Entry` 
+**entryPoint:** `payabli.Entry` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -16491,7 +6337,23 @@ client.PaymentLink.PatchOutPaymentLink(
 <dl>
 <dd>
 
-**request:** `*payabli.PatchOutPaymentLinkRequest` 
+**billPageData:** `*payabli.PaymentPageRequestBodyOut` — Updated payment link page configuration.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expirationDate:** `*string` — New expiration date for the payment link. Must be a future date. If null and the link is expired, uses the default expiration from settings. Updating the expiration date reactivates an expired payment link to Active status.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `*payabli.PaymentLinkStatus` — Updated status for the payment link.
     
 </dd>
 </dl>
@@ -16706,6 +6568,1157 @@ client.PaymentLink.UpdatePayLinkOutFromId(
 </dl>
 </details>
 
+## TokenStorage
+<details><summary><code>client.TokenStorage.AddMethod(request) -> *payabli.AddMethodResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Saves a payment method for reuse. This call exchanges sensitive payment information for a token that can be used to process future transactions. The `ReferenceId` value in the response is the `storedMethodId` to use with transactions.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.AddMethodRequest{
+        Body: &payabli.RequestTokenStorage{
+            CustomerData: &payabli.PayorDataRequest{
+                CustomerId: payabli.Int64(
+                    int64(4440),
+                ),
+            },
+            EntryPoint: payabli.String(
+                "8cfec329267",
+            ),
+            FallbackAuth: payabli.Bool(
+                true,
+            ),
+            FallbackAuthAmount: payabli.Int(
+                100,
+            ),
+            MethodDescription: payabli.String(
+                "Primary Visa card",
+            ),
+            PaymentMethod: &payabli.RequestTokenStoragePaymentMethod{
+                TokenizeCard: &payabli.TokenizeCard{
+                    Method: "card",
+                    Cardcvv: payabli.String(
+                        "123",
+                    ),
+                    Cardexp: "02/25",
+                    CardHolder: "John Doe",
+                    Cardnumber: "4111111111111111",
+                    Cardzip: payabli.String(
+                        "12345",
+                    ),
+                },
+            },
+            Source: payabli.String(
+                "api",
+            ),
+        },
+    }
+client.TokenStorage.AddMethod(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**achValidation:** `*payabli.AchValidation` — When `true`, enables real-time validation of ACH account and routing numbers. This is an add-on feature, contact Payabli for more information.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**createAnonymous:** `*payabli.CreateAnonymous` — When `true`, creates a saved method with no associated customer information. The token will be associated with customer information the first time it's used to make a payment. Defaults to `false`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**forceCustomerCreation:** `*payabli.ForceCustomerCreation` — When `true`, the request creates a new customer record, regardless of whether customer identifiers match an existing customer. Defaults to `false`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**temporary:** `*payabli.Temporary` — Creates a temporary, one-time-use token for the payment method that expires in 12 hours. Defaults to `false`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `*payabli.RequestTokenStorage` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.TokenStorage.GetMethod(MethodId) -> *payabli.GetMethodResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves details for a saved payment method.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.GetMethodRequest{
+        CardExpirationFormat: payabli.Int(
+            1,
+        ),
+        IncludeTemporary: payabli.Bool(
+            false,
+        ),
+    }
+client.TokenStorage.GetMethod(
+        context.TODO(),
+        "32-8877drt00045632-678",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**methodId:** `string` — The saved payment method ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cardExpirationFormat:** `*int` 
+
+Format for card expiration dates in the response.
+
+Accepted values:
+
+- 0: default, no formatting. Expiration dates are returned in the format they're saved in.
+
+- 1: MMYY
+
+- 2: MM/YY
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**includeTemporary:** `*bool` — When `true`, the request will include temporary tokens in the search and return details for a matching temporary token. The default behavior searches only for permanent tokens.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.TokenStorage.UpdateMethod(MethodId, request) -> *payabli.PayabliApiResponsePaymethodDelete</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates a saved payment method.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.UpdateMethodRequest{
+        Body: &payabli.RequestTokenStorage{
+            CustomerData: &payabli.PayorDataRequest{
+                CustomerId: payabli.Int64(
+                    int64(4440),
+                ),
+            },
+            EntryPoint: payabli.String(
+                "8cfec329267",
+            ),
+            FallbackAuth: payabli.Bool(
+                true,
+            ),
+            PaymentMethod: &payabli.RequestTokenStoragePaymentMethod{
+                TokenizeCard: &payabli.TokenizeCard{
+                    Method: "card",
+                    Cardcvv: payabli.String(
+                        "123",
+                    ),
+                    Cardexp: "02/25",
+                    CardHolder: "John Doe",
+                    Cardnumber: "4111111111111111",
+                    Cardzip: payabli.String(
+                        "12345",
+                    ),
+                },
+            },
+        },
+    }
+client.TokenStorage.UpdateMethod(
+        context.TODO(),
+        "32-8877drt00045632-678",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**methodId:** `string` — The saved payment method ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**achValidation:** `*payabli.AchValidation` — When `true`, enables real-time validation of ACH account and routing numbers. This is an add-on feature, contact Payabli for more information.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `*payabli.RequestTokenStorage` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.TokenStorage.RemoveMethod(MethodId) -> *payabli.PayabliApiResponsePaymethodDelete</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes a saved payment method.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.TokenStorage.RemoveMethod(
+        context.TODO(),
+        "32-8877drt00045632-678",
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**methodId:** `string` — The saved payment method ID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Paypoint
+<details><summary><code>client.Paypoint.GetBasicEntry(Entry) -> *payabli.GetBasicEntryResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Gets the basic details for a paypoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Paypoint.GetBasicEntry(
+        context.TODO(),
+        "8cfec329267",
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Paypoint.GetBasicEntryById(IdPaypoint) -> *payabli.GetBasicEntryByIdResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves the basic details for a paypoint by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Paypoint.GetBasicEntryById(
+        context.TODO(),
+        "198",
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**idPaypoint:** `string` — Paypoint ID. You can find this value by querying `/api/Query/paypoints/{orgId}`
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Paypoint.SaveLogo(Entry, request) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates a paypoint logo.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.FileContent{}
+client.Paypoint.SaveLogo(
+        context.TODO(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `*payabli.FileContent` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Paypoint.Migrate(request) -> *payabli.MigratePaypointResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Migrates a paypoint to a new parent organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.PaypointMoveRequest{
+        EntryPoint: "8cfec329267",
+        NewParentOrganizationId: 123,
+        NotificationRequest: &payabli.NotificationRequest{
+            NotificationUrl: "https://webhook-test.yoursie.com",
+            WebHeaderParameters: []*payabli.WebHeaderParameter{
+                &payabli.WebHeaderParameter{
+                    Key: "testheader",
+                    Value: "1234567890",
+                },
+            },
+        },
+    }
+client.Paypoint.Migrate(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entryPoint:** `payabli.Entrypointfield` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**newParentOrganizationId:** `int` — The ID for the paypoint's new parent organization.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**notificationRequest:** `*payabli.NotificationRequest` — Optional notification request object for a webhook
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Paypoint.SettingsPage(Entry) -> *payabli.SettingsQueryRecord</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a paypoint's basic settings like custom fields, identifiers, and invoicing settings.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Paypoint.SettingsPage(
+        context.TODO(),
+        "8cfec329267",
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Paypoint.GetEntryConfig(Entry) -> *payabli.GetEntryConfigResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Gets the details for a single paypoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.GetEntryConfigRequest{}
+client.Paypoint.GetEntryConfig(
+        context.TODO(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entrypages:** `*string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Paypoint.GetPage(Entry, Subdomain) -> *payabli.PayabliPages</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Gets the details for a single payment page for a paypoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Paypoint.GetPage(
+        context.TODO(),
+        "8cfec329267",
+        "pay-your-fees-1",
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**subdomain:** `string` — Payment page identifier. The subdomain value is the last portion of the payment page URL. For example, in `https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Paypoint.RemovePage(Entry, Subdomain) -> *payabli.PayabliApiResponseGeneric2Part</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes a payment page in a paypoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Paypoint.RemovePage(
+        context.TODO(),
+        "8cfec329267",
+        "pay-your-fees-1",
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**subdomain:** `string` — Payment page identifier. The subdomain value is the last portion of the payment page URL. For example, in `https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## HostedPaymentPages
+<details><summary><code>client.HostedPaymentPages.LoadPage(Entry, Subdomain) -> *payabli.PayabliPages</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Loads all of a payment page's details including `pageIdentifier` and `validationCode`. This endpoint requires an `application` API token.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.HostedPaymentPages.LoadPage(
+        context.TODO(),
+        "8cfec329267",
+        "pay-your-fees-1",
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**subdomain:** `string` — Payment page identifier. The subdomain value is the last part of the payment page URL. For example, in `https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.HostedPaymentPages.NewPage(Entry, request) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a new payment page for a paypoint.
+Note: this operation doesn't create a new paypoint, just a payment page for an existing paypoint. Paypoints are created by the Payabli team when a boarding application is approved.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.NewPageRequest{
+        IdempotencyKey: payabli.String(
+            "6B29FC40-CA47-1067-B31D-00DD010662DA",
+        ),
+        Body: &payabli.PayabliPages{},
+    }
+client.HostedPaymentPages.NewPage(
+        context.TODO(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `*payabli.PayabliPages` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.HostedPaymentPages.SavePage(Entry, Subdomain, request) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates a payment page in a paypoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.PayabliPages{}
+client.HostedPaymentPages.SavePage(
+        context.TODO(),
+        "8cfec329267",
+        "pay-your-fees-1",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**subdomain:** `string` — Payment page identifier. The subdomain value is the last part of the payment page URL. For example, in `https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `*payabli.PayabliPages` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## PaymentMethodDomain
 <details><summary><code>client.PaymentMethodDomain.AddPaymentMethodDomain(request) -> *payabli.AddPaymentMethodDomainApiResponse</code></summary>
 <dl>
@@ -16735,15 +7748,6 @@ Add a payment method domain to an organization or paypoint.
 
 ```go
 request := &payabli.AddPaymentMethodDomainRequest{
-        DomainName: payabli.String(
-            "checkout.example.com",
-        ),
-        EntityId: payabli.Int64(
-            int64(109),
-        ),
-        EntityType: payabli.String(
-            "paypoint",
-        ),
         ApplePay: &payabli.AddPaymentMethodDomainRequestApplePay{
             IsEnabled: payabli.Bool(
                 true,
@@ -16754,6 +7758,15 @@ request := &payabli.AddPaymentMethodDomainRequest{
                 true,
             ),
         },
+        DomainName: payabli.String(
+            "checkout.example.com",
+        ),
+        EntityId: payabli.Int64(
+            int64(109),
+        ),
+        EntityType: payabli.String(
+            "paypoint",
+        ),
     }
 client.PaymentMethodDomain.AddPaymentMethodDomain(
         context.TODO(),
@@ -16876,64 +7889,6 @@ client.PaymentMethodDomain.CascadePaymentMethodDomain(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentMethodDomain.DeletePaymentMethodDomain(DomainId) -> *payabli.DeletePaymentMethodDomainResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Delete a payment method domain. You can't delete an inherited domain, you must delete a domain at the organization level.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.PaymentMethodDomain.DeletePaymentMethodDomain(
-        context.TODO(),
-        "pmd_b8237fa45c964d8a9ef27160cd42b8c5",
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**domainId:** `string` — The payment method domain's ID in Payabli.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 <details><summary><code>client.PaymentMethodDomain.GetPaymentMethodDomain(DomainId) -> *payabli.PaymentMethodDomainApiResponse</code></summary>
 <dl>
 <dd>
@@ -16992,7 +7947,7 @@ client.PaymentMethodDomain.GetPaymentMethodDomain(
 </dl>
 </details>
 
-<details><summary><code>client.PaymentMethodDomain.ListPaymentMethodDomains() -> *payabli.ListPaymentMethodDomainsResponse</code></summary>
+<details><summary><code>client.PaymentMethodDomain.DeletePaymentMethodDomain(DomainId) -> *payabli.DeletePaymentMethodDomainResponse</code></summary>
 <dl>
 <dd>
 
@@ -17004,7 +7959,7 @@ client.PaymentMethodDomain.GetPaymentMethodDomain(
 <dl>
 <dd>
 
-Get a list of payment method domains that belong to a PSP, organization, or paypoint.
+Delete a payment method domain. You can't delete an inherited domain, you must delete a domain at the organization level.
 </dd>
 </dl>
 </dd>
@@ -17019,17 +7974,9 @@ Get a list of payment method domains that belong to a PSP, organization, or payp
 <dd>
 
 ```go
-request := &payabli.ListPaymentMethodDomainsRequest{
-        EntityId: payabli.Int64(
-            int64(1147),
-        ),
-        EntityType: payabli.String(
-            "paypoint",
-        ),
-    }
-client.PaymentMethodDomain.ListPaymentMethodDomains(
+client.PaymentMethodDomain.DeletePaymentMethodDomain(
         context.TODO(),
-        request,
+        "pmd_b8237fa45c964d8a9ef27160cd42b8c5",
     )
 }
 ```
@@ -17046,39 +7993,7 @@ client.PaymentMethodDomain.ListPaymentMethodDomains(
 <dl>
 <dd>
 
-**entityId:** `*int64` 
-
-Identifier for the organization or paypoint. 
-- For organization, provide the organization ID - For paypoint, provide the paypoint ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entityType:** `*string` 
-
-The type of entity. Valid values: 
-  - organization
-  - paypoint
-  - psp
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — Number of records to skip. Defaults to `0`.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — Max number of records for query response. Defaults to `20`.
+**domainId:** `string` — The payment method domain's ID in Payabli.
     
 </dd>
 </dl>
@@ -17177,6 +8092,104 @@ client.PaymentMethodDomain.UpdatePaymentMethodDomain(
 </dl>
 </details>
 
+<details><summary><code>client.PaymentMethodDomain.ListPaymentMethodDomains() -> *payabli.ListPaymentMethodDomainsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get a list of payment method domains that belong to a PSP, organization, or paypoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ListPaymentMethodDomainsRequest{
+        EntityId: payabli.Int64(
+            int64(1147),
+        ),
+        EntityType: payabli.String(
+            "paypoint",
+        ),
+    }
+client.PaymentMethodDomain.ListPaymentMethodDomains(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entityId:** `*int64` 
+
+Identifier for the organization or paypoint.
+- For organization, provide the organization ID - For paypoint, provide the paypoint ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entityType:** `*string` 
+
+The type of entity. Valid values:
+  - organization
+  - paypoint
+  - psp
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — Number of records to skip. Defaults to `0`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — Max number of records for query response. Defaults to `20`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.PaymentMethodDomain.VerifyPaymentMethodDomain(DomainId) -> *payabli.PaymentMethodDomainGeneralResponse</code></summary>
 <dl>
 <dd>
@@ -17235,8 +8248,8 @@ client.PaymentMethodDomain.VerifyPaymentMethodDomain(
 </dl>
 </details>
 
-## PayoutSubscription
-<details><summary><code>client.PayoutSubscription.CreatePayoutSubscription(request) -> *payabli.AddPayoutSubscriptionResponse</code></summary>
+## Import
+<details><summary><code>client.Import.ImportBills(Entry, request) -> *payabli.PayabliApiResponseImport</code></summary>
 <dl>
 <dd>
 
@@ -17248,7 +8261,7 @@ client.PaymentMethodDomain.VerifyPaymentMethodDomain(
 <dl>
 <dd>
 
-Creates a payout subscription to automatically send payouts to a vendor on a recurring schedule. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for a step-by-step guide.
+Import a list of bills from a CSV file. See the [Import Guide](/developers/developer-guides/bills-add#import-bills) for more help and an example file.
 </dd>
 </dl>
 </dd>
@@ -17263,442 +8276,12 @@ Creates a payout subscription to automatically send payouts to a vendor on a rec
 <dd>
 
 ```go
-request := &payabli.RequestPayoutSchedule{
-        Body: &payabli.PayoutSubscriptionRequestBody{
-            EntryPoint: "d193cf9a46",
-            PaymentMethod: &payabli.AuthorizePaymentMethod{
-                Method: "ach",
-                AchHolder: payabli.String(
-                    "Herman Coatings",
-                ),
-                AchRouting: payabli.String(
-                    "021000021",
-                ),
-                AchAccount: payabli.String(
-                    "3453445666",
-                ),
-                AchAccountType: payabli.String(
-                    "checking",
-                ),
-            },
-            PaymentDetails: &payabli.PayoutPaymentDetail{
-                TotalAmount: 500,
-                ServiceFee: payabli.Float64(
-                    0,
-                ),
-                Currency: payabli.String(
-                    "USD",
-                ),
-            },
-            VendorData: &payabli.RequestOutAuthorizeVendorData{
-                VendorId: payabli.Int(
-                    1501,
-                ),
-            },
-            BillData: []*payabli.BillPayOutDataRequest{
-                &payabli.BillPayOutDataRequest{
-                    InvoiceNumber: payabli.String(
-                        "INV-5001",
-                    ),
-                    NetAmount: payabli.String(
-                        "500",
-                    ),
-                    InvoiceDate: payabli.Time(
-                        payabli.MustParseDate(
-                            "2025-08-01",
-                        ),
-                    ),
-                    DueDate: payabli.Time(
-                        payabli.MustParseDate(
-                            "2025-08-15",
-                        ),
-                    ),
-                },
-            },
-            ScheduleDetails: &payabli.PayoutScheduleDetail{
-                StartDate: payabli.String(
-                    "09/01/2025",
-                ),
-                EndDate: payabli.String(
-                    "09/01/2026",
-                ),
-                Frequency: payabli.FrequencyMonthly.Ptr(),
-            },
-        },
-    }
-client.PayoutSubscription.CreatePayoutSubscription(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idempotencyKey:** `*payabli.IdempotencyKey` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `*payabli.PayoutSubscriptionRequestBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.PayoutSubscription.GetPayoutSubscription(Id) -> *payabli.GetPayoutSubscriptionResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves a single payout subscription's details. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.PayoutSubscription.GetPayoutSubscription(
-        context.TODO(),
-        int64(42),
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `int64` — The payout subscription ID.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.PayoutSubscription.UpdatePayoutSubscription(Id, request) -> *payabli.UpdatePayoutSubscriptionResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates a payout subscription's details. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.UpdatePayoutSubscriptionBody{
-        SetPause: payabli.Bool(
-            true,
+request := &payabli.ImportBillsRequest{
+        File: strings.NewReader(
+            "",
         ),
     }
-client.PayoutSubscription.UpdatePayoutSubscription(
-        context.TODO(),
-        int64(42),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `int64` — The payout subscription ID.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `*payabli.UpdatePayoutSubscriptionBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.PayoutSubscription.DeletePayoutSubscription(Id) -> *payabli.DeletePayoutSubscriptionResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Deletes a payout subscription and prevents future payouts. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.PayoutSubscription.DeletePayoutSubscription(
-        context.TODO(),
-        int64(42),
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `int64` — The payout subscription ID.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Paypoint
-<details><summary><code>client.Paypoint.GetBasicEntry(Entry) -> *payabli.GetBasicEntryResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Gets the basic details for a paypoint.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Paypoint.GetBasicEntry(
-        context.TODO(),
-        "8cfec329267",
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Paypoint.GetBasicEntryById(IdPaypoint) -> *payabli.GetBasicEntryByIdResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves the basic details for a paypoint by ID. 
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Paypoint.GetBasicEntryById(
-        context.TODO(),
-        "198",
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**idPaypoint:** `string` — Paypoint ID. You can find this value by querying `/api/Query/paypoints/{orgId}`
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Paypoint.GetEntryConfig(Entry) -> *payabli.GetEntryConfigResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Gets the details for a single paypoint.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.GetEntryConfigRequest{}
-client.Paypoint.GetEntryConfig(
+client.Import.ImportBills(
         context.TODO(),
         "8cfec329267",
         request,
@@ -17722,14 +8305,6 @@ client.Paypoint.GetEntryConfig(
     
 </dd>
 </dl>
-
-<dl>
-<dd>
-
-**entrypages:** `*string` 
-    
-</dd>
-</dl>
 </dd>
 </dl>
 
@@ -17738,7 +8313,7 @@ client.Paypoint.GetEntryConfig(
 </dl>
 </details>
 
-<details><summary><code>client.Paypoint.GetPage(Entry, Subdomain) -> *payabli.PayabliPages</code></summary>
+<details><summary><code>client.Import.ImportCustomer(Entry, request) -> *payabli.PayabliApiResponseImport</code></summary>
 <dl>
 <dd>
 
@@ -17750,7 +8325,7 @@ client.Paypoint.GetEntryConfig(
 <dl>
 <dd>
 
-Gets the details for single payment page for a paypoint. 
+Import a list of customers from a CSV file. See the [Import Guide](/developers/developer-guides/entities-customers#import-customers) for more help and example files.
 </dd>
 </dl>
 </dd>
@@ -17765,281 +8340,14 @@ Gets the details for single payment page for a paypoint.
 <dd>
 
 ```go
-client.Paypoint.GetPage(
-        context.TODO(),
-        "8cfec329267",
-        "pay-your-fees-1",
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**subdomain:** `string` — Payment page identifier. The subdomain value is the last portion of the payment page URL. For example, in`https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Paypoint.RemovePage(Entry, Subdomain) -> *payabli.PayabliApiResponseGeneric2Part</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Deletes a payment page in a paypoint.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Paypoint.RemovePage(
-        context.TODO(),
-        "8cfec329267",
-        "pay-your-fees-1",
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**subdomain:** `string` — Payment page identifier. The subdomain value is the last portion of the payment page URL. For example, in`https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Paypoint.SaveLogo(Entry, request) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates a paypoint logo. 
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.FileContent{}
-client.Paypoint.SaveLogo(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `*payabli.FileContent` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Paypoint.SettingsPage(Entry) -> *payabli.SettingsQueryRecord</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves an paypoint's basic settings like custom fields, identifiers, and invoicing settings.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Paypoint.SettingsPage(
-        context.TODO(),
-        "8cfec329267",
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Paypoint.Migrate(request) -> *payabli.MigratePaypointResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Migrates a paypoint to a new parent organization.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.PaypointMoveRequest{
-        EntryPoint: "473abc123def",
-        NewParentOrganizationId: 123,
-        NotificationRequest: &payabli.NotificationRequest{
-            NotificationUrl: "https://webhook-test.yoursie.com",
-            WebHeaderParameters: []*payabli.WebHeaderParameter{
-                &payabli.WebHeaderParameter{
-                    Key: "testheader",
-                    Value: "1234567890",
-                },
-            },
-        },
+request := &payabli.ImportCustomerRequest{
+        File: strings.NewReader(
+            "",
+        ),
     }
-client.Paypoint.Migrate(
+client.Import.ImportCustomer(
         context.TODO(),
+        "8cfec329267",
         request,
     )
 }
@@ -18057,7 +8365,79 @@ client.Paypoint.Migrate(
 <dl>
 <dd>
 
-**request:** `*payabli.PaypointMoveRequest` 
+**entry:** `payabli.Entrypointfield` — The entrypoint identifier.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**replaceExisting:** `*int` — Flag indicating to replace existing customer with a new record. Possible values: 0 (do not replace), 1 (replace). Default is 0
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Import.ImportVendor(Entry, request) -> *payabli.PayabliApiResponseImport</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Import a list of vendors from a CSV file. See the [Import Guide](/developers/developer-guides/entities-vendors#import-vendors) for more help and example files.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ImportVendorRequest{
+        File: strings.NewReader(
+            "",
+        ),
+    }
+client.Import.ImportVendor(
+        context.TODO(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `payabli.Entrypointfield` — The entrypoint identifier.
     
 </dd>
 </dl>
@@ -18129,7 +8509,7 @@ client.Query.ListBatchDetails(
 <dl>
 <dd>
 
-**entry:** `payabli.Entry` 
+**entry:** `payabli.Entry` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -18137,7 +8517,7 @@ client.Query.ListBatchDetails(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -18163,8 +8543,7 @@ client.Query.ListBatchDetails(
 
 **parameters:** `map[string]*string` 
 
-
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -18258,7 +8637,7 @@ Example: `settledAmount(gt)=20` returns all records with a `settledAmount` great
 </dl>
 </details>
 
-<details><summary><code>client.Query.ListBatchDetailsOrg(OrgId) -> *payabli.QueryResponseSettlements</code></summary>
+<details><summary><code>client.Query.ListBatchDetailsOrg(OrgId) -> *payabli.QueryBatchesDetailResponse</code></summary>
 <dl>
 <dd>
 
@@ -18324,7 +8703,7 @@ client.Query.ListBatchDetailsOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -18350,8 +8729,7 @@ client.Query.ListBatchDetailsOrg(
 
 **parameters:** `map[string]*string` 
 
-
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -18502,7 +8880,7 @@ client.Query.ListBatches(
 <dl>
 <dd>
 
-**entry:** `payabli.Entry` 
+**entry:** `payabli.Entry` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -18510,7 +8888,7 @@ client.Query.ListBatches(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -18536,7 +8914,7 @@ client.Query.ListBatches(
 
 **parameters:** `map[string]*string` 
 
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -18675,7 +9053,7 @@ client.Query.ListBatchesOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -18701,7 +9079,7 @@ client.Query.ListBatchesOrg(
 
 **parameters:** `map[string]*string` 
 
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -18832,7 +9210,7 @@ client.Query.ListBatchesOut(
 <dl>
 <dd>
 
-**entry:** `payabli.Entry` 
+**entry:** `payabli.Entry` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -18840,7 +9218,7 @@ client.Query.ListBatchesOut(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -18865,7 +9243,6 @@ client.Query.ListBatchesOut(
 <dd>
 
 **parameters:** `map[string]*string` 
-
 
 Collection of field names, conditions, and values used to filter the query. See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for more information.
 
@@ -18967,7 +9344,7 @@ client.Query.ListBatchesOutOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -18993,8 +9370,7 @@ client.Query.ListBatchesOutOrg(
 
 **parameters:** `map[string]*string` 
 
-
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -19101,7 +9477,7 @@ client.Query.ListChargebacks(
 <dl>
 <dd>
 
-**entry:** `payabli.Entry` 
+**entry:** `payabli.Entry` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -19109,7 +9485,7 @@ client.Query.ListChargebacks(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -19291,7 +9667,7 @@ client.Query.ListChargebacksOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -19467,7 +9843,7 @@ client.Query.ListCustomers(
 <dl>
 <dd>
 
-**entry:** `payabli.Entry` 
+**entry:** `payabli.Entry` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -19475,7 +9851,7 @@ client.Query.ListCustomers(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -19501,7 +9877,7 @@ client.Query.ListCustomers(
 
 **parameters:** `map[string]*string` 
 
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -19651,7 +10027,7 @@ client.Query.ListCustomersOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -19677,7 +10053,7 @@ client.Query.ListCustomersOrg(
 
 **parameters:** `map[string]*string` 
 
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -19819,7 +10195,7 @@ client.Query.ListDevices(
 <dl>
 <dd>
 
-**entry:** `payabli.Entry` 
+**entry:** `payabli.Entry` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -19827,7 +10203,7 @@ client.Query.ListDevices(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -19852,7 +10228,6 @@ client.Query.ListDevices(
 <dd>
 
 **parameters:** `map[string]*string` 
-
 
 Collection of field names, conditions, and values used to filter
 the query.
@@ -20005,7 +10380,7 @@ request := &payabli.ListDevicesOrgRequest{
     }
 client.Query.ListDevicesOrg(
         context.TODO(),
-        100,
+        123,
         request,
     )
 }
@@ -20031,7 +10406,7 @@ client.Query.ListDevicesOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -20056,7 +10431,6 @@ client.Query.ListDevicesOrg(
 <dd>
 
 **parameters:** `map[string]*string` 
-
 
 Collection of field names, conditions, and values used to filter
 the query.
@@ -20227,7 +10601,7 @@ client.Query.ListNotificationReports(
 <dl>
 <dd>
 
-**entry:** `payabli.Entry` 
+**entry:** `payabli.Entry` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -20507,7 +10881,7 @@ client.Query.ListNotifications(
 <dl>
 <dd>
 
-**entry:** `payabli.Entry` 
+**entry:** `payabli.Entry` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -20801,7 +11175,7 @@ client.Query.ListOrganizations(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -20857,7 +11231,7 @@ Collection of field names, conditions, and values used to filter the query.
 - `ownerName`  (ct, nct)
 - `contactName`  (ct, nct)
 - `orgParentname`  (ct, nct)
-- `boardingId` (eq, ne) 
+- `boardingId` (eq, ne)
 - `entryName`  (ct, nct)
 
 **List of comparison accepted - enclosed between parentheses:**
@@ -20956,7 +11330,7 @@ client.Query.ListPayout(
 <dl>
 <dd>
 
-**entry:** `payabli.Entry` 
+**entry:** `payabli.Entry` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -20964,7 +11338,7 @@ client.Query.ListPayout(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -21046,7 +11420,7 @@ List of field names accepted:
   - `customerVendorAccount` (ct, nct, eq, ne)
   - `batchId` (eq, ne)
   - `AchTraceNumber` (eq, ne)
-  - `payoutProgram`(eq, ne) the options are `managed` or `odp`. For example, `payoutProgram(eq)=managed` returns all records with a `payoutProgram` equal to `managed`. 
+  - `payoutProgram`(eq, ne) the options are `managed` or `odp`. For example, `payoutProgram(eq)=managed` returns all records with a `payoutProgram` equal to `managed`.
 
   List of comparison accepted - enclosed between parentheses:
   - eq or empty => equal
@@ -21154,7 +11528,7 @@ client.Query.ListPayoutOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -21195,7 +11569,7 @@ Collection of field names, conditions, and values used to filter the query.
   --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
 </Info>
 List of field names accepted:
-  
+
   - `status` (in, nin, eq, ne)
   - `transactionDate` (gt, ge, lt, le, eq, ne)
   - `billNumber` (ct, nct)
@@ -21343,7 +11717,7 @@ client.Query.ListPaypoints(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -21403,7 +11777,7 @@ Collection of field names, conditions, and values used to filter the query
 - `contactName`  (ct, nct)
 - `paypointId` (eq, ne)
 - `orgParentname`  (ct, nct, in, nin)
-- `boardingId` (eq, ne) 
+- `boardingId` (eq, ne)
 - `entryName`  (ct, nct)
 - `externalOrgID` (ct, nct)
 
@@ -21503,7 +11877,7 @@ client.Query.ListSettlements(
 <dl>
 <dd>
 
-**entry:** `payabli.Entry` 
+**entry:** `payabli.Entry` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -21511,7 +11885,7 @@ client.Query.ListSettlements(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -21537,8 +11911,7 @@ client.Query.ListSettlements(
 
 **parameters:** `map[string]*string` 
 
-
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -21698,7 +12071,7 @@ client.Query.ListSettlementsOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -21724,8 +12097,7 @@ client.Query.ListSettlementsOrg(
 
 **parameters:** `map[string]*string` 
 
-
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -21877,7 +12249,7 @@ client.Query.ListSubscriptions(
 <dl>
 <dd>
 
-**entry:** `payabli.Entry` 
+**entry:** `payabli.Entry` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -21885,7 +12257,7 @@ client.Query.ListSubscriptions(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -21911,8 +12283,7 @@ client.Query.ListSubscriptions(
 
 **parameters:** `map[string]*string` 
 
-
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -21927,7 +12298,7 @@ Collection of field names, conditions, and values used to filter the query.
   --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
 </Info>
 See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for more information.
-      
+
 **List of field names accepted:**
 
 - `startDate` (gt, ge, lt, le, eq, ne)
@@ -21940,6 +12311,7 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 - `feeAmount` (gt, ge, lt, le, eq, ne)
 - `status` (in, nin, eq, ne)
 - `untilcancelled` (eq, ne)
+- `subscriptionType` (eq, ne, in, nin). Filters by subscription type. Accepts `Regular` or `BalanceDriven`. Case-insensitive. Example: `subscriptionType(in)=Regular|BalanceDriven`.
 - `payaccountLastfour` (nct, ct)
 - `payaccountType` (ne, eq, in, nin)
 - `payaccountCurrency` (ne, eq, in, nin)
@@ -21975,7 +12347,7 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 - `createdAt` (eq, ne, gt, ge, lt, le)
 - `updatedOn` (eq, ne, gt, ge, lt, le)
 - `invoiceNumber` (ct, nct)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name  
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
 
 **List of comparison operators accepted:**
 - `eq` or empty => equal
@@ -22073,7 +12445,7 @@ client.Query.ListSubscriptionsOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -22099,8 +12471,7 @@ client.Query.ListSubscriptionsOrg(
 
 **parameters:** `map[string]*string` 
 
-
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -22115,7 +12486,7 @@ Collection of field names, conditions, and values used to filter the query.
   --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
 </Info>
 See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for more information.
-      
+
 **List of field names accepted:**
 
 - `startDate` (gt, ge, lt, le, eq, ne)
@@ -22128,6 +12499,7 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 - `feeAmount` (gt, ge, lt, le, eq, ne)
 - `status` (in, nin, eq, ne)
 - `untilcancelled` (eq, ne)
+- `subscriptionType` (eq, ne, in, nin). Filters by subscription type. Accepts `Regular` or `BalanceDriven`. Case-insensitive. Example: `subscriptionType(in)=Regular|BalanceDriven`.
 - `payaccountLastfour` (nct, ct)
 - `payaccountType` (ne, eq, in, nin)
 - `payaccountCurrency` (ne, eq, in, nin)
@@ -22163,7 +12535,7 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 - `createdAt` (eq, ne, gt, ge, lt, le)
 - `updatedOn` (eq, ne, gt, ge, lt, le)
 - `invoiceNumber` (ct, nct)
-- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name  
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
 
 **List of comparison operators accepted:**
 - `eq` or empty => equal
@@ -22253,7 +12625,7 @@ client.Query.ListPayoutSubscriptions(
 <dl>
 <dd>
 
-**entry:** `payabli.Entry` 
+**entry:** `payabli.Entry` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -22261,7 +12633,7 @@ client.Query.ListPayoutSubscriptions(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -22286,7 +12658,6 @@ client.Query.ListPayoutSubscriptions(
 <dd>
 
 **parameters:** `map[string]*string` 
-
 
 Collection of field names, conditions, and values used to filter the query.
 <Info>
@@ -22436,7 +12807,7 @@ client.Query.ListPayoutSubscriptionsOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -22461,7 +12832,6 @@ client.Query.ListPayoutSubscriptionsOrg(
 <dd>
 
 **parameters:** `map[string]*string` 
-
 
 Collection of field names, conditions, and values used to filter the query.
 <Info>
@@ -22558,12 +12928,15 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 <dd>
 
 Retrieve a list of transactions for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
-By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include `transactionDate` filters.
-For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024. 
-``` curl -X GET https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&fromRecord=0&transactionDate(ge)=2024-04-01T00:00:00&transactionDate(le)=2024-04-09T23:59:59\
-  -H 'requestToken: <API TOKEN>'
 
-  ```
+By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include `transactionDate` filters.
+
+These request parameters filter for transactions between April 1, 2024 and April 9, 2024.
+
+```bash
+curl -X GET https://api-sandbox.payabli.com/api/Query/transactions/8cfec329267?limitRecord=20&fromRecord=0&transactionDate(ge)=2024-04-01T00:00:00&transactionDate(le)=2024-04-09T23:59:59 \
+  -H 'requestToken: <API TOKEN>'
+```
 </dd>
 </dl>
 </dd>
@@ -22609,7 +12982,7 @@ client.Query.ListTransactions(
 <dl>
 <dd>
 
-**entry:** `payabli.Entry` 
+**entry:** `payabli.Entry` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -22617,7 +12990,7 @@ client.Query.ListTransactions(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -22643,8 +13016,7 @@ client.Query.ListTransactions(
 
 **parameters:** `map[string]*string` 
 
-
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -22759,20 +13131,16 @@ See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-repo
 <dl>
 <dd>
 
-
-Retrieve a list of transactions for an organization. Use filters to
-limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
-
+Retrieve a list of transactions for an organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 
 By default, this endpoint returns only transactions from the last 60 days. To query transactions outside of this period, include `transactionDate` filters.
 
-For example, this request parameters filter for transactions between April 01, 2024 and April 09, 2024. 
+These request parameters filter for transactions between April 1, 2024 and April 9, 2024.
 
-```
-curl -X GET "https://sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&fromRecord=0&transactionDate(ge)=2024-04-01T00:00:00&transactionDate(le)=2024-04-09T23:59:59"\
+```bash
+curl -X GET "https://api-sandbox.payabli.com/api/Query/transactions/org/1?limitRecord=20&fromRecord=0&transactionDate(ge)=2024-04-01T00:00:00&transactionDate(le)=2024-04-09T23:59:59" \
   -H 'requestToken: <API TOKEN>'
-
-  ```
+```
 </dd>
 </dl>
 </dd>
@@ -22826,7 +13194,7 @@ client.Query.ListTransactionsOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -22852,8 +13220,7 @@ client.Query.ListTransactionsOrg(
 
 **parameters:** `map[string]*string` 
 
-
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -22985,8 +13352,8 @@ Retrieve a list of transfer details records for a paypoint. Use filters to limit
 request := &payabli.ListTransfersPaypointRequest{}
 client.Query.ListTransferDetails(
         context.TODO(),
-        "47862acd",
-        123456,
+        "8cfec329267",
+        4521,
         request,
     )
 }
@@ -23004,7 +13371,7 @@ client.Query.ListTransferDetails(
 <dl>
 <dd>
 
-**entry:** `payabli.Entry` 
+**entry:** `payabli.Entry` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -23020,7 +13387,7 @@ client.Query.ListTransferDetails(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -23036,7 +13403,7 @@ client.Query.ListTransferDetails(
 <dl>
 <dd>
 
-**limitRecord:** `*payabli.LimitRecord` 
+**limitRecord:** `*payabli.LimitRecord` — Max number of records to return for the query. Use `0` or negative value to return all records. Defaults to 20.
     
 </dd>
 </dl>
@@ -23046,9 +13413,8 @@ client.Query.ListTransferDetails(
 
 **parameters:** `map[string]*string` 
 
-
 Collection of field names, conditions, and values used to filter
-the query. 
+the query.
 
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
@@ -23140,7 +13506,7 @@ request := &payabli.ListTransfersRequest{
     }
 client.Query.ListTransfers(
         context.TODO(),
-        "47862acd",
+        "8cfec329267",
         request,
     )
 }
@@ -23158,7 +13524,7 @@ client.Query.ListTransfers(
 <dl>
 <dd>
 
-**entry:** `payabli.Entry` 
+**entry:** `payabli.Entry` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -23166,7 +13532,7 @@ client.Query.ListTransfers(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -23274,7 +13640,6 @@ Retrieve a list of transfers for an org. Use filters to limit results. Include t
 
 ```go
 request := &payabli.ListTransfersRequestOrg{
-        OrgId: int64(123),
         FromRecord: payabli.Int(
             0,
         ),
@@ -23284,6 +13649,7 @@ request := &payabli.ListTransfersRequestOrg{
     }
 client.Query.ListTransfersOrg(
         context.TODO(),
+        int64(123),
         request,
     )
 }
@@ -23301,7 +13667,7 @@ client.Query.ListTransfersOrg(
 <dl>
 <dd>
 
-**orgId:** `payabli.Orgid` 
+**orgId:** `payabli.Orgid` — Organization ID. Unique identifier assigned to an org by Payabli.
     
 </dd>
 </dl>
@@ -23309,7 +13675,7 @@ client.Query.ListTransfersOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -23423,7 +13789,7 @@ request := &payabli.ListTransfersOutOrgRequest{
     }
 client.Query.ListTransfersOutOrg(
         context.TODO(),
-        77,
+        123,
         request,
     )
 }
@@ -23551,7 +13917,7 @@ request := &payabli.ListTransfersOutPaypointRequest{
     }
 client.Query.ListTransfersOutPaypoint(
         context.TODO(),
-        "47cade237",
+        "8cfec329267",
         request,
     )
 }
@@ -23569,7 +13935,7 @@ client.Query.ListTransfersOutPaypoint(
 <dl>
 <dd>
 
-**entry:** `payabli.Entry` 
+**entry:** `payabli.Entry` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -23679,7 +14045,7 @@ request := &payabli.ListTransferDetailsOutRequest{
     }
 client.Query.ListTransferDetailsOut(
         context.TODO(),
-        "47ace2b25",
+        "8cfec329267",
         4521,
         request,
     )
@@ -23698,7 +14064,7 @@ client.Query.ListTransferDetailsOut(
 <dl>
 <dd>
 
-**entry:** `payabli.Entry` 
+**entry:** `payabli.Entry` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -24134,7 +14500,7 @@ client.Query.ListVendors(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -24300,7 +14666,7 @@ client.Query.ListVendorsOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -24458,7 +14824,7 @@ client.Query.ListVcards(
 <dl>
 <dd>
 
-**entry:** `payabli.Entry` 
+**entry:** `payabli.Entry` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -24466,7 +14832,7 @@ client.Query.ListVcards(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -24492,7 +14858,7 @@ client.Query.ListVcards(
 
 **parameters:** `map[string]*string` 
 
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -24506,7 +14872,7 @@ Collection of field names, conditions, and values used to filter the query.
 
   --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
 </Info>
-List of field names accepted:  
+List of field names accepted:
 
   - `status` (eq, ne, ct, nct, sw, ew)
   - `createdAt` (gt, ge, lt, le, eq, ne)
@@ -24527,7 +14893,7 @@ List of field names accepted:
   - `paypointId` (eq, ne, gt, ge, lt, le)
   - `cardType` (eq, ne, gt, ge, lt, le)
 
-List of comparison accepted - enclosed between parentheses:  
+List of comparison accepted - enclosed between parentheses:
 
   - eq or empty => equal
   - gt => greater than
@@ -24618,7 +14984,7 @@ client.Query.ListVcardsTransactions(
 <dl>
 <dd>
 
-**entry:** `payabli.Entry` 
+**entry:** `payabli.Entry` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
     
 </dd>
 </dl>
@@ -24938,7 +15304,7 @@ client.Query.ListVcardsOrg(
 <dl>
 <dd>
 
-**exportFormat:** `*payabli.ExportFormat` 
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
     
 </dd>
 </dl>
@@ -24964,7 +15330,7 @@ client.Query.ListVcardsOrg(
 
 **parameters:** `map[string]*string` 
 
-Collection of field names, conditions, and values used to filter the query. 
+Collection of field names, conditions, and values used to filter the query.
 <Info>
   **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 
@@ -24978,7 +15344,7 @@ Collection of field names, conditions, and values used to filter the query.
 
   --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
 </Info>
-List of field names accepted:  
+List of field names accepted:
 
   - `status` (eq, ne, ct, nct, sw, ew)
   - `createdAt` (gt, ge, lt, le, eq, ne)
@@ -24999,7 +15365,7 @@ List of field names accepted:
   - `paypointId` (eq, ne, gt, ge, lt, le)
   - `cardType` (eq, ne, gt, ge, lt, le)
 
-List of comparison accepted - enclosed between parentheses:  
+List of comparison accepted - enclosed between parentheses:
 
   - eq or empty => equal
   - gt => greater than
@@ -25032,6 +15398,8947 @@ List of comparison accepted - enclosed between parentheses:
 </dl>
 </details>
 
+## Ocr
+<details><summary><code>client.Ocr.OcrDocumentForm(TypeResult, request) -> *payabli.PayabliApiResponseOcr</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to upload an image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter `typeResult`. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.FileContentImageOnly{}
+client.Ocr.OcrDocumentForm(
+        context.TODO(),
+        "typeResult",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**typeResult:** `payabli.TypeResult` — The type of object to create in Payabli. Accepted values are `bill` and `invoice`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `*payabli.FileContentImageOnly` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Ocr.OcrDocumentJson(TypeResult, request) -> *payabli.PayabliApiResponseOcr</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to submit a Base64-encoded image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter `typeResult`. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.FileContentImageOnly{}
+client.Ocr.OcrDocumentJson(
+        context.TODO(),
+        "typeResult",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**typeResult:** `payabli.TypeResult` — The type of object to create in Payabli. Accepted values are `bill` and `invoice`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `*payabli.FileContentImageOnly` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Notificationlogs
+<details><summary><code>client.Notificationlogs.SearchNotificationLogs(request) -> []*payabli.NotificationLog</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Search notification logs with filtering and pagination.
+  - Start date and end date cannot be more than 30 days apart
+  - Either `orgId` or `paypointId` must be provided
+
+This endpoint requires the `notifications_create` OR `notifications_read` permission.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.SearchNotificationLogsRequest{
+        PageSize: payabli.Int(
+            20,
+        ),
+        StartDate: payabli.MustParseDateTime(
+            "2024-01-01T00:00:00Z",
+        ),
+        EndDate: payabli.MustParseDateTime(
+            "2024-01-31T23:59:59Z",
+        ),
+        NotificationEvent: payabli.String(
+            "ActivatedMerchant",
+        ),
+        Succeeded: payabli.Bool(
+            true,
+        ),
+        OrgId: payabli.Int64(
+            int64(123),
+        ),
+    }
+client.Notificationlogs.SearchNotificationLogs(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**pageSize:** `*payabli.Pagesize` — Number of records on each response page.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page:** `*int` — The page number to retrieve. Defaults to 1 if not provided.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**startDate:** `time.Time` — The start date for the search.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**endDate:** `time.Time` — The end date for the search.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**notificationEvent:** `*string` — The type of notification event to filter by.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**succeeded:** `*bool` — Indicates whether the notification was successful.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `*int64` — The ID of the organization to filter by.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paypointId:** `*int64` — The ID of the paypoint to filter by.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Notificationlogs.GetNotificationLog(Uuid) -> *payabli.NotificationLogDetail</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get detailed information for a specific notification log entry.
+This endpoint requires the `notifications_create` OR `notifications_read` permission.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Notificationlogs.GetNotificationLog(
+        context.TODO(),
+        "550e8400-e29b-41d4-a716-446655440000",
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**uuid:** `string` — The notification log entry.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Notificationlogs.RetryNotificationLog(Uuid) -> *payabli.NotificationLogDetail</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retry sending a specific notification.
+
+**Permissions:** notifications_create
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Notificationlogs.RetryNotificationLog(
+        context.TODO(),
+        "550e8400-e29b-41d4-a716-446655440000",
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**uuid:** `string` — Unique id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Notificationlogs.BulkRetryNotificationLogs(request) -> error</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retry sending multiple notifications (maximum 50 IDs).
+This is an async process, so use the search endpoint again to check the notification status.
+
+This endpoint requires the `notifications_create` permission.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := []string{
+        "550e8400-e29b-41d4-a716-446655440000",
+        "550e8400-e29b-41d4-a716-446655440001",
+        "550e8400-e29b-41d4-a716-446655440002",
+    }
+client.Notificationlogs.BulkRetryNotificationLogs(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `payabli.BulkRetryRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Cloud
+<details><summary><code>client.Cloud.AddDevice(Entry, request) -> *payabli.AddDeviceResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Register a cloud device to an entrypoint. See [Devices Quickstart](/developers/developer-guides/devices-quickstart#devices-quickstart) for a complete guide.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.DeviceEntry{
+        Description: payabli.String(
+            "Front Desk POS",
+        ),
+        RegistrationCode: payabli.String(
+            "YS7DS5",
+        ),
+    }
+client.Cloud.AddDevice(
+        context.TODO(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `*string` — Description or name for the device. This can be anything, but Payabli recommends entering the name of the paypoint, or some other easy to identify descriptor. If you have several devices for one paypoint, you can give them descriptions like "Cashier 1" and "Cashier 2", or "Front Desk" and "Back Office"
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**registrationCode:** `*string` 
+
+The device registration code or serial number, depending on the model.
+
+- Ingenico devices: This is the activation code that's displayed on the device screen during setup.
+
+- PAX A920 device: This code is the serial number on the back of the device.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Cloud.RemoveDevice(Entry, DeviceId) -> *payabli.RemoveDeviceResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Remove a cloud device from an entrypoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Cloud.RemoveDevice(
+        context.TODO(),
+        "8cfec329267",
+        "499585-389fj484-3jcj8hj3",
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**deviceId:** `string` — ID of the cloud device.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Cloud.HistoryDevice(Entry, DeviceId) -> *payabli.CloudQueryApiResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve the registration history for a device.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Cloud.HistoryDevice(
+        context.TODO(),
+        "8cfec329267",
+        "499585-389fj484-3jcj8hj3",
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**deviceId:** `string` — ID of the cloud device.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Cloud.ListDevice(Entry) -> *payabli.CloudQueryApiResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use [List devices by paypoint](/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint) instead, which supports filters, sorting, and pagination.
+
+Get a list of cloud devices registered to an entrypoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ListDeviceRequest{}
+client.Cloud.ListDevice(
+        context.TODO(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**forceRefresh:** `*bool` — When `true`, the request retrieves an updated list of devices from the processor instead of returning a cached list of devices.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## LineItem
+<details><summary><code>client.LineItem.AddItem(Entry, request) -> *payabli.PayabliApiResponse6</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Adds products and services to an entrypoint's catalog. These are used as line items for invoicing and transactions. In the response, "responseData" displays the item's code.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.AddItemRequest{
+        Body: &payabli.LineItem{
+            ItemCommodityCode: payabli.String(
+                "010",
+            ),
+            ItemCost: 12.45,
+            ItemDescription: payabli.String(
+                "Deposit for materials",
+            ),
+            ItemMode: payabli.Int(
+                0,
+            ),
+            ItemProductCode: payabli.String(
+                "M-DEPOSIT",
+            ),
+            ItemProductName: payabli.String(
+                "Materials deposit",
+            ),
+            ItemQty: 1,
+            ItemUnitOfMeasure: payabli.String(
+                "SqFt",
+            ),
+        },
+    }
+client.LineItem.AddItem(
+        context.TODO(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `*string` — A unique ID you can include to prevent duplicating objects or transactions if a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `*payabli.LineItem` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.LineItem.GetItem(LineItemId) -> *payabli.LineItemQueryRecord</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Gets an item by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.LineItem.GetItem(
+        context.TODO(),
+        700,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**lineItemId:** `int` — ID for the line item (also known as a product, service, or item).
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.LineItem.UpdateItem(LineItemId, request) -> *payabli.PayabliApiResponse6</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates an item.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.LineItem{
+        ItemCost: 12.45,
+        ItemQty: 1,
+    }
+client.LineItem.UpdateItem(
+        context.TODO(),
+        700,
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**lineItemId:** `int` — ID for the line item (also known as a product, service, or item).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `*payabli.LineItem` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.LineItem.DeleteItem(LineItemId) -> *payabli.DeleteItemResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes an item.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.LineItem.DeleteItem(
+        context.TODO(),
+        700,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**lineItemId:** `int` — ID for the line item (also known as a product, service, or item).
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.LineItem.ListLineItems(Entry) -> *payabli.QueryResponseItems</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a list of line items and their details from an entrypoint. Line items are also known as items, products, and services. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ListLineItemsRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
+client.LineItem.ListLineItems(
+        context.TODO(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — Max number of records to return for the query. Use `0` or negative value to return all records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+
+</Info>
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+
+  - `categories` (ct, nct)
+  - `code` (ne, eq, ct, nct)
+  - `commodityCode` (ne, eq, ct, nct)
+  - `createdDate` (gt, ge, lt, le, eq, ne)
+  - `description` (ne, eq, ct, nct)
+  - `externalPaypointID` (ct, nct, ne, eq)
+  - `mode` (eq, ne)
+  - `name` (ne, eq, ct, nct)
+  - `orgName` (ne, eq, ct, nct)
+  - `paypointDba` (ne, eq, ct, nct)
+  - `paypointId` (ne, eq)
+  - `paypointLegal` (ne, eq, ct, nct)
+  - `quantity` (gt, ge, lt, le, eq, ne)
+  - `uom` (ne, eq, ct, nct)
+  - `updatedDate` (gt, ge, lt, le, eq, ne)
+  - `value` (gt, ge, lt, le, eq, ne)
+
+List of comparison accepted - enclosed between parentheses:
+
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array separated by "|"
+- nin => not inside array separated by "|"
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: name(ct)=john return all records with name containing john
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `*string` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Boarding
+<details><summary><code>client.Boarding.AddApplication(request) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a boarding application in an organization. This endpoint requires an application API token.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.AddApplicationRequest{
+        ApplicationDataPayIn: &payabli.ApplicationDataPayIn{
+            Services: &payabli.ApplicationDataPayInServices{
+                Ach: &payabli.AchSetup{},
+                Card: &payabli.CardSetup{
+                    AcceptAmex: payabli.Bool(
+                        true,
+                    ),
+                    AcceptDiscover: payabli.Bool(
+                        true,
+                    ),
+                    AcceptMastercard: payabli.Bool(
+                        true,
+                    ),
+                    AcceptVisa: payabli.Bool(
+                        true,
+                    ),
+                },
+            },
+            AnnualRevenue: payabli.Float64(
+                1000,
+            ),
+            AverageBillSize: payabli.String(
+                "500",
+            ),
+            AverageMonthlyBill: payabli.String(
+                "5650",
+            ),
+            Avgmonthly: payabli.Float64(
+                1000,
+            ),
+            Baddress: payabli.String(
+                "123 Walnut Street",
+            ),
+            Baddress1: payabli.String(
+                "Suite 103",
+            ),
+            BankData: []*payabli.Bank{
+                &payabli.Bank{
+                    AccountId: payabli.String(
+                        "123-456",
+                    ),
+                    Nickname: payabli.String(
+                        "Withdrawal Account",
+                    ),
+                    BankName: payabli.String(
+                        "Test Bank 1",
+                    ),
+                    RoutingAccount: payabli.String(
+                        "123123123",
+                    ),
+                    AccountNumber: payabli.String(
+                        "123123100",
+                    ),
+                    TypeAccount: payabli.TypeAccountChecking.Ptr(),
+                    BankAccountHolderName: payabli.String(
+                        "Gruzya Adventure Outfitters LLC",
+                    ),
+                    BankAccountHolderType: payabli.BankAccountHolderTypeBusiness.Ptr(),
+                    BankAccountFunction: payabli.Int(
+                        1,
+                    ),
+                },
+                &payabli.Bank{
+                    AccountId: payabli.String(
+                        "123-789",
+                    ),
+                    Nickname: payabli.String(
+                        "Deposit Account",
+                    ),
+                    BankName: payabli.String(
+                        "Test Bank 2",
+                    ),
+                    RoutingAccount: payabli.String(
+                        "321321321",
+                    ),
+                    AccountNumber: payabli.String(
+                        "123123200",
+                    ),
+                    TypeAccount: payabli.TypeAccountChecking.Ptr(),
+                    BankAccountHolderName: payabli.String(
+                        "Gruzya Adventure Outfitters LLC",
+                    ),
+                    BankAccountHolderType: payabli.BankAccountHolderTypeBusiness.Ptr(),
+                    BankAccountFunction: payabli.Int(
+                        0,
+                    ),
+                },
+            },
+            Bcity: payabli.String(
+                "New Vegas",
+            ),
+            Bcountry: payabli.String(
+                "US",
+            ),
+            Binperson: payabli.Int(
+                60,
+            ),
+            Binphone: payabli.Int(
+                20,
+            ),
+            Binweb: payabli.Int(
+                20,
+            ),
+            Bstate: payabli.String(
+                "FL",
+            ),
+            Bsummary: payabli.String(
+                "Brick and mortar store that sells office supplies",
+            ),
+            Btype: payabli.OwnTypeLimitedLiabilityCompany.Ptr(),
+            Bzip: payabli.String(
+                "33000",
+            ),
+            Contacts: []payabli.ApplicationDataPayInContactsItem{
+                &payabli.Contacts{
+                    ContactEmail: payabli.String(
+                        "herman@hermanscoatings.com",
+                    ),
+                    ContactName: payabli.String(
+                        "Herman Martinez",
+                    ),
+                    ContactPhone: payabli.String(
+                        "3055550000",
+                    ),
+                    ContactTitle: payabli.String(
+                        "Owner",
+                    ),
+                },
+            },
+            CreditLimit: payabli.String(
+                "creditLimit",
+            ),
+            DbaName: payabli.String(
+                "Sunshine Gutters",
+            ),
+            Ein: payabli.String(
+                "123456789",
+            ),
+            Faxnumber: payabli.String(
+                "1234567890",
+            ),
+            Highticketamt: payabli.Float64(
+                1000,
+            ),
+            LegalName: payabli.String(
+                "Sunshine Services, LLC",
+            ),
+            License: payabli.String(
+                "2222222FFG",
+            ),
+            Licstate: payabli.String(
+                "CA",
+            ),
+            Maddress: payabli.String(
+                "123 Walnut Street",
+            ),
+            Maddress1: payabli.String(
+                "STE 900",
+            ),
+            Mcc: payabli.String(
+                "7777",
+            ),
+            Mcity: payabli.String(
+                "Johnson City",
+            ),
+            Mcountry: payabli.String(
+                "US",
+            ),
+            Mstate: payabli.String(
+                "TN",
+            ),
+            Mzip: payabli.String(
+                "37615",
+            ),
+            OrgId: payabli.Int64(
+                int64(123),
+            ),
+            Ownership: []payabli.ApplicationDataPayInOwnershipItem{
+                &payabli.Owners{
+                    Ownername: payabli.String(
+                        "John Smith",
+                    ),
+                    Ownertitle: payabli.String(
+                        "CEO",
+                    ),
+                    Ownerpercent: payabli.Int(
+                        100,
+                    ),
+                    Ownerssn: payabli.String(
+                        "123456789",
+                    ),
+                    Ownerdob: payabli.String(
+                        "01/01/1990",
+                    ),
+                    Ownerphone1: payabli.String(
+                        "555888111",
+                    ),
+                    Ownerphone2: payabli.String(
+                        "555888111",
+                    ),
+                    Owneremail: payabli.String(
+                        "test@email.com",
+                    ),
+                    Ownerdriver: payabli.String(
+                        "CA6677778",
+                    ),
+                    Oaddress: payabli.String(
+                        "33 North St",
+                    ),
+                    Ocity: payabli.String(
+                        "Any City",
+                    ),
+                    Ocountry: payabli.String(
+                        "US",
+                    ),
+                    Odriverstate: payabli.String(
+                        "CA",
+                    ),
+                    Ostate: payabli.String(
+                        "CA",
+                    ),
+                    Ozip: payabli.String(
+                        "55555",
+                    ),
+                },
+            },
+            Phonenumber: "1234567890",
+            ProcessingRegion: "US",
+            RecipientEmail: payabli.String(
+                "josephray@example.com",
+            ),
+            RecipientEmailNotification: payabli.Bool(
+                true,
+            ),
+            Resumable: payabli.Bool(
+                true,
+            ),
+            Signer: &payabli.SignerDataRequest{
+                Name: payabli.String(
+                    "John Smith",
+                ),
+                Ssn: payabli.String(
+                    "123456789",
+                ),
+                Dob: payabli.String(
+                    "01/01/1976",
+                ),
+                Phone: payabli.String(
+                    "555888111",
+                ),
+                Email: payabli.String(
+                    "test@email.com",
+                ),
+                Address: payabli.String(
+                    "33 North St",
+                ),
+                Address1: payabli.String(
+                    "STE 900",
+                ),
+                City: payabli.String(
+                    "Bristol",
+                ),
+                Country: payabli.String(
+                    "US",
+                ),
+                State: payabli.String(
+                    "TN",
+                ),
+                Zip: payabli.String(
+                    "55555",
+                ),
+                SignedDocumentReference: payabli.String(
+                    "https://example.com/signed-document.pdf",
+                ),
+                PciAttestation: payabli.Bool(
+                    true,
+                ),
+                AttestationDate: payabli.String(
+                    "04/20/2025",
+                ),
+                AdditionalData: &payabli.AdditionalDataMap{
+                    "deviceId": "499585-389fj484-3jcj8hj3",
+                    "session": "fifji4-fiu443-fn4843",
+                    "timeWithCompany": "6 Years",
+                },
+                SignDate: payabli.String(
+                    "04/20/2025",
+                ),
+            },
+            Startdate: payabli.String(
+                "01/01/1990",
+            ),
+            TaxFillName: payabli.String(
+                "Sunshine LLC",
+            ),
+            TemplateId: payabli.Int64(
+                int64(22),
+            ),
+            Ticketamt: payabli.Float64(
+                1000,
+            ),
+            Website: payabli.String(
+                "www.example.com",
+            ),
+            WhenCharged: payabli.WhenchargedWhenServiceProvided,
+            WhenDelivered: payabli.WhendeliveredOver30Days,
+            WhenProvided: payabli.WhenprovidedThirtyDaysOrLess,
+            WhenRefunded: payabli.WhenrefundedThirtyDaysOrLess,
+        },
+    }
+client.Boarding.AddApplication(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `*payabli.AddApplicationRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Boarding.UpdateApplication(AppId, request) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates a boarding application by ID. This endpoint requires an application API token.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ApplicationData{}
+client.Boarding.UpdateApplication(
+        context.TODO(),
+        352,
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**appId:** `int` — Boarding application ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `*payabli.ApplicationData` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Boarding.DeleteApplication(AppId) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes a boarding application by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Boarding.DeleteApplication(
+        context.TODO(),
+        352,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**appId:** `int` — Boarding application ID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Boarding.GetApplication(AppId) -> *payabli.ApplicationDetailsRecord</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves the details for a boarding application by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Boarding.GetApplication(
+        context.TODO(),
+        352,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**appId:** `int` — Boarding application ID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Boarding.GetApplicationByAuth(XId, request) -> *payabli.ApplicationQueryRecord</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Gets a boarding application by authentication information. This endpoint requires an `application` API token.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.RequestAppByAuth{
+        Email: payabli.String(
+            "admin@email.com",
+        ),
+        ReferenceId: payabli.String(
+            "129-219",
+        ),
+    }
+client.Boarding.GetApplicationByAuth(
+        context.TODO(),
+        "17E",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**xId:** `string` — The application ID in Hex format. Find this at the end of the boarding link URL returned in a call to api/Boarding/applink/{appId}/{mail2}. For example in:  `https://boarding-sandbox.payabli.com/boarding/externalapp/load/17E`, the xId is `17E`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**email:** `*payabli.Email` — The email address the applicant used to save the application.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**referenceId:** `*string` — The referenceId is sent to the applicant via email when they save the application.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Boarding.GetByIdLinkApplication(BoardingLinkId) -> *payabli.BoardingLinkQueryRecord</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves details for a boarding link, by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Boarding.GetByIdLinkApplication(
+        context.TODO(),
+        91,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**boardingLinkId:** `int` — The boarding link ID. You can find this at the end of the boarding link reference name. For example `https://boarding.payabli.com/boarding/app/myorgaccountname-00091`. The ID is `91`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Boarding.GetByTemplateIdLinkApplication(TemplateId) -> *payabli.BoardingLinkQueryRecord</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get details for a boarding link using the boarding template ID. This endpoint requires an application API token.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Boarding.GetByTemplateIdLinkApplication(
+        context.TODO(),
+        80,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**templateId:** `float64` — The boarding template ID. You can find this at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Boarding.GetExternalApplication(AppId, Mail2) -> *payabli.PayabliApiResponse00</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a link and the verification code used to log into an existing boarding application. You can also use this endpoint to send a link and referenceId for an existing boarding application to an email address. The recipient can use the referenceId and email address to access and edit the application.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.GetExternalApplicationRequest{}
+client.Boarding.GetExternalApplication(
+        context.TODO(),
+        352,
+        "mail2",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**appId:** `int` — Boarding application ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**mail2:** `string` — Email address used to access the application. If `sendEmail` parameter is true, a link to the application is sent to this email address.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sendEmail:** `*bool` — If `true`, sends an email that includes the link to the application to the `mail2` address. Defaults to `false`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Boarding.GetLinkApplication(BoardingLinkReference) -> *payabli.BoardingLinkQueryRecord</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves the details for a boarding link, by reference name. This endpoint requires an application API token.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Boarding.GetLinkApplication(
+        context.TODO(),
+        "myorgaccountname-00091",
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**boardingLinkReference:** `string` — The boarding link reference name. You can find this at the end of the boarding link URL. For example `https://boarding.payabli.com/boarding/app/myorgaccountname-00091`
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Boarding.ListApplications(OrgId) -> *payabli.QueryBoardingAppsListResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a list of boarding applications for an organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ListApplicationsRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
+client.Boarding.ListApplications(
+        context.TODO(),
+        123,
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exportFormat:** `*payabli.ExportFormat` — Export format for file downloads. When specified, returns data as a file instead of JSON.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — Max number of records to return for the query. Use `0` or negative value to return all records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `createdAt` (gt, ge, lt, le, eq, ne)
+- `startDate` (gt, ge, lt, le, eq, ne)
+- `dbaname` (ct, nct)
+- `legalname` (ct, nct)
+- `ein` (ct, nct)
+- `address` (ct, nct)
+- `city` (ct, nct)
+- `state` (ct, nct)
+- `phone` (ct, nct)
+- `mcc` (ct, nct)
+- `owntype` (ct, nct)
+- `ownerName` (ct, nct)
+- `contactName` (ct, nct)
+- `status` (in, nin, eq,ne)
+- `orgParentname` (ct, nct)
+- `externalpaypointID` (ct, nct, eq, ne)
+- `repCode` (ct, nct, eq, ne)
+- `repName` (ct, nct, eq, ne)
+- `repOffice` (ct, nct, eq, ne)
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array
+- nin => not inside array
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `*string` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Boarding.ListBoardingLinks(OrgId) -> *payabli.QueryBoardingLinksResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Return a list of boarding links for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ListBoardingLinksRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
+client.Boarding.ListBoardingLinks(
+        context.TODO(),
+        123,
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — Max number of records to return for the query. Use `0` or negative value to return all records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `lastUpdated` (gt, ge, lt, le, eq, ne)
+- `templateName` (ct, nct)
+- `referenceName` (ct, nct)
+- `acceptRegister` (eq, ne)
+- `acceptAuth` (eq, ne)
+- `templateCode` (ct, nct)
+- `templateId` (eq, ne)
+- `orgParentname` (ct, nct)
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array
+- nin => not inside array
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: templateName(ct)=hoa return all records with template title containing "hoa"
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `*string` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Boarding.AddServiceToPaypointFromApp(request) -> *payabli.CreateApplicationFromPaypointResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a new boarding application linked to an existing paypoint as part of the multi-product boarding flow. Use this endpoint to add new services to a paypoint without creating a duplicate record. The system copies eligible business, contact, banking, and address data from the paypoint to the new application based on 1:1 field matching. The merchant only needs to provide fields that are specific to the new service. See the [Multi-product boarding](/guides/pay-ops-developer-boarding-multi-product) guide for the full flow.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.CreateApplicationFromPaypointRequest{
+        PaypointId: int64(3040),
+        TemplateId: int64(456),
+        RecipientEmail: "merchant@example.com",
+        ReturnBoardingAccessInfoInLine: payabli.Bool(
+            true,
+        ),
+        OnCreate: []string{
+            "submitApplication",
+        },
+    }
+client.Boarding.AddServiceToPaypointFromApp(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paypointId:** `int64` — ID of the existing paypoint to link to this application.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**templateId:** `int64` — ID of the boarding template to use for the new application.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**recipientEmail:** `string` — Email address where the boarding link is sent. Required. If you don't want to email the merchant, send to an internal address and use `returnBoardingAccessInfoInLine` to retrieve the link from the response instead.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**returnBoardingAccessInfoInLine:** `*bool` — When `true`, returns the boarding access information directly in the response.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**onCreate:** `[]string` — Additional actions to trigger when the application is created. Currently only `submitApplication` is supported, which automatically submits the application on creation and skips the draft state.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Boarding.GetApplicationsByPaypointId(PaypointId) -> *payabli.QueryBoardingAppsListResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns all boarding applications associated with a specific paypoint, including those created through the multi-product boarding flow. Use this endpoint to track underwriting progress across multiple service additions or to build reporting views. See the [Multi-product boarding](/guides/pay-ops-developer-boarding-multi-product) guide for the full flow.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Boarding.GetApplicationsByPaypointId(
+        context.TODO(),
+        int64(3040),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paypointId:** `int64` — ID of the paypoint to retrieve applications for.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Templates
+<details><summary><code>client.Templates.DeleteTemplate(TemplateId) -> *payabli.PayabliApiResponseTemplateId</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes a template by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Templates.DeleteTemplate(
+        context.TODO(),
+        80,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**templateId:** `float64` — The boarding template ID. You can find this at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Templates.GetlinkTemplate(TemplateId, IgnoreEmpty) -> *payabli.BoardingLinkApiResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Generates a boarding link from a boarding template.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Templates.GetlinkTemplate(
+        context.TODO(),
+        80,
+        true,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**templateId:** `float64` — The boarding template ID. You can find this at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**ignoreEmpty:** `bool` — Ignore read-only and empty fields. Default is `false`. If `ignoreEmpty` = `false` and any field is empty, then the request returns a failure response. If `ignoreEmpty` = `true`, the request returns the boarding link name regardless of whether fields are empty.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Templates.GetTemplate(TemplateId) -> *payabli.TemplateQueryRecord</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a boarding template's details by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Templates.GetTemplate(
+        context.TODO(),
+        80,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**templateId:** `float64` — The boarding template ID. You can find this at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Templates.ListTemplates(OrgId) -> *payabli.TemplateQueryResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a list of boarding templates for an organization. Use filters to limit results. You can't make a request that includes filters from the API console in the documentation. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ListTemplatesRequest{
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            0,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
+client.Templates.ListTemplates(
+        context.TODO(),
+        123,
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — Max number of records to return for the query. Use `0` or negative value to return all records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query.
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `createdAt` (gt, ge, lt, le, eq, ne)
+- `title` (ct, nct)
+- `description` (ct, nct)
+- `code` (ct, nct)
+- `orgParentname` (ct, nct)
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array
+- nin => not inside array
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: title(ct)=hoa return all records with title containing "hoa"
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `*string` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Export
+<details><summary><code>client.Export.ExportApplications(Format, OrgId) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List all apps for org](/developers/api-reference/boarding/get-list-of-applications-for-an-organization) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of boarding applications for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportApplicationsRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportApplications(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        123,
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `createdAt` (gt, ge, lt, le, eq, ne)
+- `startDate` (gt, ge, lt, le, eq, ne)
+- `dbaname`  (ct, nct)
+- `legalname`  (ct, nct)
+- `ein`  (ct, nct)
+- `address`  (ct, nct)
+- `city`  (ct, nct)
+- `state`  (ct, nct)
+- `phone`  (ct, nct)
+- `mcc`  (ct, nct)
+- `owntype`  (ct, nct)
+- `ownerName`  (ct, nct)
+- `contactName`  (ct, nct)
+- `status`  (eq, ne)
+- `orgParentname`  (ct, nct)
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array
+- nin => not inside array
+
+List of parameters accepted:
+- `limitRecord` : max number of records for query (default="20", "0" or negative value for all)
+- `fromRecord` : initial record in query
+
+Example: `dbaname(ct)=hoa` returns all records with a `dbaname` containing "hoa"
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportBatchDetails(Format, Entry) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List batch details](/developers/api-reference/query/get-list-of-batchdetails-for-an-entrypoint) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export batch details for a paypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportBatchDetailsRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportBatchDetails(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+**List of field names accepted:**
+
+  - `settlementDate` (gt, ge, lt, le, eq, ne)
+  - `depositDate` (gt, ge, lt, le, eq, ne)
+  - `transId`  (ne, eq, ct, nct)
+  - `gatewayTransId`  (ne, eq, ct, nct)
+  - `method`   (in, nin, eq, ne)
+  - `settledAmount`  (gt, ge, lt, le, eq, ne)
+  - `operation`    (in, nin, eq, ne)
+  - `source`   (in, nin, eq, ne)
+  - `batchNumber`  (ct, nct, eq, ne)
+  - `payaccountLastfour`   (nct, ct)
+  - `payaccountType`   (ne, eq, in, nin)
+  - `customerFirstname`   (ct, nct, eq, ne)
+  - `customerLastname`    (ct, nct, eq, ne)
+  - `customerName`   (ct, nct)
+  - `customerId`  (eq, ne)
+  - `customerNumber`  (ct, nct, eq, ne)
+  - `customerCompanyname`    (ct, nct, eq, ne)
+  - `customerAddress` (ct, nct, eq, ne)
+  - `customerCity`    (ct, nct, eq, ne)
+  - `customerZip` (ct, nct, eq, ne)
+  - `customerState` (ct, nct, eq, ne)
+  - `customerCountry` (ct, nct, eq, ne)
+  - `customerPhone` (ct, nct, eq, ne)
+  - `customerEmail` (ct, nct, eq, ne)
+  - `customerShippingAddress` (ct, nct, eq, ne)
+  - `customerShippingCity`    (ct, nct, eq, ne)
+  - `customerShippingZip` (ct, nct, eq, ne)
+  - `customerShippingState` (ct, nct, eq, ne)
+  - `customerShippingCountry` (ct, nct, eq, ne)
+  - `orgId`  (eq) *mandatory when entry=org*
+  - `isHold` (eq, ne)
+  - `paypointId`  (ne, eq)
+  - `paypointLegal`  (ne, eq, ct, nct)
+  - `paypointDba`  (ne, eq, ct, nct)
+  - `orgName`  (ne, eq, ct, nct)
+  - `batchId` (ct, nct, eq, neq)
+  - `additional-xxx`  (ne, eq, ct, nct) where xxx is the additional field name
+
+List of parameters accepted:
+- limitRecord: max number of records for query (default="20", "0" or negative value for all)
+- fromRecord: initial record in query
+
+Example: `amount(gt)=20` return all records with amount greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportBatchDetailsOrg(Format, OrgId) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List batch details for org](/developers/api-reference/query/get-list-of-batchdetails-for-an-organization) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export batch details for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportBatchDetailsOrgRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportBatchDetailsOrg(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        123,
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+**List of field names accepted:**
+
+  - `settlementDate` (gt, ge, lt, le, eq, ne)
+  - `depositDate` (gt, ge, lt, le, eq, ne)
+  - `transId`  (ne, eq, ct, nct)
+  - `gatewayTransId`  (ne, eq, ct, nct)
+  - `method`   (in, nin, eq, ne)
+  - `settledAmount`  (gt, ge, lt, le, eq, ne)
+  - `operation`    (in, nin, eq, ne)
+  - `source`   (in, nin, eq, ne)
+  - `batchNumber`  (ct, nct, eq, ne)
+  - `payaccountLastfour`   (nct, ct)
+  - `payaccountType`   (ne, eq, in, nin)
+  - `customerFirstname`   (ct, nct, eq, ne)
+  - `customerLastname`    (ct, nct, eq, ne)
+  - `customerName`   (ct, nct)
+  - `customerId`  (eq, ne)
+  - `customerNumber`  (ct, nct, eq, ne)
+  - `customerCompanyname`    (ct, nct, eq, ne)
+  - `customerAddress` (ct, nct, eq, ne)
+  - `customerCity`    (ct, nct, eq, ne)
+  - `customerZip` (ct, nct, eq, ne)
+  - `customerState` (ct, nct, eq, ne)
+  - `customerCountry` (ct, nct, eq, ne)
+  - `customerPhone` (ct, nct, eq, ne)
+  - `customerEmail` (ct, nct, eq, ne)
+  - `customerShippingAddress` (ct, nct, eq, ne)
+  - `customerShippingCity`    (ct, nct, eq, ne)
+  - `customerShippingZip` (ct, nct, eq, ne)
+  - `customerShippingState` (ct, nct, eq, ne)
+  - `customerShippingCountry` (ct, nct, eq, ne)
+  - `orgId`  (eq) *mandatory when entry=org*
+  - `isHold` (eq, ne)
+  - `paypointId`  (ne, eq)
+  - `paypointLegal`  (ne, eq, ct, nct)
+  - `paypointDba`  (ne, eq, ct, nct)
+  - `orgName`  (ne, eq, ct, nct)
+  - `batchId` (ct, nct, eq, neq)
+  - `additional-xxx`  (ne, eq, ct, nct) where xxx is the additional field name
+
+List of parameters accepted:
+- limitRecord: max number of records for query (default="20", "0" or negative value for all)
+- fromRecord: initial record in query
+
+Example: `amount(gt)=20` return all records with amount greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportBatches(Format, Entry) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List batches for paypoint](/developers/api-reference/query/get-list-of-batches-for-an-entrypoint) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of batches for an entrypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportBatchesRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportBatches(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `batchDate` (gt, ge, lt, le, eq, ne)
+- `batchNumber` (ne, eq)
+- `connectorName` (ne, eq, ct, nct)
+- `method` (in, nin, eq, ne)
+- `batchAmount` (gt, ge, lt, le, eq, ne)
+- `feeBatchAmount` (gt, ge, lt, le, eq, ne)
+- `netBatchAmount` (gt, ge, lt, le, eq, ne)
+- `releaseAmount` (gt, ge, lt, le, eq, ne)
+- `heldAmount` (gt, ge, lt, le, eq, ne)
+- `status` (in, nin, eq, ne)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+- `paypointId` (ne, eq)
+- `externalPaypointID` (ct, nct, eq, ne)
+- `expectedDepositDate` (gt, ge, lt, le, eq, ne)
+- `batchRecords` (gt, ge, lt, le, eq, ne)
+- `transferId` (ne, eq)
+- `transferDate` (gt, ge, lt, le, eq, ne)
+- `grossAmount` (gt, ge, lt, le, eq, ne)
+- `chargeBackAmount` (gt, ge, lt, le, eq, ne)
+- `returnedAmount` (gt, ge, lt, le, eq, ne)
+- `billingFeeAmount` (gt, ge, lt, le, eq, ne)
+- `thirdPartyPaidAmount` (gt, ge, lt, le, eq, ne)
+- `netFundedAmount` (gt, ge, lt, le, eq, ne)
+- `adjustmentAmount` (gt, ge, lt, le, eq, ne)
+- `processor` (ne, eq, ct, nct)
+- `transferStatus` (ne, eq, in, nin)
+
+List of parameters accepted:
+- limitRecord: max number of records for query (default="20", "0" or negative value for all)
+- fromRecord: initial record in query
+
+Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportBatchesOrg(Format, OrgId) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List batches for org](/developers/api-reference/query/get-list-of-batches-for-an-organization) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of batches for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportBatchesOrgRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportBatchesOrg(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        123,
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `batchDate` (gt, ge, lt, le, eq, ne)
+- `batchNumber` (ne, eq)
+- `connectorName` (ne, eq, ct, nct)
+- `method` (in, nin, eq, ne)
+- `batchAmount` (gt, ge, lt, le, eq, ne)
+- `feeBatchAmount` (gt, ge, lt, le, eq, ne)
+- `netBatchAmount` (gt, ge, lt, le, eq, ne)
+- `releaseAmount` (gt, ge, lt, le, eq, ne)
+- `heldAmount` (gt, ge, lt, le, eq, ne)
+- `status` (in, nin, eq, ne)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+- `paypointId` (ne, eq)
+- `externalPaypointID` (ct, nct, eq, ne)
+- `expectedDepositDate` (gt, ge, lt, le, eq, ne)
+- `batchRecords` (gt, ge, lt, le, eq, ne)
+- `transferId` (ne, eq)
+- `transferDate` (gt, ge, lt, le, eq, ne)
+- `grossAmount` (gt, ge, lt, le, eq, ne)
+- `chargeBackAmount` (gt, ge, lt, le, eq, ne)
+- `returnedAmount` (gt, ge, lt, le, eq, ne)
+- `billingFeeAmount` (gt, ge, lt, le, eq, ne)
+- `thirdPartyPaidAmount` (gt, ge, lt, le, eq, ne)
+- `netFundedAmount` (gt, ge, lt, le, eq, ne)
+- `adjustmentAmount` (gt, ge, lt, le, eq, ne)
+- `processor` (ne, eq, ct, nct)
+- `transferStatus` (ne, eq, in, nin)
+
+List of parameters accepted:
+- `limitRecord`: max number of records for query (default="20", "0" or negative value for all)
+- `fromRecord`: initial record in query
+Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportBatchesOut(Format, Entry) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List payout batches for paypoint](/developers/api-reference/query/get-list-of-moneyout-batches-for-an-entrypoint) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of money out batches for a paypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportBatchesOutRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportBatchesOut(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+  - `batchDate` (gt, ge, lt, le, eq, ne)
+  - `batchNumber` (ne, eq)
+  - `batchAmount` (gt, ge, lt, le, eq, ne)
+  - `status` (in, nin, eq, ne)
+  - `paypointLegal` (ne, eq, ct, nct)
+  - `paypointDba` (ne, eq, ct, nct)
+  - `orgName` (ne, eq, ct, nct, nin, in)
+  - `paypointId` (ne, eq)
+  - `externalPaypointID` (ct, nct, eq, ne)
+List of parameters accepted:
+- limitRecord: max number of records for query (default="20", "0" or negative value for all)
+- fromRecord: initial record in query
+
+Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater than 20.00"
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportBatchesOutOrg(Format, OrgId) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List payout batches for org](/developers/api-reference/query/get-list-of-moneyout-batches-for-an-org) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of money out batches for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportBatchesOutOrgRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportBatchesOutOrg(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        123,
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+  - `batchDate` (gt, ge, lt, le, eq, ne)
+  - `batchNumber` (ne, eq)
+  - `batchAmount` (gt, ge, lt, le, eq, ne)
+  - `status` (in, nin, eq, ne)
+  - `paypointLegal` (ne, eq, ct, nct)
+  - `paypointDba` (ne, eq, ct, nct)
+  - `orgName` (ne, eq, ct, nct, nin, in)
+  - `paypointId` (ne, eq)
+  - `externalPaypointID` (ct, nct, eq, ne)
+List of parameters accepted:
+- limitRecord: max number of records for query (default="20", "0" or negative value for all)
+- fromRecord: initial record in query
+
+Example: `batchAmount(gt)=20` returns all records with a `batchAmount` greater than 20.00"
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportBills(Format, Entry) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List bills by paypoint](/developers/api-reference/bill/get-list-of-bills-for-entrypoint) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of bills for an entrypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportBillsRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportBills(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `status` (in, nin, eq, ne)
+- `billNumber` (ct, nct, eq, ne)
+- `billDate` (gt, ge, lt, le, eq, ne)
+- `billDueDate` (gt, ge, lt, le, eq, ne)
+- `vendorNumber` (ct, nct, eq, ne)
+- `vendorName` (ct, nct, eq, ne)
+- `ein` (ct, nct, eq, ne)
+- `paymentMethod` (ct, nct, eq, ne)
+- `paymentId` (ct, nct, eq, ne)
+- `paymentgroup` (ct, nct, eq, ne)
+- `totalAmount` (gt, ge, lt, le, eq, ne)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array separated by "|"
+- nin => not inside array separated by "|"
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: totalAmount(gt)=20  return all records with totalAmount greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportBillsOrg(Format, OrgId) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List bills by organization](/developers/api-reference/bill/get-list-of-bills-for-organization) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of bills for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportBillsOrgRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportBillsOrg(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        123,
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `status` (in, nin, eq, ne)
+- `billNumber` (ct, nct, eq, ne)
+- `billDate` (gt, ge, lt, le, eq, ne)
+- `billDueDate` (gt, ge, lt, le, eq, ne)
+- `vendorNumber` (ct, nct, eq, ne)
+- `vendorName` (ct, nct, eq, ne)
+- `ein` (ct, nct, eq, ne)
+- `paymentMethod` (ct, nct, eq, ne)
+- `paymentId` (ct, nct, eq, ne)
+- `paymentgroup` (ct, nct, eq, ne)
+- `totalAmount` (gt, ge, lt, le, eq, ne)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array separated by "|"
+- nin => not inside array separated by "|"
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: totalAmount(gt)=20  return all records with totalAmount greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportChargebacks(Format, Entry) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List disputes by paypoint](/developers/api-reference/chargebacks/get-list-of-chargebacks-and-returned-transactions-for-an-entrypoint) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of chargebacks and ACH returns for an entrypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportChargebacksRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportChargebacks(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `chargebackDate` (gt, ge, lt, le, eq, ne)
+- `transId` (ne, eq, ct, nct)
+- `method` (in, nin, eq, ne)
+- `netAmount` (gt, ge, lt, le, eq, ne)
+- `reasonCode` (in, nin, eq, ne)
+- `reason` (ct, nct, eq, ne)
+- `caseNumber` (ct, nct, eq, ne)
+- `status` (in, nin, eq, ne)
+- `accountType` (in, nin, eq, ne)
+- `payaccountLastfour` (nct, ct)
+- `payaccountType` (ne, eq, in, nin)
+- `customerFirstname` (ct, nct, eq, ne)
+- `customerLastname` (ct, nct, eq, ne)
+- `customerName` (ct, nct)
+- `customerId` (eq, ne)
+- `customerNumber` (ct, nct, eq, ne)
+- `customerCompanyname` (ct, nct, eq, ne)
+- `customerAddress` (ct, nct, eq, ne)
+- `customerCity` (ct, nct, eq, ne)
+- `customerZip` (ct, nct, eq, ne)
+- `customerState` (ct, nct, eq, ne)
+- `customerCountry` (ct, nct, eq, ne)
+- `customerPhone` (ct, nct, eq, ne)
+- `customerEmail` (ct, nct, eq, ne)
+- `customerShippingAddress` (ct, nct, eq, ne)
+- `customerShippingCity` (ct, nct, eq, ne)
+- `customerShippingZip` (ct, nct, eq, ne)
+- `customerShippingState` (ct, nct, eq, ne)
+- `customerShippingCountry` (ct, nct, eq, ne)
+- `orgId` (eq) *mandatory when entry=org*
+- `paypointId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array separated by "|"
+- nin => not inside array separated by "|"
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportChargebacksOrg(Format, OrgId) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List disputes by organization](/developers/api-reference/chargebacks/get-list-of-chargebacks-and-returned-transactions-for-an-org) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of chargebacks and ACH returns for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportChargebacksOrgRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportChargebacksOrg(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        123,
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `chargebackDate` (gt, ge, lt, le, eq, ne)
+- `transId` (ne, eq, ct, nct)
+- `method` (in, nin, eq, ne)
+- `netAmount` (gt, ge, lt, le, eq, ne)
+- `reasonCode` (in, nin, eq, ne)
+- `reason` (ct, nct, eq, ne)
+- `caseNumber` (ct, nct, eq, ne)
+- `status` (in, nin, eq, ne)
+- `accountType` (in, nin, eq, ne)
+- `payaccountLastfour` (nct, ct)
+- `payaccountType` (ne, eq, in, nin)
+- `customerFirstname` (ct, nct, eq, ne)
+- `customerLastname` (ct, nct, eq, ne)
+- `customerName` (ct, nct)
+- `customerId` (eq, ne)
+- `customerNumber` (ct, nct, eq, ne)
+- `customerCompanyname` (ct, nct, eq, ne)
+- `customerAddress` (ct, nct, eq, ne)
+- `customerCity` (ct, nct, eq, ne)
+- `customerZip` (ct, nct, eq, ne)
+- `customerState` (ct, nct, eq, ne)
+- `customerCountry` (ct, nct, eq, ne)
+- `customerPhone` (ct, nct, eq, ne)
+- `customerEmail` (ct, nct, eq, ne)
+- `customerShippingAddress` (ct, nct, eq, ne)
+- `customerShippingCity` (ct, nct, eq, ne)
+- `customerShippingZip` (ct, nct, eq, ne)
+- `customerShippingState` (ct, nct, eq, ne)
+- `customerShippingCountry` (ct, nct, eq, ne)
+- `orgId` (eq) *mandatory when entry=org*
+- `paypointId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array separated by "|"
+- nin => not inside array separated by "|"
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportCustomers(Format, Entry) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List customers by paypoint](/developers/api-reference/customer/get-list-of-customers-for-an-entrypoint) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of customers for an entrypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportCustomersRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportCustomers(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query.
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+**List of field names accepted:**
+- `createdDate` (gt, ge, lt, le, eq, ne)
+- `customernumber` (ne, eq, ct, nct)
+- `firstname` (ne, eq, ct, nct)
+- `lastname` (ne, eq, ct, nct)
+- `name` (ct, nct)
+- `address` (ne, eq, ct, nct)
+- `city` (ne, eq, ct, nct)
+- `country` (ne, eq, ct, nct)
+- `zip` (ne, eq, ct, nct)
+- `state` (ne, eq, ct, nct)
+- `shippingaddress` (ne, eq, ct, nct)
+- `shippingcity` (ne, eq, ct, nct)
+- `shippingcountry` (ne, eq, ct, nct)
+- `shippingzip` (ne, eq, ct, nct)
+- `shippingstate` (ne, eq, ct, nct)
+- `phone` (ne, eq, ct, nct)
+- `email` (ne, eq, ct, nct)
+- `company` (ne, eq, ct, nct)
+- `username` (ne, eq, ct, nct)
+- `balance` (gt, ge, lt, le, eq, ne)
+- `status` (in, nin, eq, ne)
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
+- `orgId` (eq) *mandatory when entry=org*
+- `paypointId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+
+**List of comparison accepted - enclosed between parentheses:**
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array separated by "|"
+- nin => not inside array separated by "|"
+
+**List of parameters accepted:**
+- limitRecord: max number of records for query (default="20", "0" or negative value for all)
+- fromRecord: initial record in query
+
+**Example:**
+balance(gt)=20 return all records with balance greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportCustomersOrg(Format, OrgId) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List customers by organization](/developers/api-reference/customer/get-list-of-customers-for-an-organization) with the `exportFormat` query parameter instead.
+</Warning>
+
+Exports a list of customers for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportCustomersOrgRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportCustomersOrg(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        123,
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query.
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+**List of field names accepted:**
+- `createdDate` (gt, ge, lt, le, eq, ne)
+- `customernumber` (ne, eq, ct, nct)
+- `firstname` (ne, eq, ct, nct)
+- `lastname` (ne, eq, ct, nct)
+- `name` (ct, nct)
+- `address` (ne, eq, ct, nct)
+- `city` (ne, eq, ct, nct)
+- `country` (ne, eq, ct, nct)
+- `zip` (ne, eq, ct, nct)
+- `state` (ne, eq, ct, nct)
+- `shippingaddress` (ne, eq, ct, nct)
+- `shippingcity` (ne, eq, ct, nct)
+- `shippingcountry` (ne, eq, ct, nct)
+- `shippingzip` (ne, eq, ct, nct)
+- `shippingstate` (ne, eq, ct, nct)
+- `phone` (ne, eq, ct, nct)
+- `email` (ne, eq, ct, nct)
+- `company` (ne, eq, ct, nct)
+- `username` (ne, eq, ct, nct)
+- `balance` (gt, ge, lt, le, eq, ne)
+- `status` (in, nin, eq, ne)
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
+- `orgId` (eq) *mandatory when entry=org*
+- `paypointId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+
+**List of comparison accepted - enclosed between parentheses:**
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array separated by "|"
+- nin => not inside array separated by "|"
+
+**List of parameters accepted:**
+- limitRecord: max number of records for query (default="20", "0" or negative value for all)
+- fromRecord: initial record in query
+
+**Example:**
+balance(gt)=20 return all records with balance greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportInvoices(Format, Entry) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List invoices by paypoint](/developers/api-reference/invoice/get-list-of-invoices-for-an-entrypoint) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export list of invoices for an entrypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportInvoicesRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportInvoices(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+ - `invoiceDate` (gt, ge, lt, le, eq, ne)
+ - `dueDate` (gt, ge, lt, le, eq, ne)
+ - `sentDate` (gt, ge, lt, le, eq, ne)
+ - `frequency`  (in, nin,ne, eq)
+ - `invoiceType`   (eq, ne)
+ - `payTerms`   (in, nin, eq, ne)
+ - `paypointId`  (ne, eq)
+ - `totalAmount`  (gt, ge, lt, le, eq, ne)
+ - `paidAmount`  (gt, ge, lt, le, eq, ne)
+ - `status`   (in, nin, eq, ne)
+ - `invoiceNumber`   (ct, nct, eq, ne)
+ - `purchaseOrder`   (ct, nct, eq, ne)
+ - `itemProductCode` (ct, nct)
+ - `itemDescription` (ct, nct)
+ - `customerFirstname`   (ct, nct, eq, ne)
+ - `customerLastname`    (ct, nct, eq, ne)
+ - `customerName`   (ct, nct)
+ - `customerId`  (eq, ne)
+ - `customerNumber`  (ct, nct, eq, ne)
+ - `customerCompanyname`    (ct, nct, eq, ne)
+ - `customerAddress` (ct, nct, eq, ne)
+ - `customerCity`    (ct, nct, eq, ne)
+ - `customerZip` (ct, nct, eq, ne)
+ - `customerState` (ct, nct, eq, ne)
+ - `customerCountry` (ct, nct, eq, ne)
+ - `customerPhone` (ct, nct, eq, ne)
+ - `customerEmail` (ct, nct, eq, ne)
+ - `customerShippingAddress` (ct, nct, eq, ne)
+ - `customerShippingCity` (ct, nct, eq, ne)
+ - `customerShippingZip` (ct, nct, eq, ne)
+ - `customerShippingState` (ct, nct, eq, ne)
+ - `customerShippingCountry` (ct, nct, eq, ne)
+ - `orgId`  (eq)
+ - `paylinkId`  (ne, eq)
+ - `paypointLegal`  (ne, eq, ct, nct)
+ - `paypointDba`  (ne, eq, ct, nct)
+ - `orgName`  (ne, eq, ct, nct)
+ - `additional-xxx`  (ne, eq, ct, nct) where xxx is the additional field name
+
+List of comparison accepted - enclosed between parentheses:
+ - eq or empty => equal
+ - gt => greater than
+ - ge => greater or equal
+ - lt => less than
+ - le => less or equal
+ - ne => not equal
+ - ct => contains
+ - nct => not contains
+ - in => inside array
+ - nin => not inside array
+
+List of parameters accepted:
+ - `limitRecord` : max number of records for query (default="20", "0" or negative value for all)
+ - `fromRecord` : initial record in query
+
+Example: `totalAmount(gt)=20` returns all records with `totalAmount` greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportInvoicesOrg(Format, OrgId) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List invoices by organization](/developers/api-reference/invoice/get-list-of-invoices-for-an-organization) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of invoices for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportInvoicesOrgRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportInvoicesOrg(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        123,
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+ - `invoiceDate` (gt, ge, lt, le, eq, ne)
+ - `dueDate` (gt, ge, lt, le, eq, ne)
+ - `sentDate` (gt, ge, lt, le, eq, ne)
+ - `frequency` (in, nin,ne, eq)
+ - `invoiceType` (eq, ne)
+ - `payTerms` (in, nin, eq, ne)
+ - `paypointId` (ne, eq)
+ - `totalAmount` (gt, ge, lt, le, eq, ne)
+ - `paidAmount` (gt, ge, lt, le, eq, ne)
+ - `status` (in, nin, eq, ne)
+ - `invoiceNumber` (ct, nct, eq, ne)
+ - `purchaseOrder` (ct, nct, eq, ne)
+ - `itemProductCode` (ct, nct)
+ - `itemDescription` (ct, nct)
+ - `customerFirstname` (ct, nct, eq, ne)
+ - `customerLastname` (ct, nct, eq, ne)
+ - `customerName` (ct, nct)
+ - `customerId` (eq, ne)
+ - `customerNumber` (ct, nct, eq, ne)
+ - `customerCompanyname` (ct, nct, eq, ne)
+ - `customerAddress` (ct, nct, eq, ne)
+ - `customerCity` (ct, nct, eq, ne)
+ - `customerZip` (ct, nct, eq, ne)
+ - `customerState` (ct, nct, eq, ne)
+ - `customerCountry` (ct, nct, eq, ne)
+ - `customerPhone` (ct, nct, eq, ne)
+ - `customerEmail` (ct, nct, eq, ne)
+ - `customerShippingAddress` (ct, nct, eq, ne)
+ - `customerShippingCity` (ct, nct, eq, ne)
+ - `customerShippingZip` (ct, nct, eq, ne)
+ - `customerShippingState` (ct, nct, eq, ne)
+ - `customerShippingCountry` (ct, nct, eq, ne)
+ - `orgId` (eq)
+ - `paylinkId` (ne, eq)
+ - `paypointLegal` (ne, eq, ct, nct)
+ - `paypointDba` (ne, eq, ct, nct)
+ - `orgName` (ne, eq, ct, nct)
+ - `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
+
+List of comparison accepted - enclosed between parentheses:
+ - eq or empty => equal
+ - gt => greater than
+ - ge => greater or equal
+ - lt => less than
+ - le => less or equal
+ - ne => not equal
+ - ct => contains
+ - nct => not contains
+ - in => inside array
+ - nin => not inside array
+
+List of parameters accepted:
+ - limitRecord : max number of records for query (default="20", "0" or negative value for all)
+ - fromRecord : initial record in query
+
+Example: totalAmount(gt)=20  return all records with totalAmount greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportOrganizations(Format, OrgId) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List suborganizations by organization](/developers/api-reference/organization/get-list-of-organizations-for-entrypoint) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of child organizations (suborganizations) for a parent organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportOrganizationsRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportOrganizations(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        123,
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `name` (ct, nct, eq, ne)
+- `type` (ne, eq)
+- `contactName` (ct, nct, eq, ne)
+- `contactTitle` (ct, nct, eq, ne)
+- `contactEmail` (ct, nct, eq, ne)
+- `contactPhone` (ct, nct, eq, ne)
+- `city` (ct, nct, eq, ne)
+- `state` (in, nin, eq, ne)
+- `address` (ct, nct, eq, ne)
+- `country` (ct, nct, eq, ne)
+- `zip` (ct, nct, eq, ne)
+- `hasBilling` any value greater than zero is taken as TRUE otherwise is FALSE
+- `hasResidual` any value greater than zero is taken as TRUE otherwise is FALSE
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array
+- nin => not inside array
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: name(ct)=hoa  return all records where name contains "hoa"
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportPayout(Format, Entry) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List payouts by paypoint](/developers/api-reference/query/get-list-of-payouts-for-entrypoint) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of payouts and their statuses for an entrypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportPayoutRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportPayout(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query.
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `status` (in, nin, eq, ne)
+- `transactionDate` (gt, ge, lt, le, eq, ne)
+- `billNumber` (ct, nct)
+- `vendorNumber` (ct, nct, eq, ne)
+- `vendorName` (ct, nct, eq, ne)
+- `paymentMethod` (ct, nct, eq, ne)
+- `paymentId` (ct, nct, eq, ne)
+- `paymentgroup` (ct, nct, eq, ne)
+- `totalAmount` (gt, ge, lt, le, eq, ne)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array separated by "|"
+- nin => not inside array separated by "|"
+
+List of parameters accepted:
+- limitRecord: max number of records for query (default="20", "0" or negative value for all)
+- fromRecord: initial record in query
+
+Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportPayoutOrg(Format, OrgId) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List payouts by org](/developers/api-reference/query/get-list-of-payouts-for-organization) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of payouts and their details for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportPayoutOrgRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportPayoutOrg(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        123,
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query.
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `status` (in, nin, eq, ne)
+- `transactionDate` (gt, ge, lt, le, eq, ne)
+- `billNumber` (ct, nct)
+- `vendorNumber` (ct, nct, eq, ne)
+- `vendorName` (ct, nct, eq, ne)
+- `paymentMethod` (ct, nct, eq, ne)
+- `paymentId` (ct, nct, eq, ne)
+- `paymentgroup` (ct, nct, eq, ne)
+- `totalAmount` (gt, ge, lt, le, eq, ne)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array separated by "|"
+- nin => not inside array separated by "|"
+
+List of parameters accepted:
+- limitRecord: max number of records for query (default="20", "0" or negative value for all)
+- fromRecord: initial record in query
+
+Example: totalAmount(gt)=20 return all records with totalAmount greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportPaypoints(Format, OrgId) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List paypoints by organization](/developers/api-reference/paypoint/get-list-of-paypoints-for-an-organization) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of paypoints in an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportPaypointsRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportPaypoints(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        123,
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query.
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `createdAt` (gt, ge, lt, le, eq, ne)
+- `startDate` (gt, ge, lt, le, eq, ne)
+- `dbaname` (ct, nct)
+- `legalname` (ct, nct)
+- `ein` (ct, nct)
+- `address` (ct, nct)
+- `city` (ct, nct)
+- `state` (ct, nct)
+- `phone` (ct, nct)
+- `mcc` (ct, nct)
+- `owntype` (ct, nct)
+- `ownerName` (ct, nct)
+- `contactName` (ct, nct)
+- `orgParentname` (ct, nct)
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array
+- nin => not inside array
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: `dbaname(ct)=hoa` returns all records with `dbaname` containing "hoa"
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportSettlements(Format, Entry) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List settled transactions for paypoint](/developers/api-reference/query/get-list-of-settled-transactions-for-an-entrypoint) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of settled transactions for an entrypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportSettlementsRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportSettlements(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `settlementDate` (gt, ge, lt, le, eq, ne)
+- `transId` (ne, eq, ct, nct)
+- `gatewayTransId` (ne, eq, ct, nct)
+- `method` (in, nin, eq, ne)
+- `settledAmount` (gt, ge, lt, le, eq, ne)
+- `operation` (in, nin, eq, ne)
+- `source` (in, nin, eq, ne)
+- `batchNumber` (ct, nct, eq, ne)
+- `payaccountLastfour` (nct, ct)
+- `payaccountType` (ne, eq, in, nin)
+- `customerFirstname` (ct, nct, eq, ne)
+- `customerLastname` (ct, nct, eq, ne)
+- `customerName` (ct, nct)
+- `customerId` (eq, ne)
+- `customerNumber` (ct, nct, eq, ne)
+- `customerCompanyname` (ct, nct, eq, ne)
+- `customerAddress` (ct, nct, eq, ne)
+- `customerCity` (ct, nct, eq, ne)
+- `customerZip` (ct, nct, eq, ne)
+- `customerState` (ct, nct, eq, ne)
+- `customerCountry` (ct, nct, eq, ne)
+- `customerPhone` (ct, nct, eq, ne)
+- `customerEmail` (ct, nct, eq, ne)
+- `customerShippingAddress` (ct, nct, eq, ne)
+- `customerShippingCity` (ct, nct, eq, ne)
+- `customerShippingZip` (ct, nct, eq, ne)
+- `customerShippingState` (ct, nct, eq, ne)
+- `customerShippingCountry` (ct, nct, eq, ne)
+- `orgId` (eq) *mandatory when entry=org*
+- `paypointId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array separated by "|"
+- nin => not inside array separated by "|"
+
+List of parameters accepted:
+- limitRecord: max number of records for query (default="20", "0" or negative value for all)
+- fromRecord: initial record in query
+
+Example: `settledAmount(gt)=20` returns all records with a `settledAmount` greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportSettlementsOrg(Format, OrgId) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List settled transactions for org](/developers/api-reference/query/get-list-of-settled-transactions-for-an-org) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of settled transactions for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportSettlementsOrgRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportSettlementsOrg(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        123,
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `settlementDate` (gt, ge, lt, le, eq, ne)
+- `transId` (ne, eq, ct, nct)
+- `gatewayTransId` (ne, eq, ct, nct)
+- `method` (in, nin, eq, ne)
+- `settledAmount` (gt, ge, lt, le, eq, ne)
+- `operation` (in, nin, eq, ne)
+- `source` (in, nin, eq, ne)
+- `batchNumber` (ct, nct, eq, ne)
+- `payaccountLastfour` (nct, ct)
+- `payaccountType` (ne, eq, in, nin)
+- `customerFirstname` (ct, nct, eq, ne)
+- `customerLastname` (ct, nct, eq, ne)
+- `customerName` (ct, nct)
+- `customerId` (eq, ne)
+- `customerNumber` (ct, nct, eq, ne)
+- `customerCompanyname` (ct, nct, eq, ne)
+- `customerAddress` (ct, nct, eq, ne)
+- `customerCity` (ct, nct, eq, ne)
+- `customerZip` (ct, nct, eq, ne)
+- `customerState` (ct, nct, eq, ne)
+- `customerCountry` (ct, nct, eq, ne)
+- `customerPhone` (ct, nct, eq, ne)
+- `customerEmail` (ct, nct, eq, ne)
+- `customerShippingAddress` (ct, nct, eq, ne)
+- `customerShippingCity` (ct, nct, eq, ne)
+- `customerShippingZip` (ct, nct, eq, ne)
+- `customerShippingState` (ct, nct, eq, ne)
+- `customerShippingCountry` (ct, nct, eq, ne)
+- `orgId` (eq) *mandatory when entry=org*
+- `paypointId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array separated by "|"
+- nin => not inside array separated by "|"
+
+List of parameters accepted:
+- limitRecord: max number of records for query (default="20", "0" or negative value for all)
+- fromRecord: initial record in query
+
+Example: `settledAmount(gt)=20` returns all records with a `settledAmount` greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportSubscriptions(Format, Entry) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List subscriptions by paypoint](/developers/api-reference/subscription/get-list-of-subscriptions-for-an-entrypoint) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of subscriptions for an entrypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportSubscriptionsRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportSubscriptions(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `startDate` (gt, ge, lt, le, eq, ne)
+- `endDate` (gt, ge, lt, le, eq, ne)
+- `nextDate` (gt, ge, lt, le, eq, ne)
+- `frequency` (in, nin, ne, eq)
+- `method` (in, nin, eq, ne)
+- `totalAmount` (gt, ge, lt, le, eq, ne)
+- `netAmount` (gt, ge, lt, le, eq, ne)
+- `feeAmount` (gt, ge, lt, le, eq, ne)
+- `status` (in, nin, eq, ne)
+- `untilcancelled` (eq, ne)
+- `payaccountLastfour` (nct, ct)
+- `payaccountType` (ne, eq, in, nin)
+- `customerFirstname` (ct, nct, eq, ne)
+- `customerLastname` (ct, nct, eq, ne)
+- `customerName` (ct, nct)
+- `customerId` (eq, ne)
+- `customerNumber` (ct, nct, eq, ne)
+- `customerCompanyname` (ct, nct, eq, ne)
+- `customerAddress` (ct, nct, eq, ne)
+- `customerCity` (ct, nct, eq, ne)
+- `customerZip` (ct, nct, eq, ne)
+- `customerState` (ct, nct, eq, ne)
+- `customerCountry` (ct, nct, eq, ne)
+- `customerPhone` (ct, nct, eq, ne)
+- `customerEmail` (ct, nct, eq, ne)
+- `customerShippingAddress` (ct, nct, eq, ne)
+- `customerShippingCity` (ct, nct, eq, ne)
+- `customerShippingZip` (ct, nct, eq, ne)
+- `customerShippingState` (ct, nct, eq, ne)
+- `customerShippingCountry` (ct, nct, eq, ne)
+- `orgId` (eq)
+- `paypointId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array
+- nin => not inside array
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportSubscriptionsOrg(Format, OrgId) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List subscriptions by organization](/developers/api-reference/subscription/get-list-of-subscriptions-for-an-org) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of subscriptions for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportSubscriptionsOrgRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportSubscriptionsOrg(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        123,
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `startDate` (gt, ge, lt, le, eq, ne)
+- `endDate` (gt, ge, lt, le, eq, ne)
+- `nextDate` (gt, ge, lt, le, eq, ne)
+- `frequency` (in, nin, ne, eq)
+- `method` (in, nin, eq, ne)
+- `totalAmount` (gt, ge, lt, le, eq, ne)
+- `netAmount` (gt, ge, lt, le, eq, ne)
+- `feeAmount` (gt, ge, lt, le, eq, ne)
+- `status` (in, nin, eq, ne)
+- `untilcancelled` (eq, ne)
+- `payaccountLastfour` (nct, ct)
+- `payaccountType` (ne, eq, in, nin)
+- `customerFirstname` (ct, nct, eq, ne)
+- `customerLastname` (ct, nct, eq, ne)
+- `customerName` (ct, nct)
+- `customerId` (eq, ne)
+- `customerNumber` (ct, nct, eq, ne)
+- `customerCompanyname` (ct, nct, eq, ne)
+- `customerAddress` (ct, nct, eq, ne)
+- `customerCity` (ct, nct, eq, ne)
+- `customerZip` (ct, nct, eq, ne)
+- `customerState` (ct, nct, eq, ne)
+- `customerCountry` (ct, nct, eq, ne)
+- `customerPhone` (ct, nct, eq, ne)
+- `customerEmail` (ct, nct, eq, ne)
+- `customerShippingAddress` (ct, nct, eq, ne)
+- `customerShippingCity` (ct, nct, eq, ne)
+- `customerShippingZip` (ct, nct, eq, ne)
+- `customerShippingState` (ct, nct, eq, ne)
+- `customerShippingCountry` (ct, nct, eq, ne)
+- `orgId` (eq)
+- `paypointId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array
+- nin => not inside array
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportTransactions(Format, Entry) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List transactions for paypoint](/developers/api-reference/query/get-list-of-transactions-for-an-entrypoint) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of transactions for an entrypoint in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportTransactionsRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportTransactions(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `transactionDate` (gt, ge, lt, le, eq, ne)
+- `transId` (ne, eq, ct, nct)
+- `gatewayTransId` (ne, eq, ct, nct)
+- `orderId` (ne, eq)
+- `idTrans` (ne, eq)
+- `orgId` (ne, eq)
+- `paypointId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+- `method` (in, nin, eq, ne)
+- `totalAmount` (gt, ge, lt, le, eq, ne)
+- `netAmount` (gt, ge, lt, le, eq, ne)
+- `feeAmount` (gt, ge, lt, le, eq, ne)
+- `operation` (in, nin, eq, ne)
+- `source` (in, nin, eq, ne)
+- `status` (in, nin, eq, ne)
+- `settlementStatus` (in, nin, eq, ne)
+- `batchNumber` (nct, ct)
+- `payaccountLastfour` (nct, ct)
+- `payaccountType` (ne, eq, in, nin)
+- `customerFirstname` (ct, nct, eq, ne)
+- `customerLastname` (ct, nct, eq, ne)
+- `customerName` (ct, nct)
+- `customerId` (eq, ne)
+- `customerNumber` (ct, nct, eq, ne)
+- `customerCompanyname` (ct, nct, eq, ne)
+- `customerAddress` (ct, nct, eq, ne)
+- `customerCity` (ct, nct, eq, ne)
+- `customerZip` (ct, nct, eq, ne)
+- `customerState` (ct, nct, eq, ne)
+- `customerCountry` (ct, nct, eq, ne)
+- `customerPhone` (ct, nct, eq, ne)
+- `customerEmail` (ct, nct, eq, ne)
+- `customerShippingAddress` (ct, nct, eq, ne)
+- `customerShippingCity` (ct, nct, eq, ne)
+- `customerShippingZip` (ct, nct, eq, ne)
+- `customerShippingState` (ct, nct, eq, ne)
+- `customerShippingCountry` (ct, nct, eq, ne)
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array
+- nin => not inside array
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportTransactionsOrg(Format, OrgId) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List transactions for org](/developers/api-reference/query/get-list-of-transactions-for-an-organization) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of transactions for an org in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportTransactionsOrgRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportTransactionsOrg(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        123,
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `transactionDate` (gt, ge, lt, le, eq, ne)
+- `transId` (ne, eq, ct, nct)
+- `gatewayTransId` (ne, eq, ct, nct)
+- `orderId` (ne, eq)
+- `idTrans` (ne, eq)
+- `orgId` (ne, eq)
+- `paypointId` (ne, eq)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+- `method` (in, nin, eq, ne)
+- `totalAmount` (gt, ge, lt, le, eq, ne)
+- `netAmount` (gt, ge, lt, le, eq, ne)
+- `feeAmount` (gt, ge, lt, le, eq, ne)
+- `operation` (in, nin, eq, ne)
+- `source` (in, nin, eq, ne)
+- `status` (in, nin, eq, ne)
+- `settlementStatus` (in, nin, eq, ne)
+- `batchNumber` (nct, ct)
+- `payaccountLastfour` (nct, ct)
+- `payaccountType` (ne, eq, in, nin)
+- `customerFirstname` (ct, nct, eq, ne)
+- `customerLastname` (ct, nct, eq, ne)
+- `customerName` (ct, nct)
+- `customerId` (eq, ne)
+- `customerNumber` (ct, nct, eq, ne)
+- `customerCompanyname` (ct, nct, eq, ne)
+- `customerAddress` (ct, nct, eq, ne)
+- `customerCity` (ct, nct, eq, ne)
+- `customerZip` (ct, nct, eq, ne)
+- `customerState` (ct, nct, eq, ne)
+- `customerCountry` (ct, nct, eq, ne)
+- `customerPhone` (ct, nct, eq, ne)
+- `customerEmail` (ct, nct, eq, ne)
+- `customerShippingAddress` (ct, nct, eq, ne)
+- `customerShippingCity` (ct, nct, eq, ne)
+- `customerShippingZip` (ct, nct, eq, ne)
+- `customerShippingState` (ct, nct, eq, ne)
+- `customerShippingCountry` (ct, nct, eq, ne)
+- `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array
+- nin => not inside array
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportTransferDetails(Format, Entry, TransferId) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [Get transfer details](/developers/api-reference/query/get-list-of-transfer-details) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of transfer details for an entrypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportTransferDetailsRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
+client.Export.ExportTransferDetails(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        "8cfec329267",
+        int64(4521),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**transferId:** `int64` — Transfer identifier.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+
+  - `grossAmount` (gt, ge, lt, le, eq, ne)
+
+  - `chargeBackAmount` (gt, ge, lt, le, eq, ne)
+
+  - `returnedAmount` (gt, ge, lt, le, eq, ne)
+
+  - `billingFeeAmount` (gt, ge, lt, le, eq, ne)
+
+  - `thirdPartyPaidAmount` (gt, ge, lt, le, eq, ne)
+
+  - `netFundedAmount` (gt, ge, lt, le, eq, ne)
+
+  - `adjustmentAmount` (gt, ge, lt, le, eq, ne)
+
+  - `transactionId` (eq, ne, in, nin)
+
+  - `category` (eq, ne, ct, nct)
+
+  - `type` (eq, ne, in, nin)
+
+  - `method` (eq, ne, in, nin)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `*string` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportTransfers(Entry) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List transfers](/developers/api-reference/query/get-list-of-transfers) with the `exportFormat` query parameter instead.
+</Warning>
+
+Get a list of transfers for an entrypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportTransfersRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+        SortBy: payabli.String(
+            "desc(field_name)",
+        ),
+    }
+client.Export.ExportTransfers(
+        context.TODO(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+  - `transferDate` (gt, ge, lt, le, eq, ne)
+
+  - `grossAmount` (gt, ge, lt, le, eq, ne)
+
+  - `chargeBackAmount` (gt, ge, lt, le, eq, ne)
+
+  - `returnedAmount` (gt, ge, lt, le, eq, ne)
+
+  - `billingFeeAmount` (gt, ge, lt, le, eq, ne)
+
+  - `thirdPartyPaidAmount` (gt, ge, lt, le, eq, ne)
+
+  - `netFundedAmount` (gt, ge, lt, le, eq, ne)
+
+  - `adjustmentAmount` (gt, ge, lt, le, eq, ne)
+
+  - `processor` (ne, eq, ct, nct)
+
+  - `transferStatus` (ne, eq, in, nin)
+
+  - `batchNumber` (ne, eq, ct, nct)
+
+  - `batchId` (ne, eq, in, nin)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `*string` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportVendors(Format, Entry) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List vendors by paypoint](/developers/api-reference/vendor/get-list-of-vendors-for-entrypoint) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of vendors for an entrypoint. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportVendorsRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportVendors(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query.
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `method` (in, nin, eq, ne)
+- `enrollmentStatus` (in, nin, eq, ne)
+- `status` (in, nin, eq, ne)
+- `vendorNumber` (ct, nct, eq, ne)
+- `name` (ct, nct, eq, ne)
+- `ein` (ct, nct, eq, ne)
+- `phone` (ct, nct, eq, ne)
+- `email` (ct, nct, eq, ne)
+- `address` (ct, nct, eq, ne)
+- `city` (ct, nct, eq, ne)
+- `state` (ct, nct, eq, ne)
+- `country` (ct, nct, eq, ne)
+- `zip` (ct, nct, eq, ne)
+- `mcc` (ct, nct, eq, ne)
+- `locationCode` (ct, nct, eq, ne)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array separated by "|"
+- nin => not inside array separated by "|"
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Export.ExportVendorsOrg(Format, OrgId) -> payabli.File</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+<Warning>
+  This endpoint is deprecated. To export this data, use [List vendors by organization](/developers/api-reference/vendor/get-list-of-vendors-for-organization) with the `exportFormat` query parameter instead.
+</Warning>
+
+Export a list of vendors for an organization. Use filters to limit results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ExportVendorsOrgRequest{
+        ColumnsExport: payabli.String(
+            "BatchDate:Batch_Date,PaypointName:Legal_name",
+        ),
+        FromRecord: payabli.Int(
+            251,
+        ),
+        LimitRecord: payabli.Int(
+            1000,
+        ),
+    }
+client.Export.ExportVendorsOrg(
+        context.TODO(),
+        payabli.ExportFormat1Csv.Ptr(),
+        123,
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**format:** `*payabli.ExportFormat1` — Format for the export, either XLSX or CSV.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**columnsExport:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The number of records to return for the query. The maximum is 30,000 records. When this parameter isn't sent, the API returns up to 25,000 records.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**parameters:** `map[string]*string` 
+
+Collection of field names, conditions, and values used to filter the query.
+
+<Info>
+  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
+
+  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+
+  For example:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+
+  should become:
+
+  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+</Info>
+
+See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
+
+List of field names accepted:
+- `method` (in, nin, eq, ne)
+- `enrollmentStatus` (in, nin, eq, ne)
+- `status` (in, nin, eq, ne)
+- `vendorNumber` (ct, nct, eq, ne)
+- `name` (ct, nct, eq, ne)
+- `ein` (ct, nct, eq, ne)
+- `phone` (ct, nct, eq, ne)
+- `email` (ct, nct, eq, ne)
+- `address` (ct, nct, eq, ne)
+- `city` (ct, nct, eq, ne)
+- `state` (ct, nct, eq, ne)
+- `country` (ct, nct, eq, ne)
+- `zip` (ct, nct, eq, ne)
+- `mcc` (ct, nct, eq, ne)
+- `locationCode` (ct, nct, eq, ne)
+- `paypointLegal` (ne, eq, ct, nct)
+- `paypointDba` (ne, eq, ct, nct)
+- `orgName` (ne, eq, ct, nct)
+
+List of comparison accepted - enclosed between parentheses:
+- eq or empty => equal
+- gt => greater than
+- ge => greater or equal
+- lt => less than
+- le => less or equal
+- ne => not equal
+- ct => contains
+- nct => not contains
+- in => inside array separated by "|"
+- nin => not inside array separated by "|"
+
+List of parameters accepted:
+- limitRecord : max number of records for query (default="20", "0" or negative value for all)
+- fromRecord : initial record in query
+
+Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Organization
+<details><summary><code>client.Organization.AddOrganization(request) -> *payabli.AddOrganizationResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates an organization under a parent organization. This is also referred to as a suborganization.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.AddOrganizationRequest{
+        IdempotencyKey: payabli.String(
+            "6B29FC40-CA47-1067-B31D-00DD010662DA",
+        ),
+        BillingInfo: &payabli.Instrument{
+            AchAccount: "123123123",
+            AchRouting: "123123123",
+            BillingAddress: payabli.String(
+                "123 Walnut Street",
+            ),
+            BillingCity: payabli.String(
+                "Johnson City",
+            ),
+            BillingCountry: payabli.String(
+                "US",
+            ),
+            BillingState: payabli.String(
+                "TN",
+            ),
+            BillingZip: payabli.String(
+                "37615",
+            ),
+        },
+        Contacts: &payabli.ContactsField{
+            &payabli.Contacts{
+                ContactEmail: payabli.String(
+                    "herman@hermanscoatings.com",
+                ),
+                ContactName: payabli.String(
+                    "Herman Martinez",
+                ),
+                ContactPhone: payabli.String(
+                    "3055550000",
+                ),
+                ContactTitle: payabli.String(
+                    "Owner",
+                ),
+            },
+        },
+        HasBilling: payabli.Bool(
+            true,
+        ),
+        HasResidual: payabli.Bool(
+            true,
+        ),
+        OrgAddress: payabli.String(
+            "123 Walnut Street",
+        ),
+        OrgCity: payabli.String(
+            "Johnson City",
+        ),
+        OrgCountry: payabli.String(
+            "US",
+        ),
+        OrgEntryName: payabli.String(
+            "pilgrim-planner",
+        ),
+        OrgId: payabli.String(
+            "123",
+        ),
+        OrgLogo: &payabli.FileContent{
+            FContent: payabli.String(
+                "TXkgdGVzdCBmaWxlHJ==...",
+            ),
+            Filename: payabli.String(
+                "my-doc.pdf",
+            ),
+            Ftype: payabli.FileContentFtypePdf.Ptr(),
+            Furl: payabli.String(
+                "https://mysite.com/my-doc.pdf",
+            ),
+        },
+        OrgName: "Pilgrim Planner",
+        OrgParentId: payabli.Int64(
+            int64(236),
+        ),
+        OrgState: payabli.String(
+            "TN",
+        ),
+        OrgTimezone: payabli.Int(
+            -5,
+        ),
+        OrgType: 0,
+        OrgWebsite: payabli.String(
+            "www.pilgrimageplanner.com",
+        ),
+        OrgZip: payabli.String(
+            "37615",
+        ),
+        ReplyToEmail: "email@example.com",
+    }
+client.Organization.AddOrganization(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**services:** `[]*payabli.ServiceCost` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billingInfo:** `*payabli.Instrument` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**contacts:** `*payabli.ContactsField` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**hasBilling:** `*bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**hasResidual:** `*bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgAddress:** `*payabli.Orgaddress` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgCity:** `*payabli.Orgcity` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgCountry:** `*payabli.Orgcountry` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgEntryName:** `*payabli.Orgentryname` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgId:** `*payabli.Orgidstring` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgLogo:** `*payabli.FileContent` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgName:** `payabli.Orgname` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgParentId:** `*payabli.OrgParentId` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgState:** `*payabli.Orgstate` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgTimezone:** `*payabli.Orgtimezone` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgType:** `payabli.Orgtype` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgWebsite:** `*payabli.Orgwebsite` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgZip:** `*payabli.Orgzip` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**replyToEmail:** `payabli.ReplyToEmail` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Organization.EditOrganization(OrgId, request) -> *payabli.EditOrganizationResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates an organization's details by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.OrganizationData{
+        Contacts: &payabli.ContactsField{
+            &payabli.Contacts{
+                ContactEmail: payabli.String(
+                    "herman@hermanscoatings.com",
+                ),
+                ContactName: payabli.String(
+                    "Herman Martinez",
+                ),
+                ContactPhone: payabli.String(
+                    "3055550000",
+                ),
+                ContactTitle: payabli.String(
+                    "Owner",
+                ),
+            },
+        },
+        OrgAddress: payabli.String(
+            "123 Walnut Street",
+        ),
+        OrgCity: payabli.String(
+            "Johnson City",
+        ),
+        OrgCountry: payabli.String(
+            "US",
+        ),
+        OrgEntryName: payabli.String(
+            "pilgrim-planner",
+        ),
+        OrganizationDataOrgId: payabli.String(
+            "123",
+        ),
+        OrgName: payabli.String(
+            "Pilgrim Planner",
+        ),
+        OrgState: payabli.String(
+            "TN",
+        ),
+        OrgTimezone: payabli.Int(
+            -5,
+        ),
+        OrgType: payabli.Int(
+            0,
+        ),
+        OrgWebsite: payabli.String(
+            "www.pilgrimageplanner.com",
+        ),
+        OrgZip: payabli.String(
+            "37615",
+        ),
+    }
+client.Organization.EditOrganization(
+        context.TODO(),
+        123,
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**services:** `[]*payabli.ServiceCost` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billingInfo:** `*payabli.Instrument` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**contacts:** `*payabli.ContactsField` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**hasBilling:** `*bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**hasResidual:** `*bool` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgAddress:** `*payabli.Orgaddress` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgCity:** `*payabli.Orgcity` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgCountry:** `*payabli.Orgcountry` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgEntryName:** `*payabli.Orgentryname` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**organizationDataOrgId:** `*payabli.Orgidstring` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgLogo:** `*payabli.FileContent` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgName:** `*payabli.Orgname` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgParentId:** `*payabli.OrgParentId` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgState:** `*payabli.Orgstate` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgTimezone:** `*payabli.Orgtimezone` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgType:** `*payabli.Orgtype` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgWebsite:** `*payabli.Orgwebsite` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orgZip:** `*payabli.Orgzip` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**replyToEmail:** `*payabli.ReplyToEmail` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Organization.DeleteOrganization(OrgId) -> *payabli.DeleteOrganizationResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Delete an organization by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Organization.DeleteOrganization(
+        context.TODO(),
+        123,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Organization.GetBasicOrganization(Entry) -> *payabli.OrganizationQueryRecord</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Gets an organization's basic information by entry name (entrypoint identifier).
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Organization.GetBasicOrganization(
+        context.TODO(),
+        "8cfec329267",
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Organization.GetBasicOrganizationById(OrgId) -> *payabli.OrganizationQueryRecord</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Gets an organization's basic details by org ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Organization.GetBasicOrganizationById(
+        context.TODO(),
+        123,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Organization.GetOrganization(OrgId) -> *payabli.OrganizationQueryRecord</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves details for an organization by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Organization.GetOrganization(
+        context.TODO(),
+        123,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Organization.GetSettingsOrganization(OrgId) -> *payabli.SettingsQueryRecord</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves an organization's settings.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Organization.GetSettingsOrganization(
+        context.TODO(),
+        123,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Management
+<details><summary><code>client.Management.VerifyAccountDetails(Entry, request) -> *payabli.VerifyAccountDetailsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Verifies a bank account and returns detailed verification results from the verification network, including bank name, account status, and response codes. Unlike a pass/fail verification, this endpoint returns granular data to support decision-making and troubleshooting.
+
+When bank authentication is enabled for the paypoint's organization, the endpoint performs an identity verification check on the account holder. Otherwise, it performs an account existence check. When bank authentication is enabled, the `accountHolderType` and `holderName` fields are required.
+
+Requires `inboundpayments_create` or `outboundpayments_create` permission.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.VerifyAccountDetailsRequest{
+        RoutingNumber: "122105278",
+        AccountNumber: "0000000016",
+        AccountType: payabli.String(
+            "Checking",
+        ),
+        Country: payabli.String(
+            "US",
+        ),
+        AccountHolderType: payabli.String(
+            "personal",
+        ),
+        HolderName: payabli.String(
+            "Jane Doe",
+        ),
+    }
+client.Management.VerifyAccountDetails(
+        context.TODO(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entry name identifier.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**routingNumber:** `string` — The bank routing number to verify.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountNumber:** `string` — The bank account number to verify.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountType:** `*string` — The type of bank account, such as `Checking` or `Savings`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**country:** `*string` — The ISO country code for the bank account, such as `US`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountHolderType:** `*string` — The type of account holder. Accepted values are `personal` or `business`. Required when bank authentication is enabled for the paypoint's organization.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**holderName:** `*string` — The name of the bank account holder. For personal accounts, provide the holder's full name (for example, `Jane Doe`); the value is split on the first space into first and last name. For business accounts, provide the legal business name. Required when bank authentication is enabled for the paypoint's organization.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Statistic
 <details><summary><code>client.Statistic.BasicStats(Mode, Freq, Level, EntryId) -> []*payabli.StatBasicExtendedQueryRecord</code></summary>
 <dl>
@@ -25045,7 +24352,7 @@ List of comparison accepted - enclosed between parentheses:
 <dl>
 <dd>
 
-Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency. 
+Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
 </dd>
 </dl>
 </dd>
@@ -25061,18 +24368,18 @@ Retrieves the basic statistics for an organization or a paypoint, for a given ti
 
 ```go
 request := &payabli.BasicStatsRequest{
-        EndDate: payabli.String(
+        StartDate: payabli.String(
             "2025-11-01",
         ),
-        StartDate: payabli.String(
+        EndDate: payabli.String(
             "2025-11-30",
         ),
     }
 client.Statistic.BasicStats(
         context.TODO(),
-        "ytd",
+        "custom",
         "m",
-        1,
+        2,
         int64(1000000),
         request,
     )
@@ -25107,7 +24414,6 @@ Mode for the request. Allowed values:
 - `lastm` - Last Month
 - `lastw` - Last Week
 - `yesterday` - Last Day
-  
     
 </dd>
 </dl>
@@ -25134,7 +24440,7 @@ For example, `w` groups the results by week.
 
 **level:** `int` 
 
-The entry level for the request: 
+The entry level for the request:
   - 0 for Organization
   - 2 for Paypoint
     
@@ -25154,7 +24460,7 @@ The entry level for the request:
 
 **endDate:** `*string` 
 
-Used with `custom` mode. The end date for the range. 
+Used with `custom` mode. The end date for the range.
 Valid formats:
   - YYYY-mm-dd
   - YYYY/mm/dd
@@ -25177,7 +24483,7 @@ Valid formats:
 
 **startDate:** `*string` 
 
-Used with `custom` mode. The start date for the range. 
+Used with `custom` mode. The start date for the range.
 Valid formats:
    - YYYY-mm-dd
    - YYYY/mm/dd
@@ -25206,7 +24512,7 @@ Valid formats:
 <dl>
 <dd>
 
-Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency. 
+Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
 </dd>
 </dl>
 </dd>
@@ -25226,7 +24532,7 @@ client.Statistic.CustomerBasicStats(
         context.TODO(),
         "ytd",
         "m",
-        998,
+        4440,
         request,
     )
 }
@@ -25283,7 +24589,7 @@ For example, `w` groups the results by week.
 <dl>
 <dd>
 
-**customerId:** `int` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub. 
+**customerId:** `int` — Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
     
 </dd>
 </dl>
@@ -25334,7 +24640,7 @@ request := &payabli.SubStatsRequest{}
 client.Statistic.SubStats(
         context.TODO(),
         "30",
-        1,
+        2,
         int64(1000000),
         request,
     )
@@ -25371,7 +24677,7 @@ Interval to get the data. Allowed values:
 
 **level:** `int` 
 
-The entry level for the request: 
+The entry level for the request:
   - 0 for Organization
   - 2 for Paypoint
     
@@ -25413,7 +24719,7 @@ The entry level for the request:
 <dl>
 <dd>
 
-Retrieve the basic statistics about a vendor for a given time period, grouped by frequency. 
+Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
 </dd>
 </dl>
 </dd>
@@ -25510,8 +24816,8 @@ For example, `w` groups the results by week.
 </dl>
 </details>
 
-## Subscription
-<details><summary><code>client.Subscription.GetSubscription(SubId) -> *payabli.SubscriptionQueryRecords</code></summary>
+## Notification
+<details><summary><code>client.Notification.AddNotification(request) -> *payabli.PayabliApiResponseNotifications</code></summary>
 <dl>
 <dd>
 
@@ -25523,7 +24829,7 @@ For example, `w` groups the results by week.
 <dl>
 <dd>
 
-Retrieves a single subscription's details.
+Create a new notification or auto-generated report.
 </dd>
 </dl>
 </dd>
@@ -25538,113 +24844,24 @@ Retrieves a single subscription's details.
 <dd>
 
 ```go
-client.Subscription.GetSubscription(
-        context.TODO(),
-        263,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**subId:** `int` — The subscription ID. 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Subscription.NewSubscription(request) -> *payabli.AddSubscriptionResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Creates a subscription or scheduled payment to run at a specified time and frequency. 
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.RequestSchedule{
-        Body: &payabli.SubscriptionRequestBody{
-            CustomerData: &payabli.PayorDataRequest{
-                CustomerId: payabli.Int64(
-                    int64(4440),
-                ),
+request := &payabli.AddNotificationRequest{
+        NotificationStandardRequest: &payabli.NotificationStandardRequest{
+            Content: &payabli.NotificationStandardRequestContent{
+                EventType: payabli.NotificationStandardRequestContentEventTypeCreatedApplication.Ptr(),
             },
-            EntryPoint: payabli.String(
-                "f743aed24a",
+            Frequency: payabli.NotificationStandardRequestFrequencyUntilcancelled,
+            Method: payabli.NotificationStandardRequestMethodWeb,
+            OwnerId: payabli.Int(
+                236,
             ),
-            PaymentDetails: &payabli.PaymentDetail{
-                ServiceFee: payabli.Float64(
-                    0,
-                ),
-                TotalAmount: 100,
-            },
-            PaymentMethod: &payabli.RequestSchedulePaymentMethod{
-                PayMethodCredit: &payabli.PayMethodCredit{
-                    Cardcvv: payabli.String(
-                        "123",
-                    ),
-                    Cardexp: "02/25",
-                    CardHolder: payabli.String(
-                        "John Cassian",
-                    ),
-                    Cardnumber: "4111111111111111",
-                    Cardzip: payabli.String(
-                        "37615",
-                    ),
-                    Initiator: payabli.String(
-                        "payor",
-                    ),
-                },
-            },
-            ScheduleDetails: &payabli.ScheduleDetail{
-                EndDate: payabli.String(
-                    "03-20-2025",
-                ),
-                Frequency: payabli.FrequencyWeekly.Ptr(),
-                PlanId: payabli.Int(
-                    1,
-                ),
-                StartDate: payabli.String(
-                    "09-20-2024",
-                ),
-            },
+            OwnerType: 0,
+            Status: payabli.Int(
+                1,
+            ),
+            Target: "https://webhook.site/2871b8f8-edc7-441a-b376-98d8c8e33275",
         },
     }
-client.Subscription.NewSubscription(
+client.Notification.AddNotification(
         context.TODO(),
         request,
     )
@@ -25663,23 +24880,7 @@ client.Subscription.NewSubscription(
 <dl>
 <dd>
 
-**forceCustomerCreation:** `*payabli.ForceCustomerCreation` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idempotencyKey:** `*payabli.IdempotencyKey` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `*payabli.SubscriptionRequestBody` 
+**request:** `*payabli.AddNotificationRequest` 
     
 </dd>
 </dl>
@@ -25691,7 +24892,7 @@ client.Subscription.NewSubscription(
 </dl>
 </details>
 
-<details><summary><code>client.Subscription.RemoveSubscription(SubId) -> *payabli.RemoveSubscriptionResponse</code></summary>
+<details><summary><code>client.Notification.GetNotification(NId) -> *payabli.NotificationQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -25703,7 +24904,7 @@ client.Subscription.NewSubscription(
 <dl>
 <dd>
 
-Deletes a subscription, autopay, or recurring payment and prevents future charges.
+Retrieves a single notification or auto-generated report's details.
 </dd>
 </dl>
 </dd>
@@ -25718,9 +24919,9 @@ Deletes a subscription, autopay, or recurring payment and prevents future charge
 <dd>
 
 ```go
-client.Subscription.RemoveSubscription(
+client.Notification.GetNotification(
         context.TODO(),
-        396,
+        "1717",
     )
 }
 ```
@@ -25737,7 +24938,7 @@ client.Subscription.RemoveSubscription(
 <dl>
 <dd>
 
-**subId:** `int` — The subscription ID. 
+**nId:** `string` — Notification ID.
     
 </dd>
 </dl>
@@ -25749,7 +24950,7 @@ client.Subscription.RemoveSubscription(
 </dl>
 </details>
 
-<details><summary><code>client.Subscription.UpdateSubscription(SubId, request) -> *payabli.UpdateSubscriptionResponse</code></summary>
+<details><summary><code>client.Notification.UpdateNotification(NId, request) -> *payabli.PayabliApiResponseNotifications</code></summary>
 <dl>
 <dd>
 
@@ -25761,7 +24962,7 @@ client.Subscription.RemoveSubscription(
 <dl>
 <dd>
 
-Updates a subscription's details.
+Update a notification or auto-generated report.
 </dd>
 </dl>
 </dd>
@@ -25776,466 +24977,26 @@ Updates a subscription's details.
 <dd>
 
 ```go
-request := &payabli.RequestUpdateSchedule{
-        SetPause: payabli.Bool(
-            true,
-        ),
-    }
-client.Subscription.UpdateSubscription(
-        context.TODO(),
-        231,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**subId:** `int` — The subscription ID. 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**paymentDetails:** `*payabli.PaymentDetail` — Object describing details of the payment. To skip the payment, set the `totalAmount` to 0. Payments will be paused until the amount is updated to a non-zero value. When `totalAmount` is set to 0, the `serviceFee` must also be set to 0.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**scheduleDetails:** `*payabli.ScheduleDetail` — Object describing the schedule for subscription
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**setPause:** `*payabli.SetPause` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Templates
-<details><summary><code>client.Templates.DeleteTemplate(TemplateId) -> *payabli.PayabliApiResponseTemplateId</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Deletes a template by ID. 
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Templates.DeleteTemplate(
-        context.TODO(),
-        80,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**templateId:** `float64` — The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Templates.GetlinkTemplate(TemplateId, IgnoreEmpty) -> *payabli.BoardingLinkApiResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Generates a boarding link from a boarding template.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Templates.GetlinkTemplate(
-        context.TODO(),
-        80,
-        true,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**templateId:** `float64` — The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**ignoreEmpty:** `bool` — Ignore read-only and empty fields Default is `false`. If `ignoreEmpty` = `false` and any field is empty, then the request returns a failure response. If `ignoreEmpty` = `true`, the request returns the boarding link name regardless of whether fields are empty.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Templates.GetTemplate(TemplateId) -> *payabli.TemplateQueryRecord</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves a boarding template's details by ID.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.Templates.GetTemplate(
-        context.TODO(),
-        80,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**templateId:** `float64` — The boarding template ID. Can be found at the end of the boarding template URL in PartnerHub. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Templates.ListTemplates(OrgId) -> *payabli.TemplateQueryResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves a list of boarding templates for an organization. Use filters to limit results. You can't make a request that includes filters from the API console in the documentation. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.ListTemplatesRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Templates.ListTemplates(
-        context.TODO(),
-        123,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**orgId:** `int` — The numeric identifier for organization, assigned by Payabli.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**fromRecord:** `*int` — The number of records to skip before starting to collect the result set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limitRecord:** `*int` — Max number of records to return for the query. Use `0` or negative value to return all records.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**parameters:** `map[string]*string` 
-
-
-Collection of field names, conditions, and values used to filter the query.
-
-<Info>
-  **You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
-
-  Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-
-  For example:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
-
-  should become:
-
-  --url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
-</Info>
-
-
-See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
-
-List of field names accepted:
-- `createdAt` (gt, ge, lt, le, eq, ne)
-- `title` (ct, nct)
-- `description` (ct, nct)
-- `code` (ct, nct)
-- `orgParentname` (ct, nct)
-
-List of comparison accepted - enclosed between parentheses:
-- eq or empty => equal
-- gt => greater than
-- ge => greater or equal
-- lt => less than
-- le => less or equal
-- ne => not equal
-- ct => contains
-- nct => not contains
-- in => inside array
-- nin => not inside array
-
-List of parameters accepted:
-- limitRecord : max number of records for query (default="20", "0" or negative value for all)
-- fromRecord : initial record in query
-
-Example: title(ct)=hoa return all records with title containing "hoa"
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sortBy:** `*string` — The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## TokenStorage
-<details><summary><code>client.TokenStorage.AddMethod(request) -> *payabli.AddMethodResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Saves a payment method for reuse. This call exchanges sensitive payment information for a token that can be used to process future transactions. The `ReferenceId` value in the response is the `storedMethodId` to use with transactions.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.AddMethodRequest{
-        Body: &payabli.RequestTokenStorage{
-            CustomerData: &payabli.PayorDataRequest{
-                CustomerId: payabli.Int64(
-                    int64(4440),
-                ),
+request := &payabli.UpdateNotificationRequest{
+        NotificationStandardRequest: &payabli.NotificationStandardRequest{
+            Content: &payabli.NotificationStandardRequestContent{
+                EventType: payabli.NotificationStandardRequestContentEventTypeApprovedPayment.Ptr(),
             },
-            EntryPoint: payabli.String(
-                "f743aed24a",
+            Frequency: payabli.NotificationStandardRequestFrequencyUntilcancelled,
+            Method: payabli.NotificationStandardRequestMethodEmail,
+            OwnerId: payabli.Int(
+                136,
             ),
-            FallbackAuth: payabli.Bool(
-                true,
+            OwnerType: 0,
+            Status: payabli.Int(
+                1,
             ),
-            FallbackAuthAmount: payabli.Int(
-                100,
-            ),
-            MethodDescription: payabli.String(
-                "Primary Visa card",
-            ),
-            PaymentMethod: &payabli.RequestTokenStoragePaymentMethod{
-                TokenizeCard: &payabli.TokenizeCard{
-                    Cardcvv: payabli.String(
-                        "123",
-                    ),
-                    Cardexp: "02/25",
-                    CardHolder: "John Doe",
-                    Cardnumber: "4111111111111111",
-                    Cardzip: payabli.String(
-                        "12345",
-                    ),
-                    Method: "card",
-                },
-            },
-            Source: payabli.String(
-                "api",
-            ),
+            Target: "newemail@email.com",
         },
     }
-client.TokenStorage.AddMethod(
+client.Notification.UpdateNotification(
         context.TODO(),
+        "1717",
         request,
     )
 }
@@ -26253,7 +25014,7 @@ client.TokenStorage.AddMethod(
 <dl>
 <dd>
 
-**achValidation:** `*payabli.AchValidation` 
+**nId:** `string` — Notification ID.
     
 </dd>
 </dl>
@@ -26261,39 +25022,7 @@ client.TokenStorage.AddMethod(
 <dl>
 <dd>
 
-**createAnonymous:** `*payabli.CreateAnonymous` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**forceCustomerCreation:** `*payabli.ForceCustomerCreation` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**temporary:** `*payabli.Temporary` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idempotencyKey:** `*payabli.IdempotencyKey` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `*payabli.RequestTokenStorage` 
+**request:** `*payabli.UpdateNotificationRequest` 
     
 </dd>
 </dl>
@@ -26305,7 +25034,7 @@ client.TokenStorage.AddMethod(
 </dl>
 </details>
 
-<details><summary><code>client.TokenStorage.GetMethod(MethodId) -> *payabli.GetMethodResponse</code></summary>
+<details><summary><code>client.Notification.DeleteNotification(NId) -> *payabli.PayabliApiResponseNotifications</code></summary>
 <dl>
 <dd>
 
@@ -26317,7 +25046,7 @@ client.TokenStorage.AddMethod(
 <dl>
 <dd>
 
-Retrieves details for a saved payment method.
+Deletes a single notification or auto-generated report.
 </dd>
 </dl>
 </dd>
@@ -26332,18 +25061,9 @@ Retrieves details for a saved payment method.
 <dd>
 
 ```go
-request := &payabli.GetMethodRequest{
-        CardExpirationFormat: payabli.Int(
-            1,
-        ),
-        IncludeTemporary: payabli.Bool(
-            false,
-        ),
-    }
-client.TokenStorage.GetMethod(
+client.Notification.DeleteNotification(
         context.TODO(),
-        "32-8877drt00045632-678",
-        request,
+        "1717",
     )
 }
 ```
@@ -26360,33 +25080,7 @@ client.TokenStorage.GetMethod(
 <dl>
 <dd>
 
-**methodId:** `string` — The saved payment method ID.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**cardExpirationFormat:** `*int` 
-
-Format for card expiration dates in the response. 
-
-Accepted values:
-  
-- 0: default, no formatting. Expiration dates are returned in the format they're saved in.
-
-- 1: MMYY
- 
-- 2: MM/YY
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**includeTemporary:** `*bool` — When `true`, the request will include temporary tokens in the search and return details for a matching temporary token. The default behavior searches only for permanent tokens.
+**nId:** `string` — Notification ID.
     
 </dd>
 </dl>
@@ -26398,7 +25092,7 @@ Accepted values:
 </dl>
 </details>
 
-<details><summary><code>client.TokenStorage.RemoveMethod(MethodId) -> *payabli.PayabliApiResponsePaymethodDelete</code></summary>
+<details><summary><code>client.Notification.GetReportFile(Id) -> payabli.File</code></summary>
 <dl>
 <dd>
 
@@ -26410,7 +25104,7 @@ Accepted values:
 <dl>
 <dd>
 
-Deletes a saved payment method.
+Gets a copy of a generated report by ID.
 </dd>
 </dl>
 </dd>
@@ -26425,9 +25119,9 @@ Deletes a saved payment method.
 <dd>
 
 ```go
-client.TokenStorage.RemoveMethod(
+client.Notification.GetReportFile(
         context.TODO(),
-        "32-8877drt00045632-678",
+        int64(1000000),
     )
 }
 ```
@@ -26444,111 +25138,7 @@ client.TokenStorage.RemoveMethod(
 <dl>
 <dd>
 
-**methodId:** `string` — The saved payment method ID.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.TokenStorage.UpdateMethod(MethodId, request) -> *payabli.PayabliApiResponsePaymethodDelete</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates a saved payment method.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.UpdateMethodRequest{
-        Body: &payabli.RequestTokenStorage{
-            CustomerData: &payabli.PayorDataRequest{
-                CustomerId: payabli.Int64(
-                    int64(4440),
-                ),
-            },
-            EntryPoint: payabli.String(
-                "f743aed24a",
-            ),
-            FallbackAuth: payabli.Bool(
-                true,
-            ),
-            PaymentMethod: &payabli.RequestTokenStoragePaymentMethod{
-                TokenizeCard: &payabli.TokenizeCard{
-                    Cardcvv: payabli.String(
-                        "123",
-                    ),
-                    Cardexp: "02/25",
-                    CardHolder: "John Doe",
-                    Cardnumber: "4111111111111111",
-                    Cardzip: payabli.String(
-                        "12345",
-                    ),
-                    Method: "card",
-                },
-            },
-        },
-    }
-client.TokenStorage.UpdateMethod(
-        context.TODO(),
-        "32-8877drt00045632-678",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**methodId:** `string` — The saved payment method ID.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**achValidation:** `*payabli.AchValidation` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `*payabli.RequestTokenStorage` 
+**id:** `int64` — Report ID
     
 </dd>
 </dl>
@@ -26609,6 +25199,320 @@ client.User.AddUser(
 <dd>
 
 **request:** `*payabli.UserData` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.User.GetUser(UserId) -> *payabli.UserQueryRecord</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to retrieve information about a specific user within an organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.GetUserRequest{
+        Entry: payabli.String(
+            "8cfec329267",
+        ),
+    }
+client.User.GetUser(
+        context.TODO(),
+        int64(1000000),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**userId:** `int64` — The Payabli-generated `userId` value.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `*string` — The entrypoint identifier.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**level:** `*int` — Entry level: 0 - partner, 2 - paypoint
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.User.EditUser(UserId, request) -> *payabli.PayabliApiResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to modify the details of a specific user within an organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.UserData{}
+client.User.EditUser(
+        context.TODO(),
+        int64(1000000),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**userId:** `int64` — User Identifier
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `*payabli.UserData` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.User.DeleteUser(UserId) -> *payabli.DeleteUserResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to delete a specific user within an organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.User.DeleteUser(
+        context.TODO(),
+        int64(1000000),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**userId:** `int64` — The Payabli-generated `userId` value.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.User.AuthUser(Provider, request) -> *payabli.PayabliApiResponseMfaBasic</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+This endpoint requires an application API token.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.UserAuthRequest{}
+client.User.AuthUser(
+        context.TODO(),
+        "provider",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**provider:** `string` — Auth provider. Pass `null` to use the built-in provider.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**email:** `*payabli.Email` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `*string` — Identifier for entry point originating the request (used by front-end apps)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entryType:** `*int` — Type of entry identifier: 0 - partner, 2 - paypoint. This is used by front-end apps, required if an Entry is indicated.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**psw:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**userId:** `*int64` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**userTokenId:** `*string` 
     
 </dd>
 </dl>
@@ -26737,114 +25641,6 @@ client.User.AuthResetUser(
 </dl>
 </details>
 
-<details><summary><code>client.User.AuthUser(Provider, request) -> *payabli.PayabliApiResponseMfaBasic</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-This endpoint requires an application API token.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.UserAuthRequest{}
-client.User.AuthUser(
-        context.TODO(),
-        "provider",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**provider:** `string` — Auth provider. This fields is optional and defaults to null for the built-in provider.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**email:** `*payabli.Email` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `*string` — Identifier for entry point originating the request (used by front-end apps)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entryType:** `*int` — Type of entry identifier: 0 - partner, 2 - paypoint. This is used by front-end apps, required if an Entry is indicated.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**psw:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**userId:** `*int64` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**userTokenId:** `*string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 <details><summary><code>client.User.ChangePswUser(request) -> *payabli.ChangePswUserResponse</code></summary>
 <dl>
 <dd>
@@ -26904,7 +25700,7 @@ client.User.ChangePswUser(
 </dl>
 </details>
 
-<details><summary><code>client.User.DeleteUser(UserId) -> *payabli.DeleteUserResponse</code></summary>
+<details><summary><code>client.User.LogoutUser() -> *payabli.LogoutUserResponse</code></summary>
 <dl>
 <dd>
 
@@ -26916,7 +25712,7 @@ client.User.ChangePswUser(
 <dl>
 <dd>
 
-Use this endpoint to delete a specific user within an organization.
+Use this endpoint to log a user out from the system.
 </dd>
 </dl>
 </dd>
@@ -26931,9 +25727,52 @@ Use this endpoint to delete a specific user within an organization.
 <dd>
 
 ```go
-client.User.DeleteUser(
+client.User.LogoutUser(
         context.TODO(),
-        int64(1000000),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.User.ValidateMfaUser(request) -> *payabli.PayabliApiResponseUserMfa</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.MfaValidationData{}
+client.User.ValidateMfaUser(
+        context.TODO(),
+        request,
     )
 }
 ```
@@ -26950,7 +25789,15 @@ client.User.DeleteUser(
 <dl>
 <dd>
 
-**userId:** `int64` — The Payabli-generated `userId` value.
+**mfaCode:** `*string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**mfaValidationCode:** `*payabli.MfaValidationCode` 
     
 </dd>
 </dl>
@@ -27030,196 +25877,6 @@ client.User.EditMfaUser(
 </dl>
 </details>
 
-<details><summary><code>client.User.EditUser(UserId, request) -> *payabli.PayabliApiResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Use this endpoint to modify the details of a specific user within an organization.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.UserData{}
-client.User.EditUser(
-        context.TODO(),
-        int64(1000000),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**userId:** `int64` — User Identifier
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `*payabli.UserData` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.User.GetUser(UserId) -> *payabli.UserQueryRecord</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Use this endpoint to retrieve information about a specific user within an organization.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.GetUserRequest{
-        Entry: payabli.String(
-            "478ae1234",
-        ),
-    }
-client.User.GetUser(
-        context.TODO(),
-        int64(1000000),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**userId:** `int64` — The Payabli-generated `userId` value.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entry:** `*string` — The entrypoint identifier.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**level:** `*int` — Entry level: 0 - partner, 2 - paypoint
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.User.LogoutUser() -> *payabli.LogoutUserResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Use this endpoint to log a user out from the system.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.User.LogoutUser(
-        context.TODO(),
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 <details><summary><code>client.User.ResendMfaCode(Usrname, Entry, EntryType) -> *payabli.PayabliApiResponseMfaBasic</code></summary>
 <dl>
 <dd>
@@ -27250,7 +25907,7 @@ Resends the MFA code to the user via the selected MFA mode (email or SMS).
 client.User.ResendMfaCode(
         context.TODO(),
         "usrname",
-        "Entry",
+        "8cfec329267",
         1,
     )
 }
@@ -27268,7 +25925,7 @@ client.User.ResendMfaCode(
 <dl>
 <dd>
 
-**usrname:** `string` —  
+**usrname:** `string` — 
     
 </dd>
 </dl>
@@ -27276,7 +25933,7 @@ client.User.ResendMfaCode(
 <dl>
 <dd>
 
-**entry:** `string` —  
+**entry:** `string` — 
     
 </dd>
 </dl>
@@ -27284,74 +25941,7 @@ client.User.ResendMfaCode(
 <dl>
 <dd>
 
-**entryType:** `int` —  
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.User.ValidateMfaUser(request) -> *payabli.PayabliApiResponseUserMfa</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.MfaValidationData{}
-client.User.ValidateMfaUser(
-        context.TODO(),
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**mfaCode:** `*string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**mfaValidationCode:** `*payabli.MfaValidationCode` 
+**entryType:** `int` — 
     
 </dd>
 </dl>
@@ -27393,22 +25983,7 @@ Creates a vendor in an entrypoint.
 ```go
 request := &payabli.VendorData{
         VendorNumber: payabli.String(
-            "1234",
-        ),
-        Name1: payabli.String(
-            "Herman's Coatings and Masonry",
-        ),
-        Name2: payabli.String(
-            "<string>",
-        ),
-        Ein: payabli.String(
-            "12-3456789",
-        ),
-        Phone: payabli.String(
-            "5555555555",
-        ),
-        Email: payabli.String(
-            "example@email.com",
+            "VEN-123",
         ),
         Address1: payabli.String(
             "123 Ocean Drive",
@@ -27416,67 +25991,85 @@ request := &payabli.VendorData{
         Address2: payabli.String(
             "Suite 400",
         ),
-        City: payabli.String(
-            "Miami",
-        ),
-        State: payabli.String(
-            "FL",
-        ),
-        Zip: payabli.String(
-            "33139",
-        ),
-        Country: payabli.String(
-            "US",
-        ),
-        Mcc: payabli.String(
-            "7777",
-        ),
-        LocationCode: payabli.String(
-            "MIA123",
-        ),
-        Contacts: &payabli.ContactsField{
-            &payabli.Contacts{
-                ContactName: payabli.String(
-                    "Herman Martinez",
-                ),
-                ContactEmail: payabli.String(
-                    "example@email.com",
-                ),
-                ContactTitle: payabli.String(
-                    "Owner",
-                ),
-                ContactPhone: payabli.String(
-                    "3055550000",
-                ),
-            },
-        },
         BillingData: &payabli.BillingData{
-            Id: payabli.Int(
-                123,
-            ),
-            BankName: payabli.String(
-                "Country Bank",
-            ),
-            RoutingAccount: payabli.String(
-                "123123123",
-            ),
             AccountNumber: payabli.String(
                 "123123123",
             ),
-            TypeAccount: payabli.TypeAccountChecking.Ptr(),
+            BankAccountFunction: payabli.Int(
+                0,
+            ),
             BankAccountHolderName: payabli.String(
                 "Gruzya Adventure Outfitters LLC",
             ),
             BankAccountHolderType: payabli.BankAccountHolderTypeBusiness.Ptr(),
-            BankAccountFunction: payabli.Int(
-                0,
+            BankName: payabli.String(
+                "Country Bank",
             ),
+            Id: payabli.Int(
+                123,
+            ),
+            RoutingAccount: payabli.String(
+                "123123123",
+            ),
+            TypeAccount: payabli.TypeAccountChecking.Ptr(),
         },
+        City: payabli.String(
+            "Miami",
+        ),
+        Contacts: &payabli.ContactsField{
+            &payabli.Contacts{
+                ContactEmail: payabli.String(
+                    "example@email.com",
+                ),
+                ContactName: payabli.String(
+                    "Herman Martinez",
+                ),
+                ContactPhone: payabli.String(
+                    "3055550000",
+                ),
+                ContactTitle: payabli.String(
+                    "Owner",
+                ),
+            },
+        },
+        Country: payabli.String(
+            "US",
+        ),
+        CustomerVendorAccount: payabli.String(
+            "A-37622",
+        ),
+        Ein: payabli.String(
+            "12-3456789",
+        ),
+        Email: payabli.String(
+            "example@email.com",
+        ),
+        InternalReferenceId: payabli.Int64(
+            int64(123),
+        ),
+        LocationCode: payabli.String(
+            "MIA123",
+        ),
+        Mcc: payabli.String(
+            "7777",
+        ),
+        Name1: payabli.String(
+            "Herman's Coatings and Masonry",
+        ),
+        Name2: payabli.String(
+            "<string>",
+        ),
+        PayeeName1: payabli.String(
+            "<string>",
+        ),
+        PayeeName2: payabli.String(
+            "<string>",
+        ),
         PaymentMethod: payabli.String(
             "managed",
         ),
-        VendorStatus: payabli.Int(
-            1,
+        Phone: payabli.String(
+            "5555555555",
         ),
         RemitAddress1: payabli.String(
             "123 Walnut Street",
@@ -27487,26 +26080,23 @@ request := &payabli.VendorData{
         RemitCity: payabli.String(
             "Miami",
         ),
+        RemitCountry: payabli.String(
+            "US",
+        ),
         RemitState: payabli.String(
             "FL",
         ),
         RemitZip: payabli.String(
             "31113",
         ),
-        RemitCountry: payabli.String(
-            "US",
+        State: payabli.String(
+            "FL",
         ),
-        PayeeName1: payabli.String(
-            "<string>",
+        VendorStatus: payabli.Int(
+            1,
         ),
-        PayeeName2: payabli.String(
-            "<string>",
-        ),
-        CustomerVendorAccount: payabli.String(
-            "A-37622",
-        ),
-        InternalReferenceId: payabli.Int64(
-            int64(123),
+        Zip: payabli.String(
+            "33139",
         ),
     }
 client.Vendor.AddVendor(
@@ -27549,7 +26139,7 @@ client.Vendor.AddVendor(
 </dl>
 </details>
 
-<details><summary><code>client.Vendor.DeleteVendor(IdVendor) -> *payabli.PayabliApiResponseVendors</code></summary>
+<details><summary><code>client.Vendor.GetVendor(IdVendor) -> *payabli.VendorQueryRecord</code></summary>
 <dl>
 <dd>
 
@@ -27561,7 +26151,7 @@ client.Vendor.AddVendor(
 <dl>
 <dd>
 
-Delete a vendor. 
+Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
 </dd>
 </dl>
 </dd>
@@ -27576,7 +26166,7 @@ Delete a vendor.
 <dd>
 
 ```go
-client.Vendor.DeleteVendor(
+client.Vendor.GetVendor(
         context.TODO(),
         1,
     )
@@ -27679,7 +26269,7 @@ client.Vendor.EditVendor(
 </dl>
 </details>
 
-<details><summary><code>client.Vendor.GetVendor(IdVendor) -> *payabli.VendorQueryRecord</code></summary>
+<details><summary><code>client.Vendor.DeleteVendor(IdVendor) -> *payabli.PayabliApiResponseVendors</code></summary>
 <dl>
 <dd>
 
@@ -27691,7 +26281,7 @@ client.Vendor.EditVendor(
 <dl>
 <dd>
 
-Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
+Delete a vendor.
 </dd>
 </dl>
 </dd>
@@ -27706,7 +26296,7 @@ Retrieves a vendor's details, including enrichment status and payment acceptance
 <dd>
 
 ```go
-client.Vendor.GetVendor(
+client.Vendor.DeleteVendor(
         context.TODO(),
         1,
     )
@@ -27765,25 +26355,25 @@ Triggers AI-powered vendor enrichment for an existing vendor. Runs one or more e
 
 ```go
 request := &payabli.VendorEnrichRequest{
-        VendorId: int64(3890),
+        VendorId: int64(456),
         Scope: []string{
             "invoice_scan",
         },
         ApplyEnrichmentData: payabli.Bool(
             false,
         ),
-        FallbackMethod: payabli.String(
-            "check",
-        ),
         InvoiceFile: &payabli.FileContent{
-            Ftype: payabli.FileContentFtypePdf.Ptr(),
-            Filename: payabli.String(
-                "invoice-2026-001.pdf",
-            ),
             FContent: payabli.String(
                 "<base64-encoded-pdf>",
             ),
+            Filename: payabli.String(
+                "invoice-2026-001.pdf",
+            ),
+            Ftype: payabli.FileContentFtypePdf.Ptr(),
         },
+        FallbackMethod: payabli.String(
+            "check",
+        ),
     }
 client.Vendor.EnrichVendor(
         context.TODO(),
@@ -27813,7 +26403,1309 @@ client.Vendor.EnrichVendor(
 <dl>
 <dd>
 
-**request:** `*payabli.VendorEnrichRequest` 
+**vendorId:** `int64` — ID of the vendor to enrich. Must be active and belong to the given entrypoint.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scope:** `[]string` — Enrichment stages to run. Valid values are `invoice_scan` and `web_search`. Stages run in order: invoice scan first, then web search. If the vendor becomes payout-ready after invoice scan, web search is skipped.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**applyEnrichmentData:** `*bool` — When `true` (the default), extracted data is automatically written to the vendor record. Only empty fields are populated, existing values are never overwritten. When `false`, the vendor record isn't modified. In both cases, `enrichmentData` in the response contains the extracted results. Use `false` for UI flows where users review and confirm changes before applying them with the update vendor endpoint.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scheduleCallIfNeeded:** `*bool` — When `true`, triggers an AI outreach call if enrichment stages return insufficient payment acceptance info. This feature is currently in development.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**invoiceFile:** `*payabli.FileContent` — PDF invoice file, Base64-encoded. Required when `scope` includes `invoice_scan`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billId:** `*int64` — Bill ID to associate with this enrichment request.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fallbackMethod:** `*string` — Payment method to apply if enrichment can't find payment details. Values are `check`, `ach`, or `card`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## GhostCard
+<details><summary><code>client.GhostCard.CreateGhostCard(Entry, request) -> *payabli.CreateGhostCardResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a ghost card, a multi-use virtual debit card issued to a vendor for recurring or discretionary spend.
+
+Unlike single-use virtual cards issued as part of a payout transaction, ghost cards aren't tied to a specific payout. They're issued directly to a vendor and can be reused up to a configurable number of times within the card's spending limits.
+
+Only one ghost card can exist per vendor per paypoint. To issue a new card to the same vendor, cancel the existing card first.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.CreateGhostCardRequestBody{
+        VendorId: int64(456),
+        ExpenseLimit: 500,
+        Amount: 500,
+        MaxNumberOfUses: 3,
+        ExactAmount: false,
+        ExpenseLimitPeriod: "monthly",
+        BillingCycle: "monthly",
+        BillingCycleDay: "1",
+        DailyTransactionCount: 5,
+        DailyAmountLimit: 200,
+        TransactionAmountLimit: 100,
+        Mcc: payabli.String(
+            "5411",
+        ),
+        Tcc: payabli.String(
+            "R",
+        ),
+        Misc1: payabli.String(
+            "PO-98765",
+        ),
+        Misc2: payabli.String(
+            "Dept-Finance",
+        ),
+    }
+client.GhostCard.CreateGhostCard(
+        context.TODO(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `payabli.Entry` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**vendorId:** `int64` — ID of the vendor who receives the card. The vendor must belong to the paypoint and have an active status.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expenseLimit:** `float64` — Spending limit for the card. Must be greater than `0` and can't exceed the paypoint's configured payout credit limit.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expirationDate:** `*string` — Requested expiration date for the card. If not provided, defaults to 30 days from creation.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**amount:** `float64` — Initial load amount for the card.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**maxNumberOfUses:** `int` — Maximum number of times the card can be used. Ignored and set to `1` when `exactAmount` is `true`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exactAmount:** `bool` — When `true`, restricts the card to a single use. `maxNumberOfUses` is automatically set to `1` regardless of any other value provided.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expenseLimitPeriod:** `string` — Time period over which `expenseLimit` applies (for example, `monthly` or `weekly`).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billingCycle:** `string` — Billing cycle identifier.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billingCycleDay:** `string` — Day within the billing cycle.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**dailyTransactionCount:** `int` — Maximum number of transactions allowed per day.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**dailyAmountLimit:** `float64` — Maximum total spend allowed per day.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**transactionAmountLimit:** `int` — Maximum spend allowed per single transaction.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**mcc:** `*string` — Merchant Category Code to restrict where the card can be used. Must be a valid MCC if provided.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tcc:** `*string` — Transaction Category Code to restrict where the card can be used. Must be a valid TCC if provided.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**misc1:** `*string` — Custom metadata field. Stored on the card record.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**misc2:** `*string` — Custom metadata field. Stored on the card record.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.GhostCard.UpdateCard(Entry, request) -> *payabli.PayabliApiResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates the status of a virtual card (including ghost cards) under a paypoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.UpdateCardRequestBody{
+        CardToken: "gc_abc123def456",
+        Status: payabli.CardStatusCancelled.Ptr(),
+    }
+client.GhostCard.UpdateCard(
+        context.TODO(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `payabli.Entry` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cardToken:** `string` — Token that uniquely identifies the card. This is the `ReferenceId` returned when the card was created.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `*payabli.CardStatus` — The new status to set on the card.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## MoneyOut
+<details><summary><code>client.MoneyOut.AuthorizeOut(request) -> *payabli.AuthCapturePayoutResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Authorizes a transaction for payout.
+
+If you don't pass `autoCapture` with a value of `true`, authorized transactions aren't flagged for settlement until captured. Use the `referenceId` returned in the response to capture the transaction.
+
+When `autoCapture` is `true`, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the [`payout_transaction_approvedcaptured`](/developers/webhooks/payout-transaction-approved-captured) webhook event.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.RequestOutAuthorize{
+        EntryPoint: "8cfec329267",
+        OrderDescription: payabli.String(
+            "Window Painting",
+        ),
+        PaymentMethod: &payabli.AuthorizePaymentMethod{
+            Method: "managed",
+        },
+        PaymentDetails: &payabli.RequestOutAuthorizePaymentDetails{
+            TotalAmount: payabli.Float64(
+                47,
+            ),
+            Unbundled: payabli.Bool(
+                false,
+            ),
+        },
+        VendorData: &payabli.RequestOutAuthorizeVendorData{
+            VendorNumber: payabli.String(
+                "VEN-123",
+            ),
+        },
+        InvoiceData: []*payabli.RequestOutAuthorizeInvoiceData{
+            &payabli.RequestOutAuthorizeInvoiceData{
+                BillId: payabli.Int64(
+                    int64(54323),
+                ),
+            },
+        },
+        AutoCapture: payabli.Bool(
+            true,
+        ),
+    }
+client.MoneyOut.AuthorizeOut(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**allowDuplicatedBills:** `*bool` — When `true`, the authorization bypasses the requirement for unique bills, identified by vendor invoice number. This allows you to make more than one payout authorization for a bill, like a split payment.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**doNotCreateBills:** `*bool` — When `true`, Payabli won't automatically create a bill for this payout transaction.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**forceVendorCreation:** `*bool` — When `true`, the request creates a new vendor record, regardless of whether the vendor already exists.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entryPoint:** `payabli.Entrypointfield` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**source:** `*payabli.Source` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orderId:** `*payabli.OrderId` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**orderDescription:** `*payabli.Orderdescription` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentMethod:** `*payabli.AuthorizePaymentMethod` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentDetails:** `*payabli.RequestOutAuthorizePaymentDetails` — Object containing payment details.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**vendorData:** `*payabli.RequestOutAuthorizeVendorData` — Object containing vendor data.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**invoiceData:** `[]*payabli.RequestOutAuthorizeInvoiceData` — Array of bills associated to the transaction
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountId:** `*payabli.AccountId` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**subdomain:** `*payabli.Subdomain` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**subscriptionId:** `*payabli.Subscriptionid` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**autoCapture:** `*payabli.AutoCapture` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MoneyOut.CancelAllOut(request) -> *payabli.CaptureAllOutResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Cancels an array of payout transactions.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := []string{
+        "2-29",
+        "2-28",
+        "2-27",
+    }
+client.MoneyOut.CancelAllOut(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `[]string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MoneyOut.CancelOutGet(ReferenceId) -> *payabli.PayabliApiResponse0000</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Cancel a payout transaction by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.MoneyOut.CancelOutGet(
+        context.TODO(),
+        "129-219",
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**referenceId:** `string` — The ID for the payout transaction.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MoneyOut.CancelOutDelete(ReferenceId) -> *payabli.PayabliApiResponse0000</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Cancel a payout transaction by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.MoneyOut.CancelOutDelete(
+        context.TODO(),
+        "129-219",
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**referenceId:** `string` — The ID for the payout transaction.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MoneyOut.CaptureAllOut(request) -> *payabli.CaptureAllOutResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Captures an array of authorized payout transactions for settlement. The maximum number of transactions that can be captured in a single request is 500.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.CaptureAllOutRequest{
+        Body: []string{
+            "2-29",
+            "2-28",
+            "2-27",
+        },
+    }
+client.MoneyOut.CaptureAllOut(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `[]string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MoneyOut.CaptureOut(ReferenceId) -> *payabli.AuthCapturePayoutResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Captures a single authorized payout transaction by ID. If the transaction was authorized with `autoCapture` set to `true`,  you don't need to call this endpoint to capture the transaction for processing.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.CaptureOutRequest{}
+client.MoneyOut.CaptureOut(
+        context.TODO(),
+        "129-219",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**referenceId:** `string` — The ID for the payout transaction.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MoneyOut.PayoutDetails(TransId) -> *payabli.BillDetailResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns details for a processed money out transaction.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.MoneyOut.PayoutDetails(
+        context.TODO(),
+        "45-as456777hhhhhhhhhh77777777-324",
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**transId:** `string` — ReferenceId for the transaction (PaymentId).
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MoneyOut.VCardGet(CardToken) -> *payabli.VCardGetResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves vCard details for a single card in an entrypoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.MoneyOut.VCardGet(
+        context.TODO(),
+        "20230403315245421165",
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**cardToken:** `string` — ID for a virtual card.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MoneyOut.SendVCardLink(request) -> *payabli.OperationResult</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Sends a virtual card link via email to the vendor associated with the `transId`.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.SendVCardLinkRequest{
+        TransId: "01K33Z6YQZ6GD5QVKZ856MJBSC",
+    }
+client.MoneyOut.SendVCardLink(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**transId:** `string` — The transaction ID of the virtual card payout. The ID is returned as `ReferenceId` in the response when you authorize a payout with POST /MoneyOut/authorize.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MoneyOut.GetCheckImage(AssetName) -> string</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve the image of a check associated with a processed transaction.
+The check image is returned in the response body as a base64-encoded string.
+The check image is only available for payouts that have been processed.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.MoneyOut.GetCheckImage(
+        context.TODO(),
+        "check133832686289732320_01JKBNZ5P32JPTZY8XXXX000000.pdf",
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**assetName:** `string` 
+
+Name of the check asset to retrieve. This is returned as `filename` in the `CheckData` object
+in the response when you make a GET request to `/MoneyOut/details/{transId}`.
+```
+    "CheckData": {
+      "ftype": "PDF",
+      "filename": "check133832686289732320_01JKBNZ5P32JPTZY8XXXX000000.pdf",
+      "furl": "",
+      "fContent": ""
+  }
+```
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MoneyOut.UpdateCheckPaymentStatus(TransId, CheckPaymentStatus) -> *payabli.PayabliApiResponse00Responsedatanonobject</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates the status of a processed check payment transaction. This endpoint handles the status transition, updates related bills, creates audit events, and triggers notifications.
+
+The transaction must meet all of the following criteria:
+- **Status**: Must be in Processing or Processed status.
+- **Payment method**: Must be a check payment method.
+
+### Allowed status values
+
+| Value | Status | Description |
+|-------|--------|-------------|
+| `0` | Cancelled/Voided | Cancels the check transaction. Reverts associated bills to their previous state (Approved or Active), creates "Cancelled" events, and sends a `payout_transaction_voidedcancelled` notification if the notification is enabled. |
+| `5` | Paid | Marks the check transaction as paid. Updates associated bills to "Paid" status, creates "Paid" events, and sends a `payout_transaction_paid` notification if the notification is enabled. |
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.MoneyOut.UpdateCheckPaymentStatus(
+        context.TODO(),
+        "TRANS123456",
+        payabli.AllowedCheckPaymentStatusPaid.Ptr(),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**transId:** `string` — The Payabli transaction ID for the check payment.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**checkPaymentStatus:** `*payabli.AllowedCheckPaymentStatus` — The new status to apply to the check transaction. To mark a check as `Paid`, send 5. To mark a check as `Cancelled`, send 0.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MoneyOut.ReissueOut(request) -> *payabli.ReissuePayoutResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Reissues a payout transaction with a new payment method. This creates a new transaction linked to the original and marks the original transaction as reissued.
+
+The original transaction must be in **Processing** or **Processed** status. The payment method in the request body is used directly. The endpoint doesn't fall back to vendor-managed payment methods.
+
+The new transaction goes through the standard authorize-and-capture flow automatically. Both the original and new transactions are linked through their event histories for audit purposes.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ReissueOutRequest{
+        TransId: "129-219",
+        PaymentMethod: &payabli.ReissuePaymentMethod{
+            Method: "ach",
+            AchHolder: payabli.String(
+                "Acme Corp",
+            ),
+            AchRouting: payabli.String(
+                "021000021",
+            ),
+            AchAccount: payabli.String(
+                "9876543210",
+            ),
+            AchAccountType: payabli.String(
+                "savings",
+            ),
+            AchHolderType: payabli.AchHolderTypeBusiness.Ptr(),
+        },
+    }
+client.MoneyOut.ReissueOut(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**transId:** `string` — The transaction ID of the payout to reissue.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentMethod:** `*payabli.ReissuePaymentMethod` 
     
 </dd>
 </dl>
@@ -27861,7 +27753,7 @@ request := &payabli.ConfigureOrganizationRequestApplePay{
             true,
         ),
         OrgId: payabli.Int64(
-            int64(901),
+            int64(123),
         ),
     }
 client.Wallet.ConfigureApplePayOrganization(
@@ -28020,7 +27912,7 @@ request := &payabli.ConfigureOrganizationRequestGooglePay{
             true,
         ),
         OrgId: payabli.Int64(
-            int64(901),
+            int64(123),
         ),
     }
 client.Wallet.ConfigureGooglePayOrganization(
@@ -28133,6 +28025,648 @@ client.Wallet.ConfigureGooglePayPaypoint(
 <dd>
 
 **isEnabled:** `*payabli.IsEnabled` — When `true`, Google Pay is enabled.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## PayoutSubscription
+<details><summary><code>client.PayoutSubscription.CreatePayoutSubscription(request) -> *payabli.AddPayoutSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a payout subscription to automatically send payouts to a vendor on a recurring schedule. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for a step-by-step guide.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.RequestPayoutSchedule{
+        EntryPoint: "8cfec329267",
+        PaymentMethod: &payabli.AuthorizePaymentMethod{
+            Method: "ach",
+            AchHolder: payabli.String(
+                "Herman Coatings",
+            ),
+            AchRouting: payabli.String(
+                "021000021",
+            ),
+            AchAccount: payabli.String(
+                "3453445666",
+            ),
+            AchAccountType: payabli.String(
+                "checking",
+            ),
+        },
+        PaymentDetails: &payabli.PayoutPaymentDetail{
+            TotalAmount: 500,
+            ServiceFee: payabli.Float64(
+                0,
+            ),
+            Currency: payabli.String(
+                "USD",
+            ),
+        },
+        VendorData: &payabli.RequestOutAuthorizeVendorData{
+            VendorId: payabli.Int(
+                456,
+            ),
+        },
+        BillData: []*payabli.BillPayOutDataRequest{
+            &payabli.BillPayOutDataRequest{
+                DueDate: payabli.Time(
+                    payabli.MustParseDate(
+                        "2025-08-15",
+                    ),
+                ),
+                InvoiceDate: payabli.Time(
+                    payabli.MustParseDate(
+                        "2025-08-01",
+                    ),
+                ),
+                InvoiceNumber: payabli.String(
+                    "INV-2345",
+                ),
+                NetAmount: payabli.String(
+                    "500",
+                ),
+            },
+        },
+        ScheduleDetails: &payabli.PayoutScheduleDetail{
+            StartDate: payabli.String(
+                "09/01/2027",
+            ),
+            EndDate: payabli.String(
+                "09/01/2026",
+            ),
+            Frequency: payabli.FrequencyMonthly.Ptr(),
+        },
+    }
+client.PayoutSubscription.CreatePayoutSubscription(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entryPoint:** `payabli.Entrypointfield` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**subdomain:** `*payabli.Subdomain` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountId:** `*payabli.AccountId` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**source:** `*payabli.Source` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**setPause:** `*payabli.PayoutSetPause` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentMethod:** `*payabli.AuthorizePaymentMethod` — Payment method for the payout subscription. Supports `ach`, `vcard`, and `check`. The `managed` method isn't supported for payout subscriptions.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentDetails:** `*payabli.PayoutPaymentDetail` — Object describing details of the payout.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**vendorData:** `*payabli.RequestOutAuthorizeVendorData` — Object identifying the vendor for this subscription. Only a `vendorId` or `vendorNumber` is needed to link to an existing vendor.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billData:** `[]*payabli.BillPayOutDataRequest` — Array of bills associated with the payout subscription. If omitted and `doNotCreateBills` isn't set to `true`, the system creates a bill automatically.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scheduleDetails:** `*payabli.PayoutScheduleDetail` — Object describing the schedule for the payout subscription.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PayoutSubscription.GetPayoutSubscription(Id) -> *payabli.GetPayoutSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a single payout subscription's details. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.PayoutSubscription.GetPayoutSubscription(
+        context.TODO(),
+        int64(42),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `int64` — The payout subscription ID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PayoutSubscription.UpdatePayoutSubscription(Id, request) -> *payabli.UpdatePayoutSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates a payout subscription's details. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.UpdatePayoutSubscriptionBody{
+        SetPause: payabli.Bool(
+            true,
+        ),
+    }
+client.PayoutSubscription.UpdatePayoutSubscription(
+        context.TODO(),
+        int64(42),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `int64` — The payout subscription ID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**setPause:** `*payabli.PayoutSetPause` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentDetails:** `*payabli.PayoutPaymentDetail` — Object describing details of the payout.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentMethod:** `*payabli.AuthorizePaymentMethod` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scheduleDetails:** `*payabli.PayoutScheduleDetail` — Object describing the schedule for the payout subscription.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PayoutSubscription.DeletePayoutSubscription(Id) -> *payabli.DeletePayoutSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes a payout subscription and prevents future payouts. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.PayoutSubscription.DeletePayoutSubscription(
+        context.TODO(),
+        int64(42),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `int64` — The payout subscription ID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## ChargeBacks
+<details><summary><code>client.ChargeBacks.AddResponse(Id, request) -> *payabli.AddResponseResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Add a response to a chargeback or ACH return.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ResponseChargeBack{
+        IdempotencyKey: payabli.String(
+            "6B29FC40-CA47-1067-B31D-00DD010662DA",
+        ),
+    }
+client.ChargeBacks.AddResponse(
+        context.TODO(),
+        int64(1000000),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `int64` — ID of the chargeback or return record.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**attachments:** `*payabli.Attachments` — Array of attached files to response.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**contactEmail:** `*payabli.Email` — Email of response submitter.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**contactName:** `*string` — Name of response submitter
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**notes:** `*string` — Response notes
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.ChargeBacks.GetChargeback(Id) -> *payabli.ChargebackQueryRecords</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a chargeback record and its details.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.ChargeBacks.GetChargeback(
+        context.TODO(),
+        int64(1000000),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `int64` — ID of the chargeback or return record. This is returned as `chargebackID` in the [ReceivedChargeBack](/guides/pay-ops-webhooks-payloads#receivedchargeback) and [ReceivedAchReturn](/guides/pay-ops-webhooks-payloads#receivedachreturn) webhook notifications.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.ChargeBacks.GetChargebackAttachment(Id, FileName) -> string</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a chargeback attachment file by its file name.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.ChargeBacks.GetChargebackAttachment(
+        context.TODO(),
+        int64(1000000),
+        "fileName",
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `int64` — The ID of chargeback or return record.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fileName:** `string` — The chargeback attachment's file name.
     
 </dd>
 </dl>

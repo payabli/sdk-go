@@ -6,13 +6,14 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
+	http "net/http"
+	os "os"
+	testing "testing"
+
 	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
-	http "net/http"
-	os "os"
-	testing "testing"
 )
 
 func VerifyRequestCount(
@@ -20,7 +21,7 @@ func VerifyRequestCount(
 	testId string,
 	method string,
 	urlPath string,
-	queryParams map[string]string,
+	queryParams map[string]any,
 	expected int,
 ) {
 	wiremockURL := os.Getenv("WIREMOCK_URL")
@@ -45,9 +46,23 @@ func VerifyRequestCount(
 			}
 			reqBody.WriteString(`"`)
 			reqBody.WriteString(key)
-			reqBody.WriteString(`":{"equalTo":"`)
-			reqBody.WriteString(value)
-			reqBody.WriteString(`"}`)
+			switch v := value.(type) {
+			case string:
+				reqBody.WriteString(`":{"equalTo":"`)
+				reqBody.WriteString(v)
+				reqBody.WriteString(`"}`)
+			case []string:
+				reqBody.WriteString(`":{"hasExactly":[`)
+				for i, item := range v {
+					if i > 0 {
+						reqBody.WriteString(",")
+					}
+					reqBody.WriteString(`{"equalTo":"`)
+					reqBody.WriteString(item)
+					reqBody.WriteString(`"}`)
+				}
+				reqBody.WriteString(`]}`)
+			}
 			first = false
 		}
 		reqBody.WriteString("}")
@@ -71,12 +86,13 @@ func TestBoardingAddApplicationWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.AddApplicationRequest{
 		ApplicationDataPayIn: &payabli.ApplicationDataPayIn{
 			Services: &payabli.ApplicationDataPayInServices{
-				Ach: &payabli.ApplicationDataPayInServicesAch{},
-				Card: &payabli.ApplicationDataPayInServicesCard{
+				Ach: &payabli.AchSetup{},
+				Card: &payabli.CardSetup{
 					AcceptAmex: payabli.Bool(
 						true,
 					),
@@ -111,53 +127,53 @@ func TestBoardingAddApplicationWithWireMock(
 			),
 			BankData: []*payabli.Bank{
 				&payabli.Bank{
-					AccountNumber: payabli.String(
-						"123123123",
-					),
-					BankAccountFunction: payabli.Int(
-						1,
-					),
-					BankAccountHolderName: payabli.String(
-						"Gruzya Adventure Outfitters LLC",
-					),
-					BankAccountHolderType: payabli.BankAccountHolderTypeBusiness.Ptr(),
-					BankName: payabli.String(
-						"Test Bank",
+					AccountId: payabli.String(
+						"123-456",
 					),
 					Nickname: payabli.String(
 						"Withdrawal Account",
 					),
+					BankName: payabli.String(
+						"Test Bank 1",
+					),
 					RoutingAccount: payabli.String(
 						"123123123",
 					),
-					TypeAccount: payabli.TypeAccountChecking.Ptr(),
-					AccountId: payabli.String(
-						"123-456",
-					),
-				},
-				&payabli.Bank{
 					AccountNumber: payabli.String(
-						"123123123",
+						"123123100",
 					),
-					BankAccountFunction: payabli.Int(
-						0,
-					),
+					TypeAccount: payabli.TypeAccountChecking.Ptr(),
 					BankAccountHolderName: payabli.String(
 						"Gruzya Adventure Outfitters LLC",
 					),
 					BankAccountHolderType: payabli.BankAccountHolderTypeBusiness.Ptr(),
-					BankName: payabli.String(
-						"Test Bank",
+					BankAccountFunction: payabli.Int(
+						1,
+					),
+				},
+				&payabli.Bank{
+					AccountId: payabli.String(
+						"123-789",
 					),
 					Nickname: payabli.String(
 						"Deposit Account",
 					),
+					BankName: payabli.String(
+						"Test Bank 2",
+					),
 					RoutingAccount: payabli.String(
-						"123123123",
+						"321321321",
+					),
+					AccountNumber: payabli.String(
+						"123123200",
 					),
 					TypeAccount: payabli.TypeAccountChecking.Ptr(),
-					AccountId: payabli.String(
-						"123-456",
+					BankAccountHolderName: payabli.String(
+						"Gruzya Adventure Outfitters LLC",
+					),
+					BankAccountHolderType: payabli.BankAccountHolderTypeBusiness.Ptr(),
+					BankAccountFunction: payabli.Int(
+						0,
 					),
 				},
 			},
@@ -186,8 +202,8 @@ func TestBoardingAddApplicationWithWireMock(
 			Bzip: payabli.String(
 				"33000",
 			),
-			Contacts: []*payabli.ApplicationDataPayInContactsItem{
-				&payabli.ApplicationDataPayInContactsItem{
+			Contacts: []payabli.ApplicationDataPayInContactsItem{
+				&payabli.Contacts{
 					ContactEmail: payabli.String(
 						"herman@hermanscoatings.com",
 					),
@@ -250,8 +266,35 @@ func TestBoardingAddApplicationWithWireMock(
 			OrgId: payabli.Int64(
 				int64(123),
 			),
-			Ownership: []*payabli.ApplicationDataPayInOwnershipItem{
-				&payabli.ApplicationDataPayInOwnershipItem{
+			Ownership: []payabli.ApplicationDataPayInOwnershipItem{
+				&payabli.Owners{
+					Ownername: payabli.String(
+						"John Smith",
+					),
+					Ownertitle: payabli.String(
+						"CEO",
+					),
+					Ownerpercent: payabli.Int(
+						100,
+					),
+					Ownerssn: payabli.String(
+						"123456789",
+					),
+					Ownerdob: payabli.String(
+						"01/01/1990",
+					),
+					Ownerphone1: payabli.String(
+						"555888111",
+					),
+					Ownerphone2: payabli.String(
+						"555888111",
+					),
+					Owneremail: payabli.String(
+						"test@email.com",
+					),
+					Ownerdriver: payabli.String(
+						"CA6677778",
+					),
 					Oaddress: payabli.String(
 						"33 North St",
 					),
@@ -266,33 +309,6 @@ func TestBoardingAddApplicationWithWireMock(
 					),
 					Ostate: payabli.String(
 						"CA",
-					),
-					Ownerdob: payabli.String(
-						"01/01/1990",
-					),
-					Ownerdriver: payabli.String(
-						"CA6677778",
-					),
-					Owneremail: payabli.String(
-						"test@email.com",
-					),
-					Ownername: payabli.String(
-						"John Smith",
-					),
-					Ownerpercent: payabli.Int(
-						100,
-					),
-					Ownerphone1: payabli.String(
-						"555888111",
-					),
-					Ownerphone2: payabli.String(
-						"555888111",
-					),
-					Ownerssn: payabli.String(
-						"123456789",
-					),
-					Ownertitle: payabli.String(
-						"CEO",
 					),
 					Ozip: payabli.String(
 						"55555",
@@ -311,6 +327,21 @@ func TestBoardingAddApplicationWithWireMock(
 				true,
 			),
 			Signer: &payabli.SignerDataRequest{
+				Name: payabli.String(
+					"John Smith",
+				),
+				Ssn: payabli.String(
+					"123456789",
+				),
+				Dob: payabli.String(
+					"01/01/1976",
+				),
+				Phone: payabli.String(
+					"555888111",
+				),
+				Email: payabli.String(
+					"test@email.com",
+				),
 				Address: payabli.String(
 					"33 North St",
 				),
@@ -323,37 +354,19 @@ func TestBoardingAddApplicationWithWireMock(
 				Country: payabli.String(
 					"US",
 				),
-				Dob: payabli.String(
-					"01/01/1976",
-				),
-				Email: payabli.String(
-					"test@email.com",
-				),
-				Name: payabli.String(
-					"John Smith",
-				),
-				Phone: payabli.String(
-					"555888111",
-				),
-				Ssn: payabli.String(
-					"123456789",
-				),
 				State: payabli.String(
 					"TN",
 				),
 				Zip: payabli.String(
 					"55555",
 				),
-				PciAttestation: payabli.Bool(
-					true,
-				),
 				SignedDocumentReference: payabli.String(
 					"https://example.com/signed-document.pdf",
 				),
-				AttestationDate: payabli.String(
-					"04/20/2025",
+				PciAttestation: payabli.Bool(
+					true,
 				),
-				SignDate: payabli.String(
+				AttestationDate: payabli.String(
 					"04/20/2025",
 				),
 				AdditionalData: &payabli.AdditionalDataMap{
@@ -361,6 +374,9 @@ func TestBoardingAddApplicationWithWireMock(
 					"session":         "fifji4-fiu443-fn4843",
 					"timeWithCompany": "6 Years",
 				},
+				SignDate: payabli.String(
+					"04/20/2025",
+				),
 			},
 			Startdate: payabli.String(
 				"01/01/1990",
@@ -395,6 +411,31 @@ func TestBoardingAddApplicationWithWireMock(
 	VerifyRequestCount(t, "TestBoardingAddApplicationWithWireMock", "POST", "/Boarding/app", nil, 1)
 }
 
+func TestBoardingUpdateApplicationWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
+	)
+	request := &payabli.ApplicationData{}
+	_, invocationErr := client.Boarding.UpdateApplication(
+		context.TODO(),
+		352,
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestBoardingUpdateApplicationWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestBoardingUpdateApplicationWithWireMock", "PUT", "/Boarding/app/352", nil, 1)
+}
+
 func TestBoardingDeleteApplicationWithWireMock(
 	t *testing.T,
 ) {
@@ -404,6 +445,7 @@ func TestBoardingDeleteApplicationWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.Boarding.DeleteApplication(
 		context.TODO(),
@@ -426,6 +468,7 @@ func TestBoardingGetApplicationWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.Boarding.GetApplication(
 		context.TODO(),
@@ -448,13 +491,14 @@ func TestBoardingGetApplicationByAuthWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.RequestAppByAuth{
 		Email: payabli.String(
 			"admin@email.com",
 		),
 		ReferenceId: payabli.String(
-			"n6UCd1f1ygG7",
+			"129-219",
 		),
 	}
 	_, invocationErr := client.Boarding.GetApplicationByAuth(
@@ -479,6 +523,7 @@ func TestBoardingGetByIdLinkApplicationWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.Boarding.GetByIdLinkApplication(
 		context.TODO(),
@@ -501,6 +546,7 @@ func TestBoardingGetByTemplateIdLinkApplicationWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.Boarding.GetByTemplateIdLinkApplication(
 		context.TODO(),
@@ -523,6 +569,7 @@ func TestBoardingGetExternalApplicationWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.GetExternalApplicationRequest{}
 	_, invocationErr := client.Boarding.GetExternalApplication(
@@ -548,6 +595,7 @@ func TestBoardingGetLinkApplicationWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.Boarding.GetLinkApplication(
 		context.TODO(),
@@ -570,6 +618,7 @@ func TestBoardingListApplicationsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListApplicationsRequest{
 		FromRecord: payabli.Int(
@@ -592,7 +641,7 @@ func TestBoardingListApplicationsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestBoardingListApplicationsWithWireMock", "GET", "/Query/boarding/123", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
+	VerifyRequestCount(t, "TestBoardingListApplicationsWithWireMock", "GET", "/Query/boarding/123", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestBoardingListBoardingLinksWithWireMock(
@@ -604,6 +653,7 @@ func TestBoardingListBoardingLinksWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListBoardingLinksRequest{
 		FromRecord: payabli.Int(
@@ -626,31 +676,7 @@ func TestBoardingListBoardingLinksWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestBoardingListBoardingLinksWithWireMock", "GET", "/Query/boardinglinks/123", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
-}
-
-func TestBoardingUpdateApplicationWithWireMock(
-	t *testing.T,
-) {
-	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
-	if WireMockBaseURL == "" {
-		WireMockBaseURL = "http://localhost:8080"
-	}
-	client := client.NewClient(
-		option.WithBaseURL(WireMockBaseURL),
-	)
-	request := &payabli.ApplicationData{}
-	_, invocationErr := client.Boarding.UpdateApplication(
-		context.TODO(),
-		352,
-		request,
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestBoardingUpdateApplicationWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestBoardingUpdateApplicationWithWireMock", "PUT", "/Boarding/app/352", nil, 1)
+	VerifyRequestCount(t, "TestBoardingListBoardingLinksWithWireMock", "GET", "/Query/boardinglinks/123", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }
 
 func TestBoardingAddServiceToPaypointFromAppWithWireMock(
@@ -662,9 +688,10 @@ func TestBoardingAddServiceToPaypointFromAppWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.CreateApplicationFromPaypointRequest{
-		PaypointId:     int64(123),
+		PaypointId:     int64(3040),
 		TemplateId:     int64(456),
 		RecipientEmail: "merchant@example.com",
 		ReturnBoardingAccessInfoInLine: payabli.Bool(
@@ -695,15 +722,16 @@ func TestBoardingGetApplicationsByPaypointIdWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.Boarding.GetApplicationsByPaypointId(
 		context.TODO(),
-		int64(12345),
+		int64(3040),
 		option.WithHTTPHeader(
 			http.Header{"X-Test-Id": []string{"TestBoardingGetApplicationsByPaypointIdWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestBoardingGetApplicationsByPaypointIdWithWireMock", "GET", "/Boarding/applications/12345", nil, 1)
+	VerifyRequestCount(t, "TestBoardingGetApplicationsByPaypointIdWithWireMock", "GET", "/Boarding/applications/3040", nil, 1)
 }

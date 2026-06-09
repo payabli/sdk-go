@@ -63,10 +63,11 @@ Instantiate and use the client with the following:
 package example
 
 import (
+    context "context"
+
+    payabli "github.com/payabli/sdk-go"
     client "github.com/payabli/sdk-go/client"
     option "github.com/payabli/sdk-go/option"
-    payabli "github.com/payabli/sdk-go"
-    context "context"
 )
 
 func do() {
@@ -83,7 +84,7 @@ func do() {
                 ),
             },
             EntryPoint: payabli.String(
-                "f743aed24a",
+                "8cfec329267",
             ),
             Ipaddress: payabli.String(
                 "255.255.255.255",
@@ -110,6 +111,7 @@ func do() {
                     Initiator: payabli.String(
                         "payor",
                     ),
+                    Method: payabli.PayMethodCreditMethodCard,
                 },
             },
         },
@@ -201,11 +203,19 @@ The SDK is instrumented with automatic retries with exponential backoff. A reque
 as the request is deemed retryable and the number of retry attempts has not grown larger than the configured
 retry limit (default: 2).
 
-A request is deemed retryable when any of the following HTTP status codes is returned:
+Which status codes are retried depends on the `retryStatusCodes` generator configuration:
 
+**`legacy`** (current default): retries on
 - [408](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/408) (Timeout)
 - [429](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429) (Too Many Requests)
-- [5XX](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500) (Internal Server Errors)
+- [5XX](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses) (All server errors, including 500)
+
+**`recommended`**: retries on
+- [408](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/408) (Timeout)
+- [429](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429) (Too Many Requests)
+- [502](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502) (Bad Gateway)
+- [503](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503) (Service Unavailable)
+- [504](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/504) (Gateway Timeout)
 
 If the `Retry-After` header is present in the response, the SDK will prioritize respecting its value exactly
 over the default exponential backoff.

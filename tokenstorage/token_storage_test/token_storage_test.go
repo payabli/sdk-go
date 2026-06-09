@@ -6,13 +6,14 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
+	http "net/http"
+	os "os"
+	testing "testing"
+
 	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
-	http "net/http"
-	os "os"
-	testing "testing"
 )
 
 func VerifyRequestCount(
@@ -20,7 +21,7 @@ func VerifyRequestCount(
 	testId string,
 	method string,
 	urlPath string,
-	queryParams map[string]string,
+	queryParams map[string]any,
 	expected int,
 ) {
 	wiremockURL := os.Getenv("WIREMOCK_URL")
@@ -45,9 +46,23 @@ func VerifyRequestCount(
 			}
 			reqBody.WriteString(`"`)
 			reqBody.WriteString(key)
-			reqBody.WriteString(`":{"equalTo":"`)
-			reqBody.WriteString(value)
-			reqBody.WriteString(`"}`)
+			switch v := value.(type) {
+			case string:
+				reqBody.WriteString(`":{"equalTo":"`)
+				reqBody.WriteString(v)
+				reqBody.WriteString(`"}`)
+			case []string:
+				reqBody.WriteString(`":{"hasExactly":[`)
+				for i, item := range v {
+					if i > 0 {
+						reqBody.WriteString(",")
+					}
+					reqBody.WriteString(`{"equalTo":"`)
+					reqBody.WriteString(item)
+					reqBody.WriteString(`"}`)
+				}
+				reqBody.WriteString(`]}`)
+			}
 			first = false
 		}
 		reqBody.WriteString("}")
@@ -71,6 +86,7 @@ func TestTokenStorageAddMethodWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.AddMethodRequest{
 		Body: &payabli.RequestTokenStorage{
@@ -80,7 +96,7 @@ func TestTokenStorageAddMethodWithWireMock(
 				),
 			},
 			EntryPoint: payabli.String(
-				"f743aed24a",
+				"8cfec329267",
 			),
 			FallbackAuth: payabli.Bool(
 				true,
@@ -93,6 +109,7 @@ func TestTokenStorageAddMethodWithWireMock(
 			),
 			PaymentMethod: &payabli.RequestTokenStoragePaymentMethod{
 				TokenizeCard: &payabli.TokenizeCard{
+					Method: "card",
 					Cardcvv: payabli.String(
 						"123",
 					),
@@ -102,7 +119,6 @@ func TestTokenStorageAddMethodWithWireMock(
 					Cardzip: payabli.String(
 						"12345",
 					),
-					Method: "card",
 				},
 			},
 			Source: payabli.String(
@@ -131,6 +147,7 @@ func TestTokenStorageGetMethodWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.GetMethodRequest{
 		CardExpirationFormat: payabli.Int(
@@ -150,29 +167,7 @@ func TestTokenStorageGetMethodWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestTokenStorageGetMethodWithWireMock", "GET", "/TokenStorage/32-8877drt00045632-678", map[string]string{"cardExpirationFormat": "1", "includeTemporary": "false"}, 1)
-}
-
-func TestTokenStorageRemoveMethodWithWireMock(
-	t *testing.T,
-) {
-	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
-	if WireMockBaseURL == "" {
-		WireMockBaseURL = "http://localhost:8080"
-	}
-	client := client.NewClient(
-		option.WithBaseURL(WireMockBaseURL),
-	)
-	_, invocationErr := client.TokenStorage.RemoveMethod(
-		context.TODO(),
-		"32-8877drt00045632-678",
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestTokenStorageRemoveMethodWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestTokenStorageRemoveMethodWithWireMock", "DELETE", "/TokenStorage/32-8877drt00045632-678", nil, 1)
+	VerifyRequestCount(t, "TestTokenStorageGetMethodWithWireMock", "GET", "/TokenStorage/32-8877drt00045632-678", map[string]interface{}{"cardExpirationFormat": "1", "includeTemporary": "false"}, 1)
 }
 
 func TestTokenStorageUpdateMethodWithWireMock(
@@ -184,6 +179,7 @@ func TestTokenStorageUpdateMethodWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.UpdateMethodRequest{
 		Body: &payabli.RequestTokenStorage{
@@ -193,13 +189,14 @@ func TestTokenStorageUpdateMethodWithWireMock(
 				),
 			},
 			EntryPoint: payabli.String(
-				"f743aed24a",
+				"8cfec329267",
 			),
 			FallbackAuth: payabli.Bool(
 				true,
 			),
 			PaymentMethod: &payabli.RequestTokenStoragePaymentMethod{
 				TokenizeCard: &payabli.TokenizeCard{
+					Method: "card",
 					Cardcvv: payabli.String(
 						"123",
 					),
@@ -209,7 +206,6 @@ func TestTokenStorageUpdateMethodWithWireMock(
 					Cardzip: payabli.String(
 						"12345",
 					),
-					Method: "card",
 				},
 			},
 		},
@@ -225,4 +221,27 @@ func TestTokenStorageUpdateMethodWithWireMock(
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestTokenStorageUpdateMethodWithWireMock", "PUT", "/TokenStorage/32-8877drt00045632-678", nil, 1)
+}
+
+func TestTokenStorageRemoveMethodWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
+	)
+	_, invocationErr := client.TokenStorage.RemoveMethod(
+		context.TODO(),
+		"32-8877drt00045632-678",
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestTokenStorageRemoveMethodWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestTokenStorageRemoveMethodWithWireMock", "DELETE", "/TokenStorage/32-8877drt00045632-678", nil, 1)
 }

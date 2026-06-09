@@ -4,6 +4,7 @@ package paypoint
 
 import (
 	context "context"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
@@ -25,8 +26,9 @@ func NewClient(options *core.RequestOptions) *Client {
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -68,68 +70,6 @@ func (c *Client) GetBasicEntryById(
 	return response.Body, nil
 }
 
-// Gets the details for a single paypoint.
-func (c *Client) GetEntryConfig(
-	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
-	request *payabli.GetEntryConfigRequest,
-	opts ...option.RequestOption,
-) (*payabli.GetEntryConfigResponse, error) {
-	response, err := c.WithRawResponse.GetEntryConfig(
-		ctx,
-		entry,
-		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// Gets the details for single payment page for a paypoint.
-func (c *Client) GetPage(
-	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
-	// Payment page identifier. The subdomain value is the last portion of the payment page URL. For example, in`https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
-	subdomain string,
-	opts ...option.RequestOption,
-) (*payabli.PayabliPages, error) {
-	response, err := c.WithRawResponse.GetPage(
-		ctx,
-		entry,
-		subdomain,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// Deletes a payment page in a paypoint.
-func (c *Client) RemovePage(
-	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-	entry string,
-	// Payment page identifier. The subdomain value is the last portion of the payment page URL. For example, in`https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
-	subdomain string,
-	opts ...option.RequestOption,
-) (*payabli.PayabliApiResponseGeneric2Part, error) {
-	response, err := c.WithRawResponse.RemovePage(
-		ctx,
-		entry,
-		subdomain,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
 // Updates a paypoint logo.
 func (c *Client) SaveLogo(
 	ctx context.Context,
@@ -150,7 +90,24 @@ func (c *Client) SaveLogo(
 	return response.Body, nil
 }
 
-// Retrieves an paypoint's basic settings like custom fields, identifiers, and invoicing settings.
+// Migrates a paypoint to a new parent organization.
+func (c *Client) Migrate(
+	ctx context.Context,
+	request *payabli.PaypointMoveRequest,
+	opts ...option.RequestOption,
+) (*payabli.MigratePaypointResponse, error) {
+	response, err := c.WithRawResponse.Migrate(
+		ctx,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Retrieves a paypoint's basic settings like custom fields, identifiers, and invoicing settings.
 func (c *Client) SettingsPage(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -168,15 +125,60 @@ func (c *Client) SettingsPage(
 	return response.Body, nil
 }
 
-// Migrates a paypoint to a new parent organization.
-func (c *Client) Migrate(
+// Gets the details for a single paypoint.
+func (c *Client) GetEntryConfig(
 	ctx context.Context,
-	request *payabli.PaypointMoveRequest,
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
+	request *payabli.GetEntryConfigRequest,
 	opts ...option.RequestOption,
-) (*payabli.MigratePaypointResponse, error) {
-	response, err := c.WithRawResponse.Migrate(
+) (*payabli.GetEntryConfigResponse, error) {
+	response, err := c.WithRawResponse.GetEntryConfig(
 		ctx,
+		entry,
 		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Gets the details for a single payment page for a paypoint.
+func (c *Client) GetPage(
+	ctx context.Context,
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
+	// Payment page identifier. The subdomain value is the last portion of the payment page URL. For example, in `https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
+	subdomain string,
+	opts ...option.RequestOption,
+) (*payabli.PayabliPages, error) {
+	response, err := c.WithRawResponse.GetPage(
+		ctx,
+		entry,
+		subdomain,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Deletes a payment page in a paypoint.
+func (c *Client) RemovePage(
+	ctx context.Context,
+	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+	entry string,
+	// Payment page identifier. The subdomain value is the last portion of the payment page URL. For example, in `https://paypages-sandbox.payabli.com/513823dc10/pay-your-fees-1`, the subdomain is `pay-your-fees-1`.
+	subdomain string,
+	opts ...option.RequestOption,
+) (*payabli.PayabliApiResponseGeneric2Part, error) {
+	response, err := c.WithRawResponse.RemovePage(
+		ctx,
+		entry,
+		subdomain,
 		opts...,
 	)
 	if err != nil {

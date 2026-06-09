@@ -4,11 +4,12 @@ package invoice
 
 import (
 	context "context"
+	http "net/http"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
-	http "net/http"
 )
 
 type RawClient struct {
@@ -23,8 +24,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 		baseURL: options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -70,6 +72,7 @@ func (r *RawClient) AddInvoice(
 			Method:          http.MethodPost,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -88,21 +91,72 @@ func (r *RawClient) AddInvoice(
 	}, nil
 }
 
+func (r *RawClient) GetAttachedFileFromInvoice(
+	ctx context.Context,
+	// Invoice ID
+	idInvoice int,
+	// The filename in Payabli. Get this from the `zipName` field
+	// in the `DocumentsRef.filelist` array returned by
+	// `/api/Invoice/{idInvoice}`. Example: `0_Bill.pdf`.
+	filename string,
+	request *payabli.GetAttachedFileFromInvoiceRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*payabli.FileContent], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://api-sandbox.payabli.com/api",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/Invoice/attachedFileFromInvoice/%v/%v",
+		idInvoice,
+		filename,
+	)
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *payabli.FileContent
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*payabli.FileContent]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
 func (r *RawClient) DeleteAttachedFromInvoice(
 	ctx context.Context,
 	// Invoice ID
 	idInvoice int,
-	// The filename in Payabli. Filename is `zipName` in response to a request to `/api/Invoice/{idInvoice}`. Here, the filename is `0_Bill.pdf``.
-	// "DocumentsRef": {
-	//   "zipfile": "inva_269.zip",
-	//   "filelist": [
-	//     {
-	//       "originalName": "Bill.pdf",
-	//       "zipName": "0_Bill.pdf",
-	//       "descriptor": null
-	//     }
-	//   ]
-	// }
+	// The filename in Payabli. Get this from the `zipName` field
+	// in the `DocumentsRef.filelist` array returned by
+	// `/api/Invoice/{idInvoice}`. Example: `0_Bill.pdf`.
 	filename string,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.InvoiceResponseWithoutData], error) {
@@ -129,6 +183,7 @@ func (r *RawClient) DeleteAttachedFromInvoice(
 			Method:          http.MethodDelete,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -146,12 +201,12 @@ func (r *RawClient) DeleteAttachedFromInvoice(
 	}, nil
 }
 
-func (r *RawClient) DeleteInvoice(
+func (r *RawClient) GetInvoice(
 	ctx context.Context,
 	// Invoice ID
 	idInvoice int,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.InvoiceResponseWithoutData], error) {
+) (*core.Response[*payabli.GetInvoiceRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -166,14 +221,15 @@ func (r *RawClient) DeleteInvoice(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.InvoiceResponseWithoutData
+	var response *payabli.GetInvoiceRecord
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
 			URL:             endpointURL,
-			Method:          http.MethodDelete,
+			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -184,7 +240,7 @@ func (r *RawClient) DeleteInvoice(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.InvoiceResponseWithoutData]{
+	return &core.Response[*payabli.GetInvoiceRecord]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -228,6 +284,7 @@ func (r *RawClient) EditInvoice(
 			Method:          http.MethodPut,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -246,80 +303,12 @@ func (r *RawClient) EditInvoice(
 	}, nil
 }
 
-func (r *RawClient) GetAttachedFileFromInvoice(
-	ctx context.Context,
-	// Invoice ID
-	idInvoice int,
-	// The filename in Payabli. Filename is `zipName` in the response to a request to `/api/Invoice/{idInvoice}`. Here, the filename is `0_Bill.pdf``.
-	// ```
-	//   "DocumentsRef": {
-	//     "zipfile": "inva_269.zip",
-	//     "filelist": [
-	//       {
-	//         "originalName": "Bill.pdf",
-	//         "zipName": "0_Bill.pdf",
-	//         "descriptor": null
-	//       }
-	//     ]
-	//   }
-	//   ```
-	filename string,
-	request *payabli.GetAttachedFileFromInvoiceRequest,
-	opts ...option.RequestOption,
-) (*core.Response[*payabli.FileContent], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"https://api-sandbox.payabli.com/api",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/Invoice/attachedFileFromInvoice/%v/%v",
-		idInvoice,
-		filename,
-	)
-	queryParams, err := internal.QueryValues(request)
-	if err != nil {
-		return nil, err
-	}
-	if len(queryParams) > 0 {
-		endpointURL += "?" + queryParams.Encode()
-	}
-	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
-	)
-	var response *payabli.FileContent
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodGet,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[*payabli.FileContent]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       response,
-	}, nil
-}
-
-func (r *RawClient) GetInvoice(
+func (r *RawClient) DeleteInvoice(
 	ctx context.Context,
 	// Invoice ID
 	idInvoice int,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.GetInvoiceRecord], error) {
+) (*core.Response[*payabli.InvoiceResponseWithoutData], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -334,14 +323,15 @@ func (r *RawClient) GetInvoice(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.GetInvoiceRecord
+	var response *payabli.InvoiceResponseWithoutData
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
 			URL:             endpointURL,
-			Method:          http.MethodGet,
+			Method:          http.MethodDelete,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -352,7 +342,7 @@ func (r *RawClient) GetInvoice(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.GetInvoiceRecord]{
+	return &core.Response[*payabli.InvoiceResponseWithoutData]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -387,6 +377,7 @@ func (r *RawClient) GetInvoiceNumber(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -440,6 +431,7 @@ func (r *RawClient) ListInvoices(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -493,6 +485,7 @@ func (r *RawClient) ListInvoicesOrg(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -546,6 +539,7 @@ func (r *RawClient) SendInvoice(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -591,6 +585,7 @@ func (r *RawClient) GetInvoicePdf(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,

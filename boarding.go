@@ -10,6 +10,93 @@ import (
 )
 
 var (
+	createApplicationFromPaypointRequestFieldPaypointId                     = big.NewInt(1 << 0)
+	createApplicationFromPaypointRequestFieldTemplateId                     = big.NewInt(1 << 1)
+	createApplicationFromPaypointRequestFieldRecipientEmail                 = big.NewInt(1 << 2)
+	createApplicationFromPaypointRequestFieldReturnBoardingAccessInfoInLine = big.NewInt(1 << 3)
+	createApplicationFromPaypointRequestFieldOnCreate                       = big.NewInt(1 << 4)
+)
+
+type CreateApplicationFromPaypointRequest struct {
+	// ID of the existing paypoint to link to this application.
+	PaypointId int64 `json:"paypointId" url:"-"`
+	// ID of the boarding template to use for the new application.
+	TemplateId int64 `json:"templateId" url:"-"`
+	// Email address where the boarding link is sent. Required. If you don't want to email the merchant, send to an internal address and use `returnBoardingAccessInfoInLine` to retrieve the link from the response instead.
+	RecipientEmail string `json:"recipientEmail" url:"-"`
+	// When `true`, returns the boarding access information directly in the response.
+	ReturnBoardingAccessInfoInLine *bool `json:"returnBoardingAccessInfoInLine,omitempty" url:"-"`
+	// Additional actions to trigger when the application is created. Currently only `submitApplication` is supported, which automatically submits the application on creation and skips the draft state.
+	OnCreate []string `json:"onCreate,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (c *CreateApplicationFromPaypointRequest) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateApplicationFromPaypointRequest) SetPaypointId(paypointId int64) {
+	c.PaypointId = paypointId
+	c.require(createApplicationFromPaypointRequestFieldPaypointId)
+}
+
+// SetTemplateId sets the TemplateId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateApplicationFromPaypointRequest) SetTemplateId(templateId int64) {
+	c.TemplateId = templateId
+	c.require(createApplicationFromPaypointRequestFieldTemplateId)
+}
+
+// SetRecipientEmail sets the RecipientEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateApplicationFromPaypointRequest) SetRecipientEmail(recipientEmail string) {
+	c.RecipientEmail = recipientEmail
+	c.require(createApplicationFromPaypointRequestFieldRecipientEmail)
+}
+
+// SetReturnBoardingAccessInfoInLine sets the ReturnBoardingAccessInfoInLine field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateApplicationFromPaypointRequest) SetReturnBoardingAccessInfoInLine(returnBoardingAccessInfoInLine *bool) {
+	c.ReturnBoardingAccessInfoInLine = returnBoardingAccessInfoInLine
+	c.require(createApplicationFromPaypointRequestFieldReturnBoardingAccessInfoInLine)
+}
+
+// SetOnCreate sets the OnCreate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateApplicationFromPaypointRequest) SetOnCreate(onCreate []string) {
+	c.OnCreate = onCreate
+	c.require(createApplicationFromPaypointRequestFieldOnCreate)
+}
+
+func (c *CreateApplicationFromPaypointRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateApplicationFromPaypointRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*c = CreateApplicationFromPaypointRequest(body)
+	return nil
+}
+
+func (c *CreateApplicationFromPaypointRequest) MarshalJSON() ([]byte, error) {
+	type embed CreateApplicationFromPaypointRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+var (
 	requestAppByAuthFieldEmail       = big.NewInt(1 << 0)
 	requestAppByAuthFieldReferenceId = big.NewInt(1 << 1)
 )
@@ -75,6 +162,7 @@ var (
 )
 
 type ListApplicationsRequest struct {
+	// Export format for file downloads. When specified, returns data as a file instead of JSON.
 	ExportFormat *ExportFormat `json:"-" url:"exportFormat,omitempty"`
 	// The number of records to skip before starting to collect the result set.
 	FromRecord *int `json:"-" url:"fromRecord,omitempty"`
@@ -623,6 +711,114 @@ func (a *AchSection) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", a)
+}
+
+type AddApplicationRequest struct {
+	// Fields for Pay In processing applications
+	ApplicationDataPayIn *ApplicationDataPayIn
+	// Fields for Managed Payout processing applications
+	ApplicationDataManaged *ApplicationDataManaged
+	// Fields for On-Demand Payout processing applications
+	ApplicationDataOdp *ApplicationDataOdp
+	// All fields for boarding applications
+	ApplicationData *ApplicationData
+
+	typ string
+}
+
+func (a *AddApplicationRequest) GetApplicationDataPayIn() *ApplicationDataPayIn {
+	if a == nil {
+		return nil
+	}
+	return a.ApplicationDataPayIn
+}
+
+func (a *AddApplicationRequest) GetApplicationDataManaged() *ApplicationDataManaged {
+	if a == nil {
+		return nil
+	}
+	return a.ApplicationDataManaged
+}
+
+func (a *AddApplicationRequest) GetApplicationDataOdp() *ApplicationDataOdp {
+	if a == nil {
+		return nil
+	}
+	return a.ApplicationDataOdp
+}
+
+func (a *AddApplicationRequest) GetApplicationData() *ApplicationData {
+	if a == nil {
+		return nil
+	}
+	return a.ApplicationData
+}
+
+func (a *AddApplicationRequest) UnmarshalJSON(data []byte) error {
+	valueApplicationDataPayIn := new(ApplicationDataPayIn)
+	if err := json.Unmarshal(data, &valueApplicationDataPayIn); err == nil {
+		a.typ = "ApplicationDataPayIn"
+		a.ApplicationDataPayIn = valueApplicationDataPayIn
+		return nil
+	}
+	valueApplicationDataManaged := new(ApplicationDataManaged)
+	if err := json.Unmarshal(data, &valueApplicationDataManaged); err == nil {
+		a.typ = "ApplicationDataManaged"
+		a.ApplicationDataManaged = valueApplicationDataManaged
+		return nil
+	}
+	valueApplicationDataOdp := new(ApplicationDataOdp)
+	if err := json.Unmarshal(data, &valueApplicationDataOdp); err == nil {
+		a.typ = "ApplicationDataOdp"
+		a.ApplicationDataOdp = valueApplicationDataOdp
+		return nil
+	}
+	valueApplicationData := new(ApplicationData)
+	if err := json.Unmarshal(data, &valueApplicationData); err == nil {
+		a.typ = "ApplicationData"
+		a.ApplicationData = valueApplicationData
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, a)
+}
+
+func (a AddApplicationRequest) MarshalJSON() ([]byte, error) {
+	if a.typ == "ApplicationDataPayIn" || a.ApplicationDataPayIn != nil {
+		return json.Marshal(a.ApplicationDataPayIn)
+	}
+	if a.typ == "ApplicationDataManaged" || a.ApplicationDataManaged != nil {
+		return json.Marshal(a.ApplicationDataManaged)
+	}
+	if a.typ == "ApplicationDataOdp" || a.ApplicationDataOdp != nil {
+		return json.Marshal(a.ApplicationDataOdp)
+	}
+	if a.typ == "ApplicationData" || a.ApplicationData != nil {
+		return json.Marshal(a.ApplicationData)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", a)
+}
+
+type AddApplicationRequestVisitor interface {
+	VisitApplicationDataPayIn(*ApplicationDataPayIn) error
+	VisitApplicationDataManaged(*ApplicationDataManaged) error
+	VisitApplicationDataOdp(*ApplicationDataOdp) error
+	VisitApplicationData(*ApplicationData) error
+}
+
+func (a *AddApplicationRequest) Accept(visitor AddApplicationRequestVisitor) error {
+	if a.typ == "ApplicationDataPayIn" || a.ApplicationDataPayIn != nil {
+		return visitor.VisitApplicationDataPayIn(a.ApplicationDataPayIn)
+	}
+	if a.typ == "ApplicationDataManaged" || a.ApplicationDataManaged != nil {
+		return visitor.VisitApplicationDataManaged(a.ApplicationDataManaged)
+	}
+	if a.typ == "ApplicationDataOdp" || a.ApplicationDataOdp != nil {
+		return visitor.VisitApplicationDataOdp(a.ApplicationDataOdp)
+	}
+	if a.typ == "ApplicationData" || a.ApplicationData != nil {
+		return visitor.VisitApplicationData(a.ApplicationData)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", a)
 }
 
 // Annual revenue amount.
@@ -1656,24 +1852,24 @@ type ApplicationDataManaged struct {
 	Btype          *OwnType  `json:"btype,omitempty" url:"btype,omitempty"`
 	Bzip           *Bzip     `json:"bzip,omitempty" url:"bzip,omitempty"`
 	// List of contacts for the business.
-	Contacts  []*ApplicationDataManagedContactsItem `json:"contacts,omitempty" url:"contacts,omitempty"`
-	Dbaname   *Dbaname                              `json:"dbaname,omitempty" url:"dbaname,omitempty"`
-	Ein       *Ein                                  `json:"ein,omitempty" url:"ein,omitempty"`
-	Faxnumber *BoardingBusinessFax                  `json:"faxnumber,omitempty" url:"faxnumber,omitempty"`
-	Legalname *Legalname                            `json:"legalname,omitempty" url:"legalname,omitempty"`
-	License   *License                              `json:"license,omitempty" url:"license,omitempty"`
-	Licstate  *Licensestate                         `json:"licstate,omitempty" url:"licstate,omitempty"`
-	Maddress  *Maddress                             `json:"maddress,omitempty" url:"maddress,omitempty"`
-	Maddress1 *Maddress1                            `json:"maddress1,omitempty" url:"maddress1,omitempty"`
-	Mcc       *Mcc                                  `json:"mcc,omitempty" url:"mcc,omitempty"`
-	Mcity     *Mcity                                `json:"mcity,omitempty" url:"mcity,omitempty"`
-	Mcountry  *Mcountry                             `json:"mcountry,omitempty" url:"mcountry,omitempty"`
-	Mstate    *Mstate                               `json:"mstate,omitempty" url:"mstate,omitempty"`
-	Mzip      *Mzip                                 `json:"mzip,omitempty" url:"mzip,omitempty"`
-	OrgId     *Orgid                                `json:"orgId,omitempty" url:"orgId,omitempty"`
+	Contacts  []ApplicationDataManagedContactsItem `json:"contacts,omitempty" url:"contacts,omitempty"`
+	Dbaname   *Dbaname                             `json:"dbaname,omitempty" url:"dbaname,omitempty"`
+	Ein       *Ein                                 `json:"ein,omitempty" url:"ein,omitempty"`
+	Faxnumber *BoardingBusinessFax                 `json:"faxnumber,omitempty" url:"faxnumber,omitempty"`
+	Legalname *Legalname                           `json:"legalname,omitempty" url:"legalname,omitempty"`
+	License   *License                             `json:"license,omitempty" url:"license,omitempty"`
+	Licstate  *Licensestate                        `json:"licstate,omitempty" url:"licstate,omitempty"`
+	Maddress  *Maddress                            `json:"maddress,omitempty" url:"maddress,omitempty"`
+	Maddress1 *Maddress1                           `json:"maddress1,omitempty" url:"maddress1,omitempty"`
+	Mcc       *Mcc                                 `json:"mcc,omitempty" url:"mcc,omitempty"`
+	Mcity     *Mcity                               `json:"mcity,omitempty" url:"mcity,omitempty"`
+	Mcountry  *Mcountry                            `json:"mcountry,omitempty" url:"mcountry,omitempty"`
+	Mstate    *Mstate                              `json:"mstate,omitempty" url:"mstate,omitempty"`
+	Mzip      *Mzip                                `json:"mzip,omitempty" url:"mzip,omitempty"`
+	OrgId     *Orgid                               `json:"orgId,omitempty" url:"orgId,omitempty"`
 	// List of Owners with at least a 25% ownership.
-	Ownership   []*ApplicationDataManagedOwnershipItem `json:"ownership,omitempty" url:"ownership,omitempty"`
-	Phonenumber *BoardingBusinessPhone                 `json:"phonenumber,omitempty" url:"phonenumber,omitempty"`
+	Ownership   []ApplicationDataManagedOwnershipItem `json:"ownership,omitempty" url:"ownership,omitempty"`
+	Phonenumber *BoardingBusinessPhone                `json:"phonenumber,omitempty" url:"phonenumber,omitempty"`
 	// Email address for the applicant. This is used to send the applicant a boarding link.
 	RecipientEmail             *Email                      `json:"recipientEmail,omitempty" url:"recipientEmail,omitempty"`
 	RecipientEmailNotification *RecipientEmailNotification `json:"recipientEmailNotification,omitempty" url:"recipientEmailNotification,omitempty"`
@@ -1780,7 +1976,7 @@ func (a *ApplicationDataManaged) GetBzip() *Bzip {
 	return a.Bzip
 }
 
-func (a *ApplicationDataManaged) GetContacts() []*ApplicationDataManagedContactsItem {
+func (a *ApplicationDataManaged) GetContacts() []ApplicationDataManagedContactsItem {
 	if a == nil {
 		return nil
 	}
@@ -1885,7 +2081,7 @@ func (a *ApplicationDataManaged) GetOrgId() *Orgid {
 	return a.OrgId
 }
 
-func (a *ApplicationDataManaged) GetOwnership() []*ApplicationDataManagedOwnershipItem {
+func (a *ApplicationDataManaged) GetOwnership() []ApplicationDataManagedOwnershipItem {
 	if a == nil {
 		return nil
 	}
@@ -2083,7 +2279,7 @@ func (a *ApplicationDataManaged) SetBzip(bzip *Bzip) {
 
 // SetContacts sets the Contacts field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataManaged) SetContacts(contacts []*ApplicationDataManagedContactsItem) {
+func (a *ApplicationDataManaged) SetContacts(contacts []ApplicationDataManagedContactsItem) {
 	a.Contacts = contacts
 	a.require(applicationDataManagedFieldContacts)
 }
@@ -2188,7 +2384,7 @@ func (a *ApplicationDataManaged) SetOrgId(orgId *Orgid) {
 
 // SetOwnership sets the Ownership field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataManaged) SetOwnership(ownership []*ApplicationDataManagedOwnershipItem) {
+func (a *ApplicationDataManaged) SetOwnership(ownership []ApplicationDataManagedOwnershipItem) {
 	a.Ownership = ownership
 	a.require(applicationDataManagedFieldOwnership)
 }
@@ -2326,496 +2522,9 @@ func (a *ApplicationDataManaged) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
-var (
-	applicationDataManagedContactsItemFieldContactEmail   = big.NewInt(1 << 0)
-	applicationDataManagedContactsItemFieldContactName    = big.NewInt(1 << 1)
-	applicationDataManagedContactsItemFieldContactPhone   = big.NewInt(1 << 2)
-	applicationDataManagedContactsItemFieldContactTitle   = big.NewInt(1 << 3)
-	applicationDataManagedContactsItemFieldAdditionalData = big.NewInt(1 << 4)
-)
+type ApplicationDataManagedContactsItem = *Contacts
 
-type ApplicationDataManagedContactsItem struct {
-	// Contact email address.
-	ContactEmail *Email `json:"contactEmail,omitempty" url:"contactEmail,omitempty"`
-	// Contact name.
-	ContactName *string `json:"contactName,omitempty" url:"contactName,omitempty"`
-	// Contact phone number.
-	ContactPhone *string `json:"contactPhone,omitempty" url:"contactPhone,omitempty"`
-	// Contact title.
-	ContactTitle   *string               `json:"contactTitle,omitempty" url:"contactTitle,omitempty"`
-	AdditionalData *AdditionalDataString `json:"additionalData,omitempty" url:"additionalData,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (a *ApplicationDataManagedContactsItem) GetContactEmail() *Email {
-	if a == nil {
-		return nil
-	}
-	return a.ContactEmail
-}
-
-func (a *ApplicationDataManagedContactsItem) GetContactName() *string {
-	if a == nil {
-		return nil
-	}
-	return a.ContactName
-}
-
-func (a *ApplicationDataManagedContactsItem) GetContactPhone() *string {
-	if a == nil {
-		return nil
-	}
-	return a.ContactPhone
-}
-
-func (a *ApplicationDataManagedContactsItem) GetContactTitle() *string {
-	if a == nil {
-		return nil
-	}
-	return a.ContactTitle
-}
-
-func (a *ApplicationDataManagedContactsItem) GetAdditionalData() *AdditionalDataString {
-	if a == nil {
-		return nil
-	}
-	return a.AdditionalData
-}
-
-func (a *ApplicationDataManagedContactsItem) GetExtraProperties() map[string]interface{} {
-	if a == nil {
-		return nil
-	}
-	return a.extraProperties
-}
-
-func (a *ApplicationDataManagedContactsItem) require(field *big.Int) {
-	if a.explicitFields == nil {
-		a.explicitFields = big.NewInt(0)
-	}
-	a.explicitFields.Or(a.explicitFields, field)
-}
-
-// SetContactEmail sets the ContactEmail field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataManagedContactsItem) SetContactEmail(contactEmail *Email) {
-	a.ContactEmail = contactEmail
-	a.require(applicationDataManagedContactsItemFieldContactEmail)
-}
-
-// SetContactName sets the ContactName field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataManagedContactsItem) SetContactName(contactName *string) {
-	a.ContactName = contactName
-	a.require(applicationDataManagedContactsItemFieldContactName)
-}
-
-// SetContactPhone sets the ContactPhone field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataManagedContactsItem) SetContactPhone(contactPhone *string) {
-	a.ContactPhone = contactPhone
-	a.require(applicationDataManagedContactsItemFieldContactPhone)
-}
-
-// SetContactTitle sets the ContactTitle field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataManagedContactsItem) SetContactTitle(contactTitle *string) {
-	a.ContactTitle = contactTitle
-	a.require(applicationDataManagedContactsItemFieldContactTitle)
-}
-
-// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataManagedContactsItem) SetAdditionalData(additionalData *AdditionalDataString) {
-	a.AdditionalData = additionalData
-	a.require(applicationDataManagedContactsItemFieldAdditionalData)
-}
-
-func (a *ApplicationDataManagedContactsItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler ApplicationDataManagedContactsItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*a = ApplicationDataManagedContactsItem(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *a)
-	if err != nil {
-		return err
-	}
-	a.extraProperties = extraProperties
-	a.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (a *ApplicationDataManagedContactsItem) MarshalJSON() ([]byte, error) {
-	type embed ApplicationDataManagedContactsItem
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*a),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (a *ApplicationDataManagedContactsItem) String() string {
-	if a == nil {
-		return "<nil>"
-	}
-	if len(a.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(a); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", a)
-}
-
-var (
-	applicationDataManagedOwnershipItemFieldOwnername      = big.NewInt(1 << 0)
-	applicationDataManagedOwnershipItemFieldOwnertitle     = big.NewInt(1 << 1)
-	applicationDataManagedOwnershipItemFieldOwnerpercent   = big.NewInt(1 << 2)
-	applicationDataManagedOwnershipItemFieldOwnerssn       = big.NewInt(1 << 3)
-	applicationDataManagedOwnershipItemFieldOwnerdob       = big.NewInt(1 << 4)
-	applicationDataManagedOwnershipItemFieldOwnerphone1    = big.NewInt(1 << 5)
-	applicationDataManagedOwnershipItemFieldOwnerphone2    = big.NewInt(1 << 6)
-	applicationDataManagedOwnershipItemFieldOwneremail     = big.NewInt(1 << 7)
-	applicationDataManagedOwnershipItemFieldOwnerdriver    = big.NewInt(1 << 8)
-	applicationDataManagedOwnershipItemFieldOaddress       = big.NewInt(1 << 9)
-	applicationDataManagedOwnershipItemFieldOcity          = big.NewInt(1 << 10)
-	applicationDataManagedOwnershipItemFieldOcountry       = big.NewInt(1 << 11)
-	applicationDataManagedOwnershipItemFieldOdriverstate   = big.NewInt(1 << 12)
-	applicationDataManagedOwnershipItemFieldOstate         = big.NewInt(1 << 13)
-	applicationDataManagedOwnershipItemFieldOzip           = big.NewInt(1 << 14)
-	applicationDataManagedOwnershipItemFieldAdditionalData = big.NewInt(1 << 15)
-)
-
-type ApplicationDataManagedOwnershipItem struct {
-	// Person who is registered as the beneficial owner of the business. This is a combination of first and last name.
-	Ownername *string `json:"ownername,omitempty" url:"ownername,omitempty"`
-	// The job title of the person such as CEO or director.
-	Ownertitle *string `json:"ownertitle,omitempty" url:"ownertitle,omitempty"`
-	// Percentage of ownership the person holds, in integer format.
-	Ownerpercent *int `json:"ownerpercent,omitempty" url:"ownerpercent,omitempty"`
-	// The relevant identifier for the person such as a Social Security Number.
-	Ownerssn *string `json:"ownerssn,omitempty" url:"ownerssn,omitempty"`
-	// Owner's date of birth.
-	Ownerdob *string `json:"ownerdob,omitempty" url:"ownerdob,omitempty"`
-	// Owner phone 1.
-	Ownerphone1 *string `json:"ownerphone1,omitempty" url:"ownerphone1,omitempty"`
-	// Owner phone 2.
-	Ownerphone2 *string `json:"ownerphone2,omitempty" url:"ownerphone2,omitempty"`
-	// Owner email.
-	Owneremail *Email `json:"owneremail,omitempty" url:"owneremail,omitempty"`
-	// Owner driver's license ID number. Payabli strongly recommends including this.
-	Ownerdriver *string `json:"ownerdriver,omitempty" url:"ownerdriver,omitempty"`
-	// Owner street address. This must be the physical address of the owner, not a P.O. box.
-	Oaddress *string `json:"oaddress,omitempty" url:"oaddress,omitempty"`
-	// Owner address city.
-	Ocity *string `json:"ocity,omitempty" url:"ocity,omitempty"`
-	// Owner address country in ISO-3166-1 alpha 2 format. Check out https://en.wikipedia.org/wiki/ISO_3166-1 for reference.
-	Ocountry *string `json:"ocountry,omitempty" url:"ocountry,omitempty"`
-	// Owner driver's license State. Payabli strongly recommends including this.
-	Odriverstate *string `json:"odriverstate,omitempty" url:"odriverstate,omitempty"`
-	// Owner address state.
-	Ostate *string `json:"ostate,omitempty" url:"ostate,omitempty"`
-	// Owner address ZIP.
-	Ozip           *string               `json:"ozip,omitempty" url:"ozip,omitempty"`
-	AdditionalData *AdditionalDataString `json:"additionalData,omitempty" url:"additionalData,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (a *ApplicationDataManagedOwnershipItem) GetOwnername() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ownername
-}
-
-func (a *ApplicationDataManagedOwnershipItem) GetOwnertitle() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ownertitle
-}
-
-func (a *ApplicationDataManagedOwnershipItem) GetOwnerpercent() *int {
-	if a == nil {
-		return nil
-	}
-	return a.Ownerpercent
-}
-
-func (a *ApplicationDataManagedOwnershipItem) GetOwnerssn() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ownerssn
-}
-
-func (a *ApplicationDataManagedOwnershipItem) GetOwnerdob() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ownerdob
-}
-
-func (a *ApplicationDataManagedOwnershipItem) GetOwnerphone1() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ownerphone1
-}
-
-func (a *ApplicationDataManagedOwnershipItem) GetOwnerphone2() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ownerphone2
-}
-
-func (a *ApplicationDataManagedOwnershipItem) GetOwneremail() *Email {
-	if a == nil {
-		return nil
-	}
-	return a.Owneremail
-}
-
-func (a *ApplicationDataManagedOwnershipItem) GetOwnerdriver() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ownerdriver
-}
-
-func (a *ApplicationDataManagedOwnershipItem) GetOaddress() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Oaddress
-}
-
-func (a *ApplicationDataManagedOwnershipItem) GetOcity() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ocity
-}
-
-func (a *ApplicationDataManagedOwnershipItem) GetOcountry() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ocountry
-}
-
-func (a *ApplicationDataManagedOwnershipItem) GetOdriverstate() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Odriverstate
-}
-
-func (a *ApplicationDataManagedOwnershipItem) GetOstate() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ostate
-}
-
-func (a *ApplicationDataManagedOwnershipItem) GetOzip() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ozip
-}
-
-func (a *ApplicationDataManagedOwnershipItem) GetAdditionalData() *AdditionalDataString {
-	if a == nil {
-		return nil
-	}
-	return a.AdditionalData
-}
-
-func (a *ApplicationDataManagedOwnershipItem) GetExtraProperties() map[string]interface{} {
-	if a == nil {
-		return nil
-	}
-	return a.extraProperties
-}
-
-func (a *ApplicationDataManagedOwnershipItem) require(field *big.Int) {
-	if a.explicitFields == nil {
-		a.explicitFields = big.NewInt(0)
-	}
-	a.explicitFields.Or(a.explicitFields, field)
-}
-
-// SetOwnername sets the Ownername field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataManagedOwnershipItem) SetOwnername(ownername *string) {
-	a.Ownername = ownername
-	a.require(applicationDataManagedOwnershipItemFieldOwnername)
-}
-
-// SetOwnertitle sets the Ownertitle field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataManagedOwnershipItem) SetOwnertitle(ownertitle *string) {
-	a.Ownertitle = ownertitle
-	a.require(applicationDataManagedOwnershipItemFieldOwnertitle)
-}
-
-// SetOwnerpercent sets the Ownerpercent field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataManagedOwnershipItem) SetOwnerpercent(ownerpercent *int) {
-	a.Ownerpercent = ownerpercent
-	a.require(applicationDataManagedOwnershipItemFieldOwnerpercent)
-}
-
-// SetOwnerssn sets the Ownerssn field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataManagedOwnershipItem) SetOwnerssn(ownerssn *string) {
-	a.Ownerssn = ownerssn
-	a.require(applicationDataManagedOwnershipItemFieldOwnerssn)
-}
-
-// SetOwnerdob sets the Ownerdob field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataManagedOwnershipItem) SetOwnerdob(ownerdob *string) {
-	a.Ownerdob = ownerdob
-	a.require(applicationDataManagedOwnershipItemFieldOwnerdob)
-}
-
-// SetOwnerphone1 sets the Ownerphone1 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataManagedOwnershipItem) SetOwnerphone1(ownerphone1 *string) {
-	a.Ownerphone1 = ownerphone1
-	a.require(applicationDataManagedOwnershipItemFieldOwnerphone1)
-}
-
-// SetOwnerphone2 sets the Ownerphone2 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataManagedOwnershipItem) SetOwnerphone2(ownerphone2 *string) {
-	a.Ownerphone2 = ownerphone2
-	a.require(applicationDataManagedOwnershipItemFieldOwnerphone2)
-}
-
-// SetOwneremail sets the Owneremail field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataManagedOwnershipItem) SetOwneremail(owneremail *Email) {
-	a.Owneremail = owneremail
-	a.require(applicationDataManagedOwnershipItemFieldOwneremail)
-}
-
-// SetOwnerdriver sets the Ownerdriver field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataManagedOwnershipItem) SetOwnerdriver(ownerdriver *string) {
-	a.Ownerdriver = ownerdriver
-	a.require(applicationDataManagedOwnershipItemFieldOwnerdriver)
-}
-
-// SetOaddress sets the Oaddress field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataManagedOwnershipItem) SetOaddress(oaddress *string) {
-	a.Oaddress = oaddress
-	a.require(applicationDataManagedOwnershipItemFieldOaddress)
-}
-
-// SetOcity sets the Ocity field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataManagedOwnershipItem) SetOcity(ocity *string) {
-	a.Ocity = ocity
-	a.require(applicationDataManagedOwnershipItemFieldOcity)
-}
-
-// SetOcountry sets the Ocountry field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataManagedOwnershipItem) SetOcountry(ocountry *string) {
-	a.Ocountry = ocountry
-	a.require(applicationDataManagedOwnershipItemFieldOcountry)
-}
-
-// SetOdriverstate sets the Odriverstate field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataManagedOwnershipItem) SetOdriverstate(odriverstate *string) {
-	a.Odriverstate = odriverstate
-	a.require(applicationDataManagedOwnershipItemFieldOdriverstate)
-}
-
-// SetOstate sets the Ostate field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataManagedOwnershipItem) SetOstate(ostate *string) {
-	a.Ostate = ostate
-	a.require(applicationDataManagedOwnershipItemFieldOstate)
-}
-
-// SetOzip sets the Ozip field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataManagedOwnershipItem) SetOzip(ozip *string) {
-	a.Ozip = ozip
-	a.require(applicationDataManagedOwnershipItemFieldOzip)
-}
-
-// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataManagedOwnershipItem) SetAdditionalData(additionalData *AdditionalDataString) {
-	a.AdditionalData = additionalData
-	a.require(applicationDataManagedOwnershipItemFieldAdditionalData)
-}
-
-func (a *ApplicationDataManagedOwnershipItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler ApplicationDataManagedOwnershipItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*a = ApplicationDataManagedOwnershipItem(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *a)
-	if err != nil {
-		return err
-	}
-	a.extraProperties = extraProperties
-	a.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (a *ApplicationDataManagedOwnershipItem) MarshalJSON() ([]byte, error) {
-	type embed ApplicationDataManagedOwnershipItem
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*a),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (a *ApplicationDataManagedOwnershipItem) String() string {
-	if a == nil {
-		return "<nil>"
-	}
-	if len(a.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(a); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", a)
-}
+type ApplicationDataManagedOwnershipItem = *Owners
 
 var (
 	applicationDataOdpFieldServices                   = big.NewInt(1 << 0)
@@ -2884,29 +2593,29 @@ type ApplicationDataOdp struct {
 	Btype          *OwnType  `json:"btype,omitempty" url:"btype,omitempty"`
 	Bzip           *Bzip     `json:"bzip,omitempty" url:"bzip,omitempty"`
 	// List of contacts for the business.
-	Contacts      []*ApplicationDataOdpContactsItem `json:"contacts,omitempty" url:"contacts,omitempty"`
-	Dbaname       *Dbaname                          `json:"dbaname,omitempty" url:"dbaname,omitempty"`
-	Ein           *Ein                              `json:"ein,omitempty" url:"ein,omitempty"`
-	Faxnumber     *BoardingBusinessFax              `json:"faxnumber,omitempty" url:"faxnumber,omitempty"`
-	Highticketamt *Highticketamt                    `json:"highticketamt,omitempty" url:"highticketamt,omitempty"`
-	Legalname     *Legalname                        `json:"legalname,omitempty" url:"legalname,omitempty"`
-	License       *License                          `json:"license,omitempty" url:"license,omitempty"`
-	Licstate      *Licensestate                     `json:"licstate,omitempty" url:"licstate,omitempty"`
-	Maddress      *Maddress                         `json:"maddress,omitempty" url:"maddress,omitempty"`
-	Maddress1     *Maddress1                        `json:"maddress1,omitempty" url:"maddress1,omitempty"`
-	Mcc           *Mcc                              `json:"mcc,omitempty" url:"mcc,omitempty"`
-	Mcity         *Mcity                            `json:"mcity,omitempty" url:"mcity,omitempty"`
-	Mcountry      *Mcountry                         `json:"mcountry,omitempty" url:"mcountry,omitempty"`
-	Mstate        *Mstate                           `json:"mstate,omitempty" url:"mstate,omitempty"`
-	Mzip          *Mzip                             `json:"mzip,omitempty" url:"mzip,omitempty"`
-	OrgId         *Orgid                            `json:"orgId,omitempty" url:"orgId,omitempty"`
+	Contacts      []ApplicationDataOdpContactsItem `json:"contacts,omitempty" url:"contacts,omitempty"`
+	Dbaname       *Dbaname                         `json:"dbaname,omitempty" url:"dbaname,omitempty"`
+	Ein           *Ein                             `json:"ein,omitempty" url:"ein,omitempty"`
+	Faxnumber     *BoardingBusinessFax             `json:"faxnumber,omitempty" url:"faxnumber,omitempty"`
+	Highticketamt *Highticketamt                   `json:"highticketamt,omitempty" url:"highticketamt,omitempty"`
+	Legalname     *Legalname                       `json:"legalname,omitempty" url:"legalname,omitempty"`
+	License       *License                         `json:"license,omitempty" url:"license,omitempty"`
+	Licstate      *Licensestate                    `json:"licstate,omitempty" url:"licstate,omitempty"`
+	Maddress      *Maddress                        `json:"maddress,omitempty" url:"maddress,omitempty"`
+	Maddress1     *Maddress1                       `json:"maddress1,omitempty" url:"maddress1,omitempty"`
+	Mcc           *Mcc                             `json:"mcc,omitempty" url:"mcc,omitempty"`
+	Mcity         *Mcity                           `json:"mcity,omitempty" url:"mcity,omitempty"`
+	Mcountry      *Mcountry                        `json:"mcountry,omitempty" url:"mcountry,omitempty"`
+	Mstate        *Mstate                          `json:"mstate,omitempty" url:"mstate,omitempty"`
+	Mzip          *Mzip                            `json:"mzip,omitempty" url:"mzip,omitempty"`
+	OrgId         *Orgid                           `json:"orgId,omitempty" url:"orgId,omitempty"`
 	// List of Owners with at least a 25% ownership.
-	Ownership                  []*ApplicationDataOdpOwnershipItem `json:"ownership,omitempty" url:"ownership,omitempty"`
-	PayoutAverageMonthlyVolume PayoutAverageMonthlyVolume         `json:"payoutAverageMonthlyVolume" url:"payoutAverageMonthlyVolume"`
-	PayoutAverageTicketAmount  PayoutAverageTicketLimit           `json:"payoutAverageTicketAmount" url:"payoutAverageTicketAmount"`
-	PayoutCreditLimit          PayoutCreditLimit                  `json:"payoutCreditLimit" url:"payoutCreditLimit"`
-	PayoutHighTicketAmount     PayoutHighTicketAmount             `json:"payoutHighTicketAmount" url:"payoutHighTicketAmount"`
-	Phonenumber                *BoardingBusinessPhone             `json:"phonenumber,omitempty" url:"phonenumber,omitempty"`
+	Ownership                  []ApplicationDataOdpOwnershipItem `json:"ownership,omitempty" url:"ownership,omitempty"`
+	PayoutAverageMonthlyVolume PayoutAverageMonthlyVolume        `json:"payoutAverageMonthlyVolume" url:"payoutAverageMonthlyVolume"`
+	PayoutAverageTicketAmount  PayoutAverageTicketLimit          `json:"payoutAverageTicketAmount" url:"payoutAverageTicketAmount"`
+	PayoutCreditLimit          PayoutCreditLimit                 `json:"payoutCreditLimit" url:"payoutCreditLimit"`
+	PayoutHighTicketAmount     PayoutHighTicketAmount            `json:"payoutHighTicketAmount" url:"payoutHighTicketAmount"`
+	Phonenumber                *BoardingBusinessPhone            `json:"phonenumber,omitempty" url:"phonenumber,omitempty"`
 	// Email address for the applicant. This is used to send the applicant a boarding link.
 	RecipientEmail             *Email                      `json:"recipientEmail,omitempty" url:"recipientEmail,omitempty"`
 	RecipientEmailNotification *RecipientEmailNotification `json:"recipientEmailNotification,omitempty" url:"recipientEmailNotification,omitempty"`
@@ -3020,7 +2729,7 @@ func (a *ApplicationDataOdp) GetBzip() *Bzip {
 	return a.Bzip
 }
 
-func (a *ApplicationDataOdp) GetContacts() []*ApplicationDataOdpContactsItem {
+func (a *ApplicationDataOdp) GetContacts() []ApplicationDataOdpContactsItem {
 	if a == nil {
 		return nil
 	}
@@ -3132,7 +2841,7 @@ func (a *ApplicationDataOdp) GetOrgId() *Orgid {
 	return a.OrgId
 }
 
-func (a *ApplicationDataOdp) GetOwnership() []*ApplicationDataOdpOwnershipItem {
+func (a *ApplicationDataOdp) GetOwnership() []ApplicationDataOdpOwnershipItem {
 	if a == nil {
 		return nil
 	}
@@ -3365,7 +3074,7 @@ func (a *ApplicationDataOdp) SetBzip(bzip *Bzip) {
 
 // SetContacts sets the Contacts field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataOdp) SetContacts(contacts []*ApplicationDataOdpContactsItem) {
+func (a *ApplicationDataOdp) SetContacts(contacts []ApplicationDataOdpContactsItem) {
 	a.Contacts = contacts
 	a.require(applicationDataOdpFieldContacts)
 }
@@ -3477,7 +3186,7 @@ func (a *ApplicationDataOdp) SetOrgId(orgId *Orgid) {
 
 // SetOwnership sets the Ownership field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataOdp) SetOwnership(ownership []*ApplicationDataOdpOwnershipItem) {
+func (a *ApplicationDataOdp) SetOwnership(ownership []ApplicationDataOdpOwnershipItem) {
 	a.Ownership = ownership
 	a.require(applicationDataOdpFieldOwnership)
 }
@@ -3643,496 +3352,9 @@ func (a *ApplicationDataOdp) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
-var (
-	applicationDataOdpContactsItemFieldContactEmail   = big.NewInt(1 << 0)
-	applicationDataOdpContactsItemFieldContactName    = big.NewInt(1 << 1)
-	applicationDataOdpContactsItemFieldContactPhone   = big.NewInt(1 << 2)
-	applicationDataOdpContactsItemFieldContactTitle   = big.NewInt(1 << 3)
-	applicationDataOdpContactsItemFieldAdditionalData = big.NewInt(1 << 4)
-)
+type ApplicationDataOdpContactsItem = *Contacts
 
-type ApplicationDataOdpContactsItem struct {
-	// Contact email address.
-	ContactEmail *Email `json:"contactEmail,omitempty" url:"contactEmail,omitempty"`
-	// Contact name.
-	ContactName *string `json:"contactName,omitempty" url:"contactName,omitempty"`
-	// Contact phone number.
-	ContactPhone *string `json:"contactPhone,omitempty" url:"contactPhone,omitempty"`
-	// Contact title.
-	ContactTitle   *string               `json:"contactTitle,omitempty" url:"contactTitle,omitempty"`
-	AdditionalData *AdditionalDataString `json:"additionalData,omitempty" url:"additionalData,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (a *ApplicationDataOdpContactsItem) GetContactEmail() *Email {
-	if a == nil {
-		return nil
-	}
-	return a.ContactEmail
-}
-
-func (a *ApplicationDataOdpContactsItem) GetContactName() *string {
-	if a == nil {
-		return nil
-	}
-	return a.ContactName
-}
-
-func (a *ApplicationDataOdpContactsItem) GetContactPhone() *string {
-	if a == nil {
-		return nil
-	}
-	return a.ContactPhone
-}
-
-func (a *ApplicationDataOdpContactsItem) GetContactTitle() *string {
-	if a == nil {
-		return nil
-	}
-	return a.ContactTitle
-}
-
-func (a *ApplicationDataOdpContactsItem) GetAdditionalData() *AdditionalDataString {
-	if a == nil {
-		return nil
-	}
-	return a.AdditionalData
-}
-
-func (a *ApplicationDataOdpContactsItem) GetExtraProperties() map[string]interface{} {
-	if a == nil {
-		return nil
-	}
-	return a.extraProperties
-}
-
-func (a *ApplicationDataOdpContactsItem) require(field *big.Int) {
-	if a.explicitFields == nil {
-		a.explicitFields = big.NewInt(0)
-	}
-	a.explicitFields.Or(a.explicitFields, field)
-}
-
-// SetContactEmail sets the ContactEmail field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataOdpContactsItem) SetContactEmail(contactEmail *Email) {
-	a.ContactEmail = contactEmail
-	a.require(applicationDataOdpContactsItemFieldContactEmail)
-}
-
-// SetContactName sets the ContactName field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataOdpContactsItem) SetContactName(contactName *string) {
-	a.ContactName = contactName
-	a.require(applicationDataOdpContactsItemFieldContactName)
-}
-
-// SetContactPhone sets the ContactPhone field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataOdpContactsItem) SetContactPhone(contactPhone *string) {
-	a.ContactPhone = contactPhone
-	a.require(applicationDataOdpContactsItemFieldContactPhone)
-}
-
-// SetContactTitle sets the ContactTitle field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataOdpContactsItem) SetContactTitle(contactTitle *string) {
-	a.ContactTitle = contactTitle
-	a.require(applicationDataOdpContactsItemFieldContactTitle)
-}
-
-// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataOdpContactsItem) SetAdditionalData(additionalData *AdditionalDataString) {
-	a.AdditionalData = additionalData
-	a.require(applicationDataOdpContactsItemFieldAdditionalData)
-}
-
-func (a *ApplicationDataOdpContactsItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler ApplicationDataOdpContactsItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*a = ApplicationDataOdpContactsItem(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *a)
-	if err != nil {
-		return err
-	}
-	a.extraProperties = extraProperties
-	a.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (a *ApplicationDataOdpContactsItem) MarshalJSON() ([]byte, error) {
-	type embed ApplicationDataOdpContactsItem
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*a),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (a *ApplicationDataOdpContactsItem) String() string {
-	if a == nil {
-		return "<nil>"
-	}
-	if len(a.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(a); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", a)
-}
-
-var (
-	applicationDataOdpOwnershipItemFieldOwnername      = big.NewInt(1 << 0)
-	applicationDataOdpOwnershipItemFieldOwnertitle     = big.NewInt(1 << 1)
-	applicationDataOdpOwnershipItemFieldOwnerpercent   = big.NewInt(1 << 2)
-	applicationDataOdpOwnershipItemFieldOwnerssn       = big.NewInt(1 << 3)
-	applicationDataOdpOwnershipItemFieldOwnerdob       = big.NewInt(1 << 4)
-	applicationDataOdpOwnershipItemFieldOwnerphone1    = big.NewInt(1 << 5)
-	applicationDataOdpOwnershipItemFieldOwnerphone2    = big.NewInt(1 << 6)
-	applicationDataOdpOwnershipItemFieldOwneremail     = big.NewInt(1 << 7)
-	applicationDataOdpOwnershipItemFieldOwnerdriver    = big.NewInt(1 << 8)
-	applicationDataOdpOwnershipItemFieldOaddress       = big.NewInt(1 << 9)
-	applicationDataOdpOwnershipItemFieldOcity          = big.NewInt(1 << 10)
-	applicationDataOdpOwnershipItemFieldOcountry       = big.NewInt(1 << 11)
-	applicationDataOdpOwnershipItemFieldOdriverstate   = big.NewInt(1 << 12)
-	applicationDataOdpOwnershipItemFieldOstate         = big.NewInt(1 << 13)
-	applicationDataOdpOwnershipItemFieldOzip           = big.NewInt(1 << 14)
-	applicationDataOdpOwnershipItemFieldAdditionalData = big.NewInt(1 << 15)
-)
-
-type ApplicationDataOdpOwnershipItem struct {
-	// Person who is registered as the beneficial owner of the business. This is a combination of first and last name.
-	Ownername *string `json:"ownername,omitempty" url:"ownername,omitempty"`
-	// The job title of the person such as CEO or director.
-	Ownertitle *string `json:"ownertitle,omitempty" url:"ownertitle,omitempty"`
-	// Percentage of ownership the person holds, in integer format.
-	Ownerpercent *int `json:"ownerpercent,omitempty" url:"ownerpercent,omitempty"`
-	// The relevant identifier for the person such as a Social Security Number.
-	Ownerssn *string `json:"ownerssn,omitempty" url:"ownerssn,omitempty"`
-	// Owner's date of birth.
-	Ownerdob *string `json:"ownerdob,omitempty" url:"ownerdob,omitempty"`
-	// Owner phone 1.
-	Ownerphone1 *string `json:"ownerphone1,omitempty" url:"ownerphone1,omitempty"`
-	// Owner phone 2.
-	Ownerphone2 *string `json:"ownerphone2,omitempty" url:"ownerphone2,omitempty"`
-	// Owner email.
-	Owneremail *Email `json:"owneremail,omitempty" url:"owneremail,omitempty"`
-	// Owner driver's license ID number. Payabli strongly recommends including this.
-	Ownerdriver *string `json:"ownerdriver,omitempty" url:"ownerdriver,omitempty"`
-	// Owner street address. This must be the physical address of the owner, not a P.O. box.
-	Oaddress *string `json:"oaddress,omitempty" url:"oaddress,omitempty"`
-	// Owner address city.
-	Ocity *string `json:"ocity,omitempty" url:"ocity,omitempty"`
-	// Owner address country in ISO-3166-1 alpha 2 format. Check out https://en.wikipedia.org/wiki/ISO_3166-1 for reference.
-	Ocountry *string `json:"ocountry,omitempty" url:"ocountry,omitempty"`
-	// Owner driver's license State. Payabli strongly recommends including this.
-	Odriverstate *string `json:"odriverstate,omitempty" url:"odriverstate,omitempty"`
-	// Owner address state.
-	Ostate *string `json:"ostate,omitempty" url:"ostate,omitempty"`
-	// Owner address ZIP.
-	Ozip           *string               `json:"ozip,omitempty" url:"ozip,omitempty"`
-	AdditionalData *AdditionalDataString `json:"additionalData,omitempty" url:"additionalData,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (a *ApplicationDataOdpOwnershipItem) GetOwnername() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ownername
-}
-
-func (a *ApplicationDataOdpOwnershipItem) GetOwnertitle() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ownertitle
-}
-
-func (a *ApplicationDataOdpOwnershipItem) GetOwnerpercent() *int {
-	if a == nil {
-		return nil
-	}
-	return a.Ownerpercent
-}
-
-func (a *ApplicationDataOdpOwnershipItem) GetOwnerssn() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ownerssn
-}
-
-func (a *ApplicationDataOdpOwnershipItem) GetOwnerdob() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ownerdob
-}
-
-func (a *ApplicationDataOdpOwnershipItem) GetOwnerphone1() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ownerphone1
-}
-
-func (a *ApplicationDataOdpOwnershipItem) GetOwnerphone2() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ownerphone2
-}
-
-func (a *ApplicationDataOdpOwnershipItem) GetOwneremail() *Email {
-	if a == nil {
-		return nil
-	}
-	return a.Owneremail
-}
-
-func (a *ApplicationDataOdpOwnershipItem) GetOwnerdriver() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ownerdriver
-}
-
-func (a *ApplicationDataOdpOwnershipItem) GetOaddress() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Oaddress
-}
-
-func (a *ApplicationDataOdpOwnershipItem) GetOcity() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ocity
-}
-
-func (a *ApplicationDataOdpOwnershipItem) GetOcountry() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ocountry
-}
-
-func (a *ApplicationDataOdpOwnershipItem) GetOdriverstate() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Odriverstate
-}
-
-func (a *ApplicationDataOdpOwnershipItem) GetOstate() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ostate
-}
-
-func (a *ApplicationDataOdpOwnershipItem) GetOzip() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ozip
-}
-
-func (a *ApplicationDataOdpOwnershipItem) GetAdditionalData() *AdditionalDataString {
-	if a == nil {
-		return nil
-	}
-	return a.AdditionalData
-}
-
-func (a *ApplicationDataOdpOwnershipItem) GetExtraProperties() map[string]interface{} {
-	if a == nil {
-		return nil
-	}
-	return a.extraProperties
-}
-
-func (a *ApplicationDataOdpOwnershipItem) require(field *big.Int) {
-	if a.explicitFields == nil {
-		a.explicitFields = big.NewInt(0)
-	}
-	a.explicitFields.Or(a.explicitFields, field)
-}
-
-// SetOwnername sets the Ownername field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataOdpOwnershipItem) SetOwnername(ownername *string) {
-	a.Ownername = ownername
-	a.require(applicationDataOdpOwnershipItemFieldOwnername)
-}
-
-// SetOwnertitle sets the Ownertitle field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataOdpOwnershipItem) SetOwnertitle(ownertitle *string) {
-	a.Ownertitle = ownertitle
-	a.require(applicationDataOdpOwnershipItemFieldOwnertitle)
-}
-
-// SetOwnerpercent sets the Ownerpercent field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataOdpOwnershipItem) SetOwnerpercent(ownerpercent *int) {
-	a.Ownerpercent = ownerpercent
-	a.require(applicationDataOdpOwnershipItemFieldOwnerpercent)
-}
-
-// SetOwnerssn sets the Ownerssn field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataOdpOwnershipItem) SetOwnerssn(ownerssn *string) {
-	a.Ownerssn = ownerssn
-	a.require(applicationDataOdpOwnershipItemFieldOwnerssn)
-}
-
-// SetOwnerdob sets the Ownerdob field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataOdpOwnershipItem) SetOwnerdob(ownerdob *string) {
-	a.Ownerdob = ownerdob
-	a.require(applicationDataOdpOwnershipItemFieldOwnerdob)
-}
-
-// SetOwnerphone1 sets the Ownerphone1 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataOdpOwnershipItem) SetOwnerphone1(ownerphone1 *string) {
-	a.Ownerphone1 = ownerphone1
-	a.require(applicationDataOdpOwnershipItemFieldOwnerphone1)
-}
-
-// SetOwnerphone2 sets the Ownerphone2 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataOdpOwnershipItem) SetOwnerphone2(ownerphone2 *string) {
-	a.Ownerphone2 = ownerphone2
-	a.require(applicationDataOdpOwnershipItemFieldOwnerphone2)
-}
-
-// SetOwneremail sets the Owneremail field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataOdpOwnershipItem) SetOwneremail(owneremail *Email) {
-	a.Owneremail = owneremail
-	a.require(applicationDataOdpOwnershipItemFieldOwneremail)
-}
-
-// SetOwnerdriver sets the Ownerdriver field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataOdpOwnershipItem) SetOwnerdriver(ownerdriver *string) {
-	a.Ownerdriver = ownerdriver
-	a.require(applicationDataOdpOwnershipItemFieldOwnerdriver)
-}
-
-// SetOaddress sets the Oaddress field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataOdpOwnershipItem) SetOaddress(oaddress *string) {
-	a.Oaddress = oaddress
-	a.require(applicationDataOdpOwnershipItemFieldOaddress)
-}
-
-// SetOcity sets the Ocity field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataOdpOwnershipItem) SetOcity(ocity *string) {
-	a.Ocity = ocity
-	a.require(applicationDataOdpOwnershipItemFieldOcity)
-}
-
-// SetOcountry sets the Ocountry field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataOdpOwnershipItem) SetOcountry(ocountry *string) {
-	a.Ocountry = ocountry
-	a.require(applicationDataOdpOwnershipItemFieldOcountry)
-}
-
-// SetOdriverstate sets the Odriverstate field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataOdpOwnershipItem) SetOdriverstate(odriverstate *string) {
-	a.Odriverstate = odriverstate
-	a.require(applicationDataOdpOwnershipItemFieldOdriverstate)
-}
-
-// SetOstate sets the Ostate field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataOdpOwnershipItem) SetOstate(ostate *string) {
-	a.Ostate = ostate
-	a.require(applicationDataOdpOwnershipItemFieldOstate)
-}
-
-// SetOzip sets the Ozip field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataOdpOwnershipItem) SetOzip(ozip *string) {
-	a.Ozip = ozip
-	a.require(applicationDataOdpOwnershipItemFieldOzip)
-}
-
-// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataOdpOwnershipItem) SetAdditionalData(additionalData *AdditionalDataString) {
-	a.AdditionalData = additionalData
-	a.require(applicationDataOdpOwnershipItemFieldAdditionalData)
-}
-
-func (a *ApplicationDataOdpOwnershipItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler ApplicationDataOdpOwnershipItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*a = ApplicationDataOdpOwnershipItem(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *a)
-	if err != nil {
-		return err
-	}
-	a.extraProperties = extraProperties
-	a.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (a *ApplicationDataOdpOwnershipItem) MarshalJSON() ([]byte, error) {
-	type embed ApplicationDataOdpOwnershipItem
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*a),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (a *ApplicationDataOdpOwnershipItem) String() string {
-	if a == nil {
-		return "<nil>"
-	}
-	if len(a.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(a); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", a)
-}
+type ApplicationDataOdpOwnershipItem = *Owners
 
 // Fields for Pay In boarding applications.
 var (
@@ -4216,7 +3438,7 @@ type ApplicationDataPayIn struct {
 	Btype          *OwnType  `json:"btype,omitempty" url:"btype,omitempty"`
 	Bzip           *Bzip     `json:"bzip,omitempty" url:"bzip,omitempty"`
 	// List of contacts for the business.
-	Contacts []*ApplicationDataPayInContactsItem `json:"contacts,omitempty" url:"contacts,omitempty"`
+	Contacts []ApplicationDataPayInContactsItem `json:"contacts,omitempty" url:"contacts,omitempty"`
 	// The maximum amount of credit that our lending partner has authorized to your business for Pay In processing. It's the upper boundary on how much you can spend or owe on a credit account at any given time. For on-demand payout (Pay Out) credit limits, see `payoutCreditLimit`.
 	CreditLimit *string `json:"creditLimit,omitempty" url:"creditLimit,omitempty"`
 	// The alternate or common name that this business is doing business under usually referred to as a DBA name. Payabli strongly recommends including this information.
@@ -4238,7 +3460,7 @@ type ApplicationDataPayIn struct {
 	Mzip          *Mzip          `json:"mzip,omitempty" url:"mzip,omitempty"`
 	OrgId         *Orgid         `json:"orgId,omitempty" url:"orgId,omitempty"`
 	// List of Owners with at least a 25% ownership.
-	Ownership []*ApplicationDataPayInOwnershipItem `json:"ownership,omitempty" url:"ownership,omitempty"`
+	Ownership []ApplicationDataPayInOwnershipItem `json:"ownership,omitempty" url:"ownership,omitempty"`
 	// The business's phone number.
 	Phonenumber PhoneNumber `json:"phonenumber" url:"phonenumber"`
 	// The business's processing region, either `US` or `CA`.
@@ -4397,7 +3619,7 @@ func (a *ApplicationDataPayIn) GetBzip() *Bzip {
 	return a.Bzip
 }
 
-func (a *ApplicationDataPayIn) GetContacts() []*ApplicationDataPayInContactsItem {
+func (a *ApplicationDataPayIn) GetContacts() []ApplicationDataPayInContactsItem {
 	if a == nil {
 		return nil
 	}
@@ -4523,7 +3745,7 @@ func (a *ApplicationDataPayIn) GetOrgId() *Orgid {
 	return a.OrgId
 }
 
-func (a *ApplicationDataPayIn) GetOwnership() []*ApplicationDataPayInOwnershipItem {
+func (a *ApplicationDataPayIn) GetOwnership() []ApplicationDataPayInOwnershipItem {
 	if a == nil {
 		return nil
 	}
@@ -4812,7 +4034,7 @@ func (a *ApplicationDataPayIn) SetBzip(bzip *Bzip) {
 
 // SetContacts sets the Contacts field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayIn) SetContacts(contacts []*ApplicationDataPayInContactsItem) {
+func (a *ApplicationDataPayIn) SetContacts(contacts []ApplicationDataPayInContactsItem) {
 	a.Contacts = contacts
 	a.require(applicationDataPayInFieldContacts)
 }
@@ -4938,7 +4160,7 @@ func (a *ApplicationDataPayIn) SetOrgId(orgId *Orgid) {
 
 // SetOwnership sets the Ownership field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayIn) SetOwnership(ownership []*ApplicationDataPayInOwnershipItem) {
+func (a *ApplicationDataPayIn) SetOwnership(ownership []ApplicationDataPayInOwnershipItem) {
 	a.Ownership = ownership
 	a.require(applicationDataPayInFieldOwnership)
 }
@@ -5125,496 +4347,9 @@ func (a *ApplicationDataPayIn) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
-var (
-	applicationDataPayInContactsItemFieldContactEmail   = big.NewInt(1 << 0)
-	applicationDataPayInContactsItemFieldContactName    = big.NewInt(1 << 1)
-	applicationDataPayInContactsItemFieldContactPhone   = big.NewInt(1 << 2)
-	applicationDataPayInContactsItemFieldContactTitle   = big.NewInt(1 << 3)
-	applicationDataPayInContactsItemFieldAdditionalData = big.NewInt(1 << 4)
-)
+type ApplicationDataPayInContactsItem = *Contacts
 
-type ApplicationDataPayInContactsItem struct {
-	// Contact email address.
-	ContactEmail *Email `json:"contactEmail,omitempty" url:"contactEmail,omitempty"`
-	// Contact name.
-	ContactName *string `json:"contactName,omitempty" url:"contactName,omitempty"`
-	// Contact phone number.
-	ContactPhone *string `json:"contactPhone,omitempty" url:"contactPhone,omitempty"`
-	// Contact title.
-	ContactTitle   *string               `json:"contactTitle,omitempty" url:"contactTitle,omitempty"`
-	AdditionalData *AdditionalDataString `json:"additionalData,omitempty" url:"additionalData,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (a *ApplicationDataPayInContactsItem) GetContactEmail() *Email {
-	if a == nil {
-		return nil
-	}
-	return a.ContactEmail
-}
-
-func (a *ApplicationDataPayInContactsItem) GetContactName() *string {
-	if a == nil {
-		return nil
-	}
-	return a.ContactName
-}
-
-func (a *ApplicationDataPayInContactsItem) GetContactPhone() *string {
-	if a == nil {
-		return nil
-	}
-	return a.ContactPhone
-}
-
-func (a *ApplicationDataPayInContactsItem) GetContactTitle() *string {
-	if a == nil {
-		return nil
-	}
-	return a.ContactTitle
-}
-
-func (a *ApplicationDataPayInContactsItem) GetAdditionalData() *AdditionalDataString {
-	if a == nil {
-		return nil
-	}
-	return a.AdditionalData
-}
-
-func (a *ApplicationDataPayInContactsItem) GetExtraProperties() map[string]interface{} {
-	if a == nil {
-		return nil
-	}
-	return a.extraProperties
-}
-
-func (a *ApplicationDataPayInContactsItem) require(field *big.Int) {
-	if a.explicitFields == nil {
-		a.explicitFields = big.NewInt(0)
-	}
-	a.explicitFields.Or(a.explicitFields, field)
-}
-
-// SetContactEmail sets the ContactEmail field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInContactsItem) SetContactEmail(contactEmail *Email) {
-	a.ContactEmail = contactEmail
-	a.require(applicationDataPayInContactsItemFieldContactEmail)
-}
-
-// SetContactName sets the ContactName field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInContactsItem) SetContactName(contactName *string) {
-	a.ContactName = contactName
-	a.require(applicationDataPayInContactsItemFieldContactName)
-}
-
-// SetContactPhone sets the ContactPhone field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInContactsItem) SetContactPhone(contactPhone *string) {
-	a.ContactPhone = contactPhone
-	a.require(applicationDataPayInContactsItemFieldContactPhone)
-}
-
-// SetContactTitle sets the ContactTitle field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInContactsItem) SetContactTitle(contactTitle *string) {
-	a.ContactTitle = contactTitle
-	a.require(applicationDataPayInContactsItemFieldContactTitle)
-}
-
-// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInContactsItem) SetAdditionalData(additionalData *AdditionalDataString) {
-	a.AdditionalData = additionalData
-	a.require(applicationDataPayInContactsItemFieldAdditionalData)
-}
-
-func (a *ApplicationDataPayInContactsItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler ApplicationDataPayInContactsItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*a = ApplicationDataPayInContactsItem(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *a)
-	if err != nil {
-		return err
-	}
-	a.extraProperties = extraProperties
-	a.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (a *ApplicationDataPayInContactsItem) MarshalJSON() ([]byte, error) {
-	type embed ApplicationDataPayInContactsItem
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*a),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (a *ApplicationDataPayInContactsItem) String() string {
-	if a == nil {
-		return "<nil>"
-	}
-	if len(a.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(a); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", a)
-}
-
-var (
-	applicationDataPayInOwnershipItemFieldOwnername      = big.NewInt(1 << 0)
-	applicationDataPayInOwnershipItemFieldOwnertitle     = big.NewInt(1 << 1)
-	applicationDataPayInOwnershipItemFieldOwnerpercent   = big.NewInt(1 << 2)
-	applicationDataPayInOwnershipItemFieldOwnerssn       = big.NewInt(1 << 3)
-	applicationDataPayInOwnershipItemFieldOwnerdob       = big.NewInt(1 << 4)
-	applicationDataPayInOwnershipItemFieldOwnerphone1    = big.NewInt(1 << 5)
-	applicationDataPayInOwnershipItemFieldOwnerphone2    = big.NewInt(1 << 6)
-	applicationDataPayInOwnershipItemFieldOwneremail     = big.NewInt(1 << 7)
-	applicationDataPayInOwnershipItemFieldOwnerdriver    = big.NewInt(1 << 8)
-	applicationDataPayInOwnershipItemFieldOaddress       = big.NewInt(1 << 9)
-	applicationDataPayInOwnershipItemFieldOcity          = big.NewInt(1 << 10)
-	applicationDataPayInOwnershipItemFieldOcountry       = big.NewInt(1 << 11)
-	applicationDataPayInOwnershipItemFieldOdriverstate   = big.NewInt(1 << 12)
-	applicationDataPayInOwnershipItemFieldOstate         = big.NewInt(1 << 13)
-	applicationDataPayInOwnershipItemFieldOzip           = big.NewInt(1 << 14)
-	applicationDataPayInOwnershipItemFieldAdditionalData = big.NewInt(1 << 15)
-)
-
-type ApplicationDataPayInOwnershipItem struct {
-	// Person who is registered as the beneficial owner of the business. This is a combination of first and last name.
-	Ownername *string `json:"ownername,omitempty" url:"ownername,omitempty"`
-	// The job title of the person such as CEO or director.
-	Ownertitle *string `json:"ownertitle,omitempty" url:"ownertitle,omitempty"`
-	// Percentage of ownership the person holds, in integer format.
-	Ownerpercent *int `json:"ownerpercent,omitempty" url:"ownerpercent,omitempty"`
-	// The relevant identifier for the person such as a Social Security Number.
-	Ownerssn *string `json:"ownerssn,omitempty" url:"ownerssn,omitempty"`
-	// Owner's date of birth.
-	Ownerdob *string `json:"ownerdob,omitempty" url:"ownerdob,omitempty"`
-	// Owner phone 1.
-	Ownerphone1 *string `json:"ownerphone1,omitempty" url:"ownerphone1,omitempty"`
-	// Owner phone 2.
-	Ownerphone2 *string `json:"ownerphone2,omitempty" url:"ownerphone2,omitempty"`
-	// Owner email.
-	Owneremail *Email `json:"owneremail,omitempty" url:"owneremail,omitempty"`
-	// Owner driver's license ID number. Payabli strongly recommends including this.
-	Ownerdriver *string `json:"ownerdriver,omitempty" url:"ownerdriver,omitempty"`
-	// Owner street address. This must be the physical address of the owner, not a P.O. box.
-	Oaddress *string `json:"oaddress,omitempty" url:"oaddress,omitempty"`
-	// Owner address city.
-	Ocity *string `json:"ocity,omitempty" url:"ocity,omitempty"`
-	// Owner address country in ISO-3166-1 alpha 2 format. Check out https://en.wikipedia.org/wiki/ISO_3166-1 for reference.
-	Ocountry *string `json:"ocountry,omitempty" url:"ocountry,omitempty"`
-	// Owner driver's license State. Payabli strongly recommends including this.
-	Odriverstate *string `json:"odriverstate,omitempty" url:"odriverstate,omitempty"`
-	// Owner address state.
-	Ostate *string `json:"ostate,omitempty" url:"ostate,omitempty"`
-	// Owner address ZIP.
-	Ozip           *string               `json:"ozip,omitempty" url:"ozip,omitempty"`
-	AdditionalData *AdditionalDataString `json:"additionalData,omitempty" url:"additionalData,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (a *ApplicationDataPayInOwnershipItem) GetOwnername() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ownername
-}
-
-func (a *ApplicationDataPayInOwnershipItem) GetOwnertitle() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ownertitle
-}
-
-func (a *ApplicationDataPayInOwnershipItem) GetOwnerpercent() *int {
-	if a == nil {
-		return nil
-	}
-	return a.Ownerpercent
-}
-
-func (a *ApplicationDataPayInOwnershipItem) GetOwnerssn() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ownerssn
-}
-
-func (a *ApplicationDataPayInOwnershipItem) GetOwnerdob() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ownerdob
-}
-
-func (a *ApplicationDataPayInOwnershipItem) GetOwnerphone1() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ownerphone1
-}
-
-func (a *ApplicationDataPayInOwnershipItem) GetOwnerphone2() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ownerphone2
-}
-
-func (a *ApplicationDataPayInOwnershipItem) GetOwneremail() *Email {
-	if a == nil {
-		return nil
-	}
-	return a.Owneremail
-}
-
-func (a *ApplicationDataPayInOwnershipItem) GetOwnerdriver() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ownerdriver
-}
-
-func (a *ApplicationDataPayInOwnershipItem) GetOaddress() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Oaddress
-}
-
-func (a *ApplicationDataPayInOwnershipItem) GetOcity() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ocity
-}
-
-func (a *ApplicationDataPayInOwnershipItem) GetOcountry() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ocountry
-}
-
-func (a *ApplicationDataPayInOwnershipItem) GetOdriverstate() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Odriverstate
-}
-
-func (a *ApplicationDataPayInOwnershipItem) GetOstate() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ostate
-}
-
-func (a *ApplicationDataPayInOwnershipItem) GetOzip() *string {
-	if a == nil {
-		return nil
-	}
-	return a.Ozip
-}
-
-func (a *ApplicationDataPayInOwnershipItem) GetAdditionalData() *AdditionalDataString {
-	if a == nil {
-		return nil
-	}
-	return a.AdditionalData
-}
-
-func (a *ApplicationDataPayInOwnershipItem) GetExtraProperties() map[string]interface{} {
-	if a == nil {
-		return nil
-	}
-	return a.extraProperties
-}
-
-func (a *ApplicationDataPayInOwnershipItem) require(field *big.Int) {
-	if a.explicitFields == nil {
-		a.explicitFields = big.NewInt(0)
-	}
-	a.explicitFields.Or(a.explicitFields, field)
-}
-
-// SetOwnername sets the Ownername field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInOwnershipItem) SetOwnername(ownername *string) {
-	a.Ownername = ownername
-	a.require(applicationDataPayInOwnershipItemFieldOwnername)
-}
-
-// SetOwnertitle sets the Ownertitle field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInOwnershipItem) SetOwnertitle(ownertitle *string) {
-	a.Ownertitle = ownertitle
-	a.require(applicationDataPayInOwnershipItemFieldOwnertitle)
-}
-
-// SetOwnerpercent sets the Ownerpercent field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInOwnershipItem) SetOwnerpercent(ownerpercent *int) {
-	a.Ownerpercent = ownerpercent
-	a.require(applicationDataPayInOwnershipItemFieldOwnerpercent)
-}
-
-// SetOwnerssn sets the Ownerssn field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInOwnershipItem) SetOwnerssn(ownerssn *string) {
-	a.Ownerssn = ownerssn
-	a.require(applicationDataPayInOwnershipItemFieldOwnerssn)
-}
-
-// SetOwnerdob sets the Ownerdob field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInOwnershipItem) SetOwnerdob(ownerdob *string) {
-	a.Ownerdob = ownerdob
-	a.require(applicationDataPayInOwnershipItemFieldOwnerdob)
-}
-
-// SetOwnerphone1 sets the Ownerphone1 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInOwnershipItem) SetOwnerphone1(ownerphone1 *string) {
-	a.Ownerphone1 = ownerphone1
-	a.require(applicationDataPayInOwnershipItemFieldOwnerphone1)
-}
-
-// SetOwnerphone2 sets the Ownerphone2 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInOwnershipItem) SetOwnerphone2(ownerphone2 *string) {
-	a.Ownerphone2 = ownerphone2
-	a.require(applicationDataPayInOwnershipItemFieldOwnerphone2)
-}
-
-// SetOwneremail sets the Owneremail field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInOwnershipItem) SetOwneremail(owneremail *Email) {
-	a.Owneremail = owneremail
-	a.require(applicationDataPayInOwnershipItemFieldOwneremail)
-}
-
-// SetOwnerdriver sets the Ownerdriver field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInOwnershipItem) SetOwnerdriver(ownerdriver *string) {
-	a.Ownerdriver = ownerdriver
-	a.require(applicationDataPayInOwnershipItemFieldOwnerdriver)
-}
-
-// SetOaddress sets the Oaddress field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInOwnershipItem) SetOaddress(oaddress *string) {
-	a.Oaddress = oaddress
-	a.require(applicationDataPayInOwnershipItemFieldOaddress)
-}
-
-// SetOcity sets the Ocity field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInOwnershipItem) SetOcity(ocity *string) {
-	a.Ocity = ocity
-	a.require(applicationDataPayInOwnershipItemFieldOcity)
-}
-
-// SetOcountry sets the Ocountry field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInOwnershipItem) SetOcountry(ocountry *string) {
-	a.Ocountry = ocountry
-	a.require(applicationDataPayInOwnershipItemFieldOcountry)
-}
-
-// SetOdriverstate sets the Odriverstate field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInOwnershipItem) SetOdriverstate(odriverstate *string) {
-	a.Odriverstate = odriverstate
-	a.require(applicationDataPayInOwnershipItemFieldOdriverstate)
-}
-
-// SetOstate sets the Ostate field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInOwnershipItem) SetOstate(ostate *string) {
-	a.Ostate = ostate
-	a.require(applicationDataPayInOwnershipItemFieldOstate)
-}
-
-// SetOzip sets the Ozip field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInOwnershipItem) SetOzip(ozip *string) {
-	a.Ozip = ozip
-	a.require(applicationDataPayInOwnershipItemFieldOzip)
-}
-
-// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInOwnershipItem) SetAdditionalData(additionalData *AdditionalDataString) {
-	a.AdditionalData = additionalData
-	a.require(applicationDataPayInOwnershipItemFieldAdditionalData)
-}
-
-func (a *ApplicationDataPayInOwnershipItem) UnmarshalJSON(data []byte) error {
-	type unmarshaler ApplicationDataPayInOwnershipItem
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*a = ApplicationDataPayInOwnershipItem(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *a)
-	if err != nil {
-		return err
-	}
-	a.extraProperties = extraProperties
-	a.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (a *ApplicationDataPayInOwnershipItem) MarshalJSON() ([]byte, error) {
-	type embed ApplicationDataPayInOwnershipItem
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*a),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (a *ApplicationDataPayInOwnershipItem) String() string {
-	if a == nil {
-		return "<nil>"
-	}
-	if len(a.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(a); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", a)
-}
+type ApplicationDataPayInOwnershipItem = *Owners
 
 var (
 	applicationDataPayInServicesFieldAch  = big.NewInt(1 << 0)
@@ -5623,9 +4358,9 @@ var (
 )
 
 type ApplicationDataPayInServices struct {
-	Ach  *ApplicationDataPayInServicesAch  `json:"ach" url:"ach"`
-	Card *ApplicationDataPayInServicesCard `json:"card" url:"card"`
-	Odp  *OdpSetup                         `json:"odp,omitempty" url:"odp,omitempty"`
+	Ach  ApplicationDataPayInServicesAch  `json:"ach" url:"ach"`
+	Card ApplicationDataPayInServicesCard `json:"card" url:"card"`
+	Odp  *OdpSetup                        `json:"odp,omitempty" url:"odp,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -5634,14 +4369,14 @@ type ApplicationDataPayInServices struct {
 	rawJSON         json.RawMessage
 }
 
-func (a *ApplicationDataPayInServices) GetAch() *ApplicationDataPayInServicesAch {
+func (a *ApplicationDataPayInServices) GetAch() ApplicationDataPayInServicesAch {
 	if a == nil {
 		return nil
 	}
 	return a.Ach
 }
 
-func (a *ApplicationDataPayInServices) GetCard() *ApplicationDataPayInServicesCard {
+func (a *ApplicationDataPayInServices) GetCard() ApplicationDataPayInServicesCard {
 	if a == nil {
 		return nil
 	}
@@ -5671,14 +4406,14 @@ func (a *ApplicationDataPayInServices) require(field *big.Int) {
 
 // SetAch sets the Ach field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInServices) SetAch(ach *ApplicationDataPayInServicesAch) {
+func (a *ApplicationDataPayInServices) SetAch(ach ApplicationDataPayInServicesAch) {
 	a.Ach = ach
 	a.require(applicationDataPayInServicesFieldAch)
 }
 
 // SetCard sets the Card field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInServices) SetCard(card *ApplicationDataPayInServicesCard) {
+func (a *ApplicationDataPayInServices) SetCard(card ApplicationDataPayInServicesCard) {
 	a.Card = card
 	a.require(applicationDataPayInServicesFieldCard)
 }
@@ -5732,260 +4467,9 @@ func (a *ApplicationDataPayInServices) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
-var (
-	applicationDataPayInServicesAchFieldAcceptCcd = big.NewInt(1 << 0)
-	applicationDataPayInServicesAchFieldAcceptPpd = big.NewInt(1 << 1)
-	applicationDataPayInServicesAchFieldAcceptWeb = big.NewInt(1 << 2)
-)
+type ApplicationDataPayInServicesAch = *AchSetup
 
-type ApplicationDataPayInServicesAch struct {
-	// CCD is an ACH SEC Code that can be used in ACH transactions by the user that indicates the transaction is a Corporate Credit or Debit Entry. Options are: `true` and `false`
-	AcceptCcd *bool `json:"acceptCCD,omitempty" url:"acceptCCD,omitempty"`
-	// PPD is an ACH SEC Code that can be used in ACH transactions by the user that indicates the transaction is a Prearranged Payment and Deposit.
-	AcceptPpd *bool `json:"acceptPPD,omitempty" url:"acceptPPD,omitempty"`
-	// Web is an ACH SEC Code that can be used in ACH transactions by the user that indicates the transaction is a Internet Initiated/Mobile Entry Options are `true` and `false`.
-	AcceptWeb *bool `json:"acceptWeb,omitempty" url:"acceptWeb,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (a *ApplicationDataPayInServicesAch) GetAcceptCcd() *bool {
-	if a == nil {
-		return nil
-	}
-	return a.AcceptCcd
-}
-
-func (a *ApplicationDataPayInServicesAch) GetAcceptPpd() *bool {
-	if a == nil {
-		return nil
-	}
-	return a.AcceptPpd
-}
-
-func (a *ApplicationDataPayInServicesAch) GetAcceptWeb() *bool {
-	if a == nil {
-		return nil
-	}
-	return a.AcceptWeb
-}
-
-func (a *ApplicationDataPayInServicesAch) GetExtraProperties() map[string]interface{} {
-	if a == nil {
-		return nil
-	}
-	return a.extraProperties
-}
-
-func (a *ApplicationDataPayInServicesAch) require(field *big.Int) {
-	if a.explicitFields == nil {
-		a.explicitFields = big.NewInt(0)
-	}
-	a.explicitFields.Or(a.explicitFields, field)
-}
-
-// SetAcceptCcd sets the AcceptCcd field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInServicesAch) SetAcceptCcd(acceptCcd *bool) {
-	a.AcceptCcd = acceptCcd
-	a.require(applicationDataPayInServicesAchFieldAcceptCcd)
-}
-
-// SetAcceptPpd sets the AcceptPpd field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInServicesAch) SetAcceptPpd(acceptPpd *bool) {
-	a.AcceptPpd = acceptPpd
-	a.require(applicationDataPayInServicesAchFieldAcceptPpd)
-}
-
-// SetAcceptWeb sets the AcceptWeb field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInServicesAch) SetAcceptWeb(acceptWeb *bool) {
-	a.AcceptWeb = acceptWeb
-	a.require(applicationDataPayInServicesAchFieldAcceptWeb)
-}
-
-func (a *ApplicationDataPayInServicesAch) UnmarshalJSON(data []byte) error {
-	type unmarshaler ApplicationDataPayInServicesAch
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*a = ApplicationDataPayInServicesAch(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *a)
-	if err != nil {
-		return err
-	}
-	a.extraProperties = extraProperties
-	a.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (a *ApplicationDataPayInServicesAch) MarshalJSON() ([]byte, error) {
-	type embed ApplicationDataPayInServicesAch
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*a),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (a *ApplicationDataPayInServicesAch) String() string {
-	if a == nil {
-		return "<nil>"
-	}
-	if len(a.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(a); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", a)
-}
-
-var (
-	applicationDataPayInServicesCardFieldAcceptAmex       = big.NewInt(1 << 0)
-	applicationDataPayInServicesCardFieldAcceptDiscover   = big.NewInt(1 << 1)
-	applicationDataPayInServicesCardFieldAcceptMastercard = big.NewInt(1 << 2)
-	applicationDataPayInServicesCardFieldAcceptVisa       = big.NewInt(1 << 3)
-)
-
-type ApplicationDataPayInServicesCard struct {
-	// Determines whether American Express is accepted.
-	AcceptAmex *bool `json:"acceptAmex,omitempty" url:"acceptAmex,omitempty"`
-	// Determines whether Discover is accepted.
-	AcceptDiscover *bool `json:"acceptDiscover,omitempty" url:"acceptDiscover,omitempty"`
-	// Determines whether Mastercard is accepted.
-	AcceptMastercard *bool `json:"acceptMastercard,omitempty" url:"acceptMastercard,omitempty"`
-	// Determines whether Visa is accepted.
-	AcceptVisa *bool `json:"acceptVisa,omitempty" url:"acceptVisa,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (a *ApplicationDataPayInServicesCard) GetAcceptAmex() *bool {
-	if a == nil {
-		return nil
-	}
-	return a.AcceptAmex
-}
-
-func (a *ApplicationDataPayInServicesCard) GetAcceptDiscover() *bool {
-	if a == nil {
-		return nil
-	}
-	return a.AcceptDiscover
-}
-
-func (a *ApplicationDataPayInServicesCard) GetAcceptMastercard() *bool {
-	if a == nil {
-		return nil
-	}
-	return a.AcceptMastercard
-}
-
-func (a *ApplicationDataPayInServicesCard) GetAcceptVisa() *bool {
-	if a == nil {
-		return nil
-	}
-	return a.AcceptVisa
-}
-
-func (a *ApplicationDataPayInServicesCard) GetExtraProperties() map[string]interface{} {
-	if a == nil {
-		return nil
-	}
-	return a.extraProperties
-}
-
-func (a *ApplicationDataPayInServicesCard) require(field *big.Int) {
-	if a.explicitFields == nil {
-		a.explicitFields = big.NewInt(0)
-	}
-	a.explicitFields.Or(a.explicitFields, field)
-}
-
-// SetAcceptAmex sets the AcceptAmex field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInServicesCard) SetAcceptAmex(acceptAmex *bool) {
-	a.AcceptAmex = acceptAmex
-	a.require(applicationDataPayInServicesCardFieldAcceptAmex)
-}
-
-// SetAcceptDiscover sets the AcceptDiscover field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInServicesCard) SetAcceptDiscover(acceptDiscover *bool) {
-	a.AcceptDiscover = acceptDiscover
-	a.require(applicationDataPayInServicesCardFieldAcceptDiscover)
-}
-
-// SetAcceptMastercard sets the AcceptMastercard field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInServicesCard) SetAcceptMastercard(acceptMastercard *bool) {
-	a.AcceptMastercard = acceptMastercard
-	a.require(applicationDataPayInServicesCardFieldAcceptMastercard)
-}
-
-// SetAcceptVisa sets the AcceptVisa field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *ApplicationDataPayInServicesCard) SetAcceptVisa(acceptVisa *bool) {
-	a.AcceptVisa = acceptVisa
-	a.require(applicationDataPayInServicesCardFieldAcceptVisa)
-}
-
-func (a *ApplicationDataPayInServicesCard) UnmarshalJSON(data []byte) error {
-	type unmarshaler ApplicationDataPayInServicesCard
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*a = ApplicationDataPayInServicesCard(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *a)
-	if err != nil {
-		return err
-	}
-	a.extraProperties = extraProperties
-	a.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (a *ApplicationDataPayInServicesCard) MarshalJSON() ([]byte, error) {
-	type embed ApplicationDataPayInServicesCard
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*a),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (a *ApplicationDataPayInServicesCard) String() string {
-	if a == nil {
-		return "<nil>"
-	}
-	if len(a.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(a); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", a)
-}
+type ApplicationDataPayInServicesCard = *CardSetup
 
 var (
 	applicationDetailsRecordFieldAnnualRevenue              = big.NewInt(1 << 0)
@@ -8389,7 +6873,8 @@ func (a *ApplicationQueryRecord) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
-// Date the attestation was provided for PCI Compliance (`pciAttestation`), in MM/DD/YYYY format.
+// Date the attestation was provided for PCI Compliance (`pciAttestation`),
+// in MM/DD/YYYY format.
 type AttestationDate = string
 
 var (
@@ -9228,10 +7713,15 @@ func (b *Bnk) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
-// This is the average amount of each bill you pay through our service. For example, if your business paid 3 bills for a total of \$1,500 then your average bill size is \$500.
+// This is the average amount of each bill you pay through our service. For
+// example, if your business paid 3 bills for a total of $1,500 then your
+// average bill size is $500.
 type BoardingAverageBillSize = string
 
-// This is the total number of bills the business pays each month. For example, if your business pays an electric bill of \$500, a internet bill of \$150, and various suppliers \$5,000 every month then your monthly bill volume would be \$5,650.
+// This is the total number of bills the business pays each month. For
+// example, if your business pays an electric bill of $500, an internet bill
+// of $150, and various suppliers $5,000 every month, then your monthly bill
+// volume would be $5,650.
 type BoardingAvgMonthlyBill = string
 
 // The business's fax number.
@@ -9501,7 +7991,9 @@ func (b *BoardingLinkQueryRecord) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
-// The application's status in the merchant boarding process. See [Boarding Status Reference](/developers/references/boarding-statuses) for more.
+// The application's status in the merchant boarding process. See
+// [Boarding Status Reference](/developers/references/boarding-statuses) for
+// more.
 type BoardingStatus = int
 
 var (
@@ -10048,6 +8540,273 @@ func (c *CardSection) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+// Response returned when creating a boarding application linked to an existing paypoint.
+var (
+	createApplicationFromPaypointResponseFieldResponseCode   = big.NewInt(1 << 0)
+	createApplicationFromPaypointResponseFieldPageIdentifier = big.NewInt(1 << 1)
+	createApplicationFromPaypointResponseFieldRoomId         = big.NewInt(1 << 2)
+	createApplicationFromPaypointResponseFieldIsSuccess      = big.NewInt(1 << 3)
+	createApplicationFromPaypointResponseFieldResponseText   = big.NewInt(1 << 4)
+	createApplicationFromPaypointResponseFieldResponseData   = big.NewInt(1 << 5)
+)
+
+type CreateApplicationFromPaypointResponse struct {
+	ResponseCode   *Responsecode                              `json:"responseCode,omitempty" url:"responseCode,omitempty"`
+	PageIdentifier *PageIdentifier                            `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
+	RoomId         *RoomIdNotInUse                            `json:"roomId,omitempty" url:"roomId,omitempty"`
+	IsSuccess      *IsSuccess                                 `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	ResponseText   ResponseText                               `json:"responseText" url:"responseText"`
+	ResponseData   *CreateApplicationFromPaypointResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CreateApplicationFromPaypointResponse) GetResponseCode() *Responsecode {
+	if c == nil {
+		return nil
+	}
+	return c.ResponseCode
+}
+
+func (c *CreateApplicationFromPaypointResponse) GetPageIdentifier() *PageIdentifier {
+	if c == nil {
+		return nil
+	}
+	return c.PageIdentifier
+}
+
+func (c *CreateApplicationFromPaypointResponse) GetRoomId() *RoomIdNotInUse {
+	if c == nil {
+		return nil
+	}
+	return c.RoomId
+}
+
+func (c *CreateApplicationFromPaypointResponse) GetIsSuccess() *IsSuccess {
+	if c == nil {
+		return nil
+	}
+	return c.IsSuccess
+}
+
+func (c *CreateApplicationFromPaypointResponse) GetResponseText() ResponseText {
+	if c == nil {
+		return ""
+	}
+	return c.ResponseText
+}
+
+func (c *CreateApplicationFromPaypointResponse) GetResponseData() *CreateApplicationFromPaypointResponseData {
+	if c == nil {
+		return nil
+	}
+	return c.ResponseData
+}
+
+func (c *CreateApplicationFromPaypointResponse) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *CreateApplicationFromPaypointResponse) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetResponseCode sets the ResponseCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateApplicationFromPaypointResponse) SetResponseCode(responseCode *Responsecode) {
+	c.ResponseCode = responseCode
+	c.require(createApplicationFromPaypointResponseFieldResponseCode)
+}
+
+// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateApplicationFromPaypointResponse) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+	c.PageIdentifier = pageIdentifier
+	c.require(createApplicationFromPaypointResponseFieldPageIdentifier)
+}
+
+// SetRoomId sets the RoomId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateApplicationFromPaypointResponse) SetRoomId(roomId *RoomIdNotInUse) {
+	c.RoomId = roomId
+	c.require(createApplicationFromPaypointResponseFieldRoomId)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateApplicationFromPaypointResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	c.IsSuccess = isSuccess
+	c.require(createApplicationFromPaypointResponseFieldIsSuccess)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateApplicationFromPaypointResponse) SetResponseText(responseText ResponseText) {
+	c.ResponseText = responseText
+	c.require(createApplicationFromPaypointResponseFieldResponseText)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateApplicationFromPaypointResponse) SetResponseData(responseData *CreateApplicationFromPaypointResponseData) {
+	c.ResponseData = responseData
+	c.require(createApplicationFromPaypointResponseFieldResponseData)
+}
+
+func (c *CreateApplicationFromPaypointResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateApplicationFromPaypointResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CreateApplicationFromPaypointResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreateApplicationFromPaypointResponse) MarshalJSON() ([]byte, error) {
+	type embed CreateApplicationFromPaypointResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CreateApplicationFromPaypointResponse) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	createApplicationFromPaypointResponseDataFieldAppId        = big.NewInt(1 << 0)
+	createApplicationFromPaypointResponseDataFieldBoardingLink = big.NewInt(1 << 1)
+)
+
+type CreateApplicationFromPaypointResponseData struct {
+	// Unique identifier for the created application.
+	AppId *int64 `json:"appId,omitempty" url:"appId,omitempty"`
+	// URL where the merchant can complete the boarding process.
+	BoardingLink *string `json:"boardingLink,omitempty" url:"boardingLink,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CreateApplicationFromPaypointResponseData) GetAppId() *int64 {
+	if c == nil {
+		return nil
+	}
+	return c.AppId
+}
+
+func (c *CreateApplicationFromPaypointResponseData) GetBoardingLink() *string {
+	if c == nil {
+		return nil
+	}
+	return c.BoardingLink
+}
+
+func (c *CreateApplicationFromPaypointResponseData) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *CreateApplicationFromPaypointResponseData) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetAppId sets the AppId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateApplicationFromPaypointResponseData) SetAppId(appId *int64) {
+	c.AppId = appId
+	c.require(createApplicationFromPaypointResponseDataFieldAppId)
+}
+
+// SetBoardingLink sets the BoardingLink field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateApplicationFromPaypointResponseData) SetBoardingLink(boardingLink *string) {
+	c.BoardingLink = boardingLink
+	c.require(createApplicationFromPaypointResponseDataFieldBoardingLink)
+}
+
+func (c *CreateApplicationFromPaypointResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateApplicationFromPaypointResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CreateApplicationFromPaypointResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreateApplicationFromPaypointResponseData) MarshalJSON() ([]byte, error) {
+	type embed CreateApplicationFromPaypointResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CreateApplicationFromPaypointResponseData) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 var (
 	dSectionFieldDepositAccount    = big.NewInt(1 << 0)
 	dSectionFieldWithdrawalAccount = big.NewInt(1 << 1)
@@ -10162,18 +8921,19 @@ type LinkData struct {
 	Ro *ReadOnly        `json:"ro,omitempty" url:"ro,omitempty"`
 	Rq *RequiredElement `json:"rq,omitempty" url:"rq,omitempty"`
 	// The type of validation applied to the field. Available values:
-	// - text
-	// - alpha
-	// - ein
-	// - url
-	// - phone
-	// - alphanumeric
-	// - zipcode
-	// - numbers
-	// - float
-	// - ssn
-	// - email
-	// - routing
+	//
+	// - `text`
+	// - `alpha`
+	// - `ein`
+	// - `url`
+	// - `phone`
+	// - `alphanumeric`
+	// - `zipcode`
+	// - `numbers`
+	// - `float`
+	// - `ssn`
+	// - `email`
+	// - `routing`
 	Validator *string         `json:"validator,omitempty" url:"validator,omitempty"`
 	Value     *ValueTemplates `json:"value,omitempty" url:"value,omitempty"`
 
@@ -10788,7 +9548,11 @@ func (o *OSection) String() string {
 	return fmt.Sprintf("%#v", o)
 }
 
-// Action to take when the application is created. The only currently supported option is `submitApplication`. Use this when you have collected eSignature elsewhere or are adding additional locations for an applicant, or when you want to submit an application via API with one call without using the hosted boarding UI or embedded boarding components
+// Action to take when the application is created. The only currently
+// supported option is `submitApplication`. Use this when you have collected
+// eSignature elsewhere or are adding additional locations for an applicant,
+// or when you want to submit an application via API with one call without
+// using the hosted boarding UI or embedded boarding components.
 type OnCreate = string
 
 var (
@@ -11199,19 +9963,29 @@ func (p *PayabliApiResponse00) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
-// The total number of bills the business pays each month. For example, if your business pays an electric bill of \$500, an internet bill of \$150, and various suppliers \$5,000 every month then your monthly bill volume would be \$5,650.
+// The total number of bills the business pays each month. For example, if
+// your business pays an electric bill of $500, an internet bill of $150, and
+// various suppliers $5,000 every month then your monthly bill volume would
+// be $5,650.
 type PayoutAverageMonthlyVolume = float64
 
-// The average amount of each bill you pay through our service. For example, if your business paid 3 bills for a total of \$1,500 then your average bill size is \$500.
+// The average amount of each bill you pay through our service. For example,
+// if your business paid 3 bills for a total of $1,500 then your average
+// bill size is $500.
 type PayoutAverageTicketLimit = float64
 
-// The maximum amount of credit that our lending partner has authorized to the business for on-demand payouts. It's the upper boundary on how much you can spend or owe on a credit account at any given time.
+// The maximum amount of credit that our lending partner has authorized to
+// the business for on-demand payouts. It's the upper boundary on how much
+// you can spend or owe on a credit account at any given time.
 type PayoutCreditLimit = float64
 
-// The largest amount for bill you will pay through our service. For example, if your business paid for 3 bills each month for \$500, \$1000, and \$5000 respectively, then your highest ticket is \$5000.
+// The largest amount for a bill you will pay through our service. For
+// example, if your business paid for 3 bills each month for $500, $1000,
+// and $5000 respectively, then your highest ticket is $5000.
 type PayoutHighTicketAmount = float64
 
-// When `true`, indicates that the merchant acknowledges PCI responsibilities and can be enrolled in the PCI program for breach insurance
+// When `true`, indicates that the merchant acknowledges PCI responsibilities
+// and can be enrolled in the PCI program for breach insurance.
 type PciAttestation = bool
 
 var (
@@ -11651,13 +10425,17 @@ func (q *QueryBoardingLinksResponseRecordsItem) String() string {
 	return fmt.Sprintf("%#v", q)
 }
 
-// Sales representative code. This is an optional field that can be used to track the sales representative associated with the application.
+// Sales representative code. This is an optional field that can be used
+// to track the sales representative associated with the application.
 type RepCode = string
 
-// Sales representative name. This is an optional field that can be used to track the sales representative associated with the application.
+// Sales representative name. This is an optional field that can be used
+// to track the sales representative associated with the application.
 type RepName = string
 
-// Sales representative office location. This is an optional field that can be used to track the sales representative office associated with the application.
+// Sales representative office location. This is an optional field that
+// can be used to track the sales representative office associated with
+// the application.
 type RepOffice = string
 
 var (
@@ -11761,22 +10539,25 @@ func (s *SSection) String() string {
 }
 
 // Date when the signer signed the document. Accepted formats:
-// YYYY-MM-DD, MM/DD/YYYY
+// YYYY-MM-DD, MM/DD/YYYY.
 type SignDate = string
 
 // Reference to the signed document.
 type SignedDocumentReference = string
 
-// The signer's acceptance status. A true or false indicating an acceptance to the terms of service with the root org or provider.
+// The signer's acceptance status. A true or false indicating an
+// acceptance to the terms of service with the root org or provider.
 type SignerAcceptance = bool
 
-// Additional line for the signer's address. If used, this must be the physical address of the signer, not a P.O. box.
+// Additional line for the signer's address. If used, this must be the
+// physical address of the signer, not a P.O. box.
 type SignerAddress1 = string
 
 // The signer's city.
 type SignerCity = string
 
-// The signer's country in ISO-3166-1 alpha 2 format. See this reference for more: https://en.wikipedia.org/wiki/ISO_3166-1.
+// The signer's country in ISO-3166-1 alpha 2 format. See
+// [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1) for more.
 type SignerCountry = string
 
 // Information about the application's signer.
@@ -12496,540 +11277,14 @@ type SignerSsn = string
 // The signer's state.
 type SignerState = string
 
-// The signer's zip code.
+// The signer's ZIP code.
 type SignerZip = string
 
-// The signer's address. This must be the physical address of the signer, not a P.O. box.
+// The signer's address. This must be the physical address of the signer,
+// not a P.O. box.
 type Signeraddress = string
 
-// The average transaction size that the business expects to process. For example, if you process \$10,000 a month across 10 transactions, that's an average ticket of \$1000.
+// The average transaction size that the business expects to process. For
+// example, if you process $10,000 a month across 10 transactions, that's
+// an average ticket of $1000.
 type Ticketamt = float64
-
-type AddApplicationRequest struct {
-	// Fields for Pay In processing applications
-	ApplicationDataPayIn *ApplicationDataPayIn
-	// Fields for Managed Payout processing applications
-	ApplicationDataManaged *ApplicationDataManaged
-	// Fields for On-Demand Payout processing applications
-	ApplicationDataOdp *ApplicationDataOdp
-	// All fields for boarding applications
-	ApplicationData *ApplicationData
-
-	typ string
-}
-
-func (a *AddApplicationRequest) GetApplicationDataPayIn() *ApplicationDataPayIn {
-	if a == nil {
-		return nil
-	}
-	return a.ApplicationDataPayIn
-}
-
-func (a *AddApplicationRequest) GetApplicationDataManaged() *ApplicationDataManaged {
-	if a == nil {
-		return nil
-	}
-	return a.ApplicationDataManaged
-}
-
-func (a *AddApplicationRequest) GetApplicationDataOdp() *ApplicationDataOdp {
-	if a == nil {
-		return nil
-	}
-	return a.ApplicationDataOdp
-}
-
-func (a *AddApplicationRequest) GetApplicationData() *ApplicationData {
-	if a == nil {
-		return nil
-	}
-	return a.ApplicationData
-}
-
-func (a *AddApplicationRequest) UnmarshalJSON(data []byte) error {
-	valueApplicationDataPayIn := new(ApplicationDataPayIn)
-	if err := json.Unmarshal(data, &valueApplicationDataPayIn); err == nil {
-		a.typ = "ApplicationDataPayIn"
-		a.ApplicationDataPayIn = valueApplicationDataPayIn
-		return nil
-	}
-	valueApplicationDataManaged := new(ApplicationDataManaged)
-	if err := json.Unmarshal(data, &valueApplicationDataManaged); err == nil {
-		a.typ = "ApplicationDataManaged"
-		a.ApplicationDataManaged = valueApplicationDataManaged
-		return nil
-	}
-	valueApplicationDataOdp := new(ApplicationDataOdp)
-	if err := json.Unmarshal(data, &valueApplicationDataOdp); err == nil {
-		a.typ = "ApplicationDataOdp"
-		a.ApplicationDataOdp = valueApplicationDataOdp
-		return nil
-	}
-	valueApplicationData := new(ApplicationData)
-	if err := json.Unmarshal(data, &valueApplicationData); err == nil {
-		a.typ = "ApplicationData"
-		a.ApplicationData = valueApplicationData
-		return nil
-	}
-	return fmt.Errorf("%s cannot be deserialized as a %T", data, a)
-}
-
-func (a AddApplicationRequest) MarshalJSON() ([]byte, error) {
-	if a.typ == "ApplicationDataPayIn" || a.ApplicationDataPayIn != nil {
-		return json.Marshal(a.ApplicationDataPayIn)
-	}
-	if a.typ == "ApplicationDataManaged" || a.ApplicationDataManaged != nil {
-		return json.Marshal(a.ApplicationDataManaged)
-	}
-	if a.typ == "ApplicationDataOdp" || a.ApplicationDataOdp != nil {
-		return json.Marshal(a.ApplicationDataOdp)
-	}
-	if a.typ == "ApplicationData" || a.ApplicationData != nil {
-		return json.Marshal(a.ApplicationData)
-	}
-	return nil, fmt.Errorf("type %T does not include a non-empty union type", a)
-}
-
-type AddApplicationRequestVisitor interface {
-	VisitApplicationDataPayIn(*ApplicationDataPayIn) error
-	VisitApplicationDataManaged(*ApplicationDataManaged) error
-	VisitApplicationDataOdp(*ApplicationDataOdp) error
-	VisitApplicationData(*ApplicationData) error
-}
-
-func (a *AddApplicationRequest) Accept(visitor AddApplicationRequestVisitor) error {
-	if a.typ == "ApplicationDataPayIn" || a.ApplicationDataPayIn != nil {
-		return visitor.VisitApplicationDataPayIn(a.ApplicationDataPayIn)
-	}
-	if a.typ == "ApplicationDataManaged" || a.ApplicationDataManaged != nil {
-		return visitor.VisitApplicationDataManaged(a.ApplicationDataManaged)
-	}
-	if a.typ == "ApplicationDataOdp" || a.ApplicationDataOdp != nil {
-		return visitor.VisitApplicationDataOdp(a.ApplicationDataOdp)
-	}
-	if a.typ == "ApplicationData" || a.ApplicationData != nil {
-		return visitor.VisitApplicationData(a.ApplicationData)
-	}
-	return fmt.Errorf("type %T does not include a non-empty union type", a)
-}
-
-// Request to create a boarding application linked to an existing paypoint. Used for adding new services to a paypoint without creating a duplicate record.
-var (
-	createApplicationFromPaypointRequestFieldPaypointId                     = big.NewInt(1 << 0)
-	createApplicationFromPaypointRequestFieldTemplateId                     = big.NewInt(1 << 1)
-	createApplicationFromPaypointRequestFieldRecipientEmail                 = big.NewInt(1 << 2)
-	createApplicationFromPaypointRequestFieldReturnBoardingAccessInfoInLine = big.NewInt(1 << 3)
-	createApplicationFromPaypointRequestFieldOnCreate                       = big.NewInt(1 << 4)
-)
-
-type CreateApplicationFromPaypointRequest struct {
-	// ID of the existing paypoint to link to this application.
-	PaypointId int64 `json:"paypointId" url:"paypointId"`
-	// ID of the boarding template to use for the new application.
-	TemplateId int64 `json:"templateId" url:"templateId"`
-	// Email address where the boarding link is sent. Required. If you don't want to email the merchant, send to an internal address and use `returnBoardingAccessInfoInLine` to retrieve the link from the response instead.
-	RecipientEmail string `json:"recipientEmail" url:"recipientEmail"`
-	// When `true`, returns the boarding access information directly in the response.
-	ReturnBoardingAccessInfoInLine *bool `json:"returnBoardingAccessInfoInLine,omitempty" url:"returnBoardingAccessInfoInLine,omitempty"`
-	// Additional actions to trigger when the application is created. Currently only `submitApplication` is supported, which automatically submits the application on creation and skips the draft state.
-	OnCreate []string `json:"onCreate,omitempty" url:"onCreate,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *CreateApplicationFromPaypointRequest) GetPaypointId() int64 {
-	if c == nil {
-		return 0
-	}
-	return c.PaypointId
-}
-
-func (c *CreateApplicationFromPaypointRequest) GetTemplateId() int64 {
-	if c == nil {
-		return 0
-	}
-	return c.TemplateId
-}
-
-func (c *CreateApplicationFromPaypointRequest) GetRecipientEmail() string {
-	if c == nil {
-		return ""
-	}
-	return c.RecipientEmail
-}
-
-func (c *CreateApplicationFromPaypointRequest) GetReturnBoardingAccessInfoInLine() *bool {
-	if c == nil {
-		return nil
-	}
-	return c.ReturnBoardingAccessInfoInLine
-}
-
-func (c *CreateApplicationFromPaypointRequest) GetOnCreate() []string {
-	if c == nil {
-		return nil
-	}
-	return c.OnCreate
-}
-
-func (c *CreateApplicationFromPaypointRequest) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *CreateApplicationFromPaypointRequest) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetPaypointId sets the PaypointId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateApplicationFromPaypointRequest) SetPaypointId(paypointId int64) {
-	c.PaypointId = paypointId
-	c.require(createApplicationFromPaypointRequestFieldPaypointId)
-}
-
-// SetTemplateId sets the TemplateId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateApplicationFromPaypointRequest) SetTemplateId(templateId int64) {
-	c.TemplateId = templateId
-	c.require(createApplicationFromPaypointRequestFieldTemplateId)
-}
-
-// SetRecipientEmail sets the RecipientEmail field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateApplicationFromPaypointRequest) SetRecipientEmail(recipientEmail string) {
-	c.RecipientEmail = recipientEmail
-	c.require(createApplicationFromPaypointRequestFieldRecipientEmail)
-}
-
-// SetReturnBoardingAccessInfoInLine sets the ReturnBoardingAccessInfoInLine field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateApplicationFromPaypointRequest) SetReturnBoardingAccessInfoInLine(returnBoardingAccessInfoInLine *bool) {
-	c.ReturnBoardingAccessInfoInLine = returnBoardingAccessInfoInLine
-	c.require(createApplicationFromPaypointRequestFieldReturnBoardingAccessInfoInLine)
-}
-
-// SetOnCreate sets the OnCreate field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateApplicationFromPaypointRequest) SetOnCreate(onCreate []string) {
-	c.OnCreate = onCreate
-	c.require(createApplicationFromPaypointRequestFieldOnCreate)
-}
-
-func (c *CreateApplicationFromPaypointRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler CreateApplicationFromPaypointRequest
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = CreateApplicationFromPaypointRequest(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *CreateApplicationFromPaypointRequest) MarshalJSON() ([]byte, error) {
-	type embed CreateApplicationFromPaypointRequest
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *CreateApplicationFromPaypointRequest) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-// Response returned when creating a boarding application linked to an existing paypoint.
-var (
-	createApplicationFromPaypointResponseFieldResponseCode   = big.NewInt(1 << 0)
-	createApplicationFromPaypointResponseFieldPageIdentifier = big.NewInt(1 << 1)
-	createApplicationFromPaypointResponseFieldRoomId         = big.NewInt(1 << 2)
-	createApplicationFromPaypointResponseFieldIsSuccess      = big.NewInt(1 << 3)
-	createApplicationFromPaypointResponseFieldResponseText   = big.NewInt(1 << 4)
-	createApplicationFromPaypointResponseFieldResponseData   = big.NewInt(1 << 5)
-)
-
-type CreateApplicationFromPaypointResponse struct {
-	ResponseCode   *Responsecode                              `json:"responseCode,omitempty" url:"responseCode,omitempty"`
-	PageIdentifier *PageIdentifier                            `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
-	RoomId         *RoomIdNotInUse                            `json:"roomId,omitempty" url:"roomId,omitempty"`
-	IsSuccess      *IsSuccess                                 `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText   ResponseText                               `json:"responseText" url:"responseText"`
-	ResponseData   *CreateApplicationFromPaypointResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *CreateApplicationFromPaypointResponse) GetResponseCode() *Responsecode {
-	if c == nil {
-		return nil
-	}
-	return c.ResponseCode
-}
-
-func (c *CreateApplicationFromPaypointResponse) GetPageIdentifier() *PageIdentifier {
-	if c == nil {
-		return nil
-	}
-	return c.PageIdentifier
-}
-
-func (c *CreateApplicationFromPaypointResponse) GetRoomId() *RoomIdNotInUse {
-	if c == nil {
-		return nil
-	}
-	return c.RoomId
-}
-
-func (c *CreateApplicationFromPaypointResponse) GetIsSuccess() *IsSuccess {
-	if c == nil {
-		return nil
-	}
-	return c.IsSuccess
-}
-
-func (c *CreateApplicationFromPaypointResponse) GetResponseText() ResponseText {
-	if c == nil {
-		return ""
-	}
-	return c.ResponseText
-}
-
-func (c *CreateApplicationFromPaypointResponse) GetResponseData() *CreateApplicationFromPaypointResponseData {
-	if c == nil {
-		return nil
-	}
-	return c.ResponseData
-}
-
-func (c *CreateApplicationFromPaypointResponse) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *CreateApplicationFromPaypointResponse) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetResponseCode sets the ResponseCode field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateApplicationFromPaypointResponse) SetResponseCode(responseCode *Responsecode) {
-	c.ResponseCode = responseCode
-	c.require(createApplicationFromPaypointResponseFieldResponseCode)
-}
-
-// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateApplicationFromPaypointResponse) SetPageIdentifier(pageIdentifier *PageIdentifier) {
-	c.PageIdentifier = pageIdentifier
-	c.require(createApplicationFromPaypointResponseFieldPageIdentifier)
-}
-
-// SetRoomId sets the RoomId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateApplicationFromPaypointResponse) SetRoomId(roomId *RoomIdNotInUse) {
-	c.RoomId = roomId
-	c.require(createApplicationFromPaypointResponseFieldRoomId)
-}
-
-// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateApplicationFromPaypointResponse) SetIsSuccess(isSuccess *IsSuccess) {
-	c.IsSuccess = isSuccess
-	c.require(createApplicationFromPaypointResponseFieldIsSuccess)
-}
-
-// SetResponseText sets the ResponseText field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateApplicationFromPaypointResponse) SetResponseText(responseText ResponseText) {
-	c.ResponseText = responseText
-	c.require(createApplicationFromPaypointResponseFieldResponseText)
-}
-
-// SetResponseData sets the ResponseData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateApplicationFromPaypointResponse) SetResponseData(responseData *CreateApplicationFromPaypointResponseData) {
-	c.ResponseData = responseData
-	c.require(createApplicationFromPaypointResponseFieldResponseData)
-}
-
-func (c *CreateApplicationFromPaypointResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler CreateApplicationFromPaypointResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = CreateApplicationFromPaypointResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *CreateApplicationFromPaypointResponse) MarshalJSON() ([]byte, error) {
-	type embed CreateApplicationFromPaypointResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *CreateApplicationFromPaypointResponse) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	createApplicationFromPaypointResponseDataFieldAppId        = big.NewInt(1 << 0)
-	createApplicationFromPaypointResponseDataFieldBoardingLink = big.NewInt(1 << 1)
-)
-
-type CreateApplicationFromPaypointResponseData struct {
-	// Unique identifier for the created application.
-	AppId *int64 `json:"appId,omitempty" url:"appId,omitempty"`
-	// URL where the merchant can complete the boarding process.
-	BoardingLink *string `json:"boardingLink,omitempty" url:"boardingLink,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *CreateApplicationFromPaypointResponseData) GetAppId() *int64 {
-	if c == nil {
-		return nil
-	}
-	return c.AppId
-}
-
-func (c *CreateApplicationFromPaypointResponseData) GetBoardingLink() *string {
-	if c == nil {
-		return nil
-	}
-	return c.BoardingLink
-}
-
-func (c *CreateApplicationFromPaypointResponseData) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *CreateApplicationFromPaypointResponseData) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetAppId sets the AppId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateApplicationFromPaypointResponseData) SetAppId(appId *int64) {
-	c.AppId = appId
-	c.require(createApplicationFromPaypointResponseDataFieldAppId)
-}
-
-// SetBoardingLink sets the BoardingLink field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CreateApplicationFromPaypointResponseData) SetBoardingLink(boardingLink *string) {
-	c.BoardingLink = boardingLink
-	c.require(createApplicationFromPaypointResponseDataFieldBoardingLink)
-}
-
-func (c *CreateApplicationFromPaypointResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler CreateApplicationFromPaypointResponseData
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = CreateApplicationFromPaypointResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *CreateApplicationFromPaypointResponseData) MarshalJSON() ([]byte, error) {
-	type embed CreateApplicationFromPaypointResponseData
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *CreateApplicationFromPaypointResponseData) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}

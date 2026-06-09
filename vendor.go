@@ -10,6 +10,113 @@ import (
 )
 
 var (
+	vendorEnrichRequestFieldVendorId             = big.NewInt(1 << 0)
+	vendorEnrichRequestFieldScope                = big.NewInt(1 << 1)
+	vendorEnrichRequestFieldApplyEnrichmentData  = big.NewInt(1 << 2)
+	vendorEnrichRequestFieldScheduleCallIfNeeded = big.NewInt(1 << 3)
+	vendorEnrichRequestFieldInvoiceFile          = big.NewInt(1 << 4)
+	vendorEnrichRequestFieldBillId               = big.NewInt(1 << 5)
+	vendorEnrichRequestFieldFallbackMethod       = big.NewInt(1 << 6)
+)
+
+type VendorEnrichRequest struct {
+	// ID of the vendor to enrich. Must be active and belong to the given entrypoint.
+	VendorId int64 `json:"vendorId" url:"-"`
+	// Enrichment stages to run. Valid values are `invoice_scan` and `web_search`. Stages run in order: invoice scan first, then web search. If the vendor becomes payout-ready after invoice scan, web search is skipped.
+	Scope []string `json:"scope,omitempty" url:"-"`
+	// When `true` (the default), extracted data is automatically written to the vendor record. Only empty fields are populated, existing values are never overwritten. When `false`, the vendor record isn't modified. In both cases, `enrichmentData` in the response contains the extracted results. Use `false` for UI flows where users review and confirm changes before applying them with the update vendor endpoint.
+	ApplyEnrichmentData *bool `json:"applyEnrichmentData,omitempty" url:"-"`
+	// When `true`, triggers an AI outreach call if enrichment stages return insufficient payment acceptance info. This feature is currently in development.
+	ScheduleCallIfNeeded *bool `json:"scheduleCallIfNeeded,omitempty" url:"-"`
+	// PDF invoice file, Base64-encoded. Required when `scope` includes `invoice_scan`.
+	InvoiceFile *FileContent `json:"invoiceFile,omitempty" url:"-"`
+	// Bill ID to associate with this enrichment request.
+	BillId *int64 `json:"billId,omitempty" url:"-"`
+	// Payment method to apply if enrichment can't find payment details. Values are `check`, `ach`, or `card`.
+	FallbackMethod *string `json:"fallbackMethod,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (v *VendorEnrichRequest) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetVendorId sets the VendorId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorEnrichRequest) SetVendorId(vendorId int64) {
+	v.VendorId = vendorId
+	v.require(vendorEnrichRequestFieldVendorId)
+}
+
+// SetScope sets the Scope field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorEnrichRequest) SetScope(scope []string) {
+	v.Scope = scope
+	v.require(vendorEnrichRequestFieldScope)
+}
+
+// SetApplyEnrichmentData sets the ApplyEnrichmentData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorEnrichRequest) SetApplyEnrichmentData(applyEnrichmentData *bool) {
+	v.ApplyEnrichmentData = applyEnrichmentData
+	v.require(vendorEnrichRequestFieldApplyEnrichmentData)
+}
+
+// SetScheduleCallIfNeeded sets the ScheduleCallIfNeeded field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorEnrichRequest) SetScheduleCallIfNeeded(scheduleCallIfNeeded *bool) {
+	v.ScheduleCallIfNeeded = scheduleCallIfNeeded
+	v.require(vendorEnrichRequestFieldScheduleCallIfNeeded)
+}
+
+// SetInvoiceFile sets the InvoiceFile field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorEnrichRequest) SetInvoiceFile(invoiceFile *FileContent) {
+	v.InvoiceFile = invoiceFile
+	v.require(vendorEnrichRequestFieldInvoiceFile)
+}
+
+// SetBillId sets the BillId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorEnrichRequest) SetBillId(billId *int64) {
+	v.BillId = billId
+	v.require(vendorEnrichRequestFieldBillId)
+}
+
+// SetFallbackMethod sets the FallbackMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorEnrichRequest) SetFallbackMethod(fallbackMethod *string) {
+	v.FallbackMethod = fallbackMethod
+	v.require(vendorEnrichRequestFieldFallbackMethod)
+}
+
+func (v *VendorEnrichRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler VendorEnrichRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*v = VendorEnrichRequest(body)
+	return nil
+}
+
+func (v *VendorEnrichRequest) MarshalJSON() ([]byte, error) {
+	type embed VendorEnrichRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+var (
 	payabliApiResponseVendorsFieldIsSuccess      = big.NewInt(1 << 0)
 	payabliApiResponseVendorsFieldPageIdentifier = big.NewInt(1 << 1)
 	payabliApiResponseVendorsFieldResponseCode   = big.NewInt(1 << 2)
@@ -158,32 +265,98 @@ func (p *PayabliApiResponseVendors) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
-// Request body for the vendor enrichment endpoint.
 var (
-	vendorEnrichRequestFieldVendorId             = big.NewInt(1 << 0)
-	vendorEnrichRequestFieldScope                = big.NewInt(1 << 1)
-	vendorEnrichRequestFieldApplyEnrichmentData  = big.NewInt(1 << 2)
-	vendorEnrichRequestFieldScheduleCallIfNeeded = big.NewInt(1 << 3)
-	vendorEnrichRequestFieldInvoiceFile          = big.NewInt(1 << 4)
-	vendorEnrichRequestFieldBillId               = big.NewInt(1 << 5)
-	vendorEnrichRequestFieldFallbackMethod       = big.NewInt(1 << 6)
+	vendorDataFieldVendorNumber          = big.NewInt(1 << 0)
+	vendorDataFieldAdditionalData        = big.NewInt(1 << 1)
+	vendorDataFieldAddress1              = big.NewInt(1 << 2)
+	vendorDataFieldAddress2              = big.NewInt(1 << 3)
+	vendorDataFieldBillingData           = big.NewInt(1 << 4)
+	vendorDataFieldCity                  = big.NewInt(1 << 5)
+	vendorDataFieldContacts              = big.NewInt(1 << 6)
+	vendorDataFieldCountry               = big.NewInt(1 << 7)
+	vendorDataFieldCustomField1          = big.NewInt(1 << 8)
+	vendorDataFieldCustomField2          = big.NewInt(1 << 9)
+	vendorDataFieldCustomerVendorAccount = big.NewInt(1 << 10)
+	vendorDataFieldEin                   = big.NewInt(1 << 11)
+	vendorDataFieldEmail                 = big.NewInt(1 << 12)
+	vendorDataFieldInternalReferenceId   = big.NewInt(1 << 13)
+	vendorDataFieldLocationCode          = big.NewInt(1 << 14)
+	vendorDataFieldMcc                   = big.NewInt(1 << 15)
+	vendorDataFieldName1                 = big.NewInt(1 << 16)
+	vendorDataFieldName2                 = big.NewInt(1 << 17)
+	vendorDataFieldPayeeName1            = big.NewInt(1 << 18)
+	vendorDataFieldPayeeName2            = big.NewInt(1 << 19)
+	vendorDataFieldPaymentMethod         = big.NewInt(1 << 20)
+	vendorDataFieldPhone                 = big.NewInt(1 << 21)
+	vendorDataFieldRemitAddress1         = big.NewInt(1 << 22)
+	vendorDataFieldRemitAddress2         = big.NewInt(1 << 23)
+	vendorDataFieldRemitCity             = big.NewInt(1 << 24)
+	vendorDataFieldRemitCountry          = big.NewInt(1 << 25)
+	vendorDataFieldRemitEmail            = big.NewInt(1 << 26)
+	vendorDataFieldRemitState            = big.NewInt(1 << 27)
+	vendorDataFieldRemitZip              = big.NewInt(1 << 28)
+	vendorDataFieldState                 = big.NewInt(1 << 29)
+	vendorDataFieldVendorStatus          = big.NewInt(1 << 30)
+	vendorDataFieldZip                   = big.NewInt(1 << 31)
+	vendorDataFieldDefaultMethodId       = big.NewInt(1 << 32)
+	vendorDataFieldAttachment            = big.NewInt(1 << 33)
 )
 
-type VendorEnrichRequest struct {
-	// ID of the vendor to enrich. Must be active and belong to the given entrypoint.
-	VendorId int64 `json:"vendorId" url:"vendorId"`
-	// Enrichment stages to run. Valid values are `invoice_scan` and `web_search`. Stages run in order: invoice scan first, then web search. If the vendor becomes payout-ready after invoice scan, web search is skipped.
-	Scope []string `json:"scope,omitempty" url:"scope,omitempty"`
-	// When `true` (the default), extracted data is automatically written to the vendor record. Only empty fields are populated, existing values are never overwritten. When `false`, the vendor record isn't modified. In both cases, `enrichmentData` in the response contains the extracted results. Use `false` for UI flows where users review and confirm changes before applying them with the update vendor endpoint.
-	ApplyEnrichmentData *bool `json:"applyEnrichmentData,omitempty" url:"applyEnrichmentData,omitempty"`
-	// When `true`, triggers an AI outreach call if enrichment stages return insufficient payment acceptance info. This feature is currently in development.
-	ScheduleCallIfNeeded *bool `json:"scheduleCallIfNeeded,omitempty" url:"scheduleCallIfNeeded,omitempty"`
-	// PDF invoice file, Base64-encoded. Required when `scope` includes `invoice_scan`.
-	InvoiceFile *FileContent `json:"invoiceFile,omitempty" url:"invoiceFile,omitempty"`
-	// Bill ID to associate with this enrichment request.
-	BillId *int64 `json:"billId,omitempty" url:"billId,omitempty"`
-	// Payment method to apply if enrichment can't find payment details. Values are `check`, `ach`, or `card`.
-	FallbackMethod *string `json:"fallbackMethod,omitempty" url:"fallbackMethod,omitempty"`
+type VendorData struct {
+	VendorNumber   *VendorNumber   `json:"vendorNumber,omitempty" url:"vendorNumber,omitempty"`
+	AdditionalData *AdditionalData `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
+	// Vendor's street address. If any address field is provided, this field is required along with `city`, `state`, and `zip`. Allowed characters are letters, numbers, spaces, and `. ,
+	Address1 *AddressNullable `json:"address1,omitempty" url:"address1,omitempty"`
+	// Additional line for vendor's address, such as a suite or unit number. Always optional.
+	Address2 *AddressAddtlNullable `json:"address2,omitempty" url:"address2,omitempty"`
+	// Object containing vendor's bank information.
+	BillingData *BillingData `json:"billingData,omitempty" url:"billingData,omitempty"`
+	// Vendor's city. Required if any address field is provided.
+	City *string `json:"city,omitempty" url:"city,omitempty"`
+	// Array of objects describing the vendor's contacts.
+	Contacts *ContactsField `json:"contacts,omitempty" url:"contacts,omitempty"`
+	// Vendor's country. Must be `US` or `CA`. Defaults to `US` if not provided.
+	Country *string `json:"country,omitempty" url:"country,omitempty"`
+	// Custom field 1 for vendor
+	CustomField1 *string `json:"customField1,omitempty" url:"customField1,omitempty"`
+	// Custom field 2 for vendor
+	CustomField2 *string `json:"customField2,omitempty" url:"customField2,omitempty"`
+	// Account number of paypoint in the vendor side.
+	CustomerVendorAccount *string    `json:"customerVendorAccount,omitempty" url:"customerVendorAccount,omitempty"`
+	Ein                   *VendorEin `json:"ein,omitempty" url:"ein,omitempty"`
+	// Vendor's email address. Required for vCard.
+	Email *Email `json:"email,omitempty" url:"email,omitempty"`
+	// Internal identifier for global vendor account.
+	InternalReferenceId *int64                     `json:"internalReferenceId,omitempty" url:"internalReferenceId,omitempty"`
+	LocationCode        *LocationCode              `json:"locationCode,omitempty" url:"locationCode,omitempty"`
+	Mcc                 *Mcc                       `json:"mcc,omitempty" url:"mcc,omitempty"`
+	Name1               *VendorName1               `json:"name1,omitempty" url:"name1,omitempty"`
+	Name2               *VendorName2               `json:"name2,omitempty" url:"name2,omitempty"`
+	PayeeName1          *PayeeName                 `json:"payeeName1,omitempty" url:"payeeName1,omitempty"`
+	PayeeName2          *PayeeName                 `json:"payeeName2,omitempty" url:"payeeName2,omitempty"`
+	PaymentMethod       *VendorPaymentMethodString `json:"paymentMethod,omitempty" url:"paymentMethod,omitempty"`
+	Phone               *VendorPhone               `json:"phone,omitempty" url:"phone,omitempty"`
+	RemitAddress1       *Remitaddress1             `json:"remitAddress1,omitempty" url:"remitAddress1,omitempty"`
+	RemitAddress2       *Remitaddress2             `json:"remitAddress2,omitempty" url:"remitAddress2,omitempty"`
+	RemitCity           *Remitcity                 `json:"remitCity,omitempty" url:"remitCity,omitempty"`
+	RemitCountry        *Remitcountry              `json:"remitCountry,omitempty" url:"remitCountry,omitempty"`
+	RemitEmail          *RemitEmail                `json:"remitEmail,omitempty" url:"remitEmail,omitempty"`
+	RemitState          *Remitstate                `json:"remitState,omitempty" url:"remitState,omitempty"`
+	RemitZip            *Remitzip                  `json:"remitZip,omitempty" url:"remitZip,omitempty"`
+	// Vendor's state or province. Required if any address field is provided. Must be a valid US state abbreviation (such as `CA`, `NY`) or Canadian province abbreviation (such as `ON`, `BC`), depending on the `country` value.
+	State        *string       `json:"state,omitempty" url:"state,omitempty"`
+	VendorStatus *Vendorstatus `json:"vendorStatus,omitempty" url:"vendorStatus,omitempty"`
+	// Vendor's ZIP or postal code. Required if any address field is provided. For US addresses, use five digits (`12345`) or ZIP+4 format (`12345-6789`).
+	Zip *string `json:"zip,omitempty" url:"zip,omitempty"`
+	// Identifier for the vendor's default stored payment method.
+	DefaultMethodId *string `json:"defaultMethodId,omitempty" url:"defaultMethodId,omitempty"`
+	// PDF invoice attachment for AI-powered vendor enrichment.
+	// When this feature is enabled and you include an attachment, the invoice is scanned and extracted vendor information is merged into the request.
+	// Fields in the request body take precedence over extracted data.
+	// If the scan fails, vendor creation proceeds with the original request data.
+	// See the [vendor enrichment guide](/guides/pay-out-vendor-enrichment-overview) for details.
+	// Contact Payabli to enable this feature.
+	Attachment *FileContent `json:"attachment,omitempty" url:"attachment,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -192,125 +365,503 @@ type VendorEnrichRequest struct {
 	rawJSON         json.RawMessage
 }
 
-func (v *VendorEnrichRequest) GetVendorId() int64 {
-	if v == nil {
-		return 0
-	}
-	return v.VendorId
-}
-
-func (v *VendorEnrichRequest) GetScope() []string {
+func (v *VendorData) GetVendorNumber() *VendorNumber {
 	if v == nil {
 		return nil
 	}
-	return v.Scope
+	return v.VendorNumber
 }
 
-func (v *VendorEnrichRequest) GetApplyEnrichmentData() *bool {
+func (v *VendorData) GetAdditionalData() *AdditionalData {
 	if v == nil {
 		return nil
 	}
-	return v.ApplyEnrichmentData
+	return v.AdditionalData
 }
 
-func (v *VendorEnrichRequest) GetScheduleCallIfNeeded() *bool {
+func (v *VendorData) GetAddress1() *AddressNullable {
 	if v == nil {
 		return nil
 	}
-	return v.ScheduleCallIfNeeded
+	return v.Address1
 }
 
-func (v *VendorEnrichRequest) GetInvoiceFile() *FileContent {
+func (v *VendorData) GetAddress2() *AddressAddtlNullable {
 	if v == nil {
 		return nil
 	}
-	return v.InvoiceFile
+	return v.Address2
 }
 
-func (v *VendorEnrichRequest) GetBillId() *int64 {
+func (v *VendorData) GetBillingData() *BillingData {
 	if v == nil {
 		return nil
 	}
-	return v.BillId
+	return v.BillingData
 }
 
-func (v *VendorEnrichRequest) GetFallbackMethod() *string {
+func (v *VendorData) GetCity() *string {
 	if v == nil {
 		return nil
 	}
-	return v.FallbackMethod
+	return v.City
 }
 
-func (v *VendorEnrichRequest) GetExtraProperties() map[string]interface{} {
+func (v *VendorData) GetContacts() *ContactsField {
+	if v == nil {
+		return nil
+	}
+	return v.Contacts
+}
+
+func (v *VendorData) GetCountry() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Country
+}
+
+func (v *VendorData) GetCustomField1() *string {
+	if v == nil {
+		return nil
+	}
+	return v.CustomField1
+}
+
+func (v *VendorData) GetCustomField2() *string {
+	if v == nil {
+		return nil
+	}
+	return v.CustomField2
+}
+
+func (v *VendorData) GetCustomerVendorAccount() *string {
+	if v == nil {
+		return nil
+	}
+	return v.CustomerVendorAccount
+}
+
+func (v *VendorData) GetEin() *VendorEin {
+	if v == nil {
+		return nil
+	}
+	return v.Ein
+}
+
+func (v *VendorData) GetEmail() *Email {
+	if v == nil {
+		return nil
+	}
+	return v.Email
+}
+
+func (v *VendorData) GetInternalReferenceId() *int64 {
+	if v == nil {
+		return nil
+	}
+	return v.InternalReferenceId
+}
+
+func (v *VendorData) GetLocationCode() *LocationCode {
+	if v == nil {
+		return nil
+	}
+	return v.LocationCode
+}
+
+func (v *VendorData) GetMcc() *Mcc {
+	if v == nil {
+		return nil
+	}
+	return v.Mcc
+}
+
+func (v *VendorData) GetName1() *VendorName1 {
+	if v == nil {
+		return nil
+	}
+	return v.Name1
+}
+
+func (v *VendorData) GetName2() *VendorName2 {
+	if v == nil {
+		return nil
+	}
+	return v.Name2
+}
+
+func (v *VendorData) GetPayeeName1() *PayeeName {
+	if v == nil {
+		return nil
+	}
+	return v.PayeeName1
+}
+
+func (v *VendorData) GetPayeeName2() *PayeeName {
+	if v == nil {
+		return nil
+	}
+	return v.PayeeName2
+}
+
+func (v *VendorData) GetPaymentMethod() *VendorPaymentMethodString {
+	if v == nil {
+		return nil
+	}
+	return v.PaymentMethod
+}
+
+func (v *VendorData) GetPhone() *VendorPhone {
+	if v == nil {
+		return nil
+	}
+	return v.Phone
+}
+
+func (v *VendorData) GetRemitAddress1() *Remitaddress1 {
+	if v == nil {
+		return nil
+	}
+	return v.RemitAddress1
+}
+
+func (v *VendorData) GetRemitAddress2() *Remitaddress2 {
+	if v == nil {
+		return nil
+	}
+	return v.RemitAddress2
+}
+
+func (v *VendorData) GetRemitCity() *Remitcity {
+	if v == nil {
+		return nil
+	}
+	return v.RemitCity
+}
+
+func (v *VendorData) GetRemitCountry() *Remitcountry {
+	if v == nil {
+		return nil
+	}
+	return v.RemitCountry
+}
+
+func (v *VendorData) GetRemitEmail() *RemitEmail {
+	if v == nil {
+		return nil
+	}
+	return v.RemitEmail
+}
+
+func (v *VendorData) GetRemitState() *Remitstate {
+	if v == nil {
+		return nil
+	}
+	return v.RemitState
+}
+
+func (v *VendorData) GetRemitZip() *Remitzip {
+	if v == nil {
+		return nil
+	}
+	return v.RemitZip
+}
+
+func (v *VendorData) GetState() *string {
+	if v == nil {
+		return nil
+	}
+	return v.State
+}
+
+func (v *VendorData) GetVendorStatus() *Vendorstatus {
+	if v == nil {
+		return nil
+	}
+	return v.VendorStatus
+}
+
+func (v *VendorData) GetZip() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Zip
+}
+
+func (v *VendorData) GetDefaultMethodId() *string {
+	if v == nil {
+		return nil
+	}
+	return v.DefaultMethodId
+}
+
+func (v *VendorData) GetAttachment() *FileContent {
+	if v == nil {
+		return nil
+	}
+	return v.Attachment
+}
+
+func (v *VendorData) GetExtraProperties() map[string]interface{} {
 	if v == nil {
 		return nil
 	}
 	return v.extraProperties
 }
 
-func (v *VendorEnrichRequest) require(field *big.Int) {
+func (v *VendorData) require(field *big.Int) {
 	if v.explicitFields == nil {
 		v.explicitFields = big.NewInt(0)
 	}
 	v.explicitFields.Or(v.explicitFields, field)
 }
 
-// SetVendorId sets the VendorId field and marks it as non-optional;
+// SetVendorNumber sets the VendorNumber field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorEnrichRequest) SetVendorId(vendorId int64) {
-	v.VendorId = vendorId
-	v.require(vendorEnrichRequestFieldVendorId)
+func (v *VendorData) SetVendorNumber(vendorNumber *VendorNumber) {
+	v.VendorNumber = vendorNumber
+	v.require(vendorDataFieldVendorNumber)
 }
 
-// SetScope sets the Scope field and marks it as non-optional;
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorEnrichRequest) SetScope(scope []string) {
-	v.Scope = scope
-	v.require(vendorEnrichRequestFieldScope)
+func (v *VendorData) SetAdditionalData(additionalData *AdditionalData) {
+	v.AdditionalData = additionalData
+	v.require(vendorDataFieldAdditionalData)
 }
 
-// SetApplyEnrichmentData sets the ApplyEnrichmentData field and marks it as non-optional;
+// SetAddress1 sets the Address1 field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorEnrichRequest) SetApplyEnrichmentData(applyEnrichmentData *bool) {
-	v.ApplyEnrichmentData = applyEnrichmentData
-	v.require(vendorEnrichRequestFieldApplyEnrichmentData)
+func (v *VendorData) SetAddress1(address1 *AddressNullable) {
+	v.Address1 = address1
+	v.require(vendorDataFieldAddress1)
 }
 
-// SetScheduleCallIfNeeded sets the ScheduleCallIfNeeded field and marks it as non-optional;
+// SetAddress2 sets the Address2 field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorEnrichRequest) SetScheduleCallIfNeeded(scheduleCallIfNeeded *bool) {
-	v.ScheduleCallIfNeeded = scheduleCallIfNeeded
-	v.require(vendorEnrichRequestFieldScheduleCallIfNeeded)
+func (v *VendorData) SetAddress2(address2 *AddressAddtlNullable) {
+	v.Address2 = address2
+	v.require(vendorDataFieldAddress2)
 }
 
-// SetInvoiceFile sets the InvoiceFile field and marks it as non-optional;
+// SetBillingData sets the BillingData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorEnrichRequest) SetInvoiceFile(invoiceFile *FileContent) {
-	v.InvoiceFile = invoiceFile
-	v.require(vendorEnrichRequestFieldInvoiceFile)
+func (v *VendorData) SetBillingData(billingData *BillingData) {
+	v.BillingData = billingData
+	v.require(vendorDataFieldBillingData)
 }
 
-// SetBillId sets the BillId field and marks it as non-optional;
+// SetCity sets the City field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorEnrichRequest) SetBillId(billId *int64) {
-	v.BillId = billId
-	v.require(vendorEnrichRequestFieldBillId)
+func (v *VendorData) SetCity(city *string) {
+	v.City = city
+	v.require(vendorDataFieldCity)
 }
 
-// SetFallbackMethod sets the FallbackMethod field and marks it as non-optional;
+// SetContacts sets the Contacts field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorEnrichRequest) SetFallbackMethod(fallbackMethod *string) {
-	v.FallbackMethod = fallbackMethod
-	v.require(vendorEnrichRequestFieldFallbackMethod)
+func (v *VendorData) SetContacts(contacts *ContactsField) {
+	v.Contacts = contacts
+	v.require(vendorDataFieldContacts)
 }
 
-func (v *VendorEnrichRequest) UnmarshalJSON(data []byte) error {
-	type unmarshaler VendorEnrichRequest
+// SetCountry sets the Country field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetCountry(country *string) {
+	v.Country = country
+	v.require(vendorDataFieldCountry)
+}
+
+// SetCustomField1 sets the CustomField1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetCustomField1(customField1 *string) {
+	v.CustomField1 = customField1
+	v.require(vendorDataFieldCustomField1)
+}
+
+// SetCustomField2 sets the CustomField2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetCustomField2(customField2 *string) {
+	v.CustomField2 = customField2
+	v.require(vendorDataFieldCustomField2)
+}
+
+// SetCustomerVendorAccount sets the CustomerVendorAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetCustomerVendorAccount(customerVendorAccount *string) {
+	v.CustomerVendorAccount = customerVendorAccount
+	v.require(vendorDataFieldCustomerVendorAccount)
+}
+
+// SetEin sets the Ein field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetEin(ein *VendorEin) {
+	v.Ein = ein
+	v.require(vendorDataFieldEin)
+}
+
+// SetEmail sets the Email field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetEmail(email *Email) {
+	v.Email = email
+	v.require(vendorDataFieldEmail)
+}
+
+// SetInternalReferenceId sets the InternalReferenceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetInternalReferenceId(internalReferenceId *int64) {
+	v.InternalReferenceId = internalReferenceId
+	v.require(vendorDataFieldInternalReferenceId)
+}
+
+// SetLocationCode sets the LocationCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetLocationCode(locationCode *LocationCode) {
+	v.LocationCode = locationCode
+	v.require(vendorDataFieldLocationCode)
+}
+
+// SetMcc sets the Mcc field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetMcc(mcc *Mcc) {
+	v.Mcc = mcc
+	v.require(vendorDataFieldMcc)
+}
+
+// SetName1 sets the Name1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetName1(name1 *VendorName1) {
+	v.Name1 = name1
+	v.require(vendorDataFieldName1)
+}
+
+// SetName2 sets the Name2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetName2(name2 *VendorName2) {
+	v.Name2 = name2
+	v.require(vendorDataFieldName2)
+}
+
+// SetPayeeName1 sets the PayeeName1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetPayeeName1(payeeName1 *PayeeName) {
+	v.PayeeName1 = payeeName1
+	v.require(vendorDataFieldPayeeName1)
+}
+
+// SetPayeeName2 sets the PayeeName2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetPayeeName2(payeeName2 *PayeeName) {
+	v.PayeeName2 = payeeName2
+	v.require(vendorDataFieldPayeeName2)
+}
+
+// SetPaymentMethod sets the PaymentMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetPaymentMethod(paymentMethod *VendorPaymentMethodString) {
+	v.PaymentMethod = paymentMethod
+	v.require(vendorDataFieldPaymentMethod)
+}
+
+// SetPhone sets the Phone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetPhone(phone *VendorPhone) {
+	v.Phone = phone
+	v.require(vendorDataFieldPhone)
+}
+
+// SetRemitAddress1 sets the RemitAddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetRemitAddress1(remitAddress1 *Remitaddress1) {
+	v.RemitAddress1 = remitAddress1
+	v.require(vendorDataFieldRemitAddress1)
+}
+
+// SetRemitAddress2 sets the RemitAddress2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetRemitAddress2(remitAddress2 *Remitaddress2) {
+	v.RemitAddress2 = remitAddress2
+	v.require(vendorDataFieldRemitAddress2)
+}
+
+// SetRemitCity sets the RemitCity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetRemitCity(remitCity *Remitcity) {
+	v.RemitCity = remitCity
+	v.require(vendorDataFieldRemitCity)
+}
+
+// SetRemitCountry sets the RemitCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetRemitCountry(remitCountry *Remitcountry) {
+	v.RemitCountry = remitCountry
+	v.require(vendorDataFieldRemitCountry)
+}
+
+// SetRemitEmail sets the RemitEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetRemitEmail(remitEmail *RemitEmail) {
+	v.RemitEmail = remitEmail
+	v.require(vendorDataFieldRemitEmail)
+}
+
+// SetRemitState sets the RemitState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetRemitState(remitState *Remitstate) {
+	v.RemitState = remitState
+	v.require(vendorDataFieldRemitState)
+}
+
+// SetRemitZip sets the RemitZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetRemitZip(remitZip *Remitzip) {
+	v.RemitZip = remitZip
+	v.require(vendorDataFieldRemitZip)
+}
+
+// SetState sets the State field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetState(state *string) {
+	v.State = state
+	v.require(vendorDataFieldState)
+}
+
+// SetVendorStatus sets the VendorStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetVendorStatus(vendorStatus *Vendorstatus) {
+	v.VendorStatus = vendorStatus
+	v.require(vendorDataFieldVendorStatus)
+}
+
+// SetZip sets the Zip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetZip(zip *string) {
+	v.Zip = zip
+	v.require(vendorDataFieldZip)
+}
+
+// SetDefaultMethodId sets the DefaultMethodId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetDefaultMethodId(defaultMethodId *string) {
+	v.DefaultMethodId = defaultMethodId
+	v.require(vendorDataFieldDefaultMethodId)
+}
+
+// SetAttachment sets the Attachment field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetAttachment(attachment *FileContent) {
+	v.Attachment = attachment
+	v.require(vendorDataFieldAttachment)
+}
+
+func (v *VendorData) UnmarshalJSON(data []byte) error {
+	type unmarshaler VendorData
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*v = VendorEnrichRequest(value)
+	*v = VendorData(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *v)
 	if err != nil {
 		return err
@@ -320,8 +871,8 @@ func (v *VendorEnrichRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (v *VendorEnrichRequest) MarshalJSON() ([]byte, error) {
-	type embed VendorEnrichRequest
+func (v *VendorData) MarshalJSON() ([]byte, error) {
+	type embed VendorData
 	var marshaler = struct {
 		embed
 	}{
@@ -331,7 +882,7 @@ func (v *VendorEnrichRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (v *VendorEnrichRequest) String() string {
+func (v *VendorData) String() string {
 	if v == nil {
 		return "<nil>"
 	}

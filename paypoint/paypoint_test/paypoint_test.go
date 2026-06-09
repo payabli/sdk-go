@@ -6,13 +6,14 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
+	http "net/http"
+	os "os"
+	testing "testing"
+
 	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
-	http "net/http"
-	os "os"
-	testing "testing"
 )
 
 func VerifyRequestCount(
@@ -20,7 +21,7 @@ func VerifyRequestCount(
 	testId string,
 	method string,
 	urlPath string,
-	queryParams map[string]string,
+	queryParams map[string]any,
 	expected int,
 ) {
 	wiremockURL := os.Getenv("WIREMOCK_URL")
@@ -45,9 +46,23 @@ func VerifyRequestCount(
 			}
 			reqBody.WriteString(`"`)
 			reqBody.WriteString(key)
-			reqBody.WriteString(`":{"equalTo":"`)
-			reqBody.WriteString(value)
-			reqBody.WriteString(`"}`)
+			switch v := value.(type) {
+			case string:
+				reqBody.WriteString(`":{"equalTo":"`)
+				reqBody.WriteString(v)
+				reqBody.WriteString(`"}`)
+			case []string:
+				reqBody.WriteString(`":{"hasExactly":[`)
+				for i, item := range v {
+					if i > 0 {
+						reqBody.WriteString(",")
+					}
+					reqBody.WriteString(`{"equalTo":"`)
+					reqBody.WriteString(item)
+					reqBody.WriteString(`"}`)
+				}
+				reqBody.WriteString(`]}`)
+			}
 			first = false
 		}
 		reqBody.WriteString("}")
@@ -71,6 +86,7 @@ func TestPaypointGetBasicEntryWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.Paypoint.GetBasicEntry(
 		context.TODO(),
@@ -93,6 +109,7 @@ func TestPaypointGetBasicEntryByIdWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.Paypoint.GetBasicEntryById(
 		context.TODO(),
@@ -106,6 +123,90 @@ func TestPaypointGetBasicEntryByIdWithWireMock(
 	VerifyRequestCount(t, "TestPaypointGetBasicEntryByIdWithWireMock", "GET", "/Paypoint/basicById/198", nil, 1)
 }
 
+func TestPaypointSaveLogoWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
+	)
+	request := &payabli.FileContent{}
+	_, invocationErr := client.Paypoint.SaveLogo(
+		context.TODO(),
+		"8cfec329267",
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestPaypointSaveLogoWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestPaypointSaveLogoWithWireMock", "PUT", "/Paypoint/logo/8cfec329267", nil, 1)
+}
+
+func TestPaypointMigrateWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
+	)
+	request := &payabli.PaypointMoveRequest{
+		EntryPoint:              "8cfec329267",
+		NewParentOrganizationId: 123,
+		NotificationRequest: &payabli.NotificationRequest{
+			NotificationUrl: "https://webhook-test.yoursie.com",
+			WebHeaderParameters: []*payabli.WebHeaderParameter{
+				&payabli.WebHeaderParameter{
+					Key:   "testheader",
+					Value: "1234567890",
+				},
+			},
+		},
+	}
+	_, invocationErr := client.Paypoint.Migrate(
+		context.TODO(),
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestPaypointMigrateWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestPaypointMigrateWithWireMock", "POST", "/Paypoint/migrate", nil, 1)
+}
+
+func TestPaypointSettingsPageWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
+	)
+	_, invocationErr := client.Paypoint.SettingsPage(
+		context.TODO(),
+		"8cfec329267",
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestPaypointSettingsPageWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestPaypointSettingsPageWithWireMock", "GET", "/Paypoint/settings/8cfec329267", nil, 1)
+}
+
 func TestPaypointGetEntryConfigWithWireMock(
 	t *testing.T,
 ) {
@@ -115,6 +216,7 @@ func TestPaypointGetEntryConfigWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.GetEntryConfigRequest{}
 	_, invocationErr := client.Paypoint.GetEntryConfig(
@@ -139,6 +241,7 @@ func TestPaypointGetPageWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.Paypoint.GetPage(
 		context.TODO(),
@@ -162,6 +265,7 @@ func TestPaypointRemovePageWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.Paypoint.RemovePage(
 		context.TODO(),
@@ -174,85 +278,4 @@ func TestPaypointRemovePageWithWireMock(
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestPaypointRemovePageWithWireMock", "DELETE", "/Paypoint/8cfec329267/pay-your-fees-1", nil, 1)
-}
-
-func TestPaypointSaveLogoWithWireMock(
-	t *testing.T,
-) {
-	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
-	if WireMockBaseURL == "" {
-		WireMockBaseURL = "http://localhost:8080"
-	}
-	client := client.NewClient(
-		option.WithBaseURL(WireMockBaseURL),
-	)
-	request := &payabli.FileContent{}
-	_, invocationErr := client.Paypoint.SaveLogo(
-		context.TODO(),
-		"8cfec329267",
-		request,
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestPaypointSaveLogoWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPaypointSaveLogoWithWireMock", "PUT", "/Paypoint/logo/8cfec329267", nil, 1)
-}
-
-func TestPaypointSettingsPageWithWireMock(
-	t *testing.T,
-) {
-	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
-	if WireMockBaseURL == "" {
-		WireMockBaseURL = "http://localhost:8080"
-	}
-	client := client.NewClient(
-		option.WithBaseURL(WireMockBaseURL),
-	)
-	_, invocationErr := client.Paypoint.SettingsPage(
-		context.TODO(),
-		"8cfec329267",
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestPaypointSettingsPageWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPaypointSettingsPageWithWireMock", "GET", "/Paypoint/settings/8cfec329267", nil, 1)
-}
-
-func TestPaypointMigrateWithWireMock(
-	t *testing.T,
-) {
-	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
-	if WireMockBaseURL == "" {
-		WireMockBaseURL = "http://localhost:8080"
-	}
-	client := client.NewClient(
-		option.WithBaseURL(WireMockBaseURL),
-	)
-	request := &payabli.PaypointMoveRequest{
-		EntryPoint:              "473abc123def",
-		NewParentOrganizationId: 123,
-		NotificationRequest: &payabli.NotificationRequest{
-			NotificationUrl: "https://webhook-test.yoursie.com",
-			WebHeaderParameters: []*payabli.WebHeaderParameter{
-				&payabli.WebHeaderParameter{
-					Key:   "testheader",
-					Value: "1234567890",
-				},
-			},
-		},
-	}
-	_, invocationErr := client.Paypoint.Migrate(
-		context.TODO(),
-		request,
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestPaypointMigrateWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestPaypointMigrateWithWireMock", "POST", "/Paypoint/migrate", nil, 1)
 }

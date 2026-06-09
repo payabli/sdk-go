@@ -4,6 +4,7 @@ package ocr
 
 import (
 	context "context"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
@@ -25,8 +26,9 @@ func NewClient(options *core.RequestOptions) *Client {
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -35,6 +37,7 @@ func NewClient(options *core.RequestOptions) *Client {
 // Use this endpoint to upload an image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter `typeResult`. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
 func (c *Client) OcrDocumentForm(
 	ctx context.Context,
+	// The type of object to create in Payabli. Accepted values are `bill` and `invoice`.
 	typeResult payabli.TypeResult,
 	request *payabli.FileContentImageOnly,
 	opts ...option.RequestOption,
@@ -54,6 +57,7 @@ func (c *Client) OcrDocumentForm(
 // Use this endpoint to submit a Base64-encoded image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter `typeResult`. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
 func (c *Client) OcrDocumentJson(
 	ctx context.Context,
+	// The type of object to create in Payabli. Accepted values are `bill` and `invoice`.
 	typeResult payabli.TypeResult,
 	request *payabli.FileContentImageOnly,
 	opts ...option.RequestOption,

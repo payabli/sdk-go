@@ -160,6 +160,106 @@ func (l *ListLineItemsRequest) SetSortBy(sortBy *string) {
 }
 
 var (
+	deleteItemResponseFieldIsSuccess    = big.NewInt(1 << 0)
+	deleteItemResponseFieldResponseText = big.NewInt(1 << 1)
+)
+
+type DeleteItemResponse struct {
+	IsSuccess    IsSuccess    `json:"isSuccess" url:"isSuccess"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (d *DeleteItemResponse) GetIsSuccess() IsSuccess {
+	if d == nil {
+		return false
+	}
+	return d.IsSuccess
+}
+
+func (d *DeleteItemResponse) GetResponseText() ResponseText {
+	if d == nil {
+		return ""
+	}
+	return d.ResponseText
+}
+
+func (d *DeleteItemResponse) GetExtraProperties() map[string]interface{} {
+	if d == nil {
+		return nil
+	}
+	return d.extraProperties
+}
+
+func (d *DeleteItemResponse) require(field *big.Int) {
+	if d.explicitFields == nil {
+		d.explicitFields = big.NewInt(0)
+	}
+	d.explicitFields.Or(d.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeleteItemResponse) SetIsSuccess(isSuccess IsSuccess) {
+	d.IsSuccess = isSuccess
+	d.require(deleteItemResponseFieldIsSuccess)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeleteItemResponse) SetResponseText(responseText ResponseText) {
+	d.ResponseText = responseText
+	d.require(deleteItemResponseFieldResponseText)
+}
+
+func (d *DeleteItemResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler DeleteItemResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*d = DeleteItemResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *d)
+	if err != nil {
+		return err
+	}
+	d.extraProperties = extraProperties
+	d.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (d *DeleteItemResponse) MarshalJSON() ([]byte, error) {
+	type embed DeleteItemResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*d),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (d *DeleteItemResponse) String() string {
+	if d == nil {
+		return "<nil>"
+	}
+	if len(d.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(d); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", d)
+}
+
+var (
 	lineItemFieldItemCategories    = big.NewInt(1 << 0)
 	lineItemFieldItemCommodityCode = big.NewInt(1 << 1)
 	lineItemFieldItemCost          = big.NewInt(1 << 2)
@@ -173,7 +273,7 @@ var (
 
 type LineItem struct {
 	// Array of tags classifying item or product.
-	ItemCategories    []*string          `json:"itemCategories,omitempty" url:"itemCategories,omitempty"`
+	ItemCategories    []string           `json:"itemCategories,omitempty" url:"itemCategories,omitempty"`
 	ItemCommodityCode *ItemCommodityCode `json:"itemCommodityCode,omitempty" url:"itemCommodityCode,omitempty"`
 	// Item or product price per unit.
 	ItemCost        float64          `json:"itemCost" url:"itemCost"`
@@ -193,7 +293,7 @@ type LineItem struct {
 	rawJSON         json.RawMessage
 }
 
-func (l *LineItem) GetItemCategories() []*string {
+func (l *LineItem) GetItemCategories() []string {
 	if l == nil {
 		return nil
 	}
@@ -272,7 +372,7 @@ func (l *LineItem) require(field *big.Int) {
 
 // SetItemCategories sets the ItemCategories field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LineItem) SetItemCategories(itemCategories []*string) {
+func (l *LineItem) SetItemCategories(itemCategories []string) {
 	l.ItemCategories = itemCategories
 	l.require(lineItemFieldItemCategories)
 }
@@ -401,7 +501,7 @@ type LineItemQueryRecord struct {
 	// Identifier of line item.
 	Id *int64 `json:"id,omitempty" url:"id,omitempty"`
 	// Array of tags classifying item or product.
-	ItemCategories    []*string          `json:"itemCategories,omitempty" url:"itemCategories,omitempty"`
+	ItemCategories    []string           `json:"itemCategories,omitempty" url:"itemCategories,omitempty"`
 	ItemCommodityCode *ItemCommodityCode `json:"itemCommodityCode,omitempty" url:"itemCommodityCode,omitempty"`
 	// Item or product price per unit.
 	ItemCost        float64          `json:"itemCost" url:"itemCost"`
@@ -446,7 +546,7 @@ func (l *LineItemQueryRecord) GetId() *int64 {
 	return l.Id
 }
 
-func (l *LineItemQueryRecord) GetItemCategories() []*string {
+func (l *LineItemQueryRecord) GetItemCategories() []string {
 	if l == nil {
 		return nil
 	}
@@ -581,7 +681,7 @@ func (l *LineItemQueryRecord) SetId(id *int64) {
 
 // SetItemCategories sets the ItemCategories field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LineItemQueryRecord) SetItemCategories(itemCategories []*string) {
+func (l *LineItemQueryRecord) SetItemCategories(itemCategories []string) {
 	l.ItemCategories = itemCategories
 	l.require(lineItemQueryRecordFieldItemCategories)
 }
@@ -749,7 +849,7 @@ var (
 type PayabliApiResponse6 struct {
 	IsSuccess      *IsSuccess      `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
 	PageIdentifier *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
-	// If `isSuccess` = true, this contains the line item identifier. If `isSuccess` = false, this contains the reason of the error.
+	// If `isSuccess` = true, this contains the line item identifier. If `isSuccess` = false, this contains the reason for the error.
 	ResponseData *Responsedatanonobject `json:"responseData,omitempty" url:"responseData,omitempty"`
 	ResponseText ResponseText           `json:"responseText" url:"responseText"`
 
@@ -988,7 +1088,7 @@ type QueryResponseItemsRecordsItem struct {
 	PaypointDbaname *Dbaname `json:"PaypointDbaname,omitempty" url:"PaypointDbaname,omitempty"`
 	// The paypoint's entry name (entrypoint).
 	PaypointEntryname *Entrypointfield `json:"PaypointEntryname,omitempty" url:"PaypointEntryname,omitempty"`
-	// the Paypoint's legal name.
+	// The paypoint's legal name.
 	PaypointLegalname *Legalname `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1122,104 +1222,4 @@ func (q *QueryResponseItemsRecordsItem) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", q)
-}
-
-var (
-	deleteItemResponseFieldIsSuccess    = big.NewInt(1 << 0)
-	deleteItemResponseFieldResponseText = big.NewInt(1 << 1)
-)
-
-type DeleteItemResponse struct {
-	IsSuccess    IsSuccess    `json:"isSuccess" url:"isSuccess"`
-	ResponseText ResponseText `json:"responseText" url:"responseText"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (d *DeleteItemResponse) GetIsSuccess() IsSuccess {
-	if d == nil {
-		return false
-	}
-	return d.IsSuccess
-}
-
-func (d *DeleteItemResponse) GetResponseText() ResponseText {
-	if d == nil {
-		return ""
-	}
-	return d.ResponseText
-}
-
-func (d *DeleteItemResponse) GetExtraProperties() map[string]interface{} {
-	if d == nil {
-		return nil
-	}
-	return d.extraProperties
-}
-
-func (d *DeleteItemResponse) require(field *big.Int) {
-	if d.explicitFields == nil {
-		d.explicitFields = big.NewInt(0)
-	}
-	d.explicitFields.Or(d.explicitFields, field)
-}
-
-// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteItemResponse) SetIsSuccess(isSuccess IsSuccess) {
-	d.IsSuccess = isSuccess
-	d.require(deleteItemResponseFieldIsSuccess)
-}
-
-// SetResponseText sets the ResponseText field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteItemResponse) SetResponseText(responseText ResponseText) {
-	d.ResponseText = responseText
-	d.require(deleteItemResponseFieldResponseText)
-}
-
-func (d *DeleteItemResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler DeleteItemResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*d = DeleteItemResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *d)
-	if err != nil {
-		return err
-	}
-	d.extraProperties = extraProperties
-	d.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (d *DeleteItemResponse) MarshalJSON() ([]byte, error) {
-	type embed DeleteItemResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*d),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (d *DeleteItemResponse) String() string {
-	if d == nil {
-		return "<nil>"
-	}
-	if len(d.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(d); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", d)
 }

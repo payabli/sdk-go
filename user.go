@@ -308,6 +308,607 @@ func (m *MfaValidationData) MarshalJSON() ([]byte, error) {
 }
 
 var (
+	addUserResponseFieldIsSuccess    = big.NewInt(1 << 0)
+	addUserResponseFieldResponseData = big.NewInt(1 << 1)
+	addUserResponseFieldResponseText = big.NewInt(1 << 2)
+)
+
+type AddUserResponse struct {
+	IsSuccess *IsSuccess `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	// The response data.
+	ResponseData *string      `json:"responseData,omitempty" url:"responseData,omitempty"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AddUserResponse) GetIsSuccess() *IsSuccess {
+	if a == nil {
+		return nil
+	}
+	return a.IsSuccess
+}
+
+func (a *AddUserResponse) GetResponseData() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ResponseData
+}
+
+func (a *AddUserResponse) GetResponseText() ResponseText {
+	if a == nil {
+		return ""
+	}
+	return a.ResponseText
+}
+
+func (a *AddUserResponse) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
+	return a.extraProperties
+}
+
+func (a *AddUserResponse) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddUserResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	a.IsSuccess = isSuccess
+	a.require(addUserResponseFieldIsSuccess)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddUserResponse) SetResponseData(responseData *string) {
+	a.ResponseData = responseData
+	a.require(addUserResponseFieldResponseData)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddUserResponse) SetResponseText(responseText ResponseText) {
+	a.ResponseText = responseText
+	a.require(addUserResponseFieldResponseText)
+}
+
+func (a *AddUserResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler AddUserResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AddUserResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AddUserResponse) MarshalJSON() ([]byte, error) {
+	type embed AddUserResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AddUserResponse) String() string {
+	if a == nil {
+		return "<nil>"
+	}
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+var (
+	authResetUserResponseFieldIsSuccess    = big.NewInt(1 << 0)
+	authResetUserResponseFieldResponseText = big.NewInt(1 << 1)
+)
+
+type AuthResetUserResponse struct {
+	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AuthResetUserResponse) GetIsSuccess() *IsSuccess {
+	if a == nil {
+		return nil
+	}
+	return a.IsSuccess
+}
+
+func (a *AuthResetUserResponse) GetResponseText() ResponseText {
+	if a == nil {
+		return ""
+	}
+	return a.ResponseText
+}
+
+func (a *AuthResetUserResponse) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
+	return a.extraProperties
+}
+
+func (a *AuthResetUserResponse) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AuthResetUserResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	a.IsSuccess = isSuccess
+	a.require(authResetUserResponseFieldIsSuccess)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AuthResetUserResponse) SetResponseText(responseText ResponseText) {
+	a.ResponseText = responseText
+	a.require(authResetUserResponseFieldResponseText)
+}
+
+func (a *AuthResetUserResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler AuthResetUserResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AuthResetUserResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AuthResetUserResponse) MarshalJSON() ([]byte, error) {
+	type embed AuthResetUserResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AuthResetUserResponse) String() string {
+	if a == nil {
+		return "<nil>"
+	}
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+var (
+	changePswUserResponseFieldIsSuccess    = big.NewInt(1 << 0)
+	changePswUserResponseFieldResponseText = big.NewInt(1 << 1)
+)
+
+type ChangePswUserResponse struct {
+	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ChangePswUserResponse) GetIsSuccess() *IsSuccess {
+	if c == nil {
+		return nil
+	}
+	return c.IsSuccess
+}
+
+func (c *ChangePswUserResponse) GetResponseText() ResponseText {
+	if c == nil {
+		return ""
+	}
+	return c.ResponseText
+}
+
+func (c *ChangePswUserResponse) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *ChangePswUserResponse) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChangePswUserResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	c.IsSuccess = isSuccess
+	c.require(changePswUserResponseFieldIsSuccess)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *ChangePswUserResponse) SetResponseText(responseText ResponseText) {
+	c.ResponseText = responseText
+	c.require(changePswUserResponseFieldResponseText)
+}
+
+func (c *ChangePswUserResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ChangePswUserResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ChangePswUserResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ChangePswUserResponse) MarshalJSON() ([]byte, error) {
+	type embed ChangePswUserResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *ChangePswUserResponse) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+var (
+	deleteUserResponseFieldResponseText = big.NewInt(1 << 0)
+)
+
+type DeleteUserResponse struct {
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (d *DeleteUserResponse) GetResponseText() ResponseText {
+	if d == nil {
+		return ""
+	}
+	return d.ResponseText
+}
+
+func (d *DeleteUserResponse) GetExtraProperties() map[string]interface{} {
+	if d == nil {
+		return nil
+	}
+	return d.extraProperties
+}
+
+func (d *DeleteUserResponse) require(field *big.Int) {
+	if d.explicitFields == nil {
+		d.explicitFields = big.NewInt(0)
+	}
+	d.explicitFields.Or(d.explicitFields, field)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeleteUserResponse) SetResponseText(responseText ResponseText) {
+	d.ResponseText = responseText
+	d.require(deleteUserResponseFieldResponseText)
+}
+
+func (d *DeleteUserResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler DeleteUserResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*d = DeleteUserResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *d)
+	if err != nil {
+		return err
+	}
+	d.extraProperties = extraProperties
+	d.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (d *DeleteUserResponse) MarshalJSON() ([]byte, error) {
+	type embed DeleteUserResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*d),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (d *DeleteUserResponse) String() string {
+	if d == nil {
+		return "<nil>"
+	}
+	if len(d.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(d); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", d)
+}
+
+var (
+	editMfaUserResponseFieldIsSuccess    = big.NewInt(1 << 0)
+	editMfaUserResponseFieldResponseText = big.NewInt(1 << 1)
+)
+
+type EditMfaUserResponse struct {
+	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (e *EditMfaUserResponse) GetIsSuccess() *IsSuccess {
+	if e == nil {
+		return nil
+	}
+	return e.IsSuccess
+}
+
+func (e *EditMfaUserResponse) GetResponseText() ResponseText {
+	if e == nil {
+		return ""
+	}
+	return e.ResponseText
+}
+
+func (e *EditMfaUserResponse) GetExtraProperties() map[string]interface{} {
+	if e == nil {
+		return nil
+	}
+	return e.extraProperties
+}
+
+func (e *EditMfaUserResponse) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EditMfaUserResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	e.IsSuccess = isSuccess
+	e.require(editMfaUserResponseFieldIsSuccess)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EditMfaUserResponse) SetResponseText(responseText ResponseText) {
+	e.ResponseText = responseText
+	e.require(editMfaUserResponseFieldResponseText)
+}
+
+func (e *EditMfaUserResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler EditMfaUserResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*e = EditMfaUserResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *e)
+	if err != nil {
+		return err
+	}
+	e.extraProperties = extraProperties
+	e.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (e *EditMfaUserResponse) MarshalJSON() ([]byte, error) {
+	type embed EditMfaUserResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*e),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (e *EditMfaUserResponse) String() string {
+	if e == nil {
+		return "<nil>"
+	}
+	if len(e.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(e); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", e)
+}
+
+var (
+	logoutUserResponseFieldIsSuccess    = big.NewInt(1 << 0)
+	logoutUserResponseFieldResponseText = big.NewInt(1 << 1)
+)
+
+type LogoutUserResponse struct {
+	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *LogoutUserResponse) GetIsSuccess() *IsSuccess {
+	if l == nil {
+		return nil
+	}
+	return l.IsSuccess
+}
+
+func (l *LogoutUserResponse) GetResponseText() ResponseText {
+	if l == nil {
+		return ""
+	}
+	return l.ResponseText
+}
+
+func (l *LogoutUserResponse) GetExtraProperties() map[string]interface{} {
+	if l == nil {
+		return nil
+	}
+	return l.extraProperties
+}
+
+func (l *LogoutUserResponse) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LogoutUserResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	l.IsSuccess = isSuccess
+	l.require(logoutUserResponseFieldIsSuccess)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *LogoutUserResponse) SetResponseText(responseText ResponseText) {
+	l.ResponseText = responseText
+	l.require(logoutUserResponseFieldResponseText)
+}
+
+func (l *LogoutUserResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler LogoutUserResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = LogoutUserResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *LogoutUserResponse) MarshalJSON() ([]byte, error) {
+	type embed LogoutUserResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *LogoutUserResponse) String() string {
+	if l == nil {
+		return "<nil>"
+	}
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+var (
 	mfaDataFieldMfa     = big.NewInt(1 << 0)
 	mfaDataFieldMfaMode = big.NewInt(1 << 1)
 )
@@ -407,7 +1008,8 @@ func (m *MfaData) String() string {
 	return fmt.Sprintf("%#v", m)
 }
 
-// The validation code for multi-factor authentication, typically a hash or similar encrypted format.
+// The validation code for multi-factor authentication, typically a hash or
+// similar encrypted format.
 type MfaValidationCode = string
 
 var (
@@ -1068,605 +1670,4 @@ func (u *UserData) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", u)
-}
-
-var (
-	addUserResponseFieldIsSuccess    = big.NewInt(1 << 0)
-	addUserResponseFieldResponseData = big.NewInt(1 << 1)
-	addUserResponseFieldResponseText = big.NewInt(1 << 2)
-)
-
-type AddUserResponse struct {
-	IsSuccess *IsSuccess `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	// The response data.
-	ResponseData *string      `json:"responseData,omitempty" url:"responseData,omitempty"`
-	ResponseText ResponseText `json:"responseText" url:"responseText"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (a *AddUserResponse) GetIsSuccess() *IsSuccess {
-	if a == nil {
-		return nil
-	}
-	return a.IsSuccess
-}
-
-func (a *AddUserResponse) GetResponseData() *string {
-	if a == nil {
-		return nil
-	}
-	return a.ResponseData
-}
-
-func (a *AddUserResponse) GetResponseText() ResponseText {
-	if a == nil {
-		return ""
-	}
-	return a.ResponseText
-}
-
-func (a *AddUserResponse) GetExtraProperties() map[string]interface{} {
-	if a == nil {
-		return nil
-	}
-	return a.extraProperties
-}
-
-func (a *AddUserResponse) require(field *big.Int) {
-	if a.explicitFields == nil {
-		a.explicitFields = big.NewInt(0)
-	}
-	a.explicitFields.Or(a.explicitFields, field)
-}
-
-// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AddUserResponse) SetIsSuccess(isSuccess *IsSuccess) {
-	a.IsSuccess = isSuccess
-	a.require(addUserResponseFieldIsSuccess)
-}
-
-// SetResponseData sets the ResponseData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AddUserResponse) SetResponseData(responseData *string) {
-	a.ResponseData = responseData
-	a.require(addUserResponseFieldResponseData)
-}
-
-// SetResponseText sets the ResponseText field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AddUserResponse) SetResponseText(responseText ResponseText) {
-	a.ResponseText = responseText
-	a.require(addUserResponseFieldResponseText)
-}
-
-func (a *AddUserResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler AddUserResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*a = AddUserResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *a)
-	if err != nil {
-		return err
-	}
-	a.extraProperties = extraProperties
-	a.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (a *AddUserResponse) MarshalJSON() ([]byte, error) {
-	type embed AddUserResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*a),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (a *AddUserResponse) String() string {
-	if a == nil {
-		return "<nil>"
-	}
-	if len(a.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(a); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", a)
-}
-
-var (
-	authResetUserResponseFieldIsSuccess    = big.NewInt(1 << 0)
-	authResetUserResponseFieldResponseText = big.NewInt(1 << 1)
-)
-
-type AuthResetUserResponse struct {
-	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText ResponseText `json:"responseText" url:"responseText"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (a *AuthResetUserResponse) GetIsSuccess() *IsSuccess {
-	if a == nil {
-		return nil
-	}
-	return a.IsSuccess
-}
-
-func (a *AuthResetUserResponse) GetResponseText() ResponseText {
-	if a == nil {
-		return ""
-	}
-	return a.ResponseText
-}
-
-func (a *AuthResetUserResponse) GetExtraProperties() map[string]interface{} {
-	if a == nil {
-		return nil
-	}
-	return a.extraProperties
-}
-
-func (a *AuthResetUserResponse) require(field *big.Int) {
-	if a.explicitFields == nil {
-		a.explicitFields = big.NewInt(0)
-	}
-	a.explicitFields.Or(a.explicitFields, field)
-}
-
-// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AuthResetUserResponse) SetIsSuccess(isSuccess *IsSuccess) {
-	a.IsSuccess = isSuccess
-	a.require(authResetUserResponseFieldIsSuccess)
-}
-
-// SetResponseText sets the ResponseText field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AuthResetUserResponse) SetResponseText(responseText ResponseText) {
-	a.ResponseText = responseText
-	a.require(authResetUserResponseFieldResponseText)
-}
-
-func (a *AuthResetUserResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler AuthResetUserResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*a = AuthResetUserResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *a)
-	if err != nil {
-		return err
-	}
-	a.extraProperties = extraProperties
-	a.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (a *AuthResetUserResponse) MarshalJSON() ([]byte, error) {
-	type embed AuthResetUserResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*a),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (a *AuthResetUserResponse) String() string {
-	if a == nil {
-		return "<nil>"
-	}
-	if len(a.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(a); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", a)
-}
-
-var (
-	changePswUserResponseFieldIsSuccess    = big.NewInt(1 << 0)
-	changePswUserResponseFieldResponseText = big.NewInt(1 << 1)
-)
-
-type ChangePswUserResponse struct {
-	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText ResponseText `json:"responseText" url:"responseText"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *ChangePswUserResponse) GetIsSuccess() *IsSuccess {
-	if c == nil {
-		return nil
-	}
-	return c.IsSuccess
-}
-
-func (c *ChangePswUserResponse) GetResponseText() ResponseText {
-	if c == nil {
-		return ""
-	}
-	return c.ResponseText
-}
-
-func (c *ChangePswUserResponse) GetExtraProperties() map[string]interface{} {
-	if c == nil {
-		return nil
-	}
-	return c.extraProperties
-}
-
-func (c *ChangePswUserResponse) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ChangePswUserResponse) SetIsSuccess(isSuccess *IsSuccess) {
-	c.IsSuccess = isSuccess
-	c.require(changePswUserResponseFieldIsSuccess)
-}
-
-// SetResponseText sets the ResponseText field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *ChangePswUserResponse) SetResponseText(responseText ResponseText) {
-	c.ResponseText = responseText
-	c.require(changePswUserResponseFieldResponseText)
-}
-
-func (c *ChangePswUserResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler ChangePswUserResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = ChangePswUserResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *ChangePswUserResponse) MarshalJSON() ([]byte, error) {
-	type embed ChangePswUserResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*c),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (c *ChangePswUserResponse) String() string {
-	if c == nil {
-		return "<nil>"
-	}
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
-var (
-	deleteUserResponseFieldResponseText = big.NewInt(1 << 0)
-)
-
-type DeleteUserResponse struct {
-	ResponseText ResponseText `json:"responseText" url:"responseText"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (d *DeleteUserResponse) GetResponseText() ResponseText {
-	if d == nil {
-		return ""
-	}
-	return d.ResponseText
-}
-
-func (d *DeleteUserResponse) GetExtraProperties() map[string]interface{} {
-	if d == nil {
-		return nil
-	}
-	return d.extraProperties
-}
-
-func (d *DeleteUserResponse) require(field *big.Int) {
-	if d.explicitFields == nil {
-		d.explicitFields = big.NewInt(0)
-	}
-	d.explicitFields.Or(d.explicitFields, field)
-}
-
-// SetResponseText sets the ResponseText field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (d *DeleteUserResponse) SetResponseText(responseText ResponseText) {
-	d.ResponseText = responseText
-	d.require(deleteUserResponseFieldResponseText)
-}
-
-func (d *DeleteUserResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler DeleteUserResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*d = DeleteUserResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *d)
-	if err != nil {
-		return err
-	}
-	d.extraProperties = extraProperties
-	d.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (d *DeleteUserResponse) MarshalJSON() ([]byte, error) {
-	type embed DeleteUserResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*d),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (d *DeleteUserResponse) String() string {
-	if d == nil {
-		return "<nil>"
-	}
-	if len(d.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(d); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", d)
-}
-
-var (
-	editMfaUserResponseFieldIsSuccess    = big.NewInt(1 << 0)
-	editMfaUserResponseFieldResponseText = big.NewInt(1 << 1)
-)
-
-type EditMfaUserResponse struct {
-	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText ResponseText `json:"responseText" url:"responseText"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (e *EditMfaUserResponse) GetIsSuccess() *IsSuccess {
-	if e == nil {
-		return nil
-	}
-	return e.IsSuccess
-}
-
-func (e *EditMfaUserResponse) GetResponseText() ResponseText {
-	if e == nil {
-		return ""
-	}
-	return e.ResponseText
-}
-
-func (e *EditMfaUserResponse) GetExtraProperties() map[string]interface{} {
-	if e == nil {
-		return nil
-	}
-	return e.extraProperties
-}
-
-func (e *EditMfaUserResponse) require(field *big.Int) {
-	if e.explicitFields == nil {
-		e.explicitFields = big.NewInt(0)
-	}
-	e.explicitFields.Or(e.explicitFields, field)
-}
-
-// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *EditMfaUserResponse) SetIsSuccess(isSuccess *IsSuccess) {
-	e.IsSuccess = isSuccess
-	e.require(editMfaUserResponseFieldIsSuccess)
-}
-
-// SetResponseText sets the ResponseText field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (e *EditMfaUserResponse) SetResponseText(responseText ResponseText) {
-	e.ResponseText = responseText
-	e.require(editMfaUserResponseFieldResponseText)
-}
-
-func (e *EditMfaUserResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler EditMfaUserResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*e = EditMfaUserResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *e)
-	if err != nil {
-		return err
-	}
-	e.extraProperties = extraProperties
-	e.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (e *EditMfaUserResponse) MarshalJSON() ([]byte, error) {
-	type embed EditMfaUserResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*e),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (e *EditMfaUserResponse) String() string {
-	if e == nil {
-		return "<nil>"
-	}
-	if len(e.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(e); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", e)
-}
-
-var (
-	logoutUserResponseFieldIsSuccess    = big.NewInt(1 << 0)
-	logoutUserResponseFieldResponseText = big.NewInt(1 << 1)
-)
-
-type LogoutUserResponse struct {
-	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText ResponseText `json:"responseText" url:"responseText"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (l *LogoutUserResponse) GetIsSuccess() *IsSuccess {
-	if l == nil {
-		return nil
-	}
-	return l.IsSuccess
-}
-
-func (l *LogoutUserResponse) GetResponseText() ResponseText {
-	if l == nil {
-		return ""
-	}
-	return l.ResponseText
-}
-
-func (l *LogoutUserResponse) GetExtraProperties() map[string]interface{} {
-	if l == nil {
-		return nil
-	}
-	return l.extraProperties
-}
-
-func (l *LogoutUserResponse) require(field *big.Int) {
-	if l.explicitFields == nil {
-		l.explicitFields = big.NewInt(0)
-	}
-	l.explicitFields.Or(l.explicitFields, field)
-}
-
-// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LogoutUserResponse) SetIsSuccess(isSuccess *IsSuccess) {
-	l.IsSuccess = isSuccess
-	l.require(logoutUserResponseFieldIsSuccess)
-}
-
-// SetResponseText sets the ResponseText field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (l *LogoutUserResponse) SetResponseText(responseText ResponseText) {
-	l.ResponseText = responseText
-	l.require(logoutUserResponseFieldResponseText)
-}
-
-func (l *LogoutUserResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler LogoutUserResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*l = LogoutUserResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *l)
-	if err != nil {
-		return err
-	}
-	l.extraProperties = extraProperties
-	l.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (l *LogoutUserResponse) MarshalJSON() ([]byte, error) {
-	type embed LogoutUserResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*l),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (l *LogoutUserResponse) String() string {
-	if l == nil {
-		return "<nil>"
-	}
-	if len(l.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(l); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", l)
 }

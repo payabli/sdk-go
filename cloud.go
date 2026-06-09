@@ -43,6 +43,7 @@ var (
 )
 
 type DeviceEntry struct {
+	// _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
 	IdempotencyKey *IdempotencyKey `json:"-" url:"-"`
 	// Description or name for the device. This can be anything, but Payabli recommends entering the name of the paypoint, or some other easy to identify descriptor. If you have several devices for one paypoint, you can give them descriptions like "Cashier 1" and "Cashier 2", or "Front Desk" and "Back Office"
 	Description *string `json:"description,omitempty" url:"-"`
@@ -104,6 +105,140 @@ func (d *DeviceEntry) MarshalJSON() ([]byte, error) {
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
 	return json.Marshal(explicitMarshaler)
+}
+
+var (
+	addDeviceResponseFieldIsSuccess      = big.NewInt(1 << 0)
+	addDeviceResponseFieldResponseText   = big.NewInt(1 << 1)
+	addDeviceResponseFieldPageIdentifier = big.NewInt(1 << 2)
+	addDeviceResponseFieldResponseData   = big.NewInt(1 << 3)
+)
+
+type AddDeviceResponse struct {
+	IsSuccess      *IsSuccess      `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	ResponseText   ResponseText    `json:"responseText" url:"responseText"`
+	PageIdentifier *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
+	// If `isSuccess` = true, this contains the device identifier.
+	// If `isSuccess` = false, this contains the reason for the error.
+	ResponseData *string `json:"responseData,omitempty" url:"responseData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AddDeviceResponse) GetIsSuccess() *IsSuccess {
+	if a == nil {
+		return nil
+	}
+	return a.IsSuccess
+}
+
+func (a *AddDeviceResponse) GetResponseText() ResponseText {
+	if a == nil {
+		return ""
+	}
+	return a.ResponseText
+}
+
+func (a *AddDeviceResponse) GetPageIdentifier() *PageIdentifier {
+	if a == nil {
+		return nil
+	}
+	return a.PageIdentifier
+}
+
+func (a *AddDeviceResponse) GetResponseData() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ResponseData
+}
+
+func (a *AddDeviceResponse) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
+	return a.extraProperties
+}
+
+func (a *AddDeviceResponse) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddDeviceResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	a.IsSuccess = isSuccess
+	a.require(addDeviceResponseFieldIsSuccess)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddDeviceResponse) SetResponseText(responseText ResponseText) {
+	a.ResponseText = responseText
+	a.require(addDeviceResponseFieldResponseText)
+}
+
+// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddDeviceResponse) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+	a.PageIdentifier = pageIdentifier
+	a.require(addDeviceResponseFieldPageIdentifier)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddDeviceResponse) SetResponseData(responseData *string) {
+	a.ResponseData = responseData
+	a.require(addDeviceResponseFieldResponseData)
+}
+
+func (a *AddDeviceResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler AddDeviceResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AddDeviceResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AddDeviceResponse) MarshalJSON() ([]byte, error) {
+	type embed AddDeviceResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AddDeviceResponse) String() string {
+	if a == nil {
+		return "<nil>"
+	}
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
 }
 
 // Object containing details about cloud devices and their registration history.
@@ -536,140 +671,6 @@ func (p *PoiDevice) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", p)
-}
-
-var (
-	addDeviceResponseFieldIsSuccess      = big.NewInt(1 << 0)
-	addDeviceResponseFieldResponseText   = big.NewInt(1 << 1)
-	addDeviceResponseFieldPageIdentifier = big.NewInt(1 << 2)
-	addDeviceResponseFieldResponseData   = big.NewInt(1 << 3)
-)
-
-type AddDeviceResponse struct {
-	IsSuccess      *IsSuccess      `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText   ResponseText    `json:"responseText" url:"responseText"`
-	PageIdentifier *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
-	// If `isSuccess` = true, this contains the device identifier.
-	// If `isSuccess` = false, this contains the reason for the error.
-	ResponseData *string `json:"responseData,omitempty" url:"responseData,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (a *AddDeviceResponse) GetIsSuccess() *IsSuccess {
-	if a == nil {
-		return nil
-	}
-	return a.IsSuccess
-}
-
-func (a *AddDeviceResponse) GetResponseText() ResponseText {
-	if a == nil {
-		return ""
-	}
-	return a.ResponseText
-}
-
-func (a *AddDeviceResponse) GetPageIdentifier() *PageIdentifier {
-	if a == nil {
-		return nil
-	}
-	return a.PageIdentifier
-}
-
-func (a *AddDeviceResponse) GetResponseData() *string {
-	if a == nil {
-		return nil
-	}
-	return a.ResponseData
-}
-
-func (a *AddDeviceResponse) GetExtraProperties() map[string]interface{} {
-	if a == nil {
-		return nil
-	}
-	return a.extraProperties
-}
-
-func (a *AddDeviceResponse) require(field *big.Int) {
-	if a.explicitFields == nil {
-		a.explicitFields = big.NewInt(0)
-	}
-	a.explicitFields.Or(a.explicitFields, field)
-}
-
-// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AddDeviceResponse) SetIsSuccess(isSuccess *IsSuccess) {
-	a.IsSuccess = isSuccess
-	a.require(addDeviceResponseFieldIsSuccess)
-}
-
-// SetResponseText sets the ResponseText field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AddDeviceResponse) SetResponseText(responseText ResponseText) {
-	a.ResponseText = responseText
-	a.require(addDeviceResponseFieldResponseText)
-}
-
-// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AddDeviceResponse) SetPageIdentifier(pageIdentifier *PageIdentifier) {
-	a.PageIdentifier = pageIdentifier
-	a.require(addDeviceResponseFieldPageIdentifier)
-}
-
-// SetResponseData sets the ResponseData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AddDeviceResponse) SetResponseData(responseData *string) {
-	a.ResponseData = responseData
-	a.require(addDeviceResponseFieldResponseData)
-}
-
-func (a *AddDeviceResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler AddDeviceResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*a = AddDeviceResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *a)
-	if err != nil {
-		return err
-	}
-	a.extraProperties = extraProperties
-	a.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (a *AddDeviceResponse) MarshalJSON() ([]byte, error) {
-	type embed AddDeviceResponse
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*a),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (a *AddDeviceResponse) String() string {
-	if a == nil {
-		return "<nil>"
-	}
-	if len(a.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(a); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", a)
 }
 
 var (

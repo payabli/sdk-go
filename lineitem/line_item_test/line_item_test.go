@@ -6,13 +6,14 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
+	http "net/http"
+	os "os"
+	testing "testing"
+
 	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
-	http "net/http"
-	os "os"
-	testing "testing"
 )
 
 func VerifyRequestCount(
@@ -20,7 +21,7 @@ func VerifyRequestCount(
 	testId string,
 	method string,
 	urlPath string,
-	queryParams map[string]string,
+	queryParams map[string]any,
 	expected int,
 ) {
 	wiremockURL := os.Getenv("WIREMOCK_URL")
@@ -45,9 +46,23 @@ func VerifyRequestCount(
 			}
 			reqBody.WriteString(`"`)
 			reqBody.WriteString(key)
-			reqBody.WriteString(`":{"equalTo":"`)
-			reqBody.WriteString(value)
-			reqBody.WriteString(`"}`)
+			switch v := value.(type) {
+			case string:
+				reqBody.WriteString(`":{"equalTo":"`)
+				reqBody.WriteString(v)
+				reqBody.WriteString(`"}`)
+			case []string:
+				reqBody.WriteString(`":{"hasExactly":[`)
+				for i, item := range v {
+					if i > 0 {
+						reqBody.WriteString(",")
+					}
+					reqBody.WriteString(`{"equalTo":"`)
+					reqBody.WriteString(item)
+					reqBody.WriteString(`"}`)
+				}
+				reqBody.WriteString(`]}`)
+			}
 			first = false
 		}
 		reqBody.WriteString("}")
@@ -71,34 +86,35 @@ func TestLineItemAddItemWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.AddItemRequest{
 		Body: &payabli.LineItem{
+			ItemCommodityCode: payabli.String(
+				"010",
+			),
+			ItemCost: 12.45,
+			ItemDescription: payabli.String(
+				"Deposit for materials",
+			),
+			ItemMode: payabli.Int(
+				0,
+			),
 			ItemProductCode: payabli.String(
 				"M-DEPOSIT",
 			),
 			ItemProductName: payabli.String(
 				"Materials deposit",
 			),
-			ItemDescription: payabli.String(
-				"Deposit for materials",
-			),
-			ItemCommodityCode: payabli.String(
-				"010",
-			),
+			ItemQty: 1,
 			ItemUnitOfMeasure: payabli.String(
 				"SqFt",
-			),
-			ItemCost: 12.45,
-			ItemQty:  1,
-			ItemMode: payabli.Int(
-				0,
 			),
 		},
 	}
 	_, invocationErr := client.LineItem.AddItem(
 		context.TODO(),
-		"47cae3d74",
+		"8cfec329267",
 		request,
 		option.WithHTTPHeader(
 			http.Header{"X-Test-Id": []string{"TestLineItemAddItemWithWireMock"}},
@@ -106,29 +122,7 @@ func TestLineItemAddItemWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestLineItemAddItemWithWireMock", "POST", "/LineItem/47cae3d74", nil, 1)
-}
-
-func TestLineItemDeleteItemWithWireMock(
-	t *testing.T,
-) {
-	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
-	if WireMockBaseURL == "" {
-		WireMockBaseURL = "http://localhost:8080"
-	}
-	client := client.NewClient(
-		option.WithBaseURL(WireMockBaseURL),
-	)
-	_, invocationErr := client.LineItem.DeleteItem(
-		context.TODO(),
-		700,
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestLineItemDeleteItemWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestLineItemDeleteItemWithWireMock", "DELETE", "/LineItem/700", nil, 1)
+	VerifyRequestCount(t, "TestLineItemAddItemWithWireMock", "POST", "/LineItem/8cfec329267", nil, 1)
 }
 
 func TestLineItemGetItemWithWireMock(
@@ -140,6 +134,7 @@ func TestLineItemGetItemWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	_, invocationErr := client.LineItem.GetItem(
 		context.TODO(),
@@ -153,6 +148,57 @@ func TestLineItemGetItemWithWireMock(
 	VerifyRequestCount(t, "TestLineItemGetItemWithWireMock", "GET", "/LineItem/700", nil, 1)
 }
 
+func TestLineItemUpdateItemWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
+	)
+	request := &payabli.LineItem{
+		ItemCost: 12.45,
+		ItemQty:  1,
+	}
+	_, invocationErr := client.LineItem.UpdateItem(
+		context.TODO(),
+		700,
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestLineItemUpdateItemWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestLineItemUpdateItemWithWireMock", "PUT", "/LineItem/700", nil, 1)
+}
+
+func TestLineItemDeleteItemWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
+	)
+	_, invocationErr := client.LineItem.DeleteItem(
+		context.TODO(),
+		700,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestLineItemDeleteItemWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestLineItemDeleteItemWithWireMock", "DELETE", "/LineItem/700", nil, 1)
+}
+
 func TestLineItemListLineItemsWithWireMock(
 	t *testing.T,
 ) {
@@ -162,6 +208,7 @@ func TestLineItemListLineItemsWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.ListLineItemsRequest{
 		FromRecord: payabli.Int(
@@ -184,32 +231,5 @@ func TestLineItemListLineItemsWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestLineItemListLineItemsWithWireMock", "GET", "/Query/lineitems/8cfec329267", map[string]string{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
-}
-
-func TestLineItemUpdateItemWithWireMock(
-	t *testing.T,
-) {
-	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
-	if WireMockBaseURL == "" {
-		WireMockBaseURL = "http://localhost:8080"
-	}
-	client := client.NewClient(
-		option.WithBaseURL(WireMockBaseURL),
-	)
-	request := &payabli.LineItem{
-		ItemCost: 12.45,
-		ItemQty:  1,
-	}
-	_, invocationErr := client.LineItem.UpdateItem(
-		context.TODO(),
-		700,
-		request,
-		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestLineItemUpdateItemWithWireMock"}},
-		),
-	)
-
-	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestLineItemUpdateItemWithWireMock", "PUT", "/LineItem/700", nil, 1)
+	VerifyRequestCount(t, "TestLineItemListLineItemsWithWireMock", "GET", "/Query/lineitems/8cfec329267", map[string]interface{}{"fromRecord": "251", "limitRecord": "0", "sortBy": "desc(field_name)"}, 1)
 }

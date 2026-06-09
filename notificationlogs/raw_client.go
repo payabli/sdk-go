@@ -4,12 +4,12 @@ package notificationlogs
 
 import (
 	context "context"
-	uuid "github.com/google/uuid"
+	http "net/http"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
-	http "net/http"
 )
 
 type RawClient struct {
@@ -24,8 +24,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 		baseURL: options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -54,6 +55,7 @@ func (r *RawClient) SearchNotificationLogs(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
+	headers.Add("Content-Type", "application/json")
 	var response []*payabli.NotificationLog
 	raw, err := r.caller.Call(
 		ctx,
@@ -62,6 +64,7 @@ func (r *RawClient) SearchNotificationLogs(
 			Method:          http.MethodPost,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -83,7 +86,7 @@ func (r *RawClient) SearchNotificationLogs(
 func (r *RawClient) GetNotificationLog(
 	ctx context.Context,
 	// The notification log entry.
-	uuid uuid.UUID,
+	uuid string,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.NotificationLogDetail], error) {
 	options := core.NewRequestOptions(opts...)
@@ -108,6 +111,7 @@ func (r *RawClient) GetNotificationLog(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -128,7 +132,7 @@ func (r *RawClient) GetNotificationLog(
 func (r *RawClient) RetryNotificationLog(
 	ctx context.Context,
 	// Unique id
-	uuid uuid.UUID,
+	uuid string,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.NotificationLogDetail], error) {
 	options := core.NewRequestOptions(opts...)
@@ -153,6 +157,7 @@ func (r *RawClient) RetryNotificationLog(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -193,6 +198,7 @@ func (r *RawClient) BulkRetryNotificationLogs(
 			Method:          http.MethodPost,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,

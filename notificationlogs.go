@@ -5,22 +5,39 @@ package payabli
 import (
 	json "encoding/json"
 	fmt "fmt"
-	uuid "github.com/google/uuid"
 	internal "github.com/payabli/sdk-go/internal"
 	big "math/big"
 	time "time"
 )
 
 var (
-	searchNotificationLogsRequestFieldPageSize = big.NewInt(1 << 0)
-	searchNotificationLogsRequestFieldPage     = big.NewInt(1 << 1)
+	searchNotificationLogsRequestFieldPageSize          = big.NewInt(1 << 0)
+	searchNotificationLogsRequestFieldPage              = big.NewInt(1 << 1)
+	searchNotificationLogsRequestFieldStartDate         = big.NewInt(1 << 2)
+	searchNotificationLogsRequestFieldEndDate           = big.NewInt(1 << 3)
+	searchNotificationLogsRequestFieldNotificationEvent = big.NewInt(1 << 4)
+	searchNotificationLogsRequestFieldSucceeded         = big.NewInt(1 << 5)
+	searchNotificationLogsRequestFieldOrgId             = big.NewInt(1 << 6)
+	searchNotificationLogsRequestFieldPaypointId        = big.NewInt(1 << 7)
 )
 
 type SearchNotificationLogsRequest struct {
+	// Number of records on each response page.
 	PageSize *Pagesize `json:"-" url:"PageSize,omitempty"`
 	// The page number to retrieve. Defaults to 1 if not provided.
-	Page *int                          `json:"-" url:"Page,omitempty"`
-	Body *NotificationLogSearchRequest `json:"-" url:"-"`
+	Page *int `json:"-" url:"Page,omitempty"`
+	// The start date for the search.
+	StartDate time.Time `json:"startDate" url:"-"`
+	// The end date for the search.
+	EndDate time.Time `json:"endDate" url:"-"`
+	// The type of notification event to filter by.
+	NotificationEvent *string `json:"notificationEvent,omitempty" url:"-"`
+	// Indicates whether the notification was successful.
+	Succeeded *bool `json:"succeeded,omitempty" url:"-"`
+	// The ID of the organization to filter by.
+	OrgId *int64 `json:"orgId,omitempty" url:"-"`
+	// The ID of the paypoint to filter by.
+	PaypointId *int64 `json:"paypointId,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -47,21 +64,75 @@ func (s *SearchNotificationLogsRequest) SetPage(page *int) {
 	s.require(searchNotificationLogsRequestFieldPage)
 }
 
+// SetStartDate sets the StartDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchNotificationLogsRequest) SetStartDate(startDate time.Time) {
+	s.StartDate = startDate
+	s.require(searchNotificationLogsRequestFieldStartDate)
+}
+
+// SetEndDate sets the EndDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchNotificationLogsRequest) SetEndDate(endDate time.Time) {
+	s.EndDate = endDate
+	s.require(searchNotificationLogsRequestFieldEndDate)
+}
+
+// SetNotificationEvent sets the NotificationEvent field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchNotificationLogsRequest) SetNotificationEvent(notificationEvent *string) {
+	s.NotificationEvent = notificationEvent
+	s.require(searchNotificationLogsRequestFieldNotificationEvent)
+}
+
+// SetSucceeded sets the Succeeded field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchNotificationLogsRequest) SetSucceeded(succeeded *bool) {
+	s.Succeeded = succeeded
+	s.require(searchNotificationLogsRequestFieldSucceeded)
+}
+
+// SetOrgId sets the OrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchNotificationLogsRequest) SetOrgId(orgId *int64) {
+	s.OrgId = orgId
+	s.require(searchNotificationLogsRequestFieldOrgId)
+}
+
+// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SearchNotificationLogsRequest) SetPaypointId(paypointId *int64) {
+	s.PaypointId = paypointId
+	s.require(searchNotificationLogsRequestFieldPaypointId)
+}
+
 func (s *SearchNotificationLogsRequest) UnmarshalJSON(data []byte) error {
-	body := new(NotificationLogSearchRequest)
+	type unmarshaler SearchNotificationLogsRequest
+	var body unmarshaler
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	s.Body = body
+	*s = SearchNotificationLogsRequest(body)
 	return nil
 }
 
 func (s *SearchNotificationLogsRequest) MarshalJSON() ([]byte, error) {
-	return json.Marshal(s.Body)
+	type embed SearchNotificationLogsRequest
+	var marshaler = struct {
+		embed
+		StartDate *internal.DateTime `json:"startDate"`
+		EndDate   *internal.DateTime `json:"endDate"`
+	}{
+		embed:     embed(*s),
+		StartDate: internal.NewDateTime(s.StartDate),
+		EndDate:   internal.NewDateTime(s.EndDate),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
 }
 
 // A list of notification log IDs to retry. The maximum number of IDs that can be retried in a single request is 50.
-type BulkRetryRequest = []uuid.UUID
+type BulkRetryRequest = []string
 
 var (
 	keyValueArrayFieldKey   = big.NewInt(1 << 0)
@@ -180,7 +251,7 @@ var (
 
 type NotificationLog struct {
 	// The unique identifier for the notification.
-	Id uuid.UUID `json:"id" url:"id"`
+	Id string `json:"id" url:"id"`
 	// The ID of the organization that the notification belongs to.
 	OrgId *int64 `json:"orgId,omitempty" url:"orgId,omitempty"`
 	// The ID of the paypoint that the notification is related to.
@@ -211,9 +282,9 @@ type NotificationLog struct {
 	rawJSON         json.RawMessage
 }
 
-func (n *NotificationLog) GetId() uuid.UUID {
+func (n *NotificationLog) GetId() string {
 	if n == nil {
-		return uuid.Nil
+		return ""
 	}
 	return n.Id
 }
@@ -311,7 +382,7 @@ func (n *NotificationLog) require(field *big.Int) {
 
 // SetId sets the Id field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotificationLog) SetId(id uuid.UUID) {
+func (n *NotificationLog) SetId(id string) {
 	n.Id = id
 	n.require(notificationLogFieldId)
 }
@@ -471,7 +542,7 @@ var (
 
 type NotificationLogDetail struct {
 	// The unique identifier for the notification.
-	Id uuid.UUID `json:"id" url:"id"`
+	Id string `json:"id" url:"id"`
 	// The ID of the organization that the notification belongs to.
 	OrgId *int64 `json:"orgId,omitempty" url:"orgId,omitempty"`
 	// The ID of the paypoint that the notification is related to.
@@ -505,9 +576,9 @@ type NotificationLogDetail struct {
 	rawJSON         json.RawMessage
 }
 
-func (n *NotificationLogDetail) GetId() uuid.UUID {
+func (n *NotificationLogDetail) GetId() string {
 	if n == nil {
-		return uuid.Nil
+		return ""
 	}
 	return n.Id
 }
@@ -626,7 +697,7 @@ func (n *NotificationLogDetail) require(field *big.Int) {
 
 // SetId sets the Id field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotificationLogDetail) SetId(id uuid.UUID) {
+func (n *NotificationLogDetail) SetId(id string) {
 	n.Id = id
 	n.require(notificationLogDetailFieldId)
 }
@@ -773,188 +844,6 @@ func (n *NotificationLogDetail) MarshalJSON() ([]byte, error) {
 }
 
 func (n *NotificationLogDetail) String() string {
-	if n == nil {
-		return "<nil>"
-	}
-	if len(n.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(n.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(n); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", n)
-}
-
-var (
-	notificationLogSearchRequestFieldStartDate         = big.NewInt(1 << 0)
-	notificationLogSearchRequestFieldEndDate           = big.NewInt(1 << 1)
-	notificationLogSearchRequestFieldNotificationEvent = big.NewInt(1 << 2)
-	notificationLogSearchRequestFieldSucceeded         = big.NewInt(1 << 3)
-	notificationLogSearchRequestFieldOrgId             = big.NewInt(1 << 4)
-	notificationLogSearchRequestFieldPaypointId        = big.NewInt(1 << 5)
-)
-
-type NotificationLogSearchRequest struct {
-	// The start date for the search.
-	StartDate time.Time `json:"startDate" url:"startDate"`
-	// The end date for the search.
-	EndDate time.Time `json:"endDate" url:"endDate"`
-	// The type of notification event to filter by.
-	NotificationEvent *string `json:"notificationEvent,omitempty" url:"notificationEvent,omitempty"`
-	// Indicates whether the notification was successful.
-	Succeeded *bool `json:"succeeded,omitempty" url:"succeeded,omitempty"`
-	// The ID of the organization to filter by.
-	OrgId *int64 `json:"orgId,omitempty" url:"orgId,omitempty"`
-	// The ID of the paypoint to filter by.
-	PaypointId *int64 `json:"paypointId,omitempty" url:"paypointId,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (n *NotificationLogSearchRequest) GetStartDate() time.Time {
-	if n == nil {
-		return time.Time{}
-	}
-	return n.StartDate
-}
-
-func (n *NotificationLogSearchRequest) GetEndDate() time.Time {
-	if n == nil {
-		return time.Time{}
-	}
-	return n.EndDate
-}
-
-func (n *NotificationLogSearchRequest) GetNotificationEvent() *string {
-	if n == nil {
-		return nil
-	}
-	return n.NotificationEvent
-}
-
-func (n *NotificationLogSearchRequest) GetSucceeded() *bool {
-	if n == nil {
-		return nil
-	}
-	return n.Succeeded
-}
-
-func (n *NotificationLogSearchRequest) GetOrgId() *int64 {
-	if n == nil {
-		return nil
-	}
-	return n.OrgId
-}
-
-func (n *NotificationLogSearchRequest) GetPaypointId() *int64 {
-	if n == nil {
-		return nil
-	}
-	return n.PaypointId
-}
-
-func (n *NotificationLogSearchRequest) GetExtraProperties() map[string]interface{} {
-	if n == nil {
-		return nil
-	}
-	return n.extraProperties
-}
-
-func (n *NotificationLogSearchRequest) require(field *big.Int) {
-	if n.explicitFields == nil {
-		n.explicitFields = big.NewInt(0)
-	}
-	n.explicitFields.Or(n.explicitFields, field)
-}
-
-// SetStartDate sets the StartDate field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotificationLogSearchRequest) SetStartDate(startDate time.Time) {
-	n.StartDate = startDate
-	n.require(notificationLogSearchRequestFieldStartDate)
-}
-
-// SetEndDate sets the EndDate field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotificationLogSearchRequest) SetEndDate(endDate time.Time) {
-	n.EndDate = endDate
-	n.require(notificationLogSearchRequestFieldEndDate)
-}
-
-// SetNotificationEvent sets the NotificationEvent field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotificationLogSearchRequest) SetNotificationEvent(notificationEvent *string) {
-	n.NotificationEvent = notificationEvent
-	n.require(notificationLogSearchRequestFieldNotificationEvent)
-}
-
-// SetSucceeded sets the Succeeded field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotificationLogSearchRequest) SetSucceeded(succeeded *bool) {
-	n.Succeeded = succeeded
-	n.require(notificationLogSearchRequestFieldSucceeded)
-}
-
-// SetOrgId sets the OrgId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotificationLogSearchRequest) SetOrgId(orgId *int64) {
-	n.OrgId = orgId
-	n.require(notificationLogSearchRequestFieldOrgId)
-}
-
-// SetPaypointId sets the PaypointId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotificationLogSearchRequest) SetPaypointId(paypointId *int64) {
-	n.PaypointId = paypointId
-	n.require(notificationLogSearchRequestFieldPaypointId)
-}
-
-func (n *NotificationLogSearchRequest) UnmarshalJSON(data []byte) error {
-	type embed NotificationLogSearchRequest
-	var unmarshaler = struct {
-		embed
-		StartDate *internal.DateTime `json:"startDate"`
-		EndDate   *internal.DateTime `json:"endDate"`
-	}{
-		embed: embed(*n),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*n = NotificationLogSearchRequest(unmarshaler.embed)
-	n.StartDate = unmarshaler.StartDate.Time()
-	n.EndDate = unmarshaler.EndDate.Time()
-	extraProperties, err := internal.ExtractExtraProperties(data, *n)
-	if err != nil {
-		return err
-	}
-	n.extraProperties = extraProperties
-	n.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (n *NotificationLogSearchRequest) MarshalJSON() ([]byte, error) {
-	type embed NotificationLogSearchRequest
-	var marshaler = struct {
-		embed
-		StartDate *internal.DateTime `json:"startDate"`
-		EndDate   *internal.DateTime `json:"endDate"`
-	}{
-		embed:     embed(*n),
-		StartDate: internal.NewDateTime(n.StartDate),
-		EndDate:   internal.NewDateTime(n.EndDate),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, n.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (n *NotificationLogSearchRequest) String() string {
 	if n == nil {
 		return "<nil>"
 	}

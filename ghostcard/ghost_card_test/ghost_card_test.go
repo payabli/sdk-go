@@ -6,13 +6,14 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
+	http "net/http"
+	os "os"
+	testing "testing"
+
 	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
-	http "net/http"
-	os "os"
-	testing "testing"
 )
 
 func VerifyRequestCount(
@@ -20,7 +21,7 @@ func VerifyRequestCount(
 	testId string,
 	method string,
 	urlPath string,
-	queryParams map[string]string,
+	queryParams map[string]any,
 	expected int,
 ) {
 	wiremockURL := os.Getenv("WIREMOCK_URL")
@@ -45,9 +46,23 @@ func VerifyRequestCount(
 			}
 			reqBody.WriteString(`"`)
 			reqBody.WriteString(key)
-			reqBody.WriteString(`":{"equalTo":"`)
-			reqBody.WriteString(value)
-			reqBody.WriteString(`"}`)
+			switch v := value.(type) {
+			case string:
+				reqBody.WriteString(`":{"equalTo":"`)
+				reqBody.WriteString(v)
+				reqBody.WriteString(`"}`)
+			case []string:
+				reqBody.WriteString(`":{"hasExactly":[`)
+				for i, item := range v {
+					if i > 0 {
+						reqBody.WriteString(",")
+					}
+					reqBody.WriteString(`{"equalTo":"`)
+					reqBody.WriteString(item)
+					reqBody.WriteString(`"}`)
+				}
+				reqBody.WriteString(`]}`)
+			}
 			first = false
 		}
 		reqBody.WriteString("}")
@@ -71,9 +86,10 @@ func TestGhostCardCreateGhostCardWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.CreateGhostCardRequestBody{
-		VendorId:               int64(42),
+		VendorId:               int64(456),
 		ExpenseLimit:           500,
 		Amount:                 500,
 		MaxNumberOfUses:        3,
@@ -99,7 +115,7 @@ func TestGhostCardCreateGhostCardWithWireMock(
 	}
 	_, invocationErr := client.GhostCard.CreateGhostCard(
 		context.TODO(),
-		"8cfec2e0fa",
+		"8cfec329267",
 		request,
 		option.WithHTTPHeader(
 			http.Header{"X-Test-Id": []string{"TestGhostCardCreateGhostCardWithWireMock"}},
@@ -107,7 +123,7 @@ func TestGhostCardCreateGhostCardWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestGhostCardCreateGhostCardWithWireMock", "POST", "/MoneyOutCard/GhostCard/8cfec2e0fa", nil, 1)
+	VerifyRequestCount(t, "TestGhostCardCreateGhostCardWithWireMock", "POST", "/MoneyOutCard/GhostCard/8cfec329267", nil, 1)
 }
 
 func TestGhostCardUpdateCardWithWireMock(
@@ -119,6 +135,7 @@ func TestGhostCardUpdateCardWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.UpdateCardRequestBody{
 		CardToken: "gc_abc123def456",
@@ -126,7 +143,7 @@ func TestGhostCardUpdateCardWithWireMock(
 	}
 	_, invocationErr := client.GhostCard.UpdateCard(
 		context.TODO(),
-		"8cfec2e0fa",
+		"8cfec329267",
 		request,
 		option.WithHTTPHeader(
 			http.Header{"X-Test-Id": []string{"TestGhostCardUpdateCardWithWireMock"}},
@@ -134,5 +151,5 @@ func TestGhostCardUpdateCardWithWireMock(
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestGhostCardUpdateCardWithWireMock", "PATCH", "/MoneyOutCard/card/8cfec2e0fa", nil, 1)
+	VerifyRequestCount(t, "TestGhostCardUpdateCardWithWireMock", "PATCH", "/MoneyOutCard/card/8cfec329267", nil, 1)
 }

@@ -4,6 +4,7 @@ package ghostcard
 
 import (
 	context "context"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
@@ -25,8 +26,9 @@ func NewClient(options *core.RequestOptions) *Client {
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -39,6 +41,7 @@ func NewClient(options *core.RequestOptions) *Client {
 // Only one ghost card can exist per vendor per paypoint. To issue a new card to the same vendor, cancel the existing card first.
 func (c *Client) CreateGhostCard(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.CreateGhostCardRequestBody,
 	opts ...option.RequestOption,
@@ -58,6 +61,7 @@ func (c *Client) CreateGhostCard(
 // Updates the status of a virtual card (including ghost cards) under a paypoint.
 func (c *Client) UpdateCard(
 	ctx context.Context,
+	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
 	entry payabli.Entry,
 	request *payabli.UpdateCardRequestBody,
 	opts ...option.RequestOption,

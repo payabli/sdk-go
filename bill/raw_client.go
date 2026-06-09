@@ -4,11 +4,12 @@ package bill
 
 import (
 	context "context"
+	http "net/http"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
 	option "github.com/payabli/sdk-go/option"
-	http "net/http"
 )
 
 type RawClient struct {
@@ -23,8 +24,9 @@ func NewRawClient(options *core.RequestOptions) *RawClient {
 		baseURL: options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -63,6 +65,7 @@ func (r *RawClient) AddBill(
 			Method:          http.MethodPost,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -81,83 +84,12 @@ func (r *RawClient) AddBill(
 	}, nil
 }
 
-func (r *RawClient) DeleteAttachedFromBill(
-	ctx context.Context,
-	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
-	idBill int,
-	// The filename in Payabli. Filename is `zipName` in response to a
-	// request to `/api/Invoice/{idInvoice}`. Here, the filename is
-	// `0_Bill.pdf`.
-	//
-	// ```json
-	//   "DocumentsRef": {
-	//     "zipfile": "inva_269.zip",
-	//     "filelist": [
-	//       {
-	//         "originalName": "Bill.pdf",
-	//         "zipName": "0_Bill.pdf",
-	//         "descriptor": null
-	//       }
-	//     ]
-	//   }
-	//   ```
-	filename string,
-	request *payabli.DeleteAttachedFromBillRequest,
-	opts ...option.RequestOption,
-) (*core.Response[*payabli.BillResponse], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"https://api-sandbox.payabli.com/api",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/Bill/attachedFileFromBill/%v/%v",
-		idBill,
-		filename,
-	)
-	queryParams, err := internal.QueryValues(request)
-	if err != nil {
-		return nil, err
-	}
-	if len(queryParams) > 0 {
-		endpointURL += "?" + queryParams.Encode()
-	}
-	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
-	)
-	var response *payabli.BillResponse
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodDelete,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[*payabli.BillResponse]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       response,
-	}, nil
-}
-
-func (r *RawClient) DeleteBill(
+func (r *RawClient) GetBill(
 	ctx context.Context,
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
 	idBill int,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.BillResponse], error) {
+) (*core.Response[*payabli.GetBillResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -172,14 +104,15 @@ func (r *RawClient) DeleteBill(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.BillResponse
+	var response *payabli.GetBillResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
 			URL:             endpointURL,
-			Method:          http.MethodDelete,
+			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -190,7 +123,7 @@ func (r *RawClient) DeleteBill(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.BillResponse]{
+	return &core.Response[*payabli.GetBillResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -226,6 +159,7 @@ func (r *RawClient) EditBill(
 			Method:          http.MethodPut,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -244,21 +178,59 @@ func (r *RawClient) EditBill(
 	}, nil
 }
 
+func (r *RawClient) DeleteBill(
+	ctx context.Context,
+	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+	idBill int,
+	opts ...option.RequestOption,
+) (*core.Response[*payabli.BillResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://api-sandbox.payabli.com/api",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/Bill/%v",
+		idBill,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *payabli.BillResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodDelete,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*payabli.BillResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
 func (r *RawClient) GetAttachedFromBill(
 	ctx context.Context,
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
 	idBill int,
-	// The filename in Payabli. Filename is `zipName` in response to a request to `/api/Invoice/{idInvoice}`. Here, the filename is `0_Bill.pdf``.
-	// "DocumentsRef": {
-	//   "zipfile": "inva_269.zip",
-	//   "filelist": [
-	//     {
-	//       "originalName": "Bill.pdf",
-	//       "zipName": "0_Bill.pdf",
-	//       "descriptor": null
-	//     }
-	//   ]
-	// }
+	// The filename in Payabli. Get this from the `zipName` field
+	// in the `DocumentsRef.filelist` array returned by
+	// `/api/Bill/{idBill}`. Example: `0_Bill.pdf`.
 	filename string,
 	request *payabli.GetAttachedFromBillRequest,
 	opts ...option.RequestOption,
@@ -293,6 +265,7 @@ func (r *RawClient) GetAttachedFromBill(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -310,12 +283,17 @@ func (r *RawClient) GetAttachedFromBill(
 	}, nil
 }
 
-func (r *RawClient) GetBill(
+func (r *RawClient) DeleteAttachedFromBill(
 	ctx context.Context,
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
 	idBill int,
+	// The filename in Payabli. Get this from the `zipName` field
+	// in the `DocumentsRef.filelist` array returned by
+	// `/api/Bill/{idBill}`. Example: `0_Bill.pdf`.
+	filename string,
+	request *payabli.DeleteAttachedFromBillRequest,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.GetBillResponse], error) {
+) (*core.Response[*payabli.BillResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -323,21 +301,30 @@ func (r *RawClient) GetBill(
 		"https://api-sandbox.payabli.com/api",
 	)
 	endpointURL := internal.EncodeURL(
-		baseURL+"/Bill/%v",
+		baseURL+"/Bill/attachedFileFromBill/%v/%v",
 		idBill,
+		filename,
 	)
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
 	headers := internal.MergeHeaders(
 		r.options.ToHeader(),
 		options.ToHeader(),
 	)
-	var response *payabli.GetBillResponse
+	var response *payabli.BillResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
 			URL:             endpointURL,
-			Method:          http.MethodGet,
+			Method:          http.MethodDelete,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -348,7 +335,171 @@ func (r *RawClient) GetBill(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.GetBillResponse]{
+	return &core.Response[*payabli.BillResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) SendToApprovalBill(
+	ctx context.Context,
+	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+	idBill int,
+	request *payabli.SendToApprovalBillRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*payabli.BillResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://api-sandbox.payabli.com/api",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/Bill/approval/%v",
+		idBill,
+	)
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	if request.IdempotencyKey != nil {
+		headers.Add("idempotencyKey", *request.IdempotencyKey)
+	}
+	headers.Add("Content-Type", "application/json")
+	var response *payabli.BillResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*payabli.BillResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) ModifyApprovalBill(
+	ctx context.Context,
+	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+	idBill int,
+	request []string,
+	opts ...option.RequestOption,
+) (*core.Response[*payabli.ModifyApprovalBillResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://api-sandbox.payabli.com/api",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/Bill/approval/%v",
+		idBill,
+	)
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *payabli.ModifyApprovalBillResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPut,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*payabli.ModifyApprovalBillResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) SetApprovedBill(
+	ctx context.Context,
+	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
+	idBill int,
+	// String representing the approved status. Accepted values: 'true' or 'false'.
+	approved string,
+	request *payabli.SetApprovedBillRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*payabli.SetApprovedBillResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://api-sandbox.payabli.com/api",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/Bill/approval/%v/%v",
+		idBill,
+		approved,
+	)
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+	headers := internal.MergeHeaders(
+		r.options.ToHeader(),
+		options.ToHeader(),
+	)
+	var response *payabli.SetApprovedBillResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*payabli.SetApprovedBillResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -391,6 +542,7 @@ func (r *RawClient) ListBills(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -444,6 +596,7 @@ func (r *RawClient) ListBillsOrg(
 			Method:          http.MethodGet,
 			Headers:         headers,
 			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -455,167 +608,6 @@ func (r *RawClient) ListBillsOrg(
 		return nil, err
 	}
 	return &core.Response[*payabli.BillQueryResponse]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       response,
-	}, nil
-}
-
-func (r *RawClient) ModifyApprovalBill(
-	ctx context.Context,
-	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
-	idBill int,
-	request []string,
-	opts ...option.RequestOption,
-) (*core.Response[*payabli.ModifyApprovalBillResponse], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"https://api-sandbox.payabli.com/api",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/Bill/approval/%v",
-		idBill,
-	)
-	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
-	)
-	var response *payabli.ModifyApprovalBillResponse
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPut,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Request:         request,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[*payabli.ModifyApprovalBillResponse]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       response,
-	}, nil
-}
-
-func (r *RawClient) SendToApprovalBill(
-	ctx context.Context,
-	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
-	idBill int,
-	request *payabli.SendToApprovalBillRequest,
-	opts ...option.RequestOption,
-) (*core.Response[*payabli.BillResponse], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"https://api-sandbox.payabli.com/api",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/Bill/approval/%v",
-		idBill,
-	)
-	queryParams, err := internal.QueryValues(request)
-	if err != nil {
-		return nil, err
-	}
-	if len(queryParams) > 0 {
-		endpointURL += "?" + queryParams.Encode()
-	}
-	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
-	)
-	if request.IdempotencyKey != nil {
-		headers.Add("idempotencyKey", *request.IdempotencyKey)
-	}
-	headers.Add("Content-Type", "application/json")
-	var response *payabli.BillResponse
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodPost,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Request:         request,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[*payabli.BillResponse]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       response,
-	}, nil
-}
-
-func (r *RawClient) SetApprovedBill(
-	ctx context.Context,
-	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
-	idBill int,
-	// String representing the approved status. Accepted values: 'true' or 'false'.
-	approved string,
-	request *payabli.SetApprovedBillRequest,
-	opts ...option.RequestOption,
-) (*core.Response[*payabli.SetApprovedBillResponse], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"https://api-sandbox.payabli.com/api",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/Bill/approval/%v/%v",
-		idBill,
-		approved,
-	)
-	queryParams, err := internal.QueryValues(request)
-	if err != nil {
-		return nil, err
-	}
-	if len(queryParams) > 0 {
-		endpointURL += "?" + queryParams.Encode()
-	}
-	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
-	)
-	var response *payabli.SetApprovedBillResponse
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodGet,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[*payabli.SetApprovedBillResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

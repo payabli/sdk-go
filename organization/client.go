@@ -4,6 +4,7 @@ package organization
 
 import (
 	context "context"
+
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
 	internal "github.com/payabli/sdk-go/internal"
@@ -25,8 +26,9 @@ func NewClient(options *core.RequestOptions) *Client {
 		baseURL:         options.BaseURL,
 		caller: internal.NewCaller(
 			&internal.CallerParams{
-				Client:      options.HTTPClient,
-				MaxAttempts: options.MaxAttempts,
+				Client:         options.HTTPClient,
+				MaxAttempts:    options.MaxAttempts,
+				DisableRetries: options.DisableRetries,
 			},
 		),
 	}
@@ -41,24 +43,6 @@ func (c *Client) AddOrganization(
 	response, err := c.WithRawResponse.AddOrganization(
 		ctx,
 		request,
-		opts...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return response.Body, nil
-}
-
-// Delete an organization by ID.
-func (c *Client) DeleteOrganization(
-	ctx context.Context,
-	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
-	opts ...option.RequestOption,
-) (*payabli.DeleteOrganizationResponse, error) {
-	response, err := c.WithRawResponse.DeleteOrganization(
-		ctx,
-		orgId,
 		opts...,
 	)
 	if err != nil {
@@ -87,6 +71,24 @@ func (c *Client) EditOrganization(
 	return response.Body, nil
 }
 
+// Delete an organization by ID.
+func (c *Client) DeleteOrganization(
+	ctx context.Context,
+	// The numeric identifier for organization, assigned by Payabli.
+	orgId int,
+	opts ...option.RequestOption,
+) (*payabli.DeleteOrganizationResponse, error) {
+	response, err := c.WithRawResponse.DeleteOrganization(
+		ctx,
+		orgId,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 // Gets an organization's basic information by entry name (entrypoint identifier).
 func (c *Client) GetBasicOrganization(
 	ctx context.Context,
@@ -105,7 +107,7 @@ func (c *Client) GetBasicOrganization(
 	return response.Body, nil
 }
 
-// Gets an organizations basic details by org ID.
+// Gets an organization's basic details by org ID.
 func (c *Client) GetBasicOrganizationById(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.

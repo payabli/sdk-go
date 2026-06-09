@@ -6,13 +6,14 @@ import (
 	bytes "bytes"
 	context "context"
 	json "encoding/json"
+	http "net/http"
+	os "os"
+	testing "testing"
+
 	payabli "github.com/payabli/sdk-go"
 	client "github.com/payabli/sdk-go/client"
 	option "github.com/payabli/sdk-go/option"
 	require "github.com/stretchr/testify/require"
-	http "net/http"
-	os "os"
-	testing "testing"
 )
 
 func VerifyRequestCount(
@@ -20,7 +21,7 @@ func VerifyRequestCount(
 	testId string,
 	method string,
 	urlPath string,
-	queryParams map[string]string,
+	queryParams map[string]any,
 	expected int,
 ) {
 	wiremockURL := os.Getenv("WIREMOCK_URL")
@@ -45,9 +46,23 @@ func VerifyRequestCount(
 			}
 			reqBody.WriteString(`"`)
 			reqBody.WriteString(key)
-			reqBody.WriteString(`":{"equalTo":"`)
-			reqBody.WriteString(value)
-			reqBody.WriteString(`"}`)
+			switch v := value.(type) {
+			case string:
+				reqBody.WriteString(`":{"equalTo":"`)
+				reqBody.WriteString(v)
+				reqBody.WriteString(`"}`)
+			case []string:
+				reqBody.WriteString(`":{"hasExactly":[`)
+				for i, item := range v {
+					if i > 0 {
+						reqBody.WriteString(",")
+					}
+					reqBody.WriteString(`{"equalTo":"`)
+					reqBody.WriteString(item)
+					reqBody.WriteString(`"}`)
+				}
+				reqBody.WriteString(`]}`)
+			}
 			first = false
 		}
 		reqBody.WriteString("}")
@@ -71,25 +86,11 @@ func TestVendorAddVendorWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.VendorData{
 		VendorNumber: payabli.String(
-			"1234",
-		),
-		Name1: payabli.String(
-			"Herman's Coatings and Masonry",
-		),
-		Name2: payabli.String(
-			"<string>",
-		),
-		Ein: payabli.String(
-			"12-3456789",
-		),
-		Phone: payabli.String(
-			"5555555555",
-		),
-		Email: payabli.String(
-			"example@email.com",
+			"VEN-123",
 		),
 		Address1: payabli.String(
 			"123 Ocean Drive",
@@ -97,67 +98,85 @@ func TestVendorAddVendorWithWireMock(
 		Address2: payabli.String(
 			"Suite 400",
 		),
-		City: payabli.String(
-			"Miami",
-		),
-		State: payabli.String(
-			"FL",
-		),
-		Zip: payabli.String(
-			"33139",
-		),
-		Country: payabli.String(
-			"US",
-		),
-		Mcc: payabli.String(
-			"7777",
-		),
-		LocationCode: payabli.String(
-			"MIA123",
-		),
-		Contacts: &payabli.ContactsField{
-			&payabli.Contacts{
-				ContactName: payabli.String(
-					"Herman Martinez",
-				),
-				ContactEmail: payabli.String(
-					"example@email.com",
-				),
-				ContactTitle: payabli.String(
-					"Owner",
-				),
-				ContactPhone: payabli.String(
-					"3055550000",
-				),
-			},
-		},
 		BillingData: &payabli.BillingData{
-			Id: payabli.Int(
-				123,
-			),
-			BankName: payabli.String(
-				"Country Bank",
-			),
-			RoutingAccount: payabli.String(
-				"123123123",
-			),
 			AccountNumber: payabli.String(
 				"123123123",
 			),
-			TypeAccount: payabli.TypeAccountChecking.Ptr(),
+			BankAccountFunction: payabli.Int(
+				0,
+			),
 			BankAccountHolderName: payabli.String(
 				"Gruzya Adventure Outfitters LLC",
 			),
 			BankAccountHolderType: payabli.BankAccountHolderTypeBusiness.Ptr(),
-			BankAccountFunction: payabli.Int(
-				0,
+			BankName: payabli.String(
+				"Country Bank",
 			),
+			Id: payabli.Int(
+				123,
+			),
+			RoutingAccount: payabli.String(
+				"123123123",
+			),
+			TypeAccount: payabli.TypeAccountChecking.Ptr(),
 		},
+		City: payabli.String(
+			"Miami",
+		),
+		Contacts: &payabli.ContactsField{
+			&payabli.Contacts{
+				ContactEmail: payabli.String(
+					"example@email.com",
+				),
+				ContactName: payabli.String(
+					"Herman Martinez",
+				),
+				ContactPhone: payabli.String(
+					"3055550000",
+				),
+				ContactTitle: payabli.String(
+					"Owner",
+				),
+			},
+		},
+		Country: payabli.String(
+			"US",
+		),
+		CustomerVendorAccount: payabli.String(
+			"A-37622",
+		),
+		Ein: payabli.String(
+			"12-3456789",
+		),
+		Email: payabli.String(
+			"example@email.com",
+		),
+		InternalReferenceId: payabli.Int64(
+			int64(123),
+		),
+		LocationCode: payabli.String(
+			"MIA123",
+		),
+		Mcc: payabli.String(
+			"7777",
+		),
+		Name1: payabli.String(
+			"Herman's Coatings and Masonry",
+		),
+		Name2: payabli.String(
+			"<string>",
+		),
+		PayeeName1: payabli.String(
+			"<string>",
+		),
+		PayeeName2: payabli.String(
+			"<string>",
+		),
 		PaymentMethod: payabli.String(
 			"managed",
 		),
-		VendorStatus: payabli.Int(
-			1,
+		Phone: payabli.String(
+			"5555555555",
 		),
 		RemitAddress1: payabli.String(
 			"123 Walnut Street",
@@ -168,26 +187,23 @@ func TestVendorAddVendorWithWireMock(
 		RemitCity: payabli.String(
 			"Miami",
 		),
+		RemitCountry: payabli.String(
+			"US",
+		),
 		RemitState: payabli.String(
 			"FL",
 		),
 		RemitZip: payabli.String(
 			"31113",
 		),
-		RemitCountry: payabli.String(
-			"US",
+		State: payabli.String(
+			"FL",
 		),
-		PayeeName1: payabli.String(
-			"<string>",
+		VendorStatus: payabli.Int(
+			1,
 		),
-		PayeeName2: payabli.String(
-			"<string>",
-		),
-		CustomerVendorAccount: payabli.String(
-			"A-37622",
-		),
-		InternalReferenceId: payabli.Int64(
-			int64(123),
+		Zip: payabli.String(
+			"33139",
 		),
 	}
 	_, invocationErr := client.Vendor.AddVendor(
@@ -203,7 +219,7 @@ func TestVendorAddVendorWithWireMock(
 	VerifyRequestCount(t, "TestVendorAddVendorWithWireMock", "POST", "/Vendor/single/8cfec329267", nil, 1)
 }
 
-func TestVendorDeleteVendorWithWireMock(
+func TestVendorGetVendorWithWireMock(
 	t *testing.T,
 ) {
 	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
@@ -212,17 +228,18 @@ func TestVendorDeleteVendorWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
-	_, invocationErr := client.Vendor.DeleteVendor(
+	_, invocationErr := client.Vendor.GetVendor(
 		context.TODO(),
 		1,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestVendorDeleteVendorWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestVendorGetVendorWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestVendorDeleteVendorWithWireMock", "DELETE", "/Vendor/1", nil, 1)
+	VerifyRequestCount(t, "TestVendorGetVendorWithWireMock", "GET", "/Vendor/1", nil, 1)
 }
 
 func TestVendorEditVendorWithWireMock(
@@ -234,6 +251,7 @@ func TestVendorEditVendorWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.VendorData{
 		Name1: payabli.String(
@@ -253,7 +271,7 @@ func TestVendorEditVendorWithWireMock(
 	VerifyRequestCount(t, "TestVendorEditVendorWithWireMock", "PUT", "/Vendor/1", nil, 1)
 }
 
-func TestVendorGetVendorWithWireMock(
+func TestVendorDeleteVendorWithWireMock(
 	t *testing.T,
 ) {
 	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
@@ -262,17 +280,18 @@ func TestVendorGetVendorWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
-	_, invocationErr := client.Vendor.GetVendor(
+	_, invocationErr := client.Vendor.DeleteVendor(
 		context.TODO(),
 		1,
 		option.WithHTTPHeader(
-			http.Header{"X-Test-Id": []string{"TestVendorGetVendorWithWireMock"}},
+			http.Header{"X-Test-Id": []string{"TestVendorDeleteVendorWithWireMock"}},
 		),
 	)
 
 	require.NoError(t, invocationErr, "Client method call should succeed")
-	VerifyRequestCount(t, "TestVendorGetVendorWithWireMock", "GET", "/Vendor/1", nil, 1)
+	VerifyRequestCount(t, "TestVendorDeleteVendorWithWireMock", "DELETE", "/Vendor/1", nil, 1)
 }
 
 func TestVendorEnrichVendorWithWireMock(
@@ -284,27 +303,28 @@ func TestVendorEnrichVendorWithWireMock(
 	}
 	client := client.NewClient(
 		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
 	)
 	request := &payabli.VendorEnrichRequest{
-		VendorId: int64(3890),
+		VendorId: int64(456),
 		Scope: []string{
 			"invoice_scan",
 		},
 		ApplyEnrichmentData: payabli.Bool(
 			false,
 		),
-		FallbackMethod: payabli.String(
-			"check",
-		),
 		InvoiceFile: &payabli.FileContent{
-			Ftype: payabli.FileContentFtypePdf.Ptr(),
-			Filename: payabli.String(
-				"invoice-2026-001.pdf",
-			),
 			FContent: payabli.String(
 				"<base64-encoded-pdf>",
 			),
+			Filename: payabli.String(
+				"invoice-2026-001.pdf",
+			),
+			Ftype: payabli.FileContentFtypePdf.Ptr(),
 		},
+		FallbackMethod: payabli.String(
+			"check",
+		),
 	}
 	_, invocationErr := client.Vendor.EnrichVendor(
 		context.TODO(),
