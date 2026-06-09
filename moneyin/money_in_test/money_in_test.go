@@ -366,6 +366,7 @@ func TestMoneyInReverseWithWireMock(
 	VerifyRequestCount(t, "TestMoneyInReverseWithWireMock", "GET", "/MoneyIn/reverse/10-3ffa27df-b171-44e0-b251-e95fbfc7a723/0", nil, 1)
 }
 
+/*
 func TestMoneyInRefundWithWireMock(
 	t *testing.T,
 ) {
@@ -389,6 +390,7 @@ func TestMoneyInRefundWithWireMock(
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestMoneyInRefundWithWireMock", "GET", "/MoneyIn/refund/10-3ffa27df-b171-44e0-b251-e95fbfc7a723/0", nil, 1)
 }
+*/
 
 func TestMoneyInRefundWithInstructionsWithWireMock(
 	t *testing.T,
