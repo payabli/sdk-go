@@ -4239,7 +4239,7 @@ type CustomerData struct {
 	Firstname *string `json:"firstname,omitempty" url:"firstname,omitempty"`
 	// Customer last name
 	Lastname *string `json:"lastname,omitempty" url:"lastname,omitempty"`
-	// Customer phone number
+	// Customer phone number. Payabli normalizes this value when it's stored. For example, `(555) 555-0100` is stored as `+15555550100`.
 	Phone *string `json:"phone,omitempty" url:"phone,omitempty"`
 	// Customer email address.
 	Email *Email `json:"email,omitempty" url:"email,omitempty"`
@@ -19823,8 +19823,11 @@ func (s *SettingsQueryRecord) String() string {
 // for a full reference.
 type SettlementStatus = int
 
+// Name of the settlement status.
+type SettlementStatusName = *string
+
 // The settlement status of the payout transaction. See
-// [Payout Transaction Statuses](/guides/money-out-statuses#payout-transaction-statuses)
+// [Payout Transaction Statuses](/guides/pay-out-status-reference#payout-transaction-statuses)
 // for a full reference.
 type SettlementStatusPayout = string
 
@@ -23132,12 +23135,13 @@ var (
 )
 
 type VendorQueryRecord struct {
-	AdditionalData        *AdditionalData               `json:"additionalData,omitempty" url:"additionalData,omitempty"`
-	Address1              *AddressNullable              `json:"Address1,omitempty" url:"Address1,omitempty"`
-	Address2              *AddressAddtlNullable         `json:"Address2,omitempty" url:"Address2,omitempty"`
-	BillingData           *BillingDataResponse          `json:"BillingData,omitempty" url:"BillingData,omitempty"`
-	City                  *CityNullable                 `json:"City,omitempty" url:"City,omitempty"`
-	Contacts              *ContactsResponse             `json:"Contacts,omitempty" url:"Contacts,omitempty"`
+	AdditionalData *AdditionalData       `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	Address1       *AddressNullable      `json:"Address1,omitempty" url:"Address1,omitempty"`
+	Address2       *AddressAddtlNullable `json:"Address2,omitempty" url:"Address2,omitempty"`
+	BillingData    *BillingDataResponse  `json:"BillingData,omitempty" url:"BillingData,omitempty"`
+	City           *CityNullable         `json:"City,omitempty" url:"City,omitempty"`
+	// Array of objects describing the vendor's contacts.
+	Contacts              []*ContactsResponse           `json:"Contacts,omitempty" url:"Contacts,omitempty"`
 	Country               *string                       `json:"Country,omitempty" url:"Country,omitempty"`
 	CreatedDate           *CreatedAt                    `json:"CreatedDate,omitempty" url:"CreatedDate,omitempty"`
 	CustomerVendorAccount *string                       `json:"customerVendorAccount,omitempty" url:"customerVendorAccount,omitempty"`
@@ -23233,7 +23237,7 @@ func (v *VendorQueryRecord) GetCity() *CityNullable {
 	return v.City
 }
 
-func (v *VendorQueryRecord) GetContacts() *ContactsResponse {
+func (v *VendorQueryRecord) GetContacts() []*ContactsResponse {
 	if v == nil {
 		return nil
 	}
@@ -23606,7 +23610,7 @@ func (v *VendorQueryRecord) SetCity(city *CityNullable) {
 
 // SetContacts sets the Contacts field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorQueryRecord) SetContacts(contacts *ContactsResponse) {
+func (v *VendorQueryRecord) SetContacts(contacts []*ContactsResponse) {
 	v.Contacts = contacts
 	v.require(vendorQueryRecordFieldContacts)
 }

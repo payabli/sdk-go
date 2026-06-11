@@ -59157,7 +59157,7 @@ func TestSettersTransferOutDetailRecord(t *testing.T) {
 
 	t.Run("SetSettlementStatusName", func(t *testing.T) {
 		obj := &TransferOutDetailRecord{}
-		var fernTestValueSettlementStatusName *string
+		var fernTestValueSettlementStatusName *SettlementStatusName
 		obj.SetSettlementStatusName(fernTestValueSettlementStatusName)
 		assert.Equal(t, fernTestValueSettlementStatusName, obj.SettlementStatusName)
 		assert.NotNil(t, obj.explicitFields)
@@ -60991,7 +60991,7 @@ func TestGettersTransferOutDetailRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
-		var expected *string
+		var expected *SettlementStatusName
 		obj.SettlementStatusName = expected
 
 		// Act & Assert
@@ -62967,7 +62967,7 @@ func TestSettersMarkExplicitTransferOutDetailRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransferOutDetailRecord{}
-		var fernTestValueSettlementStatusName *string
+		var fernTestValueSettlementStatusName *SettlementStatusName
 
 		// Act
 		obj.SetSettlementStatusName(fernTestValueSettlementStatusName)

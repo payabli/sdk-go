@@ -9,10 +9,10 @@
       "path": "github.com/payabli/sdk-go"
     }
   },
-  "originGitCommit": "38a88eb882c41a6a09d736628c1ad9fed6c7eae3",
+  "originGitCommit": "21b1f70a2e9bfc3b23ab1d28054848d68be85fdc",
   "originGitCommitIsDirty": true,
   "invokedBy": "ci",
-  "requestedVersion": "1.0.2",
+  "requestedVersion": "1.0.3",
   "ciProvider": "github",
-  "sdkVersion": "v1.0.2"
+  "sdkVersion": "v1.0.3"
 }

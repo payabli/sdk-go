@@ -2071,7 +2071,7 @@ func TestSettersBillDetailResponse(t *testing.T) {
 
 	t.Run("SetBatchId", func(t *testing.T) {
 		obj := &BillDetailResponse{}
-		var fernTestValueBatchId *string
+		var fernTestValueBatchId *float64
 		obj.SetBatchId(fernTestValueBatchId)
 		assert.Equal(t, fernTestValueBatchId, obj.BatchId)
 		assert.NotNil(t, obj.explicitFields)
@@ -2103,9 +2103,17 @@ func TestSettersBillDetailResponse(t *testing.T) {
 
 	t.Run("SetSettlementStatus", func(t *testing.T) {
 		obj := &BillDetailResponse{}
-		var fernTestValueSettlementStatus *SettlementStatus
+		var fernTestValueSettlementStatus *SettlementStatusPayout
 		obj.SetSettlementStatus(fernTestValueSettlementStatus)
 		assert.Equal(t, fernTestValueSettlementStatus, obj.SettlementStatus)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetSettlementStatusName", func(t *testing.T) {
+		obj := &BillDetailResponse{}
+		var fernTestValueSettlementStatusName *SettlementStatusName
+		obj.SetSettlementStatusName(fernTestValueSettlementStatusName)
+		assert.Equal(t, fernTestValueSettlementStatusName, obj.SettlementStatusName)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -2154,6 +2162,14 @@ func TestSettersBillDetailResponse(t *testing.T) {
 		var fernTestValueRiskActionCode *RiskActionCode
 		obj.SetRiskActionCode(fernTestValueRiskActionCode)
 		assert.Equal(t, fernTestValueRiskActionCode, obj.RiskActionCode)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetEntityId", func(t *testing.T) {
+		obj := &BillDetailResponse{}
+		var fernTestValueEntityId *EntityIdString
+		obj.SetEntityId(fernTestValueEntityId)
+		assert.Equal(t, fernTestValueEntityId, obj.EntityId)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -3088,7 +3104,7 @@ func TestGettersBillDetailResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BillDetailResponse{}
-		var expected *string
+		var expected *float64
 		obj.BatchId = expected
 
 		// Act & Assert
@@ -3220,7 +3236,7 @@ func TestGettersBillDetailResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BillDetailResponse{}
-		var expected *SettlementStatus
+		var expected *SettlementStatusPayout
 		obj.SettlementStatus = expected
 
 		// Act & Assert
@@ -3247,6 +3263,39 @@ func TestGettersBillDetailResponse(t *testing.T) {
 			}
 		}()
 		_ = obj.GetSettlementStatus() // Should return zero value
+	})
+
+	t.Run("GetSettlementStatusName", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BillDetailResponse{}
+		var expected *SettlementStatusName
+		obj.SettlementStatusName = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetSettlementStatusName(), "getter should return the property value")
+	})
+
+	t.Run("GetSettlementStatusName_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BillDetailResponse{}
+		obj.SettlementStatusName = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetSettlementStatusName(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetSettlementStatusName_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *BillDetailResponse
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetSettlementStatusName() // Should return zero value
 	})
 
 	t.Run("GetRiskFlagged", func(t *testing.T) {
@@ -3445,6 +3494,39 @@ func TestGettersBillDetailResponse(t *testing.T) {
 			}
 		}()
 		_ = obj.GetRiskActionCode() // Should return zero value
+	})
+
+	t.Run("GetEntityId", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BillDetailResponse{}
+		var expected *EntityIdString
+		obj.EntityId = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetEntityId(), "getter should return the property value")
+	})
+
+	t.Run("GetEntityId_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BillDetailResponse{}
+		obj.EntityId = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetEntityId(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetEntityId_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *BillDetailResponse
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetEntityId() // Should return zero value
 	})
 
 }
@@ -4322,7 +4404,7 @@ func TestSettersMarkExplicitBillDetailResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BillDetailResponse{}
-		var fernTestValueBatchId *string
+		var fernTestValueBatchId *float64
 
 		// Act
 		obj.SetBatchId(fernTestValueBatchId)
@@ -4446,10 +4528,41 @@ func TestSettersMarkExplicitBillDetailResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BillDetailResponse{}
-		var fernTestValueSettlementStatus *SettlementStatus
+		var fernTestValueSettlementStatus *SettlementStatusPayout
 
 		// Act
 		obj.SetSettlementStatus(fernTestValueSettlementStatus)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetSettlementStatusName_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BillDetailResponse{}
+		var fernTestValueSettlementStatusName *SettlementStatusName
+
+		// Act
+		obj.SetSettlementStatusName(fernTestValueSettlementStatusName)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -4636,6 +4749,37 @@ func TestSettersMarkExplicitBillDetailResponse(t *testing.T) {
 
 		// Act
 		obj.SetRiskActionCode(fernTestValueRiskActionCode)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetEntityId_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &BillDetailResponse{}
+		var fernTestValueEntityId *EntityIdString
+
+		// Act
+		obj.SetEntityId(fernTestValueEntityId)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)

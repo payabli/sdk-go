@@ -61158,7 +61158,7 @@ func TestSettersVendorQueryRecord(t *testing.T) {
 
 	t.Run("SetContacts", func(t *testing.T) {
 		obj := &VendorQueryRecord{}
-		var fernTestValueContacts *ContactsResponse
+		var fernTestValueContacts []*ContactsResponse
 		obj.SetContacts(fernTestValueContacts)
 		assert.Equal(t, fernTestValueContacts, obj.Contacts)
 		assert.NotNil(t, obj.explicitFields)
@@ -61696,7 +61696,7 @@ func TestGettersVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var expected *ContactsResponse
+		var expected []*ContactsResponse
 		obj.Contacts = expected
 
 		// Act & Assert
@@ -63372,7 +63372,7 @@ func TestSettersMarkExplicitVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var fernTestValueContacts *ContactsResponse
+		var fernTestValueContacts []*ContactsResponse
 
 		// Act
 		obj.SetContacts(fernTestValueContacts)

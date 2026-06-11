@@ -810,12 +810,14 @@ var (
 	billDetailResponseFieldIsSameDayAch         = big.NewInt(1 << 30)
 	billDetailResponseFieldScheduleId           = big.NewInt(1 << 31)
 	billDetailResponseFieldSettlementStatus     = big.NewInt(1 << 32)
-	billDetailResponseFieldRiskFlagged          = big.NewInt(1 << 33)
-	billDetailResponseFieldRiskFlaggedOn        = big.NewInt(1 << 34)
-	billDetailResponseFieldRiskStatus           = big.NewInt(1 << 35)
-	billDetailResponseFieldRiskReason           = big.NewInt(1 << 36)
-	billDetailResponseFieldRiskAction           = big.NewInt(1 << 37)
-	billDetailResponseFieldRiskActionCode       = big.NewInt(1 << 38)
+	billDetailResponseFieldSettlementStatusName = big.NewInt(1 << 33)
+	billDetailResponseFieldRiskFlagged          = big.NewInt(1 << 34)
+	billDetailResponseFieldRiskFlaggedOn        = big.NewInt(1 << 35)
+	billDetailResponseFieldRiskStatus           = big.NewInt(1 << 36)
+	billDetailResponseFieldRiskReason           = big.NewInt(1 << 37)
+	billDetailResponseFieldRiskAction           = big.NewInt(1 << 38)
+	billDetailResponseFieldRiskActionCode       = big.NewInt(1 << 39)
+	billDetailResponseFieldEntityId             = big.NewInt(1 << 40)
 )
 
 type BillDetailResponse struct {
@@ -874,17 +876,19 @@ type BillDetailResponse struct {
 	ExternalPaypointId *ExternalPaypointId `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
 	EntryName          *Entry              `json:"EntryName,omitempty" url:"EntryName,omitempty"`
 	// Identifier for the batch in which this transaction was processed. Used to track and reconcile batch-level operations.
-	BatchId              *string               `json:"BatchId,omitempty" url:"BatchId,omitempty"`
-	HasVcardTransactions *HasVcardTransactions `json:"HasVcardTransactions,omitempty" url:"HasVcardTransactions,omitempty"`
-	IsSameDayAch         *IsSameDayAch         `json:"IsSameDayACH,omitempty" url:"IsSameDayACH,omitempty"`
-	ScheduleId           *ScheduleId           `json:"ScheduleId,omitempty" url:"ScheduleId,omitempty"`
-	SettlementStatus     *SettlementStatus     `json:"SettlementStatus,omitempty" url:"SettlementStatus,omitempty"`
-	RiskFlagged          *RiskFlagged          `json:"RiskFlagged,omitempty" url:"RiskFlagged,omitempty"`
-	RiskFlaggedOn        *RiskFlaggedOn        `json:"RiskFlaggedOn,omitempty" url:"RiskFlaggedOn,omitempty"`
-	RiskStatus           *RiskStatus           `json:"RiskStatus,omitempty" url:"RiskStatus,omitempty"`
-	RiskReason           *RiskReason           `json:"RiskReason,omitempty" url:"RiskReason,omitempty"`
-	RiskAction           *RiskAction           `json:"RiskAction,omitempty" url:"RiskAction,omitempty"`
-	RiskActionCode       *RiskActionCode       `json:"RiskActionCode,omitempty" url:"RiskActionCode,omitempty"`
+	BatchId              *float64                `json:"BatchId,omitempty" url:"BatchId,omitempty"`
+	HasVcardTransactions *HasVcardTransactions   `json:"HasVcardTransactions,omitempty" url:"HasVcardTransactions,omitempty"`
+	IsSameDayAch         *IsSameDayAch           `json:"IsSameDayACH,omitempty" url:"IsSameDayACH,omitempty"`
+	ScheduleId           *ScheduleId             `json:"ScheduleId,omitempty" url:"ScheduleId,omitempty"`
+	SettlementStatus     *SettlementStatusPayout `json:"SettlementStatus,omitempty" url:"SettlementStatus,omitempty"`
+	SettlementStatusName *SettlementStatusName   `json:"SettlementStatusName,omitempty" url:"SettlementStatusName,omitempty"`
+	RiskFlagged          *RiskFlagged            `json:"RiskFlagged,omitempty" url:"RiskFlagged,omitempty"`
+	RiskFlaggedOn        *RiskFlaggedOn          `json:"RiskFlaggedOn,omitempty" url:"RiskFlaggedOn,omitempty"`
+	RiskStatus           *RiskStatus             `json:"RiskStatus,omitempty" url:"RiskStatus,omitempty"`
+	RiskReason           *RiskReason             `json:"RiskReason,omitempty" url:"RiskReason,omitempty"`
+	RiskAction           *RiskAction             `json:"RiskAction,omitempty" url:"RiskAction,omitempty"`
+	RiskActionCode       *RiskActionCode         `json:"RiskActionCode,omitempty" url:"RiskActionCode,omitempty"`
+	EntityId             *EntityIdString         `json:"EntityId,omitempty" url:"EntityId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1089,7 +1093,7 @@ func (b *BillDetailResponse) GetEntryName() *Entry {
 	return b.EntryName
 }
 
-func (b *BillDetailResponse) GetBatchId() *string {
+func (b *BillDetailResponse) GetBatchId() *float64 {
 	if b == nil {
 		return nil
 	}
@@ -1117,11 +1121,18 @@ func (b *BillDetailResponse) GetScheduleId() *ScheduleId {
 	return b.ScheduleId
 }
 
-func (b *BillDetailResponse) GetSettlementStatus() *SettlementStatus {
+func (b *BillDetailResponse) GetSettlementStatus() *SettlementStatusPayout {
 	if b == nil {
 		return nil
 	}
 	return b.SettlementStatus
+}
+
+func (b *BillDetailResponse) GetSettlementStatusName() *SettlementStatusName {
+	if b == nil {
+		return nil
+	}
+	return b.SettlementStatusName
 }
 
 func (b *BillDetailResponse) GetRiskFlagged() *RiskFlagged {
@@ -1164,6 +1175,13 @@ func (b *BillDetailResponse) GetRiskActionCode() *RiskActionCode {
 		return nil
 	}
 	return b.RiskActionCode
+}
+
+func (b *BillDetailResponse) GetEntityId() *EntityIdString {
+	if b == nil {
+		return nil
+	}
+	return b.EntityId
 }
 
 func (b *BillDetailResponse) GetExtraProperties() map[string]interface{} {
@@ -1378,7 +1396,7 @@ func (b *BillDetailResponse) SetEntryName(entryName *Entry) {
 
 // SetBatchId sets the BatchId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillDetailResponse) SetBatchId(batchId *string) {
+func (b *BillDetailResponse) SetBatchId(batchId *float64) {
 	b.BatchId = batchId
 	b.require(billDetailResponseFieldBatchId)
 }
@@ -1406,9 +1424,16 @@ func (b *BillDetailResponse) SetScheduleId(scheduleId *ScheduleId) {
 
 // SetSettlementStatus sets the SettlementStatus field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillDetailResponse) SetSettlementStatus(settlementStatus *SettlementStatus) {
+func (b *BillDetailResponse) SetSettlementStatus(settlementStatus *SettlementStatusPayout) {
 	b.SettlementStatus = settlementStatus
 	b.require(billDetailResponseFieldSettlementStatus)
+}
+
+// SetSettlementStatusName sets the SettlementStatusName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillDetailResponse) SetSettlementStatusName(settlementStatusName *SettlementStatusName) {
+	b.SettlementStatusName = settlementStatusName
+	b.require(billDetailResponseFieldSettlementStatusName)
 }
 
 // SetRiskFlagged sets the RiskFlagged field and marks it as non-optional;
@@ -1451,6 +1476,13 @@ func (b *BillDetailResponse) SetRiskAction(riskAction *RiskAction) {
 func (b *BillDetailResponse) SetRiskActionCode(riskActionCode *RiskActionCode) {
 	b.RiskActionCode = riskActionCode
 	b.require(billDetailResponseFieldRiskActionCode)
+}
+
+// SetEntityId sets the EntityId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillDetailResponse) SetEntityId(entityId *EntityIdString) {
+	b.EntityId = entityId
+	b.require(billDetailResponseFieldEntityId)
 }
 
 func (b *BillDetailResponse) UnmarshalJSON(data []byte) error {
@@ -2015,6 +2047,11 @@ func (c *CaptureAllOutResponseResponseDataItem) String() string {
 	}
 	return fmt.Sprintf("%#v", c)
 }
+
+// The entity's ID in Payabli. If the entity is a paypoint, this is the
+// paypoint ID. If the entity is an organization, this is the organization
+// ID.
+type EntityIdString = string
 
 // Lot number associated with the bill.
 type LotNumber = string
