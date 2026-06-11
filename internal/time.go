@@ -65,12 +65,19 @@ func (d *Date) UnmarshalJSON(data []byte) error {
 	}
 
 	parsedTime, err := time.Parse(dateFormat, raw)
-	if err != nil {
-		return err
+	if err == nil {
+		*d = Date{t: &parsedTime}
+		return nil
 	}
 
-	*d = Date{t: &parsedTime}
-	return nil
+	// Fall back to MM-DD-YYYY format.
+	parsedTime, err = time.Parse("01-02-2006", raw)
+	if err == nil {
+		*d = Date{t: &parsedTime}
+		return nil
+	}
+
+	return fmt.Errorf("unable to parse date string %q: expected YYYY-MM-DD or MM-DD-YYYY", raw)
 }
 
 // DateTime wraps time.Time and adapts its JSON representation
