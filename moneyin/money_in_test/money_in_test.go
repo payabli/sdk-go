@@ -77,7 +77,6 @@ func VerifyRequestCount(
 	require.Equal(t, expected, len(result.Requests))
 }
 
-/*
 func TestMoneyInAuthorizeWithWireMock(
 	t *testing.T,
 ) {
@@ -140,7 +139,6 @@ func TestMoneyInAuthorizeWithWireMock(
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestMoneyInAuthorizeWithWireMock", "POST", "/MoneyIn/authorize", nil, 1)
 }
-*/
 
 func TestMoneyInCaptureWithWireMock(
 	t *testing.T,
@@ -366,7 +364,6 @@ func TestMoneyInReverseWithWireMock(
 	VerifyRequestCount(t, "TestMoneyInReverseWithWireMock", "GET", "/MoneyIn/reverse/10-3ffa27df-b171-44e0-b251-e95fbfc7a723/0", nil, 1)
 }
 
-/*
 func TestMoneyInRefundWithWireMock(
 	t *testing.T,
 ) {
@@ -390,7 +387,6 @@ func TestMoneyInRefundWithWireMock(
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestMoneyInRefundWithWireMock", "GET", "/MoneyIn/refund/10-3ffa27df-b171-44e0-b251-e95fbfc7a723/0", nil, 1)
 }
-*/
 
 func TestMoneyInRefundWithInstructionsWithWireMock(
 	t *testing.T,
@@ -742,9 +738,11 @@ func TestMoneyInRefundv2WithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithApiKey("test-value"),
 	)
+	request := &payabli.RefundV2Request{}
 	_, invocationErr := client.MoneyIn.Refundv2(
 		context.TODO(),
 		"10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
+		request,
 		option.WithHTTPHeader(
 			http.Header{"X-Test-Id": []string{"TestMoneyInRefundv2WithWireMock"}},
 		),
@@ -765,10 +763,12 @@ func TestMoneyInRefundv2AmountWithWireMock(
 		option.WithBaseURL(WireMockBaseURL),
 		option.WithApiKey("test-value"),
 	)
+	request := &payabli.RefundV2Request{}
 	_, invocationErr := client.MoneyIn.Refundv2Amount(
 		context.TODO(),
 		"10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
 		0,
+		request,
 		option.WithHTTPHeader(
 			http.Header{"X-Test-Id": []string{"TestMoneyInRefundv2AmountWithWireMock"}},
 		),
