@@ -2218,7 +2218,7 @@ func TestSettersBillDetailResponse(t *testing.T) {
 
 	t.Run("SetSettlementStatusName", func(t *testing.T) {
 		obj := &BillDetailResponse{}
-		var fernTestValueSettlementStatusName *SettlementStatusName
+		var fernTestValueSettlementStatusName SettlementStatusName
 		obj.SetSettlementStatusName(fernTestValueSettlementStatusName)
 		assert.Equal(t, fernTestValueSettlementStatusName, obj.SettlementStatusName)
 		assert.NotNil(t, obj.explicitFields)
@@ -3376,21 +3376,11 @@ func TestGettersBillDetailResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BillDetailResponse{}
-		var expected *SettlementStatusName
+		var expected SettlementStatusName
 		obj.SettlementStatusName = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetSettlementStatusName(), "getter should return the property value")
-	})
-
-	t.Run("GetSettlementStatusName_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &BillDetailResponse{}
-		obj.SettlementStatusName = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetSettlementStatusName(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetSettlementStatusName_NilReceiver", func(t *testing.T) {
@@ -4666,7 +4656,7 @@ func TestSettersMarkExplicitBillDetailResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BillDetailResponse{}
-		var fernTestValueSettlementStatusName *SettlementStatusName
+		var fernTestValueSettlementStatusName SettlementStatusName
 
 		// Act
 		obj.SetSettlementStatusName(fernTestValueSettlementStatusName)

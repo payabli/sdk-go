@@ -1,7 +1,7 @@
 {
   "cliVersion": "5.56.0",
   "generatorName": "fernapi/fern-go-sdk",
-  "generatorVersion": "1.42.3",
+  "generatorVersion": "1.46.2",
   "generatorConfig": {
     "packageName": "payabli",
     "enableWireTests": true,
@@ -9,10 +9,10 @@
       "path": "github.com/payabli/sdk-go"
     }
   },
-  "originGitCommit": "1aeb9b5f59cac476a429df4671f575ed07ab5731",
+  "originGitCommit": "85ba08d40b3e8f0c5eba42a19f94905104dba840",
   "originGitCommitIsDirty": true,
   "invokedBy": "ci",
-  "requestedVersion": "1.0.4",
+  "requestedVersion": "1.0.5",
   "ciProvider": "github",
-  "sdkVersion": "v1.0.4"
+  "sdkVersion": "v1.0.5"
 }

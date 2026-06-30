@@ -946,7 +946,7 @@ type BillDetailResponse struct {
 	IsSameDayAch         *IsSameDayAch           `json:"IsSameDayACH,omitempty" url:"IsSameDayACH,omitempty"`
 	ScheduleId           *ScheduleId             `json:"ScheduleId,omitempty" url:"ScheduleId,omitempty"`
 	SettlementStatus     *SettlementStatusPayout `json:"SettlementStatus,omitempty" url:"SettlementStatus,omitempty"`
-	SettlementStatusName *SettlementStatusName   `json:"SettlementStatusName,omitempty" url:"SettlementStatusName,omitempty"`
+	SettlementStatusName SettlementStatusName    `json:"SettlementStatusName,omitempty" url:"SettlementStatusName,omitempty"`
 	RiskFlagged          *RiskFlagged            `json:"RiskFlagged,omitempty" url:"RiskFlagged,omitempty"`
 	RiskFlaggedOn        *RiskFlaggedOn          `json:"RiskFlaggedOn,omitempty" url:"RiskFlaggedOn,omitempty"`
 	RiskStatus           *RiskStatus             `json:"RiskStatus,omitempty" url:"RiskStatus,omitempty"`
@@ -1193,7 +1193,7 @@ func (b *BillDetailResponse) GetSettlementStatus() *SettlementStatusPayout {
 	return b.SettlementStatus
 }
 
-func (b *BillDetailResponse) GetSettlementStatusName() *SettlementStatusName {
+func (b *BillDetailResponse) GetSettlementStatusName() SettlementStatusName {
 	if b == nil {
 		return nil
 	}
@@ -1496,7 +1496,7 @@ func (b *BillDetailResponse) SetSettlementStatus(settlementStatus *SettlementSta
 
 // SetSettlementStatusName sets the SettlementStatusName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillDetailResponse) SetSettlementStatusName(settlementStatusName *SettlementStatusName) {
+func (b *BillDetailResponse) SetSettlementStatusName(settlementStatusName SettlementStatusName) {
 	b.SettlementStatusName = settlementStatusName
 	b.require(billDetailResponseFieldSettlementStatusName)
 }

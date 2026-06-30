@@ -20949,8 +20949,8 @@ type TransferOutDetailRecord struct {
 	// ID of the schedule if applicable.
 	ScheduleId *int `json:"ScheduleId,omitempty" url:"ScheduleId,omitempty"`
 	// Settlement status.
-	SettlementStatus     *string               `json:"SettlementStatus,omitempty" url:"SettlementStatus,omitempty"`
-	SettlementStatusName *SettlementStatusName `json:"SettlementStatusName,omitempty" url:"SettlementStatusName,omitempty"`
+	SettlementStatus     *string              `json:"SettlementStatus,omitempty" url:"SettlementStatus,omitempty"`
+	SettlementStatusName SettlementStatusName `json:"SettlementStatusName,omitempty" url:"SettlementStatusName,omitempty"`
 	// Date of settlement.
 	SettlementDate *string `json:"SettlementDate,omitempty" url:"SettlementDate,omitempty"`
 	// Whether the transaction was flagged for risk.
@@ -21348,7 +21348,7 @@ func (t *TransferOutDetailRecord) GetSettlementStatus() *string {
 	return t.SettlementStatus
 }
 
-func (t *TransferOutDetailRecord) GetSettlementStatusName() *SettlementStatusName {
+func (t *TransferOutDetailRecord) GetSettlementStatusName() SettlementStatusName {
 	if t == nil {
 		return nil
 	}
@@ -21805,7 +21805,7 @@ func (t *TransferOutDetailRecord) SetSettlementStatus(settlementStatus *string) 
 
 // SetSettlementStatusName sets the SettlementStatusName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransferOutDetailRecord) SetSettlementStatusName(settlementStatusName *SettlementStatusName) {
+func (t *TransferOutDetailRecord) SetSettlementStatusName(settlementStatusName SettlementStatusName) {
 	t.SettlementStatusName = settlementStatusName
 	t.require(transferOutDetailRecordFieldSettlementStatusName)
 }

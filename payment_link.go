@@ -1447,6 +1447,8 @@ type PushPayLinkRequest struct {
 	Channel string
 	Email   *PushPayLinkRequestEmail
 	Sms     *PushPayLinkRequestSms
+
+	rawJSON json.RawMessage
 }
 
 func (p *PushPayLinkRequest) GetChannel() string {
@@ -1495,6 +1497,7 @@ func (p *PushPayLinkRequest) UnmarshalJSON(data []byte) error {
 		}
 		p.Sms = value
 	}
+	p.rawJSON = json.RawMessage(data)
 	return nil
 }
 
@@ -1507,6 +1510,9 @@ func (p PushPayLinkRequest) MarshalJSON() ([]byte, error) {
 	}
 	if p.Sms != nil {
 		return internal.MarshalJSONWithExtraProperty(p.Sms, "channel", "sms")
+	}
+	if len(p.rawJSON) > 0 {
+		return p.rawJSON, nil
 	}
 	return nil, fmt.Errorf("type %T does not define a non-empty union type", p)
 }
@@ -1539,6 +1545,9 @@ func (p *PushPayLinkRequest) validate() error {
 	}
 	if len(fields) == 0 {
 		if p.Channel != "" {
+			if len(p.rawJSON) > 0 {
+				return nil
+			}
 			return fmt.Errorf("type %T defines a discriminant set to %q but the field is not set", p, p.Channel)
 		}
 		return fmt.Errorf("type %T is empty", p)
