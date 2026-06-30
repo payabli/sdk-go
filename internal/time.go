@@ -159,6 +159,14 @@ func (d *DateTime) UnmarshalJSON(data []byte) error {
 	}
 	iso8601Err := err
 
+	// Fall back to space-separated datetime with timezone offset (e.g. "2025-02-15 10:30:00+00:00").
+	parsedTime, err = time.Parse("2006-01-02 15:04:05-07:00", raw)
+	if err == nil {
+		*d = DateTime{t: &parsedTime}
+		return nil
+	}
+	spaceSeparatedErr := err
+
 	// Fall back to date-only format 1
 	parsedTime, err = time.Parse("2006-01-02", raw)
 	if err == nil {
@@ -176,5 +184,5 @@ func (d *DateTime) UnmarshalJSON(data []byte) error {
 	}
 	dateOnly2Err := err
 
-	return fmt.Errorf("unable to parse datetime string %q: tried RFC3339Nano (%v), ISO8601 (%v), YYYY-MM-DD (%v), MM-DD-YYYY (%v)", raw, rfc3339NanoErr, iso8601Err, dateOnly1Err, dateOnly2Err)
+	return fmt.Errorf("unable to parse datetime string %q: tried RFC3339Nano (%v), ISO8601 (%v), YYYY-MM-DD (%v), MM-DD-YYYY (%v), YYYY-MM-DD 00:00:00-00:00 (%v)", raw, rfc3339NanoErr, iso8601Err, dateOnly1Err, dateOnly2Err, spaceSeparatedErr)
 }
