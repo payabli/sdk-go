@@ -275,7 +275,9 @@ type Achrouting = string
 type AdditionalData = map[string]map[string]any
 
 // Custom dictionary of key:value pairs. You can use this field to store any
-// data related to the object or for your system.
+// data related to the object or for your system. If you are using
+// [custom identifiers](/developers/developer-guides/entities-customers),
+// pass those in this object. Max length for a value is 100 characters.
 //
 // ```json
 //
@@ -445,6 +447,8 @@ type Authcode = string
 // - `{ method: "check" }` - Check payment method
 // - `{ method: "ach", achHolder: "...", achRouting: "...", achAccount: "...", achAccountType: "..." }` - ACH payment method with bank details
 // - `{ method: "ach", storedMethodId: "..." }` - ACH payment method using stored method ID
+// - `{ method: "wire", achHolder: "...", achRouting: "...", achAccount: "...", achAccountType: "..." }` - Wire transfer payment method (US only, irrevocable)
+// - `{ method: "rtp", achHolder: "...", achRouting: "...", achAccount: "...", achAccountType: "..." }` - Real-Time Payments method (US only, irrevocable)
 var (
 	authorizePaymentMethodFieldMethod                = big.NewInt(1 << 0)
 	authorizePaymentMethodFieldAchHolder             = big.NewInt(1 << 1)
@@ -459,7 +463,7 @@ var (
 )
 
 type AuthorizePaymentMethod struct {
-	// Payment method type - "managed", "vcard", "check", or "ach"
+	// Payment method type - "managed", "vcard", "check", "ach", "wire", or "rtp"
 	Method string `json:"method" url:"method"`
 	// Account holder name for ACH payments. Required when method is "ach" and not using `storedMethodId`.
 	AchHolder *string `json:"achHolder,omitempty" url:"achHolder,omitempty"`
@@ -5986,11 +5990,6 @@ func (c *CustomerSummaryRecord) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
-// Payabli-generated unique ID of customer owner of transaction. Returns `0`
-// if the transaction wasn't assigned to an existing customer or no customer
-// was created.
-type Customeridtrans = int64
-
 // Text code describing the result for CVV validation (applies only for card
 // transactions).
 type CvvResponse = string
@@ -8060,12 +8059,14 @@ type Mcity = string
 type Mcountry = string
 
 var (
-	methodElementFieldAllMethodsChecked = big.NewInt(1 << 0)
-	methodElementFieldEnabled           = big.NewInt(1 << 1)
-	methodElementFieldHeader            = big.NewInt(1 << 2)
-	methodElementFieldMethods           = big.NewInt(1 << 3)
-	methodElementFieldOrder             = big.NewInt(1 << 4)
-	methodElementFieldSettings          = big.NewInt(1 << 5)
+	methodElementFieldAllMethodsChecked  = big.NewInt(1 << 0)
+	methodElementFieldEnabled            = big.NewInt(1 << 1)
+	methodElementFieldHeader             = big.NewInt(1 << 2)
+	methodElementFieldMethods            = big.NewInt(1 << 3)
+	methodElementFieldOrder              = big.NewInt(1 << 4)
+	methodElementFieldPaymentDescription = big.NewInt(1 << 5)
+	methodElementFieldSettings           = big.NewInt(1 << 6)
+	methodElementFieldShowSaveMethod     = big.NewInt(1 << 7)
 )
 
 type MethodElement struct {
@@ -8076,8 +8077,12 @@ type MethodElement struct {
 	Header  *string      `json:"header,omitempty" url:"header,omitempty"`
 	Methods *MethodsList `json:"methods,omitempty" url:"methods,omitempty"`
 	Order   *Order       `json:"order,omitempty" url:"order,omitempty"`
+	// Description text shown in the payment methods section.
+	PaymentDescription *string `json:"paymentDescription,omitempty" url:"paymentDescription,omitempty"`
 	// Settings for wallet payment methods.
 	Settings *MethodElementSettings `json:"settings,omitempty" url:"settings,omitempty"`
+	// Controls whether the "Save payment details for future use" checkbox appears on the hosted payment page. Set to `false` to hide the checkbox. Defaults to `true`.
+	ShowSaveMethod *bool `json:"showSaveMethod,omitempty" url:"showSaveMethod,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -8121,11 +8126,25 @@ func (m *MethodElement) GetOrder() *Order {
 	return m.Order
 }
 
+func (m *MethodElement) GetPaymentDescription() *string {
+	if m == nil {
+		return nil
+	}
+	return m.PaymentDescription
+}
+
 func (m *MethodElement) GetSettings() *MethodElementSettings {
 	if m == nil {
 		return nil
 	}
 	return m.Settings
+}
+
+func (m *MethodElement) GetShowSaveMethod() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.ShowSaveMethod
 }
 
 func (m *MethodElement) GetExtraProperties() map[string]interface{} {
@@ -8177,11 +8196,25 @@ func (m *MethodElement) SetOrder(order *Order) {
 	m.require(methodElementFieldOrder)
 }
 
+// SetPaymentDescription sets the PaymentDescription field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodElement) SetPaymentDescription(paymentDescription *string) {
+	m.PaymentDescription = paymentDescription
+	m.require(methodElementFieldPaymentDescription)
+}
+
 // SetSettings sets the Settings field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (m *MethodElement) SetSettings(settings *MethodElementSettings) {
 	m.Settings = settings
 	m.require(methodElementFieldSettings)
+}
+
+// SetShowSaveMethod sets the ShowSaveMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodElement) SetShowSaveMethod(showSaveMethod *bool) {
+	m.ShowSaveMethod = showSaveMethod
+	m.require(methodElementFieldShowSaveMethod)
 }
 
 func (m *MethodElement) UnmarshalJSON(data []byte) error {
@@ -9062,6 +9095,9 @@ var (
 	methodsListFieldECheck     = big.NewInt(1 << 4)
 	methodsListFieldMastercard = big.NewInt(1 << 5)
 	methodsListFieldVisa       = big.NewInt(1 << 6)
+	methodsListFieldDiners     = big.NewInt(1 << 7)
+	methodsListFieldJcb        = big.NewInt(1 << 8)
+	methodsListFieldRdc        = big.NewInt(1 << 9)
 )
 
 type MethodsList struct {
@@ -9079,6 +9115,12 @@ type MethodsList struct {
 	Mastercard *bool `json:"mastercard,omitempty" url:"mastercard,omitempty"`
 	// When `true`, Visa is accepted.
 	Visa *bool `json:"visa,omitempty" url:"visa,omitempty"`
+	// When `true`, Diners Club is accepted.
+	Diners *bool `json:"diners,omitempty" url:"diners,omitempty"`
+	// When `true`, JCB is accepted.
+	Jcb *bool `json:"jcb,omitempty" url:"jcb,omitempty"`
+	// When `true`, Remote Deposit Capture (RDC) is accepted.
+	Rdc *bool `json:"rdc,omitempty" url:"rdc,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -9134,6 +9176,27 @@ func (m *MethodsList) GetVisa() *bool {
 		return nil
 	}
 	return m.Visa
+}
+
+func (m *MethodsList) GetDiners() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.Diners
+}
+
+func (m *MethodsList) GetJcb() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.Jcb
+}
+
+func (m *MethodsList) GetRdc() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.Rdc
 }
 
 func (m *MethodsList) GetExtraProperties() map[string]interface{} {
@@ -9197,6 +9260,27 @@ func (m *MethodsList) SetMastercard(mastercard *bool) {
 func (m *MethodsList) SetVisa(visa *bool) {
 	m.Visa = visa
 	m.require(methodsListFieldVisa)
+}
+
+// SetDiners sets the Diners field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodsList) SetDiners(diners *bool) {
+	m.Diners = diners
+	m.require(methodsListFieldDiners)
+}
+
+// SetJcb sets the Jcb field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodsList) SetJcb(jcb *bool) {
+	m.Jcb = jcb
+	m.require(methodsListFieldJcb)
+}
+
+// SetRdc sets the Rdc field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodsList) SetRdc(rdc *bool) {
+	m.Rdc = rdc
+	m.require(methodsListFieldRdc)
 }
 
 func (m *MethodsList) UnmarshalJSON(data []byte) error {
@@ -13242,202 +13326,6 @@ func (p *PayabliApiResponse00Responsedatanonobject) MarshalJSON() ([]byte, error
 }
 
 func (p *PayabliApiResponse00Responsedatanonobject) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
-var (
-	payabliApiResponse0ResponseDataFieldAuthCode          = big.NewInt(1 << 0)
-	payabliApiResponse0ResponseDataFieldAvsResponseText   = big.NewInt(1 << 1)
-	payabliApiResponse0ResponseDataFieldCustomerId        = big.NewInt(1 << 2)
-	payabliApiResponse0ResponseDataFieldCvvResponseText   = big.NewInt(1 << 3)
-	payabliApiResponse0ResponseDataFieldMethodReferenceId = big.NewInt(1 << 4)
-	payabliApiResponse0ResponseDataFieldReferenceId       = big.NewInt(1 << 5)
-	payabliApiResponse0ResponseDataFieldResultCode        = big.NewInt(1 << 6)
-	payabliApiResponse0ResponseDataFieldResultText        = big.NewInt(1 << 7)
-)
-
-type PayabliApiResponse0ResponseData struct {
-	AuthCode          *Authcode          `json:"AuthCode,omitempty" url:"AuthCode,omitempty"`
-	AvsResponseText   *AvsResponseText   `json:"avsResponseText,omitempty" url:"avsResponseText,omitempty"`
-	CustomerId        *Customeridtrans   `json:"CustomerId,omitempty" url:"CustomerId,omitempty"`
-	CvvResponseText   *CvvResponseText   `json:"cvvResponseText,omitempty" url:"cvvResponseText,omitempty"`
-	MethodReferenceId *MethodReferenceId `json:"methodReferenceId,omitempty" url:"methodReferenceId,omitempty"`
-	ReferenceId       *Referenceidtrans  `json:"ReferenceId,omitempty" url:"ReferenceId,omitempty"`
-	ResultCode        *ResultCode        `json:"ResultCode,omitempty" url:"ResultCode,omitempty"`
-	ResultText        *Resulttext        `json:"ResultText,omitempty" url:"ResultText,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PayabliApiResponse0ResponseData) GetAuthCode() *Authcode {
-	if p == nil {
-		return nil
-	}
-	return p.AuthCode
-}
-
-func (p *PayabliApiResponse0ResponseData) GetAvsResponseText() *AvsResponseText {
-	if p == nil {
-		return nil
-	}
-	return p.AvsResponseText
-}
-
-func (p *PayabliApiResponse0ResponseData) GetCustomerId() *Customeridtrans {
-	if p == nil {
-		return nil
-	}
-	return p.CustomerId
-}
-
-func (p *PayabliApiResponse0ResponseData) GetCvvResponseText() *CvvResponseText {
-	if p == nil {
-		return nil
-	}
-	return p.CvvResponseText
-}
-
-func (p *PayabliApiResponse0ResponseData) GetMethodReferenceId() *MethodReferenceId {
-	if p == nil {
-		return nil
-	}
-	return p.MethodReferenceId
-}
-
-func (p *PayabliApiResponse0ResponseData) GetReferenceId() *Referenceidtrans {
-	if p == nil {
-		return nil
-	}
-	return p.ReferenceId
-}
-
-func (p *PayabliApiResponse0ResponseData) GetResultCode() *ResultCode {
-	if p == nil {
-		return nil
-	}
-	return p.ResultCode
-}
-
-func (p *PayabliApiResponse0ResponseData) GetResultText() *Resulttext {
-	if p == nil {
-		return nil
-	}
-	return p.ResultText
-}
-
-func (p *PayabliApiResponse0ResponseData) GetExtraProperties() map[string]interface{} {
-	if p == nil {
-		return nil
-	}
-	return p.extraProperties
-}
-
-func (p *PayabliApiResponse0ResponseData) require(field *big.Int) {
-	if p.explicitFields == nil {
-		p.explicitFields = big.NewInt(0)
-	}
-	p.explicitFields.Or(p.explicitFields, field)
-}
-
-// SetAuthCode sets the AuthCode field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponse0ResponseData) SetAuthCode(authCode *Authcode) {
-	p.AuthCode = authCode
-	p.require(payabliApiResponse0ResponseDataFieldAuthCode)
-}
-
-// SetAvsResponseText sets the AvsResponseText field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponse0ResponseData) SetAvsResponseText(avsResponseText *AvsResponseText) {
-	p.AvsResponseText = avsResponseText
-	p.require(payabliApiResponse0ResponseDataFieldAvsResponseText)
-}
-
-// SetCustomerId sets the CustomerId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponse0ResponseData) SetCustomerId(customerId *Customeridtrans) {
-	p.CustomerId = customerId
-	p.require(payabliApiResponse0ResponseDataFieldCustomerId)
-}
-
-// SetCvvResponseText sets the CvvResponseText field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponse0ResponseData) SetCvvResponseText(cvvResponseText *CvvResponseText) {
-	p.CvvResponseText = cvvResponseText
-	p.require(payabliApiResponse0ResponseDataFieldCvvResponseText)
-}
-
-// SetMethodReferenceId sets the MethodReferenceId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponse0ResponseData) SetMethodReferenceId(methodReferenceId *MethodReferenceId) {
-	p.MethodReferenceId = methodReferenceId
-	p.require(payabliApiResponse0ResponseDataFieldMethodReferenceId)
-}
-
-// SetReferenceId sets the ReferenceId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponse0ResponseData) SetReferenceId(referenceId *Referenceidtrans) {
-	p.ReferenceId = referenceId
-	p.require(payabliApiResponse0ResponseDataFieldReferenceId)
-}
-
-// SetResultCode sets the ResultCode field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponse0ResponseData) SetResultCode(resultCode *ResultCode) {
-	p.ResultCode = resultCode
-	p.require(payabliApiResponse0ResponseDataFieldResultCode)
-}
-
-// SetResultText sets the ResultText field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponse0ResponseData) SetResultText(resultText *Resulttext) {
-	p.ResultText = resultText
-	p.require(payabliApiResponse0ResponseDataFieldResultText)
-}
-
-func (p *PayabliApiResponse0ResponseData) UnmarshalJSON(data []byte) error {
-	type unmarshaler PayabliApiResponse0ResponseData
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PayabliApiResponse0ResponseData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PayabliApiResponse0ResponseData) MarshalJSON() ([]byte, error) {
-	type embed PayabliApiResponse0ResponseData
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*p),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (p *PayabliApiResponse0ResponseData) String() string {
 	if p == nil {
 		return "<nil>"
 	}

@@ -348,6 +348,38 @@ func TestSettersStatBasicExtendedQueryRecord(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetOutRtpTransactions", func(t *testing.T) {
+		obj := &StatBasicExtendedQueryRecord{}
+		var fernTestValueOutRtpTransactions int
+		obj.SetOutRtpTransactions(fernTestValueOutRtpTransactions)
+		assert.Equal(t, fernTestValueOutRtpTransactions, obj.OutRtpTransactions)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetOutRtpVolume", func(t *testing.T) {
+		obj := &StatBasicExtendedQueryRecord{}
+		var fernTestValueOutRtpVolume float64
+		obj.SetOutRtpVolume(fernTestValueOutRtpVolume)
+		assert.Equal(t, fernTestValueOutRtpVolume, obj.OutRtpVolume)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetOutWireTransactions", func(t *testing.T) {
+		obj := &StatBasicExtendedQueryRecord{}
+		var fernTestValueOutWireTransactions int
+		obj.SetOutWireTransactions(fernTestValueOutWireTransactions)
+		assert.Equal(t, fernTestValueOutWireTransactions, obj.OutWireTransactions)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetOutWireVolume", func(t *testing.T) {
+		obj := &StatBasicExtendedQueryRecord{}
+		var fernTestValueOutWireVolume float64
+		obj.SetOutWireVolume(fernTestValueOutWireVolume)
+		assert.Equal(t, fernTestValueOutWireVolume, obj.OutWireVolume)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetOutTransactionsVolume", func(t *testing.T) {
 		obj := &StatBasicExtendedQueryRecord{}
 		var fernTestValueOutTransactionsVolume float64
@@ -795,6 +827,98 @@ func TestGettersStatBasicExtendedQueryRecord(t *testing.T) {
 			}
 		}()
 		_ = obj.GetOutPendingMethodTransactions() // Should return zero value
+	})
+
+	t.Run("GetOutRtpTransactions", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &StatBasicExtendedQueryRecord{}
+		var expected int
+		obj.OutRtpTransactions = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetOutRtpTransactions(), "getter should return the property value")
+	})
+
+	t.Run("GetOutRtpTransactions_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *StatBasicExtendedQueryRecord
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetOutRtpTransactions() // Should return zero value
+	})
+
+	t.Run("GetOutRtpVolume", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &StatBasicExtendedQueryRecord{}
+		var expected float64
+		obj.OutRtpVolume = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetOutRtpVolume(), "getter should return the property value")
+	})
+
+	t.Run("GetOutRtpVolume_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *StatBasicExtendedQueryRecord
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetOutRtpVolume() // Should return zero value
+	})
+
+	t.Run("GetOutWireTransactions", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &StatBasicExtendedQueryRecord{}
+		var expected int
+		obj.OutWireTransactions = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetOutWireTransactions(), "getter should return the property value")
+	})
+
+	t.Run("GetOutWireTransactions_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *StatBasicExtendedQueryRecord
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetOutWireTransactions() // Should return zero value
+	})
+
+	t.Run("GetOutWireVolume", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &StatBasicExtendedQueryRecord{}
+		var expected float64
+		obj.OutWireVolume = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetOutWireVolume(), "getter should return the property value")
+	})
+
+	t.Run("GetOutWireVolume_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *StatBasicExtendedQueryRecord
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetOutWireVolume() // Should return zero value
 	})
 
 	t.Run("GetOutTransactionsVolume", func(t *testing.T) {
@@ -1708,6 +1832,130 @@ func TestSettersMarkExplicitStatBasicExtendedQueryRecord(t *testing.T) {
 
 		// Act
 		obj.SetOutPendingMethodTransactions(fernTestValueOutPendingMethodTransactions)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetOutRtpTransactions_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &StatBasicExtendedQueryRecord{}
+		var fernTestValueOutRtpTransactions int
+
+		// Act
+		obj.SetOutRtpTransactions(fernTestValueOutRtpTransactions)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetOutRtpVolume_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &StatBasicExtendedQueryRecord{}
+		var fernTestValueOutRtpVolume float64
+
+		// Act
+		obj.SetOutRtpVolume(fernTestValueOutRtpVolume)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetOutWireTransactions_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &StatBasicExtendedQueryRecord{}
+		var fernTestValueOutWireTransactions int
+
+		// Act
+		obj.SetOutWireTransactions(fernTestValueOutWireTransactions)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetOutWireVolume_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &StatBasicExtendedQueryRecord{}
+		var fernTestValueOutWireVolume float64
+
+		// Act
+		obj.SetOutWireVolume(fernTestValueOutWireVolume)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)

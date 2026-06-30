@@ -11,6 +11,7 @@ import (
 	core "github.com/payabli/sdk-go/core"
 	customer "github.com/payabli/sdk-go/customer"
 	export "github.com/payabli/sdk-go/export"
+	funding "github.com/payabli/sdk-go/funding"
 	ghostcard "github.com/payabli/sdk-go/ghostcard"
 	hostedpaymentpages "github.com/payabli/sdk-go/hostedpaymentpages"
 	import_ "github.com/payabli/sdk-go/import_"
@@ -68,6 +69,7 @@ type Client struct {
 	Vendor              *vendor_.Client
 	GhostCard           *ghostcard.Client
 	MoneyOut            *moneyout.Client
+	Funding             *funding.Client
 	Wallet              *wallet.Client
 	PayoutSubscription  *payoutsubscription.Client
 	ChargeBacks         *chargebacks.Client
@@ -108,6 +110,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Vendor:              vendor_.NewClient(options),
 		GhostCard:           ghostcard.NewClient(options),
 		MoneyOut:            moneyout.NewClient(options),
+		Funding:             funding.NewClient(options),
 		Wallet:              wallet.NewClient(options),
 		PayoutSubscription:  payoutsubscription.NewClient(options),
 		ChargeBacks:         chargebacks.NewClient(options),

@@ -4149,6 +4149,8 @@ type ListTransfersOutOrgRequest struct {
 	//   - `paypointDbaName` (ne, eq, ct, nct)
 	//   - `batchNumber` (ne, eq, ct, nct)
 	//   - `batchId` (ne, eq, in, nin)
+	//   - `detailType` (eq, ne, in, nin, ct, nct)
+	//   - `detailMethod` (eq, ne, in, nin, ct, nct)
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
@@ -4234,6 +4236,8 @@ type ListTransfersOutPaypointRequest struct {
 	//   - `paypointDbaName` (ne, eq, ct, nct)
 	//   - `batchNumber` (ne, eq, ct, nct)
 	//   - `batchId` (ne, eq, in, nin)
+	//   - `detailType` (eq, ne, in, nin, ct, nct)
+	//   - `detailMethod` (eq, ne, in, nin, ct, nct)
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
@@ -15169,40 +15173,41 @@ func (q *QueryResponseSettlements) String() string {
 }
 
 var (
-	queryResponseSettlementsRecordsItemFieldBatchAmount         = big.NewInt(1 << 0)
-	queryResponseSettlementsRecordsItemFieldBatchNumber         = big.NewInt(1 << 1)
-	queryResponseSettlementsRecordsItemFieldCategory            = big.NewInt(1 << 2)
-	queryResponseSettlementsRecordsItemFieldCreatedAt           = big.NewInt(1 << 3)
-	queryResponseSettlementsRecordsItemFieldCustomer            = big.NewInt(1 << 4)
-	queryResponseSettlementsRecordsItemFieldDepositDate         = big.NewInt(1 << 5)
-	queryResponseSettlementsRecordsItemFieldExpectedDepositDate = big.NewInt(1 << 6)
-	queryResponseSettlementsRecordsItemFieldExternalPaypointId  = big.NewInt(1 << 7)
-	queryResponseSettlementsRecordsItemFieldGatewayTransId      = big.NewInt(1 << 8)
-	queryResponseSettlementsRecordsItemFieldId                  = big.NewInt(1 << 9)
-	queryResponseSettlementsRecordsItemFieldInvoiceData         = big.NewInt(1 << 10)
-	queryResponseSettlementsRecordsItemFieldIsHold              = big.NewInt(1 << 11)
-	queryResponseSettlementsRecordsItemFieldMaskedAccount       = big.NewInt(1 << 12)
-	queryResponseSettlementsRecordsItemFieldMethod              = big.NewInt(1 << 13)
-	queryResponseSettlementsRecordsItemFieldNetAmount           = big.NewInt(1 << 14)
-	queryResponseSettlementsRecordsItemFieldOperation           = big.NewInt(1 << 15)
-	queryResponseSettlementsRecordsItemFieldOrderId             = big.NewInt(1 << 16)
-	queryResponseSettlementsRecordsItemFieldParentOrgName       = big.NewInt(1 << 17)
-	queryResponseSettlementsRecordsItemFieldPaymentData         = big.NewInt(1 << 18)
-	queryResponseSettlementsRecordsItemFieldPaymentTransId      = big.NewInt(1 << 19)
-	queryResponseSettlementsRecordsItemFieldPaymentTransStatus  = big.NewInt(1 << 20)
-	queryResponseSettlementsRecordsItemFieldPaypointDbaname     = big.NewInt(1 << 21)
-	queryResponseSettlementsRecordsItemFieldPaypointEntryname   = big.NewInt(1 << 22)
-	queryResponseSettlementsRecordsItemFieldPaypointLegalname   = big.NewInt(1 << 23)
-	queryResponseSettlementsRecordsItemFieldResponseData        = big.NewInt(1 << 24)
-	queryResponseSettlementsRecordsItemFieldScheduleReference   = big.NewInt(1 << 25)
-	queryResponseSettlementsRecordsItemFieldSettledAmount       = big.NewInt(1 << 26)
-	queryResponseSettlementsRecordsItemFieldSettlementDate      = big.NewInt(1 << 27)
-	queryResponseSettlementsRecordsItemFieldSource              = big.NewInt(1 << 28)
-	queryResponseSettlementsRecordsItemFieldStatus              = big.NewInt(1 << 29)
-	queryResponseSettlementsRecordsItemFieldTransactionEvents   = big.NewInt(1 << 30)
-	queryResponseSettlementsRecordsItemFieldTransactionTime     = big.NewInt(1 << 31)
-	queryResponseSettlementsRecordsItemFieldTransMethod         = big.NewInt(1 << 32)
-	queryResponseSettlementsRecordsItemFieldType                = big.NewInt(1 << 33)
+	queryResponseSettlementsRecordsItemFieldBatchAmount              = big.NewInt(1 << 0)
+	queryResponseSettlementsRecordsItemFieldBatchNumber              = big.NewInt(1 << 1)
+	queryResponseSettlementsRecordsItemFieldCategory                 = big.NewInt(1 << 2)
+	queryResponseSettlementsRecordsItemFieldCreatedAt                = big.NewInt(1 << 3)
+	queryResponseSettlementsRecordsItemFieldCustomer                 = big.NewInt(1 << 4)
+	queryResponseSettlementsRecordsItemFieldDepositDate              = big.NewInt(1 << 5)
+	queryResponseSettlementsRecordsItemFieldExpectedDepositDate      = big.NewInt(1 << 6)
+	queryResponseSettlementsRecordsItemFieldExternalPaypointId       = big.NewInt(1 << 7)
+	queryResponseSettlementsRecordsItemFieldGatewayTransId           = big.NewInt(1 << 8)
+	queryResponseSettlementsRecordsItemFieldId                       = big.NewInt(1 << 9)
+	queryResponseSettlementsRecordsItemFieldInvoiceData              = big.NewInt(1 << 10)
+	queryResponseSettlementsRecordsItemFieldIsHold                   = big.NewInt(1 << 11)
+	queryResponseSettlementsRecordsItemFieldMaskedAccount            = big.NewInt(1 << 12)
+	queryResponseSettlementsRecordsItemFieldMethod                   = big.NewInt(1 << 13)
+	queryResponseSettlementsRecordsItemFieldNetAmount                = big.NewInt(1 << 14)
+	queryResponseSettlementsRecordsItemFieldOperation                = big.NewInt(1 << 15)
+	queryResponseSettlementsRecordsItemFieldOrderId                  = big.NewInt(1 << 16)
+	queryResponseSettlementsRecordsItemFieldParentOrgName            = big.NewInt(1 << 17)
+	queryResponseSettlementsRecordsItemFieldPaymentData              = big.NewInt(1 << 18)
+	queryResponseSettlementsRecordsItemFieldPaymentTransId           = big.NewInt(1 << 19)
+	queryResponseSettlementsRecordsItemFieldPaymentTransStatus       = big.NewInt(1 << 20)
+	queryResponseSettlementsRecordsItemFieldPaypointDbaname          = big.NewInt(1 << 21)
+	queryResponseSettlementsRecordsItemFieldPaypointEntryname        = big.NewInt(1 << 22)
+	queryResponseSettlementsRecordsItemFieldPaypointLegalname        = big.NewInt(1 << 23)
+	queryResponseSettlementsRecordsItemFieldResponseData             = big.NewInt(1 << 24)
+	queryResponseSettlementsRecordsItemFieldScheduleReference        = big.NewInt(1 << 25)
+	queryResponseSettlementsRecordsItemFieldSettledAmount            = big.NewInt(1 << 26)
+	queryResponseSettlementsRecordsItemFieldSettlementDate           = big.NewInt(1 << 27)
+	queryResponseSettlementsRecordsItemFieldSource                   = big.NewInt(1 << 28)
+	queryResponseSettlementsRecordsItemFieldSplitFundingInstructions = big.NewInt(1 << 29)
+	queryResponseSettlementsRecordsItemFieldStatus                   = big.NewInt(1 << 30)
+	queryResponseSettlementsRecordsItemFieldTransactionEvents        = big.NewInt(1 << 31)
+	queryResponseSettlementsRecordsItemFieldTransactionTime          = big.NewInt(1 << 32)
+	queryResponseSettlementsRecordsItemFieldTransMethod              = big.NewInt(1 << 33)
+	queryResponseSettlementsRecordsItemFieldType                     = big.NewInt(1 << 34)
 )
 
 type QueryResponseSettlementsRecordsItem struct {
@@ -15248,9 +15253,11 @@ type QueryResponseSettlementsRecordsItem struct {
 	// The transaction amount.
 	SettledAmount *float64 `json:"SettledAmount,omitempty" url:"SettledAmount,omitempty"`
 	// The date and time when the transaction was settled. This field is null when the transaction's `SettlementStatus` is -1, -5, or -6 (Exception, Held, or Released).
-	SettlementDate *time.Time        `json:"SettlementDate,omitempty" url:"SettlementDate,omitempty"`
-	Source         *Source           `json:"Source,omitempty" url:"Source,omitempty"`
-	Status         *SettlementStatus `json:"Status,omitempty" url:"Status,omitempty"`
+	SettlementDate *time.Time `json:"SettlementDate,omitempty" url:"SettlementDate,omitempty"`
+	Source         *Source    `json:"Source,omitempty" url:"Source,omitempty"`
+	// Split funding instructions for the settled transaction, each enriched with the batch and transfer that paid out the split. Null when the transaction has no splits.
+	SplitFundingInstructions []*SettlementSplitFundingDetail `json:"splitFundingInstructions,omitempty" url:"splitFundingInstructions,omitempty"`
+	Status                   *SettlementStatus               `json:"Status,omitempty" url:"Status,omitempty"`
 	// Events associated with this transaction.
 	TransactionEvents []*QueryTransactionEvents `json:"TransactionEvents,omitempty" url:"TransactionEvents,omitempty"`
 	TransactionTime   *TransactionTime          `json:"TransactionTime,omitempty" url:"TransactionTime,omitempty"`
@@ -15467,6 +15474,13 @@ func (q *QueryResponseSettlementsRecordsItem) GetSource() *Source {
 		return nil
 	}
 	return q.Source
+}
+
+func (q *QueryResponseSettlementsRecordsItem) GetSplitFundingInstructions() []*SettlementSplitFundingDetail {
+	if q == nil {
+		return nil
+	}
+	return q.SplitFundingInstructions
 }
 
 func (q *QueryResponseSettlementsRecordsItem) GetStatus() *SettlementStatus {
@@ -15719,6 +15733,13 @@ func (q *QueryResponseSettlementsRecordsItem) SetSettlementDate(settlementDate *
 func (q *QueryResponseSettlementsRecordsItem) SetSource(source *Source) {
 	q.Source = source
 	q.require(queryResponseSettlementsRecordsItemFieldSource)
+}
+
+// SetSplitFundingInstructions sets the SplitFundingInstructions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryResponseSettlementsRecordsItem) SetSplitFundingInstructions(splitFundingInstructions []*SettlementSplitFundingDetail) {
+	q.SplitFundingInstructions = splitFundingInstructions
+	q.require(queryResponseSettlementsRecordsItemFieldSplitFundingInstructions)
 }
 
 // SetStatus sets the Status field and marks it as non-optional;
@@ -16988,6 +17009,194 @@ func (q *QueryUserResponse) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", q)
+}
+
+// A split funding instruction on a settled transaction, enriched with the batch and transfer that paid out the split when that information is available. Returned by the settlement query endpoints.
+var (
+	settlementSplitFundingDetailFieldRecipientEntryPoint = big.NewInt(1 << 0)
+	settlementSplitFundingDetailFieldAccountId           = big.NewInt(1 << 1)
+	settlementSplitFundingDetailFieldDescription         = big.NewInt(1 << 2)
+	settlementSplitFundingDetailFieldAmount              = big.NewInt(1 << 3)
+	settlementSplitFundingDetailFieldBatchNumber         = big.NewInt(1 << 4)
+	settlementSplitFundingDetailFieldTransferId          = big.NewInt(1 << 5)
+	settlementSplitFundingDetailFieldTransferAmount      = big.NewInt(1 << 6)
+)
+
+type SettlementSplitFundingDetail struct {
+	// The entrypoint the split was sent to.
+	RecipientEntryPoint *string `json:"recipientEntryPoint,omitempty" url:"recipientEntryPoint,omitempty"`
+	// The account the split was sent to.
+	AccountId *string `json:"AccountId,omitempty" url:"AccountId,omitempty"`
+	// A description for the split.
+	Description *string `json:"Description,omitempty" url:"Description,omitempty"`
+	// The amount of the transaction sent to this recipient as a split.
+	Amount *float64 `json:"Amount,omitempty" url:"Amount,omitempty"`
+	// The batch number the split was paid out in. Null when the batch isn't available.
+	BatchNumber *string `json:"batchNumber,omitempty" url:"batchNumber,omitempty"`
+	// Identifier of the transfer that carried the split. Null when the transfer isn't available.
+	TransferId *int64 `json:"transferId,omitempty" url:"transferId,omitempty"`
+	// The total amount of the transfer that carried this split.
+	TransferAmount *float64 `json:"transferAmount,omitempty" url:"transferAmount,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SettlementSplitFundingDetail) GetRecipientEntryPoint() *string {
+	if s == nil {
+		return nil
+	}
+	return s.RecipientEntryPoint
+}
+
+func (s *SettlementSplitFundingDetail) GetAccountId() *string {
+	if s == nil {
+		return nil
+	}
+	return s.AccountId
+}
+
+func (s *SettlementSplitFundingDetail) GetDescription() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Description
+}
+
+func (s *SettlementSplitFundingDetail) GetAmount() *float64 {
+	if s == nil {
+		return nil
+	}
+	return s.Amount
+}
+
+func (s *SettlementSplitFundingDetail) GetBatchNumber() *string {
+	if s == nil {
+		return nil
+	}
+	return s.BatchNumber
+}
+
+func (s *SettlementSplitFundingDetail) GetTransferId() *int64 {
+	if s == nil {
+		return nil
+	}
+	return s.TransferId
+}
+
+func (s *SettlementSplitFundingDetail) GetTransferAmount() *float64 {
+	if s == nil {
+		return nil
+	}
+	return s.TransferAmount
+}
+
+func (s *SettlementSplitFundingDetail) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
+	return s.extraProperties
+}
+
+func (s *SettlementSplitFundingDetail) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetRecipientEntryPoint sets the RecipientEntryPoint field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SettlementSplitFundingDetail) SetRecipientEntryPoint(recipientEntryPoint *string) {
+	s.RecipientEntryPoint = recipientEntryPoint
+	s.require(settlementSplitFundingDetailFieldRecipientEntryPoint)
+}
+
+// SetAccountId sets the AccountId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SettlementSplitFundingDetail) SetAccountId(accountId *string) {
+	s.AccountId = accountId
+	s.require(settlementSplitFundingDetailFieldAccountId)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SettlementSplitFundingDetail) SetDescription(description *string) {
+	s.Description = description
+	s.require(settlementSplitFundingDetailFieldDescription)
+}
+
+// SetAmount sets the Amount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SettlementSplitFundingDetail) SetAmount(amount *float64) {
+	s.Amount = amount
+	s.require(settlementSplitFundingDetailFieldAmount)
+}
+
+// SetBatchNumber sets the BatchNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SettlementSplitFundingDetail) SetBatchNumber(batchNumber *string) {
+	s.BatchNumber = batchNumber
+	s.require(settlementSplitFundingDetailFieldBatchNumber)
+}
+
+// SetTransferId sets the TransferId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SettlementSplitFundingDetail) SetTransferId(transferId *int64) {
+	s.TransferId = transferId
+	s.require(settlementSplitFundingDetailFieldTransferId)
+}
+
+// SetTransferAmount sets the TransferAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SettlementSplitFundingDetail) SetTransferAmount(transferAmount *float64) {
+	s.TransferAmount = transferAmount
+	s.require(settlementSplitFundingDetailFieldTransferAmount)
+}
+
+func (s *SettlementSplitFundingDetail) UnmarshalJSON(data []byte) error {
+	type unmarshaler SettlementSplitFundingDetail
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SettlementSplitFundingDetail(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SettlementSplitFundingDetail) MarshalJSON() ([]byte, error) {
+	type embed SettlementSplitFundingDetail
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *SettlementSplitFundingDetail) String() string {
+	if s == nil {
+		return "<nil>"
+	}
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
 }
 
 var (
@@ -23465,6 +23674,8 @@ var (
 	transferOutRecordFieldSplitAmount          = big.NewInt(1 << 31)
 	transferOutRecordFieldEventsData           = big.NewInt(1 << 32)
 	transferOutRecordFieldMessages             = big.NewInt(1 << 33)
+	transferOutRecordFieldType                 = big.NewInt(1 << 34)
+	transferOutRecordFieldMethod               = big.NewInt(1 << 35)
 )
 
 type TransferOutRecord struct {
@@ -23536,6 +23747,10 @@ type TransferOutRecord struct {
 	EventsData []*TransferOutEventData `json:"eventsData,omitempty" url:"eventsData,omitempty"`
 	// List of messages associated with the transfer.
 	Messages []*TransferOutMessage `json:"messages,omitempty" url:"messages,omitempty"`
+	// The transfer type. One of `debit`, `credit`, or `billing`.
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
+	// The payment method for the transfer, such as `ach`, `vcard`, or `check`.
+	Method *string `json:"method,omitempty" url:"method,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -23780,6 +23995,20 @@ func (t *TransferOutRecord) GetMessages() []*TransferOutMessage {
 		return nil
 	}
 	return t.Messages
+}
+
+func (t *TransferOutRecord) GetType() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Type
+}
+
+func (t *TransferOutRecord) GetMethod() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Method
 }
 
 func (t *TransferOutRecord) GetExtraProperties() map[string]interface{} {
@@ -24032,6 +24261,20 @@ func (t *TransferOutRecord) SetEventsData(eventsData []*TransferOutEventData) {
 func (t *TransferOutRecord) SetMessages(messages []*TransferOutMessage) {
 	t.Messages = messages
 	t.require(transferOutRecordFieldMessages)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetType(type_ *string) {
+	t.Type = type_
+	t.require(transferOutRecordFieldType)
+}
+
+// SetMethod sets the Method field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetMethod(method *string) {
+	t.Method = method
+	t.require(transferOutRecordFieldMethod)
 }
 
 func (t *TransferOutRecord) UnmarshalJSON(data []byte) error {

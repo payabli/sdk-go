@@ -127,6 +127,30 @@ func (s *ServiceUnavailableError) Unwrap() error {
 	return s.APIError
 }
 
+// Too many requests. The calling system is rate limited.
+type TooManyRequestsError struct {
+	*core.APIError
+	Body *PayabliErrorBody
+}
+
+func (t *TooManyRequestsError) UnmarshalJSON(data []byte) error {
+	var body *PayabliErrorBody
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	t.StatusCode = 429
+	t.Body = body
+	return nil
+}
+
+func (t *TooManyRequestsError) MarshalJSON() ([]byte, error) {
+	return json.Marshal(t.Body)
+}
+
+func (t *TooManyRequestsError) Unwrap() error {
+	return t.APIError
+}
+
 // Unauthorized request.
 type UnauthorizedError struct {
 	*core.APIError
@@ -148,5 +172,32 @@ func (u *UnauthorizedError) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UnauthorizedError) Unwrap() error {
+	return u.APIError
+}
+
+// Blocked by fraud control. Returned when a risk policy blocks the transaction
+// (response code `9005`). This is a terminal outcome — the transaction is
+// rejected and won't proceed, so the body carries `isSuccess: false` and
+// `responseCode: 9005`.
+type UnprocessableEntityError struct {
+	*core.APIError
+	Body *PayabliErrorBody
+}
+
+func (u *UnprocessableEntityError) UnmarshalJSON(data []byte) error {
+	var body *PayabliErrorBody
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	u.StatusCode = 422
+	u.Body = body
+	return nil
+}
+
+func (u *UnprocessableEntityError) MarshalJSON() ([]byte, error) {
+	return json.Marshal(u.Body)
+}
+
+func (u *UnprocessableEntityError) Unwrap() error {
 	return u.APIError
 }

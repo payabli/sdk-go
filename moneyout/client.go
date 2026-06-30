@@ -39,6 +39,8 @@ func NewClient(options *core.RequestOptions) *Client {
 // If you don't pass `autoCapture` with a value of `true`, authorized transactions aren't flagged for settlement until captured. Use the `referenceId` returned in the response to capture the transaction.
 //
 // When `autoCapture` is `true`, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the [`payout_transaction_approvedcaptured`](/developers/webhooks/payout-transaction-approved-captured) webhook event.
+//
+// If a velocity fraud alert is triggered, the endpoint returns a `202` response with `responseCode` `9051`, and the authorization is held for risk review rather than rejected. If a risk policy blocks the transaction, the endpoint returns a `422` response with `responseCode` `9005`, a terminal rejection.
 func (c *Client) AuthorizeOut(
 	ctx context.Context,
 	request *payabli.RequestOutAuthorize,
@@ -125,7 +127,9 @@ func (c *Client) CaptureAllOut(
 	return response.Body, nil
 }
 
-// Captures a single authorized payout transaction by ID. If the transaction was authorized with `autoCapture` set to `true`,  you don't need to call this endpoint to capture the transaction for processing.
+// Captures a single authorized payout transaction by ID. If the transaction was authorized with `autoCapture` set to `true`, you don't need to call this endpoint to capture the transaction for processing.
+//
+// If a velocity fraud alert is triggered, the endpoint returns a `202` response with `responseCode` `9051`, and the capture is held for risk review rather than rejected. If a risk policy blocks the transaction, the endpoint returns a `422` response with `responseCode` `9005`, a terminal rejection.
 func (c *Client) CaptureOut(
 	ctx context.Context,
 	// The ID for the payout transaction.
@@ -173,6 +177,30 @@ func (c *Client) VCardGet(
 	response, err := c.WithRawResponse.VCardGet(
 		ctx,
 		cardToken,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Renews an expired or expiring virtual card by extending its expiration date to a future month.
+//
+// The card must be a virtual card that hasn't been fully used. The new expiration date must be in `MM-YYYY` or `MM/YYYY` format and no more than 2 years and 363 days in the future. The card expires on the last day of the month you specify.
+//
+// On success, `referenceId` holds the renewed card's token (the card processor may issue a new token). The response reuses the standard payout result object, so the payment-transaction fields it carries don't apply to renewal and always return `null`.
+func (c *Client) RenewVCard(
+	ctx context.Context,
+	// ID for the virtual card to renew.
+	cardToken string,
+	request *payabli.RenewVCardRequest,
+	opts ...option.RequestOption,
+) (*payabli.RenewVCardResponse, error) {
+	response, err := c.WithRawResponse.RenewVCard(
+		ctx,
+		cardToken,
+		request,
 		opts...,
 	)
 	if err != nil {

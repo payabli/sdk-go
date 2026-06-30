@@ -338,3 +338,71 @@ func TestVendorEnrichVendorWithWireMock(
 	require.NoError(t, invocationErr, "Client method call should succeed")
 	VerifyRequestCount(t, "TestVendorEnrichVendorWithWireMock", "POST", "/Vendor/enrich/8cfec329267", nil, 1)
 }
+
+func TestVendorScheduleEnrichmentCallWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
+	)
+	request := &payabli.ScheduleEnrichmentCallRequest{
+		VendorId: int64(456),
+		Phone: payabli.String(
+			"5555550200",
+		),
+		EnrichmentId: payabli.String(
+			"enrich-3890-a1b2c3d4",
+		),
+		BillId: payabli.Int64(
+			int64(54323),
+		),
+		FallbackMethod: payabli.String(
+			"check",
+		),
+		MaxRetries: payabli.Int(
+			3,
+		),
+		Timezone: payabli.String(
+			"America/New_York",
+		),
+	}
+	_, invocationErr := client.Vendor.ScheduleEnrichmentCall(
+		context.TODO(),
+		"8cfec329267",
+		request,
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestVendorScheduleEnrichmentCallWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestVendorScheduleEnrichmentCallWithWireMock", "POST", "/Vendor/enrich/schedule_call/8cfec329267", nil, 1)
+}
+
+func TestVendorGetEnrichmentCallStatusWithWireMock(
+	t *testing.T,
+) {
+	WireMockBaseURL := os.Getenv("WIREMOCK_URL")
+	if WireMockBaseURL == "" {
+		WireMockBaseURL = "http://localhost:8080"
+	}
+	client := client.NewClient(
+		option.WithBaseURL(WireMockBaseURL),
+		option.WithApiKey("test-value"),
+	)
+	_, invocationErr := client.Vendor.GetEnrichmentCallStatus(
+		context.TODO(),
+		int64(456),
+		option.WithHTTPHeader(
+			http.Header{"X-Test-Id": []string{"TestVendorGetEnrichmentCallStatusWithWireMock"}},
+		),
+	)
+
+	require.NoError(t, invocationErr, "Client method call should succeed")
+	VerifyRequestCount(t, "TestVendorGetEnrichmentCallStatusWithWireMock", "GET", "/Vendor/456/enrichment/call-status", nil, 1)
+}

@@ -854,6 +854,7 @@ func (r *RawClient) Refundv2(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
+	request *payabli.RefundV2Request,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.V2TransactionResponseWrapper], error) {
 	options := core.NewRequestOptions(opts...)
@@ -882,6 +883,7 @@ func (r *RawClient) Refundv2(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
+			Request:         request,
 			Response:        &response,
 			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
@@ -900,8 +902,9 @@ func (r *RawClient) Refundv2Amount(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
 	transId string,
-	// Amount to refund from original transaction, minus any service fees charged on the original transaction. If omitted or set to 0, performs a full refund.
+	// Amount to refund from original transaction, minus any service fees charged on the original transaction. If set to 0, performs a full refund.
 	amount float64,
+	request *payabli.RefundV2Request,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.V2TransactionResponseWrapper], error) {
 	options := core.NewRequestOptions(opts...)
@@ -931,6 +934,7 @@ func (r *RawClient) Refundv2Amount(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
+			Request:         request,
 			Response:        &response,
 			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},

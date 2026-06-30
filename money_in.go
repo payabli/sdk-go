@@ -1734,6 +1734,11 @@ func (c CheckMethod) Ptr() *CheckMethod {
 
 type CustomerVaultId = string
 
+// Payabli-generated unique ID of customer owner of transaction. Returns `0`
+// if the transaction wasn't assigned to an existing customer or no customer
+// was created.
+type Customeridtrans = int64
+
 // The expected time that the refund will be processed.
 type ExpectedProcessingDateTime = time.Time
 
@@ -2729,6 +2734,202 @@ func (p *PayabliApiResponse0) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PayabliApiResponse0) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+var (
+	payabliApiResponse0ResponseDataFieldAuthCode          = big.NewInt(1 << 0)
+	payabliApiResponse0ResponseDataFieldAvsResponseText   = big.NewInt(1 << 1)
+	payabliApiResponse0ResponseDataFieldCustomerId        = big.NewInt(1 << 2)
+	payabliApiResponse0ResponseDataFieldCvvResponseText   = big.NewInt(1 << 3)
+	payabliApiResponse0ResponseDataFieldMethodReferenceId = big.NewInt(1 << 4)
+	payabliApiResponse0ResponseDataFieldReferenceId       = big.NewInt(1 << 5)
+	payabliApiResponse0ResponseDataFieldResultCode        = big.NewInt(1 << 6)
+	payabliApiResponse0ResponseDataFieldResultText        = big.NewInt(1 << 7)
+)
+
+type PayabliApiResponse0ResponseData struct {
+	AuthCode          *Authcode          `json:"AuthCode,omitempty" url:"AuthCode,omitempty"`
+	AvsResponseText   *AvsResponseText   `json:"avsResponseText,omitempty" url:"avsResponseText,omitempty"`
+	CustomerId        *Customeridtrans   `json:"CustomerId,omitempty" url:"CustomerId,omitempty"`
+	CvvResponseText   *CvvResponseText   `json:"cvvResponseText,omitempty" url:"cvvResponseText,omitempty"`
+	MethodReferenceId *MethodReferenceId `json:"methodReferenceId,omitempty" url:"methodReferenceId,omitempty"`
+	ReferenceId       *Referenceidtrans  `json:"ReferenceId,omitempty" url:"ReferenceId,omitempty"`
+	ResultCode        *ResultCode        `json:"ResultCode,omitempty" url:"ResultCode,omitempty"`
+	ResultText        *Resulttext        `json:"ResultText,omitempty" url:"ResultText,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PayabliApiResponse0ResponseData) GetAuthCode() *Authcode {
+	if p == nil {
+		return nil
+	}
+	return p.AuthCode
+}
+
+func (p *PayabliApiResponse0ResponseData) GetAvsResponseText() *AvsResponseText {
+	if p == nil {
+		return nil
+	}
+	return p.AvsResponseText
+}
+
+func (p *PayabliApiResponse0ResponseData) GetCustomerId() *Customeridtrans {
+	if p == nil {
+		return nil
+	}
+	return p.CustomerId
+}
+
+func (p *PayabliApiResponse0ResponseData) GetCvvResponseText() *CvvResponseText {
+	if p == nil {
+		return nil
+	}
+	return p.CvvResponseText
+}
+
+func (p *PayabliApiResponse0ResponseData) GetMethodReferenceId() *MethodReferenceId {
+	if p == nil {
+		return nil
+	}
+	return p.MethodReferenceId
+}
+
+func (p *PayabliApiResponse0ResponseData) GetReferenceId() *Referenceidtrans {
+	if p == nil {
+		return nil
+	}
+	return p.ReferenceId
+}
+
+func (p *PayabliApiResponse0ResponseData) GetResultCode() *ResultCode {
+	if p == nil {
+		return nil
+	}
+	return p.ResultCode
+}
+
+func (p *PayabliApiResponse0ResponseData) GetResultText() *Resulttext {
+	if p == nil {
+		return nil
+	}
+	return p.ResultText
+}
+
+func (p *PayabliApiResponse0ResponseData) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PayabliApiResponse0ResponseData) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetAuthCode sets the AuthCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponse0ResponseData) SetAuthCode(authCode *Authcode) {
+	p.AuthCode = authCode
+	p.require(payabliApiResponse0ResponseDataFieldAuthCode)
+}
+
+// SetAvsResponseText sets the AvsResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponse0ResponseData) SetAvsResponseText(avsResponseText *AvsResponseText) {
+	p.AvsResponseText = avsResponseText
+	p.require(payabliApiResponse0ResponseDataFieldAvsResponseText)
+}
+
+// SetCustomerId sets the CustomerId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponse0ResponseData) SetCustomerId(customerId *Customeridtrans) {
+	p.CustomerId = customerId
+	p.require(payabliApiResponse0ResponseDataFieldCustomerId)
+}
+
+// SetCvvResponseText sets the CvvResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponse0ResponseData) SetCvvResponseText(cvvResponseText *CvvResponseText) {
+	p.CvvResponseText = cvvResponseText
+	p.require(payabliApiResponse0ResponseDataFieldCvvResponseText)
+}
+
+// SetMethodReferenceId sets the MethodReferenceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponse0ResponseData) SetMethodReferenceId(methodReferenceId *MethodReferenceId) {
+	p.MethodReferenceId = methodReferenceId
+	p.require(payabliApiResponse0ResponseDataFieldMethodReferenceId)
+}
+
+// SetReferenceId sets the ReferenceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponse0ResponseData) SetReferenceId(referenceId *Referenceidtrans) {
+	p.ReferenceId = referenceId
+	p.require(payabliApiResponse0ResponseDataFieldReferenceId)
+}
+
+// SetResultCode sets the ResultCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponse0ResponseData) SetResultCode(resultCode *ResultCode) {
+	p.ResultCode = resultCode
+	p.require(payabliApiResponse0ResponseDataFieldResultCode)
+}
+
+// SetResultText sets the ResultText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliApiResponse0ResponseData) SetResultText(resultText *Resulttext) {
+	p.ResultText = resultText
+	p.require(payabliApiResponse0ResponseDataFieldResultText)
+}
+
+func (p *PayabliApiResponse0ResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayabliApiResponse0ResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PayabliApiResponse0ResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PayabliApiResponse0ResponseData) MarshalJSON() ([]byte, error) {
+	type embed PayabliApiResponse0ResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PayabliApiResponse0ResponseData) String() string {
 	if p == nil {
 		return "<nil>"
 	}
@@ -3934,6 +4135,176 @@ func (r *RefundResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RefundResponse) String() string {
+	if r == nil {
+		return "<nil>"
+	}
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+// Optional request body for the v2 refund endpoints. Provide split instructions to refund a split-funded transaction. Omit the body for a standard refund. Fields match the v1 refund-with-instructions request.
+var (
+	refundV2RequestFieldAmount           = big.NewInt(1 << 0)
+	refundV2RequestFieldIpaddress        = big.NewInt(1 << 1)
+	refundV2RequestFieldOrderDescription = big.NewInt(1 << 2)
+	refundV2RequestFieldOrderId          = big.NewInt(1 << 3)
+	refundV2RequestFieldRefundDetails    = big.NewInt(1 << 4)
+	refundV2RequestFieldSource           = big.NewInt(1 << 5)
+)
+
+type RefundV2Request struct {
+	// Amount to refund from original transaction, minus any service fees charged on the original transaction.
+	//
+	// The amount provided can't be greater than the original total amount of the transaction, minus service fees. For example, if a transaction was $90 plus a $10 service fee, you can refund up to $90.
+	//
+	// An amount equal to zero will refund the total amount authorized minus any service fee.
+	Amount           *float64          `json:"amount,omitempty" url:"amount,omitempty"`
+	Ipaddress        *IpAddress        `json:"ipaddress,omitempty" url:"ipaddress,omitempty"`
+	OrderDescription *Orderdescription `json:"orderDescription,omitempty" url:"orderDescription,omitempty"`
+	OrderId          *OrderId          `json:"orderId,omitempty" url:"orderId,omitempty"`
+	RefundDetails    *RefundDetail     `json:"refundDetails,omitempty" url:"refundDetails,omitempty"`
+	Source           *Source           `json:"source,omitempty" url:"source,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RefundV2Request) GetAmount() *float64 {
+	if r == nil {
+		return nil
+	}
+	return r.Amount
+}
+
+func (r *RefundV2Request) GetIpaddress() *IpAddress {
+	if r == nil {
+		return nil
+	}
+	return r.Ipaddress
+}
+
+func (r *RefundV2Request) GetOrderDescription() *Orderdescription {
+	if r == nil {
+		return nil
+	}
+	return r.OrderDescription
+}
+
+func (r *RefundV2Request) GetOrderId() *OrderId {
+	if r == nil {
+		return nil
+	}
+	return r.OrderId
+}
+
+func (r *RefundV2Request) GetRefundDetails() *RefundDetail {
+	if r == nil {
+		return nil
+	}
+	return r.RefundDetails
+}
+
+func (r *RefundV2Request) GetSource() *Source {
+	if r == nil {
+		return nil
+	}
+	return r.Source
+}
+
+func (r *RefundV2Request) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
+	return r.extraProperties
+}
+
+func (r *RefundV2Request) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetAmount sets the Amount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RefundV2Request) SetAmount(amount *float64) {
+	r.Amount = amount
+	r.require(refundV2RequestFieldAmount)
+}
+
+// SetIpaddress sets the Ipaddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RefundV2Request) SetIpaddress(ipaddress *IpAddress) {
+	r.Ipaddress = ipaddress
+	r.require(refundV2RequestFieldIpaddress)
+}
+
+// SetOrderDescription sets the OrderDescription field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RefundV2Request) SetOrderDescription(orderDescription *Orderdescription) {
+	r.OrderDescription = orderDescription
+	r.require(refundV2RequestFieldOrderDescription)
+}
+
+// SetOrderId sets the OrderId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RefundV2Request) SetOrderId(orderId *OrderId) {
+	r.OrderId = orderId
+	r.require(refundV2RequestFieldOrderId)
+}
+
+// SetRefundDetails sets the RefundDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RefundV2Request) SetRefundDetails(refundDetails *RefundDetail) {
+	r.RefundDetails = refundDetails
+	r.require(refundV2RequestFieldRefundDetails)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RefundV2Request) SetSource(source *Source) {
+	r.Source = source
+	r.require(refundV2RequestFieldSource)
+}
+
+func (r *RefundV2Request) UnmarshalJSON(data []byte) error {
+	type unmarshaler RefundV2Request
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RefundV2Request(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RefundV2Request) MarshalJSON() ([]byte, error) {
+	type embed RefundV2Request
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *RefundV2Request) String() string {
 	if r == nil {
 		return "<nil>"
 	}

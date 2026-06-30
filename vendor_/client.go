@@ -129,3 +129,41 @@ func (c *Client) EnrichVendor(
 	}
 	return response.Body, nil
 }
+
+// Schedules an AI outreach call to a vendor to collect their preferred payment method and contact email. This is the third enrichment stage. Calls are scheduled for the next business day at around 9 AM in the vendor's timezone, with retries on no-answer and a fallback payment method applied when retries are exhausted. This feature is opt-in at the org level. Contact your Payabli representative to enable it, provision a phone number, and discuss pricing.
+func (c *Client) ScheduleEnrichmentCall(
+	ctx context.Context,
+	// Entrypoint identifier.
+	entry string,
+	request *payabli.ScheduleEnrichmentCallRequest,
+	opts ...option.RequestOption,
+) (*payabli.VendorScheduleCallResponse, error) {
+	response, err := c.WithRawResponse.ScheduleEnrichmentCall(
+		ctx,
+		entry,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Returns the latest AI outreach call activity for a vendor. The response is a composite object with a `state` discriminator (`none`, `scheduled`, `successful`, or `failed`); the block that matches the current state is populated. When the vendor has no call activity, `state` is `none` and the response returns HTTP 200.
+func (c *Client) GetEnrichmentCallStatus(
+	ctx context.Context,
+	// ID of the vendor to read call status for.
+	idVendor int64,
+	opts ...option.RequestOption,
+) (*payabli.VendorCallStatusResponse, error) {
+	response, err := c.WithRawResponse.GetEnrichmentCallStatus(
+		ctx,
+		idVendor,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}

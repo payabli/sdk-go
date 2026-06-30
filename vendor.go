@@ -26,7 +26,7 @@ type VendorEnrichRequest struct {
 	Scope []string `json:"scope,omitempty" url:"-"`
 	// When `true` (the default), extracted data is automatically written to the vendor record. Only empty fields are populated, existing values are never overwritten. When `false`, the vendor record isn't modified. In both cases, `enrichmentData` in the response contains the extracted results. Use `false` for UI flows where users review and confirm changes before applying them with the update vendor endpoint.
 	ApplyEnrichmentData *bool `json:"applyEnrichmentData,omitempty" url:"-"`
-	// When `true`, triggers an AI outreach call if enrichment stages return insufficient payment acceptance info. This feature is currently in development.
+	// When `true`, Payabli schedules an AI outreach call to the vendor if the enrichment stages return insufficient payment acceptance info. The call collects the vendor's preferred payment method and contact email. This is the third enrichment stage and is opt-in at the org level. See the schedule outreach call endpoint for behavior and requirements.
 	ScheduleCallIfNeeded *bool `json:"scheduleCallIfNeeded,omitempty" url:"-"`
 	// PDF invoice file, Base64-encoded. Required when `scope` includes `invoice_scan`.
 	InvoiceFile *FileContent `json:"invoiceFile,omitempty" url:"-"`
@@ -113,6 +113,123 @@ func (v *VendorEnrichRequest) MarshalJSON() ([]byte, error) {
 		embed: embed(*v),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+var (
+	scheduleEnrichmentCallRequestFieldVendorId       = big.NewInt(1 << 0)
+	scheduleEnrichmentCallRequestFieldPhone          = big.NewInt(1 << 1)
+	scheduleEnrichmentCallRequestFieldEnrichmentId   = big.NewInt(1 << 2)
+	scheduleEnrichmentCallRequestFieldBillId         = big.NewInt(1 << 3)
+	scheduleEnrichmentCallRequestFieldFallbackMethod = big.NewInt(1 << 4)
+	scheduleEnrichmentCallRequestFieldMaxRetries     = big.NewInt(1 << 5)
+	scheduleEnrichmentCallRequestFieldTimezone       = big.NewInt(1 << 6)
+	scheduleEnrichmentCallRequestFieldSendNow        = big.NewInt(1 << 7)
+)
+
+type ScheduleEnrichmentCallRequest struct {
+	// ID of the vendor to call. Must be active and belong to the entrypoint in the path.
+	VendorId int64 `json:"vendorId" url:"-"`
+	// Vendor phone number to call, digits only. Optional. When omitted, Payabli uses the phone number on the vendor's record. If the vendor has no phone on record, the request returns an error.
+	Phone *string `json:"phone,omitempty" url:"-"`
+	// ID of the originating enrichment run to associate with this call. Optional. When omitted, Payabli generates a standalone call schedule and skips the enrichment lookup. The bill due-date check only runs when both `enrichmentId` and `billId` are supplied.
+	EnrichmentId *string `json:"enrichmentId,omitempty" url:"-"`
+	// Bill ID used for the due-date check. When the bill is due in fewer than three days, the call is skipped and the fallback method is applied. Only evaluated when `enrichmentId` is also supplied.
+	BillId *int64 `json:"billId,omitempty" url:"-"`
+	// Payment method to apply to the vendor record if the call can't determine a preference or all retries are exhausted. Values are `check` (the default) or `managed`.
+	FallbackMethod *string `json:"fallbackMethod,omitempty" url:"-"`
+	// Number of times to retry the call if the vendor doesn't answer. Defaults to 3. Maximum is 5. The get outreach call status response reports this value as `maxAttempts`.
+	MaxRetries *int `json:"maxRetries,omitempty" url:"-"`
+	// IANA timezone identifier used to schedule the call in the vendor's local time. Defaults to `America/New_York`.
+	Timezone *string `json:"timezone,omitempty" url:"-"`
+	// When `true`, dispatches the call immediately and bypasses the business-hours window and the bill due-date check. Defaults to `false`.
+	SendNow *bool `json:"sendNow,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (s *ScheduleEnrichmentCallRequest) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetVendorId sets the VendorId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ScheduleEnrichmentCallRequest) SetVendorId(vendorId int64) {
+	s.VendorId = vendorId
+	s.require(scheduleEnrichmentCallRequestFieldVendorId)
+}
+
+// SetPhone sets the Phone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ScheduleEnrichmentCallRequest) SetPhone(phone *string) {
+	s.Phone = phone
+	s.require(scheduleEnrichmentCallRequestFieldPhone)
+}
+
+// SetEnrichmentId sets the EnrichmentId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ScheduleEnrichmentCallRequest) SetEnrichmentId(enrichmentId *string) {
+	s.EnrichmentId = enrichmentId
+	s.require(scheduleEnrichmentCallRequestFieldEnrichmentId)
+}
+
+// SetBillId sets the BillId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ScheduleEnrichmentCallRequest) SetBillId(billId *int64) {
+	s.BillId = billId
+	s.require(scheduleEnrichmentCallRequestFieldBillId)
+}
+
+// SetFallbackMethod sets the FallbackMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ScheduleEnrichmentCallRequest) SetFallbackMethod(fallbackMethod *string) {
+	s.FallbackMethod = fallbackMethod
+	s.require(scheduleEnrichmentCallRequestFieldFallbackMethod)
+}
+
+// SetMaxRetries sets the MaxRetries field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ScheduleEnrichmentCallRequest) SetMaxRetries(maxRetries *int) {
+	s.MaxRetries = maxRetries
+	s.require(scheduleEnrichmentCallRequestFieldMaxRetries)
+}
+
+// SetTimezone sets the Timezone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ScheduleEnrichmentCallRequest) SetTimezone(timezone *string) {
+	s.Timezone = timezone
+	s.require(scheduleEnrichmentCallRequestFieldTimezone)
+}
+
+// SetSendNow sets the SendNow field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *ScheduleEnrichmentCallRequest) SetSendNow(sendNow *bool) {
+	s.SendNow = sendNow
+	s.require(scheduleEnrichmentCallRequestFieldSendNow)
+}
+
+func (s *ScheduleEnrichmentCallRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler ScheduleEnrichmentCallRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*s = ScheduleEnrichmentCallRequest(body)
+	return nil
+}
+
+func (s *ScheduleEnrichmentCallRequest) MarshalJSON() ([]byte, error) {
+	type embed ScheduleEnrichmentCallRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
 	return json.Marshal(explicitMarshaler)
 }
 
@@ -265,6 +382,708 @@ func (p *PayabliApiResponseVendors) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+// Details of a completed outreach call that returned data.
+var (
+	vendorCallStatusCompletedFieldCompletedAt     = big.NewInt(1 << 0)
+	vendorCallStatusCompletedFieldDurationSeconds = big.NewInt(1 << 1)
+	vendorCallStatusCompletedFieldSummary         = big.NewInt(1 << 2)
+	vendorCallStatusCompletedFieldCallId          = big.NewInt(1 << 3)
+	vendorCallStatusCompletedFieldTranscript      = big.NewInt(1 << 4)
+	vendorCallStatusCompletedFieldExtractedData   = big.NewInt(1 << 5)
+)
+
+type VendorCallStatusCompleted struct {
+	// ISO-8601 timestamp when the call ended.
+	CompletedAt *string `json:"completedAt,omitempty" url:"completedAt,omitempty"`
+	// Call duration in seconds.
+	DurationSeconds *int `json:"durationSeconds,omitempty" url:"durationSeconds,omitempty"`
+	// Short summary of the call.
+	Summary *string `json:"summary,omitempty" url:"summary,omitempty"`
+	// Reference identifier for the call.
+	CallId *string `json:"callId,omitempty" url:"callId,omitempty"`
+	// Full call transcript. `null` when no transcript is available.
+	Transcript *string `json:"transcript,omitempty" url:"transcript,omitempty"`
+	// Payment and contact details collected during the call.
+	ExtractedData *VendorCallStatusExtractedData `json:"extractedData,omitempty" url:"extractedData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *VendorCallStatusCompleted) GetCompletedAt() *string {
+	if v == nil {
+		return nil
+	}
+	return v.CompletedAt
+}
+
+func (v *VendorCallStatusCompleted) GetDurationSeconds() *int {
+	if v == nil {
+		return nil
+	}
+	return v.DurationSeconds
+}
+
+func (v *VendorCallStatusCompleted) GetSummary() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Summary
+}
+
+func (v *VendorCallStatusCompleted) GetCallId() *string {
+	if v == nil {
+		return nil
+	}
+	return v.CallId
+}
+
+func (v *VendorCallStatusCompleted) GetTranscript() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Transcript
+}
+
+func (v *VendorCallStatusCompleted) GetExtractedData() *VendorCallStatusExtractedData {
+	if v == nil {
+		return nil
+	}
+	return v.ExtractedData
+}
+
+func (v *VendorCallStatusCompleted) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *VendorCallStatusCompleted) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetCompletedAt sets the CompletedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorCallStatusCompleted) SetCompletedAt(completedAt *string) {
+	v.CompletedAt = completedAt
+	v.require(vendorCallStatusCompletedFieldCompletedAt)
+}
+
+// SetDurationSeconds sets the DurationSeconds field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorCallStatusCompleted) SetDurationSeconds(durationSeconds *int) {
+	v.DurationSeconds = durationSeconds
+	v.require(vendorCallStatusCompletedFieldDurationSeconds)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorCallStatusCompleted) SetSummary(summary *string) {
+	v.Summary = summary
+	v.require(vendorCallStatusCompletedFieldSummary)
+}
+
+// SetCallId sets the CallId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorCallStatusCompleted) SetCallId(callId *string) {
+	v.CallId = callId
+	v.require(vendorCallStatusCompletedFieldCallId)
+}
+
+// SetTranscript sets the Transcript field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorCallStatusCompleted) SetTranscript(transcript *string) {
+	v.Transcript = transcript
+	v.require(vendorCallStatusCompletedFieldTranscript)
+}
+
+// SetExtractedData sets the ExtractedData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorCallStatusCompleted) SetExtractedData(extractedData *VendorCallStatusExtractedData) {
+	v.ExtractedData = extractedData
+	v.require(vendorCallStatusCompletedFieldExtractedData)
+}
+
+func (v *VendorCallStatusCompleted) UnmarshalJSON(data []byte) error {
+	type unmarshaler VendorCallStatusCompleted
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VendorCallStatusCompleted(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VendorCallStatusCompleted) MarshalJSON() ([]byte, error) {
+	type embed VendorCallStatusCompleted
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *VendorCallStatusCompleted) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+// Data extracted from a completed outreach call.
+var (
+	vendorCallStatusExtractedDataFieldSelectedPaymentMethod = big.NewInt(1 << 0)
+	vendorCallStatusExtractedDataFieldContactEmail          = big.NewInt(1 << 1)
+)
+
+type VendorCallStatusExtractedData struct {
+	// Payment method the vendor said they accept. Values are `card`, `ach`, or `check`.
+	SelectedPaymentMethod *string `json:"selectedPaymentMethod,omitempty" url:"selectedPaymentMethod,omitempty"`
+	// Contact email collected during the call.
+	ContactEmail *string `json:"contactEmail,omitempty" url:"contactEmail,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *VendorCallStatusExtractedData) GetSelectedPaymentMethod() *string {
+	if v == nil {
+		return nil
+	}
+	return v.SelectedPaymentMethod
+}
+
+func (v *VendorCallStatusExtractedData) GetContactEmail() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ContactEmail
+}
+
+func (v *VendorCallStatusExtractedData) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *VendorCallStatusExtractedData) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetSelectedPaymentMethod sets the SelectedPaymentMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorCallStatusExtractedData) SetSelectedPaymentMethod(selectedPaymentMethod *string) {
+	v.SelectedPaymentMethod = selectedPaymentMethod
+	v.require(vendorCallStatusExtractedDataFieldSelectedPaymentMethod)
+}
+
+// SetContactEmail sets the ContactEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorCallStatusExtractedData) SetContactEmail(contactEmail *string) {
+	v.ContactEmail = contactEmail
+	v.require(vendorCallStatusExtractedDataFieldContactEmail)
+}
+
+func (v *VendorCallStatusExtractedData) UnmarshalJSON(data []byte) error {
+	type unmarshaler VendorCallStatusExtractedData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VendorCallStatusExtractedData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VendorCallStatusExtractedData) MarshalJSON() ([]byte, error) {
+	type embed VendorCallStatusExtractedData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *VendorCallStatusExtractedData) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+// Details of an outreach call that didn't complete successfully.
+var (
+	vendorCallStatusFailedFieldLastAttemptAt         = big.NewInt(1 << 0)
+	vendorCallStatusFailedFieldReason                = big.NewInt(1 << 1)
+	vendorCallStatusFailedFieldAttemptsRemaining     = big.NewInt(1 << 2)
+	vendorCallStatusFailedFieldMaxAttempts           = big.NewInt(1 << 3)
+	vendorCallStatusFailedFieldNextRetryScheduledFor = big.NewInt(1 << 4)
+)
+
+type VendorCallStatusFailed struct {
+	// ISO-8601 timestamp of the most recent call attempt.
+	LastAttemptAt *string `json:"lastAttemptAt,omitempty" url:"lastAttemptAt,omitempty"`
+	// Reason the call didn't complete, as reported by the calling system (for example, `No answer`).
+	Reason *string `json:"reason,omitempty" url:"reason,omitempty"`
+	// Number of call attempts left before retries are exhausted.
+	AttemptsRemaining *int `json:"attemptsRemaining,omitempty" url:"attemptsRemaining,omitempty"`
+	// Maximum number of call attempts configured for this schedule.
+	MaxAttempts *int `json:"maxAttempts,omitempty" url:"maxAttempts,omitempty"`
+	// ISO-8601 timestamp of the next scheduled retry, or `null` when no further retries are scheduled.
+	NextRetryScheduledFor *string `json:"nextRetryScheduledFor,omitempty" url:"nextRetryScheduledFor,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *VendorCallStatusFailed) GetLastAttemptAt() *string {
+	if v == nil {
+		return nil
+	}
+	return v.LastAttemptAt
+}
+
+func (v *VendorCallStatusFailed) GetReason() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Reason
+}
+
+func (v *VendorCallStatusFailed) GetAttemptsRemaining() *int {
+	if v == nil {
+		return nil
+	}
+	return v.AttemptsRemaining
+}
+
+func (v *VendorCallStatusFailed) GetMaxAttempts() *int {
+	if v == nil {
+		return nil
+	}
+	return v.MaxAttempts
+}
+
+func (v *VendorCallStatusFailed) GetNextRetryScheduledFor() *string {
+	if v == nil {
+		return nil
+	}
+	return v.NextRetryScheduledFor
+}
+
+func (v *VendorCallStatusFailed) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *VendorCallStatusFailed) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetLastAttemptAt sets the LastAttemptAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorCallStatusFailed) SetLastAttemptAt(lastAttemptAt *string) {
+	v.LastAttemptAt = lastAttemptAt
+	v.require(vendorCallStatusFailedFieldLastAttemptAt)
+}
+
+// SetReason sets the Reason field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorCallStatusFailed) SetReason(reason *string) {
+	v.Reason = reason
+	v.require(vendorCallStatusFailedFieldReason)
+}
+
+// SetAttemptsRemaining sets the AttemptsRemaining field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorCallStatusFailed) SetAttemptsRemaining(attemptsRemaining *int) {
+	v.AttemptsRemaining = attemptsRemaining
+	v.require(vendorCallStatusFailedFieldAttemptsRemaining)
+}
+
+// SetMaxAttempts sets the MaxAttempts field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorCallStatusFailed) SetMaxAttempts(maxAttempts *int) {
+	v.MaxAttempts = maxAttempts
+	v.require(vendorCallStatusFailedFieldMaxAttempts)
+}
+
+// SetNextRetryScheduledFor sets the NextRetryScheduledFor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorCallStatusFailed) SetNextRetryScheduledFor(nextRetryScheduledFor *string) {
+	v.NextRetryScheduledFor = nextRetryScheduledFor
+	v.require(vendorCallStatusFailedFieldNextRetryScheduledFor)
+}
+
+func (v *VendorCallStatusFailed) UnmarshalJSON(data []byte) error {
+	type unmarshaler VendorCallStatusFailed
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VendorCallStatusFailed(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VendorCallStatusFailed) MarshalJSON() ([]byte, error) {
+	type embed VendorCallStatusFailed
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *VendorCallStatusFailed) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+// Latest AI outreach call activity for a vendor. The populated block depends on the `state` discriminator.
+var (
+	vendorCallStatusResponseFieldVendorId  = big.NewInt(1 << 0)
+	vendorCallStatusResponseFieldState     = big.NewInt(1 << 1)
+	vendorCallStatusResponseFieldScheduled = big.NewInt(1 << 2)
+	vendorCallStatusResponseFieldCompleted = big.NewInt(1 << 3)
+	vendorCallStatusResponseFieldFailed    = big.NewInt(1 << 4)
+)
+
+type VendorCallStatusResponse struct {
+	// ID of the vendor this status applies to.
+	VendorId *int64 `json:"vendorId,omitempty" url:"vendorId,omitempty"`
+	// Current call state. Values are: `none` (no call activity for the vendor), `scheduled` (a call is queued or being retried), `successful` (a call completed and returned data), or `failed` (the call didn't complete successfully).
+	State *string `json:"state,omitempty" url:"state,omitempty"`
+	// Populated when `state` is `scheduled`.
+	Scheduled *VendorCallStatusScheduled `json:"scheduled,omitempty" url:"scheduled,omitempty"`
+	// Populated when `state` is `successful`.
+	Completed *VendorCallStatusCompleted `json:"completed,omitempty" url:"completed,omitempty"`
+	// Populated when `state` is `failed`.
+	Failed *VendorCallStatusFailed `json:"failed,omitempty" url:"failed,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *VendorCallStatusResponse) GetVendorId() *int64 {
+	if v == nil {
+		return nil
+	}
+	return v.VendorId
+}
+
+func (v *VendorCallStatusResponse) GetState() *string {
+	if v == nil {
+		return nil
+	}
+	return v.State
+}
+
+func (v *VendorCallStatusResponse) GetScheduled() *VendorCallStatusScheduled {
+	if v == nil {
+		return nil
+	}
+	return v.Scheduled
+}
+
+func (v *VendorCallStatusResponse) GetCompleted() *VendorCallStatusCompleted {
+	if v == nil {
+		return nil
+	}
+	return v.Completed
+}
+
+func (v *VendorCallStatusResponse) GetFailed() *VendorCallStatusFailed {
+	if v == nil {
+		return nil
+	}
+	return v.Failed
+}
+
+func (v *VendorCallStatusResponse) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *VendorCallStatusResponse) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetVendorId sets the VendorId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorCallStatusResponse) SetVendorId(vendorId *int64) {
+	v.VendorId = vendorId
+	v.require(vendorCallStatusResponseFieldVendorId)
+}
+
+// SetState sets the State field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorCallStatusResponse) SetState(state *string) {
+	v.State = state
+	v.require(vendorCallStatusResponseFieldState)
+}
+
+// SetScheduled sets the Scheduled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorCallStatusResponse) SetScheduled(scheduled *VendorCallStatusScheduled) {
+	v.Scheduled = scheduled
+	v.require(vendorCallStatusResponseFieldScheduled)
+}
+
+// SetCompleted sets the Completed field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorCallStatusResponse) SetCompleted(completed *VendorCallStatusCompleted) {
+	v.Completed = completed
+	v.require(vendorCallStatusResponseFieldCompleted)
+}
+
+// SetFailed sets the Failed field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorCallStatusResponse) SetFailed(failed *VendorCallStatusFailed) {
+	v.Failed = failed
+	v.require(vendorCallStatusResponseFieldFailed)
+}
+
+func (v *VendorCallStatusResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler VendorCallStatusResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VendorCallStatusResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VendorCallStatusResponse) MarshalJSON() ([]byte, error) {
+	type embed VendorCallStatusResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *VendorCallStatusResponse) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+// Details of a queued or in-progress outreach call.
+var (
+	vendorCallStatusScheduledFieldScheduledFor      = big.NewInt(1 << 0)
+	vendorCallStatusScheduledFieldAttemptsRemaining = big.NewInt(1 << 1)
+	vendorCallStatusScheduledFieldMaxAttempts       = big.NewInt(1 << 2)
+)
+
+type VendorCallStatusScheduled struct {
+	// ISO-8601 timestamp of the next scheduled call attempt.
+	ScheduledFor *string `json:"scheduledFor,omitempty" url:"scheduledFor,omitempty"`
+	// Number of call attempts left before retries are exhausted.
+	AttemptsRemaining *int `json:"attemptsRemaining,omitempty" url:"attemptsRemaining,omitempty"`
+	// Maximum number of call attempts configured for this schedule.
+	MaxAttempts *int `json:"maxAttempts,omitempty" url:"maxAttempts,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *VendorCallStatusScheduled) GetScheduledFor() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ScheduledFor
+}
+
+func (v *VendorCallStatusScheduled) GetAttemptsRemaining() *int {
+	if v == nil {
+		return nil
+	}
+	return v.AttemptsRemaining
+}
+
+func (v *VendorCallStatusScheduled) GetMaxAttempts() *int {
+	if v == nil {
+		return nil
+	}
+	return v.MaxAttempts
+}
+
+func (v *VendorCallStatusScheduled) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *VendorCallStatusScheduled) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetScheduledFor sets the ScheduledFor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorCallStatusScheduled) SetScheduledFor(scheduledFor *string) {
+	v.ScheduledFor = scheduledFor
+	v.require(vendorCallStatusScheduledFieldScheduledFor)
+}
+
+// SetAttemptsRemaining sets the AttemptsRemaining field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorCallStatusScheduled) SetAttemptsRemaining(attemptsRemaining *int) {
+	v.AttemptsRemaining = attemptsRemaining
+	v.require(vendorCallStatusScheduledFieldAttemptsRemaining)
+}
+
+// SetMaxAttempts sets the MaxAttempts field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorCallStatusScheduled) SetMaxAttempts(maxAttempts *int) {
+	v.MaxAttempts = maxAttempts
+	v.require(vendorCallStatusScheduledFieldMaxAttempts)
+}
+
+func (v *VendorCallStatusScheduled) UnmarshalJSON(data []byte) error {
+	type unmarshaler VendorCallStatusScheduled
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VendorCallStatusScheduled(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VendorCallStatusScheduled) MarshalJSON() ([]byte, error) {
+	type embed VendorCallStatusScheduled
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *VendorCallStatusScheduled) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
 var (
 	vendorDataFieldVendorNumber          = big.NewInt(1 << 0)
 	vendorDataFieldAdditionalData        = big.NewInt(1 << 1)
@@ -303,8 +1122,8 @@ var (
 )
 
 type VendorData struct {
-	VendorNumber   *VendorNumber   `json:"vendorNumber,omitempty" url:"vendorNumber,omitempty"`
-	AdditionalData *AdditionalData `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
+	VendorNumber   *VendorNumber      `json:"vendorNumber,omitempty" url:"vendorNumber,omitempty"`
+	AdditionalData *AdditionalDataMap `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
 	// Vendor's street address. If any address field is provided, this field is required along with `city`, `state`, and `zip`. Allowed characters are letters, numbers, spaces, and `. ,
 	Address1 *AddressNullable `json:"address1,omitempty" url:"address1,omitempty"`
 	// Additional line for vendor's address, such as a suite or unit number. Always optional.
@@ -372,7 +1191,7 @@ func (v *VendorData) GetVendorNumber() *VendorNumber {
 	return v.VendorNumber
 }
 
-func (v *VendorData) GetAdditionalData() *AdditionalData {
+func (v *VendorData) GetAdditionalData() *AdditionalDataMap {
 	if v == nil {
 		return nil
 	}
@@ -626,7 +1445,7 @@ func (v *VendorData) SetVendorNumber(vendorNumber *VendorNumber) {
 
 // SetAdditionalData sets the AdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorData) SetAdditionalData(additionalData *AdditionalData) {
+func (v *VendorData) SetAdditionalData(additionalData *AdditionalDataMap) {
 	v.AdditionalData = additionalData
 	v.require(vendorDataFieldAdditionalData)
 }
@@ -1953,6 +2772,308 @@ func (v *VendorEnrichmentWebSearch) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VendorEnrichmentWebSearch) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+// Response from the schedule outreach call endpoint.
+var (
+	vendorScheduleCallResponseFieldResponseCode   = big.NewInt(1 << 0)
+	vendorScheduleCallResponseFieldPageIdentifier = big.NewInt(1 << 1)
+	vendorScheduleCallResponseFieldRoomId         = big.NewInt(1 << 2)
+	vendorScheduleCallResponseFieldIsSuccess      = big.NewInt(1 << 3)
+	vendorScheduleCallResponseFieldResponseText   = big.NewInt(1 << 4)
+	vendorScheduleCallResponseFieldResponseData   = big.NewInt(1 << 5)
+)
+
+type VendorScheduleCallResponse struct {
+	ResponseCode   *Responsecode                   `json:"responseCode,omitempty" url:"responseCode,omitempty"`
+	PageIdentifier *PageIdentifier                 `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
+	RoomId         *RoomIdNotInUse                 `json:"roomId,omitempty" url:"roomId,omitempty"`
+	IsSuccess      *IsSuccess                      `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	ResponseText   ResponseText                    `json:"responseText" url:"responseText"`
+	ResponseData   *VendorScheduleCallResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *VendorScheduleCallResponse) GetResponseCode() *Responsecode {
+	if v == nil {
+		return nil
+	}
+	return v.ResponseCode
+}
+
+func (v *VendorScheduleCallResponse) GetPageIdentifier() *PageIdentifier {
+	if v == nil {
+		return nil
+	}
+	return v.PageIdentifier
+}
+
+func (v *VendorScheduleCallResponse) GetRoomId() *RoomIdNotInUse {
+	if v == nil {
+		return nil
+	}
+	return v.RoomId
+}
+
+func (v *VendorScheduleCallResponse) GetIsSuccess() *IsSuccess {
+	if v == nil {
+		return nil
+	}
+	return v.IsSuccess
+}
+
+func (v *VendorScheduleCallResponse) GetResponseText() ResponseText {
+	if v == nil {
+		return ""
+	}
+	return v.ResponseText
+}
+
+func (v *VendorScheduleCallResponse) GetResponseData() *VendorScheduleCallResponseData {
+	if v == nil {
+		return nil
+	}
+	return v.ResponseData
+}
+
+func (v *VendorScheduleCallResponse) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *VendorScheduleCallResponse) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetResponseCode sets the ResponseCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorScheduleCallResponse) SetResponseCode(responseCode *Responsecode) {
+	v.ResponseCode = responseCode
+	v.require(vendorScheduleCallResponseFieldResponseCode)
+}
+
+// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorScheduleCallResponse) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+	v.PageIdentifier = pageIdentifier
+	v.require(vendorScheduleCallResponseFieldPageIdentifier)
+}
+
+// SetRoomId sets the RoomId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorScheduleCallResponse) SetRoomId(roomId *RoomIdNotInUse) {
+	v.RoomId = roomId
+	v.require(vendorScheduleCallResponseFieldRoomId)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorScheduleCallResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	v.IsSuccess = isSuccess
+	v.require(vendorScheduleCallResponseFieldIsSuccess)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorScheduleCallResponse) SetResponseText(responseText ResponseText) {
+	v.ResponseText = responseText
+	v.require(vendorScheduleCallResponseFieldResponseText)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorScheduleCallResponse) SetResponseData(responseData *VendorScheduleCallResponseData) {
+	v.ResponseData = responseData
+	v.require(vendorScheduleCallResponseFieldResponseData)
+}
+
+func (v *VendorScheduleCallResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler VendorScheduleCallResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VendorScheduleCallResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VendorScheduleCallResponse) MarshalJSON() ([]byte, error) {
+	type embed VendorScheduleCallResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *VendorScheduleCallResponse) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+// Scheduled call details.
+var (
+	vendorScheduleCallResponseDataFieldCallScheduleId    = big.NewInt(1 << 0)
+	vendorScheduleCallResponseDataFieldEnrichmentId      = big.NewInt(1 << 1)
+	vendorScheduleCallResponseDataFieldScheduledCallDate = big.NewInt(1 << 2)
+	vendorScheduleCallResponseDataFieldStatus            = big.NewInt(1 << 3)
+)
+
+type VendorScheduleCallResponseData struct {
+	// Identifier for the scheduled call.
+	CallScheduleId *int `json:"callScheduleId,omitempty" url:"callScheduleId,omitempty"`
+	// ID of the enrichment run associated with this call. When the request omits `enrichmentId`, Payabli generates one and returns it here.
+	EnrichmentId *string `json:"enrichmentId,omitempty" url:"enrichmentId,omitempty"`
+	// ISO-8601 timestamp of the next scheduled call attempt.
+	ScheduledCallDate *string `json:"scheduledCallDate,omitempty" url:"scheduledCallDate,omitempty"`
+	// Status of the call schedule. Values are `pending`, `dispatched`, `retry_scheduled`, `completed`, and `fallback_applied`.
+	Status *string `json:"status,omitempty" url:"status,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *VendorScheduleCallResponseData) GetCallScheduleId() *int {
+	if v == nil {
+		return nil
+	}
+	return v.CallScheduleId
+}
+
+func (v *VendorScheduleCallResponseData) GetEnrichmentId() *string {
+	if v == nil {
+		return nil
+	}
+	return v.EnrichmentId
+}
+
+func (v *VendorScheduleCallResponseData) GetScheduledCallDate() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ScheduledCallDate
+}
+
+func (v *VendorScheduleCallResponseData) GetStatus() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Status
+}
+
+func (v *VendorScheduleCallResponseData) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *VendorScheduleCallResponseData) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetCallScheduleId sets the CallScheduleId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorScheduleCallResponseData) SetCallScheduleId(callScheduleId *int) {
+	v.CallScheduleId = callScheduleId
+	v.require(vendorScheduleCallResponseDataFieldCallScheduleId)
+}
+
+// SetEnrichmentId sets the EnrichmentId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorScheduleCallResponseData) SetEnrichmentId(enrichmentId *string) {
+	v.EnrichmentId = enrichmentId
+	v.require(vendorScheduleCallResponseDataFieldEnrichmentId)
+}
+
+// SetScheduledCallDate sets the ScheduledCallDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorScheduleCallResponseData) SetScheduledCallDate(scheduledCallDate *string) {
+	v.ScheduledCallDate = scheduledCallDate
+	v.require(vendorScheduleCallResponseDataFieldScheduledCallDate)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorScheduleCallResponseData) SetStatus(status *string) {
+	v.Status = status
+	v.require(vendorScheduleCallResponseDataFieldStatus)
+}
+
+func (v *VendorScheduleCallResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler VendorScheduleCallResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VendorScheduleCallResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VendorScheduleCallResponseData) MarshalJSON() ([]byte, error) {
+	type embed VendorScheduleCallResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *VendorScheduleCallResponseData) String() string {
 	if v == nil {
 		return "<nil>"
 	}

@@ -331,6 +331,53 @@ func (r *ReissueOutRequest) MarshalJSON() ([]byte, error) {
 }
 
 var (
+	renewVCardRequestFieldExpirationDate = big.NewInt(1 << 0)
+)
+
+type RenewVCardRequest struct {
+	// The new expiration date for the virtual card, in `MM-YYYY` or `MM/YYYY` format. The card expires on the last day of the month you specify. The date can't be more than 2 years and 363 days in the future.
+	ExpirationDate string `json:"expirationDate" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (r *RenewVCardRequest) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetExpirationDate sets the ExpirationDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RenewVCardRequest) SetExpirationDate(expirationDate string) {
+	r.ExpirationDate = expirationDate
+	r.require(renewVCardRequestFieldExpirationDate)
+}
+
+func (r *RenewVCardRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler RenewVCardRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	*r = RenewVCardRequest(body)
+	return nil
+}
+
+func (r *RenewVCardRequest) MarshalJSON() ([]byte, error) {
+	type embed RenewVCardRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+var (
 	sendVCardLinkRequestFieldTransId = big.NewInt(1 << 0)
 )
 
@@ -574,17 +621,21 @@ var (
 	authCapturePayoutResponseDataFieldAvsResponseText   = big.NewInt(1 << 4)
 	authCapturePayoutResponseDataFieldCvvResponseText   = big.NewInt(1 << 5)
 	authCapturePayoutResponseDataFieldCustomerId        = big.NewInt(1 << 6)
-	authCapturePayoutResponseDataFieldMethodReferenceId = big.NewInt(1 << 7)
+	authCapturePayoutResponseDataFieldVendorId          = big.NewInt(1 << 7)
+	authCapturePayoutResponseDataFieldMethodReferenceId = big.NewInt(1 << 8)
 )
 
 type AuthCapturePayoutResponseData struct {
-	AuthCode          *Authcode          `json:"authCode,omitempty" url:"authCode,omitempty"`
-	ReferenceId       Referenceidtrans   `json:"referenceId" url:"referenceId"`
-	ResultCode        ResultCode         `json:"resultCode" url:"resultCode"`
-	ResultText        Resulttext         `json:"resultText" url:"resultText"`
-	AvsResponseText   *AvsResponseText   `json:"avsResponseText,omitempty" url:"avsResponseText,omitempty"`
-	CvvResponseText   *CvvResponseText   `json:"cvvResponseText,omitempty" url:"cvvResponseText,omitempty"`
-	CustomerId        Customeridtrans    `json:"customerId" url:"customerId"`
+	AuthCode        *Authcode        `json:"authCode,omitempty" url:"authCode,omitempty"`
+	ReferenceId     Referenceidtrans `json:"referenceId" url:"referenceId"`
+	ResultCode      ResultCode       `json:"resultCode" url:"resultCode"`
+	ResultText      Resulttext       `json:"resultText" url:"resultText"`
+	AvsResponseText *AvsResponseText `json:"avsResponseText,omitempty" url:"avsResponseText,omitempty"`
+	CvvResponseText *CvvResponseText `json:"cvvResponseText,omitempty" url:"cvvResponseText,omitempty"`
+	// Payabli-generated unique ID of the vendor on the payout. Returns the same value as `vendorId`, or `0` when no vendor is associated.
+	CustomerId Vendoridtrans `json:"customerId" url:"customerId"`
+	// Payabli-generated unique ID of the vendor on the payout. Returns the same value as `customerId`, or `0` when no vendor is associated.
+	VendorId          Vendoridtrans      `json:"vendorId" url:"vendorId"`
 	MethodReferenceId *MethodReferenceId `json:"methodReferenceId,omitempty" url:"methodReferenceId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -636,11 +687,18 @@ func (a *AuthCapturePayoutResponseData) GetCvvResponseText() *CvvResponseText {
 	return a.CvvResponseText
 }
 
-func (a *AuthCapturePayoutResponseData) GetCustomerId() Customeridtrans {
+func (a *AuthCapturePayoutResponseData) GetCustomerId() Vendoridtrans {
 	if a == nil {
 		return 0
 	}
 	return a.CustomerId
+}
+
+func (a *AuthCapturePayoutResponseData) GetVendorId() Vendoridtrans {
+	if a == nil {
+		return 0
+	}
+	return a.VendorId
 }
 
 func (a *AuthCapturePayoutResponseData) GetMethodReferenceId() *MethodReferenceId {
@@ -708,9 +766,16 @@ func (a *AuthCapturePayoutResponseData) SetCvvResponseText(cvvResponseText *CvvR
 
 // SetCustomerId sets the CustomerId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AuthCapturePayoutResponseData) SetCustomerId(customerId Customeridtrans) {
+func (a *AuthCapturePayoutResponseData) SetCustomerId(customerId Vendoridtrans) {
 	a.CustomerId = customerId
 	a.require(authCapturePayoutResponseDataFieldCustomerId)
+}
+
+// SetVendorId sets the VendorId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AuthCapturePayoutResponseData) SetVendorId(vendorId Vendoridtrans) {
+	a.VendorId = vendorId
+	a.require(authCapturePayoutResponseDataFieldVendorId)
 }
 
 // SetMethodReferenceId sets the MethodReferenceId field and marks it as non-optional;
@@ -1763,6 +1828,221 @@ func (b *BillDetailsResponse) String() string {
 	return fmt.Sprintf("%#v", b)
 }
 
+// Response data for canceling a single payout transaction. Mirrors the general response data, with `VendorId` added alongside `CustomerId`.
+var (
+	cancelPayoutResponseDataFieldAuthCode          = big.NewInt(1 << 0)
+	cancelPayoutResponseDataFieldAvsResponseText   = big.NewInt(1 << 1)
+	cancelPayoutResponseDataFieldCustomerId        = big.NewInt(1 << 2)
+	cancelPayoutResponseDataFieldVendorId          = big.NewInt(1 << 3)
+	cancelPayoutResponseDataFieldCvvResponseText   = big.NewInt(1 << 4)
+	cancelPayoutResponseDataFieldMethodReferenceId = big.NewInt(1 << 5)
+	cancelPayoutResponseDataFieldReferenceId       = big.NewInt(1 << 6)
+	cancelPayoutResponseDataFieldResultCode        = big.NewInt(1 << 7)
+	cancelPayoutResponseDataFieldResultText        = big.NewInt(1 << 8)
+)
+
+type CancelPayoutResponseData struct {
+	AuthCode        *Authcode        `json:"AuthCode,omitempty" url:"AuthCode,omitempty"`
+	AvsResponseText *AvsResponseText `json:"avsResponseText,omitempty" url:"avsResponseText,omitempty"`
+	// Payabli-generated unique ID of the vendor on the payout. Returns the same value as `VendorId`, or `0` when no vendor is associated.
+	CustomerId *Vendoridtrans `json:"CustomerId,omitempty" url:"CustomerId,omitempty"`
+	// Payabli-generated unique ID of the vendor on the payout. Returns the same value as `CustomerId`, or `0` when no vendor is associated.
+	VendorId          *Vendoridtrans     `json:"VendorId,omitempty" url:"VendorId,omitempty"`
+	CvvResponseText   *CvvResponseText   `json:"cvvResponseText,omitempty" url:"cvvResponseText,omitempty"`
+	MethodReferenceId *MethodReferenceId `json:"methodReferenceId,omitempty" url:"methodReferenceId,omitempty"`
+	ReferenceId       *Referenceidtrans  `json:"ReferenceId,omitempty" url:"ReferenceId,omitempty"`
+	ResultCode        *ResultCode        `json:"ResultCode,omitempty" url:"ResultCode,omitempty"`
+	ResultText        *Resulttext        `json:"ResultText,omitempty" url:"ResultText,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CancelPayoutResponseData) GetAuthCode() *Authcode {
+	if c == nil {
+		return nil
+	}
+	return c.AuthCode
+}
+
+func (c *CancelPayoutResponseData) GetAvsResponseText() *AvsResponseText {
+	if c == nil {
+		return nil
+	}
+	return c.AvsResponseText
+}
+
+func (c *CancelPayoutResponseData) GetCustomerId() *Vendoridtrans {
+	if c == nil {
+		return nil
+	}
+	return c.CustomerId
+}
+
+func (c *CancelPayoutResponseData) GetVendorId() *Vendoridtrans {
+	if c == nil {
+		return nil
+	}
+	return c.VendorId
+}
+
+func (c *CancelPayoutResponseData) GetCvvResponseText() *CvvResponseText {
+	if c == nil {
+		return nil
+	}
+	return c.CvvResponseText
+}
+
+func (c *CancelPayoutResponseData) GetMethodReferenceId() *MethodReferenceId {
+	if c == nil {
+		return nil
+	}
+	return c.MethodReferenceId
+}
+
+func (c *CancelPayoutResponseData) GetReferenceId() *Referenceidtrans {
+	if c == nil {
+		return nil
+	}
+	return c.ReferenceId
+}
+
+func (c *CancelPayoutResponseData) GetResultCode() *ResultCode {
+	if c == nil {
+		return nil
+	}
+	return c.ResultCode
+}
+
+func (c *CancelPayoutResponseData) GetResultText() *Resulttext {
+	if c == nil {
+		return nil
+	}
+	return c.ResultText
+}
+
+func (c *CancelPayoutResponseData) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *CancelPayoutResponseData) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetAuthCode sets the AuthCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CancelPayoutResponseData) SetAuthCode(authCode *Authcode) {
+	c.AuthCode = authCode
+	c.require(cancelPayoutResponseDataFieldAuthCode)
+}
+
+// SetAvsResponseText sets the AvsResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CancelPayoutResponseData) SetAvsResponseText(avsResponseText *AvsResponseText) {
+	c.AvsResponseText = avsResponseText
+	c.require(cancelPayoutResponseDataFieldAvsResponseText)
+}
+
+// SetCustomerId sets the CustomerId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CancelPayoutResponseData) SetCustomerId(customerId *Vendoridtrans) {
+	c.CustomerId = customerId
+	c.require(cancelPayoutResponseDataFieldCustomerId)
+}
+
+// SetVendorId sets the VendorId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CancelPayoutResponseData) SetVendorId(vendorId *Vendoridtrans) {
+	c.VendorId = vendorId
+	c.require(cancelPayoutResponseDataFieldVendorId)
+}
+
+// SetCvvResponseText sets the CvvResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CancelPayoutResponseData) SetCvvResponseText(cvvResponseText *CvvResponseText) {
+	c.CvvResponseText = cvvResponseText
+	c.require(cancelPayoutResponseDataFieldCvvResponseText)
+}
+
+// SetMethodReferenceId sets the MethodReferenceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CancelPayoutResponseData) SetMethodReferenceId(methodReferenceId *MethodReferenceId) {
+	c.MethodReferenceId = methodReferenceId
+	c.require(cancelPayoutResponseDataFieldMethodReferenceId)
+}
+
+// SetReferenceId sets the ReferenceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CancelPayoutResponseData) SetReferenceId(referenceId *Referenceidtrans) {
+	c.ReferenceId = referenceId
+	c.require(cancelPayoutResponseDataFieldReferenceId)
+}
+
+// SetResultCode sets the ResultCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CancelPayoutResponseData) SetResultCode(resultCode *ResultCode) {
+	c.ResultCode = resultCode
+	c.require(cancelPayoutResponseDataFieldResultCode)
+}
+
+// SetResultText sets the ResultText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CancelPayoutResponseData) SetResultText(resultText *Resulttext) {
+	c.ResultText = resultText
+	c.require(cancelPayoutResponseDataFieldResultText)
+}
+
+func (c *CancelPayoutResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler CancelPayoutResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CancelPayoutResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CancelPayoutResponseData) MarshalJSON() ([]byte, error) {
+	type embed CancelPayoutResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*c),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CancelPayoutResponseData) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 var (
 	captureAllOutResponseFieldIsSuccess      = big.NewInt(1 << 0)
 	captureAllOutResponseFieldPageIdentifier = big.NewInt(1 << 1)
@@ -1914,14 +2194,17 @@ func (c *CaptureAllOutResponse) String() string {
 
 var (
 	captureAllOutResponseResponseDataItemFieldCustomerId  = big.NewInt(1 << 0)
-	captureAllOutResponseResponseDataItemFieldReferenceId = big.NewInt(1 << 1)
-	captureAllOutResponseResponseDataItemFieldResultCode  = big.NewInt(1 << 2)
-	captureAllOutResponseResponseDataItemFieldResultText  = big.NewInt(1 << 3)
+	captureAllOutResponseResponseDataItemFieldVendorId    = big.NewInt(1 << 1)
+	captureAllOutResponseResponseDataItemFieldReferenceId = big.NewInt(1 << 2)
+	captureAllOutResponseResponseDataItemFieldResultCode  = big.NewInt(1 << 3)
+	captureAllOutResponseResponseDataItemFieldResultText  = big.NewInt(1 << 4)
 )
 
 type CaptureAllOutResponseResponseDataItem struct {
-	// Internal unique Id of vendor owner of transaction. Returns `0` if the transaction wasn't assigned to an existing vendor or no vendor was created.
-	CustomerId  *Customeridtrans  `json:"CustomerId,omitempty" url:"CustomerId,omitempty"`
+	// Payabli-generated unique ID of the vendor on the payout. Returns the same value as `VendorId`, or `0` when no vendor is associated.
+	CustomerId *Vendoridtrans `json:"CustomerId,omitempty" url:"CustomerId,omitempty"`
+	// Payabli-generated unique ID of the vendor on the payout. Returns the same value as `CustomerId`, or `0` when no vendor is associated.
+	VendorId    *Vendoridtrans    `json:"VendorId,omitempty" url:"VendorId,omitempty"`
 	ReferenceId *Referenceidtrans `json:"ReferenceId,omitempty" url:"ReferenceId,omitempty"`
 	ResultCode  *ResultCode       `json:"ResultCode,omitempty" url:"ResultCode,omitempty"`
 	// Text describing the result.
@@ -1936,11 +2219,18 @@ type CaptureAllOutResponseResponseDataItem struct {
 	rawJSON         json.RawMessage
 }
 
-func (c *CaptureAllOutResponseResponseDataItem) GetCustomerId() *Customeridtrans {
+func (c *CaptureAllOutResponseResponseDataItem) GetCustomerId() *Vendoridtrans {
 	if c == nil {
 		return nil
 	}
 	return c.CustomerId
+}
+
+func (c *CaptureAllOutResponseResponseDataItem) GetVendorId() *Vendoridtrans {
+	if c == nil {
+		return nil
+	}
+	return c.VendorId
 }
 
 func (c *CaptureAllOutResponseResponseDataItem) GetReferenceId() *Referenceidtrans {
@@ -1980,9 +2270,16 @@ func (c *CaptureAllOutResponseResponseDataItem) require(field *big.Int) {
 
 // SetCustomerId sets the CustomerId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CaptureAllOutResponseResponseDataItem) SetCustomerId(customerId *Customeridtrans) {
+func (c *CaptureAllOutResponseResponseDataItem) SetCustomerId(customerId *Vendoridtrans) {
 	c.CustomerId = customerId
 	c.require(captureAllOutResponseResponseDataItemFieldCustomerId)
+}
+
+// SetVendorId sets the VendorId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CaptureAllOutResponseResponseDataItem) SetVendorId(vendorId *Vendoridtrans) {
+	c.VendorId = vendorId
+	c.require(captureAllOutResponseResponseDataItemFieldVendorId)
 }
 
 // SetReferenceId sets the ReferenceId field and marks it as non-optional;
@@ -2168,11 +2465,11 @@ var (
 )
 
 type PayabliApiResponse0000 struct {
-	IsSuccess      *IsSuccess                       `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText   ResponseText                     `json:"responseText" url:"responseText"`
-	PageIdentifier *PageIdentifier                  `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
-	ResponseCode   *Responsecode                    `json:"responseCode,omitempty" url:"responseCode,omitempty"`
-	ResponseData   *PayabliApiResponse0ResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
+	IsSuccess      *IsSuccess                `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	ResponseText   ResponseText              `json:"responseText" url:"responseText"`
+	PageIdentifier *PageIdentifier           `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
+	ResponseCode   *Responsecode             `json:"responseCode,omitempty" url:"responseCode,omitempty"`
+	ResponseData   *CancelPayoutResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2209,7 +2506,7 @@ func (p *PayabliApiResponse0000) GetResponseCode() *Responsecode {
 	return p.ResponseCode
 }
 
-func (p *PayabliApiResponse0000) GetResponseData() *PayabliApiResponse0ResponseData {
+func (p *PayabliApiResponse0000) GetResponseData() *CancelPayoutResponseData {
 	if p == nil {
 		return nil
 	}
@@ -2260,7 +2557,7 @@ func (p *PayabliApiResponse0000) SetResponseCode(responseCode *Responsecode) {
 
 // SetResponseData sets the ResponseData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliApiResponse0000) SetResponseData(responseData *PayabliApiResponse0ResponseData) {
+func (p *PayabliApiResponse0000) SetResponseData(responseData *CancelPayoutResponseData) {
 	p.ResponseData = responseData
 	p.require(payabliApiResponse0000FieldResponseData)
 }
@@ -2717,6 +3014,341 @@ func (r *ReissuePayoutResponseData) MarshalJSON() ([]byte, error) {
 }
 
 func (r *ReissuePayoutResponseData) String() string {
+	if r == nil {
+		return "<nil>"
+	}
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	renewVCardResponseFieldResponseText = big.NewInt(1 << 0)
+	renewVCardResponseFieldIsSuccess    = big.NewInt(1 << 1)
+	renewVCardResponseFieldResponseData = big.NewInt(1 << 2)
+)
+
+type RenewVCardResponse struct {
+	ResponseText ResponseText            `json:"responseText" url:"responseText"`
+	IsSuccess    IsSuccess               `json:"isSuccess" url:"isSuccess"`
+	ResponseData *RenewVCardResponseData `json:"responseData" url:"responseData"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RenewVCardResponse) GetResponseText() ResponseText {
+	if r == nil {
+		return ""
+	}
+	return r.ResponseText
+}
+
+func (r *RenewVCardResponse) GetIsSuccess() IsSuccess {
+	if r == nil {
+		return false
+	}
+	return r.IsSuccess
+}
+
+func (r *RenewVCardResponse) GetResponseData() *RenewVCardResponseData {
+	if r == nil {
+		return nil
+	}
+	return r.ResponseData
+}
+
+func (r *RenewVCardResponse) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
+	return r.extraProperties
+}
+
+func (r *RenewVCardResponse) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RenewVCardResponse) SetResponseText(responseText ResponseText) {
+	r.ResponseText = responseText
+	r.require(renewVCardResponseFieldResponseText)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RenewVCardResponse) SetIsSuccess(isSuccess IsSuccess) {
+	r.IsSuccess = isSuccess
+	r.require(renewVCardResponseFieldIsSuccess)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RenewVCardResponse) SetResponseData(responseData *RenewVCardResponseData) {
+	r.ResponseData = responseData
+	r.require(renewVCardResponseFieldResponseData)
+}
+
+func (r *RenewVCardResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler RenewVCardResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RenewVCardResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RenewVCardResponse) MarshalJSON() ([]byte, error) {
+	type embed RenewVCardResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *RenewVCardResponse) String() string {
+	if r == nil {
+		return "<nil>"
+	}
+	if len(r.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(r); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", r)
+}
+
+var (
+	renewVCardResponseDataFieldAuthCode          = big.NewInt(1 << 0)
+	renewVCardResponseDataFieldReferenceId       = big.NewInt(1 << 1)
+	renewVCardResponseDataFieldResultCode        = big.NewInt(1 << 2)
+	renewVCardResponseDataFieldResultText        = big.NewInt(1 << 3)
+	renewVCardResponseDataFieldAvsResponseText   = big.NewInt(1 << 4)
+	renewVCardResponseDataFieldCvvResponseText   = big.NewInt(1 << 5)
+	renewVCardResponseDataFieldCustomerId        = big.NewInt(1 << 6)
+	renewVCardResponseDataFieldVendorId          = big.NewInt(1 << 7)
+	renewVCardResponseDataFieldMethodReferenceId = big.NewInt(1 << 8)
+)
+
+type RenewVCardResponseData struct {
+	// Not used for virtual card renewal; always returns `null`.
+	AuthCode *Authcode `json:"authCode,omitempty" url:"authCode,omitempty"`
+	// Reference identifier for the renewed virtual card returned by the card processor.
+	ReferenceId Referenceidtrans `json:"referenceId" url:"referenceId"`
+	ResultCode  ResultCode       `json:"resultCode" url:"resultCode"`
+	ResultText  Resulttext       `json:"resultText" url:"resultText"`
+	// Not used for virtual card renewal; always returns `null`.
+	AvsResponseText *AvsResponseText `json:"avsResponseText,omitempty" url:"avsResponseText,omitempty"`
+	// Not used for virtual card renewal; always returns `null`.
+	CvvResponseText *CvvResponseText `json:"cvvResponseText,omitempty" url:"cvvResponseText,omitempty"`
+	// Not used for virtual card renewal; always returns `null`.
+	CustomerId *Vendoridtrans `json:"customerId,omitempty" url:"customerId,omitempty"`
+	// Not used for virtual card renewal; always returns `null`.
+	VendorId *Vendoridtrans `json:"vendorId,omitempty" url:"vendorId,omitempty"`
+	// Not used for virtual card renewal; always returns `null`.
+	MethodReferenceId *MethodReferenceId `json:"methodReferenceId,omitempty" url:"methodReferenceId,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (r *RenewVCardResponseData) GetAuthCode() *Authcode {
+	if r == nil {
+		return nil
+	}
+	return r.AuthCode
+}
+
+func (r *RenewVCardResponseData) GetReferenceId() Referenceidtrans {
+	if r == nil {
+		return ""
+	}
+	return r.ReferenceId
+}
+
+func (r *RenewVCardResponseData) GetResultCode() ResultCode {
+	if r == nil {
+		return 0
+	}
+	return r.ResultCode
+}
+
+func (r *RenewVCardResponseData) GetResultText() Resulttext {
+	if r == nil {
+		return ""
+	}
+	return r.ResultText
+}
+
+func (r *RenewVCardResponseData) GetAvsResponseText() *AvsResponseText {
+	if r == nil {
+		return nil
+	}
+	return r.AvsResponseText
+}
+
+func (r *RenewVCardResponseData) GetCvvResponseText() *CvvResponseText {
+	if r == nil {
+		return nil
+	}
+	return r.CvvResponseText
+}
+
+func (r *RenewVCardResponseData) GetCustomerId() *Vendoridtrans {
+	if r == nil {
+		return nil
+	}
+	return r.CustomerId
+}
+
+func (r *RenewVCardResponseData) GetVendorId() *Vendoridtrans {
+	if r == nil {
+		return nil
+	}
+	return r.VendorId
+}
+
+func (r *RenewVCardResponseData) GetMethodReferenceId() *MethodReferenceId {
+	if r == nil {
+		return nil
+	}
+	return r.MethodReferenceId
+}
+
+func (r *RenewVCardResponseData) GetExtraProperties() map[string]interface{} {
+	if r == nil {
+		return nil
+	}
+	return r.extraProperties
+}
+
+func (r *RenewVCardResponseData) require(field *big.Int) {
+	if r.explicitFields == nil {
+		r.explicitFields = big.NewInt(0)
+	}
+	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetAuthCode sets the AuthCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RenewVCardResponseData) SetAuthCode(authCode *Authcode) {
+	r.AuthCode = authCode
+	r.require(renewVCardResponseDataFieldAuthCode)
+}
+
+// SetReferenceId sets the ReferenceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RenewVCardResponseData) SetReferenceId(referenceId Referenceidtrans) {
+	r.ReferenceId = referenceId
+	r.require(renewVCardResponseDataFieldReferenceId)
+}
+
+// SetResultCode sets the ResultCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RenewVCardResponseData) SetResultCode(resultCode ResultCode) {
+	r.ResultCode = resultCode
+	r.require(renewVCardResponseDataFieldResultCode)
+}
+
+// SetResultText sets the ResultText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RenewVCardResponseData) SetResultText(resultText Resulttext) {
+	r.ResultText = resultText
+	r.require(renewVCardResponseDataFieldResultText)
+}
+
+// SetAvsResponseText sets the AvsResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RenewVCardResponseData) SetAvsResponseText(avsResponseText *AvsResponseText) {
+	r.AvsResponseText = avsResponseText
+	r.require(renewVCardResponseDataFieldAvsResponseText)
+}
+
+// SetCvvResponseText sets the CvvResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RenewVCardResponseData) SetCvvResponseText(cvvResponseText *CvvResponseText) {
+	r.CvvResponseText = cvvResponseText
+	r.require(renewVCardResponseDataFieldCvvResponseText)
+}
+
+// SetCustomerId sets the CustomerId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RenewVCardResponseData) SetCustomerId(customerId *Vendoridtrans) {
+	r.CustomerId = customerId
+	r.require(renewVCardResponseDataFieldCustomerId)
+}
+
+// SetVendorId sets the VendorId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RenewVCardResponseData) SetVendorId(vendorId *Vendoridtrans) {
+	r.VendorId = vendorId
+	r.require(renewVCardResponseDataFieldVendorId)
+}
+
+// SetMethodReferenceId sets the MethodReferenceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RenewVCardResponseData) SetMethodReferenceId(methodReferenceId *MethodReferenceId) {
+	r.MethodReferenceId = methodReferenceId
+	r.require(renewVCardResponseDataFieldMethodReferenceId)
+}
+
+func (r *RenewVCardResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler RenewVCardResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*r = RenewVCardResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *r)
+	if err != nil {
+		return err
+	}
+	r.extraProperties = extraProperties
+	r.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (r *RenewVCardResponseData) MarshalJSON() ([]byte, error) {
+	type embed RenewVCardResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*r),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (r *RenewVCardResponseData) String() string {
 	if r == nil {
 		return "<nil>"
 	}
@@ -5299,3 +5931,8 @@ func (v *VCardGetResponseContact) String() string {
 // automatically manages check numbering and sequencing for checks issued
 // from the same bank account.
 type VendorCheckNumber = string
+
+// Payabli-generated unique ID of the vendor on the payout. Returns the same
+// value as the response's `customerId`/`CustomerId` field, or `0` when no
+// vendor is associated.
+type Vendoridtrans = int64

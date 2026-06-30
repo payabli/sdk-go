@@ -154,33 +154,37 @@ var (
 	statBasicExtendedQueryRecordFieldOutAchTransactions           = big.NewInt(1 << 7)
 	statBasicExtendedQueryRecordFieldOutCheckTransactions         = big.NewInt(1 << 8)
 	statBasicExtendedQueryRecordFieldOutPendingMethodTransactions = big.NewInt(1 << 9)
-	statBasicExtendedQueryRecordFieldOutTransactionsVolume        = big.NewInt(1 << 10)
-	statBasicExtendedQueryRecordFieldOutSubscriptionsPaidVolume   = big.NewInt(1 << 11)
-	statBasicExtendedQueryRecordFieldOutCardVolume                = big.NewInt(1 << 12)
-	statBasicExtendedQueryRecordFieldOutVCardVolume               = big.NewInt(1 << 13)
-	statBasicExtendedQueryRecordFieldOutAchVolume                 = big.NewInt(1 << 14)
-	statBasicExtendedQueryRecordFieldOutCheckVolume               = big.NewInt(1 << 15)
-	statBasicExtendedQueryRecordFieldOutPendingMethodVolume       = big.NewInt(1 << 16)
-	statBasicExtendedQueryRecordFieldInTransactions               = big.NewInt(1 << 17)
-	statBasicExtendedQueryRecordFieldInSubscriptionsPaid          = big.NewInt(1 << 18)
-	statBasicExtendedQueryRecordFieldInCustomers                  = big.NewInt(1 << 19)
-	statBasicExtendedQueryRecordFieldInNewCustomers               = big.NewInt(1 << 20)
-	statBasicExtendedQueryRecordFieldInCardTransactions           = big.NewInt(1 << 21)
-	statBasicExtendedQueryRecordFieldInAchTransactions            = big.NewInt(1 << 22)
-	statBasicExtendedQueryRecordFieldInCheckTransactions          = big.NewInt(1 << 23)
-	statBasicExtendedQueryRecordFieldInCashTransactions           = big.NewInt(1 << 24)
-	statBasicExtendedQueryRecordFieldInWalletTransactions         = big.NewInt(1 << 25)
-	statBasicExtendedQueryRecordFieldInCardChargeBacks            = big.NewInt(1 << 26)
-	statBasicExtendedQueryRecordFieldInAchReturns                 = big.NewInt(1 << 27)
-	statBasicExtendedQueryRecordFieldInTransactionsVolume         = big.NewInt(1 << 28)
-	statBasicExtendedQueryRecordFieldInSubscriptionsPaidVolume    = big.NewInt(1 << 29)
-	statBasicExtendedQueryRecordFieldInCardVolume                 = big.NewInt(1 << 30)
-	statBasicExtendedQueryRecordFieldInAchVolume                  = big.NewInt(1 << 31)
-	statBasicExtendedQueryRecordFieldInCheckVolume                = big.NewInt(1 << 32)
-	statBasicExtendedQueryRecordFieldInCashVolume                 = big.NewInt(1 << 33)
-	statBasicExtendedQueryRecordFieldInWalletVolume               = big.NewInt(1 << 34)
-	statBasicExtendedQueryRecordFieldInCardChargeBackVolume       = big.NewInt(1 << 35)
-	statBasicExtendedQueryRecordFieldInAchReturnsVolume           = big.NewInt(1 << 36)
+	statBasicExtendedQueryRecordFieldOutRtpTransactions           = big.NewInt(1 << 10)
+	statBasicExtendedQueryRecordFieldOutRtpVolume                 = big.NewInt(1 << 11)
+	statBasicExtendedQueryRecordFieldOutWireTransactions          = big.NewInt(1 << 12)
+	statBasicExtendedQueryRecordFieldOutWireVolume                = big.NewInt(1 << 13)
+	statBasicExtendedQueryRecordFieldOutTransactionsVolume        = big.NewInt(1 << 14)
+	statBasicExtendedQueryRecordFieldOutSubscriptionsPaidVolume   = big.NewInt(1 << 15)
+	statBasicExtendedQueryRecordFieldOutCardVolume                = big.NewInt(1 << 16)
+	statBasicExtendedQueryRecordFieldOutVCardVolume               = big.NewInt(1 << 17)
+	statBasicExtendedQueryRecordFieldOutAchVolume                 = big.NewInt(1 << 18)
+	statBasicExtendedQueryRecordFieldOutCheckVolume               = big.NewInt(1 << 19)
+	statBasicExtendedQueryRecordFieldOutPendingMethodVolume       = big.NewInt(1 << 20)
+	statBasicExtendedQueryRecordFieldInTransactions               = big.NewInt(1 << 21)
+	statBasicExtendedQueryRecordFieldInSubscriptionsPaid          = big.NewInt(1 << 22)
+	statBasicExtendedQueryRecordFieldInCustomers                  = big.NewInt(1 << 23)
+	statBasicExtendedQueryRecordFieldInNewCustomers               = big.NewInt(1 << 24)
+	statBasicExtendedQueryRecordFieldInCardTransactions           = big.NewInt(1 << 25)
+	statBasicExtendedQueryRecordFieldInAchTransactions            = big.NewInt(1 << 26)
+	statBasicExtendedQueryRecordFieldInCheckTransactions          = big.NewInt(1 << 27)
+	statBasicExtendedQueryRecordFieldInCashTransactions           = big.NewInt(1 << 28)
+	statBasicExtendedQueryRecordFieldInWalletTransactions         = big.NewInt(1 << 29)
+	statBasicExtendedQueryRecordFieldInCardChargeBacks            = big.NewInt(1 << 30)
+	statBasicExtendedQueryRecordFieldInAchReturns                 = big.NewInt(1 << 31)
+	statBasicExtendedQueryRecordFieldInTransactionsVolume         = big.NewInt(1 << 32)
+	statBasicExtendedQueryRecordFieldInSubscriptionsPaidVolume    = big.NewInt(1 << 33)
+	statBasicExtendedQueryRecordFieldInCardVolume                 = big.NewInt(1 << 34)
+	statBasicExtendedQueryRecordFieldInAchVolume                  = big.NewInt(1 << 35)
+	statBasicExtendedQueryRecordFieldInCheckVolume                = big.NewInt(1 << 36)
+	statBasicExtendedQueryRecordFieldInCashVolume                 = big.NewInt(1 << 37)
+	statBasicExtendedQueryRecordFieldInWalletVolume               = big.NewInt(1 << 38)
+	statBasicExtendedQueryRecordFieldInCardChargeBackVolume       = big.NewInt(1 << 39)
+	statBasicExtendedQueryRecordFieldInAchReturnsVolume           = big.NewInt(1 << 40)
 )
 
 type StatBasicExtendedQueryRecord struct {
@@ -204,6 +208,14 @@ type StatBasicExtendedQueryRecord struct {
 	OutCheckTransactions int `json:"outCheckTransactions" url:"outCheckTransactions"`
 	// Outbound (payout) Managed Payables transactions count.
 	OutPendingMethodTransactions int `json:"outPendingMethodTransactions" url:"outPendingMethodTransactions"`
+	// Outbound (payout) RTP transactions count.
+	OutRtpTransactions int `json:"outRTPTransactions" url:"outRTPTransactions"`
+	// Outbound (payout) RTP transactions volume.
+	OutRtpVolume float64 `json:"outRTPVolume" url:"outRTPVolume"`
+	// Outbound (payout) wire transactions count.
+	OutWireTransactions int `json:"outWireTransactions" url:"outWireTransactions"`
+	// Outbound (payout) wire transactions volume.
+	OutWireVolume float64 `json:"outWireVolume" url:"outWireVolume"`
 	// Outbound (payout) volume.
 	OutTransactionsVolume float64 `json:"outTransactionsVolume" url:"outTransactionsVolume"`
 	// Recurring outbound (payout) volume.
@@ -334,6 +346,34 @@ func (s *StatBasicExtendedQueryRecord) GetOutPendingMethodTransactions() int {
 		return 0
 	}
 	return s.OutPendingMethodTransactions
+}
+
+func (s *StatBasicExtendedQueryRecord) GetOutRtpTransactions() int {
+	if s == nil {
+		return 0
+	}
+	return s.OutRtpTransactions
+}
+
+func (s *StatBasicExtendedQueryRecord) GetOutRtpVolume() float64 {
+	if s == nil {
+		return 0
+	}
+	return s.OutRtpVolume
+}
+
+func (s *StatBasicExtendedQueryRecord) GetOutWireTransactions() int {
+	if s == nil {
+		return 0
+	}
+	return s.OutWireTransactions
+}
+
+func (s *StatBasicExtendedQueryRecord) GetOutWireVolume() float64 {
+	if s == nil {
+		return 0
+	}
+	return s.OutWireVolume
 }
 
 func (s *StatBasicExtendedQueryRecord) GetOutTransactionsVolume() float64 {
@@ -607,6 +647,34 @@ func (s *StatBasicExtendedQueryRecord) SetOutCheckTransactions(outCheckTransacti
 func (s *StatBasicExtendedQueryRecord) SetOutPendingMethodTransactions(outPendingMethodTransactions int) {
 	s.OutPendingMethodTransactions = outPendingMethodTransactions
 	s.require(statBasicExtendedQueryRecordFieldOutPendingMethodTransactions)
+}
+
+// SetOutRtpTransactions sets the OutRtpTransactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetOutRtpTransactions(outRtpTransactions int) {
+	s.OutRtpTransactions = outRtpTransactions
+	s.require(statBasicExtendedQueryRecordFieldOutRtpTransactions)
+}
+
+// SetOutRtpVolume sets the OutRtpVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetOutRtpVolume(outRtpVolume float64) {
+	s.OutRtpVolume = outRtpVolume
+	s.require(statBasicExtendedQueryRecordFieldOutRtpVolume)
+}
+
+// SetOutWireTransactions sets the OutWireTransactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetOutWireTransactions(outWireTransactions int) {
+	s.OutWireTransactions = outWireTransactions
+	s.require(statBasicExtendedQueryRecordFieldOutWireTransactions)
+}
+
+// SetOutWireVolume sets the OutWireVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *StatBasicExtendedQueryRecord) SetOutWireVolume(outWireVolume float64) {
+	s.OutWireVolume = outWireVolume
+	s.require(statBasicExtendedQueryRecordFieldOutWireVolume)
 }
 
 // SetOutTransactionsVolume sets the OutTransactionsVolume field and marks it as non-optional;

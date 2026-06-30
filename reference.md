@@ -1639,11 +1639,14 @@ client.CheckCapture.CheckProcessing(
 <dl>
 <dd>
 
+<Warning>
+  This endpoint is deprecated. New integrations should use the [Authorize endpoint](/developers/api-reference/moneyinV2/authorize-a-transaction), then capture, void, or refund the resulting transaction with the corresponding endpoints. Transactions created with this legacy endpoint must be managed with the legacy lifecycle endpoints — they aren't interchangeable with the current ones.
+</Warning>
+
+
 Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until [captured](/developers/api-reference/moneyin/capture-an-authorized-transaction).
+
 Only card transactions can be authorized. This endpoint can't be used for ACH transactions.
-<Tip>
-  Consider migrating to the [v2 Authorize endpoint](/developers/api-reference/moneyinV2/authorize-a-transaction) to take advantage of unified response codes and improved response consistency.
-</Tip>
 </dd>
 </dl>
 </dd>
@@ -1758,7 +1761,7 @@ client.MoneyIn.Authorize(
 <dd>
 
 <Warning>
-  This endpoint is deprecated and will be sunset on November 24, 2025. Migrate to [POST `/capture/{transId}`](/developers/api-reference/moneyin/capture-an-authorized-transaction)`.
+  This endpoint is deprecated. Use [POST `/capture/{transId}`](/developers/api-reference/moneyin/capture-an-authorized-transaction) instead, which supports partial captures and service fee adjustments.
 </Warning>
 
   Capture an [authorized
@@ -1829,13 +1832,13 @@ client.MoneyIn.Capture(
 <dl>
 <dd>
 
+<Warning>
+  This endpoint is deprecated. Use it only to capture transactions originally authorized with the legacy [Authorize endpoint](/developers/api-reference/moneyin/authorize-a-transaction). New integrations should use the [Capture endpoint](/developers/api-reference/moneyinV2/capture-an-authorized-transaction), which only works on transactions authorized with the current [Authorize endpoint](/developers/api-reference/moneyinV2/authorize-a-transaction).
+</Warning>
+
 Capture an [authorized transaction](/developers/api-reference/moneyin/authorize-a-transaction) to complete the transaction and move funds from the customer to merchant account.
 
 You can use this endpoint to capture both full and partial amounts of the original authorized transaction. See [Capture an authorized transaction](/developers/developer-guides/pay-in-auth-and-capture) for more information about this endpoint.
-
-<Tip>
-Consider migrating to the [v2 Capture endpoint](/developers/api-reference/moneyinV2/capture-an-authorized-transaction) to take advantage of unified response codes and improved response consistency.
-</Tip>
 </dd>
 </dl>
 </dd>
@@ -2143,11 +2146,11 @@ client.MoneyIn.Details(
 <dl>
 <dd>
 
-Make a single transaction. This method authorizes and captures a payment in one step.
+<Warning>
+  This endpoint is deprecated. New integrations should use the [Make a transaction endpoint](/developers/api-reference/moneyinV2/make-a-transaction) and manage the resulting transaction with the corresponding void or refund endpoints. Transactions created with this legacy endpoint must be managed with the legacy lifecycle endpoints — they aren't interchangeable with the current ones.
+</Warning>
 
-  <Tip>
-  Consider migrating to the [v2 Make a transaction endpoint](/developers/api-reference/moneyinV2/make-a-transaction) to take advantage of unified response codes and improved response consistency.
-  </Tip>
+Make a single transaction. This method authorizes and captures a payment in one step.
 </dd>
 </dl>
 </dd>
@@ -2285,7 +2288,11 @@ client.MoneyIn.Getpaid(
 <dl>
 <dd>
 
-A reversal either refunds or voids a transaction independent of the transaction's settlement status. Send a reversal request for a transaction, and Payabli automatically determines whether it's a refund or void. You don't need to know whether the transaction is settled or not. This endpoint only works on transactions made with the v1 API. For v2 transactions, check the transaction's settlement status and call v2 void or v2 refund based on the result.
+<Warning>
+  This endpoint is deprecated and only works on transactions created with the legacy endpoints. There's no equivalent in the current endpoints. For transactions created with [Make a transaction](/developers/api-reference/moneyinV2/make-a-transaction) or [Authorize](/developers/api-reference/moneyinV2/authorize-a-transaction), check the transaction's settlement status and call [Void](/developers/api-reference/moneyinV2/void-a-transaction) or [Refund](/developers/api-reference/moneyinV2/refund-a-settled-transaction) based on the result.
+</Warning>
+
+A reversal either refunds or voids a transaction independent of the transaction's settlement status. Send a reversal request for a transaction, and Payabli automatically determines whether it's a refund or void. You don't need to know whether the transaction is settled or not. This endpoint only works on transactions made with the legacy endpoints. For transactions made with the current endpoints, check the transaction's settlement status and call void or refund based on the result.
 </dd>
 </dl>
 </dd>
@@ -2358,11 +2365,11 @@ An amount equal to zero will refunds the total amount authorized minus any servi
 <dl>
 <dd>
 
-Refund a transaction that has settled and send money back to the account holder. If a transaction hasn't been settled, void it instead.
+<Warning>
+  This endpoint is deprecated. Use it only to refund transactions originally created with the legacy endpoints. New integrations should use the [Refund endpoint](/developers/api-reference/moneyinV2/refund-a-settled-transaction), which only works on transactions created with [Make a transaction](/developers/api-reference/moneyinV2/make-a-transaction) or [Authorize](/developers/api-reference/moneyinV2/authorize-a-transaction).
+</Warning>
 
-  <Tip>
-  Consider migrating to the [v2 Refund endpoint](/developers/api-reference/moneyinV2/refund-a-settled-transaction) to take advantage of unified response codes and improved response consistency.
-  </Tip>
+Refund a transaction that has settled and send money back to the account holder. If a transaction hasn't been settled, void it instead.
 </dd>
 </dl>
 </dd>
@@ -2434,6 +2441,10 @@ An amount equal to zero will refund the total amount authorized minus any servic
 
 <dl>
 <dd>
+
+<Warning>
+  This endpoint is deprecated. Use it only to refund transactions originally created with the legacy endpoints. To refund a split-funded transaction created with [Make a transaction](/developers/api-reference/moneyinV2/make-a-transaction) or [Authorize](/developers/api-reference/moneyinV2/authorize-a-transaction), use the [Refund endpoint](/developers/api-reference/moneyinV2/refund-a-settled-transaction) with split instructions in the request body.
+</Warning>
 
 Refunds a settled transaction with split instructions.
 </dd>
@@ -2847,11 +2858,11 @@ client.MoneyIn.Validate(
 <dl>
 <dd>
 
-Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. If a transaction has been settled, refund it instead.
+<Warning>
+  This endpoint is deprecated. Use it only to void transactions originally created with the legacy endpoints. New integrations should use the [Void endpoint](/developers/api-reference/moneyinV2/void-a-transaction), which only works on transactions created with [Make a transaction](/developers/api-reference/moneyinV2/make-a-transaction) or [Authorize](/developers/api-reference/moneyinV2/authorize-a-transaction).
+</Warning>
 
-  <Tip>
-  Consider migrating to the [v2 Void endpoint](/developers/api-reference/moneyinV2/void-a-transaction) to take advantage of unified response codes and improved response consistency.
-  </Tip>
+Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. If a transaction has been settled, refund it instead.
 </dd>
 </dl>
 </dd>
@@ -3218,7 +3229,7 @@ client.MoneyIn.Capturev2(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.Refundv2(TransId) -> *payabli.V2TransactionResponseWrapper</code></summary>
+<details><summary><code>client.MoneyIn.Refundv2(TransId, request) -> *payabli.V2TransactionResponseWrapper</code></summary>
 <dl>
 <dd>
 
@@ -3230,9 +3241,13 @@ client.MoneyIn.Capturev2(
 <dl>
 <dd>
 
-Give a full refund for a transaction that has settled and send money back to the account holder. To perform a partial refund, see [Partially refund a transaction](developers/api-reference/moneyinV2/partial-refund-a-settled-transaction).
+Give a full refund for a transaction that has settled and send money back to the account holder. To perform a partial refund, see [Partially refund a transaction](/developers/api-reference/moneyinV2/partial-refund-a-settled-transaction).
 
 This is the v2 version of the refund endpoint, and returns the unified response format. See [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for more information.
+
+<Note>
+  To refund a split-funded transaction, include split instructions in the request body. Omit the body for a standard refund.
+</Note>
 </dd>
 </dl>
 </dd>
@@ -3247,9 +3262,11 @@ This is the v2 version of the refund endpoint, and returns the unified response 
 <dd>
 
 ```go
+request := &payabli.RefundV2Request{}
 client.MoneyIn.Refundv2(
         context.TODO(),
         "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
+        request,
     )
 }
 ```
@@ -3267,6 +3284,14 @@ client.MoneyIn.Refundv2(
 <dd>
 
 **transId:** `string` — ReferenceId for the transaction (PaymentId).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `*payabli.RefundV2Request` 
     
 </dd>
 </dl>
@@ -3278,7 +3303,7 @@ client.MoneyIn.Refundv2(
 </dl>
 </details>
 
-<details><summary><code>client.MoneyIn.Refundv2Amount(TransId, Amount) -> *payabli.V2TransactionResponseWrapper</code></summary>
+<details><summary><code>client.MoneyIn.Refundv2Amount(TransId, Amount, request) -> *payabli.V2TransactionResponseWrapper</code></summary>
 <dl>
 <dd>
 
@@ -3290,9 +3315,13 @@ client.MoneyIn.Refundv2(
 <dl>
 <dd>
 
-Refund a transaction that has settled and send money back to the account holder. If `amount` is omitted or set to 0, performs a full refund. When a non-zero `amount` is provided, this endpoint performs a partial refund.
+Refund a transaction that has settled and send money back to the account holder. If `amount` is set to 0, performs a full refund. When a non-zero `amount` is provided, this endpoint performs a partial refund.
 
 This is the v2 version of the refund endpoint, and returns the unified response format. See [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for more information.
+
+<Note>
+  To refund a split-funded transaction, include split instructions in the request body. Omit the body for a standard refund.
+</Note>
 </dd>
 </dl>
 </dd>
@@ -3307,10 +3336,12 @@ This is the v2 version of the refund endpoint, and returns the unified response 
 <dd>
 
 ```go
+request := &payabli.RefundV2Request{}
 client.MoneyIn.Refundv2Amount(
         context.TODO(),
         "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
         0,
+        request,
     )
 }
 ```
@@ -3335,7 +3366,15 @@ client.MoneyIn.Refundv2Amount(
 <dl>
 <dd>
 
-**amount:** `float64` — Amount to refund from original transaction, minus any service fees charged on the original transaction. If omitted or set to 0, performs a full refund.
+**amount:** `float64` — Amount to refund from original transaction, minus any service fees charged on the original transaction. If set to 0, performs a full refund.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `*payabli.RefundV2Request` 
     
 </dd>
 </dl>
@@ -4904,6 +4943,8 @@ client.Invoice.GetInvoicePdf(
 <dd>
 
 Generates a payment link for an invoice from the invoice ID.
+
+The payment page configuration blocks (`logo`, `page`, `paymentMethods`, `review`, `messageBeforePaying`, `paymentButton`, `notes`, `contactUs`, and `settings`) are optional. When you omit a block, Payabli applies a default rather than hiding it. The block is enabled at a fixed display order, so the generated page stays complete and branded. To hide a section, send the block explicitly with `enabled` set to `false`. An explicit value is always honored and is never replaced by a default. For each block's default, see its description in the request body.
 </dd>
 </dl>
 </dd>
@@ -5212,7 +5253,7 @@ client.PaymentLink.AddPayLinkFromInvoice(
 <dl>
 <dd>
 
-**contactUs:** `*payabli.ContactElement` — ContactUs section of payment link page
+**contactUs:** `*payabli.ContactElement` — Contact us section of payment link page. If omitted, this block is enabled at display order 11.
     
 </dd>
 </dl>
@@ -5220,7 +5261,7 @@ client.PaymentLink.AddPayLinkFromInvoice(
 <dl>
 <dd>
 
-**invoices:** `*payabli.InvoiceElement` — Invoices section of payment link page
+**invoices:** `*payabli.InvoiceElement` — Invoices section of payment link page. Required. Omitting it returns a `400` error with code `7045`.
     
 </dd>
 </dl>
@@ -5228,7 +5269,7 @@ client.PaymentLink.AddPayLinkFromInvoice(
 <dl>
 <dd>
 
-**logo:** `*payabli.Element` — Logo section of payment link page
+**logo:** `*payabli.Element` — Logo section of payment link page. If omitted, this block is enabled at display order 1, and the logo image is resolved from the paypoint's entry logo.
     
 </dd>
 </dl>
@@ -5236,7 +5277,7 @@ client.PaymentLink.AddPayLinkFromInvoice(
 <dl>
 <dd>
 
-**messageBeforePaying:** `*payabli.LabelElement` — Message section of payment link page
+**messageBeforePaying:** `*payabli.LabelElement` — Message section of payment link page. If omitted, this block is enabled at display order 5.
     
 </dd>
 </dl>
@@ -5244,7 +5285,7 @@ client.PaymentLink.AddPayLinkFromInvoice(
 <dl>
 <dd>
 
-**notes:** `*payabli.NoteElement` — Notes section of payment link page
+**notes:** `*payabli.NoteElement` — Notes section of payment link page. If omitted, this block is enabled at display order 10.
     
 </dd>
 </dl>
@@ -5252,7 +5293,7 @@ client.PaymentLink.AddPayLinkFromInvoice(
 <dl>
 <dd>
 
-**page:** `*payabli.PageElement` — Page header section of payment link page
+**page:** `*payabli.PageElement` — Page header section of payment link page. If omitted, this block is enabled at display order 2.
     
 </dd>
 </dl>
@@ -5260,7 +5301,7 @@ client.PaymentLink.AddPayLinkFromInvoice(
 <dl>
 <dd>
 
-**paymentButton:** `*payabli.LabelElement` — Payment button section of payment link page
+**paymentButton:** `*payabli.LabelElement` — Payment button section of payment link page. If omitted, this block is enabled at display order 6, with the label "Pay Now".
     
 </dd>
 </dl>
@@ -5268,7 +5309,7 @@ client.PaymentLink.AddPayLinkFromInvoice(
 <dl>
 <dd>
 
-**paymentMethods:** `*payabli.MethodElement` — Payment methods section of payment link page
+**paymentMethods:** `*payabli.MethodElement` — Payment methods section of payment link page. If omitted, this block is enabled at display order 3, with all payment methods enabled except RDC.
     
 </dd>
 </dl>
@@ -5284,7 +5325,7 @@ client.PaymentLink.AddPayLinkFromInvoice(
 <dl>
 <dd>
 
-**review:** `*payabli.HeaderElement` — Review section of payment link page
+**review:** `*payabli.HeaderElement` — Review section of payment link page. If omitted, this block is enabled at display order 4.
     
 </dd>
 </dl>
@@ -5292,7 +5333,7 @@ client.PaymentLink.AddPayLinkFromInvoice(
 <dl>
 <dd>
 
-**settings:** `*payabli.PagelinkSetting` — Settings section of payment link page
+**settings:** `*payabli.PagelinkSetting` — Settings section of payment link page. If omitted, defaults are applied, including page color `#10a0e3` and language `en`.
     
 </dd>
 </dl>
@@ -13861,6 +13902,8 @@ List of field names accepted:
   - `paypointDbaName` (ne, eq, ct, nct)
   - `batchNumber` (ne, eq, ct, nct)
   - `batchId` (ne, eq, in, nin)
+  - `detailType` (eq, ne, in, nin, ct, nct)
+  - `detailMethod` (eq, ne, in, nin, ct, nct)
     
 </dd>
 </dl>
@@ -13989,6 +14032,8 @@ List of field names accepted:
   - `paypointDbaName` (ne, eq, ct, nct)
   - `batchNumber` (ne, eq, ct, nct)
   - `batchId` (ne, eq, in, nin)
+  - `detailType` (eq, ne, in, nin, ct, nct)
+  - `detailMethod` (eq, ne, in, nin, ct, nct)
     
 </dd>
 </dl>
@@ -26427,7 +26472,7 @@ client.Vendor.EnrichVendor(
 <dl>
 <dd>
 
-**scheduleCallIfNeeded:** `*bool` — When `true`, triggers an AI outreach call if enrichment stages return insufficient payment acceptance info. This feature is currently in development.
+**scheduleCallIfNeeded:** `*bool` — When `true`, Payabli schedules an AI outreach call to the vendor if the enrichment stages return insufficient payment acceptance info. The call collects the vendor's preferred payment method and contact email. This is the third enrichment stage and is opt-in at the org level. See the schedule outreach call endpoint for behavior and requirements.
     
 </dd>
 </dl>
@@ -26452,6 +26497,208 @@ client.Vendor.EnrichVendor(
 <dd>
 
 **fallbackMethod:** `*string` — Payment method to apply if enrichment can't find payment details. Values are `check`, `ach`, or `card`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Vendor.ScheduleEnrichmentCall(Entry, request) -> *payabli.VendorScheduleCallResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Schedules an AI outreach call to a vendor to collect their preferred payment method and contact email. This is the third enrichment stage. Calls are scheduled for the next business day at around 9 AM in the vendor's timezone, with retries on no-answer and a fallback payment method applied when retries are exhausted. This feature is opt-in at the org level. Contact your Payabli representative to enable it, provision a phone number, and discuss pricing.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ScheduleEnrichmentCallRequest{
+        VendorId: int64(456),
+        Phone: payabli.String(
+            "5555550200",
+        ),
+        EnrichmentId: payabli.String(
+            "enrich-3890-a1b2c3d4",
+        ),
+        BillId: payabli.Int64(
+            int64(54323),
+        ),
+        FallbackMethod: payabli.String(
+            "check",
+        ),
+        MaxRetries: payabli.Int(
+            3,
+        ),
+        Timezone: payabli.String(
+            "America/New_York",
+        ),
+    }
+client.Vendor.ScheduleEnrichmentCall(
+        context.TODO(),
+        "8cfec329267",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `string` — Entrypoint identifier.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**vendorId:** `int64` — ID of the vendor to call. Must be active and belong to the entrypoint in the path.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phone:** `*string` — Vendor phone number to call, digits only. Optional. When omitted, Payabli uses the phone number on the vendor's record. If the vendor has no phone on record, the request returns an error.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**enrichmentId:** `*string` — ID of the originating enrichment run to associate with this call. Optional. When omitted, Payabli generates a standalone call schedule and skips the enrichment lookup. The bill due-date check only runs when both `enrichmentId` and `billId` are supplied.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billId:** `*int64` — Bill ID used for the due-date check. When the bill is due in fewer than three days, the call is skipped and the fallback method is applied. Only evaluated when `enrichmentId` is also supplied.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fallbackMethod:** `*string` — Payment method to apply to the vendor record if the call can't determine a preference or all retries are exhausted. Values are `check` (the default) or `managed`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**maxRetries:** `*int` — Number of times to retry the call if the vendor doesn't answer. Defaults to 3. Maximum is 5. The get outreach call status response reports this value as `maxAttempts`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**timezone:** `*string` — IANA timezone identifier used to schedule the call in the vendor's local time. Defaults to `America/New_York`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sendNow:** `*bool` — When `true`, dispatches the call immediately and bypasses the business-hours window and the bill due-date check. Defaults to `false`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Vendor.GetEnrichmentCallStatus(IdVendor) -> *payabli.VendorCallStatusResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns the latest AI outreach call activity for a vendor. The response is a composite object with a `state` discriminator (`none`, `scheduled`, `successful`, or `failed`); the block that matches the current state is populated. When the vendor has no call activity, `state` is `none` and the response returns HTTP 200.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Vendor.GetEnrichmentCallStatus(
+        context.TODO(),
+        int64(456),
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**idVendor:** `int64` — ID of the vendor to read call status for.
     
 </dd>
 </dl>
@@ -26777,6 +27024,8 @@ Authorizes a transaction for payout.
 If you don't pass `autoCapture` with a value of `true`, authorized transactions aren't flagged for settlement until captured. Use the `referenceId` returned in the response to capture the transaction.
 
 When `autoCapture` is `true`, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the [`payout_transaction_approvedcaptured`](/developers/webhooks/payout-transaction-approved-captured) webhook event.
+
+If a velocity fraud alert is triggered, the endpoint returns a `202` response with `responseCode` `9051`, and the authorization is held for risk review rather than rejected. If a risk policy blocks the transaction, the endpoint returns a `422` response with `responseCode` `9005`, a terminal rejection.
 </dd>
 </dl>
 </dd>
@@ -27238,7 +27487,9 @@ client.MoneyOut.CaptureAllOut(
 <dl>
 <dd>
 
-Captures a single authorized payout transaction by ID. If the transaction was authorized with `autoCapture` set to `true`,  you don't need to call this endpoint to capture the transaction for processing.
+Captures a single authorized payout transaction by ID. If the transaction was authorized with `autoCapture` set to `true`, you don't need to call this endpoint to capture the transaction for processing.
+
+If a velocity fraud alert is triggered, the endpoint returns a `202` response with `responseCode` `9051`, and the capture is held for risk review rather than rejected. If a risk policy blocks the transaction, the endpoint returns a `422` response with `responseCode` `9005`, a terminal rejection.
 </dd>
 </dl>
 </dd>
@@ -27399,6 +27650,80 @@ client.MoneyOut.VCardGet(
 <dd>
 
 **cardToken:** `string` — ID for a virtual card.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.MoneyOut.RenewVCard(CardToken, request) -> *payabli.RenewVCardResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Renews an expired or expiring virtual card by extending its expiration date to a future month.
+
+The card must be a virtual card that hasn't been fully used. The new expiration date must be in `MM-YYYY` or `MM/YYYY` format and no more than 2 years and 363 days in the future. The card expires on the last day of the month you specify.
+
+On success, `referenceId` holds the renewed card's token (the card processor may issue a new token). The response reuses the standard payout result object, so the payment-transaction fields it carries don't apply to renewal and always return `null`.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.RenewVCardRequest{
+        ExpirationDate: "12-2027",
+    }
+client.MoneyOut.RenewVCard(
+        context.TODO(),
+        "20231206142225226104",
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**cardToken:** `string` — ID for the virtual card to renew.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expirationDate:** `string` — The new expiration date for the virtual card, in `MM-YYYY` or `MM/YYYY` format. The card expires on the last day of the month you specify. The date can't be more than 2 years and 363 days in the future.
     
 </dd>
 </dl>
@@ -27706,6 +28031,102 @@ client.MoneyOut.ReissueOut(
 <dd>
 
 **paymentMethod:** `*payabli.ReissuePaymentMethod` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Funding
+<details><summary><code>client.Funding.DepositFunds(request) -> *payabli.DepositFundsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deposits funds into a paypoint's available payout balance. Deposited funds enter a pending state and aren't available for instant payouts until confirmed through FBO reconciliation.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.DepositFundsRequest{
+        Amount: 10,
+        Entrypoint: "48acde49",
+        AccountId: "333",
+    }
+client.Funding.DepositFunds(
+        context.TODO(),
+        request,
+    )
+}
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**amount:** `float64` — The amount to deposit, in dollars. Must be greater than zero.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entrypoint:** `payabli.Entrypointfield` — The entry point identifier for the paypoint receiving the deposit.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountId:** `string` — The remittance account ID to withdraw funds from.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paypointId:** `*payabli.PaypointId` — The paypoint ID. Optional if the entry point uniquely identifies the paypoint.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sameDayAch:** `*bool` — When `true` and the request is submitted before 2 PM ET, the deposit processes as same-day ACH. If the request is submitted after 2 PM ET, it processes as standard ACH regardless of this flag.
     
 </dd>
 </dl>
