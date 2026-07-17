@@ -4,6 +4,7 @@ package customer
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -34,7 +41,7 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
-// Creates a customer in an entrypoint. An identifier is required to create customer records. Change your identifier settings in Settings > Custom Fields in PartnerHub.
+// Creates a customer in an entrypoint. An identifier is required to create customer records. Change your identifier settings in Settings > Custom Fields in the Payabli Portal.
 // If you don't include an identifier, the record is rejected.
 func (c *Client) AddCustomer(
 	ctx context.Context,
@@ -58,7 +65,7 @@ func (c *Client) AddCustomer(
 // Retrieves a customer's record and details.
 func (c *Client) GetCustomer(
 	ctx context.Context,
-	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
+	// Payabli-generated customer ID. Maps to "Customer ID" column in the Payabli Portal.
 	customerId int,
 	opts ...option.RequestOption,
 ) (*payabli.CustomerQueryRecords, error) {
@@ -76,7 +83,7 @@ func (c *Client) GetCustomer(
 // Update a customer record. Include only the fields you want to change.
 func (c *Client) UpdateCustomer(
 	ctx context.Context,
-	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
+	// Payabli-generated customer ID. Maps to "Customer ID" column in the Payabli Portal.
 	customerId int,
 	request *payabli.CustomerData,
 	opts ...option.RequestOption,
@@ -96,7 +103,7 @@ func (c *Client) UpdateCustomer(
 // Delete a customer record.
 func (c *Client) DeleteCustomer(
 	ctx context.Context,
-	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
+	// Payabli-generated customer ID. Maps to "Customer ID" column in the Payabli Portal.
 	customerId int,
 	opts ...option.RequestOption,
 ) (*payabli.PayabliApiResponse00Responsedatanonobject, error) {
@@ -114,7 +121,7 @@ func (c *Client) DeleteCustomer(
 // Sends the consent opt-in email to the customer email address in the customer record.
 func (c *Client) RequestConsent(
 	ctx context.Context,
-	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
+	// Payabli-generated customer ID. Maps to "Customer ID" column in the Payabli Portal.
 	customerId int,
 	opts ...option.RequestOption,
 ) (*payabli.PayabliApiResponse00Responsedatanonobject, error) {
@@ -132,7 +139,7 @@ func (c *Client) RequestConsent(
 // Links a customer to a transaction by ID.
 func (c *Client) LinkCustomerTransaction(
 	ctx context.Context,
-	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
+	// Payabli-generated customer ID. Maps to "Customer ID" column in the Payabli Portal.
 	customerId int,
 	// ReferenceId for the transaction (PaymentId).
 	transId string,

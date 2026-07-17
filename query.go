@@ -3484,6 +3484,7 @@ type ListTransactionsRequest struct {
 	// - `payaccountLastfour` (nct, ct)
 	// - `payaccountType` (ne, eq, in, nin)
 	// - `payaccountCurrency` (ne, eq, in, nin)
+	// - `binCardType` (eq, ne, in, nin). Filters by card type for card transactions. Accepts `CREDIT`, `DEBIT`, or `PREPAID`. Case-insensitive.
 	// - `customerFirstname` (ct, nct, eq, ne)
 	// - `customerLastname` (ct, nct, eq, ne)
 	// - `customerName` (ct, nct)
@@ -3634,6 +3635,7 @@ type ListTransactionsOrgRequest struct {
 	// - `payaccountLastfour` (nct, ct)
 	// - `payaccountType` (ne, eq, in, nin)
 	// - `payaccountCurrency` (ne, eq, in, nin)
+	// - `binCardType` (eq, ne, in, nin). Filters by card type for card transactions. Accepts `CREDIT`, `DEBIT`, or `PREPAID`. Case-insensitive.
 	// - `customerFirstname` (ct, nct, eq, ne)
 	// - `customerLastname` (ct, nct, eq, ne)
 	// - `customerName` (ct, nct)
@@ -12979,207 +12981,137 @@ func (q *QueryPayoutTransaction) String() string {
 }
 
 var (
-	queryPayoutTransactionRecordsItemFieldBatchNumber          = big.NewInt(1 << 0)
-	queryPayoutTransactionRecordsItemFieldBatchId              = big.NewInt(1 << 1)
-	queryPayoutTransactionRecordsItemFieldBills                = big.NewInt(1 << 2)
-	queryPayoutTransactionRecordsItemFieldCardToken            = big.NewInt(1 << 3)
-	queryPayoutTransactionRecordsItemFieldCheckData            = big.NewInt(1 << 4)
-	queryPayoutTransactionRecordsItemFieldCheckNumber          = big.NewInt(1 << 5)
-	queryPayoutTransactionRecordsItemFieldComments             = big.NewInt(1 << 6)
-	queryPayoutTransactionRecordsItemFieldCreatedAt            = big.NewInt(1 << 7)
-	queryPayoutTransactionRecordsItemFieldEntryName            = big.NewInt(1 << 8)
-	queryPayoutTransactionRecordsItemFieldEvents               = big.NewInt(1 << 9)
-	queryPayoutTransactionRecordsItemFieldExternalPaypointId   = big.NewInt(1 << 10)
-	queryPayoutTransactionRecordsItemFieldFeeAmount            = big.NewInt(1 << 11)
-	queryPayoutTransactionRecordsItemFieldGateway              = big.NewInt(1 << 12)
-	queryPayoutTransactionRecordsItemFieldHasVcardTransactions = big.NewInt(1 << 13)
-	queryPayoutTransactionRecordsItemFieldIdOut                = big.NewInt(1 << 14)
-	queryPayoutTransactionRecordsItemFieldIsSameDayAch         = big.NewInt(1 << 15)
-	queryPayoutTransactionRecordsItemFieldLastUpdated          = big.NewInt(1 << 16)
-	queryPayoutTransactionRecordsItemFieldNetAmount            = big.NewInt(1 << 17)
-	queryPayoutTransactionRecordsItemFieldParentOrgName        = big.NewInt(1 << 18)
-	queryPayoutTransactionRecordsItemFieldParentOrgId          = big.NewInt(1 << 19)
-	queryPayoutTransactionRecordsItemFieldPaymentData          = big.NewInt(1 << 20)
-	queryPayoutTransactionRecordsItemFieldPaymentId            = big.NewInt(1 << 21)
-	queryPayoutTransactionRecordsItemFieldPaymentMethod        = big.NewInt(1 << 22)
-	queryPayoutTransactionRecordsItemFieldPaymentStatus        = big.NewInt(1 << 23)
-	queryPayoutTransactionRecordsItemFieldPayoutProgram        = big.NewInt(1 << 24)
-	queryPayoutTransactionRecordsItemFieldPaypointDbaname      = big.NewInt(1 << 25)
-	queryPayoutTransactionRecordsItemFieldPaypointLegalname    = big.NewInt(1 << 26)
-	queryPayoutTransactionRecordsItemFieldRiskAction           = big.NewInt(1 << 27)
-	queryPayoutTransactionRecordsItemFieldRiskActionCode       = big.NewInt(1 << 28)
-	queryPayoutTransactionRecordsItemFieldRiskFlagged          = big.NewInt(1 << 29)
-	queryPayoutTransactionRecordsItemFieldRiskFlaggedOn        = big.NewInt(1 << 30)
-	queryPayoutTransactionRecordsItemFieldRiskReason           = big.NewInt(1 << 31)
-	queryPayoutTransactionRecordsItemFieldRiskStatus           = big.NewInt(1 << 32)
-	queryPayoutTransactionRecordsItemFieldScheduleId           = big.NewInt(1 << 33)
-	queryPayoutTransactionRecordsItemFieldSettlementStatus     = big.NewInt(1 << 34)
-	queryPayoutTransactionRecordsItemFieldSource               = big.NewInt(1 << 35)
-	queryPayoutTransactionRecordsItemFieldStatus               = big.NewInt(1 << 36)
-	queryPayoutTransactionRecordsItemFieldTotalAmount          = big.NewInt(1 << 37)
-	queryPayoutTransactionRecordsItemFieldVendor               = big.NewInt(1 << 38)
+	queryPayoutTransactionRecordsItemFieldIdOut                = big.NewInt(1 << 0)
+	queryPayoutTransactionRecordsItemFieldCreatedAt            = big.NewInt(1 << 1)
+	queryPayoutTransactionRecordsItemFieldComments             = big.NewInt(1 << 2)
+	queryPayoutTransactionRecordsItemFieldVendor               = big.NewInt(1 << 3)
+	queryPayoutTransactionRecordsItemFieldPaypointDbaname      = big.NewInt(1 << 4)
+	queryPayoutTransactionRecordsItemFieldPaypointLegalname    = big.NewInt(1 << 5)
+	queryPayoutTransactionRecordsItemFieldPaypointId           = big.NewInt(1 << 6)
+	queryPayoutTransactionRecordsItemFieldStatus               = big.NewInt(1 << 7)
+	queryPayoutTransactionRecordsItemFieldPaymentId            = big.NewInt(1 << 8)
+	queryPayoutTransactionRecordsItemFieldTransId              = big.NewInt(1 << 9)
+	queryPayoutTransactionRecordsItemFieldTransStatus          = big.NewInt(1 << 10)
+	queryPayoutTransactionRecordsItemFieldTransStatusDetail    = big.NewInt(1 << 11)
+	queryPayoutTransactionRecordsItemFieldTransStatusName      = big.NewInt(1 << 12)
+	queryPayoutTransactionRecordsItemFieldTransStatusCategory  = big.NewInt(1 << 13)
+	queryPayoutTransactionRecordsItemFieldLastUpdated          = big.NewInt(1 << 14)
+	queryPayoutTransactionRecordsItemFieldTotalAmount          = big.NewInt(1 << 15)
+	queryPayoutTransactionRecordsItemFieldNetAmount            = big.NewInt(1 << 16)
+	queryPayoutTransactionRecordsItemFieldFeeAmount            = big.NewInt(1 << 17)
+	queryPayoutTransactionRecordsItemFieldSource               = big.NewInt(1 << 18)
+	queryPayoutTransactionRecordsItemFieldParentOrgName        = big.NewInt(1 << 19)
+	queryPayoutTransactionRecordsItemFieldParentOrgId          = big.NewInt(1 << 20)
+	queryPayoutTransactionRecordsItemFieldBatchNumber          = big.NewInt(1 << 21)
+	queryPayoutTransactionRecordsItemFieldPaymentStatus        = big.NewInt(1 << 22)
+	queryPayoutTransactionRecordsItemFieldPaymentMethod        = big.NewInt(1 << 23)
+	queryPayoutTransactionRecordsItemFieldCardToken            = big.NewInt(1 << 24)
+	queryPayoutTransactionRecordsItemFieldCheckNumber          = big.NewInt(1 << 25)
+	queryPayoutTransactionRecordsItemFieldCheckData            = big.NewInt(1 << 26)
+	queryPayoutTransactionRecordsItemFieldPaymentData          = big.NewInt(1 << 27)
+	queryPayoutTransactionRecordsItemFieldBills                = big.NewInt(1 << 28)
+	queryPayoutTransactionRecordsItemFieldEvents               = big.NewInt(1 << 29)
+	queryPayoutTransactionRecordsItemFieldExternalPaypointId   = big.NewInt(1 << 30)
+	queryPayoutTransactionRecordsItemFieldEntryName            = big.NewInt(1 << 31)
+	queryPayoutTransactionRecordsItemFieldGateway              = big.NewInt(1 << 32)
+	queryPayoutTransactionRecordsItemFieldBatchId              = big.NewInt(1 << 33)
+	queryPayoutTransactionRecordsItemFieldHasVcardTransactions = big.NewInt(1 << 34)
+	queryPayoutTransactionRecordsItemFieldIsSameDayAch         = big.NewInt(1 << 35)
+	queryPayoutTransactionRecordsItemFieldScheduleId           = big.NewInt(1 << 36)
+	queryPayoutTransactionRecordsItemFieldSettlementStatus     = big.NewInt(1 << 37)
+	queryPayoutTransactionRecordsItemFieldSettlementStatusName = big.NewInt(1 << 38)
+	queryPayoutTransactionRecordsItemFieldSettlementDate       = big.NewInt(1 << 39)
+	queryPayoutTransactionRecordsItemFieldRiskFlagged          = big.NewInt(1 << 40)
+	queryPayoutTransactionRecordsItemFieldRiskFlaggedOn        = big.NewInt(1 << 41)
+	queryPayoutTransactionRecordsItemFieldRiskStatus           = big.NewInt(1 << 42)
+	queryPayoutTransactionRecordsItemFieldRiskReason           = big.NewInt(1 << 43)
+	queryPayoutTransactionRecordsItemFieldRiskAction           = big.NewInt(1 << 44)
+	queryPayoutTransactionRecordsItemFieldRiskActionCode       = big.NewInt(1 << 45)
+	queryPayoutTransactionRecordsItemFieldPayoutProgram        = big.NewInt(1 << 46)
+	queryPayoutTransactionRecordsItemFieldAchTraceNumber       = big.NewInt(1 << 47)
+	queryPayoutTransactionRecordsItemFieldEntityId             = big.NewInt(1 << 48)
 )
 
 type QueryPayoutTransactionRecordsItem struct {
-	BatchNumber *BatchNumber `json:"BatchNumber,omitempty" url:"BatchNumber,omitempty"`
-	// Identifier of the batch associated with payout transaction.
-	BatchId *int `json:"BatchId,omitempty" url:"BatchId,omitempty"`
-	// Bills associated with this transaction.
-	Bills     []*BillPayOutData `json:"Bills,omitempty" url:"Bills,omitempty"`
-	CardToken *string           `json:"CardToken,omitempty" url:"CardToken,omitempty"`
-	// Object referencing paper check image.
-	CheckData *FileContent `json:"CheckData,omitempty" url:"CheckData,omitempty"`
-	// Paper check number related to payout transaction.
-	CheckNumber *string `json:"CheckNumber,omitempty" url:"CheckNumber,omitempty"`
+	// Identifier of payout transaction.
+	IdOut *int64 `json:"IdOut,omitempty" url:"IdOut,omitempty"`
+	// Timestamp when the payment was created, in UTC.
+	CreatedAt *CreatedAt `json:"CreatedAt,omitempty" url:"CreatedAt,omitempty"`
 	// Any comment or description for payout transaction.
 	Comments *Comments `json:"Comments,omitempty" url:"Comments,omitempty"`
-	// Timestamp when the payment was created, in UTC.
-	CreatedAt *CreatedAt       `json:"CreatedAt,omitempty" url:"CreatedAt,omitempty"`
-	EntryName *Entrypointfield `json:"EntryName,omitempty" url:"EntryName,omitempty"`
-	// Events associated with this transaction.
-	Events               []*QueryTransactionEvents `json:"Events,omitempty" url:"Events,omitempty"`
-	ExternalPaypointId   *ExternalPaypointId       `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
-	FeeAmount            *FeeAmount                `json:"FeeAmount,omitempty" url:"FeeAmount,omitempty"`
-	Gateway              *Gatewayfield             `json:"Gateway,omitempty" url:"Gateway,omitempty"`
-	HasVcardTransactions *HasVcardTransactions     `json:"HasVcardTransactions,omitempty" url:"HasVcardTransactions,omitempty"`
-	// Identifier of payout transaction.
-	IdOut        *int64        `json:"IdOut,omitempty" url:"IdOut,omitempty"`
-	IsSameDayAch *IsSameDayAch `json:"IsSameDayACH,omitempty" url:"IsSameDayACH,omitempty"`
+	// Vendor related to the payout transaction.
+	Vendor          *VendorQueryRecord `json:"Vendor,omitempty" url:"Vendor,omitempty"`
+	PaypointDbaname *Dbaname           `json:"PaypointDbaname,omitempty" url:"PaypointDbaname,omitempty"`
+	// Paypoint legal name.
+	PaypointLegalname *Legalname  `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
+	PaypointId        *PaypointId `json:"PaypointId,omitempty" url:"PaypointId,omitempty"`
+	// Internal status of transaction.
+	Status    *int             `json:"Status,omitempty" url:"Status,omitempty"`
+	PaymentId *PaymentIdString `json:"PaymentId,omitempty" url:"PaymentId,omitempty"`
+	// ID of the transaction linked to this payout, when applicable.
+	TransId *string `json:"TransId,omitempty" url:"TransId,omitempty"`
+	// Status of the linked transaction.
+	TransStatus *int `json:"TransStatus,omitempty" url:"TransStatus,omitempty"`
+	// Detailed status of the linked transaction.
+	TransStatusDetail *string `json:"TransStatusDetail,omitempty" url:"TransStatusDetail,omitempty"`
+	// Name of the linked transaction's status.
+	TransStatusName *string `json:"TransStatusName,omitempty" url:"TransStatusName,omitempty"`
+	// Category of the linked transaction's status.
+	TransStatusCategory *string `json:"TransStatusCategory,omitempty" url:"TransStatusCategory,omitempty"`
 	// Timestamp when payment record was updated.
 	LastUpdated *LastModified `json:"LastUpdated,omitempty" url:"LastUpdated,omitempty"`
-	// Net amount paid.
-	NetAmount     *Netamountnullable                            `json:"NetAmount,omitempty" url:"NetAmount,omitempty"`
-	ParentOrgName *OrgParentName                                `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
-	ParentOrgId   *OrgParentId                                  `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
-	PaymentData   *QueryPayoutTransactionRecordsItemPaymentData `json:"PaymentData,omitempty" url:"PaymentData,omitempty"`
-	PaymentId     *PaymentIdString                              `json:"PaymentId,omitempty" url:"PaymentId,omitempty"`
-	// The payment method for the transaction.
-	PaymentMethod *string `json:"PaymentMethod,omitempty" url:"PaymentMethod,omitempty"`
-	// Status of payout transaction. See [Payout Transaction Statuses](guides/money-out-statuses#payout-transaction-statuses) for a full reference.
-	PaymentStatus   *string        `json:"PaymentStatus,omitempty" url:"PaymentStatus,omitempty"`
-	PayoutProgram   *PayoutProgram `json:"PayoutProgram,omitempty" url:"PayoutProgram,omitempty"`
-	PaypointDbaname *Dbaname       `json:"PaypointDbaname,omitempty" url:"PaypointDbaname,omitempty"`
-	// Paypoint legal name.
-	PaypointLegalname *Legalname              `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
-	RiskAction        *RiskAction             `json:"RiskAction,omitempty" url:"RiskAction,omitempty"`
-	RiskActionCode    *RiskActionCode         `json:"RiskActionCode,omitempty" url:"RiskActionCode,omitempty"`
-	RiskFlagged       *RiskFlagged            `json:"RiskFlagged,omitempty" url:"RiskFlagged,omitempty"`
-	RiskFlaggedOn     *RiskFlaggedOn          `json:"RiskFlaggedOn,omitempty" url:"RiskFlaggedOn,omitempty"`
-	RiskReason        *RiskReason             `json:"RiskReason,omitempty" url:"RiskReason,omitempty"`
-	RiskStatus        *RiskStatus             `json:"RiskStatus,omitempty" url:"RiskStatus,omitempty"`
-	ScheduleId        *ScheduleId             `json:"ScheduleId,omitempty" url:"ScheduleId,omitempty"`
-	SettlementStatus  *SettlementStatusPayout `json:"SettlementStatus,omitempty" url:"SettlementStatus,omitempty"`
-	Source            *Source                 `json:"Source,omitempty" url:"Source,omitempty"`
-	// Internal status of transaction.
-	Status *int `json:"Status,omitempty" url:"Status,omitempty"`
 	// Transaction total amount (including service fee or sub-charge).
 	TotalAmount *float64 `json:"TotalAmount,omitempty" url:"TotalAmount,omitempty"`
-	// Vendor related to the payout transaction.
-	Vendor *VendorQueryRecord `json:"Vendor,omitempty" url:"Vendor,omitempty"`
+	// Net amount paid.
+	NetAmount     *Netamountnullable `json:"NetAmount,omitempty" url:"NetAmount,omitempty"`
+	FeeAmount     *FeeAmount         `json:"FeeAmount,omitempty" url:"FeeAmount,omitempty"`
+	Source        *Source            `json:"Source,omitempty" url:"Source,omitempty"`
+	ParentOrgName *OrgParentName     `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
+	ParentOrgId   *OrgParentId       `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
+	BatchNumber   *BatchNumber       `json:"BatchNumber,omitempty" url:"BatchNumber,omitempty"`
+	// Status of payout transaction. See [Payout Transaction Statuses](/guides/pay-out-status-reference#payout-transaction-statuses) for a full reference.
+	PaymentStatus *string `json:"PaymentStatus,omitempty" url:"PaymentStatus,omitempty"`
+	// The payment method for the transaction.
+	PaymentMethod *string `json:"PaymentMethod,omitempty" url:"PaymentMethod,omitempty"`
+	CardToken     *string `json:"CardToken,omitempty" url:"CardToken,omitempty"`
+	// Paper check number related to payout transaction.
+	CheckNumber *string `json:"CheckNumber,omitempty" url:"CheckNumber,omitempty"`
+	// Object referencing paper check image.
+	CheckData   *FileContent                                  `json:"CheckData,omitempty" url:"CheckData,omitempty"`
+	PaymentData *QueryPayoutTransactionRecordsItemPaymentData `json:"PaymentData,omitempty" url:"PaymentData,omitempty"`
+	// Bills associated with this transaction.
+	Bills []*BillPayOutData `json:"Bills,omitempty" url:"Bills,omitempty"`
+	// Events associated with this transaction.
+	Events             []*QueryTransactionEvents `json:"Events,omitempty" url:"Events,omitempty"`
+	ExternalPaypointId *ExternalPaypointId       `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	EntryName          *Entrypointfield          `json:"EntryName,omitempty" url:"EntryName,omitempty"`
+	Gateway            *Gatewayfield             `json:"Gateway,omitempty" url:"Gateway,omitempty"`
+	// Identifier of the batch associated with payout transaction.
+	BatchId              *int                    `json:"BatchId,omitempty" url:"BatchId,omitempty"`
+	HasVcardTransactions *HasVcardTransactions   `json:"HasVcardTransactions,omitempty" url:"HasVcardTransactions,omitempty"`
+	IsSameDayAch         *IsSameDayAch           `json:"IsSameDayACH,omitempty" url:"IsSameDayACH,omitempty"`
+	ScheduleId           *ScheduleId             `json:"ScheduleId,omitempty" url:"ScheduleId,omitempty"`
+	SettlementStatus     *SettlementStatusPayout `json:"SettlementStatus,omitempty" url:"SettlementStatus,omitempty"`
+	SettlementStatusName SettlementStatusName    `json:"SettlementStatusName,omitempty" url:"SettlementStatusName,omitempty"`
+	// Date the payout settled, in UTC. Null until the payout settles.
+	SettlementDate *time.Time      `json:"SettlementDate,omitempty" url:"SettlementDate,omitempty"`
+	RiskFlagged    *RiskFlagged    `json:"RiskFlagged,omitempty" url:"RiskFlagged,omitempty"`
+	RiskFlaggedOn  *RiskFlaggedOn  `json:"RiskFlaggedOn,omitempty" url:"RiskFlaggedOn,omitempty"`
+	RiskStatus     *RiskStatus     `json:"RiskStatus,omitempty" url:"RiskStatus,omitempty"`
+	RiskReason     *RiskReason     `json:"RiskReason,omitempty" url:"RiskReason,omitempty"`
+	RiskAction     *RiskAction     `json:"RiskAction,omitempty" url:"RiskAction,omitempty"`
+	RiskActionCode *RiskActionCode `json:"RiskActionCode,omitempty" url:"RiskActionCode,omitempty"`
+	PayoutProgram  *PayoutProgram  `json:"PayoutProgram,omitempty" url:"PayoutProgram,omitempty"`
+	// ACH trace number for the payout, when available.
+	AchTraceNumber *string `json:"AchTraceNumber,omitempty" url:"AchTraceNumber,omitempty"`
+	// Unique identifier (ULID) of the payout transaction.
+	EntityId *string `json:"EntityId,omitempty" url:"EntityId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
-}
-
-func (q *QueryPayoutTransactionRecordsItem) GetBatchNumber() *BatchNumber {
-	if q == nil {
-		return nil
-	}
-	return q.BatchNumber
-}
-
-func (q *QueryPayoutTransactionRecordsItem) GetBatchId() *int {
-	if q == nil {
-		return nil
-	}
-	return q.BatchId
-}
-
-func (q *QueryPayoutTransactionRecordsItem) GetBills() []*BillPayOutData {
-	if q == nil {
-		return nil
-	}
-	return q.Bills
-}
-
-func (q *QueryPayoutTransactionRecordsItem) GetCardToken() *string {
-	if q == nil {
-		return nil
-	}
-	return q.CardToken
-}
-
-func (q *QueryPayoutTransactionRecordsItem) GetCheckData() *FileContent {
-	if q == nil {
-		return nil
-	}
-	return q.CheckData
-}
-
-func (q *QueryPayoutTransactionRecordsItem) GetCheckNumber() *string {
-	if q == nil {
-		return nil
-	}
-	return q.CheckNumber
-}
-
-func (q *QueryPayoutTransactionRecordsItem) GetComments() *Comments {
-	if q == nil {
-		return nil
-	}
-	return q.Comments
-}
-
-func (q *QueryPayoutTransactionRecordsItem) GetCreatedAt() *CreatedAt {
-	if q == nil {
-		return nil
-	}
-	return q.CreatedAt
-}
-
-func (q *QueryPayoutTransactionRecordsItem) GetEntryName() *Entrypointfield {
-	if q == nil {
-		return nil
-	}
-	return q.EntryName
-}
-
-func (q *QueryPayoutTransactionRecordsItem) GetEvents() []*QueryTransactionEvents {
-	if q == nil {
-		return nil
-	}
-	return q.Events
-}
-
-func (q *QueryPayoutTransactionRecordsItem) GetExternalPaypointId() *ExternalPaypointId {
-	if q == nil {
-		return nil
-	}
-	return q.ExternalPaypointId
-}
-
-func (q *QueryPayoutTransactionRecordsItem) GetFeeAmount() *FeeAmount {
-	if q == nil {
-		return nil
-	}
-	return q.FeeAmount
-}
-
-func (q *QueryPayoutTransactionRecordsItem) GetGateway() *Gatewayfield {
-	if q == nil {
-		return nil
-	}
-	return q.Gateway
-}
-
-func (q *QueryPayoutTransactionRecordsItem) GetHasVcardTransactions() *HasVcardTransactions {
-	if q == nil {
-		return nil
-	}
-	return q.HasVcardTransactions
 }
 
 func (q *QueryPayoutTransactionRecordsItem) GetIdOut() *int64 {
@@ -13189,74 +13121,25 @@ func (q *QueryPayoutTransactionRecordsItem) GetIdOut() *int64 {
 	return q.IdOut
 }
 
-func (q *QueryPayoutTransactionRecordsItem) GetIsSameDayAch() *IsSameDayAch {
+func (q *QueryPayoutTransactionRecordsItem) GetCreatedAt() *CreatedAt {
 	if q == nil {
 		return nil
 	}
-	return q.IsSameDayAch
+	return q.CreatedAt
 }
 
-func (q *QueryPayoutTransactionRecordsItem) GetLastUpdated() *LastModified {
+func (q *QueryPayoutTransactionRecordsItem) GetComments() *Comments {
 	if q == nil {
 		return nil
 	}
-	return q.LastUpdated
+	return q.Comments
 }
 
-func (q *QueryPayoutTransactionRecordsItem) GetNetAmount() *Netamountnullable {
+func (q *QueryPayoutTransactionRecordsItem) GetVendor() *VendorQueryRecord {
 	if q == nil {
 		return nil
 	}
-	return q.NetAmount
-}
-
-func (q *QueryPayoutTransactionRecordsItem) GetParentOrgName() *OrgParentName {
-	if q == nil {
-		return nil
-	}
-	return q.ParentOrgName
-}
-
-func (q *QueryPayoutTransactionRecordsItem) GetParentOrgId() *OrgParentId {
-	if q == nil {
-		return nil
-	}
-	return q.ParentOrgId
-}
-
-func (q *QueryPayoutTransactionRecordsItem) GetPaymentData() *QueryPayoutTransactionRecordsItemPaymentData {
-	if q == nil {
-		return nil
-	}
-	return q.PaymentData
-}
-
-func (q *QueryPayoutTransactionRecordsItem) GetPaymentId() *PaymentIdString {
-	if q == nil {
-		return nil
-	}
-	return q.PaymentId
-}
-
-func (q *QueryPayoutTransactionRecordsItem) GetPaymentMethod() *string {
-	if q == nil {
-		return nil
-	}
-	return q.PaymentMethod
-}
-
-func (q *QueryPayoutTransactionRecordsItem) GetPaymentStatus() *string {
-	if q == nil {
-		return nil
-	}
-	return q.PaymentStatus
-}
-
-func (q *QueryPayoutTransactionRecordsItem) GetPayoutProgram() *PayoutProgram {
-	if q == nil {
-		return nil
-	}
-	return q.PayoutProgram
+	return q.Vendor
 }
 
 func (q *QueryPayoutTransactionRecordsItem) GetPaypointDbaname() *Dbaname {
@@ -13273,46 +13156,214 @@ func (q *QueryPayoutTransactionRecordsItem) GetPaypointLegalname() *Legalname {
 	return q.PaypointLegalname
 }
 
-func (q *QueryPayoutTransactionRecordsItem) GetRiskAction() *RiskAction {
+func (q *QueryPayoutTransactionRecordsItem) GetPaypointId() *PaypointId {
 	if q == nil {
 		return nil
 	}
-	return q.RiskAction
+	return q.PaypointId
 }
 
-func (q *QueryPayoutTransactionRecordsItem) GetRiskActionCode() *RiskActionCode {
+func (q *QueryPayoutTransactionRecordsItem) GetStatus() *int {
 	if q == nil {
 		return nil
 	}
-	return q.RiskActionCode
+	return q.Status
 }
 
-func (q *QueryPayoutTransactionRecordsItem) GetRiskFlagged() *RiskFlagged {
+func (q *QueryPayoutTransactionRecordsItem) GetPaymentId() *PaymentIdString {
 	if q == nil {
 		return nil
 	}
-	return q.RiskFlagged
+	return q.PaymentId
 }
 
-func (q *QueryPayoutTransactionRecordsItem) GetRiskFlaggedOn() *RiskFlaggedOn {
+func (q *QueryPayoutTransactionRecordsItem) GetTransId() *string {
 	if q == nil {
 		return nil
 	}
-	return q.RiskFlaggedOn
+	return q.TransId
 }
 
-func (q *QueryPayoutTransactionRecordsItem) GetRiskReason() *RiskReason {
+func (q *QueryPayoutTransactionRecordsItem) GetTransStatus() *int {
 	if q == nil {
 		return nil
 	}
-	return q.RiskReason
+	return q.TransStatus
 }
 
-func (q *QueryPayoutTransactionRecordsItem) GetRiskStatus() *RiskStatus {
+func (q *QueryPayoutTransactionRecordsItem) GetTransStatusDetail() *string {
 	if q == nil {
 		return nil
 	}
-	return q.RiskStatus
+	return q.TransStatusDetail
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetTransStatusName() *string {
+	if q == nil {
+		return nil
+	}
+	return q.TransStatusName
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetTransStatusCategory() *string {
+	if q == nil {
+		return nil
+	}
+	return q.TransStatusCategory
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetLastUpdated() *LastModified {
+	if q == nil {
+		return nil
+	}
+	return q.LastUpdated
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetTotalAmount() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.TotalAmount
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetNetAmount() *Netamountnullable {
+	if q == nil {
+		return nil
+	}
+	return q.NetAmount
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetFeeAmount() *FeeAmount {
+	if q == nil {
+		return nil
+	}
+	return q.FeeAmount
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetSource() *Source {
+	if q == nil {
+		return nil
+	}
+	return q.Source
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetParentOrgName() *OrgParentName {
+	if q == nil {
+		return nil
+	}
+	return q.ParentOrgName
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetParentOrgId() *OrgParentId {
+	if q == nil {
+		return nil
+	}
+	return q.ParentOrgId
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetBatchNumber() *BatchNumber {
+	if q == nil {
+		return nil
+	}
+	return q.BatchNumber
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetPaymentStatus() *string {
+	if q == nil {
+		return nil
+	}
+	return q.PaymentStatus
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetPaymentMethod() *string {
+	if q == nil {
+		return nil
+	}
+	return q.PaymentMethod
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetCardToken() *string {
+	if q == nil {
+		return nil
+	}
+	return q.CardToken
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetCheckNumber() *string {
+	if q == nil {
+		return nil
+	}
+	return q.CheckNumber
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetCheckData() *FileContent {
+	if q == nil {
+		return nil
+	}
+	return q.CheckData
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetPaymentData() *QueryPayoutTransactionRecordsItemPaymentData {
+	if q == nil {
+		return nil
+	}
+	return q.PaymentData
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetBills() []*BillPayOutData {
+	if q == nil {
+		return nil
+	}
+	return q.Bills
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetEvents() []*QueryTransactionEvents {
+	if q == nil {
+		return nil
+	}
+	return q.Events
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetExternalPaypointId() *ExternalPaypointId {
+	if q == nil {
+		return nil
+	}
+	return q.ExternalPaypointId
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetEntryName() *Entrypointfield {
+	if q == nil {
+		return nil
+	}
+	return q.EntryName
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetGateway() *Gatewayfield {
+	if q == nil {
+		return nil
+	}
+	return q.Gateway
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetBatchId() *int {
+	if q == nil {
+		return nil
+	}
+	return q.BatchId
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetHasVcardTransactions() *HasVcardTransactions {
+	if q == nil {
+		return nil
+	}
+	return q.HasVcardTransactions
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetIsSameDayAch() *IsSameDayAch {
+	if q == nil {
+		return nil
+	}
+	return q.IsSameDayAch
 }
 
 func (q *QueryPayoutTransactionRecordsItem) GetScheduleId() *ScheduleId {
@@ -13329,32 +13380,81 @@ func (q *QueryPayoutTransactionRecordsItem) GetSettlementStatus() *SettlementSta
 	return q.SettlementStatus
 }
 
-func (q *QueryPayoutTransactionRecordsItem) GetSource() *Source {
+func (q *QueryPayoutTransactionRecordsItem) GetSettlementStatusName() SettlementStatusName {
 	if q == nil {
 		return nil
 	}
-	return q.Source
+	return q.SettlementStatusName
 }
 
-func (q *QueryPayoutTransactionRecordsItem) GetStatus() *int {
+func (q *QueryPayoutTransactionRecordsItem) GetSettlementDate() *time.Time {
 	if q == nil {
 		return nil
 	}
-	return q.Status
+	return q.SettlementDate
 }
 
-func (q *QueryPayoutTransactionRecordsItem) GetTotalAmount() *float64 {
+func (q *QueryPayoutTransactionRecordsItem) GetRiskFlagged() *RiskFlagged {
 	if q == nil {
 		return nil
 	}
-	return q.TotalAmount
+	return q.RiskFlagged
 }
 
-func (q *QueryPayoutTransactionRecordsItem) GetVendor() *VendorQueryRecord {
+func (q *QueryPayoutTransactionRecordsItem) GetRiskFlaggedOn() *RiskFlaggedOn {
 	if q == nil {
 		return nil
 	}
-	return q.Vendor
+	return q.RiskFlaggedOn
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetRiskStatus() *RiskStatus {
+	if q == nil {
+		return nil
+	}
+	return q.RiskStatus
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetRiskReason() *RiskReason {
+	if q == nil {
+		return nil
+	}
+	return q.RiskReason
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetRiskAction() *RiskAction {
+	if q == nil {
+		return nil
+	}
+	return q.RiskAction
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetRiskActionCode() *RiskActionCode {
+	if q == nil {
+		return nil
+	}
+	return q.RiskActionCode
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetPayoutProgram() *PayoutProgram {
+	if q == nil {
+		return nil
+	}
+	return q.PayoutProgram
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetAchTraceNumber() *string {
+	if q == nil {
+		return nil
+	}
+	return q.AchTraceNumber
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetEntityId() *string {
+	if q == nil {
+		return nil
+	}
+	return q.EntityId
 }
 
 func (q *QueryPayoutTransactionRecordsItem) GetExtraProperties() map[string]interface{} {
@@ -13371,53 +13471,11 @@ func (q *QueryPayoutTransactionRecordsItem) require(field *big.Int) {
 	q.explicitFields.Or(q.explicitFields, field)
 }
 
-// SetBatchNumber sets the BatchNumber field and marks it as non-optional;
+// SetIdOut sets the IdOut field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetBatchNumber(batchNumber *BatchNumber) {
-	q.BatchNumber = batchNumber
-	q.require(queryPayoutTransactionRecordsItemFieldBatchNumber)
-}
-
-// SetBatchId sets the BatchId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetBatchId(batchId *int) {
-	q.BatchId = batchId
-	q.require(queryPayoutTransactionRecordsItemFieldBatchId)
-}
-
-// SetBills sets the Bills field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetBills(bills []*BillPayOutData) {
-	q.Bills = bills
-	q.require(queryPayoutTransactionRecordsItemFieldBills)
-}
-
-// SetCardToken sets the CardToken field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetCardToken(cardToken *string) {
-	q.CardToken = cardToken
-	q.require(queryPayoutTransactionRecordsItemFieldCardToken)
-}
-
-// SetCheckData sets the CheckData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetCheckData(checkData *FileContent) {
-	q.CheckData = checkData
-	q.require(queryPayoutTransactionRecordsItemFieldCheckData)
-}
-
-// SetCheckNumber sets the CheckNumber field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetCheckNumber(checkNumber *string) {
-	q.CheckNumber = checkNumber
-	q.require(queryPayoutTransactionRecordsItemFieldCheckNumber)
-}
-
-// SetComments sets the Comments field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetComments(comments *Comments) {
-	q.Comments = comments
-	q.require(queryPayoutTransactionRecordsItemFieldComments)
+func (q *QueryPayoutTransactionRecordsItem) SetIdOut(idOut *int64) {
+	q.IdOut = idOut
+	q.require(queryPayoutTransactionRecordsItemFieldIdOut)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
@@ -13427,123 +13485,18 @@ func (q *QueryPayoutTransactionRecordsItem) SetCreatedAt(createdAt *CreatedAt) {
 	q.require(queryPayoutTransactionRecordsItemFieldCreatedAt)
 }
 
-// SetEntryName sets the EntryName field and marks it as non-optional;
+// SetComments sets the Comments field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetEntryName(entryName *Entrypointfield) {
-	q.EntryName = entryName
-	q.require(queryPayoutTransactionRecordsItemFieldEntryName)
+func (q *QueryPayoutTransactionRecordsItem) SetComments(comments *Comments) {
+	q.Comments = comments
+	q.require(queryPayoutTransactionRecordsItemFieldComments)
 }
 
-// SetEvents sets the Events field and marks it as non-optional;
+// SetVendor sets the Vendor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetEvents(events []*QueryTransactionEvents) {
-	q.Events = events
-	q.require(queryPayoutTransactionRecordsItemFieldEvents)
-}
-
-// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
-	q.ExternalPaypointId = externalPaypointId
-	q.require(queryPayoutTransactionRecordsItemFieldExternalPaypointId)
-}
-
-// SetFeeAmount sets the FeeAmount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetFeeAmount(feeAmount *FeeAmount) {
-	q.FeeAmount = feeAmount
-	q.require(queryPayoutTransactionRecordsItemFieldFeeAmount)
-}
-
-// SetGateway sets the Gateway field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetGateway(gateway *Gatewayfield) {
-	q.Gateway = gateway
-	q.require(queryPayoutTransactionRecordsItemFieldGateway)
-}
-
-// SetHasVcardTransactions sets the HasVcardTransactions field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetHasVcardTransactions(hasVcardTransactions *HasVcardTransactions) {
-	q.HasVcardTransactions = hasVcardTransactions
-	q.require(queryPayoutTransactionRecordsItemFieldHasVcardTransactions)
-}
-
-// SetIdOut sets the IdOut field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetIdOut(idOut *int64) {
-	q.IdOut = idOut
-	q.require(queryPayoutTransactionRecordsItemFieldIdOut)
-}
-
-// SetIsSameDayAch sets the IsSameDayAch field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetIsSameDayAch(isSameDayAch *IsSameDayAch) {
-	q.IsSameDayAch = isSameDayAch
-	q.require(queryPayoutTransactionRecordsItemFieldIsSameDayAch)
-}
-
-// SetLastUpdated sets the LastUpdated field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetLastUpdated(lastUpdated *LastModified) {
-	q.LastUpdated = lastUpdated
-	q.require(queryPayoutTransactionRecordsItemFieldLastUpdated)
-}
-
-// SetNetAmount sets the NetAmount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetNetAmount(netAmount *Netamountnullable) {
-	q.NetAmount = netAmount
-	q.require(queryPayoutTransactionRecordsItemFieldNetAmount)
-}
-
-// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetParentOrgName(parentOrgName *OrgParentName) {
-	q.ParentOrgName = parentOrgName
-	q.require(queryPayoutTransactionRecordsItemFieldParentOrgName)
-}
-
-// SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetParentOrgId(parentOrgId *OrgParentId) {
-	q.ParentOrgId = parentOrgId
-	q.require(queryPayoutTransactionRecordsItemFieldParentOrgId)
-}
-
-// SetPaymentData sets the PaymentData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetPaymentData(paymentData *QueryPayoutTransactionRecordsItemPaymentData) {
-	q.PaymentData = paymentData
-	q.require(queryPayoutTransactionRecordsItemFieldPaymentData)
-}
-
-// SetPaymentId sets the PaymentId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetPaymentId(paymentId *PaymentIdString) {
-	q.PaymentId = paymentId
-	q.require(queryPayoutTransactionRecordsItemFieldPaymentId)
-}
-
-// SetPaymentMethod sets the PaymentMethod field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetPaymentMethod(paymentMethod *string) {
-	q.PaymentMethod = paymentMethod
-	q.require(queryPayoutTransactionRecordsItemFieldPaymentMethod)
-}
-
-// SetPaymentStatus sets the PaymentStatus field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetPaymentStatus(paymentStatus *string) {
-	q.PaymentStatus = paymentStatus
-	q.require(queryPayoutTransactionRecordsItemFieldPaymentStatus)
-}
-
-// SetPayoutProgram sets the PayoutProgram field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetPayoutProgram(payoutProgram *PayoutProgram) {
-	q.PayoutProgram = payoutProgram
-	q.require(queryPayoutTransactionRecordsItemFieldPayoutProgram)
+func (q *QueryPayoutTransactionRecordsItem) SetVendor(vendor_ *VendorQueryRecord) {
+	q.Vendor = vendor_
+	q.require(queryPayoutTransactionRecordsItemFieldVendor)
 }
 
 // SetPaypointDbaname sets the PaypointDbaname field and marks it as non-optional;
@@ -13560,46 +13513,214 @@ func (q *QueryPayoutTransactionRecordsItem) SetPaypointLegalname(paypointLegalna
 	q.require(queryPayoutTransactionRecordsItemFieldPaypointLegalname)
 }
 
-// SetRiskAction sets the RiskAction field and marks it as non-optional;
+// SetPaypointId sets the PaypointId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetRiskAction(riskAction *RiskAction) {
-	q.RiskAction = riskAction
-	q.require(queryPayoutTransactionRecordsItemFieldRiskAction)
+func (q *QueryPayoutTransactionRecordsItem) SetPaypointId(paypointId *PaypointId) {
+	q.PaypointId = paypointId
+	q.require(queryPayoutTransactionRecordsItemFieldPaypointId)
 }
 
-// SetRiskActionCode sets the RiskActionCode field and marks it as non-optional;
+// SetStatus sets the Status field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetRiskActionCode(riskActionCode *RiskActionCode) {
-	q.RiskActionCode = riskActionCode
-	q.require(queryPayoutTransactionRecordsItemFieldRiskActionCode)
+func (q *QueryPayoutTransactionRecordsItem) SetStatus(status *int) {
+	q.Status = status
+	q.require(queryPayoutTransactionRecordsItemFieldStatus)
 }
 
-// SetRiskFlagged sets the RiskFlagged field and marks it as non-optional;
+// SetPaymentId sets the PaymentId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetRiskFlagged(riskFlagged *RiskFlagged) {
-	q.RiskFlagged = riskFlagged
-	q.require(queryPayoutTransactionRecordsItemFieldRiskFlagged)
+func (q *QueryPayoutTransactionRecordsItem) SetPaymentId(paymentId *PaymentIdString) {
+	q.PaymentId = paymentId
+	q.require(queryPayoutTransactionRecordsItemFieldPaymentId)
 }
 
-// SetRiskFlaggedOn sets the RiskFlaggedOn field and marks it as non-optional;
+// SetTransId sets the TransId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetRiskFlaggedOn(riskFlaggedOn *RiskFlaggedOn) {
-	q.RiskFlaggedOn = riskFlaggedOn
-	q.require(queryPayoutTransactionRecordsItemFieldRiskFlaggedOn)
+func (q *QueryPayoutTransactionRecordsItem) SetTransId(transId *string) {
+	q.TransId = transId
+	q.require(queryPayoutTransactionRecordsItemFieldTransId)
 }
 
-// SetRiskReason sets the RiskReason field and marks it as non-optional;
+// SetTransStatus sets the TransStatus field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetRiskReason(riskReason *RiskReason) {
-	q.RiskReason = riskReason
-	q.require(queryPayoutTransactionRecordsItemFieldRiskReason)
+func (q *QueryPayoutTransactionRecordsItem) SetTransStatus(transStatus *int) {
+	q.TransStatus = transStatus
+	q.require(queryPayoutTransactionRecordsItemFieldTransStatus)
 }
 
-// SetRiskStatus sets the RiskStatus field and marks it as non-optional;
+// SetTransStatusDetail sets the TransStatusDetail field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetRiskStatus(riskStatus *RiskStatus) {
-	q.RiskStatus = riskStatus
-	q.require(queryPayoutTransactionRecordsItemFieldRiskStatus)
+func (q *QueryPayoutTransactionRecordsItem) SetTransStatusDetail(transStatusDetail *string) {
+	q.TransStatusDetail = transStatusDetail
+	q.require(queryPayoutTransactionRecordsItemFieldTransStatusDetail)
+}
+
+// SetTransStatusName sets the TransStatusName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetTransStatusName(transStatusName *string) {
+	q.TransStatusName = transStatusName
+	q.require(queryPayoutTransactionRecordsItemFieldTransStatusName)
+}
+
+// SetTransStatusCategory sets the TransStatusCategory field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetTransStatusCategory(transStatusCategory *string) {
+	q.TransStatusCategory = transStatusCategory
+	q.require(queryPayoutTransactionRecordsItemFieldTransStatusCategory)
+}
+
+// SetLastUpdated sets the LastUpdated field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetLastUpdated(lastUpdated *LastModified) {
+	q.LastUpdated = lastUpdated
+	q.require(queryPayoutTransactionRecordsItemFieldLastUpdated)
+}
+
+// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetTotalAmount(totalAmount *float64) {
+	q.TotalAmount = totalAmount
+	q.require(queryPayoutTransactionRecordsItemFieldTotalAmount)
+}
+
+// SetNetAmount sets the NetAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetNetAmount(netAmount *Netamountnullable) {
+	q.NetAmount = netAmount
+	q.require(queryPayoutTransactionRecordsItemFieldNetAmount)
+}
+
+// SetFeeAmount sets the FeeAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetFeeAmount(feeAmount *FeeAmount) {
+	q.FeeAmount = feeAmount
+	q.require(queryPayoutTransactionRecordsItemFieldFeeAmount)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetSource(source *Source) {
+	q.Source = source
+	q.require(queryPayoutTransactionRecordsItemFieldSource)
+}
+
+// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetParentOrgName(parentOrgName *OrgParentName) {
+	q.ParentOrgName = parentOrgName
+	q.require(queryPayoutTransactionRecordsItemFieldParentOrgName)
+}
+
+// SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetParentOrgId(parentOrgId *OrgParentId) {
+	q.ParentOrgId = parentOrgId
+	q.require(queryPayoutTransactionRecordsItemFieldParentOrgId)
+}
+
+// SetBatchNumber sets the BatchNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetBatchNumber(batchNumber *BatchNumber) {
+	q.BatchNumber = batchNumber
+	q.require(queryPayoutTransactionRecordsItemFieldBatchNumber)
+}
+
+// SetPaymentStatus sets the PaymentStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetPaymentStatus(paymentStatus *string) {
+	q.PaymentStatus = paymentStatus
+	q.require(queryPayoutTransactionRecordsItemFieldPaymentStatus)
+}
+
+// SetPaymentMethod sets the PaymentMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetPaymentMethod(paymentMethod *string) {
+	q.PaymentMethod = paymentMethod
+	q.require(queryPayoutTransactionRecordsItemFieldPaymentMethod)
+}
+
+// SetCardToken sets the CardToken field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetCardToken(cardToken *string) {
+	q.CardToken = cardToken
+	q.require(queryPayoutTransactionRecordsItemFieldCardToken)
+}
+
+// SetCheckNumber sets the CheckNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetCheckNumber(checkNumber *string) {
+	q.CheckNumber = checkNumber
+	q.require(queryPayoutTransactionRecordsItemFieldCheckNumber)
+}
+
+// SetCheckData sets the CheckData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetCheckData(checkData *FileContent) {
+	q.CheckData = checkData
+	q.require(queryPayoutTransactionRecordsItemFieldCheckData)
+}
+
+// SetPaymentData sets the PaymentData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetPaymentData(paymentData *QueryPayoutTransactionRecordsItemPaymentData) {
+	q.PaymentData = paymentData
+	q.require(queryPayoutTransactionRecordsItemFieldPaymentData)
+}
+
+// SetBills sets the Bills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetBills(bills []*BillPayOutData) {
+	q.Bills = bills
+	q.require(queryPayoutTransactionRecordsItemFieldBills)
+}
+
+// SetEvents sets the Events field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetEvents(events []*QueryTransactionEvents) {
+	q.Events = events
+	q.require(queryPayoutTransactionRecordsItemFieldEvents)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
+	q.ExternalPaypointId = externalPaypointId
+	q.require(queryPayoutTransactionRecordsItemFieldExternalPaypointId)
+}
+
+// SetEntryName sets the EntryName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetEntryName(entryName *Entrypointfield) {
+	q.EntryName = entryName
+	q.require(queryPayoutTransactionRecordsItemFieldEntryName)
+}
+
+// SetGateway sets the Gateway field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetGateway(gateway *Gatewayfield) {
+	q.Gateway = gateway
+	q.require(queryPayoutTransactionRecordsItemFieldGateway)
+}
+
+// SetBatchId sets the BatchId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetBatchId(batchId *int) {
+	q.BatchId = batchId
+	q.require(queryPayoutTransactionRecordsItemFieldBatchId)
+}
+
+// SetHasVcardTransactions sets the HasVcardTransactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetHasVcardTransactions(hasVcardTransactions *HasVcardTransactions) {
+	q.HasVcardTransactions = hasVcardTransactions
+	q.require(queryPayoutTransactionRecordsItemFieldHasVcardTransactions)
+}
+
+// SetIsSameDayAch sets the IsSameDayAch field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetIsSameDayAch(isSameDayAch *IsSameDayAch) {
+	q.IsSameDayAch = isSameDayAch
+	q.require(queryPayoutTransactionRecordsItemFieldIsSameDayAch)
 }
 
 // SetScheduleId sets the ScheduleId field and marks it as non-optional;
@@ -13616,41 +13737,91 @@ func (q *QueryPayoutTransactionRecordsItem) SetSettlementStatus(settlementStatus
 	q.require(queryPayoutTransactionRecordsItemFieldSettlementStatus)
 }
 
-// SetSource sets the Source field and marks it as non-optional;
+// SetSettlementStatusName sets the SettlementStatusName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetSource(source *Source) {
-	q.Source = source
-	q.require(queryPayoutTransactionRecordsItemFieldSource)
+func (q *QueryPayoutTransactionRecordsItem) SetSettlementStatusName(settlementStatusName SettlementStatusName) {
+	q.SettlementStatusName = settlementStatusName
+	q.require(queryPayoutTransactionRecordsItemFieldSettlementStatusName)
 }
 
-// SetStatus sets the Status field and marks it as non-optional;
+// SetSettlementDate sets the SettlementDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetStatus(status *int) {
-	q.Status = status
-	q.require(queryPayoutTransactionRecordsItemFieldStatus)
+func (q *QueryPayoutTransactionRecordsItem) SetSettlementDate(settlementDate *time.Time) {
+	q.SettlementDate = settlementDate
+	q.require(queryPayoutTransactionRecordsItemFieldSettlementDate)
 }
 
-// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
+// SetRiskFlagged sets the RiskFlagged field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetTotalAmount(totalAmount *float64) {
-	q.TotalAmount = totalAmount
-	q.require(queryPayoutTransactionRecordsItemFieldTotalAmount)
+func (q *QueryPayoutTransactionRecordsItem) SetRiskFlagged(riskFlagged *RiskFlagged) {
+	q.RiskFlagged = riskFlagged
+	q.require(queryPayoutTransactionRecordsItemFieldRiskFlagged)
 }
 
-// SetVendor sets the Vendor field and marks it as non-optional;
+// SetRiskFlaggedOn sets the RiskFlaggedOn field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItem) SetVendor(vendor_ *VendorQueryRecord) {
-	q.Vendor = vendor_
-	q.require(queryPayoutTransactionRecordsItemFieldVendor)
+func (q *QueryPayoutTransactionRecordsItem) SetRiskFlaggedOn(riskFlaggedOn *RiskFlaggedOn) {
+	q.RiskFlaggedOn = riskFlaggedOn
+	q.require(queryPayoutTransactionRecordsItemFieldRiskFlaggedOn)
+}
+
+// SetRiskStatus sets the RiskStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetRiskStatus(riskStatus *RiskStatus) {
+	q.RiskStatus = riskStatus
+	q.require(queryPayoutTransactionRecordsItemFieldRiskStatus)
+}
+
+// SetRiskReason sets the RiskReason field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetRiskReason(riskReason *RiskReason) {
+	q.RiskReason = riskReason
+	q.require(queryPayoutTransactionRecordsItemFieldRiskReason)
+}
+
+// SetRiskAction sets the RiskAction field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetRiskAction(riskAction *RiskAction) {
+	q.RiskAction = riskAction
+	q.require(queryPayoutTransactionRecordsItemFieldRiskAction)
+}
+
+// SetRiskActionCode sets the RiskActionCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetRiskActionCode(riskActionCode *RiskActionCode) {
+	q.RiskActionCode = riskActionCode
+	q.require(queryPayoutTransactionRecordsItemFieldRiskActionCode)
+}
+
+// SetPayoutProgram sets the PayoutProgram field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetPayoutProgram(payoutProgram *PayoutProgram) {
+	q.PayoutProgram = payoutProgram
+	q.require(queryPayoutTransactionRecordsItemFieldPayoutProgram)
+}
+
+// SetAchTraceNumber sets the AchTraceNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetAchTraceNumber(achTraceNumber *string) {
+	q.AchTraceNumber = achTraceNumber
+	q.require(queryPayoutTransactionRecordsItemFieldAchTraceNumber)
+}
+
+// SetEntityId sets the EntityId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetEntityId(entityId *string) {
+	q.EntityId = entityId
+	q.require(queryPayoutTransactionRecordsItemFieldEntityId)
 }
 
 func (q *QueryPayoutTransactionRecordsItem) UnmarshalJSON(data []byte) error {
 	type embed QueryPayoutTransactionRecordsItem
 	var unmarshaler = struct {
 		embed
-		CreatedAt     *internal.DateTime `json:"CreatedAt,omitempty"`
-		LastUpdated   *internal.DateTime `json:"LastUpdated,omitempty"`
-		RiskFlaggedOn *internal.DateTime `json:"RiskFlaggedOn,omitempty"`
+		CreatedAt      *internal.DateTime `json:"CreatedAt,omitempty"`
+		LastUpdated    *internal.DateTime `json:"LastUpdated,omitempty"`
+		SettlementDate *internal.DateTime `json:"SettlementDate,omitempty"`
+		RiskFlaggedOn  *internal.DateTime `json:"RiskFlaggedOn,omitempty"`
 	}{
 		embed: embed(*q),
 	}
@@ -13660,6 +13831,7 @@ func (q *QueryPayoutTransactionRecordsItem) UnmarshalJSON(data []byte) error {
 	*q = QueryPayoutTransactionRecordsItem(unmarshaler.embed)
 	q.CreatedAt = unmarshaler.CreatedAt.TimePtr()
 	q.LastUpdated = unmarshaler.LastUpdated.TimePtr()
+	q.SettlementDate = unmarshaler.SettlementDate.TimePtr()
 	q.RiskFlaggedOn = unmarshaler.RiskFlaggedOn.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *q)
 	if err != nil {
@@ -13674,14 +13846,16 @@ func (q *QueryPayoutTransactionRecordsItem) MarshalJSON() ([]byte, error) {
 	type embed QueryPayoutTransactionRecordsItem
 	var marshaler = struct {
 		embed
-		CreatedAt     *internal.DateTime `json:"CreatedAt,omitempty"`
-		LastUpdated   *internal.DateTime `json:"LastUpdated,omitempty"`
-		RiskFlaggedOn *internal.DateTime `json:"RiskFlaggedOn,omitempty"`
+		CreatedAt      *internal.DateTime `json:"CreatedAt,omitempty"`
+		LastUpdated    *internal.DateTime `json:"LastUpdated,omitempty"`
+		SettlementDate *internal.DateTime `json:"SettlementDate,omitempty"`
+		RiskFlaggedOn  *internal.DateTime `json:"RiskFlaggedOn,omitempty"`
 	}{
-		embed:         embed(*q),
-		CreatedAt:     internal.NewOptionalDateTime(q.CreatedAt),
-		LastUpdated:   internal.NewOptionalDateTime(q.LastUpdated),
-		RiskFlaggedOn: internal.NewOptionalDateTime(q.RiskFlaggedOn),
+		embed:          embed(*q),
+		CreatedAt:      internal.NewOptionalDateTime(q.CreatedAt),
+		LastUpdated:    internal.NewOptionalDateTime(q.LastUpdated),
+		SettlementDate: internal.NewOptionalDateTime(q.SettlementDate),
+		RiskFlaggedOn:  internal.NewOptionalDateTime(q.RiskFlaggedOn),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -13703,47 +13877,47 @@ func (q *QueryPayoutTransactionRecordsItem) String() string {
 }
 
 var (
-	queryPayoutTransactionRecordsItemPaymentDataFieldAccountExp            = big.NewInt(1 << 0)
-	queryPayoutTransactionRecordsItemPaymentDataFieldAccountId             = big.NewInt(1 << 1)
-	queryPayoutTransactionRecordsItemPaymentDataFieldAccountType           = big.NewInt(1 << 2)
+	queryPayoutTransactionRecordsItemPaymentDataFieldMaskedAccount         = big.NewInt(1 << 0)
+	queryPayoutTransactionRecordsItemPaymentDataFieldAccountType           = big.NewInt(1 << 1)
+	queryPayoutTransactionRecordsItemPaymentDataFieldAccountExp            = big.NewInt(1 << 2)
 	queryPayoutTransactionRecordsItemPaymentDataFieldAccountZip            = big.NewInt(1 << 3)
-	queryPayoutTransactionRecordsItemPaymentDataFieldBankAccount           = big.NewInt(1 << 4)
-	queryPayoutTransactionRecordsItemPaymentDataFieldBinData               = big.NewInt(1 << 5)
-	queryPayoutTransactionRecordsItemPaymentDataFieldCloudSignatureData    = big.NewInt(1 << 6)
-	queryPayoutTransactionRecordsItemPaymentDataFieldCloudSignatureFormat  = big.NewInt(1 << 7)
-	queryPayoutTransactionRecordsItemPaymentDataFieldGatewayConnector      = big.NewInt(1 << 8)
-	queryPayoutTransactionRecordsItemPaymentDataFieldHolderName            = big.NewInt(1 << 9)
-	queryPayoutTransactionRecordsItemPaymentDataFieldInitiator             = big.NewInt(1 << 10)
-	queryPayoutTransactionRecordsItemPaymentDataFieldMaskedAccount         = big.NewInt(1 << 11)
-	queryPayoutTransactionRecordsItemPaymentDataFieldOrderDescription      = big.NewInt(1 << 12)
-	queryPayoutTransactionRecordsItemPaymentDataFieldPaymentDetails        = big.NewInt(1 << 13)
-	queryPayoutTransactionRecordsItemPaymentDataFieldPayorData             = big.NewInt(1 << 14)
-	queryPayoutTransactionRecordsItemPaymentDataFieldSequence              = big.NewInt(1 << 15)
-	queryPayoutTransactionRecordsItemPaymentDataFieldStoredId              = big.NewInt(1 << 16)
-	queryPayoutTransactionRecordsItemPaymentDataFieldStoredMethodUsageType = big.NewInt(1 << 17)
+	queryPayoutTransactionRecordsItemPaymentDataFieldHolderName            = big.NewInt(1 << 4)
+	queryPayoutTransactionRecordsItemPaymentDataFieldStoredId              = big.NewInt(1 << 5)
+	queryPayoutTransactionRecordsItemPaymentDataFieldInitiator             = big.NewInt(1 << 6)
+	queryPayoutTransactionRecordsItemPaymentDataFieldStoredMethodUsageType = big.NewInt(1 << 7)
+	queryPayoutTransactionRecordsItemPaymentDataFieldSequence              = big.NewInt(1 << 8)
+	queryPayoutTransactionRecordsItemPaymentDataFieldOrderDescription      = big.NewInt(1 << 9)
+	queryPayoutTransactionRecordsItemPaymentDataFieldCloudSignatureData    = big.NewInt(1 << 10)
+	queryPayoutTransactionRecordsItemPaymentDataFieldCloudSignatureFormat  = big.NewInt(1 << 11)
+	queryPayoutTransactionRecordsItemPaymentDataFieldPaymentDetails        = big.NewInt(1 << 12)
+	queryPayoutTransactionRecordsItemPaymentDataFieldPayorData             = big.NewInt(1 << 13)
+	queryPayoutTransactionRecordsItemPaymentDataFieldAccountId             = big.NewInt(1 << 14)
+	queryPayoutTransactionRecordsItemPaymentDataFieldBankAccount           = big.NewInt(1 << 15)
+	queryPayoutTransactionRecordsItemPaymentDataFieldGatewayConnector      = big.NewInt(1 << 16)
+	queryPayoutTransactionRecordsItemPaymentDataFieldBinData               = big.NewInt(1 << 17)
 )
 
 type QueryPayoutTransactionRecordsItemPaymentData struct {
-	AccountExp           *Accountexp             `json:"AccountExp,omitempty" url:"AccountExp,omitempty"`
-	AccountId            *AccountId              `json:"accountId,omitempty" url:"accountId,omitempty"`
-	AccountType          *Accounttype            `json:"AccountType,omitempty" url:"AccountType,omitempty"`
-	AccountZip           *Accountzip             `json:"AccountZip,omitempty" url:"AccountZip,omitempty"`
-	BankAccount          *string                 `json:"bankAccount,omitempty" url:"bankAccount,omitempty"`
-	BinData              *BinData                `json:"binData,omitempty" url:"binData,omitempty"`
-	CloudSignatureData   *string                 `json:"cloudSignatureData,omitempty" url:"cloudSignatureData,omitempty"`
-	CloudSignatureFormat *string                 `json:"cloudSignatureFormat,omitempty" url:"cloudSignatureFormat,omitempty"`
-	GatewayConnector     *PayoutGatewayConnector `json:"gatewayConnector,omitempty" url:"gatewayConnector,omitempty"`
+	MaskedAccount *Maskedaccount `json:"MaskedAccount,omitempty" url:"MaskedAccount,omitempty"`
+	AccountType   *Accounttype   `json:"AccountType,omitempty" url:"AccountType,omitempty"`
+	AccountExp    *Accountexp    `json:"AccountExp,omitempty" url:"AccountExp,omitempty"`
+	AccountZip    *Accountzip    `json:"AccountZip,omitempty" url:"AccountZip,omitempty"`
 	// Card or bank account holder name.
-	HolderName       *Holdername       `json:"HolderName,omitempty" url:"HolderName,omitempty"`
-	Initiator        *Initiator        `json:"Initiator,omitempty" url:"Initiator,omitempty"`
-	MaskedAccount    *Maskedaccount    `json:"MaskedAccount,omitempty" url:"MaskedAccount,omitempty"`
-	OrderDescription *Orderdescription `json:"orderDescription,omitempty" url:"orderDescription,omitempty"`
-	PaymentDetails   *PaymentDetail    `json:"paymentDetails,omitempty" url:"paymentDetails,omitempty"`
-	PayorData        *string           `json:"payorData,omitempty" url:"payorData,omitempty"`
-	Sequence         *Sequence         `json:"Sequence,omitempty" url:"Sequence,omitempty"`
+	HolderName *Holdername `json:"HolderName,omitempty" url:"HolderName,omitempty"`
 	// Identifier of stored payment method used in transaction.
-	StoredId              *Storedmethodid        `json:"StoredId,omitempty" url:"StoredId,omitempty"`
-	StoredMethodUsageType *StoredMethodUsageType `json:"StoredMethodUsageType,omitempty" url:"StoredMethodUsageType,omitempty"`
+	StoredId              *Storedmethodid         `json:"StoredId,omitempty" url:"StoredId,omitempty"`
+	Initiator             *Initiator              `json:"Initiator,omitempty" url:"Initiator,omitempty"`
+	StoredMethodUsageType *StoredMethodUsageType  `json:"StoredMethodUsageType,omitempty" url:"StoredMethodUsageType,omitempty"`
+	Sequence              *Sequence               `json:"Sequence,omitempty" url:"Sequence,omitempty"`
+	OrderDescription      *Orderdescription       `json:"orderDescription,omitempty" url:"orderDescription,omitempty"`
+	CloudSignatureData    *string                 `json:"cloudSignatureData,omitempty" url:"cloudSignatureData,omitempty"`
+	CloudSignatureFormat  *string                 `json:"cloudSignatureFormat,omitempty" url:"cloudSignatureFormat,omitempty"`
+	PaymentDetails        *PaymentDetail          `json:"paymentDetails,omitempty" url:"paymentDetails,omitempty"`
+	PayorData             *string                 `json:"payorData,omitempty" url:"payorData,omitempty"`
+	AccountId             *AccountId              `json:"accountId,omitempty" url:"accountId,omitempty"`
+	BankAccount           *string                 `json:"bankAccount,omitempty" url:"bankAccount,omitempty"`
+	GatewayConnector      *PayoutGatewayConnector `json:"gatewayConnector,omitempty" url:"gatewayConnector,omitempty"`
+	BinData               *BinData                `json:"binData,omitempty" url:"binData,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -13752,18 +13926,11 @@ type QueryPayoutTransactionRecordsItemPaymentData struct {
 	rawJSON         json.RawMessage
 }
 
-func (q *QueryPayoutTransactionRecordsItemPaymentData) GetAccountExp() *Accountexp {
+func (q *QueryPayoutTransactionRecordsItemPaymentData) GetMaskedAccount() *Maskedaccount {
 	if q == nil {
 		return nil
 	}
-	return q.AccountExp
-}
-
-func (q *QueryPayoutTransactionRecordsItemPaymentData) GetAccountId() *AccountId {
-	if q == nil {
-		return nil
-	}
-	return q.AccountId
+	return q.MaskedAccount
 }
 
 func (q *QueryPayoutTransactionRecordsItemPaymentData) GetAccountType() *Accounttype {
@@ -13773,6 +13940,13 @@ func (q *QueryPayoutTransactionRecordsItemPaymentData) GetAccountType() *Account
 	return q.AccountType
 }
 
+func (q *QueryPayoutTransactionRecordsItemPaymentData) GetAccountExp() *Accountexp {
+	if q == nil {
+		return nil
+	}
+	return q.AccountExp
+}
+
 func (q *QueryPayoutTransactionRecordsItemPaymentData) GetAccountZip() *Accountzip {
 	if q == nil {
 		return nil
@@ -13780,18 +13954,46 @@ func (q *QueryPayoutTransactionRecordsItemPaymentData) GetAccountZip() *Accountz
 	return q.AccountZip
 }
 
-func (q *QueryPayoutTransactionRecordsItemPaymentData) GetBankAccount() *string {
+func (q *QueryPayoutTransactionRecordsItemPaymentData) GetHolderName() *Holdername {
 	if q == nil {
 		return nil
 	}
-	return q.BankAccount
+	return q.HolderName
 }
 
-func (q *QueryPayoutTransactionRecordsItemPaymentData) GetBinData() *BinData {
+func (q *QueryPayoutTransactionRecordsItemPaymentData) GetStoredId() *Storedmethodid {
 	if q == nil {
 		return nil
 	}
-	return q.BinData
+	return q.StoredId
+}
+
+func (q *QueryPayoutTransactionRecordsItemPaymentData) GetInitiator() *Initiator {
+	if q == nil {
+		return nil
+	}
+	return q.Initiator
+}
+
+func (q *QueryPayoutTransactionRecordsItemPaymentData) GetStoredMethodUsageType() *StoredMethodUsageType {
+	if q == nil {
+		return nil
+	}
+	return q.StoredMethodUsageType
+}
+
+func (q *QueryPayoutTransactionRecordsItemPaymentData) GetSequence() *Sequence {
+	if q == nil {
+		return nil
+	}
+	return q.Sequence
+}
+
+func (q *QueryPayoutTransactionRecordsItemPaymentData) GetOrderDescription() *Orderdescription {
+	if q == nil {
+		return nil
+	}
+	return q.OrderDescription
 }
 
 func (q *QueryPayoutTransactionRecordsItemPaymentData) GetCloudSignatureData() *string {
@@ -13808,41 +14010,6 @@ func (q *QueryPayoutTransactionRecordsItemPaymentData) GetCloudSignatureFormat()
 	return q.CloudSignatureFormat
 }
 
-func (q *QueryPayoutTransactionRecordsItemPaymentData) GetGatewayConnector() *PayoutGatewayConnector {
-	if q == nil {
-		return nil
-	}
-	return q.GatewayConnector
-}
-
-func (q *QueryPayoutTransactionRecordsItemPaymentData) GetHolderName() *Holdername {
-	if q == nil {
-		return nil
-	}
-	return q.HolderName
-}
-
-func (q *QueryPayoutTransactionRecordsItemPaymentData) GetInitiator() *Initiator {
-	if q == nil {
-		return nil
-	}
-	return q.Initiator
-}
-
-func (q *QueryPayoutTransactionRecordsItemPaymentData) GetMaskedAccount() *Maskedaccount {
-	if q == nil {
-		return nil
-	}
-	return q.MaskedAccount
-}
-
-func (q *QueryPayoutTransactionRecordsItemPaymentData) GetOrderDescription() *Orderdescription {
-	if q == nil {
-		return nil
-	}
-	return q.OrderDescription
-}
-
 func (q *QueryPayoutTransactionRecordsItemPaymentData) GetPaymentDetails() *PaymentDetail {
 	if q == nil {
 		return nil
@@ -13857,25 +14024,32 @@ func (q *QueryPayoutTransactionRecordsItemPaymentData) GetPayorData() *string {
 	return q.PayorData
 }
 
-func (q *QueryPayoutTransactionRecordsItemPaymentData) GetSequence() *Sequence {
+func (q *QueryPayoutTransactionRecordsItemPaymentData) GetAccountId() *AccountId {
 	if q == nil {
 		return nil
 	}
-	return q.Sequence
+	return q.AccountId
 }
 
-func (q *QueryPayoutTransactionRecordsItemPaymentData) GetStoredId() *Storedmethodid {
+func (q *QueryPayoutTransactionRecordsItemPaymentData) GetBankAccount() *string {
 	if q == nil {
 		return nil
 	}
-	return q.StoredId
+	return q.BankAccount
 }
 
-func (q *QueryPayoutTransactionRecordsItemPaymentData) GetStoredMethodUsageType() *StoredMethodUsageType {
+func (q *QueryPayoutTransactionRecordsItemPaymentData) GetGatewayConnector() *PayoutGatewayConnector {
 	if q == nil {
 		return nil
 	}
-	return q.StoredMethodUsageType
+	return q.GatewayConnector
+}
+
+func (q *QueryPayoutTransactionRecordsItemPaymentData) GetBinData() *BinData {
+	if q == nil {
+		return nil
+	}
+	return q.BinData
 }
 
 func (q *QueryPayoutTransactionRecordsItemPaymentData) GetExtraProperties() map[string]interface{} {
@@ -13892,18 +14066,11 @@ func (q *QueryPayoutTransactionRecordsItemPaymentData) require(field *big.Int) {
 	q.explicitFields.Or(q.explicitFields, field)
 }
 
-// SetAccountExp sets the AccountExp field and marks it as non-optional;
+// SetMaskedAccount sets the MaskedAccount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItemPaymentData) SetAccountExp(accountExp *Accountexp) {
-	q.AccountExp = accountExp
-	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldAccountExp)
-}
-
-// SetAccountId sets the AccountId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItemPaymentData) SetAccountId(accountId *AccountId) {
-	q.AccountId = accountId
-	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldAccountId)
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetMaskedAccount(maskedAccount *Maskedaccount) {
+	q.MaskedAccount = maskedAccount
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldMaskedAccount)
 }
 
 // SetAccountType sets the AccountType field and marks it as non-optional;
@@ -13913,6 +14080,13 @@ func (q *QueryPayoutTransactionRecordsItemPaymentData) SetAccountType(accountTyp
 	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldAccountType)
 }
 
+// SetAccountExp sets the AccountExp field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetAccountExp(accountExp *Accountexp) {
+	q.AccountExp = accountExp
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldAccountExp)
+}
+
 // SetAccountZip sets the AccountZip field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (q *QueryPayoutTransactionRecordsItemPaymentData) SetAccountZip(accountZip *Accountzip) {
@@ -13920,18 +14094,46 @@ func (q *QueryPayoutTransactionRecordsItemPaymentData) SetAccountZip(accountZip 
 	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldAccountZip)
 }
 
-// SetBankAccount sets the BankAccount field and marks it as non-optional;
+// SetHolderName sets the HolderName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItemPaymentData) SetBankAccount(bankAccount *string) {
-	q.BankAccount = bankAccount
-	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldBankAccount)
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetHolderName(holderName *Holdername) {
+	q.HolderName = holderName
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldHolderName)
 }
 
-// SetBinData sets the BinData field and marks it as non-optional;
+// SetStoredId sets the StoredId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItemPaymentData) SetBinData(binData *BinData) {
-	q.BinData = binData
-	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldBinData)
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetStoredId(storedId *Storedmethodid) {
+	q.StoredId = storedId
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldStoredId)
+}
+
+// SetInitiator sets the Initiator field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetInitiator(initiator *Initiator) {
+	q.Initiator = initiator
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldInitiator)
+}
+
+// SetStoredMethodUsageType sets the StoredMethodUsageType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetStoredMethodUsageType(storedMethodUsageType *StoredMethodUsageType) {
+	q.StoredMethodUsageType = storedMethodUsageType
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldStoredMethodUsageType)
+}
+
+// SetSequence sets the Sequence field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetSequence(sequence *Sequence) {
+	q.Sequence = sequence
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldSequence)
+}
+
+// SetOrderDescription sets the OrderDescription field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetOrderDescription(orderDescription *Orderdescription) {
+	q.OrderDescription = orderDescription
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldOrderDescription)
 }
 
 // SetCloudSignatureData sets the CloudSignatureData field and marks it as non-optional;
@@ -13948,41 +14150,6 @@ func (q *QueryPayoutTransactionRecordsItemPaymentData) SetCloudSignatureFormat(c
 	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldCloudSignatureFormat)
 }
 
-// SetGatewayConnector sets the GatewayConnector field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItemPaymentData) SetGatewayConnector(gatewayConnector *PayoutGatewayConnector) {
-	q.GatewayConnector = gatewayConnector
-	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldGatewayConnector)
-}
-
-// SetHolderName sets the HolderName field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItemPaymentData) SetHolderName(holderName *Holdername) {
-	q.HolderName = holderName
-	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldHolderName)
-}
-
-// SetInitiator sets the Initiator field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItemPaymentData) SetInitiator(initiator *Initiator) {
-	q.Initiator = initiator
-	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldInitiator)
-}
-
-// SetMaskedAccount sets the MaskedAccount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItemPaymentData) SetMaskedAccount(maskedAccount *Maskedaccount) {
-	q.MaskedAccount = maskedAccount
-	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldMaskedAccount)
-}
-
-// SetOrderDescription sets the OrderDescription field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItemPaymentData) SetOrderDescription(orderDescription *Orderdescription) {
-	q.OrderDescription = orderDescription
-	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldOrderDescription)
-}
-
 // SetPaymentDetails sets the PaymentDetails field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (q *QueryPayoutTransactionRecordsItemPaymentData) SetPaymentDetails(paymentDetails *PaymentDetail) {
@@ -13997,25 +14164,32 @@ func (q *QueryPayoutTransactionRecordsItemPaymentData) SetPayorData(payorData *s
 	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldPayorData)
 }
 
-// SetSequence sets the Sequence field and marks it as non-optional;
+// SetAccountId sets the AccountId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItemPaymentData) SetSequence(sequence *Sequence) {
-	q.Sequence = sequence
-	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldSequence)
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetAccountId(accountId *AccountId) {
+	q.AccountId = accountId
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldAccountId)
 }
 
-// SetStoredId sets the StoredId field and marks it as non-optional;
+// SetBankAccount sets the BankAccount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItemPaymentData) SetStoredId(storedId *Storedmethodid) {
-	q.StoredId = storedId
-	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldStoredId)
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetBankAccount(bankAccount *string) {
+	q.BankAccount = bankAccount
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldBankAccount)
 }
 
-// SetStoredMethodUsageType sets the StoredMethodUsageType field and marks it as non-optional;
+// SetGatewayConnector sets the GatewayConnector field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionRecordsItemPaymentData) SetStoredMethodUsageType(storedMethodUsageType *StoredMethodUsageType) {
-	q.StoredMethodUsageType = storedMethodUsageType
-	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldStoredMethodUsageType)
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetGatewayConnector(gatewayConnector *PayoutGatewayConnector) {
+	q.GatewayConnector = gatewayConnector
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldGatewayConnector)
+}
+
+// SetBinData sets the BinData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItemPaymentData) SetBinData(binData *BinData) {
+	q.BinData = binData
+	q.require(queryPayoutTransactionRecordsItemPaymentDataFieldBinData)
 }
 
 func (q *QueryPayoutTransactionRecordsItemPaymentData) UnmarshalJSON(data []byte) error {
@@ -14061,51 +14235,51 @@ func (q *QueryPayoutTransactionRecordsItemPaymentData) String() string {
 }
 
 var (
-	queryPayoutTransactionSummaryFieldPageIdentifier        = big.NewInt(1 << 0)
-	queryPayoutTransactionSummaryFieldPageSize              = big.NewInt(1 << 1)
-	queryPayoutTransactionSummaryFieldTotalAmount           = big.NewInt(1 << 2)
-	queryPayoutTransactionSummaryFieldTotalAuthorized       = big.NewInt(1 << 3)
-	queryPayoutTransactionSummaryFieldTotalAuthorizedAmount = big.NewInt(1 << 4)
-	queryPayoutTransactionSummaryFieldTotalCanceled         = big.NewInt(1 << 5)
-	queryPayoutTransactionSummaryFieldTotalCanceledAmount   = big.NewInt(1 << 6)
-	queryPayoutTransactionSummaryFieldTotalCaptured         = big.NewInt(1 << 7)
-	queryPayoutTransactionSummaryFieldTotalCapturedAmount   = big.NewInt(1 << 8)
-	queryPayoutTransactionSummaryFieldTotalNetAmount        = big.NewInt(1 << 9)
+	queryPayoutTransactionSummaryFieldTotalPaid             = big.NewInt(1 << 0)
+	queryPayoutTransactionSummaryFieldTotalPaidAmount       = big.NewInt(1 << 1)
+	queryPayoutTransactionSummaryFieldTotalCanceled         = big.NewInt(1 << 2)
+	queryPayoutTransactionSummaryFieldTotalCanceledAmount   = big.NewInt(1 << 3)
+	queryPayoutTransactionSummaryFieldTotalCaptured         = big.NewInt(1 << 4)
+	queryPayoutTransactionSummaryFieldTotalCapturedAmount   = big.NewInt(1 << 5)
+	queryPayoutTransactionSummaryFieldTotalAuthorized       = big.NewInt(1 << 6)
+	queryPayoutTransactionSummaryFieldTotalAuthorizedAmount = big.NewInt(1 << 7)
+	queryPayoutTransactionSummaryFieldTotalProcessing       = big.NewInt(1 << 8)
+	queryPayoutTransactionSummaryFieldTotalProcessingAmount = big.NewInt(1 << 9)
 	queryPayoutTransactionSummaryFieldTotalOpen             = big.NewInt(1 << 10)
 	queryPayoutTransactionSummaryFieldTotalOpenAmount       = big.NewInt(1 << 11)
-	queryPayoutTransactionSummaryFieldTotalPages            = big.NewInt(1 << 12)
-	queryPayoutTransactionSummaryFieldTotalPaid             = big.NewInt(1 << 13)
-	queryPayoutTransactionSummaryFieldTotalPaidAmount       = big.NewInt(1 << 14)
-	queryPayoutTransactionSummaryFieldTotalOnHold           = big.NewInt(1 << 15)
-	queryPayoutTransactionSummaryFieldTotalOnHoldAmount     = big.NewInt(1 << 16)
-	queryPayoutTransactionSummaryFieldTotalProcessing       = big.NewInt(1 << 17)
-	queryPayoutTransactionSummaryFieldTotalProcessingAmount = big.NewInt(1 << 18)
-	queryPayoutTransactionSummaryFieldTotalRecords          = big.NewInt(1 << 19)
+	queryPayoutTransactionSummaryFieldTotalOnHold           = big.NewInt(1 << 12)
+	queryPayoutTransactionSummaryFieldTotalOnHoldAmount     = big.NewInt(1 << 13)
+	queryPayoutTransactionSummaryFieldTotalRecords          = big.NewInt(1 << 14)
+	queryPayoutTransactionSummaryFieldTotalAmount           = big.NewInt(1 << 15)
+	queryPayoutTransactionSummaryFieldTotalNetAmount        = big.NewInt(1 << 16)
+	queryPayoutTransactionSummaryFieldTotalPages            = big.NewInt(1 << 17)
+	queryPayoutTransactionSummaryFieldPageSize              = big.NewInt(1 << 18)
+	queryPayoutTransactionSummaryFieldPageidentifier        = big.NewInt(1 << 19)
 )
 
 type QueryPayoutTransactionSummary struct {
-	PageIdentifier        *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
-	PageSize              *Pagesize       `json:"pageSize,omitempty" url:"pageSize,omitempty"`
-	TotalAmount           *float64        `json:"totalAmount,omitempty" url:"totalAmount,omitempty"`
-	TotalAuthorized       *int            `json:"totalAuthorized,omitempty" url:"totalAuthorized,omitempty"`
-	TotalAuthorizedAmount *float64        `json:"totalAuthorizedAmount,omitempty" url:"totalAuthorizedAmount,omitempty"`
-	TotalCanceled         *int            `json:"totalCanceled,omitempty" url:"totalCanceled,omitempty"`
-	TotalCanceledAmount   *float64        `json:"totalCanceledAmount,omitempty" url:"totalCanceledAmount,omitempty"`
-	TotalCaptured         *int            `json:"totalCaptured,omitempty" url:"totalCaptured,omitempty"`
-	TotalCapturedAmount   *float64        `json:"totalCapturedAmount,omitempty" url:"totalCapturedAmount,omitempty"`
-	TotalNetAmount        *float64        `json:"totalNetAmount,omitempty" url:"totalNetAmount,omitempty"`
-	TotalOpen             *int            `json:"totalOpen,omitempty" url:"totalOpen,omitempty"`
-	TotalOpenAmount       *float64        `json:"totalOpenAmount,omitempty" url:"totalOpenAmount,omitempty"`
-	TotalPages            *int            `json:"totalPages,omitempty" url:"totalPages,omitempty"`
-	TotalPaid             *int            `json:"totalPaid,omitempty" url:"totalPaid,omitempty"`
-	TotalPaidAmount       *float64        `json:"totalPaidAmount,omitempty" url:"totalPaidAmount,omitempty"`
+	TotalPaid             *int     `json:"totalPaid,omitempty" url:"totalPaid,omitempty"`
+	TotalPaidAmount       *float64 `json:"totalPaidAmount,omitempty" url:"totalPaidAmount,omitempty"`
+	TotalCanceled         *int     `json:"totalCanceled,omitempty" url:"totalCanceled,omitempty"`
+	TotalCanceledAmount   *float64 `json:"totalCanceledAmount,omitempty" url:"totalCanceledAmount,omitempty"`
+	TotalCaptured         *int     `json:"totalCaptured,omitempty" url:"totalCaptured,omitempty"`
+	TotalCapturedAmount   *float64 `json:"totalCapturedAmount,omitempty" url:"totalCapturedAmount,omitempty"`
+	TotalAuthorized       *int     `json:"totalAuthorized,omitempty" url:"totalAuthorized,omitempty"`
+	TotalAuthorizedAmount *float64 `json:"totalAuthorizedAmount,omitempty" url:"totalAuthorizedAmount,omitempty"`
+	TotalProcessing       *int     `json:"totalProcessing,omitempty" url:"totalProcessing,omitempty"`
+	TotalProcessingAmount *float64 `json:"totalProcessingAmount,omitempty" url:"totalProcessingAmount,omitempty"`
+	TotalOpen             *int     `json:"totalOpen,omitempty" url:"totalOpen,omitempty"`
+	TotalOpenAmount       *float64 `json:"totalOpenAmount,omitempty" url:"totalOpenAmount,omitempty"`
 	// Total number of transactions that are currently on hold.
 	TotalOnHold *int `json:"totalOnHold,omitempty" url:"totalOnHold,omitempty"`
 	// Total amount of transactions that are currently on hold.
-	TotalOnHoldAmount     *float64 `json:"totalOnHoldAmount,omitempty" url:"totalOnHoldAmount,omitempty"`
-	TotalProcessing       *int     `json:"totalProcessing,omitempty" url:"totalProcessing,omitempty"`
-	TotalProcessingAmount *float64 `json:"totalProcessingAmount,omitempty" url:"totalProcessingAmount,omitempty"`
-	TotalRecords          *int     `json:"totalRecords,omitempty" url:"totalRecords,omitempty"`
+	TotalOnHoldAmount *float64        `json:"totalOnHoldAmount,omitempty" url:"totalOnHoldAmount,omitempty"`
+	TotalRecords      *int            `json:"totalRecords,omitempty" url:"totalRecords,omitempty"`
+	TotalAmount       *float64        `json:"totalAmount,omitempty" url:"totalAmount,omitempty"`
+	TotalNetAmount    *float64        `json:"totalNetAmount,omitempty" url:"totalNetAmount,omitempty"`
+	TotalPages        *int            `json:"totalPages,omitempty" url:"totalPages,omitempty"`
+	PageSize          *Pagesize       `json:"pageSize,omitempty" url:"pageSize,omitempty"`
+	Pageidentifier    *PageIdentifier `json:"pageidentifier,omitempty" url:"pageidentifier,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -14114,39 +14288,18 @@ type QueryPayoutTransactionSummary struct {
 	rawJSON         json.RawMessage
 }
 
-func (q *QueryPayoutTransactionSummary) GetPageIdentifier() *PageIdentifier {
+func (q *QueryPayoutTransactionSummary) GetTotalPaid() *int {
 	if q == nil {
 		return nil
 	}
-	return q.PageIdentifier
+	return q.TotalPaid
 }
 
-func (q *QueryPayoutTransactionSummary) GetPageSize() *Pagesize {
+func (q *QueryPayoutTransactionSummary) GetTotalPaidAmount() *float64 {
 	if q == nil {
 		return nil
 	}
-	return q.PageSize
-}
-
-func (q *QueryPayoutTransactionSummary) GetTotalAmount() *float64 {
-	if q == nil {
-		return nil
-	}
-	return q.TotalAmount
-}
-
-func (q *QueryPayoutTransactionSummary) GetTotalAuthorized() *int {
-	if q == nil {
-		return nil
-	}
-	return q.TotalAuthorized
-}
-
-func (q *QueryPayoutTransactionSummary) GetTotalAuthorizedAmount() *float64 {
-	if q == nil {
-		return nil
-	}
-	return q.TotalAuthorizedAmount
+	return q.TotalPaidAmount
 }
 
 func (q *QueryPayoutTransactionSummary) GetTotalCanceled() *int {
@@ -14177,60 +14330,18 @@ func (q *QueryPayoutTransactionSummary) GetTotalCapturedAmount() *float64 {
 	return q.TotalCapturedAmount
 }
 
-func (q *QueryPayoutTransactionSummary) GetTotalNetAmount() *float64 {
+func (q *QueryPayoutTransactionSummary) GetTotalAuthorized() *int {
 	if q == nil {
 		return nil
 	}
-	return q.TotalNetAmount
+	return q.TotalAuthorized
 }
 
-func (q *QueryPayoutTransactionSummary) GetTotalOpen() *int {
+func (q *QueryPayoutTransactionSummary) GetTotalAuthorizedAmount() *float64 {
 	if q == nil {
 		return nil
 	}
-	return q.TotalOpen
-}
-
-func (q *QueryPayoutTransactionSummary) GetTotalOpenAmount() *float64 {
-	if q == nil {
-		return nil
-	}
-	return q.TotalOpenAmount
-}
-
-func (q *QueryPayoutTransactionSummary) GetTotalPages() *int {
-	if q == nil {
-		return nil
-	}
-	return q.TotalPages
-}
-
-func (q *QueryPayoutTransactionSummary) GetTotalPaid() *int {
-	if q == nil {
-		return nil
-	}
-	return q.TotalPaid
-}
-
-func (q *QueryPayoutTransactionSummary) GetTotalPaidAmount() *float64 {
-	if q == nil {
-		return nil
-	}
-	return q.TotalPaidAmount
-}
-
-func (q *QueryPayoutTransactionSummary) GetTotalOnHold() *int {
-	if q == nil {
-		return nil
-	}
-	return q.TotalOnHold
-}
-
-func (q *QueryPayoutTransactionSummary) GetTotalOnHoldAmount() *float64 {
-	if q == nil {
-		return nil
-	}
-	return q.TotalOnHoldAmount
+	return q.TotalAuthorizedAmount
 }
 
 func (q *QueryPayoutTransactionSummary) GetTotalProcessing() *int {
@@ -14247,11 +14358,74 @@ func (q *QueryPayoutTransactionSummary) GetTotalProcessingAmount() *float64 {
 	return q.TotalProcessingAmount
 }
 
+func (q *QueryPayoutTransactionSummary) GetTotalOpen() *int {
+	if q == nil {
+		return nil
+	}
+	return q.TotalOpen
+}
+
+func (q *QueryPayoutTransactionSummary) GetTotalOpenAmount() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.TotalOpenAmount
+}
+
+func (q *QueryPayoutTransactionSummary) GetTotalOnHold() *int {
+	if q == nil {
+		return nil
+	}
+	return q.TotalOnHold
+}
+
+func (q *QueryPayoutTransactionSummary) GetTotalOnHoldAmount() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.TotalOnHoldAmount
+}
+
 func (q *QueryPayoutTransactionSummary) GetTotalRecords() *int {
 	if q == nil {
 		return nil
 	}
 	return q.TotalRecords
+}
+
+func (q *QueryPayoutTransactionSummary) GetTotalAmount() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.TotalAmount
+}
+
+func (q *QueryPayoutTransactionSummary) GetTotalNetAmount() *float64 {
+	if q == nil {
+		return nil
+	}
+	return q.TotalNetAmount
+}
+
+func (q *QueryPayoutTransactionSummary) GetTotalPages() *int {
+	if q == nil {
+		return nil
+	}
+	return q.TotalPages
+}
+
+func (q *QueryPayoutTransactionSummary) GetPageSize() *Pagesize {
+	if q == nil {
+		return nil
+	}
+	return q.PageSize
+}
+
+func (q *QueryPayoutTransactionSummary) GetPageidentifier() *PageIdentifier {
+	if q == nil {
+		return nil
+	}
+	return q.Pageidentifier
 }
 
 func (q *QueryPayoutTransactionSummary) GetExtraProperties() map[string]interface{} {
@@ -14268,39 +14442,18 @@ func (q *QueryPayoutTransactionSummary) require(field *big.Int) {
 	q.explicitFields.Or(q.explicitFields, field)
 }
 
-// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
+// SetTotalPaid sets the TotalPaid field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionSummary) SetPageIdentifier(pageIdentifier *PageIdentifier) {
-	q.PageIdentifier = pageIdentifier
-	q.require(queryPayoutTransactionSummaryFieldPageIdentifier)
+func (q *QueryPayoutTransactionSummary) SetTotalPaid(totalPaid *int) {
+	q.TotalPaid = totalPaid
+	q.require(queryPayoutTransactionSummaryFieldTotalPaid)
 }
 
-// SetPageSize sets the PageSize field and marks it as non-optional;
+// SetTotalPaidAmount sets the TotalPaidAmount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionSummary) SetPageSize(pageSize *Pagesize) {
-	q.PageSize = pageSize
-	q.require(queryPayoutTransactionSummaryFieldPageSize)
-}
-
-// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionSummary) SetTotalAmount(totalAmount *float64) {
-	q.TotalAmount = totalAmount
-	q.require(queryPayoutTransactionSummaryFieldTotalAmount)
-}
-
-// SetTotalAuthorized sets the TotalAuthorized field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionSummary) SetTotalAuthorized(totalAuthorized *int) {
-	q.TotalAuthorized = totalAuthorized
-	q.require(queryPayoutTransactionSummaryFieldTotalAuthorized)
-}
-
-// SetTotalAuthorizedAmount sets the TotalAuthorizedAmount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionSummary) SetTotalAuthorizedAmount(totalAuthorizedAmount *float64) {
-	q.TotalAuthorizedAmount = totalAuthorizedAmount
-	q.require(queryPayoutTransactionSummaryFieldTotalAuthorizedAmount)
+func (q *QueryPayoutTransactionSummary) SetTotalPaidAmount(totalPaidAmount *float64) {
+	q.TotalPaidAmount = totalPaidAmount
+	q.require(queryPayoutTransactionSummaryFieldTotalPaidAmount)
 }
 
 // SetTotalCanceled sets the TotalCanceled field and marks it as non-optional;
@@ -14331,60 +14484,18 @@ func (q *QueryPayoutTransactionSummary) SetTotalCapturedAmount(totalCapturedAmou
 	q.require(queryPayoutTransactionSummaryFieldTotalCapturedAmount)
 }
 
-// SetTotalNetAmount sets the TotalNetAmount field and marks it as non-optional;
+// SetTotalAuthorized sets the TotalAuthorized field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionSummary) SetTotalNetAmount(totalNetAmount *float64) {
-	q.TotalNetAmount = totalNetAmount
-	q.require(queryPayoutTransactionSummaryFieldTotalNetAmount)
+func (q *QueryPayoutTransactionSummary) SetTotalAuthorized(totalAuthorized *int) {
+	q.TotalAuthorized = totalAuthorized
+	q.require(queryPayoutTransactionSummaryFieldTotalAuthorized)
 }
 
-// SetTotalOpen sets the TotalOpen field and marks it as non-optional;
+// SetTotalAuthorizedAmount sets the TotalAuthorizedAmount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionSummary) SetTotalOpen(totalOpen *int) {
-	q.TotalOpen = totalOpen
-	q.require(queryPayoutTransactionSummaryFieldTotalOpen)
-}
-
-// SetTotalOpenAmount sets the TotalOpenAmount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionSummary) SetTotalOpenAmount(totalOpenAmount *float64) {
-	q.TotalOpenAmount = totalOpenAmount
-	q.require(queryPayoutTransactionSummaryFieldTotalOpenAmount)
-}
-
-// SetTotalPages sets the TotalPages field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionSummary) SetTotalPages(totalPages *int) {
-	q.TotalPages = totalPages
-	q.require(queryPayoutTransactionSummaryFieldTotalPages)
-}
-
-// SetTotalPaid sets the TotalPaid field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionSummary) SetTotalPaid(totalPaid *int) {
-	q.TotalPaid = totalPaid
-	q.require(queryPayoutTransactionSummaryFieldTotalPaid)
-}
-
-// SetTotalPaidAmount sets the TotalPaidAmount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionSummary) SetTotalPaidAmount(totalPaidAmount *float64) {
-	q.TotalPaidAmount = totalPaidAmount
-	q.require(queryPayoutTransactionSummaryFieldTotalPaidAmount)
-}
-
-// SetTotalOnHold sets the TotalOnHold field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionSummary) SetTotalOnHold(totalOnHold *int) {
-	q.TotalOnHold = totalOnHold
-	q.require(queryPayoutTransactionSummaryFieldTotalOnHold)
-}
-
-// SetTotalOnHoldAmount sets the TotalOnHoldAmount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryPayoutTransactionSummary) SetTotalOnHoldAmount(totalOnHoldAmount *float64) {
-	q.TotalOnHoldAmount = totalOnHoldAmount
-	q.require(queryPayoutTransactionSummaryFieldTotalOnHoldAmount)
+func (q *QueryPayoutTransactionSummary) SetTotalAuthorizedAmount(totalAuthorizedAmount *float64) {
+	q.TotalAuthorizedAmount = totalAuthorizedAmount
+	q.require(queryPayoutTransactionSummaryFieldTotalAuthorizedAmount)
 }
 
 // SetTotalProcessing sets the TotalProcessing field and marks it as non-optional;
@@ -14401,11 +14512,74 @@ func (q *QueryPayoutTransactionSummary) SetTotalProcessingAmount(totalProcessing
 	q.require(queryPayoutTransactionSummaryFieldTotalProcessingAmount)
 }
 
+// SetTotalOpen sets the TotalOpen field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetTotalOpen(totalOpen *int) {
+	q.TotalOpen = totalOpen
+	q.require(queryPayoutTransactionSummaryFieldTotalOpen)
+}
+
+// SetTotalOpenAmount sets the TotalOpenAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetTotalOpenAmount(totalOpenAmount *float64) {
+	q.TotalOpenAmount = totalOpenAmount
+	q.require(queryPayoutTransactionSummaryFieldTotalOpenAmount)
+}
+
+// SetTotalOnHold sets the TotalOnHold field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetTotalOnHold(totalOnHold *int) {
+	q.TotalOnHold = totalOnHold
+	q.require(queryPayoutTransactionSummaryFieldTotalOnHold)
+}
+
+// SetTotalOnHoldAmount sets the TotalOnHoldAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetTotalOnHoldAmount(totalOnHoldAmount *float64) {
+	q.TotalOnHoldAmount = totalOnHoldAmount
+	q.require(queryPayoutTransactionSummaryFieldTotalOnHoldAmount)
+}
+
 // SetTotalRecords sets the TotalRecords field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (q *QueryPayoutTransactionSummary) SetTotalRecords(totalRecords *int) {
 	q.TotalRecords = totalRecords
 	q.require(queryPayoutTransactionSummaryFieldTotalRecords)
+}
+
+// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetTotalAmount(totalAmount *float64) {
+	q.TotalAmount = totalAmount
+	q.require(queryPayoutTransactionSummaryFieldTotalAmount)
+}
+
+// SetTotalNetAmount sets the TotalNetAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetTotalNetAmount(totalNetAmount *float64) {
+	q.TotalNetAmount = totalNetAmount
+	q.require(queryPayoutTransactionSummaryFieldTotalNetAmount)
+}
+
+// SetTotalPages sets the TotalPages field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetTotalPages(totalPages *int) {
+	q.TotalPages = totalPages
+	q.require(queryPayoutTransactionSummaryFieldTotalPages)
+}
+
+// SetPageSize sets the PageSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetPageSize(pageSize *Pagesize) {
+	q.PageSize = pageSize
+	q.require(queryPayoutTransactionSummaryFieldPageSize)
+}
+
+// SetPageidentifier sets the Pageidentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionSummary) SetPageidentifier(pageidentifier *PageIdentifier) {
+	q.Pageidentifier = pageidentifier
+	q.require(queryPayoutTransactionSummaryFieldPageidentifier)
 }
 
 func (q *QueryPayoutTransactionSummary) UnmarshalJSON(data []byte) error {

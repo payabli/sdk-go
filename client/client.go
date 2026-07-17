@@ -3,6 +3,11 @@
 package client
 
 import (
+	context "context"
+	errors "errors"
+	os "os"
+
+	payabli "github.com/payabli/sdk-go"
 	bill "github.com/payabli/sdk-go/bill"
 	boarding "github.com/payabli/sdk-go/boarding"
 	chargebacks "github.com/payabli/sdk-go/chargebacks"
@@ -34,6 +39,7 @@ import (
 	statistic "github.com/payabli/sdk-go/statistic"
 	subscription "github.com/payabli/sdk-go/subscription"
 	templates "github.com/payabli/sdk-go/templates"
+	token "github.com/payabli/sdk-go/token"
 	tokenstorage "github.com/payabli/sdk-go/tokenstorage"
 	user "github.com/payabli/sdk-go/user"
 	vendor_ "github.com/payabli/sdk-go/vendor_"
@@ -45,6 +51,7 @@ type Client struct {
 	Customer            *customer.Client
 	CheckCapture        *checkcapture.Client
 	MoneyIn             *moneyin.Client
+	Token               *token.Client
 	Subscription        *subscription.Client
 	Invoice             *invoice.Client
 	PaymentLink         *paymentlink.Client
@@ -81,11 +88,46 @@ type Client struct {
 
 func NewClient(opts ...option.RequestOption) *Client {
 	options := core.NewRequestOptions(opts...)
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
+	oauthTokenProvider := core.NewTokenProvider(
+		0,
+	)
+	authOptions := *options
+	authClient := token.NewClient(
+		&authOptions,
+	)
+	options.SetTokenGetter(func() (string, error) {
+		return oauthTokenProvider.GetOrFetch(func() (string, int, error) {
+			response, err := authClient.CreateServerSideToken(context.Background(), &payabli.CreateServerSideTokenRequest{
+				ClientId:     options.ClientID,
+				ClientSecret: options.ClientSecret,
+			})
+			if err != nil {
+				return "", 0, err
+			}
+			if response.AccessToken == "" {
+				return "", 0, errors.New(
+					"oauth response missing access token",
+				)
+			}
+			expiresIn := core.DefaultExpirySeconds
+			if response.ExpiresIn > 0 {
+				expiresIn = response.ExpiresIn
+			}
+			return response.AccessToken, expiresIn, nil
+		})
+	})
 	return &Client{
 		Bill:                bill.NewClient(options),
 		Customer:            customer.NewClient(options),
 		CheckCapture:        checkcapture.NewClient(options),
 		MoneyIn:             moneyin.NewClient(options),
+		Token:               token.NewClient(options),
 		Subscription:        subscription.NewClient(options),
 		Invoice:             invoice.NewClient(options),
 		PaymentLink:         paymentlink.NewClient(options),

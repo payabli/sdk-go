@@ -93,7 +93,7 @@ func (r *RawClient) AddCustomer(
 
 func (r *RawClient) GetCustomer(
 	ctx context.Context,
-	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
+	// Payabli-generated customer ID. Maps to "Customer ID" column in the Payabli Portal.
 	customerId int,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.CustomerQueryRecords], error) {
@@ -139,7 +139,7 @@ func (r *RawClient) GetCustomer(
 
 func (r *RawClient) UpdateCustomer(
 	ctx context.Context,
-	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
+	// Payabli-generated customer ID. Maps to "Customer ID" column in the Payabli Portal.
 	customerId int,
 	request *payabli.CustomerData,
 	opts ...option.RequestOption,
@@ -187,7 +187,7 @@ func (r *RawClient) UpdateCustomer(
 
 func (r *RawClient) DeleteCustomer(
 	ctx context.Context,
-	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
+	// Payabli-generated customer ID. Maps to "Customer ID" column in the Payabli Portal.
 	customerId int,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.PayabliApiResponse00Responsedatanonobject], error) {
@@ -233,7 +233,7 @@ func (r *RawClient) DeleteCustomer(
 
 func (r *RawClient) RequestConsent(
 	ctx context.Context,
-	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
+	// Payabli-generated customer ID. Maps to "Customer ID" column in the Payabli Portal.
 	customerId int,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.PayabliApiResponse00Responsedatanonobject], error) {
@@ -279,7 +279,7 @@ func (r *RawClient) RequestConsent(
 
 func (r *RawClient) LinkCustomerTransaction(
 	ctx context.Context,
-	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
+	// Payabli-generated customer ID. Maps to "Customer ID" column in the Payabli Portal.
 	customerId int,
 	// ReferenceId for the transaction (PaymentId).
 	transId string,

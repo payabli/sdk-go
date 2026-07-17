@@ -142,7 +142,7 @@ func (r *RawClient) CustomerBasicStats(
 	//
 	// For example, `w` groups the results by week.
 	freq string,
-	// Payabli-generated customer ID. Maps to "Customer ID" column in PartnerHub.
+	// Payabli-generated customer ID. Maps to "Customer ID" column in the Payabli Portal.
 	customerId int,
 	request *payabli.CustomerBasicStatsRequest,
 	opts ...option.RequestOption,

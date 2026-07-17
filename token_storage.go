@@ -3224,7 +3224,6 @@ var (
 	tokenizeAchFieldAchHolder      = big.NewInt(1 << 4)
 	tokenizeAchFieldAchHolderType  = big.NewInt(1 << 5)
 	tokenizeAchFieldAchRouting     = big.NewInt(1 << 6)
-	tokenizeAchFieldDevice         = big.NewInt(1 << 7)
 )
 
 type TokenizeAch struct {
@@ -3237,7 +3236,6 @@ type TokenizeAch struct {
 	AchHolder     string         `json:"achHolder" url:"achHolder"`
 	AchHolderType *AchHolderType `json:"achHolderType,omitempty" url:"achHolderType,omitempty"`
 	AchRouting    Achrouting     `json:"achRouting" url:"achRouting"`
-	Device        *Device        `json:"device,omitempty" url:"device,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3293,13 +3291,6 @@ func (t *TokenizeAch) GetAchRouting() Achrouting {
 		return ""
 	}
 	return t.AchRouting
-}
-
-func (t *TokenizeAch) GetDevice() *Device {
-	if t == nil {
-		return nil
-	}
-	return t.Device
 }
 
 func (t *TokenizeAch) GetExtraProperties() map[string]interface{} {
@@ -3365,13 +3356,6 @@ func (t *TokenizeAch) SetAchRouting(achRouting Achrouting) {
 	t.require(tokenizeAchFieldAchRouting)
 }
 
-// SetDevice sets the Device field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TokenizeAch) SetDevice(device *Device) {
-	t.Device = device
-	t.require(tokenizeAchFieldDevice)
-}
-
 func (t *TokenizeAch) UnmarshalJSON(data []byte) error {
 	type unmarshaler TokenizeAch
 	var value unmarshaler
@@ -3421,6 +3405,7 @@ var (
 	tokenizeCardFieldCardHolder = big.NewInt(1 << 3)
 	tokenizeCardFieldCardnumber = big.NewInt(1 << 4)
 	tokenizeCardFieldCardzip    = big.NewInt(1 << 5)
+	tokenizeCardFieldDevice     = big.NewInt(1 << 6)
 )
 
 type TokenizeCard struct {
@@ -3431,6 +3416,7 @@ type TokenizeCard struct {
 	CardHolder Cardholder `json:"cardHolder" url:"cardHolder"`
 	Cardnumber Cardnumber `json:"cardnumber" url:"cardnumber"`
 	Cardzip    *Cardzip   `json:"cardzip,omitempty" url:"cardzip,omitempty"`
+	Device     *Device    `json:"device,omitempty" url:"device,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3479,6 +3465,13 @@ func (t *TokenizeCard) GetCardzip() *Cardzip {
 		return nil
 	}
 	return t.Cardzip
+}
+
+func (t *TokenizeCard) GetDevice() *Device {
+	if t == nil {
+		return nil
+	}
+	return t.Device
 }
 
 func (t *TokenizeCard) GetExtraProperties() map[string]interface{} {
@@ -3535,6 +3528,13 @@ func (t *TokenizeCard) SetCardnumber(cardnumber Cardnumber) {
 func (t *TokenizeCard) SetCardzip(cardzip *Cardzip) {
 	t.Cardzip = cardzip
 	t.require(tokenizeCardFieldCardzip)
+}
+
+// SetDevice sets the Device field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TokenizeCard) SetDevice(device *Device) {
+	t.Device = device
+	t.require(tokenizeCardFieldDevice)
 }
 
 func (t *TokenizeCard) UnmarshalJSON(data []byte) error {

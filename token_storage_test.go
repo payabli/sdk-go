@@ -10187,14 +10187,6 @@ func TestSettersTokenizeAch(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetDevice", func(t *testing.T) {
-		obj := &TokenizeAch{}
-		var fernTestValueDevice *Device
-		obj.SetDevice(fernTestValueDevice)
-		assert.Equal(t, fernTestValueDevice, obj.Device)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
 }
 
 func TestGettersTokenizeAch(t *testing.T) {
@@ -10377,39 +10369,6 @@ func TestGettersTokenizeAch(t *testing.T) {
 			}
 		}()
 		_ = obj.GetAchRouting() // Should return zero value
-	})
-
-	t.Run("GetDevice", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &TokenizeAch{}
-		var expected *Device
-		obj.Device = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetDevice(), "getter should return the property value")
-	})
-
-	t.Run("GetDevice_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &TokenizeAch{}
-		obj.Device = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetDevice(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetDevice_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *TokenizeAch
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetDevice() // Should return zero value
 	})
 
 }
@@ -10632,37 +10591,6 @@ func TestSettersMarkExplicitTokenizeAch(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetDevice_MarksExplicit", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &TokenizeAch{}
-		var fernTestValueDevice *Device
-
-		// Act
-		obj.SetDevice(fernTestValueDevice)
-
-		// Assert - object with explicitly set field can be marshaled/unmarshaled
-		bytes, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed for test setup")
-
-		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
-		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
-		if len(bytes) > 0 && bytes[0] == '{' {
-			// JSON object - unmarshal into map
-			var unmarshaled map[string]interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		} else {
-			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
-			var unmarshaled interface{}
-			err = json.Unmarshal(bytes, &unmarshaled)
-			require.NoError(t, err, "unmarshaling should succeed for test verification")
-		}
-
-		// Note: This does not explicitly assert the presence of a specific JSON field
-		// It verifies that setting a field via setter allows successful JSON round-trip
-	})
-
 }
 
 func TestSettersTokenizeCard(t *testing.T) {
@@ -10711,6 +10639,14 @@ func TestSettersTokenizeCard(t *testing.T) {
 		var fernTestValueCardzip *Cardzip
 		obj.SetCardzip(fernTestValueCardzip)
 		assert.Equal(t, fernTestValueCardzip, obj.Cardzip)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetDevice", func(t *testing.T) {
+		obj := &TokenizeCard{}
+		var fernTestValueDevice *Device
+		obj.SetDevice(fernTestValueDevice)
+		assert.Equal(t, fernTestValueDevice, obj.Device)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -10873,6 +10809,39 @@ func TestGettersTokenizeCard(t *testing.T) {
 			}
 		}()
 		_ = obj.GetCardzip() // Should return zero value
+	})
+
+	t.Run("GetDevice", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TokenizeCard{}
+		var expected *Device
+		obj.Device = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetDevice(), "getter should return the property value")
+	})
+
+	t.Run("GetDevice_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TokenizeCard{}
+		obj.Device = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetDevice(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetDevice_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *TokenizeCard
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetDevice() // Should return zero value
 	})
 
 }
@@ -11041,6 +11010,37 @@ func TestSettersMarkExplicitTokenizeCard(t *testing.T) {
 
 		// Act
 		obj.SetCardzip(fernTestValueCardzip)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetDevice_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TokenizeCard{}
+		var fernTestValueDevice *Device
+
+		// Act
+		obj.SetDevice(fernTestValueDevice)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)

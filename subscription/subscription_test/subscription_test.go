@@ -183,7 +183,7 @@ func TestSubscriptionNewSubscriptionWithWireMock(
 				Cardcvv: payabli.String(
 					"123",
 				),
-				Cardexp: "02/25",
+				Cardexp: "12/29",
 				CardHolder: payabli.String(
 					"John Cassian",
 				),

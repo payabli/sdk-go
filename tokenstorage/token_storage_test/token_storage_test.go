@@ -113,7 +113,7 @@ func TestTokenStorageAddMethodWithWireMock(
 					Cardcvv: payabli.String(
 						"123",
 					),
-					Cardexp:    "02/25",
+					Cardexp:    "12/29",
 					CardHolder: "John Doe",
 					Cardnumber: "4111111111111111",
 					Cardzip: payabli.String(
@@ -200,7 +200,7 @@ func TestTokenStorageUpdateMethodWithWireMock(
 					Cardcvv: payabli.String(
 						"123",
 					),
-					Cardexp:    "02/25",
+					Cardexp:    "12/29",
 					CardHolder: "John Doe",
 					Cardnumber: "4111111111111111",
 					Cardzip: payabli.String(
