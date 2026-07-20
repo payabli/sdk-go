@@ -23240,7 +23240,7 @@ type VendorQueryRecord struct {
 	EnrichedAt *time.Time `json:"EnrichedAt,omitempty" url:"EnrichedAt,omitempty"`
 	// Identifier for the enrichment request that last updated this vendor.
 	EnrichmentId       *string                       `json:"EnrichmentId,omitempty" url:"EnrichmentId,omitempty"`
-	AdditionalData     *AdditionalData               `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	AdditionalData     *AdditionalDataMap            `json:"additionalData,omitempty" url:"additionalData,omitempty"`
 	ExternalPaypointId *ExternalPaypointId           `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
 	StoredMethods      []*VendorResponseStoredMethod `json:"StoredMethods,omitempty" url:"StoredMethods,omitempty"`
 
@@ -23601,7 +23601,7 @@ func (v *VendorQueryRecord) GetEnrichmentId() *string {
 	return v.EnrichmentId
 }
 
-func (v *VendorQueryRecord) GetAdditionalData() *AdditionalData {
+func (v *VendorQueryRecord) GetAdditionalData() *AdditionalDataMap {
 	if v == nil {
 		return nil
 	}
@@ -23988,7 +23988,7 @@ func (v *VendorQueryRecord) SetEnrichmentId(enrichmentId *string) {
 
 // SetAdditionalData sets the AdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorQueryRecord) SetAdditionalData(additionalData *AdditionalData) {
+func (v *VendorQueryRecord) SetAdditionalData(additionalData *AdditionalDataMap) {
 	v.AdditionalData = additionalData
 	v.require(vendorQueryRecordFieldAdditionalData)
 }
