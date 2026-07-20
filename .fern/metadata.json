@@ -4,15 +4,15 @@
   "generatorVersion": "1.46.5",
   "generatorConfig": {
     "packageName": "payabli",
-    "enableWireTests": true,
+    "enableWireTests": false,
     "module": {
       "path": "github.com/payabli/sdk-go"
     }
   },
-  "originGitCommit": "fbf628bcea22b886022a9bd709dca9daaf0bd3ca",
+  "originGitCommit": "25e022418e827b968d19012dbd06ec6ee7e96b52",
   "originGitCommitIsDirty": true,
   "invokedBy": "ci",
-  "requestedVersion": "1.0.8",
+  "requestedVersion": "1.0.9",
   "ciProvider": "github",
-  "sdkVersion": "v1.0.8"
+  "sdkVersion": "v1.0.9"
 }
