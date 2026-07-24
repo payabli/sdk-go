@@ -4,6 +4,7 @@ package query
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -36,6 +43,25 @@ func NewClient(options *core.RequestOptions) *Client {
 
 // Retrieve a list of batches and their details, including settled and
 // unsettled transactions for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListBatchDetailsRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListBatchDetails(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ListBatchDetails(
 	ctx context.Context,
 	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -56,6 +82,25 @@ func (c *Client) ListBatchDetails(
 }
 
 // Retrieve a list of batches and their details, including settled and unsettled transactions for an organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListBatchDetailsOrgRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListBatchDetailsOrg(
+//	    context.TODO(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ListBatchDetailsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -76,6 +121,25 @@ func (c *Client) ListBatchDetailsOrg(
 }
 
 // Retrieve a list of batches for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListBatchesRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListBatches(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ListBatches(
 	ctx context.Context,
 	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -96,6 +160,25 @@ func (c *Client) ListBatches(
 }
 
 // Retrieve a list of batches for an org. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListBatchesOrgRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListBatchesOrg(
+//	    context.TODO(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ListBatchesOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -116,6 +199,25 @@ func (c *Client) ListBatchesOrg(
 }
 
 // Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListBatchesOutRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListBatchesOut(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ListBatchesOut(
 	ctx context.Context,
 	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -136,6 +238,25 @@ func (c *Client) ListBatchesOut(
 }
 
 // Retrieve a list of MoneyOut batches for an org. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListBatchesOutOrgRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListBatchesOutOrg(
+//	    context.TODO(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ListBatchesOutOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -156,6 +277,25 @@ func (c *Client) ListBatchesOutOrg(
 }
 
 // Retrieves a list of chargebacks and returned transactions for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListChargebacksRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListChargebacks(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ListChargebacks(
 	ctx context.Context,
 	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -176,6 +316,25 @@ func (c *Client) ListChargebacks(
 }
 
 // Retrieve a list of chargebacks and returned transactions for an org. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListChargebacksOrgRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListChargebacksOrg(
+//	    context.TODO(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ListChargebacksOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -196,6 +355,25 @@ func (c *Client) ListChargebacksOrg(
 }
 
 // Retrieves a list of customers for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListCustomersRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListCustomers(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ListCustomers(
 	ctx context.Context,
 	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -216,6 +394,25 @@ func (c *Client) ListCustomers(
 }
 
 // Retrieves a list of customers for an org. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListCustomersOrgRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListCustomersOrg(
+//	    context.TODO(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ListCustomersOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -236,6 +433,25 @@ func (c *Client) ListCustomersOrg(
 }
 
 // Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListDevicesRequest{
+//	    FromRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        20,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(createdAt)",
+//	    ),
+//	}
+//	client.Query.ListDevices(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ListDevices(
 	ctx context.Context,
 	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -256,6 +472,25 @@ func (c *Client) ListDevices(
 }
 
 // Returns a list of cloud devices for a single organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListDevicesOrgRequest{
+//	    FromRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        20,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(createdAt)",
+//	    ),
+//	}
+//	client.Query.ListDevicesOrg(
+//	    context.TODO(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ListDevicesOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -276,6 +511,25 @@ func (c *Client) ListDevicesOrg(
 }
 
 // Returns a list of all reports generated in the last 60 days for a single entrypoint. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ListNotificationReportsRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListNotificationReports(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ListNotificationReports(
 	ctx context.Context,
 	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -296,6 +550,25 @@ func (c *Client) ListNotificationReports(
 }
 
 // Returns a list of all reports generated in the last 60 days for an organization. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ListNotificationReportsOrgRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListNotificationReportsOrg(
+//	    context.TODO(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ListNotificationReportsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -316,6 +589,25 @@ func (c *Client) ListNotificationReportsOrg(
 }
 
 // Returns a list of notifications for an entrypoint. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ListNotificationsRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListNotifications(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ListNotifications(
 	ctx context.Context,
 	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -336,6 +628,25 @@ func (c *Client) ListNotifications(
 }
 
 // Return a list of notifications for an organization. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ListNotificationsOrgRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListNotificationsOrg(
+//	    context.TODO(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ListNotificationsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -356,6 +667,25 @@ func (c *Client) ListNotificationsOrg(
 }
 
 // Retrieves a list of an organization's suborganizations and their full details such as orgId, users, and settings. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListOrganizationsRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListOrganizations(
+//	    context.TODO(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ListOrganizations(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -376,6 +706,25 @@ func (c *Client) ListOrganizations(
 }
 
 // Retrieves a list of money out transactions (payouts) for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListPayoutRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListPayout(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ListPayout(
 	ctx context.Context,
 	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -396,6 +745,25 @@ func (c *Client) ListPayout(
 }
 
 // Retrieves a list of money out transactions (payouts) for an organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListPayoutOrgRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListPayoutOrg(
+//	    context.TODO(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ListPayoutOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -416,6 +784,25 @@ func (c *Client) ListPayoutOrg(
 }
 
 // Returns a list of paypoints in an organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListPaypointsRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListPaypoints(
+//	    context.TODO(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ListPaypoints(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -436,6 +823,25 @@ func (c *Client) ListPaypoints(
 }
 
 // Retrieve a list of settled transactions for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListSettlementsRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListSettlements(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ListSettlements(
 	ctx context.Context,
 	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -456,6 +862,25 @@ func (c *Client) ListSettlements(
 }
 
 // Retrieve a list of settled transactions for an organization. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListSettlementsOrgRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListSettlementsOrg(
+//	    context.TODO(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ListSettlementsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -476,6 +901,25 @@ func (c *Client) ListSettlementsOrg(
 }
 
 // Returns a list of subscriptions for a single paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListSubscriptionsRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListSubscriptions(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ListSubscriptions(
 	ctx context.Context,
 	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -496,6 +940,25 @@ func (c *Client) ListSubscriptions(
 }
 
 // Returns a list of subscriptions for a single org. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListSubscriptionsOrgRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListSubscriptionsOrg(
+//	    context.TODO(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ListSubscriptionsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -516,6 +979,25 @@ func (c *Client) ListSubscriptionsOrg(
 }
 
 // Returns a list of payout subscriptions for a single paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
+//
+// Example:
+//
+//	request := &payabli.ListPayoutSubscriptionsRequest{
+//	    FromRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        20,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListPayoutSubscriptions(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ListPayoutSubscriptions(
 	ctx context.Context,
 	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -536,6 +1018,25 @@ func (c *Client) ListPayoutSubscriptions(
 }
 
 // Returns a list of payout subscriptions for a single org. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
+//
+// Example:
+//
+//	request := &payabli.ListPayoutSubscriptionsOrgRequest{
+//	    FromRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        20,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListPayoutSubscriptionsOrg(
+//	    context.TODO(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ListPayoutSubscriptionsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -567,6 +1068,25 @@ func (c *Client) ListPayoutSubscriptionsOrg(
 //	  -H 'requestToken: <API TOKEN>'
 //
 // ```
+//
+// Example:
+//
+//	request := &payabli.ListTransactionsRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListTransactions(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ListTransactions(
 	ctx context.Context,
 	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -598,6 +1118,25 @@ func (c *Client) ListTransactions(
 //	  -H 'requestToken: <API TOKEN>'
 //
 // ```
+//
+// Example:
+//
+//	request := &payabli.ListTransactionsOrgRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListTransactionsOrg(
+//	    context.TODO(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ListTransactionsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -618,6 +1157,16 @@ func (c *Client) ListTransactionsOrg(
 }
 
 // Retrieve a list of transfer details records for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListTransfersPaypointRequest{}
+//	client.Query.ListTransferDetails(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    4521,
+//	    request,
+//	)
 func (c *Client) ListTransferDetails(
 	ctx context.Context,
 	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -641,6 +1190,22 @@ func (c *Client) ListTransferDetails(
 }
 
 // Retrieve a list of transfers for a paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListTransfersRequest{
+//	    FromRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        20,
+//	    ),
+//	}
+//	client.Query.ListTransfers(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ListTransfers(
 	ctx context.Context,
 	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -661,6 +1226,22 @@ func (c *Client) ListTransfers(
 }
 
 // Retrieve a list of transfers for an org. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListTransfersRequestOrg{
+//	    FromRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        20,
+//	    ),
+//	}
+//	client.Query.ListTransfersOrg(
+//	    context.TODO(),
+//	    int64(123),
+//	    request,
+//	)
 func (c *Client) ListTransfersOrg(
 	ctx context.Context,
 	// Organization ID. Unique identifier assigned to an org by Payabli.
@@ -681,6 +1262,22 @@ func (c *Client) ListTransfersOrg(
 }
 
 // Retrieve a list of outbound transfers for an organization. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ListTransfersOutOrgRequest{
+//	    FromRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        20,
+//	    ),
+//	}
+//	client.Query.ListTransfersOutOrg(
+//	    context.TODO(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ListTransfersOutOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -701,6 +1298,22 @@ func (c *Client) ListTransfersOutOrg(
 }
 
 // Retrieve a list of outbound transfers for a paypoint. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ListTransfersOutPaypointRequest{
+//	    FromRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        20,
+//	    ),
+//	}
+//	client.Query.ListTransfersOutPaypoint(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ListTransfersOutPaypoint(
 	ctx context.Context,
 	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -721,6 +1334,23 @@ func (c *Client) ListTransfersOutPaypoint(
 }
 
 // Retrieve details for a specific outbound transfer. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ListTransferDetailsOutRequest{
+//	    FromRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        20,
+//	    ),
+//	}
+//	client.Query.ListTransferDetailsOut(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    4521,
+//	    request,
+//	)
 func (c *Client) ListTransferDetailsOut(
 	ctx context.Context,
 	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -744,6 +1374,25 @@ func (c *Client) ListTransferDetailsOut(
 }
 
 // Get list of users for an org. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ListUsersOrgRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListUsersOrg(
+//	    context.TODO(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ListUsersOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -764,6 +1413,25 @@ func (c *Client) ListUsersOrg(
 }
 
 // Get list of users for a paypoint. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ListUsersPaypointRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListUsersPaypoint(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ListUsersPaypoint(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -784,6 +1452,25 @@ func (c *Client) ListUsersPaypoint(
 }
 
 // Retrieve a list of vendors for an entrypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListVendorsRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListVendors(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ListVendors(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -804,6 +1491,25 @@ func (c *Client) ListVendors(
 }
 
 // Retrieve a list of vendors for an organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListVendorsOrgRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListVendorsOrg(
+//	    context.TODO(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ListVendorsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -824,6 +1530,25 @@ func (c *Client) ListVendorsOrg(
 }
 
 // Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListVcardsRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListVcards(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ListVcards(
 	ctx context.Context,
 	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -844,6 +1569,25 @@ func (c *Client) ListVcards(
 }
 
 // Retrieve a list of virtual card transactions for an entrypoint. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ListVcardsTransactionsRequest{
+//	    FromRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        20,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(CreatedOn)",
+//	    ),
+//	}
+//	client.Query.ListVcardsTransactions(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ListVcardsTransactions(
 	ctx context.Context,
 	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -864,6 +1608,25 @@ func (c *Client) ListVcardsTransactions(
 }
 
 // Retrieve a list of virtual card transactions for an organization. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ListVcardsTransactionsOrgRequest{
+//	    FromRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        20,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(CreatedOn)",
+//	    ),
+//	}
+//	client.Query.ListVcardsTransactionsOrg(
+//	    context.TODO(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ListVcardsTransactionsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -884,6 +1647,25 @@ func (c *Client) ListVcardsTransactionsOrg(
 }
 
 // Retrieve a list of vcards (virtual credit cards) issued for an organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListVcardsOrgRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Query.ListVcardsOrg(
+//	    context.TODO(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ListVcardsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.

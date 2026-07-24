@@ -4,6 +4,7 @@ package subscription
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -35,6 +42,13 @@ func NewClient(options *core.RequestOptions) *Client {
 }
 
 // Retrieves a single subscription's details.
+//
+// Example:
+//
+//	client.Subscription.GetSubscription(
+//	    context.TODO(),
+//	    231,
+//	)
 func (c *Client) GetSubscription(
 	ctx context.Context,
 	// The subscription ID.
@@ -53,6 +67,19 @@ func (c *Client) GetSubscription(
 }
 
 // Updates a subscription's details.
+//
+// Example:
+//
+//	request := &payabli.RequestUpdateSchedule{
+//	    SetPause: payabli.Bool(
+//	        true,
+//	    ),
+//	}
+//	client.Subscription.UpdateSubscription(
+//	    context.TODO(),
+//	    231,
+//	    request,
+//	)
 func (c *Client) UpdateSubscription(
 	ctx context.Context,
 	// The subscription ID.
@@ -73,6 +100,13 @@ func (c *Client) UpdateSubscription(
 }
 
 // Deletes a subscription, autopay, or recurring payment and prevents future charges.
+//
+// Example:
+//
+//	client.Subscription.RemoveSubscription(
+//	    context.TODO(),
+//	    231,
+//	)
 func (c *Client) RemoveSubscription(
 	ctx context.Context,
 	// The subscription ID.
@@ -91,6 +125,60 @@ func (c *Client) RemoveSubscription(
 }
 
 // Creates a subscription or scheduled payment to run at a specified time and frequency. You can use stored payment method tokens for card, ACH, and digital wallets by passing them into the `paymentMethod.storedMethodId` field.
+//
+// Example:
+//
+//	request := &payabli.RequestSchedule{
+//	    CustomerData: &payabli.PayorDataRequest{
+//	        CustomerId: payabli.Int64(
+//	            int64(4440),
+//	        ),
+//	    },
+//	    EntryPoint: payabli.String(
+//	        "8cfec329267",
+//	    ),
+//	    PaymentDetails: &payabli.PaymentDetail{
+//	        ServiceFee: payabli.Float64(
+//	            0,
+//	        ),
+//	        TotalAmount: 100,
+//	    },
+//	    PaymentMethod: &payabli.RequestSchedulePaymentMethod{
+//	        PayMethodCredit: &payabli.PayMethodCredit{
+//	            Cardcvv: payabli.String(
+//	                "123",
+//	            ),
+//	            Cardexp: "12/29",
+//	            CardHolder: payabli.String(
+//	                "John Cassian",
+//	            ),
+//	            Cardnumber: "4111111111111111",
+//	            Cardzip: payabli.String(
+//	                "37615",
+//	            ),
+//	            Initiator: payabli.String(
+//	                "payor",
+//	            ),
+//	            Method: payabli.PayMethodCreditMethodCard,
+//	        },
+//	    },
+//	    ScheduleDetails: &payabli.ScheduleDetail{
+//	        EndDate: payabli.String(
+//	            "2025-03-20",
+//	        ),
+//	        Frequency: payabli.FrequencyWeekly.Ptr(),
+//	        PlanId: payabli.Int(
+//	            1,
+//	        ),
+//	        StartDate: payabli.String(
+//	            "2024-09-20",
+//	        ),
+//	    },
+//	}
+//	client.Subscription.NewSubscription(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) NewSubscription(
 	ctx context.Context,
 	request *payabli.RequestSchedule,

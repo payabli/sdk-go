@@ -4,6 +4,7 @@ package user
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -35,6 +42,14 @@ func NewClient(options *core.RequestOptions) *Client {
 }
 
 // Use this endpoint to add a new user to an organization.
+//
+// Example:
+//
+//	request := &payabli.UserData{}
+//	client.User.AddUser(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) AddUser(
 	ctx context.Context,
 	request *payabli.UserData,
@@ -52,6 +67,19 @@ func (c *Client) AddUser(
 }
 
 // Use this endpoint to retrieve information about a specific user within an organization.
+//
+// Example:
+//
+//	request := &payabli.GetUserRequest{
+//	    Entry: payabli.String(
+//	        "8cfec329267",
+//	    ),
+//	}
+//	client.User.GetUser(
+//	    context.TODO(),
+//	    int64(1000000),
+//	    request,
+//	)
 func (c *Client) GetUser(
 	ctx context.Context,
 	// The Payabli-generated `userId` value.
@@ -72,6 +100,15 @@ func (c *Client) GetUser(
 }
 
 // Use this endpoint to modify the details of a specific user within an organization.
+//
+// Example:
+//
+//	request := &payabli.UserData{}
+//	client.User.EditUser(
+//	    context.TODO(),
+//	    int64(1000000),
+//	    request,
+//	)
 func (c *Client) EditUser(
 	ctx context.Context,
 	// User Identifier
@@ -92,6 +129,13 @@ func (c *Client) EditUser(
 }
 
 // Use this endpoint to delete a specific user within an organization.
+//
+// Example:
+//
+//	client.User.DeleteUser(
+//	    context.TODO(),
+//	    int64(1000000),
+//	)
 func (c *Client) DeleteUser(
 	ctx context.Context,
 	// The Payabli-generated `userId` value.
@@ -110,6 +154,15 @@ func (c *Client) DeleteUser(
 }
 
 // This endpoint requires an application API token.
+//
+// Example:
+//
+//	request := &payabli.UserAuthRequest{}
+//	client.User.AuthUser(
+//	    context.TODO(),
+//	    "provider",
+//	    request,
+//	)
 func (c *Client) AuthUser(
 	ctx context.Context,
 	// Auth provider. Pass `null` to use the built-in provider.
@@ -130,6 +183,12 @@ func (c *Client) AuthUser(
 }
 
 // Use this endpoint to refresh the authentication token for a user within an organization.
+//
+// Example:
+//
+//	client.User.AuthRefreshUser(
+//	    context.TODO(),
+//	)
 func (c *Client) AuthRefreshUser(
 	ctx context.Context,
 	opts ...option.RequestOption,
@@ -145,6 +204,14 @@ func (c *Client) AuthRefreshUser(
 }
 
 // Use this endpoint to initiate a password reset for a user within an organization.
+//
+// Example:
+//
+//	request := &payabli.UserAuthResetRequest{}
+//	client.User.AuthResetUser(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) AuthResetUser(
 	ctx context.Context,
 	request *payabli.UserAuthResetRequest,
@@ -162,6 +229,14 @@ func (c *Client) AuthResetUser(
 }
 
 // Use this endpoint to change the password for a user within an organization.
+//
+// Example:
+//
+//	request := &payabli.UserAuthPswResetRequest{}
+//	client.User.ChangePswUser(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) ChangePswUser(
 	ctx context.Context,
 	request *payabli.UserAuthPswResetRequest,
@@ -179,6 +254,12 @@ func (c *Client) ChangePswUser(
 }
 
 // Use this endpoint to log a user out from the system.
+//
+// Example:
+//
+//	client.User.LogoutUser(
+//	    context.TODO(),
+//	)
 func (c *Client) LogoutUser(
 	ctx context.Context,
 	opts ...option.RequestOption,
@@ -194,6 +275,14 @@ func (c *Client) LogoutUser(
 }
 
 // Use this endpoint to validate the multi-factor authentication (MFA) code for a user within an organization.
+//
+// Example:
+//
+//	request := &payabli.MfaValidationData{}
+//	client.User.ValidateMfaUser(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) ValidateMfaUser(
 	ctx context.Context,
 	request *payabli.MfaValidationData,
@@ -211,6 +300,15 @@ func (c *Client) ValidateMfaUser(
 }
 
 // Use this endpoint to enable or disable multi-factor authentication (MFA) for a user within an organization.
+//
+// Example:
+//
+//	request := &payabli.MfaData{}
+//	client.User.EditMfaUser(
+//	    context.TODO(),
+//	    int64(1000000),
+//	    request,
+//	)
 func (c *Client) EditMfaUser(
 	ctx context.Context,
 	// User Identifier
@@ -231,6 +329,15 @@ func (c *Client) EditMfaUser(
 }
 
 // Resends the MFA code to the user via the selected MFA mode (email or SMS).
+//
+// Example:
+//
+//	client.User.ResendMfaCode(
+//	    context.TODO(),
+//	    "usrname",
+//	    "8cfec329267",
+//	    1,
+//	)
 func (c *Client) ResendMfaCode(
 	ctx context.Context,
 	//

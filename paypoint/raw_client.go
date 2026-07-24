@@ -48,9 +48,16 @@ func (r *RawClient) GetBasicEntry(
 		baseURL+"/Paypoint/basic/%v",
 		entry,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.GetBasicEntryResponse
 	raw, err := r.caller.Call(
@@ -94,9 +101,16 @@ func (r *RawClient) GetBasicEntryById(
 		baseURL+"/Paypoint/basicById/%v",
 		idPaypoint,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.GetBasicEntryByIdResponse
 	raw, err := r.caller.Call(
@@ -141,9 +155,16 @@ func (r *RawClient) SaveLogo(
 		baseURL+"/Paypoint/logo/%v",
 		entry,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.PayabliApiResponse00Responsedatanonobject
 	raw, err := r.caller.Call(
@@ -184,9 +205,16 @@ func (r *RawClient) Migrate(
 		"https://api-sandbox.payabli.com/api",
 	)
 	endpointURL := baseURL + "/Paypoint/migrate"
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	headers.Add("Content-Type", "application/json")
 	var response *payabli.MigratePaypointResponse
@@ -232,9 +260,16 @@ func (r *RawClient) SettingsPage(
 		baseURL+"/Paypoint/settings/%v",
 		entry,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.SettingsQueryRecord
 	raw, err := r.caller.Call(
@@ -286,9 +321,16 @@ func (r *RawClient) GetEntryConfig(
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.GetEntryConfigResponse
 	raw, err := r.caller.Call(
@@ -335,9 +377,16 @@ func (r *RawClient) GetPage(
 		entry,
 		subdomain,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.PayabliPages
 	raw, err := r.caller.Call(
@@ -384,9 +433,16 @@ func (r *RawClient) RemovePage(
 		entry,
 		subdomain,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.PayabliApiResponseGeneric2Part
 	raw, err := r.caller.Call(

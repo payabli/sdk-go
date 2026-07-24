@@ -49,9 +49,16 @@ func (r *RawClient) AddBill(
 		baseURL+"/Bill/single/%v",
 		entry,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	if request.IdempotencyKey != nil {
 		headers.Add("idempotencyKey", *request.IdempotencyKey)
@@ -100,9 +107,16 @@ func (r *RawClient) GetBill(
 		baseURL+"/Bill/%v",
 		idBill,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.GetBillResponse
 	raw, err := r.caller.Call(
@@ -147,9 +161,16 @@ func (r *RawClient) EditBill(
 		baseURL+"/Bill/%v",
 		idBill,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.EditBillResponse
 	raw, err := r.caller.Call(
@@ -194,9 +215,16 @@ func (r *RawClient) DeleteBill(
 		baseURL+"/Bill/%v",
 		idBill,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.BillResponse
 	raw, err := r.caller.Call(
@@ -253,9 +281,16 @@ func (r *RawClient) GetAttachedFromBill(
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.FileContent
 	raw, err := r.caller.Call(
@@ -312,9 +347,16 @@ func (r *RawClient) DeleteAttachedFromBill(
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.BillResponse
 	raw, err := r.caller.Call(
@@ -366,9 +408,16 @@ func (r *RawClient) SendToApprovalBill(
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	if request.IdempotencyKey != nil {
 		headers.Add("idempotencyKey", *request.IdempotencyKey)
@@ -418,9 +467,16 @@ func (r *RawClient) ModifyApprovalBill(
 		baseURL+"/Bill/approval/%v",
 		idBill,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.ModifyApprovalBillResponse
 	raw, err := r.caller.Call(
@@ -476,9 +532,16 @@ func (r *RawClient) SetApprovedBill(
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.SetApprovedBillResponse
 	raw, err := r.caller.Call(
@@ -530,9 +593,16 @@ func (r *RawClient) ListBills(
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.BillQueryResponse
 	raw, err := r.caller.Call(
@@ -584,9 +654,16 @@ func (r *RawClient) ListBillsOrg(
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.BillQueryResponse
 	raw, err := r.caller.Call(

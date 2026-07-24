@@ -4,6 +4,7 @@ package paymentmethoddomain
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -35,6 +42,34 @@ func NewClient(options *core.RequestOptions) *Client {
 }
 
 // Add a payment method domain to an organization or paypoint.
+//
+// Example:
+//
+//	request := &payabli.AddPaymentMethodDomainRequest{
+//	    ApplePay: &payabli.AddPaymentMethodDomainRequestApplePay{
+//	        IsEnabled: payabli.Bool(
+//	            true,
+//	        ),
+//	    },
+//	    GooglePay: &payabli.AddPaymentMethodDomainRequestGooglePay{
+//	        IsEnabled: payabli.Bool(
+//	            true,
+//	        ),
+//	    },
+//	    DomainName: payabli.String(
+//	        "checkout.example.com",
+//	    ),
+//	    EntityId: payabli.Int64(
+//	        int64(109),
+//	    ),
+//	    EntityType: payabli.String(
+//	        "paypoint",
+//	    ),
+//	}
+//	client.PaymentMethodDomain.AddPaymentMethodDomain(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) AddPaymentMethodDomain(
 	ctx context.Context,
 	request *payabli.AddPaymentMethodDomainRequest,
@@ -52,6 +87,13 @@ func (c *Client) AddPaymentMethodDomain(
 }
 
 // Cascades a payment method domain to all child entities. All paypoints and suborganization under this parent will inherit this domain and its settings.
+//
+// Example:
+//
+//	client.PaymentMethodDomain.CascadePaymentMethodDomain(
+//	    context.TODO(),
+//	    "pmd_b8237fa45c964d8a9ef27160cd42b8c5",
+//	)
 func (c *Client) CascadePaymentMethodDomain(
 	ctx context.Context,
 	// The payment method domain's ID in Payabli.
@@ -70,6 +112,13 @@ func (c *Client) CascadePaymentMethodDomain(
 }
 
 // Get the details for a payment method domain.
+//
+// Example:
+//
+//	client.PaymentMethodDomain.GetPaymentMethodDomain(
+//	    context.TODO(),
+//	    "pmd_b8237fa45c964d8a9ef27160cd42b8c5",
+//	)
 func (c *Client) GetPaymentMethodDomain(
 	ctx context.Context,
 	// The payment method domain's ID in Payabli.
@@ -88,6 +137,13 @@ func (c *Client) GetPaymentMethodDomain(
 }
 
 // Delete a payment method domain. You can't delete an inherited domain, you must delete a domain at the organization level.
+//
+// Example:
+//
+//	client.PaymentMethodDomain.DeletePaymentMethodDomain(
+//	    context.TODO(),
+//	    "pmd_b8237fa45c964d8a9ef27160cd42b8c5",
+//	)
 func (c *Client) DeletePaymentMethodDomain(
 	ctx context.Context,
 	// The payment method domain's ID in Payabli.
@@ -106,6 +162,26 @@ func (c *Client) DeletePaymentMethodDomain(
 }
 
 // Update a payment method domain's configuration values.
+//
+// Example:
+//
+//	request := &payabli.UpdatePaymentMethodDomainRequest{
+//	    ApplePay: &payabli.UpdatePaymentMethodDomainRequestWallet{
+//	        IsEnabled: payabli.Bool(
+//	            false,
+//	        ),
+//	    },
+//	    GooglePay: &payabli.UpdatePaymentMethodDomainRequestWallet{
+//	        IsEnabled: payabli.Bool(
+//	            false,
+//	        ),
+//	    },
+//	}
+//	client.PaymentMethodDomain.UpdatePaymentMethodDomain(
+//	    context.TODO(),
+//	    "pmd_b8237fa45c964d8a9ef27160cd42b8c5",
+//	    request,
+//	)
 func (c *Client) UpdatePaymentMethodDomain(
 	ctx context.Context,
 	// The payment method domain's ID in Payabli.
@@ -126,6 +202,21 @@ func (c *Client) UpdatePaymentMethodDomain(
 }
 
 // Get a list of payment method domains that belong to a PSP, organization, or paypoint.
+//
+// Example:
+//
+//	request := &payabli.ListPaymentMethodDomainsRequest{
+//	    EntityId: payabli.Int64(
+//	        int64(1147),
+//	    ),
+//	    EntityType: payabli.String(
+//	        "paypoint",
+//	    ),
+//	}
+//	client.PaymentMethodDomain.ListPaymentMethodDomains(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) ListPaymentMethodDomains(
 	ctx context.Context,
 	request *payabli.ListPaymentMethodDomainsRequest,
@@ -143,6 +234,13 @@ func (c *Client) ListPaymentMethodDomains(
 }
 
 // Verify a new payment method domain. If verification is successful, Apple Pay is automatically activated for the domain.
+//
+// Example:
+//
+//	client.PaymentMethodDomain.VerifyPaymentMethodDomain(
+//	    context.TODO(),
+//	    "pmd_b8237fa45c964d8a9ef27160cd42b8c5",
+//	)
 func (c *Client) VerifyPaymentMethodDomain(
 	ctx context.Context,
 	// The payment method domain's ID in Payabli.

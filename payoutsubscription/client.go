@@ -4,6 +4,7 @@ package payoutsubscription
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -35,6 +42,74 @@ func NewClient(options *core.RequestOptions) *Client {
 }
 
 // Creates a payout subscription to automatically send payouts to a vendor on a recurring schedule. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for a step-by-step guide.
+//
+// Example:
+//
+//	request := &payabli.RequestPayoutSchedule{
+//	    EntryPoint: "8cfec329267",
+//	    PaymentMethod: &payabli.AuthorizePaymentMethod{
+//	        Method: "ach",
+//	        AchHolder: payabli.String(
+//	            "Herman Coatings",
+//	        ),
+//	        AchRouting: payabli.String(
+//	            "021000021",
+//	        ),
+//	        AchAccount: payabli.String(
+//	            "3453445666",
+//	        ),
+//	        AchAccountType: payabli.String(
+//	            "checking",
+//	        ),
+//	    },
+//	    PaymentDetails: &payabli.PayoutPaymentDetail{
+//	        TotalAmount: 500,
+//	        ServiceFee: payabli.Float64(
+//	            0,
+//	        ),
+//	        Currency: payabli.String(
+//	            "USD",
+//	        ),
+//	    },
+//	    VendorData: &payabli.RequestOutAuthorizeVendorData{
+//	        VendorId: payabli.Int(
+//	            456,
+//	        ),
+//	    },
+//	    BillData: []*payabli.BillPayOutDataRequest{
+//	        &payabli.BillPayOutDataRequest{
+//	            DueDate: payabli.Time(
+//	                payabli.MustParseDate(
+//	                    "2025-08-15",
+//	                ),
+//	            ),
+//	            InvoiceDate: payabli.Time(
+//	                payabli.MustParseDate(
+//	                    "2025-08-01",
+//	                ),
+//	            ),
+//	            InvoiceNumber: payabli.String(
+//	                "INV-2345",
+//	            ),
+//	            NetAmount: payabli.String(
+//	                "500",
+//	            ),
+//	        },
+//	    },
+//	    ScheduleDetails: &payabli.PayoutScheduleDetail{
+//	        StartDate: payabli.String(
+//	            "09/01/2027",
+//	        ),
+//	        EndDate: payabli.String(
+//	            "09/01/2026",
+//	        ),
+//	        Frequency: payabli.FrequencyMonthly.Ptr(),
+//	    },
+//	}
+//	client.PayoutSubscription.CreatePayoutSubscription(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) CreatePayoutSubscription(
 	ctx context.Context,
 	request *payabli.RequestPayoutSchedule,
@@ -52,6 +127,13 @@ func (c *Client) CreatePayoutSubscription(
 }
 
 // Retrieves a single payout subscription's details. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
+//
+// Example:
+//
+//	client.PayoutSubscription.GetPayoutSubscription(
+//	    context.TODO(),
+//	    int64(42),
+//	)
 func (c *Client) GetPayoutSubscription(
 	ctx context.Context,
 	// The payout subscription ID.
@@ -70,6 +152,19 @@ func (c *Client) GetPayoutSubscription(
 }
 
 // Updates a payout subscription's details. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
+//
+// Example:
+//
+//	request := &payabli.UpdatePayoutSubscriptionBody{
+//	    SetPause: payabli.Bool(
+//	        true,
+//	    ),
+//	}
+//	client.PayoutSubscription.UpdatePayoutSubscription(
+//	    context.TODO(),
+//	    int64(42),
+//	    request,
+//	)
 func (c *Client) UpdatePayoutSubscription(
 	ctx context.Context,
 	// The payout subscription ID.
@@ -90,6 +185,13 @@ func (c *Client) UpdatePayoutSubscription(
 }
 
 // Deletes a payout subscription and prevents future payouts. See [Manage payout subscriptions](/guides/pay-out-developer-payout-subscriptions-manage) for more information.
+//
+// Example:
+//
+//	client.PayoutSubscription.DeletePayoutSubscription(
+//	    context.TODO(),
+//	    int64(42),
+//	)
 func (c *Client) DeletePayoutSubscription(
 	ctx context.Context,
 	// The payout subscription ID.

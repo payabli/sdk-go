@@ -4,6 +4,7 @@ package moneyout
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -43,6 +50,45 @@ func NewClient(options *core.RequestOptions) *Client {
 // If a velocity fraud alert is triggered, the endpoint returns a `202` response with `responseCode` `9051`, and the authorization is held for risk review rather than rejected. If a risk policy blocks the transaction, the endpoint returns a `422` response with `responseCode` `9005`, a terminal rejection.
 //
 // For check payouts, Payabli validates the remit (mailing) address at authorization. If the address fails deliverability validation, the endpoint returns a `422` response and doesn't charge the paypoint. Correct the address and re-authorize. Other payout rails (ACH, RTP, virtual card, wire, and managed payables) aren't affected.
+//
+// Example:
+//
+//	request := &payabli.RequestOutAuthorize{
+//	    EntryPoint: "8cfec329267",
+//	    OrderDescription: payabli.String(
+//	        "Window Painting",
+//	    ),
+//	    PaymentMethod: &payabli.AuthorizePaymentMethod{
+//	        Method: "managed",
+//	    },
+//	    PaymentDetails: &payabli.RequestOutAuthorizePaymentDetails{
+//	        TotalAmount: payabli.Float64(
+//	            47,
+//	        ),
+//	        Unbundled: payabli.Bool(
+//	            false,
+//	        ),
+//	    },
+//	    VendorData: &payabli.RequestOutAuthorizeVendorData{
+//	        VendorNumber: payabli.String(
+//	            "VEN-123",
+//	        ),
+//	    },
+//	    InvoiceData: []*payabli.RequestOutAuthorizeInvoiceData{
+//	        &payabli.RequestOutAuthorizeInvoiceData{
+//	            BillId: payabli.Int64(
+//	                int64(54323),
+//	            ),
+//	        },
+//	    },
+//	    AutoCapture: payabli.Bool(
+//	        true,
+//	    ),
+//	}
+//	client.MoneyOut.AuthorizeOut(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) AuthorizeOut(
 	ctx context.Context,
 	request *payabli.RequestOutAuthorize,
@@ -60,6 +106,18 @@ func (c *Client) AuthorizeOut(
 }
 
 // Cancels an array of payout transactions.
+//
+// Example:
+//
+//	request := []string{
+//	    "2-29",
+//	    "2-28",
+//	    "2-27",
+//	}
+//	client.MoneyOut.CancelAllOut(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) CancelAllOut(
 	ctx context.Context,
 	request []string,
@@ -77,6 +135,13 @@ func (c *Client) CancelAllOut(
 }
 
 // Cancel a payout transaction by ID.
+//
+// Example:
+//
+//	client.MoneyOut.CancelOutGet(
+//	    context.TODO(),
+//	    "129-219",
+//	)
 func (c *Client) CancelOutGet(
 	ctx context.Context,
 	// The ID for the payout transaction.
@@ -95,6 +160,13 @@ func (c *Client) CancelOutGet(
 }
 
 // Cancel a payout transaction by ID.
+//
+// Example:
+//
+//	client.MoneyOut.CancelOutDelete(
+//	    context.TODO(),
+//	    "129-219",
+//	)
 func (c *Client) CancelOutDelete(
 	ctx context.Context,
 	// The ID for the payout transaction.
@@ -113,6 +185,20 @@ func (c *Client) CancelOutDelete(
 }
 
 // Captures an array of authorized payout transactions for settlement. The maximum number of transactions that can be captured in a single request is 500.
+//
+// Example:
+//
+//	request := &payabli.CaptureAllOutRequest{
+//	    Body: []string{
+//	        "2-29",
+//	        "2-28",
+//	        "2-27",
+//	    },
+//	}
+//	client.MoneyOut.CaptureAllOut(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) CaptureAllOut(
 	ctx context.Context,
 	request *payabli.CaptureAllOutRequest,
@@ -132,6 +218,15 @@ func (c *Client) CaptureAllOut(
 // Captures a single authorized payout transaction by ID. If the transaction was authorized with `autoCapture` set to `true`, you don't need to call this endpoint to capture the transaction for processing.
 //
 // If a velocity fraud alert is triggered, the endpoint returns a `202` response with `responseCode` `9051`, and the capture is held for risk review rather than rejected. If a risk policy blocks the transaction, the endpoint returns a `422` response with `responseCode` `9005`, a terminal rejection.
+//
+// Example:
+//
+//	request := &payabli.CaptureOutRequest{}
+//	client.MoneyOut.CaptureOut(
+//	    context.TODO(),
+//	    "129-219",
+//	    request,
+//	)
 func (c *Client) CaptureOut(
 	ctx context.Context,
 	// The ID for the payout transaction.
@@ -152,6 +247,13 @@ func (c *Client) CaptureOut(
 }
 
 // Returns details for a processed money out transaction.
+//
+// Example:
+//
+//	client.MoneyOut.PayoutDetails(
+//	    context.TODO(),
+//	    "45-as456777hhhhhhhhhh77777777-324",
+//	)
 func (c *Client) PayoutDetails(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
@@ -170,6 +272,13 @@ func (c *Client) PayoutDetails(
 }
 
 // Retrieves vCard details for a single card in an entrypoint.
+//
+// Example:
+//
+//	client.MoneyOut.VCardGet(
+//	    context.TODO(),
+//	    "20230403315245421165",
+//	)
 func (c *Client) VCardGet(
 	ctx context.Context,
 	// ID for a virtual card.
@@ -192,6 +301,17 @@ func (c *Client) VCardGet(
 // The card must be a virtual card that hasn't been fully used. The new expiration date must be in `MM-YYYY` or `MM/YYYY` format and no more than 2 years and 363 days in the future. The card expires on the last day of the month you specify.
 //
 // On success, `referenceId` holds the renewed card's token (the card processor may issue a new token). The response reuses the standard payout result object, so the payment-transaction fields it carries don't apply to renewal and always return `null`.
+//
+// Example:
+//
+//	request := &payabli.RenewVCardRequest{
+//	    ExpirationDate: "12-2027",
+//	}
+//	client.MoneyOut.RenewVCard(
+//	    context.TODO(),
+//	    "20231206142225226104",
+//	    request,
+//	)
 func (c *Client) RenewVCard(
 	ctx context.Context,
 	// ID for the virtual card to renew.
@@ -212,6 +332,16 @@ func (c *Client) RenewVCard(
 }
 
 // Sends a virtual card link via email to the vendor associated with the `transId`.
+//
+// Example:
+//
+//	request := &payabli.SendVCardLinkRequest{
+//	    TransId: "01K33Z6YQZ6GD5QVKZ856MJBSC",
+//	}
+//	client.MoneyOut.SendVCardLink(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) SendVCardLink(
 	ctx context.Context,
 	request *payabli.SendVCardLinkRequest,
@@ -231,6 +361,13 @@ func (c *Client) SendVCardLink(
 // Retrieve the image of a check associated with a processed transaction.
 // The check image is returned in the response body as a base64-encoded string.
 // The check image is only available for payouts that have been processed.
+//
+// Example:
+//
+//	client.MoneyOut.GetCheckImage(
+//	    context.TODO(),
+//	    "check133832686289732320_01JKBNZ5P32JPTZY8XXXX000000.pdf",
+//	)
 func (c *Client) GetCheckImage(
 	ctx context.Context,
 	// Name of the check asset to retrieve. This is returned as `filename` in the `CheckData` object
@@ -269,6 +406,14 @@ func (c *Client) GetCheckImage(
 // |-------|--------|-------------|
 // | `0` | Cancelled/Voided | Cancels the check transaction. Reverts associated bills to their previous state (Approved or Active), creates "Cancelled" events, and sends a `payout_transaction_voidedcancelled` notification if the notification is enabled. |
 // | `5` | Paid | Marks the check transaction as paid. Updates associated bills to "Paid" status, creates "Paid" events, and sends a `payout_transaction_paid` notification if the notification is enabled. |
+//
+// Example:
+//
+//	client.MoneyOut.UpdateCheckPaymentStatus(
+//	    context.TODO(),
+//	    "TRANS123456",
+//	    payabli.AllowedCheckPaymentStatusPaid.Ptr(),
+//	)
 func (c *Client) UpdateCheckPaymentStatus(
 	ctx context.Context,
 	// The Payabli transaction ID for the check payment.
@@ -294,6 +439,32 @@ func (c *Client) UpdateCheckPaymentStatus(
 // The original transaction must be in **Processing** or **Processed** status. The payment method in the request body is used directly. The endpoint doesn't fall back to vendor-managed payment methods.
 //
 // The new transaction goes through the standard authorize-and-capture flow automatically. Both the original and new transactions are linked through their event histories for audit purposes.
+//
+// Example:
+//
+//	request := &payabli.ReissueOutRequest{
+//	    TransId: "129-219",
+//	    PaymentMethod: &payabli.ReissuePaymentMethod{
+//	        Method: "ach",
+//	        AchHolder: payabli.String(
+//	            "Acme Corp",
+//	        ),
+//	        AchRouting: payabli.String(
+//	            "021000021",
+//	        ),
+//	        AchAccount: payabli.String(
+//	            "9876543210",
+//	        ),
+//	        AchAccountType: payabli.String(
+//	            "savings",
+//	        ),
+//	        AchHolderType: payabli.AchHolderTypeBusiness.Ptr(),
+//	    },
+//	}
+//	client.MoneyOut.ReissueOut(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) ReissueOut(
 	ctx context.Context,
 	request *payabli.ReissueOutRequest,

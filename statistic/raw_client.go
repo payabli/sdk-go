@@ -87,9 +87,16 @@ func (r *RawClient) BasicStats(
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response []*payabli.StatBasicExtendedQueryRecord
 	raw, err := r.caller.Call(
@@ -166,9 +173,16 @@ func (r *RawClient) CustomerBasicStats(
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response []*payabli.SubscriptionStatsQueryRecord
 	raw, err := r.caller.Call(
@@ -234,9 +248,16 @@ func (r *RawClient) SubStats(
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response []*payabli.StatBasicQueryRecord
 	raw, err := r.caller.Call(
@@ -313,9 +334,16 @@ func (r *RawClient) VendorBasicStats(
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response []*payabli.StatisticsVendorQueryRecord
 	raw, err := r.caller.Call(

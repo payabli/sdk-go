@@ -49,9 +49,16 @@ func (r *RawClient) CreateGhostCard(
 		baseURL+"/MoneyOutCard/GhostCard/%v",
 		entry,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	headers.Add("Content-Type", "application/json")
 	var response *payabli.CreateGhostCardResponse
@@ -98,9 +105,16 @@ func (r *RawClient) UpdateCard(
 		baseURL+"/MoneyOutCard/card/%v",
 		entry,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	headers.Add("Content-Type", "application/json")
 	var response *payabli.PayabliApiResponse

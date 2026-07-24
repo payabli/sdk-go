@@ -51,9 +51,16 @@ func (r *RawClient) AddMethod(
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	if request.IdempotencyKey != nil {
 		headers.Add("idempotencyKey", *request.IdempotencyKey)
@@ -110,9 +117,16 @@ func (r *RawClient) GetMethod(
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.GetMethodResponse
 	raw, err := r.caller.Call(
@@ -164,9 +178,16 @@ func (r *RawClient) UpdateMethod(
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	headers.Add("Content-Type", "application/json")
 	var response *payabli.PayabliApiResponsePaymethodDelete
@@ -211,9 +232,16 @@ func (r *RawClient) RemoveMethod(
 		baseURL+"/TokenStorage/%v",
 		methodId,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.PayabliApiResponsePaymethodDelete
 	raw, err := r.caller.Call(

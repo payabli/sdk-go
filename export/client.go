@@ -4,6 +4,7 @@ package export
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -41,6 +48,26 @@ func NewClient(options *core.RequestOptions) *Client {
 // </Warning>
 //
 // Export a list of boarding applications for an organization. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ExportApplicationsRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportApplications(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ExportApplications(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -70,6 +97,26 @@ func (c *Client) ExportApplications(
 // </Warning>
 //
 // Export batch details for a paypoint. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ExportBatchDetailsRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportBatchDetails(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ExportBatchDetails(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -99,6 +146,26 @@ func (c *Client) ExportBatchDetails(
 // </Warning>
 //
 // Export batch details for an organization. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ExportBatchDetailsOrgRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportBatchDetailsOrg(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ExportBatchDetailsOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -128,6 +195,26 @@ func (c *Client) ExportBatchDetailsOrg(
 // </Warning>
 //
 // Export a list of batches for an entrypoint. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ExportBatchesRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportBatches(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ExportBatches(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -157,6 +244,26 @@ func (c *Client) ExportBatches(
 // </Warning>
 //
 // Export a list of batches for an organization. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ExportBatchesOrgRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportBatchesOrg(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ExportBatchesOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -186,6 +293,26 @@ func (c *Client) ExportBatchesOrg(
 // </Warning>
 //
 // Export a list of money out batches for a paypoint. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ExportBatchesOutRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportBatchesOut(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ExportBatchesOut(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -215,6 +342,26 @@ func (c *Client) ExportBatchesOut(
 // </Warning>
 //
 // Export a list of money out batches for an organization. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ExportBatchesOutOrgRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportBatchesOutOrg(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ExportBatchesOutOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -244,6 +391,26 @@ func (c *Client) ExportBatchesOutOrg(
 // </Warning>
 //
 // Export a list of bills for an entrypoint. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ExportBillsRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportBills(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ExportBills(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -273,6 +440,26 @@ func (c *Client) ExportBills(
 // </Warning>
 //
 // Export a list of bills for an organization. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ExportBillsOrgRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportBillsOrg(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ExportBillsOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -302,6 +489,26 @@ func (c *Client) ExportBillsOrg(
 // </Warning>
 //
 // Export a list of chargebacks and ACH returns for an entrypoint. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ExportChargebacksRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportChargebacks(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ExportChargebacks(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -331,6 +538,26 @@ func (c *Client) ExportChargebacks(
 // </Warning>
 //
 // Export a list of chargebacks and ACH returns for an organization. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ExportChargebacksOrgRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportChargebacksOrg(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ExportChargebacksOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -360,6 +587,26 @@ func (c *Client) ExportChargebacksOrg(
 // </Warning>
 //
 // Export a list of customers for an entrypoint. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ExportCustomersRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportCustomers(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ExportCustomers(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -389,6 +636,26 @@ func (c *Client) ExportCustomers(
 // </Warning>
 //
 // Exports a list of customers for an organization. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ExportCustomersOrgRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportCustomersOrg(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ExportCustomersOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -418,6 +685,26 @@ func (c *Client) ExportCustomersOrg(
 // </Warning>
 //
 // Export list of invoices for an entrypoint. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ExportInvoicesRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportInvoices(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ExportInvoices(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -447,6 +734,26 @@ func (c *Client) ExportInvoices(
 // </Warning>
 //
 // Export a list of invoices for an organization. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ExportInvoicesOrgRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportInvoicesOrg(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ExportInvoicesOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -476,6 +783,26 @@ func (c *Client) ExportInvoicesOrg(
 // </Warning>
 //
 // Export a list of child organizations (suborganizations) for a parent organization.
+//
+// Example:
+//
+//	request := &payabli.ExportOrganizationsRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportOrganizations(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ExportOrganizations(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -505,6 +832,26 @@ func (c *Client) ExportOrganizations(
 // </Warning>
 //
 // Export a list of payouts and their statuses for an entrypoint. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ExportPayoutRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportPayout(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ExportPayout(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -534,6 +881,26 @@ func (c *Client) ExportPayout(
 // </Warning>
 //
 // Export a list of payouts and their details for an organization. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ExportPayoutOrgRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportPayoutOrg(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ExportPayoutOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -563,6 +930,26 @@ func (c *Client) ExportPayoutOrg(
 // </Warning>
 //
 // Export a list of paypoints in an organization. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ExportPaypointsRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportPaypoints(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ExportPaypoints(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -592,6 +979,26 @@ func (c *Client) ExportPaypoints(
 // </Warning>
 //
 // Export a list of settled transactions for an entrypoint. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ExportSettlementsRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportSettlements(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ExportSettlements(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -621,6 +1028,26 @@ func (c *Client) ExportSettlements(
 // </Warning>
 //
 // Export a list of settled transactions for an organization. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ExportSettlementsOrgRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportSettlementsOrg(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ExportSettlementsOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -650,6 +1077,26 @@ func (c *Client) ExportSettlementsOrg(
 // </Warning>
 //
 // Export a list of subscriptions for an entrypoint. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ExportSubscriptionsRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportSubscriptions(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ExportSubscriptions(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -679,6 +1126,26 @@ func (c *Client) ExportSubscriptions(
 // </Warning>
 //
 // Export a list of subscriptions for an organization. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ExportSubscriptionsOrgRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportSubscriptionsOrg(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ExportSubscriptionsOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -708,6 +1175,26 @@ func (c *Client) ExportSubscriptionsOrg(
 // </Warning>
 //
 // Export a list of transactions for an entrypoint in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
+//
+// Example:
+//
+//	request := &payabli.ExportTransactionsRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportTransactions(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ExportTransactions(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -737,6 +1224,26 @@ func (c *Client) ExportTransactions(
 // </Warning>
 //
 // Export a list of transactions for an org in a file in XLSX or CSV format. Use filters to limit results. If you don't specify a date range in the request, the last two months of data are returned.
+//
+// Example:
+//
+//	request := &payabli.ExportTransactionsOrgRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportTransactionsOrg(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ExportTransactionsOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -766,6 +1273,30 @@ func (c *Client) ExportTransactionsOrg(
 // </Warning>
 //
 // Export a list of transfer details for an entrypoint. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ExportTransferDetailsRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Export.ExportTransferDetails(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    "8cfec329267",
+//	    int64(4521),
+//	    request,
+//	)
 func (c *Client) ExportTransferDetails(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -798,6 +1329,28 @@ func (c *Client) ExportTransferDetails(
 // </Warning>
 //
 // Get a list of transfers for an entrypoint. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ExportTransfersRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Export.ExportTransfers(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ExportTransfers(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -824,6 +1377,26 @@ func (c *Client) ExportTransfers(
 // </Warning>
 //
 // Export a list of vendors for an entrypoint. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ExportVendorsRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportVendors(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ExportVendors(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.
@@ -853,6 +1426,26 @@ func (c *Client) ExportVendors(
 // </Warning>
 //
 // Export a list of vendors for an organization. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ExportVendorsOrgRequest{
+//	    ColumnsExport: payabli.String(
+//	        "BatchDate:Batch_Date,PaypointName:Legal_name",
+//	    ),
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        1000,
+//	    ),
+//	}
+//	client.Export.ExportVendorsOrg(
+//	    context.TODO(),
+//	    payabli.ExportFormat1Csv.Ptr(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ExportVendorsOrg(
 	ctx context.Context,
 	// Format for the export, either XLSX or CSV.

@@ -44,9 +44,16 @@ func (r *RawClient) AddPaymentMethodDomain(
 		"https://api-sandbox.payabli.com/api",
 	)
 	endpointURL := baseURL + "/PaymentMethodDomain"
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	headers.Add("Content-Type", "application/json")
 	var response *payabli.AddPaymentMethodDomainApiResponse
@@ -92,9 +99,16 @@ func (r *RawClient) CascadePaymentMethodDomain(
 		baseURL+"/PaymentMethodDomain/%v/cascade",
 		domainId,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.PaymentMethodDomainGeneralResponse
 	raw, err := r.caller.Call(
@@ -138,9 +152,16 @@ func (r *RawClient) GetPaymentMethodDomain(
 		baseURL+"/PaymentMethodDomain/%v",
 		domainId,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.PaymentMethodDomainApiResponse
 	raw, err := r.caller.Call(
@@ -184,9 +205,16 @@ func (r *RawClient) DeletePaymentMethodDomain(
 		baseURL+"/PaymentMethodDomain/%v",
 		domainId,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.DeletePaymentMethodDomainResponse
 	raw, err := r.caller.Call(
@@ -231,9 +259,16 @@ func (r *RawClient) UpdatePaymentMethodDomain(
 		baseURL+"/PaymentMethodDomain/%v",
 		domainId,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	headers.Add("Content-Type", "application/json")
 	var response *payabli.PaymentMethodDomainGeneralResponse
@@ -282,9 +317,16 @@ func (r *RawClient) ListPaymentMethodDomains(
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.ListPaymentMethodDomainsResponse
 	raw, err := r.caller.Call(
@@ -328,9 +370,16 @@ func (r *RawClient) VerifyPaymentMethodDomain(
 		baseURL+"/PaymentMethodDomain/%v/verify",
 		domainId,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.PaymentMethodDomainGeneralResponse
 	raw, err := r.caller.Call(

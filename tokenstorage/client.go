@@ -4,6 +4,7 @@ package tokenstorage
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -35,6 +42,51 @@ func NewClient(options *core.RequestOptions) *Client {
 }
 
 // Saves a payment method for reuse. This call exchanges sensitive payment information for a token that can be used to process future transactions. The `ReferenceId` value in the response is the `storedMethodId` to use with transactions.
+//
+// Example:
+//
+//	request := &payabli.AddMethodRequest{
+//	    Body: &payabli.RequestTokenStorage{
+//	        CustomerData: &payabli.PayorDataRequest{
+//	            CustomerId: payabli.Int64(
+//	                int64(4440),
+//	            ),
+//	        },
+//	        EntryPoint: payabli.String(
+//	            "8cfec329267",
+//	        ),
+//	        FallbackAuth: payabli.Bool(
+//	            true,
+//	        ),
+//	        FallbackAuthAmount: payabli.Int(
+//	            100,
+//	        ),
+//	        MethodDescription: payabli.String(
+//	            "Primary Visa card",
+//	        ),
+//	        PaymentMethod: &payabli.RequestTokenStoragePaymentMethod{
+//	            TokenizeCard: &payabli.TokenizeCard{
+//	                Method: "card",
+//	                Cardcvv: payabli.String(
+//	                    "123",
+//	                ),
+//	                Cardexp: "12/29",
+//	                CardHolder: "John Doe",
+//	                Cardnumber: "4111111111111111",
+//	                Cardzip: payabli.String(
+//	                    "12345",
+//	                ),
+//	            },
+//	        },
+//	        Source: payabli.String(
+//	            "api",
+//	        ),
+//	    },
+//	}
+//	client.TokenStorage.AddMethod(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) AddMethod(
 	ctx context.Context,
 	request *payabli.AddMethodRequest,
@@ -52,6 +104,22 @@ func (c *Client) AddMethod(
 }
 
 // Retrieves details for a saved payment method.
+//
+// Example:
+//
+//	request := &payabli.GetMethodRequest{
+//	    CardExpirationFormat: payabli.Int(
+//	        1,
+//	    ),
+//	    IncludeTemporary: payabli.Bool(
+//	        false,
+//	    ),
+//	}
+//	client.TokenStorage.GetMethod(
+//	    context.TODO(),
+//	    "32-8877drt00045632-678",
+//	    request,
+//	)
 func (c *Client) GetMethod(
 	ctx context.Context,
 	// The saved payment method ID.
@@ -72,6 +140,43 @@ func (c *Client) GetMethod(
 }
 
 // Updates a saved payment method.
+//
+// Example:
+//
+//	request := &payabli.UpdateMethodRequest{
+//	    Body: &payabli.RequestTokenStorage{
+//	        CustomerData: &payabli.PayorDataRequest{
+//	            CustomerId: payabli.Int64(
+//	                int64(4440),
+//	            ),
+//	        },
+//	        EntryPoint: payabli.String(
+//	            "8cfec329267",
+//	        ),
+//	        FallbackAuth: payabli.Bool(
+//	            true,
+//	        ),
+//	        PaymentMethod: &payabli.RequestTokenStoragePaymentMethod{
+//	            TokenizeCard: &payabli.TokenizeCard{
+//	                Method: "card",
+//	                Cardcvv: payabli.String(
+//	                    "123",
+//	                ),
+//	                Cardexp: "12/29",
+//	                CardHolder: "John Doe",
+//	                Cardnumber: "4111111111111111",
+//	                Cardzip: payabli.String(
+//	                    "12345",
+//	                ),
+//	            },
+//	        },
+//	    },
+//	}
+//	client.TokenStorage.UpdateMethod(
+//	    context.TODO(),
+//	    "32-8877drt00045632-678",
+//	    request,
+//	)
 func (c *Client) UpdateMethod(
 	ctx context.Context,
 	// The saved payment method ID.
@@ -92,6 +197,13 @@ func (c *Client) UpdateMethod(
 }
 
 // Deletes a saved payment method.
+//
+// Example:
+//
+//	client.TokenStorage.RemoveMethod(
+//	    context.TODO(),
+//	    "32-8877drt00045632-678",
+//	)
 func (c *Client) RemoveMethod(
 	ctx context.Context,
 	// The saved payment method ID.

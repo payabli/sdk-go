@@ -4,6 +4,7 @@ package notificationlogs
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -39,6 +46,33 @@ func NewClient(options *core.RequestOptions) *Client {
 //   - Either `orgId` or `paypointId` must be provided
 //
 // This endpoint requires the `notifications_create` OR `notifications_read` permission.
+//
+// Example:
+//
+//	request := &payabli.SearchNotificationLogsRequest{
+//	    PageSize: payabli.Int(
+//	        20,
+//	    ),
+//	    StartDate: payabli.MustParseDateTime(
+//	        "2024-01-01T00:00:00Z",
+//	    ),
+//	    EndDate: payabli.MustParseDateTime(
+//	        "2024-01-31T23:59:59Z",
+//	    ),
+//	    NotificationEvent: payabli.String(
+//	        "ActivatedMerchant",
+//	    ),
+//	    Succeeded: payabli.Bool(
+//	        true,
+//	    ),
+//	    OrgId: payabli.Int64(
+//	        int64(123),
+//	    ),
+//	}
+//	client.Notificationlogs.SearchNotificationLogs(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) SearchNotificationLogs(
 	ctx context.Context,
 	request *payabli.SearchNotificationLogsRequest,
@@ -57,6 +91,13 @@ func (c *Client) SearchNotificationLogs(
 
 // Get detailed information for a specific notification log entry.
 // This endpoint requires the `notifications_create` OR `notifications_read` permission.
+//
+// Example:
+//
+//	client.Notificationlogs.GetNotificationLog(
+//	    context.TODO(),
+//	    "550e8400-e29b-41d4-a716-446655440000",
+//	)
 func (c *Client) GetNotificationLog(
 	ctx context.Context,
 	// The notification log entry.
@@ -77,6 +118,13 @@ func (c *Client) GetNotificationLog(
 // Retry sending a specific notification.
 //
 // **Permissions:** notifications_create
+//
+// Example:
+//
+//	client.Notificationlogs.RetryNotificationLog(
+//	    context.TODO(),
+//	    "550e8400-e29b-41d4-a716-446655440000",
+//	)
 func (c *Client) RetryNotificationLog(
 	ctx context.Context,
 	// Unique id
@@ -98,6 +146,18 @@ func (c *Client) RetryNotificationLog(
 // This is an async process, so use the search endpoint again to check the notification status.
 //
 // This endpoint requires the `notifications_create` permission.
+//
+// Example:
+//
+//	request := []string{
+//	    "550e8400-e29b-41d4-a716-446655440000",
+//	    "550e8400-e29b-41d4-a716-446655440001",
+//	    "550e8400-e29b-41d4-a716-446655440002",
+//	}
+//	client.Notificationlogs.BulkRetryNotificationLogs(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) BulkRetryNotificationLogs(
 	ctx context.Context,
 	request payabli.BulkRetryRequest,

@@ -4,6 +4,7 @@ package vendor_
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -35,6 +42,132 @@ func NewClient(options *core.RequestOptions) *Client {
 }
 
 // Creates a vendor in an entrypoint.
+//
+// Example:
+//
+//	request := &payabli.VendorData{
+//	    VendorNumber: payabli.String(
+//	        "VEN-123",
+//	    ),
+//	    Address1: payabli.String(
+//	        "123 Ocean Drive",
+//	    ),
+//	    Address2: payabli.String(
+//	        "Suite 400",
+//	    ),
+//	    BillingData: &payabli.BillingData{
+//	        AccountNumber: payabli.String(
+//	            "123123123",
+//	        ),
+//	        BankAccountFunction: payabli.Int(
+//	            0,
+//	        ),
+//	        BankAccountHolderName: payabli.String(
+//	            "Gruzya Adventure Outfitters LLC",
+//	        ),
+//	        BankAccountHolderType: payabli.BankAccountHolderTypeBusiness.Ptr(),
+//	        BankName: payabli.String(
+//	            "Country Bank",
+//	        ),
+//	        Id: payabli.Int(
+//	            123,
+//	        ),
+//	        RoutingAccount: payabli.String(
+//	            "123123123",
+//	        ),
+//	        TypeAccount: payabli.TypeAccountChecking.Ptr(),
+//	    },
+//	    City: payabli.String(
+//	        "Miami",
+//	    ),
+//	    Contacts: &payabli.ContactsField{
+//	        &payabli.Contacts{
+//	            ContactEmail: payabli.String(
+//	                "example@email.com",
+//	            ),
+//	            ContactName: payabli.String(
+//	                "Herman Martinez",
+//	            ),
+//	            ContactPhone: payabli.String(
+//	                "3055550000",
+//	            ),
+//	            ContactTitle: payabli.String(
+//	                "Owner",
+//	            ),
+//	        },
+//	    },
+//	    Country: payabli.String(
+//	        "US",
+//	    ),
+//	    CustomerVendorAccount: payabli.String(
+//	        "A-37622",
+//	    ),
+//	    Ein: payabli.String(
+//	        "12-3456789",
+//	    ),
+//	    Email: payabli.String(
+//	        "example@email.com",
+//	    ),
+//	    InternalReferenceId: payabli.Int64(
+//	        int64(123),
+//	    ),
+//	    LocationCode: payabli.String(
+//	        "MIA123",
+//	    ),
+//	    Mcc: payabli.String(
+//	        "7777",
+//	    ),
+//	    Name1: payabli.String(
+//	        "Herman's Coatings and Masonry",
+//	    ),
+//	    Name2: payabli.String(
+//	        "<string>",
+//	    ),
+//	    PayeeName1: payabli.String(
+//	        "<string>",
+//	    ),
+//	    PayeeName2: payabli.String(
+//	        "<string>",
+//	    ),
+//	    PaymentMethod: payabli.String(
+//	        "managed",
+//	    ),
+//	    Phone: payabli.String(
+//	        "5555555555",
+//	    ),
+//	    RemitAddress1: payabli.String(
+//	        "123 Walnut Street",
+//	    ),
+//	    RemitAddress2: payabli.String(
+//	        "Suite 900",
+//	    ),
+//	    RemitCity: payabli.String(
+//	        "Miami",
+//	    ),
+//	    RemitCountry: payabli.String(
+//	        "US",
+//	    ),
+//	    RemitState: payabli.String(
+//	        "FL",
+//	    ),
+//	    RemitZip: payabli.String(
+//	        "31113",
+//	    ),
+//	    State: payabli.String(
+//	        "FL",
+//	    ),
+//	    VendorStatus: payabli.Int(
+//	        1,
+//	    ),
+//	    Zip: payabli.String(
+//	        "33139",
+//	    ),
+//	}
+//	client.Vendor.AddVendor(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) AddVendor(
 	ctx context.Context,
 	// Entrypoint identifier.
@@ -55,6 +188,13 @@ func (c *Client) AddVendor(
 }
 
 // Retrieves a vendor's details, including enrichment status and payment acceptance info when available.
+//
+// Example:
+//
+//	client.Vendor.GetVendor(
+//	    context.TODO(),
+//	    1,
+//	)
 func (c *Client) GetVendor(
 	ctx context.Context,
 	// Vendor ID.
@@ -73,6 +213,19 @@ func (c *Client) GetVendor(
 }
 
 // Updates a vendor's information. Send only the fields you need to update.
+//
+// Example:
+//
+//	request := &payabli.VendorData{
+//	    Name1: payabli.String(
+//	        "Theodore's Janitorial",
+//	    ),
+//	}
+//	client.Vendor.EditVendor(
+//	    context.TODO(),
+//	    1,
+//	    request,
+//	)
 func (c *Client) EditVendor(
 	ctx context.Context,
 	// Vendor ID.
@@ -93,6 +246,13 @@ func (c *Client) EditVendor(
 }
 
 // Delete a vendor.
+//
+// Example:
+//
+//	client.Vendor.DeleteVendor(
+//	    context.TODO(),
+//	    1,
+//	)
 func (c *Client) DeleteVendor(
 	ctx context.Context,
 	// Vendor ID.
@@ -111,6 +271,35 @@ func (c *Client) DeleteVendor(
 }
 
 // Triggers AI-powered vendor enrichment for an existing vendor. Runs one or more enrichment stages (invoice scan, web search) based on the `scope` parameter. Can automatically apply extracted payment acceptance info and vendor contact information to the vendor record, or return raw results for manual review. Contact Payabli to enable this feature.
+//
+// Example:
+//
+//	request := &payabli.VendorEnrichRequest{
+//	    VendorId: int64(456),
+//	    Scope: []string{
+//	        "invoice_scan",
+//	    },
+//	    ApplyEnrichmentData: payabli.Bool(
+//	        false,
+//	    ),
+//	    InvoiceFile: &payabli.FileContent{
+//	        FContent: payabli.String(
+//	            "<base64-encoded-pdf>",
+//	        ),
+//	        Filename: payabli.String(
+//	            "invoice-2026-001.pdf",
+//	        ),
+//	        Ftype: payabli.FileContentFtypePdf.Ptr(),
+//	    },
+//	    FallbackMethod: payabli.String(
+//	        "check",
+//	    ),
+//	}
+//	client.Vendor.EnrichVendor(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) EnrichVendor(
 	ctx context.Context,
 	// Entrypoint identifier.
@@ -131,6 +320,35 @@ func (c *Client) EnrichVendor(
 }
 
 // Schedules an AI outreach call to a vendor to collect their preferred payment method and contact email. This is the third enrichment stage. Calls are scheduled for the next business day at around 9 AM in the vendor's timezone, with retries on no-answer and a fallback payment method applied when retries are exhausted. This feature is opt-in at the org level. Contact your Payabli representative to enable it, provision a phone number, and discuss pricing.
+//
+// Example:
+//
+//	request := &payabli.ScheduleEnrichmentCallRequest{
+//	    VendorId: int64(456),
+//	    Phone: payabli.String(
+//	        "5555550200",
+//	    ),
+//	    EnrichmentId: payabli.String(
+//	        "enrich-3890-a1b2c3d4",
+//	    ),
+//	    BillId: payabli.Int64(
+//	        int64(54323),
+//	    ),
+//	    FallbackMethod: payabli.String(
+//	        "check",
+//	    ),
+//	    MaxRetries: payabli.Int(
+//	        3,
+//	    ),
+//	    Timezone: payabli.String(
+//	        "America/New_York",
+//	    ),
+//	}
+//	client.Vendor.ScheduleEnrichmentCall(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ScheduleEnrichmentCall(
 	ctx context.Context,
 	// Entrypoint identifier.
@@ -151,6 +369,13 @@ func (c *Client) ScheduleEnrichmentCall(
 }
 
 // Returns the latest AI outreach call activity for a vendor. The response is a composite object with a `state` discriminator (`none`, `scheduled`, `successful`, or `failed`); the block that matches the current state is populated. When the vendor has no call activity, `state` is `none` and the response returns HTTP 200.
+//
+// Example:
+//
+//	client.Vendor.GetEnrichmentCallStatus(
+//	    context.TODO(),
+//	    int64(456),
+//	)
 func (c *Client) GetEnrichmentCallStatus(
 	ctx context.Context,
 	// ID of the vendor to read call status for.

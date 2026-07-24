@@ -4,6 +4,7 @@ package statistic
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -35,6 +42,25 @@ func NewClient(options *core.RequestOptions) *Client {
 }
 
 // Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
+//
+// Example:
+//
+//	request := &payabli.BasicStatsRequest{
+//	    StartDate: payabli.String(
+//	        "2025-11-01",
+//	    ),
+//	    EndDate: payabli.String(
+//	        "2025-11-30",
+//	    ),
+//	}
+//	client.Statistic.BasicStats(
+//	    context.TODO(),
+//	    "custom",
+//	    "m",
+//	    2,
+//	    int64(1000000),
+//	    request,
+//	)
 func (c *Client) BasicStats(
 	ctx context.Context,
 	// Mode for the request. Allowed values:
@@ -86,6 +112,17 @@ func (c *Client) BasicStats(
 }
 
 // Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
+//
+// Example:
+//
+//	request := &payabli.CustomerBasicStatsRequest{}
+//	client.Statistic.CustomerBasicStats(
+//	    context.TODO(),
+//	    "ytd",
+//	    "m",
+//	    4440,
+//	    request,
+//	)
 func (c *Client) CustomerBasicStats(
 	ctx context.Context,
 	// Mode for request. Allowed values:
@@ -131,6 +168,17 @@ func (c *Client) CustomerBasicStats(
 }
 
 // Retrieves the subscription statistics for a given interval for a paypoint or organization.
+//
+// Example:
+//
+//	request := &payabli.SubStatsRequest{}
+//	client.Statistic.SubStats(
+//	    context.TODO(),
+//	    "30",
+//	    2,
+//	    int64(1000000),
+//	    request,
+//	)
 func (c *Client) SubStats(
 	ctx context.Context,
 	// Interval to get the data. Allowed values:
@@ -165,6 +213,17 @@ func (c *Client) SubStats(
 }
 
 // Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
+//
+// Example:
+//
+//	request := &payabli.VendorBasicStatsRequest{}
+//	client.Statistic.VendorBasicStats(
+//	    context.TODO(),
+//	    "ytd",
+//	    "m",
+//	    1,
+//	    request,
+//	)
 func (c *Client) VendorBasicStats(
 	ctx context.Context,
 	// Mode for request. Allowed values:

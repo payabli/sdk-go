@@ -4,6 +4,7 @@ package lineitem
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -35,6 +42,38 @@ func NewClient(options *core.RequestOptions) *Client {
 }
 
 // Adds products and services to an entrypoint's catalog. These are used as line items for invoicing and transactions. In the response, "responseData" displays the item's code.
+//
+// Example:
+//
+//	request := &payabli.AddItemRequest{
+//	    Body: &payabli.LineItem{
+//	        ItemCommodityCode: payabli.String(
+//	            "010",
+//	        ),
+//	        ItemCost: 12.45,
+//	        ItemDescription: payabli.String(
+//	            "Deposit for materials",
+//	        ),
+//	        ItemMode: payabli.Int(
+//	            0,
+//	        ),
+//	        ItemProductCode: payabli.String(
+//	            "M-DEPOSIT",
+//	        ),
+//	        ItemProductName: payabli.String(
+//	            "Materials deposit",
+//	        ),
+//	        ItemQty: 1,
+//	        ItemUnitOfMeasure: payabli.String(
+//	            "SqFt",
+//	        ),
+//	    },
+//	}
+//	client.LineItem.AddItem(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) AddItem(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -55,6 +94,13 @@ func (c *Client) AddItem(
 }
 
 // Gets an item by ID.
+//
+// Example:
+//
+//	client.LineItem.GetItem(
+//	    context.TODO(),
+//	    700,
+//	)
 func (c *Client) GetItem(
 	ctx context.Context,
 	// ID for the line item (also known as a product, service, or item).
@@ -73,6 +119,18 @@ func (c *Client) GetItem(
 }
 
 // Updates an item.
+//
+// Example:
+//
+//	request := &payabli.LineItem{
+//	    ItemCost: 12.45,
+//	    ItemQty: 1,
+//	}
+//	client.LineItem.UpdateItem(
+//	    context.TODO(),
+//	    700,
+//	    request,
+//	)
 func (c *Client) UpdateItem(
 	ctx context.Context,
 	// ID for the line item (also known as a product, service, or item).
@@ -93,6 +151,13 @@ func (c *Client) UpdateItem(
 }
 
 // Deletes an item.
+//
+// Example:
+//
+//	client.LineItem.DeleteItem(
+//	    context.TODO(),
+//	    700,
+//	)
 func (c *Client) DeleteItem(
 	ctx context.Context,
 	// ID for the line item (also known as a product, service, or item).
@@ -111,6 +176,25 @@ func (c *Client) DeleteItem(
 }
 
 // Retrieves a list of line items and their details from an entrypoint. Line items are also known as items, products, and services. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ListLineItemsRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.LineItem.ListLineItems(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ListLineItems(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)

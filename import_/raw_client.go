@@ -49,9 +49,16 @@ func (r *RawClient) ImportBills(
 		baseURL+"/Import/billsForm/%v",
 		entry,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	writer := internal.NewMultipartWriter()
 	if err := writer.WriteFile("file", request.File); err != nil {
@@ -113,9 +120,16 @@ func (r *RawClient) ImportCustomer(
 	if len(queryParams) > 0 {
 		endpointURL += "?" + queryParams.Encode()
 	}
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	writer := internal.NewMultipartWriter()
 	if err := writer.WriteFile("file", request.File); err != nil {
@@ -170,9 +184,16 @@ func (r *RawClient) ImportVendor(
 		baseURL+"/Import/vendorsForm/%v",
 		entry,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	writer := internal.NewMultipartWriter()
 	if err := writer.WriteFile("file", request.File); err != nil {

@@ -44,9 +44,16 @@ func (r *RawClient) ConfigureApplePayOrganization(
 		"https://api-sandbox.payabli.com/api",
 	)
 	endpointURL := baseURL + "/Wallet/applepay/configure-organization"
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	headers.Add("Content-Type", "application/json")
 	var response *payabli.ConfigureApplePayOrganizationApiResponse
@@ -88,9 +95,16 @@ func (r *RawClient) ConfigureApplePayPaypoint(
 		"https://api-sandbox.payabli.com/api",
 	)
 	endpointURL := baseURL + "/Wallet/applepay/configure-paypoint"
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	headers.Add("Content-Type", "application/json")
 	var response *payabli.ConfigureApplePaypointApiResponse
@@ -132,9 +146,16 @@ func (r *RawClient) ConfigureGooglePayOrganization(
 		"https://api-sandbox.payabli.com/api",
 	)
 	endpointURL := baseURL + "/Wallet/googlepay/configure-organization"
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	headers.Add("Content-Type", "application/json")
 	var response *payabli.ConfigureApplePayOrganizationApiResponse
@@ -176,9 +197,16 @@ func (r *RawClient) ConfigureGooglePayPaypoint(
 		"https://api-sandbox.payabli.com/api",
 	)
 	endpointURL := baseURL + "/Wallet/googlepay/configure-paypoint"
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	headers.Add("Content-Type", "application/json")
 	var response *payabli.ConfigureGooglePaypointApiResponse

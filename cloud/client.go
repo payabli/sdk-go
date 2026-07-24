@@ -4,6 +4,7 @@ package cloud
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -35,6 +42,22 @@ func NewClient(options *core.RequestOptions) *Client {
 }
 
 // Register a cloud device to an entrypoint. See [Devices Quickstart](/developers/developer-guides/devices-quickstart#devices-quickstart) for a complete guide.
+//
+// Example:
+//
+//	request := &payabli.DeviceEntry{
+//	    Description: payabli.String(
+//	        "Front Desk POS",
+//	    ),
+//	    RegistrationCode: payabli.String(
+//	        "YS7DS5",
+//	    ),
+//	}
+//	client.Cloud.AddDevice(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) AddDevice(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -55,6 +78,14 @@ func (c *Client) AddDevice(
 }
 
 // Remove a cloud device from an entrypoint.
+//
+// Example:
+//
+//	client.Cloud.RemoveDevice(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    "499585-389fj484-3jcj8hj3",
+//	)
 func (c *Client) RemoveDevice(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -76,6 +107,14 @@ func (c *Client) RemoveDevice(
 }
 
 // Retrieve the registration history for a device.
+//
+// Example:
+//
+//	client.Cloud.HistoryDevice(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    "499585-389fj484-3jcj8hj3",
+//	)
 func (c *Client) HistoryDevice(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -99,6 +138,15 @@ func (c *Client) HistoryDevice(
 // Use [List devices by paypoint](/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint) instead, which supports filters, sorting, and pagination.
 //
 // Get a list of cloud devices registered to an entrypoint.
+//
+// Example:
+//
+//	request := &payabli.ListDeviceRequest{}
+//	client.Cloud.ListDevice(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ListDevice(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)

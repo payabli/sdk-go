@@ -4,6 +4,7 @@ package boarding
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -35,6 +42,324 @@ func NewClient(options *core.RequestOptions) *Client {
 }
 
 // Creates a boarding application in an organization. This endpoint requires an application API token.
+//
+// Example:
+//
+//	request := &payabli.AddApplicationRequest{
+//	    ApplicationDataPayIn: &payabli.ApplicationDataPayIn{
+//	        Services: &payabli.ApplicationDataPayInServices{
+//	            Ach: &payabli.AchSetup{},
+//	            Card: &payabli.CardSetup{
+//	                AcceptAmex: payabli.Bool(
+//	                    true,
+//	                ),
+//	                AcceptDiscover: payabli.Bool(
+//	                    true,
+//	                ),
+//	                AcceptMastercard: payabli.Bool(
+//	                    true,
+//	                ),
+//	                AcceptVisa: payabli.Bool(
+//	                    true,
+//	                ),
+//	            },
+//	        },
+//	        AnnualRevenue: payabli.Float64(
+//	            1000,
+//	        ),
+//	        AverageBillSize: payabli.String(
+//	            "500",
+//	        ),
+//	        AverageMonthlyBill: payabli.String(
+//	            "5650",
+//	        ),
+//	        Avgmonthly: payabli.Float64(
+//	            1000,
+//	        ),
+//	        Baddress: payabli.String(
+//	            "123 Walnut Street",
+//	        ),
+//	        Baddress1: payabli.String(
+//	            "Suite 103",
+//	        ),
+//	        BankData: []*payabli.Bank{
+//	            &payabli.Bank{
+//	                AccountId: payabli.String(
+//	                    "123-456",
+//	                ),
+//	                Nickname: payabli.String(
+//	                    "Withdrawal Account",
+//	                ),
+//	                BankName: payabli.String(
+//	                    "Test Bank 1",
+//	                ),
+//	                RoutingAccount: payabli.String(
+//	                    "123123123",
+//	                ),
+//	                AccountNumber: payabli.String(
+//	                    "123123100",
+//	                ),
+//	                TypeAccount: payabli.TypeAccountChecking.Ptr(),
+//	                BankAccountHolderName: payabli.String(
+//	                    "Gruzya Adventure Outfitters LLC",
+//	                ),
+//	                BankAccountHolderType: payabli.BankAccountHolderTypeBusiness.Ptr(),
+//	                BankAccountFunction: payabli.Int(
+//	                    1,
+//	                ),
+//	            },
+//	            &payabli.Bank{
+//	                AccountId: payabli.String(
+//	                    "123-789",
+//	                ),
+//	                Nickname: payabli.String(
+//	                    "Deposit Account",
+//	                ),
+//	                BankName: payabli.String(
+//	                    "Test Bank 2",
+//	                ),
+//	                RoutingAccount: payabli.String(
+//	                    "321321321",
+//	                ),
+//	                AccountNumber: payabli.String(
+//	                    "123123200",
+//	                ),
+//	                TypeAccount: payabli.TypeAccountChecking.Ptr(),
+//	                BankAccountHolderName: payabli.String(
+//	                    "Gruzya Adventure Outfitters LLC",
+//	                ),
+//	                BankAccountHolderType: payabli.BankAccountHolderTypeBusiness.Ptr(),
+//	                BankAccountFunction: payabli.Int(
+//	                    0,
+//	                ),
+//	            },
+//	        },
+//	        Bcity: payabli.String(
+//	            "New Vegas",
+//	        ),
+//	        Bcountry: payabli.String(
+//	            "US",
+//	        ),
+//	        Binperson: payabli.Int(
+//	            60,
+//	        ),
+//	        Binphone: payabli.Int(
+//	            20,
+//	        ),
+//	        Binweb: payabli.Int(
+//	            20,
+//	        ),
+//	        Bstate: payabli.String(
+//	            "FL",
+//	        ),
+//	        Bsummary: payabli.String(
+//	            "Brick and mortar store that sells office supplies",
+//	        ),
+//	        Btype: payabli.OwnTypeLimitedLiabilityCompany.Ptr(),
+//	        Bzip: payabli.String(
+//	            "33000",
+//	        ),
+//	        Contacts: []payabli.ApplicationDataPayInContactsItem{
+//	            &payabli.Contacts{
+//	                ContactEmail: payabli.String(
+//	                    "herman@hermanscoatings.com",
+//	                ),
+//	                ContactName: payabli.String(
+//	                    "Herman Martinez",
+//	                ),
+//	                ContactPhone: payabli.String(
+//	                    "3055550000",
+//	                ),
+//	                ContactTitle: payabli.String(
+//	                    "Owner",
+//	                ),
+//	            },
+//	        },
+//	        CreditLimit: payabli.String(
+//	            "creditLimit",
+//	        ),
+//	        DbaName: payabli.String(
+//	            "Sunshine Gutters",
+//	        ),
+//	        Ein: payabli.String(
+//	            "123456789",
+//	        ),
+//	        Faxnumber: payabli.String(
+//	            "1234567890",
+//	        ),
+//	        Highticketamt: payabli.Float64(
+//	            1000,
+//	        ),
+//	        LegalName: payabli.String(
+//	            "Sunshine Services, LLC",
+//	        ),
+//	        License: payabli.String(
+//	            "2222222FFG",
+//	        ),
+//	        Licstate: payabli.String(
+//	            "CA",
+//	        ),
+//	        Maddress: payabli.String(
+//	            "123 Walnut Street",
+//	        ),
+//	        Maddress1: payabli.String(
+//	            "STE 900",
+//	        ),
+//	        Mcc: payabli.String(
+//	            "7777",
+//	        ),
+//	        Mcity: payabli.String(
+//	            "Johnson City",
+//	        ),
+//	        Mcountry: payabli.String(
+//	            "US",
+//	        ),
+//	        Mstate: payabli.String(
+//	            "TN",
+//	        ),
+//	        Mzip: payabli.String(
+//	            "37615",
+//	        ),
+//	        OrgId: payabli.Int64(
+//	            int64(123),
+//	        ),
+//	        Ownership: []payabli.ApplicationDataPayInOwnershipItem{
+//	            &payabli.Owners{
+//	                Ownername: payabli.String(
+//	                    "John Smith",
+//	                ),
+//	                Ownertitle: payabli.String(
+//	                    "CEO",
+//	                ),
+//	                Ownerpercent: payabli.Int(
+//	                    100,
+//	                ),
+//	                Ownerssn: payabli.String(
+//	                    "123456789",
+//	                ),
+//	                Ownerdob: payabli.String(
+//	                    "01/01/1990",
+//	                ),
+//	                Ownerphone1: payabli.String(
+//	                    "555888111",
+//	                ),
+//	                Ownerphone2: payabli.String(
+//	                    "555888111",
+//	                ),
+//	                Owneremail: payabli.String(
+//	                    "test@email.com",
+//	                ),
+//	                Ownerdriver: payabli.String(
+//	                    "CA6677778",
+//	                ),
+//	                Oaddress: payabli.String(
+//	                    "33 North St",
+//	                ),
+//	                Ocity: payabli.String(
+//	                    "Any City",
+//	                ),
+//	                Ocountry: payabli.String(
+//	                    "US",
+//	                ),
+//	                Odriverstate: payabli.String(
+//	                    "CA",
+//	                ),
+//	                Ostate: payabli.String(
+//	                    "CA",
+//	                ),
+//	                Ozip: payabli.String(
+//	                    "55555",
+//	                ),
+//	            },
+//	        },
+//	        Phonenumber: "1234567890",
+//	        ProcessingRegion: "US",
+//	        RecipientEmail: payabli.String(
+//	            "josephray@example.com",
+//	        ),
+//	        RecipientEmailNotification: payabli.Bool(
+//	            true,
+//	        ),
+//	        Resumable: payabli.Bool(
+//	            true,
+//	        ),
+//	        Signer: &payabli.SignerDataRequest{
+//	            Name: payabli.String(
+//	                "John Smith",
+//	            ),
+//	            Ssn: payabli.String(
+//	                "123456789",
+//	            ),
+//	            Dob: payabli.String(
+//	                "01/01/1976",
+//	            ),
+//	            Phone: payabli.String(
+//	                "555888111",
+//	            ),
+//	            Email: payabli.String(
+//	                "test@email.com",
+//	            ),
+//	            Address: payabli.String(
+//	                "33 North St",
+//	            ),
+//	            Address1: payabli.String(
+//	                "STE 900",
+//	            ),
+//	            City: payabli.String(
+//	                "Bristol",
+//	            ),
+//	            Country: payabli.String(
+//	                "US",
+//	            ),
+//	            State: payabli.String(
+//	                "TN",
+//	            ),
+//	            Zip: payabli.String(
+//	                "55555",
+//	            ),
+//	            SignedDocumentReference: payabli.String(
+//	                "https://example.com/signed-document.pdf",
+//	            ),
+//	            PciAttestation: payabli.Bool(
+//	                true,
+//	            ),
+//	            AttestationDate: payabli.String(
+//	                "04/20/2025",
+//	            ),
+//	            AdditionalData: &payabli.AdditionalDataMap{
+//	                "deviceId": "499585-389fj484-3jcj8hj3",
+//	                "session": "fifji4-fiu443-fn4843",
+//	                "timeWithCompany": "6 Years",
+//	            },
+//	            SignDate: payabli.String(
+//	                "04/20/2025",
+//	            ),
+//	        },
+//	        Startdate: payabli.String(
+//	            "01/01/1990",
+//	        ),
+//	        TaxFillName: payabli.String(
+//	            "Sunshine LLC",
+//	        ),
+//	        TemplateId: payabli.Int64(
+//	            int64(22),
+//	        ),
+//	        Ticketamt: payabli.Float64(
+//	            1000,
+//	        ),
+//	        Website: payabli.String(
+//	            "www.example.com",
+//	        ),
+//	        WhenCharged: payabli.WhenchargedWhenServiceProvided,
+//	        WhenDelivered: payabli.WhendeliveredOver30Days,
+//	        WhenProvided: payabli.WhenprovidedThirtyDaysOrLess,
+//	        WhenRefunded: payabli.WhenrefundedThirtyDaysOrLess,
+//	    },
+//	}
+//	client.Boarding.AddApplication(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) AddApplication(
 	ctx context.Context,
 	request *payabli.AddApplicationRequest,
@@ -52,6 +377,15 @@ func (c *Client) AddApplication(
 }
 
 // Updates a boarding application by ID. This endpoint requires an application API token.
+//
+// Example:
+//
+//	request := &payabli.ApplicationData{}
+//	client.Boarding.UpdateApplication(
+//	    context.TODO(),
+//	    352,
+//	    request,
+//	)
 func (c *Client) UpdateApplication(
 	ctx context.Context,
 	// Boarding application ID.
@@ -72,6 +406,13 @@ func (c *Client) UpdateApplication(
 }
 
 // Deletes a boarding application by ID.
+//
+// Example:
+//
+//	client.Boarding.DeleteApplication(
+//	    context.TODO(),
+//	    352,
+//	)
 func (c *Client) DeleteApplication(
 	ctx context.Context,
 	// Boarding application ID.
@@ -90,6 +431,13 @@ func (c *Client) DeleteApplication(
 }
 
 // Retrieves the details for a boarding application by ID.
+//
+// Example:
+//
+//	client.Boarding.GetApplication(
+//	    context.TODO(),
+//	    352,
+//	)
 func (c *Client) GetApplication(
 	ctx context.Context,
 	// Boarding application ID.
@@ -108,6 +456,22 @@ func (c *Client) GetApplication(
 }
 
 // Gets a boarding application by authentication information. This endpoint requires an `application` API token.
+//
+// Example:
+//
+//	request := &payabli.RequestAppByAuth{
+//	    Email: payabli.String(
+//	        "admin@email.com",
+//	    ),
+//	    ReferenceId: payabli.String(
+//	        "129-219",
+//	    ),
+//	}
+//	client.Boarding.GetApplicationByAuth(
+//	    context.TODO(),
+//	    "17E",
+//	    request,
+//	)
 func (c *Client) GetApplicationByAuth(
 	ctx context.Context,
 	// The application ID in Hex format. Find this at the end of the boarding link URL returned in a call to api/Boarding/applink/{appId}/{mail2}. For example in:  `https://boarding-sandbox.payabli.com/boarding/externalapp/load/17E`, the xId is `17E`.
@@ -128,6 +492,13 @@ func (c *Client) GetApplicationByAuth(
 }
 
 // Retrieves details for a boarding link, by ID.
+//
+// Example:
+//
+//	client.Boarding.GetByIdLinkApplication(
+//	    context.TODO(),
+//	    91,
+//	)
 func (c *Client) GetByIdLinkApplication(
 	ctx context.Context,
 	// The boarding link ID. You can find this at the end of the boarding link reference name. For example `https://boarding.payabli.com/boarding/app/myorgaccountname-00091`. The ID is `91`.
@@ -146,6 +517,13 @@ func (c *Client) GetByIdLinkApplication(
 }
 
 // Get details for a boarding link using the boarding template ID. This endpoint requires an application API token.
+//
+// Example:
+//
+//	client.Boarding.GetByTemplateIdLinkApplication(
+//	    context.TODO(),
+//	    80,
+//	)
 func (c *Client) GetByTemplateIdLinkApplication(
 	ctx context.Context,
 	// The boarding template ID. You can find this at the end of the boarding template URL in the Payabli Portal. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
@@ -164,6 +542,16 @@ func (c *Client) GetByTemplateIdLinkApplication(
 }
 
 // Retrieves a link and the verification code used to log into an existing boarding application. You can also use this endpoint to send a link and referenceId for an existing boarding application to an email address. The recipient can use the referenceId and email address to access and edit the application.
+//
+// Example:
+//
+//	request := &payabli.GetExternalApplicationRequest{}
+//	client.Boarding.GetExternalApplication(
+//	    context.TODO(),
+//	    352,
+//	    "mail2",
+//	    request,
+//	)
 func (c *Client) GetExternalApplication(
 	ctx context.Context,
 	// Boarding application ID.
@@ -187,6 +575,13 @@ func (c *Client) GetExternalApplication(
 }
 
 // Retrieves the details for a boarding link, by reference name. This endpoint requires an application API token.
+//
+// Example:
+//
+//	client.Boarding.GetLinkApplication(
+//	    context.TODO(),
+//	    "myorgaccountname-00091",
+//	)
 func (c *Client) GetLinkApplication(
 	ctx context.Context,
 	// The boarding link reference name. You can find this at the end of the boarding link URL. For example `https://boarding.payabli.com/boarding/app/myorgaccountname-00091`
@@ -205,6 +600,25 @@ func (c *Client) GetLinkApplication(
 }
 
 // Returns a list of boarding applications for an organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListApplicationsRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Boarding.ListApplications(
+//	    context.TODO(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ListApplications(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -225,6 +639,25 @@ func (c *Client) ListApplications(
 }
 
 // Return a list of boarding links for an organization. Use filters to limit results.
+//
+// Example:
+//
+//	request := &payabli.ListBoardingLinksRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Boarding.ListBoardingLinks(
+//	    context.TODO(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ListBoardingLinks(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -245,6 +678,24 @@ func (c *Client) ListBoardingLinks(
 }
 
 // Creates a new boarding application linked to an existing paypoint as part of the multi-product boarding flow. Use this endpoint to add new services to a paypoint without creating a duplicate record. The system copies eligible business, contact, banking, and address data from the paypoint to the new application based on 1:1 field matching. The merchant only needs to provide fields that are specific to the new service. See the [Multi-product boarding](/guides/pay-ops-developer-boarding-multi-product) guide for the full flow.
+//
+// Example:
+//
+//	request := &payabli.CreateApplicationFromPaypointRequest{
+//	    PaypointId: int64(3040),
+//	    TemplateId: int64(456),
+//	    RecipientEmail: "merchant@example.com",
+//	    ReturnBoardingAccessInfoInLine: payabli.Bool(
+//	        true,
+//	    ),
+//	    OnCreate: []string{
+//	        "submitApplication",
+//	    },
+//	}
+//	client.Boarding.AddServiceToPaypointFromApp(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) AddServiceToPaypointFromApp(
 	ctx context.Context,
 	request *payabli.CreateApplicationFromPaypointRequest,
@@ -262,6 +713,13 @@ func (c *Client) AddServiceToPaypointFromApp(
 }
 
 // Returns all boarding applications associated with a specific paypoint, including those created through the multi-product boarding flow. Use this endpoint to track underwriting progress across multiple service additions or to build reporting views. See the [Multi-product boarding](/guides/pay-ops-developer-boarding-multi-product) guide for the full flow.
+//
+// Example:
+//
+//	client.Boarding.GetApplicationsByPaypointId(
+//	    context.TODO(),
+//	    int64(3040),
+//	)
 func (c *Client) GetApplicationsByPaypointId(
 	ctx context.Context,
 	// ID of the paypoint to retrieve applications for.

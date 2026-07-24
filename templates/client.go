@@ -4,6 +4,7 @@ package templates
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -35,6 +42,13 @@ func NewClient(options *core.RequestOptions) *Client {
 }
 
 // Deletes a template by ID.
+//
+// Example:
+//
+//	client.Templates.DeleteTemplate(
+//	    context.TODO(),
+//	    80,
+//	)
 func (c *Client) DeleteTemplate(
 	ctx context.Context,
 	// The boarding template ID. You can find this at the end of the boarding template URL in the Payabli Portal. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
@@ -53,6 +67,14 @@ func (c *Client) DeleteTemplate(
 }
 
 // Generates a boarding link from a boarding template.
+//
+// Example:
+//
+//	client.Templates.GetlinkTemplate(
+//	    context.TODO(),
+//	    80,
+//	    true,
+//	)
 func (c *Client) GetlinkTemplate(
 	ctx context.Context,
 	// The boarding template ID. You can find this at the end of the boarding template URL in the Payabli Portal. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
@@ -74,6 +96,13 @@ func (c *Client) GetlinkTemplate(
 }
 
 // Retrieves a boarding template's details by ID.
+//
+// Example:
+//
+//	client.Templates.GetTemplate(
+//	    context.TODO(),
+//	    80,
+//	)
 func (c *Client) GetTemplate(
 	ctx context.Context,
 	// The boarding template ID. You can find this at the end of the boarding template URL in the Payabli Portal. Example: `https://partner-sandbox.payabli.com/myorganization/boarding/edittemplate/80`. Here, the template ID is `80`.
@@ -92,6 +121,25 @@ func (c *Client) GetTemplate(
 }
 
 // Retrieves a list of boarding templates for an organization. Use filters to limit results. You can't make a request that includes filters from the API console in the documentation. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
+//
+// Example:
+//
+//	request := &payabli.ListTemplatesRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Templates.ListTemplates(
+//	    context.TODO(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ListTemplates(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.

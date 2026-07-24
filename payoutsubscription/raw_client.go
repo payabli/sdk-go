@@ -44,9 +44,16 @@ func (r *RawClient) CreatePayoutSubscription(
 		"https://api-sandbox.payabli.com/api",
 	)
 	endpointURL := baseURL + "/PayoutSubscription"
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	if request.IdempotencyKey != nil {
 		headers.Add("idempotencyKey", *request.IdempotencyKey)
@@ -95,9 +102,16 @@ func (r *RawClient) GetPayoutSubscription(
 		baseURL+"/PayoutSubscription/%v",
 		id,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.GetPayoutSubscriptionResponse
 	raw, err := r.caller.Call(
@@ -142,9 +156,16 @@ func (r *RawClient) UpdatePayoutSubscription(
 		baseURL+"/PayoutSubscription/%v",
 		id,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	headers.Add("Content-Type", "application/json")
 	var response *payabli.UpdatePayoutSubscriptionResponse
@@ -190,9 +211,16 @@ func (r *RawClient) DeletePayoutSubscription(
 		baseURL+"/PayoutSubscription/%v",
 		id,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.DeletePayoutSubscriptionResponse
 	raw, err := r.caller.Call(

@@ -4,6 +4,7 @@ package hostedpaymentpages
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -35,6 +42,14 @@ func NewClient(options *core.RequestOptions) *Client {
 }
 
 // Loads all of a payment page's details including `pageIdentifier` and `validationCode`. This endpoint requires an `application` API token.
+//
+// Example:
+//
+//	client.HostedPaymentPages.LoadPage(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    "pay-your-fees-1",
+//	)
 func (c *Client) LoadPage(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -57,6 +72,20 @@ func (c *Client) LoadPage(
 
 // Creates a new payment page for a paypoint.
 // Note: this operation doesn't create a new paypoint, just a payment page for an existing paypoint. Paypoints are created by the Payabli team when a boarding application is approved.
+//
+// Example:
+//
+//	request := &payabli.NewPageRequest{
+//	    IdempotencyKey: payabli.String(
+//	        "6B29FC40-CA47-1067-B31D-00DD010662DA",
+//	    ),
+//	    Body: &payabli.PayabliPages{},
+//	}
+//	client.HostedPaymentPages.NewPage(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) NewPage(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -77,6 +106,16 @@ func (c *Client) NewPage(
 }
 
 // Updates a payment page in a paypoint.
+//
+// Example:
+//
+//	request := &payabli.PayabliPages{}
+//	client.HostedPaymentPages.SavePage(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    "pay-your-fees-1",
+//	    request,
+//	)
 func (c *Client) SavePage(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)

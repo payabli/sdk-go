@@ -4,6 +4,7 @@ package paypoint
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -35,6 +42,13 @@ func NewClient(options *core.RequestOptions) *Client {
 }
 
 // Gets the basic details for a paypoint.
+//
+// Example:
+//
+//	client.Paypoint.GetBasicEntry(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	)
 func (c *Client) GetBasicEntry(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -53,6 +67,13 @@ func (c *Client) GetBasicEntry(
 }
 
 // Retrieves the basic details for a paypoint by ID.
+//
+// Example:
+//
+//	client.Paypoint.GetBasicEntryById(
+//	    context.TODO(),
+//	    "198",
+//	)
 func (c *Client) GetBasicEntryById(
 	ctx context.Context,
 	// Paypoint ID. You can find this value by querying `/api/Query/paypoints/{orgId}`
@@ -71,6 +92,15 @@ func (c *Client) GetBasicEntryById(
 }
 
 // Updates a paypoint logo.
+//
+// Example:
+//
+//	request := &payabli.FileContent{}
+//	client.Paypoint.SaveLogo(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) SaveLogo(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -91,6 +121,26 @@ func (c *Client) SaveLogo(
 }
 
 // Migrates a paypoint to a new parent organization.
+//
+// Example:
+//
+//	request := &payabli.PaypointMoveRequest{
+//	    EntryPoint: "8cfec329267",
+//	    NewParentOrganizationId: 123,
+//	    NotificationRequest: &payabli.NotificationRequest{
+//	        NotificationUrl: "https://webhook-test.yoursie.com",
+//	        WebHeaderParameters: []*payabli.WebHeaderParameter{
+//	            &payabli.WebHeaderParameter{
+//	                Key: "testheader",
+//	                Value: "1234567890",
+//	            },
+//	        },
+//	    },
+//	}
+//	client.Paypoint.Migrate(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) Migrate(
 	ctx context.Context,
 	request *payabli.PaypointMoveRequest,
@@ -108,6 +158,13 @@ func (c *Client) Migrate(
 }
 
 // Retrieves a paypoint's basic settings like custom fields, identifiers, and invoicing settings.
+//
+// Example:
+//
+//	client.Paypoint.SettingsPage(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	)
 func (c *Client) SettingsPage(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -126,6 +183,15 @@ func (c *Client) SettingsPage(
 }
 
 // Gets the details for a single paypoint.
+//
+// Example:
+//
+//	request := &payabli.GetEntryConfigRequest{}
+//	client.Paypoint.GetEntryConfig(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) GetEntryConfig(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -146,6 +212,14 @@ func (c *Client) GetEntryConfig(
 }
 
 // Gets the details for a single payment page for a paypoint.
+//
+// Example:
+//
+//	client.Paypoint.GetPage(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    "pay-your-fees-1",
+//	)
 func (c *Client) GetPage(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -167,6 +241,14 @@ func (c *Client) GetPage(
 }
 
 // Deletes a payment page in a paypoint.
+//
+// Example:
+//
+//	client.Paypoint.RemovePage(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    "pay-your-fees-1",
+//	)
 func (c *Client) RemovePage(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)

@@ -4,6 +4,7 @@ package import_
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -35,6 +42,19 @@ func NewClient(options *core.RequestOptions) *Client {
 }
 
 // Import a list of bills from a CSV file. See the [Import Guide](/developers/developer-guides/bills-add#import-bills) for more help and an example file.
+//
+// Example:
+//
+//	request := &payabli.ImportBillsRequest{
+//	    File: strings.NewReader(
+//	        "",
+//	    ),
+//	}
+//	client.Import.ImportBills(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ImportBills(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -55,6 +75,19 @@ func (c *Client) ImportBills(
 }
 
 // Import a list of customers from a CSV file. See the [Import Guide](/developers/developer-guides/entities-customers#import-customers) for more help and example files.
+//
+// Example:
+//
+//	request := &payabli.ImportCustomerRequest{
+//	    File: strings.NewReader(
+//	        "",
+//	    ),
+//	}
+//	client.Import.ImportCustomer(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ImportCustomer(
 	ctx context.Context,
 	// The entrypoint identifier.
@@ -75,6 +108,19 @@ func (c *Client) ImportCustomer(
 }
 
 // Import a list of vendors from a CSV file. See the [Import Guide](/developers/developer-guides/entities-vendors#import-vendors) for more help and example files.
+//
+// Example:
+//
+//	request := &payabli.ImportVendorRequest{
+//	    File: strings.NewReader(
+//	        "",
+//	    ),
+//	}
+//	client.Import.ImportVendor(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ImportVendor(
 	ctx context.Context,
 	// The entrypoint identifier.

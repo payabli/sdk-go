@@ -4,6 +4,7 @@ package ghostcard
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -39,6 +46,39 @@ func NewClient(options *core.RequestOptions) *Client {
 // Unlike single-use virtual cards issued as part of a payout transaction, ghost cards aren't tied to a specific payout. They're issued directly to a vendor and can be reused up to a configurable number of times within the card's spending limits.
 //
 // Only one ghost card can exist per vendor per paypoint. To issue a new card to the same vendor, cancel the existing card first.
+//
+// Example:
+//
+//	request := &payabli.CreateGhostCardRequestBody{
+//	    VendorId: int64(456),
+//	    ExpenseLimit: 500,
+//	    Amount: 500,
+//	    MaxNumberOfUses: 3,
+//	    ExactAmount: false,
+//	    ExpenseLimitPeriod: "monthly",
+//	    BillingCycle: "monthly",
+//	    BillingCycleDay: "1",
+//	    DailyTransactionCount: 5,
+//	    DailyAmountLimit: 200,
+//	    TransactionAmountLimit: 100,
+//	    Mcc: payabli.String(
+//	        "5411",
+//	    ),
+//	    Tcc: payabli.String(
+//	        "R",
+//	    ),
+//	    Misc1: payabli.String(
+//	        "PO-98765",
+//	    ),
+//	    Misc2: payabli.String(
+//	        "Dept-Finance",
+//	    ),
+//	}
+//	client.GhostCard.CreateGhostCard(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) CreateGhostCard(
 	ctx context.Context,
 	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -59,6 +99,18 @@ func (c *Client) CreateGhostCard(
 }
 
 // Updates the status of a virtual card (including ghost cards) under a paypoint.
+//
+// Example:
+//
+//	request := &payabli.UpdateCardRequestBody{
+//	    CardToken: "gc_abc123def456",
+//	    Status: payabli.CardStatusCancelled.Ptr(),
+//	}
+//	client.GhostCard.UpdateCard(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) UpdateCard(
 	ctx context.Context,
 	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)

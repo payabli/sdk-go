@@ -4,6 +4,7 @@ package management
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -39,6 +46,30 @@ func NewClient(options *core.RequestOptions) *Client {
 // When bank authentication is enabled for the paypoint's organization, the endpoint performs an identity verification check on the account holder. Otherwise, it performs an account existence check. When bank authentication is enabled, the `accountHolderType` and `holderName` fields are required.
 //
 // Requires `inboundpayments_create` or `outboundpayments_create` permission.
+//
+// Example:
+//
+//	request := &payabli.VerifyAccountDetailsRequest{
+//	    RoutingNumber: "122105278",
+//	    AccountNumber: "0000000016",
+//	    AccountType: payabli.String(
+//	        "Checking",
+//	    ),
+//	    Country: payabli.String(
+//	        "US",
+//	    ),
+//	    AccountHolderType: payabli.String(
+//	        "personal",
+//	    ),
+//	    HolderName: payabli.String(
+//	        "Jane Doe",
+//	    ),
+//	}
+//	client.Management.VerifyAccountDetails(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) VerifyAccountDetails(
 	ctx context.Context,
 	// The paypoint's entry name identifier.

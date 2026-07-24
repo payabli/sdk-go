@@ -3,6 +3,11 @@
 package client
 
 import (
+	context "context"
+	errors "errors"
+	os "os"
+
+	payabli "github.com/payabli/sdk-go"
 	bill "github.com/payabli/sdk-go/bill"
 	boarding "github.com/payabli/sdk-go/boarding"
 	chargebacks "github.com/payabli/sdk-go/chargebacks"
@@ -83,6 +88,40 @@ type Client struct {
 
 func NewClient(opts ...option.RequestOption) *Client {
 	options := core.NewRequestOptions(opts...)
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
+	oauthTokenProvider := core.NewTokenProvider(
+		0,
+	)
+	authOptions := *options
+	authClient := token.NewClient(
+		&authOptions,
+	)
+	options.SetTokenGetter(func() (string, error) {
+		return oauthTokenProvider.GetOrFetch(func() (string, int64, error) {
+			response, err := authClient.CreateServerSideToken(context.Background(), &payabli.CreateServerSideTokenRequest{
+				ClientId:     options.ClientID,
+				ClientSecret: options.ClientSecret,
+			})
+			if err != nil {
+				return "", 0, err
+			}
+			if response.AccessToken == "" {
+				return "", 0, errors.New(
+					"oauth response missing access token",
+				)
+			}
+			expiresIn := int64(core.DefaultExpirySeconds)
+			if response.ExpiresIn > 0 {
+				expiresIn = int64(response.ExpiresIn)
+			}
+			return response.AccessToken, expiresIn, nil
+		})
+	})
 	return &Client{
 		Bill:                bill.NewClient(options),
 		Customer:            customer.NewClient(options),

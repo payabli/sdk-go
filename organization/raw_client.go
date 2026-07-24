@@ -44,9 +44,16 @@ func (r *RawClient) AddOrganization(
 		"https://api-sandbox.payabli.com/api",
 	)
 	endpointURL := baseURL + "/Organization"
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	if request.IdempotencyKey != nil {
 		headers.Add("idempotencyKey", *request.IdempotencyKey)
@@ -96,9 +103,16 @@ func (r *RawClient) EditOrganization(
 		baseURL+"/Organization/%v",
 		orgId,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	headers.Add("Content-Type", "application/json")
 	var response *payabli.EditOrganizationResponse
@@ -144,9 +158,16 @@ func (r *RawClient) DeleteOrganization(
 		baseURL+"/Organization/%v",
 		orgId,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.DeleteOrganizationResponse
 	raw, err := r.caller.Call(
@@ -190,9 +211,16 @@ func (r *RawClient) GetBasicOrganization(
 		baseURL+"/Organization/basic/%v",
 		entry,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.OrganizationQueryRecord
 	raw, err := r.caller.Call(
@@ -236,9 +264,16 @@ func (r *RawClient) GetBasicOrganizationById(
 		baseURL+"/Organization/basicById/%v",
 		orgId,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.OrganizationQueryRecord
 	raw, err := r.caller.Call(
@@ -282,9 +317,16 @@ func (r *RawClient) GetOrganization(
 		baseURL+"/Organization/read/%v",
 		orgId,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.OrganizationQueryRecord
 	raw, err := r.caller.Call(
@@ -328,9 +370,16 @@ func (r *RawClient) GetSettingsOrganization(
 		baseURL+"/Organization/settings/%v",
 		orgId,
 	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	var response *payabli.SettingsQueryRecord
 	raw, err := r.caller.Call(

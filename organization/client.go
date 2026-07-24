@@ -4,6 +4,7 @@ package organization
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -35,6 +42,104 @@ func NewClient(options *core.RequestOptions) *Client {
 }
 
 // Creates an organization under a parent organization. This is also referred to as a suborganization.
+//
+// Example:
+//
+//	request := &payabli.AddOrganizationRequest{
+//	    IdempotencyKey: payabli.String(
+//	        "6B29FC40-CA47-1067-B31D-00DD010662DA",
+//	    ),
+//	    BillingInfo: &payabli.Instrument{
+//	        AchAccount: "123123123",
+//	        AchRouting: "123123123",
+//	        BillingAddress: payabli.String(
+//	            "123 Walnut Street",
+//	        ),
+//	        BillingCity: payabli.String(
+//	            "Johnson City",
+//	        ),
+//	        BillingCountry: payabli.String(
+//	            "US",
+//	        ),
+//	        BillingState: payabli.String(
+//	            "TN",
+//	        ),
+//	        BillingZip: payabli.String(
+//	            "37615",
+//	        ),
+//	    },
+//	    Contacts: &payabli.ContactsField{
+//	        &payabli.Contacts{
+//	            ContactEmail: payabli.String(
+//	                "herman@hermanscoatings.com",
+//	            ),
+//	            ContactName: payabli.String(
+//	                "Herman Martinez",
+//	            ),
+//	            ContactPhone: payabli.String(
+//	                "3055550000",
+//	            ),
+//	            ContactTitle: payabli.String(
+//	                "Owner",
+//	            ),
+//	        },
+//	    },
+//	    HasBilling: payabli.Bool(
+//	        true,
+//	    ),
+//	    HasResidual: payabli.Bool(
+//	        true,
+//	    ),
+//	    OrgAddress: payabli.String(
+//	        "123 Walnut Street",
+//	    ),
+//	    OrgCity: payabli.String(
+//	        "Johnson City",
+//	    ),
+//	    OrgCountry: payabli.String(
+//	        "US",
+//	    ),
+//	    OrgEntryName: payabli.String(
+//	        "pilgrim-planner",
+//	    ),
+//	    OrgId: payabli.String(
+//	        "123",
+//	    ),
+//	    OrgLogo: &payabli.FileContent{
+//	        FContent: payabli.String(
+//	            "TXkgdGVzdCBmaWxlHJ==...",
+//	        ),
+//	        Filename: payabli.String(
+//	            "my-doc.pdf",
+//	        ),
+//	        Ftype: payabli.FileContentFtypePdf.Ptr(),
+//	        Furl: payabli.String(
+//	            "https://mysite.com/my-doc.pdf",
+//	        ),
+//	    },
+//	    OrgName: "Pilgrim Planner",
+//	    OrgParentId: payabli.Int64(
+//	        int64(236),
+//	    ),
+//	    OrgState: payabli.String(
+//	        "TN",
+//	    ),
+//	    OrgTimezone: payabli.Int(
+//	        -5,
+//	    ),
+//	    OrgType: 0,
+//	    OrgWebsite: payabli.String(
+//	        "www.pilgrimageplanner.com",
+//	    ),
+//	    OrgZip: payabli.String(
+//	        "37615",
+//	    ),
+//	    ReplyToEmail: "email@example.com",
+//	}
+//	client.Organization.AddOrganization(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) AddOrganization(
 	ctx context.Context,
 	request *payabli.AddOrganizationRequest,
@@ -52,6 +157,65 @@ func (c *Client) AddOrganization(
 }
 
 // Updates an organization's details by ID.
+//
+// Example:
+//
+//	request := &payabli.OrganizationData{
+//	    Contacts: &payabli.ContactsField{
+//	        &payabli.Contacts{
+//	            ContactEmail: payabli.String(
+//	                "herman@hermanscoatings.com",
+//	            ),
+//	            ContactName: payabli.String(
+//	                "Herman Martinez",
+//	            ),
+//	            ContactPhone: payabli.String(
+//	                "3055550000",
+//	            ),
+//	            ContactTitle: payabli.String(
+//	                "Owner",
+//	            ),
+//	        },
+//	    },
+//	    OrgAddress: payabli.String(
+//	        "123 Walnut Street",
+//	    ),
+//	    OrgCity: payabli.String(
+//	        "Johnson City",
+//	    ),
+//	    OrgCountry: payabli.String(
+//	        "US",
+//	    ),
+//	    OrgEntryName: payabli.String(
+//	        "pilgrim-planner",
+//	    ),
+//	    OrganizationDataOrgId: payabli.String(
+//	        "123",
+//	    ),
+//	    OrgName: payabli.String(
+//	        "Pilgrim Planner",
+//	    ),
+//	    OrgState: payabli.String(
+//	        "TN",
+//	    ),
+//	    OrgTimezone: payabli.Int(
+//	        -5,
+//	    ),
+//	    OrgType: payabli.Int(
+//	        0,
+//	    ),
+//	    OrgWebsite: payabli.String(
+//	        "www.pilgrimageplanner.com",
+//	    ),
+//	    OrgZip: payabli.String(
+//	        "37615",
+//	    ),
+//	}
+//	client.Organization.EditOrganization(
+//	    context.TODO(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) EditOrganization(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -72,6 +236,13 @@ func (c *Client) EditOrganization(
 }
 
 // Delete an organization by ID.
+//
+// Example:
+//
+//	client.Organization.DeleteOrganization(
+//	    context.TODO(),
+//	    123,
+//	)
 func (c *Client) DeleteOrganization(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -90,6 +261,13 @@ func (c *Client) DeleteOrganization(
 }
 
 // Gets an organization's basic information by entry name (entrypoint identifier).
+//
+// Example:
+//
+//	client.Organization.GetBasicOrganization(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	)
 func (c *Client) GetBasicOrganization(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -108,6 +286,13 @@ func (c *Client) GetBasicOrganization(
 }
 
 // Gets an organization's basic details by org ID.
+//
+// Example:
+//
+//	client.Organization.GetBasicOrganizationById(
+//	    context.TODO(),
+//	    123,
+//	)
 func (c *Client) GetBasicOrganizationById(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -126,6 +311,13 @@ func (c *Client) GetBasicOrganizationById(
 }
 
 // Retrieves details for an organization by ID.
+//
+// Example:
+//
+//	client.Organization.GetOrganization(
+//	    context.TODO(),
+//	    123,
+//	)
 func (c *Client) GetOrganization(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -144,6 +336,13 @@ func (c *Client) GetOrganization(
 }
 
 // Retrieves an organization's settings.
+//
+// Example:
+//
+//	client.Organization.GetSettingsOrganization(
+//	    context.TODO(),
+//	    123,
+//	)
 func (c *Client) GetSettingsOrganization(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.

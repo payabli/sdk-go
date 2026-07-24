@@ -4,6 +4,7 @@ package chargebacks
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -35,6 +42,19 @@ func NewClient(options *core.RequestOptions) *Client {
 }
 
 // Add a response to a chargeback or ACH return.
+//
+// Example:
+//
+//	request := &payabli.ResponseChargeBack{
+//	    IdempotencyKey: payabli.String(
+//	        "6B29FC40-CA47-1067-B31D-00DD010662DA",
+//	    ),
+//	}
+//	client.ChargeBacks.AddResponse(
+//	    context.TODO(),
+//	    int64(1000000),
+//	    request,
+//	)
 func (c *Client) AddResponse(
 	ctx context.Context,
 	// ID of the chargeback or return record.
@@ -55,6 +75,13 @@ func (c *Client) AddResponse(
 }
 
 // Retrieves a chargeback record and its details.
+//
+// Example:
+//
+//	client.ChargeBacks.GetChargeback(
+//	    context.TODO(),
+//	    int64(1000000),
+//	)
 func (c *Client) GetChargeback(
 	ctx context.Context,
 	// ID of the chargeback or return record. This is returned as `chargebackID` in the [ReceivedChargeBack](/guides/pay-ops-webhooks-payloads#receivedchargeback) and [ReceivedAchReturn](/guides/pay-ops-webhooks-payloads#receivedachreturn) webhook notifications.
@@ -73,6 +100,14 @@ func (c *Client) GetChargeback(
 }
 
 // Retrieves a chargeback attachment file by its file name.
+//
+// Example:
+//
+//	client.ChargeBacks.GetChargebackAttachment(
+//	    context.TODO(),
+//	    int64(1000000),
+//	    "fileName",
+//	)
 func (c *Client) GetChargebackAttachment(
 	ctx context.Context,
 	// The ID of chargeback or return record.

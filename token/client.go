@@ -4,6 +4,7 @@ package token
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -35,6 +42,17 @@ func NewClient(options *core.RequestOptions) *Client {
 }
 
 // Exchanges a client ID and client secret for a short-lived Bearer access token using the OAuth2 client-credentials flow. Designed for server-to-server use: the credentials and the returned token stay on your backend. Send the returned `access_token` in the `Authorization` header as `Bearer <access_token>` on subsequent API calls. See the [OAuth authentication guide](/developers/oauth-authentication) for the full flow.
+//
+// Example:
+//
+//	request := &payabli.CreateServerSideTokenRequest{
+//	    ClientId: "YOUR_CLIENT_ID",
+//	    ClientSecret: "YOUR_CLIENT_SECRET",
+//	}
+//	client.Token.CreateServerSideToken(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) CreateServerSideToken(
 	ctx context.Context,
 	request *payabli.CreateServerSideTokenRequest,

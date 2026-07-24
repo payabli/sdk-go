@@ -4,6 +4,7 @@ package funding
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -35,6 +42,18 @@ func NewClient(options *core.RequestOptions) *Client {
 }
 
 // Deposits funds into a paypoint's available payout balance. Deposited funds enter a pending state and aren't available for instant payouts until confirmed through FBO reconciliation.
+//
+// Example:
+//
+//	request := &payabli.DepositFundsRequest{
+//	    Amount: 10,
+//	    Entrypoint: "48acde49",
+//	    AccountId: "333",
+//	}
+//	client.Funding.DepositFunds(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) DepositFunds(
 	ctx context.Context,
 	request *payabli.DepositFundsRequest,

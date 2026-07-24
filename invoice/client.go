@@ -4,6 +4,7 @@ package invoice
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -35,6 +42,94 @@ func NewClient(options *core.RequestOptions) *Client {
 }
 
 // Creates an invoice in an entrypoint.
+//
+// Example:
+//
+//	request := &payabli.AddInvoiceRequest{
+//	    Body: &payabli.InvoiceDataRequest{
+//	        CustomerData: &payabli.PayorDataRequest{
+//	            CustomerNumber: payabli.String(
+//	                "C-90010",
+//	            ),
+//	            FirstName: payabli.String(
+//	                "Tamara",
+//	            ),
+//	            LastName: payabli.String(
+//	                "Bagratoni",
+//	            ),
+//	        },
+//	        InvoiceData: &payabli.BillData{
+//	            Discount: payabli.Float64(
+//	                10,
+//	            ),
+//	            Frequency: payabli.FrequencyOneTime.Ptr(),
+//	            InvoiceAmount: payabli.Float64(
+//	                1082.37,
+//	            ),
+//	            InvoiceDate: payabli.Time(
+//	                payabli.MustParseDate(
+//	                    "2025-10-19",
+//	                ),
+//	            ),
+//	            InvoiceNumber: payabli.String(
+//	                "INV-2345",
+//	            ),
+//	            InvoiceStatus: payabli.Int(
+//	                1,
+//	            ),
+//	            InvoiceType: payabli.Int(
+//	                0,
+//	            ),
+//	            Items: []*payabli.BillItem{
+//	                &payabli.BillItem{
+//	                    ItemCost: payabli.Float64(
+//	                        100,
+//	                    ),
+//	                    ItemDescription: payabli.String(
+//	                        "Consultation for Georgian tours",
+//	                    ),
+//	                    ItemMode: payabli.Int(
+//	                        2,
+//	                    ),
+//	                    ItemProductName: payabli.String(
+//	                        "Adventure Consult",
+//	                    ),
+//	                    ItemQty: payabli.Int(
+//	                        2,
+//	                    ),
+//	                    ItemTotalAmount: payabli.Float64(
+//	                        200,
+//	                    ),
+//	                },
+//	                &payabli.BillItem{
+//	                    ItemCost: payabli.Float64(
+//	                        882.37,
+//	                    ),
+//	                    ItemDescription: payabli.String(
+//	                        "Deposit for trip planning",
+//	                    ),
+//	                    ItemMode: payabli.Int(
+//	                        2,
+//	                    ),
+//	                    ItemProductName: payabli.String(
+//	                        "Deposit ",
+//	                    ),
+//	                    ItemQty: payabli.Int(
+//	                        1,
+//	                    ),
+//	                    ItemTotalAmount: payabli.Float64(
+//	                        882.37,
+//	                    ),
+//	                },
+//	            },
+//	        },
+//	    },
+//	}
+//	client.Invoice.AddInvoice(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) AddInvoice(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -55,6 +150,16 @@ func (c *Client) AddInvoice(
 }
 
 // Retrieves a file attached to an invoice.
+//
+// Example:
+//
+//	request := &payabli.GetAttachedFileFromInvoiceRequest{}
+//	client.Invoice.GetAttachedFileFromInvoice(
+//	    context.TODO(),
+//	    1,
+//	    "filename",
+//	    request,
+//	)
 func (c *Client) GetAttachedFileFromInvoice(
 	ctx context.Context,
 	// Invoice ID
@@ -80,6 +185,14 @@ func (c *Client) GetAttachedFileFromInvoice(
 }
 
 // Deletes a file attached to an invoice.
+//
+// Example:
+//
+//	client.Invoice.DeleteAttachedFromInvoice(
+//	    context.TODO(),
+//	    23548884,
+//	    "0_Bill.pdf",
+//	)
 func (c *Client) DeleteAttachedFromInvoice(
 	ctx context.Context,
 	// Invoice ID
@@ -103,6 +216,13 @@ func (c *Client) DeleteAttachedFromInvoice(
 }
 
 // Retrieves a single invoice by ID.
+//
+// Example:
+//
+//	client.Invoice.GetInvoice(
+//	    context.TODO(),
+//	    23548884,
+//	)
 func (c *Client) GetInvoice(
 	ctx context.Context,
 	// Invoice ID
@@ -121,6 +241,47 @@ func (c *Client) GetInvoice(
 }
 
 // Updates details for a single invoice in an entrypoint.
+//
+// Example:
+//
+//	request := &payabli.EditInvoiceRequest{
+//	    Body: &payabli.InvoiceDataRequest{
+//	        InvoiceData: &payabli.BillData{
+//	            InvoiceAmount: payabli.Float64(
+//	                982.37,
+//	            ),
+//	            InvoiceDate: payabli.Time(
+//	                payabli.MustParseDate(
+//	                    "2025-10-19",
+//	                ),
+//	            ),
+//	            InvoiceNumber: payabli.String(
+//	                "INV-2345",
+//	            ),
+//	            Items: []*payabli.BillItem{
+//	                &payabli.BillItem{
+//	                    ItemCost: payabli.Float64(
+//	                        882.37,
+//	                    ),
+//	                    ItemDescription: payabli.String(
+//	                        "Deposit for trip planning",
+//	                    ),
+//	                    ItemProductName: payabli.String(
+//	                        "Deposit",
+//	                    ),
+//	                    ItemQty: payabli.Int(
+//	                        1,
+//	                    ),
+//	                },
+//	            },
+//	        },
+//	    },
+//	}
+//	client.Invoice.EditInvoice(
+//	    context.TODO(),
+//	    23548884,
+//	    request,
+//	)
 func (c *Client) EditInvoice(
 	ctx context.Context,
 	// Invoice ID
@@ -141,6 +302,13 @@ func (c *Client) EditInvoice(
 }
 
 // Deletes a single invoice from an entrypoint.
+//
+// Example:
+//
+//	client.Invoice.DeleteInvoice(
+//	    context.TODO(),
+//	    23548884,
+//	)
 func (c *Client) DeleteInvoice(
 	ctx context.Context,
 	// Invoice ID
@@ -159,6 +327,13 @@ func (c *Client) DeleteInvoice(
 }
 
 // Retrieves the next available invoice number for a paypoint.
+//
+// Example:
+//
+//	client.Invoice.GetInvoiceNumber(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	)
 func (c *Client) GetInvoiceNumber(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -177,6 +352,25 @@ func (c *Client) GetInvoiceNumber(
 }
 
 // Returns a list of invoices for an entrypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListInvoicesRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Invoice.ListInvoices(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ListInvoices(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -197,6 +391,25 @@ func (c *Client) ListInvoices(
 }
 
 // Returns a list of invoices for an org. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListInvoicesOrgRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Invoice.ListInvoicesOrg(
+//	    context.TODO(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ListInvoicesOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
@@ -217,6 +430,22 @@ func (c *Client) ListInvoicesOrg(
 }
 
 // Sends an invoice from an entrypoint via email.
+//
+// Example:
+//
+//	request := &payabli.SendInvoiceRequest{
+//	    Attachfile: payabli.Bool(
+//	        true,
+//	    ),
+//	    Mail2: payabli.String(
+//	        "tamara@example.com",
+//	    ),
+//	}
+//	client.Invoice.SendInvoice(
+//	    context.TODO(),
+//	    23548884,
+//	    request,
+//	)
 func (c *Client) SendInvoice(
 	ctx context.Context,
 	// Invoice ID
@@ -237,6 +466,13 @@ func (c *Client) SendInvoice(
 }
 
 // Export a single invoice in PDF format.
+//
+// Example:
+//
+//	client.Invoice.GetInvoicePdf(
+//	    context.TODO(),
+//	    23548884,
+//	)
 func (c *Client) GetInvoicePdf(
 	ctx context.Context,
 	// Invoice ID

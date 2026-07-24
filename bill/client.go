@@ -4,6 +4,7 @@ package bill
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -35,6 +42,109 @@ func NewClient(options *core.RequestOptions) *Client {
 }
 
 // Creates a bill in an entrypoint.
+//
+// Example:
+//
+//	request := &payabli.AddBillRequest{
+//	    Body: &payabli.BillOutData{
+//	        AccountingField1: payabli.String(
+//	            "MyInternalId",
+//	        ),
+//	        Attachments: &payabli.Attachments{
+//	            &payabli.FileContent{
+//	                Filename: payabli.String(
+//	                    "my-doc.pdf",
+//	                ),
+//	                Ftype: payabli.FileContentFtypePdf.Ptr(),
+//	                Furl: payabli.String(
+//	                    "https://mysite.com/my-doc.pdf",
+//	                ),
+//	            },
+//	        },
+//	        BillDate: payabli.Time(
+//	            payabli.MustParseDate(
+//	                "2024-07-01",
+//	            ),
+//	        ),
+//	        BillItems: &payabli.Billitems{
+//	            &payabli.BillItem{
+//	                ItemCategories: []string{
+//	                    "deposits",
+//	                },
+//	                ItemCommodityCode: payabli.String(
+//	                    "010",
+//	                ),
+//	                ItemCost: payabli.Float64(
+//	                    5,
+//	                ),
+//	                ItemDescription: payabli.String(
+//	                    "Deposit for materials",
+//	                ),
+//	                ItemMode: payabli.Int(
+//	                    0,
+//	                ),
+//	                ItemProductCode: payabli.String(
+//	                    "M-DEPOSIT",
+//	                ),
+//	                ItemProductName: payabli.String(
+//	                    "Materials deposit",
+//	                ),
+//	                ItemQty: payabli.Int(
+//	                    1,
+//	                ),
+//	                ItemTaxAmount: payabli.Float64(
+//	                    7,
+//	                ),
+//	                ItemTaxRate: payabli.Float64(
+//	                    0.075,
+//	                ),
+//	                ItemTotalAmount: payabli.Float64(
+//	                    123,
+//	                ),
+//	                ItemUnitOfMeasure: payabli.String(
+//	                    "SqFt",
+//	                ),
+//	            },
+//	        },
+//	        BillNumber: payabli.String(
+//	            "ABC-123",
+//	        ),
+//	        Comments: payabli.String(
+//	            "Deposit for materials",
+//	        ),
+//	        DueDate: payabli.Time(
+//	            payabli.MustParseDate(
+//	                "2024-07-01",
+//	            ),
+//	        ),
+//	        EndDate: payabli.Time(
+//	            payabli.MustParseDate(
+//	                "2024-07-01",
+//	            ),
+//	        ),
+//	        Frequency: payabli.FrequencyMonthly.Ptr(),
+//	        Mode: payabli.Int(
+//	            0,
+//	        ),
+//	        NetAmount: payabli.Float64(
+//	            3762.87,
+//	        ),
+//	        Status: payabli.Int(
+//	            1,
+//	        ),
+//	        Terms: payabli.TermsNet30.Ptr(),
+//	        Vendor: &payabli.BillOutDataVendor{
+//	            VendorNumber: payabli.String(
+//	                "VEN-123",
+//	            ),
+//	        },
+//	    },
+//	}
+//	client.Bill.AddBill(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) AddBill(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -55,6 +165,13 @@ func (c *Client) AddBill(
 }
 
 // Retrieves a bill by ID from an entrypoint.
+//
+// Example:
+//
+//	client.Bill.GetBill(
+//	    context.TODO(),
+//	    285,
+//	)
 func (c *Client) GetBill(
 	ctx context.Context,
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
@@ -73,6 +190,24 @@ func (c *Client) GetBill(
 }
 
 // Updates a bill by ID.
+//
+// Example:
+//
+//	request := &payabli.BillOutData{
+//	    BillDate: payabli.Time(
+//	        payabli.MustParseDate(
+//	            "2025-07-01",
+//	        ),
+//	    ),
+//	    NetAmount: payabli.Float64(
+//	        3762.87,
+//	    ),
+//	}
+//	client.Bill.EditBill(
+//	    context.TODO(),
+//	    285,
+//	    request,
+//	)
 func (c *Client) EditBill(
 	ctx context.Context,
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
@@ -93,6 +228,13 @@ func (c *Client) EditBill(
 }
 
 // Deletes a bill by ID.
+//
+// Example:
+//
+//	client.Bill.DeleteBill(
+//	    context.TODO(),
+//	    285,
+//	)
 func (c *Client) DeleteBill(
 	ctx context.Context,
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
@@ -111,6 +253,20 @@ func (c *Client) DeleteBill(
 }
 
 // Retrieves a file attached to a bill, either as a binary file or as a Base64-encoded string.
+//
+// Example:
+//
+//	request := &payabli.GetAttachedFromBillRequest{
+//	    ReturnObject: payabli.Bool(
+//	        true,
+//	    ),
+//	}
+//	client.Bill.GetAttachedFromBill(
+//	    context.TODO(),
+//	    285,
+//	    "0_Bill.pdf",
+//	    request,
+//	)
 func (c *Client) GetAttachedFromBill(
 	ctx context.Context,
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
@@ -136,6 +292,16 @@ func (c *Client) GetAttachedFromBill(
 }
 
 // Delete a file attached to a bill.
+//
+// Example:
+//
+//	request := &payabli.DeleteAttachedFromBillRequest{}
+//	client.Bill.DeleteAttachedFromBill(
+//	    context.TODO(),
+//	    285,
+//	    "0_Bill.pdf",
+//	    request,
+//	)
 func (c *Client) DeleteAttachedFromBill(
 	ctx context.Context,
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
@@ -161,6 +327,22 @@ func (c *Client) DeleteAttachedFromBill(
 }
 
 // Send a bill to a user or list of users to approve.
+//
+// Example:
+//
+//	request := &payabli.SendToApprovalBillRequest{
+//	    IdempotencyKey: payabli.String(
+//	        "6B29FC40-CA47-1067-B31D-00DD010662DA",
+//	    ),
+//	    Body: []string{
+//	        "approver@example.com",
+//	    },
+//	}
+//	client.Bill.SendToApprovalBill(
+//	    context.TODO(),
+//	    285,
+//	    request,
+//	)
 func (c *Client) SendToApprovalBill(
 	ctx context.Context,
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
@@ -181,6 +363,18 @@ func (c *Client) SendToApprovalBill(
 }
 
 // Modify the list of users the bill is sent to for approval.
+//
+// Example:
+//
+//	request := []string{
+//	    "approver1@example.com",
+//	    "approver2@example.com",
+//	}
+//	client.Bill.ModifyApprovalBill(
+//	    context.TODO(),
+//	    285,
+//	    request,
+//	)
 func (c *Client) ModifyApprovalBill(
 	ctx context.Context,
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
@@ -201,6 +395,16 @@ func (c *Client) ModifyApprovalBill(
 }
 
 // Approve or disapprove a bill by ID.
+//
+// Example:
+//
+//	request := &payabli.SetApprovedBillRequest{}
+//	client.Bill.SetApprovedBill(
+//	    context.TODO(),
+//	    285,
+//	    "true",
+//	    request,
+//	)
 func (c *Client) SetApprovedBill(
 	ctx context.Context,
 	// Payabli ID for the bill. Get this ID by querying `/api/Query/bills/` for the entrypoint or the organization.
@@ -224,6 +428,25 @@ func (c *Client) SetApprovedBill(
 }
 
 // Retrieve a list of bills for an entrypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListBillsRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Bill.ListBills(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) ListBills(
 	ctx context.Context,
 	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
@@ -244,6 +467,25 @@ func (c *Client) ListBills(
 }
 
 // Retrieve a list of bills for an organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+//
+// Example:
+//
+//	request := &payabli.ListBillsOrgRequest{
+//	    FromRecord: payabli.Int(
+//	        251,
+//	    ),
+//	    LimitRecord: payabli.Int(
+//	        0,
+//	    ),
+//	    SortBy: payabli.String(
+//	        "desc(field_name)",
+//	    ),
+//	}
+//	client.Bill.ListBillsOrg(
+//	    context.TODO(),
+//	    123,
+//	    request,
+//	)
 func (c *Client) ListBillsOrg(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.

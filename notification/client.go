@@ -4,6 +4,7 @@ package notification
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -35,6 +42,30 @@ func NewClient(options *core.RequestOptions) *Client {
 }
 
 // Create a new notification or auto-generated report.
+//
+// Example:
+//
+//	request := &payabli.AddNotificationRequest{
+//	    NotificationStandardRequest: &payabli.NotificationStandardRequest{
+//	        Content: &payabli.NotificationStandardRequestContent{
+//	            EventType: payabli.NotificationStandardRequestContentEventTypeCreatedApplication.Ptr(),
+//	        },
+//	        Frequency: payabli.NotificationStandardRequestFrequencyUntilcancelled,
+//	        Method: payabli.NotificationStandardRequestMethodWeb,
+//	        OwnerId: payabli.Int(
+//	            236,
+//	        ),
+//	        OwnerType: 0,
+//	        Status: payabli.Int(
+//	            1,
+//	        ),
+//	        Target: "https://webhook.site/2871b8f8-edc7-441a-b376-98d8c8e33275",
+//	    },
+//	}
+//	client.Notification.AddNotification(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) AddNotification(
 	ctx context.Context,
 	request *payabli.AddNotificationRequest,
@@ -52,6 +83,13 @@ func (c *Client) AddNotification(
 }
 
 // Retrieves a single notification or auto-generated report's details.
+//
+// Example:
+//
+//	client.Notification.GetNotification(
+//	    context.TODO(),
+//	    "1717",
+//	)
 func (c *Client) GetNotification(
 	ctx context.Context,
 	// Notification ID.
@@ -70,6 +108,31 @@ func (c *Client) GetNotification(
 }
 
 // Update a notification or auto-generated report.
+//
+// Example:
+//
+//	request := &payabli.UpdateNotificationRequest{
+//	    NotificationStandardRequest: &payabli.NotificationStandardRequest{
+//	        Content: &payabli.NotificationStandardRequestContent{
+//	            EventType: payabli.NotificationStandardRequestContentEventTypeApprovedPayment.Ptr(),
+//	        },
+//	        Frequency: payabli.NotificationStandardRequestFrequencyUntilcancelled,
+//	        Method: payabli.NotificationStandardRequestMethodEmail,
+//	        OwnerId: payabli.Int(
+//	            136,
+//	        ),
+//	        OwnerType: 0,
+//	        Status: payabli.Int(
+//	            1,
+//	        ),
+//	        Target: "newemail@email.com",
+//	    },
+//	}
+//	client.Notification.UpdateNotification(
+//	    context.TODO(),
+//	    "1717",
+//	    request,
+//	)
 func (c *Client) UpdateNotification(
 	ctx context.Context,
 	// Notification ID.
@@ -90,6 +153,13 @@ func (c *Client) UpdateNotification(
 }
 
 // Deletes a single notification or auto-generated report.
+//
+// Example:
+//
+//	client.Notification.DeleteNotification(
+//	    context.TODO(),
+//	    "1717",
+//	)
 func (c *Client) DeleteNotification(
 	ctx context.Context,
 	// Notification ID.
@@ -108,6 +178,13 @@ func (c *Client) DeleteNotification(
 }
 
 // Gets a copy of a generated report by ID.
+//
+// Example:
+//
+//	client.Notification.GetReportFile(
+//	    context.TODO(),
+//	    int64(1000000),
+//	)
 func (c *Client) GetReportFile(
 	ctx context.Context,
 	// Report ID

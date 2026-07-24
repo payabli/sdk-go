@@ -4,6 +4,7 @@ package customer
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -36,6 +43,51 @@ func NewClient(options *core.RequestOptions) *Client {
 
 // Creates a customer in an entrypoint. An identifier is required to create customer records. Change your identifier settings in Settings > Custom Fields in the Payabli Portal.
 // If you don't include an identifier, the record is rejected.
+//
+// Example:
+//
+//	request := &payabli.AddCustomerRequest{
+//	    Body: &payabli.CustomerData{
+//	        CustomerNumber: payabli.String(
+//	            "C-90010",
+//	        ),
+//	        Firstname: payabli.String(
+//	            "Irene",
+//	        ),
+//	        Lastname: payabli.String(
+//	            "Canizales",
+//	        ),
+//	        Email: payabli.String(
+//	            "irene@canizalesconcrete.com",
+//	        ),
+//	        Address1: payabli.String(
+//	            "123 Bishop's Trail",
+//	        ),
+//	        City: payabli.String(
+//	            "Mountain City",
+//	        ),
+//	        State: payabli.String(
+//	            "TN",
+//	        ),
+//	        Zip: payabli.String(
+//	            "37612",
+//	        ),
+//	        Country: payabli.String(
+//	            "US",
+//	        ),
+//	        TimeZone: payabli.Int(
+//	            -5,
+//	        ),
+//	        IdentifierFields: &payabli.Identifierfields{
+//	            "email",
+//	        },
+//	    },
+//	}
+//	client.Customer.AddCustomer(
+//	    context.TODO(),
+//	    "8cfec329267",
+//	    request,
+//	)
 func (c *Client) AddCustomer(
 	ctx context.Context,
 	// The entrypoint identifier.
@@ -56,6 +108,13 @@ func (c *Client) AddCustomer(
 }
 
 // Retrieves a customer's record and details.
+//
+// Example:
+//
+//	client.Customer.GetCustomer(
+//	    context.TODO(),
+//	    4440,
+//	)
 func (c *Client) GetCustomer(
 	ctx context.Context,
 	// Payabli-generated customer ID. Maps to "Customer ID" column in the Payabli Portal.
@@ -74,6 +133,37 @@ func (c *Client) GetCustomer(
 }
 
 // Update a customer record. Include only the fields you want to change.
+//
+// Example:
+//
+//	request := &payabli.CustomerData{
+//	    Firstname: payabli.String(
+//	        "Irene",
+//	    ),
+//	    Lastname: payabli.String(
+//	        "Canizales",
+//	    ),
+//	    Address1: payabli.String(
+//	        "145 Bishop's Trail",
+//	    ),
+//	    City: payabli.String(
+//	        "Mountain City",
+//	    ),
+//	    State: payabli.String(
+//	        "TN",
+//	    ),
+//	    Zip: payabli.String(
+//	        "37612",
+//	    ),
+//	    Country: payabli.String(
+//	        "US",
+//	    ),
+//	}
+//	client.Customer.UpdateCustomer(
+//	    context.TODO(),
+//	    4440,
+//	    request,
+//	)
 func (c *Client) UpdateCustomer(
 	ctx context.Context,
 	// Payabli-generated customer ID. Maps to "Customer ID" column in the Payabli Portal.
@@ -94,6 +184,13 @@ func (c *Client) UpdateCustomer(
 }
 
 // Delete a customer record.
+//
+// Example:
+//
+//	client.Customer.DeleteCustomer(
+//	    context.TODO(),
+//	    4440,
+//	)
 func (c *Client) DeleteCustomer(
 	ctx context.Context,
 	// Payabli-generated customer ID. Maps to "Customer ID" column in the Payabli Portal.
@@ -112,6 +209,13 @@ func (c *Client) DeleteCustomer(
 }
 
 // Sends the consent opt-in email to the customer email address in the customer record.
+//
+// Example:
+//
+//	client.Customer.RequestConsent(
+//	    context.TODO(),
+//	    4440,
+//	)
 func (c *Client) RequestConsent(
 	ctx context.Context,
 	// Payabli-generated customer ID. Maps to "Customer ID" column in the Payabli Portal.
@@ -130,6 +234,14 @@ func (c *Client) RequestConsent(
 }
 
 // Links a customer to a transaction by ID.
+//
+// Example:
+//
+//	client.Customer.LinkCustomerTransaction(
+//	    context.TODO(),
+//	    4440,
+//	    "45-as456777hhhhhhhhhh77777777-324",
+//	)
 func (c *Client) LinkCustomerTransaction(
 	ctx context.Context,
 	// Payabli-generated customer ID. Maps to "Customer ID" column in the Payabli Portal.

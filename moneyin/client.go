@@ -4,6 +4,7 @@ package moneyin
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -43,6 +50,53 @@ func NewClient(options *core.RequestOptions) *Client {
 // Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until [captured](/developers/api-reference/moneyin/capture-an-authorized-transaction).
 //
 // Only card transactions can be authorized. This endpoint can't be used for ACH transactions.
+//
+// Example:
+//
+//	request := &payabli.RequestPaymentAuthorize{
+//	    Body: &payabli.TransRequestBody{
+//	        CustomerData: &payabli.PayorDataRequest{
+//	            CustomerId: payabli.Int64(
+//	                int64(4440),
+//	            ),
+//	        },
+//	        EntryPoint: payabli.String(
+//	            "8cfec329267",
+//	        ),
+//	        Ipaddress: payabli.String(
+//	            "255.255.255.255",
+//	        ),
+//	        PaymentDetails: &payabli.PaymentDetail{
+//	            ServiceFee: payabli.Float64(
+//	                0,
+//	            ),
+//	            TotalAmount: 100,
+//	        },
+//	        PaymentMethod: &payabli.PaymentMethod{
+//	            PayMethodCredit: &payabli.PayMethodCredit{
+//	                Cardcvv: payabli.String(
+//	                    "999",
+//	                ),
+//	                Cardexp: "02/27",
+//	                CardHolder: payabli.String(
+//	                    "John Cassian",
+//	                ),
+//	                Cardnumber: "4111111111111111",
+//	                Cardzip: payabli.String(
+//	                    "12345",
+//	                ),
+//	                Initiator: payabli.String(
+//	                    "payor",
+//	                ),
+//	                Method: payabli.PayMethodCreditMethodCard,
+//	            },
+//	        },
+//	    },
+//	}
+//	client.MoneyIn.Authorize(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) Authorize(
 	ctx context.Context,
 	request *payabli.RequestPaymentAuthorize,
@@ -68,6 +122,14 @@ func (c *Client) Authorize(
 //	Capture an [authorized
 //
 // transaction](/developers/api-reference/moneyin/authorize-a-transaction) to complete the transaction and move funds from the customer to merchant account.
+//
+// Example:
+//
+//	client.MoneyIn.Capture(
+//	    context.TODO(),
+//	    "10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13",
+//	    0,
+//	)
 func (c *Client) Capture(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
@@ -97,6 +159,22 @@ func (c *Client) Capture(
 // Capture an [authorized transaction](/developers/api-reference/moneyin/authorize-a-transaction) to complete the transaction and move funds from the customer to merchant account.
 //
 // You can use this endpoint to capture both full and partial amounts of the original authorized transaction. See [Capture an authorized transaction](/developers/developer-guides/pay-in-auth-and-capture) for more information about this endpoint.
+//
+// Example:
+//
+//	request := &payabli.CaptureRequest{
+//	    PaymentDetails: &payabli.CapturePaymentDetails{
+//	        TotalAmount: 105,
+//	        ServiceFee: payabli.Float64(
+//	            5,
+//	        ),
+//	    },
+//	}
+//	client.MoneyIn.CaptureAuth(
+//	    context.TODO(),
+//	    "10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13",
+//	    request,
+//	)
 func (c *Client) CaptureAuth(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
@@ -119,6 +197,48 @@ func (c *Client) CaptureAuth(
 // Make a temporary microdeposit in a customer account to verify the customer's ownership and access to the target account. Reverse the microdeposit with `reverseCredit`. Payabli doesn't automatically make microdeposits when you add a bank account, you must manually make the requests.
 //
 // This feature must be enabled by Payabli on a per-merchant basis. Contact support for help.
+//
+// Example:
+//
+//	request := &payabli.RequestCredit{
+//	    IdempotencyKey: payabli.String(
+//	        "6B29FC40-CA47-1067-B31D-00DD010662DA",
+//	    ),
+//	    CustomerData: &payabli.PayorDataRequest{
+//	        BillingAddress1: payabli.String(
+//	            "5127 Linkwood ave",
+//	        ),
+//	        CustomerNumber: payabli.String(
+//	            "C-90010",
+//	        ),
+//	    },
+//	    Entrypoint: payabli.String(
+//	        "8cfec329267",
+//	    ),
+//	    PaymentDetails: &payabli.PaymentDetailCredit{
+//	        ServiceFee: payabli.Float64(
+//	            0,
+//	        ),
+//	        TotalAmount: 1,
+//	    },
+//	    PaymentMethod: &payabli.RequestCreditPaymentMethod{
+//	        AchAccount: payabli.String(
+//	            "88354454",
+//	        ),
+//	        AchAccountType: payabli.AchaccounttypeChecking.Ptr(),
+//	        AchHolder: payabli.String(
+//	            "John Smith",
+//	        ),
+//	        AchRouting: payabli.String(
+//	            "021000021",
+//	        ),
+//	        Method: payabli.RequestCreditPaymentMethodMethodAch,
+//	    },
+//	}
+//	client.MoneyIn.Credit(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) Credit(
 	ctx context.Context,
 	request *payabli.RequestCredit,
@@ -136,6 +256,13 @@ func (c *Client) Credit(
 }
 
 // Retrieve a processed transaction's details.
+//
+// Example:
+//
+//	client.MoneyIn.Details(
+//	    context.TODO(),
+//	    "45-as456777hhhhhhhhhh77777777-324",
+//	)
 func (c *Client) Details(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
@@ -160,6 +287,53 @@ func (c *Client) Details(
 // </Warning>
 //
 // Make a single transaction. This method authorizes and captures a payment in one step.
+//
+// Example:
+//
+//	request := &payabli.RequestPayment{
+//	    Body: &payabli.TransRequestBody{
+//	        CustomerData: &payabli.PayorDataRequest{
+//	            CustomerId: payabli.Int64(
+//	                int64(4440),
+//	            ),
+//	        },
+//	        EntryPoint: payabli.String(
+//	            "8cfec329267",
+//	        ),
+//	        Ipaddress: payabli.String(
+//	            "255.255.255.255",
+//	        ),
+//	        PaymentDetails: &payabli.PaymentDetail{
+//	            ServiceFee: payabli.Float64(
+//	                0,
+//	            ),
+//	            TotalAmount: 100,
+//	        },
+//	        PaymentMethod: &payabli.PaymentMethod{
+//	            PayMethodCredit: &payabli.PayMethodCredit{
+//	                Cardcvv: payabli.String(
+//	                    "999",
+//	                ),
+//	                Cardexp: "02/27",
+//	                CardHolder: payabli.String(
+//	                    "John Cassian",
+//	                ),
+//	                Cardnumber: "4111111111111111",
+//	                Cardzip: payabli.String(
+//	                    "12345",
+//	                ),
+//	                Initiator: payabli.String(
+//	                    "payor",
+//	                ),
+//	                Method: payabli.PayMethodCreditMethodCard,
+//	            },
+//	        },
+//	    },
+//	}
+//	client.MoneyIn.Getpaid(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) Getpaid(
 	ctx context.Context,
 	request *payabli.RequestPayment,
@@ -183,6 +357,14 @@ func (c *Client) Getpaid(
 // </Warning>
 //
 // A reversal either refunds or voids a transaction independent of the transaction's settlement status. Send a reversal request for a transaction, and Payabli automatically determines whether it's a refund or void. You don't need to know whether the transaction is settled or not. This endpoint only works on transactions made with the legacy endpoints. For transactions made with the current endpoints, check the transaction's settlement status and call void or refund based on the result.
+//
+// Example:
+//
+//	client.MoneyIn.Reverse(
+//	    context.TODO(),
+//	    "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
+//	    0,
+//	)
 func (c *Client) Reverse(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
@@ -214,6 +396,14 @@ func (c *Client) Reverse(
 // </Warning>
 //
 // Refund a transaction that has settled and send money back to the account holder. If a transaction hasn't been settled, void it instead.
+//
+// Example:
+//
+//	client.MoneyIn.Refund(
+//	    context.TODO(),
+//	    "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
+//	    0,
+//	)
 func (c *Client) Refund(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
@@ -245,6 +435,60 @@ func (c *Client) Refund(
 // </Warning>
 //
 // Refunds a settled transaction with split instructions.
+//
+// Example:
+//
+//	request := &payabli.RequestRefund{
+//	    IdempotencyKey: payabli.String(
+//	        "8A29FC40-CA47-1067-B31D-00DD010662DB",
+//	    ),
+//	    Amount: payabli.Float64(
+//	        100,
+//	    ),
+//	    OrderDescription: payabli.String(
+//	        "Materials deposit",
+//	    ),
+//	    RefundDetails: &payabli.RefundDetail{
+//	        SplitRefunding: []*payabli.SplitFundingRefundContent{
+//	            &payabli.SplitFundingRefundContent{
+//	                AccountId: payabli.String(
+//	                    "187-342",
+//	                ),
+//	                Amount: payabli.Float64(
+//	                    60,
+//	                ),
+//	                Description: payabli.String(
+//	                    "Refunding undelivered materials",
+//	                ),
+//	                OriginationEntryPoint: payabli.String(
+//	                    "7f1a381696",
+//	                ),
+//	            },
+//	            &payabli.SplitFundingRefundContent{
+//	                AccountId: payabli.String(
+//	                    "187-343",
+//	                ),
+//	                Amount: payabli.Float64(
+//	                    40,
+//	                ),
+//	                Description: payabli.String(
+//	                    "Refunding deposit for undelivered materials",
+//	                ),
+//	                OriginationEntryPoint: payabli.String(
+//	                    "7f1a381696",
+//	                ),
+//	            },
+//	        },
+//	    },
+//	    Source: payabli.String(
+//	        "api",
+//	    ),
+//	}
+//	client.MoneyIn.RefundWithInstructions(
+//	    context.TODO(),
+//	    "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
+//	    request,
+//	)
 func (c *Client) RefundWithInstructions(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
@@ -265,6 +509,13 @@ func (c *Client) RefundWithInstructions(
 }
 
 // Reverse microdeposits that are used to verify customer account ownership and access. The `transId` value is returned in the success response for the original credit transaction made with `api/MoneyIn/makecredit`.
+//
+// Example:
+//
+//	client.MoneyIn.ReverseCredit(
+//	    context.TODO(),
+//	    "45-as456777hhhhhhhhhh77777777-324",
+//	)
 func (c *Client) ReverseCredit(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
@@ -283,6 +534,19 @@ func (c *Client) ReverseCredit(
 }
 
 // Send a payment receipt for a transaction.
+//
+// Example:
+//
+//	request := &payabli.SendReceipt2TransRequest{
+//	    Email: payabli.String(
+//	        "example@email.com",
+//	    ),
+//	}
+//	client.MoneyIn.SendReceipt2Trans(
+//	    context.TODO(),
+//	    "45-as456777hhhhhhhhhh77777777-324",
+//	    request,
+//	)
 func (c *Client) SendReceipt2Trans(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
@@ -303,6 +567,26 @@ func (c *Client) SendReceipt2Trans(
 }
 
 // Validates a card number without running a transaction or authorizing a charge.
+//
+// Example:
+//
+//	request := &payabli.RequestPaymentValidate{
+//	    IdempotencyKey: payabli.String(
+//	        "6B29FC40-CA47-1067-B31D-00DD010662DA",
+//	    ),
+//	    EntryPoint: "8cfec329267",
+//	    PaymentMethod: &payabli.RequestPaymentValidatePaymentMethod{
+//	        Method: payabli.RequestPaymentValidatePaymentMethodMethodCard,
+//	        Cardnumber: "4360000001000005",
+//	        Cardexp: "12/29",
+//	        Cardzip: "14602-8328",
+//	        CardHolder: "Dianne Becker-Smith",
+//	    },
+//	}
+//	client.MoneyIn.Validate(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) Validate(
 	ctx context.Context,
 	request *payabli.RequestPaymentValidate,
@@ -326,6 +610,13 @@ func (c *Client) Validate(
 // </Warning>
 //
 // Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. If a transaction has been settled, refund it instead.
+//
+// Example:
+//
+//	client.MoneyIn.Void(
+//	    context.TODO(),
+//	    "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
+//	)
 func (c *Client) Void(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
@@ -344,6 +635,53 @@ func (c *Client) Void(
 }
 
 // Make a single transaction. This method authorizes and captures a payment in one step. This is the v2 version of the `api/MoneyIn/getpaid` endpoint, and returns the unified response format. See [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for more information.
+//
+// Example:
+//
+//	request := &payabli.RequestPaymentV2{
+//	    Body: &payabli.TransRequestBody{
+//	        CustomerData: &payabli.PayorDataRequest{
+//	            CustomerId: payabli.Int64(
+//	                int64(4440),
+//	            ),
+//	        },
+//	        EntryPoint: payabli.String(
+//	            "8cfec329267",
+//	        ),
+//	        Ipaddress: payabli.String(
+//	            "255.255.255.255",
+//	        ),
+//	        PaymentDetails: &payabli.PaymentDetail{
+//	            ServiceFee: payabli.Float64(
+//	                0,
+//	            ),
+//	            TotalAmount: 100,
+//	        },
+//	        PaymentMethod: &payabli.PaymentMethod{
+//	            PayMethodCredit: &payabli.PayMethodCredit{
+//	                Cardcvv: payabli.String(
+//	                    "999",
+//	                ),
+//	                Cardexp: "02/27",
+//	                CardHolder: payabli.String(
+//	                    "John Cassian",
+//	                ),
+//	                Cardnumber: "4111111111111111",
+//	                Cardzip: payabli.String(
+//	                    "12345",
+//	                ),
+//	                Initiator: payabli.String(
+//	                    "payor",
+//	                ),
+//	                Method: payabli.PayMethodCreditMethodCard,
+//	            },
+//	        },
+//	    },
+//	}
+//	client.MoneyIn.Getpaidv2(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) Getpaidv2(
 	ctx context.Context,
 	request *payabli.RequestPaymentV2,
@@ -363,6 +701,53 @@ func (c *Client) Getpaidv2(
 // Authorize a card transaction. This returns an authorization code and reserves funds for the merchant. Authorized transactions aren't flagged for settlement until captured. This is the v2 version of the `api/MoneyIn/authorize` endpoint, and returns the unified response format. See [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for more information.
 //
 // **Note**: Only card transactions can be authorized. This endpoint can't be used for ACH transactions.
+//
+// Example:
+//
+//	request := &payabli.RequestPaymentAuthorizeV2{
+//	    Body: &payabli.TransRequestBody{
+//	        CustomerData: &payabli.PayorDataRequest{
+//	            CustomerId: payabli.Int64(
+//	                int64(4440),
+//	            ),
+//	        },
+//	        EntryPoint: payabli.String(
+//	            "8cfec329267",
+//	        ),
+//	        Ipaddress: payabli.String(
+//	            "255.255.255.255",
+//	        ),
+//	        PaymentDetails: &payabli.PaymentDetail{
+//	            ServiceFee: payabli.Float64(
+//	                0,
+//	            ),
+//	            TotalAmount: 100,
+//	        },
+//	        PaymentMethod: &payabli.PaymentMethod{
+//	            PayMethodCredit: &payabli.PayMethodCredit{
+//	                Cardcvv: payabli.String(
+//	                    "999",
+//	                ),
+//	                Cardexp: "02/27",
+//	                CardHolder: payabli.String(
+//	                    "John Cassian",
+//	                ),
+//	                Cardnumber: "4111111111111111",
+//	                Cardzip: payabli.String(
+//	                    "12345",
+//	                ),
+//	                Initiator: payabli.String(
+//	                    "payor",
+//	                ),
+//	                Method: payabli.PayMethodCreditMethodCard,
+//	            },
+//	        },
+//	    },
+//	}
+//	client.MoneyIn.Authorizev2(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) Authorizev2(
 	ctx context.Context,
 	request *payabli.RequestPaymentAuthorizeV2,
@@ -380,6 +765,22 @@ func (c *Client) Authorizev2(
 }
 
 // Capture an authorized transaction to complete the transaction and move funds from the customer to merchant account. This is the v2 version of the `api/MoneyIn/capture/{transId}` endpoint, and returns the unified response format. See [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for more information.
+//
+// Example:
+//
+//	request := &payabli.CaptureRequest{
+//	    PaymentDetails: &payabli.CapturePaymentDetails{
+//	        TotalAmount: 105,
+//	        ServiceFee: payabli.Float64(
+//	            5,
+//	        ),
+//	    },
+//	}
+//	client.MoneyIn.Capturev2(
+//	    context.TODO(),
+//	    "10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13",
+//	    request,
+//	)
 func (c *Client) Capturev2(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
@@ -408,6 +809,15 @@ func (c *Client) Capturev2(
 //	To refund a split-funded transaction, include split instructions in the request body. Omit the body for a standard refund.
 //
 // </Note>
+//
+// Example:
+//
+//	request := &payabli.RefundV2Request{}
+//	client.MoneyIn.Refundv2(
+//	    context.TODO(),
+//	    "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
+//	    request,
+//	)
 func (c *Client) Refundv2(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
@@ -436,6 +846,16 @@ func (c *Client) Refundv2(
 //	To refund a split-funded transaction, include split instructions in the request body. Omit the body for a standard refund.
 //
 // </Note>
+//
+// Example:
+//
+//	request := &payabli.RefundV2Request{}
+//	client.MoneyIn.Refundv2Amount(
+//	    context.TODO(),
+//	    "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
+//	    0,
+//	    request,
+//	)
 func (c *Client) Refundv2Amount(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).
@@ -459,6 +879,13 @@ func (c *Client) Refundv2Amount(
 }
 
 // Cancel a transaction that hasn't been settled yet. Voiding non-captured authorizations prevents future captures. This is the v2 version of the `api/MoneyIn/void/{transId}` endpoint, and returns the unified response format. See [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for more information.
+//
+// Example:
+//
+//	client.MoneyIn.Voidv2(
+//	    context.TODO(),
+//	    "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
+//	)
 func (c *Client) Voidv2(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).

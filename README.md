@@ -73,8 +73,9 @@ import (
 
 func do() {
     client := client.NewClient(
-        option.WithApiKey(
-            "<value>",
+        option.WithClientCredentials(
+            "<clientId>",
+            "<clientSecret>",
         ),
     )
     request := &payabli.RequestPaymentV2{

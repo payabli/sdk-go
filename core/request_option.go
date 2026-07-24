@@ -6,12 +6,16 @@ import (
 	fmt "fmt"
 	http "net/http"
 	url "net/url"
+	strings "strings"
 )
 
 // RequestOption adapts the behavior of the client or an individual request.
 type RequestOption interface {
 	applyRequestOptions(*RequestOptions)
 }
+
+// TokenGetter is a function that returns an access token.
+type TokenGetter func() (string, error)
 
 // RequestOptions defines all of the possible request options.
 //
@@ -28,6 +32,10 @@ type RequestOptions struct {
 	MaxStreamReconnectAttempts uint
 	DisableStreamReconnection  bool
 	DisableRetries             bool
+	tokenGetter                TokenGetter
+	ClientID                   string
+	ClientSecret               string
+	Token                      string
 	ApiKey                     string
 }
 
@@ -51,18 +59,77 @@ func NewRequestOptions(opts ...RequestOption) *RequestOptions {
 // for the request(s).
 func (r *RequestOptions) ToHeader() http.Header {
 	header := r.cloneHeader()
-	if r.ApiKey != "" {
-		header.Set("requestToken", fmt.Sprintf("%v", r.ApiKey))
-	}
 	return header
+}
+
+// AuthHeadersForEndpoint returns the auth headers to apply for an endpoint,
+// given the endpoint's static security requirements. It routes to the first
+// requirement whose schemes all have credentials available (OR across the
+// list, AND within a requirement).
+func (r *RequestOptions) AuthHeadersForEndpoint(security [][]string) (http.Header, error) {
+	if len(security) == 0 {
+		return make(http.Header), nil
+	}
+	availableAuthHeaders := make(map[string]http.Header)
+	token := r.Token
+	if token == "" && r.tokenGetter != nil {
+		if value, err := r.tokenGetter(); err == nil {
+			token = value
+		}
+	}
+	if token != "" {
+		tokenHeaders := make(http.Header)
+		tokenHeaders.Set("Authorization", "Bearer "+token)
+		availableAuthHeaders["BearerAuth"] = tokenHeaders
+	}
+	if r.ApiKey != "" {
+		headerValues := make(http.Header)
+		headerValues.Set("requestToken", fmt.Sprintf("%v", r.ApiKey))
+		availableAuthHeaders["APIKeyAuth"] = headerValues
+	}
+	for _, requirement := range security {
+		satisfied := true
+		for _, schemeKey := range requirement {
+			if _, ok := availableAuthHeaders[schemeKey]; !ok {
+				satisfied = false
+				break
+			}
+		}
+		if !satisfied {
+			continue
+		}
+		combined := make(http.Header)
+		for _, schemeKey := range requirement {
+			for name, values := range availableAuthHeaders[schemeKey] {
+				for _, value := range values {
+					combined.Set(name, value)
+				}
+			}
+		}
+		return combined, nil
+	}
+	missing := make([]string, 0, len(security))
+	for _, requirement := range security {
+		var missingSchemes []string
+		for _, schemeKey := range requirement {
+			if _, ok := availableAuthHeaders[schemeKey]; !ok {
+				missingSchemes = append(missingSchemes, schemeKey)
+			}
+		}
+		missing = append(missing, strings.Join(missingSchemes, " AND "))
+	}
+	return nil, fmt.Errorf(
+		"no authentication credentials provided that satisfy the endpoint's security requirements; please provide credentials for: %s",
+		strings.Join(missing, " OR "),
+	)
 }
 
 func (r *RequestOptions) cloneHeader() http.Header {
 	headers := r.HTTPHeader.Clone()
 	headers.Set("X-Fern-Language", "Go")
 	headers.Set("X-Fern-SDK-Name", "github.com/payabli/sdk-go")
-	headers.Set("X-Fern-SDK-Version", "v1.0.11")
-	headers.Set("User-Agent", "github.com/payabli/sdk-go/1.0.11")
+	headers.Set("X-Fern-SDK-Version", "v1.0.12")
+	headers.Set("User-Agent", "github.com/payabli/sdk-go/1.0.12")
 	return headers
 }
 
@@ -150,6 +217,50 @@ type WithoutRetriesOption struct{}
 
 func (w *WithoutRetriesOption) applyRequestOptions(opts *RequestOptions) {
 	opts.DisableRetries = true
+}
+
+// ClientIDOption implements the RequestOption interface.
+type ClientIDOption struct {
+	ClientID string
+}
+
+func (c *ClientIDOption) applyRequestOptions(opts *RequestOptions) {
+	opts.ClientID = c.ClientID
+}
+
+// ClientSecretOption implements the RequestOption interface.
+type ClientSecretOption struct {
+	ClientSecret string
+}
+
+func (c *ClientSecretOption) applyRequestOptions(opts *RequestOptions) {
+	opts.ClientSecret = c.ClientSecret
+}
+
+// ClientCredentialsOption implements the RequestOption interface.
+type ClientCredentialsOption struct {
+	ClientID     string
+	ClientSecret string
+}
+
+func (c *ClientCredentialsOption) applyRequestOptions(opts *RequestOptions) {
+	opts.ClientID = c.ClientID
+	opts.ClientSecret = c.ClientSecret
+}
+
+// TokenOption implements the RequestOption interface.
+type TokenOption struct {
+	Token string
+}
+
+func (t *TokenOption) applyRequestOptions(opts *RequestOptions) {
+	opts.Token = t.Token
+}
+
+// SetTokenGetter sets the token getter function for OAuth.
+// This is an internal method and should not be called directly.
+func (r *RequestOptions) SetTokenGetter(getter TokenGetter) {
+	r.tokenGetter = getter
 }
 
 // ApiKeyOption implements the RequestOption interface.

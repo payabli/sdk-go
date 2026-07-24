@@ -44,9 +44,16 @@ func (r *RawClient) DepositFunds(
 		"https://api-sandbox.payabli.com/api",
 	)
 	endpointURL := baseURL + "/Funding/depositFunds"
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
 	headers := internal.MergeHeaders(
-		r.options.ToHeader(),
-		options.ToHeader(),
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
 	)
 	headers.Add("Content-Type", "application/json")
 	var response *payabli.DepositFundsResponse

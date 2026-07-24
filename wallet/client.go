@@ -4,6 +4,7 @@ package wallet
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -35,6 +42,24 @@ func NewClient(options *core.RequestOptions) *Client {
 }
 
 // Configure and activate Apple Pay for a Payabli organization
+//
+// Example:
+//
+//	request := &payabli.ConfigureOrganizationRequestApplePay{
+//	    Cascade: payabli.Bool(
+//	        true,
+//	    ),
+//	    IsEnabled: payabli.Bool(
+//	        true,
+//	    ),
+//	    OrgId: payabli.Int64(
+//	        int64(123),
+//	    ),
+//	}
+//	client.Wallet.ConfigureApplePayOrganization(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) ConfigureApplePayOrganization(
 	ctx context.Context,
 	request *payabli.ConfigureOrganizationRequestApplePay,
@@ -52,6 +77,21 @@ func (c *Client) ConfigureApplePayOrganization(
 }
 
 // Configure and activate Apple Pay for a Payabli paypoint
+//
+// Example:
+//
+//	request := &payabli.ConfigurePaypointRequestApplePay{
+//	    Entry: payabli.String(
+//	        "8cfec329267",
+//	    ),
+//	    IsEnabled: payabli.Bool(
+//	        true,
+//	    ),
+//	}
+//	client.Wallet.ConfigureApplePayPaypoint(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) ConfigureApplePayPaypoint(
 	ctx context.Context,
 	request *payabli.ConfigurePaypointRequestApplePay,
@@ -69,6 +109,24 @@ func (c *Client) ConfigureApplePayPaypoint(
 }
 
 // Configure and activate Google Pay for a Payabli organization
+//
+// Example:
+//
+//	request := &payabli.ConfigureOrganizationRequestGooglePay{
+//	    Cascade: payabli.Bool(
+//	        true,
+//	    ),
+//	    IsEnabled: payabli.Bool(
+//	        true,
+//	    ),
+//	    OrgId: payabli.Int64(
+//	        int64(123),
+//	    ),
+//	}
+//	client.Wallet.ConfigureGooglePayOrganization(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) ConfigureGooglePayOrganization(
 	ctx context.Context,
 	request *payabli.ConfigureOrganizationRequestGooglePay,
@@ -86,6 +144,21 @@ func (c *Client) ConfigureGooglePayOrganization(
 }
 
 // Configure and activate Google Pay for a Payabli paypoint
+//
+// Example:
+//
+//	request := &payabli.ConfigurePaypointRequestGooglePay{
+//	    Entry: payabli.String(
+//	        "8cfec329267",
+//	    ),
+//	    IsEnabled: payabli.Bool(
+//	        true,
+//	    ),
+//	}
+//	client.Wallet.ConfigureGooglePayPaypoint(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) ConfigureGooglePayPaypoint(
 	ctx context.Context,
 	request *payabli.ConfigurePaypointRequestGooglePay,

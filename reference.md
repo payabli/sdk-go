@@ -28,106 +28,105 @@ Creates a bill in an entrypoint.
 
 ```go
 request := &payabli.AddBillRequest{
-        Body: &payabli.BillOutData{
-            AccountingField1: payabli.String(
-                "MyInternalId",
-            ),
-            Attachments: &payabli.Attachments{
-                &payabli.FileContent{
-                    Filename: payabli.String(
-                        "my-doc.pdf",
-                    ),
-                    Ftype: payabli.FileContentFtypePdf.Ptr(),
-                    Furl: payabli.String(
-                        "https://mysite.com/my-doc.pdf",
-                    ),
-                },
-            },
-            BillDate: payabli.Time(
-                payabli.MustParseDate(
-                    "2024-07-01",
+    Body: &payabli.BillOutData{
+        AccountingField1: payabli.String(
+            "MyInternalId",
+        ),
+        Attachments: &payabli.Attachments{
+            &payabli.FileContent{
+                Filename: payabli.String(
+                    "my-doc.pdf",
                 ),
-            ),
-            BillItems: &payabli.Billitems{
-                &payabli.BillItem{
-                    ItemCategories: []string{
-                        "deposits",
-                    },
-                    ItemCommodityCode: payabli.String(
-                        "010",
-                    ),
-                    ItemCost: payabli.Float64(
-                        5,
-                    ),
-                    ItemDescription: payabli.String(
-                        "Deposit for materials",
-                    ),
-                    ItemMode: payabli.Int(
-                        0,
-                    ),
-                    ItemProductCode: payabli.String(
-                        "M-DEPOSIT",
-                    ),
-                    ItemProductName: payabli.String(
-                        "Materials deposit",
-                    ),
-                    ItemQty: payabli.Int(
-                        1,
-                    ),
-                    ItemTaxAmount: payabli.Float64(
-                        7,
-                    ),
-                    ItemTaxRate: payabli.Float64(
-                        0.075,
-                    ),
-                    ItemTotalAmount: payabli.Float64(
-                        123,
-                    ),
-                    ItemUnitOfMeasure: payabli.String(
-                        "SqFt",
-                    ),
-                },
-            },
-            BillNumber: payabli.String(
-                "ABC-123",
-            ),
-            Comments: payabli.String(
-                "Deposit for materials",
-            ),
-            DueDate: payabli.Time(
-                payabli.MustParseDate(
-                    "2024-07-01",
-                ),
-            ),
-            EndDate: payabli.Time(
-                payabli.MustParseDate(
-                    "2024-07-01",
-                ),
-            ),
-            Frequency: payabli.FrequencyMonthly.Ptr(),
-            Mode: payabli.Int(
-                0,
-            ),
-            NetAmount: payabli.Float64(
-                3762.87,
-            ),
-            Status: payabli.Int(
-                1,
-            ),
-            Terms: payabli.TermsNet30.Ptr(),
-            Vendor: &payabli.BillOutDataVendor{
-                VendorNumber: payabli.String(
-                    "VEN-123",
+                Ftype: payabli.FileContentFtypePdf.Ptr(),
+                Furl: payabli.String(
+                    "https://mysite.com/my-doc.pdf",
                 ),
             },
         },
-    }
-client.Bill.AddBill(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+        BillDate: payabli.Time(
+            payabli.MustParseDate(
+                "2024-07-01",
+            ),
+        ),
+        BillItems: &payabli.Billitems{
+            &payabli.BillItem{
+                ItemCategories: []string{
+                    "deposits",
+                },
+                ItemCommodityCode: payabli.String(
+                    "010",
+                ),
+                ItemCost: payabli.Float64(
+                    5,
+                ),
+                ItemDescription: payabli.String(
+                    "Deposit for materials",
+                ),
+                ItemMode: payabli.Int(
+                    0,
+                ),
+                ItemProductCode: payabli.String(
+                    "M-DEPOSIT",
+                ),
+                ItemProductName: payabli.String(
+                    "Materials deposit",
+                ),
+                ItemQty: payabli.Int(
+                    1,
+                ),
+                ItemTaxAmount: payabli.Float64(
+                    7,
+                ),
+                ItemTaxRate: payabli.Float64(
+                    0.075,
+                ),
+                ItemTotalAmount: payabli.Float64(
+                    123,
+                ),
+                ItemUnitOfMeasure: payabli.String(
+                    "SqFt",
+                ),
+            },
+        },
+        BillNumber: payabli.String(
+            "ABC-123",
+        ),
+        Comments: payabli.String(
+            "Deposit for materials",
+        ),
+        DueDate: payabli.Time(
+            payabli.MustParseDate(
+                "2024-07-01",
+            ),
+        ),
+        EndDate: payabli.Time(
+            payabli.MustParseDate(
+                "2024-07-01",
+            ),
+        ),
+        Frequency: payabli.FrequencyMonthly.Ptr(),
+        Mode: payabli.Int(
+            0,
+        ),
+        NetAmount: payabli.Float64(
+            3762.87,
+        ),
+        Status: payabli.Int(
+            1,
+        ),
+        Terms: payabli.TermsNet30.Ptr(),
+        Vendor: &payabli.BillOutDataVendor{
+            VendorNumber: payabli.String(
+                "VEN-123",
+            ),
+        },
+    },
 }
+client.Bill.AddBill(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -198,10 +197,9 @@ Retrieves a bill by ID from an entrypoint.
 
 ```go
 client.Bill.GetBill(
-        context.TODO(),
-        285,
-    )
-}
+    context.TODO(),
+    285,
+)
 ```
 </dd>
 </dl>
@@ -256,21 +254,20 @@ Updates a bill by ID.
 
 ```go
 request := &payabli.BillOutData{
-        BillDate: payabli.Time(
-            payabli.MustParseDate(
-                "2025-07-01",
-            ),
+    BillDate: payabli.Time(
+        payabli.MustParseDate(
+            "2025-07-01",
         ),
-        NetAmount: payabli.Float64(
-            3762.87,
-        ),
-    }
-client.Bill.EditBill(
-        context.TODO(),
-        285,
-        request,
-    )
+    ),
+    NetAmount: payabli.Float64(
+        3762.87,
+    ),
 }
+client.Bill.EditBill(
+    context.TODO(),
+    285,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -333,10 +330,9 @@ Deletes a bill by ID.
 
 ```go
 client.Bill.DeleteBill(
-        context.TODO(),
-        285,
-    )
-}
+    context.TODO(),
+    285,
+)
 ```
 </dd>
 </dl>
@@ -391,17 +387,16 @@ Retrieves a file attached to a bill, either as a binary file or as a Base64-enco
 
 ```go
 request := &payabli.GetAttachedFromBillRequest{
-        ReturnObject: payabli.Bool(
-            true,
-        ),
-    }
-client.Bill.GetAttachedFromBill(
-        context.TODO(),
-        285,
-        "0_Bill.pdf",
-        request,
-    )
+    ReturnObject: payabli.Bool(
+        true,
+    ),
 }
+client.Bill.GetAttachedFromBill(
+    context.TODO(),
+    285,
+    "0_Bill.pdf",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -477,12 +472,11 @@ Delete a file attached to a bill.
 ```go
 request := &payabli.DeleteAttachedFromBillRequest{}
 client.Bill.DeleteAttachedFromBill(
-        context.TODO(),
-        285,
-        "0_Bill.pdf",
-        request,
-    )
-}
+    context.TODO(),
+    285,
+    "0_Bill.pdf",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -557,19 +551,18 @@ Send a bill to a user or list of users to approve.
 
 ```go
 request := &payabli.SendToApprovalBillRequest{
-        IdempotencyKey: payabli.String(
-            "6B29FC40-CA47-1067-B31D-00DD010662DA",
-        ),
-        Body: []string{
-            "approver@example.com",
-        },
-    }
-client.Bill.SendToApprovalBill(
-        context.TODO(),
-        285,
-        request,
-    )
+    IdempotencyKey: payabli.String(
+        "6B29FC40-CA47-1067-B31D-00DD010662DA",
+    ),
+    Body: []string{
+        "approver@example.com",
+    },
 }
+client.Bill.SendToApprovalBill(
+    context.TODO(),
+    285,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -648,15 +641,14 @@ Modify the list of users the bill is sent to for approval.
 
 ```go
 request := []string{
-        "approver1@example.com",
-        "approver2@example.com",
-    }
-client.Bill.ModifyApprovalBill(
-        context.TODO(),
-        285,
-        request,
-    )
+    "approver1@example.com",
+    "approver2@example.com",
 }
+client.Bill.ModifyApprovalBill(
+    context.TODO(),
+    285,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -720,12 +712,11 @@ Approve or disapprove a bill by ID.
 ```go
 request := &payabli.SetApprovedBillRequest{}
 client.Bill.SetApprovedBill(
-        context.TODO(),
-        285,
-        "true",
-        request,
-    )
-}
+    context.TODO(),
+    285,
+    "true",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -796,22 +787,21 @@ Retrieve a list of bills for an entrypoint. Use filters to limit results. Includ
 
 ```go
 request := &payabli.ListBillsRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Bill.ListBills(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Bill.ListBills(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -950,22 +940,21 @@ Retrieve a list of bills for an organization. Use filters to limit results. Incl
 
 ```go
 request := &payabli.ListBillsOrgRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Bill.ListBillsOrg(
-        context.TODO(),
-        123,
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Bill.ListBillsOrg(
+    context.TODO(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -1106,48 +1095,47 @@ If you don't include an identifier, the record is rejected.
 
 ```go
 request := &payabli.AddCustomerRequest{
-        Body: &payabli.CustomerData{
-            CustomerNumber: payabli.String(
-                "C-90010",
-            ),
-            Firstname: payabli.String(
-                "Irene",
-            ),
-            Lastname: payabli.String(
-                "Canizales",
-            ),
-            Email: payabli.String(
-                "irene@canizalesconcrete.com",
-            ),
-            Address1: payabli.String(
-                "123 Bishop's Trail",
-            ),
-            City: payabli.String(
-                "Mountain City",
-            ),
-            State: payabli.String(
-                "TN",
-            ),
-            Zip: payabli.String(
-                "37612",
-            ),
-            Country: payabli.String(
-                "US",
-            ),
-            TimeZone: payabli.Int(
-                -5,
-            ),
-            IdentifierFields: &payabli.Identifierfields{
-                "email",
-            },
+    Body: &payabli.CustomerData{
+        CustomerNumber: payabli.String(
+            "C-90010",
+        ),
+        Firstname: payabli.String(
+            "Irene",
+        ),
+        Lastname: payabli.String(
+            "Canizales",
+        ),
+        Email: payabli.String(
+            "irene@canizalesconcrete.com",
+        ),
+        Address1: payabli.String(
+            "123 Bishop's Trail",
+        ),
+        City: payabli.String(
+            "Mountain City",
+        ),
+        State: payabli.String(
+            "TN",
+        ),
+        Zip: payabli.String(
+            "37612",
+        ),
+        Country: payabli.String(
+            "US",
+        ),
+        TimeZone: payabli.Int(
+            -5,
+        ),
+        IdentifierFields: &payabli.Identifierfields{
+            "email",
         },
-    }
-client.Customer.AddCustomer(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    },
 }
+client.Customer.AddCustomer(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -1234,10 +1222,9 @@ Retrieves a customer's record and details.
 
 ```go
 client.Customer.GetCustomer(
-        context.TODO(),
-        4440,
-    )
-}
+    context.TODO(),
+    4440,
+)
 ```
 </dd>
 </dl>
@@ -1292,34 +1279,33 @@ Update a customer record. Include only the fields you want to change.
 
 ```go
 request := &payabli.CustomerData{
-        Firstname: payabli.String(
-            "Irene",
-        ),
-        Lastname: payabli.String(
-            "Canizales",
-        ),
-        Address1: payabli.String(
-            "145 Bishop's Trail",
-        ),
-        City: payabli.String(
-            "Mountain City",
-        ),
-        State: payabli.String(
-            "TN",
-        ),
-        Zip: payabli.String(
-            "37612",
-        ),
-        Country: payabli.String(
-            "US",
-        ),
-    }
-client.Customer.UpdateCustomer(
-        context.TODO(),
-        4440,
-        request,
-    )
+    Firstname: payabli.String(
+        "Irene",
+    ),
+    Lastname: payabli.String(
+        "Canizales",
+    ),
+    Address1: payabli.String(
+        "145 Bishop's Trail",
+    ),
+    City: payabli.String(
+        "Mountain City",
+    ),
+    State: payabli.String(
+        "TN",
+    ),
+    Zip: payabli.String(
+        "37612",
+    ),
+    Country: payabli.String(
+        "US",
+    ),
 }
+client.Customer.UpdateCustomer(
+    context.TODO(),
+    4440,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -1382,10 +1368,9 @@ Delete a customer record.
 
 ```go
 client.Customer.DeleteCustomer(
-        context.TODO(),
-        4440,
-    )
-}
+    context.TODO(),
+    4440,
+)
 ```
 </dd>
 </dl>
@@ -1440,10 +1425,9 @@ Sends the consent opt-in email to the customer email address in the customer rec
 
 ```go
 client.Customer.RequestConsent(
-        context.TODO(),
-        4440,
-    )
-}
+    context.TODO(),
+    4440,
+)
 ```
 </dd>
 </dl>
@@ -1498,11 +1482,10 @@ Links a customer to a transaction by ID.
 
 ```go
 client.Customer.LinkCustomerTransaction(
-        context.TODO(),
-        4440,
-        "45-as456777hhhhhhhhhh77777777-324",
-    )
-}
+    context.TODO(),
+    4440,
+    "45-as456777hhhhhhhhhh77777777-324",
+)
 ```
 </dd>
 </dl>
@@ -1566,16 +1549,15 @@ Captures a check for Remote Deposit Capture (RDC) using the provided check image
 
 ```go
 request := &payabli.CheckCaptureRequestBody{
-        EntryPoint: "8cfec329267",
-        FrontImage: "/9j/4AAQSkZJRgABAQEASABIAAD...",
-        RearImage: "/9j/4AAQSkZJRgABAQEASABIAAD...",
-        CheckAmount: 12550,
-    }
-client.CheckCapture.CheckProcessing(
-        context.TODO(),
-        request,
-    )
+    EntryPoint: "8cfec329267",
+    FrontImage: "/9j/4AAQSkZJRgABAQEASABIAAD...",
+    RearImage: "/9j/4AAQSkZJRgABAQEASABIAAD...",
+    CheckAmount: 12550,
 }
+client.CheckCapture.CheckProcessing(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -1662,50 +1644,49 @@ Only card transactions can be authorized. This endpoint can't be used for ACH tr
 
 ```go
 request := &payabli.RequestPaymentAuthorize{
-        Body: &payabli.TransRequestBody{
-            CustomerData: &payabli.PayorDataRequest{
-                CustomerId: payabli.Int64(
-                    int64(4440),
-                ),
-            },
-            EntryPoint: payabli.String(
-                "8cfec329267",
+    Body: &payabli.TransRequestBody{
+        CustomerData: &payabli.PayorDataRequest{
+            CustomerId: payabli.Int64(
+                int64(4440),
             ),
-            Ipaddress: payabli.String(
-                "255.255.255.255",
+        },
+        EntryPoint: payabli.String(
+            "8cfec329267",
+        ),
+        Ipaddress: payabli.String(
+            "255.255.255.255",
+        ),
+        PaymentDetails: &payabli.PaymentDetail{
+            ServiceFee: payabli.Float64(
+                0,
             ),
-            PaymentDetails: &payabli.PaymentDetail{
-                ServiceFee: payabli.Float64(
-                    0,
+            TotalAmount: 100,
+        },
+        PaymentMethod: &payabli.PaymentMethod{
+            PayMethodCredit: &payabli.PayMethodCredit{
+                Cardcvv: payabli.String(
+                    "999",
                 ),
-                TotalAmount: 100,
-            },
-            PaymentMethod: &payabli.PaymentMethod{
-                PayMethodCredit: &payabli.PayMethodCredit{
-                    Cardcvv: payabli.String(
-                        "999",
-                    ),
-                    Cardexp: "02/27",
-                    CardHolder: payabli.String(
-                        "John Cassian",
-                    ),
-                    Cardnumber: "4111111111111111",
-                    Cardzip: payabli.String(
-                        "12345",
-                    ),
-                    Initiator: payabli.String(
-                        "payor",
-                    ),
-                    Method: payabli.PayMethodCreditMethodCard,
-                },
+                Cardexp: "02/27",
+                CardHolder: payabli.String(
+                    "John Cassian",
+                ),
+                Cardnumber: "4111111111111111",
+                Cardzip: payabli.String(
+                    "12345",
+                ),
+                Initiator: payabli.String(
+                    "payor",
+                ),
+                Method: payabli.PayMethodCreditMethodCard,
             },
         },
-    }
-client.MoneyIn.Authorize(
-        context.TODO(),
-        request,
-    )
+    },
 }
+client.MoneyIn.Authorize(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -1781,11 +1762,10 @@ transaction](/developers/api-reference/moneyin/authorize-a-transaction) to compl
 
 ```go
 client.MoneyIn.Capture(
-        context.TODO(),
-        "10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13",
-        0,
-    )
-}
+    context.TODO(),
+    "10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13",
+    0,
+)
 ```
 </dd>
 </dl>
@@ -1854,19 +1834,18 @@ You can use this endpoint to capture both full and partial amounts of the origin
 
 ```go
 request := &payabli.CaptureRequest{
-        PaymentDetails: &payabli.CapturePaymentDetails{
-            TotalAmount: 105,
-            ServiceFee: payabli.Float64(
-                5,
-            ),
-        },
-    }
-client.MoneyIn.CaptureAuth(
-        context.TODO(),
-        "10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13",
-        request,
-    )
+    PaymentDetails: &payabli.CapturePaymentDetails{
+        TotalAmount: 105,
+        ServiceFee: payabli.Float64(
+            5,
+        ),
+    },
 }
+client.MoneyIn.CaptureAuth(
+    context.TODO(),
+    "10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -1931,45 +1910,44 @@ This feature must be enabled by Payabli on a per-merchant basis. Contact support
 
 ```go
 request := &payabli.RequestCredit{
-        IdempotencyKey: payabli.String(
-            "6B29FC40-CA47-1067-B31D-00DD010662DA",
+    IdempotencyKey: payabli.String(
+        "6B29FC40-CA47-1067-B31D-00DD010662DA",
+    ),
+    CustomerData: &payabli.PayorDataRequest{
+        BillingAddress1: payabli.String(
+            "5127 Linkwood ave",
         ),
-        CustomerData: &payabli.PayorDataRequest{
-            BillingAddress1: payabli.String(
-                "5127 Linkwood ave",
-            ),
-            CustomerNumber: payabli.String(
-                "C-90010",
-            ),
-        },
-        Entrypoint: payabli.String(
-            "8cfec329267",
+        CustomerNumber: payabli.String(
+            "C-90010",
         ),
-        PaymentDetails: &payabli.PaymentDetailCredit{
-            ServiceFee: payabli.Float64(
-                0,
-            ),
-            TotalAmount: 1,
-        },
-        PaymentMethod: &payabli.RequestCreditPaymentMethod{
-            AchAccount: payabli.String(
-                "88354454",
-            ),
-            AchAccountType: payabli.AchaccounttypeChecking.Ptr(),
-            AchHolder: payabli.String(
-                "John Smith",
-            ),
-            AchRouting: payabli.String(
-                "021000021",
-            ),
-            Method: payabli.RequestCreditPaymentMethodMethodAch,
-        },
-    }
-client.MoneyIn.Credit(
-        context.TODO(),
-        request,
-    )
+    },
+    Entrypoint: payabli.String(
+        "8cfec329267",
+    ),
+    PaymentDetails: &payabli.PaymentDetailCredit{
+        ServiceFee: payabli.Float64(
+            0,
+        ),
+        TotalAmount: 1,
+    },
+    PaymentMethod: &payabli.RequestCreditPaymentMethod{
+        AchAccount: payabli.String(
+            "88354454",
+        ),
+        AchAccountType: payabli.AchaccounttypeChecking.Ptr(),
+        AchHolder: payabli.String(
+            "John Smith",
+        ),
+        AchRouting: payabli.String(
+            "021000021",
+        ),
+        Method: payabli.RequestCreditPaymentMethodMethodAch,
+    },
 }
+client.MoneyIn.Credit(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -2104,10 +2082,9 @@ Retrieve a processed transaction's details.
 
 ```go
 client.MoneyIn.Details(
-        context.TODO(),
-        "45-as456777hhhhhhhhhh77777777-324",
-    )
-}
+    context.TODO(),
+    "45-as456777hhhhhhhhhh77777777-324",
+)
 ```
 </dd>
 </dl>
@@ -2166,50 +2143,49 @@ Make a single transaction. This method authorizes and captures a payment in one 
 
 ```go
 request := &payabli.RequestPayment{
-        Body: &payabli.TransRequestBody{
-            CustomerData: &payabli.PayorDataRequest{
-                CustomerId: payabli.Int64(
-                    int64(4440),
-                ),
-            },
-            EntryPoint: payabli.String(
-                "8cfec329267",
+    Body: &payabli.TransRequestBody{
+        CustomerData: &payabli.PayorDataRequest{
+            CustomerId: payabli.Int64(
+                int64(4440),
             ),
-            Ipaddress: payabli.String(
-                "255.255.255.255",
+        },
+        EntryPoint: payabli.String(
+            "8cfec329267",
+        ),
+        Ipaddress: payabli.String(
+            "255.255.255.255",
+        ),
+        PaymentDetails: &payabli.PaymentDetail{
+            ServiceFee: payabli.Float64(
+                0,
             ),
-            PaymentDetails: &payabli.PaymentDetail{
-                ServiceFee: payabli.Float64(
-                    0,
+            TotalAmount: 100,
+        },
+        PaymentMethod: &payabli.PaymentMethod{
+            PayMethodCredit: &payabli.PayMethodCredit{
+                Cardcvv: payabli.String(
+                    "999",
                 ),
-                TotalAmount: 100,
-            },
-            PaymentMethod: &payabli.PaymentMethod{
-                PayMethodCredit: &payabli.PayMethodCredit{
-                    Cardcvv: payabli.String(
-                        "999",
-                    ),
-                    Cardexp: "02/27",
-                    CardHolder: payabli.String(
-                        "John Cassian",
-                    ),
-                    Cardnumber: "4111111111111111",
-                    Cardzip: payabli.String(
-                        "12345",
-                    ),
-                    Initiator: payabli.String(
-                        "payor",
-                    ),
-                    Method: payabli.PayMethodCreditMethodCard,
-                },
+                Cardexp: "02/27",
+                CardHolder: payabli.String(
+                    "John Cassian",
+                ),
+                Cardnumber: "4111111111111111",
+                Cardzip: payabli.String(
+                    "12345",
+                ),
+                Initiator: payabli.String(
+                    "payor",
+                ),
+                Method: payabli.PayMethodCreditMethodCard,
             },
         },
-    }
-client.MoneyIn.Getpaid(
-        context.TODO(),
-        request,
-    )
+    },
 }
+client.MoneyIn.Getpaid(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -2308,11 +2284,10 @@ A reversal either refunds or voids a transaction independent of the transaction'
 
 ```go
 client.MoneyIn.Reverse(
-        context.TODO(),
-        "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
-        0,
-    )
-}
+    context.TODO(),
+    "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
+    0,
+)
 ```
 </dd>
 </dl>
@@ -2385,11 +2360,10 @@ Refund a transaction that has settled and send money back to the account holder.
 
 ```go
 client.MoneyIn.Refund(
-        context.TODO(),
-        "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
-        0,
-    )
-}
+    context.TODO(),
+    "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
+    0,
+)
 ```
 </dd>
 </dl>
@@ -2462,57 +2436,56 @@ Refunds a settled transaction with split instructions.
 
 ```go
 request := &payabli.RequestRefund{
-        IdempotencyKey: payabli.String(
-            "8A29FC40-CA47-1067-B31D-00DD010662DB",
-        ),
-        Amount: payabli.Float64(
-            100,
-        ),
-        OrderDescription: payabli.String(
-            "Materials deposit",
-        ),
-        RefundDetails: &payabli.RefundDetail{
-            SplitRefunding: []*payabli.SplitFundingRefundContent{
-                &payabli.SplitFundingRefundContent{
-                    AccountId: payabli.String(
-                        "187-342",
-                    ),
-                    Amount: payabli.Float64(
-                        60,
-                    ),
-                    Description: payabli.String(
-                        "Refunding undelivered materials",
-                    ),
-                    OriginationEntryPoint: payabli.String(
-                        "7f1a381696",
-                    ),
-                },
-                &payabli.SplitFundingRefundContent{
-                    AccountId: payabli.String(
-                        "187-343",
-                    ),
-                    Amount: payabli.Float64(
-                        40,
-                    ),
-                    Description: payabli.String(
-                        "Refunding deposit for undelivered materials",
-                    ),
-                    OriginationEntryPoint: payabli.String(
-                        "7f1a381696",
-                    ),
-                },
+    IdempotencyKey: payabli.String(
+        "8A29FC40-CA47-1067-B31D-00DD010662DB",
+    ),
+    Amount: payabli.Float64(
+        100,
+    ),
+    OrderDescription: payabli.String(
+        "Materials deposit",
+    ),
+    RefundDetails: &payabli.RefundDetail{
+        SplitRefunding: []*payabli.SplitFundingRefundContent{
+            &payabli.SplitFundingRefundContent{
+                AccountId: payabli.String(
+                    "187-342",
+                ),
+                Amount: payabli.Float64(
+                    60,
+                ),
+                Description: payabli.String(
+                    "Refunding undelivered materials",
+                ),
+                OriginationEntryPoint: payabli.String(
+                    "7f1a381696",
+                ),
+            },
+            &payabli.SplitFundingRefundContent{
+                AccountId: payabli.String(
+                    "187-343",
+                ),
+                Amount: payabli.Float64(
+                    40,
+                ),
+                Description: payabli.String(
+                    "Refunding deposit for undelivered materials",
+                ),
+                OriginationEntryPoint: payabli.String(
+                    "7f1a381696",
+                ),
             },
         },
-        Source: payabli.String(
-            "api",
-        ),
-    }
-client.MoneyIn.RefundWithInstructions(
-        context.TODO(),
-        "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
-        request,
-    )
+    },
+    Source: payabli.String(
+        "api",
+    ),
 }
+client.MoneyIn.RefundWithInstructions(
+    context.TODO(),
+    "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -2629,10 +2602,9 @@ Reverse microdeposits that are used to verify customer account ownership and acc
 
 ```go
 client.MoneyIn.ReverseCredit(
-        context.TODO(),
-        "45-as456777hhhhhhhhhh77777777-324",
-    )
-}
+    context.TODO(),
+    "45-as456777hhhhhhhhhh77777777-324",
+)
 ```
 </dd>
 </dl>
@@ -2687,16 +2659,15 @@ Send a payment receipt for a transaction.
 
 ```go
 request := &payabli.SendReceipt2TransRequest{
-        Email: payabli.String(
-            "example@email.com",
-        ),
-    }
-client.MoneyIn.SendReceipt2Trans(
-        context.TODO(),
-        "45-as456777hhhhhhhhhh77777777-324",
-        request,
-    )
+    Email: payabli.String(
+        "example@email.com",
+    ),
 }
+client.MoneyIn.SendReceipt2Trans(
+    context.TODO(),
+    "45-as456777hhhhhhhhhh77777777-324",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -2763,23 +2734,22 @@ Validates a card number without running a transaction or authorizing a charge.
 
 ```go
 request := &payabli.RequestPaymentValidate{
-        IdempotencyKey: payabli.String(
-            "6B29FC40-CA47-1067-B31D-00DD010662DA",
-        ),
-        EntryPoint: "8cfec329267",
-        PaymentMethod: &payabli.RequestPaymentValidatePaymentMethod{
-            Method: payabli.RequestPaymentValidatePaymentMethodMethodCard,
-            Cardnumber: "4360000001000005",
-            Cardexp: "12/29",
-            Cardzip: "14602-8328",
-            CardHolder: "Dianne Becker-Smith",
-        },
-    }
-client.MoneyIn.Validate(
-        context.TODO(),
-        request,
-    )
+    IdempotencyKey: payabli.String(
+        "6B29FC40-CA47-1067-B31D-00DD010662DA",
+    ),
+    EntryPoint: "8cfec329267",
+    PaymentMethod: &payabli.RequestPaymentValidatePaymentMethod{
+        Method: payabli.RequestPaymentValidatePaymentMethodMethodCard,
+        Cardnumber: "4360000001000005",
+        Cardexp: "12/29",
+        Cardzip: "14602-8328",
+        CardHolder: "Dianne Becker-Smith",
+    },
 }
+client.MoneyIn.Validate(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -2878,10 +2848,9 @@ Cancel a transaction that hasn't been settled yet. Voiding non-captured authoriz
 
 ```go
 client.MoneyIn.Void(
-        context.TODO(),
-        "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
-    )
-}
+    context.TODO(),
+    "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
+)
 ```
 </dd>
 </dl>
@@ -2936,50 +2905,49 @@ Make a single transaction. This method authorizes and captures a payment in one 
 
 ```go
 request := &payabli.RequestPaymentV2{
-        Body: &payabli.TransRequestBody{
-            CustomerData: &payabli.PayorDataRequest{
-                CustomerId: payabli.Int64(
-                    int64(4440),
-                ),
-            },
-            EntryPoint: payabli.String(
-                "8cfec329267",
+    Body: &payabli.TransRequestBody{
+        CustomerData: &payabli.PayorDataRequest{
+            CustomerId: payabli.Int64(
+                int64(4440),
             ),
-            Ipaddress: payabli.String(
-                "255.255.255.255",
+        },
+        EntryPoint: payabli.String(
+            "8cfec329267",
+        ),
+        Ipaddress: payabli.String(
+            "255.255.255.255",
+        ),
+        PaymentDetails: &payabli.PaymentDetail{
+            ServiceFee: payabli.Float64(
+                0,
             ),
-            PaymentDetails: &payabli.PaymentDetail{
-                ServiceFee: payabli.Float64(
-                    0,
+            TotalAmount: 100,
+        },
+        PaymentMethod: &payabli.PaymentMethod{
+            PayMethodCredit: &payabli.PayMethodCredit{
+                Cardcvv: payabli.String(
+                    "999",
                 ),
-                TotalAmount: 100,
-            },
-            PaymentMethod: &payabli.PaymentMethod{
-                PayMethodCredit: &payabli.PayMethodCredit{
-                    Cardcvv: payabli.String(
-                        "999",
-                    ),
-                    Cardexp: "02/27",
-                    CardHolder: payabli.String(
-                        "John Cassian",
-                    ),
-                    Cardnumber: "4111111111111111",
-                    Cardzip: payabli.String(
-                        "12345",
-                    ),
-                    Initiator: payabli.String(
-                        "payor",
-                    ),
-                    Method: payabli.PayMethodCreditMethodCard,
-                },
+                Cardexp: "02/27",
+                CardHolder: payabli.String(
+                    "John Cassian",
+                ),
+                Cardnumber: "4111111111111111",
+                Cardzip: payabli.String(
+                    "12345",
+                ),
+                Initiator: payabli.String(
+                    "payor",
+                ),
+                Method: payabli.PayMethodCreditMethodCard,
             },
         },
-    }
-client.MoneyIn.Getpaidv2(
-        context.TODO(),
-        request,
-    )
+    },
 }
+client.MoneyIn.Getpaidv2(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -3068,50 +3036,49 @@ Authorize a card transaction. This returns an authorization code and reserves fu
 
 ```go
 request := &payabli.RequestPaymentAuthorizeV2{
-        Body: &payabli.TransRequestBody{
-            CustomerData: &payabli.PayorDataRequest{
-                CustomerId: payabli.Int64(
-                    int64(4440),
-                ),
-            },
-            EntryPoint: payabli.String(
-                "8cfec329267",
+    Body: &payabli.TransRequestBody{
+        CustomerData: &payabli.PayorDataRequest{
+            CustomerId: payabli.Int64(
+                int64(4440),
             ),
-            Ipaddress: payabli.String(
-                "255.255.255.255",
+        },
+        EntryPoint: payabli.String(
+            "8cfec329267",
+        ),
+        Ipaddress: payabli.String(
+            "255.255.255.255",
+        ),
+        PaymentDetails: &payabli.PaymentDetail{
+            ServiceFee: payabli.Float64(
+                0,
             ),
-            PaymentDetails: &payabli.PaymentDetail{
-                ServiceFee: payabli.Float64(
-                    0,
+            TotalAmount: 100,
+        },
+        PaymentMethod: &payabli.PaymentMethod{
+            PayMethodCredit: &payabli.PayMethodCredit{
+                Cardcvv: payabli.String(
+                    "999",
                 ),
-                TotalAmount: 100,
-            },
-            PaymentMethod: &payabli.PaymentMethod{
-                PayMethodCredit: &payabli.PayMethodCredit{
-                    Cardcvv: payabli.String(
-                        "999",
-                    ),
-                    Cardexp: "02/27",
-                    CardHolder: payabli.String(
-                        "John Cassian",
-                    ),
-                    Cardnumber: "4111111111111111",
-                    Cardzip: payabli.String(
-                        "12345",
-                    ),
-                    Initiator: payabli.String(
-                        "payor",
-                    ),
-                    Method: payabli.PayMethodCreditMethodCard,
-                },
+                Cardexp: "02/27",
+                CardHolder: payabli.String(
+                    "John Cassian",
+                ),
+                Cardnumber: "4111111111111111",
+                Cardzip: payabli.String(
+                    "12345",
+                ),
+                Initiator: payabli.String(
+                    "payor",
+                ),
+                Method: payabli.PayMethodCreditMethodCard,
             },
         },
-    }
-client.MoneyIn.Authorizev2(
-        context.TODO(),
-        request,
-    )
+    },
 }
+client.MoneyIn.Authorizev2(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -3182,19 +3149,18 @@ Capture an authorized transaction to complete the transaction and move funds fro
 
 ```go
 request := &payabli.CaptureRequest{
-        PaymentDetails: &payabli.CapturePaymentDetails{
-            TotalAmount: 105,
-            ServiceFee: payabli.Float64(
-                5,
-            ),
-        },
-    }
-client.MoneyIn.Capturev2(
-        context.TODO(),
-        "10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13",
-        request,
-    )
+    PaymentDetails: &payabli.CapturePaymentDetails{
+        TotalAmount: 105,
+        ServiceFee: payabli.Float64(
+            5,
+        ),
+    },
 }
+client.MoneyIn.Capturev2(
+    context.TODO(),
+    "10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -3264,11 +3230,10 @@ This is the v2 version of the refund endpoint, and returns the unified response 
 ```go
 request := &payabli.RefundV2Request{}
 client.MoneyIn.Refundv2(
-        context.TODO(),
-        "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
-        request,
-    )
-}
+    context.TODO(),
+    "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -3338,12 +3303,11 @@ This is the v2 version of the refund endpoint, and returns the unified response 
 ```go
 request := &payabli.RefundV2Request{}
 client.MoneyIn.Refundv2Amount(
-        context.TODO(),
-        "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
-        0,
-        request,
-    )
-}
+    context.TODO(),
+    "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
+    0,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -3414,10 +3378,9 @@ Cancel a transaction that hasn't been settled yet. Voiding non-captured authoriz
 
 ```go
 client.MoneyIn.Voidv2(
-        context.TODO(),
-        "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
-    )
-}
+    context.TODO(),
+    "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
+)
 ```
 </dd>
 </dl>
@@ -3473,14 +3436,13 @@ Exchanges a client ID and client secret for a short-lived Bearer access token us
 
 ```go
 request := &payabli.CreateServerSideTokenRequest{
-        ClientId: "YOUR_CLIENT_ID",
-        ClientSecret: "YOUR_CLIENT_SECRET",
-    }
-client.Token.CreateServerSideToken(
-        context.TODO(),
-        request,
-    )
+    ClientId: "YOUR_CLIENT_ID",
+    ClientSecret: "YOUR_CLIENT_SECRET",
 }
+client.Token.CreateServerSideToken(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -3560,10 +3522,9 @@ Retrieves a single subscription's details.
 
 ```go
 client.Subscription.GetSubscription(
-        context.TODO(),
-        231,
-    )
-}
+    context.TODO(),
+    231,
+)
 ```
 </dd>
 </dl>
@@ -3618,16 +3579,15 @@ Updates a subscription's details.
 
 ```go
 request := &payabli.RequestUpdateSchedule{
-        SetPause: payabli.Bool(
-            true,
-        ),
-    }
-client.Subscription.UpdateSubscription(
-        context.TODO(),
-        231,
-        request,
-    )
+    SetPause: payabli.Bool(
+        true,
+    ),
 }
+client.Subscription.UpdateSubscription(
+    context.TODO(),
+    231,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -3706,10 +3666,9 @@ Deletes a subscription, autopay, or recurring payment and prevents future charge
 
 ```go
 client.Subscription.RemoveSubscription(
-        context.TODO(),
-        231,
-    )
-}
+    context.TODO(),
+    231,
+)
 ```
 </dd>
 </dl>
@@ -3764,57 +3723,56 @@ Creates a subscription or scheduled payment to run at a specified time and frequ
 
 ```go
 request := &payabli.RequestSchedule{
-        CustomerData: &payabli.PayorDataRequest{
-            CustomerId: payabli.Int64(
-                int64(4440),
-            ),
-        },
-        EntryPoint: payabli.String(
-            "8cfec329267",
+    CustomerData: &payabli.PayorDataRequest{
+        CustomerId: payabli.Int64(
+            int64(4440),
         ),
-        PaymentDetails: &payabli.PaymentDetail{
-            ServiceFee: payabli.Float64(
-                0,
+    },
+    EntryPoint: payabli.String(
+        "8cfec329267",
+    ),
+    PaymentDetails: &payabli.PaymentDetail{
+        ServiceFee: payabli.Float64(
+            0,
+        ),
+        TotalAmount: 100,
+    },
+    PaymentMethod: &payabli.RequestSchedulePaymentMethod{
+        PayMethodCredit: &payabli.PayMethodCredit{
+            Cardcvv: payabli.String(
+                "123",
             ),
-            TotalAmount: 100,
+            Cardexp: "12/29",
+            CardHolder: payabli.String(
+                "John Cassian",
+            ),
+            Cardnumber: "4111111111111111",
+            Cardzip: payabli.String(
+                "37615",
+            ),
+            Initiator: payabli.String(
+                "payor",
+            ),
+            Method: payabli.PayMethodCreditMethodCard,
         },
-        PaymentMethod: &payabli.RequestSchedulePaymentMethod{
-            PayMethodCredit: &payabli.PayMethodCredit{
-                Cardcvv: payabli.String(
-                    "123",
-                ),
-                Cardexp: "12/29",
-                CardHolder: payabli.String(
-                    "John Cassian",
-                ),
-                Cardnumber: "4111111111111111",
-                Cardzip: payabli.String(
-                    "37615",
-                ),
-                Initiator: payabli.String(
-                    "payor",
-                ),
-                Method: payabli.PayMethodCreditMethodCard,
-            },
-        },
-        ScheduleDetails: &payabli.ScheduleDetail{
-            EndDate: payabli.String(
-                "2025-03-20",
-            ),
-            Frequency: payabli.FrequencyWeekly.Ptr(),
-            PlanId: payabli.Int(
-                1,
-            ),
-            StartDate: payabli.String(
-                "2024-09-20",
-            ),
-        },
-    }
-client.Subscription.NewSubscription(
-        context.TODO(),
-        request,
-    )
+    },
+    ScheduleDetails: &payabli.ScheduleDetail{
+        EndDate: payabli.String(
+            "2025-03-20",
+        ),
+        Frequency: payabli.FrequencyWeekly.Ptr(),
+        PlanId: payabli.Int(
+            1,
+        ),
+        StartDate: payabli.String(
+            "2024-09-20",
+        ),
+    },
 }
+client.Subscription.NewSubscription(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -3958,91 +3916,90 @@ Creates an invoice in an entrypoint.
 
 ```go
 request := &payabli.AddInvoiceRequest{
-        Body: &payabli.InvoiceDataRequest{
-            CustomerData: &payabli.PayorDataRequest{
-                CustomerNumber: payabli.String(
-                    "C-90010",
+    Body: &payabli.InvoiceDataRequest{
+        CustomerData: &payabli.PayorDataRequest{
+            CustomerNumber: payabli.String(
+                "C-90010",
+            ),
+            FirstName: payabli.String(
+                "Tamara",
+            ),
+            LastName: payabli.String(
+                "Bagratoni",
+            ),
+        },
+        InvoiceData: &payabli.BillData{
+            Discount: payabli.Float64(
+                10,
+            ),
+            Frequency: payabli.FrequencyOneTime.Ptr(),
+            InvoiceAmount: payabli.Float64(
+                1082.37,
+            ),
+            InvoiceDate: payabli.Time(
+                payabli.MustParseDate(
+                    "2025-10-19",
                 ),
-                FirstName: payabli.String(
-                    "Tamara",
-                ),
-                LastName: payabli.String(
-                    "Bagratoni",
-                ),
-            },
-            InvoiceData: &payabli.BillData{
-                Discount: payabli.Float64(
-                    10,
-                ),
-                Frequency: payabli.FrequencyOneTime.Ptr(),
-                InvoiceAmount: payabli.Float64(
-                    1082.37,
-                ),
-                InvoiceDate: payabli.Time(
-                    payabli.MustParseDate(
-                        "2025-10-19",
+            ),
+            InvoiceNumber: payabli.String(
+                "INV-2345",
+            ),
+            InvoiceStatus: payabli.Int(
+                1,
+            ),
+            InvoiceType: payabli.Int(
+                0,
+            ),
+            Items: []*payabli.BillItem{
+                &payabli.BillItem{
+                    ItemCost: payabli.Float64(
+                        100,
                     ),
-                ),
-                InvoiceNumber: payabli.String(
-                    "INV-2345",
-                ),
-                InvoiceStatus: payabli.Int(
-                    1,
-                ),
-                InvoiceType: payabli.Int(
-                    0,
-                ),
-                Items: []*payabli.BillItem{
-                    &payabli.BillItem{
-                        ItemCost: payabli.Float64(
-                            100,
-                        ),
-                        ItemDescription: payabli.String(
-                            "Consultation for Georgian tours",
-                        ),
-                        ItemMode: payabli.Int(
-                            2,
-                        ),
-                        ItemProductName: payabli.String(
-                            "Adventure Consult",
-                        ),
-                        ItemQty: payabli.Int(
-                            2,
-                        ),
-                        ItemTotalAmount: payabli.Float64(
-                            200,
-                        ),
-                    },
-                    &payabli.BillItem{
-                        ItemCost: payabli.Float64(
-                            882.37,
-                        ),
-                        ItemDescription: payabli.String(
-                            "Deposit for trip planning",
-                        ),
-                        ItemMode: payabli.Int(
-                            2,
-                        ),
-                        ItemProductName: payabli.String(
-                            "Deposit ",
-                        ),
-                        ItemQty: payabli.Int(
-                            1,
-                        ),
-                        ItemTotalAmount: payabli.Float64(
-                            882.37,
-                        ),
-                    },
+                    ItemDescription: payabli.String(
+                        "Consultation for Georgian tours",
+                    ),
+                    ItemMode: payabli.Int(
+                        2,
+                    ),
+                    ItemProductName: payabli.String(
+                        "Adventure Consult",
+                    ),
+                    ItemQty: payabli.Int(
+                        2,
+                    ),
+                    ItemTotalAmount: payabli.Float64(
+                        200,
+                    ),
+                },
+                &payabli.BillItem{
+                    ItemCost: payabli.Float64(
+                        882.37,
+                    ),
+                    ItemDescription: payabli.String(
+                        "Deposit for trip planning",
+                    ),
+                    ItemMode: payabli.Int(
+                        2,
+                    ),
+                    ItemProductName: payabli.String(
+                        "Deposit ",
+                    ),
+                    ItemQty: payabli.Int(
+                        1,
+                    ),
+                    ItemTotalAmount: payabli.Float64(
+                        882.37,
+                    ),
                 },
             },
         },
-    }
-client.Invoice.AddInvoice(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    },
 }
+client.Invoice.AddInvoice(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -4122,12 +4079,11 @@ Retrieves a file attached to an invoice.
 ```go
 request := &payabli.GetAttachedFileFromInvoiceRequest{}
 client.Invoice.GetAttachedFileFromInvoice(
-        context.TODO(),
-        1,
-        "filename",
-        request,
-    )
-}
+    context.TODO(),
+    1,
+    "filename",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -4202,11 +4158,10 @@ Deletes a file attached to an invoice.
 
 ```go
 client.Invoice.DeleteAttachedFromInvoice(
-        context.TODO(),
-        23548884,
-        "0_Bill.pdf",
-    )
-}
+    context.TODO(),
+    23548884,
+    "0_Bill.pdf",
+)
 ```
 </dd>
 </dl>
@@ -4273,10 +4228,9 @@ Retrieves a single invoice by ID.
 
 ```go
 client.Invoice.GetInvoice(
-        context.TODO(),
-        23548884,
-    )
-}
+    context.TODO(),
+    23548884,
+)
 ```
 </dd>
 </dl>
@@ -4331,44 +4285,43 @@ Updates details for a single invoice in an entrypoint.
 
 ```go
 request := &payabli.EditInvoiceRequest{
-        Body: &payabli.InvoiceDataRequest{
-            InvoiceData: &payabli.BillData{
-                InvoiceAmount: payabli.Float64(
-                    982.37,
+    Body: &payabli.InvoiceDataRequest{
+        InvoiceData: &payabli.BillData{
+            InvoiceAmount: payabli.Float64(
+                982.37,
+            ),
+            InvoiceDate: payabli.Time(
+                payabli.MustParseDate(
+                    "2025-10-19",
                 ),
-                InvoiceDate: payabli.Time(
-                    payabli.MustParseDate(
-                        "2025-10-19",
+            ),
+            InvoiceNumber: payabli.String(
+                "INV-2345",
+            ),
+            Items: []*payabli.BillItem{
+                &payabli.BillItem{
+                    ItemCost: payabli.Float64(
+                        882.37,
                     ),
-                ),
-                InvoiceNumber: payabli.String(
-                    "INV-2345",
-                ),
-                Items: []*payabli.BillItem{
-                    &payabli.BillItem{
-                        ItemCost: payabli.Float64(
-                            882.37,
-                        ),
-                        ItemDescription: payabli.String(
-                            "Deposit for trip planning",
-                        ),
-                        ItemProductName: payabli.String(
-                            "Deposit",
-                        ),
-                        ItemQty: payabli.Int(
-                            1,
-                        ),
-                    },
+                    ItemDescription: payabli.String(
+                        "Deposit for trip planning",
+                    ),
+                    ItemProductName: payabli.String(
+                        "Deposit",
+                    ),
+                    ItemQty: payabli.Int(
+                        1,
+                    ),
                 },
             },
         },
-    }
-client.Invoice.EditInvoice(
-        context.TODO(),
-        23548884,
-        request,
-    )
+    },
 }
+client.Invoice.EditInvoice(
+    context.TODO(),
+    23548884,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -4439,10 +4392,9 @@ Deletes a single invoice from an entrypoint.
 
 ```go
 client.Invoice.DeleteInvoice(
-        context.TODO(),
-        23548884,
-    )
-}
+    context.TODO(),
+    23548884,
+)
 ```
 </dd>
 </dl>
@@ -4497,10 +4449,9 @@ Retrieves the next available invoice number for a paypoint.
 
 ```go
 client.Invoice.GetInvoiceNumber(
-        context.TODO(),
-        "8cfec329267",
-    )
-}
+    context.TODO(),
+    "8cfec329267",
+)
 ```
 </dd>
 </dl>
@@ -4555,22 +4506,21 @@ Returns a list of invoices for an entrypoint. Use filters to limit results. Incl
 
 ```go
 request := &payabli.ListInvoicesRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Invoice.ListInvoices(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Invoice.ListInvoices(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -4729,22 +4679,21 @@ Returns a list of invoices for an org. Use filters to limit results. Include the
 
 ```go
 request := &payabli.ListInvoicesOrgRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Invoice.ListInvoicesOrg(
-        context.TODO(),
-        123,
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Invoice.ListInvoicesOrg(
+    context.TODO(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -4903,19 +4852,18 @@ Sends an invoice from an entrypoint via email.
 
 ```go
 request := &payabli.SendInvoiceRequest{
-        Attachfile: payabli.Bool(
-            true,
-        ),
-        Mail2: payabli.String(
-            "tamara@example.com",
-        ),
-    }
-client.Invoice.SendInvoice(
-        context.TODO(),
-        23548884,
-        request,
-    )
+    Attachfile: payabli.Bool(
+        true,
+    ),
+    Mail2: payabli.String(
+        "tamara@example.com",
+    ),
 }
+client.Invoice.SendInvoice(
+    context.TODO(),
+    23548884,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -4986,10 +4934,9 @@ Export a single invoice in PDF format.
 
 ```go
 client.Invoice.GetInvoicePdf(
-        context.TODO(),
-        23548884,
-    )
-}
+    context.TODO(),
+    23548884,
+)
 ```
 </dd>
 </dl>
@@ -5047,253 +4994,252 @@ The payment page configuration blocks (`logo`, `page`, `paymentMethods`, `review
 
 ```go
 request := &payabli.PayLinkDataInvoice{
-        Mail2: payabli.String(
-            "jo@example.com; ceo@example.com",
+    Mail2: payabli.String(
+        "jo@example.com; ceo@example.com",
+    ),
+    ContactUs: &payabli.ContactElement{
+        EmailLabel: payabli.String(
+            "Email",
         ),
-        ContactUs: &payabli.ContactElement{
-            EmailLabel: payabli.String(
-                "Email",
-            ),
-            Enabled: payabli.Bool(
-                true,
-            ),
-            Header: payabli.String(
-                "Contact Us",
-            ),
-            Order: payabli.Int(
-                0,
-            ),
-            PaymentIcons: payabli.Bool(
-                true,
-            ),
-            PhoneLabel: payabli.String(
-                "Phone",
-            ),
-        },
-        Invoices: &payabli.InvoiceElement{
-            Enabled: payabli.Bool(
-                true,
-            ),
-            InvoiceLink: &payabli.LabelElement{
-                Enabled: payabli.Bool(
-                    true,
-                ),
-                Label: payabli.String(
-                    "View Invoice",
-                ),
-                Order: payabli.Int(
-                    0,
-                ),
-            },
-            Order: payabli.Int(
-                0,
-            ),
-            ViewInvoiceDetails: &payabli.LabelElement{
-                Enabled: payabli.Bool(
-                    true,
-                ),
-                Label: payabli.String(
-                    "Invoice Details",
-                ),
-                Order: payabli.Int(
-                    0,
-                ),
-            },
-        },
-        Logo: &payabli.Element{
-            Enabled: payabli.Bool(
-                true,
-            ),
-            Order: payabli.Int(
-                0,
-            ),
-        },
-        MessageBeforePaying: &payabli.LabelElement{
+        Enabled: payabli.Bool(
+            true,
+        ),
+        Header: payabli.String(
+            "Contact Us",
+        ),
+        Order: payabli.Int(
+            0,
+        ),
+        PaymentIcons: payabli.Bool(
+            true,
+        ),
+        PhoneLabel: payabli.String(
+            "Phone",
+        ),
+    },
+    Invoices: &payabli.InvoiceElement{
+        Enabled: payabli.Bool(
+            true,
+        ),
+        InvoiceLink: &payabli.LabelElement{
             Enabled: payabli.Bool(
                 true,
             ),
             Label: payabli.String(
-                "Please review your payment details",
+                "View Invoice",
             ),
             Order: payabli.Int(
                 0,
             ),
         },
-        Notes: &payabli.NoteElement{
+        Order: payabli.Int(
+            0,
+        ),
+        ViewInvoiceDetails: &payabli.LabelElement{
             Enabled: payabli.Bool(
                 true,
             ),
-            Header: payabli.String(
-                "Additional Notes",
+            Label: payabli.String(
+                "Invoice Details",
             ),
             Order: payabli.Int(
                 0,
             ),
-            Placeholder: payabli.String(
-                "Enter any additional notes here",
+        },
+    },
+    Logo: &payabli.Element{
+        Enabled: payabli.Bool(
+            true,
+        ),
+        Order: payabli.Int(
+            0,
+        ),
+    },
+    MessageBeforePaying: &payabli.LabelElement{
+        Enabled: payabli.Bool(
+            true,
+        ),
+        Label: payabli.String(
+            "Please review your payment details",
+        ),
+        Order: payabli.Int(
+            0,
+        ),
+    },
+    Notes: &payabli.NoteElement{
+        Enabled: payabli.Bool(
+            true,
+        ),
+        Header: payabli.String(
+            "Additional Notes",
+        ),
+        Order: payabli.Int(
+            0,
+        ),
+        Placeholder: payabli.String(
+            "Enter any additional notes here",
+        ),
+        Value: payabli.String(
+            "",
+        ),
+    },
+    Page: &payabli.PageElement{
+        Description: payabli.String(
+            "Complete your payment securely",
+        ),
+        Enabled: payabli.Bool(
+            true,
+        ),
+        Header: payabli.String(
+            "Payment Page",
+        ),
+        Order: payabli.Int(
+            0,
+        ),
+    },
+    PaymentButton: &payabli.LabelElement{
+        Enabled: payabli.Bool(
+            true,
+        ),
+        Label: payabli.String(
+            "Pay Now",
+        ),
+        Order: payabli.Int(
+            0,
+        ),
+    },
+    PaymentMethods: &payabli.MethodElement{
+        AllMethodsChecked: payabli.Bool(
+            true,
+        ),
+        Enabled: payabli.Bool(
+            true,
+        ),
+        Header: payabli.String(
+            "Payment Methods",
+        ),
+        Methods: &payabli.MethodsList{
+            Amex: payabli.Bool(
+                true,
             ),
-            Value: payabli.String(
+            ApplePay: payabli.Bool(
+                true,
+            ),
+            Discover: payabli.Bool(
+                true,
+            ),
+            ECheck: payabli.Bool(
+                true,
+            ),
+            Mastercard: payabli.Bool(
+                true,
+            ),
+            Visa: payabli.Bool(
+                true,
+            ),
+        },
+        Order: payabli.Int(
+            0,
+        ),
+        Settings: &payabli.MethodElementSettings{
+            ApplePay: &payabli.MethodElementSettingsApplePay{
+                ButtonStyle: payabli.MethodElementSettingsApplePayButtonStyleBlack.Ptr(),
+                ButtonType: payabli.MethodElementSettingsApplePayButtonTypePay.Ptr(),
+                Language: payabli.MethodElementSettingsApplePayLanguageEnUs.Ptr(),
+            },
+        },
+    },
+    Payor: &payabli.PayorElement{
+        Enabled: payabli.Bool(
+            true,
+        ),
+        Fields: []*payabli.PayorFields{
+            &payabli.PayorFields{
+                Display: payabli.Bool(
+                    true,
+                ),
+                Fixed: payabli.Bool(
+                    true,
+                ),
+                Identifier: payabli.Bool(
+                    true,
+                ),
+                Label: payabli.String(
+                    "Full Name",
+                ),
+                Name: payabli.String(
+                    "fullName",
+                ),
+                Order: payabli.Int(
+                    0,
+                ),
+                Required: payabli.Bool(
+                    true,
+                ),
+                Validation: payabli.String(
+                    "alpha",
+                ),
+                Value: payabli.String(
+                    "",
+                ),
+                Width: payabli.Int(
+                    0,
+                ),
+            },
+        },
+        Header: payabli.String(
+            "Payor Information",
+        ),
+        Order: payabli.Int(
+            0,
+        ),
+    },
+    Review: &payabli.HeaderElement{
+        Enabled: payabli.Bool(
+            true,
+        ),
+        Header: payabli.String(
+            "Review Payment",
+        ),
+        Order: payabli.Int(
+            0,
+        ),
+    },
+    Settings: &payabli.PagelinkSetting{
+        Color: payabli.String(
+            "#000000",
+        ),
+        CustomCssUrl: payabli.String(
+            "https://example.com/custom.css",
+        ),
+        Language: payabli.String(
+            "en",
+        ),
+        PageLogo: &payabli.FileContent{
+            FContent: payabli.String(
+                "PHN2ZyB2aWV3Qm94PSIwIDAgODAwIDEwMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPCEtLSBCYWNrZ3JvdW5kIC0tPgogIDxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iMTAwMCIgZmlsbD0id2hpdGUiLz4KICAKICA8IS0tIENvbXBhbnkgSGVhZGVyIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI2MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+R3J1enlhIEFkdmVudHVyZSBPdXRmaXR0ZXJzPC90ZXh0PgogIDxsaW5lIHgxPSI0MCIgeTE9IjgwIiB4Mj0iNzYwIiB5Mj0iODAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgCiAgPCEtLSBDb21wYW55IERldGFpbHMgLS0+CiAgPHRleHQgeD0iNDAiIHk9IjExMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4xMjMgTW91bnRhaW4gVmlldyBSb2FkPC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+VGJpbGlzaSwgR2VvcmdpYSAwMTA1PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxNTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+VGVsOiArOTk1IDMyIDEyMyA0NTY3PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxNzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+RW1haWw6IGluZm9AZ3J1enlhYWR2ZW50dXJlcy5jb208L3RleHQ+CgogIDwhLS0gSW52b2ljZSBUaXRsZSAtLT4KICA8dGV4dCB4PSI2MDAiIHk9IjExMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+SU5WT0lDRTwvdGV4dD4KICA8dGV4dCB4PSI2MDAiIHk9IjE0MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5EYXRlOiAxMi8xMS8yMDI0PC90ZXh0PgogIDx0ZXh0IHg9IjYwMCIgeT0iMTYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPkludm9pY2UgIzogR1JaLTIwMjQtMTEyMzwvdGV4dD4KCiAgPCEtLSBCaWxsIFRvIFNlY3Rpb24gLS0+CiAgPHRleHQgeD0iNDAiIHk9IjIyMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+QklMTCBUTzo8L3RleHQ+CiAgPHJlY3QgeD0iNDAiIHk9IjIzNSIgd2lkdGg9IjMwMCIgaGVpZ2h0PSI4MCIgZmlsbD0iI2Y3ZjlmYSIvPgogIDx0ZXh0IHg9IjUwIiB5PSIyNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+W0N1c3RvbWVyIE5hbWVdPC90ZXh0PgogIDx0ZXh0IHg9IjUwIiB5PSIyODAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+W0FkZHJlc3MgTGluZSAxXTwvdGV4dD4KICA8dGV4dCB4PSI1MCIgeT0iMzAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPltDaXR5LCBDb3VudHJ5XTwvdGV4dD4KCiAgPCEtLSBUYWJsZSBIZWFkZXJzIC0tPgogIDxyZWN0IHg9IjQwIiB5PSIzNDAiIHdpZHRoPSI3MjAiIGhlaWdodD0iMzAiIGZpbGw9IiMyYzNlNTAiLz4KICA8dGV4dCB4PSI1MCIgeT0iMzYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSI+RGVzY3JpcHRpb248L3RleHQ+CiAgPHRleHQgeD0iNDUwIiB5PSIzNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIj5RdWFudGl0eTwvdGV4dD4KICA8dGV4dCB4PSI1NTAiIHk9IjM2MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiPlJhdGU8L3RleHQ+CiAgPHRleHQgeD0iNjgwIiB5PSIzNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIj5BbW91bnQ8L3RleHQ+CgogIDwhLS0gVGFibGUgUm93cyAtLT4KICA8cmVjdCB4PSI0MCIgeT0iMzcwIiB3aWR0aD0iNzIwIiBoZWlnaHQ9IjMwIiBmaWxsPSIjZjdmOWZhIi8+CiAgPHRleHQgeD0iNTAiIHk9IjM5MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5Nb3VudGFpbiBDbGltYmluZyBFcXVpcG1lbnQgUmVudGFsPC90ZXh0PgogIDx0ZXh0IHg9IjQ1MCIgeT0iMzkwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPjE8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSIzOTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDI1MC4wMDwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjM5MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kMjUwLjAwPC90ZXh0PgoKICA8cmVjdCB4PSI0MCIgeT0iNDAwIiB3aWR0aD0iNzIwIiBoZWlnaHQ9IjMwIiBmaWxsPSJ3aGl0ZSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI0MjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+R3VpZGVkIFRyZWsgUGFja2FnZSAtIDIgRGF5czwvdGV4dD4KICA8dGV4dCB4PSI0NTAiIHk9IjQyMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4xPC90ZXh0PgogIDx0ZXh0IHg9IjU1MCIgeT0iNDIwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPiQ0MDAuMDA8L3RleHQ+CiAgPHRleHQgeD0iNjgwIiB5PSI0MjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDQwMC4wMDwvdGV4dD4KCiAgPHJlY3QgeD0iNDAiIHk9IjQzMCIgd2lkdGg9IjcyMCIgaGVpZ2h0PSIzMCIgZmlsbD0iI2Y3ZjlmYSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI0NTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+U2FmZXR5IEVxdWlwbWVudCBQYWNrYWdlPC90ZXh0PgogIDx0ZXh0IHg9IjQ1MCIgeT0iNDUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPjE8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSI0NTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDE1MC4wMDwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjQ1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kMTUwLjAwPC90ZXh0PgoKICA8IS0tIFRvdGFscyAtLT4KICA8bGluZSB4MT0iNDAiIHkxPSI0ODAiIHgyPSI3NjAiIHkyPSI0ODAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgPHRleHQgeD0iNTUwIiB5PSI1MTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMzNDQ5NWUiPlN1YnRvdGFsOjwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjUxMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kODAwLjAwPC90ZXh0PgogIDx0ZXh0IHg9IjU1MCIgeT0iNTM1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjMzQ0OTVlIj5UYXggKDE4JSk6PC90ZXh0PgogIDx0ZXh0IHg9IjY4MCIgeT0iNTM1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPiQxNDQuMDA8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSI1NzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPlRvdGFsOjwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjU3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+JDk0NC4wMDwvdGV4dD4KCiAgPCEtLSBQYXltZW50IFRlcm1zIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI2NDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPlBheW1lbnQgVGVybXM8L3RleHQ+CiAgPHRleHQgeD0iNDAiIHk9IjY3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5QYXltZW50IGlzIGR1ZSB3aXRoaW4gMzAgZGF5czwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNjkwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPlBsZWFzZSBpbmNsdWRlIGludm9pY2UgbnVtYmVyIG9uIHBheW1lbnQ8L3RleHQ+CgogIDwhLS0gQmFuayBEZXRhaWxzIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI3MzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPkJhbmsgRGV0YWlsczwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNzYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPkJhbms6IEJhbmsgb2YgR2VvcmdpYTwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNzgwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPklCQU46IEdFMTIzNDU2Nzg5MDEyMzQ1Njc4PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSI4MDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+U1dJRlQ6IEJBR0FHRTIyPC90ZXh0PgoKICA8IS0tIEZvb3RlciAtLT4KICA8bGluZSB4MT0iNDAiIHkxPSI5MDAiIHgyPSI3NjAiIHkyPSI5MDAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgPHRleHQgeD0iNDAiIHk9IjkzMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjN2Y4YzhkIj5UaGFuayB5b3UgZm9yIGNob29zaW5nIEdydXp5YSBBZHZlbnR1cmUgT3V0Zml0dGVyczwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iOTUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM3ZjhjOGQiPnd3dy5ncnV6eWFhZHZlbnR1cmVzLmNvbTwvdGV4dD4KPC9zdmc+Cg==",
+            ),
+            Filename: payabli.String(
+                "logo.jpg",
+            ),
+            Ftype: payabli.FileContentFtypeJpg.Ptr(),
+            Furl: payabli.String(
                 "",
             ),
         },
-        Page: &payabli.PageElement{
-            Description: payabli.String(
-                "Complete your payment securely",
-            ),
-            Enabled: payabli.Bool(
-                true,
-            ),
-            Header: payabli.String(
-                "Payment Page",
-            ),
-            Order: payabli.Int(
-                0,
-            ),
-        },
-        PaymentButton: &payabli.LabelElement{
-            Enabled: payabli.Bool(
-                true,
-            ),
-            Label: payabli.String(
-                "Pay Now",
-            ),
-            Order: payabli.Int(
-                0,
-            ),
-        },
-        PaymentMethods: &payabli.MethodElement{
-            AllMethodsChecked: payabli.Bool(
-                true,
-            ),
-            Enabled: payabli.Bool(
-                true,
-            ),
-            Header: payabli.String(
-                "Payment Methods",
-            ),
-            Methods: &payabli.MethodsList{
-                Amex: payabli.Bool(
-                    true,
-                ),
-                ApplePay: payabli.Bool(
-                    true,
-                ),
-                Discover: payabli.Bool(
-                    true,
-                ),
-                ECheck: payabli.Bool(
-                    true,
-                ),
-                Mastercard: payabli.Bool(
-                    true,
-                ),
-                Visa: payabli.Bool(
-                    true,
-                ),
-            },
-            Order: payabli.Int(
-                0,
-            ),
-            Settings: &payabli.MethodElementSettings{
-                ApplePay: &payabli.MethodElementSettingsApplePay{
-                    ButtonStyle: payabli.MethodElementSettingsApplePayButtonStyleBlack.Ptr(),
-                    ButtonType: payabli.MethodElementSettingsApplePayButtonTypePay.Ptr(),
-                    Language: payabli.MethodElementSettingsApplePayLanguageEnUs.Ptr(),
-                },
-            },
-        },
-        Payor: &payabli.PayorElement{
-            Enabled: payabli.Bool(
-                true,
-            ),
-            Fields: []*payabli.PayorFields{
-                &payabli.PayorFields{
-                    Display: payabli.Bool(
-                        true,
-                    ),
-                    Fixed: payabli.Bool(
-                        true,
-                    ),
-                    Identifier: payabli.Bool(
-                        true,
-                    ),
-                    Label: payabli.String(
-                        "Full Name",
-                    ),
-                    Name: payabli.String(
-                        "fullName",
-                    ),
-                    Order: payabli.Int(
-                        0,
-                    ),
-                    Required: payabli.Bool(
-                        true,
-                    ),
-                    Validation: payabli.String(
-                        "alpha",
-                    ),
-                    Value: payabli.String(
-                        "",
-                    ),
-                    Width: payabli.Int(
-                        0,
-                    ),
-                },
-            },
-            Header: payabli.String(
-                "Payor Information",
-            ),
-            Order: payabli.Int(
-                0,
-            ),
-        },
-        Review: &payabli.HeaderElement{
-            Enabled: payabli.Bool(
-                true,
-            ),
-            Header: payabli.String(
-                "Review Payment",
-            ),
-            Order: payabli.Int(
-                0,
-            ),
-        },
-        Settings: &payabli.PagelinkSetting{
-            Color: payabli.String(
-                "#000000",
-            ),
-            CustomCssUrl: payabli.String(
-                "https://example.com/custom.css",
-            ),
-            Language: payabli.String(
-                "en",
-            ),
-            PageLogo: &payabli.FileContent{
-                FContent: payabli.String(
-                    "PHN2ZyB2aWV3Qm94PSIwIDAgODAwIDEwMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPCEtLSBCYWNrZ3JvdW5kIC0tPgogIDxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iMTAwMCIgZmlsbD0id2hpdGUiLz4KICAKICA8IS0tIENvbXBhbnkgSGVhZGVyIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI2MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+R3J1enlhIEFkdmVudHVyZSBPdXRmaXR0ZXJzPC90ZXh0PgogIDxsaW5lIHgxPSI0MCIgeTE9IjgwIiB4Mj0iNzYwIiB5Mj0iODAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgCiAgPCEtLSBDb21wYW55IERldGFpbHMgLS0+CiAgPHRleHQgeD0iNDAiIHk9IjExMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4xMjMgTW91bnRhaW4gVmlldyBSb2FkPC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+VGJpbGlzaSwgR2VvcmdpYSAwMTA1PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxNTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+VGVsOiArOTk1IDMyIDEyMyA0NTY3PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSIxNzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+RW1haWw6IGluZm9AZ3J1enlhYWR2ZW50dXJlcy5jb208L3RleHQ+CgogIDwhLS0gSW52b2ljZSBUaXRsZSAtLT4KICA8dGV4dCB4PSI2MDAiIHk9IjExMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+SU5WT0lDRTwvdGV4dD4KICA8dGV4dCB4PSI2MDAiIHk9IjE0MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5EYXRlOiAxMi8xMS8yMDI0PC90ZXh0PgogIDx0ZXh0IHg9IjYwMCIgeT0iMTYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPkludm9pY2UgIzogR1JaLTIwMjQtMTEyMzwvdGV4dD4KCiAgPCEtLSBCaWxsIFRvIFNlY3Rpb24gLS0+CiAgPHRleHQgeD0iNDAiIHk9IjIyMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+QklMTCBUTzo8L3RleHQ+CiAgPHJlY3QgeD0iNDAiIHk9IjIzNSIgd2lkdGg9IjMwMCIgaGVpZ2h0PSI4MCIgZmlsbD0iI2Y3ZjlmYSIvPgogIDx0ZXh0IHg9IjUwIiB5PSIyNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+W0N1c3RvbWVyIE5hbWVdPC90ZXh0PgogIDx0ZXh0IHg9IjUwIiB5PSIyODAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+W0FkZHJlc3MgTGluZSAxXTwvdGV4dD4KICA8dGV4dCB4PSI1MCIgeT0iMzAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPltDaXR5LCBDb3VudHJ5XTwvdGV4dD4KCiAgPCEtLSBUYWJsZSBIZWFkZXJzIC0tPgogIDxyZWN0IHg9IjQwIiB5PSIzNDAiIHdpZHRoPSI3MjAiIGhlaWdodD0iMzAiIGZpbGw9IiMyYzNlNTAiLz4KICA8dGV4dCB4PSI1MCIgeT0iMzYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSI+RGVzY3JpcHRpb248L3RleHQ+CiAgPHRleHQgeD0iNDUwIiB5PSIzNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIj5RdWFudGl0eTwvdGV4dD4KICA8dGV4dCB4PSI1NTAiIHk9IjM2MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiPlJhdGU8L3RleHQ+CiAgPHRleHQgeD0iNjgwIiB5PSIzNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIj5BbW91bnQ8L3RleHQ+CgogIDwhLS0gVGFibGUgUm93cyAtLT4KICA8cmVjdCB4PSI0MCIgeT0iMzcwIiB3aWR0aD0iNzIwIiBoZWlnaHQ9IjMwIiBmaWxsPSIjZjdmOWZhIi8+CiAgPHRleHQgeD0iNTAiIHk9IjM5MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5Nb3VudGFpbiBDbGltYmluZyBFcXVpcG1lbnQgUmVudGFsPC90ZXh0PgogIDx0ZXh0IHg9IjQ1MCIgeT0iMzkwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPjE8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSIzOTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDI1MC4wMDwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjM5MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kMjUwLjAwPC90ZXh0PgoKICA8cmVjdCB4PSI0MCIgeT0iNDAwIiB3aWR0aD0iNzIwIiBoZWlnaHQ9IjMwIiBmaWxsPSJ3aGl0ZSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI0MjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+R3VpZGVkIFRyZWsgUGFja2FnZSAtIDIgRGF5czwvdGV4dD4KICA8dGV4dCB4PSI0NTAiIHk9IjQyMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4xPC90ZXh0PgogIDx0ZXh0IHg9IjU1MCIgeT0iNDIwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPiQ0MDAuMDA8L3RleHQ+CiAgPHRleHQgeD0iNjgwIiB5PSI0MjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDQwMC4wMDwvdGV4dD4KCiAgPHJlY3QgeD0iNDAiIHk9IjQzMCIgd2lkdGg9IjcyMCIgaGVpZ2h0PSIzMCIgZmlsbD0iI2Y3ZjlmYSIvPgogIDx0ZXh0IHg9IjUwIiB5PSI0NTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+U2FmZXR5IEVxdWlwbWVudCBQYWNrYWdlPC90ZXh0PgogIDx0ZXh0IHg9IjQ1MCIgeT0iNDUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPjE8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSI0NTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+JDE1MC4wMDwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjQ1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kMTUwLjAwPC90ZXh0PgoKICA8IS0tIFRvdGFscyAtLT4KICA8bGluZSB4MT0iNDAiIHkxPSI0ODAiIHgyPSI3NjAiIHkyPSI0ODAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgPHRleHQgeD0iNTUwIiB5PSI1MTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMzNDQ5NWUiPlN1YnRvdGFsOjwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjUxMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj4kODAwLjAwPC90ZXh0PgogIDx0ZXh0IHg9IjU1MCIgeT0iNTM1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjMzQ0OTVlIj5UYXggKDE4JSk6PC90ZXh0PgogIDx0ZXh0IHg9IjY4MCIgeT0iNTM1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPiQxNDQuMDA8L3RleHQ+CiAgPHRleHQgeD0iNTUwIiB5PSI1NzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPlRvdGFsOjwvdGV4dD4KICA8dGV4dCB4PSI2ODAiIHk9IjU3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzJjM2U1MCI+JDk0NC4wMDwvdGV4dD4KCiAgPCEtLSBQYXltZW50IFRlcm1zIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI2NDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPlBheW1lbnQgVGVybXM8L3RleHQ+CiAgPHRleHQgeD0iNDAiIHk9IjY3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzQ0OTVlIj5QYXltZW50IGlzIGR1ZSB3aXRoaW4gMzAgZGF5czwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNjkwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPlBsZWFzZSBpbmNsdWRlIGludm9pY2UgbnVtYmVyIG9uIHBheW1lbnQ8L3RleHQ+CgogIDwhLS0gQmFuayBEZXRhaWxzIC0tPgogIDx0ZXh0IHg9IjQwIiB5PSI3MzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMyYzNlNTAiPkJhbmsgRGV0YWlsczwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNzYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPkJhbms6IEJhbmsgb2YgR2VvcmdpYTwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iNzgwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNDQ5NWUiPklCQU46IEdFMTIzNDU2Nzg5MDEyMzQ1Njc4PC90ZXh0PgogIDx0ZXh0IHg9IjQwIiB5PSI4MDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM0NDk1ZSI+U1dJRlQ6IEJBR0FHRTIyPC90ZXh0PgoKICA8IS0tIEZvb3RlciAtLT4KICA8bGluZSB4MT0iNDAiIHkxPSI5MDAiIHgyPSI3NjAiIHkyPSI5MDAiIHN0cm9rZT0iIzJjM2U1MCIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgPHRleHQgeD0iNDAiIHk9IjkzMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjN2Y4YzhkIj5UaGFuayB5b3UgZm9yIGNob29zaW5nIEdydXp5YSBBZHZlbnR1cmUgT3V0Zml0dGVyczwvdGV4dD4KICA8dGV4dCB4PSI0MCIgeT0iOTUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM3ZjhjOGQiPnd3dy5ncnV6eWFhZHZlbnR1cmVzLmNvbTwvdGV4dD4KPC9zdmc+Cg==",
-                ),
-                Filename: payabli.String(
-                    "logo.jpg",
-                ),
-                Ftype: payabli.FileContentFtypeJpg.Ptr(),
-                Furl: payabli.String(
-                    "",
-                ),
-            },
-            RedirectAfterApprove: payabli.Bool(
-                true,
-            ),
-            RedirectAfterApproveUrl: payabli.String(
-                "https://example.com/success",
-            ),
-        },
-    }
-client.PaymentLink.AddPayLinkFromInvoice(
-        context.TODO(),
-        23548884,
-        request,
-    )
+        RedirectAfterApprove: payabli.Bool(
+            true,
+        ),
+        RedirectAfterApproveUrl: payabli.String(
+            "https://example.com/success",
+        ),
+    },
 }
+client.PaymentLink.AddPayLinkFromInvoice(
+    context.TODO(),
+    23548884,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -5460,1067 +5406,10 @@ Generates a payment link for a bill from the bill ID. The vendor receives a secu
 
 ```go
 request := &payabli.PayLinkDataBill{
-        Mail2: payabli.String(
-            "jo@example.com; ceo@example.com",
-        ),
-        Body: &payabli.PaymentPageRequestBodyOut{
-            ContactUs: &payabli.ContactElement{
-                EmailLabel: payabli.String(
-                    "Email",
-                ),
-                Enabled: payabli.Bool(
-                    true,
-                ),
-                Header: payabli.String(
-                    "Contact Us",
-                ),
-                Order: payabli.Int(
-                    0,
-                ),
-                PaymentIcons: payabli.Bool(
-                    true,
-                ),
-                PhoneLabel: payabli.String(
-                    "Phone",
-                ),
-            },
-            Logo: &payabli.Element{
-                Enabled: payabli.Bool(
-                    true,
-                ),
-                Order: payabli.Int(
-                    0,
-                ),
-            },
-            MessageBeforePaying: &payabli.LabelElement{
-                Enabled: payabli.Bool(
-                    true,
-                ),
-                Label: payabli.String(
-                    "Please review your payment details",
-                ),
-                Order: payabli.Int(
-                    0,
-                ),
-            },
-            Notes: &payabli.NoteElement{
-                Enabled: payabli.Bool(
-                    true,
-                ),
-                Header: payabli.String(
-                    "Additional Notes",
-                ),
-                Order: payabli.Int(
-                    0,
-                ),
-                Placeholder: payabli.String(
-                    "Enter any additional notes here",
-                ),
-                Value: payabli.String(
-                    "",
-                ),
-            },
-            Page: &payabli.PageElement{
-                Description: payabli.String(
-                    "Get paid securely",
-                ),
-                Enabled: payabli.Bool(
-                    true,
-                ),
-                Header: payabli.String(
-                    "Payment Page",
-                ),
-                Order: payabli.Int(
-                    0,
-                ),
-            },
-            PaymentButton: &payabli.LabelElement{
-                Enabled: payabli.Bool(
-                    true,
-                ),
-                Label: payabli.String(
-                    "Pay Now",
-                ),
-                Order: payabli.Int(
-                    0,
-                ),
-            },
-            PaymentMethods: &payabli.MethodElementOut{
-                AllMethodsChecked: payabli.Bool(
-                    true,
-                ),
-                AllowMultipleMethods: payabli.Bool(
-                    true,
-                ),
-                DefaultMethod: payabli.String(
-                    "vcard",
-                ),
-                Enabled: payabli.Bool(
-                    true,
-                ),
-                Header: payabli.String(
-                    "Payment Methods",
-                ),
-                Methods: &payabli.MethodsListOut{
-                    Ach: payabli.Bool(
-                        true,
-                    ),
-                    Check: payabli.Bool(
-                        true,
-                    ),
-                    Vcard: payabli.Bool(
-                        true,
-                    ),
-                },
-                Order: payabli.Int(
-                    0,
-                ),
-                ShowPreviewVirtualCard: payabli.Bool(
-                    true,
-                ),
-            },
-            Review: &payabli.HeaderElement{
-                Enabled: payabli.Bool(
-                    true,
-                ),
-                Header: payabli.String(
-                    "Review Payment",
-                ),
-                Order: payabli.Int(
-                    0,
-                ),
-            },
-            Settings: &payabli.PagelinkSetting{
-                Color: payabli.String(
-                    "#000000",
-                ),
-                Language: payabli.String(
-                    "en",
-                ),
-            },
-        },
-    }
-client.PaymentLink.AddPayLinkFromBill(
-        context.TODO(),
-        54323,
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**billId:** `int` — The Payabli ID for the bill.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**amountFixed:** `*bool` — Indicates whether customer can modify the payment amount. A value of `true` means the amount isn't modifiable, a value `false` means the payor can modify the amount to pay.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**mail2:** `*string` — List of recipient email addresses. When there is more than one, separate them by a semicolon (;).
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `*payabli.PaymentPageRequestBodyOut` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.PaymentLink.DeletePayLinkFromId(PayLinkId) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Deletes a payment link by ID.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.PaymentLink.DeletePayLinkFromId(
-        context.TODO(),
-        "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**payLinkId:** `string` — ID for the payment link.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.PaymentLink.GetPayLinkFromId(PaylinkId) -> *payabli.GetPayLinkFromIdResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves a payment link by ID.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-client.PaymentLink.GetPayLinkFromId(
-        context.TODO(),
-        "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**paylinkId:** `string` — ID for payment link
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.PaymentLink.PushPayLinkFromId(PayLinkId, request) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Send a payment link to the specified email addresses or phone numbers.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.PushPayLinkRequest{
-        Sms: &payabli.PushPayLinkRequestSms{},
-    }
-client.PaymentLink.PushPayLinkFromId(
-        context.TODO(),
-        "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**payLinkId:** `string` — ID for the payment link.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `*payabli.PushPayLinkRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.PaymentLink.RefreshPayLinkFromId(PayLinkId) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Refresh a payment link's content after an update.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.RefreshPayLinkFromIdRequest{}
-client.PaymentLink.RefreshPayLinkFromId(
-        context.TODO(),
-        "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**payLinkId:** `string` — ID for the payment link.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**amountFixed:** `*bool` — Indicates whether customer can modify the payment amount. A value of `true` means the amount isn't modifiable, a value `false` means the payor can modify the amount to pay.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.PaymentLink.SendPayLinkFromId(PayLinkId) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Sends a payment link to the specified email addresses.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.SendPayLinkFromIdRequest{
-        Mail2: payabli.String(
-            "jo@example.com; ceo@example.com",
-        ),
-    }
-client.PaymentLink.SendPayLinkFromId(
-        context.TODO(),
-        "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**payLinkId:** `string` — ID for the payment link.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**attachfile:** `*bool` — When `true`, attaches a PDF version of invoice to the email.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**mail2:** `*string` — List of recipient email addresses. When there is more than one, separate them by a semicolon (;).
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.PaymentLink.UpdatePayLinkFromId(PayLinkId, request) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates a payment link's details.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.PayLinkUpdateData{
-        Notes: &payabli.NoteElement{
-            Enabled: payabli.Bool(
-                true,
-            ),
-            Header: payabli.String(
-                "Additional Notes",
-            ),
-            Order: payabli.Int(
-                0,
-            ),
-            Placeholder: payabli.String(
-                "Enter any additional notes here",
-            ),
-            Value: payabli.String(
-                "",
-            ),
-        },
-        PaymentButton: &payabli.LabelElement{
-            Enabled: payabli.Bool(
-                true,
-            ),
-            Label: payabli.String(
-                "Pay Now",
-            ),
-            Order: payabli.Int(
-                0,
-            ),
-        },
-    }
-client.PaymentLink.UpdatePayLinkFromId(
-        context.TODO(),
-        "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**payLinkId:** `string` — ID for the payment link.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**contactUs:** `*payabli.ContactElement` — ContactUs section of payment link page
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**logo:** `*payabli.Element` — Logo section of payment link page
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**messageBeforePaying:** `*payabli.LabelElement` — Message section of payment link page
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**notes:** `*payabli.NoteElement` — Notes section of payment link page
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**page:** `*payabli.PageElement` — Page header section of payment link page
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**paymentButton:** `*payabli.LabelElement` — Payment button section of payment link page
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**paymentMethods:** `*payabli.MethodElement` — Payment methods section of payment link page
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**review:** `*payabli.HeaderElement` — Review section of payment link page
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**settings:** `*payabli.PagelinkSetting` — Settings section of payment link page
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.PaymentLink.AddPayLinkFromBillLotNumber(LotNumber, request) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Generates a vendor payment link for a specific bill lot number. This allows you to pay all bills with the same lot number for a vendor with a single payment link.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.PayLinkDataOut{
-        EntryPoint: "8cfec329267",
-        VendorNumber: "VEN-123",
-        Mail2: payabli.String(
-            "customer@example.com; billing@example.com",
-        ),
-        AmountFixed: payabli.String(
-            "true",
-        ),
-        Body: &payabli.PaymentPageRequestBodyOut{
-            ContactUs: &payabli.ContactElement{
-                EmailLabel: payabli.String(
-                    "Email",
-                ),
-                Enabled: payabli.Bool(
-                    true,
-                ),
-                Header: payabli.String(
-                    "Contact Us",
-                ),
-                Order: payabli.Int(
-                    0,
-                ),
-                PaymentIcons: payabli.Bool(
-                    true,
-                ),
-                PhoneLabel: payabli.String(
-                    "Phone",
-                ),
-            },
-            Logo: &payabli.Element{
-                Enabled: payabli.Bool(
-                    true,
-                ),
-                Order: payabli.Int(
-                    0,
-                ),
-            },
-            MessageBeforePaying: &payabli.LabelElement{
-                Enabled: payabli.Bool(
-                    true,
-                ),
-                Label: payabli.String(
-                    "Please review your payment details",
-                ),
-                Order: payabli.Int(
-                    0,
-                ),
-            },
-            Notes: &payabli.NoteElement{
-                Enabled: payabli.Bool(
-                    true,
-                ),
-                Header: payabli.String(
-                    "Additional Notes",
-                ),
-                Order: payabli.Int(
-                    0,
-                ),
-                Placeholder: payabli.String(
-                    "Enter any additional notes here",
-                ),
-                Value: payabli.String(
-                    "",
-                ),
-            },
-            Page: &payabli.PageElement{
-                Description: payabli.String(
-                    "Get paid securely",
-                ),
-                Enabled: payabli.Bool(
-                    true,
-                ),
-                Header: payabli.String(
-                    "Payment Page",
-                ),
-                Order: payabli.Int(
-                    0,
-                ),
-            },
-            PaymentButton: &payabli.LabelElement{
-                Enabled: payabli.Bool(
-                    true,
-                ),
-                Label: payabli.String(
-                    "Pay Now",
-                ),
-                Order: payabli.Int(
-                    0,
-                ),
-            },
-            PaymentMethods: &payabli.MethodElementOut{
-                AllMethodsChecked: payabli.Bool(
-                    true,
-                ),
-                AllowMultipleMethods: payabli.Bool(
-                    true,
-                ),
-                DefaultMethod: payabli.String(
-                    "vcard",
-                ),
-                Enabled: payabli.Bool(
-                    true,
-                ),
-                Header: payabli.String(
-                    "Payment Methods",
-                ),
-                Methods: &payabli.MethodsListOut{
-                    Ach: payabli.Bool(
-                        true,
-                    ),
-                    Check: payabli.Bool(
-                        true,
-                    ),
-                    Vcard: payabli.Bool(
-                        true,
-                    ),
-                },
-                Order: payabli.Int(
-                    0,
-                ),
-                ShowPreviewVirtualCard: payabli.Bool(
-                    true,
-                ),
-            },
-            Review: &payabli.HeaderElement{
-                Enabled: payabli.Bool(
-                    true,
-                ),
-                Header: payabli.String(
-                    "Review Payment",
-                ),
-                Order: payabli.Int(
-                    0,
-                ),
-            },
-            Settings: &payabli.PagelinkSetting{
-                Color: payabli.String(
-                    "#000000",
-                ),
-                Language: payabli.String(
-                    "en",
-                ),
-            },
-        },
-    }
-client.PaymentLink.AddPayLinkFromBillLotNumber(
-        context.TODO(),
-        "LOT-2024-001",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**lotNumber:** `string` — Lot number of the bills to pay. All bills with this lot number will be included.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**entryPoint:** `payabli.Entry` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**vendorNumber:** `string` — The vendor number for the vendor being paid with this payment link.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**mail2:** `*string` — List of recipient email addresses. When there is more than one, separate them by a semicolon (;).
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**amountFixed:** `*string` — Indicates whether customer can modify the payment amount. A value of `true` means the amount isn't modifiable, a value `false` means the payor can modify the amount to pay.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `*payabli.PaymentPageRequestBodyOut` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.PaymentLink.PatchOutPaymentLink(PaylinkId, request) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Partially updates a Pay Out payment link's content, expiration date, and/or status. Use this to modify the payment page configuration, extend or change the expiration, or cancel a link. Updating the expiration date of an expired link reactivates it to Active status.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.PatchOutPaymentLinkRequest{
-        ExpirationDate: payabli.String(
-            "2026-06-01T00:00:00Z",
-        ),
-        Status: payabli.PaymentLinkStatusActive.Ptr(),
-    }
-client.PaymentLink.PatchOutPaymentLink(
-        context.TODO(),
-        "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
-        request,
-    )
-}
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**paylinkId:** `string` — ID for the payment link.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**billPageData:** `*payabli.PaymentPageRequestBodyOut` — Updated payment link page configuration.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**expirationDate:** `*string` — New expiration date for the payment link. Must be a future date. If null and the link is expired, uses the default expiration from settings. Updating the expiration date reactivates an expired payment link to Active status.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**status:** `*payabli.PaymentLinkStatus` — Updated status for the payment link.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.PaymentLink.UpdatePayLinkOutFromId(PaylinkId, request) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates the payment page content for a Pay Out payment link. Use this to change the branding, messaging, payment methods offered, or other page configuration.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```go
-request := &payabli.PaymentPageRequestBodyOut{
+    Mail2: payabli.String(
+        "jo@example.com; ceo@example.com",
+    ),
+    Body: &payabli.PaymentPageRequestBodyOut{
         ContactUs: &payabli.ContactElement{
             EmailLabel: payabli.String(
                 "Email",
@@ -6655,13 +5544,1060 @@ request := &payabli.PaymentPageRequestBodyOut{
                 "en",
             ),
         },
-    }
-client.PaymentLink.UpdatePayLinkOutFromId(
-        context.TODO(),
-        "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
-        request,
-    )
+    },
 }
+client.PaymentLink.AddPayLinkFromBill(
+    context.TODO(),
+    54323,
+    request,
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billId:** `int` — The Payabli ID for the bill.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**amountFixed:** `*bool` — Indicates whether customer can modify the payment amount. A value of `true` means the amount isn't modifiable, a value `false` means the payor can modify the amount to pay.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**mail2:** `*string` — List of recipient email addresses. When there is more than one, separate them by a semicolon (;).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `*payabli.PaymentPageRequestBodyOut` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PaymentLink.DeletePayLinkFromId(PayLinkId) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes a payment link by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.PaymentLink.DeletePayLinkFromId(
+    context.TODO(),
+    "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**payLinkId:** `string` — ID for the payment link.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PaymentLink.GetPayLinkFromId(PaylinkId) -> *payabli.GetPayLinkFromIdResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a payment link by ID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.PaymentLink.GetPayLinkFromId(
+    context.TODO(),
+    "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paylinkId:** `string` — ID for payment link
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PaymentLink.PushPayLinkFromId(PayLinkId, request) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Send a payment link to the specified email addresses or phone numbers.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.PushPayLinkRequest{
+    Sms: &payabli.PushPayLinkRequestSms{},
+}
+client.PaymentLink.PushPayLinkFromId(
+    context.TODO(),
+    "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
+    request,
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**payLinkId:** `string` — ID for the payment link.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `*payabli.PushPayLinkRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PaymentLink.RefreshPayLinkFromId(PayLinkId) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Refresh a payment link's content after an update.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.RefreshPayLinkFromIdRequest{}
+client.PaymentLink.RefreshPayLinkFromId(
+    context.TODO(),
+    "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
+    request,
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**payLinkId:** `string` — ID for the payment link.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**amountFixed:** `*bool` — Indicates whether customer can modify the payment amount. A value of `true` means the amount isn't modifiable, a value `false` means the payor can modify the amount to pay.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PaymentLink.SendPayLinkFromId(PayLinkId) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Sends a payment link to the specified email addresses.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.SendPayLinkFromIdRequest{
+    Mail2: payabli.String(
+        "jo@example.com; ceo@example.com",
+    ),
+}
+client.PaymentLink.SendPayLinkFromId(
+    context.TODO(),
+    "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
+    request,
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**payLinkId:** `string` — ID for the payment link.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**attachfile:** `*bool` — When `true`, attaches a PDF version of invoice to the email.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**mail2:** `*string` — List of recipient email addresses. When there is more than one, separate them by a semicolon (;).
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PaymentLink.UpdatePayLinkFromId(PayLinkId, request) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates a payment link's details.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.PayLinkUpdateData{
+    Notes: &payabli.NoteElement{
+        Enabled: payabli.Bool(
+            true,
+        ),
+        Header: payabli.String(
+            "Additional Notes",
+        ),
+        Order: payabli.Int(
+            0,
+        ),
+        Placeholder: payabli.String(
+            "Enter any additional notes here",
+        ),
+        Value: payabli.String(
+            "",
+        ),
+    },
+    PaymentButton: &payabli.LabelElement{
+        Enabled: payabli.Bool(
+            true,
+        ),
+        Label: payabli.String(
+            "Pay Now",
+        ),
+        Order: payabli.Int(
+            0,
+        ),
+    },
+}
+client.PaymentLink.UpdatePayLinkFromId(
+    context.TODO(),
+    "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
+    request,
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**payLinkId:** `string` — ID for the payment link.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**contactUs:** `*payabli.ContactElement` — ContactUs section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**logo:** `*payabli.Element` — Logo section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**messageBeforePaying:** `*payabli.LabelElement` — Message section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**notes:** `*payabli.NoteElement` — Notes section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**page:** `*payabli.PageElement` — Page header section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentButton:** `*payabli.LabelElement` — Payment button section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**paymentMethods:** `*payabli.MethodElement` — Payment methods section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**review:** `*payabli.HeaderElement` — Review section of payment link page
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**settings:** `*payabli.PagelinkSetting` — Settings section of payment link page
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PaymentLink.AddPayLinkFromBillLotNumber(LotNumber, request) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Generates a vendor payment link for a specific bill lot number. This allows you to pay all bills with the same lot number for a vendor with a single payment link.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.PayLinkDataOut{
+    EntryPoint: "8cfec329267",
+    VendorNumber: "VEN-123",
+    Mail2: payabli.String(
+        "customer@example.com; billing@example.com",
+    ),
+    AmountFixed: payabli.String(
+        "true",
+    ),
+    Body: &payabli.PaymentPageRequestBodyOut{
+        ContactUs: &payabli.ContactElement{
+            EmailLabel: payabli.String(
+                "Email",
+            ),
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Header: payabli.String(
+                "Contact Us",
+            ),
+            Order: payabli.Int(
+                0,
+            ),
+            PaymentIcons: payabli.Bool(
+                true,
+            ),
+            PhoneLabel: payabli.String(
+                "Phone",
+            ),
+        },
+        Logo: &payabli.Element{
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Order: payabli.Int(
+                0,
+            ),
+        },
+        MessageBeforePaying: &payabli.LabelElement{
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Label: payabli.String(
+                "Please review your payment details",
+            ),
+            Order: payabli.Int(
+                0,
+            ),
+        },
+        Notes: &payabli.NoteElement{
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Header: payabli.String(
+                "Additional Notes",
+            ),
+            Order: payabli.Int(
+                0,
+            ),
+            Placeholder: payabli.String(
+                "Enter any additional notes here",
+            ),
+            Value: payabli.String(
+                "",
+            ),
+        },
+        Page: &payabli.PageElement{
+            Description: payabli.String(
+                "Get paid securely",
+            ),
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Header: payabli.String(
+                "Payment Page",
+            ),
+            Order: payabli.Int(
+                0,
+            ),
+        },
+        PaymentButton: &payabli.LabelElement{
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Label: payabli.String(
+                "Pay Now",
+            ),
+            Order: payabli.Int(
+                0,
+            ),
+        },
+        PaymentMethods: &payabli.MethodElementOut{
+            AllMethodsChecked: payabli.Bool(
+                true,
+            ),
+            AllowMultipleMethods: payabli.Bool(
+                true,
+            ),
+            DefaultMethod: payabli.String(
+                "vcard",
+            ),
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Header: payabli.String(
+                "Payment Methods",
+            ),
+            Methods: &payabli.MethodsListOut{
+                Ach: payabli.Bool(
+                    true,
+                ),
+                Check: payabli.Bool(
+                    true,
+                ),
+                Vcard: payabli.Bool(
+                    true,
+                ),
+            },
+            Order: payabli.Int(
+                0,
+            ),
+            ShowPreviewVirtualCard: payabli.Bool(
+                true,
+            ),
+        },
+        Review: &payabli.HeaderElement{
+            Enabled: payabli.Bool(
+                true,
+            ),
+            Header: payabli.String(
+                "Review Payment",
+            ),
+            Order: payabli.Int(
+                0,
+            ),
+        },
+        Settings: &payabli.PagelinkSetting{
+            Color: payabli.String(
+                "#000000",
+            ),
+            Language: payabli.String(
+                "en",
+            ),
+        },
+    },
+}
+client.PaymentLink.AddPayLinkFromBillLotNumber(
+    context.TODO(),
+    "LOT-2024-001",
+    request,
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**lotNumber:** `string` — Lot number of the bills to pay. All bills with this lot number will be included.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entryPoint:** `payabli.Entry` — The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**vendorNumber:** `string` — The vendor number for the vendor being paid with this payment link.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**mail2:** `*string` — List of recipient email addresses. When there is more than one, separate them by a semicolon (;).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**amountFixed:** `*string` — Indicates whether customer can modify the payment amount. A value of `true` means the amount isn't modifiable, a value `false` means the payor can modify the amount to pay.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `*payabli.PaymentPageRequestBodyOut` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PaymentLink.PatchOutPaymentLink(PaylinkId, request) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Partially updates a Pay Out payment link's content, expiration date, and/or status. Use this to modify the payment page configuration, extend or change the expiration, or cancel a link. Updating the expiration date of an expired link reactivates it to Active status.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.PatchOutPaymentLinkRequest{
+    ExpirationDate: payabli.String(
+        "2026-06-01T00:00:00Z",
+    ),
+    Status: payabli.PaymentLinkStatusActive.Ptr(),
+}
+client.PaymentLink.PatchOutPaymentLink(
+    context.TODO(),
+    "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
+    request,
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paylinkId:** `string` — ID for the payment link.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**billPageData:** `*payabli.PaymentPageRequestBodyOut` — Updated payment link page configuration.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expirationDate:** `*string` — New expiration date for the payment link. Must be a future date. If null and the link is expired, uses the default expiration from settings. Updating the expiration date reactivates an expired payment link to Active status.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `*payabli.PaymentLinkStatus` — Updated status for the payment link.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.PaymentLink.UpdatePayLinkOutFromId(PaylinkId, request) -> *payabli.PayabliApiResponsePaymentLinks</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates the payment page content for a Pay Out payment link. Use this to change the branding, messaging, payment methods offered, or other page configuration.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.PaymentPageRequestBodyOut{
+    ContactUs: &payabli.ContactElement{
+        EmailLabel: payabli.String(
+            "Email",
+        ),
+        Enabled: payabli.Bool(
+            true,
+        ),
+        Header: payabli.String(
+            "Contact Us",
+        ),
+        Order: payabli.Int(
+            0,
+        ),
+        PaymentIcons: payabli.Bool(
+            true,
+        ),
+        PhoneLabel: payabli.String(
+            "Phone",
+        ),
+    },
+    Logo: &payabli.Element{
+        Enabled: payabli.Bool(
+            true,
+        ),
+        Order: payabli.Int(
+            0,
+        ),
+    },
+    MessageBeforePaying: &payabli.LabelElement{
+        Enabled: payabli.Bool(
+            true,
+        ),
+        Label: payabli.String(
+            "Please review your payment details",
+        ),
+        Order: payabli.Int(
+            0,
+        ),
+    },
+    Notes: &payabli.NoteElement{
+        Enabled: payabli.Bool(
+            true,
+        ),
+        Header: payabli.String(
+            "Additional Notes",
+        ),
+        Order: payabli.Int(
+            0,
+        ),
+        Placeholder: payabli.String(
+            "Enter any additional notes here",
+        ),
+        Value: payabli.String(
+            "",
+        ),
+    },
+    Page: &payabli.PageElement{
+        Description: payabli.String(
+            "Get paid securely",
+        ),
+        Enabled: payabli.Bool(
+            true,
+        ),
+        Header: payabli.String(
+            "Payment Page",
+        ),
+        Order: payabli.Int(
+            0,
+        ),
+    },
+    PaymentButton: &payabli.LabelElement{
+        Enabled: payabli.Bool(
+            true,
+        ),
+        Label: payabli.String(
+            "Pay Now",
+        ),
+        Order: payabli.Int(
+            0,
+        ),
+    },
+    PaymentMethods: &payabli.MethodElementOut{
+        AllMethodsChecked: payabli.Bool(
+            true,
+        ),
+        AllowMultipleMethods: payabli.Bool(
+            true,
+        ),
+        DefaultMethod: payabli.String(
+            "vcard",
+        ),
+        Enabled: payabli.Bool(
+            true,
+        ),
+        Header: payabli.String(
+            "Payment Methods",
+        ),
+        Methods: &payabli.MethodsListOut{
+            Ach: payabli.Bool(
+                true,
+            ),
+            Check: payabli.Bool(
+                true,
+            ),
+            Vcard: payabli.Bool(
+                true,
+            ),
+        },
+        Order: payabli.Int(
+            0,
+        ),
+        ShowPreviewVirtualCard: payabli.Bool(
+            true,
+        ),
+    },
+    Review: &payabli.HeaderElement{
+        Enabled: payabli.Bool(
+            true,
+        ),
+        Header: payabli.String(
+            "Review Payment",
+        ),
+        Order: payabli.Int(
+            0,
+        ),
+    },
+    Settings: &payabli.PagelinkSetting{
+        Color: payabli.String(
+            "#000000",
+        ),
+        Language: payabli.String(
+            "en",
+        ),
+    },
+}
+client.PaymentLink.UpdatePayLinkOutFromId(
+    context.TODO(),
+    "2325-XXXXXXX-90b1-4598-b6c7-44cdcbf495d7-1234",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -6725,48 +6661,47 @@ Saves a payment method for reuse. This call exchanges sensitive payment informat
 
 ```go
 request := &payabli.AddMethodRequest{
-        Body: &payabli.RequestTokenStorage{
-            CustomerData: &payabli.PayorDataRequest{
-                CustomerId: payabli.Int64(
-                    int64(4440),
-                ),
-            },
-            EntryPoint: payabli.String(
-                "8cfec329267",
-            ),
-            FallbackAuth: payabli.Bool(
-                true,
-            ),
-            FallbackAuthAmount: payabli.Int(
-                100,
-            ),
-            MethodDescription: payabli.String(
-                "Primary Visa card",
-            ),
-            PaymentMethod: &payabli.RequestTokenStoragePaymentMethod{
-                TokenizeCard: &payabli.TokenizeCard{
-                    Method: "card",
-                    Cardcvv: payabli.String(
-                        "123",
-                    ),
-                    Cardexp: "12/29",
-                    CardHolder: "John Doe",
-                    Cardnumber: "4111111111111111",
-                    Cardzip: payabli.String(
-                        "12345",
-                    ),
-                },
-            },
-            Source: payabli.String(
-                "api",
+    Body: &payabli.RequestTokenStorage{
+        CustomerData: &payabli.PayorDataRequest{
+            CustomerId: payabli.Int64(
+                int64(4440),
             ),
         },
-    }
-client.TokenStorage.AddMethod(
-        context.TODO(),
-        request,
-    )
+        EntryPoint: payabli.String(
+            "8cfec329267",
+        ),
+        FallbackAuth: payabli.Bool(
+            true,
+        ),
+        FallbackAuthAmount: payabli.Int(
+            100,
+        ),
+        MethodDescription: payabli.String(
+            "Primary Visa card",
+        ),
+        PaymentMethod: &payabli.RequestTokenStoragePaymentMethod{
+            TokenizeCard: &payabli.TokenizeCard{
+                Method: "card",
+                Cardcvv: payabli.String(
+                    "123",
+                ),
+                Cardexp: "12/29",
+                CardHolder: "John Doe",
+                Cardnumber: "4111111111111111",
+                Cardzip: payabli.String(
+                    "12345",
+                ),
+            },
+        },
+        Source: payabli.String(
+            "api",
+        ),
+    },
 }
+client.TokenStorage.AddMethod(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -6861,19 +6796,18 @@ Retrieves details for a saved payment method.
 
 ```go
 request := &payabli.GetMethodRequest{
-        CardExpirationFormat: payabli.Int(
-            1,
-        ),
-        IncludeTemporary: payabli.Bool(
-            false,
-        ),
-    }
-client.TokenStorage.GetMethod(
-        context.TODO(),
-        "32-8877drt00045632-678",
-        request,
-    )
+    CardExpirationFormat: payabli.Int(
+        1,
+    ),
+    IncludeTemporary: payabli.Bool(
+        false,
+    ),
 }
+client.TokenStorage.GetMethod(
+    context.TODO(),
+    "32-8877drt00045632-678",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -6954,40 +6888,39 @@ Updates a saved payment method.
 
 ```go
 request := &payabli.UpdateMethodRequest{
-        Body: &payabli.RequestTokenStorage{
-            CustomerData: &payabli.PayorDataRequest{
-                CustomerId: payabli.Int64(
-                    int64(4440),
+    Body: &payabli.RequestTokenStorage{
+        CustomerData: &payabli.PayorDataRequest{
+            CustomerId: payabli.Int64(
+                int64(4440),
+            ),
+        },
+        EntryPoint: payabli.String(
+            "8cfec329267",
+        ),
+        FallbackAuth: payabli.Bool(
+            true,
+        ),
+        PaymentMethod: &payabli.RequestTokenStoragePaymentMethod{
+            TokenizeCard: &payabli.TokenizeCard{
+                Method: "card",
+                Cardcvv: payabli.String(
+                    "123",
+                ),
+                Cardexp: "12/29",
+                CardHolder: "John Doe",
+                Cardnumber: "4111111111111111",
+                Cardzip: payabli.String(
+                    "12345",
                 ),
             },
-            EntryPoint: payabli.String(
-                "8cfec329267",
-            ),
-            FallbackAuth: payabli.Bool(
-                true,
-            ),
-            PaymentMethod: &payabli.RequestTokenStoragePaymentMethod{
-                TokenizeCard: &payabli.TokenizeCard{
-                    Method: "card",
-                    Cardcvv: payabli.String(
-                        "123",
-                    ),
-                    Cardexp: "12/29",
-                    CardHolder: "John Doe",
-                    Cardnumber: "4111111111111111",
-                    Cardzip: payabli.String(
-                        "12345",
-                    ),
-                },
-            },
         },
-    }
-client.TokenStorage.UpdateMethod(
-        context.TODO(),
-        "32-8877drt00045632-678",
-        request,
-    )
+    },
 }
+client.TokenStorage.UpdateMethod(
+    context.TODO(),
+    "32-8877drt00045632-678",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -7058,10 +6991,9 @@ Deletes a saved payment method.
 
 ```go
 client.TokenStorage.RemoveMethod(
-        context.TODO(),
-        "32-8877drt00045632-678",
-    )
-}
+    context.TODO(),
+    "32-8877drt00045632-678",
+)
 ```
 </dd>
 </dl>
@@ -7117,10 +7049,9 @@ Gets the basic details for a paypoint.
 
 ```go
 client.Paypoint.GetBasicEntry(
-        context.TODO(),
-        "8cfec329267",
-    )
-}
+    context.TODO(),
+    "8cfec329267",
+)
 ```
 </dd>
 </dl>
@@ -7175,10 +7106,9 @@ Retrieves the basic details for a paypoint by ID.
 
 ```go
 client.Paypoint.GetBasicEntryById(
-        context.TODO(),
-        "198",
-    )
-}
+    context.TODO(),
+    "198",
+)
 ```
 </dd>
 </dl>
@@ -7234,11 +7164,10 @@ Updates a paypoint logo.
 ```go
 request := &payabli.FileContent{}
 client.Paypoint.SaveLogo(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
-}
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -7301,23 +7230,22 @@ Migrates a paypoint to a new parent organization.
 
 ```go
 request := &payabli.PaypointMoveRequest{
-        EntryPoint: "8cfec329267",
-        NewParentOrganizationId: 123,
-        NotificationRequest: &payabli.NotificationRequest{
-            NotificationUrl: "https://webhook-test.yoursie.com",
-            WebHeaderParameters: []*payabli.WebHeaderParameter{
-                &payabli.WebHeaderParameter{
-                    Key: "testheader",
-                    Value: "1234567890",
-                },
+    EntryPoint: "8cfec329267",
+    NewParentOrganizationId: 123,
+    NotificationRequest: &payabli.NotificationRequest{
+        NotificationUrl: "https://webhook-test.yoursie.com",
+        WebHeaderParameters: []*payabli.WebHeaderParameter{
+            &payabli.WebHeaderParameter{
+                Key: "testheader",
+                Value: "1234567890",
             },
         },
-    }
-client.Paypoint.Migrate(
-        context.TODO(),
-        request,
-    )
+    },
 }
+client.Paypoint.Migrate(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -7388,10 +7316,9 @@ Retrieves a paypoint's basic settings like custom fields, identifiers, and invoi
 
 ```go
 client.Paypoint.SettingsPage(
-        context.TODO(),
-        "8cfec329267",
-    )
-}
+    context.TODO(),
+    "8cfec329267",
+)
 ```
 </dd>
 </dl>
@@ -7447,11 +7374,10 @@ Gets the details for a single paypoint.
 ```go
 request := &payabli.GetEntryConfigRequest{}
 client.Paypoint.GetEntryConfig(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
-}
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -7514,11 +7440,10 @@ Gets the details for a single payment page for a paypoint.
 
 ```go
 client.Paypoint.GetPage(
-        context.TODO(),
-        "8cfec329267",
-        "pay-your-fees-1",
-    )
-}
+    context.TODO(),
+    "8cfec329267",
+    "pay-your-fees-1",
+)
 ```
 </dd>
 </dl>
@@ -7581,11 +7506,10 @@ Deletes a payment page in a paypoint.
 
 ```go
 client.Paypoint.RemovePage(
-        context.TODO(),
-        "8cfec329267",
-        "pay-your-fees-1",
-    )
-}
+    context.TODO(),
+    "8cfec329267",
+    "pay-your-fees-1",
+)
 ```
 </dd>
 </dl>
@@ -7649,11 +7573,10 @@ Loads all of a payment page's details including `pageIdentifier` and `validation
 
 ```go
 client.HostedPaymentPages.LoadPage(
-        context.TODO(),
-        "8cfec329267",
-        "pay-your-fees-1",
-    )
-}
+    context.TODO(),
+    "8cfec329267",
+    "pay-your-fees-1",
+)
 ```
 </dd>
 </dl>
@@ -7717,17 +7640,16 @@ Note: this operation doesn't create a new paypoint, just a payment page for an e
 
 ```go
 request := &payabli.NewPageRequest{
-        IdempotencyKey: payabli.String(
-            "6B29FC40-CA47-1067-B31D-00DD010662DA",
-        ),
-        Body: &payabli.PayabliPages{},
-    }
-client.HostedPaymentPages.NewPage(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    IdempotencyKey: payabli.String(
+        "6B29FC40-CA47-1067-B31D-00DD010662DA",
+    ),
+    Body: &payabli.PayabliPages{},
 }
+client.HostedPaymentPages.NewPage(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -7799,12 +7721,11 @@ Updates a payment page in a paypoint.
 ```go
 request := &payabli.PayabliPages{}
 client.HostedPaymentPages.SavePage(
-        context.TODO(),
-        "8cfec329267",
-        "pay-your-fees-1",
-        request,
-    )
-}
+    context.TODO(),
+    "8cfec329267",
+    "pay-your-fees-1",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -7876,31 +7797,30 @@ Add a payment method domain to an organization or paypoint.
 
 ```go
 request := &payabli.AddPaymentMethodDomainRequest{
-        ApplePay: &payabli.AddPaymentMethodDomainRequestApplePay{
-            IsEnabled: payabli.Bool(
-                true,
-            ),
-        },
-        GooglePay: &payabli.AddPaymentMethodDomainRequestGooglePay{
-            IsEnabled: payabli.Bool(
-                true,
-            ),
-        },
-        DomainName: payabli.String(
-            "checkout.example.com",
+    ApplePay: &payabli.AddPaymentMethodDomainRequestApplePay{
+        IsEnabled: payabli.Bool(
+            true,
         ),
-        EntityId: payabli.Int64(
-            int64(109),
+    },
+    GooglePay: &payabli.AddPaymentMethodDomainRequestGooglePay{
+        IsEnabled: payabli.Bool(
+            true,
         ),
-        EntityType: payabli.String(
-            "paypoint",
-        ),
-    }
-client.PaymentMethodDomain.AddPaymentMethodDomain(
-        context.TODO(),
-        request,
-    )
+    },
+    DomainName: payabli.String(
+        "checkout.example.com",
+    ),
+    EntityId: payabli.Int64(
+        int64(109),
+    ),
+    EntityType: payabli.String(
+        "paypoint",
+    ),
 }
+client.PaymentMethodDomain.AddPaymentMethodDomain(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -7987,10 +7907,9 @@ Cascades a payment method domain to all child entities. All paypoints and suborg
 
 ```go
 client.PaymentMethodDomain.CascadePaymentMethodDomain(
-        context.TODO(),
-        "pmd_b8237fa45c964d8a9ef27160cd42b8c5",
-    )
-}
+    context.TODO(),
+    "pmd_b8237fa45c964d8a9ef27160cd42b8c5",
+)
 ```
 </dd>
 </dl>
@@ -8045,10 +7964,9 @@ Get the details for a payment method domain.
 
 ```go
 client.PaymentMethodDomain.GetPaymentMethodDomain(
-        context.TODO(),
-        "pmd_b8237fa45c964d8a9ef27160cd42b8c5",
-    )
-}
+    context.TODO(),
+    "pmd_b8237fa45c964d8a9ef27160cd42b8c5",
+)
 ```
 </dd>
 </dl>
@@ -8103,10 +8021,9 @@ Delete a payment method domain. You can't delete an inherited domain, you must d
 
 ```go
 client.PaymentMethodDomain.DeletePaymentMethodDomain(
-        context.TODO(),
-        "pmd_b8237fa45c964d8a9ef27160cd42b8c5",
-    )
-}
+    context.TODO(),
+    "pmd_b8237fa45c964d8a9ef27160cd42b8c5",
+)
 ```
 </dd>
 </dl>
@@ -8161,23 +8078,22 @@ Update a payment method domain's configuration values.
 
 ```go
 request := &payabli.UpdatePaymentMethodDomainRequest{
-        ApplePay: &payabli.UpdatePaymentMethodDomainRequestWallet{
-            IsEnabled: payabli.Bool(
-                false,
-            ),
-        },
-        GooglePay: &payabli.UpdatePaymentMethodDomainRequestWallet{
-            IsEnabled: payabli.Bool(
-                false,
-            ),
-        },
-    }
-client.PaymentMethodDomain.UpdatePaymentMethodDomain(
-        context.TODO(),
-        "pmd_b8237fa45c964d8a9ef27160cd42b8c5",
-        request,
-    )
+    ApplePay: &payabli.UpdatePaymentMethodDomainRequestWallet{
+        IsEnabled: payabli.Bool(
+            false,
+        ),
+    },
+    GooglePay: &payabli.UpdatePaymentMethodDomainRequestWallet{
+        IsEnabled: payabli.Bool(
+            false,
+        ),
+    },
 }
+client.PaymentMethodDomain.UpdatePaymentMethodDomain(
+    context.TODO(),
+    "pmd_b8237fa45c964d8a9ef27160cd42b8c5",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -8248,18 +8164,17 @@ Get a list of payment method domains that belong to a PSP, organization, or payp
 
 ```go
 request := &payabli.ListPaymentMethodDomainsRequest{
-        EntityId: payabli.Int64(
-            int64(1147),
-        ),
-        EntityType: payabli.String(
-            "paypoint",
-        ),
-    }
-client.PaymentMethodDomain.ListPaymentMethodDomains(
-        context.TODO(),
-        request,
-    )
+    EntityId: payabli.Int64(
+        int64(1147),
+    ),
+    EntityType: payabli.String(
+        "paypoint",
+    ),
 }
+client.PaymentMethodDomain.ListPaymentMethodDomains(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -8346,10 +8261,9 @@ Verify a new payment method domain. If verification is successful, Apple Pay is 
 
 ```go
 client.PaymentMethodDomain.VerifyPaymentMethodDomain(
-        context.TODO(),
-        "pmd_b8237fa45c964d8a9ef27160cd42b8c5",
-    )
-}
+    context.TODO(),
+    "pmd_b8237fa45c964d8a9ef27160cd42b8c5",
+)
 ```
 </dd>
 </dl>
@@ -8405,16 +8319,15 @@ Import a list of bills from a CSV file. See the [Import Guide](/developers/devel
 
 ```go
 request := &payabli.ImportBillsRequest{
-        File: strings.NewReader(
-            "",
-        ),
-    }
-client.Import.ImportBills(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    File: strings.NewReader(
+        "",
+    ),
 }
+client.Import.ImportBills(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -8469,16 +8382,15 @@ Import a list of customers from a CSV file. See the [Import Guide](/developers/d
 
 ```go
 request := &payabli.ImportCustomerRequest{
-        File: strings.NewReader(
-            "",
-        ),
-    }
-client.Import.ImportCustomer(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    File: strings.NewReader(
+        "",
+    ),
 }
+client.Import.ImportCustomer(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -8541,16 +8453,15 @@ Import a list of vendors from a CSV file. See the [Import Guide](/developers/dev
 
 ```go
 request := &payabli.ImportVendorRequest{
-        File: strings.NewReader(
-            "",
-        ),
-    }
-client.Import.ImportVendor(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    File: strings.NewReader(
+        "",
+    ),
 }
+client.Import.ImportVendor(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -8607,22 +8518,21 @@ unsettled transactions for a paypoint. Use filters to limit results. Include the
 
 ```go
 request := &payabli.ListBatchDetailsRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListBatchDetails(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListBatchDetails(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -8793,22 +8703,21 @@ Retrieve a list of batches and their details, including settled and unsettled tr
 
 ```go
 request := &payabli.ListBatchDetailsOrgRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListBatchDetailsOrg(
-        context.TODO(),
-        123,
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListBatchDetailsOrg(
+    context.TODO(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -8978,22 +8887,21 @@ Retrieve a list of batches for a paypoint. Use filters to limit results. Include
 
 ```go
 request := &payabli.ListBatchesRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListBatches(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListBatches(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -9143,22 +9051,21 @@ Retrieve a list of batches for an org. Use filters to limit results. Include the
 
 ```go
 request := &payabli.ListBatchesOrgRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListBatchesOrg(
-        context.TODO(),
-        123,
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListBatchesOrg(
+    context.TODO(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -9308,22 +9215,21 @@ Retrieve a list of MoneyOut batches for a paypoint. Use filters to limit results
 
 ```go
 request := &payabli.ListBatchesOutRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListBatchesOut(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListBatchesOut(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -9434,22 +9340,21 @@ Retrieve a list of MoneyOut batches for an org. Use filters to limit results. In
 
 ```go
 request := &payabli.ListBatchesOutOrgRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListBatchesOutOrg(
-        context.TODO(),
-        123,
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListBatchesOutOrg(
+    context.TODO(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -9575,22 +9480,21 @@ Retrieves a list of chargebacks and returned transactions for a paypoint. Use fi
 
 ```go
 request := &payabli.ListChargebacksRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListChargebacks(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListChargebacks(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -9757,22 +9661,21 @@ Retrieve a list of chargebacks and returned transactions for an org. Use filters
 
 ```go
 request := &payabli.ListChargebacksOrgRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListChargebacksOrg(
-        context.TODO(),
-        123,
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListChargebacksOrg(
+    context.TODO(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -9941,22 +9844,21 @@ Retrieves a list of customers for a paypoint. Use filters to limit results. Incl
 
 ```go
 request := &payabli.ListCustomersRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListCustomers(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListCustomers(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -10117,22 +10019,21 @@ Retrieves a list of customers for an org. Use filters to limit results. Include 
 
 ```go
 request := &payabli.ListCustomersOrgRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListCustomersOrg(
-        context.TODO(),
-        123,
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListCustomersOrg(
+    context.TODO(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -10293,22 +10194,21 @@ Returns a list of cloud devices for a single paypoint. Use filters to limit resu
 
 ```go
 request := &payabli.ListDevicesRequest{
-        FromRecord: payabli.Int(
-            0,
-        ),
-        LimitRecord: payabli.Int(
-            20,
-        ),
-        SortBy: payabli.String(
-            "desc(createdAt)",
-        ),
-    }
-client.Query.ListDevices(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    FromRecord: payabli.Int(
+        0,
+    ),
+    LimitRecord: payabli.Int(
+        20,
+    ),
+    SortBy: payabli.String(
+        "desc(createdAt)",
+    ),
 }
+client.Query.ListDevices(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -10496,22 +10396,21 @@ Returns a list of cloud devices for a single organization. Use filters to limit 
 
 ```go
 request := &payabli.ListDevicesOrgRequest{
-        FromRecord: payabli.Int(
-            0,
-        ),
-        LimitRecord: payabli.Int(
-            20,
-        ),
-        SortBy: payabli.String(
-            "desc(createdAt)",
-        ),
-    }
-client.Query.ListDevicesOrg(
-        context.TODO(),
-        123,
-        request,
-    )
+    FromRecord: payabli.Int(
+        0,
+    ),
+    LimitRecord: payabli.Int(
+        20,
+    ),
+    SortBy: payabli.String(
+        "desc(createdAt)",
+    ),
 }
+client.Query.ListDevicesOrg(
+    context.TODO(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -10699,22 +10598,21 @@ Returns a list of all reports generated in the last 60 days for a single entrypo
 
 ```go
 request := &payabli.ListNotificationReportsRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListNotificationReports(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListNotificationReports(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -10840,22 +10738,21 @@ Returns a list of all reports generated in the last 60 days for an organization.
 
 ```go
 request := &payabli.ListNotificationReportsOrgRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListNotificationReportsOrg(
-        context.TODO(),
-        123,
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListNotificationReportsOrg(
+    context.TODO(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -10979,22 +10876,21 @@ Returns a list of notifications for an entrypoint. Use filters to limit results.
 
 ```go
 request := &payabli.ListNotificationsRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListNotifications(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListNotifications(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -11122,22 +11018,21 @@ Return a list of notifications for an organization. Use filters to limit results
 
 ```go
 request := &payabli.ListNotificationsOrgRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListNotificationsOrg(
-        context.TODO(),
-        123,
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListNotificationsOrg(
+    context.TODO(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -11265,22 +11160,21 @@ Retrieves a list of an organization's suborganizations and their full details su
 
 ```go
 request := &payabli.ListOrganizationsRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListOrganizations(
-        context.TODO(),
-        123,
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListOrganizations(
+    context.TODO(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -11428,22 +11322,21 @@ Retrieves a list of money out transactions (payouts) for a paypoint. Use filters
 
 ```go
 request := &payabli.ListPayoutRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListPayout(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListPayout(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -11618,22 +11511,21 @@ Retrieves a list of money out transactions (payouts) for an organization. Use fi
 
 ```go
 request := &payabli.ListPayoutOrgRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListPayoutOrg(
-        context.TODO(),
-        123,
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListPayoutOrg(
+    context.TODO(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -11807,22 +11699,21 @@ Returns a list of paypoints in an organization. Use filters to limit results. In
 
 ```go
 request := &payabli.ListPaypointsRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListPaypoints(
-        context.TODO(),
-        123,
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListPaypoints(
+    context.TODO(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -11975,22 +11866,21 @@ Retrieve a list of settled transactions for a paypoint. Use filters to limit res
 
 ```go
 request := &payabli.ListSettlementsRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListSettlements(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListSettlements(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -12161,22 +12051,21 @@ Retrieve a list of settled transactions for an organization. Include the `export
 
 ```go
 request := &payabli.ListSettlementsOrgRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListSettlementsOrg(
-        context.TODO(),
-        123,
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListSettlementsOrg(
+    context.TODO(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -12347,22 +12236,21 @@ Returns a list of subscriptions for a single paypoint. Use filters to limit resu
 
 ```go
 request := &payabli.ListSubscriptionsRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListSubscriptions(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListSubscriptions(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -12535,22 +12423,21 @@ Returns a list of subscriptions for a single org. Use filters to limit results. 
 
 ```go
 request := &payabli.ListSubscriptionsOrgRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListSubscriptionsOrg(
-        context.TODO(),
-        123,
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListSubscriptionsOrg(
+    context.TODO(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -12723,22 +12610,21 @@ Returns a list of payout subscriptions for a single paypoint. Use filters to lim
 
 ```go
 request := &payabli.ListPayoutSubscriptionsRequest{
-        FromRecord: payabli.Int(
-            0,
-        ),
-        LimitRecord: payabli.Int(
-            20,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListPayoutSubscriptions(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    FromRecord: payabli.Int(
+        0,
+    ),
+    LimitRecord: payabli.Int(
+        20,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListPayoutSubscriptions(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -12897,22 +12783,21 @@ Returns a list of payout subscriptions for a single org. Use filters to limit re
 
 ```go
 request := &payabli.ListPayoutSubscriptionsOrgRequest{
-        FromRecord: payabli.Int(
-            0,
-        ),
-        LimitRecord: payabli.Int(
-            20,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListPayoutSubscriptionsOrg(
-        context.TODO(),
-        123,
-        request,
-    )
+    FromRecord: payabli.Int(
+        0,
+    ),
+    LimitRecord: payabli.Int(
+        20,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListPayoutSubscriptionsOrg(
+    context.TODO(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -13080,22 +12965,21 @@ curl -X GET https://api-sandbox.payabli.com/api/Query/transactions/8cfec329267?l
 
 ```go
 request := &payabli.ListTransactionsRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListTransactions(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListTransactions(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -13285,22 +13169,21 @@ curl -X GET "https://api-sandbox.payabli.com/api/Query/transactions/org/1?limitR
 
 ```go
 request := &payabli.ListTransactionsOrgRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListTransactionsOrg(
-        context.TODO(),
-        123,
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListTransactionsOrg(
+    context.TODO(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -13481,12 +13364,11 @@ Retrieve a list of transfer details records for a paypoint. Use filters to limit
 ```go
 request := &payabli.ListTransfersPaypointRequest{}
 client.Query.ListTransferDetails(
-        context.TODO(),
-        "8cfec329267",
-        4521,
-        request,
-    )
-}
+    context.TODO(),
+    "8cfec329267",
+    4521,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -13627,19 +13509,18 @@ Retrieve a list of transfers for a paypoint. Use filters to limit results. Inclu
 
 ```go
 request := &payabli.ListTransfersRequest{
-        FromRecord: payabli.Int(
-            0,
-        ),
-        LimitRecord: payabli.Int(
-            20,
-        ),
-    }
-client.Query.ListTransfers(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    FromRecord: payabli.Int(
+        0,
+    ),
+    LimitRecord: payabli.Int(
+        20,
+    ),
 }
+client.Query.ListTransfers(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -13770,19 +13651,18 @@ Retrieve a list of transfers for an org. Use filters to limit results. Include t
 
 ```go
 request := &payabli.ListTransfersRequestOrg{
-        FromRecord: payabli.Int(
-            0,
-        ),
-        LimitRecord: payabli.Int(
-            20,
-        ),
-    }
-client.Query.ListTransfersOrg(
-        context.TODO(),
-        int64(123),
-        request,
-    )
+    FromRecord: payabli.Int(
+        0,
+    ),
+    LimitRecord: payabli.Int(
+        20,
+    ),
 }
+client.Query.ListTransfersOrg(
+    context.TODO(),
+    int64(123),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -13910,19 +13790,18 @@ Retrieve a list of outbound transfers for an organization. Use filters to limit 
 
 ```go
 request := &payabli.ListTransfersOutOrgRequest{
-        FromRecord: payabli.Int(
-            0,
-        ),
-        LimitRecord: payabli.Int(
-            20,
-        ),
-    }
-client.Query.ListTransfersOutOrg(
-        context.TODO(),
-        123,
-        request,
-    )
+    FromRecord: payabli.Int(
+        0,
+    ),
+    LimitRecord: payabli.Int(
+        20,
+    ),
 }
+client.Query.ListTransfersOutOrg(
+    context.TODO(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -14040,19 +13919,18 @@ Retrieve a list of outbound transfers for a paypoint. Use filters to limit resul
 
 ```go
 request := &payabli.ListTransfersOutPaypointRequest{
-        FromRecord: payabli.Int(
-            0,
-        ),
-        LimitRecord: payabli.Int(
-            20,
-        ),
-    }
-client.Query.ListTransfersOutPaypoint(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    FromRecord: payabli.Int(
+        0,
+    ),
+    LimitRecord: payabli.Int(
+        20,
+    ),
 }
+client.Query.ListTransfersOutPaypoint(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -14170,20 +14048,19 @@ Retrieve details for a specific outbound transfer. Use filters to limit results.
 
 ```go
 request := &payabli.ListTransferDetailsOutRequest{
-        FromRecord: payabli.Int(
-            0,
-        ),
-        LimitRecord: payabli.Int(
-            20,
-        ),
-    }
-client.Query.ListTransferDetailsOut(
-        context.TODO(),
-        "8cfec329267",
-        4521,
-        request,
-    )
+    FromRecord: payabli.Int(
+        0,
+    ),
+    LimitRecord: payabli.Int(
+        20,
+    ),
 }
+client.Query.ListTransferDetailsOut(
+    context.TODO(),
+    "8cfec329267",
+    4521,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -14306,22 +14183,21 @@ Get list of users for an org. Use filters to limit results.
 
 ```go
 request := &payabli.ListUsersOrgRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListUsersOrg(
-        context.TODO(),
-        123,
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListUsersOrg(
+    context.TODO(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -14451,22 +14327,21 @@ Get list of users for a paypoint. Use filters to limit results.
 
 ```go
 request := &payabli.ListUsersPaypointRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListUsersPaypoint(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListUsersPaypoint(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -14596,22 +14471,21 @@ Retrieve a list of vendors for an entrypoint. Use filters to limit results. Incl
 
 ```go
 request := &payabli.ListVendorsRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListVendors(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListVendors(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -14762,22 +14636,21 @@ Retrieve a list of vendors for an organization. Use filters to limit results. In
 
 ```go
 request := &payabli.ListVendorsOrgRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListVendorsOrg(
-        context.TODO(),
-        123,
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListVendorsOrg(
+    context.TODO(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -14928,22 +14801,21 @@ Retrieve a list of vcards (virtual credit cards) issued for an entrypoint. Use f
 
 ```go
 request := &payabli.ListVcardsRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListVcards(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListVcards(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -15088,22 +14960,21 @@ Retrieve a list of virtual card transactions for an entrypoint. Use filters to l
 
 ```go
 request := &payabli.ListVcardsTransactionsRequest{
-        FromRecord: payabli.Int(
-            0,
-        ),
-        LimitRecord: payabli.Int(
-            20,
-        ),
-        SortBy: payabli.String(
-            "desc(CreatedOn)",
-        ),
-    }
-client.Query.ListVcardsTransactions(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    FromRecord: payabli.Int(
+        0,
+    ),
+    LimitRecord: payabli.Int(
+        20,
+    ),
+    SortBy: payabli.String(
+        "desc(CreatedOn)",
+    ),
 }
+client.Query.ListVcardsTransactions(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -15244,22 +15115,21 @@ Retrieve a list of virtual card transactions for an organization. Use filters to
 
 ```go
 request := &payabli.ListVcardsTransactionsOrgRequest{
-        FromRecord: payabli.Int(
-            0,
-        ),
-        LimitRecord: payabli.Int(
-            20,
-        ),
-        SortBy: payabli.String(
-            "desc(CreatedOn)",
-        ),
-    }
-client.Query.ListVcardsTransactionsOrg(
-        context.TODO(),
-        123,
-        request,
-    )
+    FromRecord: payabli.Int(
+        0,
+    ),
+    LimitRecord: payabli.Int(
+        20,
+    ),
+    SortBy: payabli.String(
+        "desc(CreatedOn)",
+    ),
 }
+client.Query.ListVcardsTransactionsOrg(
+    context.TODO(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -15400,22 +15270,21 @@ Retrieve a list of vcards (virtual credit cards) issued for an organization. Use
 
 ```go
 request := &payabli.ListVcardsOrgRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Query.ListVcardsOrg(
-        context.TODO(),
-        123,
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Query.ListVcardsOrg(
+    context.TODO(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -15562,11 +15431,10 @@ Use this endpoint to upload an image file for OCR processing. The accepted file 
 ```go
 request := &payabli.FileContentImageOnly{}
 client.Ocr.OcrDocumentForm(
-        context.TODO(),
-        "typeResult",
-        request,
-    )
-}
+    context.TODO(),
+    "typeResult",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -15630,11 +15498,10 @@ Use this endpoint to submit a Base64-encoded image file for OCR processing. The 
 ```go
 request := &payabli.FileContentImageOnly{}
 client.Ocr.OcrDocumentJson(
-        context.TODO(),
-        "typeResult",
-        request,
-    )
-}
+    context.TODO(),
+    "typeResult",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -15702,30 +15569,29 @@ This endpoint requires the `notifications_create` OR `notifications_read` permis
 
 ```go
 request := &payabli.SearchNotificationLogsRequest{
-        PageSize: payabli.Int(
-            20,
-        ),
-        StartDate: payabli.MustParseDateTime(
-            "2024-01-01T00:00:00Z",
-        ),
-        EndDate: payabli.MustParseDateTime(
-            "2024-01-31T23:59:59Z",
-        ),
-        NotificationEvent: payabli.String(
-            "ActivatedMerchant",
-        ),
-        Succeeded: payabli.Bool(
-            true,
-        ),
-        OrgId: payabli.Int64(
-            int64(123),
-        ),
-    }
-client.Notificationlogs.SearchNotificationLogs(
-        context.TODO(),
-        request,
-    )
+    PageSize: payabli.Int(
+        20,
+    ),
+    StartDate: payabli.MustParseDateTime(
+        "2024-01-01T00:00:00Z",
+    ),
+    EndDate: payabli.MustParseDateTime(
+        "2024-01-31T23:59:59Z",
+    ),
+    NotificationEvent: payabli.String(
+        "ActivatedMerchant",
+    ),
+    Succeeded: payabli.Bool(
+        true,
+    ),
+    OrgId: payabli.Int64(
+        int64(123),
+    ),
 }
+client.Notificationlogs.SearchNotificationLogs(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -15837,10 +15703,9 @@ This endpoint requires the `notifications_create` OR `notifications_read` permis
 
 ```go
 client.Notificationlogs.GetNotificationLog(
-        context.TODO(),
-        "550e8400-e29b-41d4-a716-446655440000",
-    )
-}
+    context.TODO(),
+    "550e8400-e29b-41d4-a716-446655440000",
+)
 ```
 </dd>
 </dl>
@@ -15897,10 +15762,9 @@ Retry sending a specific notification.
 
 ```go
 client.Notificationlogs.RetryNotificationLog(
-        context.TODO(),
-        "550e8400-e29b-41d4-a716-446655440000",
-    )
-}
+    context.TODO(),
+    "550e8400-e29b-41d4-a716-446655440000",
+)
 ```
 </dd>
 </dl>
@@ -15958,15 +15822,14 @@ This endpoint requires the `notifications_create` permission.
 
 ```go
 request := []string{
-        "550e8400-e29b-41d4-a716-446655440000",
-        "550e8400-e29b-41d4-a716-446655440001",
-        "550e8400-e29b-41d4-a716-446655440002",
-    }
-client.Notificationlogs.BulkRetryNotificationLogs(
-        context.TODO(),
-        request,
-    )
+    "550e8400-e29b-41d4-a716-446655440000",
+    "550e8400-e29b-41d4-a716-446655440001",
+    "550e8400-e29b-41d4-a716-446655440002",
 }
+client.Notificationlogs.BulkRetryNotificationLogs(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -16022,19 +15885,18 @@ Register a cloud device to an entrypoint. See [Devices Quickstart](/developers/d
 
 ```go
 request := &payabli.DeviceEntry{
-        Description: payabli.String(
-            "Front Desk POS",
-        ),
-        RegistrationCode: payabli.String(
-            "YS7DS5",
-        ),
-    }
-client.Cloud.AddDevice(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    Description: payabli.String(
+        "Front Desk POS",
+    ),
+    RegistrationCode: payabli.String(
+        "YS7DS5",
+    ),
 }
+client.Cloud.AddDevice(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -16119,11 +15981,10 @@ Remove a cloud device from an entrypoint.
 
 ```go
 client.Cloud.RemoveDevice(
-        context.TODO(),
-        "8cfec329267",
-        "499585-389fj484-3jcj8hj3",
-    )
-}
+    context.TODO(),
+    "8cfec329267",
+    "499585-389fj484-3jcj8hj3",
+)
 ```
 </dd>
 </dl>
@@ -16186,11 +16047,10 @@ Retrieve the registration history for a device.
 
 ```go
 client.Cloud.HistoryDevice(
-        context.TODO(),
-        "8cfec329267",
-        "499585-389fj484-3jcj8hj3",
-    )
-}
+    context.TODO(),
+    "8cfec329267",
+    "499585-389fj484-3jcj8hj3",
+)
 ```
 </dd>
 </dl>
@@ -16256,11 +16116,10 @@ Get a list of cloud devices registered to an entrypoint.
 ```go
 request := &payabli.ListDeviceRequest{}
 client.Cloud.ListDevice(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
-}
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -16324,35 +16183,34 @@ Adds products and services to an entrypoint's catalog. These are used as line it
 
 ```go
 request := &payabli.AddItemRequest{
-        Body: &payabli.LineItem{
-            ItemCommodityCode: payabli.String(
-                "010",
-            ),
-            ItemCost: 12.45,
-            ItemDescription: payabli.String(
-                "Deposit for materials",
-            ),
-            ItemMode: payabli.Int(
-                0,
-            ),
-            ItemProductCode: payabli.String(
-                "M-DEPOSIT",
-            ),
-            ItemProductName: payabli.String(
-                "Materials deposit",
-            ),
-            ItemQty: 1,
-            ItemUnitOfMeasure: payabli.String(
-                "SqFt",
-            ),
-        },
-    }
-client.LineItem.AddItem(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    Body: &payabli.LineItem{
+        ItemCommodityCode: payabli.String(
+            "010",
+        ),
+        ItemCost: 12.45,
+        ItemDescription: payabli.String(
+            "Deposit for materials",
+        ),
+        ItemMode: payabli.Int(
+            0,
+        ),
+        ItemProductCode: payabli.String(
+            "M-DEPOSIT",
+        ),
+        ItemProductName: payabli.String(
+            "Materials deposit",
+        ),
+        ItemQty: 1,
+        ItemUnitOfMeasure: payabli.String(
+            "SqFt",
+        ),
+    },
 }
+client.LineItem.AddItem(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -16423,10 +16281,9 @@ Gets an item by ID.
 
 ```go
 client.LineItem.GetItem(
-        context.TODO(),
-        700,
-    )
-}
+    context.TODO(),
+    700,
+)
 ```
 </dd>
 </dl>
@@ -16481,15 +16338,14 @@ Updates an item.
 
 ```go
 request := &payabli.LineItem{
-        ItemCost: 12.45,
-        ItemQty: 1,
-    }
-client.LineItem.UpdateItem(
-        context.TODO(),
-        700,
-        request,
-    )
+    ItemCost: 12.45,
+    ItemQty: 1,
 }
+client.LineItem.UpdateItem(
+    context.TODO(),
+    700,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -16552,10 +16408,9 @@ Deletes an item.
 
 ```go
 client.LineItem.DeleteItem(
-        context.TODO(),
-        700,
-    )
-}
+    context.TODO(),
+    700,
+)
 ```
 </dd>
 </dl>
@@ -16610,22 +16465,21 @@ Retrieves a list of line items and their details from an entrypoint. Line items 
 
 ```go
 request := &payabli.ListLineItemsRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.LineItem.ListLineItems(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.LineItem.ListLineItems(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -16768,321 +16622,320 @@ Creates a boarding application in an organization. This endpoint requires an app
 
 ```go
 request := &payabli.AddApplicationRequest{
-        ApplicationDataPayIn: &payabli.ApplicationDataPayIn{
-            Services: &payabli.ApplicationDataPayInServices{
-                Ach: &payabli.AchSetup{},
-                Card: &payabli.CardSetup{
-                    AcceptAmex: payabli.Bool(
-                        true,
-                    ),
-                    AcceptDiscover: payabli.Bool(
-                        true,
-                    ),
-                    AcceptMastercard: payabli.Bool(
-                        true,
-                    ),
-                    AcceptVisa: payabli.Bool(
-                        true,
-                    ),
-                },
-            },
-            AnnualRevenue: payabli.Float64(
-                1000,
-            ),
-            AverageBillSize: payabli.String(
-                "500",
-            ),
-            AverageMonthlyBill: payabli.String(
-                "5650",
-            ),
-            Avgmonthly: payabli.Float64(
-                1000,
-            ),
-            Baddress: payabli.String(
-                "123 Walnut Street",
-            ),
-            Baddress1: payabli.String(
-                "Suite 103",
-            ),
-            BankData: []*payabli.Bank{
-                &payabli.Bank{
-                    AccountId: payabli.String(
-                        "123-456",
-                    ),
-                    Nickname: payabli.String(
-                        "Withdrawal Account",
-                    ),
-                    BankName: payabli.String(
-                        "Test Bank 1",
-                    ),
-                    RoutingAccount: payabli.String(
-                        "123123123",
-                    ),
-                    AccountNumber: payabli.String(
-                        "123123100",
-                    ),
-                    TypeAccount: payabli.TypeAccountChecking.Ptr(),
-                    BankAccountHolderName: payabli.String(
-                        "Gruzya Adventure Outfitters LLC",
-                    ),
-                    BankAccountHolderType: payabli.BankAccountHolderTypeBusiness.Ptr(),
-                    BankAccountFunction: payabli.Int(
-                        1,
-                    ),
-                },
-                &payabli.Bank{
-                    AccountId: payabli.String(
-                        "123-789",
-                    ),
-                    Nickname: payabli.String(
-                        "Deposit Account",
-                    ),
-                    BankName: payabli.String(
-                        "Test Bank 2",
-                    ),
-                    RoutingAccount: payabli.String(
-                        "321321321",
-                    ),
-                    AccountNumber: payabli.String(
-                        "123123200",
-                    ),
-                    TypeAccount: payabli.TypeAccountChecking.Ptr(),
-                    BankAccountHolderName: payabli.String(
-                        "Gruzya Adventure Outfitters LLC",
-                    ),
-                    BankAccountHolderType: payabli.BankAccountHolderTypeBusiness.Ptr(),
-                    BankAccountFunction: payabli.Int(
-                        0,
-                    ),
-                },
-            },
-            Bcity: payabli.String(
-                "New Vegas",
-            ),
-            Bcountry: payabli.String(
-                "US",
-            ),
-            Binperson: payabli.Int(
-                60,
-            ),
-            Binphone: payabli.Int(
-                20,
-            ),
-            Binweb: payabli.Int(
-                20,
-            ),
-            Bstate: payabli.String(
-                "FL",
-            ),
-            Bsummary: payabli.String(
-                "Brick and mortar store that sells office supplies",
-            ),
-            Btype: payabli.OwnTypeLimitedLiabilityCompany.Ptr(),
-            Bzip: payabli.String(
-                "33000",
-            ),
-            Contacts: []payabli.ApplicationDataPayInContactsItem{
-                &payabli.Contacts{
-                    ContactEmail: payabli.String(
-                        "herman@hermanscoatings.com",
-                    ),
-                    ContactName: payabli.String(
-                        "Herman Martinez",
-                    ),
-                    ContactPhone: payabli.String(
-                        "3055550000",
-                    ),
-                    ContactTitle: payabli.String(
-                        "Owner",
-                    ),
-                },
-            },
-            CreditLimit: payabli.String(
-                "creditLimit",
-            ),
-            DbaName: payabli.String(
-                "Sunshine Gutters",
-            ),
-            Ein: payabli.String(
-                "123456789",
-            ),
-            Faxnumber: payabli.String(
-                "1234567890",
-            ),
-            Highticketamt: payabli.Float64(
-                1000,
-            ),
-            LegalName: payabli.String(
-                "Sunshine Services, LLC",
-            ),
-            License: payabli.String(
-                "2222222FFG",
-            ),
-            Licstate: payabli.String(
-                "CA",
-            ),
-            Maddress: payabli.String(
-                "123 Walnut Street",
-            ),
-            Maddress1: payabli.String(
-                "STE 900",
-            ),
-            Mcc: payabli.String(
-                "7777",
-            ),
-            Mcity: payabli.String(
-                "Johnson City",
-            ),
-            Mcountry: payabli.String(
-                "US",
-            ),
-            Mstate: payabli.String(
-                "TN",
-            ),
-            Mzip: payabli.String(
-                "37615",
-            ),
-            OrgId: payabli.Int64(
-                int64(123),
-            ),
-            Ownership: []payabli.ApplicationDataPayInOwnershipItem{
-                &payabli.Owners{
-                    Ownername: payabli.String(
-                        "John Smith",
-                    ),
-                    Ownertitle: payabli.String(
-                        "CEO",
-                    ),
-                    Ownerpercent: payabli.Int(
-                        100,
-                    ),
-                    Ownerssn: payabli.String(
-                        "123456789",
-                    ),
-                    Ownerdob: payabli.String(
-                        "01/01/1990",
-                    ),
-                    Ownerphone1: payabli.String(
-                        "555888111",
-                    ),
-                    Ownerphone2: payabli.String(
-                        "555888111",
-                    ),
-                    Owneremail: payabli.String(
-                        "test@email.com",
-                    ),
-                    Ownerdriver: payabli.String(
-                        "CA6677778",
-                    ),
-                    Oaddress: payabli.String(
-                        "33 North St",
-                    ),
-                    Ocity: payabli.String(
-                        "Any City",
-                    ),
-                    Ocountry: payabli.String(
-                        "US",
-                    ),
-                    Odriverstate: payabli.String(
-                        "CA",
-                    ),
-                    Ostate: payabli.String(
-                        "CA",
-                    ),
-                    Ozip: payabli.String(
-                        "55555",
-                    ),
-                },
-            },
-            Phonenumber: "1234567890",
-            ProcessingRegion: "US",
-            RecipientEmail: payabli.String(
-                "josephray@example.com",
-            ),
-            RecipientEmailNotification: payabli.Bool(
-                true,
-            ),
-            Resumable: payabli.Bool(
-                true,
-            ),
-            Signer: &payabli.SignerDataRequest{
-                Name: payabli.String(
-                    "John Smith",
-                ),
-                Ssn: payabli.String(
-                    "123456789",
-                ),
-                Dob: payabli.String(
-                    "01/01/1976",
-                ),
-                Phone: payabli.String(
-                    "555888111",
-                ),
-                Email: payabli.String(
-                    "test@email.com",
-                ),
-                Address: payabli.String(
-                    "33 North St",
-                ),
-                Address1: payabli.String(
-                    "STE 900",
-                ),
-                City: payabli.String(
-                    "Bristol",
-                ),
-                Country: payabli.String(
-                    "US",
-                ),
-                State: payabli.String(
-                    "TN",
-                ),
-                Zip: payabli.String(
-                    "55555",
-                ),
-                SignedDocumentReference: payabli.String(
-                    "https://example.com/signed-document.pdf",
-                ),
-                PciAttestation: payabli.Bool(
+    ApplicationDataPayIn: &payabli.ApplicationDataPayIn{
+        Services: &payabli.ApplicationDataPayInServices{
+            Ach: &payabli.AchSetup{},
+            Card: &payabli.CardSetup{
+                AcceptAmex: payabli.Bool(
                     true,
                 ),
-                AttestationDate: payabli.String(
-                    "04/20/2025",
+                AcceptDiscover: payabli.Bool(
+                    true,
                 ),
-                AdditionalData: &payabli.AdditionalDataMap{
-                    "deviceId": "499585-389fj484-3jcj8hj3",
-                    "session": "fifji4-fiu443-fn4843",
-                    "timeWithCompany": "6 Years",
-                },
-                SignDate: payabli.String(
-                    "04/20/2025",
+                AcceptMastercard: payabli.Bool(
+                    true,
+                ),
+                AcceptVisa: payabli.Bool(
+                    true,
                 ),
             },
-            Startdate: payabli.String(
-                "01/01/1990",
-            ),
-            TaxFillName: payabli.String(
-                "Sunshine LLC",
-            ),
-            TemplateId: payabli.Int64(
-                int64(22),
-            ),
-            Ticketamt: payabli.Float64(
-                1000,
-            ),
-            Website: payabli.String(
-                "www.example.com",
-            ),
-            WhenCharged: payabli.WhenchargedWhenServiceProvided,
-            WhenDelivered: payabli.WhendeliveredOver30Days,
-            WhenProvided: payabli.WhenprovidedThirtyDaysOrLess,
-            WhenRefunded: payabli.WhenrefundedThirtyDaysOrLess,
         },
-    }
-client.Boarding.AddApplication(
-        context.TODO(),
-        request,
-    )
+        AnnualRevenue: payabli.Float64(
+            1000,
+        ),
+        AverageBillSize: payabli.String(
+            "500",
+        ),
+        AverageMonthlyBill: payabli.String(
+            "5650",
+        ),
+        Avgmonthly: payabli.Float64(
+            1000,
+        ),
+        Baddress: payabli.String(
+            "123 Walnut Street",
+        ),
+        Baddress1: payabli.String(
+            "Suite 103",
+        ),
+        BankData: []*payabli.Bank{
+            &payabli.Bank{
+                AccountId: payabli.String(
+                    "123-456",
+                ),
+                Nickname: payabli.String(
+                    "Withdrawal Account",
+                ),
+                BankName: payabli.String(
+                    "Test Bank 1",
+                ),
+                RoutingAccount: payabli.String(
+                    "123123123",
+                ),
+                AccountNumber: payabli.String(
+                    "123123100",
+                ),
+                TypeAccount: payabli.TypeAccountChecking.Ptr(),
+                BankAccountHolderName: payabli.String(
+                    "Gruzya Adventure Outfitters LLC",
+                ),
+                BankAccountHolderType: payabli.BankAccountHolderTypeBusiness.Ptr(),
+                BankAccountFunction: payabli.Int(
+                    1,
+                ),
+            },
+            &payabli.Bank{
+                AccountId: payabli.String(
+                    "123-789",
+                ),
+                Nickname: payabli.String(
+                    "Deposit Account",
+                ),
+                BankName: payabli.String(
+                    "Test Bank 2",
+                ),
+                RoutingAccount: payabli.String(
+                    "321321321",
+                ),
+                AccountNumber: payabli.String(
+                    "123123200",
+                ),
+                TypeAccount: payabli.TypeAccountChecking.Ptr(),
+                BankAccountHolderName: payabli.String(
+                    "Gruzya Adventure Outfitters LLC",
+                ),
+                BankAccountHolderType: payabli.BankAccountHolderTypeBusiness.Ptr(),
+                BankAccountFunction: payabli.Int(
+                    0,
+                ),
+            },
+        },
+        Bcity: payabli.String(
+            "New Vegas",
+        ),
+        Bcountry: payabli.String(
+            "US",
+        ),
+        Binperson: payabli.Int(
+            60,
+        ),
+        Binphone: payabli.Int(
+            20,
+        ),
+        Binweb: payabli.Int(
+            20,
+        ),
+        Bstate: payabli.String(
+            "FL",
+        ),
+        Bsummary: payabli.String(
+            "Brick and mortar store that sells office supplies",
+        ),
+        Btype: payabli.OwnTypeLimitedLiabilityCompany.Ptr(),
+        Bzip: payabli.String(
+            "33000",
+        ),
+        Contacts: []payabli.ApplicationDataPayInContactsItem{
+            &payabli.Contacts{
+                ContactEmail: payabli.String(
+                    "herman@hermanscoatings.com",
+                ),
+                ContactName: payabli.String(
+                    "Herman Martinez",
+                ),
+                ContactPhone: payabli.String(
+                    "3055550000",
+                ),
+                ContactTitle: payabli.String(
+                    "Owner",
+                ),
+            },
+        },
+        CreditLimit: payabli.String(
+            "creditLimit",
+        ),
+        DbaName: payabli.String(
+            "Sunshine Gutters",
+        ),
+        Ein: payabli.String(
+            "123456789",
+        ),
+        Faxnumber: payabli.String(
+            "1234567890",
+        ),
+        Highticketamt: payabli.Float64(
+            1000,
+        ),
+        LegalName: payabli.String(
+            "Sunshine Services, LLC",
+        ),
+        License: payabli.String(
+            "2222222FFG",
+        ),
+        Licstate: payabli.String(
+            "CA",
+        ),
+        Maddress: payabli.String(
+            "123 Walnut Street",
+        ),
+        Maddress1: payabli.String(
+            "STE 900",
+        ),
+        Mcc: payabli.String(
+            "7777",
+        ),
+        Mcity: payabli.String(
+            "Johnson City",
+        ),
+        Mcountry: payabli.String(
+            "US",
+        ),
+        Mstate: payabli.String(
+            "TN",
+        ),
+        Mzip: payabli.String(
+            "37615",
+        ),
+        OrgId: payabli.Int64(
+            int64(123),
+        ),
+        Ownership: []payabli.ApplicationDataPayInOwnershipItem{
+            &payabli.Owners{
+                Ownername: payabli.String(
+                    "John Smith",
+                ),
+                Ownertitle: payabli.String(
+                    "CEO",
+                ),
+                Ownerpercent: payabli.Int(
+                    100,
+                ),
+                Ownerssn: payabli.String(
+                    "123456789",
+                ),
+                Ownerdob: payabli.String(
+                    "01/01/1990",
+                ),
+                Ownerphone1: payabli.String(
+                    "555888111",
+                ),
+                Ownerphone2: payabli.String(
+                    "555888111",
+                ),
+                Owneremail: payabli.String(
+                    "test@email.com",
+                ),
+                Ownerdriver: payabli.String(
+                    "CA6677778",
+                ),
+                Oaddress: payabli.String(
+                    "33 North St",
+                ),
+                Ocity: payabli.String(
+                    "Any City",
+                ),
+                Ocountry: payabli.String(
+                    "US",
+                ),
+                Odriverstate: payabli.String(
+                    "CA",
+                ),
+                Ostate: payabli.String(
+                    "CA",
+                ),
+                Ozip: payabli.String(
+                    "55555",
+                ),
+            },
+        },
+        Phonenumber: "1234567890",
+        ProcessingRegion: "US",
+        RecipientEmail: payabli.String(
+            "josephray@example.com",
+        ),
+        RecipientEmailNotification: payabli.Bool(
+            true,
+        ),
+        Resumable: payabli.Bool(
+            true,
+        ),
+        Signer: &payabli.SignerDataRequest{
+            Name: payabli.String(
+                "John Smith",
+            ),
+            Ssn: payabli.String(
+                "123456789",
+            ),
+            Dob: payabli.String(
+                "01/01/1976",
+            ),
+            Phone: payabli.String(
+                "555888111",
+            ),
+            Email: payabli.String(
+                "test@email.com",
+            ),
+            Address: payabli.String(
+                "33 North St",
+            ),
+            Address1: payabli.String(
+                "STE 900",
+            ),
+            City: payabli.String(
+                "Bristol",
+            ),
+            Country: payabli.String(
+                "US",
+            ),
+            State: payabli.String(
+                "TN",
+            ),
+            Zip: payabli.String(
+                "55555",
+            ),
+            SignedDocumentReference: payabli.String(
+                "https://example.com/signed-document.pdf",
+            ),
+            PciAttestation: payabli.Bool(
+                true,
+            ),
+            AttestationDate: payabli.String(
+                "04/20/2025",
+            ),
+            AdditionalData: &payabli.AdditionalDataMap{
+                "deviceId": "499585-389fj484-3jcj8hj3",
+                "session": "fifji4-fiu443-fn4843",
+                "timeWithCompany": "6 Years",
+            },
+            SignDate: payabli.String(
+                "04/20/2025",
+            ),
+        },
+        Startdate: payabli.String(
+            "01/01/1990",
+        ),
+        TaxFillName: payabli.String(
+            "Sunshine LLC",
+        ),
+        TemplateId: payabli.Int64(
+            int64(22),
+        ),
+        Ticketamt: payabli.Float64(
+            1000,
+        ),
+        Website: payabli.String(
+            "www.example.com",
+        ),
+        WhenCharged: payabli.WhenchargedWhenServiceProvided,
+        WhenDelivered: payabli.WhendeliveredOver30Days,
+        WhenProvided: payabli.WhenprovidedThirtyDaysOrLess,
+        WhenRefunded: payabli.WhenrefundedThirtyDaysOrLess,
+    },
 }
+client.Boarding.AddApplication(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -17138,11 +16991,10 @@ Updates a boarding application by ID. This endpoint requires an application API 
 ```go
 request := &payabli.ApplicationData{}
 client.Boarding.UpdateApplication(
-        context.TODO(),
-        352,
-        request,
-    )
-}
+    context.TODO(),
+    352,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -17205,10 +17057,9 @@ Deletes a boarding application by ID.
 
 ```go
 client.Boarding.DeleteApplication(
-        context.TODO(),
-        352,
-    )
-}
+    context.TODO(),
+    352,
+)
 ```
 </dd>
 </dl>
@@ -17263,10 +17114,9 @@ Retrieves the details for a boarding application by ID.
 
 ```go
 client.Boarding.GetApplication(
-        context.TODO(),
-        352,
-    )
-}
+    context.TODO(),
+    352,
+)
 ```
 </dd>
 </dl>
@@ -17321,19 +17171,18 @@ Gets a boarding application by authentication information. This endpoint require
 
 ```go
 request := &payabli.RequestAppByAuth{
-        Email: payabli.String(
-            "admin@email.com",
-        ),
-        ReferenceId: payabli.String(
-            "129-219",
-        ),
-    }
-client.Boarding.GetApplicationByAuth(
-        context.TODO(),
-        "17E",
-        request,
-    )
+    Email: payabli.String(
+        "admin@email.com",
+    ),
+    ReferenceId: payabli.String(
+        "129-219",
+    ),
 }
+client.Boarding.GetApplicationByAuth(
+    context.TODO(),
+    "17E",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -17404,10 +17253,9 @@ Retrieves details for a boarding link, by ID.
 
 ```go
 client.Boarding.GetByIdLinkApplication(
-        context.TODO(),
-        91,
-    )
-}
+    context.TODO(),
+    91,
+)
 ```
 </dd>
 </dl>
@@ -17462,10 +17310,9 @@ Get details for a boarding link using the boarding template ID. This endpoint re
 
 ```go
 client.Boarding.GetByTemplateIdLinkApplication(
-        context.TODO(),
-        80,
-    )
-}
+    context.TODO(),
+    80,
+)
 ```
 </dd>
 </dl>
@@ -17521,12 +17368,11 @@ Retrieves a link and the verification code used to log into an existing boarding
 ```go
 request := &payabli.GetExternalApplicationRequest{}
 client.Boarding.GetExternalApplication(
-        context.TODO(),
-        352,
-        "mail2",
-        request,
-    )
-}
+    context.TODO(),
+    352,
+    "mail2",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -17597,10 +17443,9 @@ Retrieves the details for a boarding link, by reference name. This endpoint requ
 
 ```go
 client.Boarding.GetLinkApplication(
-        context.TODO(),
-        "myorgaccountname-00091",
-    )
-}
+    context.TODO(),
+    "myorgaccountname-00091",
+)
 ```
 </dd>
 </dl>
@@ -17655,22 +17500,21 @@ Returns a list of boarding applications for an organization. Use filters to limi
 
 ```go
 request := &payabli.ListApplicationsRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Boarding.ListApplications(
-        context.TODO(),
-        123,
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Boarding.ListApplications(
+    context.TODO(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -17801,22 +17645,21 @@ Return a list of boarding links for an organization. Use filters to limit result
 
 ```go
 request := &payabli.ListBoardingLinksRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Boarding.ListBoardingLinks(
-        context.TODO(),
-        123,
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Boarding.ListBoardingLinks(
+    context.TODO(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -17935,21 +17778,20 @@ Creates a new boarding application linked to an existing paypoint as part of the
 
 ```go
 request := &payabli.CreateApplicationFromPaypointRequest{
-        PaypointId: int64(3040),
-        TemplateId: int64(456),
-        RecipientEmail: "merchant@example.com",
-        ReturnBoardingAccessInfoInLine: payabli.Bool(
-            true,
-        ),
-        OnCreate: []string{
-            "submitApplication",
-        },
-    }
-client.Boarding.AddServiceToPaypointFromApp(
-        context.TODO(),
-        request,
-    )
+    PaypointId: int64(3040),
+    TemplateId: int64(456),
+    RecipientEmail: "merchant@example.com",
+    ReturnBoardingAccessInfoInLine: payabli.Bool(
+        true,
+    ),
+    OnCreate: []string{
+        "submitApplication",
+    },
 }
+client.Boarding.AddServiceToPaypointFromApp(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -18036,10 +17878,9 @@ Returns all boarding applications associated with a specific paypoint, including
 
 ```go
 client.Boarding.GetApplicationsByPaypointId(
-        context.TODO(),
-        int64(3040),
-    )
-}
+    context.TODO(),
+    int64(3040),
+)
 ```
 </dd>
 </dl>
@@ -18095,10 +17936,9 @@ Deletes a template by ID.
 
 ```go
 client.Templates.DeleteTemplate(
-        context.TODO(),
-        80,
-    )
-}
+    context.TODO(),
+    80,
+)
 ```
 </dd>
 </dl>
@@ -18153,11 +17993,10 @@ Generates a boarding link from a boarding template.
 
 ```go
 client.Templates.GetlinkTemplate(
-        context.TODO(),
-        80,
-        true,
-    )
-}
+    context.TODO(),
+    80,
+    true,
+)
 ```
 </dd>
 </dl>
@@ -18220,10 +18059,9 @@ Retrieves a boarding template's details by ID.
 
 ```go
 client.Templates.GetTemplate(
-        context.TODO(),
-        80,
-    )
-}
+    context.TODO(),
+    80,
+)
 ```
 </dd>
 </dl>
@@ -18278,22 +18116,21 @@ Retrieves a list of boarding templates for an organization. Use filters to limit
 
 ```go
 request := &payabli.ListTemplatesRequest{
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            0,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Templates.ListTemplates(
-        context.TODO(),
-        123,
-        request,
-    )
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        0,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Templates.ListTemplates(
+    context.TODO(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -18429,23 +18266,22 @@ Export a list of boarding applications for an organization. Use filters to limit
 
 ```go
 request := &payabli.ExportApplicationsRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportApplications(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportApplications(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -18597,23 +18433,22 @@ Export batch details for a paypoint. Use filters to limit results.
 
 ```go
 request := &payabli.ExportBatchDetailsRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportBatchDetails(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        "8cfec329267",
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportBatchDetails(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -18776,23 +18611,22 @@ Export batch details for an organization. Use filters to limit results.
 
 ```go
 request := &payabli.ExportBatchDetailsOrgRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportBatchDetailsOrg(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportBatchDetailsOrg(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -18955,23 +18789,22 @@ Export a list of batches for an entrypoint. Use filters to limit results.
 
 ```go
 request := &payabli.ExportBatchesRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportBatches(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        "8cfec329267",
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportBatches(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -19124,23 +18957,22 @@ Export a list of batches for an organization. Use filters to limit results.
 
 ```go
 request := &payabli.ExportBatchesOrgRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportBatchesOrg(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportBatchesOrg(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -19291,23 +19123,22 @@ Export a list of money out batches for a paypoint. Use filters to limit results.
 
 ```go
 request := &payabli.ExportBatchesOutRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportBatchesOut(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        "8cfec329267",
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportBatchesOut(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -19440,23 +19271,22 @@ Export a list of money out batches for an organization. Use filters to limit res
 
 ```go
 request := &payabli.ExportBatchesOutOrgRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportBatchesOutOrg(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportBatchesOutOrg(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -19589,23 +19419,22 @@ Export a list of bills for an entrypoint. Use filters to limit results.
 
 ```go
 request := &payabli.ExportBillsRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportBills(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        "8cfec329267",
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportBills(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -19756,23 +19585,22 @@ Export a list of bills for an organization. Use filters to limit results.
 
 ```go
 request := &payabli.ExportBillsOrgRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportBillsOrg(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportBillsOrg(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -19923,23 +19751,22 @@ Export a list of chargebacks and ACH returns for an entrypoint. Use filters to l
 
 ```go
 request := &payabli.ExportChargebacksRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportChargebacks(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        "8cfec329267",
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportChargebacks(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -20111,23 +19938,22 @@ Export a list of chargebacks and ACH returns for an organization. Use filters to
 
 ```go
 request := &payabli.ExportChargebacksOrgRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportChargebacksOrg(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportChargebacksOrg(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -20299,23 +20125,22 @@ Export a list of customers for an entrypoint. Use filters to limit results.
 
 ```go
 request := &payabli.ExportCustomersRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportCustomers(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        "8cfec329267",
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportCustomers(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -20480,23 +20305,22 @@ Exports a list of customers for an organization. Use filters to limit results.
 
 ```go
 request := &payabli.ExportCustomersOrgRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportCustomersOrg(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportCustomersOrg(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -20661,23 +20485,22 @@ Export list of invoices for an entrypoint. Use filters to limit results.
 
 ```go
 request := &payabli.ExportInvoicesRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportInvoices(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        "8cfec329267",
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportInvoices(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -20852,23 +20675,22 @@ Export a list of invoices for an organization. Use filters to limit results.
 
 ```go
 request := &payabli.ExportInvoicesOrgRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportInvoicesOrg(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportInvoicesOrg(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -21043,23 +20865,22 @@ Export a list of child organizations (suborganizations) for a parent organizatio
 
 ```go
 request := &payabli.ExportOrganizationsRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportOrganizations(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportOrganizations(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -21209,23 +21030,22 @@ Export a list of payouts and their statuses for an entrypoint. Use filters to li
 
 ```go
 request := &payabli.ExportPayoutRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportPayout(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        "8cfec329267",
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportPayout(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -21374,23 +21194,22 @@ Export a list of payouts and their details for an organization. Use filters to l
 
 ```go
 request := &payabli.ExportPayoutOrgRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportPayoutOrg(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportPayoutOrg(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -21539,23 +21358,22 @@ Export a list of paypoints in an organization. Use filters to limit results.
 
 ```go
 request := &payabli.ExportPaypointsRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportPaypoints(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportPaypoints(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -21706,23 +21524,22 @@ Export a list of settled transactions for an entrypoint. Use filters to limit re
 
 ```go
 request := &payabli.ExportSettlementsRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportSettlements(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        "8cfec329267",
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportSettlements(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -21893,23 +21710,22 @@ Export a list of settled transactions for an organization. Use filters to limit 
 
 ```go
 request := &payabli.ExportSettlementsOrgRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportSettlementsOrg(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportSettlementsOrg(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -22080,23 +21896,22 @@ Export a list of subscriptions for an entrypoint. Use filters to limit results.
 
 ```go
 request := &payabli.ExportSubscriptionsRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportSubscriptions(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        "8cfec329267",
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportSubscriptions(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -22269,23 +22084,22 @@ Export a list of subscriptions for an organization. Use filters to limit results
 
 ```go
 request := &payabli.ExportSubscriptionsOrgRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportSubscriptionsOrg(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportSubscriptionsOrg(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -22458,23 +22272,22 @@ Export a list of transactions for an entrypoint in a file in XLSX or CSV format.
 
 ```go
 request := &payabli.ExportTransactionsRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportTransactions(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        "8cfec329267",
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportTransactions(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -22651,23 +22464,22 @@ Export a list of transactions for an org in a file in XLSX or CSV format. Use fi
 
 ```go
 request := &payabli.ExportTransactionsOrgRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportTransactionsOrg(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportTransactionsOrg(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -22844,27 +22656,26 @@ Export a list of transfer details for an entrypoint. Use filters to limit result
 
 ```go
 request := &payabli.ExportTransferDetailsRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Export.ExportTransferDetails(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        "8cfec329267",
-        int64(4521),
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Export.ExportTransferDetails(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    "8cfec329267",
+    int64(4521),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -23021,25 +22832,24 @@ Get a list of transfers for an entrypoint. Use filters to limit results.
 
 ```go
 request := &payabli.ExportTransfersRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-        SortBy: payabli.String(
-            "desc(field_name)",
-        ),
-    }
-client.Export.ExportTransfers(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
+    SortBy: payabli.String(
+        "desc(field_name)",
+    ),
 }
+client.Export.ExportTransfers(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -23181,23 +22991,22 @@ Export a list of vendors for an entrypoint. Use filters to limit results.
 
 ```go
 request := &payabli.ExportVendorsRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportVendors(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        "8cfec329267",
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportVendors(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -23352,23 +23161,22 @@ Export a list of vendors for an organization. Use filters to limit results.
 
 ```go
 request := &payabli.ExportVendorsOrgRequest{
-        ColumnsExport: payabli.String(
-            "BatchDate:Batch_Date,PaypointName:Legal_name",
-        ),
-        FromRecord: payabli.Int(
-            251,
-        ),
-        LimitRecord: payabli.Int(
-            1000,
-        ),
-    }
-client.Export.ExportVendorsOrg(
-        context.TODO(),
-        payabli.ExportFormat1Csv.Ptr(),
-        123,
-        request,
-    )
+    ColumnsExport: payabli.String(
+        "BatchDate:Batch_Date,PaypointName:Legal_name",
+    ),
+    FromRecord: payabli.Int(
+        251,
+    ),
+    LimitRecord: payabli.Int(
+        1000,
+    ),
 }
+client.Export.ExportVendorsOrg(
+    context.TODO(),
+    payabli.ExportFormat1Csv.Ptr(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -23520,101 +23328,100 @@ Creates an organization under a parent organization. This is also referred to as
 
 ```go
 request := &payabli.AddOrganizationRequest{
-        IdempotencyKey: payabli.String(
-            "6B29FC40-CA47-1067-B31D-00DD010662DA",
-        ),
-        BillingInfo: &payabli.Instrument{
-            AchAccount: "123123123",
-            AchRouting: "123123123",
-            BillingAddress: payabli.String(
-                "123 Walnut Street",
-            ),
-            BillingCity: payabli.String(
-                "Johnson City",
-            ),
-            BillingCountry: payabli.String(
-                "US",
-            ),
-            BillingState: payabli.String(
-                "TN",
-            ),
-            BillingZip: payabli.String(
-                "37615",
-            ),
-        },
-        Contacts: &payabli.ContactsField{
-            &payabli.Contacts{
-                ContactEmail: payabli.String(
-                    "herman@hermanscoatings.com",
-                ),
-                ContactName: payabli.String(
-                    "Herman Martinez",
-                ),
-                ContactPhone: payabli.String(
-                    "3055550000",
-                ),
-                ContactTitle: payabli.String(
-                    "Owner",
-                ),
-            },
-        },
-        HasBilling: payabli.Bool(
-            true,
-        ),
-        HasResidual: payabli.Bool(
-            true,
-        ),
-        OrgAddress: payabli.String(
+    IdempotencyKey: payabli.String(
+        "6B29FC40-CA47-1067-B31D-00DD010662DA",
+    ),
+    BillingInfo: &payabli.Instrument{
+        AchAccount: "123123123",
+        AchRouting: "123123123",
+        BillingAddress: payabli.String(
             "123 Walnut Street",
         ),
-        OrgCity: payabli.String(
+        BillingCity: payabli.String(
             "Johnson City",
         ),
-        OrgCountry: payabli.String(
+        BillingCountry: payabli.String(
             "US",
         ),
-        OrgEntryName: payabli.String(
-            "pilgrim-planner",
-        ),
-        OrgId: payabli.String(
-            "123",
-        ),
-        OrgLogo: &payabli.FileContent{
-            FContent: payabli.String(
-                "TXkgdGVzdCBmaWxlHJ==...",
-            ),
-            Filename: payabli.String(
-                "my-doc.pdf",
-            ),
-            Ftype: payabli.FileContentFtypePdf.Ptr(),
-            Furl: payabli.String(
-                "https://mysite.com/my-doc.pdf",
-            ),
-        },
-        OrgName: "Pilgrim Planner",
-        OrgParentId: payabli.Int64(
-            int64(236),
-        ),
-        OrgState: payabli.String(
+        BillingState: payabli.String(
             "TN",
         ),
-        OrgTimezone: payabli.Int(
-            -5,
-        ),
-        OrgType: 0,
-        OrgWebsite: payabli.String(
-            "www.pilgrimageplanner.com",
-        ),
-        OrgZip: payabli.String(
+        BillingZip: payabli.String(
             "37615",
         ),
-        ReplyToEmail: "email@example.com",
-    }
-client.Organization.AddOrganization(
-        context.TODO(),
-        request,
-    )
+    },
+    Contacts: &payabli.ContactsField{
+        &payabli.Contacts{
+            ContactEmail: payabli.String(
+                "herman@hermanscoatings.com",
+            ),
+            ContactName: payabli.String(
+                "Herman Martinez",
+            ),
+            ContactPhone: payabli.String(
+                "3055550000",
+            ),
+            ContactTitle: payabli.String(
+                "Owner",
+            ),
+        },
+    },
+    HasBilling: payabli.Bool(
+        true,
+    ),
+    HasResidual: payabli.Bool(
+        true,
+    ),
+    OrgAddress: payabli.String(
+        "123 Walnut Street",
+    ),
+    OrgCity: payabli.String(
+        "Johnson City",
+    ),
+    OrgCountry: payabli.String(
+        "US",
+    ),
+    OrgEntryName: payabli.String(
+        "pilgrim-planner",
+    ),
+    OrgId: payabli.String(
+        "123",
+    ),
+    OrgLogo: &payabli.FileContent{
+        FContent: payabli.String(
+            "TXkgdGVzdCBmaWxlHJ==...",
+        ),
+        Filename: payabli.String(
+            "my-doc.pdf",
+        ),
+        Ftype: payabli.FileContentFtypePdf.Ptr(),
+        Furl: payabli.String(
+            "https://mysite.com/my-doc.pdf",
+        ),
+    },
+    OrgName: "Pilgrim Planner",
+    OrgParentId: payabli.Int64(
+        int64(236),
+    ),
+    OrgState: payabli.String(
+        "TN",
+    ),
+    OrgTimezone: payabli.Int(
+        -5,
+    ),
+    OrgType: 0,
+    OrgWebsite: payabli.String(
+        "www.pilgrimageplanner.com",
+    ),
+    OrgZip: payabli.String(
+        "37615",
+    ),
+    ReplyToEmail: "email@example.com",
 }
+client.Organization.AddOrganization(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -23821,62 +23628,61 @@ Updates an organization's details by ID.
 
 ```go
 request := &payabli.OrganizationData{
-        Contacts: &payabli.ContactsField{
-            &payabli.Contacts{
-                ContactEmail: payabli.String(
-                    "herman@hermanscoatings.com",
-                ),
-                ContactName: payabli.String(
-                    "Herman Martinez",
-                ),
-                ContactPhone: payabli.String(
-                    "3055550000",
-                ),
-                ContactTitle: payabli.String(
-                    "Owner",
-                ),
-            },
+    Contacts: &payabli.ContactsField{
+        &payabli.Contacts{
+            ContactEmail: payabli.String(
+                "herman@hermanscoatings.com",
+            ),
+            ContactName: payabli.String(
+                "Herman Martinez",
+            ),
+            ContactPhone: payabli.String(
+                "3055550000",
+            ),
+            ContactTitle: payabli.String(
+                "Owner",
+            ),
         },
-        OrgAddress: payabli.String(
-            "123 Walnut Street",
-        ),
-        OrgCity: payabli.String(
-            "Johnson City",
-        ),
-        OrgCountry: payabli.String(
-            "US",
-        ),
-        OrgEntryName: payabli.String(
-            "pilgrim-planner",
-        ),
-        OrganizationDataOrgId: payabli.String(
-            "123",
-        ),
-        OrgName: payabli.String(
-            "Pilgrim Planner",
-        ),
-        OrgState: payabli.String(
-            "TN",
-        ),
-        OrgTimezone: payabli.Int(
-            -5,
-        ),
-        OrgType: payabli.Int(
-            0,
-        ),
-        OrgWebsite: payabli.String(
-            "www.pilgrimageplanner.com",
-        ),
-        OrgZip: payabli.String(
-            "37615",
-        ),
-    }
-client.Organization.EditOrganization(
-        context.TODO(),
-        123,
-        request,
-    )
+    },
+    OrgAddress: payabli.String(
+        "123 Walnut Street",
+    ),
+    OrgCity: payabli.String(
+        "Johnson City",
+    ),
+    OrgCountry: payabli.String(
+        "US",
+    ),
+    OrgEntryName: payabli.String(
+        "pilgrim-planner",
+    ),
+    OrganizationDataOrgId: payabli.String(
+        "123",
+    ),
+    OrgName: payabli.String(
+        "Pilgrim Planner",
+    ),
+    OrgState: payabli.String(
+        "TN",
+    ),
+    OrgTimezone: payabli.Int(
+        -5,
+    ),
+    OrgType: payabli.Int(
+        0,
+    ),
+    OrgWebsite: payabli.String(
+        "www.pilgrimageplanner.com",
+    ),
+    OrgZip: payabli.String(
+        "37615",
+    ),
 }
+client.Organization.EditOrganization(
+    context.TODO(),
+    123,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -24083,10 +23889,9 @@ Delete an organization by ID.
 
 ```go
 client.Organization.DeleteOrganization(
-        context.TODO(),
-        123,
-    )
-}
+    context.TODO(),
+    123,
+)
 ```
 </dd>
 </dl>
@@ -24141,10 +23946,9 @@ Gets an organization's basic information by entry name (entrypoint identifier).
 
 ```go
 client.Organization.GetBasicOrganization(
-        context.TODO(),
-        "8cfec329267",
-    )
-}
+    context.TODO(),
+    "8cfec329267",
+)
 ```
 </dd>
 </dl>
@@ -24199,10 +24003,9 @@ Gets an organization's basic details by org ID.
 
 ```go
 client.Organization.GetBasicOrganizationById(
-        context.TODO(),
-        123,
-    )
-}
+    context.TODO(),
+    123,
+)
 ```
 </dd>
 </dl>
@@ -24257,10 +24060,9 @@ Retrieves details for an organization by ID.
 
 ```go
 client.Organization.GetOrganization(
-        context.TODO(),
-        123,
-    )
-}
+    context.TODO(),
+    123,
+)
 ```
 </dd>
 </dl>
@@ -24315,10 +24117,9 @@ Retrieves an organization's settings.
 
 ```go
 client.Organization.GetSettingsOrganization(
-        context.TODO(),
-        123,
-    )
-}
+    context.TODO(),
+    123,
+)
 ```
 </dd>
 </dl>
@@ -24378,27 +24179,26 @@ Requires `inboundpayments_create` or `outboundpayments_create` permission.
 
 ```go
 request := &payabli.VerifyAccountDetailsRequest{
-        RoutingNumber: "122105278",
-        AccountNumber: "0000000016",
-        AccountType: payabli.String(
-            "Checking",
-        ),
-        Country: payabli.String(
-            "US",
-        ),
-        AccountHolderType: payabli.String(
-            "personal",
-        ),
-        HolderName: payabli.String(
-            "Jane Doe",
-        ),
-    }
-client.Management.VerifyAccountDetails(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    RoutingNumber: "122105278",
+    AccountNumber: "0000000016",
+    AccountType: payabli.String(
+        "Checking",
+    ),
+    Country: payabli.String(
+        "US",
+    ),
+    AccountHolderType: payabli.String(
+        "personal",
+    ),
+    HolderName: payabli.String(
+        "Jane Doe",
+    ),
 }
+client.Management.VerifyAccountDetails(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -24502,22 +24302,21 @@ Retrieves the basic statistics for an organization or a paypoint, for a given ti
 
 ```go
 request := &payabli.BasicStatsRequest{
-        StartDate: payabli.String(
-            "2025-11-01",
-        ),
-        EndDate: payabli.String(
-            "2025-11-30",
-        ),
-    }
-client.Statistic.BasicStats(
-        context.TODO(),
-        "custom",
-        "m",
-        2,
-        int64(1000000),
-        request,
-    )
+    StartDate: payabli.String(
+        "2025-11-01",
+    ),
+    EndDate: payabli.String(
+        "2025-11-30",
+    ),
 }
+client.Statistic.BasicStats(
+    context.TODO(),
+    "custom",
+    "m",
+    2,
+    int64(1000000),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -24663,13 +24462,12 @@ Retrieves the basic statistics for a customer for a specific time period, groupe
 ```go
 request := &payabli.CustomerBasicStatsRequest{}
 client.Statistic.CustomerBasicStats(
-        context.TODO(),
-        "ytd",
-        "m",
-        4440,
-        request,
-    )
-}
+    context.TODO(),
+    "ytd",
+    "m",
+    4440,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -24772,13 +24570,12 @@ Retrieves the subscription statistics for a given interval for a paypoint or org
 ```go
 request := &payabli.SubStatsRequest{}
 client.Statistic.SubStats(
-        context.TODO(),
-        "30",
-        2,
-        int64(1000000),
-        request,
-    )
-}
+    context.TODO(),
+    "30",
+    2,
+    int64(1000000),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -24870,13 +24667,12 @@ Retrieve the basic statistics about a vendor for a given time period, grouped by
 ```go
 request := &payabli.VendorBasicStatsRequest{}
 client.Statistic.VendorBasicStats(
-        context.TODO(),
-        "ytd",
-        "m",
-        1,
-        request,
-    )
-}
+    context.TODO(),
+    "ytd",
+    "m",
+    1,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -24979,27 +24775,26 @@ Create a new notification or auto-generated report.
 
 ```go
 request := &payabli.AddNotificationRequest{
-        NotificationStandardRequest: &payabli.NotificationStandardRequest{
-            Content: &payabli.NotificationStandardRequestContent{
-                EventType: payabli.NotificationStandardRequestContentEventTypeCreatedApplication.Ptr(),
-            },
-            Frequency: payabli.NotificationStandardRequestFrequencyUntilcancelled,
-            Method: payabli.NotificationStandardRequestMethodWeb,
-            OwnerId: payabli.Int(
-                236,
-            ),
-            OwnerType: 0,
-            Status: payabli.Int(
-                1,
-            ),
-            Target: "https://webhook.site/2871b8f8-edc7-441a-b376-98d8c8e33275",
+    NotificationStandardRequest: &payabli.NotificationStandardRequest{
+        Content: &payabli.NotificationStandardRequestContent{
+            EventType: payabli.NotificationStandardRequestContentEventTypeCreatedApplication.Ptr(),
         },
-    }
-client.Notification.AddNotification(
-        context.TODO(),
-        request,
-    )
+        Frequency: payabli.NotificationStandardRequestFrequencyUntilcancelled,
+        Method: payabli.NotificationStandardRequestMethodWeb,
+        OwnerId: payabli.Int(
+            236,
+        ),
+        OwnerType: 0,
+        Status: payabli.Int(
+            1,
+        ),
+        Target: "https://webhook.site/2871b8f8-edc7-441a-b376-98d8c8e33275",
+    },
 }
+client.Notification.AddNotification(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -25054,10 +24849,9 @@ Retrieves a single notification or auto-generated report's details.
 
 ```go
 client.Notification.GetNotification(
-        context.TODO(),
-        "1717",
-    )
-}
+    context.TODO(),
+    "1717",
+)
 ```
 </dd>
 </dl>
@@ -25112,28 +24906,27 @@ Update a notification or auto-generated report.
 
 ```go
 request := &payabli.UpdateNotificationRequest{
-        NotificationStandardRequest: &payabli.NotificationStandardRequest{
-            Content: &payabli.NotificationStandardRequestContent{
-                EventType: payabli.NotificationStandardRequestContentEventTypeApprovedPayment.Ptr(),
-            },
-            Frequency: payabli.NotificationStandardRequestFrequencyUntilcancelled,
-            Method: payabli.NotificationStandardRequestMethodEmail,
-            OwnerId: payabli.Int(
-                136,
-            ),
-            OwnerType: 0,
-            Status: payabli.Int(
-                1,
-            ),
-            Target: "newemail@email.com",
+    NotificationStandardRequest: &payabli.NotificationStandardRequest{
+        Content: &payabli.NotificationStandardRequestContent{
+            EventType: payabli.NotificationStandardRequestContentEventTypeApprovedPayment.Ptr(),
         },
-    }
-client.Notification.UpdateNotification(
-        context.TODO(),
-        "1717",
-        request,
-    )
+        Frequency: payabli.NotificationStandardRequestFrequencyUntilcancelled,
+        Method: payabli.NotificationStandardRequestMethodEmail,
+        OwnerId: payabli.Int(
+            136,
+        ),
+        OwnerType: 0,
+        Status: payabli.Int(
+            1,
+        ),
+        Target: "newemail@email.com",
+    },
 }
+client.Notification.UpdateNotification(
+    context.TODO(),
+    "1717",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -25196,10 +24989,9 @@ Deletes a single notification or auto-generated report.
 
 ```go
 client.Notification.DeleteNotification(
-        context.TODO(),
-        "1717",
-    )
-}
+    context.TODO(),
+    "1717",
+)
 ```
 </dd>
 </dl>
@@ -25254,10 +25046,9 @@ Gets a copy of a generated report by ID.
 
 ```go
 client.Notification.GetReportFile(
-        context.TODO(),
-        int64(1000000),
-    )
-}
+    context.TODO(),
+    int64(1000000),
+)
 ```
 </dd>
 </dl>
@@ -25314,10 +25105,9 @@ Use this endpoint to add a new user to an organization.
 ```go
 request := &payabli.UserData{}
 client.User.AddUser(
-        context.TODO(),
-        request,
-    )
-}
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -25372,16 +25162,15 @@ Use this endpoint to retrieve information about a specific user within an organi
 
 ```go
 request := &payabli.GetUserRequest{
-        Entry: payabli.String(
-            "8cfec329267",
-        ),
-    }
-client.User.GetUser(
-        context.TODO(),
-        int64(1000000),
-        request,
-    )
+    Entry: payabli.String(
+        "8cfec329267",
+    ),
 }
+client.User.GetUser(
+    context.TODO(),
+    int64(1000000),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -25453,11 +25242,10 @@ Use this endpoint to modify the details of a specific user within an organizatio
 ```go
 request := &payabli.UserData{}
 client.User.EditUser(
-        context.TODO(),
-        int64(1000000),
-        request,
-    )
-}
+    context.TODO(),
+    int64(1000000),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -25520,10 +25308,9 @@ Use this endpoint to delete a specific user within an organization.
 
 ```go
 client.User.DeleteUser(
-        context.TODO(),
-        int64(1000000),
-    )
-}
+    context.TODO(),
+    int64(1000000),
+)
 ```
 </dd>
 </dl>
@@ -25579,11 +25366,10 @@ This endpoint requires an application API token.
 ```go
 request := &payabli.UserAuthRequest{}
 client.User.AuthUser(
-        context.TODO(),
-        "provider",
-        request,
-    )
-}
+    context.TODO(),
+    "provider",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -25686,9 +25472,8 @@ Use this endpoint to refresh the authentication token for a user within an organ
 
 ```go
 client.User.AuthRefreshUser(
-        context.TODO(),
-    )
-}
+    context.TODO(),
+)
 ```
 </dd>
 </dl>
@@ -25729,10 +25514,9 @@ Use this endpoint to initiate a password reset for a user within an organization
 ```go
 request := &payabli.UserAuthResetRequest{}
 client.User.AuthResetUser(
-        context.TODO(),
-        request,
-    )
-}
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -25804,10 +25588,9 @@ Use this endpoint to change the password for a user within an organization.
 ```go
 request := &payabli.UserAuthPswResetRequest{}
 client.User.ChangePswUser(
-        context.TODO(),
-        request,
-    )
-}
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -25862,9 +25645,8 @@ Use this endpoint to log a user out from the system.
 
 ```go
 client.User.LogoutUser(
-        context.TODO(),
-    )
-}
+    context.TODO(),
+)
 ```
 </dd>
 </dl>
@@ -25905,10 +25687,9 @@ Use this endpoint to validate the multi-factor authentication (MFA) code for a u
 ```go
 request := &payabli.MfaValidationData{}
 client.User.ValidateMfaUser(
-        context.TODO(),
-        request,
-    )
-}
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -25972,11 +25753,10 @@ Use this endpoint to enable or disable multi-factor authentication (MFA) for a u
 ```go
 request := &payabli.MfaData{}
 client.User.EditMfaUser(
-        context.TODO(),
-        int64(1000000),
-        request,
-    )
-}
+    context.TODO(),
+    int64(1000000),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -26039,12 +25819,11 @@ Resends the MFA code to the user via the selected MFA mode (email or SMS).
 
 ```go
 client.User.ResendMfaCode(
-        context.TODO(),
-        "usrname",
-        "8cfec329267",
-        1,
-    )
-}
+    context.TODO(),
+    "usrname",
+    "8cfec329267",
+    1,
+)
 ```
 </dd>
 </dl>
@@ -26116,129 +25895,128 @@ Creates a vendor in an entrypoint.
 
 ```go
 request := &payabli.VendorData{
-        VendorNumber: payabli.String(
-            "VEN-123",
+    VendorNumber: payabli.String(
+        "VEN-123",
+    ),
+    Address1: payabli.String(
+        "123 Ocean Drive",
+    ),
+    Address2: payabli.String(
+        "Suite 400",
+    ),
+    BillingData: &payabli.BillingData{
+        AccountNumber: payabli.String(
+            "123123123",
         ),
-        Address1: payabli.String(
-            "123 Ocean Drive",
+        BankAccountFunction: payabli.Int(
+            0,
         ),
-        Address2: payabli.String(
-            "Suite 400",
+        BankAccountHolderName: payabli.String(
+            "Gruzya Adventure Outfitters LLC",
         ),
-        BillingData: &payabli.BillingData{
-            AccountNumber: payabli.String(
-                "123123123",
+        BankAccountHolderType: payabli.BankAccountHolderTypeBusiness.Ptr(),
+        BankName: payabli.String(
+            "Country Bank",
+        ),
+        Id: payabli.Int(
+            123,
+        ),
+        RoutingAccount: payabli.String(
+            "123123123",
+        ),
+        TypeAccount: payabli.TypeAccountChecking.Ptr(),
+    },
+    City: payabli.String(
+        "Miami",
+    ),
+    Contacts: &payabli.ContactsField{
+        &payabli.Contacts{
+            ContactEmail: payabli.String(
+                "example@email.com",
             ),
-            BankAccountFunction: payabli.Int(
-                0,
+            ContactName: payabli.String(
+                "Herman Martinez",
             ),
-            BankAccountHolderName: payabli.String(
-                "Gruzya Adventure Outfitters LLC",
+            ContactPhone: payabli.String(
+                "3055550000",
             ),
-            BankAccountHolderType: payabli.BankAccountHolderTypeBusiness.Ptr(),
-            BankName: payabli.String(
-                "Country Bank",
+            ContactTitle: payabli.String(
+                "Owner",
             ),
-            Id: payabli.Int(
-                123,
-            ),
-            RoutingAccount: payabli.String(
-                "123123123",
-            ),
-            TypeAccount: payabli.TypeAccountChecking.Ptr(),
         },
-        City: payabli.String(
-            "Miami",
-        ),
-        Contacts: &payabli.ContactsField{
-            &payabli.Contacts{
-                ContactEmail: payabli.String(
-                    "example@email.com",
-                ),
-                ContactName: payabli.String(
-                    "Herman Martinez",
-                ),
-                ContactPhone: payabli.String(
-                    "3055550000",
-                ),
-                ContactTitle: payabli.String(
-                    "Owner",
-                ),
-            },
-        },
-        Country: payabli.String(
-            "US",
-        ),
-        CustomerVendorAccount: payabli.String(
-            "A-37622",
-        ),
-        Ein: payabli.String(
-            "12-3456789",
-        ),
-        Email: payabli.String(
-            "example@email.com",
-        ),
-        InternalReferenceId: payabli.Int64(
-            int64(123),
-        ),
-        LocationCode: payabli.String(
-            "MIA123",
-        ),
-        Mcc: payabli.String(
-            "7777",
-        ),
-        Name1: payabli.String(
-            "Herman's Coatings and Masonry",
-        ),
-        Name2: payabli.String(
-            "<string>",
-        ),
-        PayeeName1: payabli.String(
-            "<string>",
-        ),
-        PayeeName2: payabli.String(
-            "<string>",
-        ),
-        PaymentMethod: payabli.String(
-            "managed",
-        ),
-        Phone: payabli.String(
-            "5555555555",
-        ),
-        RemitAddress1: payabli.String(
-            "123 Walnut Street",
-        ),
-        RemitAddress2: payabli.String(
-            "Suite 900",
-        ),
-        RemitCity: payabli.String(
-            "Miami",
-        ),
-        RemitCountry: payabli.String(
-            "US",
-        ),
-        RemitState: payabli.String(
-            "FL",
-        ),
-        RemitZip: payabli.String(
-            "31113",
-        ),
-        State: payabli.String(
-            "FL",
-        ),
-        VendorStatus: payabli.Int(
-            1,
-        ),
-        Zip: payabli.String(
-            "33139",
-        ),
-    }
-client.Vendor.AddVendor(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    },
+    Country: payabli.String(
+        "US",
+    ),
+    CustomerVendorAccount: payabli.String(
+        "A-37622",
+    ),
+    Ein: payabli.String(
+        "12-3456789",
+    ),
+    Email: payabli.String(
+        "example@email.com",
+    ),
+    InternalReferenceId: payabli.Int64(
+        int64(123),
+    ),
+    LocationCode: payabli.String(
+        "MIA123",
+    ),
+    Mcc: payabli.String(
+        "7777",
+    ),
+    Name1: payabli.String(
+        "Herman's Coatings and Masonry",
+    ),
+    Name2: payabli.String(
+        "<string>",
+    ),
+    PayeeName1: payabli.String(
+        "<string>",
+    ),
+    PayeeName2: payabli.String(
+        "<string>",
+    ),
+    PaymentMethod: payabli.String(
+        "managed",
+    ),
+    Phone: payabli.String(
+        "5555555555",
+    ),
+    RemitAddress1: payabli.String(
+        "123 Walnut Street",
+    ),
+    RemitAddress2: payabli.String(
+        "Suite 900",
+    ),
+    RemitCity: payabli.String(
+        "Miami",
+    ),
+    RemitCountry: payabli.String(
+        "US",
+    ),
+    RemitState: payabli.String(
+        "FL",
+    ),
+    RemitZip: payabli.String(
+        "31113",
+    ),
+    State: payabli.String(
+        "FL",
+    ),
+    VendorStatus: payabli.Int(
+        1,
+    ),
+    Zip: payabli.String(
+        "33139",
+    ),
 }
+client.Vendor.AddVendor(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -26301,10 +26079,9 @@ Retrieves a vendor's details, including enrichment status and payment acceptance
 
 ```go
 client.Vendor.GetVendor(
-        context.TODO(),
-        1,
-    )
-}
+    context.TODO(),
+    1,
+)
 ```
 </dd>
 </dl>
@@ -26359,16 +26136,15 @@ Updates a vendor's information. Send only the fields you need to update.
 
 ```go
 request := &payabli.VendorData{
-        Name1: payabli.String(
-            "Theodore's Janitorial",
-        ),
-    }
-client.Vendor.EditVendor(
-        context.TODO(),
-        1,
-        request,
-    )
+    Name1: payabli.String(
+        "Theodore's Janitorial",
+    ),
 }
+client.Vendor.EditVendor(
+    context.TODO(),
+    1,
+    request,
+)
 ```
 </dd>
 </dl>
@@ -26431,10 +26207,9 @@ Delete a vendor.
 
 ```go
 client.Vendor.DeleteVendor(
-        context.TODO(),
-        1,
-    )
-}
+    context.TODO(),
+    1,
+)
 ```
 </dd>
 </dl>
@@ -26489,32 +26264,31 @@ Triggers AI-powered vendor enrichment for an existing vendor. Runs one or more e
 
 ```go
 request := &payabli.VendorEnrichRequest{
-        VendorId: int64(456),
-        Scope: []string{
-            "invoice_scan",
-        },
-        ApplyEnrichmentData: payabli.Bool(
-            false,
+    VendorId: int64(456),
+    Scope: []string{
+        "invoice_scan",
+    },
+    ApplyEnrichmentData: payabli.Bool(
+        false,
+    ),
+    InvoiceFile: &payabli.FileContent{
+        FContent: payabli.String(
+            "<base64-encoded-pdf>",
         ),
-        InvoiceFile: &payabli.FileContent{
-            FContent: payabli.String(
-                "<base64-encoded-pdf>",
-            ),
-            Filename: payabli.String(
-                "invoice-2026-001.pdf",
-            ),
-            Ftype: payabli.FileContentFtypePdf.Ptr(),
-        },
-        FallbackMethod: payabli.String(
-            "check",
+        Filename: payabli.String(
+            "invoice-2026-001.pdf",
         ),
-    }
-client.Vendor.EnrichVendor(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+        Ftype: payabli.FileContentFtypePdf.Ptr(),
+    },
+    FallbackMethod: payabli.String(
+        "check",
+    ),
 }
+client.Vendor.EnrichVendor(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -26625,32 +26399,31 @@ Schedules an AI outreach call to a vendor to collect their preferred payment met
 
 ```go
 request := &payabli.ScheduleEnrichmentCallRequest{
-        VendorId: int64(456),
-        Phone: payabli.String(
-            "5555550200",
-        ),
-        EnrichmentId: payabli.String(
-            "enrich-3890-a1b2c3d4",
-        ),
-        BillId: payabli.Int64(
-            int64(54323),
-        ),
-        FallbackMethod: payabli.String(
-            "check",
-        ),
-        MaxRetries: payabli.Int(
-            3,
-        ),
-        Timezone: payabli.String(
-            "America/New_York",
-        ),
-    }
-client.Vendor.ScheduleEnrichmentCall(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    VendorId: int64(456),
+    Phone: payabli.String(
+        "5555550200",
+    ),
+    EnrichmentId: payabli.String(
+        "enrich-3890-a1b2c3d4",
+    ),
+    BillId: payabli.Int64(
+        int64(54323),
+    ),
+    FallbackMethod: payabli.String(
+        "check",
+    ),
+    MaxRetries: payabli.Int(
+        3,
+    ),
+    Timezone: payabli.String(
+        "America/New_York",
+    ),
 }
+client.Vendor.ScheduleEnrichmentCall(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -26769,10 +26542,9 @@ Returns the latest AI outreach call activity for a vendor. The response is a com
 
 ```go
 client.Vendor.GetEnrichmentCallStatus(
-        context.TODO(),
-        int64(456),
-    )
-}
+    context.TODO(),
+    int64(456),
+)
 ```
 </dd>
 </dl>
@@ -26832,36 +26604,35 @@ Only one ghost card can exist per vendor per paypoint. To issue a new card to th
 
 ```go
 request := &payabli.CreateGhostCardRequestBody{
-        VendorId: int64(456),
-        ExpenseLimit: 500,
-        Amount: 500,
-        MaxNumberOfUses: 3,
-        ExactAmount: false,
-        ExpenseLimitPeriod: "monthly",
-        BillingCycle: "monthly",
-        BillingCycleDay: "1",
-        DailyTransactionCount: 5,
-        DailyAmountLimit: 200,
-        TransactionAmountLimit: 100,
-        Mcc: payabli.String(
-            "5411",
-        ),
-        Tcc: payabli.String(
-            "R",
-        ),
-        Misc1: payabli.String(
-            "PO-98765",
-        ),
-        Misc2: payabli.String(
-            "Dept-Finance",
-        ),
-    }
-client.GhostCard.CreateGhostCard(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    VendorId: int64(456),
+    ExpenseLimit: 500,
+    Amount: 500,
+    MaxNumberOfUses: 3,
+    ExactAmount: false,
+    ExpenseLimitPeriod: "monthly",
+    BillingCycle: "monthly",
+    BillingCycleDay: "1",
+    DailyTransactionCount: 5,
+    DailyAmountLimit: 200,
+    TransactionAmountLimit: 100,
+    Mcc: payabli.String(
+        "5411",
+    ),
+    Tcc: payabli.String(
+        "R",
+    ),
+    Misc1: payabli.String(
+        "PO-98765",
+    ),
+    Misc2: payabli.String(
+        "Dept-Finance",
+    ),
 }
+client.GhostCard.CreateGhostCard(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -27044,15 +26815,14 @@ Updates the status of a virtual card (including ghost cards) under a paypoint.
 
 ```go
 request := &payabli.UpdateCardRequestBody{
-        CardToken: "gc_abc123def456",
-        Status: payabli.CardStatusCancelled.Ptr(),
-    }
-client.GhostCard.UpdateCard(
-        context.TODO(),
-        "8cfec329267",
-        request,
-    )
+    CardToken: "gc_abc123def456",
+    Status: payabli.CardStatusCancelled.Ptr(),
 }
+client.GhostCard.UpdateCard(
+    context.TODO(),
+    "8cfec329267",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -27132,42 +26902,41 @@ For check payouts, Payabli validates the remit (mailing) address at authorizatio
 
 ```go
 request := &payabli.RequestOutAuthorize{
-        EntryPoint: "8cfec329267",
-        OrderDescription: payabli.String(
-            "Window Painting",
+    EntryPoint: "8cfec329267",
+    OrderDescription: payabli.String(
+        "Window Painting",
+    ),
+    PaymentMethod: &payabli.AuthorizePaymentMethod{
+        Method: "managed",
+    },
+    PaymentDetails: &payabli.RequestOutAuthorizePaymentDetails{
+        TotalAmount: payabli.Float64(
+            47,
         ),
-        PaymentMethod: &payabli.AuthorizePaymentMethod{
-            Method: "managed",
-        },
-        PaymentDetails: &payabli.RequestOutAuthorizePaymentDetails{
-            TotalAmount: payabli.Float64(
-                47,
-            ),
-            Unbundled: payabli.Bool(
-                false,
-            ),
-        },
-        VendorData: &payabli.RequestOutAuthorizeVendorData{
-            VendorNumber: payabli.String(
-                "VEN-123",
-            ),
-        },
-        InvoiceData: []*payabli.RequestOutAuthorizeInvoiceData{
-            &payabli.RequestOutAuthorizeInvoiceData{
-                BillId: payabli.Int64(
-                    int64(54323),
-                ),
-            },
-        },
-        AutoCapture: payabli.Bool(
-            true,
+        Unbundled: payabli.Bool(
+            false,
         ),
-    }
-client.MoneyOut.AuthorizeOut(
-        context.TODO(),
-        request,
-    )
+    },
+    VendorData: &payabli.RequestOutAuthorizeVendorData{
+        VendorNumber: payabli.String(
+            "VEN-123",
+        ),
+    },
+    InvoiceData: []*payabli.RequestOutAuthorizeInvoiceData{
+        &payabli.RequestOutAuthorizeInvoiceData{
+            BillId: payabli.Int64(
+                int64(54323),
+            ),
+        },
+    },
+    AutoCapture: payabli.Bool(
+        true,
+    ),
 }
+client.MoneyOut.AuthorizeOut(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -27342,15 +27111,14 @@ Cancels an array of payout transactions.
 
 ```go
 request := []string{
-        "2-29",
-        "2-28",
-        "2-27",
-    }
-client.MoneyOut.CancelAllOut(
-        context.TODO(),
-        request,
-    )
+    "2-29",
+    "2-28",
+    "2-27",
 }
+client.MoneyOut.CancelAllOut(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -27405,10 +27173,9 @@ Cancel a payout transaction by ID.
 
 ```go
 client.MoneyOut.CancelOutGet(
-        context.TODO(),
-        "129-219",
-    )
-}
+    context.TODO(),
+    "129-219",
+)
 ```
 </dd>
 </dl>
@@ -27463,10 +27230,9 @@ Cancel a payout transaction by ID.
 
 ```go
 client.MoneyOut.CancelOutDelete(
-        context.TODO(),
-        "129-219",
-    )
-}
+    context.TODO(),
+    "129-219",
+)
 ```
 </dd>
 </dl>
@@ -27521,17 +27287,16 @@ Captures an array of authorized payout transactions for settlement. The maximum 
 
 ```go
 request := &payabli.CaptureAllOutRequest{
-        Body: []string{
-            "2-29",
-            "2-28",
-            "2-27",
-        },
-    }
-client.MoneyOut.CaptureAllOut(
-        context.TODO(),
-        request,
-    )
+    Body: []string{
+        "2-29",
+        "2-28",
+        "2-27",
+    },
 }
+client.MoneyOut.CaptureAllOut(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -27597,11 +27362,10 @@ If a velocity fraud alert is triggered, the endpoint returns a `202` response wi
 ```go
 request := &payabli.CaptureOutRequest{}
 client.MoneyOut.CaptureOut(
-        context.TODO(),
-        "129-219",
-        request,
-    )
-}
+    context.TODO(),
+    "129-219",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -27664,10 +27428,9 @@ Returns details for a processed money out transaction.
 
 ```go
 client.MoneyOut.PayoutDetails(
-        context.TODO(),
-        "45-as456777hhhhhhhhhh77777777-324",
-    )
-}
+    context.TODO(),
+    "45-as456777hhhhhhhhhh77777777-324",
+)
 ```
 </dd>
 </dl>
@@ -27722,10 +27485,9 @@ Retrieves vCard details for a single card in an entrypoint.
 
 ```go
 client.MoneyOut.VCardGet(
-        context.TODO(),
-        "20230403315245421165",
-    )
-}
+    context.TODO(),
+    "20230403315245421165",
+)
 ```
 </dd>
 </dl>
@@ -27784,14 +27546,13 @@ On success, `referenceId` holds the renewed card's token (the card processor may
 
 ```go
 request := &payabli.RenewVCardRequest{
-        ExpirationDate: "12-2027",
-    }
-client.MoneyOut.RenewVCard(
-        context.TODO(),
-        "20231206142225226104",
-        request,
-    )
+    ExpirationDate: "12-2027",
 }
+client.MoneyOut.RenewVCard(
+    context.TODO(),
+    "20231206142225226104",
+    request,
+)
 ```
 </dd>
 </dl>
@@ -27854,13 +27615,12 @@ Sends a virtual card link via email to the vendor associated with the `transId`.
 
 ```go
 request := &payabli.SendVCardLinkRequest{
-        TransId: "01K33Z6YQZ6GD5QVKZ856MJBSC",
-    }
-client.MoneyOut.SendVCardLink(
-        context.TODO(),
-        request,
-    )
+    TransId: "01K33Z6YQZ6GD5QVKZ856MJBSC",
 }
+client.MoneyOut.SendVCardLink(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -27917,10 +27677,9 @@ The check image is only available for payouts that have been processed.
 
 ```go
 client.MoneyOut.GetCheckImage(
-        context.TODO(),
-        "check133832686289732320_01JKBNZ5P32JPTZY8XXXX000000.pdf",
-    )
-}
+    context.TODO(),
+    "check133832686289732320_01JKBNZ5P32JPTZY8XXXX000000.pdf",
+)
 ```
 </dd>
 </dl>
@@ -27997,11 +27756,10 @@ The transaction must meet all of the following criteria:
 
 ```go
 client.MoneyOut.UpdateCheckPaymentStatus(
-        context.TODO(),
-        "TRANS123456",
-        payabli.AllowedCheckPaymentStatusPaid.Ptr(),
-    )
-}
+    context.TODO(),
+    "TRANS123456",
+    payabli.AllowedCheckPaymentStatusPaid.Ptr(),
+)
 ```
 </dd>
 </dl>
@@ -28068,29 +27826,28 @@ The new transaction goes through the standard authorize-and-capture flow automat
 
 ```go
 request := &payabli.ReissueOutRequest{
-        TransId: "129-219",
-        PaymentMethod: &payabli.ReissuePaymentMethod{
-            Method: "ach",
-            AchHolder: payabli.String(
-                "Acme Corp",
-            ),
-            AchRouting: payabli.String(
-                "021000021",
-            ),
-            AchAccount: payabli.String(
-                "9876543210",
-            ),
-            AchAccountType: payabli.String(
-                "savings",
-            ),
-            AchHolderType: payabli.AchHolderTypeBusiness.Ptr(),
-        },
-    }
-client.MoneyOut.ReissueOut(
-        context.TODO(),
-        request,
-    )
+    TransId: "129-219",
+    PaymentMethod: &payabli.ReissuePaymentMethod{
+        Method: "ach",
+        AchHolder: payabli.String(
+            "Acme Corp",
+        ),
+        AchRouting: payabli.String(
+            "021000021",
+        ),
+        AchAccount: payabli.String(
+            "9876543210",
+        ),
+        AchAccountType: payabli.String(
+            "savings",
+        ),
+        AchHolderType: payabli.AchHolderTypeBusiness.Ptr(),
+    },
 }
+client.MoneyOut.ReissueOut(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -28162,15 +27919,14 @@ Deposits funds into a paypoint's available payout balance. Deposited funds enter
 
 ```go
 request := &payabli.DepositFundsRequest{
-        Amount: 10,
-        Entrypoint: "48acde49",
-        AccountId: "333",
-    }
-client.Funding.DepositFunds(
-        context.TODO(),
-        request,
-    )
+    Amount: 10,
+    Entrypoint: "48acde49",
+    AccountId: "333",
 }
+client.Funding.DepositFunds(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -28258,21 +28014,20 @@ Configure and activate Apple Pay for a Payabli organization
 
 ```go
 request := &payabli.ConfigureOrganizationRequestApplePay{
-        Cascade: payabli.Bool(
-            true,
-        ),
-        IsEnabled: payabli.Bool(
-            true,
-        ),
-        OrgId: payabli.Int64(
-            int64(123),
-        ),
-    }
-client.Wallet.ConfigureApplePayOrganization(
-        context.TODO(),
-        request,
-    )
+    Cascade: payabli.Bool(
+        true,
+    ),
+    IsEnabled: payabli.Bool(
+        true,
+    ),
+    OrgId: payabli.Int64(
+        int64(123),
+    ),
 }
+client.Wallet.ConfigureApplePayOrganization(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -28343,18 +28098,17 @@ Configure and activate Apple Pay for a Payabli paypoint
 
 ```go
 request := &payabli.ConfigurePaypointRequestApplePay{
-        Entry: payabli.String(
-            "8cfec329267",
-        ),
-        IsEnabled: payabli.Bool(
-            true,
-        ),
-    }
-client.Wallet.ConfigureApplePayPaypoint(
-        context.TODO(),
-        request,
-    )
+    Entry: payabli.String(
+        "8cfec329267",
+    ),
+    IsEnabled: payabli.Bool(
+        true,
+    ),
 }
+client.Wallet.ConfigureApplePayPaypoint(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -28417,21 +28171,20 @@ Configure and activate Google Pay for a Payabli organization
 
 ```go
 request := &payabli.ConfigureOrganizationRequestGooglePay{
-        Cascade: payabli.Bool(
-            true,
-        ),
-        IsEnabled: payabli.Bool(
-            true,
-        ),
-        OrgId: payabli.Int64(
-            int64(123),
-        ),
-    }
-client.Wallet.ConfigureGooglePayOrganization(
-        context.TODO(),
-        request,
-    )
+    Cascade: payabli.Bool(
+        true,
+    ),
+    IsEnabled: payabli.Bool(
+        true,
+    ),
+    OrgId: payabli.Int64(
+        int64(123),
+    ),
 }
+client.Wallet.ConfigureGooglePayOrganization(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -28502,18 +28255,17 @@ Configure and activate Google Pay for a Payabli paypoint
 
 ```go
 request := &payabli.ConfigurePaypointRequestGooglePay{
-        Entry: payabli.String(
-            "8cfec329267",
-        ),
-        IsEnabled: payabli.Bool(
-            true,
-        ),
-    }
-client.Wallet.ConfigureGooglePayPaypoint(
-        context.TODO(),
-        request,
-    )
+    Entry: payabli.String(
+        "8cfec329267",
+    ),
+    IsEnabled: payabli.Bool(
+        true,
+    ),
 }
+client.Wallet.ConfigureGooglePayPaypoint(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -28577,71 +28329,70 @@ Creates a payout subscription to automatically send payouts to a vendor on a rec
 
 ```go
 request := &payabli.RequestPayoutSchedule{
-        EntryPoint: "8cfec329267",
-        PaymentMethod: &payabli.AuthorizePaymentMethod{
-            Method: "ach",
-            AchHolder: payabli.String(
-                "Herman Coatings",
-            ),
-            AchRouting: payabli.String(
-                "021000021",
-            ),
-            AchAccount: payabli.String(
-                "3453445666",
-            ),
-            AchAccountType: payabli.String(
-                "checking",
-            ),
-        },
-        PaymentDetails: &payabli.PayoutPaymentDetail{
-            TotalAmount: 500,
-            ServiceFee: payabli.Float64(
-                0,
-            ),
-            Currency: payabli.String(
-                "USD",
-            ),
-        },
-        VendorData: &payabli.RequestOutAuthorizeVendorData{
-            VendorId: payabli.Int(
-                456,
-            ),
-        },
-        BillData: []*payabli.BillPayOutDataRequest{
-            &payabli.BillPayOutDataRequest{
-                DueDate: payabli.Time(
-                    payabli.MustParseDate(
-                        "2025-08-15",
-                    ),
+    EntryPoint: "8cfec329267",
+    PaymentMethod: &payabli.AuthorizePaymentMethod{
+        Method: "ach",
+        AchHolder: payabli.String(
+            "Herman Coatings",
+        ),
+        AchRouting: payabli.String(
+            "021000021",
+        ),
+        AchAccount: payabli.String(
+            "3453445666",
+        ),
+        AchAccountType: payabli.String(
+            "checking",
+        ),
+    },
+    PaymentDetails: &payabli.PayoutPaymentDetail{
+        TotalAmount: 500,
+        ServiceFee: payabli.Float64(
+            0,
+        ),
+        Currency: payabli.String(
+            "USD",
+        ),
+    },
+    VendorData: &payabli.RequestOutAuthorizeVendorData{
+        VendorId: payabli.Int(
+            456,
+        ),
+    },
+    BillData: []*payabli.BillPayOutDataRequest{
+        &payabli.BillPayOutDataRequest{
+            DueDate: payabli.Time(
+                payabli.MustParseDate(
+                    "2025-08-15",
                 ),
-                InvoiceDate: payabli.Time(
-                    payabli.MustParseDate(
-                        "2025-08-01",
-                    ),
-                ),
-                InvoiceNumber: payabli.String(
-                    "INV-2345",
-                ),
-                NetAmount: payabli.String(
-                    "500",
-                ),
-            },
-        },
-        ScheduleDetails: &payabli.PayoutScheduleDetail{
-            StartDate: payabli.String(
-                "09/01/2027",
             ),
-            EndDate: payabli.String(
-                "09/01/2026",
+            InvoiceDate: payabli.Time(
+                payabli.MustParseDate(
+                    "2025-08-01",
+                ),
             ),
-            Frequency: payabli.FrequencyMonthly.Ptr(),
+            InvoiceNumber: payabli.String(
+                "INV-2345",
+            ),
+            NetAmount: payabli.String(
+                "500",
+            ),
         },
-    }
-client.PayoutSubscription.CreatePayoutSubscription(
-        context.TODO(),
-        request,
-    )
+    },
+    ScheduleDetails: &payabli.PayoutScheduleDetail{
+        StartDate: payabli.String(
+            "09/01/2027",
+        ),
+        EndDate: payabli.String(
+            "09/01/2026",
+        ),
+        Frequency: payabli.FrequencyMonthly.Ptr(),
+    },
 }
+client.PayoutSubscription.CreatePayoutSubscription(
+    context.TODO(),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -28776,10 +28527,9 @@ Retrieves a single payout subscription's details. See [Manage payout subscriptio
 
 ```go
 client.PayoutSubscription.GetPayoutSubscription(
-        context.TODO(),
-        int64(42),
-    )
-}
+    context.TODO(),
+    int64(42),
+)
 ```
 </dd>
 </dl>
@@ -28834,16 +28584,15 @@ Updates a payout subscription's details. See [Manage payout subscriptions](/guid
 
 ```go
 request := &payabli.UpdatePayoutSubscriptionBody{
-        SetPause: payabli.Bool(
-            true,
-        ),
-    }
-client.PayoutSubscription.UpdatePayoutSubscription(
-        context.TODO(),
-        int64(42),
-        request,
-    )
+    SetPause: payabli.Bool(
+        true,
+    ),
 }
+client.PayoutSubscription.UpdatePayoutSubscription(
+    context.TODO(),
+    int64(42),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -28930,10 +28679,9 @@ Deletes a payout subscription and prevents future payouts. See [Manage payout su
 
 ```go
 client.PayoutSubscription.DeletePayoutSubscription(
-        context.TODO(),
-        int64(42),
-    )
-}
+    context.TODO(),
+    int64(42),
+)
 ```
 </dd>
 </dl>
@@ -28989,16 +28737,15 @@ Add a response to a chargeback or ACH return.
 
 ```go
 request := &payabli.ResponseChargeBack{
-        IdempotencyKey: payabli.String(
-            "6B29FC40-CA47-1067-B31D-00DD010662DA",
-        ),
-    }
-client.ChargeBacks.AddResponse(
-        context.TODO(),
-        int64(1000000),
-        request,
-    )
+    IdempotencyKey: payabli.String(
+        "6B29FC40-CA47-1067-B31D-00DD010662DA",
+    ),
 }
+client.ChargeBacks.AddResponse(
+    context.TODO(),
+    int64(1000000),
+    request,
+)
 ```
 </dd>
 </dl>
@@ -29093,10 +28840,9 @@ Retrieves a chargeback record and its details.
 
 ```go
 client.ChargeBacks.GetChargeback(
-        context.TODO(),
-        int64(1000000),
-    )
-}
+    context.TODO(),
+    int64(1000000),
+)
 ```
 </dd>
 </dl>
@@ -29151,11 +28897,10 @@ Retrieves a chargeback attachment file by its file name.
 
 ```go
 client.ChargeBacks.GetChargebackAttachment(
-        context.TODO(),
-        int64(1000000),
-        "fileName",
-    )
-}
+    context.TODO(),
+    int64(1000000),
+    "fileName",
+)
 ```
 </dd>
 </dl>

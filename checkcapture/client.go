@@ -4,6 +4,7 @@ package checkcapture
 
 import (
 	context "context"
+	os "os"
 
 	payabli "github.com/payabli/sdk-go"
 	core "github.com/payabli/sdk-go/core"
@@ -20,6 +21,12 @@ type Client struct {
 }
 
 func NewClient(options *core.RequestOptions) *Client {
+	if options.ClientID == "" {
+		options.ClientID = os.Getenv("OAUTH_CLIENT_ID")
+	}
+	if options.ClientSecret == "" {
+		options.ClientSecret = os.Getenv("OAUTH_CLIENT_SECRET")
+	}
 	return &Client{
 		WithRawResponse: NewRawClient(options),
 		options:         options,
@@ -35,6 +42,19 @@ func NewClient(options *core.RequestOptions) *Client {
 }
 
 // Captures a check for Remote Deposit Capture (RDC) using the provided check images and details. This endpoint handles the OCR extraction of check data including MICR, routing number, account number, and amount. See the [RDC guide](/developers/developer-guides/pay-in-rdc) for more details.
+//
+// Example:
+//
+//	request := &payabli.CheckCaptureRequestBody{
+//	    EntryPoint: "8cfec329267",
+//	    FrontImage: "/9j/4AAQSkZJRgABAQEASABIAAD...",
+//	    RearImage: "/9j/4AAQSkZJRgABAQEASABIAAD...",
+//	    CheckAmount: 12550,
+//	}
+//	client.CheckCapture.CheckProcessing(
+//	    context.TODO(),
+//	    request,
+//	)
 func (c *Client) CheckProcessing(
 	ctx context.Context,
 	request *payabli.CheckCaptureRequestBody,
