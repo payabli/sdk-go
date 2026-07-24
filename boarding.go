@@ -9548,12 +9548,13 @@ func (o *OSection) String() string {
 	return fmt.Sprintf("%#v", o)
 }
 
-// Action to take when the application is created. The only currently
+// Actions to take when the application is created. The only currently
 // supported option is `submitApplication`. Use this when you have collected
 // eSignature elsewhere or are adding additional locations for an applicant,
 // or when you want to submit an application via API with one call without
-// using the hosted boarding UI or embedded boarding components.
-type OnCreate = string
+// using the hosted boarding UI or embedded boarding components. Pass the
+// value as an array, for example `["submitApplication"]`.
+type OnCreate = []string
 
 var (
 	pSectionFieldAvgmonthly    = big.NewInt(1 << 0)

@@ -13,9 +13,6 @@ type RequestOption interface {
 	applyRequestOptions(*RequestOptions)
 }
 
-// TokenGetter is a function that returns an access token.
-type TokenGetter func() (string, error)
-
 // RequestOptions defines all of the possible request options.
 //
 // This type is primarily used by the generated code and is not meant
@@ -31,10 +28,6 @@ type RequestOptions struct {
 	MaxStreamReconnectAttempts uint
 	DisableStreamReconnection  bool
 	DisableRetries             bool
-	tokenGetter                TokenGetter
-	ClientID                   string
-	ClientSecret               string
-	Token                      string
 	ApiKey                     string
 }
 
@@ -58,14 +51,6 @@ func NewRequestOptions(opts ...RequestOption) *RequestOptions {
 // for the request(s).
 func (r *RequestOptions) ToHeader() http.Header {
 	header := r.cloneHeader()
-	if r.Token != "" {
-		header.Set("Authorization", "Bearer "+r.Token)
-	}
-	if header.Get("Authorization") == "" && r.tokenGetter != nil {
-		if token, err := r.tokenGetter(); err == nil && token != "" {
-			header.Set("Authorization", "Bearer "+token)
-		}
-	}
 	if r.ApiKey != "" {
 		header.Set("requestToken", fmt.Sprintf("%v", r.ApiKey))
 	}
@@ -76,8 +61,8 @@ func (r *RequestOptions) cloneHeader() http.Header {
 	headers := r.HTTPHeader.Clone()
 	headers.Set("X-Fern-Language", "Go")
 	headers.Set("X-Fern-SDK-Name", "github.com/payabli/sdk-go")
-	headers.Set("X-Fern-SDK-Version", "v1.0.10")
-	headers.Set("User-Agent", "github.com/payabli/sdk-go/1.0.10")
+	headers.Set("X-Fern-SDK-Version", "v1.0.11")
+	headers.Set("User-Agent", "github.com/payabli/sdk-go/1.0.11")
 	return headers
 }
 
@@ -165,50 +150,6 @@ type WithoutRetriesOption struct{}
 
 func (w *WithoutRetriesOption) applyRequestOptions(opts *RequestOptions) {
 	opts.DisableRetries = true
-}
-
-// ClientIDOption implements the RequestOption interface.
-type ClientIDOption struct {
-	ClientID string
-}
-
-func (c *ClientIDOption) applyRequestOptions(opts *RequestOptions) {
-	opts.ClientID = c.ClientID
-}
-
-// ClientSecretOption implements the RequestOption interface.
-type ClientSecretOption struct {
-	ClientSecret string
-}
-
-func (c *ClientSecretOption) applyRequestOptions(opts *RequestOptions) {
-	opts.ClientSecret = c.ClientSecret
-}
-
-// ClientCredentialsOption implements the RequestOption interface.
-type ClientCredentialsOption struct {
-	ClientID     string
-	ClientSecret string
-}
-
-func (c *ClientCredentialsOption) applyRequestOptions(opts *RequestOptions) {
-	opts.ClientID = c.ClientID
-	opts.ClientSecret = c.ClientSecret
-}
-
-// TokenOption implements the RequestOption interface.
-type TokenOption struct {
-	Token string
-}
-
-func (t *TokenOption) applyRequestOptions(opts *RequestOptions) {
-	opts.Token = t.Token
-}
-
-// SetTokenGetter sets the token getter function for OAuth.
-// This is an internal method and should not be called directly.
-func (r *RequestOptions) SetTokenGetter(getter TokenGetter) {
-	r.tokenGetter = getter
 }
 
 // ApiKeyOption implements the RequestOption interface.

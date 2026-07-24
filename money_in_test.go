@@ -4392,11 +4392,11 @@ func TestSettersPayMethodBodyAllFields(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetInitator", func(t *testing.T) {
+	t.Run("SetInitiator", func(t *testing.T) {
 		obj := &PayMethodBodyAllFields{}
-		var fernTestValueInitator *Initiator
-		obj.SetInitator(fernTestValueInitator)
-		assert.Equal(t, fernTestValueInitator, obj.Initator)
+		var fernTestValueInitiator *Initiator
+		obj.SetInitiator(fernTestValueInitiator)
+		assert.Equal(t, fernTestValueInitiator, obj.Initiator)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -4768,28 +4768,28 @@ func TestGettersPayMethodBodyAllFields(t *testing.T) {
 		_ = obj.GetDevice() // Should return zero value
 	})
 
-	t.Run("GetInitator", func(t *testing.T) {
+	t.Run("GetInitiator", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &PayMethodBodyAllFields{}
 		var expected *Initiator
-		obj.Initator = expected
+		obj.Initiator = expected
 
 		// Act & Assert
-		assert.Equal(t, expected, obj.GetInitator(), "getter should return the property value")
+		assert.Equal(t, expected, obj.GetInitiator(), "getter should return the property value")
 	})
 
-	t.Run("GetInitator_NilValue", func(t *testing.T) {
+	t.Run("GetInitiator_NilValue", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &PayMethodBodyAllFields{}
-		obj.Initator = nil
+		obj.Initiator = nil
 
 		// Act & Assert
-		assert.Nil(t, obj.GetInitator(), "getter should return nil when property is nil")
+		assert.Nil(t, obj.GetInitiator(), "getter should return nil when property is nil")
 	})
 
-	t.Run("GetInitator_NilReceiver", func(t *testing.T) {
+	t.Run("GetInitiator_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *PayMethodBodyAllFields
 		// Should not panic - getters should handle nil receiver gracefully
@@ -4798,7 +4798,7 @@ func TestGettersPayMethodBodyAllFields(t *testing.T) {
 				t.Errorf("Getter panicked on nil receiver: %v", r)
 			}
 		}()
-		_ = obj.GetInitator() // Should return zero value
+		_ = obj.GetInitiator() // Should return zero value
 	})
 
 	t.Run("GetMethod", func(t *testing.T) {
@@ -5277,14 +5277,14 @@ func TestSettersMarkExplicitPayMethodBodyAllFields(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetInitator_MarksExplicit", func(t *testing.T) {
+	t.Run("SetInitiator_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &PayMethodBodyAllFields{}
-		var fernTestValueInitator *Initiator
+		var fernTestValueInitiator *Initiator
 
 		// Act
-		obj.SetInitator(fernTestValueInitator)
+		obj.SetInitiator(fernTestValueInitiator)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)

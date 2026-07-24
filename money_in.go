@@ -2001,7 +2001,7 @@ var (
 	payMethodBodyAllFieldsFieldCardnumber            = big.NewInt(1 << 8)
 	payMethodBodyAllFieldsFieldCardzip               = big.NewInt(1 << 9)
 	payMethodBodyAllFieldsFieldDevice                = big.NewInt(1 << 10)
-	payMethodBodyAllFieldsFieldInitator              = big.NewInt(1 << 11)
+	payMethodBodyAllFieldsFieldInitiator             = big.NewInt(1 << 11)
 	payMethodBodyAllFieldsFieldMethod                = big.NewInt(1 << 12)
 	payMethodBodyAllFieldsFieldSaveIfSuccess         = big.NewInt(1 << 13)
 	payMethodBodyAllFieldsFieldStoredMethodId        = big.NewInt(1 << 14)
@@ -2022,7 +2022,7 @@ type PayMethodBodyAllFields struct {
 	Cardnumber            *Cardnumber            `json:"cardnumber,omitempty" url:"cardnumber,omitempty"`
 	Cardzip               *Cardzip               `json:"cardzip,omitempty" url:"cardzip,omitempty"`
 	Device                *Device                `json:"device,omitempty" url:"device,omitempty"`
-	Initator              *Initiator             `json:"initator,omitempty" url:"initator,omitempty"`
+	Initiator             *Initiator             `json:"initiator,omitempty" url:"initiator,omitempty"`
 	Method                *Methodall             `json:"method,omitempty" url:"method,omitempty"`
 	SaveIfSuccess         *SaveIfSuccess         `json:"saveIfSuccess,omitempty" url:"saveIfSuccess,omitempty"`
 	StoredMethodId        *Storedmethodid        `json:"storedMethodId,omitempty" url:"storedMethodId,omitempty"`
@@ -2112,11 +2112,11 @@ func (p *PayMethodBodyAllFields) GetDevice() *Device {
 	return p.Device
 }
 
-func (p *PayMethodBodyAllFields) GetInitator() *Initiator {
+func (p *PayMethodBodyAllFields) GetInitiator() *Initiator {
 	if p == nil {
 		return nil
 	}
-	return p.Initator
+	return p.Initiator
 }
 
 func (p *PayMethodBodyAllFields) GetMethod() *Methodall {
@@ -2238,11 +2238,11 @@ func (p *PayMethodBodyAllFields) SetDevice(device *Device) {
 	p.require(payMethodBodyAllFieldsFieldDevice)
 }
 
-// SetInitator sets the Initator field and marks it as non-optional;
+// SetInitiator sets the Initiator field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayMethodBodyAllFields) SetInitator(initator *Initiator) {
-	p.Initator = initator
-	p.require(payMethodBodyAllFieldsFieldInitator)
+func (p *PayMethodBodyAllFields) SetInitiator(initiator *Initiator) {
+	p.Initiator = initiator
+	p.require(payMethodBodyAllFieldsFieldInitiator)
 }
 
 // SetMethod sets the Method field and marks it as non-optional;
