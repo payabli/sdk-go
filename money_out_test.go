@@ -43,6 +43,14 @@ func TestSettersRequestOutAuthorize(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetSameDayAch", func(t *testing.T) {
+		obj := &RequestOutAuthorize{}
+		var fernTestValueSameDayAch *bool
+		obj.SetSameDayAch(fernTestValueSameDayAch)
+		assert.Equal(t, fernTestValueSameDayAch, obj.SameDayAch)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 	t.Run("SetEntryPoint", func(t *testing.T) {
 		obj := &RequestOutAuthorize{}
 		var fernTestValueEntryPoint Entrypointfield
@@ -243,6 +251,37 @@ func TestSettersMarkExplicitRequestOutAuthorize(t *testing.T) {
 
 		// Act
 		obj.SetForceVendorCreation(fernTestValueForceVendorCreation)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetSameDayAch_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &RequestOutAuthorize{}
+		var fernTestValueSameDayAch *bool
+
+		// Act
+		obj.SetSameDayAch(fernTestValueSameDayAch)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
@@ -649,6 +688,14 @@ func TestSettersCaptureAllOutRequest(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
+	t.Run("SetAutoConvertSameDayAch", func(t *testing.T) {
+		obj := &CaptureAllOutRequest{}
+		var fernTestValueAutoConvertSameDayAch *bool
+		obj.SetAutoConvertSameDayAch(fernTestValueAutoConvertSameDayAch)
+		assert.Equal(t, fernTestValueAutoConvertSameDayAch, obj.AutoConvertSameDayAch)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
 }
 
 func TestSettersMarkExplicitCaptureAllOutRequest(t *testing.T) {
@@ -683,6 +730,37 @@ func TestSettersMarkExplicitCaptureAllOutRequest(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
+	t.Run("SetAutoConvertSameDayAch_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CaptureAllOutRequest{}
+		var fernTestValueAutoConvertSameDayAch *bool
+
+		// Act
+		obj.SetAutoConvertSameDayAch(fernTestValueAutoConvertSameDayAch)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
 }
 
 func TestSettersCaptureOutRequest(t *testing.T) {
@@ -691,6 +769,14 @@ func TestSettersCaptureOutRequest(t *testing.T) {
 		var fernTestValueIdempotencyKey *IdempotencyKey
 		obj.SetIdempotencyKey(fernTestValueIdempotencyKey)
 		assert.Equal(t, fernTestValueIdempotencyKey, obj.IdempotencyKey)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetAutoConvertSameDayAch", func(t *testing.T) {
+		obj := &CaptureOutRequest{}
+		var fernTestValueAutoConvertSameDayAch *bool
+		obj.SetAutoConvertSameDayAch(fernTestValueAutoConvertSameDayAch)
+		assert.Equal(t, fernTestValueAutoConvertSameDayAch, obj.AutoConvertSameDayAch)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -705,6 +791,37 @@ func TestSettersMarkExplicitCaptureOutRequest(t *testing.T) {
 
 		// Act
 		obj.SetIdempotencyKey(fernTestValueIdempotencyKey)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetAutoConvertSameDayAch_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &CaptureOutRequest{}
+		var fernTestValueAutoConvertSameDayAch *bool
+
+		// Act
+		obj.SetAutoConvertSameDayAch(fernTestValueAutoConvertSameDayAch)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)

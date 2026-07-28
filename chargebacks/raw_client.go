@@ -93,7 +93,7 @@ func (r *RawClient) AddResponse(
 
 func (r *RawClient) GetChargeback(
 	ctx context.Context,
-	// ID of the chargeback or return record. This is returned as `chargebackID` in the [ReceivedChargeBack](/guides/pay-ops-webhooks-payloads#receivedchargeback) and [ReceivedAchReturn](/guides/pay-ops-webhooks-payloads#receivedachreturn) webhook notifications.
+	// ID of the chargeback or return record. This is returned as `chargebackID` in the [ReceivedChargeBack](/developers/webhooks/payops-chargeback-received) and [ReceivedAchReturn](/developers/webhooks/payops-ach-return-received) webhook notifications.
 	id int64,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.ChargebackQueryRecords], error) {

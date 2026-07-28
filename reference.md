@@ -24777,7 +24777,7 @@ Create a new notification or auto-generated report.
 request := &payabli.AddNotificationRequest{
     NotificationStandardRequest: &payabli.NotificationStandardRequest{
         Content: &payabli.NotificationStandardRequestContent{
-            EventType: payabli.NotificationStandardRequestContentEventTypeCreatedApplication.Ptr(),
+            EventType: payabli.NotificationStandardRequestContentEventTypeCreatedapplication.Ptr(),
         },
         Frequency: payabli.NotificationStandardRequestFrequencyUntilcancelled,
         Method: payabli.NotificationStandardRequestMethodWeb,
@@ -24908,7 +24908,7 @@ Update a notification or auto-generated report.
 request := &payabli.UpdateNotificationRequest{
     NotificationStandardRequest: &payabli.NotificationStandardRequest{
         Content: &payabli.NotificationStandardRequestContent{
-            EventType: payabli.NotificationStandardRequestContentEventTypeApprovedPayment.Ptr(),
+            EventType: payabli.NotificationStandardRequestContentEventTypeApprovedpayment.Ptr(),
         },
         Frequency: payabli.NotificationStandardRequestFrequencyUntilcancelled,
         Method: payabli.NotificationStandardRequestMethodEmail,
@@ -26882,7 +26882,7 @@ Authorizes a transaction for payout.
 
 If you don't pass `autoCapture` with a value of `true`, authorized transactions aren't flagged for settlement until captured. Use the `referenceId` returned in the response to capture the transaction.
 
-When `autoCapture` is `true`, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the [`payout_transaction_approvedcaptured`](/developers/api-reference/webhooks-overview/payout-transaction-approved-captured) webhook event.
+When `autoCapture` is `true`, Payabli captures the transaction asynchronously after authorization. The response confirms only that the transaction was authorized; it doesn't confirm that capture succeeded. To confirm capture, listen for the [`payout_transaction_approvedcaptured`](/developers/webhooks/payout-transaction-approved-captured) webhook event.
 
 If a velocity fraud alert is triggered, the endpoint returns a `202` response with `responseCode` `9051`, and the authorization is held for risk review rather than rejected. If a risk policy blocks the transaction, the endpoint returns a `422` response with `responseCode` `9005`, a terminal rejection.
 
@@ -26968,6 +26968,18 @@ client.MoneyOut.AuthorizeOut(
 <dd>
 
 **forceVendorCreation:** `*bool` — When `true`, the request creates a new vendor record, regardless of whether the vendor already exists.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sameDayAch:** `*bool` 
+
+When `true`, Payabli authorizes the payout for same-day ACH processing instead of standard ACH. Same-day ACH must be enabled for the paypoint, otherwise the authorization fails with a `400` response and `responseCode` `3492`. Only ACH payouts honor this flag. Wire and RTP payouts ignore it.
+
+Same-day ACH has a daily cutoff. Capture the transaction before the cutoff, or pass `autoConvertSameDayAch` with a value of `true` when you capture it.
     
 </dd>
 </dl>
@@ -27311,6 +27323,18 @@ client.MoneyOut.CaptureAllOut(
 <dl>
 <dd>
 
+**autoConvertSameDayAch:** `*bool` 
+
+Controls what happens to a payout authorized with `sameDayACH` set to `true` when you capture it after the same-day ACH cutoff. When `true`, Payabli converts the payout to a standard ACH payment and captures it. When `false`, the capture is declined.
+
+This parameter has no effect on payouts that weren't authorized for same-day ACH.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **idempotencyKey:** `*payabli.IdempotencyKey` — _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
     
 </dd>
@@ -27381,6 +27405,18 @@ client.MoneyOut.CaptureOut(
 <dd>
 
 **referenceId:** `string` — The ID for the payout transaction.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**autoConvertSameDayAch:** `*bool` 
+
+Controls what happens to a payout authorized with `sameDayACH` set to `true` when you capture it after the same-day ACH cutoff. When `true`, Payabli converts the payout to a standard ACH payment and captures it. When `false`, the capture is declined.
+
+This parameter has no effect on payouts that weren't authorized for same-day ACH.
     
 </dd>
 </dl>
@@ -28857,7 +28893,7 @@ client.ChargeBacks.GetChargeback(
 <dl>
 <dd>
 
-**id:** `int64` — ID of the chargeback or return record. This is returned as `chargebackID` in the [ReceivedChargeBack](/guides/pay-ops-webhooks-payloads#receivedchargeback) and [ReceivedAchReturn](/guides/pay-ops-webhooks-payloads#receivedachreturn) webhook notifications.
+**id:** `int64` — ID of the chargeback or return record. This is returned as `chargebackID` in the [ReceivedChargeBack](/developers/webhooks/payops-chargeback-received) and [ReceivedAchReturn](/developers/webhooks/payops-ach-return-received) webhook notifications.
     
 </dd>
 </dl>
@@ -28924,6 +28960,1107 @@ client.ChargeBacks.GetChargebackAttachment(
 <dd>
 
 **fileName:** `string` — The chargeback attachment's file name.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Case Management
+<details><summary><code>client.CaseManagement.ValidateBankAccountChange(PaypointId, request) -> *payabli.PreCreationValidationResult</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Validates a bank account change for a paypoint without creating a case.
+Runs the same checks the create endpoint runs, and returns blocking
+conditions and warnings. Blocking conditions prevent creation; warnings
+don't.
+
+Available to both Platform and Enterprise Partners.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ValidateBankAccountChangeRequest{
+    RoutingNumber: "123456789",
+    AccountNumber: "987654321",
+    AccountType: "checking",
+    BankAccountHolderType: "business",
+    BankAccountFunction: payabli.CaseManagementBankAccountFunctionDeposits,
+    Services: &payabli.BankAccountServices{
+        MoneyIn: []payabli.MoneyInService{
+            payabli.MoneyInServiceAch,
+        },
+        MoneyOut: []payabli.MoneyOutService{
+            payabli.MoneyOutServiceAch,
+        },
+    },
+}
+client.CaseManagement.ValidateBankAccountChange(
+    context.TODO(),
+    int64(3040),
+    request,
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paypointId:** `int64` — The paypoint's numeric identifier.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**routingNumber:** `string` — The 9-digit bank routing number.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountNumber:** `string` — The bank account number (4 to 17 digits).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountType:** `string` — The account type. Must be `checking` or `savings`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**bankAccountHolderType:** `string` — The account holder type. Must be `personal` or `business`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**bankAccountFunction:** `*payabli.CaseManagementBankAccountFunction` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**services:** `*payabli.BankAccountServices` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.CaseManagement.CreateBankAccountChange(PaypointId, request) -> *payabli.CaseResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a bank-account-change case for a paypoint. The account and
+routing numbers are validated and tokenized before the case is saved —
+the raw numbers are never stored or returned. The account holder name is
+taken from the paypoint's legal name. On success the case is created in
+`Submitted` and asynchronous verification starts.
+
+Available to both Platform and Enterprise Partners.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.CreateBankAccountChangeCaseRequest{
+    Nickname: "Main Settlement Account",
+    BankName: "First National Bank",
+    RoutingNumber: "123456789",
+    AccountNumber: "987654321",
+    AccountType: "checking",
+    BankAccountHolderType: "business",
+    BankAccountFunction: payabli.CaseManagementBankAccountFunctionDeposits,
+    Services: &payabli.BankAccountServices{
+        MoneyIn: []payabli.MoneyInService{
+            payabli.MoneyInServiceAch,
+        },
+        MoneyOut: []payabli.MoneyOutService{
+            payabli.MoneyOutServiceAch,
+        },
+    },
+    Default: true,
+}
+client.CaseManagement.CreateBankAccountChange(
+    context.TODO(),
+    int64(3040),
+    request,
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paypointId:** `int64` — The paypoint's numeric identifier.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**nickname:** `string` — A label for the account.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**bankName:** `string` — The name of the bank.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**routingNumber:** `string` — The 9-digit bank routing number.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountNumber:** `string` — The bank account number (4 to 17 digits).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**accountType:** `string` — The account type. Must be `checking` or `savings`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**bankAccountHolderType:** `string` — The account holder type. Must be `personal` or `business`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**bankAccountFunction:** `*payabli.CaseManagementBankAccountFunction` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**services:** `*payabli.BankAccountServices` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**default_:** `bool` — Whether this is the default account for the selected services.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scheduleFor:** `*time.Time` 
+
+When to run the change, as a UTC timestamp (trailing `Z`). Must be at
+least 1 hour and at most 30 days in the future. Omit to run as soon as
+the case is approved.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.CaseManagement.GetCase(Uuid) -> *payabli.CaseResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a case by its UUID, including its current state, parameters,
+state history, verification metadata, and attachments.
+
+Available to both Platform and Enterprise Partners.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.CaseManagement.GetCase(
+    context.TODO(),
+    "9c2b7e14-3a5f-4d21-b8e0-1f6a4c9d2e70",
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**uuid:** `string` — The case's UUID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.CaseManagement.ListCases(OrganizationId) -> *payabli.CaseListResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists cases for an organization, climbing the platform org hierarchy.
+Supports pagination and sorting through query parameters, and filtering
+through repeatable `parameters[field(op)]=value` query parameters (for
+example `parameters[state(in)]=Assigned|PendingReview`). Filterable
+fields include `state`, `caseType`, `paypointId`, `createdAt`,
+`updatedAt`, `scheduleFor`, and `createdBy`.
+
+Available to both Platform and Enterprise Partners.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ListCasesCaseManagementRequest{
+    FromRecord: payabli.Int(
+        0,
+    ),
+    LimitRecord: payabli.Int(
+        20,
+    ),
+}
+client.CaseManagement.ListCases(
+    context.TODO(),
+    int64(123),
+    request,
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**organizationId:** `int64` — The organization's numeric identifier.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fromRecord:** `*int` — The zero-based index of the first record to return.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limitRecord:** `*int` — The maximum number of records to return (1 to 200).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sortBy:** `*string` — Sort expression, such as `desc(createdAt)` or `asc(state)`. Defaults to `desc(createdAt)`.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.CaseManagement.ListMessages(CaseUuid) -> *payabli.MessagePage</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists the notes on a case, ordered oldest to newest. Cursor-paginated.
+
+Available to both Platform and Enterprise Partners.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.ListMessagesCaseManagementRequest{}
+client.CaseManagement.ListMessages(
+    context.TODO(),
+    "9c2b7e14-3a5f-4d21-b8e0-1f6a4c9d2e70",
+    request,
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**caseUuid:** `string` — The case's UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `*int` — The maximum number of notes to return (default 50, max 200).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cursor:** `*string` — An opaque cursor for the next page.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.CaseManagement.PostMessage(CaseUuid, request) -> *payabli.PostedMessage</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Adds a note to a case.
+
+Available to both Platform and Enterprise Partners.
+
+This endpoint is in development and not yet available for API use. To
+add a note for now, use Case Management in the
+[Payabli Portal](/guides/pay-ops-portal-bank-account-changes-manage).
+To read existing notes on a case, use
+[List case notes](/developers/api-reference/caseManagement/list-case-notes).
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.PostCaseMessageRequest{
+    Content: "Reviewed supporting documents; account ownership confirmed.",
+}
+client.CaseManagement.PostMessage(
+    context.TODO(),
+    "9c2b7e14-3a5f-4d21-b8e0-1f6a4c9d2e70",
+    request,
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**caseUuid:** `string` — The case's UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**content:** `string` — The note text (1 to 4000 characters).
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.CaseManagement.ListTransitions(Uuid) -> *payabli.AvailableTransitionsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists the review actions currently available on a case. The list is
+empty when no user action is available (for example while the case is
+mid-automation).
+
+Available to both Platform and Enterprise Partners, though only
+Enterprise Partners can fire the returned actions.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.CaseManagement.ListTransitions(
+    context.TODO(),
+    "9c2b7e14-3a5f-4d21-b8e0-1f6a4c9d2e70",
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**uuid:** `string` — The case's UUID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.CaseManagement.Transition(Uuid, request) -> *payabli.CaseResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Fires a review action on a case, such as `Approve`, `Deny`, `Escalate`,
+or `RequestReview`. Assigning a case uses the dedicated assign endpoint,
+not this one. Firing an action that isn't valid for the case's current
+state returns `409`.
+
+Available to Enterprise Partners only.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.TransitionCaseRequest{
+    Trigger: payabli.CaseTriggerApprove,
+    Reason: "Account ownership confirmed with the merchant by phone.",
+}
+client.CaseManagement.Transition(
+    context.TODO(),
+    "9c2b7e14-3a5f-4d21-b8e0-1f6a4c9d2e70",
+    request,
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**uuid:** `string` — The case's UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trigger:** `*payabli.CaseTrigger` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**reason:** `string` — The reason for the action.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**declineReason:** `*payabli.BankReviewDecisionReason` — The decline reason. Required when the trigger is `Deny`, and must be omitted otherwise.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.CaseManagement.AssignCase(Uuid, request) -> *payabli.CaseResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Assigns a case to a reviewer.
+
+Available to Enterprise Partners only.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.AssignCaseRequest{
+    AssigneeId: int64(4238),
+    Reason: payabli.String(
+        "Routing to the risk team for review.",
+    ),
+}
+client.CaseManagement.AssignCase(
+    context.TODO(),
+    "9c2b7e14-3a5f-4d21-b8e0-1f6a4c9d2e70",
+    request,
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**uuid:** `string` — The case's UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**assigneeId:** `int64` — The numeric id of the reviewer to assign the case to.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**reason:** `*string` — An optional reason for the assignment.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.CaseManagement.ListAttachments(CaseUuid) -> []*payabli.AttachmentResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists the files attached to a case.
+
+Available to both Platform and Enterprise Partners.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.CaseManagement.ListAttachments(
+    context.TODO(),
+    "9c2b7e14-3a5f-4d21-b8e0-1f6a4c9d2e70",
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**caseUuid:** `string` — The case's UUID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.CaseManagement.UploadAttachment(CaseUuid, request) -> *payabli.AttachmentResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Uploads a file to a case as multipart form data. The maximum size is
+25 MiB, and the content type must be an allowed type such as PDF, PNG,
+JPEG, CSV, XLSX, DOCX, or plain text.
+
+Available to both Platform and Enterprise Partners.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+request := &payabli.UploadAttachmentCaseManagementRequest{
+    File: strings.NewReader(
+        "",
+    ),
+}
+client.CaseManagement.UploadAttachment(
+    context.TODO(),
+    "caseUuid",
+    request,
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**caseUuid:** `string` — The case's UUID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.CaseManagement.GetAttachment(CaseUuid, AttachmentId) -> string</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Streams the file content of an attachment.
+
+Available to both Platform and Enterprise Partners.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.CaseManagement.GetAttachment(
+    context.TODO(),
+    "caseUuid",
+    "attachmentId",
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**caseUuid:** `string` — The case's UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**attachmentId:** `string` — The attachment's UUID.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.CaseManagement.DeleteAttachment(CaseUuid, AttachmentId) -> error</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes an attachment from a case.
+
+Available to both Platform and Enterprise Partners.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.CaseManagement.DeleteAttachment(
+    context.TODO(),
+    "caseUuid",
+    "attachmentId",
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**caseUuid:** `string` — The case's UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**attachmentId:** `string` — The attachment's UUID.
     
 </dd>
 </dl>

@@ -31,6 +31,30 @@ func (b *BadRequestError) Unwrap() error {
 	return b.APIError
 }
 
+// The action isn't permitted from the case's current state.
+type ConflictError struct {
+	*core.APIError
+	Body any
+}
+
+func (c *ConflictError) UnmarshalJSON(data []byte) error {
+	var body any
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	c.StatusCode = 409
+	c.Body = body
+	return nil
+}
+
+func (c *ConflictError) MarshalJSON() ([]byte, error) {
+	return json.Marshal(c.Body)
+}
+
+func (c *ConflictError) Unwrap() error {
+	return c.APIError
+}
+
 // Consent error.
 type ForbiddenError struct {
 	*core.APIError
@@ -77,6 +101,30 @@ func (i *InternalServerError) MarshalJSON() ([]byte, error) {
 
 func (i *InternalServerError) Unwrap() error {
 	return i.APIError
+}
+
+// The case doesn't exist.
+type NotFoundError struct {
+	*core.APIError
+	Body any
+}
+
+func (n *NotFoundError) UnmarshalJSON(data []byte) error {
+	var body any
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	n.StatusCode = 404
+	n.Body = body
+	return nil
+}
+
+func (n *NotFoundError) MarshalJSON() ([]byte, error) {
+	return json.Marshal(n.Body)
+}
+
+func (n *NotFoundError) Unwrap() error {
+	return n.APIError
 }
 
 // Auth or sale decline error for v2 Money In endpoints (HTTP 402). Returned when an authorization or sale operation is declined for a transaction. Uses unified response codes starting with 'D'. See the [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for the complete list of codes.

@@ -10,6 +10,7 @@ import (
 	payabli "github.com/payabli/sdk-go"
 	bill "github.com/payabli/sdk-go/bill"
 	boarding "github.com/payabli/sdk-go/boarding"
+	casemanagement "github.com/payabli/sdk-go/casemanagement"
 	chargebacks "github.com/payabli/sdk-go/chargebacks"
 	checkcapture "github.com/payabli/sdk-go/checkcapture"
 	cloud "github.com/payabli/sdk-go/cloud"
@@ -80,6 +81,7 @@ type Client struct {
 	Wallet              *wallet.Client
 	PayoutSubscription  *payoutsubscription.Client
 	ChargeBacks         *chargebacks.Client
+	CaseManagement      *casemanagement.Client
 
 	options *core.RequestOptions
 	baseURL string
@@ -156,6 +158,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Wallet:              wallet.NewClient(options),
 		PayoutSubscription:  payoutsubscription.NewClient(options),
 		ChargeBacks:         chargebacks.NewClient(options),
+		CaseManagement:      casemanagement.NewClient(options),
 		options:             options,
 		baseURL:             options.BaseURL,
 		caller: internal.NewCaller(

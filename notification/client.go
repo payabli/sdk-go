@@ -48,7 +48,7 @@ func NewClient(options *core.RequestOptions) *Client {
 //	request := &payabli.AddNotificationRequest{
 //	    NotificationStandardRequest: &payabli.NotificationStandardRequest{
 //	        Content: &payabli.NotificationStandardRequestContent{
-//	            EventType: payabli.NotificationStandardRequestContentEventTypeCreatedApplication.Ptr(),
+//	            EventType: payabli.NotificationStandardRequestContentEventTypeCreatedapplication.Ptr(),
 //	        },
 //	        Frequency: payabli.NotificationStandardRequestFrequencyUntilcancelled,
 //	        Method: payabli.NotificationStandardRequestMethodWeb,
@@ -114,7 +114,7 @@ func (c *Client) GetNotification(
 //	request := &payabli.UpdateNotificationRequest{
 //	    NotificationStandardRequest: &payabli.NotificationStandardRequest{
 //	        Content: &payabli.NotificationStandardRequestContent{
-//	            EventType: payabli.NotificationStandardRequestContentEventTypeApprovedPayment.Ptr(),
+//	            EventType: payabli.NotificationStandardRequestContentEventTypeApprovedpayment.Ptr(),
 //	        },
 //	        Frequency: payabli.NotificationStandardRequestFrequencyUntilcancelled,
 //	        Method: payabli.NotificationStandardRequestMethodEmail,

@@ -15,18 +15,19 @@ var (
 	requestOutAuthorizeFieldAllowDuplicatedBills = big.NewInt(1 << 1)
 	requestOutAuthorizeFieldDoNotCreateBills     = big.NewInt(1 << 2)
 	requestOutAuthorizeFieldForceVendorCreation  = big.NewInt(1 << 3)
-	requestOutAuthorizeFieldEntryPoint           = big.NewInt(1 << 4)
-	requestOutAuthorizeFieldSource               = big.NewInt(1 << 5)
-	requestOutAuthorizeFieldOrderId              = big.NewInt(1 << 6)
-	requestOutAuthorizeFieldOrderDescription     = big.NewInt(1 << 7)
-	requestOutAuthorizeFieldPaymentMethod        = big.NewInt(1 << 8)
-	requestOutAuthorizeFieldPaymentDetails       = big.NewInt(1 << 9)
-	requestOutAuthorizeFieldVendorData           = big.NewInt(1 << 10)
-	requestOutAuthorizeFieldInvoiceData          = big.NewInt(1 << 11)
-	requestOutAuthorizeFieldAccountId            = big.NewInt(1 << 12)
-	requestOutAuthorizeFieldSubdomain            = big.NewInt(1 << 13)
-	requestOutAuthorizeFieldSubscriptionId       = big.NewInt(1 << 14)
-	requestOutAuthorizeFieldAutoCapture          = big.NewInt(1 << 15)
+	requestOutAuthorizeFieldSameDayAch           = big.NewInt(1 << 4)
+	requestOutAuthorizeFieldEntryPoint           = big.NewInt(1 << 5)
+	requestOutAuthorizeFieldSource               = big.NewInt(1 << 6)
+	requestOutAuthorizeFieldOrderId              = big.NewInt(1 << 7)
+	requestOutAuthorizeFieldOrderDescription     = big.NewInt(1 << 8)
+	requestOutAuthorizeFieldPaymentMethod        = big.NewInt(1 << 9)
+	requestOutAuthorizeFieldPaymentDetails       = big.NewInt(1 << 10)
+	requestOutAuthorizeFieldVendorData           = big.NewInt(1 << 11)
+	requestOutAuthorizeFieldInvoiceData          = big.NewInt(1 << 12)
+	requestOutAuthorizeFieldAccountId            = big.NewInt(1 << 13)
+	requestOutAuthorizeFieldSubdomain            = big.NewInt(1 << 14)
+	requestOutAuthorizeFieldSubscriptionId       = big.NewInt(1 << 15)
+	requestOutAuthorizeFieldAutoCapture          = big.NewInt(1 << 16)
 )
 
 type RequestOutAuthorize struct {
@@ -37,12 +38,16 @@ type RequestOutAuthorize struct {
 	// When `true`, Payabli won't automatically create a bill for this payout transaction.
 	DoNotCreateBills *bool `json:"-" url:"doNotCreateBills,omitempty"`
 	// When `true`, the request creates a new vendor record, regardless of whether the vendor already exists.
-	ForceVendorCreation *bool                   `json:"-" url:"forceVendorCreation,omitempty"`
-	EntryPoint          Entrypointfield         `json:"entryPoint" url:"-"`
-	Source              *Source                 `json:"source,omitempty" url:"-"`
-	OrderId             *OrderId                `json:"orderId,omitempty" url:"-"`
-	OrderDescription    *Orderdescription       `json:"orderDescription,omitempty" url:"-"`
-	PaymentMethod       *AuthorizePaymentMethod `json:"paymentMethod" url:"-"`
+	ForceVendorCreation *bool `json:"-" url:"forceVendorCreation,omitempty"`
+	// When `true`, Payabli authorizes the payout for same-day ACH processing instead of standard ACH. Same-day ACH must be enabled for the paypoint, otherwise the authorization fails with a `400` response and `responseCode` `3492`. Only ACH payouts honor this flag. Wire and RTP payouts ignore it.
+	//
+	// Same-day ACH has a daily cutoff. Capture the transaction before the cutoff, or pass `autoConvertSameDayAch` with a value of `true` when you capture it.
+	SameDayAch       *bool                   `json:"-" url:"sameDayACH,omitempty"`
+	EntryPoint       Entrypointfield         `json:"entryPoint" url:"-"`
+	Source           *Source                 `json:"source,omitempty" url:"-"`
+	OrderId          *OrderId                `json:"orderId,omitempty" url:"-"`
+	OrderDescription *Orderdescription       `json:"orderDescription,omitempty" url:"-"`
+	PaymentMethod    *AuthorizePaymentMethod `json:"paymentMethod" url:"-"`
 	// Object containing payment details.
 	PaymentDetails *RequestOutAuthorizePaymentDetails `json:"paymentDetails" url:"-"`
 	// Object containing vendor data.
@@ -91,6 +96,13 @@ func (r *RequestOutAuthorize) SetDoNotCreateBills(doNotCreateBills *bool) {
 func (r *RequestOutAuthorize) SetForceVendorCreation(forceVendorCreation *bool) {
 	r.ForceVendorCreation = forceVendorCreation
 	r.require(requestOutAuthorizeFieldForceVendorCreation)
+}
+
+// SetSameDayAch sets the SameDayAch field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RequestOutAuthorize) SetSameDayAch(sameDayAch *bool) {
+	r.SameDayAch = sameDayAch
+	r.require(requestOutAuthorizeFieldSameDayAch)
 }
 
 // SetEntryPoint sets the EntryPoint field and marks it as non-optional;
@@ -199,13 +211,18 @@ func (r *RequestOutAuthorize) MarshalJSON() ([]byte, error) {
 }
 
 var (
-	captureAllOutRequestFieldIdempotencyKey = big.NewInt(1 << 0)
+	captureAllOutRequestFieldIdempotencyKey        = big.NewInt(1 << 0)
+	captureAllOutRequestFieldAutoConvertSameDayAch = big.NewInt(1 << 1)
 )
 
 type CaptureAllOutRequest struct {
 	// _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
 	IdempotencyKey *IdempotencyKey `json:"-" url:"-"`
-	Body           []string        `json:"-" url:"-"`
+	// Controls what happens to a payout authorized with `sameDayACH` set to `true` when you capture it after the same-day ACH cutoff. When `true`, Payabli converts the payout to a standard ACH payment and captures it. When `false`, the capture is declined.
+	//
+	// This parameter has no effect on payouts that weren't authorized for same-day ACH.
+	AutoConvertSameDayAch *bool    `json:"-" url:"autoConvertSameDayAch,omitempty"`
+	Body                  []string `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -225,6 +242,13 @@ func (c *CaptureAllOutRequest) SetIdempotencyKey(idempotencyKey *IdempotencyKey)
 	c.require(captureAllOutRequestFieldIdempotencyKey)
 }
 
+// SetAutoConvertSameDayAch sets the AutoConvertSameDayAch field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CaptureAllOutRequest) SetAutoConvertSameDayAch(autoConvertSameDayAch *bool) {
+	c.AutoConvertSameDayAch = autoConvertSameDayAch
+	c.require(captureAllOutRequestFieldAutoConvertSameDayAch)
+}
+
 func (c *CaptureAllOutRequest) UnmarshalJSON(data []byte) error {
 	var body []string
 	if err := json.Unmarshal(data, &body); err != nil {
@@ -239,12 +263,17 @@ func (c *CaptureAllOutRequest) MarshalJSON() ([]byte, error) {
 }
 
 var (
-	captureOutRequestFieldIdempotencyKey = big.NewInt(1 << 0)
+	captureOutRequestFieldIdempotencyKey        = big.NewInt(1 << 0)
+	captureOutRequestFieldAutoConvertSameDayAch = big.NewInt(1 << 1)
 )
 
 type CaptureOutRequest struct {
 	// _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
 	IdempotencyKey *IdempotencyKey `json:"-" url:"-"`
+	// Controls what happens to a payout authorized with `sameDayACH` set to `true` when you capture it after the same-day ACH cutoff. When `true`, Payabli converts the payout to a standard ACH payment and captures it. When `false`, the capture is declined.
+	//
+	// This parameter has no effect on payouts that weren't authorized for same-day ACH.
+	AutoConvertSameDayAch *bool `json:"-" url:"autoConvertSameDayAch,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -262,6 +291,13 @@ func (c *CaptureOutRequest) require(field *big.Int) {
 func (c *CaptureOutRequest) SetIdempotencyKey(idempotencyKey *IdempotencyKey) {
 	c.IdempotencyKey = idempotencyKey
 	c.require(captureOutRequestFieldIdempotencyKey)
+}
+
+// SetAutoConvertSameDayAch sets the AutoConvertSameDayAch field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CaptureOutRequest) SetAutoConvertSameDayAch(autoConvertSameDayAch *bool) {
+	c.AutoConvertSameDayAch = autoConvertSameDayAch
+	c.require(captureOutRequestFieldAutoConvertSameDayAch)
 }
 
 var (
@@ -831,7 +867,7 @@ func (a *AuthCapturePayoutResponseData) String() string {
 // successful authorization. The authorization request returns once the
 // transaction is authorized; capture happens later, and the response
 // doesn't confirm capture. To confirm capture succeeded, listen for the
-// [`payout_transaction_approvedcaptured`](/developers/api-reference/webhooks-overview/payout-transaction-approved-captured)
+// [`payout_transaction_approvedcaptured`](/developers/webhooks/payout-transaction-approved-captured)
 // webhook event.
 //
 // When `false`, you must manually capture the transaction after a
