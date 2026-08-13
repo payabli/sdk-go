@@ -812,11 +812,10 @@ func (c *Client) Capturev2(
 //
 // Example:
 //
-//	request := &payabli.RefundV2Request{}
 //	client.MoneyIn.Refundv2(
 //	    context.TODO(),
 //	    "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
-//	    request,
+//	    nil,
 //	)
 func (c *Client) Refundv2(
 	ctx context.Context,
@@ -843,18 +842,17 @@ func (c *Client) Refundv2(
 //
 // <Note>
 //
-//	To refund a split-funded transaction, include split instructions in the request body. Omit the body for a standard refund.
+//	For a standard refund, whether full (`amount` set to 0) or partial, send no request body. Include a request body only to refund a split-funded transaction, with split instructions in `refundDetails`.
 //
 // </Note>
 //
 // Example:
 //
-//	request := &payabli.RefundV2Request{}
 //	client.MoneyIn.Refundv2Amount(
 //	    context.TODO(),
 //	    "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
 //	    0,
-//	    request,
+//	    nil,
 //	)
 func (c *Client) Refundv2Amount(
 	ctx context.Context,

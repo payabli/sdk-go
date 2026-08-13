@@ -62,6 +62,9 @@ type CallParams struct {
 	Response           interface{}
 	ResponseIsOptional bool
 	ErrorDecoder       ErrorDecoder
+	// BodyIsOptional reports whether the endpoint accepts the request without a body,
+	// so a call that sends none must not advertise a body content type either.
+	BodyIsOptional bool
 }
 
 // CallResponse is a parsed HTTP response from an API call.
@@ -83,6 +86,12 @@ func (c *Caller) Call(ctx context.Context, params *CallParams) (*CallResponse, e
 	)
 	if err != nil {
 		return nil, err
+	}
+
+	// A request that carries no body must not claim a media type, which a server
+	// branching on the content type would otherwise read as an empty JSON body.
+	if params.BodyIsOptional && req.Body == nil {
+		req.Header.Del(contentTypeHeader)
 	}
 
 	// If the call has been cancelled, don't issue the request.

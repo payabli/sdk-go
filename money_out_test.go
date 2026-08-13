@@ -1472,7 +1472,7 @@ func TestSettersAuthCapturePayoutResponseData(t *testing.T) {
 
 	t.Run("SetReferenceId", func(t *testing.T) {
 		obj := &AuthCapturePayoutResponseData{}
-		var fernTestValueReferenceId Referenceidtrans
+		var fernTestValueReferenceId *Referenceidtrans
 		obj.SetReferenceId(fernTestValueReferenceId)
 		assert.Equal(t, fernTestValueReferenceId, obj.ReferenceId)
 		assert.NotNil(t, obj.explicitFields)
@@ -1574,11 +1574,21 @@ func TestGettersAuthCapturePayoutResponseData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &AuthCapturePayoutResponseData{}
-		var expected Referenceidtrans
+		var expected *Referenceidtrans
 		obj.ReferenceId = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetReferenceId(), "getter should return the property value")
+	})
+
+	t.Run("GetReferenceId_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &AuthCapturePayoutResponseData{}
+		obj.ReferenceId = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetReferenceId(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetReferenceId_NilReceiver", func(t *testing.T) {
@@ -1822,7 +1832,7 @@ func TestSettersMarkExplicitAuthCapturePayoutResponseData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &AuthCapturePayoutResponseData{}
-		var fernTestValueReferenceId Referenceidtrans
+		var fernTestValueReferenceId *Referenceidtrans
 
 		// Act
 		obj.SetReferenceId(fernTestValueReferenceId)

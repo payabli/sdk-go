@@ -228,47 +228,47 @@ func (a *AddOrganizationRequest) MarshalJSON() ([]byte, error) {
 }
 
 var (
-	organizationDataFieldServices              = big.NewInt(1 << 0)
-	organizationDataFieldBillingInfo           = big.NewInt(1 << 1)
-	organizationDataFieldContacts              = big.NewInt(1 << 2)
-	organizationDataFieldHasBilling            = big.NewInt(1 << 3)
-	organizationDataFieldHasResidual           = big.NewInt(1 << 4)
-	organizationDataFieldOrgAddress            = big.NewInt(1 << 5)
-	organizationDataFieldOrgCity               = big.NewInt(1 << 6)
-	organizationDataFieldOrgCountry            = big.NewInt(1 << 7)
-	organizationDataFieldOrgEntryName          = big.NewInt(1 << 8)
-	organizationDataFieldOrganizationDataOrgId = big.NewInt(1 << 9)
-	organizationDataFieldOrgLogo               = big.NewInt(1 << 10)
-	organizationDataFieldOrgName               = big.NewInt(1 << 11)
-	organizationDataFieldOrgParentId           = big.NewInt(1 << 12)
-	organizationDataFieldOrgState              = big.NewInt(1 << 13)
-	organizationDataFieldOrgTimezone           = big.NewInt(1 << 14)
-	organizationDataFieldOrgType               = big.NewInt(1 << 15)
-	organizationDataFieldOrgWebsite            = big.NewInt(1 << 16)
-	organizationDataFieldOrgZip                = big.NewInt(1 << 17)
-	organizationDataFieldReplyToEmail          = big.NewInt(1 << 18)
+	organizationDataFieldServices     = big.NewInt(1 << 0)
+	organizationDataFieldBillingInfo  = big.NewInt(1 << 1)
+	organizationDataFieldContacts     = big.NewInt(1 << 2)
+	organizationDataFieldHasBilling   = big.NewInt(1 << 3)
+	organizationDataFieldHasResidual  = big.NewInt(1 << 4)
+	organizationDataFieldOrgAddress   = big.NewInt(1 << 5)
+	organizationDataFieldOrgCity      = big.NewInt(1 << 6)
+	organizationDataFieldOrgCountry   = big.NewInt(1 << 7)
+	organizationDataFieldOrgEntryName = big.NewInt(1 << 8)
+	organizationDataFieldOrgId        = big.NewInt(1 << 9)
+	organizationDataFieldOrgLogo      = big.NewInt(1 << 10)
+	organizationDataFieldOrgName      = big.NewInt(1 << 11)
+	organizationDataFieldOrgParentId  = big.NewInt(1 << 12)
+	organizationDataFieldOrgState     = big.NewInt(1 << 13)
+	organizationDataFieldOrgTimezone  = big.NewInt(1 << 14)
+	organizationDataFieldOrgType      = big.NewInt(1 << 15)
+	organizationDataFieldOrgWebsite   = big.NewInt(1 << 16)
+	organizationDataFieldOrgZip       = big.NewInt(1 << 17)
+	organizationDataFieldReplyToEmail = big.NewInt(1 << 18)
 )
 
 type OrganizationData struct {
-	Services              []*ServiceCost `json:"services,omitempty" url:"-"`
-	BillingInfo           *Instrument    `json:"billingInfo,omitempty" url:"-"`
-	Contacts              *ContactsField `json:"contacts,omitempty" url:"-"`
-	HasBilling            *bool          `json:"hasBilling,omitempty" url:"-"`
-	HasResidual           *bool          `json:"hasResidual,omitempty" url:"-"`
-	OrgAddress            *Orgaddress    `json:"orgAddress,omitempty" url:"-"`
-	OrgCity               *Orgcity       `json:"orgCity,omitempty" url:"-"`
-	OrgCountry            *Orgcountry    `json:"orgCountry,omitempty" url:"-"`
-	OrgEntryName          *Orgentryname  `json:"orgEntryName,omitempty" url:"-"`
-	OrganizationDataOrgId *Orgidstring   `json:"orgId,omitempty" url:"-"`
-	OrgLogo               *FileContent   `json:"orgLogo,omitempty" url:"-"`
-	OrgName               *Orgname       `json:"orgName,omitempty" url:"-"`
-	OrgParentId           *OrgParentId   `json:"orgParentId,omitempty" url:"-"`
-	OrgState              *Orgstate      `json:"orgState,omitempty" url:"-"`
-	OrgTimezone           *Orgtimezone   `json:"orgTimezone,omitempty" url:"-"`
-	OrgType               *Orgtype       `json:"orgType,omitempty" url:"-"`
-	OrgWebsite            *Orgwebsite    `json:"orgWebsite,omitempty" url:"-"`
-	OrgZip                *Orgzip        `json:"orgZip,omitempty" url:"-"`
-	ReplyToEmail          *ReplyToEmail  `json:"replyToEmail,omitempty" url:"-"`
+	Services     []*ServiceCost `json:"services,omitempty" url:"-"`
+	BillingInfo  *Instrument    `json:"billingInfo,omitempty" url:"-"`
+	Contacts     *ContactsField `json:"contacts,omitempty" url:"-"`
+	HasBilling   *bool          `json:"hasBilling,omitempty" url:"-"`
+	HasResidual  *bool          `json:"hasResidual,omitempty" url:"-"`
+	OrgAddress   *Orgaddress    `json:"orgAddress,omitempty" url:"-"`
+	OrgCity      *Orgcity       `json:"orgCity,omitempty" url:"-"`
+	OrgCountry   *Orgcountry    `json:"orgCountry,omitempty" url:"-"`
+	OrgEntryName *Orgentryname  `json:"orgEntryName,omitempty" url:"-"`
+	OrgId        *Orgidstring   `json:"orgId,omitempty" url:"-"`
+	OrgLogo      *FileContent   `json:"orgLogo,omitempty" url:"-"`
+	OrgName      *Orgname       `json:"orgName,omitempty" url:"-"`
+	OrgParentId  *OrgParentId   `json:"orgParentId,omitempty" url:"-"`
+	OrgState     *Orgstate      `json:"orgState,omitempty" url:"-"`
+	OrgTimezone  *Orgtimezone   `json:"orgTimezone,omitempty" url:"-"`
+	OrgType      *Orgtype       `json:"orgType,omitempty" url:"-"`
+	OrgWebsite   *Orgwebsite    `json:"orgWebsite,omitempty" url:"-"`
+	OrgZip       *Orgzip        `json:"orgZip,omitempty" url:"-"`
+	ReplyToEmail *ReplyToEmail  `json:"replyToEmail,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -344,11 +344,11 @@ func (o *OrganizationData) SetOrgEntryName(orgEntryName *Orgentryname) {
 	o.require(organizationDataFieldOrgEntryName)
 }
 
-// SetOrganizationDataOrgId sets the OrganizationDataOrgId field and marks it as non-optional;
+// SetOrgId sets the OrgId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (o *OrganizationData) SetOrganizationDataOrgId(organizationDataOrgId *Orgidstring) {
-	o.OrganizationDataOrgId = organizationDataOrgId
-	o.require(organizationDataFieldOrganizationDataOrgId)
+func (o *OrganizationData) SetOrgId(orgId *Orgidstring) {
+	o.OrgId = orgId
+	o.require(organizationDataFieldOrgId)
 }
 
 // SetOrgLogo sets the OrgLogo field and marks it as non-optional;

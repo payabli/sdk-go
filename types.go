@@ -18154,10 +18154,17 @@ type RemitEmail = string
 
 // Remittance street address. Used for mailing paper checks. Required if any
 // remittance address field is provided.
+//
+// For a PO Box address, include only the PO Box in this field, for example
+// `PO Box 29652`. Put the rest of the address, such as a department number,
+// in `remitAddress2`.
 type Remitaddress1 = string
 
 // Remittance address additional line, such as a suite or unit number. Used
 // for mailing paper checks. Always optional.
+//
+// For a PO Box address, this field holds the part of the address that
+// follows the PO Box, for example `Dept# 880662`.
 type Remitaddress2 = string
 
 // Remittance address city. Used for mailing paper checks. Required if any
@@ -18372,12 +18379,15 @@ var (
 )
 
 type RequestOutAuthorizeVendorData struct {
-	VendorNumber          *VendorNumber                         `json:"vendorNumber,omitempty" url:"vendorNumber,omitempty"`
-	Name1                 *VendorName1                          `json:"name1,omitempty" url:"name1,omitempty"`
-	Name2                 *VendorName2                          `json:"name2,omitempty" url:"name2,omitempty"`
-	Ein                   *VendorEin                            `json:"ein,omitempty" url:"ein,omitempty"`
-	Phone                 *VendorPhone                          `json:"phone,omitempty" url:"phone,omitempty"`
-	Email                 *Email                                `json:"email,omitempty" url:"email,omitempty"`
+	VendorNumber *VendorNumber `json:"vendorNumber,omitempty" url:"vendorNumber,omitempty"`
+	Name1        *VendorName1  `json:"name1,omitempty" url:"name1,omitempty"`
+	Name2        *VendorName2  `json:"name2,omitempty" url:"name2,omitempty"`
+	Ein          *VendorEin    `json:"ein,omitempty" url:"ein,omitempty"`
+	Phone        *VendorPhone  `json:"phone,omitempty" url:"phone,omitempty"`
+	Email        *Email        `json:"email,omitempty" url:"email,omitempty"`
+	// Vendor's address
+	//
+	// For a PO Box address, include only the PO Box in this field, for example `PO Box 29652`. Put the rest of the address, such as a department number, in `address2`.
 	Address1              *AddressNullable                      `json:"address1,omitempty" url:"address1,omitempty"`
 	City                  *string                               `json:"city,omitempty" url:"city,omitempty"`
 	State                 *string                               `json:"state,omitempty" url:"state,omitempty"`
@@ -18397,13 +18407,16 @@ type RequestOutAuthorizeVendorData struct {
 	CustomField1          *string                               `json:"customField1,omitempty" url:"customField1,omitempty"`
 	CustomField2          *string                               `json:"customField2,omitempty" url:"customField2,omitempty"`
 	AdditionalData        *AdditionalData                       `json:"additionalData,omitempty" url:"additionalData,omitempty"`
-	Address2              *AddressAddtlNullable                 `json:"address2,omitempty" url:"address2,omitempty"`
-	InternalReferenceId   *int64                                `json:"internalReferenceId,omitempty" url:"internalReferenceId,omitempty"`
-	LocationCode          *LocationCode                         `json:"locationCode,omitempty" url:"locationCode,omitempty"`
-	PayeeName1            *PayeeName                            `json:"payeeName1,omitempty" url:"payeeName1,omitempty"`
-	PayeeName2            *PayeeName                            `json:"payeeName2,omitempty" url:"payeeName2,omitempty"`
-	PaymentMethod         *VendorPaymentMethod                  `json:"paymentMethod,omitempty" url:"paymentMethod,omitempty"`
-	VendorId              *Vendorid                             `json:"vendorId,omitempty" url:"vendorId,omitempty"`
+	// Additional line for vendor's address.
+	//
+	// For a PO Box address, this field holds the part of the address that follows the PO Box, for example `Dept# 880662`.
+	Address2            *AddressAddtlNullable `json:"address2,omitempty" url:"address2,omitempty"`
+	InternalReferenceId *int64                `json:"internalReferenceId,omitempty" url:"internalReferenceId,omitempty"`
+	LocationCode        *LocationCode         `json:"locationCode,omitempty" url:"locationCode,omitempty"`
+	PayeeName1          *PayeeName            `json:"payeeName1,omitempty" url:"payeeName1,omitempty"`
+	PayeeName2          *PayeeName            `json:"payeeName2,omitempty" url:"payeeName2,omitempty"`
+	PaymentMethod       *VendorPaymentMethod  `json:"paymentMethod,omitempty" url:"paymentMethod,omitempty"`
+	VendorId            *Vendorid             `json:"vendorId,omitempty" url:"vendorId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -19200,12 +19213,12 @@ var (
 
 type SettingElement struct {
 	Enabled *Enabled `json:"enabled,omitempty" url:"enabled,omitempty"`
-	// Fields to display on the reciept.
+	// Fields to display on the receipt.
 	Fields []*DisplayProperty `json:"fields,omitempty" url:"fields,omitempty"`
 	Order  *Order             `json:"order,omitempty" url:"order,omitempty"`
 	// When `true`, Payabli automatically sends the receipt to the payor email address.
 	SendAuto *bool `json:"sendAuto,omitempty" url:"sendAuto,omitempty"`
-	// When `true`, you must send the reciept to the payor manually using the [/MoneyIn/sendreceipt/\{transId\}](/developers/api-reference/moneyin/send-receipt-for-transaction) endpoint.
+	// When `true`, you must send the receipt to the payor manually using the [/MoneyIn/sendreceipt/\{transId\}](/developers/api-reference/moneyin/send-receipt-for-transaction) endpoint.
 	SendManual *bool `json:"sendManual,omitempty" url:"sendManual,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -19864,7 +19877,7 @@ var (
 )
 
 type SubscriptionQueryRecords struct {
-	// Timestamp of when the subscription ws created, in UTC.
+	// Timestamp of when the subscription was created, in UTC.
 	CreatedAt *CreatedAt                 `json:"CreatedAt,omitempty" url:"CreatedAt,omitempty"`
 	Customer  *QueryTransactionPayorData `json:"Customer,omitempty" url:"Customer,omitempty"`
 	// The subscription's end date.
@@ -22150,7 +22163,7 @@ type V2BadRequestError struct {
 	Instance string `json:"instance" url:"instance"`
 	// Payabli's unified response code for validation errors. Starts with 'E'. See [Pay In unified response codes reference](/guides/pay-in-unified-response-codes-reference) for more information.
 	Code string `json:"code" url:"code"`
-	// Dictionary of field-specific validation errors. Keys are field paths (e.g., "paymentMethod.cardnumber") and values are arrays of error details.
+	// Dictionary of field-specific validation errors. Keys are field paths (for example, "paymentMethod.cardnumber") and values are arrays of error details.
 	Errors map[string][]*V2BadRequestErrorDetail `json:"errors" url:"errors"`
 	// Pagination token (equivalent to pageIdentifier in v1 APIs). Usually null for errors.
 	Token *string `json:"token,omitempty" url:"token,omitempty"`

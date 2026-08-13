@@ -662,12 +662,13 @@ var (
 )
 
 type AuthCapturePayoutResponseData struct {
-	AuthCode        *Authcode        `json:"authCode,omitempty" url:"authCode,omitempty"`
-	ReferenceId     Referenceidtrans `json:"referenceId" url:"referenceId"`
-	ResultCode      ResultCode       `json:"resultCode" url:"resultCode"`
-	ResultText      Resulttext       `json:"resultText" url:"resultText"`
-	AvsResponseText *AvsResponseText `json:"avsResponseText,omitempty" url:"avsResponseText,omitempty"`
-	CvvResponseText *CvvResponseText `json:"cvvResponseText,omitempty" url:"cvvResponseText,omitempty"`
+	AuthCode *Authcode `json:"authCode,omitempty" url:"authCode,omitempty"`
+	// The transaction reference ID, used to capture the transaction. Returns `null` when no transaction is created, such as a declined authorization.
+	ReferenceId     *Referenceidtrans `json:"referenceId,omitempty" url:"referenceId,omitempty"`
+	ResultCode      ResultCode        `json:"resultCode" url:"resultCode"`
+	ResultText      Resulttext        `json:"resultText" url:"resultText"`
+	AvsResponseText *AvsResponseText  `json:"avsResponseText,omitempty" url:"avsResponseText,omitempty"`
+	CvvResponseText *CvvResponseText  `json:"cvvResponseText,omitempty" url:"cvvResponseText,omitempty"`
 	// Payabli-generated unique ID of the vendor on the payout. Returns the same value as `vendorId`, or `0` when no vendor is associated.
 	CustomerId Vendoridtrans `json:"customerId" url:"customerId"`
 	// Payabli-generated unique ID of the vendor on the payout. Returns the same value as `customerId`, or `0` when no vendor is associated.
@@ -688,9 +689,9 @@ func (a *AuthCapturePayoutResponseData) GetAuthCode() *Authcode {
 	return a.AuthCode
 }
 
-func (a *AuthCapturePayoutResponseData) GetReferenceId() Referenceidtrans {
+func (a *AuthCapturePayoutResponseData) GetReferenceId() *Referenceidtrans {
 	if a == nil {
-		return ""
+		return nil
 	}
 	return a.ReferenceId
 }
@@ -767,7 +768,7 @@ func (a *AuthCapturePayoutResponseData) SetAuthCode(authCode *Authcode) {
 
 // SetReferenceId sets the ReferenceId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AuthCapturePayoutResponseData) SetReferenceId(referenceId Referenceidtrans) {
+func (a *AuthCapturePayoutResponseData) SetReferenceId(referenceId *Referenceidtrans) {
 	a.ReferenceId = referenceId
 	a.require(authCapturePayoutResponseDataFieldReferenceId)
 }

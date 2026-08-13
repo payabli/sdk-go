@@ -172,7 +172,7 @@ type ListApplicationsRequest struct {
 	//
 	// See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
 	//
-	// List of field names accepted:
+	// Accepted field names:
 	// - `createdAt` (gt, ge, lt, le, eq, ne)
 	// - `startDate` (gt, ge, lt, le, eq, ne)
 	// - `dbaname` (ct, nct)
@@ -192,7 +192,7 @@ type ListApplicationsRequest struct {
 	// - `repCode` (ct, nct, eq, ne)
 	// - `repName` (ct, nct, eq, ne)
 	// - `repOffice` (ct, nct, eq, ne)
-	// List of comparison accepted - enclosed between parentheses:
+	// Accepted comparison operators - enclosed between parentheses:
 	// - eq or empty => equal
 	// - gt => greater than
 	// - ge => greater or equal
@@ -269,7 +269,7 @@ type ListBoardingLinksRequest struct {
 	//
 	// See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
 	//
-	// List of field names accepted:
+	// Accepted field names:
 	// - `lastUpdated` (gt, ge, lt, le, eq, ne)
 	// - `templateName` (ct, nct)
 	// - `referenceName` (ct, nct)
@@ -279,7 +279,7 @@ type ListBoardingLinksRequest struct {
 	// - `templateId` (eq, ne)
 	// - `orgParentname` (ct, nct)
 	//
-	// List of comparison accepted - enclosed between parentheses:
+	// Accepted comparison operators - enclosed between parentheses:
 	// - eq or empty => equal
 	// - gt => greater than
 	// - ge => greater or equal
@@ -291,7 +291,7 @@ type ListBoardingLinksRequest struct {
 	// - in => inside array
 	// - nin => not inside array
 	//
-	// List of parameters accepted:
+	// Accepted parameters:
 	// - limitRecord : max number of records for query (default="20", "0" or negative value for all)
 	// - fromRecord : initial record in query
 	//

@@ -18,9 +18,9 @@ var (
 
 type CheckCaptureRequestBody struct {
 	EntryPoint Entry `json:"entryPoint" url:"-"`
-	// Base64-encoded front check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check clearly with no partial, blurry, or illegible portions.
+	// Base64-encoded front check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check with no partial, blurry, or illegible portions.
 	FrontImage string `json:"frontImage" url:"-"`
-	// Base64-encoded rear check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check clearly with no partial, blurry, or illegible portions.
+	// Base64-encoded rear check image. Must be JPEG or PNG format and less than 1MB. Image must show the entire check with no partial, blurry, or illegible portions.
 	RearImage string `json:"rearImage" url:"-"`
 	// Check amount in cents (maximum 32-bit integer value).
 	CheckAmount int `json:"checkAmount" url:"-"`

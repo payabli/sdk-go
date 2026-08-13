@@ -189,7 +189,7 @@ func (c *Client) AddOrganization(
 //	    OrgEntryName: payabli.String(
 //	        "pilgrim-planner",
 //	    ),
-//	    OrganizationDataOrgId: payabli.String(
+//	    OrgId: payabli.String(
 //	        "123",
 //	    ),
 //	    OrgName: payabli.String(
@@ -219,13 +219,13 @@ func (c *Client) AddOrganization(
 func (c *Client) EditOrganization(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgIdPathParam int,
 	request *payabli.OrganizationData,
 	opts ...option.RequestOption,
 ) (*payabli.EditOrganizationResponse, error) {
 	response, err := c.WithRawResponse.EditOrganization(
 		ctx,
-		orgId,
+		orgIdPathParam,
 		request,
 		opts...,
 	)

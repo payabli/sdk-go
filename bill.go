@@ -70,9 +70,7 @@ type ListBillsRequest struct {
 	//
 	//	**You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 	//
-	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response isn't filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-	//
-	//	For example:
+	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response isn't filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
 	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
@@ -83,7 +81,7 @@ type ListBillsRequest struct {
 	// </Info>
 	// See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
 	//
-	// List of field names accepted:
+	// **Accepted field names:**
 	// - `frequency` (`in`, `nin`, `ne`, `eq`)
 	// - `method` (`in`, `nin`, `eq`, `ne`)
 	// - `event` (`in`, `nin`, `eq`, `ne`)
@@ -94,7 +92,7 @@ type ListBillsRequest struct {
 	// - `approvalUserEmail` (`eq`, `ne`)
 	// - `scheduleId` (`ne`, `eq`)
 	//
-	// List of comparison accepted - enclosed between parentheses:
+	// Accepted comparison operators - enclosed between parentheses:
 	// - `eq` or empty => equal
 	// - `gt` => greater than
 	// - `ge` => greater or equal
@@ -106,7 +104,7 @@ type ListBillsRequest struct {
 	// - `in` => inside array
 	// - `nin` => not inside array
 	//
-	// List of parameters accepted:
+	// Accepted parameters:
 	// - `limitRecord` : max number of records for query (default="20", "0" or negative value for all)
 	// - `fromRecord` : initial record in query
 	// Example: `totalAmount(gt)=20` returns all records with a `totalAmount` that's greater than 20.00
@@ -180,9 +178,7 @@ type ListBillsOrgRequest struct {
 	//
 	//	**You must remove `parameters=` from the request before you send it, otherwise Payabli will ignore the filters.**
 	//
-	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response isn't filtered. Instead, copy the request, remove `parameters=` and run the request in a different client.
-	//
-	//	For example:
+	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response isn't filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
 	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
@@ -193,7 +189,7 @@ type ListBillsOrgRequest struct {
 	// </Info>
 	// See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
 	//
-	// List of field names accepted:
+	// **Accepted field names:**
 	// - `frequency` (in, nin, ne, eq)
 	// - `method` (in, nin, eq, ne)
 	// - `event` (in, nin, eq, ne)
@@ -203,7 +199,7 @@ type ListBillsOrgRequest struct {
 	// - `approvalUserId` (eq, ne)
 	// - `approvalUserEmail` (eq, ne)
 	//
-	// List of comparison accepted - enclosed between parentheses:
+	// Accepted comparison operators - enclosed between parentheses:
 	// - eq or empty => equal
 	// - gt => greater than
 	// - ge => greater or equal
@@ -215,7 +211,7 @@ type ListBillsOrgRequest struct {
 	// - in => inside array
 	// - nin => not inside array
 	//
-	// List of parameters accepted:
+	// Accepted parameters:
 	// - limitRecord : max number of records for query (default="20", "0" or negative value for all)
 	// - fromRecord : initial record in query
 	//
@@ -4705,7 +4701,7 @@ type VendorDataResponse struct {
 	City string `json:"City" url:"City"`
 	// Vendor's state. Must be a two-character state code.
 	State string `json:"State" url:"State"`
-	// Vendor's zip code.
+	// Vendor's ZIP code.
 	Zip string `json:"Zip" url:"Zip"`
 	// Vendor's country. Payabli supports only US and Canadian vendors.
 	Country      string       `json:"Country" url:"Country"`
@@ -5514,8 +5510,12 @@ var (
 type VendorOutData struct {
 	AdditionalData *AdditionalData `json:"additionalData,omitempty" url:"additionalData,omitempty"`
 	// Vendor's street address. Allowed characters are letters, numbers, spaces, and `. ,
+	//
+	// For a PO Box address, this field holds only the PO Box, for example `PO Box 29652`, and the rest of the address, such as a department number, is in `Address2`.
 	Address1 *AddressNullable `json:"Address1,omitempty" url:"Address1,omitempty"`
 	// Additional line for vendor's address, such as a suite or unit number.
+	//
+	// For a PO Box address, this field holds the part of the address that follows the PO Box, for example `Dept# 880662`.
 	Address2 *AddressAddtlNullable `json:"Address2,omitempty" url:"Address2,omitempty"`
 	// Object containing vendor's bank information.
 	BillingData *BillingData `json:"BillingData,omitempty" url:"BillingData,omitempty"`

@@ -1125,8 +1125,12 @@ type VendorData struct {
 	VendorNumber   *VendorNumber      `json:"vendorNumber,omitempty" url:"vendorNumber,omitempty"`
 	AdditionalData *AdditionalDataMap `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
 	// Vendor's street address. If any address field is provided, this field is required along with `city`, `state`, and `zip`. Allowed characters are letters, numbers, spaces, and `. ,
+	//
+	// For a PO Box address, include only the PO Box in this field, for example `PO Box 29652`. Put the rest of the address, such as a department number, in `address2`.
 	Address1 *AddressNullable `json:"address1,omitempty" url:"address1,omitempty"`
 	// Additional line for vendor's address, such as a suite or unit number. Always optional.
+	//
+	// For a PO Box address, this field holds the part of the address that follows the PO Box, for example `Dept# 880662`.
 	Address2 *AddressAddtlNullable `json:"address2,omitempty" url:"address2,omitempty"`
 	// Object containing vendor's bank information.
 	BillingData *BillingData `json:"billingData,omitempty" url:"billingData,omitempty"`

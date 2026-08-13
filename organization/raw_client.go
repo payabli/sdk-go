@@ -89,7 +89,7 @@ func (r *RawClient) AddOrganization(
 func (r *RawClient) EditOrganization(
 	ctx context.Context,
 	// The numeric identifier for organization, assigned by Payabli.
-	orgId int,
+	orgIdPathParam int,
 	request *payabli.OrganizationData,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.EditOrganizationResponse], error) {
@@ -101,7 +101,7 @@ func (r *RawClient) EditOrganization(
 	)
 	endpointURL := internal.EncodeURL(
 		baseURL+"/Organization/%v",
-		orgId,
+		orgIdPathParam,
 	)
 	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
 	if authErr != nil {

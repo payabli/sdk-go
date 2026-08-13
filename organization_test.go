@@ -868,11 +868,11 @@ func TestSettersOrganizationData(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetOrganizationDataOrgId", func(t *testing.T) {
+	t.Run("SetOrgId", func(t *testing.T) {
 		obj := &OrganizationData{}
-		var fernTestValueOrganizationDataOrgId *Orgidstring
-		obj.SetOrganizationDataOrgId(fernTestValueOrganizationDataOrgId)
-		assert.Equal(t, fernTestValueOrganizationDataOrgId, obj.OrganizationDataOrgId)
+		var fernTestValueOrgId *Orgidstring
+		obj.SetOrgId(fernTestValueOrgId)
+		assert.Equal(t, fernTestValueOrgId, obj.OrgId)
 		assert.NotNil(t, obj.explicitFields)
 	})
 
@@ -1230,14 +1230,14 @@ func TestSettersMarkExplicitOrganizationData(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
-	t.Run("SetOrganizationDataOrgId_MarksExplicit", func(t *testing.T) {
+	t.Run("SetOrgId_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &OrganizationData{}
-		var fernTestValueOrganizationDataOrgId *Orgidstring
+		var fernTestValueOrgId *Orgidstring
 
 		// Act
-		obj.SetOrganizationDataOrgId(fernTestValueOrganizationDataOrgId)
+		obj.SetOrgId(fernTestValueOrgId)
 
 		// Assert - object with explicitly set field can be marshaled/unmarshaled
 		bytes, err := json.Marshal(obj)
