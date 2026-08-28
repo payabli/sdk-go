@@ -1960,11 +1960,12 @@ func (g *GetPaidResponseData) String() string {
 type Methodall string
 
 const (
-	MethodallCard  Methodall = "card"
-	MethodallAch   Methodall = "ach"
-	MethodallCloud Methodall = "cloud"
-	MethodallCheck Methodall = "check"
-	MethodallCash  Methodall = "cash"
+	MethodallCard   Methodall = "card"
+	MethodallAch    Methodall = "ach"
+	MethodallCloud  Methodall = "cloud"
+	MethodallDevice Methodall = "device"
+	MethodallCheck  Methodall = "check"
+	MethodallCash   Methodall = "cash"
 )
 
 func NewMethodallFromString(s string) (Methodall, error) {
@@ -1975,6 +1976,8 @@ func NewMethodallFromString(s string) (Methodall, error) {
 		return MethodallAch, nil
 	case "cloud":
 		return MethodallCloud, nil
+	case "device":
+		return MethodallDevice, nil
 	case "check":
 		return MethodallCheck, nil
 	case "cash":
@@ -2316,16 +2319,14 @@ func (p *PayMethodBodyAllFields) String() string {
 }
 
 var (
-	payMethodCloudFieldDevice        = big.NewInt(1 << 0)
-	payMethodCloudFieldMethod        = big.NewInt(1 << 1)
-	payMethodCloudFieldSaveIfSuccess = big.NewInt(1 << 2)
+	payMethodCloudFieldDevice = big.NewInt(1 << 0)
+	payMethodCloudFieldMethod = big.NewInt(1 << 1)
 )
 
 type PayMethodCloud struct {
 	Device *Device `json:"device,omitempty" url:"device,omitempty"`
 	// Method to use for the transaction. For cloud device transactions, the method is `cloud`.
-	Method        PayMethodCloudMethod `json:"method" url:"method"`
-	SaveIfSuccess *SaveIfSuccess       `json:"saveIfSuccess,omitempty" url:"saveIfSuccess,omitempty"`
+	Method PayMethodCloudMethod `json:"method" url:"method"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2346,13 +2347,6 @@ func (p *PayMethodCloud) GetMethod() PayMethodCloudMethod {
 		return ""
 	}
 	return p.Method
-}
-
-func (p *PayMethodCloud) GetSaveIfSuccess() *SaveIfSuccess {
-	if p == nil {
-		return nil
-	}
-	return p.SaveIfSuccess
 }
 
 func (p *PayMethodCloud) GetExtraProperties() map[string]interface{} {
@@ -2381,13 +2375,6 @@ func (p *PayMethodCloud) SetDevice(device *Device) {
 func (p *PayMethodCloud) SetMethod(method PayMethodCloudMethod) {
 	p.Method = method
 	p.require(payMethodCloudFieldMethod)
-}
-
-// SetSaveIfSuccess sets the SaveIfSuccess field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayMethodCloud) SetSaveIfSuccess(saveIfSuccess *SaveIfSuccess) {
-	p.SaveIfSuccess = saveIfSuccess
-	p.require(payMethodCloudFieldSaveIfSuccess)
 }
 
 func (p *PayMethodCloud) UnmarshalJSON(data []byte) error {
@@ -2449,6 +2436,147 @@ func NewPayMethodCloudMethodFromString(s string) (PayMethodCloudMethod, error) {
 }
 
 func (p PayMethodCloudMethod) Ptr() *PayMethodCloudMethod {
+	return &p
+}
+
+// The required fields for a payment made with a semi-integrated device.
+var (
+	payMethodDeviceFieldDevice        = big.NewInt(1 << 0)
+	payMethodDeviceFieldMethod        = big.NewInt(1 << 1)
+	payMethodDeviceFieldSaveIfSuccess = big.NewInt(1 << 2)
+)
+
+type PayMethodDevice struct {
+	// Identifier of the registered semi-integrated device that takes the payment.
+	// Omitting this field returns response code 7017, and an identifier that
+	// isn't registered to the paypoint returns 7018.
+	Device Device `json:"device" url:"device"`
+	// Method to use for the transaction. For semi-integrated device transactions, the method is `device`.
+	Method        PayMethodDeviceMethod `json:"method" url:"method"`
+	SaveIfSuccess *SaveIfSuccess        `json:"saveIfSuccess,omitempty" url:"saveIfSuccess,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PayMethodDevice) GetDevice() Device {
+	if p == nil {
+		return ""
+	}
+	return p.Device
+}
+
+func (p *PayMethodDevice) GetMethod() PayMethodDeviceMethod {
+	if p == nil {
+		return ""
+	}
+	return p.Method
+}
+
+func (p *PayMethodDevice) GetSaveIfSuccess() *SaveIfSuccess {
+	if p == nil {
+		return nil
+	}
+	return p.SaveIfSuccess
+}
+
+func (p *PayMethodDevice) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PayMethodDevice) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetDevice sets the Device field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayMethodDevice) SetDevice(device Device) {
+	p.Device = device
+	p.require(payMethodDeviceFieldDevice)
+}
+
+// SetMethod sets the Method field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayMethodDevice) SetMethod(method PayMethodDeviceMethod) {
+	p.Method = method
+	p.require(payMethodDeviceFieldMethod)
+}
+
+// SetSaveIfSuccess sets the SaveIfSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayMethodDevice) SetSaveIfSuccess(saveIfSuccess *SaveIfSuccess) {
+	p.SaveIfSuccess = saveIfSuccess
+	p.require(payMethodDeviceFieldSaveIfSuccess)
+}
+
+func (p *PayMethodDevice) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayMethodDevice
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PayMethodDevice(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PayMethodDevice) MarshalJSON() ([]byte, error) {
+	type embed PayMethodDevice
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PayMethodDevice) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+// Method to use for the transaction. For semi-integrated device transactions, the method is `device`.
+type PayMethodDeviceMethod string
+
+const (
+	PayMethodDeviceMethodDevice PayMethodDeviceMethod = "device"
+)
+
+func NewPayMethodDeviceMethodFromString(s string) (PayMethodDeviceMethod, error) {
+	switch s {
+	case "device":
+		return PayMethodDeviceMethodDevice, nil
+	}
+	var t PayMethodDeviceMethod
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (p PayMethodDeviceMethod) Ptr() *PayMethodDeviceMethod {
 	return &p
 }
 
@@ -3203,6 +3331,7 @@ type PaymentMethod struct {
 	PayMethodAch           *PayMethodAch
 	PayMethodStoredMethod  *PayMethodStoredMethod
 	PayMethodCloud         *PayMethodCloud
+	PayMethodDevice        *PayMethodDevice
 	Check                  *Check
 	Cash                   *Cash
 	PayMethodBodyAllFields *PayMethodBodyAllFields
@@ -3236,6 +3365,13 @@ func (p *PaymentMethod) GetPayMethodCloud() *PayMethodCloud {
 		return nil
 	}
 	return p.PayMethodCloud
+}
+
+func (p *PaymentMethod) GetPayMethodDevice() *PayMethodDevice {
+	if p == nil {
+		return nil
+	}
+	return p.PayMethodDevice
 }
 
 func (p *PaymentMethod) GetCheck() *Check {
@@ -3284,6 +3420,12 @@ func (p *PaymentMethod) UnmarshalJSON(data []byte) error {
 		p.PayMethodCloud = valuePayMethodCloud
 		return nil
 	}
+	valuePayMethodDevice := new(PayMethodDevice)
+	if err := json.Unmarshal(data, &valuePayMethodDevice); err == nil {
+		p.typ = "PayMethodDevice"
+		p.PayMethodDevice = valuePayMethodDevice
+		return nil
+	}
 	valueCheck := new(Check)
 	if err := json.Unmarshal(data, &valueCheck); err == nil {
 		p.typ = "Check"
@@ -3318,6 +3460,9 @@ func (p PaymentMethod) MarshalJSON() ([]byte, error) {
 	if p.typ == "PayMethodCloud" || p.PayMethodCloud != nil {
 		return json.Marshal(p.PayMethodCloud)
 	}
+	if p.typ == "PayMethodDevice" || p.PayMethodDevice != nil {
+		return json.Marshal(p.PayMethodDevice)
+	}
 	if p.typ == "Check" || p.Check != nil {
 		return json.Marshal(p.Check)
 	}
@@ -3335,6 +3480,7 @@ type PaymentMethodVisitor interface {
 	VisitPayMethodAch(*PayMethodAch) error
 	VisitPayMethodStoredMethod(*PayMethodStoredMethod) error
 	VisitPayMethodCloud(*PayMethodCloud) error
+	VisitPayMethodDevice(*PayMethodDevice) error
 	VisitCheck(*Check) error
 	VisitCash(*Cash) error
 	VisitPayMethodBodyAllFields(*PayMethodBodyAllFields) error
@@ -3352,6 +3498,9 @@ func (p *PaymentMethod) Accept(visitor PaymentMethodVisitor) error {
 	}
 	if p.typ == "PayMethodCloud" || p.PayMethodCloud != nil {
 		return visitor.VisitPayMethodCloud(p.PayMethodCloud)
+	}
+	if p.typ == "PayMethodDevice" || p.PayMethodDevice != nil {
+		return visitor.VisitPayMethodDevice(p.PayMethodDevice)
 	}
 	if p.typ == "Check" || p.Check != nil {
 		return visitor.VisitCheck(p.Check)
@@ -6751,8 +6900,8 @@ var (
 )
 
 type TransactionDetailPaymentData struct {
-	MaskedAccount         Maskedaccount                    `json:"maskedAccount" url:"maskedAccount"`
-	AccountType           Accounttype                      `json:"accountType" url:"accountType"`
+	MaskedAccount         *Maskedaccount                   `json:"maskedAccount,omitempty" url:"maskedAccount,omitempty"`
+	AccountType           *Accounttype                     `json:"accountType,omitempty" url:"accountType,omitempty"`
 	AccountExp            *Accountexp                      `json:"accountExp,omitempty" url:"accountExp,omitempty"`
 	HolderName            Holdername                       `json:"holderName" url:"holderName"`
 	StoredId              *Storedmethodid                  `json:"storedId,omitempty" url:"storedId,omitempty"`
@@ -6772,16 +6921,16 @@ type TransactionDetailPaymentData struct {
 	rawJSON         json.RawMessage
 }
 
-func (t *TransactionDetailPaymentData) GetMaskedAccount() Maskedaccount {
+func (t *TransactionDetailPaymentData) GetMaskedAccount() *Maskedaccount {
 	if t == nil {
-		return ""
+		return nil
 	}
 	return t.MaskedAccount
 }
 
-func (t *TransactionDetailPaymentData) GetAccountType() Accounttype {
+func (t *TransactionDetailPaymentData) GetAccountType() *Accounttype {
 	if t == nil {
-		return ""
+		return nil
 	}
 	return t.AccountType
 }
@@ -6879,14 +7028,14 @@ func (t *TransactionDetailPaymentData) require(field *big.Int) {
 
 // SetMaskedAccount sets the MaskedAccount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailPaymentData) SetMaskedAccount(maskedAccount Maskedaccount) {
+func (t *TransactionDetailPaymentData) SetMaskedAccount(maskedAccount *Maskedaccount) {
 	t.MaskedAccount = maskedAccount
 	t.require(transactionDetailPaymentDataFieldMaskedAccount)
 }
 
 // SetAccountType sets the AccountType field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (t *TransactionDetailPaymentData) SetAccountType(accountType Accounttype) {
+func (t *TransactionDetailPaymentData) SetAccountType(accountType *Accounttype) {
 	t.AccountType = accountType
 	t.require(transactionDetailPaymentDataFieldAccountType)
 }
@@ -8655,7 +8804,7 @@ type TransactionQueryRecordsCustomer struct {
 	// Internal identifier used for processing.
 	GatewayTransId *string   `json:"GatewayTransId,omitempty" url:"GatewayTransId,omitempty"`
 	InvoiceData    *BillData `json:"invoiceData,omitempty" url:"invoiceData,omitempty"`
-	// Payment method used: card, ach, or wallet.
+	// The payment method used for the transaction, for example card, ach, or device.
 	Method *string `json:"Method,omitempty" url:"Method,omitempty"`
 	// Net amount paid.
 	NetAmount *Netamountnullable `json:"NetAmount,omitempty" url:"NetAmount,omitempty"`
@@ -9367,7 +9516,7 @@ type V2TransactionDetailResponseData struct {
 	Responsetext   Resulttext     `json:"responsetext" url:"responsetext"`
 	Authcode       *Authcode      `json:"authcode,omitempty" url:"authcode,omitempty"`
 	// Unique identifier for the transaction assigned by the payment processor.
-	Transactionid   string           `json:"transactionid" url:"transactionid"`
+	Transactionid   *string          `json:"transactionid,omitempty" url:"transactionid,omitempty"`
 	Avsresponse     *AvsResponse     `json:"avsresponse,omitempty" url:"avsresponse,omitempty"`
 	AvsresponseText *AvsResponseText `json:"avsresponse_text,omitempty" url:"avsresponse_text,omitempty"`
 	Cvvresponse     *CvvResponse     `json:"cvvresponse,omitempty" url:"cvvresponse,omitempty"`
@@ -9423,9 +9572,9 @@ func (v *V2TransactionDetailResponseData) GetAuthcode() *Authcode {
 	return v.Authcode
 }
 
-func (v *V2TransactionDetailResponseData) GetTransactionid() string {
+func (v *V2TransactionDetailResponseData) GetTransactionid() *string {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.Transactionid
 }
@@ -9551,7 +9700,7 @@ func (v *V2TransactionDetailResponseData) SetAuthcode(authcode *Authcode) {
 
 // SetTransactionid sets the Transactionid field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TransactionDetailResponseData) SetTransactionid(transactionid string) {
+func (v *V2TransactionDetailResponseData) SetTransactionid(transactionid *string) {
 	v.Transactionid = transactionid
 	v.require(v2TransactionDetailResponseDataFieldTransactionid)
 }
@@ -9735,7 +9884,7 @@ type V2TransactionDetails struct {
 	ConnectorName                string                       `json:"connectorName" url:"connectorName"`
 	ExternalProcessorInformation ExternalProcessorInformation `json:"externalProcessorInformation" url:"externalProcessorInformation"`
 	// Gateway transaction identifier.
-	GatewayTransId string   `json:"gatewayTransId" url:"gatewayTransId"`
+	GatewayTransId *string  `json:"gatewayTransId,omitempty" url:"gatewayTransId,omitempty"`
 	OrderId        *OrderId `json:"orderId,omitempty" url:"orderId,omitempty"`
 	// Payment method used for the transaction.
 	Method      string      `json:"method" url:"method"`
@@ -9846,9 +9995,9 @@ func (v *V2TransactionDetails) GetExternalProcessorInformation() ExternalProcess
 	return v.ExternalProcessorInformation
 }
 
-func (v *V2TransactionDetails) GetGatewayTransId() string {
+func (v *V2TransactionDetails) GetGatewayTransId() *string {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.GatewayTransId
 }
@@ -10226,7 +10375,7 @@ func (v *V2TransactionDetails) SetExternalProcessorInformation(externalProcessor
 
 // SetGatewayTransId sets the GatewayTransId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *V2TransactionDetails) SetGatewayTransId(gatewayTransId string) {
+func (v *V2TransactionDetails) SetGatewayTransId(gatewayTransId *string) {
 	v.GatewayTransId = gatewayTransId
 	v.require(v2TransactionDetailsFieldGatewayTransId)
 }

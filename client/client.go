@@ -17,6 +17,7 @@ import (
 	cloud "github.com/payabli/sdk-go/cloud"
 	core "github.com/payabli/sdk-go/core"
 	customer "github.com/payabli/sdk-go/customer"
+	device "github.com/payabli/sdk-go/device"
 	export "github.com/payabli/sdk-go/export"
 	funding "github.com/payabli/sdk-go/funding"
 	ghostcard "github.com/payabli/sdk-go/ghostcard"
@@ -65,6 +66,7 @@ type Client struct {
 	Query               *query.Client
 	Ocr                 *ocr.Client
 	Notificationlogs    *notificationlogs.Client
+	Device              *device.Client
 	Cloud               *cloud.Client
 	LineItem            *lineitem.Client
 	Boarding            *boarding.Client
@@ -143,6 +145,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Query:               query.NewClient(options),
 		Ocr:                 ocr.NewClient(options),
 		Notificationlogs:    notificationlogs.NewClient(options),
+		Device:              device.NewClient(options),
 		Cloud:               cloud.NewClient(options),
 		LineItem:            lineitem.NewClient(options),
 		Boarding:            boarding.NewClient(options),

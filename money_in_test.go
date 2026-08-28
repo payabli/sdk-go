@@ -5451,14 +5451,6 @@ func TestSettersPayMethodCloud(t *testing.T) {
 		assert.NotNil(t, obj.explicitFields)
 	})
 
-	t.Run("SetSaveIfSuccess", func(t *testing.T) {
-		obj := &PayMethodCloud{}
-		var fernTestValueSaveIfSuccess *SaveIfSuccess
-		obj.SetSaveIfSuccess(fernTestValueSaveIfSuccess)
-		assert.Equal(t, fernTestValueSaveIfSuccess, obj.SaveIfSuccess)
-		assert.NotNil(t, obj.explicitFields)
-	})
-
 }
 
 func TestGettersPayMethodCloud(t *testing.T) {
@@ -5516,39 +5508,6 @@ func TestGettersPayMethodCloud(t *testing.T) {
 			}
 		}()
 		_ = obj.GetMethod() // Should return zero value
-	})
-
-	t.Run("GetSaveIfSuccess", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &PayMethodCloud{}
-		var expected *SaveIfSuccess
-		obj.SaveIfSuccess = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetSaveIfSuccess(), "getter should return the property value")
-	})
-
-	t.Run("GetSaveIfSuccess_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &PayMethodCloud{}
-		obj.SaveIfSuccess = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetSaveIfSuccess(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetSaveIfSuccess_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *PayMethodCloud
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetSaveIfSuccess() // Should return zero value
 	})
 
 }
@@ -5616,10 +5575,184 @@ func TestSettersMarkExplicitPayMethodCloud(t *testing.T) {
 		// It verifies that setting a field via setter allows successful JSON round-trip
 	})
 
+}
+
+func TestSettersPayMethodDevice(t *testing.T) {
+	t.Run("SetDevice", func(t *testing.T) {
+		obj := &PayMethodDevice{}
+		var fernTestValueDevice Device
+		obj.SetDevice(fernTestValueDevice)
+		assert.Equal(t, fernTestValueDevice, obj.Device)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetMethod", func(t *testing.T) {
+		obj := &PayMethodDevice{}
+		var fernTestValueMethod PayMethodDeviceMethod
+		obj.SetMethod(fernTestValueMethod)
+		assert.Equal(t, fernTestValueMethod, obj.Method)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetSaveIfSuccess", func(t *testing.T) {
+		obj := &PayMethodDevice{}
+		var fernTestValueSaveIfSuccess *SaveIfSuccess
+		obj.SetSaveIfSuccess(fernTestValueSaveIfSuccess)
+		assert.Equal(t, fernTestValueSaveIfSuccess, obj.SaveIfSuccess)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+}
+
+func TestGettersPayMethodDevice(t *testing.T) {
+	t.Run("GetDevice", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &PayMethodDevice{}
+		var expected Device
+		obj.Device = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetDevice(), "getter should return the property value")
+	})
+
+	t.Run("GetDevice_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *PayMethodDevice
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetDevice() // Should return zero value
+	})
+
+	t.Run("GetMethod", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &PayMethodDevice{}
+		var expected PayMethodDeviceMethod
+		obj.Method = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetMethod(), "getter should return the property value")
+	})
+
+	t.Run("GetMethod_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *PayMethodDevice
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetMethod() // Should return zero value
+	})
+
+	t.Run("GetSaveIfSuccess", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &PayMethodDevice{}
+		var expected *SaveIfSuccess
+		obj.SaveIfSuccess = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetSaveIfSuccess(), "getter should return the property value")
+	})
+
+	t.Run("GetSaveIfSuccess_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &PayMethodDevice{}
+		obj.SaveIfSuccess = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetSaveIfSuccess(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetSaveIfSuccess_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *PayMethodDevice
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetSaveIfSuccess() // Should return zero value
+	})
+
+}
+
+func TestSettersMarkExplicitPayMethodDevice(t *testing.T) {
+	t.Run("SetDevice_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &PayMethodDevice{}
+		var fernTestValueDevice Device
+
+		// Act
+		obj.SetDevice(fernTestValueDevice)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetMethod_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &PayMethodDevice{}
+		var fernTestValueMethod PayMethodDeviceMethod
+
+		// Act
+		obj.SetMethod(fernTestValueMethod)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
 	t.Run("SetSaveIfSuccess_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &PayMethodCloud{}
+		obj := &PayMethodDevice{}
 		var fernTestValueSaveIfSuccess *SaveIfSuccess
 
 		// Act
@@ -7431,6 +7564,39 @@ func TestGettersPaymentMethod(t *testing.T) {
 			}
 		}()
 		_ = obj.GetPayMethodCloud() // Should return zero value
+	})
+
+	t.Run("GetPayMethodDevice", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &PaymentMethod{}
+		var expected *PayMethodDevice
+		obj.PayMethodDevice = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetPayMethodDevice(), "getter should return the property value")
+	})
+
+	t.Run("GetPayMethodDevice_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &PaymentMethod{}
+		obj.PayMethodDevice = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetPayMethodDevice(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetPayMethodDevice_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *PaymentMethod
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetPayMethodDevice() // Should return zero value
 	})
 
 	t.Run("GetCheck", func(t *testing.T) {
@@ -17492,7 +17658,7 @@ func TestSettersMarkExplicitTransactionDetailInvoiceData(t *testing.T) {
 func TestSettersTransactionDetailPaymentData(t *testing.T) {
 	t.Run("SetMaskedAccount", func(t *testing.T) {
 		obj := &TransactionDetailPaymentData{}
-		var fernTestValueMaskedAccount Maskedaccount
+		var fernTestValueMaskedAccount *Maskedaccount
 		obj.SetMaskedAccount(fernTestValueMaskedAccount)
 		assert.Equal(t, fernTestValueMaskedAccount, obj.MaskedAccount)
 		assert.NotNil(t, obj.explicitFields)
@@ -17500,7 +17666,7 @@ func TestSettersTransactionDetailPaymentData(t *testing.T) {
 
 	t.Run("SetAccountType", func(t *testing.T) {
 		obj := &TransactionDetailPaymentData{}
-		var fernTestValueAccountType Accounttype
+		var fernTestValueAccountType *Accounttype
 		obj.SetAccountType(fernTestValueAccountType)
 		assert.Equal(t, fernTestValueAccountType, obj.AccountType)
 		assert.NotNil(t, obj.explicitFields)
@@ -17601,11 +17767,21 @@ func TestGettersTransactionDetailPaymentData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailPaymentData{}
-		var expected Maskedaccount
+		var expected *Maskedaccount
 		obj.MaskedAccount = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetMaskedAccount(), "getter should return the property value")
+	})
+
+	t.Run("GetMaskedAccount_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionDetailPaymentData{}
+		obj.MaskedAccount = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetMaskedAccount(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetMaskedAccount_NilReceiver", func(t *testing.T) {
@@ -17624,11 +17800,21 @@ func TestGettersTransactionDetailPaymentData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailPaymentData{}
-		var expected Accounttype
+		var expected *Accounttype
 		obj.AccountType = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetAccountType(), "getter should return the property value")
+	})
+
+	t.Run("GetAccountType_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &TransactionDetailPaymentData{}
+		obj.AccountType = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetAccountType(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetAccountType_NilReceiver", func(t *testing.T) {
@@ -18003,7 +18189,7 @@ func TestSettersMarkExplicitTransactionDetailPaymentData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailPaymentData{}
-		var fernTestValueMaskedAccount Maskedaccount
+		var fernTestValueMaskedAccount *Maskedaccount
 
 		// Act
 		obj.SetMaskedAccount(fernTestValueMaskedAccount)
@@ -18034,7 +18220,7 @@ func TestSettersMarkExplicitTransactionDetailPaymentData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &TransactionDetailPaymentData{}
-		var fernTestValueAccountType Accounttype
+		var fernTestValueAccountType *Accounttype
 
 		// Act
 		obj.SetAccountType(fernTestValueAccountType)
@@ -26901,7 +27087,7 @@ func TestSettersV2TransactionDetailResponseData(t *testing.T) {
 
 	t.Run("SetTransactionid", func(t *testing.T) {
 		obj := &V2TransactionDetailResponseData{}
-		var fernTestValueTransactionid string
+		var fernTestValueTransactionid *string
 		obj.SetTransactionid(fernTestValueTransactionid)
 		assert.Equal(t, fernTestValueTransactionid, obj.Transactionid)
 		assert.NotNil(t, obj.explicitFields)
@@ -27129,11 +27315,21 @@ func TestGettersV2TransactionDetailResponseData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &V2TransactionDetailResponseData{}
-		var expected string
+		var expected *string
 		obj.Transactionid = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetTransactionid(), "getter should return the property value")
+	})
+
+	t.Run("GetTransactionid_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2TransactionDetailResponseData{}
+		obj.Transactionid = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetTransactionid(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetTransactionid_NilReceiver", func(t *testing.T) {
@@ -27620,7 +27816,7 @@ func TestSettersMarkExplicitV2TransactionDetailResponseData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &V2TransactionDetailResponseData{}
-		var fernTestValueTransactionid string
+		var fernTestValueTransactionid *string
 
 		// Act
 		obj.SetTransactionid(fernTestValueTransactionid)
@@ -28018,7 +28214,7 @@ func TestSettersV2TransactionDetails(t *testing.T) {
 
 	t.Run("SetGatewayTransId", func(t *testing.T) {
 		obj := &V2TransactionDetails{}
-		var fernTestValueGatewayTransId string
+		var fernTestValueGatewayTransId *string
 		obj.SetGatewayTransId(fernTestValueGatewayTransId)
 		assert.Equal(t, fernTestValueGatewayTransId, obj.GatewayTransId)
 		assert.NotNil(t, obj.explicitFields)
@@ -28544,11 +28740,21 @@ func TestGettersV2TransactionDetails(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &V2TransactionDetails{}
-		var expected string
+		var expected *string
 		obj.GatewayTransId = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetGatewayTransId(), "getter should return the property value")
+	})
+
+	t.Run("GetGatewayTransId_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &V2TransactionDetails{}
+		obj.GatewayTransId = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetGatewayTransId(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetGatewayTransId_NilReceiver", func(t *testing.T) {
@@ -29949,7 +30155,7 @@ func TestSettersMarkExplicitV2TransactionDetails(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &V2TransactionDetails{}
-		var fernTestValueGatewayTransId string
+		var fernTestValueGatewayTransId *string
 
 		// Act
 		obj.SetGatewayTransId(fernTestValueGatewayTransId)
@@ -33772,6 +33978,39 @@ func TestJSONMarshalingPayMethodCloud(t *testing.T) {
 	})
 }
 
+func TestJSONMarshalingPayMethodDevice(t *testing.T) {
+	t.Run("MarshalUnmarshal", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &PayMethodDevice{}
+
+		// Act - Marshal to JSON
+		data, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed")
+		assert.NotNil(t, data, "marshaled data should not be nil")
+		assert.NotEmpty(t, data, "marshaled data should not be empty")
+
+		// Unmarshal back and verify round-trip
+		var unmarshaled PayMethodDevice
+		err = json.Unmarshal(data, &unmarshaled)
+		assert.NoError(t, err, "round-trip unmarshal should succeed")
+	})
+
+	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
+		t.Parallel()
+		var obj PayMethodDevice
+		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
+		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
+	})
+
+	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
+		t.Parallel()
+		var obj PayMethodDevice
+		err := json.Unmarshal([]byte(`{}`), &obj)
+		assert.NoError(t, err, "unmarshaling empty object should succeed")
+	})
+}
+
 func TestJSONMarshalingPayMethodStoredMethod(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
@@ -35004,6 +35243,22 @@ func TestStringPayMethodCloud(t *testing.T) {
 	})
 }
 
+func TestStringPayMethodDevice(t *testing.T) {
+	t.Run("StringMethod", func(t *testing.T) {
+		t.Parallel()
+		obj := &PayMethodDevice{}
+		result := obj.String()
+		assert.NotEmpty(t, result, "String() should return a non-empty representation")
+	})
+
+	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *PayMethodDevice
+		result := obj.String()
+		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
+	})
+}
+
 func TestStringPayMethodStoredMethod(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
@@ -35582,6 +35837,13 @@ func TestEnumMethodall(t *testing.T) {
 		assert.Equal(t, Methodall("cloud"), val, "enum value should match expected wire value")
 	})
 
+	t.Run("NewFromString_device", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewMethodallFromString("device")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, Methodall("device"), val, "enum value should match expected wire value")
+	})
+
 	t.Run("NewFromString_check", func(t *testing.T) {
 		t.Parallel()
 		val, err := NewMethodallFromString("check")
@@ -35625,6 +35887,28 @@ func TestEnumPayMethodCloudMethod(t *testing.T) {
 
 	t.Run("Ptr", func(t *testing.T) {
 		val, err := NewPayMethodCloudMethodFromString("cloud")
+		assert.NoError(t, err)
+		ptr := val.Ptr()
+		assert.NotNil(t, ptr)
+		assert.Equal(t, val, *ptr)
+	})
+}
+
+func TestEnumPayMethodDeviceMethod(t *testing.T) {
+	t.Run("NewFromString_device", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewPayMethodDeviceMethodFromString("device")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, PayMethodDeviceMethod("device"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_Invalid", func(t *testing.T) {
+		_, err := NewPayMethodDeviceMethodFromString("invalid_value_that_does_not_exist")
+		assert.Error(t, err)
+	})
+
+	t.Run("Ptr", func(t *testing.T) {
+		val, err := NewPayMethodDeviceMethodFromString("device")
 		assert.NoError(t, err)
 		ptr := val.Ptr()
 		assert.NotNil(t, ptr)
@@ -35996,6 +36280,29 @@ func TestExtraPropertiesPayMethodCloud(t *testing.T) {
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *PayMethodCloud
+		extraProps := obj.GetExtraProperties()
+		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
+	})
+}
+
+func TestExtraPropertiesPayMethodDevice(t *testing.T) {
+	t.Run("GetExtraProperties", func(t *testing.T) {
+		t.Parallel()
+		obj := &PayMethodDevice{}
+		// Should not panic when calling GetExtraProperties()
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("GetExtraProperties() panicked: %v", r)
+			}
+		}()
+		extraProps := obj.GetExtraProperties()
+		// Result can be nil or an empty/non-empty map
+		_ = extraProps
+	})
+
+	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *PayMethodDevice
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})

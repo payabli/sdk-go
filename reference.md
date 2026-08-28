@@ -1641,39 +1641,13 @@ Only card transactions can be authorized. This endpoint can't be used for ACH tr
 ```go
 request := &payabli.RequestPaymentAuthorize{
     Body: &payabli.TransRequestBody{
-        CustomerData: &payabli.PayorDataRequest{
-            CustomerId: payabli.Int64(
-                int64(4440),
-            ),
-        },
-        EntryPoint: payabli.String(
-            "8cfec329267",
-        ),
-        Ipaddress: payabli.String(
-            "255.255.255.255",
-        ),
         PaymentDetails: &payabli.PaymentDetail{
-            ServiceFee: payabli.Float64(
-                0,
-            ),
-            TotalAmount: 100,
+            TotalAmount: 1.1,
         },
         PaymentMethod: &payabli.PaymentMethod{
             PayMethodCredit: &payabli.PayMethodCredit{
-                Cardcvv: payabli.String(
-                    "999",
-                ),
-                Cardexp: "02/27",
-                CardHolder: payabli.String(
-                    "John Cassian",
-                ),
-                Cardnumber: "4111111111111111",
-                Cardzip: payabli.String(
-                    "12345",
-                ),
-                Initiator: payabli.String(
-                    "payor",
-                ),
+                Cardexp: "cardexp",
+                Cardnumber: "cardnumber",
                 Method: payabli.PayMethodCreditMethodCard,
             },
         },
@@ -1759,8 +1733,8 @@ transaction](/developers/api-reference/moneyin/authorize-a-transaction) to compl
 ```go
 client.MoneyIn.Capture(
     context.TODO(),
-    "10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13",
-    0,
+    "transId",
+    1.1,
 )
 ```
 </dd>
@@ -1831,15 +1805,12 @@ You can use this endpoint to capture both full and partial amounts of the origin
 ```go
 request := &payabli.CaptureRequest{
     PaymentDetails: &payabli.CapturePaymentDetails{
-        TotalAmount: 105,
-        ServiceFee: payabli.Float64(
-            5,
-        ),
+        TotalAmount: 1.1,
     },
 }
 client.MoneyIn.CaptureAuth(
     context.TODO(),
-    "10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13",
+    "transId",
     request,
 )
 ```
@@ -2140,39 +2111,13 @@ Make a single transaction. This method authorizes and captures a payment in one 
 ```go
 request := &payabli.RequestPayment{
     Body: &payabli.TransRequestBody{
-        CustomerData: &payabli.PayorDataRequest{
-            CustomerId: payabli.Int64(
-                int64(4440),
-            ),
-        },
-        EntryPoint: payabli.String(
-            "8cfec329267",
-        ),
-        Ipaddress: payabli.String(
-            "255.255.255.255",
-        ),
         PaymentDetails: &payabli.PaymentDetail{
-            ServiceFee: payabli.Float64(
-                0,
-            ),
-            TotalAmount: 100,
+            TotalAmount: 1.1,
         },
         PaymentMethod: &payabli.PaymentMethod{
             PayMethodCredit: &payabli.PayMethodCredit{
-                Cardcvv: payabli.String(
-                    "999",
-                ),
-                Cardexp: "02/27",
-                CardHolder: payabli.String(
-                    "John Cassian",
-                ),
-                Cardnumber: "4111111111111111",
-                Cardzip: payabli.String(
-                    "12345",
-                ),
-                Initiator: payabli.String(
-                    "payor",
-                ),
+                Cardexp: "cardexp",
+                Cardnumber: "cardnumber",
                 Method: payabli.PayMethodCreditMethodCard,
             },
         },
@@ -2281,8 +2226,8 @@ A reversal either refunds or voids a transaction independent of the transaction'
 ```go
 client.MoneyIn.Reverse(
     context.TODO(),
-    "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
-    0,
+    "transId",
+    1.1,
 )
 ```
 </dd>
@@ -2357,8 +2302,8 @@ Refund a transaction that has settled and send money back to the account holder.
 ```go
 client.MoneyIn.Refund(
     context.TODO(),
-    "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
-    0,
+    "transId",
+    1.1,
 )
 ```
 </dd>
@@ -2431,55 +2376,10 @@ Refunds a settled transaction with split instructions.
 <dd>
 
 ```go
-request := &payabli.RequestRefund{
-    IdempotencyKey: payabli.String(
-        "8A29FC40-CA47-1067-B31D-00DD010662DB",
-    ),
-    Amount: payabli.Float64(
-        100,
-    ),
-    OrderDescription: payabli.String(
-        "Materials deposit",
-    ),
-    RefundDetails: &payabli.RefundDetail{
-        SplitRefunding: []*payabli.SplitFundingRefundContent{
-            &payabli.SplitFundingRefundContent{
-                AccountId: payabli.String(
-                    "187-342",
-                ),
-                Amount: payabli.Float64(
-                    60,
-                ),
-                Description: payabli.String(
-                    "Refunding undelivered materials",
-                ),
-                OriginationEntryPoint: payabli.String(
-                    "7f1a381696",
-                ),
-            },
-            &payabli.SplitFundingRefundContent{
-                AccountId: payabli.String(
-                    "187-343",
-                ),
-                Amount: payabli.Float64(
-                    40,
-                ),
-                Description: payabli.String(
-                    "Refunding deposit for undelivered materials",
-                ),
-                OriginationEntryPoint: payabli.String(
-                    "7f1a381696",
-                ),
-            },
-        },
-    },
-    Source: payabli.String(
-        "api",
-    ),
-}
+request := &payabli.RequestRefund{}
 client.MoneyIn.RefundWithInstructions(
     context.TODO(),
-    "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
+    "transId",
     request,
 )
 ```
@@ -2845,7 +2745,7 @@ Cancel a transaction that hasn't been settled yet. Voiding non-captured authoriz
 ```go
 client.MoneyIn.Void(
     context.TODO(),
-    "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
+    "transId",
 )
 ```
 </dd>
@@ -15794,6 +15694,73 @@ client.Notificationlogs.BulkRetryNotificationLogs(
 </dl>
 </details>
 
+## Device
+<details><summary><code>client.Device.Challenge(Entry) -> *payabli.DeviceChallengeResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Generates a one-time, 6-digit verification code for activating a
+semi-integrated card-present device in a paypoint. After calling this endpoint, an operator enters the returned code
+on the device's terminal, along with a device name, to register the
+device to the paypoint resolved from `{entry}`.
+
+A code expires 5 minutes after it's issued. A paypoint can have several
+codes active at once — for example, when activating a batch of devices —
+and a code binds to whichever device enters it first.
+
+Authenticate with an OAuth2 Bearer token that has the `device_registry` scope.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```go
+client.Device.Challenge(
+    context.TODO(),
+    "8cfec329267",
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entry:** `string` — The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Cloud
 <details><summary><code>client.Cloud.AddDevice(Entry, request) -> *payabli.AddDeviceResponse</code></summary>
 <dl>
@@ -16035,7 +16002,7 @@ client.Cloud.HistoryDevice(
 <dl>
 <dd>
 
-Use [List devices by paypoint](/developers/api-reference/cloud/get-list-of-devices-for-a-paypoint) instead, which supports filters, sorting, and pagination.
+Use [List devices by paypoint](/developers/api-reference/get-list-of-devices-for-a-paypoint) instead, which supports filters, sorting, and pagination.
 
 Get a list of cloud devices registered to an entrypoint.
 </dd>
@@ -26800,9 +26767,7 @@ request := &payabli.RequestOutAuthorize{
     },
     InvoiceData: []*payabli.RequestOutAuthorizeInvoiceData{
         &payabli.RequestOutAuthorizeInvoiceData{
-            BillId: payabli.Int64(
-                int64(54323),
-            ),
+            BillId: int64(54323),
         },
     },
     AutoCapture: payabli.Bool(
@@ -26836,14 +26801,6 @@ client.MoneyOut.AuthorizeOut(
 <dd>
 
 **doNotCreateBills:** `*bool` — When `true`, Payabli won't automatically create a bill for this payout transaction.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**forceVendorCreation:** `*bool` — When `true`, the request creates a new vendor record, regardless of whether the vendor already exists.
     
 </dd>
 </dl>
@@ -26927,7 +26884,7 @@ Same-day ACH has a daily cutoff. Capture the transaction before the cutoff, or p
 <dl>
 <dd>
 
-**invoiceData:** `[]*payabli.RequestOutAuthorizeInvoiceData` — Array of bills associated to the transaction
+**invoiceData:** `[]*payabli.RequestOutAuthorizeInvoiceData` — Bills to pay with this payout, each referenced by `billId`.
     
 </dd>
 </dl>
@@ -27831,7 +27788,7 @@ Deposits funds into a paypoint's available payout balance. Deposited funds enter
 
 ```go
 request := &payabli.DepositFundsRequest{
-    Amount: 10,
+    Amount: 1500,
     Entrypoint: "48acde49",
     AccountId: "333",
 }

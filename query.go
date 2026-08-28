@@ -15489,7 +15489,7 @@ type QueryResponseSettlementsRecordsItem struct {
 	// Events associated with this transaction.
 	TransactionEvents []*QueryTransactionEvents `json:"TransactionEvents,omitempty" url:"TransactionEvents,omitempty"`
 	TransactionTime   *TransactionTime          `json:"TransactionTime,omitempty" url:"TransactionTime,omitempty"`
-	// Payment method used: card or ach.
+	// The payment method used for the transaction, for example card, ach, or device.
 	TransMethod *string `json:"TransMethod,omitempty" url:"TransMethod,omitempty"`
 	// The transaction type: credit or debit.
 	Type *string `json:"Type,omitempty" url:"Type,omitempty"`
@@ -18277,7 +18277,7 @@ type TransferDetailRecord struct {
 	// Internal identifier used for processing
 	GatewayTransId *string  `json:"GatewayTransId,omitempty" url:"GatewayTransId,omitempty"`
 	OrderId        *OrderId `json:"OrderId,omitempty" url:"OrderId,omitempty"`
-	// Payment method used: card, ach, or wallet
+	// The payment method used for the transaction, for example card, ach, or device.
 	Method      *string      `json:"Method,omitempty" url:"Method,omitempty"`
 	BatchNumber *BatchNumber `json:"BatchNumber,omitempty" url:"BatchNumber,omitempty"`
 	// The amount of the batch

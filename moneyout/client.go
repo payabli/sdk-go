@@ -76,9 +76,7 @@ func NewClient(options *core.RequestOptions) *Client {
 //	    },
 //	    InvoiceData: []*payabli.RequestOutAuthorizeInvoiceData{
 //	        &payabli.RequestOutAuthorizeInvoiceData{
-//	            BillId: payabli.Int64(
-//	                int64(54323),
-//	            ),
+//	            BillId: int64(54323),
 //	        },
 //	    },
 //	    AutoCapture: payabli.Bool(

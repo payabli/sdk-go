@@ -548,7 +548,7 @@ func (r *RawClient) SendVCardLink(
 		r.baseURL,
 		"https://api-sandbox.payabli.com/api",
 	)
-	endpointURL := baseURL + "/vcard/send-card-link"
+	endpointURL := baseURL + "/MoneyOut/vcard/send-card-link"
 	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
 	if authErr != nil {
 		return nil, authErr

@@ -14,20 +14,19 @@ var (
 	requestOutAuthorizeFieldIdempotencyKey       = big.NewInt(1 << 0)
 	requestOutAuthorizeFieldAllowDuplicatedBills = big.NewInt(1 << 1)
 	requestOutAuthorizeFieldDoNotCreateBills     = big.NewInt(1 << 2)
-	requestOutAuthorizeFieldForceVendorCreation  = big.NewInt(1 << 3)
-	requestOutAuthorizeFieldSameDayAch           = big.NewInt(1 << 4)
-	requestOutAuthorizeFieldEntryPoint           = big.NewInt(1 << 5)
-	requestOutAuthorizeFieldSource               = big.NewInt(1 << 6)
-	requestOutAuthorizeFieldOrderId              = big.NewInt(1 << 7)
-	requestOutAuthorizeFieldOrderDescription     = big.NewInt(1 << 8)
-	requestOutAuthorizeFieldPaymentMethod        = big.NewInt(1 << 9)
-	requestOutAuthorizeFieldPaymentDetails       = big.NewInt(1 << 10)
-	requestOutAuthorizeFieldVendorData           = big.NewInt(1 << 11)
-	requestOutAuthorizeFieldInvoiceData          = big.NewInt(1 << 12)
-	requestOutAuthorizeFieldAccountId            = big.NewInt(1 << 13)
-	requestOutAuthorizeFieldSubdomain            = big.NewInt(1 << 14)
-	requestOutAuthorizeFieldSubscriptionId       = big.NewInt(1 << 15)
-	requestOutAuthorizeFieldAutoCapture          = big.NewInt(1 << 16)
+	requestOutAuthorizeFieldSameDayAch           = big.NewInt(1 << 3)
+	requestOutAuthorizeFieldEntryPoint           = big.NewInt(1 << 4)
+	requestOutAuthorizeFieldSource               = big.NewInt(1 << 5)
+	requestOutAuthorizeFieldOrderId              = big.NewInt(1 << 6)
+	requestOutAuthorizeFieldOrderDescription     = big.NewInt(1 << 7)
+	requestOutAuthorizeFieldPaymentMethod        = big.NewInt(1 << 8)
+	requestOutAuthorizeFieldPaymentDetails       = big.NewInt(1 << 9)
+	requestOutAuthorizeFieldVendorData           = big.NewInt(1 << 10)
+	requestOutAuthorizeFieldInvoiceData          = big.NewInt(1 << 11)
+	requestOutAuthorizeFieldAccountId            = big.NewInt(1 << 12)
+	requestOutAuthorizeFieldSubdomain            = big.NewInt(1 << 13)
+	requestOutAuthorizeFieldSubscriptionId       = big.NewInt(1 << 14)
+	requestOutAuthorizeFieldAutoCapture          = big.NewInt(1 << 15)
 )
 
 type RequestOutAuthorize struct {
@@ -37,8 +36,6 @@ type RequestOutAuthorize struct {
 	AllowDuplicatedBills *bool `json:"-" url:"allowDuplicatedBills,omitempty"`
 	// When `true`, Payabli won't automatically create a bill for this payout transaction.
 	DoNotCreateBills *bool `json:"-" url:"doNotCreateBills,omitempty"`
-	// When `true`, the request creates a new vendor record, regardless of whether the vendor already exists.
-	ForceVendorCreation *bool `json:"-" url:"forceVendorCreation,omitempty"`
 	// When `true`, Payabli authorizes the payout for same-day ACH processing instead of standard ACH. Same-day ACH must be enabled for the paypoint, otherwise the authorization fails with a `400` response and `responseCode` `3492`. Only ACH payouts honor this flag. Wire and RTP payouts ignore it.
 	//
 	// Same-day ACH has a daily cutoff. Capture the transaction before the cutoff, or pass `autoConvertSameDayAch` with a value of `true` when you capture it.
@@ -52,8 +49,8 @@ type RequestOutAuthorize struct {
 	PaymentDetails *RequestOutAuthorizePaymentDetails `json:"paymentDetails" url:"-"`
 	// Object containing vendor data.
 	VendorData *RequestOutAuthorizeVendorData `json:"vendorData" url:"-"`
-	// Array of bills associated to the transaction
-	InvoiceData    []*RequestOutAuthorizeInvoiceData `json:"invoiceData" url:"-"`
+	// Bills to pay with this payout, each referenced by `billId`.
+	InvoiceData    []*RequestOutAuthorizeInvoiceData `json:"invoiceData,omitempty" url:"-"`
 	AccountId      *AccountId                        `json:"accountId,omitempty" url:"-"`
 	Subdomain      *Subdomain                        `json:"subdomain,omitempty" url:"-"`
 	SubscriptionId *Subscriptionid                   `json:"subscriptionId,omitempty" url:"-"`
@@ -89,13 +86,6 @@ func (r *RequestOutAuthorize) SetAllowDuplicatedBills(allowDuplicatedBills *bool
 func (r *RequestOutAuthorize) SetDoNotCreateBills(doNotCreateBills *bool) {
 	r.DoNotCreateBills = doNotCreateBills
 	r.require(requestOutAuthorizeFieldDoNotCreateBills)
-}
-
-// SetForceVendorCreation sets the ForceVendorCreation field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorize) SetForceVendorCreation(forceVendorCreation *bool) {
-	r.ForceVendorCreation = forceVendorCreation
-	r.require(requestOutAuthorizeFieldForceVendorCreation)
 }
 
 // SetSameDayAch sets the SameDayAch field and marks it as non-optional;
@@ -2387,19 +2377,19 @@ func (c *CaptureAllOutResponseResponseDataItem) String() string {
 // ID.
 type EntityIdString = string
 
-// Lot number associated with the bill.
-type LotNumber = string
-
 var (
-	operationResultFieldMessage = big.NewInt(1 << 0)
-	operationResultFieldSuccess = big.NewInt(1 << 1)
+	operationResultFieldSuccess = big.NewInt(1 << 0)
+	operationResultFieldMessage = big.NewInt(1 << 1)
+	operationResultFieldLink    = big.NewInt(1 << 2)
 )
 
 type OperationResult struct {
-	// Message describing the result. If the virtual card link was sent successfully, this contains the email address to which the link was sent.
-	Message *string `json:"message,omitempty" url:"message,omitempty"`
 	// Indicates whether the operation was successful.
 	Success bool `json:"success" url:"success"`
+	// A status message describing the result.
+	Message string `json:"message" url:"message"`
+	// The secure link the vendor uses to view their virtual card details. Empty when the operation fails.
+	Link string `json:"link" url:"link"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2408,18 +2398,25 @@ type OperationResult struct {
 	rawJSON         json.RawMessage
 }
 
-func (o *OperationResult) GetMessage() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Message
-}
-
 func (o *OperationResult) GetSuccess() bool {
 	if o == nil {
 		return false
 	}
 	return o.Success
+}
+
+func (o *OperationResult) GetMessage() string {
+	if o == nil {
+		return ""
+	}
+	return o.Message
+}
+
+func (o *OperationResult) GetLink() string {
+	if o == nil {
+		return ""
+	}
+	return o.Link
 }
 
 func (o *OperationResult) GetExtraProperties() map[string]interface{} {
@@ -2436,18 +2433,25 @@ func (o *OperationResult) require(field *big.Int) {
 	o.explicitFields.Or(o.explicitFields, field)
 }
 
-// SetMessage sets the Message field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (o *OperationResult) SetMessage(message *string) {
-	o.Message = message
-	o.require(operationResultFieldMessage)
-}
-
 // SetSuccess sets the Success field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (o *OperationResult) SetSuccess(success bool) {
 	o.Success = success
 	o.require(operationResultFieldSuccess)
+}
+
+// SetMessage sets the Message field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OperationResult) SetMessage(message string) {
+	o.Message = message
+	o.require(operationResultFieldMessage)
+}
+
+// SetLink sets the Link field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OperationResult) SetLink(link string) {
+	o.Link = link
+	o.require(operationResultFieldLink)
 }
 
 func (o *OperationResult) UnmarshalJSON(data []byte) error {
@@ -3400,38 +3404,15 @@ func (r *RenewVCardResponseData) String() string {
 	return fmt.Sprintf("%#v", r)
 }
 
+// Bill to pay with this payout. Create the bill first with
+// [Add bill](/developers/api-reference/bill/add-bill), then reference it here
+// by `billId`.
 var (
-	requestOutAuthorizeInvoiceDataFieldInvoiceNumber    = big.NewInt(1 << 0)
-	requestOutAuthorizeInvoiceDataFieldNetAmount        = big.NewInt(1 << 1)
-	requestOutAuthorizeInvoiceDataFieldInvoiceDate      = big.NewInt(1 << 2)
-	requestOutAuthorizeInvoiceDataFieldDueDate          = big.NewInt(1 << 3)
-	requestOutAuthorizeInvoiceDataFieldComments         = big.NewInt(1 << 4)
-	requestOutAuthorizeInvoiceDataFieldLotNumber        = big.NewInt(1 << 5)
-	requestOutAuthorizeInvoiceDataFieldBillId           = big.NewInt(1 << 6)
-	requestOutAuthorizeInvoiceDataFieldDiscount         = big.NewInt(1 << 7)
-	requestOutAuthorizeInvoiceDataFieldTerms            = big.NewInt(1 << 8)
-	requestOutAuthorizeInvoiceDataFieldAccountingField1 = big.NewInt(1 << 9)
-	requestOutAuthorizeInvoiceDataFieldAccountingField2 = big.NewInt(1 << 10)
-	requestOutAuthorizeInvoiceDataFieldAdditionalData   = big.NewInt(1 << 11)
-	requestOutAuthorizeInvoiceDataFieldAttachments      = big.NewInt(1 << 12)
+	requestOutAuthorizeInvoiceDataFieldBillId = big.NewInt(1 << 0)
 )
 
 type RequestOutAuthorizeInvoiceData struct {
-	InvoiceNumber *InvoiceNumber   `json:"invoiceNumber,omitempty" url:"invoiceNumber,omitempty"`
-	NetAmount     *NetAmountstring `json:"netAmount,omitempty" url:"netAmount,omitempty"`
-	// Invoice date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.
-	InvoiceDate *time.Time `json:"invoiceDate,omitempty" url:"invoiceDate,omitempty" format:"date"`
-	// Invoice due date in any of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.
-	DueDate          *time.Time            `json:"dueDate,omitempty" url:"dueDate,omitempty" format:"date"`
-	Comments         *Comments             `json:"comments,omitempty" url:"comments,omitempty"`
-	LotNumber        *LotNumber            `json:"lotNumber,omitempty" url:"lotNumber,omitempty"`
-	BillId           *BillId               `json:"billId,omitempty" url:"billId,omitempty"`
-	Discount         *Discount             `json:"discount,omitempty" url:"discount,omitempty"`
-	Terms            *Terms                `json:"terms,omitempty" url:"terms,omitempty"`
-	AccountingField1 *AccountingField      `json:"accountingField1,omitempty" url:"accountingField1,omitempty"`
-	AccountingField2 *AccountingField      `json:"accountingField2,omitempty" url:"accountingField2,omitempty"`
-	AdditionalData   *AdditionalDataString `json:"additionalData,omitempty" url:"additionalData,omitempty"`
-	Attachments      *Attachments          `json:"attachments,omitempty" url:"attachments,omitempty"`
+	BillId BillId `json:"billId" url:"billId"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -3440,95 +3421,11 @@ type RequestOutAuthorizeInvoiceData struct {
 	rawJSON         json.RawMessage
 }
 
-func (r *RequestOutAuthorizeInvoiceData) GetInvoiceNumber() *InvoiceNumber {
+func (r *RequestOutAuthorizeInvoiceData) GetBillId() BillId {
 	if r == nil {
-		return nil
-	}
-	return r.InvoiceNumber
-}
-
-func (r *RequestOutAuthorizeInvoiceData) GetNetAmount() *NetAmountstring {
-	if r == nil {
-		return nil
-	}
-	return r.NetAmount
-}
-
-func (r *RequestOutAuthorizeInvoiceData) GetInvoiceDate() *time.Time {
-	if r == nil {
-		return nil
-	}
-	return r.InvoiceDate
-}
-
-func (r *RequestOutAuthorizeInvoiceData) GetDueDate() *time.Time {
-	if r == nil {
-		return nil
-	}
-	return r.DueDate
-}
-
-func (r *RequestOutAuthorizeInvoiceData) GetComments() *Comments {
-	if r == nil {
-		return nil
-	}
-	return r.Comments
-}
-
-func (r *RequestOutAuthorizeInvoiceData) GetLotNumber() *LotNumber {
-	if r == nil {
-		return nil
-	}
-	return r.LotNumber
-}
-
-func (r *RequestOutAuthorizeInvoiceData) GetBillId() *BillId {
-	if r == nil {
-		return nil
+		return 0
 	}
 	return r.BillId
-}
-
-func (r *RequestOutAuthorizeInvoiceData) GetDiscount() *Discount {
-	if r == nil {
-		return nil
-	}
-	return r.Discount
-}
-
-func (r *RequestOutAuthorizeInvoiceData) GetTerms() *Terms {
-	if r == nil {
-		return nil
-	}
-	return r.Terms
-}
-
-func (r *RequestOutAuthorizeInvoiceData) GetAccountingField1() *AccountingField {
-	if r == nil {
-		return nil
-	}
-	return r.AccountingField1
-}
-
-func (r *RequestOutAuthorizeInvoiceData) GetAccountingField2() *AccountingField {
-	if r == nil {
-		return nil
-	}
-	return r.AccountingField2
-}
-
-func (r *RequestOutAuthorizeInvoiceData) GetAdditionalData() *AdditionalDataString {
-	if r == nil {
-		return nil
-	}
-	return r.AdditionalData
-}
-
-func (r *RequestOutAuthorizeInvoiceData) GetAttachments() *Attachments {
-	if r == nil {
-		return nil
-	}
-	return r.Attachments
 }
 
 func (r *RequestOutAuthorizeInvoiceData) GetExtraProperties() map[string]interface{} {
@@ -3545,112 +3442,20 @@ func (r *RequestOutAuthorizeInvoiceData) require(field *big.Int) {
 	r.explicitFields.Or(r.explicitFields, field)
 }
 
-// SetInvoiceNumber sets the InvoiceNumber field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeInvoiceData) SetInvoiceNumber(invoiceNumber *InvoiceNumber) {
-	r.InvoiceNumber = invoiceNumber
-	r.require(requestOutAuthorizeInvoiceDataFieldInvoiceNumber)
-}
-
-// SetNetAmount sets the NetAmount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeInvoiceData) SetNetAmount(netAmount *NetAmountstring) {
-	r.NetAmount = netAmount
-	r.require(requestOutAuthorizeInvoiceDataFieldNetAmount)
-}
-
-// SetInvoiceDate sets the InvoiceDate field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeInvoiceData) SetInvoiceDate(invoiceDate *time.Time) {
-	r.InvoiceDate = invoiceDate
-	r.require(requestOutAuthorizeInvoiceDataFieldInvoiceDate)
-}
-
-// SetDueDate sets the DueDate field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeInvoiceData) SetDueDate(dueDate *time.Time) {
-	r.DueDate = dueDate
-	r.require(requestOutAuthorizeInvoiceDataFieldDueDate)
-}
-
-// SetComments sets the Comments field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeInvoiceData) SetComments(comments *Comments) {
-	r.Comments = comments
-	r.require(requestOutAuthorizeInvoiceDataFieldComments)
-}
-
-// SetLotNumber sets the LotNumber field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeInvoiceData) SetLotNumber(lotNumber *LotNumber) {
-	r.LotNumber = lotNumber
-	r.require(requestOutAuthorizeInvoiceDataFieldLotNumber)
-}
-
 // SetBillId sets the BillId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeInvoiceData) SetBillId(billId *BillId) {
+func (r *RequestOutAuthorizeInvoiceData) SetBillId(billId BillId) {
 	r.BillId = billId
 	r.require(requestOutAuthorizeInvoiceDataFieldBillId)
 }
 
-// SetDiscount sets the Discount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeInvoiceData) SetDiscount(discount *Discount) {
-	r.Discount = discount
-	r.require(requestOutAuthorizeInvoiceDataFieldDiscount)
-}
-
-// SetTerms sets the Terms field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeInvoiceData) SetTerms(terms *Terms) {
-	r.Terms = terms
-	r.require(requestOutAuthorizeInvoiceDataFieldTerms)
-}
-
-// SetAccountingField1 sets the AccountingField1 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeInvoiceData) SetAccountingField1(accountingField1 *AccountingField) {
-	r.AccountingField1 = accountingField1
-	r.require(requestOutAuthorizeInvoiceDataFieldAccountingField1)
-}
-
-// SetAccountingField2 sets the AccountingField2 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeInvoiceData) SetAccountingField2(accountingField2 *AccountingField) {
-	r.AccountingField2 = accountingField2
-	r.require(requestOutAuthorizeInvoiceDataFieldAccountingField2)
-}
-
-// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeInvoiceData) SetAdditionalData(additionalData *AdditionalDataString) {
-	r.AdditionalData = additionalData
-	r.require(requestOutAuthorizeInvoiceDataFieldAdditionalData)
-}
-
-// SetAttachments sets the Attachments field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeInvoiceData) SetAttachments(attachments *Attachments) {
-	r.Attachments = attachments
-	r.require(requestOutAuthorizeInvoiceDataFieldAttachments)
-}
-
 func (r *RequestOutAuthorizeInvoiceData) UnmarshalJSON(data []byte) error {
-	type embed RequestOutAuthorizeInvoiceData
-	var unmarshaler = struct {
-		embed
-		InvoiceDate *internal.Date `json:"invoiceDate,omitempty"`
-		DueDate     *internal.Date `json:"dueDate,omitempty"`
-	}{
-		embed: embed(*r),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler RequestOutAuthorizeInvoiceData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*r = RequestOutAuthorizeInvoiceData(unmarshaler.embed)
-	r.InvoiceDate = unmarshaler.InvoiceDate.TimePtr()
-	r.DueDate = unmarshaler.DueDate.TimePtr()
+	*r = RequestOutAuthorizeInvoiceData(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *r)
 	if err != nil {
 		return err
@@ -3664,12 +3469,8 @@ func (r *RequestOutAuthorizeInvoiceData) MarshalJSON() ([]byte, error) {
 	type embed RequestOutAuthorizeInvoiceData
 	var marshaler = struct {
 		embed
-		InvoiceDate *internal.Date `json:"invoiceDate,omitempty"`
-		DueDate     *internal.Date `json:"dueDate,omitempty"`
 	}{
-		embed:       embed(*r),
-		InvoiceDate: internal.NewOptionalDate(r.InvoiceDate),
-		DueDate:     internal.NewOptionalDate(r.DueDate),
+		embed: embed(*r),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
 	return json.Marshal(explicitMarshaler)

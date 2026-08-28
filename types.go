@@ -6058,7 +6058,7 @@ type Dbaname = string
 // savings).
 type Descriptor = string
 
-// Identifier of registered cloud device used in the transaction.
+// Identifier of the registered device used in the transaction.
 type Device = string
 
 // Discount applied to the invoice.
@@ -14502,7 +14502,7 @@ type PaymentDetail struct {
 	Currency *string `json:"currency,omitempty" url:"currency,omitempty"`
 	// Service fee to be deducted from the total amount. This amount must be a number, percentages aren't accepted. If you are using a percentage-based fee schedule, you must calculate the value manually.
 	ServiceFee *float64 `json:"serviceFee,omitempty" url:"serviceFee,omitempty"`
-	// Split funding instructions for the transaction. See [Split a Transaction](/developers/developer-guides/money-in-split-funding) for more.
+	// Split funding instructions for the transaction. See [Split a Transaction](/guides/pay-in-developer-routing-split-funds) for more.
 	SplitFunding *SplitFunding `json:"splitFunding,omitempty" url:"splitFunding,omitempty"`
 	// Unique identifier for a processed check image. Required for RDC (Remote Deposit Capture) transactions where `achCode` is `BOC`. Use the `id` value from the [check processing](/developers/api-reference/moneyin/check-capture) response.
 	CheckUniqueId *string `json:"checkUniqueId,omitempty" url:"checkUniqueId,omitempty"`
@@ -15513,11 +15513,12 @@ var (
 	paypointDataFieldPhone              = big.NewInt(1 << 15)
 	paypointDataFieldServiceData        = big.NewInt(1 << 16)
 	paypointDataFieldState              = big.NewInt(1 << 17)
-	paypointDataFieldSummary            = big.NewInt(1 << 18)
-	paypointDataFieldTimeZone           = big.NewInt(1 << 19)
-	paypointDataFieldWebsiteAddress     = big.NewInt(1 << 20)
-	paypointDataFieldZip                = big.NewInt(1 << 21)
-	paypointDataFieldStatementEmail     = big.NewInt(1 << 22)
+	paypointDataFieldBusinessSummary    = big.NewInt(1 << 18)
+	paypointDataFieldSummary            = big.NewInt(1 << 19)
+	paypointDataFieldTimeZone           = big.NewInt(1 << 20)
+	paypointDataFieldWebsiteAddress     = big.NewInt(1 << 21)
+	paypointDataFieldZip                = big.NewInt(1 << 22)
+	paypointDataFieldStatementEmail     = big.NewInt(1 << 23)
 )
 
 type PaypointData struct {
@@ -15532,18 +15533,21 @@ type PaypointData struct {
 	DbaName            *Dbaname                    `json:"DbaName,omitempty" url:"DbaName,omitempty"`
 	ExternalPaypointId *ExternalPaypointId         `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
 	// Fax number
-	Fax            *PhoneNumber     `json:"Fax,omitempty" url:"Fax,omitempty"`
-	IdPaypoint     *Idpaypoint      `json:"IdPaypoint,omitempty" url:"IdPaypoint,omitempty"`
-	LegalName      *Legalname       `json:"LegalName,omitempty" url:"LegalName,omitempty"`
-	ParentOrg      *OrgData         `json:"ParentOrg,omitempty" url:"ParentOrg,omitempty"`
-	PaypointStatus *Paypointstatus  `json:"PaypointStatus,omitempty" url:"PaypointStatus,omitempty"`
-	Phone          *PhoneNumber     `json:"Phone,omitempty" url:"Phone,omitempty"`
-	ServiceData    *Services        `json:"ServiceData,omitempty" url:"ServiceData,omitempty"`
-	State          *StateNullable   `json:"State,omitempty" url:"State,omitempty"`
-	Summary        *PaypointSummary `json:"summary,omitempty" url:"summary,omitempty"`
-	TimeZone       *Timezone        `json:"TimeZone,omitempty" url:"TimeZone,omitempty"`
-	WebsiteAddress *Website         `json:"WebsiteAddress,omitempty" url:"WebsiteAddress,omitempty"`
-	Zip            *Zip             `json:"Zip,omitempty" url:"Zip,omitempty"`
+	Fax            *PhoneNumber    `json:"Fax,omitempty" url:"Fax,omitempty"`
+	IdPaypoint     *Idpaypoint     `json:"IdPaypoint,omitempty" url:"IdPaypoint,omitempty"`
+	LegalName      *Legalname      `json:"LegalName,omitempty" url:"LegalName,omitempty"`
+	ParentOrg      *OrgData        `json:"ParentOrg,omitempty" url:"ParentOrg,omitempty"`
+	PaypointStatus *Paypointstatus `json:"PaypointStatus,omitempty" url:"PaypointStatus,omitempty"`
+	Phone          *PhoneNumber    `json:"Phone,omitempty" url:"Phone,omitempty"`
+	ServiceData    *Services       `json:"ServiceData,omitempty" url:"ServiceData,omitempty"`
+	State          *StateNullable  `json:"State,omitempty" url:"State,omitempty"`
+	// This business description is captured during boarding. It differs from `summary`, which
+	// reports counts of customers, transactions, and subscriptions attached to the paypoint.
+	BusinessSummary *string          `json:"Summary,omitempty" url:"Summary,omitempty"`
+	Summary         *PaypointSummary `json:"summary,omitempty" url:"summary,omitempty"`
+	TimeZone        *Timezone        `json:"TimeZone,omitempty" url:"TimeZone,omitempty"`
+	WebsiteAddress  *Website         `json:"WebsiteAddress,omitempty" url:"WebsiteAddress,omitempty"`
+	Zip             *Zip             `json:"Zip,omitempty" url:"Zip,omitempty"`
 	// Configuration for billing statement email recipients and sender address. `null` if not configured.
 	StatementEmail *StatementEmailConfig `json:"StatementEmail,omitempty" url:"StatementEmail,omitempty"`
 
@@ -15678,6 +15682,13 @@ func (p *PaypointData) GetState() *StateNullable {
 		return nil
 	}
 	return p.State
+}
+
+func (p *PaypointData) GetBusinessSummary() *string {
+	if p == nil {
+		return nil
+	}
+	return p.BusinessSummary
 }
 
 func (p *PaypointData) GetSummary() *PaypointSummary {
@@ -15853,6 +15864,13 @@ func (p *PaypointData) SetServiceData(serviceData *Services) {
 func (p *PaypointData) SetState(state *StateNullable) {
 	p.State = state
 	p.require(paypointDataFieldState)
+}
+
+// SetBusinessSummary sets the BusinessSummary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointData) SetBusinessSummary(businessSummary *string) {
+	p.BusinessSummary = businessSummary
+	p.require(paypointDataFieldBusinessSummary)
 }
 
 // SetSummary sets the Summary field and marks it as non-optional;
@@ -18193,230 +18211,18 @@ type ReplyToEmail = string
 // Time that a response to a chargeback is due, in UTC.
 type Replyby = time.Time
 
-// Object containing vendor's bank information. This object is deprecated for this endpoint. Use the `paymentMethod` object in payout authorize requests instead.
+// Vendor to pay with this payout. Create the vendor first with
+// [Create vendor](/developers/api-reference/vendor/create-vendor), then
+// reference it here by `vendorNumber` or `vendorId`.
 var (
-	requestOutAuthorizeVendorBillingDataFieldBankName              = big.NewInt(1 << 0)
-	requestOutAuthorizeVendorBillingDataFieldRoutingAccount        = big.NewInt(1 << 1)
-	requestOutAuthorizeVendorBillingDataFieldAccountNumber         = big.NewInt(1 << 2)
-	requestOutAuthorizeVendorBillingDataFieldTypeAccount           = big.NewInt(1 << 3)
-	requestOutAuthorizeVendorBillingDataFieldBankAccountHolderName = big.NewInt(1 << 4)
-)
-
-type RequestOutAuthorizeVendorBillingData struct {
-	BankName              *BankName              `json:"bankName,omitempty" url:"bankName,omitempty"`
-	RoutingAccount        *RoutingAccount        `json:"routingAccount,omitempty" url:"routingAccount,omitempty"`
-	AccountNumber         *AccountNumber         `json:"accountNumber,omitempty" url:"accountNumber,omitempty"`
-	TypeAccount           *TypeAccount           `json:"typeAccount,omitempty" url:"typeAccount,omitempty"`
-	BankAccountHolderName *BankAccountHolderName `json:"bankAccountHolderName,omitempty" url:"bankAccountHolderName,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (r *RequestOutAuthorizeVendorBillingData) GetBankName() *BankName {
-	if r == nil {
-		return nil
-	}
-	return r.BankName
-}
-
-func (r *RequestOutAuthorizeVendorBillingData) GetRoutingAccount() *RoutingAccount {
-	if r == nil {
-		return nil
-	}
-	return r.RoutingAccount
-}
-
-func (r *RequestOutAuthorizeVendorBillingData) GetAccountNumber() *AccountNumber {
-	if r == nil {
-		return nil
-	}
-	return r.AccountNumber
-}
-
-func (r *RequestOutAuthorizeVendorBillingData) GetTypeAccount() *TypeAccount {
-	if r == nil {
-		return nil
-	}
-	return r.TypeAccount
-}
-
-func (r *RequestOutAuthorizeVendorBillingData) GetBankAccountHolderName() *BankAccountHolderName {
-	if r == nil {
-		return nil
-	}
-	return r.BankAccountHolderName
-}
-
-func (r *RequestOutAuthorizeVendorBillingData) GetExtraProperties() map[string]interface{} {
-	if r == nil {
-		return nil
-	}
-	return r.extraProperties
-}
-
-func (r *RequestOutAuthorizeVendorBillingData) require(field *big.Int) {
-	if r.explicitFields == nil {
-		r.explicitFields = big.NewInt(0)
-	}
-	r.explicitFields.Or(r.explicitFields, field)
-}
-
-// SetBankName sets the BankName field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorBillingData) SetBankName(bankName *BankName) {
-	r.BankName = bankName
-	r.require(requestOutAuthorizeVendorBillingDataFieldBankName)
-}
-
-// SetRoutingAccount sets the RoutingAccount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorBillingData) SetRoutingAccount(routingAccount *RoutingAccount) {
-	r.RoutingAccount = routingAccount
-	r.require(requestOutAuthorizeVendorBillingDataFieldRoutingAccount)
-}
-
-// SetAccountNumber sets the AccountNumber field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorBillingData) SetAccountNumber(accountNumber *AccountNumber) {
-	r.AccountNumber = accountNumber
-	r.require(requestOutAuthorizeVendorBillingDataFieldAccountNumber)
-}
-
-// SetTypeAccount sets the TypeAccount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorBillingData) SetTypeAccount(typeAccount *TypeAccount) {
-	r.TypeAccount = typeAccount
-	r.require(requestOutAuthorizeVendorBillingDataFieldTypeAccount)
-}
-
-// SetBankAccountHolderName sets the BankAccountHolderName field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorBillingData) SetBankAccountHolderName(bankAccountHolderName *BankAccountHolderName) {
-	r.BankAccountHolderName = bankAccountHolderName
-	r.require(requestOutAuthorizeVendorBillingDataFieldBankAccountHolderName)
-}
-
-func (r *RequestOutAuthorizeVendorBillingData) UnmarshalJSON(data []byte) error {
-	type unmarshaler RequestOutAuthorizeVendorBillingData
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*r = RequestOutAuthorizeVendorBillingData(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *r)
-	if err != nil {
-		return err
-	}
-	r.extraProperties = extraProperties
-	r.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (r *RequestOutAuthorizeVendorBillingData) MarshalJSON() ([]byte, error) {
-	type embed RequestOutAuthorizeVendorBillingData
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*r),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (r *RequestOutAuthorizeVendorBillingData) String() string {
-	if r == nil {
-		return "<nil>"
-	}
-	if len(r.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(r.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(r); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", r)
-}
-
-// Object containing vendor data.
-var (
-	requestOutAuthorizeVendorDataFieldVendorNumber          = big.NewInt(1 << 0)
-	requestOutAuthorizeVendorDataFieldName1                 = big.NewInt(1 << 1)
-	requestOutAuthorizeVendorDataFieldName2                 = big.NewInt(1 << 2)
-	requestOutAuthorizeVendorDataFieldEin                   = big.NewInt(1 << 3)
-	requestOutAuthorizeVendorDataFieldPhone                 = big.NewInt(1 << 4)
-	requestOutAuthorizeVendorDataFieldEmail                 = big.NewInt(1 << 5)
-	requestOutAuthorizeVendorDataFieldAddress1              = big.NewInt(1 << 6)
-	requestOutAuthorizeVendorDataFieldCity                  = big.NewInt(1 << 7)
-	requestOutAuthorizeVendorDataFieldState                 = big.NewInt(1 << 8)
-	requestOutAuthorizeVendorDataFieldZip                   = big.NewInt(1 << 9)
-	requestOutAuthorizeVendorDataFieldCountry               = big.NewInt(1 << 10)
-	requestOutAuthorizeVendorDataFieldMcc                   = big.NewInt(1 << 11)
-	requestOutAuthorizeVendorDataFieldContacts              = big.NewInt(1 << 12)
-	requestOutAuthorizeVendorDataFieldBillingData           = big.NewInt(1 << 13)
-	requestOutAuthorizeVendorDataFieldVendorStatus          = big.NewInt(1 << 14)
-	requestOutAuthorizeVendorDataFieldRemitAddress1         = big.NewInt(1 << 15)
-	requestOutAuthorizeVendorDataFieldRemitAddress2         = big.NewInt(1 << 16)
-	requestOutAuthorizeVendorDataFieldRemitCity             = big.NewInt(1 << 17)
-	requestOutAuthorizeVendorDataFieldRemitState            = big.NewInt(1 << 18)
-	requestOutAuthorizeVendorDataFieldRemitZip              = big.NewInt(1 << 19)
-	requestOutAuthorizeVendorDataFieldRemitCountry          = big.NewInt(1 << 20)
-	requestOutAuthorizeVendorDataFieldCustomerVendorAccount = big.NewInt(1 << 21)
-	requestOutAuthorizeVendorDataFieldCustomField1          = big.NewInt(1 << 22)
-	requestOutAuthorizeVendorDataFieldCustomField2          = big.NewInt(1 << 23)
-	requestOutAuthorizeVendorDataFieldAdditionalData        = big.NewInt(1 << 24)
-	requestOutAuthorizeVendorDataFieldAddress2              = big.NewInt(1 << 25)
-	requestOutAuthorizeVendorDataFieldInternalReferenceId   = big.NewInt(1 << 26)
-	requestOutAuthorizeVendorDataFieldLocationCode          = big.NewInt(1 << 27)
-	requestOutAuthorizeVendorDataFieldPayeeName1            = big.NewInt(1 << 28)
-	requestOutAuthorizeVendorDataFieldPayeeName2            = big.NewInt(1 << 29)
-	requestOutAuthorizeVendorDataFieldPaymentMethod         = big.NewInt(1 << 30)
-	requestOutAuthorizeVendorDataFieldVendorId              = big.NewInt(1 << 31)
+	requestOutAuthorizeVendorDataFieldVendorNumber = big.NewInt(1 << 0)
+	requestOutAuthorizeVendorDataFieldVendorId     = big.NewInt(1 << 1)
 )
 
 type RequestOutAuthorizeVendorData struct {
 	VendorNumber *VendorNumber `json:"vendorNumber,omitempty" url:"vendorNumber,omitempty"`
-	Name1        *VendorName1  `json:"name1,omitempty" url:"name1,omitempty"`
-	Name2        *VendorName2  `json:"name2,omitempty" url:"name2,omitempty"`
-	Ein          *VendorEin    `json:"ein,omitempty" url:"ein,omitempty"`
-	Phone        *VendorPhone  `json:"phone,omitempty" url:"phone,omitempty"`
-	Email        *Email        `json:"email,omitempty" url:"email,omitempty"`
-	// Vendor's address
-	//
-	// For a PO Box address, include only the PO Box in this field, for example `PO Box 29652`. Put the rest of the address, such as a department number, in `address2`.
-	Address1              *AddressNullable                      `json:"address1,omitempty" url:"address1,omitempty"`
-	City                  *string                               `json:"city,omitempty" url:"city,omitempty"`
-	State                 *string                               `json:"state,omitempty" url:"state,omitempty"`
-	Zip                   *string                               `json:"zip,omitempty" url:"zip,omitempty"`
-	Country               *string                               `json:"country,omitempty" url:"country,omitempty"`
-	Mcc                   *Mcc                                  `json:"mcc,omitempty" url:"mcc,omitempty"`
-	Contacts              *ContactsField                        `json:"contacts,omitempty" url:"contacts,omitempty"`
-	BillingData           *RequestOutAuthorizeVendorBillingData `json:"billingData,omitempty" url:"billingData,omitempty"`
-	VendorStatus          *Vendorstatus                         `json:"vendorStatus,omitempty" url:"vendorStatus,omitempty"`
-	RemitAddress1         *Remitaddress1                        `json:"remitAddress1,omitempty" url:"remitAddress1,omitempty"`
-	RemitAddress2         *Remitaddress2                        `json:"remitAddress2,omitempty" url:"remitAddress2,omitempty"`
-	RemitCity             *Remitcity                            `json:"remitCity,omitempty" url:"remitCity,omitempty"`
-	RemitState            *Remitstate                           `json:"remitState,omitempty" url:"remitState,omitempty"`
-	RemitZip              *Remitzip                             `json:"remitZip,omitempty" url:"remitZip,omitempty"`
-	RemitCountry          *Remitcountry                         `json:"remitCountry,omitempty" url:"remitCountry,omitempty"`
-	CustomerVendorAccount *string                               `json:"customerVendorAccount,omitempty" url:"customerVendorAccount,omitempty"`
-	CustomField1          *string                               `json:"customField1,omitempty" url:"customField1,omitempty"`
-	CustomField2          *string                               `json:"customField2,omitempty" url:"customField2,omitempty"`
-	AdditionalData        *AdditionalData                       `json:"additionalData,omitempty" url:"additionalData,omitempty"`
-	// Additional line for vendor's address.
-	//
-	// For a PO Box address, this field holds the part of the address that follows the PO Box, for example `Dept# 880662`.
-	Address2            *AddressAddtlNullable `json:"address2,omitempty" url:"address2,omitempty"`
-	InternalReferenceId *int64                `json:"internalReferenceId,omitempty" url:"internalReferenceId,omitempty"`
-	LocationCode        *LocationCode         `json:"locationCode,omitempty" url:"locationCode,omitempty"`
-	PayeeName1          *PayeeName            `json:"payeeName1,omitempty" url:"payeeName1,omitempty"`
-	PayeeName2          *PayeeName            `json:"payeeName2,omitempty" url:"payeeName2,omitempty"`
-	PaymentMethod       *VendorPaymentMethod  `json:"paymentMethod,omitempty" url:"paymentMethod,omitempty"`
-	VendorId            *Vendorid             `json:"vendorId,omitempty" url:"vendorId,omitempty"`
+	// Payabli identifier for the vendor record. Required when `vendorNumber` isn't included.
+	VendorId *Vendorid `json:"vendorId,omitempty" url:"vendorId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -18430,216 +18236,6 @@ func (r *RequestOutAuthorizeVendorData) GetVendorNumber() *VendorNumber {
 		return nil
 	}
 	return r.VendorNumber
-}
-
-func (r *RequestOutAuthorizeVendorData) GetName1() *VendorName1 {
-	if r == nil {
-		return nil
-	}
-	return r.Name1
-}
-
-func (r *RequestOutAuthorizeVendorData) GetName2() *VendorName2 {
-	if r == nil {
-		return nil
-	}
-	return r.Name2
-}
-
-func (r *RequestOutAuthorizeVendorData) GetEin() *VendorEin {
-	if r == nil {
-		return nil
-	}
-	return r.Ein
-}
-
-func (r *RequestOutAuthorizeVendorData) GetPhone() *VendorPhone {
-	if r == nil {
-		return nil
-	}
-	return r.Phone
-}
-
-func (r *RequestOutAuthorizeVendorData) GetEmail() *Email {
-	if r == nil {
-		return nil
-	}
-	return r.Email
-}
-
-func (r *RequestOutAuthorizeVendorData) GetAddress1() *AddressNullable {
-	if r == nil {
-		return nil
-	}
-	return r.Address1
-}
-
-func (r *RequestOutAuthorizeVendorData) GetCity() *string {
-	if r == nil {
-		return nil
-	}
-	return r.City
-}
-
-func (r *RequestOutAuthorizeVendorData) GetState() *string {
-	if r == nil {
-		return nil
-	}
-	return r.State
-}
-
-func (r *RequestOutAuthorizeVendorData) GetZip() *string {
-	if r == nil {
-		return nil
-	}
-	return r.Zip
-}
-
-func (r *RequestOutAuthorizeVendorData) GetCountry() *string {
-	if r == nil {
-		return nil
-	}
-	return r.Country
-}
-
-func (r *RequestOutAuthorizeVendorData) GetMcc() *Mcc {
-	if r == nil {
-		return nil
-	}
-	return r.Mcc
-}
-
-func (r *RequestOutAuthorizeVendorData) GetContacts() *ContactsField {
-	if r == nil {
-		return nil
-	}
-	return r.Contacts
-}
-
-func (r *RequestOutAuthorizeVendorData) GetBillingData() *RequestOutAuthorizeVendorBillingData {
-	if r == nil {
-		return nil
-	}
-	return r.BillingData
-}
-
-func (r *RequestOutAuthorizeVendorData) GetVendorStatus() *Vendorstatus {
-	if r == nil {
-		return nil
-	}
-	return r.VendorStatus
-}
-
-func (r *RequestOutAuthorizeVendorData) GetRemitAddress1() *Remitaddress1 {
-	if r == nil {
-		return nil
-	}
-	return r.RemitAddress1
-}
-
-func (r *RequestOutAuthorizeVendorData) GetRemitAddress2() *Remitaddress2 {
-	if r == nil {
-		return nil
-	}
-	return r.RemitAddress2
-}
-
-func (r *RequestOutAuthorizeVendorData) GetRemitCity() *Remitcity {
-	if r == nil {
-		return nil
-	}
-	return r.RemitCity
-}
-
-func (r *RequestOutAuthorizeVendorData) GetRemitState() *Remitstate {
-	if r == nil {
-		return nil
-	}
-	return r.RemitState
-}
-
-func (r *RequestOutAuthorizeVendorData) GetRemitZip() *Remitzip {
-	if r == nil {
-		return nil
-	}
-	return r.RemitZip
-}
-
-func (r *RequestOutAuthorizeVendorData) GetRemitCountry() *Remitcountry {
-	if r == nil {
-		return nil
-	}
-	return r.RemitCountry
-}
-
-func (r *RequestOutAuthorizeVendorData) GetCustomerVendorAccount() *string {
-	if r == nil {
-		return nil
-	}
-	return r.CustomerVendorAccount
-}
-
-func (r *RequestOutAuthorizeVendorData) GetCustomField1() *string {
-	if r == nil {
-		return nil
-	}
-	return r.CustomField1
-}
-
-func (r *RequestOutAuthorizeVendorData) GetCustomField2() *string {
-	if r == nil {
-		return nil
-	}
-	return r.CustomField2
-}
-
-func (r *RequestOutAuthorizeVendorData) GetAdditionalData() *AdditionalData {
-	if r == nil {
-		return nil
-	}
-	return r.AdditionalData
-}
-
-func (r *RequestOutAuthorizeVendorData) GetAddress2() *AddressAddtlNullable {
-	if r == nil {
-		return nil
-	}
-	return r.Address2
-}
-
-func (r *RequestOutAuthorizeVendorData) GetInternalReferenceId() *int64 {
-	if r == nil {
-		return nil
-	}
-	return r.InternalReferenceId
-}
-
-func (r *RequestOutAuthorizeVendorData) GetLocationCode() *LocationCode {
-	if r == nil {
-		return nil
-	}
-	return r.LocationCode
-}
-
-func (r *RequestOutAuthorizeVendorData) GetPayeeName1() *PayeeName {
-	if r == nil {
-		return nil
-	}
-	return r.PayeeName1
-}
-
-func (r *RequestOutAuthorizeVendorData) GetPayeeName2() *PayeeName {
-	if r == nil {
-		return nil
-	}
-	return r.PayeeName2
-}
-
-func (r *RequestOutAuthorizeVendorData) GetPaymentMethod() *VendorPaymentMethod {
-	if r == nil {
-		return nil
-	}
-	return r.PaymentMethod
 }
 
 func (r *RequestOutAuthorizeVendorData) GetVendorId() *Vendorid {
@@ -18668,216 +18264,6 @@ func (r *RequestOutAuthorizeVendorData) require(field *big.Int) {
 func (r *RequestOutAuthorizeVendorData) SetVendorNumber(vendorNumber *VendorNumber) {
 	r.VendorNumber = vendorNumber
 	r.require(requestOutAuthorizeVendorDataFieldVendorNumber)
-}
-
-// SetName1 sets the Name1 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetName1(name1 *VendorName1) {
-	r.Name1 = name1
-	r.require(requestOutAuthorizeVendorDataFieldName1)
-}
-
-// SetName2 sets the Name2 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetName2(name2 *VendorName2) {
-	r.Name2 = name2
-	r.require(requestOutAuthorizeVendorDataFieldName2)
-}
-
-// SetEin sets the Ein field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetEin(ein *VendorEin) {
-	r.Ein = ein
-	r.require(requestOutAuthorizeVendorDataFieldEin)
-}
-
-// SetPhone sets the Phone field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetPhone(phone *VendorPhone) {
-	r.Phone = phone
-	r.require(requestOutAuthorizeVendorDataFieldPhone)
-}
-
-// SetEmail sets the Email field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetEmail(email *Email) {
-	r.Email = email
-	r.require(requestOutAuthorizeVendorDataFieldEmail)
-}
-
-// SetAddress1 sets the Address1 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetAddress1(address1 *AddressNullable) {
-	r.Address1 = address1
-	r.require(requestOutAuthorizeVendorDataFieldAddress1)
-}
-
-// SetCity sets the City field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetCity(city *string) {
-	r.City = city
-	r.require(requestOutAuthorizeVendorDataFieldCity)
-}
-
-// SetState sets the State field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetState(state *string) {
-	r.State = state
-	r.require(requestOutAuthorizeVendorDataFieldState)
-}
-
-// SetZip sets the Zip field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetZip(zip *string) {
-	r.Zip = zip
-	r.require(requestOutAuthorizeVendorDataFieldZip)
-}
-
-// SetCountry sets the Country field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetCountry(country *string) {
-	r.Country = country
-	r.require(requestOutAuthorizeVendorDataFieldCountry)
-}
-
-// SetMcc sets the Mcc field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetMcc(mcc *Mcc) {
-	r.Mcc = mcc
-	r.require(requestOutAuthorizeVendorDataFieldMcc)
-}
-
-// SetContacts sets the Contacts field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetContacts(contacts *ContactsField) {
-	r.Contacts = contacts
-	r.require(requestOutAuthorizeVendorDataFieldContacts)
-}
-
-// SetBillingData sets the BillingData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetBillingData(billingData *RequestOutAuthorizeVendorBillingData) {
-	r.BillingData = billingData
-	r.require(requestOutAuthorizeVendorDataFieldBillingData)
-}
-
-// SetVendorStatus sets the VendorStatus field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetVendorStatus(vendorStatus *Vendorstatus) {
-	r.VendorStatus = vendorStatus
-	r.require(requestOutAuthorizeVendorDataFieldVendorStatus)
-}
-
-// SetRemitAddress1 sets the RemitAddress1 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetRemitAddress1(remitAddress1 *Remitaddress1) {
-	r.RemitAddress1 = remitAddress1
-	r.require(requestOutAuthorizeVendorDataFieldRemitAddress1)
-}
-
-// SetRemitAddress2 sets the RemitAddress2 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetRemitAddress2(remitAddress2 *Remitaddress2) {
-	r.RemitAddress2 = remitAddress2
-	r.require(requestOutAuthorizeVendorDataFieldRemitAddress2)
-}
-
-// SetRemitCity sets the RemitCity field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetRemitCity(remitCity *Remitcity) {
-	r.RemitCity = remitCity
-	r.require(requestOutAuthorizeVendorDataFieldRemitCity)
-}
-
-// SetRemitState sets the RemitState field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetRemitState(remitState *Remitstate) {
-	r.RemitState = remitState
-	r.require(requestOutAuthorizeVendorDataFieldRemitState)
-}
-
-// SetRemitZip sets the RemitZip field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetRemitZip(remitZip *Remitzip) {
-	r.RemitZip = remitZip
-	r.require(requestOutAuthorizeVendorDataFieldRemitZip)
-}
-
-// SetRemitCountry sets the RemitCountry field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetRemitCountry(remitCountry *Remitcountry) {
-	r.RemitCountry = remitCountry
-	r.require(requestOutAuthorizeVendorDataFieldRemitCountry)
-}
-
-// SetCustomerVendorAccount sets the CustomerVendorAccount field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetCustomerVendorAccount(customerVendorAccount *string) {
-	r.CustomerVendorAccount = customerVendorAccount
-	r.require(requestOutAuthorizeVendorDataFieldCustomerVendorAccount)
-}
-
-// SetCustomField1 sets the CustomField1 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetCustomField1(customField1 *string) {
-	r.CustomField1 = customField1
-	r.require(requestOutAuthorizeVendorDataFieldCustomField1)
-}
-
-// SetCustomField2 sets the CustomField2 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetCustomField2(customField2 *string) {
-	r.CustomField2 = customField2
-	r.require(requestOutAuthorizeVendorDataFieldCustomField2)
-}
-
-// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetAdditionalData(additionalData *AdditionalData) {
-	r.AdditionalData = additionalData
-	r.require(requestOutAuthorizeVendorDataFieldAdditionalData)
-}
-
-// SetAddress2 sets the Address2 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetAddress2(address2 *AddressAddtlNullable) {
-	r.Address2 = address2
-	r.require(requestOutAuthorizeVendorDataFieldAddress2)
-}
-
-// SetInternalReferenceId sets the InternalReferenceId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetInternalReferenceId(internalReferenceId *int64) {
-	r.InternalReferenceId = internalReferenceId
-	r.require(requestOutAuthorizeVendorDataFieldInternalReferenceId)
-}
-
-// SetLocationCode sets the LocationCode field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetLocationCode(locationCode *LocationCode) {
-	r.LocationCode = locationCode
-	r.require(requestOutAuthorizeVendorDataFieldLocationCode)
-}
-
-// SetPayeeName1 sets the PayeeName1 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetPayeeName1(payeeName1 *PayeeName) {
-	r.PayeeName1 = payeeName1
-	r.require(requestOutAuthorizeVendorDataFieldPayeeName1)
-}
-
-// SetPayeeName2 sets the PayeeName2 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetPayeeName2(payeeName2 *PayeeName) {
-	r.PayeeName2 = payeeName2
-	r.require(requestOutAuthorizeVendorDataFieldPayeeName2)
-}
-
-// SetPaymentMethod sets the PaymentMethod field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorizeVendorData) SetPaymentMethod(paymentMethod *VendorPaymentMethod) {
-	r.PaymentMethod = paymentMethod
-	r.require(requestOutAuthorizeVendorDataFieldPaymentMethod)
 }
 
 // SetVendorId sets the VendorId field and marks it as non-optional;
@@ -20971,7 +20357,7 @@ type TransactionQueryRecords struct {
 	// Internal identifier used for processing.
 	GatewayTransId *string   `json:"GatewayTransId,omitempty" url:"GatewayTransId,omitempty"`
 	InvoiceData    *BillData `json:"invoiceData,omitempty" url:"invoiceData,omitempty"`
-	// Payment method used: card, ach, or wallet.
+	// The payment method used for the transaction, for example card, ach, or device.
 	Method *string `json:"Method,omitempty" url:"Method,omitempty"`
 	// Net amount paid.
 	NetAmount *Netamountnullable `json:"NetAmount,omitempty" url:"NetAmount,omitempty"`
@@ -22751,127 +22137,9 @@ func (v *V2InternalServerError) String() string {
 
 type ValueTemplates = string
 
-// EIN/Tax ID for vendor. Must be nine digits formatted as `XX-XXXXXXX`
-// (for example, `12-3456789`).
-type VendorEin = string
-
-// Primary name for vendor. Required for new vendor.
-type VendorName1 = string
-
-// Secondary name for vendor. If provided, allowed characters are the
-// same as the `name1` field.
-type VendorName2 = string
-
 // Custom number identifying the vendor. Must be unique in paypoint. Can't be
 // blank.
 type VendorNumber = string
-
-// Payment method object to use for the payout.
-// - `{ method: "managed" }` - Managed payment method
-// - `{ method: "vcard" }` - Virtual card payment method
-// - `{ method: "check" }` - Check payment method
-// - `{ method: "ach", storedMethodId?: "..." }` - ACH payment method with optional stored method ID
-var (
-	vendorPaymentMethodFieldMethod         = big.NewInt(1 << 0)
-	vendorPaymentMethodFieldStoredMethodId = big.NewInt(1 << 1)
-)
-
-type VendorPaymentMethod struct {
-	// Payment method type - "managed", "vcard", "check", or "ach"
-	Method string `json:"method" url:"method"`
-	// ID of the stored ACH payment method. Only applicable when method is "ach". Required when using a previously saved ACH method when the vendor has more than one saved method. See the [Payouts with saved ACH payment methods](/developers/developer-guides/pay-out-manage-payouts) section for more details.
-	StoredMethodId *string `json:"storedMethodId,omitempty" url:"storedMethodId,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (v *VendorPaymentMethod) GetMethod() string {
-	if v == nil {
-		return ""
-	}
-	return v.Method
-}
-
-func (v *VendorPaymentMethod) GetStoredMethodId() *string {
-	if v == nil {
-		return nil
-	}
-	return v.StoredMethodId
-}
-
-func (v *VendorPaymentMethod) GetExtraProperties() map[string]interface{} {
-	if v == nil {
-		return nil
-	}
-	return v.extraProperties
-}
-
-func (v *VendorPaymentMethod) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetMethod sets the Method field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorPaymentMethod) SetMethod(method string) {
-	v.Method = method
-	v.require(vendorPaymentMethodFieldMethod)
-}
-
-// SetStoredMethodId sets the StoredMethodId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorPaymentMethod) SetStoredMethodId(storedMethodId *string) {
-	v.StoredMethodId = storedMethodId
-	v.require(vendorPaymentMethodFieldStoredMethodId)
-}
-
-func (v *VendorPaymentMethod) UnmarshalJSON(data []byte) error {
-	type unmarshaler VendorPaymentMethod
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*v = VendorPaymentMethod(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *v)
-	if err != nil {
-		return err
-	}
-	v.extraProperties = extraProperties
-	v.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (v *VendorPaymentMethod) MarshalJSON() ([]byte, error) {
-	type embed VendorPaymentMethod
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*v),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (v *VendorPaymentMethod) String() string {
-	if v == nil {
-		return "<nil>"
-	}
-	if len(v.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(v); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", v)
-}
 
 // The vendor's preferred payment method. Can be one of:
 //
@@ -22880,10 +22148,6 @@ func (v *VendorPaymentMethod) String() string {
 // - `check` — Check payment method
 // - `ach` — ACH payment method
 type VendorPaymentMethodString = string
-
-// Vendor's phone number. Phone number can't contain non-digit characters
-// like hyphens or parentheses.
-type VendorPhone = string
 
 var (
 	vendorQueryRecordFieldVendorNumber          = big.NewInt(1 << 0)

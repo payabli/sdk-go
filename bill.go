@@ -6041,3 +6041,110 @@ func (v *VendorOutData) String() string {
 	}
 	return fmt.Sprintf("%#v", v)
 }
+
+// Payment method object to use for the payout.
+// - `{ method: "managed" }` - Managed payment method
+// - `{ method: "vcard" }` - Virtual card payment method
+// - `{ method: "check" }` - Check payment method
+// - `{ method: "ach", storedMethodId?: "..." }` - ACH payment method with optional stored method ID
+var (
+	vendorPaymentMethodFieldMethod         = big.NewInt(1 << 0)
+	vendorPaymentMethodFieldStoredMethodId = big.NewInt(1 << 1)
+)
+
+type VendorPaymentMethod struct {
+	// Payment method type - "managed", "vcard", "check", or "ach"
+	Method string `json:"method" url:"method"`
+	// ID of the stored ACH payment method. Only applicable when method is "ach". Required when using a previously saved ACH method when the vendor has more than one saved method. See the [Payouts with saved ACH payment methods](/developers/developer-guides/pay-out-manage-payouts) section for more details.
+	StoredMethodId *string `json:"storedMethodId,omitempty" url:"storedMethodId,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *VendorPaymentMethod) GetMethod() string {
+	if v == nil {
+		return ""
+	}
+	return v.Method
+}
+
+func (v *VendorPaymentMethod) GetStoredMethodId() *string {
+	if v == nil {
+		return nil
+	}
+	return v.StoredMethodId
+}
+
+func (v *VendorPaymentMethod) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *VendorPaymentMethod) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetMethod sets the Method field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorPaymentMethod) SetMethod(method string) {
+	v.Method = method
+	v.require(vendorPaymentMethodFieldMethod)
+}
+
+// SetStoredMethodId sets the StoredMethodId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorPaymentMethod) SetStoredMethodId(storedMethodId *string) {
+	v.StoredMethodId = storedMethodId
+	v.require(vendorPaymentMethodFieldStoredMethodId)
+}
+
+func (v *VendorPaymentMethod) UnmarshalJSON(data []byte) error {
+	type unmarshaler VendorPaymentMethod
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VendorPaymentMethod(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VendorPaymentMethod) MarshalJSON() ([]byte, error) {
+	type embed VendorPaymentMethod
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *VendorPaymentMethod) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}

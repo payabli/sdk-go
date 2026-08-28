@@ -55,39 +55,13 @@ func NewClient(options *core.RequestOptions) *Client {
 //
 //	request := &payabli.RequestPaymentAuthorize{
 //	    Body: &payabli.TransRequestBody{
-//	        CustomerData: &payabli.PayorDataRequest{
-//	            CustomerId: payabli.Int64(
-//	                int64(4440),
-//	            ),
-//	        },
-//	        EntryPoint: payabli.String(
-//	            "8cfec329267",
-//	        ),
-//	        Ipaddress: payabli.String(
-//	            "255.255.255.255",
-//	        ),
 //	        PaymentDetails: &payabli.PaymentDetail{
-//	            ServiceFee: payabli.Float64(
-//	                0,
-//	            ),
-//	            TotalAmount: 100,
+//	            TotalAmount: 1.1,
 //	        },
 //	        PaymentMethod: &payabli.PaymentMethod{
 //	            PayMethodCredit: &payabli.PayMethodCredit{
-//	                Cardcvv: payabli.String(
-//	                    "999",
-//	                ),
-//	                Cardexp: "02/27",
-//	                CardHolder: payabli.String(
-//	                    "John Cassian",
-//	                ),
-//	                Cardnumber: "4111111111111111",
-//	                Cardzip: payabli.String(
-//	                    "12345",
-//	                ),
-//	                Initiator: payabli.String(
-//	                    "payor",
-//	                ),
+//	                Cardexp: "cardexp",
+//	                Cardnumber: "cardnumber",
 //	                Method: payabli.PayMethodCreditMethodCard,
 //	            },
 //	        },
@@ -127,8 +101,8 @@ func (c *Client) Authorize(
 //
 //	client.MoneyIn.Capture(
 //	    context.TODO(),
-//	    "10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13",
-//	    0,
+//	    "transId",
+//	    1.1,
 //	)
 func (c *Client) Capture(
 	ctx context.Context,
@@ -164,15 +138,12 @@ func (c *Client) Capture(
 //
 //	request := &payabli.CaptureRequest{
 //	    PaymentDetails: &payabli.CapturePaymentDetails{
-//	        TotalAmount: 105,
-//	        ServiceFee: payabli.Float64(
-//	            5,
-//	        ),
+//	        TotalAmount: 1.1,
 //	    },
 //	}
 //	client.MoneyIn.CaptureAuth(
 //	    context.TODO(),
-//	    "10-7d9cd67d-2d5d-4cd7-a1b7-72b8b201ec13",
+//	    "transId",
 //	    request,
 //	)
 func (c *Client) CaptureAuth(
@@ -292,39 +263,13 @@ func (c *Client) Details(
 //
 //	request := &payabli.RequestPayment{
 //	    Body: &payabli.TransRequestBody{
-//	        CustomerData: &payabli.PayorDataRequest{
-//	            CustomerId: payabli.Int64(
-//	                int64(4440),
-//	            ),
-//	        },
-//	        EntryPoint: payabli.String(
-//	            "8cfec329267",
-//	        ),
-//	        Ipaddress: payabli.String(
-//	            "255.255.255.255",
-//	        ),
 //	        PaymentDetails: &payabli.PaymentDetail{
-//	            ServiceFee: payabli.Float64(
-//	                0,
-//	            ),
-//	            TotalAmount: 100,
+//	            TotalAmount: 1.1,
 //	        },
 //	        PaymentMethod: &payabli.PaymentMethod{
 //	            PayMethodCredit: &payabli.PayMethodCredit{
-//	                Cardcvv: payabli.String(
-//	                    "999",
-//	                ),
-//	                Cardexp: "02/27",
-//	                CardHolder: payabli.String(
-//	                    "John Cassian",
-//	                ),
-//	                Cardnumber: "4111111111111111",
-//	                Cardzip: payabli.String(
-//	                    "12345",
-//	                ),
-//	                Initiator: payabli.String(
-//	                    "payor",
-//	                ),
+//	                Cardexp: "cardexp",
+//	                Cardnumber: "cardnumber",
 //	                Method: payabli.PayMethodCreditMethodCard,
 //	            },
 //	        },
@@ -362,8 +307,8 @@ func (c *Client) Getpaid(
 //
 //	client.MoneyIn.Reverse(
 //	    context.TODO(),
-//	    "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
-//	    0,
+//	    "transId",
+//	    1.1,
 //	)
 func (c *Client) Reverse(
 	ctx context.Context,
@@ -401,8 +346,8 @@ func (c *Client) Reverse(
 //
 //	client.MoneyIn.Refund(
 //	    context.TODO(),
-//	    "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
-//	    0,
+//	    "transId",
+//	    1.1,
 //	)
 func (c *Client) Refund(
 	ctx context.Context,
@@ -438,55 +383,10 @@ func (c *Client) Refund(
 //
 // Example:
 //
-//	request := &payabli.RequestRefund{
-//	    IdempotencyKey: payabli.String(
-//	        "8A29FC40-CA47-1067-B31D-00DD010662DB",
-//	    ),
-//	    Amount: payabli.Float64(
-//	        100,
-//	    ),
-//	    OrderDescription: payabli.String(
-//	        "Materials deposit",
-//	    ),
-//	    RefundDetails: &payabli.RefundDetail{
-//	        SplitRefunding: []*payabli.SplitFundingRefundContent{
-//	            &payabli.SplitFundingRefundContent{
-//	                AccountId: payabli.String(
-//	                    "187-342",
-//	                ),
-//	                Amount: payabli.Float64(
-//	                    60,
-//	                ),
-//	                Description: payabli.String(
-//	                    "Refunding undelivered materials",
-//	                ),
-//	                OriginationEntryPoint: payabli.String(
-//	                    "7f1a381696",
-//	                ),
-//	            },
-//	            &payabli.SplitFundingRefundContent{
-//	                AccountId: payabli.String(
-//	                    "187-343",
-//	                ),
-//	                Amount: payabli.Float64(
-//	                    40,
-//	                ),
-//	                Description: payabli.String(
-//	                    "Refunding deposit for undelivered materials",
-//	                ),
-//	                OriginationEntryPoint: payabli.String(
-//	                    "7f1a381696",
-//	                ),
-//	            },
-//	        },
-//	    },
-//	    Source: payabli.String(
-//	        "api",
-//	    ),
-//	}
+//	request := &payabli.RequestRefund{}
 //	client.MoneyIn.RefundWithInstructions(
 //	    context.TODO(),
-//	    "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
+//	    "transId",
 //	    request,
 //	)
 func (c *Client) RefundWithInstructions(
@@ -615,7 +515,7 @@ func (c *Client) Validate(
 //
 //	client.MoneyIn.Void(
 //	    context.TODO(),
-//	    "10-3ffa27df-b171-44e0-b251-e95fbfc7a723",
+//	    "transId",
 //	)
 func (c *Client) Void(
 	ctx context.Context,

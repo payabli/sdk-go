@@ -1720,6 +1720,10 @@ func (v *VendorData) String() string {
 	return fmt.Sprintf("%#v", v)
 }
 
+// EIN/Tax ID for vendor. Must be nine digits formatted as `XX-XXXXXXX`
+// (for example, `12-3456789`).
+type VendorEin = string
+
 // Response from the vendor enrichment endpoint.
 var (
 	vendorEnrichResponseFieldResponseCode   = big.NewInt(1 << 0)
@@ -2789,6 +2793,17 @@ func (v *VendorEnrichmentWebSearch) String() string {
 	}
 	return fmt.Sprintf("%#v", v)
 }
+
+// Primary name for vendor. Required for new vendor.
+type VendorName1 = string
+
+// Secondary name for vendor. If provided, allowed characters are the
+// same as the `name1` field.
+type VendorName2 = string
+
+// Vendor's phone number. Phone number can't contain non-digit characters
+// like hyphens or parentheses.
+type VendorPhone = string
 
 // Response from the schedule outreach call endpoint.
 var (
