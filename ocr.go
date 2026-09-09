@@ -6,143 +6,99 @@ import (
 	json "encoding/json"
 	fmt "fmt"
 	internal "github.com/payabli/sdk-go/internal"
+	io "io"
 	big "math/big"
 	time "time"
 )
 
-var (
-	fileContentImageOnlyFieldFtype    = big.NewInt(1 << 0)
-	fileContentImageOnlyFieldFilename = big.NewInt(1 << 1)
-	fileContentImageOnlyFieldFurl     = big.NewInt(1 << 2)
-	fileContentImageOnlyFieldFContent = big.NewInt(1 << 3)
-)
-
-type FileContentImageOnly struct {
-	Ftype *FileContentFtype `json:"ftype,omitempty" url:"ftype,omitempty"`
-	// The name of the file to be uploaded
-	Filename *string `json:"filename,omitempty" url:"filename,omitempty"`
-	// Optional URL link to the file
-	Furl *string `json:"furl,omitempty" url:"furl,omitempty"`
-	// Base64-encoded file content
-	FContent *string `json:"fContent,omitempty" url:"fContent,omitempty"`
+type OcrDocumentFormRequest struct {
+	File io.Reader `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
 }
 
-func (f *FileContentImageOnly) GetFtype() *FileContentFtype {
-	if f == nil {
-		return nil
+func (o *OcrDocumentFormRequest) require(field *big.Int) {
+	if o.explicitFields == nil {
+		o.explicitFields = big.NewInt(0)
 	}
-	return f.Ftype
+	o.explicitFields.Or(o.explicitFields, field)
 }
 
-func (f *FileContentImageOnly) GetFilename() *string {
-	if f == nil {
-		return nil
-	}
-	return f.Filename
+var (
+	ocrDocumentJsonRequestFieldFtype    = big.NewInt(1 << 0)
+	ocrDocumentJsonRequestFieldFilename = big.NewInt(1 << 1)
+	ocrDocumentJsonRequestFieldFurl     = big.NewInt(1 << 2)
+	ocrDocumentJsonRequestFieldFContent = big.NewInt(1 << 3)
+)
+
+type OcrDocumentJsonRequest struct {
+	Ftype *FileContentFtype `json:"ftype,omitempty" url:"-"`
+	// The name of the file to be uploaded
+	Filename *string `json:"filename,omitempty" url:"-"`
+	// Optional URL link to the file
+	Furl *string `json:"furl,omitempty" url:"-"`
+	// Base64-encoded file content
+	FContent *string `json:"fContent,omitempty" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
 }
 
-func (f *FileContentImageOnly) GetFurl() *string {
-	if f == nil {
-		return nil
+func (o *OcrDocumentJsonRequest) require(field *big.Int) {
+	if o.explicitFields == nil {
+		o.explicitFields = big.NewInt(0)
 	}
-	return f.Furl
-}
-
-func (f *FileContentImageOnly) GetFContent() *string {
-	if f == nil {
-		return nil
-	}
-	return f.FContent
-}
-
-func (f *FileContentImageOnly) GetExtraProperties() map[string]interface{} {
-	if f == nil {
-		return nil
-	}
-	return f.extraProperties
-}
-
-func (f *FileContentImageOnly) require(field *big.Int) {
-	if f.explicitFields == nil {
-		f.explicitFields = big.NewInt(0)
-	}
-	f.explicitFields.Or(f.explicitFields, field)
+	o.explicitFields.Or(o.explicitFields, field)
 }
 
 // SetFtype sets the Ftype field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *FileContentImageOnly) SetFtype(ftype *FileContentFtype) {
-	f.Ftype = ftype
-	f.require(fileContentImageOnlyFieldFtype)
+func (o *OcrDocumentJsonRequest) SetFtype(ftype *FileContentFtype) {
+	o.Ftype = ftype
+	o.require(ocrDocumentJsonRequestFieldFtype)
 }
 
 // SetFilename sets the Filename field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *FileContentImageOnly) SetFilename(filename *string) {
-	f.Filename = filename
-	f.require(fileContentImageOnlyFieldFilename)
+func (o *OcrDocumentJsonRequest) SetFilename(filename *string) {
+	o.Filename = filename
+	o.require(ocrDocumentJsonRequestFieldFilename)
 }
 
 // SetFurl sets the Furl field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *FileContentImageOnly) SetFurl(furl *string) {
-	f.Furl = furl
-	f.require(fileContentImageOnlyFieldFurl)
+func (o *OcrDocumentJsonRequest) SetFurl(furl *string) {
+	o.Furl = furl
+	o.require(ocrDocumentJsonRequestFieldFurl)
 }
 
 // SetFContent sets the FContent field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (f *FileContentImageOnly) SetFContent(fContent *string) {
-	f.FContent = fContent
-	f.require(fileContentImageOnlyFieldFContent)
+func (o *OcrDocumentJsonRequest) SetFContent(fContent *string) {
+	o.FContent = fContent
+	o.require(ocrDocumentJsonRequestFieldFContent)
 }
 
-func (f *FileContentImageOnly) UnmarshalJSON(data []byte) error {
-	type unmarshaler FileContentImageOnly
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
+func (o *OcrDocumentJsonRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler OcrDocumentJsonRequest
+	var body unmarshaler
+	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*f = FileContentImageOnly(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *f)
-	if err != nil {
-		return err
-	}
-	f.extraProperties = extraProperties
-	f.rawJSON = json.RawMessage(data)
+	*o = OcrDocumentJsonRequest(body)
 	return nil
 }
 
-func (f *FileContentImageOnly) MarshalJSON() ([]byte, error) {
-	type embed FileContentImageOnly
+func (o *OcrDocumentJsonRequest) MarshalJSON() ([]byte, error) {
+	type embed OcrDocumentJsonRequest
 	var marshaler = struct {
 		embed
 	}{
-		embed: embed(*f),
+		embed: embed(*o),
 	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, f.explicitFields)
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, o.explicitFields)
 	return json.Marshal(explicitMarshaler)
-}
-
-func (f *FileContentImageOnly) String() string {
-	if f == nil {
-		return "<nil>"
-	}
-	if len(f.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(f.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(f); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", f)
 }
 
 var (

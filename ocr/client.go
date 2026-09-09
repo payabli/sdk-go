@@ -41,11 +41,15 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
-// Use this endpoint to upload an image file for OCR processing. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter `typeResult`. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more.
+// Use this endpoint to upload a document file for OCR processing as `multipart/form-data`, with the file in a field named `file`. The accepted file formats include PDF, JPG, JPEG, PNG, and GIF. Specify the desired type of result (either 'bill' or 'invoice') in the path parameter `typeResult`. The response will contain the OCR processing results, including extracted data such as bill number, vendor information, bill items, and more. To send the file as a Base64-encoded string in a JSON body instead, use `ocrDocumentJson`.
 //
 // Example:
 //
-//	request := &payabli.FileContentImageOnly{}
+//	request := &payabli.OcrDocumentFormRequest{
+//	    File: strings.NewReader(
+//	        "",
+//	    ),
+//	}
 //	client.Ocr.OcrDocumentForm(
 //	    context.TODO(),
 //	    "typeResult",
@@ -55,7 +59,7 @@ func (c *Client) OcrDocumentForm(
 	ctx context.Context,
 	// The type of object to create in Payabli. Accepted values are `bill` and `invoice`.
 	typeResult payabli.TypeResult,
-	request *payabli.FileContentImageOnly,
+	request *payabli.OcrDocumentFormRequest,
 	opts ...option.RequestOption,
 ) (*payabli.PayabliApiResponseOcr, error) {
 	response, err := c.WithRawResponse.OcrDocumentForm(
@@ -74,7 +78,7 @@ func (c *Client) OcrDocumentForm(
 //
 // Example:
 //
-//	request := &payabli.FileContentImageOnly{}
+//	request := &payabli.OcrDocumentJsonRequest{}
 //	client.Ocr.OcrDocumentJson(
 //	    context.TODO(),
 //	    "typeResult",
@@ -84,7 +88,7 @@ func (c *Client) OcrDocumentJson(
 	ctx context.Context,
 	// The type of object to create in Payabli. Accepted values are `bill` and `invoice`.
 	typeResult payabli.TypeResult,
-	request *payabli.FileContentImageOnly,
+	request *payabli.OcrDocumentJsonRequest,
 	opts ...option.RequestOption,
 ) (*payabli.PayabliApiResponseOcr, error) {
 	response, err := c.WithRawResponse.OcrDocumentJson(

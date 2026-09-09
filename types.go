@@ -17146,7 +17146,8 @@ var (
 )
 
 type QuerySummary struct {
-	PageIdentifier *PageIdentifier `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
+	// Pagination token for retrieving the next page of results. Returns `null` when there's no additional page.
+	PageIdentifier *PageIdentifier `json:"pageidentifier,omitempty" url:"pageidentifier,omitempty"`
 	PageSize       *Pagesize       `json:"pageSize,omitempty" url:"pageSize,omitempty"`
 	// Total amount for the records.
 	TotalAmount *float64 `json:"totalAmount,omitempty" url:"totalAmount,omitempty"`

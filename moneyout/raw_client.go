@@ -375,6 +375,67 @@ func (r *RawClient) CaptureOut(
 	}, nil
 }
 
+func (r *RawClient) Payout(
+	ctx context.Context,
+	request *payabli.PayoutRequest,
+	opts ...option.RequestOption,
+) (*core.Response[*payabli.AuthCapturePayoutResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://api-sandbox.payabli.com/api",
+	)
+	endpointURL := baseURL + "/MoneyOut/payout"
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return nil, err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
+	headers := internal.MergeHeaders(
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
+	)
+	if request.IdempotencyKey != nil {
+		headers.Add("idempotencyKey", *request.IdempotencyKey)
+	}
+	headers.Add("Content-Type", "application/json")
+	var response *payabli.AuthCapturePayoutResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodPost,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Request:         request,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*payabli.AuthCapturePayoutResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
 func (r *RawClient) PayoutDetails(
 	ctx context.Context,
 	// ReferenceId for the transaction (PaymentId).

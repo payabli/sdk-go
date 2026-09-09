@@ -737,10 +737,13 @@ type ListChargebacksRequest struct {
 	// - `chargebackDate` (gt, ge, lt, le, eq, ne)
 	// - `transId`  (ne, eq, ct, nct)
 	// - `method`   (in, nin, eq, ne)
+	// - `amount`  (gt, ge, lt, le, eq, ne): the chargeback or return's own amount (the top-level `netAmount` in the response), unlike `netAmount`, which matches the original transaction's net
+	// - `totalAmount`  (gt, ge, lt, le, eq, ne): the original transaction's gross amount, including service and pending fees (`transaction.totalAmount` in the response)
 	// - `netAmount`  (gt, ge, lt, le, eq, ne)
 	// - `reasonCode`   (in, nin, eq, ne)
 	// - `reason`  (ct, nct, eq, ne)
 	// - `replyDate` (gt, ge, lt, le, eq, ne)
+	// - `replyBy` (gt, ge, lt, le, eq, ne): alias of `replyDate`, matching the `replyBy` field in the response
 	// - `caseNumber`  (ct, nct, eq, ne)
 	// - `status`   (in, nin, eq, ne)
 	// - `accountType`   (in, nin, eq, ne)
@@ -789,7 +792,7 @@ type ListChargebacksRequest struct {
 	//
 	// Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
-	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`. For this endpoint, you can also sort by `amount` and `totalAmount`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -874,10 +877,13 @@ type ListChargebacksOrgRequest struct {
 	// - `chargebackDate` (gt, ge, lt, le, eq, ne)
 	// - `transId`  (ne, eq, ct, nct)
 	// - `method`   (in, nin, eq, ne)
+	// - `amount`  (gt, ge, lt, le, eq, ne): the chargeback or return's own amount (the top-level `netAmount` in the response), unlike `netAmount`, which matches the original transaction's net
+	// - `totalAmount`  (gt, ge, lt, le, eq, ne): the original transaction's gross amount, including service and pending fees (`transaction.totalAmount` in the response)
 	// - `netAmount`  (gt, ge, lt, le, eq, ne)
 	// - `reasonCode`   (in, nin, eq, ne)
 	// - `reason`  (ct, nct, eq, ne)
 	// - `replyDate` (gt, ge, lt, le, eq, ne)
+	// - `replyBy` (gt, ge, lt, le, eq, ne): alias of `replyDate`, matching the `replyBy` field in the response
 	// - `caseNumber`  (ct, nct, eq, ne)
 	// - `status`   (in, nin, eq, ne)
 	// - `accountType`   (in, nin, eq, ne)
@@ -927,7 +933,7 @@ type ListChargebacksOrgRequest struct {
 	//
 	// Example: `netAmount(gt)=20` returns all records with a `netAmount` greater than 20.00
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
-	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
+	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`. For this endpoint, you can also sort by `amount` and `totalAmount`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -2099,6 +2105,8 @@ type ListPayoutRequest struct {
 	//
 	//   - `paymentId` (ct, nct, eq, ne)
 	//
+	//   - `orderId` (ne, eq)
+	//
 	//   - `parentOrgId` (ne, eq, nin, in)
 	//
 	//   - `batchNumber` (ct, nct, eq, ne)
@@ -2294,6 +2302,8 @@ type ListPayoutOrgRequest struct {
 	//   - `paymentMethod` (ct, nct, eq, ne, in, nin)
 	//
 	//   - `paymentId` (ct, nct, eq, ne)
+	//
+	//   - `orderId` (ne, eq)
 	//
 	//   - `batchNumber` (ct, nct, eq, ne)
 	//
@@ -13002,47 +13012,48 @@ var (
 	queryPayoutTransactionRecordsItemFieldPaypointId           = big.NewInt(1 << 6)
 	queryPayoutTransactionRecordsItemFieldStatus               = big.NewInt(1 << 7)
 	queryPayoutTransactionRecordsItemFieldPaymentId            = big.NewInt(1 << 8)
-	queryPayoutTransactionRecordsItemFieldTransId              = big.NewInt(1 << 9)
-	queryPayoutTransactionRecordsItemFieldTransStatus          = big.NewInt(1 << 10)
-	queryPayoutTransactionRecordsItemFieldTransStatusDetail    = big.NewInt(1 << 11)
-	queryPayoutTransactionRecordsItemFieldTransStatusName      = big.NewInt(1 << 12)
-	queryPayoutTransactionRecordsItemFieldTransStatusCategory  = big.NewInt(1 << 13)
-	queryPayoutTransactionRecordsItemFieldLastUpdated          = big.NewInt(1 << 14)
-	queryPayoutTransactionRecordsItemFieldTotalAmount          = big.NewInt(1 << 15)
-	queryPayoutTransactionRecordsItemFieldNetAmount            = big.NewInt(1 << 16)
-	queryPayoutTransactionRecordsItemFieldFeeAmount            = big.NewInt(1 << 17)
-	queryPayoutTransactionRecordsItemFieldSource               = big.NewInt(1 << 18)
-	queryPayoutTransactionRecordsItemFieldParentOrgName        = big.NewInt(1 << 19)
-	queryPayoutTransactionRecordsItemFieldParentOrgId          = big.NewInt(1 << 20)
-	queryPayoutTransactionRecordsItemFieldBatchNumber          = big.NewInt(1 << 21)
-	queryPayoutTransactionRecordsItemFieldPaymentStatus        = big.NewInt(1 << 22)
-	queryPayoutTransactionRecordsItemFieldPaymentMethod        = big.NewInt(1 << 23)
-	queryPayoutTransactionRecordsItemFieldCardToken            = big.NewInt(1 << 24)
-	queryPayoutTransactionRecordsItemFieldCheckNumber          = big.NewInt(1 << 25)
-	queryPayoutTransactionRecordsItemFieldCheckData            = big.NewInt(1 << 26)
-	queryPayoutTransactionRecordsItemFieldPaymentData          = big.NewInt(1 << 27)
-	queryPayoutTransactionRecordsItemFieldBills                = big.NewInt(1 << 28)
-	queryPayoutTransactionRecordsItemFieldEvents               = big.NewInt(1 << 29)
-	queryPayoutTransactionRecordsItemFieldExternalPaypointId   = big.NewInt(1 << 30)
-	queryPayoutTransactionRecordsItemFieldEntryName            = big.NewInt(1 << 31)
-	queryPayoutTransactionRecordsItemFieldGateway              = big.NewInt(1 << 32)
-	queryPayoutTransactionRecordsItemFieldBatchId              = big.NewInt(1 << 33)
-	queryPayoutTransactionRecordsItemFieldHasVcardTransactions = big.NewInt(1 << 34)
-	queryPayoutTransactionRecordsItemFieldIsSameDayAch         = big.NewInt(1 << 35)
-	queryPayoutTransactionRecordsItemFieldScheduleId           = big.NewInt(1 << 36)
-	queryPayoutTransactionRecordsItemFieldSettlementStatus     = big.NewInt(1 << 37)
-	queryPayoutTransactionRecordsItemFieldSettlementStatusName = big.NewInt(1 << 38)
-	queryPayoutTransactionRecordsItemFieldSettlementDate       = big.NewInt(1 << 39)
-	queryPayoutTransactionRecordsItemFieldRiskFlagged          = big.NewInt(1 << 40)
-	queryPayoutTransactionRecordsItemFieldRiskFlaggedOn        = big.NewInt(1 << 41)
-	queryPayoutTransactionRecordsItemFieldRiskStatus           = big.NewInt(1 << 42)
-	queryPayoutTransactionRecordsItemFieldRiskReason           = big.NewInt(1 << 43)
-	queryPayoutTransactionRecordsItemFieldRiskAction           = big.NewInt(1 << 44)
-	queryPayoutTransactionRecordsItemFieldRiskActionCode       = big.NewInt(1 << 45)
-	queryPayoutTransactionRecordsItemFieldPayoutProgram        = big.NewInt(1 << 46)
-	queryPayoutTransactionRecordsItemFieldAchTraceNumber       = big.NewInt(1 << 47)
-	queryPayoutTransactionRecordsItemFieldEntityId             = big.NewInt(1 << 48)
-	queryPayoutTransactionRecordsItemFieldAllowedActions       = big.NewInt(1 << 49)
+	queryPayoutTransactionRecordsItemFieldOrderId              = big.NewInt(1 << 9)
+	queryPayoutTransactionRecordsItemFieldTransId              = big.NewInt(1 << 10)
+	queryPayoutTransactionRecordsItemFieldTransStatus          = big.NewInt(1 << 11)
+	queryPayoutTransactionRecordsItemFieldTransStatusDetail    = big.NewInt(1 << 12)
+	queryPayoutTransactionRecordsItemFieldTransStatusName      = big.NewInt(1 << 13)
+	queryPayoutTransactionRecordsItemFieldTransStatusCategory  = big.NewInt(1 << 14)
+	queryPayoutTransactionRecordsItemFieldLastUpdated          = big.NewInt(1 << 15)
+	queryPayoutTransactionRecordsItemFieldTotalAmount          = big.NewInt(1 << 16)
+	queryPayoutTransactionRecordsItemFieldNetAmount            = big.NewInt(1 << 17)
+	queryPayoutTransactionRecordsItemFieldFeeAmount            = big.NewInt(1 << 18)
+	queryPayoutTransactionRecordsItemFieldSource               = big.NewInt(1 << 19)
+	queryPayoutTransactionRecordsItemFieldParentOrgName        = big.NewInt(1 << 20)
+	queryPayoutTransactionRecordsItemFieldParentOrgId          = big.NewInt(1 << 21)
+	queryPayoutTransactionRecordsItemFieldBatchNumber          = big.NewInt(1 << 22)
+	queryPayoutTransactionRecordsItemFieldPaymentStatus        = big.NewInt(1 << 23)
+	queryPayoutTransactionRecordsItemFieldPaymentMethod        = big.NewInt(1 << 24)
+	queryPayoutTransactionRecordsItemFieldCardToken            = big.NewInt(1 << 25)
+	queryPayoutTransactionRecordsItemFieldCheckNumber          = big.NewInt(1 << 26)
+	queryPayoutTransactionRecordsItemFieldCheckData            = big.NewInt(1 << 27)
+	queryPayoutTransactionRecordsItemFieldPaymentData          = big.NewInt(1 << 28)
+	queryPayoutTransactionRecordsItemFieldBills                = big.NewInt(1 << 29)
+	queryPayoutTransactionRecordsItemFieldEvents               = big.NewInt(1 << 30)
+	queryPayoutTransactionRecordsItemFieldExternalPaypointId   = big.NewInt(1 << 31)
+	queryPayoutTransactionRecordsItemFieldEntryName            = big.NewInt(1 << 32)
+	queryPayoutTransactionRecordsItemFieldGateway              = big.NewInt(1 << 33)
+	queryPayoutTransactionRecordsItemFieldBatchId              = big.NewInt(1 << 34)
+	queryPayoutTransactionRecordsItemFieldHasVcardTransactions = big.NewInt(1 << 35)
+	queryPayoutTransactionRecordsItemFieldIsSameDayAch         = big.NewInt(1 << 36)
+	queryPayoutTransactionRecordsItemFieldScheduleId           = big.NewInt(1 << 37)
+	queryPayoutTransactionRecordsItemFieldSettlementStatus     = big.NewInt(1 << 38)
+	queryPayoutTransactionRecordsItemFieldSettlementStatusName = big.NewInt(1 << 39)
+	queryPayoutTransactionRecordsItemFieldSettlementDate       = big.NewInt(1 << 40)
+	queryPayoutTransactionRecordsItemFieldRiskFlagged          = big.NewInt(1 << 41)
+	queryPayoutTransactionRecordsItemFieldRiskFlaggedOn        = big.NewInt(1 << 42)
+	queryPayoutTransactionRecordsItemFieldRiskStatus           = big.NewInt(1 << 43)
+	queryPayoutTransactionRecordsItemFieldRiskReason           = big.NewInt(1 << 44)
+	queryPayoutTransactionRecordsItemFieldRiskAction           = big.NewInt(1 << 45)
+	queryPayoutTransactionRecordsItemFieldRiskActionCode       = big.NewInt(1 << 46)
+	queryPayoutTransactionRecordsItemFieldPayoutProgram        = big.NewInt(1 << 47)
+	queryPayoutTransactionRecordsItemFieldAchTraceNumber       = big.NewInt(1 << 48)
+	queryPayoutTransactionRecordsItemFieldEntityId             = big.NewInt(1 << 49)
+	queryPayoutTransactionRecordsItemFieldAllowedActions       = big.NewInt(1 << 50)
 )
 
 type QueryPayoutTransactionRecordsItem struct {
@@ -13061,6 +13072,7 @@ type QueryPayoutTransactionRecordsItem struct {
 	// Internal status of transaction.
 	Status    *int             `json:"Status,omitempty" url:"Status,omitempty"`
 	PaymentId *PaymentIdString `json:"PaymentId,omitempty" url:"PaymentId,omitempty"`
+	OrderId   *OrderId         `json:"orderId,omitempty" url:"orderId,omitempty"`
 	// ID of the transaction linked to this payout, when applicable.
 	TransId *string `json:"TransId,omitempty" url:"TransId,omitempty"`
 	// Status of the linked transaction.
@@ -13190,6 +13202,13 @@ func (q *QueryPayoutTransactionRecordsItem) GetPaymentId() *PaymentIdString {
 		return nil
 	}
 	return q.PaymentId
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetOrderId() *OrderId {
+	if q == nil {
+		return nil
+	}
+	return q.OrderId
 }
 
 func (q *QueryPayoutTransactionRecordsItem) GetTransId() *string {
@@ -13554,6 +13573,13 @@ func (q *QueryPayoutTransactionRecordsItem) SetStatus(status *int) {
 func (q *QueryPayoutTransactionRecordsItem) SetPaymentId(paymentId *PaymentIdString) {
 	q.PaymentId = paymentId
 	q.require(queryPayoutTransactionRecordsItemFieldPaymentId)
+}
+
+// SetOrderId sets the OrderId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetOrderId(orderId *OrderId) {
+	q.OrderId = orderId
+	q.require(queryPayoutTransactionRecordsItemFieldOrderId)
 }
 
 // SetTransId sets the TransId field and marks it as non-optional;

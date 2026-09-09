@@ -15,18 +15,6 @@ var (
 	requestOutAuthorizeFieldAllowDuplicatedBills = big.NewInt(1 << 1)
 	requestOutAuthorizeFieldDoNotCreateBills     = big.NewInt(1 << 2)
 	requestOutAuthorizeFieldSameDayAch           = big.NewInt(1 << 3)
-	requestOutAuthorizeFieldEntryPoint           = big.NewInt(1 << 4)
-	requestOutAuthorizeFieldSource               = big.NewInt(1 << 5)
-	requestOutAuthorizeFieldOrderId              = big.NewInt(1 << 6)
-	requestOutAuthorizeFieldOrderDescription     = big.NewInt(1 << 7)
-	requestOutAuthorizeFieldPaymentMethod        = big.NewInt(1 << 8)
-	requestOutAuthorizeFieldPaymentDetails       = big.NewInt(1 << 9)
-	requestOutAuthorizeFieldVendorData           = big.NewInt(1 << 10)
-	requestOutAuthorizeFieldInvoiceData          = big.NewInt(1 << 11)
-	requestOutAuthorizeFieldAccountId            = big.NewInt(1 << 12)
-	requestOutAuthorizeFieldSubdomain            = big.NewInt(1 << 13)
-	requestOutAuthorizeFieldSubscriptionId       = big.NewInt(1 << 14)
-	requestOutAuthorizeFieldAutoCapture          = big.NewInt(1 << 15)
 )
 
 type RequestOutAuthorize struct {
@@ -39,22 +27,8 @@ type RequestOutAuthorize struct {
 	// When `true`, Payabli authorizes the payout for same-day ACH processing instead of standard ACH. Same-day ACH must be enabled for the paypoint, otherwise the authorization fails with a `400` response and `responseCode` `3492`. Only ACH payouts honor this flag. Wire and RTP payouts ignore it.
 	//
 	// Same-day ACH has a daily cutoff. Capture the transaction before the cutoff, or pass `autoConvertSameDayAch` with a value of `true` when you capture it.
-	SameDayAch       *bool                   `json:"-" url:"sameDayACH,omitempty"`
-	EntryPoint       Entrypointfield         `json:"entryPoint" url:"-"`
-	Source           *Source                 `json:"source,omitempty" url:"-"`
-	OrderId          *OrderId                `json:"orderId,omitempty" url:"-"`
-	OrderDescription *Orderdescription       `json:"orderDescription,omitempty" url:"-"`
-	PaymentMethod    *AuthorizePaymentMethod `json:"paymentMethod" url:"-"`
-	// Object containing payment details.
-	PaymentDetails *RequestOutAuthorizePaymentDetails `json:"paymentDetails" url:"-"`
-	// Object containing vendor data.
-	VendorData *RequestOutAuthorizeVendorData `json:"vendorData" url:"-"`
-	// Bills to pay with this payout, each referenced by `billId`.
-	InvoiceData    []*RequestOutAuthorizeInvoiceData `json:"invoiceData,omitempty" url:"-"`
-	AccountId      *AccountId                        `json:"accountId,omitempty" url:"-"`
-	Subdomain      *Subdomain                        `json:"subdomain,omitempty" url:"-"`
-	SubscriptionId *Subscriptionid                   `json:"subscriptionId,omitempty" url:"-"`
-	AutoCapture    *AutoCapture                      `json:"autoCapture,omitempty" url:"-"`
+	SameDayAch *bool                `json:"-" url:"sameDayACH,omitempty"`
+	Body       *AuthorizePayoutBody `json:"-" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -95,109 +69,17 @@ func (r *RequestOutAuthorize) SetSameDayAch(sameDayAch *bool) {
 	r.require(requestOutAuthorizeFieldSameDayAch)
 }
 
-// SetEntryPoint sets the EntryPoint field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorize) SetEntryPoint(entryPoint Entrypointfield) {
-	r.EntryPoint = entryPoint
-	r.require(requestOutAuthorizeFieldEntryPoint)
-}
-
-// SetSource sets the Source field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorize) SetSource(source *Source) {
-	r.Source = source
-	r.require(requestOutAuthorizeFieldSource)
-}
-
-// SetOrderId sets the OrderId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorize) SetOrderId(orderId *OrderId) {
-	r.OrderId = orderId
-	r.require(requestOutAuthorizeFieldOrderId)
-}
-
-// SetOrderDescription sets the OrderDescription field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorize) SetOrderDescription(orderDescription *Orderdescription) {
-	r.OrderDescription = orderDescription
-	r.require(requestOutAuthorizeFieldOrderDescription)
-}
-
-// SetPaymentMethod sets the PaymentMethod field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorize) SetPaymentMethod(paymentMethod *AuthorizePaymentMethod) {
-	r.PaymentMethod = paymentMethod
-	r.require(requestOutAuthorizeFieldPaymentMethod)
-}
-
-// SetPaymentDetails sets the PaymentDetails field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorize) SetPaymentDetails(paymentDetails *RequestOutAuthorizePaymentDetails) {
-	r.PaymentDetails = paymentDetails
-	r.require(requestOutAuthorizeFieldPaymentDetails)
-}
-
-// SetVendorData sets the VendorData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorize) SetVendorData(vendorData *RequestOutAuthorizeVendorData) {
-	r.VendorData = vendorData
-	r.require(requestOutAuthorizeFieldVendorData)
-}
-
-// SetInvoiceData sets the InvoiceData field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorize) SetInvoiceData(invoiceData []*RequestOutAuthorizeInvoiceData) {
-	r.InvoiceData = invoiceData
-	r.require(requestOutAuthorizeFieldInvoiceData)
-}
-
-// SetAccountId sets the AccountId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorize) SetAccountId(accountId *AccountId) {
-	r.AccountId = accountId
-	r.require(requestOutAuthorizeFieldAccountId)
-}
-
-// SetSubdomain sets the Subdomain field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorize) SetSubdomain(subdomain *Subdomain) {
-	r.Subdomain = subdomain
-	r.require(requestOutAuthorizeFieldSubdomain)
-}
-
-// SetSubscriptionId sets the SubscriptionId field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorize) SetSubscriptionId(subscriptionId *Subscriptionid) {
-	r.SubscriptionId = subscriptionId
-	r.require(requestOutAuthorizeFieldSubscriptionId)
-}
-
-// SetAutoCapture sets the AutoCapture field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (r *RequestOutAuthorize) SetAutoCapture(autoCapture *AutoCapture) {
-	r.AutoCapture = autoCapture
-	r.require(requestOutAuthorizeFieldAutoCapture)
-}
-
 func (r *RequestOutAuthorize) UnmarshalJSON(data []byte) error {
-	type unmarshaler RequestOutAuthorize
-	var body unmarshaler
+	body := new(AuthorizePayoutBody)
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
-	*r = RequestOutAuthorize(body)
+	r.Body = body
 	return nil
 }
 
 func (r *RequestOutAuthorize) MarshalJSON() ([]byte, error) {
-	type embed RequestOutAuthorize
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*r),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, r.explicitFields)
-	return json.Marshal(explicitMarshaler)
+	return json.Marshal(r.Body)
 }
 
 var (
@@ -288,6 +170,100 @@ func (c *CaptureOutRequest) SetIdempotencyKey(idempotencyKey *IdempotencyKey) {
 func (c *CaptureOutRequest) SetAutoConvertSameDayAch(autoConvertSameDayAch *bool) {
 	c.AutoConvertSameDayAch = autoConvertSameDayAch
 	c.require(captureOutRequestFieldAutoConvertSameDayAch)
+}
+
+var (
+	payoutRequestFieldIdempotencyKey            = big.NewInt(1 << 0)
+	payoutRequestFieldSameDayAch                = big.NewInt(1 << 1)
+	payoutRequestFieldDoNotCreateBills          = big.NewInt(1 << 2)
+	payoutRequestFieldAllowDuplicatedBills      = big.NewInt(1 << 3)
+	payoutRequestFieldUpdateVendorPaymentMethod = big.NewInt(1 << 4)
+	payoutRequestFieldAutoConvertSameDayAch     = big.NewInt(1 << 5)
+)
+
+type PayoutRequest struct {
+	// _Optional but recommended_ A unique ID that you can include to prevent duplicating objects or transactions in the case that a request is sent more than once. This key isn't generated in Payabli, you must generate it yourself. This key persists for 2 minutes. After 2 minutes, you can reuse the key if needed.
+	IdempotencyKey *IdempotencyKey `json:"-" url:"-"`
+	// When `true`, Payabli authorizes the payout for same-day ACH processing instead of standard ACH. Same-day ACH must be enabled for the paypoint, otherwise the authorization fails with a `400` response and `responseCode` `3492`. Only ACH payouts honor this flag. Wire and RTP payouts ignore it.
+	//
+	// Because this endpoint captures immediately, pass `autoConvertSameDayAch` with a value of `true` to fall back to standard ACH if the capture runs after the same-day ACH cutoff.
+	SameDayAch *bool `json:"-" url:"sameDayACH,omitempty"`
+	// When `true`, Payabli won't automatically create a bill for this payout transaction.
+	DoNotCreateBills *bool `json:"-" url:"doNotCreateBills,omitempty"`
+	// When `true`, the payout bypasses the requirement for unique bills, identified by vendor invoice number. This allows you to make more than one payout for a bill, like a split payment.
+	AllowDuplicatedBills *bool `json:"-" url:"allowDuplicatedBills,omitempty"`
+	// When `true`, Payabli updates the vendor's stored default payment method to the method used in this payout.
+	UpdateVendorPaymentMethod *bool `json:"-" url:"updateVendorPaymentMethod,omitempty"`
+	// Controls what happens to a payout authorized with `sameDayACH` set to `true` when the capture runs after the same-day ACH cutoff. When `true`, Payabli converts the payout to a standard ACH payment and captures it. When `false`, the capture is declined.
+	//
+	// This parameter has no effect on payouts that weren't authorized for same-day ACH.
+	AutoConvertSameDayAch *bool                `json:"-" url:"autoConvertSameDayAch,omitempty"`
+	Body                  *AuthorizePayoutBody `json:"-" url:"-"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+}
+
+func (p *PayoutRequest) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetIdempotencyKey sets the IdempotencyKey field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutRequest) SetIdempotencyKey(idempotencyKey *IdempotencyKey) {
+	p.IdempotencyKey = idempotencyKey
+	p.require(payoutRequestFieldIdempotencyKey)
+}
+
+// SetSameDayAch sets the SameDayAch field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutRequest) SetSameDayAch(sameDayAch *bool) {
+	p.SameDayAch = sameDayAch
+	p.require(payoutRequestFieldSameDayAch)
+}
+
+// SetDoNotCreateBills sets the DoNotCreateBills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutRequest) SetDoNotCreateBills(doNotCreateBills *bool) {
+	p.DoNotCreateBills = doNotCreateBills
+	p.require(payoutRequestFieldDoNotCreateBills)
+}
+
+// SetAllowDuplicatedBills sets the AllowDuplicatedBills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutRequest) SetAllowDuplicatedBills(allowDuplicatedBills *bool) {
+	p.AllowDuplicatedBills = allowDuplicatedBills
+	p.require(payoutRequestFieldAllowDuplicatedBills)
+}
+
+// SetUpdateVendorPaymentMethod sets the UpdateVendorPaymentMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutRequest) SetUpdateVendorPaymentMethod(updateVendorPaymentMethod *bool) {
+	p.UpdateVendorPaymentMethod = updateVendorPaymentMethod
+	p.require(payoutRequestFieldUpdateVendorPaymentMethod)
+}
+
+// SetAutoConvertSameDayAch sets the AutoConvertSameDayAch field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutRequest) SetAutoConvertSameDayAch(autoConvertSameDayAch *bool) {
+	p.AutoConvertSameDayAch = autoConvertSameDayAch
+	p.require(payoutRequestFieldAutoConvertSameDayAch)
+}
+
+func (p *PayoutRequest) UnmarshalJSON(data []byte) error {
+	body := new(AuthorizePayoutBody)
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+	p.Body = body
+	return nil
+}
+
+func (p *PayoutRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(p.Body)
 }
 
 var (
@@ -840,6 +816,269 @@ func (a *AuthCapturePayoutResponseData) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AuthCapturePayoutResponseData) String() string {
+	if a == nil {
+		return "<nil>"
+	}
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+var (
+	authorizePayoutBodyFieldEntryPoint       = big.NewInt(1 << 0)
+	authorizePayoutBodyFieldSource           = big.NewInt(1 << 1)
+	authorizePayoutBodyFieldOrderId          = big.NewInt(1 << 2)
+	authorizePayoutBodyFieldOrderDescription = big.NewInt(1 << 3)
+	authorizePayoutBodyFieldPaymentMethod    = big.NewInt(1 << 4)
+	authorizePayoutBodyFieldPaymentDetails   = big.NewInt(1 << 5)
+	authorizePayoutBodyFieldVendorData       = big.NewInt(1 << 6)
+	authorizePayoutBodyFieldInvoiceData      = big.NewInt(1 << 7)
+	authorizePayoutBodyFieldAccountId        = big.NewInt(1 << 8)
+	authorizePayoutBodyFieldSubdomain        = big.NewInt(1 << 9)
+	authorizePayoutBodyFieldSubscriptionId   = big.NewInt(1 << 10)
+	authorizePayoutBodyFieldAutoCapture      = big.NewInt(1 << 11)
+)
+
+type AuthorizePayoutBody struct {
+	EntryPoint       Entrypointfield         `json:"entryPoint" url:"entryPoint"`
+	Source           *Source                 `json:"source,omitempty" url:"source,omitempty"`
+	OrderId          *OrderId                `json:"orderId,omitempty" url:"orderId,omitempty"`
+	OrderDescription *Orderdescription       `json:"orderDescription,omitempty" url:"orderDescription,omitempty"`
+	PaymentMethod    *AuthorizePaymentMethod `json:"paymentMethod" url:"paymentMethod"`
+	// Object containing payment details.
+	PaymentDetails *RequestOutAuthorizePaymentDetails `json:"paymentDetails" url:"paymentDetails"`
+	// Object containing vendor data.
+	VendorData *RequestOutAuthorizeVendorData `json:"vendorData" url:"vendorData"`
+	// Bills to pay with this payout, each referenced by `billId`.
+	InvoiceData    []*RequestOutAuthorizeInvoiceData `json:"invoiceData,omitempty" url:"invoiceData,omitempty"`
+	AccountId      *AccountId                        `json:"accountId,omitempty" url:"accountId,omitempty"`
+	Subdomain      *Subdomain                        `json:"subdomain,omitempty" url:"subdomain,omitempty"`
+	SubscriptionId *Subscriptionid                   `json:"subscriptionId,omitempty" url:"subscriptionId,omitempty"`
+	AutoCapture    *AutoCapture                      `json:"autoCapture,omitempty" url:"autoCapture,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AuthorizePayoutBody) GetEntryPoint() Entrypointfield {
+	if a == nil {
+		return ""
+	}
+	return a.EntryPoint
+}
+
+func (a *AuthorizePayoutBody) GetSource() *Source {
+	if a == nil {
+		return nil
+	}
+	return a.Source
+}
+
+func (a *AuthorizePayoutBody) GetOrderId() *OrderId {
+	if a == nil {
+		return nil
+	}
+	return a.OrderId
+}
+
+func (a *AuthorizePayoutBody) GetOrderDescription() *Orderdescription {
+	if a == nil {
+		return nil
+	}
+	return a.OrderDescription
+}
+
+func (a *AuthorizePayoutBody) GetPaymentMethod() *AuthorizePaymentMethod {
+	if a == nil {
+		return nil
+	}
+	return a.PaymentMethod
+}
+
+func (a *AuthorizePayoutBody) GetPaymentDetails() *RequestOutAuthorizePaymentDetails {
+	if a == nil {
+		return nil
+	}
+	return a.PaymentDetails
+}
+
+func (a *AuthorizePayoutBody) GetVendorData() *RequestOutAuthorizeVendorData {
+	if a == nil {
+		return nil
+	}
+	return a.VendorData
+}
+
+func (a *AuthorizePayoutBody) GetInvoiceData() []*RequestOutAuthorizeInvoiceData {
+	if a == nil {
+		return nil
+	}
+	return a.InvoiceData
+}
+
+func (a *AuthorizePayoutBody) GetAccountId() *AccountId {
+	if a == nil {
+		return nil
+	}
+	return a.AccountId
+}
+
+func (a *AuthorizePayoutBody) GetSubdomain() *Subdomain {
+	if a == nil {
+		return nil
+	}
+	return a.Subdomain
+}
+
+func (a *AuthorizePayoutBody) GetSubscriptionId() *Subscriptionid {
+	if a == nil {
+		return nil
+	}
+	return a.SubscriptionId
+}
+
+func (a *AuthorizePayoutBody) GetAutoCapture() *AutoCapture {
+	if a == nil {
+		return nil
+	}
+	return a.AutoCapture
+}
+
+func (a *AuthorizePayoutBody) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
+	return a.extraProperties
+}
+
+func (a *AuthorizePayoutBody) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetEntryPoint sets the EntryPoint field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AuthorizePayoutBody) SetEntryPoint(entryPoint Entrypointfield) {
+	a.EntryPoint = entryPoint
+	a.require(authorizePayoutBodyFieldEntryPoint)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AuthorizePayoutBody) SetSource(source *Source) {
+	a.Source = source
+	a.require(authorizePayoutBodyFieldSource)
+}
+
+// SetOrderId sets the OrderId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AuthorizePayoutBody) SetOrderId(orderId *OrderId) {
+	a.OrderId = orderId
+	a.require(authorizePayoutBodyFieldOrderId)
+}
+
+// SetOrderDescription sets the OrderDescription field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AuthorizePayoutBody) SetOrderDescription(orderDescription *Orderdescription) {
+	a.OrderDescription = orderDescription
+	a.require(authorizePayoutBodyFieldOrderDescription)
+}
+
+// SetPaymentMethod sets the PaymentMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AuthorizePayoutBody) SetPaymentMethod(paymentMethod *AuthorizePaymentMethod) {
+	a.PaymentMethod = paymentMethod
+	a.require(authorizePayoutBodyFieldPaymentMethod)
+}
+
+// SetPaymentDetails sets the PaymentDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AuthorizePayoutBody) SetPaymentDetails(paymentDetails *RequestOutAuthorizePaymentDetails) {
+	a.PaymentDetails = paymentDetails
+	a.require(authorizePayoutBodyFieldPaymentDetails)
+}
+
+// SetVendorData sets the VendorData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AuthorizePayoutBody) SetVendorData(vendorData *RequestOutAuthorizeVendorData) {
+	a.VendorData = vendorData
+	a.require(authorizePayoutBodyFieldVendorData)
+}
+
+// SetInvoiceData sets the InvoiceData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AuthorizePayoutBody) SetInvoiceData(invoiceData []*RequestOutAuthorizeInvoiceData) {
+	a.InvoiceData = invoiceData
+	a.require(authorizePayoutBodyFieldInvoiceData)
+}
+
+// SetAccountId sets the AccountId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AuthorizePayoutBody) SetAccountId(accountId *AccountId) {
+	a.AccountId = accountId
+	a.require(authorizePayoutBodyFieldAccountId)
+}
+
+// SetSubdomain sets the Subdomain field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AuthorizePayoutBody) SetSubdomain(subdomain *Subdomain) {
+	a.Subdomain = subdomain
+	a.require(authorizePayoutBodyFieldSubdomain)
+}
+
+// SetSubscriptionId sets the SubscriptionId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AuthorizePayoutBody) SetSubscriptionId(subscriptionId *Subscriptionid) {
+	a.SubscriptionId = subscriptionId
+	a.require(authorizePayoutBodyFieldSubscriptionId)
+}
+
+// SetAutoCapture sets the AutoCapture field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AuthorizePayoutBody) SetAutoCapture(autoCapture *AutoCapture) {
+	a.AutoCapture = autoCapture
+	a.require(authorizePayoutBodyFieldAutoCapture)
+}
+
+func (a *AuthorizePayoutBody) UnmarshalJSON(data []byte) error {
+	type unmarshaler AuthorizePayoutBody
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AuthorizePayoutBody(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AuthorizePayoutBody) MarshalJSON() ([]byte, error) {
+	type embed AuthorizePayoutBody
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *AuthorizePayoutBody) String() string {
 	if a == nil {
 		return "<nil>"
 	}
@@ -1641,14 +1880,16 @@ func (b *BillDetailResponse) String() string {
 
 // Response object for bill details. Contains basic information about a bill.
 var (
-	billDetailsResponseFieldBillId        = big.NewInt(1 << 0)
-	billDetailsResponseFieldLotNumber     = big.NewInt(1 << 1)
-	billDetailsResponseFieldInvoiceNumber = big.NewInt(1 << 2)
-	billDetailsResponseFieldNetAmount     = big.NewInt(1 << 3)
-	billDetailsResponseFieldDiscount      = big.NewInt(1 << 4)
-	billDetailsResponseFieldDueDate       = big.NewInt(1 << 5)
-	billDetailsResponseFieldInvoiceDate   = big.NewInt(1 << 6)
-	billDetailsResponseFieldComments      = big.NewInt(1 << 7)
+	billDetailsResponseFieldBillId             = big.NewInt(1 << 0)
+	billDetailsResponseFieldLotNumber          = big.NewInt(1 << 1)
+	billDetailsResponseFieldInvoiceNumber      = big.NewInt(1 << 2)
+	billDetailsResponseFieldNetAmount          = big.NewInt(1 << 3)
+	billDetailsResponseFieldPaidAmount         = big.NewInt(1 << 4)
+	billDetailsResponseFieldOutstandingBalance = big.NewInt(1 << 5)
+	billDetailsResponseFieldDiscount           = big.NewInt(1 << 6)
+	billDetailsResponseFieldDueDate            = big.NewInt(1 << 7)
+	billDetailsResponseFieldInvoiceDate        = big.NewInt(1 << 8)
+	billDetailsResponseFieldComments           = big.NewInt(1 << 9)
 )
 
 type BillDetailsResponse struct {
@@ -1659,6 +1900,10 @@ type BillDetailsResponse struct {
 	InvoiceNumber *InvoiceNumber `json:"invoiceNumber,omitempty" url:"invoiceNumber,omitempty"`
 	// Net Amount owed in bill. Required when adding a bill.
 	NetAmount *NetAmountstring `json:"netAmount,omitempty" url:"netAmount,omitempty"`
+	// The amount paid toward the bill so far.
+	PaidAmount *string `json:"paidAmount,omitempty" url:"paidAmount,omitempty"`
+	// The amount still owed on the bill, calculated as `netAmount` minus `paidAmount`.
+	OutstandingBalance *string `json:"outstandingBalance,omitempty" url:"outstandingBalance,omitempty"`
 	// Bill discount amount.
 	Discount *string `json:"discount,omitempty" url:"discount,omitempty"`
 	// Bill due date in format YYYY-MM-DD or MM/DD/YYYY.
@@ -1701,6 +1946,20 @@ func (b *BillDetailsResponse) GetNetAmount() *NetAmountstring {
 		return nil
 	}
 	return b.NetAmount
+}
+
+func (b *BillDetailsResponse) GetPaidAmount() *string {
+	if b == nil {
+		return nil
+	}
+	return b.PaidAmount
+}
+
+func (b *BillDetailsResponse) GetOutstandingBalance() *string {
+	if b == nil {
+		return nil
+	}
+	return b.OutstandingBalance
 }
 
 func (b *BillDetailsResponse) GetDiscount() *string {
@@ -1771,6 +2030,20 @@ func (b *BillDetailsResponse) SetInvoiceNumber(invoiceNumber *InvoiceNumber) {
 func (b *BillDetailsResponse) SetNetAmount(netAmount *NetAmountstring) {
 	b.NetAmount = netAmount
 	b.require(billDetailsResponseFieldNetAmount)
+}
+
+// SetPaidAmount sets the PaidAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillDetailsResponse) SetPaidAmount(paidAmount *string) {
+	b.PaidAmount = paidAmount
+	b.require(billDetailsResponseFieldPaidAmount)
+}
+
+// SetOutstandingBalance sets the OutstandingBalance field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillDetailsResponse) SetOutstandingBalance(outstandingBalance *string) {
+	b.OutstandingBalance = outstandingBalance
+	b.require(billDetailsResponseFieldOutstandingBalance)
 }
 
 // SetDiscount sets the Discount field and marks it as non-optional;
@@ -3506,7 +3779,7 @@ type RequestOutAuthorizePaymentDetails struct {
 	Currency *string `json:"currency,omitempty" url:"currency,omitempty"`
 	// Service fee to be deducted from the total amount. This amount must be a number, percentages aren't accepted. If you are using a percentage-based fee schedule, you must calculate the value manually.
 	ServiceFee *float64 `json:"serviceFee,omitempty" url:"serviceFee,omitempty"`
-	// Total amount to be charged. If a service fee is included, then this amount should include the service fee.
+	// Total amount to be charged. If a service fee is included, then this amount should include the service fee. If you're using managed payables (`paymentMethod.method` of `managed`), you can partially pay a single bill by setting this below the bill's outstanding balance. See [Partially pay a bill](/guides/pay-out-developer-bills-manage#partially-pay-a-bill).
 	TotalAmount *float64 `json:"totalAmount,omitempty" url:"totalAmount,omitempty"`
 	// Indicates whether the payout should be bundled into a single transaction or processed separately. If set to `true`, each bill will be processed as a separate payout. If `false` or not provided, then multiple bills will be paid with a single payout.
 	Unbundled *bool `json:"unbundled,omitempty" url:"unbundled,omitempty"`

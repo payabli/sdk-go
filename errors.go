@@ -31,7 +31,7 @@ func (b *BadRequestError) Unwrap() error {
 	return b.APIError
 }
 
-// The action isn't permitted from the case's current state.
+// Conflict. Another capture for the same payout is already in progress. Returned when capture requests race for the same payout: one request captures it and the others return this error. Capturing a payout that's already captured returns `7002` instead.
 type ConflictError struct {
 	*core.APIError
 	Body any

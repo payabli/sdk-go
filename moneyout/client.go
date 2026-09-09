@@ -54,34 +54,36 @@ func NewClient(options *core.RequestOptions) *Client {
 // Example:
 //
 //	request := &payabli.RequestOutAuthorize{
-//	    EntryPoint: "8cfec329267",
-//	    OrderDescription: payabli.String(
-//	        "Window Painting",
-//	    ),
-//	    PaymentMethod: &payabli.AuthorizePaymentMethod{
-//	        Method: "managed",
-//	    },
-//	    PaymentDetails: &payabli.RequestOutAuthorizePaymentDetails{
-//	        TotalAmount: payabli.Float64(
-//	            47,
+//	    Body: &payabli.AuthorizePayoutBody{
+//	        EntryPoint: "8cfec329267",
+//	        OrderDescription: payabli.String(
+//	            "Window Painting",
 //	        ),
-//	        Unbundled: payabli.Bool(
-//	            false,
-//	        ),
-//	    },
-//	    VendorData: &payabli.RequestOutAuthorizeVendorData{
-//	        VendorNumber: payabli.String(
-//	            "VEN-123",
-//	        ),
-//	    },
-//	    InvoiceData: []*payabli.RequestOutAuthorizeInvoiceData{
-//	        &payabli.RequestOutAuthorizeInvoiceData{
-//	            BillId: int64(54323),
+//	        PaymentMethod: &payabli.AuthorizePaymentMethod{
+//	            Method: "managed",
 //	        },
+//	        PaymentDetails: &payabli.RequestOutAuthorizePaymentDetails{
+//	            TotalAmount: payabli.Float64(
+//	                47,
+//	            ),
+//	            Unbundled: payabli.Bool(
+//	                false,
+//	            ),
+//	        },
+//	        VendorData: &payabli.RequestOutAuthorizeVendorData{
+//	            VendorNumber: payabli.String(
+//	                "VEN-123",
+//	            ),
+//	        },
+//	        InvoiceData: []*payabli.RequestOutAuthorizeInvoiceData{
+//	            &payabli.RequestOutAuthorizeInvoiceData{
+//	                BillId: int64(54323),
+//	            },
+//	        },
+//	        AutoCapture: payabli.Bool(
+//	            true,
+//	        ),
 //	    },
-//	    AutoCapture: payabli.Bool(
-//	        true,
-//	    ),
 //	}
 //	client.MoneyOut.AuthorizeOut(
 //	    context.TODO(),
@@ -235,6 +237,62 @@ func (c *Client) CaptureOut(
 	response, err := c.WithRawResponse.CaptureOut(
 		ctx,
 		referenceId,
+		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Authorizes a payout and captures it in the same request, returning the capture result. Use this endpoint when you need the capture outcome synchronously: it does the same work as calling `POST /MoneyOut/authorize` followed by `GET /MoneyOut/capture/{referenceId}`, in a single call.
+//
+// Risk and fraud review runs at both the authorize and capture stages, exactly as it does for the two-call flow.
+//
+// Payabli ignores the `autoCapture` field in the request body, since this endpoint always captures inline.
+//
+// If the capture fails, the payout stays authorized. Retry the capture with `GET /MoneyOut/capture/{referenceId}` using the `referenceId` from the error response rather than resubmitting, which would create a second payout. See the [Manage payouts guide](/guides/pay-out-developer-payouts-manage#authorize-and-capture-in-one-call) for details.
+//
+// Example:
+//
+//	request := &payabli.PayoutRequest{
+//	    Body: &payabli.AuthorizePayoutBody{
+//	        EntryPoint: "8cfec329267",
+//	        OrderDescription: payabli.String(
+//	            "Window Painting",
+//	        ),
+//	        PaymentMethod: &payabli.AuthorizePaymentMethod{
+//	            Method: "managed",
+//	        },
+//	        PaymentDetails: &payabli.RequestOutAuthorizePaymentDetails{
+//	            TotalAmount: payabli.Float64(
+//	                47,
+//	            ),
+//	        },
+//	        VendorData: &payabli.RequestOutAuthorizeVendorData{
+//	            VendorNumber: payabli.String(
+//	                "VEN-123",
+//	            ),
+//	        },
+//	        InvoiceData: []*payabli.RequestOutAuthorizeInvoiceData{
+//	            &payabli.RequestOutAuthorizeInvoiceData{
+//	                BillId: int64(54323),
+//	            },
+//	        },
+//	    },
+//	}
+//	client.MoneyOut.Payout(
+//	    context.TODO(),
+//	    request,
+//	)
+func (c *Client) Payout(
+	ctx context.Context,
+	request *payabli.PayoutRequest,
+	opts ...option.RequestOption,
+) (*payabli.AuthCapturePayoutResponse, error) {
+	response, err := c.WithRawResponse.Payout(
+		ctx,
 		request,
 		opts...,
 	)

@@ -10,9 +10,9 @@ import (
 	time "time"
 )
 
-func TestSettersFileContentImageOnly(t *testing.T) {
+func TestSettersOcrDocumentJsonRequest(t *testing.T) {
 	t.Run("SetFtype", func(t *testing.T) {
-		obj := &FileContentImageOnly{}
+		obj := &OcrDocumentJsonRequest{}
 		var fernTestValueFtype *FileContentFtype
 		obj.SetFtype(fernTestValueFtype)
 		assert.Equal(t, fernTestValueFtype, obj.Ftype)
@@ -20,7 +20,7 @@ func TestSettersFileContentImageOnly(t *testing.T) {
 	})
 
 	t.Run("SetFilename", func(t *testing.T) {
-		obj := &FileContentImageOnly{}
+		obj := &OcrDocumentJsonRequest{}
 		var fernTestValueFilename *string
 		obj.SetFilename(fernTestValueFilename)
 		assert.Equal(t, fernTestValueFilename, obj.Filename)
@@ -28,7 +28,7 @@ func TestSettersFileContentImageOnly(t *testing.T) {
 	})
 
 	t.Run("SetFurl", func(t *testing.T) {
-		obj := &FileContentImageOnly{}
+		obj := &OcrDocumentJsonRequest{}
 		var fernTestValueFurl *string
 		obj.SetFurl(fernTestValueFurl)
 		assert.Equal(t, fernTestValueFurl, obj.Furl)
@@ -36,7 +36,7 @@ func TestSettersFileContentImageOnly(t *testing.T) {
 	})
 
 	t.Run("SetFContent", func(t *testing.T) {
-		obj := &FileContentImageOnly{}
+		obj := &OcrDocumentJsonRequest{}
 		var fernTestValueFContent *string
 		obj.SetFContent(fernTestValueFContent)
 		assert.Equal(t, fernTestValueFContent, obj.FContent)
@@ -45,146 +45,11 @@ func TestSettersFileContentImageOnly(t *testing.T) {
 
 }
 
-func TestGettersFileContentImageOnly(t *testing.T) {
-	t.Run("GetFtype", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &FileContentImageOnly{}
-		var expected *FileContentFtype
-		obj.Ftype = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetFtype(), "getter should return the property value")
-	})
-
-	t.Run("GetFtype_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &FileContentImageOnly{}
-		obj.Ftype = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetFtype(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetFtype_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *FileContentImageOnly
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetFtype() // Should return zero value
-	})
-
-	t.Run("GetFilename", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &FileContentImageOnly{}
-		var expected *string
-		obj.Filename = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetFilename(), "getter should return the property value")
-	})
-
-	t.Run("GetFilename_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &FileContentImageOnly{}
-		obj.Filename = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetFilename(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetFilename_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *FileContentImageOnly
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetFilename() // Should return zero value
-	})
-
-	t.Run("GetFurl", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &FileContentImageOnly{}
-		var expected *string
-		obj.Furl = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetFurl(), "getter should return the property value")
-	})
-
-	t.Run("GetFurl_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &FileContentImageOnly{}
-		obj.Furl = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetFurl(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetFurl_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *FileContentImageOnly
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetFurl() // Should return zero value
-	})
-
-	t.Run("GetFContent", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &FileContentImageOnly{}
-		var expected *string
-		obj.FContent = expected
-
-		// Act & Assert
-		assert.Equal(t, expected, obj.GetFContent(), "getter should return the property value")
-	})
-
-	t.Run("GetFContent_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &FileContentImageOnly{}
-		obj.FContent = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetFContent(), "getter should return nil when property is nil")
-	})
-
-	t.Run("GetFContent_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *FileContentImageOnly
-		// Should not panic - getters should handle nil receiver gracefully
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("Getter panicked on nil receiver: %v", r)
-			}
-		}()
-		_ = obj.GetFContent() // Should return zero value
-	})
-
-}
-
-func TestSettersMarkExplicitFileContentImageOnly(t *testing.T) {
+func TestSettersMarkExplicitOcrDocumentJsonRequest(t *testing.T) {
 	t.Run("SetFtype_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &FileContentImageOnly{}
+		obj := &OcrDocumentJsonRequest{}
 		var fernTestValueFtype *FileContentFtype
 
 		// Act
@@ -215,7 +80,7 @@ func TestSettersMarkExplicitFileContentImageOnly(t *testing.T) {
 	t.Run("SetFilename_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &FileContentImageOnly{}
+		obj := &OcrDocumentJsonRequest{}
 		var fernTestValueFilename *string
 
 		// Act
@@ -246,7 +111,7 @@ func TestSettersMarkExplicitFileContentImageOnly(t *testing.T) {
 	t.Run("SetFurl_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &FileContentImageOnly{}
+		obj := &OcrDocumentJsonRequest{}
 		var fernTestValueFurl *string
 
 		// Act
@@ -277,7 +142,7 @@ func TestSettersMarkExplicitFileContentImageOnly(t *testing.T) {
 	t.Run("SetFContent_MarksExplicit", func(t *testing.T) {
 		t.Parallel()
 		// Arrange
-		obj := &FileContentImageOnly{}
+		obj := &OcrDocumentJsonRequest{}
 		var fernTestValueFContent *string
 
 		// Act
@@ -6334,39 +6199,6 @@ func TestSettersMarkExplicitPayabliApiResponseOcr(t *testing.T) {
 
 }
 
-func TestJSONMarshalingFileContentImageOnly(t *testing.T) {
-	t.Run("MarshalUnmarshal", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &FileContentImageOnly{}
-
-		// Act - Marshal to JSON
-		data, err := json.Marshal(obj)
-		require.NoError(t, err, "marshaling should succeed")
-		assert.NotNil(t, data, "marshaled data should not be nil")
-		assert.NotEmpty(t, data, "marshaled data should not be empty")
-
-		// Unmarshal back and verify round-trip
-		var unmarshaled FileContentImageOnly
-		err = json.Unmarshal(data, &unmarshaled)
-		assert.NoError(t, err, "round-trip unmarshal should succeed")
-	})
-
-	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
-		t.Parallel()
-		var obj FileContentImageOnly
-		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
-		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
-	})
-
-	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
-		t.Parallel()
-		var obj FileContentImageOnly
-		err := json.Unmarshal([]byte(`{}`), &obj)
-		assert.NoError(t, err, "unmarshaling empty object should succeed")
-	})
-}
-
 func TestJSONMarshalingOcrAttachment(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
@@ -6664,22 +6496,6 @@ func TestJSONMarshalingPayabliApiResponseOcr(t *testing.T) {
 	})
 }
 
-func TestStringFileContentImageOnly(t *testing.T) {
-	t.Run("StringMethod", func(t *testing.T) {
-		t.Parallel()
-		obj := &FileContentImageOnly{}
-		result := obj.String()
-		assert.NotEmpty(t, result, "String() should return a non-empty representation")
-	})
-
-	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *FileContentImageOnly
-		result := obj.String()
-		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
-	})
-}
-
 func TestStringOcrAttachment(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
@@ -6821,29 +6637,6 @@ func TestStringPayabliApiResponseOcr(t *testing.T) {
 		var obj *PayabliApiResponseOcr
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
-	})
-}
-
-func TestExtraPropertiesFileContentImageOnly(t *testing.T) {
-	t.Run("GetExtraProperties", func(t *testing.T) {
-		t.Parallel()
-		obj := &FileContentImageOnly{}
-		// Should not panic when calling GetExtraProperties()
-		defer func() {
-			if r := recover(); r != nil {
-				t.Errorf("GetExtraProperties() panicked: %v", r)
-			}
-		}()
-		extraProps := obj.GetExtraProperties()
-		// Result can be nil or an empty/non-empty map
-		_ = extraProps
-	})
-
-	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
-		t.Parallel()
-		var obj *FileContentImageOnly
-		extraProps := obj.GetExtraProperties()
-		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})
 }
 

@@ -1040,8 +1040,10 @@ var (
 	billQueryRecord2FieldStatus             = big.NewInt(1 << 32)
 	billQueryRecord2FieldTerms              = big.NewInt(1 << 33)
 	billQueryRecord2FieldTotalAmount        = big.NewInt(1 << 34)
-	billQueryRecord2FieldTransaction        = big.NewInt(1 << 35)
-	billQueryRecord2FieldVendor             = big.NewInt(1 << 36)
+	billQueryRecord2FieldPaidAmount         = big.NewInt(1 << 35)
+	billQueryRecord2FieldOutstandingBalance = big.NewInt(1 << 36)
+	billQueryRecord2FieldTransaction        = big.NewInt(1 << 37)
+	billQueryRecord2FieldVendor             = big.NewInt(1 << 38)
 )
 
 type BillQueryRecord2 struct {
@@ -1108,6 +1110,10 @@ type BillQueryRecord2 struct {
 	Terms *Terms `json:"Terms,omitempty" url:"Terms,omitempty"`
 	// Total amount of the bill including taxes and fees.
 	TotalAmount *float64 `json:"TotalAmount,omitempty" url:"TotalAmount,omitempty"`
+	// The amount paid toward the bill so far.
+	PaidAmount *float64 `json:"PaidAmount,omitempty" url:"PaidAmount,omitempty"`
+	// The amount still owed on the bill, calculated as `NetAmount` minus `PaidAmount`.
+	OutstandingBalance *float64 `json:"OutstandingBalance,omitempty" url:"OutstandingBalance,omitempty"`
 	// MoneyOut transaction associated to the bill.
 	Transaction *TransactionOutQueryRecord `json:"Transaction,omitempty" url:"Transaction,omitempty"`
 	Vendor      *VendorOutData             `json:"Vendor,omitempty" url:"Vendor,omitempty"`
@@ -1362,6 +1368,20 @@ func (b *BillQueryRecord2) GetTotalAmount() *float64 {
 		return nil
 	}
 	return b.TotalAmount
+}
+
+func (b *BillQueryRecord2) GetPaidAmount() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.PaidAmount
+}
+
+func (b *BillQueryRecord2) GetOutstandingBalance() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.OutstandingBalance
 }
 
 func (b *BillQueryRecord2) GetTransaction() *TransactionOutQueryRecord {
@@ -1635,6 +1655,20 @@ func (b *BillQueryRecord2) SetTerms(terms *Terms) {
 func (b *BillQueryRecord2) SetTotalAmount(totalAmount *float64) {
 	b.TotalAmount = totalAmount
 	b.require(billQueryRecord2FieldTotalAmount)
+}
+
+// SetPaidAmount sets the PaidAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetPaidAmount(paidAmount *float64) {
+	b.PaidAmount = paidAmount
+	b.require(billQueryRecord2FieldPaidAmount)
+}
+
+// SetOutstandingBalance sets the OutstandingBalance field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetOutstandingBalance(outstandingBalance *float64) {
+	b.OutstandingBalance = outstandingBalance
+	b.require(billQueryRecord2FieldOutstandingBalance)
 }
 
 // SetTransaction sets the Transaction field and marks it as non-optional;
@@ -2630,38 +2664,40 @@ var (
 	billResponseDataFieldNetAmount          = big.NewInt(1 << 2)
 	billResponseDataFieldDiscount           = big.NewInt(1 << 3)
 	billResponseDataFieldTotalAmount        = big.NewInt(1 << 4)
-	billResponseDataFieldBillDate           = big.NewInt(1 << 5)
-	billResponseDataFieldDueDate            = big.NewInt(1 << 6)
-	billResponseDataFieldComments           = big.NewInt(1 << 7)
-	billResponseDataFieldBatchNumber        = big.NewInt(1 << 8)
-	billResponseDataFieldBillItems          = big.NewInt(1 << 9)
-	billResponseDataFieldMode               = big.NewInt(1 << 10)
-	billResponseDataFieldPaymentMethod      = big.NewInt(1 << 11)
-	billResponseDataFieldPaymentId          = big.NewInt(1 << 12)
-	billResponseDataFieldAccountingField1   = big.NewInt(1 << 13)
-	billResponseDataFieldAccountingField2   = big.NewInt(1 << 14)
-	billResponseDataFieldTerms              = big.NewInt(1 << 15)
-	billResponseDataFieldSource             = big.NewInt(1 << 16)
-	billResponseDataFieldAdditionalData     = big.NewInt(1 << 17)
-	billResponseDataFieldVendor             = big.NewInt(1 << 18)
-	billResponseDataFieldStatus             = big.NewInt(1 << 19)
-	billResponseDataFieldCreatedAt          = big.NewInt(1 << 20)
-	billResponseDataFieldEndDate            = big.NewInt(1 << 21)
-	billResponseDataFieldLastUpdated        = big.NewInt(1 << 22)
-	billResponseDataFieldFrequency          = big.NewInt(1 << 23)
-	billResponseDataFieldTransaction        = big.NewInt(1 << 24)
-	billResponseDataFieldBillEvents         = big.NewInt(1 << 25)
-	billResponseDataFieldBillApprovals      = big.NewInt(1 << 26)
-	billResponseDataFieldPaypointLegalname  = big.NewInt(1 << 27)
-	billResponseDataFieldPaypointDbaname    = big.NewInt(1 << 28)
-	billResponseDataFieldParentOrgId        = big.NewInt(1 << 29)
-	billResponseDataFieldParentOrgName      = big.NewInt(1 << 30)
-	billResponseDataFieldPaypointEntryname  = big.NewInt(1 << 31)
-	billResponseDataFieldPaylinkId          = big.NewInt(1 << 32)
-	billResponseDataFieldDocumentsRef       = big.NewInt(1 << 33)
-	billResponseDataFieldExternalPaypointId = big.NewInt(1 << 34)
-	billResponseDataFieldLotNumber          = big.NewInt(1 << 35)
-	billResponseDataFieldEntityId           = big.NewInt(1 << 36)
+	billResponseDataFieldPaidAmount         = big.NewInt(1 << 5)
+	billResponseDataFieldOutstandingBalance = big.NewInt(1 << 6)
+	billResponseDataFieldBillDate           = big.NewInt(1 << 7)
+	billResponseDataFieldDueDate            = big.NewInt(1 << 8)
+	billResponseDataFieldComments           = big.NewInt(1 << 9)
+	billResponseDataFieldBatchNumber        = big.NewInt(1 << 10)
+	billResponseDataFieldBillItems          = big.NewInt(1 << 11)
+	billResponseDataFieldMode               = big.NewInt(1 << 12)
+	billResponseDataFieldPaymentMethod      = big.NewInt(1 << 13)
+	billResponseDataFieldPaymentId          = big.NewInt(1 << 14)
+	billResponseDataFieldAccountingField1   = big.NewInt(1 << 15)
+	billResponseDataFieldAccountingField2   = big.NewInt(1 << 16)
+	billResponseDataFieldTerms              = big.NewInt(1 << 17)
+	billResponseDataFieldSource             = big.NewInt(1 << 18)
+	billResponseDataFieldAdditionalData     = big.NewInt(1 << 19)
+	billResponseDataFieldVendor             = big.NewInt(1 << 20)
+	billResponseDataFieldStatus             = big.NewInt(1 << 21)
+	billResponseDataFieldCreatedAt          = big.NewInt(1 << 22)
+	billResponseDataFieldEndDate            = big.NewInt(1 << 23)
+	billResponseDataFieldLastUpdated        = big.NewInt(1 << 24)
+	billResponseDataFieldFrequency          = big.NewInt(1 << 25)
+	billResponseDataFieldTransaction        = big.NewInt(1 << 26)
+	billResponseDataFieldBillEvents         = big.NewInt(1 << 27)
+	billResponseDataFieldBillApprovals      = big.NewInt(1 << 28)
+	billResponseDataFieldPaypointLegalname  = big.NewInt(1 << 29)
+	billResponseDataFieldPaypointDbaname    = big.NewInt(1 << 30)
+	billResponseDataFieldParentOrgId        = big.NewInt(1 << 31)
+	billResponseDataFieldParentOrgName      = big.NewInt(1 << 32)
+	billResponseDataFieldPaypointEntryname  = big.NewInt(1 << 33)
+	billResponseDataFieldPaylinkId          = big.NewInt(1 << 34)
+	billResponseDataFieldDocumentsRef       = big.NewInt(1 << 35)
+	billResponseDataFieldExternalPaypointId = big.NewInt(1 << 36)
+	billResponseDataFieldLotNumber          = big.NewInt(1 << 37)
+	billResponseDataFieldEntityId           = big.NewInt(1 << 38)
 )
 
 type BillResponseData struct {
@@ -2674,6 +2710,10 @@ type BillResponseData struct {
 	Discount *float64 `json:"Discount,omitempty" url:"Discount,omitempty"`
 	// Total amount for the bill.
 	TotalAmount *float64 `json:"TotalAmount,omitempty" url:"TotalAmount,omitempty"`
+	// The amount paid toward the bill so far.
+	PaidAmount *float64 `json:"PaidAmount,omitempty" url:"PaidAmount,omitempty"`
+	// The amount still owed on the bill, calculated as `NetAmount` minus `PaidAmount`.
+	OutstandingBalance *float64 `json:"OutstandingBalance,omitempty" url:"OutstandingBalance,omitempty"`
 	// Date of bill. Accepted formats: YYYY-MM-DD, MM/DD/YYYY
 	BillDate *time.Time `json:"BillDate,omitempty" url:"BillDate,omitempty" format:"date"`
 	// Due Date of bill. Accepted formats: YYYY-MM-DD, MM/DD/YYYY
@@ -2761,6 +2801,20 @@ func (b *BillResponseData) GetTotalAmount() *float64 {
 		return nil
 	}
 	return b.TotalAmount
+}
+
+func (b *BillResponseData) GetPaidAmount() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.PaidAmount
+}
+
+func (b *BillResponseData) GetOutstandingBalance() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.OutstandingBalance
 }
 
 func (b *BillResponseData) GetBillDate() *time.Time {
@@ -3034,6 +3088,20 @@ func (b *BillResponseData) SetDiscount(discount *float64) {
 func (b *BillResponseData) SetTotalAmount(totalAmount *float64) {
 	b.TotalAmount = totalAmount
 	b.require(billResponseDataFieldTotalAmount)
+}
+
+// SetPaidAmount sets the PaidAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetPaidAmount(paidAmount *float64) {
+	b.PaidAmount = paidAmount
+	b.require(billResponseDataFieldPaidAmount)
+}
+
+// SetOutstandingBalance sets the OutstandingBalance field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetOutstandingBalance(outstandingBalance *float64) {
+	b.OutstandingBalance = outstandingBalance
+	b.require(billResponseDataFieldOutstandingBalance)
 }
 
 // SetBillDate sets the BillDate field and marks it as non-optional;
@@ -3338,6 +3406,7 @@ type Billitems = []*BillItem
 // - `11`: Rejected
 // - `20`: Approved
 // - `50`: Payment in transit
+// - `75`: Partially paid
 // - `100`: Paid
 type Billstatus = int
 

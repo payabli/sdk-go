@@ -36,7 +36,7 @@ func (r *RawClient) OcrDocumentForm(
 	ctx context.Context,
 	// The type of object to create in Payabli. Accepted values are `bill` and `invoice`.
 	typeResult payabli.TypeResult,
-	request *payabli.FileContentImageOnly,
+	request *payabli.OcrDocumentFormRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.PayabliApiResponseOcr], error) {
 	options := core.NewRequestOptions(opts...)
@@ -60,6 +60,15 @@ func (r *RawClient) OcrDocumentForm(
 		),
 		authHeaders,
 	)
+	writer := internal.NewMultipartWriter()
+	if err := writer.WriteFile("file", request.File); err != nil {
+		return nil, err
+	}
+	if err := writer.Close(); err != nil {
+		return nil, err
+	}
+	headers.Set("Content-Type", writer.ContentType())
+
 	var response *payabli.PayabliApiResponseOcr
 	raw, err := r.caller.Call(
 		ctx,
@@ -72,7 +81,7 @@ func (r *RawClient) OcrDocumentForm(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			Request:         request,
+			Request:         writer.Buffer(),
 			Response:        &response,
 			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
 		},
@@ -91,7 +100,7 @@ func (r *RawClient) OcrDocumentJson(
 	ctx context.Context,
 	// The type of object to create in Payabli. Accepted values are `bill` and `invoice`.
 	typeResult payabli.TypeResult,
-	request *payabli.FileContentImageOnly,
+	request *payabli.OcrDocumentJsonRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[*payabli.PayabliApiResponseOcr], error) {
 	options := core.NewRequestOptions(opts...)
@@ -115,6 +124,7 @@ func (r *RawClient) OcrDocumentJson(
 		),
 		authHeaders,
 	)
+	headers.Add("Content-Type", "application/json")
 	var response *payabli.PayabliApiResponseOcr
 	raw, err := r.caller.Call(
 		ctx,
