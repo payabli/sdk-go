@@ -11145,8 +11145,8 @@ type Owners struct {
 	// Owner address state.
 	Ostate *string `json:"ostate,omitempty" url:"ostate,omitempty"`
 	// Owner address ZIP.
-	Ozip           *string               `json:"ozip,omitempty" url:"ozip,omitempty"`
-	AdditionalData *AdditionalDataString `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	Ozip           *string            `json:"ozip,omitempty" url:"ozip,omitempty"`
+	AdditionalData *AdditionalDataMap `json:"additionalData,omitempty" url:"additionalData,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -11260,7 +11260,7 @@ func (o *Owners) GetOzip() *string {
 	return o.Ozip
 }
 
-func (o *Owners) GetAdditionalData() *AdditionalDataString {
+func (o *Owners) GetAdditionalData() *AdditionalDataMap {
 	if o == nil {
 		return nil
 	}
@@ -11388,7 +11388,7 @@ func (o *Owners) SetOzip(ozip *string) {
 
 // SetAdditionalData sets the AdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (o *Owners) SetAdditionalData(additionalData *AdditionalDataString) {
+func (o *Owners) SetAdditionalData(additionalData *AdditionalDataMap) {
 	o.AdditionalData = additionalData
 	o.require(ownersFieldAdditionalData)
 }
