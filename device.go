@@ -21,7 +21,7 @@ type DeviceChallengeData struct {
 	// terminal to activate it. It can start with leading zeros, so keep it as
 	// a string.
 	Code string `json:"code" url:"code"`
-	// UTC time when the code expires, in ISO-8601 round-trip format. A code is
+	// UTC time when the code expires, in ISO 8601 round-trip format. A code is
 	// valid for 5 minutes after it's issued.
 	ExpiresAt time.Time `json:"expiresAt" url:"expiresAt"`
 

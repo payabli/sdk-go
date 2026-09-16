@@ -121,13 +121,13 @@ func NewClient(options *core.RequestOptions) *Client {
 //	        "Herman's Coatings and Masonry",
 //	    ),
 //	    Name2: payabli.String(
-//	        "<string>",
+//	        "HCM Services",
 //	    ),
 //	    PayeeName1: payabli.String(
-//	        "<string>",
+//	        "Herman Martinez",
 //	    ),
 //	    PayeeName2: payabli.String(
-//	        "<string>",
+//	        "Herman Coatings",
 //	    ),
 //	    PaymentMethod: payabli.String(
 //	        "managed",

@@ -80,12 +80,12 @@ func NewClient(options *core.RequestOptions) *Client {
 //	        &payabli.BillPayOutDataRequest{
 //	            DueDate: payabli.Time(
 //	                payabli.MustParseDate(
-//	                    "2025-08-15",
+//	                    "2027-08-15",
 //	                ),
 //	            ),
 //	            InvoiceDate: payabli.Time(
 //	                payabli.MustParseDate(
-//	                    "2025-08-01",
+//	                    "2027-08-01",
 //	                ),
 //	            ),
 //	            InvoiceNumber: payabli.String(
@@ -98,10 +98,10 @@ func NewClient(options *core.RequestOptions) *Client {
 //	    },
 //	    ScheduleDetails: &payabli.PayoutScheduleDetail{
 //	        StartDate: payabli.String(
-//	            "09/01/2027",
+//	            "01/01/2027",
 //	        ),
 //	        EndDate: payabli.String(
-//	            "09/01/2026",
+//	            "12/31/2027",
 //	        ),
 //	        Frequency: payabli.FrequencyMonthly.Ptr(),
 //	    },

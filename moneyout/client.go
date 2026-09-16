@@ -110,9 +110,8 @@ func (c *Client) AuthorizeOut(
 // Example:
 //
 //	request := []string{
-//	    "2-29",
-//	    "2-28",
-//	    "2-27",
+//	    "129-230",
+//	    "129-219",
 //	}
 //	client.MoneyOut.CancelAllOut(
 //	    context.TODO(),
@@ -190,9 +189,8 @@ func (c *Client) CancelOutDelete(
 //
 //	request := &payabli.CaptureAllOutRequest{
 //	    Body: []string{
-//	        "2-29",
-//	        "2-28",
-//	        "2-27",
+//	        "129-230",
+//	        "129-219",
 //	    },
 //	}
 //	client.MoneyOut.CaptureAllOut(

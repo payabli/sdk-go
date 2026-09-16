@@ -41,6 +41,7 @@ import (
 	query "github.com/payabli/sdk-go/query"
 	statistic "github.com/payabli/sdk-go/statistic"
 	subscription "github.com/payabli/sdk-go/subscription"
+	taptopay "github.com/payabli/sdk-go/taptopay"
 	templates "github.com/payabli/sdk-go/templates"
 	token "github.com/payabli/sdk-go/token"
 	tokenstorage "github.com/payabli/sdk-go/tokenstorage"
@@ -67,6 +68,7 @@ type Client struct {
 	Ocr                 *ocr.Client
 	Notificationlogs    *notificationlogs.Client
 	Device              *device.Client
+	Taptopay            *taptopay.Client
 	Cloud               *cloud.Client
 	LineItem            *lineitem.Client
 	Boarding            *boarding.Client
@@ -146,6 +148,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Ocr:                 ocr.NewClient(options),
 		Notificationlogs:    notificationlogs.NewClient(options),
 		Device:              device.NewClient(options),
+		Taptopay:            taptopay.NewClient(options),
 		Cloud:               cloud.NewClient(options),
 		LineItem:            lineitem.NewClient(options),
 		Boarding:            boarding.NewClient(options),

@@ -164,14 +164,14 @@ func (c *Client) RemoveSubscription(
 //	    },
 //	    ScheduleDetails: &payabli.ScheduleDetail{
 //	        EndDate: payabli.String(
-//	            "2025-03-20",
+//	            "2027-12-31",
 //	        ),
 //	        Frequency: payabli.FrequencyWeekly.Ptr(),
 //	        PlanId: payabli.Int(
 //	            1,
 //	        ),
 //	        StartDate: payabli.String(
-//	            "2024-09-20",
+//	            "2027-01-01",
 //	        ),
 //	    },
 //	}

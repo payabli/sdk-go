@@ -151,9 +151,8 @@ func (r *RawClient) CustomerBasicStats(
 	freq string,
 	// Payabli-generated customer ID. Maps to "Customer ID" column in the Payabli Portal.
 	customerId int,
-	request *payabli.CustomerBasicStatsRequest,
 	opts ...option.RequestOption,
-) (*core.Response[[]*payabli.SubscriptionStatsQueryRecord], error) {
+) (*core.Response[[]*payabli.StatCustomerBasicQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -166,13 +165,73 @@ func (r *RawClient) CustomerBasicStats(
 		freq,
 		customerId,
 	)
-	queryParams, err := internal.QueryValues(request)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
+	headers := internal.MergeHeaders(
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
+	)
+	var response []*payabli.StatCustomerBasicQueryRecord
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
+		},
+	)
 	if err != nil {
 		return nil, err
 	}
-	if len(queryParams) > 0 {
-		endpointURL += "?" + queryParams.Encode()
-	}
+	return &core.Response[[]*payabli.StatCustomerBasicQueryRecord]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
+func (r *RawClient) SubStats(
+	ctx context.Context,
+	// Interval to get the data. Allowed values:
+	//
+	// - `all` - all intervals
+	// - `30` - 1-30 days
+	// - `60` - 31-60 days
+	// - `90` - 61-90 days
+	// - `plus` - +90 days
+	interval string,
+	// The entry level for the request:
+	//   - 0 for Organization
+	//   - 2 for Paypoint
+	level int,
+	// Identifier in Payabli for the entity.
+	entryId int64,
+	opts ...option.RequestOption,
+) (*core.Response[[]*payabli.SubscriptionStatsQueryRecord], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://api-sandbox.payabli.com/api",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/Statistic/subscriptions/%v/%v/%v",
+		interval,
+		level,
+		entryId,
+	)
 	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
 	if authErr != nil {
 		return nil, authErr
@@ -210,81 +269,6 @@ func (r *RawClient) CustomerBasicStats(
 	}, nil
 }
 
-func (r *RawClient) SubStats(
-	ctx context.Context,
-	// Interval to get the data. Allowed values:
-	//
-	// - `all` - all intervals
-	// - `30` - 1-30 days
-	// - `60` - 31-60 days
-	// - `90` - 61-90 days
-	// - `plus` - +90 days
-	interval string,
-	// The entry level for the request:
-	//   - 0 for Organization
-	//   - 2 for Paypoint
-	level int,
-	// Identifier in Payabli for the entity.
-	entryId int64,
-	request *payabli.SubStatsRequest,
-	opts ...option.RequestOption,
-) (*core.Response[[]*payabli.StatBasicQueryRecord], error) {
-	options := core.NewRequestOptions(opts...)
-	baseURL := internal.ResolveBaseURL(
-		options.BaseURL,
-		r.baseURL,
-		"https://api-sandbox.payabli.com/api",
-	)
-	endpointURL := internal.EncodeURL(
-		baseURL+"/Statistic/subscriptions/%v/%v/%v",
-		interval,
-		level,
-		entryId,
-	)
-	queryParams, err := internal.QueryValues(request)
-	if err != nil {
-		return nil, err
-	}
-	if len(queryParams) > 0 {
-		endpointURL += "?" + queryParams.Encode()
-	}
-	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
-	if authErr != nil {
-		return nil, authErr
-	}
-	headers := internal.MergeHeaders(
-		internal.MergeHeaders(
-			r.options.ToHeader(),
-			options.ToHeader(),
-		),
-		authHeaders,
-	)
-	var response []*payabli.StatBasicQueryRecord
-	raw, err := r.caller.Call(
-		ctx,
-		&internal.CallParams{
-			URL:             endpointURL,
-			Method:          http.MethodGet,
-			Headers:         headers,
-			MaxAttempts:     options.MaxAttempts,
-			DisableRetries:  options.DisableRetries,
-			BodyProperties:  options.BodyProperties,
-			QueryParameters: options.QueryParameters,
-			Client:          options.HTTPClient,
-			Response:        &response,
-			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &core.Response[[]*payabli.StatBasicQueryRecord]{
-		StatusCode: raw.StatusCode,
-		Header:     raw.Header,
-		Body:       response,
-	}, nil
-}
-
 func (r *RawClient) VendorBasicStats(
 	ctx context.Context,
 	// Mode for request. Allowed values:
@@ -312,7 +296,6 @@ func (r *RawClient) VendorBasicStats(
 	freq string,
 	// Vendor ID.
 	idVendor int,
-	request *payabli.VendorBasicStatsRequest,
 	opts ...option.RequestOption,
 ) (*core.Response[[]*payabli.StatisticsVendorQueryRecord], error) {
 	options := core.NewRequestOptions(opts...)
@@ -327,13 +310,6 @@ func (r *RawClient) VendorBasicStats(
 		freq,
 		idVendor,
 	)
-	queryParams, err := internal.QueryValues(request)
-	if err != nil {
-		return nil, err
-	}
-	if len(queryParams) > 0 {
-		endpointURL += "?" + queryParams.Encode()
-	}
 	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
 	if authErr != nil {
 		return nil, authErr

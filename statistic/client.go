@@ -41,7 +41,7 @@ func NewClient(options *core.RequestOptions) *Client {
 	}
 }
 
-// Retrieves the basic statistics for an organization or a paypoint, for a given time period, grouped by a particular frequency.
+// Retrieves the basic statistics for an organization or a paypoint over a date range, grouped by a frequency. The response returns one row per time bucket. Counts and volumes cover approved transactions only and leave out declines. Volumes are net of fees.
 //
 // Example:
 //
@@ -111,17 +111,15 @@ func (c *Client) BasicStats(
 	return response.Body, nil
 }
 
-// Retrieves the basic statistics for a customer for a specific time period, grouped by a selected frequency.
+// Retrieves the basic statistics for a customer over a date range, grouped by a frequency. This is a Pay In view: it counts the customer's approved transactions and returns one row per time bucket. Volume here is the gross amount, before fees.
 //
 // Example:
 //
-//	request := &payabli.CustomerBasicStatsRequest{}
 //	client.Statistic.CustomerBasicStats(
 //	    context.TODO(),
-//	    "ytd",
+//	    "m12",
 //	    "m",
 //	    4440,
-//	    request,
 //	)
 func (c *Client) CustomerBasicStats(
 	ctx context.Context,
@@ -150,15 +148,13 @@ func (c *Client) CustomerBasicStats(
 	freq string,
 	// Payabli-generated customer ID. Maps to "Customer ID" column in the Payabli Portal.
 	customerId int,
-	request *payabli.CustomerBasicStatsRequest,
 	opts ...option.RequestOption,
-) ([]*payabli.SubscriptionStatsQueryRecord, error) {
+) ([]*payabli.StatCustomerBasicQueryRecord, error) {
 	response, err := c.WithRawResponse.CustomerBasicStats(
 		ctx,
 		mode,
 		freq,
 		customerId,
-		request,
 		opts...,
 	)
 	if err != nil {
@@ -167,17 +163,15 @@ func (c *Client) CustomerBasicStats(
 	return response.Body, nil
 }
 
-// Retrieves the subscription statistics for a given interval for a paypoint or organization.
+// Retrieves subscription statistics for a paypoint or organization, bucketed by how soon active subscriptions are due to renew. This is a forward-looking forecast of upcoming renewals, not charges already taken. Request a single window with `interval`, or `all` to return every window in one call.
 //
 // Example:
 //
-//	request := &payabli.SubStatsRequest{}
 //	client.Statistic.SubStats(
 //	    context.TODO(),
-//	    "30",
+//	    "all",
 //	    2,
 //	    int64(1000000),
-//	    request,
 //	)
 func (c *Client) SubStats(
 	ctx context.Context,
@@ -195,15 +189,13 @@ func (c *Client) SubStats(
 	level int,
 	// Identifier in Payabli for the entity.
 	entryId int64,
-	request *payabli.SubStatsRequest,
 	opts ...option.RequestOption,
-) ([]*payabli.StatBasicQueryRecord, error) {
+) ([]*payabli.SubscriptionStatsQueryRecord, error) {
 	response, err := c.WithRawResponse.SubStats(
 		ctx,
 		interval,
 		level,
 		entryId,
-		request,
 		opts...,
 	)
 	if err != nil {
@@ -212,17 +204,15 @@ func (c *Client) SubStats(
 	return response.Body, nil
 }
 
-// Retrieve the basic statistics about a vendor for a given time period, grouped by frequency.
+// Retrieve the basic statistics about a vendor over a date range, grouped by frequency. The response returns one row per time bucket, breaking the vendor's bills down by bill state (active, sent to approval, approved, in transit, paid, and so on). Volumes are net of fees.
 //
 // Example:
 //
-//	request := &payabli.VendorBasicStatsRequest{}
 //	client.Statistic.VendorBasicStats(
 //	    context.TODO(),
 //	    "ytd",
 //	    "m",
 //	    1,
-//	    request,
 //	)
 func (c *Client) VendorBasicStats(
 	ctx context.Context,
@@ -251,7 +241,6 @@ func (c *Client) VendorBasicStats(
 	freq string,
 	// Vendor ID.
 	idVendor int,
-	request *payabli.VendorBasicStatsRequest,
 	opts ...option.RequestOption,
 ) ([]*payabli.StatisticsVendorQueryRecord, error) {
 	response, err := c.WithRawResponse.VendorBasicStats(
@@ -259,7 +248,6 @@ func (c *Client) VendorBasicStats(
 		mode,
 		freq,
 		idVendor,
-		request,
 		opts...,
 	)
 	if err != nil {

@@ -20047,6 +20047,227 @@ func (s *SummaryOrg) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
+// Error response for a Tap to Pay activation challenge request.
+// `responseData` carries the same status code as the HTTP response
+// and a message describing the refusal.
+var (
+	tapToPayActivationChallengeErrorResponseFieldIsSuccess    = big.NewInt(1 << 0)
+	tapToPayActivationChallengeErrorResponseFieldResponseText = big.NewInt(1 << 1)
+	tapToPayActivationChallengeErrorResponseFieldResponseData = big.NewInt(1 << 2)
+)
+
+type TapToPayActivationChallengeErrorResponse struct {
+	IsSuccess    IsSuccess                                             `json:"isSuccess" url:"isSuccess"`
+	ResponseText ResponseText                                          `json:"responseText" url:"responseText"`
+	ResponseData *TapToPayActivationChallengeErrorResponseResponseData `json:"responseData" url:"responseData"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TapToPayActivationChallengeErrorResponse) GetIsSuccess() IsSuccess {
+	if t == nil {
+		return false
+	}
+	return t.IsSuccess
+}
+
+func (t *TapToPayActivationChallengeErrorResponse) GetResponseText() ResponseText {
+	if t == nil {
+		return ""
+	}
+	return t.ResponseText
+}
+
+func (t *TapToPayActivationChallengeErrorResponse) GetResponseData() *TapToPayActivationChallengeErrorResponseResponseData {
+	if t == nil {
+		return nil
+	}
+	return t.ResponseData
+}
+
+func (t *TapToPayActivationChallengeErrorResponse) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
+	return t.extraProperties
+}
+
+func (t *TapToPayActivationChallengeErrorResponse) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TapToPayActivationChallengeErrorResponse) SetIsSuccess(isSuccess IsSuccess) {
+	t.IsSuccess = isSuccess
+	t.require(tapToPayActivationChallengeErrorResponseFieldIsSuccess)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TapToPayActivationChallengeErrorResponse) SetResponseText(responseText ResponseText) {
+	t.ResponseText = responseText
+	t.require(tapToPayActivationChallengeErrorResponseFieldResponseText)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TapToPayActivationChallengeErrorResponse) SetResponseData(responseData *TapToPayActivationChallengeErrorResponseResponseData) {
+	t.ResponseData = responseData
+	t.require(tapToPayActivationChallengeErrorResponseFieldResponseData)
+}
+
+func (t *TapToPayActivationChallengeErrorResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler TapToPayActivationChallengeErrorResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TapToPayActivationChallengeErrorResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TapToPayActivationChallengeErrorResponse) MarshalJSON() ([]byte, error) {
+	type embed TapToPayActivationChallengeErrorResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TapToPayActivationChallengeErrorResponse) String() string {
+	if t == nil {
+		return "<nil>"
+	}
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+var (
+	tapToPayActivationChallengeErrorResponseResponseDataFieldResultCode = big.NewInt(1 << 0)
+	tapToPayActivationChallengeErrorResponseResponseDataFieldResultText = big.NewInt(1 << 1)
+)
+
+type TapToPayActivationChallengeErrorResponseResponseData struct {
+	// The same status code as the HTTP response.
+	ResultCode int `json:"resultCode" url:"resultCode"`
+	// A message describing why the request was refused.
+	ResultText string `json:"resultText" url:"resultText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TapToPayActivationChallengeErrorResponseResponseData) GetResultCode() int {
+	if t == nil {
+		return 0
+	}
+	return t.ResultCode
+}
+
+func (t *TapToPayActivationChallengeErrorResponseResponseData) GetResultText() string {
+	if t == nil {
+		return ""
+	}
+	return t.ResultText
+}
+
+func (t *TapToPayActivationChallengeErrorResponseResponseData) GetExtraProperties() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
+	return t.extraProperties
+}
+
+func (t *TapToPayActivationChallengeErrorResponseResponseData) require(field *big.Int) {
+	if t.explicitFields == nil {
+		t.explicitFields = big.NewInt(0)
+	}
+	t.explicitFields.Or(t.explicitFields, field)
+}
+
+// SetResultCode sets the ResultCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TapToPayActivationChallengeErrorResponseResponseData) SetResultCode(resultCode int) {
+	t.ResultCode = resultCode
+	t.require(tapToPayActivationChallengeErrorResponseResponseDataFieldResultCode)
+}
+
+// SetResultText sets the ResultText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TapToPayActivationChallengeErrorResponseResponseData) SetResultText(resultText string) {
+	t.ResultText = resultText
+	t.require(tapToPayActivationChallengeErrorResponseResponseDataFieldResultText)
+}
+
+func (t *TapToPayActivationChallengeErrorResponseResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler TapToPayActivationChallengeErrorResponseResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = TapToPayActivationChallengeErrorResponseResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TapToPayActivationChallengeErrorResponseResponseData) MarshalJSON() ([]byte, error) {
+	type embed TapToPayActivationChallengeErrorResponseResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*t),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, t.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (t *TapToPayActivationChallengeErrorResponseResponseData) String() string {
+	if t == nil {
+		return "<nil>"
+	}
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
 // Specify the notification target.
 //
 // For `method`=`email` the expected value is a list of email addresses

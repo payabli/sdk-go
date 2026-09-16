@@ -55,14 +55,16 @@ func (c *ConflictError) Unwrap() error {
 	return c.APIError
 }
 
-// Consent error.
+// Forbidden. Returned when the token isn't authorized for `entry`,
+// or when the device isn't in a state that allows activation (for
+// example, it's already active).
 type ForbiddenError struct {
 	*core.APIError
-	Body *PayabliErrorBody
+	Body any
 }
 
 func (f *ForbiddenError) UnmarshalJSON(data []byte) error {
-	var body *PayabliErrorBody
+	var body any
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}
@@ -103,7 +105,7 @@ func (i *InternalServerError) Unwrap() error {
 	return i.APIError
 }
 
-// The case doesn't exist.
+// Returned when `deviceId` doesn't match a registered device on `entry`.
 type NotFoundError struct {
 	*core.APIError
 	Body any

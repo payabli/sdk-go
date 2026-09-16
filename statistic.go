@@ -10,9 +10,8 @@ import (
 )
 
 var (
-	basicStatsRequestFieldEndDate    = big.NewInt(1 << 0)
-	basicStatsRequestFieldParameters = big.NewInt(1 << 1)
-	basicStatsRequestFieldStartDate  = big.NewInt(1 << 2)
+	basicStatsRequestFieldEndDate   = big.NewInt(1 << 0)
+	basicStatsRequestFieldStartDate = big.NewInt(1 << 1)
 )
 
 type BasicStatsRequest struct {
@@ -23,8 +22,6 @@ type BasicStatsRequest struct {
 	//   - mm-dd-YYYY
 	//   - mm/dd/YYYY
 	EndDate *string `json:"-" url:"endDate,omitempty"`
-	// List of parameters.
-	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// Used with `custom` mode. The start date for the range.
 	// Valid formats:
 	//   - YYYY-mm-dd
@@ -51,96 +48,11 @@ func (b *BasicStatsRequest) SetEndDate(endDate *string) {
 	b.require(basicStatsRequestFieldEndDate)
 }
 
-// SetParameters sets the Parameters field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BasicStatsRequest) SetParameters(parameters map[string]*string) {
-	b.Parameters = parameters
-	b.require(basicStatsRequestFieldParameters)
-}
-
 // SetStartDate sets the StartDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (b *BasicStatsRequest) SetStartDate(startDate *string) {
 	b.StartDate = startDate
 	b.require(basicStatsRequestFieldStartDate)
-}
-
-var (
-	customerBasicStatsRequestFieldParameters = big.NewInt(1 << 0)
-)
-
-type CustomerBasicStatsRequest struct {
-	// List of parameters.
-	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (c *CustomerBasicStatsRequest) require(field *big.Int) {
-	if c.explicitFields == nil {
-		c.explicitFields = big.NewInt(0)
-	}
-	c.explicitFields.Or(c.explicitFields, field)
-}
-
-// SetParameters sets the Parameters field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CustomerBasicStatsRequest) SetParameters(parameters map[string]*string) {
-	c.Parameters = parameters
-	c.require(customerBasicStatsRequestFieldParameters)
-}
-
-var (
-	subStatsRequestFieldParameters = big.NewInt(1 << 0)
-)
-
-type SubStatsRequest struct {
-	// List of parameters
-	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (s *SubStatsRequest) require(field *big.Int) {
-	if s.explicitFields == nil {
-		s.explicitFields = big.NewInt(0)
-	}
-	s.explicitFields.Or(s.explicitFields, field)
-}
-
-// SetParameters sets the Parameters field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SubStatsRequest) SetParameters(parameters map[string]*string) {
-	s.Parameters = parameters
-	s.require(subStatsRequestFieldParameters)
-}
-
-var (
-	vendorBasicStatsRequestFieldParameters = big.NewInt(1 << 0)
-)
-
-type VendorBasicStatsRequest struct {
-	// List of parameters
-	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-}
-
-func (v *VendorBasicStatsRequest) require(field *big.Int) {
-	if v.explicitFields == nil {
-		v.explicitFields = big.NewInt(0)
-	}
-	v.explicitFields.Or(v.explicitFields, field)
-}
-
-// SetParameters sets the Parameters field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorBasicStatsRequest) SetParameters(parameters map[string]*string) {
-	v.Parameters = parameters
-	v.require(vendorBasicStatsRequestFieldParameters)
 }
 
 var (
@@ -188,87 +100,87 @@ var (
 )
 
 type StatBasicExtendedQueryRecord struct {
-	// The time window based on the mode and frequency used for the query.
+	// The time bucket for this row, formatted according to the query's `freq` (for example, `2025-11` for a monthly bucket). The response returns one object per bucket across the requested range.
 	StatX string `json:"statX" url:"statX"`
-	// Number of active vendors.
+	// Cumulative number of vendors, as a running total through the end of this bucket rather than a per-bucket count. On the payout (money out) side, "customers" are vendors.
 	OutCustomers int `json:"outCustomers" url:"outCustomers"`
-	// Number of new vendors.
+	// Number of vendors created during this bucket, scoped to the paypoint (`level` 2) or organization (`level` 0).
 	OutNewCustomers int `json:"outNewCustomers" url:"outNewCustomers"`
-	// Outbound (payout) transactions count.
+	// Count of payout (money out) transactions. The payout method counts (`outCardTransactions`, `outVCardTransactions`, `outACHTransactions`, `outCheckTransactions`, `outPendingMethodTransactions`, `outRTPTransactions`, `outWireTransactions`) are mutually exclusive and together account for this total.
 	OutTransactions int `json:"outTransactions" url:"outTransactions"`
-	// Recurring outbound (payout) transactions count.
+	// Count of payout transactions generated by a recurring schedule.
 	OutSubscriptionsPaid int `json:"outSubscriptionsPaid" url:"outSubscriptionsPaid"`
-	// Outbound (payout) pCard transactions count.
+	// Count of payout transactions sent by pCard.
 	OutCardTransactions int `json:"outCardTransactions" url:"outCardTransactions"`
-	// Outbound (payout) vCard transactions count.
+	// Count of payout transactions sent by virtual card (vCard).
 	OutVCardTransactions int `json:"outVCardTransactions" url:"outVCardTransactions"`
-	// Outbound (payout) ACH transactions count.
+	// Count of payout transactions sent by ACH.
 	OutAchTransactions int `json:"outACHTransactions" url:"outACHTransactions"`
-	// Outbound (payout) check transactions count.
+	// Count of payout transactions sent by check.
 	OutCheckTransactions int `json:"outCheckTransactions" url:"outCheckTransactions"`
-	// Outbound (payout) Managed Payables transactions count.
+	// Count of payout transactions held as Managed Payables, where the payout method isn't assigned yet.
 	OutPendingMethodTransactions int `json:"outPendingMethodTransactions" url:"outPendingMethodTransactions"`
-	// Outbound (payout) RTP transactions count.
+	// Count of payout transactions sent by real-time payments (RTP).
 	OutRtpTransactions int `json:"outRTPTransactions" url:"outRTPTransactions"`
-	// Outbound (payout) RTP transactions volume.
+	// Total value of RTP payouts, net of fees.
 	OutRtpVolume float64 `json:"outRTPVolume" url:"outRTPVolume"`
-	// Outbound (payout) wire transactions count.
+	// Count of payout transactions sent by wire.
 	OutWireTransactions int `json:"outWireTransactions" url:"outWireTransactions"`
-	// Outbound (payout) wire transactions volume.
+	// Total value of wire payouts, net of fees.
 	OutWireVolume float64 `json:"outWireVolume" url:"outWireVolume"`
-	// Outbound (payout) volume.
+	// Total payout value, net of fees.
 	OutTransactionsVolume float64 `json:"outTransactionsVolume" url:"outTransactionsVolume"`
-	// Recurring outbound (payout) volume.
+	// Total value of recurring payouts, net of fees.
 	OutSubscriptionsPaidVolume float64 `json:"outSubscriptionsPaidVolume" url:"outSubscriptionsPaidVolume"`
-	// Outbound (payout) pCard transactions volume.
+	// Total value of pCard payouts, net of fees.
 	OutCardVolume float64 `json:"outCardVolume" url:"outCardVolume"`
-	// Outbound (payout) vCard transactions volume.
+	// Total value of vCard payouts, net of fees.
 	OutVCardVolume float64 `json:"outVCardVolume" url:"outVCardVolume"`
-	// Outbound (payout) ACH transactions volume.
+	// Total value of ACH payouts, net of fees.
 	OutAchVolume float64 `json:"outACHVolume" url:"outACHVolume"`
-	// Outbound (payout) check transactions volume.
+	// Total value of check payouts, net of fees.
 	OutCheckVolume float64 `json:"outCheckVolume" url:"outCheckVolume"`
-	// Outbound (payout) Managed Payables volume.
+	// Total value of Managed Payables payouts, net of fees.
 	OutPendingMethodVolume float64 `json:"outPendingMethodVolume" url:"outPendingMethodVolume"`
-	// Inbound transactions count.
+	// Count of approved inbound (money in) transactions. This counts approved transactions only and leaves out declines. The payment method counts (`inCardTransactions`, `inACHTransactions`, `inCheckTransactions`, `inCashTransactions`, `inWalletTransactions`) are mutually exclusive and sum to this total.
 	InTransactions int `json:"inTransactions" url:"inTransactions"`
-	// Inbound recurring transactions count.
+	// Count of approved inbound transactions charged by a recurring schedule. This is a subset of `inTransactions`, not an amount to add on top of it.
 	InSubscriptionsPaid int `json:"inSubscriptionsPaid" url:"inSubscriptionsPaid"`
-	// Number of active customers.
+	// Cumulative number of customers, as a running total through the end of this bucket rather than a per-bucket count.
 	InCustomers int `json:"inCustomers" url:"inCustomers"`
-	// Number of new customers.
+	// Number of customers created during this bucket, scoped to the paypoint (`level` 2) or organization (`level` 0).
 	InNewCustomers int `json:"inNewCustomers" url:"inNewCustomers"`
-	// Inbound card transactions count.
+	// Count of approved inbound card transactions, including card, cloud device, and in-person device payments.
 	InCardTransactions int `json:"inCardTransactions" url:"inCardTransactions"`
-	// Inbound ACH transactions count.
+	// Count of approved inbound ACH transactions.
 	InAchTransactions int `json:"inACHTransactions" url:"inACHTransactions"`
-	// Inbound check transactions count.
+	// Count of approved inbound check transactions.
 	InCheckTransactions int `json:"inCheckTransactions" url:"inCheckTransactions"`
-	// Inbound cash transactions count.
+	// Count of approved inbound cash transactions.
 	InCashTransactions int `json:"inCashTransactions" url:"inCashTransactions"`
-	// Inbound wallet transactions count.
+	// Count of approved inbound digital wallet transactions.
 	InWalletTransactions int `json:"inWalletTransactions" url:"inWalletTransactions"`
-	// Inbound card chargebacks and returns count.
+	// Count of card chargebacks recorded. Tracked separately from `inACHReturns`.
 	InCardChargeBacks int `json:"inCardChargeBacks" url:"inCardChargeBacks"`
-	// Inbound ACH returns count.
+	// Count of ACH returns recorded.
 	InAchReturns int `json:"inACHReturns" url:"inACHReturns"`
-	// Inbound volume.
+	// Total approved inbound value, net of fees.
 	InTransactionsVolume float64 `json:"inTransactionsVolume" url:"inTransactionsVolume"`
-	// Inbound recurring payments volume.
+	// Total value of approved recurring inbound transactions, net of fees.
 	InSubscriptionsPaidVolume float64 `json:"inSubscriptionsPaidVolume" url:"inSubscriptionsPaidVolume"`
-	// Inbound card volume.
+	// Total approved card value, net of fees.
 	InCardVolume float64 `json:"inCardVolume" url:"inCardVolume"`
-	// Inbound ACH volume.
+	// Total approved ACH value, net of fees.
 	InAchVolume float64 `json:"inACHVolume" url:"inACHVolume"`
-	// Inbound check volume.
+	// Total approved check value, net of fees.
 	InCheckVolume float64 `json:"inCheckVolume" url:"inCheckVolume"`
-	// Inbound cash volume recognized.
+	// Total approved cash value, net of fees.
 	InCashVolume float64 `json:"inCashVolume" url:"inCashVolume"`
-	// Inbound wallet transactions volume.
+	// Total approved digital wallet value, net of fees.
 	InWalletVolume float64 `json:"inWalletVolume" url:"inWalletVolume"`
-	// Inbound Card chargebacks and returns volume.
+	// Total value of card chargebacks.
 	InCardChargeBackVolume float64 `json:"inCardChargeBackVolume" url:"inCardChargeBackVolume"`
-	// Inbound ACH returns volume.
+	// Total value of ACH returns.
 	InAchReturnsVolume float64 `json:"inACHReturnsVolume" url:"inACHReturnsVolume"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -909,24 +821,18 @@ func (s *StatBasicExtendedQueryRecord) String() string {
 }
 
 var (
-	statBasicQueryRecordFieldStatX                = big.NewInt(1 << 0)
-	statBasicQueryRecordFieldInTransactions       = big.NewInt(1 << 1)
-	statBasicQueryRecordFieldInTransactionsVolume = big.NewInt(1 << 2)
-	statBasicQueryRecordFieldInWalletTransactions = big.NewInt(1 << 3)
-	statBasicQueryRecordFieldInWalletVolume       = big.NewInt(1 << 4)
+	statCustomerBasicQueryRecordFieldStatX                = big.NewInt(1 << 0)
+	statCustomerBasicQueryRecordFieldInTransactions       = big.NewInt(1 << 1)
+	statCustomerBasicQueryRecordFieldInTransactionsVolume = big.NewInt(1 << 2)
 )
 
-type StatBasicQueryRecord struct {
-	// Statistical grouping identifier
+type StatCustomerBasicQueryRecord struct {
+	// The time bucket for this row, formatted according to the query's `freq` (for example, `2026-9` for a monthly bucket). The response returns one object per bucket across the requested range.
 	StatX string `json:"statX" url:"statX"`
-	// Number of incoming transactions
+	// Count of the customer's approved transactions.
 	InTransactions int `json:"inTransactions" url:"inTransactions"`
-	// Volume of incoming transactions
+	// Total gross value of the customer's approved transactions. Unlike `/Statistic/basic`, this volume is the gross amount, before fees.
 	InTransactionsVolume float64 `json:"inTransactionsVolume" url:"inTransactionsVolume"`
-	// Number of incoming wallet transactions
-	InWalletTransactions int `json:"inWalletTransactions" url:"inWalletTransactions"`
-	// Volume of incoming wallet transactions
-	InWalletVolume float64 `json:"inWalletVolume" url:"inWalletVolume"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -935,49 +841,35 @@ type StatBasicQueryRecord struct {
 	rawJSON         json.RawMessage
 }
 
-func (s *StatBasicQueryRecord) GetStatX() string {
+func (s *StatCustomerBasicQueryRecord) GetStatX() string {
 	if s == nil {
 		return ""
 	}
 	return s.StatX
 }
 
-func (s *StatBasicQueryRecord) GetInTransactions() int {
+func (s *StatCustomerBasicQueryRecord) GetInTransactions() int {
 	if s == nil {
 		return 0
 	}
 	return s.InTransactions
 }
 
-func (s *StatBasicQueryRecord) GetInTransactionsVolume() float64 {
+func (s *StatCustomerBasicQueryRecord) GetInTransactionsVolume() float64 {
 	if s == nil {
 		return 0
 	}
 	return s.InTransactionsVolume
 }
 
-func (s *StatBasicQueryRecord) GetInWalletTransactions() int {
-	if s == nil {
-		return 0
-	}
-	return s.InWalletTransactions
-}
-
-func (s *StatBasicQueryRecord) GetInWalletVolume() float64 {
-	if s == nil {
-		return 0
-	}
-	return s.InWalletVolume
-}
-
-func (s *StatBasicQueryRecord) GetExtraProperties() map[string]interface{} {
+func (s *StatCustomerBasicQueryRecord) GetExtraProperties() map[string]interface{} {
 	if s == nil {
 		return nil
 	}
 	return s.extraProperties
 }
 
-func (s *StatBasicQueryRecord) require(field *big.Int) {
+func (s *StatCustomerBasicQueryRecord) require(field *big.Int) {
 	if s.explicitFields == nil {
 		s.explicitFields = big.NewInt(0)
 	}
@@ -986,46 +878,32 @@ func (s *StatBasicQueryRecord) require(field *big.Int) {
 
 // SetStatX sets the StatX field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StatBasicQueryRecord) SetStatX(statX string) {
+func (s *StatCustomerBasicQueryRecord) SetStatX(statX string) {
 	s.StatX = statX
-	s.require(statBasicQueryRecordFieldStatX)
+	s.require(statCustomerBasicQueryRecordFieldStatX)
 }
 
 // SetInTransactions sets the InTransactions field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StatBasicQueryRecord) SetInTransactions(inTransactions int) {
+func (s *StatCustomerBasicQueryRecord) SetInTransactions(inTransactions int) {
 	s.InTransactions = inTransactions
-	s.require(statBasicQueryRecordFieldInTransactions)
+	s.require(statCustomerBasicQueryRecordFieldInTransactions)
 }
 
 // SetInTransactionsVolume sets the InTransactionsVolume field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StatBasicQueryRecord) SetInTransactionsVolume(inTransactionsVolume float64) {
+func (s *StatCustomerBasicQueryRecord) SetInTransactionsVolume(inTransactionsVolume float64) {
 	s.InTransactionsVolume = inTransactionsVolume
-	s.require(statBasicQueryRecordFieldInTransactionsVolume)
+	s.require(statCustomerBasicQueryRecordFieldInTransactionsVolume)
 }
 
-// SetInWalletTransactions sets the InWalletTransactions field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StatBasicQueryRecord) SetInWalletTransactions(inWalletTransactions int) {
-	s.InWalletTransactions = inWalletTransactions
-	s.require(statBasicQueryRecordFieldInWalletTransactions)
-}
-
-// SetInWalletVolume sets the InWalletVolume field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (s *StatBasicQueryRecord) SetInWalletVolume(inWalletVolume float64) {
-	s.InWalletVolume = inWalletVolume
-	s.require(statBasicQueryRecordFieldInWalletVolume)
-}
-
-func (s *StatBasicQueryRecord) UnmarshalJSON(data []byte) error {
-	type unmarshaler StatBasicQueryRecord
+func (s *StatCustomerBasicQueryRecord) UnmarshalJSON(data []byte) error {
+	type unmarshaler StatCustomerBasicQueryRecord
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*s = StatBasicQueryRecord(value)
+	*s = StatCustomerBasicQueryRecord(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *s)
 	if err != nil {
 		return err
@@ -1035,8 +913,8 @@ func (s *StatBasicQueryRecord) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (s *StatBasicQueryRecord) MarshalJSON() ([]byte, error) {
-	type embed StatBasicQueryRecord
+func (s *StatCustomerBasicQueryRecord) MarshalJSON() ([]byte, error) {
+	type embed StatCustomerBasicQueryRecord
 	var marshaler = struct {
 		embed
 	}{
@@ -1046,7 +924,7 @@ func (s *StatBasicQueryRecord) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (s *StatBasicQueryRecord) String() string {
+func (s *StatCustomerBasicQueryRecord) String() string {
 	if s == nil {
 		return "<nil>"
 	}
@@ -1082,39 +960,39 @@ var (
 )
 
 type StatisticsVendorQueryRecord struct {
-	// Statistical grouping identifier
+	// The time bucket for this row, formatted according to the query's `freq` (for example, `2025-11` for a monthly bucket). Each bill falls in the bucket of its most recent update. The counts below break the vendor's bills down by bill state.
 	StatX string `json:"statX" url:"statX"`
-	// Number of active transactions
+	// Number of the vendor's bills in the active state (created, not yet submitted for approval).
 	Active int `json:"active" url:"active"`
-	// Volume of active transactions
+	// Total value of the vendor's active bills, net of fees.
 	ActiveVolume float64 `json:"activeVolume" url:"activeVolume"`
-	// Number of transactions sent to approval
+	// Number of the vendor's bills submitted into an approval workflow.
 	SentToApproval int `json:"sentToApproval" url:"sentToApproval"`
-	// Volume of transactions sent to approval
+	// Total value of the vendor's bills sent to approval, net of fees.
 	SentToApprovalVolume float64 `json:"sentToApprovalVolume" url:"sentToApprovalVolume"`
-	// Number of transactions to approval
+	// Number of the vendor's bills awaiting an approver's decision.
 	ToApproval int `json:"toApproval" url:"toApproval"`
-	// Volume of transactions to approval
+	// Total value of the vendor's bills awaiting approval, net of fees.
 	ToApprovalVolume float64 `json:"toApprovalVolume" url:"toApprovalVolume"`
-	// Number of approved transactions
+	// Number of the vendor's bills approved for payment.
 	Approved int `json:"approved" url:"approved"`
-	// Volume of approved transactions
+	// Total value of the vendor's approved bills, net of fees.
 	ApprovedVolume float64 `json:"approvedVolume" url:"approvedVolume"`
-	// Number of disapproved transactions
+	// Number of the vendor's bills rejected during approval.
 	Disapproved int `json:"disapproved" url:"disapproved"`
-	// Volume of disapproved transactions
+	// Total value of the vendor's disapproved bills, net of fees.
 	DisapprovedVolume float64 `json:"disapprovedVolume" url:"disapprovedVolume"`
-	// Number of cancelled transactions
+	// Number of the vendor's cancelled bills.
 	Cancelled int `json:"cancelled" url:"cancelled"`
-	// Volume of cancelled transactions
+	// Total value of the vendor's cancelled bills, net of fees.
 	CancelledVolume float64 `json:"cancelledVolume" url:"cancelledVolume"`
-	// Number of transactions in transit
+	// Number of the vendor's bills whose payment is in transit.
 	InTransit int `json:"inTransit" url:"inTransit"`
-	// Volume of transactions in transit
+	// Total value of the vendor's in-transit bills, net of fees.
 	InTransitVolume float64 `json:"inTransitVolume" url:"inTransitVolume"`
-	// Number of paid transactions
+	// Number of the vendor's bills marked paid. Paid means the payout has settled, not merely that Payabli issued it.
 	Paid int `json:"paid" url:"paid"`
-	// Volume of paid transactions
+	// Total value of the vendor's paid bills, net of fees.
 	PaidVolume float64 `json:"paidVolume" url:"paidVolume"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -1425,11 +1303,11 @@ var (
 )
 
 type SubscriptionStatsQueryRecord struct {
-	// Time interval identifier
+	// The renewal window this row represents: `30` (due within 30 days), `60` (31 to 60 days), `90` (61 to 90 days), or `+90` (more than 90 days out). Note the response label `+90` differs from its request path value `plus`. Requesting `all` returns one row per window.
 	Interval string `json:"interval" url:"interval"`
-	// Number of subscriptions
+	// Number of active subscriptions scheduled to renew within this window. This is a forecast of upcoming renewals, not charges already taken, so it doesn't reconcile with `inSubscriptionsPaid` on `/Statistic/basic`.
 	Count int `json:"count" url:"count"`
-	// Subscription volume
+	// Total value of the upcoming renewals in this window, net of fees.
 	Volume float64 `json:"volume" url:"volume"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
