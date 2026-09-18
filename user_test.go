@@ -2550,7 +2550,7 @@ func TestSettersUserData(t *testing.T) {
 
 	t.Run("SetAdditionalData", func(t *testing.T) {
 		obj := &UserData{}
-		var fernTestValueAdditionalData *AdditionalData
+		var fernTestValueAdditionalData *AdditionalDataMap
 		obj.SetAdditionalData(fernTestValueAdditionalData)
 		assert.Equal(t, fernTestValueAdditionalData, obj.AdditionalData)
 		assert.NotNil(t, obj.explicitFields)
@@ -2668,7 +2668,7 @@ func TestGettersUserData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &UserData{}
-		var expected *AdditionalData
+		var expected *AdditionalDataMap
 		obj.AdditionalData = expected
 
 		// Act & Assert
@@ -3032,7 +3032,7 @@ func TestSettersMarkExplicitUserData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &UserData{}
-		var fernTestValueAdditionalData *AdditionalData
+		var fernTestValueAdditionalData *AdditionalDataMap
 
 		// Act
 		obj.SetAdditionalData(fernTestValueAdditionalData)

@@ -4565,10 +4565,9 @@ type VCardGetResponseAssociatedVendor struct {
 	// Account number of paypoint in the vendor side.
 	CustomerVendorAccount *string `json:"customerVendorAccount,omitempty" url:"customerVendorAccount,omitempty"`
 	// Internal reference ID used within the system.
-	InternalReferenceId *int `json:"InternalReferenceId,omitempty" url:"InternalReferenceId,omitempty"`
-	// Field for additional data, if any.
-	AdditionalData     *string             `json:"additionalData,omitempty" url:"additionalData,omitempty"`
-	ExternalPaypointId *ExternalPaypointId `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	InternalReferenceId *int                `json:"InternalReferenceId,omitempty" url:"InternalReferenceId,omitempty"`
+	AdditionalData      *AdditionalDataMap  `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	ExternalPaypointId  *ExternalPaypointId `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
 	// Stored payment methods for the vendor.
 	StoredMethods *string `json:"StoredMethods,omitempty" url:"StoredMethods,omitempty"`
 
@@ -4866,7 +4865,7 @@ func (v *VCardGetResponseAssociatedVendor) GetInternalReferenceId() *int {
 	return v.InternalReferenceId
 }
 
-func (v *VCardGetResponseAssociatedVendor) GetAdditionalData() *string {
+func (v *VCardGetResponseAssociatedVendor) GetAdditionalData() *AdditionalDataMap {
 	if v == nil {
 		return nil
 	}
@@ -5190,7 +5189,7 @@ func (v *VCardGetResponseAssociatedVendor) SetInternalReferenceId(internalRefere
 
 // SetAdditionalData sets the AdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardGetResponseAssociatedVendor) SetAdditionalData(additionalData *string) {
+func (v *VCardGetResponseAssociatedVendor) SetAdditionalData(additionalData *AdditionalDataMap) {
 	v.AdditionalData = additionalData
 	v.require(vCardGetResponseAssociatedVendorFieldAdditionalData)
 }

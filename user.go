@@ -1441,8 +1441,8 @@ var (
 )
 
 type UserData struct {
-	Access         []*UsrAccess    `json:"access,omitempty" url:"access,omitempty"`
-	AdditionalData *AdditionalData `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	Access         []*UsrAccess       `json:"access,omitempty" url:"access,omitempty"`
+	AdditionalData *AdditionalDataMap `json:"additionalData,omitempty" url:"additionalData,omitempty"`
 	// The user's email address.
 	Email    *Email    `json:"email,omitempty" url:"email,omitempty"`
 	Language *Language `json:"language,omitempty" url:"language,omitempty"`
@@ -1469,7 +1469,7 @@ func (u *UserData) GetAccess() []*UsrAccess {
 	return u.Access
 }
 
-func (u *UserData) GetAdditionalData() *AdditionalData {
+func (u *UserData) GetAdditionalData() *AdditionalDataMap {
 	if u == nil {
 		return nil
 	}
@@ -1562,7 +1562,7 @@ func (u *UserData) SetAccess(access []*UsrAccess) {
 
 // SetAdditionalData sets the AdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (u *UserData) SetAdditionalData(additionalData *AdditionalData) {
+func (u *UserData) SetAdditionalData(additionalData *AdditionalDataMap) {
 	u.AdditionalData = additionalData
 	u.require(userDataFieldAdditionalData)
 }

@@ -422,9 +422,9 @@ var (
 )
 
 type BillOutData struct {
-	AccountingField1 *AccountingField      `json:"accountingField1,omitempty" url:"accountingField1,omitempty"`
-	AccountingField2 *AccountingField      `json:"accountingField2,omitempty" url:"accountingField2,omitempty"`
-	AdditionalData   *AdditionalDataString `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	AccountingField1 *AccountingField   `json:"accountingField1,omitempty" url:"accountingField1,omitempty"`
+	AccountingField2 *AccountingField   `json:"accountingField2,omitempty" url:"accountingField2,omitempty"`
+	AdditionalData   *AdditionalDataMap `json:"additionalData,omitempty" url:"additionalData,omitempty"`
 	// An array of bill images. Attachments aren't required, but we strongly
 	// recommend including them. Including a bill image can make payouts
 	// smoother and prevent delays. You can include either the Base64-encoded
@@ -492,7 +492,7 @@ func (b *BillOutData) GetAccountingField2() *AccountingField {
 	return b.AccountingField2
 }
 
-func (b *BillOutData) GetAdditionalData() *AdditionalDataString {
+func (b *BillOutData) GetAdditionalData() *AdditionalDataMap {
 	if b == nil {
 		return nil
 	}
@@ -648,7 +648,7 @@ func (b *BillOutData) SetAccountingField2(accountingField2 *AccountingField) {
 
 // SetAdditionalData sets the AdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillOutData) SetAdditionalData(additionalData *AdditionalDataString) {
+func (b *BillOutData) SetAdditionalData(additionalData *AdditionalDataMap) {
 	b.AdditionalData = additionalData
 	b.require(billOutDataFieldAdditionalData)
 }
@@ -1054,8 +1054,8 @@ type BillQueryRecord2 struct {
 	// Batch number associated with the bill.
 	BatchNumber   *string                              `json:"BatchNumber,omitempty" url:"BatchNumber,omitempty"`
 	BillApprovals []*BillQueryRecord2BillApprovalsItem `json:"billApprovals,omitempty" url:"billApprovals,omitempty"`
-	// Bill creation date in one of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.
-	BillDate *time.Time `json:"BillDate,omitempty" url:"BillDate,omitempty" format:"date"`
+	// Bill creation date, returned as a timestamp.
+	BillDate *time.Time `json:"BillDate,omitempty" url:"BillDate,omitempty"`
 	// Events associated with the bill.
 	BillEvents []*GeneralEvents `json:"billEvents,omitempty" url:"billEvents,omitempty"`
 	// Array of items included in the bill.
@@ -1070,8 +1070,8 @@ type BillQueryRecord2 struct {
 	Discount *float64 `json:"Discount,omitempty" url:"Discount,omitempty"`
 	// Reference to documents associated with the bill.
 	DocumentsRef *string `json:"DocumentsRef,omitempty" url:"DocumentsRef,omitempty"`
-	// Bill due date in one of the accepted formats: YYYY-MM-DD, MM/DD/YYYY.
-	DueDate *time.Time `json:"DueDate,omitempty" url:"DueDate,omitempty" format:"date"`
+	// Bill due date, returned as a timestamp.
+	DueDate *time.Time `json:"DueDate,omitempty" url:"DueDate,omitempty"`
 	// End date for the bill.
 	EndDate *time.Time `json:"EndDate,omitempty" url:"EndDate,omitempty" format:"date"`
 	// Entity identifier associated with the bill.
@@ -1689,9 +1689,9 @@ func (b *BillQueryRecord2) UnmarshalJSON(data []byte) error {
 	type embed BillQueryRecord2
 	var unmarshaler = struct {
 		embed
-		BillDate    *internal.Date     `json:"BillDate,omitempty"`
+		BillDate    *internal.DateTime `json:"BillDate,omitempty"`
 		CreatedAt   *internal.DateTime `json:"CreatedAt,omitempty"`
-		DueDate     *internal.Date     `json:"DueDate,omitempty"`
+		DueDate     *internal.DateTime `json:"DueDate,omitempty"`
 		EndDate     *internal.Date     `json:"EndDate,omitempty"`
 		LastUpdated *internal.DateTime `json:"LastUpdated,omitempty"`
 	}{
@@ -1719,16 +1719,16 @@ func (b *BillQueryRecord2) MarshalJSON() ([]byte, error) {
 	type embed BillQueryRecord2
 	var marshaler = struct {
 		embed
-		BillDate    *internal.Date     `json:"BillDate,omitempty"`
+		BillDate    *internal.DateTime `json:"BillDate,omitempty"`
 		CreatedAt   *internal.DateTime `json:"CreatedAt,omitempty"`
-		DueDate     *internal.Date     `json:"DueDate,omitempty"`
+		DueDate     *internal.DateTime `json:"DueDate,omitempty"`
 		EndDate     *internal.Date     `json:"EndDate,omitempty"`
 		LastUpdated *internal.DateTime `json:"LastUpdated,omitempty"`
 	}{
 		embed:       embed(*b),
-		BillDate:    internal.NewOptionalDate(b.BillDate),
+		BillDate:    internal.NewOptionalDateTime(b.BillDate),
 		CreatedAt:   internal.NewOptionalDateTime(b.CreatedAt),
-		DueDate:     internal.NewOptionalDate(b.DueDate),
+		DueDate:     internal.NewOptionalDateTime(b.DueDate),
 		EndDate:     internal.NewOptionalDate(b.EndDate),
 		LastUpdated: internal.NewOptionalDateTime(b.LastUpdated),
 	}
@@ -2714,10 +2714,10 @@ type BillResponseData struct {
 	PaidAmount *float64 `json:"PaidAmount,omitempty" url:"PaidAmount,omitempty"`
 	// The amount still owed on the bill, calculated as `NetAmount` minus `PaidAmount`.
 	OutstandingBalance *float64 `json:"OutstandingBalance,omitempty" url:"OutstandingBalance,omitempty"`
-	// Date of bill. Accepted formats: YYYY-MM-DD, MM/DD/YYYY
-	BillDate *time.Time `json:"BillDate,omitempty" url:"BillDate,omitempty" format:"date"`
-	// Due Date of bill. Accepted formats: YYYY-MM-DD, MM/DD/YYYY
-	DueDate *time.Time `json:"DueDate,omitempty" url:"DueDate,omitempty" format:"date"`
+	// Date of bill, returned as a timestamp.
+	BillDate *time.Time `json:"BillDate,omitempty" url:"BillDate,omitempty"`
+	// Due date of bill, returned as a timestamp.
+	DueDate *time.Time `json:"DueDate,omitempty" url:"DueDate,omitempty"`
 	// Comments associated with the bill. For managed payables, the character limit is 200. For on demand payouts, the characters limit is 250.
 	Comments *string `json:"Comments,omitempty" url:"Comments,omitempty"`
 	// The batch number that the bill belongs to.
@@ -2734,11 +2734,11 @@ type BillResponseData struct {
 	AccountingField2 *AccountingField `json:"AccountingField2,omitempty" url:"AccountingField2,omitempty"`
 	Terms            *Terms           `json:"Terms,omitempty" url:"Terms,omitempty"`
 	// The source of the bill, such as "API" or "UI".
-	Source         *string               `json:"Source,omitempty" url:"Source,omitempty"`
-	AdditionalData *AdditionalDataString `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
-	Vendor         *VendorDataResponse   `json:"Vendor,omitempty" url:"Vendor,omitempty"`
-	Status         *Billstatus           `json:"Status,omitempty" url:"Status,omitempty"`
-	CreatedAt      *CreatedAt            `json:"CreatedAt,omitempty" url:"CreatedAt,omitempty"`
+	Source         *string             `json:"Source,omitempty" url:"Source,omitempty"`
+	AdditionalData *AdditionalDataMap  `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
+	Vendor         *VendorDataResponse `json:"Vendor,omitempty" url:"Vendor,omitempty"`
+	Status         *Billstatus         `json:"Status,omitempty" url:"Status,omitempty"`
+	CreatedAt      *CreatedAt          `json:"CreatedAt,omitempty" url:"CreatedAt,omitempty"`
 	// End date for scheduled bills. Applied only in `Mode` = 1.
 	EndDate     *time.Time    `json:"EndDate,omitempty" url:"EndDate,omitempty" format:"date"`
 	LastUpdated *LastModified `json:"LastUpdated,omitempty" url:"LastUpdated,omitempty"`
@@ -2901,7 +2901,7 @@ func (b *BillResponseData) GetSource() *string {
 	return b.Source
 }
 
-func (b *BillResponseData) GetAdditionalData() *AdditionalDataString {
+func (b *BillResponseData) GetAdditionalData() *AdditionalDataMap {
 	if b == nil {
 		return nil
 	}
@@ -3190,7 +3190,7 @@ func (b *BillResponseData) SetSource(source *string) {
 
 // SetAdditionalData sets the AdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillResponseData) SetAdditionalData(additionalData *AdditionalDataString) {
+func (b *BillResponseData) SetAdditionalData(additionalData *AdditionalDataMap) {
 	b.AdditionalData = additionalData
 	b.require(billResponseDataFieldAdditionalData)
 }
@@ -3332,8 +3332,8 @@ func (b *BillResponseData) UnmarshalJSON(data []byte) error {
 	type embed BillResponseData
 	var unmarshaler = struct {
 		embed
-		BillDate    *internal.Date     `json:"BillDate,omitempty"`
-		DueDate     *internal.Date     `json:"DueDate,omitempty"`
+		BillDate    *internal.DateTime `json:"BillDate,omitempty"`
+		DueDate     *internal.DateTime `json:"DueDate,omitempty"`
 		CreatedAt   *internal.DateTime `json:"CreatedAt,omitempty"`
 		EndDate     *internal.Date     `json:"EndDate,omitempty"`
 		LastUpdated *internal.DateTime `json:"LastUpdated,omitempty"`
@@ -3362,15 +3362,15 @@ func (b *BillResponseData) MarshalJSON() ([]byte, error) {
 	type embed BillResponseData
 	var marshaler = struct {
 		embed
-		BillDate    *internal.Date     `json:"BillDate,omitempty"`
-		DueDate     *internal.Date     `json:"DueDate,omitempty"`
+		BillDate    *internal.DateTime `json:"BillDate,omitempty"`
+		DueDate     *internal.DateTime `json:"DueDate,omitempty"`
 		CreatedAt   *internal.DateTime `json:"CreatedAt,omitempty"`
 		EndDate     *internal.Date     `json:"EndDate,omitempty"`
 		LastUpdated *internal.DateTime `json:"LastUpdated,omitempty"`
 	}{
 		embed:       embed(*b),
-		BillDate:    internal.NewOptionalDate(b.BillDate),
-		DueDate:     internal.NewOptionalDate(b.DueDate),
+		BillDate:    internal.NewOptionalDateTime(b.BillDate),
+		DueDate:     internal.NewOptionalDateTime(b.DueDate),
 		CreatedAt:   internal.NewOptionalDateTime(b.CreatedAt),
 		EndDate:     internal.NewOptionalDate(b.EndDate),
 		LastUpdated: internal.NewOptionalDateTime(b.LastUpdated),

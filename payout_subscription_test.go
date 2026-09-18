@@ -967,7 +967,7 @@ func TestSettersBillPayOutDataRequest(t *testing.T) {
 
 	t.Run("SetAdditionalData", func(t *testing.T) {
 		obj := &BillPayOutDataRequest{}
-		var fernTestValueAdditionalData *AdditionalDataString
+		var fernTestValueAdditionalData *AdditionalDataMap
 		obj.SetAdditionalData(fernTestValueAdditionalData)
 		assert.Equal(t, fernTestValueAdditionalData, obj.AdditionalData)
 		assert.NotNil(t, obj.explicitFields)
@@ -1318,7 +1318,7 @@ func TestGettersBillPayOutDataRequest(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BillPayOutDataRequest{}
-		var expected *AdditionalDataString
+		var expected *AdditionalDataMap
 		obj.AdditionalData = expected
 
 		// Act & Assert
@@ -1697,7 +1697,7 @@ func TestSettersMarkExplicitBillPayOutDataRequest(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BillPayOutDataRequest{}
-		var fernTestValueAdditionalData *AdditionalDataString
+		var fernTestValueAdditionalData *AdditionalDataMap
 
 		// Act
 		obj.SetAdditionalData(fernTestValueAdditionalData)

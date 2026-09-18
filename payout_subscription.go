@@ -393,10 +393,10 @@ type BillPayOutDataRequest struct {
 	// Bill discount amount.
 	Discount *string `json:"discount,omitempty" url:"discount,omitempty"`
 	// Description of payment terms.
-	Terms            *Terms                `json:"terms,omitempty" url:"terms,omitempty"`
-	AccountingField1 *AccountingField      `json:"accountingField1,omitempty" url:"accountingField1,omitempty"`
-	AccountingField2 *AccountingField      `json:"accountingField2,omitempty" url:"accountingField2,omitempty"`
-	AdditionalData   *AdditionalDataString `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	Terms            *Terms             `json:"terms,omitempty" url:"terms,omitempty"`
+	AccountingField1 *AccountingField   `json:"accountingField1,omitempty" url:"accountingField1,omitempty"`
+	AccountingField2 *AccountingField   `json:"accountingField2,omitempty" url:"accountingField2,omitempty"`
+	AdditionalData   *AdditionalDataMap `json:"additionalData,omitempty" url:"additionalData,omitempty"`
 	// Bill image attachment. Send the bill image as Base64-encoded string, or as a publicly accessible link. For full details on using this field with a payout authorization, see [the documentation](/developers/developer-guides/pay-out-manage-payouts).
 	Attachments *Attachments `json:"attachments,omitempty" url:"attachments,omitempty"`
 
@@ -477,7 +477,7 @@ func (b *BillPayOutDataRequest) GetAccountingField2() *AccountingField {
 	return b.AccountingField2
 }
 
-func (b *BillPayOutDataRequest) GetAdditionalData() *AdditionalDataString {
+func (b *BillPayOutDataRequest) GetAdditionalData() *AdditionalDataMap {
 	if b == nil {
 		return nil
 	}
@@ -577,7 +577,7 @@ func (b *BillPayOutDataRequest) SetAccountingField2(accountingField2 *Accounting
 
 // SetAdditionalData sets the AdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BillPayOutDataRequest) SetAdditionalData(additionalData *AdditionalDataString) {
+func (b *BillPayOutDataRequest) SetAdditionalData(additionalData *AdditionalDataMap) {
 	b.AdditionalData = additionalData
 	b.require(billPayOutDataRequestFieldAdditionalData)
 }

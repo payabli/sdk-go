@@ -12752,7 +12752,7 @@ func TestSettersVCardGetResponseAssociatedVendor(t *testing.T) {
 
 	t.Run("SetAdditionalData", func(t *testing.T) {
 		obj := &VCardGetResponseAssociatedVendor{}
-		var fernTestValueAdditionalData *string
+		var fernTestValueAdditionalData *AdditionalDataMap
 		obj.SetAdditionalData(fernTestValueAdditionalData)
 		assert.Equal(t, fernTestValueAdditionalData, obj.AdditionalData)
 		assert.NotNil(t, obj.explicitFields)
@@ -14134,7 +14134,7 @@ func TestGettersVCardGetResponseAssociatedVendor(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardGetResponseAssociatedVendor{}
-		var expected *string
+		var expected *AdditionalDataMap
 		obj.AdditionalData = expected
 
 		// Act & Assert
@@ -15507,7 +15507,7 @@ func TestSettersMarkExplicitVCardGetResponseAssociatedVendor(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardGetResponseAssociatedVendor{}
-		var fernTestValueAdditionalData *string
+		var fernTestValueAdditionalData *AdditionalDataMap
 
 		// Act
 		obj.SetAdditionalData(fernTestValueAdditionalData)

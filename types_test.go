@@ -6010,7 +6010,7 @@ func TestSettersBillPayOutData(t *testing.T) {
 
 	t.Run("SetAdditionalData", func(t *testing.T) {
 		obj := &BillPayOutData{}
-		var fernTestValueAdditionalData *AdditionalDataString
+		var fernTestValueAdditionalData *AdditionalDataMap
 		obj.SetAdditionalData(fernTestValueAdditionalData)
 		assert.Equal(t, fernTestValueAdditionalData, obj.AdditionalData)
 		assert.NotNil(t, obj.explicitFields)
@@ -6260,7 +6260,7 @@ func TestGettersBillPayOutData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BillPayOutData{}
-		var expected *AdditionalDataString
+		var expected *AdditionalDataMap
 		obj.AdditionalData = expected
 
 		// Act & Assert
@@ -6748,7 +6748,7 @@ func TestSettersMarkExplicitBillPayOutData(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BillPayOutData{}
-		var fernTestValueAdditionalData *AdditionalDataString
+		var fernTestValueAdditionalData *AdditionalDataMap
 
 		// Act
 		obj.SetAdditionalData(fernTestValueAdditionalData)
@@ -56286,7 +56286,7 @@ func TestSettersUserQueryRecord(t *testing.T) {
 
 	t.Run("SetAdditionalData", func(t *testing.T) {
 		obj := &UserQueryRecord{}
-		var fernTestValueAdditionalData *AdditionalDataString
+		var fernTestValueAdditionalData *AdditionalDataMap
 		obj.SetAdditionalData(fernTestValueAdditionalData)
 		assert.Equal(t, fernTestValueAdditionalData, obj.AdditionalData)
 		assert.NotNil(t, obj.explicitFields)
@@ -56452,7 +56452,7 @@ func TestGettersUserQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &UserQueryRecord{}
-		var expected *AdditionalDataString
+		var expected *AdditionalDataMap
 		obj.AdditionalData = expected
 
 		// Act & Assert
@@ -57014,7 +57014,7 @@ func TestSettersMarkExplicitUserQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &UserQueryRecord{}
-		var fernTestValueAdditionalData *AdditionalDataString
+		var fernTestValueAdditionalData *AdditionalDataMap
 
 		// Act
 		obj.SetAdditionalData(fernTestValueAdditionalData)
@@ -58980,7 +58980,7 @@ func TestSettersMarkExplicitV2InternalServerError(t *testing.T) {
 func TestSettersVendorQueryRecord(t *testing.T) {
 	t.Run("SetVendorNumber", func(t *testing.T) {
 		obj := &VendorQueryRecord{}
-		var fernTestValueVendorNumber *VendorNumber
+		var fernTestValueVendorNumber VendorNumber
 		obj.SetVendorNumber(fernTestValueVendorNumber)
 		assert.Equal(t, fernTestValueVendorNumber, obj.VendorNumber)
 		assert.NotNil(t, obj.explicitFields)
@@ -58988,7 +58988,7 @@ func TestSettersVendorQueryRecord(t *testing.T) {
 
 	t.Run("SetName1", func(t *testing.T) {
 		obj := &VendorQueryRecord{}
-		var fernTestValueName1 *string
+		var fernTestValueName1 string
 		obj.SetName1(fernTestValueName1)
 		assert.Equal(t, fernTestValueName1, obj.Name1)
 		assert.NotNil(t, obj.explicitFields)
@@ -59036,7 +59036,7 @@ func TestSettersVendorQueryRecord(t *testing.T) {
 
 	t.Run("SetAddress1", func(t *testing.T) {
 		obj := &VendorQueryRecord{}
-		var fernTestValueAddress1 *AddressNullable
+		var fernTestValueAddress1 *string
 		obj.SetAddress1(fernTestValueAddress1)
 		assert.Equal(t, fernTestValueAddress1, obj.Address1)
 		assert.NotNil(t, obj.explicitFields)
@@ -59044,7 +59044,7 @@ func TestSettersVendorQueryRecord(t *testing.T) {
 
 	t.Run("SetAddress2", func(t *testing.T) {
 		obj := &VendorQueryRecord{}
-		var fernTestValueAddress2 *AddressAddtlNullable
+		var fernTestValueAddress2 *string
 		obj.SetAddress2(fernTestValueAddress2)
 		assert.Equal(t, fernTestValueAddress2, obj.Address2)
 		assert.NotNil(t, obj.explicitFields)
@@ -59052,7 +59052,7 @@ func TestSettersVendorQueryRecord(t *testing.T) {
 
 	t.Run("SetCity", func(t *testing.T) {
 		obj := &VendorQueryRecord{}
-		var fernTestValueCity *CityNullable
+		var fernTestValueCity *string
 		obj.SetCity(fernTestValueCity)
 		assert.Equal(t, fernTestValueCity, obj.City)
 		assert.NotNil(t, obj.explicitFields)
@@ -59060,7 +59060,7 @@ func TestSettersVendorQueryRecord(t *testing.T) {
 
 	t.Run("SetState", func(t *testing.T) {
 		obj := &VendorQueryRecord{}
-		var fernTestValueState *StateNullable
+		var fernTestValueState *string
 		obj.SetState(fernTestValueState)
 		assert.Equal(t, fernTestValueState, obj.State)
 		assert.NotNil(t, obj.explicitFields)
@@ -59124,7 +59124,7 @@ func TestSettersVendorQueryRecord(t *testing.T) {
 
 	t.Run("SetVendorStatus", func(t *testing.T) {
 		obj := &VendorQueryRecord{}
-		var fernTestValueVendorStatus *Vendorstatus
+		var fernTestValueVendorStatus Vendorstatus
 		obj.SetVendorStatus(fernTestValueVendorStatus)
 		assert.Equal(t, fernTestValueVendorStatus, obj.VendorStatus)
 		assert.NotNil(t, obj.explicitFields)
@@ -59132,7 +59132,7 @@ func TestSettersVendorQueryRecord(t *testing.T) {
 
 	t.Run("SetVendorId", func(t *testing.T) {
 		obj := &VendorQueryRecord{}
-		var fernTestValueVendorId *Vendorid
+		var fernTestValueVendorId Vendorid
 		obj.SetVendorId(fernTestValueVendorId)
 		assert.Equal(t, fernTestValueVendorId, obj.VendorId)
 		assert.NotNil(t, obj.explicitFields)
@@ -59156,7 +59156,7 @@ func TestSettersVendorQueryRecord(t *testing.T) {
 
 	t.Run("SetPaypointLegalname", func(t *testing.T) {
 		obj := &VendorQueryRecord{}
-		var fernTestValuePaypointLegalname *Legalname
+		var fernTestValuePaypointLegalname Legalname
 		obj.SetPaypointLegalname(fernTestValuePaypointLegalname)
 		assert.Equal(t, fernTestValuePaypointLegalname, obj.PaypointLegalname)
 		assert.NotNil(t, obj.explicitFields)
@@ -59172,7 +59172,7 @@ func TestSettersVendorQueryRecord(t *testing.T) {
 
 	t.Run("SetPaypointDbaname", func(t *testing.T) {
 		obj := &VendorQueryRecord{}
-		var fernTestValuePaypointDbaname *Dbaname
+		var fernTestValuePaypointDbaname Dbaname
 		obj.SetPaypointDbaname(fernTestValuePaypointDbaname)
 		assert.Equal(t, fernTestValuePaypointDbaname, obj.PaypointDbaname)
 		assert.NotNil(t, obj.explicitFields)
@@ -59180,7 +59180,7 @@ func TestSettersVendorQueryRecord(t *testing.T) {
 
 	t.Run("SetPaypointEntryname", func(t *testing.T) {
 		obj := &VendorQueryRecord{}
-		var fernTestValuePaypointEntryname *Entrypointfield
+		var fernTestValuePaypointEntryname Entrypointfield
 		obj.SetPaypointEntryname(fernTestValuePaypointEntryname)
 		assert.Equal(t, fernTestValuePaypointEntryname, obj.PaypointEntryname)
 		assert.NotNil(t, obj.explicitFields)
@@ -59188,7 +59188,7 @@ func TestSettersVendorQueryRecord(t *testing.T) {
 
 	t.Run("SetParentOrgName", func(t *testing.T) {
 		obj := &VendorQueryRecord{}
-		var fernTestValueParentOrgName *OrgParentName
+		var fernTestValueParentOrgName OrgParentName
 		obj.SetParentOrgName(fernTestValueParentOrgName)
 		assert.Equal(t, fernTestValueParentOrgName, obj.ParentOrgName)
 		assert.NotNil(t, obj.explicitFields)
@@ -59196,7 +59196,7 @@ func TestSettersVendorQueryRecord(t *testing.T) {
 
 	t.Run("SetParentOrgId", func(t *testing.T) {
 		obj := &VendorQueryRecord{}
-		var fernTestValueParentOrgId *OrgParentId
+		var fernTestValueParentOrgId OrgParentId
 		obj.SetParentOrgId(fernTestValueParentOrgId)
 		assert.Equal(t, fernTestValueParentOrgId, obj.ParentOrgId)
 		assert.NotNil(t, obj.explicitFields)
@@ -59204,7 +59204,7 @@ func TestSettersVendorQueryRecord(t *testing.T) {
 
 	t.Run("SetCreatedDate", func(t *testing.T) {
 		obj := &VendorQueryRecord{}
-		var fernTestValueCreatedDate *CreatedAt
+		var fernTestValueCreatedDate CreatedAt
 		obj.SetCreatedDate(fernTestValueCreatedDate)
 		assert.Equal(t, fernTestValueCreatedDate, obj.CreatedDate)
 		assert.NotNil(t, obj.explicitFields)
@@ -59212,7 +59212,7 @@ func TestSettersVendorQueryRecord(t *testing.T) {
 
 	t.Run("SetLastUpdated", func(t *testing.T) {
 		obj := &VendorQueryRecord{}
-		var fernTestValueLastUpdated *LastModified
+		var fernTestValueLastUpdated LastModified
 		obj.SetLastUpdated(fernTestValueLastUpdated)
 		assert.Equal(t, fernTestValueLastUpdated, obj.LastUpdated)
 		assert.NotNil(t, obj.explicitFields)
@@ -59308,7 +59308,7 @@ func TestSettersVendorQueryRecord(t *testing.T) {
 
 	t.Run("SetInternalReferenceId", func(t *testing.T) {
 		obj := &VendorQueryRecord{}
-		var fernTestValueInternalReferenceId *InternalReferenceId
+		var fernTestValueInternalReferenceId InternalReferenceId
 		obj.SetInternalReferenceId(fernTestValueInternalReferenceId)
 		assert.Equal(t, fernTestValueInternalReferenceId, obj.InternalReferenceId)
 		assert.NotNil(t, obj.explicitFields)
@@ -59348,7 +59348,7 @@ func TestSettersVendorQueryRecord(t *testing.T) {
 
 	t.Run("SetEnrichmentStatus", func(t *testing.T) {
 		obj := &VendorQueryRecord{}
-		var fernTestValueEnrichmentStatus *string
+		var fernTestValueEnrichmentStatus string
 		obj.SetEnrichmentStatus(fernTestValueEnrichmentStatus)
 		assert.Equal(t, fernTestValueEnrichmentStatus, obj.EnrichmentStatus)
 		assert.NotNil(t, obj.explicitFields)
@@ -59409,21 +59409,11 @@ func TestGettersVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var expected *VendorNumber
+		var expected VendorNumber
 		obj.VendorNumber = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetVendorNumber(), "getter should return the property value")
-	})
-
-	t.Run("GetVendorNumber_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &VendorQueryRecord{}
-		obj.VendorNumber = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetVendorNumber(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetVendorNumber_NilReceiver", func(t *testing.T) {
@@ -59442,21 +59432,11 @@ func TestGettersVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var expected *string
+		var expected string
 		obj.Name1 = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetName1(), "getter should return the property value")
-	})
-
-	t.Run("GetName1_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &VendorQueryRecord{}
-		obj.Name1 = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetName1(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetName1_NilReceiver", func(t *testing.T) {
@@ -59640,7 +59620,7 @@ func TestGettersVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var expected *AddressNullable
+		var expected *string
 		obj.Address1 = expected
 
 		// Act & Assert
@@ -59673,7 +59653,7 @@ func TestGettersVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var expected *AddressAddtlNullable
+		var expected *string
 		obj.Address2 = expected
 
 		// Act & Assert
@@ -59706,7 +59686,7 @@ func TestGettersVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var expected *CityNullable
+		var expected *string
 		obj.City = expected
 
 		// Act & Assert
@@ -59739,7 +59719,7 @@ func TestGettersVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var expected *StateNullable
+		var expected *string
 		obj.State = expected
 
 		// Act & Assert
@@ -60003,21 +59983,11 @@ func TestGettersVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var expected *Vendorstatus
+		var expected Vendorstatus
 		obj.VendorStatus = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetVendorStatus(), "getter should return the property value")
-	})
-
-	t.Run("GetVendorStatus_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &VendorQueryRecord{}
-		obj.VendorStatus = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetVendorStatus(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetVendorStatus_NilReceiver", func(t *testing.T) {
@@ -60036,21 +60006,11 @@ func TestGettersVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var expected *Vendorid
+		var expected Vendorid
 		obj.VendorId = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetVendorId(), "getter should return the property value")
-	})
-
-	t.Run("GetVendorId_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &VendorQueryRecord{}
-		obj.VendorId = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetVendorId(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetVendorId_NilReceiver", func(t *testing.T) {
@@ -60135,21 +60095,11 @@ func TestGettersVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var expected *Legalname
+		var expected Legalname
 		obj.PaypointLegalname = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetPaypointLegalname(), "getter should return the property value")
-	})
-
-	t.Run("GetPaypointLegalname_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &VendorQueryRecord{}
-		obj.PaypointLegalname = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetPaypointLegalname(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetPaypointLegalname_NilReceiver", func(t *testing.T) {
@@ -60201,21 +60151,11 @@ func TestGettersVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var expected *Dbaname
+		var expected Dbaname
 		obj.PaypointDbaname = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetPaypointDbaname(), "getter should return the property value")
-	})
-
-	t.Run("GetPaypointDbaname_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &VendorQueryRecord{}
-		obj.PaypointDbaname = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetPaypointDbaname(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetPaypointDbaname_NilReceiver", func(t *testing.T) {
@@ -60234,21 +60174,11 @@ func TestGettersVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var expected *Entrypointfield
+		var expected Entrypointfield
 		obj.PaypointEntryname = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetPaypointEntryname(), "getter should return the property value")
-	})
-
-	t.Run("GetPaypointEntryname_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &VendorQueryRecord{}
-		obj.PaypointEntryname = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetPaypointEntryname(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetPaypointEntryname_NilReceiver", func(t *testing.T) {
@@ -60267,21 +60197,11 @@ func TestGettersVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var expected *OrgParentName
+		var expected OrgParentName
 		obj.ParentOrgName = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetParentOrgName(), "getter should return the property value")
-	})
-
-	t.Run("GetParentOrgName_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &VendorQueryRecord{}
-		obj.ParentOrgName = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetParentOrgName(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetParentOrgName_NilReceiver", func(t *testing.T) {
@@ -60300,21 +60220,11 @@ func TestGettersVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var expected *OrgParentId
+		var expected OrgParentId
 		obj.ParentOrgId = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetParentOrgId(), "getter should return the property value")
-	})
-
-	t.Run("GetParentOrgId_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &VendorQueryRecord{}
-		obj.ParentOrgId = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetParentOrgId(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetParentOrgId_NilReceiver", func(t *testing.T) {
@@ -60333,21 +60243,11 @@ func TestGettersVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var expected *CreatedAt
+		var expected CreatedAt
 		obj.CreatedDate = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetCreatedDate(), "getter should return the property value")
-	})
-
-	t.Run("GetCreatedDate_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &VendorQueryRecord{}
-		obj.CreatedDate = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetCreatedDate(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetCreatedDate_NilReceiver", func(t *testing.T) {
@@ -60366,21 +60266,11 @@ func TestGettersVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var expected *LastModified
+		var expected LastModified
 		obj.LastUpdated = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetLastUpdated(), "getter should return the property value")
-	})
-
-	t.Run("GetLastUpdated_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &VendorQueryRecord{}
-		obj.LastUpdated = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetLastUpdated(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetLastUpdated_NilReceiver", func(t *testing.T) {
@@ -60762,21 +60652,11 @@ func TestGettersVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var expected *InternalReferenceId
+		var expected InternalReferenceId
 		obj.InternalReferenceId = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetInternalReferenceId(), "getter should return the property value")
-	})
-
-	t.Run("GetInternalReferenceId_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &VendorQueryRecord{}
-		obj.InternalReferenceId = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetInternalReferenceId(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetInternalReferenceId_NilReceiver", func(t *testing.T) {
@@ -60927,21 +60807,11 @@ func TestGettersVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var expected *string
+		var expected string
 		obj.EnrichmentStatus = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetEnrichmentStatus(), "getter should return the property value")
-	})
-
-	t.Run("GetEnrichmentStatus_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &VendorQueryRecord{}
-		obj.EnrichmentStatus = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetEnrichmentStatus(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetEnrichmentStatus_NilReceiver", func(t *testing.T) {
@@ -61161,7 +61031,7 @@ func TestSettersMarkExplicitVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var fernTestValueVendorNumber *VendorNumber
+		var fernTestValueVendorNumber VendorNumber
 
 		// Act
 		obj.SetVendorNumber(fernTestValueVendorNumber)
@@ -61192,7 +61062,7 @@ func TestSettersMarkExplicitVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var fernTestValueName1 *string
+		var fernTestValueName1 string
 
 		// Act
 		obj.SetName1(fernTestValueName1)
@@ -61378,7 +61248,7 @@ func TestSettersMarkExplicitVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var fernTestValueAddress1 *AddressNullable
+		var fernTestValueAddress1 *string
 
 		// Act
 		obj.SetAddress1(fernTestValueAddress1)
@@ -61409,7 +61279,7 @@ func TestSettersMarkExplicitVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var fernTestValueAddress2 *AddressAddtlNullable
+		var fernTestValueAddress2 *string
 
 		// Act
 		obj.SetAddress2(fernTestValueAddress2)
@@ -61440,7 +61310,7 @@ func TestSettersMarkExplicitVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var fernTestValueCity *CityNullable
+		var fernTestValueCity *string
 
 		// Act
 		obj.SetCity(fernTestValueCity)
@@ -61471,7 +61341,7 @@ func TestSettersMarkExplicitVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var fernTestValueState *StateNullable
+		var fernTestValueState *string
 
 		// Act
 		obj.SetState(fernTestValueState)
@@ -61719,7 +61589,7 @@ func TestSettersMarkExplicitVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var fernTestValueVendorStatus *Vendorstatus
+		var fernTestValueVendorStatus Vendorstatus
 
 		// Act
 		obj.SetVendorStatus(fernTestValueVendorStatus)
@@ -61750,7 +61620,7 @@ func TestSettersMarkExplicitVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var fernTestValueVendorId *Vendorid
+		var fernTestValueVendorId Vendorid
 
 		// Act
 		obj.SetVendorId(fernTestValueVendorId)
@@ -61843,7 +61713,7 @@ func TestSettersMarkExplicitVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var fernTestValuePaypointLegalname *Legalname
+		var fernTestValuePaypointLegalname Legalname
 
 		// Act
 		obj.SetPaypointLegalname(fernTestValuePaypointLegalname)
@@ -61905,7 +61775,7 @@ func TestSettersMarkExplicitVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var fernTestValuePaypointDbaname *Dbaname
+		var fernTestValuePaypointDbaname Dbaname
 
 		// Act
 		obj.SetPaypointDbaname(fernTestValuePaypointDbaname)
@@ -61936,7 +61806,7 @@ func TestSettersMarkExplicitVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var fernTestValuePaypointEntryname *Entrypointfield
+		var fernTestValuePaypointEntryname Entrypointfield
 
 		// Act
 		obj.SetPaypointEntryname(fernTestValuePaypointEntryname)
@@ -61967,7 +61837,7 @@ func TestSettersMarkExplicitVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var fernTestValueParentOrgName *OrgParentName
+		var fernTestValueParentOrgName OrgParentName
 
 		// Act
 		obj.SetParentOrgName(fernTestValueParentOrgName)
@@ -61998,7 +61868,7 @@ func TestSettersMarkExplicitVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var fernTestValueParentOrgId *OrgParentId
+		var fernTestValueParentOrgId OrgParentId
 
 		// Act
 		obj.SetParentOrgId(fernTestValueParentOrgId)
@@ -62029,7 +61899,7 @@ func TestSettersMarkExplicitVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var fernTestValueCreatedDate *CreatedAt
+		var fernTestValueCreatedDate CreatedAt
 
 		// Act
 		obj.SetCreatedDate(fernTestValueCreatedDate)
@@ -62060,7 +61930,7 @@ func TestSettersMarkExplicitVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var fernTestValueLastUpdated *LastModified
+		var fernTestValueLastUpdated LastModified
 
 		// Act
 		obj.SetLastUpdated(fernTestValueLastUpdated)
@@ -62432,7 +62302,7 @@ func TestSettersMarkExplicitVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var fernTestValueInternalReferenceId *InternalReferenceId
+		var fernTestValueInternalReferenceId InternalReferenceId
 
 		// Act
 		obj.SetInternalReferenceId(fernTestValueInternalReferenceId)
@@ -62587,7 +62457,7 @@ func TestSettersMarkExplicitVendorQueryRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorQueryRecord{}
-		var fernTestValueEnrichmentStatus *string
+		var fernTestValueEnrichmentStatus string
 
 		// Act
 		obj.SetEnrichmentStatus(fernTestValueEnrichmentStatus)
