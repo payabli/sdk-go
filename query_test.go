@@ -8026,7 +8026,7 @@ func TestSettersMarkExplicitListVendorsOrgRequest(t *testing.T) {
 func TestSettersAssociatedVendor(t *testing.T) {
 	t.Run("SetVendorNumber", func(t *testing.T) {
 		obj := &AssociatedVendor{}
-		var fernTestValueVendorNumber VendorNumber
+		var fernTestValueVendorNumber *VendorNumber
 		obj.SetVendorNumber(fernTestValueVendorNumber)
 		assert.Equal(t, fernTestValueVendorNumber, obj.VendorNumber)
 		assert.NotNil(t, obj.explicitFields)
@@ -8034,7 +8034,7 @@ func TestSettersAssociatedVendor(t *testing.T) {
 
 	t.Run("SetName1", func(t *testing.T) {
 		obj := &AssociatedVendor{}
-		var fernTestValueName1 string
+		var fernTestValueName1 *string
 		obj.SetName1(fernTestValueName1)
 		assert.Equal(t, fernTestValueName1, obj.Name1)
 		assert.NotNil(t, obj.explicitFields)
@@ -8170,7 +8170,7 @@ func TestSettersAssociatedVendor(t *testing.T) {
 
 	t.Run("SetVendorId", func(t *testing.T) {
 		obj := &AssociatedVendor{}
-		var fernTestValueVendorId int
+		var fernTestValueVendorId *int
 		obj.SetVendorId(fernTestValueVendorId)
 		assert.Equal(t, fernTestValueVendorId, obj.VendorId)
 		assert.NotNil(t, obj.explicitFields)
@@ -8359,11 +8359,21 @@ func TestGettersAssociatedVendor(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &AssociatedVendor{}
-		var expected VendorNumber
+		var expected *VendorNumber
 		obj.VendorNumber = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetVendorNumber(), "getter should return the property value")
+	})
+
+	t.Run("GetVendorNumber_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &AssociatedVendor{}
+		obj.VendorNumber = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetVendorNumber(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetVendorNumber_NilReceiver", func(t *testing.T) {
@@ -8382,11 +8392,21 @@ func TestGettersAssociatedVendor(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &AssociatedVendor{}
-		var expected string
+		var expected *string
 		obj.Name1 = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetName1(), "getter should return the property value")
+	})
+
+	t.Run("GetName1_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &AssociatedVendor{}
+		obj.Name1 = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetName1(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetName1_NilReceiver", func(t *testing.T) {
@@ -8933,11 +8953,21 @@ func TestGettersAssociatedVendor(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &AssociatedVendor{}
-		var expected int
+		var expected *int
 		obj.VendorId = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetVendorId(), "getter should return the property value")
+	})
+
+	t.Run("GetVendorId_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &AssociatedVendor{}
+		obj.VendorId = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetVendorId(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetVendorId_NilReceiver", func(t *testing.T) {
@@ -9685,7 +9715,7 @@ func TestSettersMarkExplicitAssociatedVendor(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &AssociatedVendor{}
-		var fernTestValueVendorNumber VendorNumber
+		var fernTestValueVendorNumber *VendorNumber
 
 		// Act
 		obj.SetVendorNumber(fernTestValueVendorNumber)
@@ -9716,7 +9746,7 @@ func TestSettersMarkExplicitAssociatedVendor(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &AssociatedVendor{}
-		var fernTestValueName1 string
+		var fernTestValueName1 *string
 
 		// Act
 		obj.SetName1(fernTestValueName1)
@@ -10243,7 +10273,7 @@ func TestSettersMarkExplicitAssociatedVendor(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &AssociatedVendor{}
-		var fernTestValueVendorId int
+		var fernTestValueVendorId *int
 
 		// Act
 		obj.SetVendorId(fernTestValueVendorId)
@@ -30442,7 +30472,7 @@ func TestSettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 
 	t.Run("SetBankData", func(t *testing.T) {
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueBankData BankData
+		var fernTestValueBankData *BankData
 		obj.SetBankData(fernTestValueBankData)
 		assert.Equal(t, fernTestValueBankData, obj.BankData)
 		assert.NotNil(t, obj.explicitFields)
@@ -30474,7 +30504,7 @@ func TestSettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 
 	t.Run("SetBinPerson", func(t *testing.T) {
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueBinPerson Binperson
+		var fernTestValueBinPerson *Binperson
 		obj.SetBinPerson(fernTestValueBinPerson)
 		assert.Equal(t, fernTestValueBinPerson, obj.BinPerson)
 		assert.NotNil(t, obj.explicitFields)
@@ -30482,7 +30512,7 @@ func TestSettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 
 	t.Run("SetBinPhone", func(t *testing.T) {
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueBinPhone Binphone
+		var fernTestValueBinPhone *Binphone
 		obj.SetBinPhone(fernTestValueBinPhone)
 		assert.Equal(t, fernTestValueBinPhone, obj.BinPhone)
 		assert.NotNil(t, obj.explicitFields)
@@ -30490,7 +30520,7 @@ func TestSettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 
 	t.Run("SetBinWeb", func(t *testing.T) {
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueBinWeb Binweb
+		var fernTestValueBinWeb *Binweb
 		obj.SetBinWeb(fernTestValueBinWeb)
 		assert.Equal(t, fernTestValueBinWeb, obj.BinWeb)
 		assert.NotNil(t, obj.explicitFields)
@@ -30498,7 +30528,7 @@ func TestSettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 
 	t.Run("SetBoardingId", func(t *testing.T) {
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueBoardingId BoardingId
+		var fernTestValueBoardingId *BoardingId
 		obj.SetBoardingId(fernTestValueBoardingId)
 		assert.Equal(t, fernTestValueBoardingId, obj.BoardingId)
 		assert.NotNil(t, obj.explicitFields)
@@ -30538,7 +30568,7 @@ func TestSettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 
 	t.Run("SetBTimeZone", func(t *testing.T) {
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueBTimeZone Timezone
+		var fernTestValueBTimeZone *Timezone
 		obj.SetBTimeZone(fernTestValueBTimeZone)
 		assert.Equal(t, fernTestValueBTimeZone, obj.BTimeZone)
 		assert.NotNil(t, obj.explicitFields)
@@ -30554,7 +30584,7 @@ func TestSettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 
 	t.Run("SetContactData", func(t *testing.T) {
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueContactData ContactsField
+		var fernTestValueContactData *ContactsField
 		obj.SetContactData(fernTestValueContactData)
 		assert.Equal(t, fernTestValueContactData, obj.ContactData)
 		assert.NotNil(t, obj.explicitFields)
@@ -30562,7 +30592,7 @@ func TestSettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 
 	t.Run("SetCreatedAt", func(t *testing.T) {
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueCreatedAt CreatedAt
+		var fernTestValueCreatedAt *CreatedAt
 		obj.SetCreatedAt(fernTestValueCreatedAt)
 		assert.Equal(t, fernTestValueCreatedAt, obj.CreatedAt)
 		assert.NotNil(t, obj.explicitFields)
@@ -30570,7 +30600,7 @@ func TestSettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 
 	t.Run("SetDbaName", func(t *testing.T) {
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueDbaName Dbaname
+		var fernTestValueDbaName *Dbaname
 		obj.SetDbaName(fernTestValueDbaName)
 		assert.Equal(t, fernTestValueDbaName, obj.DbaName)
 		assert.NotNil(t, obj.explicitFields)
@@ -30586,7 +30616,7 @@ func TestSettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 
 	t.Run("SetEin", func(t *testing.T) {
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueEin Ein
+		var fernTestValueEin *Ein
 		obj.SetEin(fernTestValueEin)
 		assert.Equal(t, fernTestValueEin, obj.Ein)
 		assert.NotNil(t, obj.explicitFields)
@@ -30610,7 +30640,7 @@ func TestSettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 
 	t.Run("SetExternalProcessorInformation", func(t *testing.T) {
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueExternalProcessorInformation ExternalProcessorInformation
+		var fernTestValueExternalProcessorInformation *ExternalProcessorInformation
 		obj.SetExternalProcessorInformation(fernTestValueExternalProcessorInformation)
 		assert.Equal(t, fernTestValueExternalProcessorInformation, obj.ExternalProcessorInformation)
 		assert.NotNil(t, obj.explicitFields)
@@ -30626,7 +30656,7 @@ func TestSettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 
 	t.Run("SetIdPaypoint", func(t *testing.T) {
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueIdPaypoint Idpaypoint
+		var fernTestValueIdPaypoint *Idpaypoint
 		obj.SetIdPaypoint(fernTestValueIdPaypoint)
 		assert.Equal(t, fernTestValueIdPaypoint, obj.IdPaypoint)
 		assert.NotNil(t, obj.explicitFields)
@@ -30634,7 +30664,7 @@ func TestSettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 
 	t.Run("SetLastModified", func(t *testing.T) {
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueLastModified LastModified
+		var fernTestValueLastModified *LastModified
 		obj.SetLastModified(fernTestValueLastModified)
 		assert.Equal(t, fernTestValueLastModified, obj.LastModified)
 		assert.NotNil(t, obj.explicitFields)
@@ -30642,7 +30672,7 @@ func TestSettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 
 	t.Run("SetLegalName", func(t *testing.T) {
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueLegalName Legalname
+		var fernTestValueLegalName *Legalname
 		obj.SetLegalName(fernTestValueLegalName)
 		assert.Equal(t, fernTestValueLegalName, obj.LegalName)
 		assert.NotNil(t, obj.explicitFields)
@@ -30682,7 +30712,7 @@ func TestSettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 
 	t.Run("SetMccid", func(t *testing.T) {
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueMccid string
+		var fernTestValueMccid *string
 		obj.SetMccid(fernTestValueMccid)
 		assert.Equal(t, fernTestValueMccid, obj.Mccid)
 		assert.NotNil(t, obj.explicitFields)
@@ -30722,7 +30752,7 @@ func TestSettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 
 	t.Run("SetOrgId", func(t *testing.T) {
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueOrgId Orgid
+		var fernTestValueOrgId *Orgid
 		obj.SetOrgId(fernTestValueOrgId)
 		assert.Equal(t, fernTestValueOrgId, obj.OrgId)
 		assert.NotNil(t, obj.explicitFields)
@@ -30730,7 +30760,7 @@ func TestSettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 
 	t.Run("SetOrgParentName", func(t *testing.T) {
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueOrgParentName OrgParentName
+		var fernTestValueOrgParentName *OrgParentName
 		obj.SetOrgParentName(fernTestValueOrgParentName)
 		assert.Equal(t, fernTestValueOrgParentName, obj.OrgParentName)
 		assert.NotNil(t, obj.explicitFields)
@@ -30738,7 +30768,7 @@ func TestSettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 
 	t.Run("SetOwnerData", func(t *testing.T) {
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueOwnerData Ownership
+		var fernTestValueOwnerData *Ownership
 		obj.SetOwnerData(fernTestValueOwnerData)
 		assert.Equal(t, fernTestValueOwnerData, obj.OwnerData)
 		assert.NotNil(t, obj.explicitFields)
@@ -30754,7 +30784,7 @@ func TestSettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 
 	t.Run("SetPaypointStatus", func(t *testing.T) {
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValuePaypointStatus Paypointstatus
+		var fernTestValuePaypointStatus *Paypointstatus
 		obj.SetPaypointStatus(fernTestValuePaypointStatus)
 		assert.Equal(t, fernTestValuePaypointStatus, obj.PaypointStatus)
 		assert.NotNil(t, obj.explicitFields)
@@ -30794,7 +30824,7 @@ func TestSettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 
 	t.Run("SetTemplateId", func(t *testing.T) {
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueTemplateId TemplateId
+		var fernTestValueTemplateId *TemplateId
 		obj.SetTemplateId(fernTestValueTemplateId)
 		assert.Equal(t, fernTestValueTemplateId, obj.TemplateId)
 		assert.NotNil(t, obj.explicitFields)
@@ -30979,11 +31009,21 @@ func TestGettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var expected BankData
+		var expected *BankData
 		obj.BankData = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetBankData(), "getter should return the property value")
+	})
+
+	t.Run("GetBankData_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &QueryEntrypointResponseRecordsItem{}
+		obj.BankData = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetBankData(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetBankData_NilReceiver", func(t *testing.T) {
@@ -31101,11 +31141,21 @@ func TestGettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var expected Binperson
+		var expected *Binperson
 		obj.BinPerson = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetBinPerson(), "getter should return the property value")
+	})
+
+	t.Run("GetBinPerson_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &QueryEntrypointResponseRecordsItem{}
+		obj.BinPerson = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetBinPerson(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetBinPerson_NilReceiver", func(t *testing.T) {
@@ -31124,11 +31174,21 @@ func TestGettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var expected Binphone
+		var expected *Binphone
 		obj.BinPhone = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetBinPhone(), "getter should return the property value")
+	})
+
+	t.Run("GetBinPhone_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &QueryEntrypointResponseRecordsItem{}
+		obj.BinPhone = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetBinPhone(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetBinPhone_NilReceiver", func(t *testing.T) {
@@ -31147,11 +31207,21 @@ func TestGettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var expected Binweb
+		var expected *Binweb
 		obj.BinWeb = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetBinWeb(), "getter should return the property value")
+	})
+
+	t.Run("GetBinWeb_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &QueryEntrypointResponseRecordsItem{}
+		obj.BinWeb = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetBinWeb(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetBinWeb_NilReceiver", func(t *testing.T) {
@@ -31170,11 +31240,21 @@ func TestGettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var expected BoardingId
+		var expected *BoardingId
 		obj.BoardingId = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetBoardingId(), "getter should return the property value")
+	})
+
+	t.Run("GetBoardingId_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &QueryEntrypointResponseRecordsItem{}
+		obj.BoardingId = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetBoardingId(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetBoardingId_NilReceiver", func(t *testing.T) {
@@ -31325,11 +31405,21 @@ func TestGettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var expected Timezone
+		var expected *Timezone
 		obj.BTimeZone = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetBTimeZone(), "getter should return the property value")
+	})
+
+	t.Run("GetBTimeZone_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &QueryEntrypointResponseRecordsItem{}
+		obj.BTimeZone = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetBTimeZone(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetBTimeZone_NilReceiver", func(t *testing.T) {
@@ -31381,11 +31471,21 @@ func TestGettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var expected ContactsField
+		var expected *ContactsField
 		obj.ContactData = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetContactData(), "getter should return the property value")
+	})
+
+	t.Run("GetContactData_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &QueryEntrypointResponseRecordsItem{}
+		obj.ContactData = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetContactData(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetContactData_NilReceiver", func(t *testing.T) {
@@ -31404,11 +31504,21 @@ func TestGettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var expected CreatedAt
+		var expected *CreatedAt
 		obj.CreatedAt = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetCreatedAt(), "getter should return the property value")
+	})
+
+	t.Run("GetCreatedAt_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &QueryEntrypointResponseRecordsItem{}
+		obj.CreatedAt = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetCreatedAt(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetCreatedAt_NilReceiver", func(t *testing.T) {
@@ -31427,11 +31537,21 @@ func TestGettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var expected Dbaname
+		var expected *Dbaname
 		obj.DbaName = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetDbaName(), "getter should return the property value")
+	})
+
+	t.Run("GetDbaName_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &QueryEntrypointResponseRecordsItem{}
+		obj.DbaName = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetDbaName(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetDbaName_NilReceiver", func(t *testing.T) {
@@ -31483,11 +31603,21 @@ func TestGettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var expected Ein
+		var expected *Ein
 		obj.Ein = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetEin(), "getter should return the property value")
+	})
+
+	t.Run("GetEin_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &QueryEntrypointResponseRecordsItem{}
+		obj.Ein = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetEin(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetEin_NilReceiver", func(t *testing.T) {
@@ -31572,11 +31702,21 @@ func TestGettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var expected ExternalProcessorInformation
+		var expected *ExternalProcessorInformation
 		obj.ExternalProcessorInformation = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetExternalProcessorInformation(), "getter should return the property value")
+	})
+
+	t.Run("GetExternalProcessorInformation_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &QueryEntrypointResponseRecordsItem{}
+		obj.ExternalProcessorInformation = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetExternalProcessorInformation(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetExternalProcessorInformation_NilReceiver", func(t *testing.T) {
@@ -31628,11 +31768,21 @@ func TestGettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var expected Idpaypoint
+		var expected *Idpaypoint
 		obj.IdPaypoint = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetIdPaypoint(), "getter should return the property value")
+	})
+
+	t.Run("GetIdPaypoint_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &QueryEntrypointResponseRecordsItem{}
+		obj.IdPaypoint = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetIdPaypoint(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetIdPaypoint_NilReceiver", func(t *testing.T) {
@@ -31651,11 +31801,21 @@ func TestGettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var expected LastModified
+		var expected *LastModified
 		obj.LastModified = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetLastModified(), "getter should return the property value")
+	})
+
+	t.Run("GetLastModified_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &QueryEntrypointResponseRecordsItem{}
+		obj.LastModified = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetLastModified(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetLastModified_NilReceiver", func(t *testing.T) {
@@ -31674,11 +31834,21 @@ func TestGettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var expected Legalname
+		var expected *Legalname
 		obj.LegalName = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetLegalName(), "getter should return the property value")
+	})
+
+	t.Run("GetLegalName_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &QueryEntrypointResponseRecordsItem{}
+		obj.LegalName = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetLegalName(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetLegalName_NilReceiver", func(t *testing.T) {
@@ -31829,11 +31999,21 @@ func TestGettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var expected string
+		var expected *string
 		obj.Mccid = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetMccid(), "getter should return the property value")
+	})
+
+	t.Run("GetMccid_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &QueryEntrypointResponseRecordsItem{}
+		obj.Mccid = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetMccid(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetMccid_NilReceiver", func(t *testing.T) {
@@ -31984,11 +32164,21 @@ func TestGettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var expected Orgid
+		var expected *Orgid
 		obj.OrgId = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetOrgId(), "getter should return the property value")
+	})
+
+	t.Run("GetOrgId_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &QueryEntrypointResponseRecordsItem{}
+		obj.OrgId = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetOrgId(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetOrgId_NilReceiver", func(t *testing.T) {
@@ -32007,11 +32197,21 @@ func TestGettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var expected OrgParentName
+		var expected *OrgParentName
 		obj.OrgParentName = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetOrgParentName(), "getter should return the property value")
+	})
+
+	t.Run("GetOrgParentName_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &QueryEntrypointResponseRecordsItem{}
+		obj.OrgParentName = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetOrgParentName(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetOrgParentName_NilReceiver", func(t *testing.T) {
@@ -32030,11 +32230,21 @@ func TestGettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var expected Ownership
+		var expected *Ownership
 		obj.OwnerData = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetOwnerData(), "getter should return the property value")
+	})
+
+	t.Run("GetOwnerData_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &QueryEntrypointResponseRecordsItem{}
+		obj.OwnerData = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetOwnerData(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetOwnerData_NilReceiver", func(t *testing.T) {
@@ -32086,11 +32296,21 @@ func TestGettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var expected Paypointstatus
+		var expected *Paypointstatus
 		obj.PaypointStatus = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetPaypointStatus(), "getter should return the property value")
+	})
+
+	t.Run("GetPaypointStatus_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &QueryEntrypointResponseRecordsItem{}
+		obj.PaypointStatus = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetPaypointStatus(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetPaypointStatus_NilReceiver", func(t *testing.T) {
@@ -32241,11 +32461,21 @@ func TestGettersQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var expected TemplateId
+		var expected *TemplateId
 		obj.TemplateId = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetTemplateId(), "getter should return the property value")
+	})
+
+	t.Run("GetTemplateId_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &QueryEntrypointResponseRecordsItem{}
+		obj.TemplateId = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetTemplateId(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetTemplateId_NilReceiver", func(t *testing.T) {
@@ -32556,7 +32786,7 @@ func TestSettersMarkExplicitQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueBankData BankData
+		var fernTestValueBankData *BankData
 
 		// Act
 		obj.SetBankData(fernTestValueBankData)
@@ -32680,7 +32910,7 @@ func TestSettersMarkExplicitQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueBinPerson Binperson
+		var fernTestValueBinPerson *Binperson
 
 		// Act
 		obj.SetBinPerson(fernTestValueBinPerson)
@@ -32711,7 +32941,7 @@ func TestSettersMarkExplicitQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueBinPhone Binphone
+		var fernTestValueBinPhone *Binphone
 
 		// Act
 		obj.SetBinPhone(fernTestValueBinPhone)
@@ -32742,7 +32972,7 @@ func TestSettersMarkExplicitQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueBinWeb Binweb
+		var fernTestValueBinWeb *Binweb
 
 		// Act
 		obj.SetBinWeb(fernTestValueBinWeb)
@@ -32773,7 +33003,7 @@ func TestSettersMarkExplicitQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueBoardingId BoardingId
+		var fernTestValueBoardingId *BoardingId
 
 		// Act
 		obj.SetBoardingId(fernTestValueBoardingId)
@@ -32928,7 +33158,7 @@ func TestSettersMarkExplicitQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueBTimeZone Timezone
+		var fernTestValueBTimeZone *Timezone
 
 		// Act
 		obj.SetBTimeZone(fernTestValueBTimeZone)
@@ -32990,7 +33220,7 @@ func TestSettersMarkExplicitQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueContactData ContactsField
+		var fernTestValueContactData *ContactsField
 
 		// Act
 		obj.SetContactData(fernTestValueContactData)
@@ -33021,7 +33251,7 @@ func TestSettersMarkExplicitQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueCreatedAt CreatedAt
+		var fernTestValueCreatedAt *CreatedAt
 
 		// Act
 		obj.SetCreatedAt(fernTestValueCreatedAt)
@@ -33052,7 +33282,7 @@ func TestSettersMarkExplicitQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueDbaName Dbaname
+		var fernTestValueDbaName *Dbaname
 
 		// Act
 		obj.SetDbaName(fernTestValueDbaName)
@@ -33114,7 +33344,7 @@ func TestSettersMarkExplicitQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueEin Ein
+		var fernTestValueEin *Ein
 
 		// Act
 		obj.SetEin(fernTestValueEin)
@@ -33207,7 +33437,7 @@ func TestSettersMarkExplicitQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueExternalProcessorInformation ExternalProcessorInformation
+		var fernTestValueExternalProcessorInformation *ExternalProcessorInformation
 
 		// Act
 		obj.SetExternalProcessorInformation(fernTestValueExternalProcessorInformation)
@@ -33269,7 +33499,7 @@ func TestSettersMarkExplicitQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueIdPaypoint Idpaypoint
+		var fernTestValueIdPaypoint *Idpaypoint
 
 		// Act
 		obj.SetIdPaypoint(fernTestValueIdPaypoint)
@@ -33300,7 +33530,7 @@ func TestSettersMarkExplicitQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueLastModified LastModified
+		var fernTestValueLastModified *LastModified
 
 		// Act
 		obj.SetLastModified(fernTestValueLastModified)
@@ -33331,7 +33561,7 @@ func TestSettersMarkExplicitQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueLegalName Legalname
+		var fernTestValueLegalName *Legalname
 
 		// Act
 		obj.SetLegalName(fernTestValueLegalName)
@@ -33486,7 +33716,7 @@ func TestSettersMarkExplicitQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueMccid string
+		var fernTestValueMccid *string
 
 		// Act
 		obj.SetMccid(fernTestValueMccid)
@@ -33641,7 +33871,7 @@ func TestSettersMarkExplicitQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueOrgId Orgid
+		var fernTestValueOrgId *Orgid
 
 		// Act
 		obj.SetOrgId(fernTestValueOrgId)
@@ -33672,7 +33902,7 @@ func TestSettersMarkExplicitQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueOrgParentName OrgParentName
+		var fernTestValueOrgParentName *OrgParentName
 
 		// Act
 		obj.SetOrgParentName(fernTestValueOrgParentName)
@@ -33703,7 +33933,7 @@ func TestSettersMarkExplicitQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueOwnerData Ownership
+		var fernTestValueOwnerData *Ownership
 
 		// Act
 		obj.SetOwnerData(fernTestValueOwnerData)
@@ -33765,7 +33995,7 @@ func TestSettersMarkExplicitQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValuePaypointStatus Paypointstatus
+		var fernTestValuePaypointStatus *Paypointstatus
 
 		// Act
 		obj.SetPaypointStatus(fernTestValuePaypointStatus)
@@ -33920,7 +34150,7 @@ func TestSettersMarkExplicitQueryEntrypointResponseRecordsItem(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &QueryEntrypointResponseRecordsItem{}
-		var fernTestValueTemplateId TemplateId
+		var fernTestValueTemplateId *TemplateId
 
 		// Act
 		obj.SetTemplateId(fernTestValueTemplateId)
@@ -73660,7 +73890,7 @@ func TestSettersMarkExplicitVCardQueryResponse(t *testing.T) {
 func TestSettersVCardRecord(t *testing.T) {
 	t.Run("SetVcardSent", func(t *testing.T) {
 		obj := &VCardRecord{}
-		var fernTestValueVcardSent bool
+		var fernTestValueVcardSent *bool
 		obj.SetVcardSent(fernTestValueVcardSent)
 		assert.Equal(t, fernTestValueVcardSent, obj.VcardSent)
 		assert.NotNil(t, obj.explicitFields)
@@ -73668,7 +73898,7 @@ func TestSettersVCardRecord(t *testing.T) {
 
 	t.Run("SetCardType", func(t *testing.T) {
 		obj := &VCardRecord{}
-		var fernTestValueCardType VCardCardType
+		var fernTestValueCardType *VCardCardType
 		obj.SetCardType(fernTestValueCardType)
 		assert.Equal(t, fernTestValueCardType, obj.CardType)
 		assert.NotNil(t, obj.explicitFields)
@@ -73676,7 +73906,7 @@ func TestSettersVCardRecord(t *testing.T) {
 
 	t.Run("SetCardToken", func(t *testing.T) {
 		obj := &VCardRecord{}
-		var fernTestValueCardToken string
+		var fernTestValueCardToken *string
 		obj.SetCardToken(fernTestValueCardToken)
 		assert.Equal(t, fernTestValueCardToken, obj.CardToken)
 		assert.NotNil(t, obj.explicitFields)
@@ -73684,7 +73914,7 @@ func TestSettersVCardRecord(t *testing.T) {
 
 	t.Run("SetCardNumber", func(t *testing.T) {
 		obj := &VCardRecord{}
-		var fernTestValueCardNumber string
+		var fernTestValueCardNumber *string
 		obj.SetCardNumber(fernTestValueCardNumber)
 		assert.Equal(t, fernTestValueCardNumber, obj.CardNumber)
 		assert.NotNil(t, obj.explicitFields)
@@ -73700,7 +73930,7 @@ func TestSettersVCardRecord(t *testing.T) {
 
 	t.Run("SetExpirationDate", func(t *testing.T) {
 		obj := &VCardRecord{}
-		var fernTestValueExpirationDate string
+		var fernTestValueExpirationDate *string
 		obj.SetExpirationDate(fernTestValueExpirationDate)
 		assert.Equal(t, fernTestValueExpirationDate, obj.ExpirationDate)
 		assert.NotNil(t, obj.explicitFields)
@@ -73708,7 +73938,7 @@ func TestSettersVCardRecord(t *testing.T) {
 
 	t.Run("SetStatus", func(t *testing.T) {
 		obj := &VCardRecord{}
-		var fernTestValueStatus string
+		var fernTestValueStatus *string
 		obj.SetStatus(fernTestValueStatus)
 		assert.Equal(t, fernTestValueStatus, obj.Status)
 		assert.NotNil(t, obj.explicitFields)
@@ -73716,7 +73946,7 @@ func TestSettersVCardRecord(t *testing.T) {
 
 	t.Run("SetAmount", func(t *testing.T) {
 		obj := &VCardRecord{}
-		var fernTestValueAmount float64
+		var fernTestValueAmount *float64
 		obj.SetAmount(fernTestValueAmount)
 		assert.Equal(t, fernTestValueAmount, obj.Amount)
 		assert.NotNil(t, obj.explicitFields)
@@ -73724,7 +73954,7 @@ func TestSettersVCardRecord(t *testing.T) {
 
 	t.Run("SetCurrentBalance", func(t *testing.T) {
 		obj := &VCardRecord{}
-		var fernTestValueCurrentBalance float64
+		var fernTestValueCurrentBalance *float64
 		obj.SetCurrentBalance(fernTestValueCurrentBalance)
 		assert.Equal(t, fernTestValueCurrentBalance, obj.CurrentBalance)
 		assert.NotNil(t, obj.explicitFields)
@@ -73732,7 +73962,7 @@ func TestSettersVCardRecord(t *testing.T) {
 
 	t.Run("SetExpenseLimit", func(t *testing.T) {
 		obj := &VCardRecord{}
-		var fernTestValueExpenseLimit float64
+		var fernTestValueExpenseLimit *float64
 		obj.SetExpenseLimit(fernTestValueExpenseLimit)
 		assert.Equal(t, fernTestValueExpenseLimit, obj.ExpenseLimit)
 		assert.NotNil(t, obj.explicitFields)
@@ -73748,7 +73978,7 @@ func TestSettersVCardRecord(t *testing.T) {
 
 	t.Run("SetMaxNumberOfUses", func(t *testing.T) {
 		obj := &VCardRecord{}
-		var fernTestValueMaxNumberOfUses int
+		var fernTestValueMaxNumberOfUses *int
 		obj.SetMaxNumberOfUses(fernTestValueMaxNumberOfUses)
 		assert.Equal(t, fernTestValueMaxNumberOfUses, obj.MaxNumberOfUses)
 		assert.NotNil(t, obj.explicitFields)
@@ -73756,7 +73986,7 @@ func TestSettersVCardRecord(t *testing.T) {
 
 	t.Run("SetCurrentNumberOfUses", func(t *testing.T) {
 		obj := &VCardRecord{}
-		var fernTestValueCurrentNumberOfUses int
+		var fernTestValueCurrentNumberOfUses *int
 		obj.SetCurrentNumberOfUses(fernTestValueCurrentNumberOfUses)
 		assert.Equal(t, fernTestValueCurrentNumberOfUses, obj.CurrentNumberOfUses)
 		assert.NotNil(t, obj.explicitFields)
@@ -73764,7 +73994,7 @@ func TestSettersVCardRecord(t *testing.T) {
 
 	t.Run("SetExactAmount", func(t *testing.T) {
 		obj := &VCardRecord{}
-		var fernTestValueExactAmount bool
+		var fernTestValueExactAmount *bool
 		obj.SetExactAmount(fernTestValueExactAmount)
 		assert.Equal(t, fernTestValueExactAmount, obj.ExactAmount)
 		assert.NotNil(t, obj.explicitFields)
@@ -73804,7 +74034,7 @@ func TestSettersVCardRecord(t *testing.T) {
 
 	t.Run("SetDateCreated", func(t *testing.T) {
 		obj := &VCardRecord{}
-		var fernTestValueDateCreated CreatedAt
+		var fernTestValueDateCreated *CreatedAt
 		obj.SetDateCreated(fernTestValueDateCreated)
 		assert.Equal(t, fernTestValueDateCreated, obj.DateCreated)
 		assert.NotNil(t, obj.explicitFields)
@@ -73812,7 +74042,7 @@ func TestSettersVCardRecord(t *testing.T) {
 
 	t.Run("SetDateModified", func(t *testing.T) {
 		obj := &VCardRecord{}
-		var fernTestValueDateModified LastModified
+		var fernTestValueDateModified *LastModified
 		obj.SetDateModified(fernTestValueDateModified)
 		assert.Equal(t, fernTestValueDateModified, obj.DateModified)
 		assert.NotNil(t, obj.explicitFields)
@@ -73876,7 +74106,7 @@ func TestSettersVCardRecord(t *testing.T) {
 
 	t.Run("SetPaypointId", func(t *testing.T) {
 		obj := &VCardRecord{}
-		var fernTestValuePaypointId int
+		var fernTestValuePaypointId *int
 		obj.SetPaypointId(fernTestValuePaypointId)
 		assert.Equal(t, fernTestValuePaypointId, obj.PaypointId)
 		assert.NotNil(t, obj.explicitFields)
@@ -73889,11 +74119,21 @@ func TestGettersVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var expected bool
+		var expected *bool
 		obj.VcardSent = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetVcardSent(), "getter should return the property value")
+	})
+
+	t.Run("GetVcardSent_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VCardRecord{}
+		obj.VcardSent = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetVcardSent(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetVcardSent_NilReceiver", func(t *testing.T) {
@@ -73912,11 +74152,21 @@ func TestGettersVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var expected VCardCardType
+		var expected *VCardCardType
 		obj.CardType = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetCardType(), "getter should return the property value")
+	})
+
+	t.Run("GetCardType_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VCardRecord{}
+		obj.CardType = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetCardType(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetCardType_NilReceiver", func(t *testing.T) {
@@ -73935,11 +74185,21 @@ func TestGettersVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var expected string
+		var expected *string
 		obj.CardToken = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetCardToken(), "getter should return the property value")
+	})
+
+	t.Run("GetCardToken_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VCardRecord{}
+		obj.CardToken = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetCardToken(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetCardToken_NilReceiver", func(t *testing.T) {
@@ -73958,11 +74218,21 @@ func TestGettersVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var expected string
+		var expected *string
 		obj.CardNumber = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetCardNumber(), "getter should return the property value")
+	})
+
+	t.Run("GetCardNumber_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VCardRecord{}
+		obj.CardNumber = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetCardNumber(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetCardNumber_NilReceiver", func(t *testing.T) {
@@ -74014,11 +74284,21 @@ func TestGettersVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var expected string
+		var expected *string
 		obj.ExpirationDate = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetExpirationDate(), "getter should return the property value")
+	})
+
+	t.Run("GetExpirationDate_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VCardRecord{}
+		obj.ExpirationDate = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetExpirationDate(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetExpirationDate_NilReceiver", func(t *testing.T) {
@@ -74037,11 +74317,21 @@ func TestGettersVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var expected string
+		var expected *string
 		obj.Status = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetStatus(), "getter should return the property value")
+	})
+
+	t.Run("GetStatus_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VCardRecord{}
+		obj.Status = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetStatus(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetStatus_NilReceiver", func(t *testing.T) {
@@ -74060,11 +74350,21 @@ func TestGettersVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var expected float64
+		var expected *float64
 		obj.Amount = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetAmount(), "getter should return the property value")
+	})
+
+	t.Run("GetAmount_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VCardRecord{}
+		obj.Amount = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetAmount(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetAmount_NilReceiver", func(t *testing.T) {
@@ -74083,11 +74383,21 @@ func TestGettersVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var expected float64
+		var expected *float64
 		obj.CurrentBalance = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetCurrentBalance(), "getter should return the property value")
+	})
+
+	t.Run("GetCurrentBalance_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VCardRecord{}
+		obj.CurrentBalance = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetCurrentBalance(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetCurrentBalance_NilReceiver", func(t *testing.T) {
@@ -74106,11 +74416,21 @@ func TestGettersVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var expected float64
+		var expected *float64
 		obj.ExpenseLimit = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetExpenseLimit(), "getter should return the property value")
+	})
+
+	t.Run("GetExpenseLimit_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VCardRecord{}
+		obj.ExpenseLimit = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetExpenseLimit(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetExpenseLimit_NilReceiver", func(t *testing.T) {
@@ -74162,11 +74482,21 @@ func TestGettersVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var expected int
+		var expected *int
 		obj.MaxNumberOfUses = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetMaxNumberOfUses(), "getter should return the property value")
+	})
+
+	t.Run("GetMaxNumberOfUses_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VCardRecord{}
+		obj.MaxNumberOfUses = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetMaxNumberOfUses(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetMaxNumberOfUses_NilReceiver", func(t *testing.T) {
@@ -74185,11 +74515,21 @@ func TestGettersVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var expected int
+		var expected *int
 		obj.CurrentNumberOfUses = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetCurrentNumberOfUses(), "getter should return the property value")
+	})
+
+	t.Run("GetCurrentNumberOfUses_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VCardRecord{}
+		obj.CurrentNumberOfUses = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetCurrentNumberOfUses(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetCurrentNumberOfUses_NilReceiver", func(t *testing.T) {
@@ -74208,11 +74548,21 @@ func TestGettersVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var expected bool
+		var expected *bool
 		obj.ExactAmount = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetExactAmount(), "getter should return the property value")
+	})
+
+	t.Run("GetExactAmount_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VCardRecord{}
+		obj.ExactAmount = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetExactAmount(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetExactAmount_NilReceiver", func(t *testing.T) {
@@ -74363,11 +74713,21 @@ func TestGettersVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var expected CreatedAt
+		var expected *CreatedAt
 		obj.DateCreated = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetDateCreated(), "getter should return the property value")
+	})
+
+	t.Run("GetDateCreated_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VCardRecord{}
+		obj.DateCreated = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetDateCreated(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetDateCreated_NilReceiver", func(t *testing.T) {
@@ -74386,11 +74746,21 @@ func TestGettersVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var expected LastModified
+		var expected *LastModified
 		obj.DateModified = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetDateModified(), "getter should return the property value")
+	})
+
+	t.Run("GetDateModified_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VCardRecord{}
+		obj.DateModified = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetDateModified(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetDateModified_NilReceiver", func(t *testing.T) {
@@ -74640,11 +75010,21 @@ func TestGettersVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var expected int
+		var expected *int
 		obj.PaypointId = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetPaypointId(), "getter should return the property value")
+	})
+
+	t.Run("GetPaypointId_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VCardRecord{}
+		obj.PaypointId = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetPaypointId(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetPaypointId_NilReceiver", func(t *testing.T) {
@@ -74666,7 +75046,7 @@ func TestSettersMarkExplicitVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var fernTestValueVcardSent bool
+		var fernTestValueVcardSent *bool
 
 		// Act
 		obj.SetVcardSent(fernTestValueVcardSent)
@@ -74697,7 +75077,7 @@ func TestSettersMarkExplicitVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var fernTestValueCardType VCardCardType
+		var fernTestValueCardType *VCardCardType
 
 		// Act
 		obj.SetCardType(fernTestValueCardType)
@@ -74728,7 +75108,7 @@ func TestSettersMarkExplicitVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var fernTestValueCardToken string
+		var fernTestValueCardToken *string
 
 		// Act
 		obj.SetCardToken(fernTestValueCardToken)
@@ -74759,7 +75139,7 @@ func TestSettersMarkExplicitVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var fernTestValueCardNumber string
+		var fernTestValueCardNumber *string
 
 		// Act
 		obj.SetCardNumber(fernTestValueCardNumber)
@@ -74821,7 +75201,7 @@ func TestSettersMarkExplicitVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var fernTestValueExpirationDate string
+		var fernTestValueExpirationDate *string
 
 		// Act
 		obj.SetExpirationDate(fernTestValueExpirationDate)
@@ -74852,7 +75232,7 @@ func TestSettersMarkExplicitVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var fernTestValueStatus string
+		var fernTestValueStatus *string
 
 		// Act
 		obj.SetStatus(fernTestValueStatus)
@@ -74883,7 +75263,7 @@ func TestSettersMarkExplicitVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var fernTestValueAmount float64
+		var fernTestValueAmount *float64
 
 		// Act
 		obj.SetAmount(fernTestValueAmount)
@@ -74914,7 +75294,7 @@ func TestSettersMarkExplicitVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var fernTestValueCurrentBalance float64
+		var fernTestValueCurrentBalance *float64
 
 		// Act
 		obj.SetCurrentBalance(fernTestValueCurrentBalance)
@@ -74945,7 +75325,7 @@ func TestSettersMarkExplicitVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var fernTestValueExpenseLimit float64
+		var fernTestValueExpenseLimit *float64
 
 		// Act
 		obj.SetExpenseLimit(fernTestValueExpenseLimit)
@@ -75007,7 +75387,7 @@ func TestSettersMarkExplicitVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var fernTestValueMaxNumberOfUses int
+		var fernTestValueMaxNumberOfUses *int
 
 		// Act
 		obj.SetMaxNumberOfUses(fernTestValueMaxNumberOfUses)
@@ -75038,7 +75418,7 @@ func TestSettersMarkExplicitVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var fernTestValueCurrentNumberOfUses int
+		var fernTestValueCurrentNumberOfUses *int
 
 		// Act
 		obj.SetCurrentNumberOfUses(fernTestValueCurrentNumberOfUses)
@@ -75069,7 +75449,7 @@ func TestSettersMarkExplicitVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var fernTestValueExactAmount bool
+		var fernTestValueExactAmount *bool
 
 		// Act
 		obj.SetExactAmount(fernTestValueExactAmount)
@@ -75224,7 +75604,7 @@ func TestSettersMarkExplicitVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var fernTestValueDateCreated CreatedAt
+		var fernTestValueDateCreated *CreatedAt
 
 		// Act
 		obj.SetDateCreated(fernTestValueDateCreated)
@@ -75255,7 +75635,7 @@ func TestSettersMarkExplicitVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var fernTestValueDateModified LastModified
+		var fernTestValueDateModified *LastModified
 
 		// Act
 		obj.SetDateModified(fernTestValueDateModified)
@@ -75503,7 +75883,7 @@ func TestSettersMarkExplicitVCardRecord(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VCardRecord{}
-		var fernTestValuePaypointId int
+		var fernTestValuePaypointId *int
 
 		// Act
 		obj.SetPaypointId(fernTestValuePaypointId)
