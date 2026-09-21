@@ -4754,36 +4754,36 @@ type VendorDataResponse struct {
 	// Primary name for vendor.
 	Name1 string `json:"Name1" url:"Name1"`
 	// Secondary name for vendor.
-	Name2 string `json:"Name2" url:"Name2"`
+	Name2 *string `json:"Name2,omitempty" url:"Name2,omitempty"`
 	// EIN/Tax ID for vendor. In responses, this field is masked, and looks like: `"ein": "XXXXX6789"`.
-	Ein string `json:"EIN" url:"EIN"`
+	Ein *string `json:"EIN,omitempty" url:"EIN,omitempty"`
 	// Vendor's phone number.
 	Phone string `json:"Phone" url:"Phone"`
 	Email Email  `json:"Email" url:"Email"`
 	// Email address for remittance
 	RemitEmail *string `json:"RemitEmail,omitempty" url:"RemitEmail,omitempty"`
 	// Vendor's address.
-	Address1 string `json:"Address1" url:"Address1"`
+	Address1 *string `json:"Address1,omitempty" url:"Address1,omitempty"`
 	// Additional line for vendor's address.
-	Address2 string `json:"Address2" url:"Address2"`
+	Address2 *string `json:"Address2,omitempty" url:"Address2,omitempty"`
 	// Vendor's city.
-	City string `json:"City" url:"City"`
+	City *string `json:"City,omitempty" url:"City,omitempty"`
 	// Vendor's state. Must be a two-character state code.
-	State string `json:"State" url:"State"`
+	State *string `json:"State,omitempty" url:"State,omitempty"`
 	// Vendor's ZIP code.
-	Zip string `json:"Zip" url:"Zip"`
+	Zip *string `json:"Zip,omitempty" url:"Zip,omitempty"`
 	// Vendor's country. Payabli supports only US and Canadian vendors.
-	Country      string       `json:"Country" url:"Country"`
-	Mcc          Mcc          `json:"Mcc" url:"Mcc"`
-	LocationCode LocationCode `json:"LocationCode" url:"LocationCode"`
+	Country      *string       `json:"Country,omitempty" url:"Country,omitempty"`
+	Mcc          *Mcc          `json:"Mcc,omitempty" url:"Mcc,omitempty"`
+	LocationCode *LocationCode `json:"LocationCode,omitempty" url:"LocationCode,omitempty"`
 	// Array of objects describing the vendor's contacts.
-	Contacts []*ContactsResponse `json:"Contacts" url:"Contacts"`
+	Contacts []*ContactsResponse `json:"Contacts,omitempty" url:"Contacts,omitempty"`
 	// Object containing vendor's bank information.
-	BillingData *VendorResponseBillingData `json:"BillingData" url:"BillingData"`
+	BillingData *VendorResponseBillingData `json:"BillingData,omitempty" url:"BillingData,omitempty"`
 	// Preferred payment method for vendor.
-	PaymentMethod VendorDataResponsePaymentMethod `json:"PaymentMethod" url:"PaymentMethod"`
-	VendorStatus  Vendorstatus                    `json:"VendorStatus" url:"VendorStatus"`
-	VendorId      Vendorid                        `json:"VendorId" url:"VendorId"`
+	PaymentMethod *VendorDataResponsePaymentMethod `json:"PaymentMethod,omitempty" url:"PaymentMethod,omitempty"`
+	VendorStatus  Vendorstatus                     `json:"VendorStatus" url:"VendorStatus"`
+	VendorId      Vendorid                         `json:"VendorId" url:"VendorId"`
 	// Vendor enrollment status
 	EnrollmentStatus *string `json:"EnrollmentStatus,omitempty" url:"EnrollmentStatus,omitempty"`
 	// Vendor bill summary statistics
@@ -4801,25 +4801,25 @@ type VendorDataResponse struct {
 	// Date when vendor was created
 	CreatedDate time.Time `json:"CreatedDate" url:"CreatedDate"`
 	// Date when vendor was last updated
-	LastUpdated   time.Time     `json:"LastUpdated" url:"LastUpdated"`
-	RemitAddress1 Remitaddress1 `json:"remitAddress1" url:"remitAddress1"`
-	RemitAddress2 Remitaddress2 `json:"remitAddress2" url:"remitAddress2"`
-	RemitCity     Remitcity     `json:"remitCity" url:"remitCity"`
-	RemitState    Remitstate    `json:"remitState" url:"remitState"`
-	RemitZip      Remitzip      `json:"remitZip" url:"remitZip"`
-	RemitCountry  Remitcountry  `json:"remitCountry" url:"remitCountry"`
-	PayeeName1    PayeeName     `json:"payeeName1" url:"payeeName1"`
-	PayeeName2    PayeeName     `json:"payeeName2" url:"payeeName2"`
+	LastUpdated   time.Time      `json:"LastUpdated" url:"LastUpdated"`
+	RemitAddress1 *Remitaddress1 `json:"remitAddress1,omitempty" url:"remitAddress1,omitempty"`
+	RemitAddress2 *Remitaddress2 `json:"remitAddress2,omitempty" url:"remitAddress2,omitempty"`
+	RemitCity     *Remitcity     `json:"remitCity,omitempty" url:"remitCity,omitempty"`
+	RemitState    *Remitstate    `json:"remitState,omitempty" url:"remitState,omitempty"`
+	RemitZip      *Remitzip      `json:"remitZip,omitempty" url:"remitZip,omitempty"`
+	RemitCountry  *Remitcountry  `json:"remitCountry,omitempty" url:"remitCountry,omitempty"`
+	PayeeName1    *PayeeName     `json:"payeeName1,omitempty" url:"payeeName1,omitempty"`
+	PayeeName2    *PayeeName     `json:"payeeName2,omitempty" url:"payeeName2,omitempty"`
 	// Custom field 1 for vendor
-	CustomField1 string `json:"customField1" url:"customField1"`
+	CustomField1 *string `json:"customField1,omitempty" url:"customField1,omitempty"`
 	// Custom field 2 for vendor
-	CustomField2 string `json:"customField2" url:"customField2"`
+	CustomField2 *string `json:"customField2,omitempty" url:"customField2,omitempty"`
 	// Account number of paypoint in the Vendor side.
 	CustomerVendorAccount *string             `json:"customerVendorAccount,omitempty" url:"customerVendorAccount,omitempty"`
 	InternalReferenceId   InternalReferenceId `json:"InternalReferenceId" url:"InternalReferenceId"`
-	AdditionalData        AdditionalDataMap   `json:"additionalData" url:"additionalData"`
+	AdditionalData        *AdditionalDataMap  `json:"additionalData,omitempty" url:"additionalData,omitempty"`
 	// External paypoint identifier
-	ExternalPaypointId string `json:"externalPaypointID" url:"externalPaypointID"`
+	ExternalPaypointId *string `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
 	// Array of stored payment methods for vendor
 	StoredMethods []*VendorResponseStoredMethod `json:"StoredMethods" url:"StoredMethods"`
 
@@ -4844,16 +4844,16 @@ func (v *VendorDataResponse) GetName1() string {
 	return v.Name1
 }
 
-func (v *VendorDataResponse) GetName2() string {
+func (v *VendorDataResponse) GetName2() *string {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.Name2
 }
 
-func (v *VendorDataResponse) GetEin() string {
+func (v *VendorDataResponse) GetEin() *string {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.Ein
 }
@@ -4879,58 +4879,58 @@ func (v *VendorDataResponse) GetRemitEmail() *string {
 	return v.RemitEmail
 }
 
-func (v *VendorDataResponse) GetAddress1() string {
+func (v *VendorDataResponse) GetAddress1() *string {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.Address1
 }
 
-func (v *VendorDataResponse) GetAddress2() string {
+func (v *VendorDataResponse) GetAddress2() *string {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.Address2
 }
 
-func (v *VendorDataResponse) GetCity() string {
+func (v *VendorDataResponse) GetCity() *string {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.City
 }
 
-func (v *VendorDataResponse) GetState() string {
+func (v *VendorDataResponse) GetState() *string {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.State
 }
 
-func (v *VendorDataResponse) GetZip() string {
+func (v *VendorDataResponse) GetZip() *string {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.Zip
 }
 
-func (v *VendorDataResponse) GetCountry() string {
+func (v *VendorDataResponse) GetCountry() *string {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.Country
 }
 
-func (v *VendorDataResponse) GetMcc() Mcc {
+func (v *VendorDataResponse) GetMcc() *Mcc {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.Mcc
 }
 
-func (v *VendorDataResponse) GetLocationCode() LocationCode {
+func (v *VendorDataResponse) GetLocationCode() *LocationCode {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.LocationCode
 }
@@ -4949,9 +4949,9 @@ func (v *VendorDataResponse) GetBillingData() *VendorResponseBillingData {
 	return v.BillingData
 }
 
-func (v *VendorDataResponse) GetPaymentMethod() VendorDataResponsePaymentMethod {
+func (v *VendorDataResponse) GetPaymentMethod() *VendorDataResponsePaymentMethod {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.PaymentMethod
 }
@@ -5033,72 +5033,72 @@ func (v *VendorDataResponse) GetLastUpdated() time.Time {
 	return v.LastUpdated
 }
 
-func (v *VendorDataResponse) GetRemitAddress1() Remitaddress1 {
+func (v *VendorDataResponse) GetRemitAddress1() *Remitaddress1 {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.RemitAddress1
 }
 
-func (v *VendorDataResponse) GetRemitAddress2() Remitaddress2 {
+func (v *VendorDataResponse) GetRemitAddress2() *Remitaddress2 {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.RemitAddress2
 }
 
-func (v *VendorDataResponse) GetRemitCity() Remitcity {
+func (v *VendorDataResponse) GetRemitCity() *Remitcity {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.RemitCity
 }
 
-func (v *VendorDataResponse) GetRemitState() Remitstate {
+func (v *VendorDataResponse) GetRemitState() *Remitstate {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.RemitState
 }
 
-func (v *VendorDataResponse) GetRemitZip() Remitzip {
+func (v *VendorDataResponse) GetRemitZip() *Remitzip {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.RemitZip
 }
 
-func (v *VendorDataResponse) GetRemitCountry() Remitcountry {
+func (v *VendorDataResponse) GetRemitCountry() *Remitcountry {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.RemitCountry
 }
 
-func (v *VendorDataResponse) GetPayeeName1() PayeeName {
+func (v *VendorDataResponse) GetPayeeName1() *PayeeName {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.PayeeName1
 }
 
-func (v *VendorDataResponse) GetPayeeName2() PayeeName {
+func (v *VendorDataResponse) GetPayeeName2() *PayeeName {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.PayeeName2
 }
 
-func (v *VendorDataResponse) GetCustomField1() string {
+func (v *VendorDataResponse) GetCustomField1() *string {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.CustomField1
 }
 
-func (v *VendorDataResponse) GetCustomField2() string {
+func (v *VendorDataResponse) GetCustomField2() *string {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.CustomField2
 }
@@ -5117,16 +5117,16 @@ func (v *VendorDataResponse) GetInternalReferenceId() InternalReferenceId {
 	return v.InternalReferenceId
 }
 
-func (v *VendorDataResponse) GetAdditionalData() AdditionalDataMap {
+func (v *VendorDataResponse) GetAdditionalData() *AdditionalDataMap {
 	if v == nil {
 		return nil
 	}
 	return v.AdditionalData
 }
 
-func (v *VendorDataResponse) GetExternalPaypointId() string {
+func (v *VendorDataResponse) GetExternalPaypointId() *string {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.ExternalPaypointId
 }
@@ -5168,14 +5168,14 @@ func (v *VendorDataResponse) SetName1(name1 string) {
 
 // SetName2 sets the Name2 field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetName2(name2 string) {
+func (v *VendorDataResponse) SetName2(name2 *string) {
 	v.Name2 = name2
 	v.require(vendorDataResponseFieldName2)
 }
 
 // SetEin sets the Ein field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetEin(ein string) {
+func (v *VendorDataResponse) SetEin(ein *string) {
 	v.Ein = ein
 	v.require(vendorDataResponseFieldEin)
 }
@@ -5203,56 +5203,56 @@ func (v *VendorDataResponse) SetRemitEmail(remitEmail *string) {
 
 // SetAddress1 sets the Address1 field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetAddress1(address1 string) {
+func (v *VendorDataResponse) SetAddress1(address1 *string) {
 	v.Address1 = address1
 	v.require(vendorDataResponseFieldAddress1)
 }
 
 // SetAddress2 sets the Address2 field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetAddress2(address2 string) {
+func (v *VendorDataResponse) SetAddress2(address2 *string) {
 	v.Address2 = address2
 	v.require(vendorDataResponseFieldAddress2)
 }
 
 // SetCity sets the City field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetCity(city string) {
+func (v *VendorDataResponse) SetCity(city *string) {
 	v.City = city
 	v.require(vendorDataResponseFieldCity)
 }
 
 // SetState sets the State field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetState(state string) {
+func (v *VendorDataResponse) SetState(state *string) {
 	v.State = state
 	v.require(vendorDataResponseFieldState)
 }
 
 // SetZip sets the Zip field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetZip(zip string) {
+func (v *VendorDataResponse) SetZip(zip *string) {
 	v.Zip = zip
 	v.require(vendorDataResponseFieldZip)
 }
 
 // SetCountry sets the Country field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetCountry(country string) {
+func (v *VendorDataResponse) SetCountry(country *string) {
 	v.Country = country
 	v.require(vendorDataResponseFieldCountry)
 }
 
 // SetMcc sets the Mcc field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetMcc(mcc Mcc) {
+func (v *VendorDataResponse) SetMcc(mcc *Mcc) {
 	v.Mcc = mcc
 	v.require(vendorDataResponseFieldMcc)
 }
 
 // SetLocationCode sets the LocationCode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetLocationCode(locationCode LocationCode) {
+func (v *VendorDataResponse) SetLocationCode(locationCode *LocationCode) {
 	v.LocationCode = locationCode
 	v.require(vendorDataResponseFieldLocationCode)
 }
@@ -5273,7 +5273,7 @@ func (v *VendorDataResponse) SetBillingData(billingData *VendorResponseBillingDa
 
 // SetPaymentMethod sets the PaymentMethod field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetPaymentMethod(paymentMethod VendorDataResponsePaymentMethod) {
+func (v *VendorDataResponse) SetPaymentMethod(paymentMethod *VendorDataResponsePaymentMethod) {
 	v.PaymentMethod = paymentMethod
 	v.require(vendorDataResponseFieldPaymentMethod)
 }
@@ -5357,70 +5357,70 @@ func (v *VendorDataResponse) SetLastUpdated(lastUpdated time.Time) {
 
 // SetRemitAddress1 sets the RemitAddress1 field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetRemitAddress1(remitAddress1 Remitaddress1) {
+func (v *VendorDataResponse) SetRemitAddress1(remitAddress1 *Remitaddress1) {
 	v.RemitAddress1 = remitAddress1
 	v.require(vendorDataResponseFieldRemitAddress1)
 }
 
 // SetRemitAddress2 sets the RemitAddress2 field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetRemitAddress2(remitAddress2 Remitaddress2) {
+func (v *VendorDataResponse) SetRemitAddress2(remitAddress2 *Remitaddress2) {
 	v.RemitAddress2 = remitAddress2
 	v.require(vendorDataResponseFieldRemitAddress2)
 }
 
 // SetRemitCity sets the RemitCity field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetRemitCity(remitCity Remitcity) {
+func (v *VendorDataResponse) SetRemitCity(remitCity *Remitcity) {
 	v.RemitCity = remitCity
 	v.require(vendorDataResponseFieldRemitCity)
 }
 
 // SetRemitState sets the RemitState field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetRemitState(remitState Remitstate) {
+func (v *VendorDataResponse) SetRemitState(remitState *Remitstate) {
 	v.RemitState = remitState
 	v.require(vendorDataResponseFieldRemitState)
 }
 
 // SetRemitZip sets the RemitZip field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetRemitZip(remitZip Remitzip) {
+func (v *VendorDataResponse) SetRemitZip(remitZip *Remitzip) {
 	v.RemitZip = remitZip
 	v.require(vendorDataResponseFieldRemitZip)
 }
 
 // SetRemitCountry sets the RemitCountry field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetRemitCountry(remitCountry Remitcountry) {
+func (v *VendorDataResponse) SetRemitCountry(remitCountry *Remitcountry) {
 	v.RemitCountry = remitCountry
 	v.require(vendorDataResponseFieldRemitCountry)
 }
 
 // SetPayeeName1 sets the PayeeName1 field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetPayeeName1(payeeName1 PayeeName) {
+func (v *VendorDataResponse) SetPayeeName1(payeeName1 *PayeeName) {
 	v.PayeeName1 = payeeName1
 	v.require(vendorDataResponseFieldPayeeName1)
 }
 
 // SetPayeeName2 sets the PayeeName2 field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetPayeeName2(payeeName2 PayeeName) {
+func (v *VendorDataResponse) SetPayeeName2(payeeName2 *PayeeName) {
 	v.PayeeName2 = payeeName2
 	v.require(vendorDataResponseFieldPayeeName2)
 }
 
 // SetCustomField1 sets the CustomField1 field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetCustomField1(customField1 string) {
+func (v *VendorDataResponse) SetCustomField1(customField1 *string) {
 	v.CustomField1 = customField1
 	v.require(vendorDataResponseFieldCustomField1)
 }
 
 // SetCustomField2 sets the CustomField2 field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetCustomField2(customField2 string) {
+func (v *VendorDataResponse) SetCustomField2(customField2 *string) {
 	v.CustomField2 = customField2
 	v.require(vendorDataResponseFieldCustomField2)
 }
@@ -5441,14 +5441,14 @@ func (v *VendorDataResponse) SetInternalReferenceId(internalReferenceId Internal
 
 // SetAdditionalData sets the AdditionalData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetAdditionalData(additionalData AdditionalDataMap) {
+func (v *VendorDataResponse) SetAdditionalData(additionalData *AdditionalDataMap) {
 	v.AdditionalData = additionalData
 	v.require(vendorDataResponseFieldAdditionalData)
 }
 
 // SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorDataResponse) SetExternalPaypointId(externalPaypointId string) {
+func (v *VendorDataResponse) SetExternalPaypointId(externalPaypointId *string) {
 	v.ExternalPaypointId = externalPaypointId
 	v.require(vendorDataResponseFieldExternalPaypointId)
 }

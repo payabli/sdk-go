@@ -5176,9 +5176,9 @@ var (
 )
 
 type AssociatedVendor struct {
-	VendorNumber *VendorNumber `json:"VendorNumber,omitempty" url:"VendorNumber,omitempty"`
+	VendorNumber VendorNumber `json:"VendorNumber" url:"VendorNumber"`
 	// Primary name for vendor.
-	Name1 *string `json:"Name1,omitempty" url:"Name1,omitempty"`
+	Name1 string `json:"Name1" url:"Name1"`
 	// Secondary name for vendor.
 	Name2 *string `json:"Name2,omitempty" url:"Name2,omitempty"`
 	Ein   *Ein    `json:"EIN,omitempty" url:"EIN,omitempty"`
@@ -5205,7 +5205,7 @@ type AssociatedVendor struct {
 	BillingData      *BillingDataResponse `json:"BillingData,omitempty" url:"BillingData,omitempty"`
 	PaymentMethod    *string              `json:"PaymentMethod,omitempty" url:"PaymentMethod,omitempty"`
 	VendorStatus     *Vendorstatus        `json:"VendorStatus,omitempty" url:"VendorStatus,omitempty"`
-	VendorId         *int                 `json:"VendorId,omitempty" url:"VendorId,omitempty"`
+	VendorId         int                  `json:"VendorId" url:"VendorId"`
 	EnrollmentStatus *EnrollmentStatus    `json:"EnrollmentStatus,omitempty" url:"EnrollmentStatus,omitempty"`
 	Summary          *VendorSummary       `json:"Summary,omitempty" url:"Summary,omitempty"`
 	// The paypoint's legal name.
@@ -5239,16 +5239,16 @@ type AssociatedVendor struct {
 	rawJSON         json.RawMessage
 }
 
-func (a *AssociatedVendor) GetVendorNumber() *VendorNumber {
+func (a *AssociatedVendor) GetVendorNumber() VendorNumber {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.VendorNumber
 }
 
-func (a *AssociatedVendor) GetName1() *string {
+func (a *AssociatedVendor) GetName1() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.Name1
 }
@@ -5365,9 +5365,9 @@ func (a *AssociatedVendor) GetVendorStatus() *Vendorstatus {
 	return a.VendorStatus
 }
 
-func (a *AssociatedVendor) GetVendorId() *int {
+func (a *AssociatedVendor) GetVendorId() int {
 	if a == nil {
-		return nil
+		return 0
 	}
 	return a.VendorId
 }
@@ -5542,14 +5542,14 @@ func (a *AssociatedVendor) require(field *big.Int) {
 
 // SetVendorNumber sets the VendorNumber field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AssociatedVendor) SetVendorNumber(vendorNumber *VendorNumber) {
+func (a *AssociatedVendor) SetVendorNumber(vendorNumber VendorNumber) {
 	a.VendorNumber = vendorNumber
 	a.require(associatedVendorFieldVendorNumber)
 }
 
 // SetName1 sets the Name1 field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AssociatedVendor) SetName1(name1 *string) {
+func (a *AssociatedVendor) SetName1(name1 string) {
 	a.Name1 = name1
 	a.require(associatedVendorFieldName1)
 }
@@ -5668,7 +5668,7 @@ func (a *AssociatedVendor) SetVendorStatus(vendorStatus *Vendorstatus) {
 
 // SetVendorId sets the VendorId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (a *AssociatedVendor) SetVendorId(vendorId *int) {
+func (a *AssociatedVendor) SetVendorId(vendorId int) {
 	a.VendorId = vendorId
 	a.require(associatedVendorFieldVendorId)
 }
@@ -11917,52 +11917,52 @@ type QueryEntrypointResponseRecordsItem struct {
 	AverageTicketAmount  *Avgticketamt `json:"AverageTicketAmount,omitempty" url:"AverageTicketAmount,omitempty"`
 	BAddress1            *Baddress1    `json:"BAddress1,omitempty" url:"BAddress1,omitempty"`
 	BAddress2            *Baddress2    `json:"BAddress2,omitempty" url:"BAddress2,omitempty"`
-	BankData             *BankData     `json:"BankData,omitempty" url:"BankData,omitempty"`
+	BankData             BankData      `json:"BankData" url:"BankData"`
 	BCity                *Bcity        `json:"BCity,omitempty" url:"BCity,omitempty"`
 	BCountry             *Bcountry     `json:"BCountry,omitempty" url:"BCountry,omitempty"`
 	// The business's fax number.
-	BFax                         *Bphone                       `json:"BFax,omitempty" url:"BFax,omitempty"`
-	BinPerson                    *Binperson                    `json:"BinPerson,omitempty" url:"BinPerson,omitempty"`
-	BinPhone                     *Binphone                     `json:"BinPhone,omitempty" url:"BinPhone,omitempty"`
-	BinWeb                       *Binweb                       `json:"BinWeb,omitempty" url:"BinWeb,omitempty"`
-	BoardingId                   *BoardingId                   `json:"BoardingId,omitempty" url:"BoardingId,omitempty"`
-	BPhone                       *Bphone                       `json:"BPhone,omitempty" url:"BPhone,omitempty"`
-	BStartdate                   *Busstartdate                 `json:"BStartdate,omitempty" url:"BStartdate,omitempty"`
-	BState                       *Bstate                       `json:"BState,omitempty" url:"BState,omitempty"`
-	BSummary                     *Bsummary                     `json:"BSummary,omitempty" url:"BSummary,omitempty"`
-	BTimeZone                    *Timezone                     `json:"BTimeZone,omitempty" url:"BTimeZone,omitempty"`
-	BZip                         *Bzip                         `json:"BZip,omitempty" url:"BZip,omitempty"`
-	ContactData                  *ContactsField                `json:"ContactData,omitempty" url:"ContactData,omitempty"`
-	CreatedAt                    *CreatedAt                    `json:"CreatedAt,omitempty" url:"CreatedAt,omitempty"`
-	DbaName                      *Dbaname                      `json:"DbaName,omitempty" url:"DbaName,omitempty"`
-	DocumentsRef                 *string                       `json:"DocumentsRef,omitempty" url:"DocumentsRef,omitempty"`
-	Ein                          *Ein                          `json:"Ein,omitempty" url:"Ein,omitempty"`
-	EntryPoints                  []*PaypointEntryConfig        `json:"EntryPoints,omitempty" url:"EntryPoints,omitempty"`
-	ExternalPaypointId           *ExternalPaypointId           `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
-	ExternalProcessorInformation *ExternalProcessorInformation `json:"ExternalProcessorInformation,omitempty" url:"ExternalProcessorInformation,omitempty"`
-	HighTicketAmount             *Highticketamt                `json:"HighTicketAmount,omitempty" url:"HighTicketAmount,omitempty"`
-	IdPaypoint                   *Idpaypoint                   `json:"IdPaypoint,omitempty" url:"IdPaypoint,omitempty"`
-	LastModified                 *LastModified                 `json:"LastModified,omitempty" url:"LastModified,omitempty"`
-	LegalName                    *Legalname                    `json:"LegalName,omitempty" url:"LegalName,omitempty"`
-	License                      *License                      `json:"License,omitempty" url:"License,omitempty"`
-	LicenseState                 *Licensestate                 `json:"LicenseState,omitempty" url:"LicenseState,omitempty"`
-	MAddress1                    *Maddress                     `json:"MAddress1,omitempty" url:"MAddress1,omitempty"`
-	MAddress2                    *Maddress1                    `json:"MAddress2,omitempty" url:"MAddress2,omitempty"`
-	Mccid                        *string                       `json:"Mccid,omitempty" url:"Mccid,omitempty"`
-	MCity                        *Mcity                        `json:"MCity,omitempty" url:"MCity,omitempty"`
-	MCountry                     *Mcountry                     `json:"MCountry,omitempty" url:"MCountry,omitempty"`
-	MState                       *Mstate                       `json:"MState,omitempty" url:"MState,omitempty"`
-	MZip                         *Mzip                         `json:"MZip,omitempty" url:"MZip,omitempty"`
-	OrgId                        *Orgid                        `json:"OrgId,omitempty" url:"OrgId,omitempty"`
-	OrgParentName                *OrgParentName                `json:"OrgParentName,omitempty" url:"OrgParentName,omitempty"`
-	OwnerData                    *Ownership                    `json:"OwnerData,omitempty" url:"OwnerData,omitempty"`
-	OwnType                      *OwnType                      `json:"OwnType,omitempty" url:"OwnType,omitempty"`
-	PaypointStatus               *Paypointstatus               `json:"PaypointStatus,omitempty" url:"PaypointStatus,omitempty"`
-	SalesCode                    *SalesCode                    `json:"SalesCode,omitempty" url:"SalesCode,omitempty"`
-	ServiceData                  *Services                     `json:"ServiceData,omitempty" url:"ServiceData,omitempty"`
-	Summary                      *PaypointSummary              `json:"summary,omitempty" url:"summary,omitempty"`
-	Taxfillname                  *Taxfillname                  `json:"Taxfillname,omitempty" url:"Taxfillname,omitempty"`
-	TemplateId                   *TemplateId                   `json:"TemplateId,omitempty" url:"TemplateId,omitempty"`
+	BFax                         *Bphone                      `json:"BFax,omitempty" url:"BFax,omitempty"`
+	BinPerson                    Binperson                    `json:"BinPerson" url:"BinPerson"`
+	BinPhone                     Binphone                     `json:"BinPhone" url:"BinPhone"`
+	BinWeb                       Binweb                       `json:"BinWeb" url:"BinWeb"`
+	BoardingId                   BoardingId                   `json:"BoardingId" url:"BoardingId"`
+	BPhone                       *Bphone                      `json:"BPhone,omitempty" url:"BPhone,omitempty"`
+	BStartdate                   *Busstartdate                `json:"BStartdate,omitempty" url:"BStartdate,omitempty"`
+	BState                       *Bstate                      `json:"BState,omitempty" url:"BState,omitempty"`
+	BSummary                     *Bsummary                    `json:"BSummary,omitempty" url:"BSummary,omitempty"`
+	BTimeZone                    Timezone                     `json:"BTimeZone" url:"BTimeZone"`
+	BZip                         *Bzip                        `json:"BZip,omitempty" url:"BZip,omitempty"`
+	ContactData                  ContactsField                `json:"ContactData" url:"ContactData"`
+	CreatedAt                    CreatedAt                    `json:"CreatedAt" url:"CreatedAt"`
+	DbaName                      Dbaname                      `json:"DbaName" url:"DbaName"`
+	DocumentsRef                 *string                      `json:"DocumentsRef,omitempty" url:"DocumentsRef,omitempty"`
+	Ein                          Ein                          `json:"Ein" url:"Ein"`
+	EntryPoints                  []*PaypointEntryConfig       `json:"EntryPoints" url:"EntryPoints"`
+	ExternalPaypointId           *ExternalPaypointId          `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	ExternalProcessorInformation ExternalProcessorInformation `json:"ExternalProcessorInformation" url:"ExternalProcessorInformation"`
+	HighTicketAmount             *Highticketamt               `json:"HighTicketAmount,omitempty" url:"HighTicketAmount,omitempty"`
+	IdPaypoint                   Idpaypoint                   `json:"IdPaypoint" url:"IdPaypoint"`
+	LastModified                 LastModified                 `json:"LastModified" url:"LastModified"`
+	LegalName                    Legalname                    `json:"LegalName" url:"LegalName"`
+	License                      *License                     `json:"License,omitempty" url:"License,omitempty"`
+	LicenseState                 *Licensestate                `json:"LicenseState,omitempty" url:"LicenseState,omitempty"`
+	MAddress1                    *Maddress                    `json:"MAddress1,omitempty" url:"MAddress1,omitempty"`
+	MAddress2                    *Maddress1                   `json:"MAddress2,omitempty" url:"MAddress2,omitempty"`
+	Mccid                        string                       `json:"Mccid" url:"Mccid"`
+	MCity                        *Mcity                       `json:"MCity,omitempty" url:"MCity,omitempty"`
+	MCountry                     *Mcountry                    `json:"MCountry,omitempty" url:"MCountry,omitempty"`
+	MState                       *Mstate                      `json:"MState,omitempty" url:"MState,omitempty"`
+	MZip                         *Mzip                        `json:"MZip,omitempty" url:"MZip,omitempty"`
+	OrgId                        Orgid                        `json:"OrgId" url:"OrgId"`
+	OrgParentName                OrgParentName                `json:"OrgParentName" url:"OrgParentName"`
+	OwnerData                    Ownership                    `json:"OwnerData" url:"OwnerData"`
+	OwnType                      *OwnType                     `json:"OwnType,omitempty" url:"OwnType,omitempty"`
+	PaypointStatus               Paypointstatus               `json:"PaypointStatus" url:"PaypointStatus"`
+	SalesCode                    *SalesCode                   `json:"SalesCode,omitempty" url:"SalesCode,omitempty"`
+	ServiceData                  *Services                    `json:"ServiceData,omitempty" url:"ServiceData,omitempty"`
+	Summary                      *PaypointSummary             `json:"summary" url:"summary"`
+	Taxfillname                  *Taxfillname                 `json:"Taxfillname,omitempty" url:"Taxfillname,omitempty"`
+	TemplateId                   TemplateId                   `json:"TemplateId" url:"TemplateId"`
 	// Business website.
 	WebsiteAddress *Website       `json:"WebsiteAddress,omitempty" url:"WebsiteAddress,omitempty"`
 	Whencharged    *Whencharged   `json:"Whencharged,omitempty" url:"Whencharged,omitempty"`
@@ -12005,7 +12005,7 @@ func (q *QueryEntrypointResponseRecordsItem) GetBAddress2() *Baddress2 {
 	return q.BAddress2
 }
 
-func (q *QueryEntrypointResponseRecordsItem) GetBankData() *BankData {
+func (q *QueryEntrypointResponseRecordsItem) GetBankData() BankData {
 	if q == nil {
 		return nil
 	}
@@ -12033,30 +12033,30 @@ func (q *QueryEntrypointResponseRecordsItem) GetBFax() *Bphone {
 	return q.BFax
 }
 
-func (q *QueryEntrypointResponseRecordsItem) GetBinPerson() *Binperson {
+func (q *QueryEntrypointResponseRecordsItem) GetBinPerson() Binperson {
 	if q == nil {
-		return nil
+		return 0
 	}
 	return q.BinPerson
 }
 
-func (q *QueryEntrypointResponseRecordsItem) GetBinPhone() *Binphone {
+func (q *QueryEntrypointResponseRecordsItem) GetBinPhone() Binphone {
 	if q == nil {
-		return nil
+		return 0
 	}
 	return q.BinPhone
 }
 
-func (q *QueryEntrypointResponseRecordsItem) GetBinWeb() *Binweb {
+func (q *QueryEntrypointResponseRecordsItem) GetBinWeb() Binweb {
 	if q == nil {
-		return nil
+		return 0
 	}
 	return q.BinWeb
 }
 
-func (q *QueryEntrypointResponseRecordsItem) GetBoardingId() *BoardingId {
+func (q *QueryEntrypointResponseRecordsItem) GetBoardingId() BoardingId {
 	if q == nil {
-		return nil
+		return 0
 	}
 	return q.BoardingId
 }
@@ -12089,9 +12089,9 @@ func (q *QueryEntrypointResponseRecordsItem) GetBSummary() *Bsummary {
 	return q.BSummary
 }
 
-func (q *QueryEntrypointResponseRecordsItem) GetBTimeZone() *Timezone {
+func (q *QueryEntrypointResponseRecordsItem) GetBTimeZone() Timezone {
 	if q == nil {
-		return nil
+		return 0
 	}
 	return q.BTimeZone
 }
@@ -12103,23 +12103,23 @@ func (q *QueryEntrypointResponseRecordsItem) GetBZip() *Bzip {
 	return q.BZip
 }
 
-func (q *QueryEntrypointResponseRecordsItem) GetContactData() *ContactsField {
+func (q *QueryEntrypointResponseRecordsItem) GetContactData() ContactsField {
 	if q == nil {
 		return nil
 	}
 	return q.ContactData
 }
 
-func (q *QueryEntrypointResponseRecordsItem) GetCreatedAt() *CreatedAt {
+func (q *QueryEntrypointResponseRecordsItem) GetCreatedAt() CreatedAt {
 	if q == nil {
-		return nil
+		return time.Time{}
 	}
 	return q.CreatedAt
 }
 
-func (q *QueryEntrypointResponseRecordsItem) GetDbaName() *Dbaname {
+func (q *QueryEntrypointResponseRecordsItem) GetDbaName() Dbaname {
 	if q == nil {
-		return nil
+		return ""
 	}
 	return q.DbaName
 }
@@ -12131,9 +12131,9 @@ func (q *QueryEntrypointResponseRecordsItem) GetDocumentsRef() *string {
 	return q.DocumentsRef
 }
 
-func (q *QueryEntrypointResponseRecordsItem) GetEin() *Ein {
+func (q *QueryEntrypointResponseRecordsItem) GetEin() Ein {
 	if q == nil {
-		return nil
+		return ""
 	}
 	return q.Ein
 }
@@ -12152,9 +12152,9 @@ func (q *QueryEntrypointResponseRecordsItem) GetExternalPaypointId() *ExternalPa
 	return q.ExternalPaypointId
 }
 
-func (q *QueryEntrypointResponseRecordsItem) GetExternalProcessorInformation() *ExternalProcessorInformation {
+func (q *QueryEntrypointResponseRecordsItem) GetExternalProcessorInformation() ExternalProcessorInformation {
 	if q == nil {
-		return nil
+		return ""
 	}
 	return q.ExternalProcessorInformation
 }
@@ -12166,23 +12166,23 @@ func (q *QueryEntrypointResponseRecordsItem) GetHighTicketAmount() *Highticketam
 	return q.HighTicketAmount
 }
 
-func (q *QueryEntrypointResponseRecordsItem) GetIdPaypoint() *Idpaypoint {
+func (q *QueryEntrypointResponseRecordsItem) GetIdPaypoint() Idpaypoint {
 	if q == nil {
-		return nil
+		return 0
 	}
 	return q.IdPaypoint
 }
 
-func (q *QueryEntrypointResponseRecordsItem) GetLastModified() *LastModified {
+func (q *QueryEntrypointResponseRecordsItem) GetLastModified() LastModified {
 	if q == nil {
-		return nil
+		return time.Time{}
 	}
 	return q.LastModified
 }
 
-func (q *QueryEntrypointResponseRecordsItem) GetLegalName() *Legalname {
+func (q *QueryEntrypointResponseRecordsItem) GetLegalName() Legalname {
 	if q == nil {
-		return nil
+		return ""
 	}
 	return q.LegalName
 }
@@ -12215,9 +12215,9 @@ func (q *QueryEntrypointResponseRecordsItem) GetMAddress2() *Maddress1 {
 	return q.MAddress2
 }
 
-func (q *QueryEntrypointResponseRecordsItem) GetMccid() *string {
+func (q *QueryEntrypointResponseRecordsItem) GetMccid() string {
 	if q == nil {
-		return nil
+		return ""
 	}
 	return q.Mccid
 }
@@ -12250,21 +12250,21 @@ func (q *QueryEntrypointResponseRecordsItem) GetMZip() *Mzip {
 	return q.MZip
 }
 
-func (q *QueryEntrypointResponseRecordsItem) GetOrgId() *Orgid {
+func (q *QueryEntrypointResponseRecordsItem) GetOrgId() Orgid {
 	if q == nil {
-		return nil
+		return 0
 	}
 	return q.OrgId
 }
 
-func (q *QueryEntrypointResponseRecordsItem) GetOrgParentName() *OrgParentName {
+func (q *QueryEntrypointResponseRecordsItem) GetOrgParentName() OrgParentName {
 	if q == nil {
-		return nil
+		return ""
 	}
 	return q.OrgParentName
 }
 
-func (q *QueryEntrypointResponseRecordsItem) GetOwnerData() *Ownership {
+func (q *QueryEntrypointResponseRecordsItem) GetOwnerData() Ownership {
 	if q == nil {
 		return nil
 	}
@@ -12278,9 +12278,9 @@ func (q *QueryEntrypointResponseRecordsItem) GetOwnType() *OwnType {
 	return q.OwnType
 }
 
-func (q *QueryEntrypointResponseRecordsItem) GetPaypointStatus() *Paypointstatus {
+func (q *QueryEntrypointResponseRecordsItem) GetPaypointStatus() Paypointstatus {
 	if q == nil {
-		return nil
+		return 0
 	}
 	return q.PaypointStatus
 }
@@ -12313,9 +12313,9 @@ func (q *QueryEntrypointResponseRecordsItem) GetTaxfillname() *Taxfillname {
 	return q.Taxfillname
 }
 
-func (q *QueryEntrypointResponseRecordsItem) GetTemplateId() *TemplateId {
+func (q *QueryEntrypointResponseRecordsItem) GetTemplateId() TemplateId {
 	if q == nil {
-		return nil
+		return 0
 	}
 	return q.TemplateId
 }
@@ -12399,7 +12399,7 @@ func (q *QueryEntrypointResponseRecordsItem) SetBAddress2(bAddress2 *Baddress2) 
 
 // SetBankData sets the BankData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryEntrypointResponseRecordsItem) SetBankData(bankData *BankData) {
+func (q *QueryEntrypointResponseRecordsItem) SetBankData(bankData BankData) {
 	q.BankData = bankData
 	q.require(queryEntrypointResponseRecordsItemFieldBankData)
 }
@@ -12427,28 +12427,28 @@ func (q *QueryEntrypointResponseRecordsItem) SetBFax(bFax *Bphone) {
 
 // SetBinPerson sets the BinPerson field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryEntrypointResponseRecordsItem) SetBinPerson(binPerson *Binperson) {
+func (q *QueryEntrypointResponseRecordsItem) SetBinPerson(binPerson Binperson) {
 	q.BinPerson = binPerson
 	q.require(queryEntrypointResponseRecordsItemFieldBinPerson)
 }
 
 // SetBinPhone sets the BinPhone field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryEntrypointResponseRecordsItem) SetBinPhone(binPhone *Binphone) {
+func (q *QueryEntrypointResponseRecordsItem) SetBinPhone(binPhone Binphone) {
 	q.BinPhone = binPhone
 	q.require(queryEntrypointResponseRecordsItemFieldBinPhone)
 }
 
 // SetBinWeb sets the BinWeb field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryEntrypointResponseRecordsItem) SetBinWeb(binWeb *Binweb) {
+func (q *QueryEntrypointResponseRecordsItem) SetBinWeb(binWeb Binweb) {
 	q.BinWeb = binWeb
 	q.require(queryEntrypointResponseRecordsItemFieldBinWeb)
 }
 
 // SetBoardingId sets the BoardingId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryEntrypointResponseRecordsItem) SetBoardingId(boardingId *BoardingId) {
+func (q *QueryEntrypointResponseRecordsItem) SetBoardingId(boardingId BoardingId) {
 	q.BoardingId = boardingId
 	q.require(queryEntrypointResponseRecordsItemFieldBoardingId)
 }
@@ -12483,7 +12483,7 @@ func (q *QueryEntrypointResponseRecordsItem) SetBSummary(bSummary *Bsummary) {
 
 // SetBTimeZone sets the BTimeZone field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryEntrypointResponseRecordsItem) SetBTimeZone(bTimeZone *Timezone) {
+func (q *QueryEntrypointResponseRecordsItem) SetBTimeZone(bTimeZone Timezone) {
 	q.BTimeZone = bTimeZone
 	q.require(queryEntrypointResponseRecordsItemFieldBTimeZone)
 }
@@ -12497,21 +12497,21 @@ func (q *QueryEntrypointResponseRecordsItem) SetBZip(bZip *Bzip) {
 
 // SetContactData sets the ContactData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryEntrypointResponseRecordsItem) SetContactData(contactData *ContactsField) {
+func (q *QueryEntrypointResponseRecordsItem) SetContactData(contactData ContactsField) {
 	q.ContactData = contactData
 	q.require(queryEntrypointResponseRecordsItemFieldContactData)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryEntrypointResponseRecordsItem) SetCreatedAt(createdAt *CreatedAt) {
+func (q *QueryEntrypointResponseRecordsItem) SetCreatedAt(createdAt CreatedAt) {
 	q.CreatedAt = createdAt
 	q.require(queryEntrypointResponseRecordsItemFieldCreatedAt)
 }
 
 // SetDbaName sets the DbaName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryEntrypointResponseRecordsItem) SetDbaName(dbaName *Dbaname) {
+func (q *QueryEntrypointResponseRecordsItem) SetDbaName(dbaName Dbaname) {
 	q.DbaName = dbaName
 	q.require(queryEntrypointResponseRecordsItemFieldDbaName)
 }
@@ -12525,7 +12525,7 @@ func (q *QueryEntrypointResponseRecordsItem) SetDocumentsRef(documentsRef *strin
 
 // SetEin sets the Ein field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryEntrypointResponseRecordsItem) SetEin(ein *Ein) {
+func (q *QueryEntrypointResponseRecordsItem) SetEin(ein Ein) {
 	q.Ein = ein
 	q.require(queryEntrypointResponseRecordsItemFieldEin)
 }
@@ -12546,7 +12546,7 @@ func (q *QueryEntrypointResponseRecordsItem) SetExternalPaypointId(externalPaypo
 
 // SetExternalProcessorInformation sets the ExternalProcessorInformation field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryEntrypointResponseRecordsItem) SetExternalProcessorInformation(externalProcessorInformation *ExternalProcessorInformation) {
+func (q *QueryEntrypointResponseRecordsItem) SetExternalProcessorInformation(externalProcessorInformation ExternalProcessorInformation) {
 	q.ExternalProcessorInformation = externalProcessorInformation
 	q.require(queryEntrypointResponseRecordsItemFieldExternalProcessorInformation)
 }
@@ -12560,21 +12560,21 @@ func (q *QueryEntrypointResponseRecordsItem) SetHighTicketAmount(highTicketAmoun
 
 // SetIdPaypoint sets the IdPaypoint field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryEntrypointResponseRecordsItem) SetIdPaypoint(idPaypoint *Idpaypoint) {
+func (q *QueryEntrypointResponseRecordsItem) SetIdPaypoint(idPaypoint Idpaypoint) {
 	q.IdPaypoint = idPaypoint
 	q.require(queryEntrypointResponseRecordsItemFieldIdPaypoint)
 }
 
 // SetLastModified sets the LastModified field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryEntrypointResponseRecordsItem) SetLastModified(lastModified *LastModified) {
+func (q *QueryEntrypointResponseRecordsItem) SetLastModified(lastModified LastModified) {
 	q.LastModified = lastModified
 	q.require(queryEntrypointResponseRecordsItemFieldLastModified)
 }
 
 // SetLegalName sets the LegalName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryEntrypointResponseRecordsItem) SetLegalName(legalName *Legalname) {
+func (q *QueryEntrypointResponseRecordsItem) SetLegalName(legalName Legalname) {
 	q.LegalName = legalName
 	q.require(queryEntrypointResponseRecordsItemFieldLegalName)
 }
@@ -12609,7 +12609,7 @@ func (q *QueryEntrypointResponseRecordsItem) SetMAddress2(mAddress2 *Maddress1) 
 
 // SetMccid sets the Mccid field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryEntrypointResponseRecordsItem) SetMccid(mccid *string) {
+func (q *QueryEntrypointResponseRecordsItem) SetMccid(mccid string) {
 	q.Mccid = mccid
 	q.require(queryEntrypointResponseRecordsItemFieldMccid)
 }
@@ -12644,21 +12644,21 @@ func (q *QueryEntrypointResponseRecordsItem) SetMZip(mZip *Mzip) {
 
 // SetOrgId sets the OrgId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryEntrypointResponseRecordsItem) SetOrgId(orgId *Orgid) {
+func (q *QueryEntrypointResponseRecordsItem) SetOrgId(orgId Orgid) {
 	q.OrgId = orgId
 	q.require(queryEntrypointResponseRecordsItemFieldOrgId)
 }
 
 // SetOrgParentName sets the OrgParentName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryEntrypointResponseRecordsItem) SetOrgParentName(orgParentName *OrgParentName) {
+func (q *QueryEntrypointResponseRecordsItem) SetOrgParentName(orgParentName OrgParentName) {
 	q.OrgParentName = orgParentName
 	q.require(queryEntrypointResponseRecordsItemFieldOrgParentName)
 }
 
 // SetOwnerData sets the OwnerData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryEntrypointResponseRecordsItem) SetOwnerData(ownerData *Ownership) {
+func (q *QueryEntrypointResponseRecordsItem) SetOwnerData(ownerData Ownership) {
 	q.OwnerData = ownerData
 	q.require(queryEntrypointResponseRecordsItemFieldOwnerData)
 }
@@ -12672,7 +12672,7 @@ func (q *QueryEntrypointResponseRecordsItem) SetOwnType(ownType *OwnType) {
 
 // SetPaypointStatus sets the PaypointStatus field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryEntrypointResponseRecordsItem) SetPaypointStatus(paypointStatus *Paypointstatus) {
+func (q *QueryEntrypointResponseRecordsItem) SetPaypointStatus(paypointStatus Paypointstatus) {
 	q.PaypointStatus = paypointStatus
 	q.require(queryEntrypointResponseRecordsItemFieldPaypointStatus)
 }
@@ -12707,7 +12707,7 @@ func (q *QueryEntrypointResponseRecordsItem) SetTaxfillname(taxfillname *Taxfill
 
 // SetTemplateId sets the TemplateId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (q *QueryEntrypointResponseRecordsItem) SetTemplateId(templateId *TemplateId) {
+func (q *QueryEntrypointResponseRecordsItem) SetTemplateId(templateId TemplateId) {
 	q.TemplateId = templateId
 	q.require(queryEntrypointResponseRecordsItemFieldTemplateId)
 }
@@ -12751,8 +12751,8 @@ func (q *QueryEntrypointResponseRecordsItem) UnmarshalJSON(data []byte) error {
 	type embed QueryEntrypointResponseRecordsItem
 	var unmarshaler = struct {
 		embed
-		CreatedAt    *internal.DateTime `json:"CreatedAt,omitempty"`
-		LastModified *internal.DateTime `json:"LastModified,omitempty"`
+		CreatedAt    *internal.DateTime `json:"CreatedAt"`
+		LastModified *internal.DateTime `json:"LastModified"`
 	}{
 		embed: embed(*q),
 	}
@@ -12760,8 +12760,8 @@ func (q *QueryEntrypointResponseRecordsItem) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*q = QueryEntrypointResponseRecordsItem(unmarshaler.embed)
-	q.CreatedAt = unmarshaler.CreatedAt.TimePtr()
-	q.LastModified = unmarshaler.LastModified.TimePtr()
+	q.CreatedAt = unmarshaler.CreatedAt.Time()
+	q.LastModified = unmarshaler.LastModified.Time()
 	extraProperties, err := internal.ExtractExtraProperties(data, *q)
 	if err != nil {
 		return err
@@ -12775,12 +12775,12 @@ func (q *QueryEntrypointResponseRecordsItem) MarshalJSON() ([]byte, error) {
 	type embed QueryEntrypointResponseRecordsItem
 	var marshaler = struct {
 		embed
-		CreatedAt    *internal.DateTime `json:"CreatedAt,omitempty"`
-		LastModified *internal.DateTime `json:"LastModified,omitempty"`
+		CreatedAt    *internal.DateTime `json:"CreatedAt"`
+		LastModified *internal.DateTime `json:"LastModified"`
 	}{
 		embed:        embed(*q),
-		CreatedAt:    internal.NewOptionalDateTime(q.CreatedAt),
-		LastModified: internal.NewOptionalDateTime(q.LastModified),
+		CreatedAt:    internal.NewDateTime(q.CreatedAt),
+		LastModified: internal.NewDateTime(q.LastModified),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -25056,25 +25056,25 @@ var (
 
 type VCardRecord struct {
 	// When `true`, the vCard has been sent.
-	VcardSent *bool          `json:"vcardSent,omitempty" url:"vcardSent,omitempty"`
-	CardType  *VCardCardType `json:"cardType,omitempty" url:"cardType,omitempty"`
-	CardToken *string        `json:"cardToken,omitempty" url:"cardToken,omitempty"`
+	VcardSent bool          `json:"vcardSent" url:"vcardSent"`
+	CardType  VCardCardType `json:"cardType" url:"cardType"`
+	CardToken string        `json:"cardToken" url:"cardToken"`
 	// The vCard number.
-	CardNumber *string `json:"cardNumber,omitempty" url:"cardNumber,omitempty"`
+	CardNumber string `json:"cardNumber" url:"cardNumber"`
 	// The vCard CVC number.
 	Cvc *string `json:"cvc,omitempty" url:"cvc,omitempty"`
 	// Expiration date in format YYYY-MM-DD. The minimum time to expire is 3 months, maximum is 3 years. If not provided, the default is 6 months.
-	ExpirationDate *string `json:"expirationDate,omitempty" url:"expirationDate,omitempty"`
-	Status         *string `json:"status,omitempty" url:"status,omitempty"`
+	ExpirationDate string `json:"expirationDate" url:"expirationDate"`
+	Status         string `json:"status" url:"status"`
 	// The vCard amount.
-	Amount *float64 `json:"amount,omitempty" url:"amount,omitempty"`
+	Amount float64 `json:"amount" url:"amount"`
 	// The vCard's current balance.
-	CurrentBalance      *float64 `json:"currentBalance,omitempty" url:"currentBalance,omitempty"`
-	ExpenseLimit        *float64 `json:"expenseLimit,omitempty" url:"expenseLimit,omitempty"`
-	ExpenseLimitPeriod  *string  `json:"expenseLimitPeriod,omitempty" url:"expenseLimitPeriod,omitempty"`
-	MaxNumberOfUses     *int     `json:"maxNumberOfUses,omitempty" url:"maxNumberOfUses,omitempty"`
-	CurrentNumberOfUses *int     `json:"currentNumberOfUses,omitempty" url:"currentNumberOfUses,omitempty"`
-	ExactAmount         *bool    `json:"exactAmount,omitempty" url:"exactAmount,omitempty"`
+	CurrentBalance      float64 `json:"currentBalance" url:"currentBalance"`
+	ExpenseLimit        float64 `json:"expenseLimit" url:"expenseLimit"`
+	ExpenseLimitPeriod  *string `json:"expenseLimitPeriod,omitempty" url:"expenseLimitPeriod,omitempty"`
+	MaxNumberOfUses     int     `json:"maxNumberOfUses" url:"maxNumberOfUses"`
+	CurrentNumberOfUses int     `json:"currentNumberOfUses" url:"currentNumberOfUses"`
+	ExactAmount         bool    `json:"exactAmount" url:"exactAmount"`
 	// MCC assigned to vCard.
 	Mcc *string `json:"mcc,omitempty" url:"mcc,omitempty"`
 	// TCC assigned to vCard.
@@ -25083,9 +25083,9 @@ type VCardRecord struct {
 	Misc1 *string `json:"misc1,omitempty" url:"misc1,omitempty"`
 	// Custom field 2.
 	Misc2              *string           `json:"misc2,omitempty" url:"misc2,omitempty"`
-	DateCreated        *CreatedAt        `json:"dateCreated,omitempty" url:"dateCreated,omitempty"`
-	DateModified       *LastModified     `json:"dateModified,omitempty" url:"dateModified,omitempty"`
-	AssociatedVendor   *AssociatedVendor `json:"associatedVendor,omitempty" url:"associatedVendor,omitempty"`
+	DateCreated        CreatedAt         `json:"dateCreated" url:"dateCreated"`
+	DateModified       LastModified      `json:"dateModified" url:"dateModified"`
+	AssociatedVendor   *AssociatedVendor `json:"associatedVendor" url:"associatedVendor"`
 	AssociatedCustomer *CustomerData     `json:"associatedCustomer,omitempty" url:"associatedCustomer,omitempty"`
 	ParentOrgName      *OrgParentName    `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
 	// The paypoint's DBA name.
@@ -25096,7 +25096,7 @@ type VCardRecord struct {
 	PaypointEntryname  *Entrypointfield    `json:"PaypointEntryname,omitempty" url:"PaypointEntryname,omitempty"`
 	ExternalPaypointId *ExternalPaypointId `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
 	// The paypoint's unique identifier.
-	PaypointId *int `json:"paypointId,omitempty" url:"paypointId,omitempty"`
+	PaypointId int `json:"paypointId" url:"paypointId"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -25105,30 +25105,30 @@ type VCardRecord struct {
 	rawJSON         json.RawMessage
 }
 
-func (v *VCardRecord) GetVcardSent() *bool {
+func (v *VCardRecord) GetVcardSent() bool {
 	if v == nil {
-		return nil
+		return false
 	}
 	return v.VcardSent
 }
 
-func (v *VCardRecord) GetCardType() *VCardCardType {
+func (v *VCardRecord) GetCardType() VCardCardType {
 	if v == nil {
-		return nil
+		return 0
 	}
 	return v.CardType
 }
 
-func (v *VCardRecord) GetCardToken() *string {
+func (v *VCardRecord) GetCardToken() string {
 	if v == nil {
-		return nil
+		return ""
 	}
 	return v.CardToken
 }
 
-func (v *VCardRecord) GetCardNumber() *string {
+func (v *VCardRecord) GetCardNumber() string {
 	if v == nil {
-		return nil
+		return ""
 	}
 	return v.CardNumber
 }
@@ -25140,37 +25140,37 @@ func (v *VCardRecord) GetCvc() *string {
 	return v.Cvc
 }
 
-func (v *VCardRecord) GetExpirationDate() *string {
+func (v *VCardRecord) GetExpirationDate() string {
 	if v == nil {
-		return nil
+		return ""
 	}
 	return v.ExpirationDate
 }
 
-func (v *VCardRecord) GetStatus() *string {
+func (v *VCardRecord) GetStatus() string {
 	if v == nil {
-		return nil
+		return ""
 	}
 	return v.Status
 }
 
-func (v *VCardRecord) GetAmount() *float64 {
+func (v *VCardRecord) GetAmount() float64 {
 	if v == nil {
-		return nil
+		return 0
 	}
 	return v.Amount
 }
 
-func (v *VCardRecord) GetCurrentBalance() *float64 {
+func (v *VCardRecord) GetCurrentBalance() float64 {
 	if v == nil {
-		return nil
+		return 0
 	}
 	return v.CurrentBalance
 }
 
-func (v *VCardRecord) GetExpenseLimit() *float64 {
+func (v *VCardRecord) GetExpenseLimit() float64 {
 	if v == nil {
-		return nil
+		return 0
 	}
 	return v.ExpenseLimit
 }
@@ -25182,23 +25182,23 @@ func (v *VCardRecord) GetExpenseLimitPeriod() *string {
 	return v.ExpenseLimitPeriod
 }
 
-func (v *VCardRecord) GetMaxNumberOfUses() *int {
+func (v *VCardRecord) GetMaxNumberOfUses() int {
 	if v == nil {
-		return nil
+		return 0
 	}
 	return v.MaxNumberOfUses
 }
 
-func (v *VCardRecord) GetCurrentNumberOfUses() *int {
+func (v *VCardRecord) GetCurrentNumberOfUses() int {
 	if v == nil {
-		return nil
+		return 0
 	}
 	return v.CurrentNumberOfUses
 }
 
-func (v *VCardRecord) GetExactAmount() *bool {
+func (v *VCardRecord) GetExactAmount() bool {
 	if v == nil {
-		return nil
+		return false
 	}
 	return v.ExactAmount
 }
@@ -25231,16 +25231,16 @@ func (v *VCardRecord) GetMisc2() *string {
 	return v.Misc2
 }
 
-func (v *VCardRecord) GetDateCreated() *CreatedAt {
+func (v *VCardRecord) GetDateCreated() CreatedAt {
 	if v == nil {
-		return nil
+		return time.Time{}
 	}
 	return v.DateCreated
 }
 
-func (v *VCardRecord) GetDateModified() *LastModified {
+func (v *VCardRecord) GetDateModified() LastModified {
 	if v == nil {
-		return nil
+		return time.Time{}
 	}
 	return v.DateModified
 }
@@ -25294,9 +25294,9 @@ func (v *VCardRecord) GetExternalPaypointId() *ExternalPaypointId {
 	return v.ExternalPaypointId
 }
 
-func (v *VCardRecord) GetPaypointId() *int {
+func (v *VCardRecord) GetPaypointId() int {
 	if v == nil {
-		return nil
+		return 0
 	}
 	return v.PaypointId
 }
@@ -25317,28 +25317,28 @@ func (v *VCardRecord) require(field *big.Int) {
 
 // SetVcardSent sets the VcardSent field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardRecord) SetVcardSent(vcardSent *bool) {
+func (v *VCardRecord) SetVcardSent(vcardSent bool) {
 	v.VcardSent = vcardSent
 	v.require(vCardRecordFieldVcardSent)
 }
 
 // SetCardType sets the CardType field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardRecord) SetCardType(cardType *VCardCardType) {
+func (v *VCardRecord) SetCardType(cardType VCardCardType) {
 	v.CardType = cardType
 	v.require(vCardRecordFieldCardType)
 }
 
 // SetCardToken sets the CardToken field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardRecord) SetCardToken(cardToken *string) {
+func (v *VCardRecord) SetCardToken(cardToken string) {
 	v.CardToken = cardToken
 	v.require(vCardRecordFieldCardToken)
 }
 
 // SetCardNumber sets the CardNumber field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardRecord) SetCardNumber(cardNumber *string) {
+func (v *VCardRecord) SetCardNumber(cardNumber string) {
 	v.CardNumber = cardNumber
 	v.require(vCardRecordFieldCardNumber)
 }
@@ -25352,35 +25352,35 @@ func (v *VCardRecord) SetCvc(cvc *string) {
 
 // SetExpirationDate sets the ExpirationDate field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardRecord) SetExpirationDate(expirationDate *string) {
+func (v *VCardRecord) SetExpirationDate(expirationDate string) {
 	v.ExpirationDate = expirationDate
 	v.require(vCardRecordFieldExpirationDate)
 }
 
 // SetStatus sets the Status field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardRecord) SetStatus(status *string) {
+func (v *VCardRecord) SetStatus(status string) {
 	v.Status = status
 	v.require(vCardRecordFieldStatus)
 }
 
 // SetAmount sets the Amount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardRecord) SetAmount(amount *float64) {
+func (v *VCardRecord) SetAmount(amount float64) {
 	v.Amount = amount
 	v.require(vCardRecordFieldAmount)
 }
 
 // SetCurrentBalance sets the CurrentBalance field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardRecord) SetCurrentBalance(currentBalance *float64) {
+func (v *VCardRecord) SetCurrentBalance(currentBalance float64) {
 	v.CurrentBalance = currentBalance
 	v.require(vCardRecordFieldCurrentBalance)
 }
 
 // SetExpenseLimit sets the ExpenseLimit field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardRecord) SetExpenseLimit(expenseLimit *float64) {
+func (v *VCardRecord) SetExpenseLimit(expenseLimit float64) {
 	v.ExpenseLimit = expenseLimit
 	v.require(vCardRecordFieldExpenseLimit)
 }
@@ -25394,21 +25394,21 @@ func (v *VCardRecord) SetExpenseLimitPeriod(expenseLimitPeriod *string) {
 
 // SetMaxNumberOfUses sets the MaxNumberOfUses field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardRecord) SetMaxNumberOfUses(maxNumberOfUses *int) {
+func (v *VCardRecord) SetMaxNumberOfUses(maxNumberOfUses int) {
 	v.MaxNumberOfUses = maxNumberOfUses
 	v.require(vCardRecordFieldMaxNumberOfUses)
 }
 
 // SetCurrentNumberOfUses sets the CurrentNumberOfUses field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardRecord) SetCurrentNumberOfUses(currentNumberOfUses *int) {
+func (v *VCardRecord) SetCurrentNumberOfUses(currentNumberOfUses int) {
 	v.CurrentNumberOfUses = currentNumberOfUses
 	v.require(vCardRecordFieldCurrentNumberOfUses)
 }
 
 // SetExactAmount sets the ExactAmount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardRecord) SetExactAmount(exactAmount *bool) {
+func (v *VCardRecord) SetExactAmount(exactAmount bool) {
 	v.ExactAmount = exactAmount
 	v.require(vCardRecordFieldExactAmount)
 }
@@ -25443,14 +25443,14 @@ func (v *VCardRecord) SetMisc2(misc2 *string) {
 
 // SetDateCreated sets the DateCreated field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardRecord) SetDateCreated(dateCreated *CreatedAt) {
+func (v *VCardRecord) SetDateCreated(dateCreated CreatedAt) {
 	v.DateCreated = dateCreated
 	v.require(vCardRecordFieldDateCreated)
 }
 
 // SetDateModified sets the DateModified field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardRecord) SetDateModified(dateModified *LastModified) {
+func (v *VCardRecord) SetDateModified(dateModified LastModified) {
 	v.DateModified = dateModified
 	v.require(vCardRecordFieldDateModified)
 }
@@ -25506,7 +25506,7 @@ func (v *VCardRecord) SetExternalPaypointId(externalPaypointId *ExternalPaypoint
 
 // SetPaypointId sets the PaypointId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VCardRecord) SetPaypointId(paypointId *int) {
+func (v *VCardRecord) SetPaypointId(paypointId int) {
 	v.PaypointId = paypointId
 	v.require(vCardRecordFieldPaypointId)
 }
@@ -25515,8 +25515,8 @@ func (v *VCardRecord) UnmarshalJSON(data []byte) error {
 	type embed VCardRecord
 	var unmarshaler = struct {
 		embed
-		DateCreated  *internal.DateTime `json:"dateCreated,omitempty"`
-		DateModified *internal.DateTime `json:"dateModified,omitempty"`
+		DateCreated  *internal.DateTime `json:"dateCreated"`
+		DateModified *internal.DateTime `json:"dateModified"`
 	}{
 		embed: embed(*v),
 	}
@@ -25524,8 +25524,8 @@ func (v *VCardRecord) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*v = VCardRecord(unmarshaler.embed)
-	v.DateCreated = unmarshaler.DateCreated.TimePtr()
-	v.DateModified = unmarshaler.DateModified.TimePtr()
+	v.DateCreated = unmarshaler.DateCreated.Time()
+	v.DateModified = unmarshaler.DateModified.Time()
 	extraProperties, err := internal.ExtractExtraProperties(data, *v)
 	if err != nil {
 		return err
@@ -25539,12 +25539,12 @@ func (v *VCardRecord) MarshalJSON() ([]byte, error) {
 	type embed VCardRecord
 	var marshaler = struct {
 		embed
-		DateCreated  *internal.DateTime `json:"dateCreated,omitempty"`
-		DateModified *internal.DateTime `json:"dateModified,omitempty"`
+		DateCreated  *internal.DateTime `json:"dateCreated"`
+		DateModified *internal.DateTime `json:"dateModified"`
 	}{
 		embed:        embed(*v),
-		DateCreated:  internal.NewOptionalDateTime(v.DateCreated),
-		DateModified: internal.NewOptionalDateTime(v.DateModified),
+		DateCreated:  internal.NewDateTime(v.DateCreated),
+		DateModified: internal.NewDateTime(v.DateModified),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
 	return json.Marshal(explicitMarshaler)

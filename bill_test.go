@@ -14667,7 +14667,7 @@ func TestSettersVendorDataResponse(t *testing.T) {
 
 	t.Run("SetName2", func(t *testing.T) {
 		obj := &VendorDataResponse{}
-		var fernTestValueName2 string
+		var fernTestValueName2 *string
 		obj.SetName2(fernTestValueName2)
 		assert.Equal(t, fernTestValueName2, obj.Name2)
 		assert.NotNil(t, obj.explicitFields)
@@ -14675,7 +14675,7 @@ func TestSettersVendorDataResponse(t *testing.T) {
 
 	t.Run("SetEin", func(t *testing.T) {
 		obj := &VendorDataResponse{}
-		var fernTestValueEin string
+		var fernTestValueEin *string
 		obj.SetEin(fernTestValueEin)
 		assert.Equal(t, fernTestValueEin, obj.Ein)
 		assert.NotNil(t, obj.explicitFields)
@@ -14707,7 +14707,7 @@ func TestSettersVendorDataResponse(t *testing.T) {
 
 	t.Run("SetAddress1", func(t *testing.T) {
 		obj := &VendorDataResponse{}
-		var fernTestValueAddress1 string
+		var fernTestValueAddress1 *string
 		obj.SetAddress1(fernTestValueAddress1)
 		assert.Equal(t, fernTestValueAddress1, obj.Address1)
 		assert.NotNil(t, obj.explicitFields)
@@ -14715,7 +14715,7 @@ func TestSettersVendorDataResponse(t *testing.T) {
 
 	t.Run("SetAddress2", func(t *testing.T) {
 		obj := &VendorDataResponse{}
-		var fernTestValueAddress2 string
+		var fernTestValueAddress2 *string
 		obj.SetAddress2(fernTestValueAddress2)
 		assert.Equal(t, fernTestValueAddress2, obj.Address2)
 		assert.NotNil(t, obj.explicitFields)
@@ -14723,7 +14723,7 @@ func TestSettersVendorDataResponse(t *testing.T) {
 
 	t.Run("SetCity", func(t *testing.T) {
 		obj := &VendorDataResponse{}
-		var fernTestValueCity string
+		var fernTestValueCity *string
 		obj.SetCity(fernTestValueCity)
 		assert.Equal(t, fernTestValueCity, obj.City)
 		assert.NotNil(t, obj.explicitFields)
@@ -14731,7 +14731,7 @@ func TestSettersVendorDataResponse(t *testing.T) {
 
 	t.Run("SetState", func(t *testing.T) {
 		obj := &VendorDataResponse{}
-		var fernTestValueState string
+		var fernTestValueState *string
 		obj.SetState(fernTestValueState)
 		assert.Equal(t, fernTestValueState, obj.State)
 		assert.NotNil(t, obj.explicitFields)
@@ -14739,7 +14739,7 @@ func TestSettersVendorDataResponse(t *testing.T) {
 
 	t.Run("SetZip", func(t *testing.T) {
 		obj := &VendorDataResponse{}
-		var fernTestValueZip string
+		var fernTestValueZip *string
 		obj.SetZip(fernTestValueZip)
 		assert.Equal(t, fernTestValueZip, obj.Zip)
 		assert.NotNil(t, obj.explicitFields)
@@ -14747,7 +14747,7 @@ func TestSettersVendorDataResponse(t *testing.T) {
 
 	t.Run("SetCountry", func(t *testing.T) {
 		obj := &VendorDataResponse{}
-		var fernTestValueCountry string
+		var fernTestValueCountry *string
 		obj.SetCountry(fernTestValueCountry)
 		assert.Equal(t, fernTestValueCountry, obj.Country)
 		assert.NotNil(t, obj.explicitFields)
@@ -14755,7 +14755,7 @@ func TestSettersVendorDataResponse(t *testing.T) {
 
 	t.Run("SetMcc", func(t *testing.T) {
 		obj := &VendorDataResponse{}
-		var fernTestValueMcc Mcc
+		var fernTestValueMcc *Mcc
 		obj.SetMcc(fernTestValueMcc)
 		assert.Equal(t, fernTestValueMcc, obj.Mcc)
 		assert.NotNil(t, obj.explicitFields)
@@ -14763,7 +14763,7 @@ func TestSettersVendorDataResponse(t *testing.T) {
 
 	t.Run("SetLocationCode", func(t *testing.T) {
 		obj := &VendorDataResponse{}
-		var fernTestValueLocationCode LocationCode
+		var fernTestValueLocationCode *LocationCode
 		obj.SetLocationCode(fernTestValueLocationCode)
 		assert.Equal(t, fernTestValueLocationCode, obj.LocationCode)
 		assert.NotNil(t, obj.explicitFields)
@@ -14787,7 +14787,7 @@ func TestSettersVendorDataResponse(t *testing.T) {
 
 	t.Run("SetPaymentMethod", func(t *testing.T) {
 		obj := &VendorDataResponse{}
-		var fernTestValuePaymentMethod VendorDataResponsePaymentMethod
+		var fernTestValuePaymentMethod *VendorDataResponsePaymentMethod
 		obj.SetPaymentMethod(fernTestValuePaymentMethod)
 		assert.Equal(t, fernTestValuePaymentMethod, obj.PaymentMethod)
 		assert.NotNil(t, obj.explicitFields)
@@ -14883,7 +14883,7 @@ func TestSettersVendorDataResponse(t *testing.T) {
 
 	t.Run("SetRemitAddress1", func(t *testing.T) {
 		obj := &VendorDataResponse{}
-		var fernTestValueRemitAddress1 Remitaddress1
+		var fernTestValueRemitAddress1 *Remitaddress1
 		obj.SetRemitAddress1(fernTestValueRemitAddress1)
 		assert.Equal(t, fernTestValueRemitAddress1, obj.RemitAddress1)
 		assert.NotNil(t, obj.explicitFields)
@@ -14891,7 +14891,7 @@ func TestSettersVendorDataResponse(t *testing.T) {
 
 	t.Run("SetRemitAddress2", func(t *testing.T) {
 		obj := &VendorDataResponse{}
-		var fernTestValueRemitAddress2 Remitaddress2
+		var fernTestValueRemitAddress2 *Remitaddress2
 		obj.SetRemitAddress2(fernTestValueRemitAddress2)
 		assert.Equal(t, fernTestValueRemitAddress2, obj.RemitAddress2)
 		assert.NotNil(t, obj.explicitFields)
@@ -14899,7 +14899,7 @@ func TestSettersVendorDataResponse(t *testing.T) {
 
 	t.Run("SetRemitCity", func(t *testing.T) {
 		obj := &VendorDataResponse{}
-		var fernTestValueRemitCity Remitcity
+		var fernTestValueRemitCity *Remitcity
 		obj.SetRemitCity(fernTestValueRemitCity)
 		assert.Equal(t, fernTestValueRemitCity, obj.RemitCity)
 		assert.NotNil(t, obj.explicitFields)
@@ -14907,7 +14907,7 @@ func TestSettersVendorDataResponse(t *testing.T) {
 
 	t.Run("SetRemitState", func(t *testing.T) {
 		obj := &VendorDataResponse{}
-		var fernTestValueRemitState Remitstate
+		var fernTestValueRemitState *Remitstate
 		obj.SetRemitState(fernTestValueRemitState)
 		assert.Equal(t, fernTestValueRemitState, obj.RemitState)
 		assert.NotNil(t, obj.explicitFields)
@@ -14915,7 +14915,7 @@ func TestSettersVendorDataResponse(t *testing.T) {
 
 	t.Run("SetRemitZip", func(t *testing.T) {
 		obj := &VendorDataResponse{}
-		var fernTestValueRemitZip Remitzip
+		var fernTestValueRemitZip *Remitzip
 		obj.SetRemitZip(fernTestValueRemitZip)
 		assert.Equal(t, fernTestValueRemitZip, obj.RemitZip)
 		assert.NotNil(t, obj.explicitFields)
@@ -14923,7 +14923,7 @@ func TestSettersVendorDataResponse(t *testing.T) {
 
 	t.Run("SetRemitCountry", func(t *testing.T) {
 		obj := &VendorDataResponse{}
-		var fernTestValueRemitCountry Remitcountry
+		var fernTestValueRemitCountry *Remitcountry
 		obj.SetRemitCountry(fernTestValueRemitCountry)
 		assert.Equal(t, fernTestValueRemitCountry, obj.RemitCountry)
 		assert.NotNil(t, obj.explicitFields)
@@ -14931,7 +14931,7 @@ func TestSettersVendorDataResponse(t *testing.T) {
 
 	t.Run("SetPayeeName1", func(t *testing.T) {
 		obj := &VendorDataResponse{}
-		var fernTestValuePayeeName1 PayeeName
+		var fernTestValuePayeeName1 *PayeeName
 		obj.SetPayeeName1(fernTestValuePayeeName1)
 		assert.Equal(t, fernTestValuePayeeName1, obj.PayeeName1)
 		assert.NotNil(t, obj.explicitFields)
@@ -14939,7 +14939,7 @@ func TestSettersVendorDataResponse(t *testing.T) {
 
 	t.Run("SetPayeeName2", func(t *testing.T) {
 		obj := &VendorDataResponse{}
-		var fernTestValuePayeeName2 PayeeName
+		var fernTestValuePayeeName2 *PayeeName
 		obj.SetPayeeName2(fernTestValuePayeeName2)
 		assert.Equal(t, fernTestValuePayeeName2, obj.PayeeName2)
 		assert.NotNil(t, obj.explicitFields)
@@ -14947,7 +14947,7 @@ func TestSettersVendorDataResponse(t *testing.T) {
 
 	t.Run("SetCustomField1", func(t *testing.T) {
 		obj := &VendorDataResponse{}
-		var fernTestValueCustomField1 string
+		var fernTestValueCustomField1 *string
 		obj.SetCustomField1(fernTestValueCustomField1)
 		assert.Equal(t, fernTestValueCustomField1, obj.CustomField1)
 		assert.NotNil(t, obj.explicitFields)
@@ -14955,7 +14955,7 @@ func TestSettersVendorDataResponse(t *testing.T) {
 
 	t.Run("SetCustomField2", func(t *testing.T) {
 		obj := &VendorDataResponse{}
-		var fernTestValueCustomField2 string
+		var fernTestValueCustomField2 *string
 		obj.SetCustomField2(fernTestValueCustomField2)
 		assert.Equal(t, fernTestValueCustomField2, obj.CustomField2)
 		assert.NotNil(t, obj.explicitFields)
@@ -14979,7 +14979,7 @@ func TestSettersVendorDataResponse(t *testing.T) {
 
 	t.Run("SetAdditionalData", func(t *testing.T) {
 		obj := &VendorDataResponse{}
-		var fernTestValueAdditionalData AdditionalDataMap
+		var fernTestValueAdditionalData *AdditionalDataMap
 		obj.SetAdditionalData(fernTestValueAdditionalData)
 		assert.Equal(t, fernTestValueAdditionalData, obj.AdditionalData)
 		assert.NotNil(t, obj.explicitFields)
@@ -14987,7 +14987,7 @@ func TestSettersVendorDataResponse(t *testing.T) {
 
 	t.Run("SetExternalPaypointId", func(t *testing.T) {
 		obj := &VendorDataResponse{}
-		var fernTestValueExternalPaypointId string
+		var fernTestValueExternalPaypointId *string
 		obj.SetExternalPaypointId(fernTestValueExternalPaypointId)
 		assert.Equal(t, fernTestValueExternalPaypointId, obj.ExternalPaypointId)
 		assert.NotNil(t, obj.explicitFields)
@@ -15054,11 +15054,21 @@ func TestGettersVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var expected string
+		var expected *string
 		obj.Name2 = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetName2(), "getter should return the property value")
+	})
+
+	t.Run("GetName2_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VendorDataResponse{}
+		obj.Name2 = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetName2(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetName2_NilReceiver", func(t *testing.T) {
@@ -15077,11 +15087,21 @@ func TestGettersVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var expected string
+		var expected *string
 		obj.Ein = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetEin(), "getter should return the property value")
+	})
+
+	t.Run("GetEin_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VendorDataResponse{}
+		obj.Ein = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetEin(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetEin_NilReceiver", func(t *testing.T) {
@@ -15179,11 +15199,21 @@ func TestGettersVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var expected string
+		var expected *string
 		obj.Address1 = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetAddress1(), "getter should return the property value")
+	})
+
+	t.Run("GetAddress1_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VendorDataResponse{}
+		obj.Address1 = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetAddress1(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetAddress1_NilReceiver", func(t *testing.T) {
@@ -15202,11 +15232,21 @@ func TestGettersVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var expected string
+		var expected *string
 		obj.Address2 = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetAddress2(), "getter should return the property value")
+	})
+
+	t.Run("GetAddress2_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VendorDataResponse{}
+		obj.Address2 = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetAddress2(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetAddress2_NilReceiver", func(t *testing.T) {
@@ -15225,11 +15265,21 @@ func TestGettersVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var expected string
+		var expected *string
 		obj.City = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetCity(), "getter should return the property value")
+	})
+
+	t.Run("GetCity_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VendorDataResponse{}
+		obj.City = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetCity(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetCity_NilReceiver", func(t *testing.T) {
@@ -15248,11 +15298,21 @@ func TestGettersVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var expected string
+		var expected *string
 		obj.State = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetState(), "getter should return the property value")
+	})
+
+	t.Run("GetState_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VendorDataResponse{}
+		obj.State = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetState(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetState_NilReceiver", func(t *testing.T) {
@@ -15271,11 +15331,21 @@ func TestGettersVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var expected string
+		var expected *string
 		obj.Zip = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetZip(), "getter should return the property value")
+	})
+
+	t.Run("GetZip_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VendorDataResponse{}
+		obj.Zip = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetZip(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetZip_NilReceiver", func(t *testing.T) {
@@ -15294,11 +15364,21 @@ func TestGettersVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var expected string
+		var expected *string
 		obj.Country = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetCountry(), "getter should return the property value")
+	})
+
+	t.Run("GetCountry_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VendorDataResponse{}
+		obj.Country = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetCountry(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetCountry_NilReceiver", func(t *testing.T) {
@@ -15317,11 +15397,21 @@ func TestGettersVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var expected Mcc
+		var expected *Mcc
 		obj.Mcc = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetMcc(), "getter should return the property value")
+	})
+
+	t.Run("GetMcc_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VendorDataResponse{}
+		obj.Mcc = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetMcc(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetMcc_NilReceiver", func(t *testing.T) {
@@ -15340,11 +15430,21 @@ func TestGettersVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var expected LocationCode
+		var expected *LocationCode
 		obj.LocationCode = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetLocationCode(), "getter should return the property value")
+	})
+
+	t.Run("GetLocationCode_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VendorDataResponse{}
+		obj.LocationCode = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetLocationCode(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetLocationCode_NilReceiver", func(t *testing.T) {
@@ -15429,11 +15529,21 @@ func TestGettersVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var expected VendorDataResponsePaymentMethod
+		var expected *VendorDataResponsePaymentMethod
 		obj.PaymentMethod = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetPaymentMethod(), "getter should return the property value")
+	})
+
+	t.Run("GetPaymentMethod_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VendorDataResponse{}
+		obj.PaymentMethod = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetPaymentMethod(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetPaymentMethod_NilReceiver", func(t *testing.T) {
@@ -15725,11 +15835,21 @@ func TestGettersVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var expected Remitaddress1
+		var expected *Remitaddress1
 		obj.RemitAddress1 = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetRemitAddress1(), "getter should return the property value")
+	})
+
+	t.Run("GetRemitAddress1_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VendorDataResponse{}
+		obj.RemitAddress1 = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetRemitAddress1(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetRemitAddress1_NilReceiver", func(t *testing.T) {
@@ -15748,11 +15868,21 @@ func TestGettersVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var expected Remitaddress2
+		var expected *Remitaddress2
 		obj.RemitAddress2 = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetRemitAddress2(), "getter should return the property value")
+	})
+
+	t.Run("GetRemitAddress2_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VendorDataResponse{}
+		obj.RemitAddress2 = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetRemitAddress2(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetRemitAddress2_NilReceiver", func(t *testing.T) {
@@ -15771,11 +15901,21 @@ func TestGettersVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var expected Remitcity
+		var expected *Remitcity
 		obj.RemitCity = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetRemitCity(), "getter should return the property value")
+	})
+
+	t.Run("GetRemitCity_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VendorDataResponse{}
+		obj.RemitCity = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetRemitCity(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetRemitCity_NilReceiver", func(t *testing.T) {
@@ -15794,11 +15934,21 @@ func TestGettersVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var expected Remitstate
+		var expected *Remitstate
 		obj.RemitState = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetRemitState(), "getter should return the property value")
+	})
+
+	t.Run("GetRemitState_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VendorDataResponse{}
+		obj.RemitState = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetRemitState(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetRemitState_NilReceiver", func(t *testing.T) {
@@ -15817,11 +15967,21 @@ func TestGettersVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var expected Remitzip
+		var expected *Remitzip
 		obj.RemitZip = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetRemitZip(), "getter should return the property value")
+	})
+
+	t.Run("GetRemitZip_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VendorDataResponse{}
+		obj.RemitZip = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetRemitZip(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetRemitZip_NilReceiver", func(t *testing.T) {
@@ -15840,11 +16000,21 @@ func TestGettersVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var expected Remitcountry
+		var expected *Remitcountry
 		obj.RemitCountry = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetRemitCountry(), "getter should return the property value")
+	})
+
+	t.Run("GetRemitCountry_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VendorDataResponse{}
+		obj.RemitCountry = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetRemitCountry(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetRemitCountry_NilReceiver", func(t *testing.T) {
@@ -15863,11 +16033,21 @@ func TestGettersVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var expected PayeeName
+		var expected *PayeeName
 		obj.PayeeName1 = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetPayeeName1(), "getter should return the property value")
+	})
+
+	t.Run("GetPayeeName1_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VendorDataResponse{}
+		obj.PayeeName1 = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetPayeeName1(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetPayeeName1_NilReceiver", func(t *testing.T) {
@@ -15886,11 +16066,21 @@ func TestGettersVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var expected PayeeName
+		var expected *PayeeName
 		obj.PayeeName2 = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetPayeeName2(), "getter should return the property value")
+	})
+
+	t.Run("GetPayeeName2_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VendorDataResponse{}
+		obj.PayeeName2 = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetPayeeName2(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetPayeeName2_NilReceiver", func(t *testing.T) {
@@ -15909,11 +16099,21 @@ func TestGettersVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var expected string
+		var expected *string
 		obj.CustomField1 = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetCustomField1(), "getter should return the property value")
+	})
+
+	t.Run("GetCustomField1_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VendorDataResponse{}
+		obj.CustomField1 = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetCustomField1(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetCustomField1_NilReceiver", func(t *testing.T) {
@@ -15932,11 +16132,21 @@ func TestGettersVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var expected string
+		var expected *string
 		obj.CustomField2 = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetCustomField2(), "getter should return the property value")
+	})
+
+	t.Run("GetCustomField2_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VendorDataResponse{}
+		obj.CustomField2 = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetCustomField2(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetCustomField2_NilReceiver", func(t *testing.T) {
@@ -16011,11 +16221,21 @@ func TestGettersVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var expected AdditionalDataMap
+		var expected *AdditionalDataMap
 		obj.AdditionalData = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetAdditionalData(), "getter should return the property value")
+	})
+
+	t.Run("GetAdditionalData_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VendorDataResponse{}
+		obj.AdditionalData = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetAdditionalData(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetAdditionalData_NilReceiver", func(t *testing.T) {
@@ -16034,11 +16254,21 @@ func TestGettersVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var expected string
+		var expected *string
 		obj.ExternalPaypointId = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetExternalPaypointId(), "getter should return the property value")
+	})
+
+	t.Run("GetExternalPaypointId_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &VendorDataResponse{}
+		obj.ExternalPaypointId = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetExternalPaypointId(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetExternalPaypointId_NilReceiver", func(t *testing.T) {
@@ -16155,7 +16385,7 @@ func TestSettersMarkExplicitVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var fernTestValueName2 string
+		var fernTestValueName2 *string
 
 		// Act
 		obj.SetName2(fernTestValueName2)
@@ -16186,7 +16416,7 @@ func TestSettersMarkExplicitVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var fernTestValueEin string
+		var fernTestValueEin *string
 
 		// Act
 		obj.SetEin(fernTestValueEin)
@@ -16310,7 +16540,7 @@ func TestSettersMarkExplicitVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var fernTestValueAddress1 string
+		var fernTestValueAddress1 *string
 
 		// Act
 		obj.SetAddress1(fernTestValueAddress1)
@@ -16341,7 +16571,7 @@ func TestSettersMarkExplicitVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var fernTestValueAddress2 string
+		var fernTestValueAddress2 *string
 
 		// Act
 		obj.SetAddress2(fernTestValueAddress2)
@@ -16372,7 +16602,7 @@ func TestSettersMarkExplicitVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var fernTestValueCity string
+		var fernTestValueCity *string
 
 		// Act
 		obj.SetCity(fernTestValueCity)
@@ -16403,7 +16633,7 @@ func TestSettersMarkExplicitVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var fernTestValueState string
+		var fernTestValueState *string
 
 		// Act
 		obj.SetState(fernTestValueState)
@@ -16434,7 +16664,7 @@ func TestSettersMarkExplicitVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var fernTestValueZip string
+		var fernTestValueZip *string
 
 		// Act
 		obj.SetZip(fernTestValueZip)
@@ -16465,7 +16695,7 @@ func TestSettersMarkExplicitVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var fernTestValueCountry string
+		var fernTestValueCountry *string
 
 		// Act
 		obj.SetCountry(fernTestValueCountry)
@@ -16496,7 +16726,7 @@ func TestSettersMarkExplicitVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var fernTestValueMcc Mcc
+		var fernTestValueMcc *Mcc
 
 		// Act
 		obj.SetMcc(fernTestValueMcc)
@@ -16527,7 +16757,7 @@ func TestSettersMarkExplicitVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var fernTestValueLocationCode LocationCode
+		var fernTestValueLocationCode *LocationCode
 
 		// Act
 		obj.SetLocationCode(fernTestValueLocationCode)
@@ -16620,7 +16850,7 @@ func TestSettersMarkExplicitVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var fernTestValuePaymentMethod VendorDataResponsePaymentMethod
+		var fernTestValuePaymentMethod *VendorDataResponsePaymentMethod
 
 		// Act
 		obj.SetPaymentMethod(fernTestValuePaymentMethod)
@@ -16992,7 +17222,7 @@ func TestSettersMarkExplicitVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var fernTestValueRemitAddress1 Remitaddress1
+		var fernTestValueRemitAddress1 *Remitaddress1
 
 		// Act
 		obj.SetRemitAddress1(fernTestValueRemitAddress1)
@@ -17023,7 +17253,7 @@ func TestSettersMarkExplicitVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var fernTestValueRemitAddress2 Remitaddress2
+		var fernTestValueRemitAddress2 *Remitaddress2
 
 		// Act
 		obj.SetRemitAddress2(fernTestValueRemitAddress2)
@@ -17054,7 +17284,7 @@ func TestSettersMarkExplicitVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var fernTestValueRemitCity Remitcity
+		var fernTestValueRemitCity *Remitcity
 
 		// Act
 		obj.SetRemitCity(fernTestValueRemitCity)
@@ -17085,7 +17315,7 @@ func TestSettersMarkExplicitVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var fernTestValueRemitState Remitstate
+		var fernTestValueRemitState *Remitstate
 
 		// Act
 		obj.SetRemitState(fernTestValueRemitState)
@@ -17116,7 +17346,7 @@ func TestSettersMarkExplicitVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var fernTestValueRemitZip Remitzip
+		var fernTestValueRemitZip *Remitzip
 
 		// Act
 		obj.SetRemitZip(fernTestValueRemitZip)
@@ -17147,7 +17377,7 @@ func TestSettersMarkExplicitVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var fernTestValueRemitCountry Remitcountry
+		var fernTestValueRemitCountry *Remitcountry
 
 		// Act
 		obj.SetRemitCountry(fernTestValueRemitCountry)
@@ -17178,7 +17408,7 @@ func TestSettersMarkExplicitVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var fernTestValuePayeeName1 PayeeName
+		var fernTestValuePayeeName1 *PayeeName
 
 		// Act
 		obj.SetPayeeName1(fernTestValuePayeeName1)
@@ -17209,7 +17439,7 @@ func TestSettersMarkExplicitVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var fernTestValuePayeeName2 PayeeName
+		var fernTestValuePayeeName2 *PayeeName
 
 		// Act
 		obj.SetPayeeName2(fernTestValuePayeeName2)
@@ -17240,7 +17470,7 @@ func TestSettersMarkExplicitVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var fernTestValueCustomField1 string
+		var fernTestValueCustomField1 *string
 
 		// Act
 		obj.SetCustomField1(fernTestValueCustomField1)
@@ -17271,7 +17501,7 @@ func TestSettersMarkExplicitVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var fernTestValueCustomField2 string
+		var fernTestValueCustomField2 *string
 
 		// Act
 		obj.SetCustomField2(fernTestValueCustomField2)
@@ -17364,7 +17594,7 @@ func TestSettersMarkExplicitVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var fernTestValueAdditionalData AdditionalDataMap
+		var fernTestValueAdditionalData *AdditionalDataMap
 
 		// Act
 		obj.SetAdditionalData(fernTestValueAdditionalData)
@@ -17395,7 +17625,7 @@ func TestSettersMarkExplicitVendorDataResponse(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &VendorDataResponse{}
-		var fernTestValueExternalPaypointId string
+		var fernTestValueExternalPaypointId *string
 
 		// Act
 		obj.SetExternalPaypointId(fernTestValueExternalPaypointId)

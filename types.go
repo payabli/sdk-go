@@ -4814,17 +4814,20 @@ var (
 )
 
 type CustomerQueryRecords struct {
-	CustomerId     *CustomerId             `json:"customerId,omitempty" url:"customerId,omitempty"`
-	CustomerNumber *CustomerNumberNullable `json:"customerNumber,omitempty" url:"customerNumber,omitempty"`
+	CustomerId CustomerId `json:"customerId" url:"customerId"`
+	// User-provided unique identifier for the customer. This is typically the
+	// customer ID from your own system. Returns null when the paypoint's
+	// customer identifier configuration doesn't use the customer number.
+	CustomerNumber *string `json:"customerNumber,omitempty" url:"customerNumber,omitempty"`
 	// Username for customer.
-	CustomerUsername *string         `json:"customerUsername,omitempty" url:"customerUsername,omitempty"`
-	CustomerStatus   *CustomerStatus `json:"customerStatus,omitempty" url:"customerStatus,omitempty"`
+	CustomerUsername *string        `json:"customerUsername,omitempty" url:"customerUsername,omitempty"`
+	CustomerStatus   CustomerStatus `json:"customerStatus" url:"customerStatus"`
 	// Company name.
 	Company *string `json:"Company,omitempty" url:"Company,omitempty"`
 	// Customer first name.
-	Firstname *string `json:"Firstname,omitempty" url:"Firstname,omitempty"`
+	Firstname string `json:"Firstname" url:"Firstname"`
 	// Customer last name.
-	Lastname *string `json:"Lastname,omitempty" url:"Lastname,omitempty"`
+	Lastname string `json:"Lastname" url:"Lastname"`
 	// Customer phone number.
 	Phone *string `json:"Phone,omitempty" url:"Phone,omitempty"`
 	// Customer email address.
@@ -4848,10 +4851,10 @@ type CustomerQueryRecords struct {
 	ShippingZip      *Shippingzip               `json:"ShippingZip,omitempty" url:"ShippingZip,omitempty"`
 	ShippingCountry  *Shippingcountry           `json:"ShippingCountry,omitempty" url:"ShippingCountry,omitempty"`
 	// Customer balance.
-	Balance  *float64  `json:"Balance,omitempty" url:"Balance,omitempty"`
-	TimeZone *Timezone `json:"TimeZone,omitempty" url:"TimeZone,omitempty"`
-	Mfa      *Mfa      `json:"MFA,omitempty" url:"MFA,omitempty"`
-	MfaMode  *MfaMode  `json:"MFAMode,omitempty" url:"MFAMode,omitempty"`
+	Balance  float64  `json:"Balance" url:"Balance"`
+	TimeZone Timezone `json:"TimeZone" url:"TimeZone"`
+	Mfa      Mfa      `json:"MFA" url:"MFA"`
+	MfaMode  MfaMode  `json:"MFAMode" url:"MFAMode"`
 	// Social network linked to customer. Possible values:
 	// - `facebook`
 	// - `google`
@@ -4863,24 +4866,24 @@ type CustomerQueryRecords struct {
 	// Additional data provided by the social network related to the customer.
 	SnData *string `json:"snData,omitempty" url:"snData,omitempty"`
 	// Date and time of last update.
-	LastUpdated *time.Time `json:"LastUpdated,omitempty" url:"LastUpdated,omitempty"`
+	LastUpdated time.Time `json:"LastUpdated" url:"LastUpdated"`
 	// Date and time created.
-	Created *time.Time `json:"Created,omitempty" url:"Created,omitempty"`
+	Created time.Time `json:"Created" url:"Created"`
 	// List of additional custom fields in format key:value.
-	AdditionalFields map[string]string `json:"AdditionalFields,omitempty" url:"AdditionalFields,omitempty"`
-	IdentifierFields *Identifierfields `json:"IdentifierFields,omitempty" url:"IdentifierFields,omitempty"`
+	AdditionalFields map[string]string `json:"AdditionalFields" url:"AdditionalFields"`
+	IdentifierFields Identifierfields  `json:"IdentifierFields" url:"IdentifierFields"`
 	// List of subscriptions associated to the customer.
 	Subscriptions []*SubscriptionQueryRecords `json:"Subscriptions,omitempty" url:"Subscriptions,omitempty"`
 	// List of payment methods associated to the customer.
 	StoredMethods   []*MethodQueryRecords  `json:"StoredMethods,omitempty" url:"StoredMethods,omitempty"`
 	CustomerSummary *CustomerSummaryRecord `json:"customerSummary,omitempty" url:"customerSummary,omitempty"`
 	// Paypoint legal name.
-	PaypointLegalname *Legalname `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
+	PaypointLegalname Legalname `json:"PaypointLegalname" url:"PaypointLegalname"`
 	// Paypoint DBA name.
-	PaypointDbaname    *Dbaname                             `json:"PaypointDbaname,omitempty" url:"PaypointDbaname,omitempty"`
-	ParentOrgName      *OrgParentName                       `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
-	ParentOrgId        *OrgParentId                         `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
-	PaypointEntryname  *Entrypointfield                     `json:"PaypointEntryname,omitempty" url:"PaypointEntryname,omitempty"`
+	PaypointDbaname    Dbaname                              `json:"PaypointDbaname" url:"PaypointDbaname"`
+	ParentOrgName      OrgParentName                        `json:"ParentOrgName" url:"ParentOrgName"`
+	ParentOrgId        OrgParentId                          `json:"ParentOrgId" url:"ParentOrgId"`
+	PaypointEntryname  Entrypointfield                      `json:"PaypointEntryname" url:"PaypointEntryname"`
 	Pageidentifier     *PageIdentifier                      `json:"pageidentifier,omitempty" url:"pageidentifier,omitempty"`
 	ExternalPaypointId *ExternalPaypointId                  `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
 	CustomerConsent    *CustomerQueryRecordsCustomerConsent `json:"customerConsent,omitempty" url:"customerConsent,omitempty"`
@@ -4893,14 +4896,14 @@ type CustomerQueryRecords struct {
 	rawJSON         json.RawMessage
 }
 
-func (c *CustomerQueryRecords) GetCustomerId() *CustomerId {
+func (c *CustomerQueryRecords) GetCustomerId() CustomerId {
 	if c == nil {
-		return nil
+		return 0
 	}
 	return c.CustomerId
 }
 
-func (c *CustomerQueryRecords) GetCustomerNumber() *CustomerNumberNullable {
+func (c *CustomerQueryRecords) GetCustomerNumber() *string {
 	if c == nil {
 		return nil
 	}
@@ -4914,9 +4917,9 @@ func (c *CustomerQueryRecords) GetCustomerUsername() *string {
 	return c.CustomerUsername
 }
 
-func (c *CustomerQueryRecords) GetCustomerStatus() *CustomerStatus {
+func (c *CustomerQueryRecords) GetCustomerStatus() CustomerStatus {
 	if c == nil {
-		return nil
+		return 0
 	}
 	return c.CustomerStatus
 }
@@ -4928,16 +4931,16 @@ func (c *CustomerQueryRecords) GetCompany() *string {
 	return c.Company
 }
 
-func (c *CustomerQueryRecords) GetFirstname() *string {
+func (c *CustomerQueryRecords) GetFirstname() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.Firstname
 }
 
-func (c *CustomerQueryRecords) GetLastname() *string {
+func (c *CustomerQueryRecords) GetLastname() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.Lastname
 }
@@ -5040,30 +5043,30 @@ func (c *CustomerQueryRecords) GetShippingCountry() *Shippingcountry {
 	return c.ShippingCountry
 }
 
-func (c *CustomerQueryRecords) GetBalance() *float64 {
+func (c *CustomerQueryRecords) GetBalance() float64 {
 	if c == nil {
-		return nil
+		return 0
 	}
 	return c.Balance
 }
 
-func (c *CustomerQueryRecords) GetTimeZone() *Timezone {
+func (c *CustomerQueryRecords) GetTimeZone() Timezone {
 	if c == nil {
-		return nil
+		return 0
 	}
 	return c.TimeZone
 }
 
-func (c *CustomerQueryRecords) GetMfa() *Mfa {
+func (c *CustomerQueryRecords) GetMfa() Mfa {
 	if c == nil {
-		return nil
+		return false
 	}
 	return c.Mfa
 }
 
-func (c *CustomerQueryRecords) GetMfaMode() *MfaMode {
+func (c *CustomerQueryRecords) GetMfaMode() MfaMode {
 	if c == nil {
-		return nil
+		return 0
 	}
 	return c.MfaMode
 }
@@ -5089,16 +5092,16 @@ func (c *CustomerQueryRecords) GetSnData() *string {
 	return c.SnData
 }
 
-func (c *CustomerQueryRecords) GetLastUpdated() *time.Time {
+func (c *CustomerQueryRecords) GetLastUpdated() time.Time {
 	if c == nil {
-		return nil
+		return time.Time{}
 	}
 	return c.LastUpdated
 }
 
-func (c *CustomerQueryRecords) GetCreated() *time.Time {
+func (c *CustomerQueryRecords) GetCreated() time.Time {
 	if c == nil {
-		return nil
+		return time.Time{}
 	}
 	return c.Created
 }
@@ -5110,7 +5113,7 @@ func (c *CustomerQueryRecords) GetAdditionalFields() map[string]string {
 	return c.AdditionalFields
 }
 
-func (c *CustomerQueryRecords) GetIdentifierFields() *Identifierfields {
+func (c *CustomerQueryRecords) GetIdentifierFields() Identifierfields {
 	if c == nil {
 		return nil
 	}
@@ -5138,37 +5141,37 @@ func (c *CustomerQueryRecords) GetCustomerSummary() *CustomerSummaryRecord {
 	return c.CustomerSummary
 }
 
-func (c *CustomerQueryRecords) GetPaypointLegalname() *Legalname {
+func (c *CustomerQueryRecords) GetPaypointLegalname() Legalname {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.PaypointLegalname
 }
 
-func (c *CustomerQueryRecords) GetPaypointDbaname() *Dbaname {
+func (c *CustomerQueryRecords) GetPaypointDbaname() Dbaname {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.PaypointDbaname
 }
 
-func (c *CustomerQueryRecords) GetParentOrgName() *OrgParentName {
+func (c *CustomerQueryRecords) GetParentOrgName() OrgParentName {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.ParentOrgName
 }
 
-func (c *CustomerQueryRecords) GetParentOrgId() *OrgParentId {
+func (c *CustomerQueryRecords) GetParentOrgId() OrgParentId {
 	if c == nil {
-		return nil
+		return 0
 	}
 	return c.ParentOrgId
 }
 
-func (c *CustomerQueryRecords) GetPaypointEntryname() *Entrypointfield {
+func (c *CustomerQueryRecords) GetPaypointEntryname() Entrypointfield {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.PaypointEntryname
 }
@@ -5217,14 +5220,14 @@ func (c *CustomerQueryRecords) require(field *big.Int) {
 
 // SetCustomerId sets the CustomerId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CustomerQueryRecords) SetCustomerId(customerId *CustomerId) {
+func (c *CustomerQueryRecords) SetCustomerId(customerId CustomerId) {
 	c.CustomerId = customerId
 	c.require(customerQueryRecordsFieldCustomerId)
 }
 
 // SetCustomerNumber sets the CustomerNumber field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CustomerQueryRecords) SetCustomerNumber(customerNumber *CustomerNumberNullable) {
+func (c *CustomerQueryRecords) SetCustomerNumber(customerNumber *string) {
 	c.CustomerNumber = customerNumber
 	c.require(customerQueryRecordsFieldCustomerNumber)
 }
@@ -5238,7 +5241,7 @@ func (c *CustomerQueryRecords) SetCustomerUsername(customerUsername *string) {
 
 // SetCustomerStatus sets the CustomerStatus field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CustomerQueryRecords) SetCustomerStatus(customerStatus *CustomerStatus) {
+func (c *CustomerQueryRecords) SetCustomerStatus(customerStatus CustomerStatus) {
 	c.CustomerStatus = customerStatus
 	c.require(customerQueryRecordsFieldCustomerStatus)
 }
@@ -5252,14 +5255,14 @@ func (c *CustomerQueryRecords) SetCompany(company *string) {
 
 // SetFirstname sets the Firstname field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CustomerQueryRecords) SetFirstname(firstname *string) {
+func (c *CustomerQueryRecords) SetFirstname(firstname string) {
 	c.Firstname = firstname
 	c.require(customerQueryRecordsFieldFirstname)
 }
 
 // SetLastname sets the Lastname field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CustomerQueryRecords) SetLastname(lastname *string) {
+func (c *CustomerQueryRecords) SetLastname(lastname string) {
 	c.Lastname = lastname
 	c.require(customerQueryRecordsFieldLastname)
 }
@@ -5364,28 +5367,28 @@ func (c *CustomerQueryRecords) SetShippingCountry(shippingCountry *Shippingcount
 
 // SetBalance sets the Balance field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CustomerQueryRecords) SetBalance(balance *float64) {
+func (c *CustomerQueryRecords) SetBalance(balance float64) {
 	c.Balance = balance
 	c.require(customerQueryRecordsFieldBalance)
 }
 
 // SetTimeZone sets the TimeZone field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CustomerQueryRecords) SetTimeZone(timeZone *Timezone) {
+func (c *CustomerQueryRecords) SetTimeZone(timeZone Timezone) {
 	c.TimeZone = timeZone
 	c.require(customerQueryRecordsFieldTimeZone)
 }
 
 // SetMfa sets the Mfa field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CustomerQueryRecords) SetMfa(mfa *Mfa) {
+func (c *CustomerQueryRecords) SetMfa(mfa Mfa) {
 	c.Mfa = mfa
 	c.require(customerQueryRecordsFieldMfa)
 }
 
 // SetMfaMode sets the MfaMode field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CustomerQueryRecords) SetMfaMode(mfaMode *MfaMode) {
+func (c *CustomerQueryRecords) SetMfaMode(mfaMode MfaMode) {
 	c.MfaMode = mfaMode
 	c.require(customerQueryRecordsFieldMfaMode)
 }
@@ -5413,14 +5416,14 @@ func (c *CustomerQueryRecords) SetSnData(snData *string) {
 
 // SetLastUpdated sets the LastUpdated field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CustomerQueryRecords) SetLastUpdated(lastUpdated *time.Time) {
+func (c *CustomerQueryRecords) SetLastUpdated(lastUpdated time.Time) {
 	c.LastUpdated = lastUpdated
 	c.require(customerQueryRecordsFieldLastUpdated)
 }
 
 // SetCreated sets the Created field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CustomerQueryRecords) SetCreated(created *time.Time) {
+func (c *CustomerQueryRecords) SetCreated(created time.Time) {
 	c.Created = created
 	c.require(customerQueryRecordsFieldCreated)
 }
@@ -5434,7 +5437,7 @@ func (c *CustomerQueryRecords) SetAdditionalFields(additionalFields map[string]s
 
 // SetIdentifierFields sets the IdentifierFields field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CustomerQueryRecords) SetIdentifierFields(identifierFields *Identifierfields) {
+func (c *CustomerQueryRecords) SetIdentifierFields(identifierFields Identifierfields) {
 	c.IdentifierFields = identifierFields
 	c.require(customerQueryRecordsFieldIdentifierFields)
 }
@@ -5462,35 +5465,35 @@ func (c *CustomerQueryRecords) SetCustomerSummary(customerSummary *CustomerSumma
 
 // SetPaypointLegalname sets the PaypointLegalname field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CustomerQueryRecords) SetPaypointLegalname(paypointLegalname *Legalname) {
+func (c *CustomerQueryRecords) SetPaypointLegalname(paypointLegalname Legalname) {
 	c.PaypointLegalname = paypointLegalname
 	c.require(customerQueryRecordsFieldPaypointLegalname)
 }
 
 // SetPaypointDbaname sets the PaypointDbaname field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CustomerQueryRecords) SetPaypointDbaname(paypointDbaname *Dbaname) {
+func (c *CustomerQueryRecords) SetPaypointDbaname(paypointDbaname Dbaname) {
 	c.PaypointDbaname = paypointDbaname
 	c.require(customerQueryRecordsFieldPaypointDbaname)
 }
 
 // SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CustomerQueryRecords) SetParentOrgName(parentOrgName *OrgParentName) {
+func (c *CustomerQueryRecords) SetParentOrgName(parentOrgName OrgParentName) {
 	c.ParentOrgName = parentOrgName
 	c.require(customerQueryRecordsFieldParentOrgName)
 }
 
 // SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CustomerQueryRecords) SetParentOrgId(parentOrgId *OrgParentId) {
+func (c *CustomerQueryRecords) SetParentOrgId(parentOrgId OrgParentId) {
 	c.ParentOrgId = parentOrgId
 	c.require(customerQueryRecordsFieldParentOrgId)
 }
 
 // SetPaypointEntryname sets the PaypointEntryname field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (c *CustomerQueryRecords) SetPaypointEntryname(paypointEntryname *Entrypointfield) {
+func (c *CustomerQueryRecords) SetPaypointEntryname(paypointEntryname Entrypointfield) {
 	c.PaypointEntryname = paypointEntryname
 	c.require(customerQueryRecordsFieldPaypointEntryname)
 }
@@ -5527,8 +5530,8 @@ func (c *CustomerQueryRecords) UnmarshalJSON(data []byte) error {
 	type embed CustomerQueryRecords
 	var unmarshaler = struct {
 		embed
-		LastUpdated *internal.DateTime `json:"LastUpdated,omitempty"`
-		Created     *internal.DateTime `json:"Created,omitempty"`
+		LastUpdated *internal.DateTime `json:"LastUpdated"`
+		Created     *internal.DateTime `json:"Created"`
 	}{
 		embed: embed(*c),
 	}
@@ -5536,8 +5539,8 @@ func (c *CustomerQueryRecords) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*c = CustomerQueryRecords(unmarshaler.embed)
-	c.LastUpdated = unmarshaler.LastUpdated.TimePtr()
-	c.Created = unmarshaler.Created.TimePtr()
+	c.LastUpdated = unmarshaler.LastUpdated.Time()
+	c.Created = unmarshaler.Created.Time()
 	extraProperties, err := internal.ExtractExtraProperties(data, *c)
 	if err != nil {
 		return err
@@ -5551,12 +5554,12 @@ func (c *CustomerQueryRecords) MarshalJSON() ([]byte, error) {
 	type embed CustomerQueryRecords
 	var marshaler = struct {
 		embed
-		LastUpdated *internal.DateTime `json:"LastUpdated,omitempty"`
-		Created     *internal.DateTime `json:"Created,omitempty"`
+		LastUpdated *internal.DateTime `json:"LastUpdated"`
+		Created     *internal.DateTime `json:"Created"`
 	}{
 		embed:       embed(*c),
-		LastUpdated: internal.NewOptionalDateTime(c.LastUpdated),
-		Created:     internal.NewOptionalDateTime(c.Created),
+		LastUpdated: internal.NewDateTime(c.LastUpdated),
+		Created:     internal.NewDateTime(c.Created),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
 	return json.Marshal(explicitMarshaler)
