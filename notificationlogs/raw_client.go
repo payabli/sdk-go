@@ -3,6 +3,7 @@
 package notificationlogs
 
 import (
+	bytes "bytes"
 	context "context"
 	http "net/http"
 
@@ -148,7 +149,7 @@ func (r *RawClient) RetryNotificationLog(
 	// Unique id
 	uuid string,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.NotificationLogDetail], error) {
+) (*core.Response[*payabli.NotificationRetryResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -170,7 +171,7 @@ func (r *RawClient) RetryNotificationLog(
 		),
 		authHeaders,
 	)
-	var response *payabli.NotificationLogDetail
+	var response *payabli.NotificationRetryResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -189,7 +190,7 @@ func (r *RawClient) RetryNotificationLog(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.NotificationLogDetail]{
+	return &core.Response[*payabli.NotificationRetryResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -200,7 +201,7 @@ func (r *RawClient) BulkRetryNotificationLogs(
 	ctx context.Context,
 	request payabli.BulkRetryRequest,
 	opts ...option.RequestOption,
-) (*core.Response[any], error) {
+) (*core.Response[string], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -219,6 +220,7 @@ func (r *RawClient) BulkRetryNotificationLogs(
 		),
 		authHeaders,
 	)
+	response := bytes.NewBuffer(nil)
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -231,14 +233,15 @@ func (r *RawClient) BulkRetryNotificationLogs(
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
 			Request:         request,
+			Response:        response,
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[any]{
+	return &core.Response[string]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
-		Body:       nil,
+		Body:       response.String(),
 	}, nil
 }

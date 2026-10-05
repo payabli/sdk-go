@@ -26,17 +26,17 @@ type SearchNotificationLogsRequest struct {
 	PageSize *Pagesize `json:"-" url:"PageSize,omitempty"`
 	// The page number to retrieve. Defaults to 1 if not provided.
 	Page *int `json:"-" url:"Page,omitempty"`
-	// The start date for the search.
+	// The start date for the search. Can't be more than 30 days before `endDate`.
 	StartDate time.Time `json:"startDate" url:"-"`
-	// The end date for the search.
+	// The end date for the search. Can't be more than 30 days after `startDate`.
 	EndDate time.Time `json:"endDate" url:"-"`
-	// The type of notification event to filter by.
+	// The event to filter by, such as `approvedpayment`. Case-insensitive.
 	NotificationEvent *string `json:"notificationEvent,omitempty" url:"-"`
-	// Indicates whether the notification was successful.
+	// Filter by delivery outcome. Set to `false` to return only failed notifications.
 	Succeeded *bool `json:"succeeded,omitempty" url:"-"`
-	// The ID of the organization to filter by.
+	// The ID of the organization to filter by. Either `orgId` or `paypointId` is required.
 	OrgId *int64 `json:"orgId,omitempty" url:"-"`
-	// The ID of the paypoint to filter by.
+	// The ID of the paypoint to filter by. Either `orgId` or `paypointId` is required.
 	PaypointId *int64 `json:"paypointId,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -234,52 +234,98 @@ func (k *KeyValueArray) String() string {
 	return fmt.Sprintf("%#v", k)
 }
 
+// A notification log entry returned by the search endpoint.
 var (
-	notificationLogFieldId                = big.NewInt(1 << 0)
-	notificationLogFieldOrgId             = big.NewInt(1 << 1)
-	notificationLogFieldPaypointId        = big.NewInt(1 << 2)
-	notificationLogFieldNotificationEvent = big.NewInt(1 << 3)
-	notificationLogFieldTarget            = big.NewInt(1 << 4)
-	notificationLogFieldResponseStatus    = big.NewInt(1 << 5)
-	notificationLogFieldSuccess           = big.NewInt(1 << 6)
-	notificationLogFieldJobData           = big.NewInt(1 << 7)
-	notificationLogFieldCreatedDate       = big.NewInt(1 << 8)
-	notificationLogFieldSuccessDate       = big.NewInt(1 << 9)
-	notificationLogFieldLastFailedDate    = big.NewInt(1 << 10)
-	notificationLogFieldIsInProgress      = big.NewInt(1 << 11)
+	notificationLogFieldOrganizationName    = big.NewInt(1 << 0)
+	notificationLogFieldPaypointName        = big.NewInt(1 << 1)
+	notificationLogFieldRequestId           = big.NewInt(1 << 2)
+	notificationLogFieldId                  = big.NewInt(1 << 3)
+	notificationLogFieldOrgId               = big.NewInt(1 << 4)
+	notificationLogFieldPaypointId          = big.NewInt(1 << 5)
+	notificationLogFieldNotificationEvent   = big.NewInt(1 << 6)
+	notificationLogFieldTarget              = big.NewInt(1 << 7)
+	notificationLogFieldResponseStatusCode  = big.NewInt(1 << 8)
+	notificationLogFieldResponseStatus      = big.NewInt(1 << 9)
+	notificationLogFieldSuccess             = big.NewInt(1 << 10)
+	notificationLogFieldJobData             = big.NewInt(1 << 11)
+	notificationLogFieldCreatedDate         = big.NewInt(1 << 12)
+	notificationLogFieldSuccessDate         = big.NewInt(1 << 13)
+	notificationLogFieldLastFailedDate      = big.NewInt(1 << 14)
+	notificationLogFieldIsInProgress        = big.NewInt(1 << 15)
+	notificationLogFieldOrganizationLogo    = big.NewInt(1 << 16)
+	notificationLogFieldOrganizationFavIcon = big.NewInt(1 << 17)
+	notificationLogFieldPaypointLogo        = big.NewInt(1 << 18)
+	notificationLogFieldNotificationType    = big.NewInt(1 << 19)
 )
 
 type NotificationLog struct {
+	// The name of the organization the notification belongs to.
+	OrganizationName string `json:"organizationName" url:"organizationName"`
+	// The name of the paypoint the notification is related to. Empty for organization-level notifications.
+	PaypointName string `json:"paypointName" url:"paypointName"`
+	// The identifier for the delivery request.
+	RequestId string `json:"requestId" url:"requestId"`
 	// The unique identifier for the notification.
 	Id string `json:"id" url:"id"`
-	// The ID of the organization that the notification belongs to.
+	// The ID of the organization the notification belongs to.
 	OrgId *int64 `json:"orgId,omitempty" url:"orgId,omitempty"`
-	// The ID of the paypoint that the notification is related to.
+	// The ID of the paypoint the notification is related to. Null for organization-level notifications.
 	PaypointId *int64 `json:"paypointId,omitempty" url:"paypointId,omitempty"`
-	// The event that triggered the notification.
+	// The event that triggered the notification, such as `approvedpayment`.
 	NotificationEvent *string `json:"notificationEvent,omitempty" url:"notificationEvent,omitempty"`
-	// The target URL for the notification.
+	// The target the notification was delivered to, such as a webhook URL, email address, or phone number.
 	Target *string `json:"target,omitempty" url:"target,omitempty"`
-	// The HTTP response status of the notification.
-	ResponseStatus *string `json:"responseStatus,omitempty" url:"responseStatus,omitempty"`
-	// Indicates whether the notification was successful.
+	// The HTTP status code the target returned, such as `200`. Returns `0` when the target sent no response.
+	ResponseStatusCode int `json:"responseStatusCode" url:"responseStatusCode"`
+	// The delivery status message, such as `OK` when the notification succeeded, `Dropped` when it failed, or `No response received from server.` when the target sent no response.
+	ResponseStatus string `json:"responseStatus" url:"responseStatus"`
+	// Indicates whether the notification was delivered successfully.
 	Success bool `json:"success" url:"success"`
-	// Contains the body of the notification.
+	// The body of the notification.
 	JobData *string `json:"jobData,omitempty" url:"jobData,omitempty"`
 	// The date and time when the notification was created.
 	CreatedDate time.Time `json:"createdDate" url:"createdDate"`
-	// The date and time when the notification was successfully delivered.
+	// The date and time when the notification was delivered successfully. Null if it hasn't succeeded.
 	SuccessDate *time.Time `json:"successDate,omitempty" url:"successDate,omitempty"`
-	// The date and time when the notification last failed.
+	// The date and time when the notification last failed. Null if it hasn't failed.
 	LastFailedDate *time.Time `json:"lastFailedDate,omitempty" url:"lastFailedDate,omitempty"`
-	// Indicates whether the notification is currently in progress.
+	// Indicates whether the notification is currently being sent.
 	IsInProgress bool `json:"isInProgress" url:"isInProgress"`
+	// The URL of the organization's logo.
+	OrganizationLogo string `json:"organizationLogo" url:"organizationLogo"`
+	// The URL of the organization's browser tab icon.
+	OrganizationFavIcon string `json:"organizationFavIcon" url:"organizationFavIcon"`
+	// The URL of the paypoint's logo.
+	PaypointLogo string `json:"paypointLogo" url:"paypointLogo"`
+	// The notification's delivery method — `1` (Email), `2` (SMS), or `3` (Webhook).
+	NotificationType int `json:"notificationType" url:"notificationType"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
+}
+
+func (n *NotificationLog) GetOrganizationName() string {
+	if n == nil {
+		return ""
+	}
+	return n.OrganizationName
+}
+
+func (n *NotificationLog) GetPaypointName() string {
+	if n == nil {
+		return ""
+	}
+	return n.PaypointName
+}
+
+func (n *NotificationLog) GetRequestId() string {
+	if n == nil {
+		return ""
+	}
+	return n.RequestId
 }
 
 func (n *NotificationLog) GetId() string {
@@ -317,9 +363,16 @@ func (n *NotificationLog) GetTarget() *string {
 	return n.Target
 }
 
-func (n *NotificationLog) GetResponseStatus() *string {
+func (n *NotificationLog) GetResponseStatusCode() int {
 	if n == nil {
-		return nil
+		return 0
+	}
+	return n.ResponseStatusCode
+}
+
+func (n *NotificationLog) GetResponseStatus() string {
+	if n == nil {
+		return ""
 	}
 	return n.ResponseStatus
 }
@@ -366,6 +419,34 @@ func (n *NotificationLog) GetIsInProgress() bool {
 	return n.IsInProgress
 }
 
+func (n *NotificationLog) GetOrganizationLogo() string {
+	if n == nil {
+		return ""
+	}
+	return n.OrganizationLogo
+}
+
+func (n *NotificationLog) GetOrganizationFavIcon() string {
+	if n == nil {
+		return ""
+	}
+	return n.OrganizationFavIcon
+}
+
+func (n *NotificationLog) GetPaypointLogo() string {
+	if n == nil {
+		return ""
+	}
+	return n.PaypointLogo
+}
+
+func (n *NotificationLog) GetNotificationType() int {
+	if n == nil {
+		return 0
+	}
+	return n.NotificationType
+}
+
 func (n *NotificationLog) GetExtraProperties() map[string]interface{} {
 	if n == nil {
 		return nil
@@ -378,6 +459,27 @@ func (n *NotificationLog) require(field *big.Int) {
 		n.explicitFields = big.NewInt(0)
 	}
 	n.explicitFields.Or(n.explicitFields, field)
+}
+
+// SetOrganizationName sets the OrganizationName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLog) SetOrganizationName(organizationName string) {
+	n.OrganizationName = organizationName
+	n.require(notificationLogFieldOrganizationName)
+}
+
+// SetPaypointName sets the PaypointName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLog) SetPaypointName(paypointName string) {
+	n.PaypointName = paypointName
+	n.require(notificationLogFieldPaypointName)
+}
+
+// SetRequestId sets the RequestId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLog) SetRequestId(requestId string) {
+	n.RequestId = requestId
+	n.require(notificationLogFieldRequestId)
 }
 
 // SetId sets the Id field and marks it as non-optional;
@@ -415,9 +517,16 @@ func (n *NotificationLog) SetTarget(target *string) {
 	n.require(notificationLogFieldTarget)
 }
 
+// SetResponseStatusCode sets the ResponseStatusCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLog) SetResponseStatusCode(responseStatusCode int) {
+	n.ResponseStatusCode = responseStatusCode
+	n.require(notificationLogFieldResponseStatusCode)
+}
+
 // SetResponseStatus sets the ResponseStatus field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotificationLog) SetResponseStatus(responseStatus *string) {
+func (n *NotificationLog) SetResponseStatus(responseStatus string) {
 	n.ResponseStatus = responseStatus
 	n.require(notificationLogFieldResponseStatus)
 }
@@ -462,6 +571,34 @@ func (n *NotificationLog) SetLastFailedDate(lastFailedDate *time.Time) {
 func (n *NotificationLog) SetIsInProgress(isInProgress bool) {
 	n.IsInProgress = isInProgress
 	n.require(notificationLogFieldIsInProgress)
+}
+
+// SetOrganizationLogo sets the OrganizationLogo field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLog) SetOrganizationLogo(organizationLogo string) {
+	n.OrganizationLogo = organizationLogo
+	n.require(notificationLogFieldOrganizationLogo)
+}
+
+// SetOrganizationFavIcon sets the OrganizationFavIcon field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLog) SetOrganizationFavIcon(organizationFavIcon string) {
+	n.OrganizationFavIcon = organizationFavIcon
+	n.require(notificationLogFieldOrganizationFavIcon)
+}
+
+// SetPaypointLogo sets the PaypointLogo field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLog) SetPaypointLogo(paypointLogo string) {
+	n.PaypointLogo = paypointLogo
+	n.require(notificationLogFieldPaypointLogo)
+}
+
+// SetNotificationType sets the NotificationType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLog) SetNotificationType(notificationType int) {
+	n.NotificationType = notificationType
+	n.require(notificationLogFieldNotificationType)
 }
 
 func (n *NotificationLog) UnmarshalJSON(data []byte) error {
@@ -522,58 +659,452 @@ func (n *NotificationLog) String() string {
 	return fmt.Sprintf("%#v", n)
 }
 
+// Fields shared by the search and detail responses for a notification log entry.
 var (
-	notificationLogDetailFieldId                = big.NewInt(1 << 0)
-	notificationLogDetailFieldOrgId             = big.NewInt(1 << 1)
-	notificationLogDetailFieldPaypointId        = big.NewInt(1 << 2)
-	notificationLogDetailFieldNotificationEvent = big.NewInt(1 << 3)
-	notificationLogDetailFieldTarget            = big.NewInt(1 << 4)
-	notificationLogDetailFieldResponseStatus    = big.NewInt(1 << 5)
-	notificationLogDetailFieldSuccess           = big.NewInt(1 << 6)
-	notificationLogDetailFieldJobData           = big.NewInt(1 << 7)
-	notificationLogDetailFieldCreatedDate       = big.NewInt(1 << 8)
-	notificationLogDetailFieldSuccessDate       = big.NewInt(1 << 9)
-	notificationLogDetailFieldLastFailedDate    = big.NewInt(1 << 10)
-	notificationLogDetailFieldIsInProgress      = big.NewInt(1 << 11)
-	notificationLogDetailFieldWebHeaders        = big.NewInt(1 << 12)
-	notificationLogDetailFieldResponseHeaders   = big.NewInt(1 << 13)
-	notificationLogDetailFieldResponseContent   = big.NewInt(1 << 14)
+	notificationLogBaseFieldOrganizationName   = big.NewInt(1 << 0)
+	notificationLogBaseFieldPaypointName       = big.NewInt(1 << 1)
+	notificationLogBaseFieldRequestId          = big.NewInt(1 << 2)
+	notificationLogBaseFieldId                 = big.NewInt(1 << 3)
+	notificationLogBaseFieldOrgId              = big.NewInt(1 << 4)
+	notificationLogBaseFieldPaypointId         = big.NewInt(1 << 5)
+	notificationLogBaseFieldNotificationEvent  = big.NewInt(1 << 6)
+	notificationLogBaseFieldTarget             = big.NewInt(1 << 7)
+	notificationLogBaseFieldResponseStatusCode = big.NewInt(1 << 8)
+	notificationLogBaseFieldResponseStatus     = big.NewInt(1 << 9)
+	notificationLogBaseFieldSuccess            = big.NewInt(1 << 10)
+	notificationLogBaseFieldJobData            = big.NewInt(1 << 11)
+	notificationLogBaseFieldCreatedDate        = big.NewInt(1 << 12)
+	notificationLogBaseFieldSuccessDate        = big.NewInt(1 << 13)
+	notificationLogBaseFieldLastFailedDate     = big.NewInt(1 << 14)
+	notificationLogBaseFieldIsInProgress       = big.NewInt(1 << 15)
 )
 
-type NotificationLogDetail struct {
+type NotificationLogBase struct {
+	// The name of the organization the notification belongs to.
+	OrganizationName string `json:"organizationName" url:"organizationName"`
+	// The name of the paypoint the notification is related to. Empty for organization-level notifications.
+	PaypointName string `json:"paypointName" url:"paypointName"`
+	// The identifier for the delivery request.
+	RequestId string `json:"requestId" url:"requestId"`
 	// The unique identifier for the notification.
 	Id string `json:"id" url:"id"`
-	// The ID of the organization that the notification belongs to.
+	// The ID of the organization the notification belongs to.
 	OrgId *int64 `json:"orgId,omitempty" url:"orgId,omitempty"`
-	// The ID of the paypoint that the notification is related to.
+	// The ID of the paypoint the notification is related to. Null for organization-level notifications.
 	PaypointId *int64 `json:"paypointId,omitempty" url:"paypointId,omitempty"`
-	// The event that triggered the notification.
+	// The event that triggered the notification, such as `approvedpayment`.
 	NotificationEvent *string `json:"notificationEvent,omitempty" url:"notificationEvent,omitempty"`
-	// The target URL for the notification.
+	// The target the notification was delivered to, such as a webhook URL, email address, or phone number.
 	Target *string `json:"target,omitempty" url:"target,omitempty"`
-	// The HTTP response status of the notification.
-	ResponseStatus *string `json:"responseStatus,omitempty" url:"responseStatus,omitempty"`
-	// Indicates whether the notification was successful.
+	// The HTTP status code the target returned, such as `200`. Returns `0` when the target sent no response.
+	ResponseStatusCode int `json:"responseStatusCode" url:"responseStatusCode"`
+	// The delivery status message, such as `OK` when the notification succeeded, `Dropped` when it failed, or `No response received from server.` when the target sent no response.
+	ResponseStatus string `json:"responseStatus" url:"responseStatus"`
+	// Indicates whether the notification was delivered successfully.
 	Success bool `json:"success" url:"success"`
-	// Contains the body of the notification.
+	// The body of the notification.
 	JobData *string `json:"jobData,omitempty" url:"jobData,omitempty"`
 	// The date and time when the notification was created.
 	CreatedDate time.Time `json:"createdDate" url:"createdDate"`
-	// The date and time when the notification was successfully delivered.
+	// The date and time when the notification was delivered successfully. Null if it hasn't succeeded.
 	SuccessDate *time.Time `json:"successDate,omitempty" url:"successDate,omitempty"`
-	// The date and time when the notification last failed.
+	// The date and time when the notification last failed. Null if it hasn't failed.
 	LastFailedDate *time.Time `json:"lastFailedDate,omitempty" url:"lastFailedDate,omitempty"`
-	// Indicates whether the notification is currently in progress.
-	IsInProgress    bool                        `json:"isInProgress" url:"isInProgress"`
-	WebHeaders      []*StringStringKeyValuePair `json:"webHeaders,omitempty" url:"webHeaders,omitempty"`
-	ResponseHeaders []*KeyValueArray            `json:"responseHeaders,omitempty" url:"responseHeaders,omitempty"`
-	ResponseContent *string                     `json:"responseContent,omitempty" url:"responseContent,omitempty"`
+	// Indicates whether the notification is currently being sent.
+	IsInProgress bool `json:"isInProgress" url:"isInProgress"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
+}
+
+func (n *NotificationLogBase) GetOrganizationName() string {
+	if n == nil {
+		return ""
+	}
+	return n.OrganizationName
+}
+
+func (n *NotificationLogBase) GetPaypointName() string {
+	if n == nil {
+		return ""
+	}
+	return n.PaypointName
+}
+
+func (n *NotificationLogBase) GetRequestId() string {
+	if n == nil {
+		return ""
+	}
+	return n.RequestId
+}
+
+func (n *NotificationLogBase) GetId() string {
+	if n == nil {
+		return ""
+	}
+	return n.Id
+}
+
+func (n *NotificationLogBase) GetOrgId() *int64 {
+	if n == nil {
+		return nil
+	}
+	return n.OrgId
+}
+
+func (n *NotificationLogBase) GetPaypointId() *int64 {
+	if n == nil {
+		return nil
+	}
+	return n.PaypointId
+}
+
+func (n *NotificationLogBase) GetNotificationEvent() *string {
+	if n == nil {
+		return nil
+	}
+	return n.NotificationEvent
+}
+
+func (n *NotificationLogBase) GetTarget() *string {
+	if n == nil {
+		return nil
+	}
+	return n.Target
+}
+
+func (n *NotificationLogBase) GetResponseStatusCode() int {
+	if n == nil {
+		return 0
+	}
+	return n.ResponseStatusCode
+}
+
+func (n *NotificationLogBase) GetResponseStatus() string {
+	if n == nil {
+		return ""
+	}
+	return n.ResponseStatus
+}
+
+func (n *NotificationLogBase) GetSuccess() bool {
+	if n == nil {
+		return false
+	}
+	return n.Success
+}
+
+func (n *NotificationLogBase) GetJobData() *string {
+	if n == nil {
+		return nil
+	}
+	return n.JobData
+}
+
+func (n *NotificationLogBase) GetCreatedDate() time.Time {
+	if n == nil {
+		return time.Time{}
+	}
+	return n.CreatedDate
+}
+
+func (n *NotificationLogBase) GetSuccessDate() *time.Time {
+	if n == nil {
+		return nil
+	}
+	return n.SuccessDate
+}
+
+func (n *NotificationLogBase) GetLastFailedDate() *time.Time {
+	if n == nil {
+		return nil
+	}
+	return n.LastFailedDate
+}
+
+func (n *NotificationLogBase) GetIsInProgress() bool {
+	if n == nil {
+		return false
+	}
+	return n.IsInProgress
+}
+
+func (n *NotificationLogBase) GetExtraProperties() map[string]interface{} {
+	if n == nil {
+		return nil
+	}
+	return n.extraProperties
+}
+
+func (n *NotificationLogBase) require(field *big.Int) {
+	if n.explicitFields == nil {
+		n.explicitFields = big.NewInt(0)
+	}
+	n.explicitFields.Or(n.explicitFields, field)
+}
+
+// SetOrganizationName sets the OrganizationName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogBase) SetOrganizationName(organizationName string) {
+	n.OrganizationName = organizationName
+	n.require(notificationLogBaseFieldOrganizationName)
+}
+
+// SetPaypointName sets the PaypointName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogBase) SetPaypointName(paypointName string) {
+	n.PaypointName = paypointName
+	n.require(notificationLogBaseFieldPaypointName)
+}
+
+// SetRequestId sets the RequestId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogBase) SetRequestId(requestId string) {
+	n.RequestId = requestId
+	n.require(notificationLogBaseFieldRequestId)
+}
+
+// SetId sets the Id field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogBase) SetId(id string) {
+	n.Id = id
+	n.require(notificationLogBaseFieldId)
+}
+
+// SetOrgId sets the OrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogBase) SetOrgId(orgId *int64) {
+	n.OrgId = orgId
+	n.require(notificationLogBaseFieldOrgId)
+}
+
+// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogBase) SetPaypointId(paypointId *int64) {
+	n.PaypointId = paypointId
+	n.require(notificationLogBaseFieldPaypointId)
+}
+
+// SetNotificationEvent sets the NotificationEvent field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogBase) SetNotificationEvent(notificationEvent *string) {
+	n.NotificationEvent = notificationEvent
+	n.require(notificationLogBaseFieldNotificationEvent)
+}
+
+// SetTarget sets the Target field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogBase) SetTarget(target *string) {
+	n.Target = target
+	n.require(notificationLogBaseFieldTarget)
+}
+
+// SetResponseStatusCode sets the ResponseStatusCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogBase) SetResponseStatusCode(responseStatusCode int) {
+	n.ResponseStatusCode = responseStatusCode
+	n.require(notificationLogBaseFieldResponseStatusCode)
+}
+
+// SetResponseStatus sets the ResponseStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogBase) SetResponseStatus(responseStatus string) {
+	n.ResponseStatus = responseStatus
+	n.require(notificationLogBaseFieldResponseStatus)
+}
+
+// SetSuccess sets the Success field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogBase) SetSuccess(success bool) {
+	n.Success = success
+	n.require(notificationLogBaseFieldSuccess)
+}
+
+// SetJobData sets the JobData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogBase) SetJobData(jobData *string) {
+	n.JobData = jobData
+	n.require(notificationLogBaseFieldJobData)
+}
+
+// SetCreatedDate sets the CreatedDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogBase) SetCreatedDate(createdDate time.Time) {
+	n.CreatedDate = createdDate
+	n.require(notificationLogBaseFieldCreatedDate)
+}
+
+// SetSuccessDate sets the SuccessDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogBase) SetSuccessDate(successDate *time.Time) {
+	n.SuccessDate = successDate
+	n.require(notificationLogBaseFieldSuccessDate)
+}
+
+// SetLastFailedDate sets the LastFailedDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogBase) SetLastFailedDate(lastFailedDate *time.Time) {
+	n.LastFailedDate = lastFailedDate
+	n.require(notificationLogBaseFieldLastFailedDate)
+}
+
+// SetIsInProgress sets the IsInProgress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogBase) SetIsInProgress(isInProgress bool) {
+	n.IsInProgress = isInProgress
+	n.require(notificationLogBaseFieldIsInProgress)
+}
+
+func (n *NotificationLogBase) UnmarshalJSON(data []byte) error {
+	type embed NotificationLogBase
+	var unmarshaler = struct {
+		embed
+		CreatedDate    *internal.DateTime `json:"createdDate"`
+		SuccessDate    *internal.DateTime `json:"successDate,omitempty"`
+		LastFailedDate *internal.DateTime `json:"lastFailedDate,omitempty"`
+	}{
+		embed: embed(*n),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*n = NotificationLogBase(unmarshaler.embed)
+	n.CreatedDate = unmarshaler.CreatedDate.Time()
+	n.SuccessDate = unmarshaler.SuccessDate.TimePtr()
+	n.LastFailedDate = unmarshaler.LastFailedDate.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *n)
+	if err != nil {
+		return err
+	}
+	n.extraProperties = extraProperties
+	n.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (n *NotificationLogBase) MarshalJSON() ([]byte, error) {
+	type embed NotificationLogBase
+	var marshaler = struct {
+		embed
+		CreatedDate    *internal.DateTime `json:"createdDate"`
+		SuccessDate    *internal.DateTime `json:"successDate,omitempty"`
+		LastFailedDate *internal.DateTime `json:"lastFailedDate,omitempty"`
+	}{
+		embed:          embed(*n),
+		CreatedDate:    internal.NewDateTime(n.CreatedDate),
+		SuccessDate:    internal.NewOptionalDateTime(n.SuccessDate),
+		LastFailedDate: internal.NewOptionalDateTime(n.LastFailedDate),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, n.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (n *NotificationLogBase) String() string {
+	if n == nil {
+		return "<nil>"
+	}
+	if len(n.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(n.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(n); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", n)
+}
+
+// A notification log entry returned by the detail and retry endpoints, including the request and response captured for the delivery.
+var (
+	notificationLogDetailFieldOrganizationName   = big.NewInt(1 << 0)
+	notificationLogDetailFieldPaypointName       = big.NewInt(1 << 1)
+	notificationLogDetailFieldRequestId          = big.NewInt(1 << 2)
+	notificationLogDetailFieldId                 = big.NewInt(1 << 3)
+	notificationLogDetailFieldOrgId              = big.NewInt(1 << 4)
+	notificationLogDetailFieldPaypointId         = big.NewInt(1 << 5)
+	notificationLogDetailFieldNotificationEvent  = big.NewInt(1 << 6)
+	notificationLogDetailFieldTarget             = big.NewInt(1 << 7)
+	notificationLogDetailFieldResponseStatusCode = big.NewInt(1 << 8)
+	notificationLogDetailFieldResponseStatus     = big.NewInt(1 << 9)
+	notificationLogDetailFieldSuccess            = big.NewInt(1 << 10)
+	notificationLogDetailFieldJobData            = big.NewInt(1 << 11)
+	notificationLogDetailFieldCreatedDate        = big.NewInt(1 << 12)
+	notificationLogDetailFieldSuccessDate        = big.NewInt(1 << 13)
+	notificationLogDetailFieldLastFailedDate     = big.NewInt(1 << 14)
+	notificationLogDetailFieldIsInProgress       = big.NewInt(1 << 15)
+	notificationLogDetailFieldWebHeaders         = big.NewInt(1 << 16)
+	notificationLogDetailFieldResponseHeaders    = big.NewInt(1 << 17)
+	notificationLogDetailFieldResponseContent    = big.NewInt(1 << 18)
+)
+
+type NotificationLogDetail struct {
+	// The name of the organization the notification belongs to.
+	OrganizationName string `json:"organizationName" url:"organizationName"`
+	// The name of the paypoint the notification is related to. Empty for organization-level notifications.
+	PaypointName string `json:"paypointName" url:"paypointName"`
+	// The identifier for the delivery request.
+	RequestId string `json:"requestId" url:"requestId"`
+	// The unique identifier for the notification.
+	Id string `json:"id" url:"id"`
+	// The ID of the organization the notification belongs to.
+	OrgId *int64 `json:"orgId,omitempty" url:"orgId,omitempty"`
+	// The ID of the paypoint the notification is related to. Null for organization-level notifications.
+	PaypointId *int64 `json:"paypointId,omitempty" url:"paypointId,omitempty"`
+	// The event that triggered the notification, such as `approvedpayment`.
+	NotificationEvent *string `json:"notificationEvent,omitempty" url:"notificationEvent,omitempty"`
+	// The target the notification was delivered to, such as a webhook URL, email address, or phone number.
+	Target *string `json:"target,omitempty" url:"target,omitempty"`
+	// The HTTP status code the target returned, such as `200`. Returns `0` when the target sent no response.
+	ResponseStatusCode int `json:"responseStatusCode" url:"responseStatusCode"`
+	// The delivery status message, such as `OK` when the notification succeeded, `Dropped` when it failed, or `No response received from server.` when the target sent no response.
+	ResponseStatus string `json:"responseStatus" url:"responseStatus"`
+	// Indicates whether the notification was delivered successfully.
+	Success bool `json:"success" url:"success"`
+	// The body of the notification.
+	JobData *string `json:"jobData,omitempty" url:"jobData,omitempty"`
+	// The date and time when the notification was created.
+	CreatedDate time.Time `json:"createdDate" url:"createdDate"`
+	// The date and time when the notification was delivered successfully. Null if it hasn't succeeded.
+	SuccessDate *time.Time `json:"successDate,omitempty" url:"successDate,omitempty"`
+	// The date and time when the notification last failed. Null if it hasn't failed.
+	LastFailedDate *time.Time `json:"lastFailedDate,omitempty" url:"lastFailedDate,omitempty"`
+	// Indicates whether the notification is currently being sent.
+	IsInProgress bool `json:"isInProgress" url:"isInProgress"`
+	// The custom headers Payabli sent with the notification, if any.
+	WebHeaders []*StringStringKeyValuePair `json:"webHeaders,omitempty" url:"webHeaders,omitempty"`
+	// The headers the target returned. Null when the target sent no response.
+	ResponseHeaders []*KeyValueArray `json:"responseHeaders,omitempty" url:"responseHeaders,omitempty"`
+	// The body the target returned. Empty when the target sent no response.
+	ResponseContent string `json:"responseContent" url:"responseContent"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (n *NotificationLogDetail) GetOrganizationName() string {
+	if n == nil {
+		return ""
+	}
+	return n.OrganizationName
+}
+
+func (n *NotificationLogDetail) GetPaypointName() string {
+	if n == nil {
+		return ""
+	}
+	return n.PaypointName
+}
+
+func (n *NotificationLogDetail) GetRequestId() string {
+	if n == nil {
+		return ""
+	}
+	return n.RequestId
 }
 
 func (n *NotificationLogDetail) GetId() string {
@@ -611,9 +1142,16 @@ func (n *NotificationLogDetail) GetTarget() *string {
 	return n.Target
 }
 
-func (n *NotificationLogDetail) GetResponseStatus() *string {
+func (n *NotificationLogDetail) GetResponseStatusCode() int {
 	if n == nil {
-		return nil
+		return 0
+	}
+	return n.ResponseStatusCode
+}
+
+func (n *NotificationLogDetail) GetResponseStatus() string {
+	if n == nil {
+		return ""
 	}
 	return n.ResponseStatus
 }
@@ -674,9 +1212,9 @@ func (n *NotificationLogDetail) GetResponseHeaders() []*KeyValueArray {
 	return n.ResponseHeaders
 }
 
-func (n *NotificationLogDetail) GetResponseContent() *string {
+func (n *NotificationLogDetail) GetResponseContent() string {
 	if n == nil {
-		return nil
+		return ""
 	}
 	return n.ResponseContent
 }
@@ -693,6 +1231,27 @@ func (n *NotificationLogDetail) require(field *big.Int) {
 		n.explicitFields = big.NewInt(0)
 	}
 	n.explicitFields.Or(n.explicitFields, field)
+}
+
+// SetOrganizationName sets the OrganizationName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogDetail) SetOrganizationName(organizationName string) {
+	n.OrganizationName = organizationName
+	n.require(notificationLogDetailFieldOrganizationName)
+}
+
+// SetPaypointName sets the PaypointName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogDetail) SetPaypointName(paypointName string) {
+	n.PaypointName = paypointName
+	n.require(notificationLogDetailFieldPaypointName)
+}
+
+// SetRequestId sets the RequestId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogDetail) SetRequestId(requestId string) {
+	n.RequestId = requestId
+	n.require(notificationLogDetailFieldRequestId)
 }
 
 // SetId sets the Id field and marks it as non-optional;
@@ -730,9 +1289,16 @@ func (n *NotificationLogDetail) SetTarget(target *string) {
 	n.require(notificationLogDetailFieldTarget)
 }
 
+// SetResponseStatusCode sets the ResponseStatusCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationLogDetail) SetResponseStatusCode(responseStatusCode int) {
+	n.ResponseStatusCode = responseStatusCode
+	n.require(notificationLogDetailFieldResponseStatusCode)
+}
+
 // SetResponseStatus sets the ResponseStatus field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotificationLogDetail) SetResponseStatus(responseStatus *string) {
+func (n *NotificationLogDetail) SetResponseStatus(responseStatus string) {
 	n.ResponseStatus = responseStatus
 	n.require(notificationLogDetailFieldResponseStatus)
 }
@@ -795,7 +1361,7 @@ func (n *NotificationLogDetail) SetResponseHeaders(responseHeaders []*KeyValueAr
 
 // SetResponseContent sets the ResponseContent field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (n *NotificationLogDetail) SetResponseContent(responseContent *string) {
+func (n *NotificationLogDetail) SetResponseContent(responseContent string) {
 	n.ResponseContent = responseContent
 	n.require(notificationLogDetailFieldResponseContent)
 }
@@ -844,6 +1410,91 @@ func (n *NotificationLogDetail) MarshalJSON() ([]byte, error) {
 }
 
 func (n *NotificationLogDetail) String() string {
+	if n == nil {
+		return "<nil>"
+	}
+	if len(n.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(n.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(n); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", n)
+}
+
+var (
+	notificationRetryResponseFieldMessage = big.NewInt(1 << 0)
+)
+
+type NotificationRetryResponse struct {
+	// A message describing the result of the retry.
+	Message string `json:"message" url:"message"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (n *NotificationRetryResponse) GetMessage() string {
+	if n == nil {
+		return ""
+	}
+	return n.Message
+}
+
+func (n *NotificationRetryResponse) GetExtraProperties() map[string]interface{} {
+	if n == nil {
+		return nil
+	}
+	return n.extraProperties
+}
+
+func (n *NotificationRetryResponse) require(field *big.Int) {
+	if n.explicitFields == nil {
+		n.explicitFields = big.NewInt(0)
+	}
+	n.explicitFields.Or(n.explicitFields, field)
+}
+
+// SetMessage sets the Message field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NotificationRetryResponse) SetMessage(message string) {
+	n.Message = message
+	n.require(notificationRetryResponseFieldMessage)
+}
+
+func (n *NotificationRetryResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler NotificationRetryResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*n = NotificationRetryResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *n)
+	if err != nil {
+		return err
+	}
+	n.extraProperties = extraProperties
+	n.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (n *NotificationRetryResponse) MarshalJSON() ([]byte, error) {
+	type embed NotificationRetryResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*n),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, n.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (n *NotificationRetryResponse) String() string {
 	if n == nil {
 		return "<nil>"
 	}

@@ -728,26 +728,37 @@ func (o *OcrResponseData) String() string {
 var (
 	ocrResultDataFieldBillNumber       = big.NewInt(1 << 0)
 	ocrResultDataFieldNetAmount        = big.NewInt(1 << 1)
-	ocrResultDataFieldBillDate         = big.NewInt(1 << 2)
-	ocrResultDataFieldDueDate          = big.NewInt(1 << 3)
-	ocrResultDataFieldComments         = big.NewInt(1 << 4)
-	ocrResultDataFieldBillItems        = big.NewInt(1 << 5)
-	ocrResultDataFieldMode             = big.NewInt(1 << 6)
-	ocrResultDataFieldAccountingField1 = big.NewInt(1 << 7)
-	ocrResultDataFieldAccountingField2 = big.NewInt(1 << 8)
-	ocrResultDataFieldAdditionalData   = big.NewInt(1 << 9)
-	ocrResultDataFieldVendor           = big.NewInt(1 << 10)
-	ocrResultDataFieldEndDate          = big.NewInt(1 << 11)
-	ocrResultDataFieldFrequency        = big.NewInt(1 << 12)
-	ocrResultDataFieldTerms            = big.NewInt(1 << 13)
-	ocrResultDataFieldStatus           = big.NewInt(1 << 14)
-	ocrResultDataFieldLotNumber        = big.NewInt(1 << 15)
-	ocrResultDataFieldAttachments      = big.NewInt(1 << 16)
+	ocrResultDataFieldDiscount         = big.NewInt(1 << 2)
+	ocrResultDataFieldTotalAmount      = big.NewInt(1 << 3)
+	ocrResultDataFieldBillDate         = big.NewInt(1 << 4)
+	ocrResultDataFieldDueDate          = big.NewInt(1 << 5)
+	ocrResultDataFieldComments         = big.NewInt(1 << 6)
+	ocrResultDataFieldBillItems        = big.NewInt(1 << 7)
+	ocrResultDataFieldMode             = big.NewInt(1 << 8)
+	ocrResultDataFieldAccountingField1 = big.NewInt(1 << 9)
+	ocrResultDataFieldAccountingField2 = big.NewInt(1 << 10)
+	ocrResultDataFieldAdditionalData   = big.NewInt(1 << 11)
+	ocrResultDataFieldVendor           = big.NewInt(1 << 12)
+	ocrResultDataFieldEndDate          = big.NewInt(1 << 13)
+	ocrResultDataFieldFrequency        = big.NewInt(1 << 14)
+	ocrResultDataFieldTerms            = big.NewInt(1 << 15)
+	ocrResultDataFieldStatus           = big.NewInt(1 << 16)
+	ocrResultDataFieldLotNumber        = big.NewInt(1 << 17)
+	ocrResultDataFieldAttachments      = big.NewInt(1 << 18)
 )
 
 type OcrResultData struct {
-	BillNumber       *string                    `json:"billNumber,omitempty" url:"billNumber,omitempty"`
-	NetAmount        *float64                   `json:"netAmount,omitempty" url:"netAmount,omitempty"`
+	BillNumber *string `json:"billNumber,omitempty" url:"billNumber,omitempty"`
+	// Subtotal of the document's line items, before tax.
+	//
+	// This isn't the amount due. When you create a bill from this result,
+	// set the bill's `netAmount` from `totalAmount`.
+	NetAmount *float64 `json:"netAmount,omitempty" url:"netAmount,omitempty"`
+	// Discount on the document. This is often `null` even when the
+	// document shows a discount. `totalAmount` already reflects any discount.
+	Discount *float64 `json:"discount,omitempty" url:"discount,omitempty"`
+	// Total amount due on the document, after any discount and including tax.
+	TotalAmount      *float64                   `json:"totalAmount,omitempty" url:"totalAmount,omitempty"`
 	BillDate         *time.Time                 `json:"billDate,omitempty" url:"billDate,omitempty"`
 	DueDate          *time.Time                 `json:"dueDate,omitempty" url:"dueDate,omitempty"`
 	Comments         *string                    `json:"comments,omitempty" url:"comments,omitempty"`
@@ -783,6 +794,20 @@ func (o *OcrResultData) GetNetAmount() *float64 {
 		return nil
 	}
 	return o.NetAmount
+}
+
+func (o *OcrResultData) GetDiscount() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Discount
+}
+
+func (o *OcrResultData) GetTotalAmount() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.TotalAmount
 }
 
 func (o *OcrResultData) GetBillDate() *time.Time {
@@ -916,6 +941,20 @@ func (o *OcrResultData) SetBillNumber(billNumber *string) {
 func (o *OcrResultData) SetNetAmount(netAmount *float64) {
 	o.NetAmount = netAmount
 	o.require(ocrResultDataFieldNetAmount)
+}
+
+// SetDiscount sets the Discount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrResultData) SetDiscount(discount *float64) {
+	o.Discount = discount
+	o.require(ocrResultDataFieldDiscount)
+}
+
+// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OcrResultData) SetTotalAmount(totalAmount *float64) {
+	o.TotalAmount = totalAmount
+	o.require(ocrResultDataFieldTotalAmount)
 }
 
 // SetBillDate sets the BillDate field and marks it as non-optional;

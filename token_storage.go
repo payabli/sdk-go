@@ -175,15 +175,18 @@ func (u *UpdateMethodRequest) MarshalJSON() ([]byte, error) {
 }
 
 var (
-	addMethodResponseFieldIsSuccess    = big.NewInt(1 << 0)
-	addMethodResponseFieldResponseText = big.NewInt(1 << 1)
-	addMethodResponseFieldResponseData = big.NewInt(1 << 2)
+	addMethodResponseFieldIsSuccess      = big.NewInt(1 << 0)
+	addMethodResponseFieldResponseText   = big.NewInt(1 << 1)
+	addMethodResponseFieldPageIdentifier = big.NewInt(1 << 2)
+	addMethodResponseFieldResponseData   = big.NewInt(1 << 3)
 )
 
 type AddMethodResponse struct {
-	IsSuccess    *IsSuccess                     `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
-	ResponseText ResponseText                   `json:"responseText" url:"responseText"`
-	ResponseData *AddMethodResponseResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
+	IsSuccess    *IsSuccess   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	ResponseText ResponseText `json:"responseText" url:"responseText"`
+	// Returned only when the request succeeds. Not returned when the request is declined, or when you convert a temporary token to a permanent token.
+	PageIdentifier *PageIdentifier                `json:"pageIdentifier,omitempty" url:"pageIdentifier,omitempty"`
+	ResponseData   *AddMethodResponseResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -204,6 +207,13 @@ func (a *AddMethodResponse) GetResponseText() ResponseText {
 		return ""
 	}
 	return a.ResponseText
+}
+
+func (a *AddMethodResponse) GetPageIdentifier() *PageIdentifier {
+	if a == nil {
+		return nil
+	}
+	return a.PageIdentifier
 }
 
 func (a *AddMethodResponse) GetResponseData() *AddMethodResponseResponseData {
@@ -239,6 +249,13 @@ func (a *AddMethodResponse) SetIsSuccess(isSuccess *IsSuccess) {
 func (a *AddMethodResponse) SetResponseText(responseText ResponseText) {
 	a.ResponseText = responseText
 	a.require(addMethodResponseFieldResponseText)
+}
+
+// SetPageIdentifier sets the PageIdentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddMethodResponse) SetPageIdentifier(pageIdentifier *PageIdentifier) {
+	a.PageIdentifier = pageIdentifier
+	a.require(addMethodResponseFieldPageIdentifier)
 }
 
 // SetResponseData sets the ResponseData field and marks it as non-optional;
@@ -295,7 +312,11 @@ var (
 	addMethodResponseResponseDataFieldResultCode        = big.NewInt(1 << 1)
 	addMethodResponseResponseDataFieldResultText        = big.NewInt(1 << 2)
 	addMethodResponseResponseDataFieldCustomerId        = big.NewInt(1 << 3)
-	addMethodResponseResponseDataFieldMethodReferenceId = big.NewInt(1 << 4)
+	addMethodResponseResponseDataFieldAuthCode          = big.NewInt(1 << 4)
+	addMethodResponseResponseDataFieldAvsResponseText   = big.NewInt(1 << 5)
+	addMethodResponseResponseDataFieldCvvResponseText   = big.NewInt(1 << 6)
+	addMethodResponseResponseDataFieldVendorId          = big.NewInt(1 << 7)
+	addMethodResponseResponseDataFieldMethodReferenceId = big.NewInt(1 << 8)
 )
 
 type AddMethodResponseResponseData struct {
@@ -306,7 +327,19 @@ type AddMethodResponseResponseData struct {
 	// Internal unique ID of customer owner of the stored method.
 	//
 	// Returns `0` if the method wasn't assigned to an existing customer or no customer was created.
-	CustomerId        *CustomerId        `json:"customerId,omitempty" url:"customerId,omitempty"`
+	CustomerId *CustomerId `json:"customerId,omitempty" url:"customerId,omitempty"`
+	// Only returned when the request is declined.
+	AuthCode *Authcode `json:"authCode,omitempty" url:"authCode,omitempty"`
+	// Only returned when the request is declined.
+	AvsResponseText *AvsResponseText `json:"avsResponseText,omitempty" url:"avsResponseText,omitempty"`
+	// Only returned when the request is declined.
+	CvvResponseText *CvvResponseText `json:"cvvResponseText,omitempty" url:"cvvResponseText,omitempty"`
+	// Only returned when the request is declined.
+	VendorId *Vendorid `json:"vendorId,omitempty" url:"vendorId,omitempty"`
+	// Stored method identifier in Payabli platform. Returns the same value as
+	// `referenceId`. This field isn't returned when you convert a temporary
+	// token to a permanent token, so use `referenceId` to get the stored
+	// method ID.
 	MethodReferenceId *MethodReferenceId `json:"methodReferenceId,omitempty" url:"methodReferenceId,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -342,6 +375,34 @@ func (a *AddMethodResponseResponseData) GetCustomerId() *CustomerId {
 		return nil
 	}
 	return a.CustomerId
+}
+
+func (a *AddMethodResponseResponseData) GetAuthCode() *Authcode {
+	if a == nil {
+		return nil
+	}
+	return a.AuthCode
+}
+
+func (a *AddMethodResponseResponseData) GetAvsResponseText() *AvsResponseText {
+	if a == nil {
+		return nil
+	}
+	return a.AvsResponseText
+}
+
+func (a *AddMethodResponseResponseData) GetCvvResponseText() *CvvResponseText {
+	if a == nil {
+		return nil
+	}
+	return a.CvvResponseText
+}
+
+func (a *AddMethodResponseResponseData) GetVendorId() *Vendorid {
+	if a == nil {
+		return nil
+	}
+	return a.VendorId
 }
 
 func (a *AddMethodResponseResponseData) GetMethodReferenceId() *MethodReferenceId {
@@ -391,6 +452,34 @@ func (a *AddMethodResponseResponseData) SetResultText(resultText *Resulttext) {
 func (a *AddMethodResponseResponseData) SetCustomerId(customerId *CustomerId) {
 	a.CustomerId = customerId
 	a.require(addMethodResponseResponseDataFieldCustomerId)
+}
+
+// SetAuthCode sets the AuthCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddMethodResponseResponseData) SetAuthCode(authCode *Authcode) {
+	a.AuthCode = authCode
+	a.require(addMethodResponseResponseDataFieldAuthCode)
+}
+
+// SetAvsResponseText sets the AvsResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddMethodResponseResponseData) SetAvsResponseText(avsResponseText *AvsResponseText) {
+	a.AvsResponseText = avsResponseText
+	a.require(addMethodResponseResponseDataFieldAvsResponseText)
+}
+
+// SetCvvResponseText sets the CvvResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddMethodResponseResponseData) SetCvvResponseText(cvvResponseText *CvvResponseText) {
+	a.CvvResponseText = cvvResponseText
+	a.require(addMethodResponseResponseDataFieldCvvResponseText)
+}
+
+// SetVendorId sets the VendorId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AddMethodResponseResponseData) SetVendorId(vendorId *Vendorid) {
+	a.VendorId = vendorId
+	a.require(addMethodResponseResponseDataFieldVendorId)
 }
 
 // SetMethodReferenceId sets the MethodReferenceId field and marks it as non-optional;
@@ -683,6 +772,7 @@ var (
 	getMethodResponseResponseDataFieldMethodType     = big.NewInt(1 << 15)
 	getMethodResponseResponseDataFieldPostalCode     = big.NewInt(1 << 16)
 	getMethodResponseResponseDataFieldVendors        = big.NewInt(1 << 17)
+	getMethodResponseResponseDataFieldWalletType     = big.NewInt(1 << 18)
 )
 
 type GetMethodResponseResponseData struct {
@@ -715,6 +805,8 @@ type GetMethodResponseResponseData struct {
 	// The payment method postal code
 	PostalCode *string                                     `json:"postalCode,omitempty" url:"postalCode,omitempty"`
 	Vendors    []*GetMethodResponseResponseDataVendorsItem `json:"vendors,omitempty" url:"vendors,omitempty"`
+	// Digital wallet type if applicable.
+	WalletType *string `json:"walletType,omitempty" url:"walletType,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -847,6 +939,13 @@ func (g *GetMethodResponseResponseData) GetVendors() []*GetMethodResponseRespons
 		return nil
 	}
 	return g.Vendors
+}
+
+func (g *GetMethodResponseResponseData) GetWalletType() *string {
+	if g == nil {
+		return nil
+	}
+	return g.WalletType
 }
 
 func (g *GetMethodResponseResponseData) GetExtraProperties() map[string]interface{} {
@@ -989,6 +1088,13 @@ func (g *GetMethodResponseResponseData) SetVendors(vendors []*GetMethodResponseR
 	g.require(getMethodResponseResponseDataFieldVendors)
 }
 
+// SetWalletType sets the WalletType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseData) SetWalletType(walletType *string) {
+	g.WalletType = walletType
+	g.require(getMethodResponseResponseDataFieldWalletType)
+}
+
 func (g *GetMethodResponseResponseData) UnmarshalJSON(data []byte) error {
 	type embed GetMethodResponseResponseData
 	var unmarshaler = struct {
@@ -1043,90 +1149,92 @@ func (g *GetMethodResponseResponseData) String() string {
 	return fmt.Sprintf("%#v", g)
 }
 
+// The customer record that owns the stored payment method.
 var (
-	getMethodResponseResponseDataCustomersItemFieldAdditionalData     = big.NewInt(1 << 0)
-	getMethodResponseResponseDataCustomersItemFieldBillingAddress1    = big.NewInt(1 << 1)
-	getMethodResponseResponseDataCustomersItemFieldBillingAddress2    = big.NewInt(1 << 2)
-	getMethodResponseResponseDataCustomersItemFieldBillingCity        = big.NewInt(1 << 3)
-	getMethodResponseResponseDataCustomersItemFieldBillingCountry     = big.NewInt(1 << 4)
-	getMethodResponseResponseDataCustomersItemFieldBillingEmail       = big.NewInt(1 << 5)
-	getMethodResponseResponseDataCustomersItemFieldBillingPhone       = big.NewInt(1 << 6)
-	getMethodResponseResponseDataCustomersItemFieldBillingState       = big.NewInt(1 << 7)
-	getMethodResponseResponseDataCustomersItemFieldBillingZip         = big.NewInt(1 << 8)
-	getMethodResponseResponseDataCustomersItemFieldCompany            = big.NewInt(1 << 9)
+	getMethodResponseResponseDataCustomersItemFieldAdditionalFields   = big.NewInt(1 << 0)
+	getMethodResponseResponseDataCustomersItemFieldAddress            = big.NewInt(1 << 1)
+	getMethodResponseResponseDataCustomersItemFieldAddress1           = big.NewInt(1 << 2)
+	getMethodResponseResponseDataCustomersItemFieldBalance            = big.NewInt(1 << 3)
+	getMethodResponseResponseDataCustomersItemFieldCity               = big.NewInt(1 << 4)
+	getMethodResponseResponseDataCustomersItemFieldCompany            = big.NewInt(1 << 5)
+	getMethodResponseResponseDataCustomersItemFieldCountry            = big.NewInt(1 << 6)
+	getMethodResponseResponseDataCustomersItemFieldCreated            = big.NewInt(1 << 7)
+	getMethodResponseResponseDataCustomersItemFieldCustomerConsent    = big.NewInt(1 << 8)
+	getMethodResponseResponseDataCustomersItemFieldCustomerEvents     = big.NewInt(1 << 9)
 	getMethodResponseResponseDataCustomersItemFieldCustomerId         = big.NewInt(1 << 10)
 	getMethodResponseResponseDataCustomersItemFieldCustomerNumber     = big.NewInt(1 << 11)
-	getMethodResponseResponseDataCustomersItemFieldFirstName          = big.NewInt(1 << 12)
-	getMethodResponseResponseDataCustomersItemFieldIdentifierFields   = big.NewInt(1 << 13)
-	getMethodResponseResponseDataCustomersItemFieldLastName           = big.NewInt(1 << 14)
-	getMethodResponseResponseDataCustomersItemFieldShippingAddress1   = big.NewInt(1 << 15)
-	getMethodResponseResponseDataCustomersItemFieldShippingAddress2   = big.NewInt(1 << 16)
-	getMethodResponseResponseDataCustomersItemFieldShippingCity       = big.NewInt(1 << 17)
-	getMethodResponseResponseDataCustomersItemFieldShippingCountry    = big.NewInt(1 << 18)
-	getMethodResponseResponseDataCustomersItemFieldShippingState      = big.NewInt(1 << 19)
-	getMethodResponseResponseDataCustomersItemFieldShippingZip        = big.NewInt(1 << 20)
-	getMethodResponseResponseDataCustomersItemFieldBalance            = big.NewInt(1 << 21)
-	getMethodResponseResponseDataCustomersItemFieldCreated            = big.NewInt(1 << 22)
-	getMethodResponseResponseDataCustomersItemFieldCustomerConsent    = big.NewInt(1 << 23)
-	getMethodResponseResponseDataCustomersItemFieldCustomerStatus     = big.NewInt(1 << 24)
-	getMethodResponseResponseDataCustomersItemFieldCustomerSummary    = big.NewInt(1 << 25)
-	getMethodResponseResponseDataCustomersItemFieldCustomerUsername   = big.NewInt(1 << 26)
-	getMethodResponseResponseDataCustomersItemFieldExternalPaypointId = big.NewInt(1 << 27)
-	getMethodResponseResponseDataCustomersItemFieldLastUpdated        = big.NewInt(1 << 28)
-	getMethodResponseResponseDataCustomersItemFieldMfa                = big.NewInt(1 << 29)
-	getMethodResponseResponseDataCustomersItemFieldMfaMode            = big.NewInt(1 << 30)
-	getMethodResponseResponseDataCustomersItemFieldPageindentifier    = big.NewInt(1 << 31)
-	getMethodResponseResponseDataCustomersItemFieldParentOrgId        = big.NewInt(1 << 32)
-	getMethodResponseResponseDataCustomersItemFieldParentOrgName      = big.NewInt(1 << 33)
-	getMethodResponseResponseDataCustomersItemFieldPaypointDbaname    = big.NewInt(1 << 34)
-	getMethodResponseResponseDataCustomersItemFieldPaypointEntryname  = big.NewInt(1 << 35)
-	getMethodResponseResponseDataCustomersItemFieldPaypointLegalname  = big.NewInt(1 << 36)
+	getMethodResponseResponseDataCustomersItemFieldCustomerPortal     = big.NewInt(1 << 12)
+	getMethodResponseResponseDataCustomersItemFieldCustomerStatus     = big.NewInt(1 << 13)
+	getMethodResponseResponseDataCustomersItemFieldCustomerSummary    = big.NewInt(1 << 14)
+	getMethodResponseResponseDataCustomersItemFieldCustomerUsername   = big.NewInt(1 << 15)
+	getMethodResponseResponseDataCustomersItemFieldEmail              = big.NewInt(1 << 16)
+	getMethodResponseResponseDataCustomersItemFieldExternalPaypointId = big.NewInt(1 << 17)
+	getMethodResponseResponseDataCustomersItemFieldFirstname          = big.NewInt(1 << 18)
+	getMethodResponseResponseDataCustomersItemFieldIdentifierFields   = big.NewInt(1 << 19)
+	getMethodResponseResponseDataCustomersItemFieldLastname           = big.NewInt(1 << 20)
+	getMethodResponseResponseDataCustomersItemFieldLastUpdated        = big.NewInt(1 << 21)
+	getMethodResponseResponseDataCustomersItemFieldMfa                = big.NewInt(1 << 22)
+	getMethodResponseResponseDataCustomersItemFieldMfaMode            = big.NewInt(1 << 23)
+	getMethodResponseResponseDataCustomersItemFieldPageindentifier    = big.NewInt(1 << 24)
+	getMethodResponseResponseDataCustomersItemFieldParentOrgId        = big.NewInt(1 << 25)
+	getMethodResponseResponseDataCustomersItemFieldParentOrgName      = big.NewInt(1 << 26)
+	getMethodResponseResponseDataCustomersItemFieldPaypointDbaname    = big.NewInt(1 << 27)
+	getMethodResponseResponseDataCustomersItemFieldPaypointEntryname  = big.NewInt(1 << 28)
+	getMethodResponseResponseDataCustomersItemFieldPaypointLegalname  = big.NewInt(1 << 29)
+	getMethodResponseResponseDataCustomersItemFieldPhone              = big.NewInt(1 << 30)
+	getMethodResponseResponseDataCustomersItemFieldShippingAddress    = big.NewInt(1 << 31)
+	getMethodResponseResponseDataCustomersItemFieldShippingAddress1   = big.NewInt(1 << 32)
+	getMethodResponseResponseDataCustomersItemFieldShippingCity       = big.NewInt(1 << 33)
+	getMethodResponseResponseDataCustomersItemFieldShippingCountry    = big.NewInt(1 << 34)
+	getMethodResponseResponseDataCustomersItemFieldShippingState      = big.NewInt(1 << 35)
+	getMethodResponseResponseDataCustomersItemFieldShippingZip        = big.NewInt(1 << 36)
 	getMethodResponseResponseDataCustomersItemFieldSnData             = big.NewInt(1 << 37)
 	getMethodResponseResponseDataCustomersItemFieldSnIdentifier       = big.NewInt(1 << 38)
 	getMethodResponseResponseDataCustomersItemFieldSnProvider         = big.NewInt(1 << 39)
-	getMethodResponseResponseDataCustomersItemFieldStoredMethods      = big.NewInt(1 << 40)
-	getMethodResponseResponseDataCustomersItemFieldSubscriptions      = big.NewInt(1 << 41)
-	getMethodResponseResponseDataCustomersItemFieldTimeZone           = big.NewInt(1 << 42)
+	getMethodResponseResponseDataCustomersItemFieldState              = big.NewInt(1 << 40)
+	getMethodResponseResponseDataCustomersItemFieldStoredMethods      = big.NewInt(1 << 41)
+	getMethodResponseResponseDataCustomersItemFieldSubscriptions      = big.NewInt(1 << 42)
+	getMethodResponseResponseDataCustomersItemFieldTimeZone           = big.NewInt(1 << 43)
+	getMethodResponseResponseDataCustomersItemFieldZip                = big.NewInt(1 << 44)
 )
 
 type GetMethodResponseResponseDataCustomersItem struct {
-	AdditionalData  *AdditionalData              `json:"additionalData,omitempty" url:"additionalData,omitempty"`
-	BillingAddress1 *BillingAddressNullable      `json:"billingAddress1,omitempty" url:"billingAddress1,omitempty"`
-	BillingAddress2 *BillingAddressAddtlNullable `json:"billingAddress2,omitempty" url:"billingAddress2,omitempty"`
-	BillingCity     *BillingCityNullable         `json:"billingCity,omitempty" url:"billingCity,omitempty"`
-	BillingCountry  *BillingCountryNullable      `json:"billingCountry,omitempty" url:"billingCountry,omitempty"`
-	BillingEmail    *Email                       `json:"billingEmail,omitempty" url:"billingEmail,omitempty"`
-	BillingPhone    *PhoneNumber                 `json:"billingPhone,omitempty" url:"billingPhone,omitempty"`
-	BillingState    *BillingStateNullable        `json:"billingState,omitempty" url:"billingState,omitempty"`
-	// Customer's billing ZIP code. For Pay In functions, this field supports 5-digit and 9-digit ZIP codes and alphanumeric Canadian postal codes. For example: "37615-1234" or "37615".
-	BillingZip *BillingZip `json:"billingZip,omitempty" url:"billingZip,omitempty"`
-	// Customer's company name.
-	Company        *string                 `json:"company,omitempty" url:"company,omitempty"`
-	CustomerId     *CustomerId             `json:"customerId,omitempty" url:"customerId,omitempty"`
-	CustomerNumber *CustomerNumberNullable `json:"customerNumber,omitempty" url:"customerNumber,omitempty"`
-	// Customer/Payor first name.
-	FirstName        *string           `json:"firstName,omitempty" url:"firstName,omitempty"`
-	IdentifierFields *Identifierfields `json:"identifierFields,omitempty" url:"identifierFields,omitempty"`
-	// Customer/Payor last name.
-	LastName         *string                    `json:"lastName,omitempty" url:"lastName,omitempty"`
-	ShippingAddress1 *Shippingaddress           `json:"shippingAddress1,omitempty" url:"shippingAddress1,omitempty"`
-	ShippingAddress2 *Shippingaddressadditional `json:"shippingAddress2,omitempty" url:"shippingAddress2,omitempty"`
-	ShippingCity     *Shippingcity              `json:"shippingCity,omitempty" url:"shippingCity,omitempty"`
-	ShippingCountry  *Shippingcountry           `json:"shippingCountry,omitempty" url:"shippingCountry,omitempty"`
-	ShippingState    *Shippingstate             `json:"shippingState,omitempty" url:"shippingState,omitempty"`
-	ShippingZip      *Shippingzip               `json:"shippingZip,omitempty" url:"shippingZip,omitempty"`
+	// List of additional custom fields in format key:value.
+	AdditionalFields map[string]string `json:"additionalFields,omitempty" url:"additionalFields,omitempty"`
+	// Customer address.
+	Address *string `json:"address,omitempty" url:"address,omitempty"`
+	// Additional line for customer address.
+	Address1 *string `json:"address1,omitempty" url:"address1,omitempty"`
 	// Customer's current balance
 	Balance *float64 `json:"balance,omitempty" url:"balance,omitempty"`
+	// Customer city.
+	City *string `json:"city,omitempty" url:"city,omitempty"`
+	// Company name.
+	Company *string `json:"company,omitempty" url:"company,omitempty"`
+	// Customer country.
+	Country *string `json:"country,omitempty" url:"country,omitempty"`
 	// Creation timestamp
 	Created *time.Time `json:"created,omitempty" url:"created,omitempty"`
 	// Customer consent information
 	CustomerConsent map[string]any `json:"customerConsent,omitempty" url:"customerConsent,omitempty"`
+	// Events recorded for the customer.
+	CustomerEvents []any                   `json:"customerEvents,omitempty" url:"customerEvents,omitempty"`
+	CustomerId     *CustomerId             `json:"customerId,omitempty" url:"customerId,omitempty"`
+	CustomerNumber *CustomerNumberNullable `json:"customerNumber,omitempty" url:"customerNumber,omitempty"`
+	CustomerPortal *string                 `json:"customerPortal,omitempty" url:"customerPortal,omitempty"`
 	// Status code for the customer
 	CustomerStatus  *int                   `json:"customerStatus,omitempty" url:"customerStatus,omitempty"`
 	CustomerSummary *CustomerSummaryRecord `json:"customerSummary,omitempty" url:"customerSummary,omitempty"`
 	// Username of the customer
-	CustomerUsername   *string             `json:"customerUsername,omitempty" url:"customerUsername,omitempty"`
+	CustomerUsername *string `json:"customerUsername,omitempty" url:"customerUsername,omitempty"`
+	// Customer email address.
+	Email              *Email              `json:"email,omitempty" url:"email,omitempty"`
 	ExternalPaypointId *ExternalPaypointId `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	// Customer first name.
+	Firstname        *string           `json:"firstname,omitempty" url:"firstname,omitempty"`
+	IdentifierFields *Identifierfields `json:"identifierFields,omitempty" url:"identifierFields,omitempty"`
+	// Customer last name.
+	Lastname *string `json:"lastname,omitempty" url:"lastname,omitempty"`
 	// Last update timestamp
 	LastUpdated *time.Time `json:"lastUpdated,omitempty" url:"lastUpdated,omitempty"`
 	// Multi-factor authentication status
@@ -1141,18 +1249,30 @@ type GetMethodResponseResponseDataCustomersItem struct {
 	// The paypoint entryname the customer is associated with
 	PaypointEntryname *string    `json:"paypointEntryname,omitempty" url:"paypointEntryname,omitempty"`
 	PaypointLegalname *Legalname `json:"paypointLegalname,omitempty" url:"paypointLegalname,omitempty"`
+	// Customer phone number.
+	Phone            *string                    `json:"phone,omitempty" url:"phone,omitempty"`
+	ShippingAddress  *Shippingaddress           `json:"shippingAddress,omitempty" url:"shippingAddress,omitempty"`
+	ShippingAddress1 *Shippingaddressadditional `json:"shippingAddress1,omitempty" url:"shippingAddress1,omitempty"`
+	ShippingCity     *Shippingcity              `json:"shippingCity,omitempty" url:"shippingCity,omitempty"`
+	ShippingCountry  *Shippingcountry           `json:"shippingCountry,omitempty" url:"shippingCountry,omitempty"`
+	ShippingState    *Shippingstate             `json:"shippingState,omitempty" url:"shippingState,omitempty"`
+	ShippingZip      *Shippingzip               `json:"shippingZip,omitempty" url:"shippingZip,omitempty"`
 	// Social network data
 	SnData map[string]any `json:"snData,omitempty" url:"snData,omitempty"`
 	// Social network identifier
 	SnIdentifier *string `json:"snIdentifier,omitempty" url:"snIdentifier,omitempty"`
 	// Social network provider
 	SnProvider *string `json:"snProvider,omitempty" url:"snProvider,omitempty"`
+	// Customer state.
+	State *string `json:"state,omitempty" url:"state,omitempty"`
 	// List of payment methods associated to the customer
 	StoredMethods []*MethodQueryRecords `json:"storedMethods,omitempty" url:"storedMethods,omitempty"`
 	// List of subscriptions associated to the customer
 	Subscriptions []*SubscriptionQueryRecords `json:"subscriptions,omitempty" url:"subscriptions,omitempty"`
 	// Customer's timezone
 	TimeZone *int `json:"timeZone,omitempty" url:"timeZone,omitempty"`
+	// Customer postal code.
+	Zip *string `json:"zip,omitempty" url:"zip,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1161,67 +1281,39 @@ type GetMethodResponseResponseDataCustomersItem struct {
 	rawJSON         json.RawMessage
 }
 
-func (g *GetMethodResponseResponseDataCustomersItem) GetAdditionalData() *AdditionalData {
+func (g *GetMethodResponseResponseDataCustomersItem) GetAdditionalFields() map[string]string {
 	if g == nil {
 		return nil
 	}
-	return g.AdditionalData
+	return g.AdditionalFields
 }
 
-func (g *GetMethodResponseResponseDataCustomersItem) GetBillingAddress1() *BillingAddressNullable {
+func (g *GetMethodResponseResponseDataCustomersItem) GetAddress() *string {
 	if g == nil {
 		return nil
 	}
-	return g.BillingAddress1
+	return g.Address
 }
 
-func (g *GetMethodResponseResponseDataCustomersItem) GetBillingAddress2() *BillingAddressAddtlNullable {
+func (g *GetMethodResponseResponseDataCustomersItem) GetAddress1() *string {
 	if g == nil {
 		return nil
 	}
-	return g.BillingAddress2
+	return g.Address1
 }
 
-func (g *GetMethodResponseResponseDataCustomersItem) GetBillingCity() *BillingCityNullable {
+func (g *GetMethodResponseResponseDataCustomersItem) GetBalance() *float64 {
 	if g == nil {
 		return nil
 	}
-	return g.BillingCity
+	return g.Balance
 }
 
-func (g *GetMethodResponseResponseDataCustomersItem) GetBillingCountry() *BillingCountryNullable {
+func (g *GetMethodResponseResponseDataCustomersItem) GetCity() *string {
 	if g == nil {
 		return nil
 	}
-	return g.BillingCountry
-}
-
-func (g *GetMethodResponseResponseDataCustomersItem) GetBillingEmail() *Email {
-	if g == nil {
-		return nil
-	}
-	return g.BillingEmail
-}
-
-func (g *GetMethodResponseResponseDataCustomersItem) GetBillingPhone() *PhoneNumber {
-	if g == nil {
-		return nil
-	}
-	return g.BillingPhone
-}
-
-func (g *GetMethodResponseResponseDataCustomersItem) GetBillingState() *BillingStateNullable {
-	if g == nil {
-		return nil
-	}
-	return g.BillingState
-}
-
-func (g *GetMethodResponseResponseDataCustomersItem) GetBillingZip() *BillingZip {
-	if g == nil {
-		return nil
-	}
-	return g.BillingZip
+	return g.City
 }
 
 func (g *GetMethodResponseResponseDataCustomersItem) GetCompany() *string {
@@ -1229,6 +1321,34 @@ func (g *GetMethodResponseResponseDataCustomersItem) GetCompany() *string {
 		return nil
 	}
 	return g.Company
+}
+
+func (g *GetMethodResponseResponseDataCustomersItem) GetCountry() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Country
+}
+
+func (g *GetMethodResponseResponseDataCustomersItem) GetCreated() *time.Time {
+	if g == nil {
+		return nil
+	}
+	return g.Created
+}
+
+func (g *GetMethodResponseResponseDataCustomersItem) GetCustomerConsent() map[string]any {
+	if g == nil {
+		return nil
+	}
+	return g.CustomerConsent
+}
+
+func (g *GetMethodResponseResponseDataCustomersItem) GetCustomerEvents() []any {
+	if g == nil {
+		return nil
+	}
+	return g.CustomerEvents
 }
 
 func (g *GetMethodResponseResponseDataCustomersItem) GetCustomerId() *CustomerId {
@@ -1245,88 +1365,11 @@ func (g *GetMethodResponseResponseDataCustomersItem) GetCustomerNumber() *Custom
 	return g.CustomerNumber
 }
 
-func (g *GetMethodResponseResponseDataCustomersItem) GetFirstName() *string {
+func (g *GetMethodResponseResponseDataCustomersItem) GetCustomerPortal() *string {
 	if g == nil {
 		return nil
 	}
-	return g.FirstName
-}
-
-func (g *GetMethodResponseResponseDataCustomersItem) GetIdentifierFields() *Identifierfields {
-	if g == nil {
-		return nil
-	}
-	return g.IdentifierFields
-}
-
-func (g *GetMethodResponseResponseDataCustomersItem) GetLastName() *string {
-	if g == nil {
-		return nil
-	}
-	return g.LastName
-}
-
-func (g *GetMethodResponseResponseDataCustomersItem) GetShippingAddress1() *Shippingaddress {
-	if g == nil {
-		return nil
-	}
-	return g.ShippingAddress1
-}
-
-func (g *GetMethodResponseResponseDataCustomersItem) GetShippingAddress2() *Shippingaddressadditional {
-	if g == nil {
-		return nil
-	}
-	return g.ShippingAddress2
-}
-
-func (g *GetMethodResponseResponseDataCustomersItem) GetShippingCity() *Shippingcity {
-	if g == nil {
-		return nil
-	}
-	return g.ShippingCity
-}
-
-func (g *GetMethodResponseResponseDataCustomersItem) GetShippingCountry() *Shippingcountry {
-	if g == nil {
-		return nil
-	}
-	return g.ShippingCountry
-}
-
-func (g *GetMethodResponseResponseDataCustomersItem) GetShippingState() *Shippingstate {
-	if g == nil {
-		return nil
-	}
-	return g.ShippingState
-}
-
-func (g *GetMethodResponseResponseDataCustomersItem) GetShippingZip() *Shippingzip {
-	if g == nil {
-		return nil
-	}
-	return g.ShippingZip
-}
-
-func (g *GetMethodResponseResponseDataCustomersItem) GetBalance() *float64 {
-	if g == nil {
-		return nil
-	}
-	return g.Balance
-}
-
-func (g *GetMethodResponseResponseDataCustomersItem) GetCreated() *time.Time {
-	if g == nil {
-		return nil
-	}
-	return g.Created
-}
-
-func (g *GetMethodResponseResponseDataCustomersItem) GetCustomerConsent() map[string]any {
-	if g == nil {
-		return nil
-	}
-	return g.CustomerConsent
+	return g.CustomerPortal
 }
 
 func (g *GetMethodResponseResponseDataCustomersItem) GetCustomerStatus() *int {
@@ -1350,11 +1393,39 @@ func (g *GetMethodResponseResponseDataCustomersItem) GetCustomerUsername() *stri
 	return g.CustomerUsername
 }
 
+func (g *GetMethodResponseResponseDataCustomersItem) GetEmail() *Email {
+	if g == nil {
+		return nil
+	}
+	return g.Email
+}
+
 func (g *GetMethodResponseResponseDataCustomersItem) GetExternalPaypointId() *ExternalPaypointId {
 	if g == nil {
 		return nil
 	}
 	return g.ExternalPaypointId
+}
+
+func (g *GetMethodResponseResponseDataCustomersItem) GetFirstname() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Firstname
+}
+
+func (g *GetMethodResponseResponseDataCustomersItem) GetIdentifierFields() *Identifierfields {
+	if g == nil {
+		return nil
+	}
+	return g.IdentifierFields
+}
+
+func (g *GetMethodResponseResponseDataCustomersItem) GetLastname() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Lastname
 }
 
 func (g *GetMethodResponseResponseDataCustomersItem) GetLastUpdated() *time.Time {
@@ -1420,6 +1491,55 @@ func (g *GetMethodResponseResponseDataCustomersItem) GetPaypointLegalname() *Leg
 	return g.PaypointLegalname
 }
 
+func (g *GetMethodResponseResponseDataCustomersItem) GetPhone() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Phone
+}
+
+func (g *GetMethodResponseResponseDataCustomersItem) GetShippingAddress() *Shippingaddress {
+	if g == nil {
+		return nil
+	}
+	return g.ShippingAddress
+}
+
+func (g *GetMethodResponseResponseDataCustomersItem) GetShippingAddress1() *Shippingaddressadditional {
+	if g == nil {
+		return nil
+	}
+	return g.ShippingAddress1
+}
+
+func (g *GetMethodResponseResponseDataCustomersItem) GetShippingCity() *Shippingcity {
+	if g == nil {
+		return nil
+	}
+	return g.ShippingCity
+}
+
+func (g *GetMethodResponseResponseDataCustomersItem) GetShippingCountry() *Shippingcountry {
+	if g == nil {
+		return nil
+	}
+	return g.ShippingCountry
+}
+
+func (g *GetMethodResponseResponseDataCustomersItem) GetShippingState() *Shippingstate {
+	if g == nil {
+		return nil
+	}
+	return g.ShippingState
+}
+
+func (g *GetMethodResponseResponseDataCustomersItem) GetShippingZip() *Shippingzip {
+	if g == nil {
+		return nil
+	}
+	return g.ShippingZip
+}
+
 func (g *GetMethodResponseResponseDataCustomersItem) GetSnData() map[string]any {
 	if g == nil {
 		return nil
@@ -1439,6 +1559,13 @@ func (g *GetMethodResponseResponseDataCustomersItem) GetSnProvider() *string {
 		return nil
 	}
 	return g.SnProvider
+}
+
+func (g *GetMethodResponseResponseDataCustomersItem) GetState() *string {
+	if g == nil {
+		return nil
+	}
+	return g.State
 }
 
 func (g *GetMethodResponseResponseDataCustomersItem) GetStoredMethods() []*MethodQueryRecords {
@@ -1462,6 +1589,13 @@ func (g *GetMethodResponseResponseDataCustomersItem) GetTimeZone() *int {
 	return g.TimeZone
 }
 
+func (g *GetMethodResponseResponseDataCustomersItem) GetZip() *string {
+	if g == nil {
+		return nil
+	}
+	return g.Zip
+}
+
 func (g *GetMethodResponseResponseDataCustomersItem) GetExtraProperties() map[string]interface{} {
 	if g == nil {
 		return nil
@@ -1476,67 +1610,39 @@ func (g *GetMethodResponseResponseDataCustomersItem) require(field *big.Int) {
 	g.explicitFields.Or(g.explicitFields, field)
 }
 
-// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// SetAdditionalFields sets the AdditionalFields field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMethodResponseResponseDataCustomersItem) SetAdditionalData(additionalData *AdditionalData) {
-	g.AdditionalData = additionalData
-	g.require(getMethodResponseResponseDataCustomersItemFieldAdditionalData)
+func (g *GetMethodResponseResponseDataCustomersItem) SetAdditionalFields(additionalFields map[string]string) {
+	g.AdditionalFields = additionalFields
+	g.require(getMethodResponseResponseDataCustomersItemFieldAdditionalFields)
 }
 
-// SetBillingAddress1 sets the BillingAddress1 field and marks it as non-optional;
+// SetAddress sets the Address field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMethodResponseResponseDataCustomersItem) SetBillingAddress1(billingAddress1 *BillingAddressNullable) {
-	g.BillingAddress1 = billingAddress1
-	g.require(getMethodResponseResponseDataCustomersItemFieldBillingAddress1)
+func (g *GetMethodResponseResponseDataCustomersItem) SetAddress(address *string) {
+	g.Address = address
+	g.require(getMethodResponseResponseDataCustomersItemFieldAddress)
 }
 
-// SetBillingAddress2 sets the BillingAddress2 field and marks it as non-optional;
+// SetAddress1 sets the Address1 field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMethodResponseResponseDataCustomersItem) SetBillingAddress2(billingAddress2 *BillingAddressAddtlNullable) {
-	g.BillingAddress2 = billingAddress2
-	g.require(getMethodResponseResponseDataCustomersItemFieldBillingAddress2)
+func (g *GetMethodResponseResponseDataCustomersItem) SetAddress1(address1 *string) {
+	g.Address1 = address1
+	g.require(getMethodResponseResponseDataCustomersItemFieldAddress1)
 }
 
-// SetBillingCity sets the BillingCity field and marks it as non-optional;
+// SetBalance sets the Balance field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMethodResponseResponseDataCustomersItem) SetBillingCity(billingCity *BillingCityNullable) {
-	g.BillingCity = billingCity
-	g.require(getMethodResponseResponseDataCustomersItemFieldBillingCity)
+func (g *GetMethodResponseResponseDataCustomersItem) SetBalance(balance *float64) {
+	g.Balance = balance
+	g.require(getMethodResponseResponseDataCustomersItemFieldBalance)
 }
 
-// SetBillingCountry sets the BillingCountry field and marks it as non-optional;
+// SetCity sets the City field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMethodResponseResponseDataCustomersItem) SetBillingCountry(billingCountry *BillingCountryNullable) {
-	g.BillingCountry = billingCountry
-	g.require(getMethodResponseResponseDataCustomersItemFieldBillingCountry)
-}
-
-// SetBillingEmail sets the BillingEmail field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMethodResponseResponseDataCustomersItem) SetBillingEmail(billingEmail *Email) {
-	g.BillingEmail = billingEmail
-	g.require(getMethodResponseResponseDataCustomersItemFieldBillingEmail)
-}
-
-// SetBillingPhone sets the BillingPhone field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMethodResponseResponseDataCustomersItem) SetBillingPhone(billingPhone *PhoneNumber) {
-	g.BillingPhone = billingPhone
-	g.require(getMethodResponseResponseDataCustomersItemFieldBillingPhone)
-}
-
-// SetBillingState sets the BillingState field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMethodResponseResponseDataCustomersItem) SetBillingState(billingState *BillingStateNullable) {
-	g.BillingState = billingState
-	g.require(getMethodResponseResponseDataCustomersItemFieldBillingState)
-}
-
-// SetBillingZip sets the BillingZip field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMethodResponseResponseDataCustomersItem) SetBillingZip(billingZip *BillingZip) {
-	g.BillingZip = billingZip
-	g.require(getMethodResponseResponseDataCustomersItemFieldBillingZip)
+func (g *GetMethodResponseResponseDataCustomersItem) SetCity(city *string) {
+	g.City = city
+	g.require(getMethodResponseResponseDataCustomersItemFieldCity)
 }
 
 // SetCompany sets the Company field and marks it as non-optional;
@@ -1544,6 +1650,34 @@ func (g *GetMethodResponseResponseDataCustomersItem) SetBillingZip(billingZip *B
 func (g *GetMethodResponseResponseDataCustomersItem) SetCompany(company *string) {
 	g.Company = company
 	g.require(getMethodResponseResponseDataCustomersItemFieldCompany)
+}
+
+// SetCountry sets the Country field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataCustomersItem) SetCountry(country *string) {
+	g.Country = country
+	g.require(getMethodResponseResponseDataCustomersItemFieldCountry)
+}
+
+// SetCreated sets the Created field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataCustomersItem) SetCreated(created *time.Time) {
+	g.Created = created
+	g.require(getMethodResponseResponseDataCustomersItemFieldCreated)
+}
+
+// SetCustomerConsent sets the CustomerConsent field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataCustomersItem) SetCustomerConsent(customerConsent map[string]any) {
+	g.CustomerConsent = customerConsent
+	g.require(getMethodResponseResponseDataCustomersItemFieldCustomerConsent)
+}
+
+// SetCustomerEvents sets the CustomerEvents field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataCustomersItem) SetCustomerEvents(customerEvents []any) {
+	g.CustomerEvents = customerEvents
+	g.require(getMethodResponseResponseDataCustomersItemFieldCustomerEvents)
 }
 
 // SetCustomerId sets the CustomerId field and marks it as non-optional;
@@ -1560,88 +1694,11 @@ func (g *GetMethodResponseResponseDataCustomersItem) SetCustomerNumber(customerN
 	g.require(getMethodResponseResponseDataCustomersItemFieldCustomerNumber)
 }
 
-// SetFirstName sets the FirstName field and marks it as non-optional;
+// SetCustomerPortal sets the CustomerPortal field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMethodResponseResponseDataCustomersItem) SetFirstName(firstName *string) {
-	g.FirstName = firstName
-	g.require(getMethodResponseResponseDataCustomersItemFieldFirstName)
-}
-
-// SetIdentifierFields sets the IdentifierFields field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMethodResponseResponseDataCustomersItem) SetIdentifierFields(identifierFields *Identifierfields) {
-	g.IdentifierFields = identifierFields
-	g.require(getMethodResponseResponseDataCustomersItemFieldIdentifierFields)
-}
-
-// SetLastName sets the LastName field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMethodResponseResponseDataCustomersItem) SetLastName(lastName *string) {
-	g.LastName = lastName
-	g.require(getMethodResponseResponseDataCustomersItemFieldLastName)
-}
-
-// SetShippingAddress1 sets the ShippingAddress1 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMethodResponseResponseDataCustomersItem) SetShippingAddress1(shippingAddress1 *Shippingaddress) {
-	g.ShippingAddress1 = shippingAddress1
-	g.require(getMethodResponseResponseDataCustomersItemFieldShippingAddress1)
-}
-
-// SetShippingAddress2 sets the ShippingAddress2 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMethodResponseResponseDataCustomersItem) SetShippingAddress2(shippingAddress2 *Shippingaddressadditional) {
-	g.ShippingAddress2 = shippingAddress2
-	g.require(getMethodResponseResponseDataCustomersItemFieldShippingAddress2)
-}
-
-// SetShippingCity sets the ShippingCity field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMethodResponseResponseDataCustomersItem) SetShippingCity(shippingCity *Shippingcity) {
-	g.ShippingCity = shippingCity
-	g.require(getMethodResponseResponseDataCustomersItemFieldShippingCity)
-}
-
-// SetShippingCountry sets the ShippingCountry field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMethodResponseResponseDataCustomersItem) SetShippingCountry(shippingCountry *Shippingcountry) {
-	g.ShippingCountry = shippingCountry
-	g.require(getMethodResponseResponseDataCustomersItemFieldShippingCountry)
-}
-
-// SetShippingState sets the ShippingState field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMethodResponseResponseDataCustomersItem) SetShippingState(shippingState *Shippingstate) {
-	g.ShippingState = shippingState
-	g.require(getMethodResponseResponseDataCustomersItemFieldShippingState)
-}
-
-// SetShippingZip sets the ShippingZip field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMethodResponseResponseDataCustomersItem) SetShippingZip(shippingZip *Shippingzip) {
-	g.ShippingZip = shippingZip
-	g.require(getMethodResponseResponseDataCustomersItemFieldShippingZip)
-}
-
-// SetBalance sets the Balance field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMethodResponseResponseDataCustomersItem) SetBalance(balance *float64) {
-	g.Balance = balance
-	g.require(getMethodResponseResponseDataCustomersItemFieldBalance)
-}
-
-// SetCreated sets the Created field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMethodResponseResponseDataCustomersItem) SetCreated(created *time.Time) {
-	g.Created = created
-	g.require(getMethodResponseResponseDataCustomersItemFieldCreated)
-}
-
-// SetCustomerConsent sets the CustomerConsent field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (g *GetMethodResponseResponseDataCustomersItem) SetCustomerConsent(customerConsent map[string]any) {
-	g.CustomerConsent = customerConsent
-	g.require(getMethodResponseResponseDataCustomersItemFieldCustomerConsent)
+func (g *GetMethodResponseResponseDataCustomersItem) SetCustomerPortal(customerPortal *string) {
+	g.CustomerPortal = customerPortal
+	g.require(getMethodResponseResponseDataCustomersItemFieldCustomerPortal)
 }
 
 // SetCustomerStatus sets the CustomerStatus field and marks it as non-optional;
@@ -1665,11 +1722,39 @@ func (g *GetMethodResponseResponseDataCustomersItem) SetCustomerUsername(custome
 	g.require(getMethodResponseResponseDataCustomersItemFieldCustomerUsername)
 }
 
+// SetEmail sets the Email field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataCustomersItem) SetEmail(email *Email) {
+	g.Email = email
+	g.require(getMethodResponseResponseDataCustomersItemFieldEmail)
+}
+
 // SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (g *GetMethodResponseResponseDataCustomersItem) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
 	g.ExternalPaypointId = externalPaypointId
 	g.require(getMethodResponseResponseDataCustomersItemFieldExternalPaypointId)
+}
+
+// SetFirstname sets the Firstname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataCustomersItem) SetFirstname(firstname *string) {
+	g.Firstname = firstname
+	g.require(getMethodResponseResponseDataCustomersItemFieldFirstname)
+}
+
+// SetIdentifierFields sets the IdentifierFields field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataCustomersItem) SetIdentifierFields(identifierFields *Identifierfields) {
+	g.IdentifierFields = identifierFields
+	g.require(getMethodResponseResponseDataCustomersItemFieldIdentifierFields)
+}
+
+// SetLastname sets the Lastname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataCustomersItem) SetLastname(lastname *string) {
+	g.Lastname = lastname
+	g.require(getMethodResponseResponseDataCustomersItemFieldLastname)
 }
 
 // SetLastUpdated sets the LastUpdated field and marks it as non-optional;
@@ -1735,6 +1820,55 @@ func (g *GetMethodResponseResponseDataCustomersItem) SetPaypointLegalname(paypoi
 	g.require(getMethodResponseResponseDataCustomersItemFieldPaypointLegalname)
 }
 
+// SetPhone sets the Phone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataCustomersItem) SetPhone(phone *string) {
+	g.Phone = phone
+	g.require(getMethodResponseResponseDataCustomersItemFieldPhone)
+}
+
+// SetShippingAddress sets the ShippingAddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataCustomersItem) SetShippingAddress(shippingAddress *Shippingaddress) {
+	g.ShippingAddress = shippingAddress
+	g.require(getMethodResponseResponseDataCustomersItemFieldShippingAddress)
+}
+
+// SetShippingAddress1 sets the ShippingAddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataCustomersItem) SetShippingAddress1(shippingAddress1 *Shippingaddressadditional) {
+	g.ShippingAddress1 = shippingAddress1
+	g.require(getMethodResponseResponseDataCustomersItemFieldShippingAddress1)
+}
+
+// SetShippingCity sets the ShippingCity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataCustomersItem) SetShippingCity(shippingCity *Shippingcity) {
+	g.ShippingCity = shippingCity
+	g.require(getMethodResponseResponseDataCustomersItemFieldShippingCity)
+}
+
+// SetShippingCountry sets the ShippingCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataCustomersItem) SetShippingCountry(shippingCountry *Shippingcountry) {
+	g.ShippingCountry = shippingCountry
+	g.require(getMethodResponseResponseDataCustomersItemFieldShippingCountry)
+}
+
+// SetShippingState sets the ShippingState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataCustomersItem) SetShippingState(shippingState *Shippingstate) {
+	g.ShippingState = shippingState
+	g.require(getMethodResponseResponseDataCustomersItemFieldShippingState)
+}
+
+// SetShippingZip sets the ShippingZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataCustomersItem) SetShippingZip(shippingZip *Shippingzip) {
+	g.ShippingZip = shippingZip
+	g.require(getMethodResponseResponseDataCustomersItemFieldShippingZip)
+}
+
 // SetSnData sets the SnData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (g *GetMethodResponseResponseDataCustomersItem) SetSnData(snData map[string]any) {
@@ -1756,6 +1890,13 @@ func (g *GetMethodResponseResponseDataCustomersItem) SetSnProvider(snProvider *s
 	g.require(getMethodResponseResponseDataCustomersItemFieldSnProvider)
 }
 
+// SetState sets the State field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataCustomersItem) SetState(state *string) {
+	g.State = state
+	g.require(getMethodResponseResponseDataCustomersItemFieldState)
+}
+
 // SetStoredMethods sets the StoredMethods field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (g *GetMethodResponseResponseDataCustomersItem) SetStoredMethods(storedMethods []*MethodQueryRecords) {
@@ -1775,6 +1916,13 @@ func (g *GetMethodResponseResponseDataCustomersItem) SetSubscriptions(subscripti
 func (g *GetMethodResponseResponseDataCustomersItem) SetTimeZone(timeZone *int) {
 	g.TimeZone = timeZone
 	g.require(getMethodResponseResponseDataCustomersItemFieldTimeZone)
+}
+
+// SetZip sets the Zip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataCustomersItem) SetZip(zip *string) {
+	g.Zip = zip
+	g.require(getMethodResponseResponseDataCustomersItemFieldZip)
 }
 
 func (g *GetMethodResponseResponseDataCustomersItem) UnmarshalJSON(data []byte) error {

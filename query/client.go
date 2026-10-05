@@ -432,7 +432,7 @@ func (c *Client) ListCustomersOrg(
 	return response.Body, nil
 }
 
-// Returns a list of cloud devices for a single paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+// Returns a list of cloud and AXIUM devices for a single paypoint. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 //
 // Example:
 //
@@ -471,7 +471,7 @@ func (c *Client) ListDevices(
 	return response.Body, nil
 }
 
-// Returns a list of cloud devices for a single organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
+// Returns a list of cloud and AXIUM devices for a single organization. Use filters to limit results. Include the `exportFormat` query parameter to return the results as a file instead of a JSON response.
 //
 // Example:
 //

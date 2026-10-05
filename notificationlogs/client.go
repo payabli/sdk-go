@@ -60,7 +60,7 @@ func NewClient(options *core.RequestOptions) *Client {
 //	        "2024-01-31T23:59:59Z",
 //	    ),
 //	    NotificationEvent: payabli.String(
-//	        "ActivatedMerchant",
+//	        "approvedpayment",
 //	    ),
 //	    Succeeded: payabli.Bool(
 //	        true,
@@ -130,7 +130,7 @@ func (c *Client) RetryNotificationLog(
 	// Unique id
 	uuid string,
 	opts ...option.RequestOption,
-) (*payabli.NotificationLogDetail, error) {
+) (*payabli.NotificationRetryResponse, error) {
 	response, err := c.WithRawResponse.RetryNotificationLog(
 		ctx,
 		uuid,
@@ -150,9 +150,8 @@ func (c *Client) RetryNotificationLog(
 // Example:
 //
 //	request := []string{
-//	    "550e8400-e29b-41d4-a716-446655440000",
-//	    "550e8400-e29b-41d4-a716-446655440001",
-//	    "550e8400-e29b-41d4-a716-446655440002",
+//	    "string",
+//	    "string",
 //	}
 //	client.Notificationlogs.BulkRetryNotificationLogs(
 //	    context.TODO(),
@@ -162,14 +161,14 @@ func (c *Client) BulkRetryNotificationLogs(
 	ctx context.Context,
 	request payabli.BulkRetryRequest,
 	opts ...option.RequestOption,
-) error {
-	_, err := c.WithRawResponse.BulkRetryNotificationLogs(
+) (string, error) {
+	response, err := c.WithRawResponse.BulkRetryNotificationLogs(
 		ctx,
 		request,
 		opts...,
 	)
 	if err != nil {
-		return err
+		return "", err
 	}
-	return nil
+	return response.Body, nil
 }

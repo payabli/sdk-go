@@ -440,7 +440,7 @@ type BillOutData struct {
 	// [vendor enrichment guide](/guides/pay-out-vendor-enrichment-overview)
 	// for details. Contact Payabli to enable this feature.
 	Attachments *Attachments `json:"attachments,omitempty" url:"attachments,omitempty"`
-	// Date of bill. Accepted formats: YYYY-MM-DD, MM/DD/YYYY.
+	// Date of bill. Send the date in YYYY-MM-DD format. The API also accepts ISO 8601 date-time values but keeps only the date.
 	BillDate  *time.Time `json:"billDate,omitempty" url:"billDate,omitempty" format:"date"`
 	BillItems *Billitems `json:"billItems,omitempty" url:"billItems,omitempty"`
 	// Unique identifier for the bill. Required when adding a bill.
@@ -448,7 +448,7 @@ type BillOutData struct {
 	Comments   *Comments `json:"comments,omitempty" url:"comments,omitempty"`
 	// Discount amount applied to the bill.
 	Discount *float64 `json:"discount,omitempty" url:"discount,omitempty"`
-	// Due date of bill. Accepted formats: YYYY-MM-DD, MM/DD/YYYY.
+	// Due date of bill. Send the date in YYYY-MM-DD format. The API also accepts ISO 8601 date-time values but keeps only the date.
 	DueDate *time.Time `json:"dueDate,omitempty" url:"dueDate,omitempty" format:"date"`
 	// End date for scheduled bills. Applied only in `Mode` = 1. Accepted
 	// formats: YYYY-MM-DD, MM/DD/YYYY.
