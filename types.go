@@ -2798,6 +2798,7 @@ var (
 	billingDataResponseFieldStatus                = big.NewInt(1 << 11)
 	billingDataResponseFieldServices              = big.NewInt(1 << 12)
 	billingDataResponseFieldDefault               = big.NewInt(1 << 13)
+	billingDataResponseFieldCountry               = big.NewInt(1 << 14)
 )
 
 type BillingDataResponse struct {
@@ -2821,6 +2822,8 @@ type BillingDataResponse struct {
 	Status              int   `json:"status" url:"status"`
 	Services            []any `json:"services" url:"services"`
 	Default             bool  `json:"default" url:"default"`
+	// Country code of the bank account, in ISO 3166-1 alpha-2 format (for example, `US` or `CA`).
+	Country *string `json:"country,omitempty" url:"country,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -2925,6 +2928,13 @@ func (b *BillingDataResponse) GetDefault() bool {
 		return false
 	}
 	return b.Default
+}
+
+func (b *BillingDataResponse) GetCountry() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Country
 }
 
 func (b *BillingDataResponse) GetExtraProperties() map[string]interface{} {
@@ -3037,6 +3047,13 @@ func (b *BillingDataResponse) SetServices(services []any) {
 func (b *BillingDataResponse) SetDefault(default_ bool) {
 	b.Default = default_
 	b.require(billingDataResponseFieldDefault)
+}
+
+// SetCountry sets the Country field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillingDataResponse) SetCountry(country *string) {
+	b.Country = country
+	b.require(billingDataResponseFieldCountry)
 }
 
 func (b *BillingDataResponse) UnmarshalJSON(data []byte) error {
@@ -22371,6 +22388,245 @@ type VendorNumber = string
 // - `ach` — ACH payment method
 type VendorPaymentMethodString = string
 
+// The vendor's vendor portal access.
+var (
+	vendorPortalAccessFieldAnyoneHasAccess = big.NewInt(1 << 0)
+	vendorPortalAccessFieldUsers           = big.NewInt(1 << 1)
+)
+
+type VendorPortalAccess struct {
+	// When `true`, at least one user has access to the vendor portal.
+	AnyoneHasAccess *bool `json:"AnyoneHasAccess,omitempty" url:"AnyoneHasAccess,omitempty"`
+	// Users with access to the vendor portal.
+	Users []*VendorPortalAccessUsersItem `json:"Users,omitempty" url:"Users,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *VendorPortalAccess) GetAnyoneHasAccess() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.AnyoneHasAccess
+}
+
+func (v *VendorPortalAccess) GetUsers() []*VendorPortalAccessUsersItem {
+	if v == nil {
+		return nil
+	}
+	return v.Users
+}
+
+func (v *VendorPortalAccess) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *VendorPortalAccess) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetAnyoneHasAccess sets the AnyoneHasAccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorPortalAccess) SetAnyoneHasAccess(anyoneHasAccess *bool) {
+	v.AnyoneHasAccess = anyoneHasAccess
+	v.require(vendorPortalAccessFieldAnyoneHasAccess)
+}
+
+// SetUsers sets the Users field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorPortalAccess) SetUsers(users []*VendorPortalAccessUsersItem) {
+	v.Users = users
+	v.require(vendorPortalAccessFieldUsers)
+}
+
+func (v *VendorPortalAccess) UnmarshalJSON(data []byte) error {
+	type unmarshaler VendorPortalAccess
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VendorPortalAccess(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VendorPortalAccess) MarshalJSON() ([]byte, error) {
+	type embed VendorPortalAccess
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *VendorPortalAccess) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+var (
+	vendorPortalAccessUsersItemFieldUserId = big.NewInt(1 << 0)
+	vendorPortalAccessUsersItemFieldEmail  = big.NewInt(1 << 1)
+	vendorPortalAccessUsersItemFieldName   = big.NewInt(1 << 2)
+	vendorPortalAccessUsersItemFieldPhone  = big.NewInt(1 << 3)
+)
+
+type VendorPortalAccessUsersItem struct {
+	// The user's ID.
+	UserId *int64 `json:"UserId,omitempty" url:"UserId,omitempty"`
+	// The user's email address.
+	Email *string `json:"Email,omitempty" url:"Email,omitempty"`
+	// The user's name.
+	Name *string `json:"Name,omitempty" url:"Name,omitempty"`
+	// The user's phone number.
+	Phone *string `json:"Phone,omitempty" url:"Phone,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *VendorPortalAccessUsersItem) GetUserId() *int64 {
+	if v == nil {
+		return nil
+	}
+	return v.UserId
+}
+
+func (v *VendorPortalAccessUsersItem) GetEmail() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Email
+}
+
+func (v *VendorPortalAccessUsersItem) GetName() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Name
+}
+
+func (v *VendorPortalAccessUsersItem) GetPhone() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Phone
+}
+
+func (v *VendorPortalAccessUsersItem) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *VendorPortalAccessUsersItem) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetUserId sets the UserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorPortalAccessUsersItem) SetUserId(userId *int64) {
+	v.UserId = userId
+	v.require(vendorPortalAccessUsersItemFieldUserId)
+}
+
+// SetEmail sets the Email field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorPortalAccessUsersItem) SetEmail(email *string) {
+	v.Email = email
+	v.require(vendorPortalAccessUsersItemFieldEmail)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorPortalAccessUsersItem) SetName(name *string) {
+	v.Name = name
+	v.require(vendorPortalAccessUsersItemFieldName)
+}
+
+// SetPhone sets the Phone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorPortalAccessUsersItem) SetPhone(phone *string) {
+	v.Phone = phone
+	v.require(vendorPortalAccessUsersItemFieldPhone)
+}
+
+func (v *VendorPortalAccessUsersItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler VendorPortalAccessUsersItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*v = VendorPortalAccessUsersItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VendorPortalAccessUsersItem) MarshalJSON() ([]byte, error) {
+	type embed VendorPortalAccessUsersItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*v),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *VendorPortalAccessUsersItem) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
 var (
 	vendorQueryRecordFieldVendorNumber          = big.NewInt(1 << 0)
 	vendorQueryRecordFieldName1                 = big.NewInt(1 << 1)
@@ -22425,6 +22681,7 @@ var (
 	vendorQueryRecordFieldAdditionalData        = big.NewInt(1 << 50)
 	vendorQueryRecordFieldExternalPaypointId    = big.NewInt(1 << 51)
 	vendorQueryRecordFieldStoredMethods         = big.NewInt(1 << 52)
+	vendorQueryRecordFieldVendorPortal          = big.NewInt(1 << 53)
 )
 
 type VendorQueryRecord struct {
@@ -22491,10 +22748,11 @@ type VendorQueryRecord struct {
 	// When the vendor was last enriched (UTC).
 	EnrichedAt *time.Time `json:"EnrichedAt,omitempty" url:"EnrichedAt,omitempty"`
 	// Identifier for the enrichment request that last updated this vendor.
-	EnrichmentId       *string                       `json:"EnrichmentId,omitempty" url:"EnrichmentId,omitempty"`
-	AdditionalData     *AdditionalDataMap            `json:"additionalData,omitempty" url:"additionalData,omitempty"`
-	ExternalPaypointId *ExternalPaypointId           `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
-	StoredMethods      []*VendorResponseStoredMethod `json:"StoredMethods,omitempty" url:"StoredMethods,omitempty"`
+	EnrichmentId       *string               `json:"EnrichmentId,omitempty" url:"EnrichmentId,omitempty"`
+	AdditionalData     *AdditionalDataMap    `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	ExternalPaypointId *ExternalPaypointId   `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	StoredMethods      []*VendorStoredMethod `json:"StoredMethods,omitempty" url:"StoredMethods,omitempty"`
+	VendorPortal       *VendorPortalAccess   `json:"VendorPortal,omitempty" url:"VendorPortal,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -22867,11 +23125,18 @@ func (v *VendorQueryRecord) GetExternalPaypointId() *ExternalPaypointId {
 	return v.ExternalPaypointId
 }
 
-func (v *VendorQueryRecord) GetStoredMethods() []*VendorResponseStoredMethod {
+func (v *VendorQueryRecord) GetStoredMethods() []*VendorStoredMethod {
 	if v == nil {
 		return nil
 	}
 	return v.StoredMethods
+}
+
+func (v *VendorQueryRecord) GetVendorPortal() *VendorPortalAccess {
+	if v == nil {
+		return nil
+	}
+	return v.VendorPortal
 }
 
 func (v *VendorQueryRecord) GetExtraProperties() map[string]interface{} {
@@ -23254,9 +23519,16 @@ func (v *VendorQueryRecord) SetExternalPaypointId(externalPaypointId *ExternalPa
 
 // SetStoredMethods sets the StoredMethods field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (v *VendorQueryRecord) SetStoredMethods(storedMethods []*VendorResponseStoredMethod) {
+func (v *VendorQueryRecord) SetStoredMethods(storedMethods []*VendorStoredMethod) {
 	v.StoredMethods = storedMethods
 	v.require(vendorQueryRecordFieldStoredMethods)
+}
+
+// SetVendorPortal sets the VendorPortal field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorQueryRecord) SetVendorPortal(vendorPortal *VendorPortalAccess) {
+	v.VendorPortal = vendorPortal
+	v.require(vendorQueryRecordFieldVendorPortal)
 }
 
 func (v *VendorQueryRecord) UnmarshalJSON(data []byte) error {
@@ -24276,6 +24548,378 @@ func (v *VendorResponseSummary) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VendorResponseSummary) String() string {
+	if v == nil {
+		return "<nil>"
+	}
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+// A vendor's stored payment method.
+var (
+	vendorStoredMethodFieldIdPmethod      = big.NewInt(1 << 0)
+	vendorStoredMethodFieldMethod         = big.NewInt(1 << 1)
+	vendorStoredMethodFieldDescriptor     = big.NewInt(1 << 2)
+	vendorStoredMethodFieldMaskedAccount  = big.NewInt(1 << 3)
+	vendorStoredMethodFieldExpDate        = big.NewInt(1 << 4)
+	vendorStoredMethodFieldHolderName     = big.NewInt(1 << 5)
+	vendorStoredMethodFieldAchSecCode     = big.NewInt(1 << 6)
+	vendorStoredMethodFieldAchHolderType  = big.NewInt(1 << 7)
+	vendorStoredMethodFieldIsValidatedAch = big.NewInt(1 << 8)
+	vendorStoredMethodFieldBin            = big.NewInt(1 << 9)
+	vendorStoredMethodFieldBinData        = big.NewInt(1 << 10)
+	vendorStoredMethodFieldAba            = big.NewInt(1 << 11)
+	vendorStoredMethodFieldPostalCode     = big.NewInt(1 << 12)
+	vendorStoredMethodFieldMethodType     = big.NewInt(1 << 13)
+	vendorStoredMethodFieldWalletType     = big.NewInt(1 << 14)
+	vendorStoredMethodFieldLastUpdated    = big.NewInt(1 << 15)
+	vendorStoredMethodFieldCardUpdatedOn  = big.NewInt(1 << 16)
+	vendorStoredMethodFieldIsDefault      = big.NewInt(1 << 17)
+)
+
+type VendorStoredMethod struct {
+	IdPmethod      *string  `json:"IdPmethod,omitempty" url:"IdPmethod,omitempty"`
+	Method         *string  `json:"Method,omitempty" url:"Method,omitempty"`
+	Descriptor     *string  `json:"Descriptor,omitempty" url:"Descriptor,omitempty"`
+	MaskedAccount  *string  `json:"MaskedAccount,omitempty" url:"MaskedAccount,omitempty"`
+	ExpDate        *string  `json:"ExpDate,omitempty" url:"ExpDate,omitempty"`
+	HolderName     *string  `json:"HolderName,omitempty" url:"HolderName,omitempty"`
+	AchSecCode     *string  `json:"AchSecCode,omitempty" url:"AchSecCode,omitempty"`
+	AchHolderType  *string  `json:"AchHolderType,omitempty" url:"AchHolderType,omitempty"`
+	IsValidatedAch *bool    `json:"IsValidatedACH,omitempty" url:"IsValidatedACH,omitempty"`
+	Bin            *string  `json:"BIN,omitempty" url:"BIN,omitempty"`
+	BinData        *BinData `json:"binData,omitempty" url:"binData,omitempty"`
+	Aba            *string  `json:"ABA,omitempty" url:"ABA,omitempty"`
+	PostalCode     *string  `json:"PostalCode,omitempty" url:"PostalCode,omitempty"`
+	MethodType     *string  `json:"MethodType,omitempty" url:"MethodType,omitempty"`
+	// Digital wallet type if applicable.
+	WalletType  *string    `json:"WalletType,omitempty" url:"WalletType,omitempty"`
+	LastUpdated *time.Time `json:"LastUpdated,omitempty" url:"LastUpdated,omitempty"`
+	// Date and time the card was last updated.
+	CardUpdatedOn *time.Time `json:"CardUpdatedOn,omitempty" url:"CardUpdatedOn,omitempty"`
+	// When `true`, this payment method is the vendor's default.
+	IsDefault *bool `json:"IsDefault,omitempty" url:"IsDefault,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *VendorStoredMethod) GetIdPmethod() *string {
+	if v == nil {
+		return nil
+	}
+	return v.IdPmethod
+}
+
+func (v *VendorStoredMethod) GetMethod() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Method
+}
+
+func (v *VendorStoredMethod) GetDescriptor() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Descriptor
+}
+
+func (v *VendorStoredMethod) GetMaskedAccount() *string {
+	if v == nil {
+		return nil
+	}
+	return v.MaskedAccount
+}
+
+func (v *VendorStoredMethod) GetExpDate() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ExpDate
+}
+
+func (v *VendorStoredMethod) GetHolderName() *string {
+	if v == nil {
+		return nil
+	}
+	return v.HolderName
+}
+
+func (v *VendorStoredMethod) GetAchSecCode() *string {
+	if v == nil {
+		return nil
+	}
+	return v.AchSecCode
+}
+
+func (v *VendorStoredMethod) GetAchHolderType() *string {
+	if v == nil {
+		return nil
+	}
+	return v.AchHolderType
+}
+
+func (v *VendorStoredMethod) GetIsValidatedAch() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.IsValidatedAch
+}
+
+func (v *VendorStoredMethod) GetBin() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Bin
+}
+
+func (v *VendorStoredMethod) GetBinData() *BinData {
+	if v == nil {
+		return nil
+	}
+	return v.BinData
+}
+
+func (v *VendorStoredMethod) GetAba() *string {
+	if v == nil {
+		return nil
+	}
+	return v.Aba
+}
+
+func (v *VendorStoredMethod) GetPostalCode() *string {
+	if v == nil {
+		return nil
+	}
+	return v.PostalCode
+}
+
+func (v *VendorStoredMethod) GetMethodType() *string {
+	if v == nil {
+		return nil
+	}
+	return v.MethodType
+}
+
+func (v *VendorStoredMethod) GetWalletType() *string {
+	if v == nil {
+		return nil
+	}
+	return v.WalletType
+}
+
+func (v *VendorStoredMethod) GetLastUpdated() *time.Time {
+	if v == nil {
+		return nil
+	}
+	return v.LastUpdated
+}
+
+func (v *VendorStoredMethod) GetCardUpdatedOn() *time.Time {
+	if v == nil {
+		return nil
+	}
+	return v.CardUpdatedOn
+}
+
+func (v *VendorStoredMethod) GetIsDefault() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.IsDefault
+}
+
+func (v *VendorStoredMethod) GetExtraProperties() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.extraProperties
+}
+
+func (v *VendorStoredMethod) require(field *big.Int) {
+	if v.explicitFields == nil {
+		v.explicitFields = big.NewInt(0)
+	}
+	v.explicitFields.Or(v.explicitFields, field)
+}
+
+// SetIdPmethod sets the IdPmethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorStoredMethod) SetIdPmethod(idPmethod *string) {
+	v.IdPmethod = idPmethod
+	v.require(vendorStoredMethodFieldIdPmethod)
+}
+
+// SetMethod sets the Method field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorStoredMethod) SetMethod(method *string) {
+	v.Method = method
+	v.require(vendorStoredMethodFieldMethod)
+}
+
+// SetDescriptor sets the Descriptor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorStoredMethod) SetDescriptor(descriptor *string) {
+	v.Descriptor = descriptor
+	v.require(vendorStoredMethodFieldDescriptor)
+}
+
+// SetMaskedAccount sets the MaskedAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorStoredMethod) SetMaskedAccount(maskedAccount *string) {
+	v.MaskedAccount = maskedAccount
+	v.require(vendorStoredMethodFieldMaskedAccount)
+}
+
+// SetExpDate sets the ExpDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorStoredMethod) SetExpDate(expDate *string) {
+	v.ExpDate = expDate
+	v.require(vendorStoredMethodFieldExpDate)
+}
+
+// SetHolderName sets the HolderName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorStoredMethod) SetHolderName(holderName *string) {
+	v.HolderName = holderName
+	v.require(vendorStoredMethodFieldHolderName)
+}
+
+// SetAchSecCode sets the AchSecCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorStoredMethod) SetAchSecCode(achSecCode *string) {
+	v.AchSecCode = achSecCode
+	v.require(vendorStoredMethodFieldAchSecCode)
+}
+
+// SetAchHolderType sets the AchHolderType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorStoredMethod) SetAchHolderType(achHolderType *string) {
+	v.AchHolderType = achHolderType
+	v.require(vendorStoredMethodFieldAchHolderType)
+}
+
+// SetIsValidatedAch sets the IsValidatedAch field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorStoredMethod) SetIsValidatedAch(isValidatedAch *bool) {
+	v.IsValidatedAch = isValidatedAch
+	v.require(vendorStoredMethodFieldIsValidatedAch)
+}
+
+// SetBin sets the Bin field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorStoredMethod) SetBin(bin *string) {
+	v.Bin = bin
+	v.require(vendorStoredMethodFieldBin)
+}
+
+// SetBinData sets the BinData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorStoredMethod) SetBinData(binData *BinData) {
+	v.BinData = binData
+	v.require(vendorStoredMethodFieldBinData)
+}
+
+// SetAba sets the Aba field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorStoredMethod) SetAba(aba *string) {
+	v.Aba = aba
+	v.require(vendorStoredMethodFieldAba)
+}
+
+// SetPostalCode sets the PostalCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorStoredMethod) SetPostalCode(postalCode *string) {
+	v.PostalCode = postalCode
+	v.require(vendorStoredMethodFieldPostalCode)
+}
+
+// SetMethodType sets the MethodType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorStoredMethod) SetMethodType(methodType *string) {
+	v.MethodType = methodType
+	v.require(vendorStoredMethodFieldMethodType)
+}
+
+// SetWalletType sets the WalletType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorStoredMethod) SetWalletType(walletType *string) {
+	v.WalletType = walletType
+	v.require(vendorStoredMethodFieldWalletType)
+}
+
+// SetLastUpdated sets the LastUpdated field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorStoredMethod) SetLastUpdated(lastUpdated *time.Time) {
+	v.LastUpdated = lastUpdated
+	v.require(vendorStoredMethodFieldLastUpdated)
+}
+
+// SetCardUpdatedOn sets the CardUpdatedOn field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorStoredMethod) SetCardUpdatedOn(cardUpdatedOn *time.Time) {
+	v.CardUpdatedOn = cardUpdatedOn
+	v.require(vendorStoredMethodFieldCardUpdatedOn)
+}
+
+// SetIsDefault sets the IsDefault field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorStoredMethod) SetIsDefault(isDefault *bool) {
+	v.IsDefault = isDefault
+	v.require(vendorStoredMethodFieldIsDefault)
+}
+
+func (v *VendorStoredMethod) UnmarshalJSON(data []byte) error {
+	type embed VendorStoredMethod
+	var unmarshaler = struct {
+		embed
+		LastUpdated   *internal.DateTime `json:"LastUpdated,omitempty"`
+		CardUpdatedOn *internal.DateTime `json:"CardUpdatedOn,omitempty"`
+	}{
+		embed: embed(*v),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*v = VendorStoredMethod(unmarshaler.embed)
+	v.LastUpdated = unmarshaler.LastUpdated.TimePtr()
+	v.CardUpdatedOn = unmarshaler.CardUpdatedOn.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *v)
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VendorStoredMethod) MarshalJSON() ([]byte, error) {
+	type embed VendorStoredMethod
+	var marshaler = struct {
+		embed
+		LastUpdated   *internal.DateTime `json:"LastUpdated,omitempty"`
+		CardUpdatedOn *internal.DateTime `json:"CardUpdatedOn,omitempty"`
+	}{
+		embed:         embed(*v),
+		LastUpdated:   internal.NewOptionalDateTime(v.LastUpdated),
+		CardUpdatedOn: internal.NewOptionalDateTime(v.CardUpdatedOn),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, v.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (v *VendorStoredMethod) String() string {
 	if v == nil {
 		return "<nil>"
 	}

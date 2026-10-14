@@ -8378,36 +8378,846 @@ func (p *PayoutGatewayConnector) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+// Payment method details for the payout subscription, as returned by the list payout subscriptions endpoint.
 var (
-	payoutSubscriptionQueryRecordPascalFieldIdOutSubscription  = big.NewInt(1 << 0)
-	payoutSubscriptionQueryRecordPascalFieldStatus             = big.NewInt(1 << 1)
-	payoutSubscriptionQueryRecordPascalFieldEvents             = big.NewInt(1 << 2)
-	payoutSubscriptionQueryRecordPascalFieldVendor             = big.NewInt(1 << 3)
-	payoutSubscriptionQueryRecordPascalFieldBillData           = big.NewInt(1 << 4)
-	payoutSubscriptionQueryRecordPascalFieldExternalPaypointId = big.NewInt(1 << 5)
-	payoutSubscriptionQueryRecordPascalFieldMethod             = big.NewInt(1 << 6)
-	payoutSubscriptionQueryRecordPascalFieldPaypointId         = big.NewInt(1 << 7)
-	payoutSubscriptionQueryRecordPascalFieldTotalAmount        = big.NewInt(1 << 8)
-	payoutSubscriptionQueryRecordPascalFieldNetAmount          = big.NewInt(1 << 9)
-	payoutSubscriptionQueryRecordPascalFieldFeeAmount          = big.NewInt(1 << 10)
-	payoutSubscriptionQueryRecordPascalFieldPaymentData        = big.NewInt(1 << 11)
-	payoutSubscriptionQueryRecordPascalFieldStartDate          = big.NewInt(1 << 12)
-	payoutSubscriptionQueryRecordPascalFieldEndDate            = big.NewInt(1 << 13)
-	payoutSubscriptionQueryRecordPascalFieldNextDate           = big.NewInt(1 << 14)
-	payoutSubscriptionQueryRecordPascalFieldFrequency          = big.NewInt(1 << 15)
-	payoutSubscriptionQueryRecordPascalFieldTotalCycles        = big.NewInt(1 << 16)
-	payoutSubscriptionQueryRecordPascalFieldLeftCycles         = big.NewInt(1 << 17)
-	payoutSubscriptionQueryRecordPascalFieldLastRun            = big.NewInt(1 << 18)
-	payoutSubscriptionQueryRecordPascalFieldEntrypageId        = big.NewInt(1 << 19)
-	payoutSubscriptionQueryRecordPascalFieldUntilCancelled     = big.NewInt(1 << 20)
-	payoutSubscriptionQueryRecordPascalFieldLastUpdated        = big.NewInt(1 << 21)
-	payoutSubscriptionQueryRecordPascalFieldCreatedAt          = big.NewInt(1 << 22)
-	payoutSubscriptionQueryRecordPascalFieldPaypointLegalname  = big.NewInt(1 << 23)
-	payoutSubscriptionQueryRecordPascalFieldPaypointDbaname    = big.NewInt(1 << 24)
-	payoutSubscriptionQueryRecordPascalFieldPaypointEntryname  = big.NewInt(1 << 25)
-	payoutSubscriptionQueryRecordPascalFieldParentOrgName      = big.NewInt(1 << 26)
-	payoutSubscriptionQueryRecordPascalFieldParentOrgId        = big.NewInt(1 << 27)
-	payoutSubscriptionQueryRecordPascalFieldSource             = big.NewInt(1 << 28)
+	payoutSubscriptionPaymentDataPascalFieldAccountExp            = big.NewInt(1 << 0)
+	payoutSubscriptionPaymentDataPascalFieldAccountId             = big.NewInt(1 << 1)
+	payoutSubscriptionPaymentDataPascalFieldAccountType           = big.NewInt(1 << 2)
+	payoutSubscriptionPaymentDataPascalFieldAccountZip            = big.NewInt(1 << 3)
+	payoutSubscriptionPaymentDataPascalFieldBinData               = big.NewInt(1 << 4)
+	payoutSubscriptionPaymentDataPascalFieldHolderName            = big.NewInt(1 << 5)
+	payoutSubscriptionPaymentDataPascalFieldInitiator             = big.NewInt(1 << 6)
+	payoutSubscriptionPaymentDataPascalFieldMaskedAccount         = big.NewInt(1 << 7)
+	payoutSubscriptionPaymentDataPascalFieldOrderDescription      = big.NewInt(1 << 8)
+	payoutSubscriptionPaymentDataPascalFieldPaymentDetails        = big.NewInt(1 << 9)
+	payoutSubscriptionPaymentDataPascalFieldPayorSignature        = big.NewInt(1 << 10)
+	payoutSubscriptionPaymentDataPascalFieldSequence              = big.NewInt(1 << 11)
+	payoutSubscriptionPaymentDataPascalFieldSignatureData         = big.NewInt(1 << 12)
+	payoutSubscriptionPaymentDataPascalFieldWalletType            = big.NewInt(1 << 13)
+	payoutSubscriptionPaymentDataPascalFieldStoredId              = big.NewInt(1 << 14)
+	payoutSubscriptionPaymentDataPascalFieldStoredMethodUsageType = big.NewInt(1 << 15)
+)
+
+type PayoutSubscriptionPaymentDataPascal struct {
+	AccountExp       *Accountexp                             `json:"AccountExp,omitempty" url:"AccountExp,omitempty"`
+	AccountId        *AccountId                              `json:"accountId,omitempty" url:"accountId,omitempty"`
+	AccountType      *Accounttype                            `json:"AccountType,omitempty" url:"AccountType,omitempty"`
+	AccountZip       *Accountzip                             `json:"AccountZip,omitempty" url:"AccountZip,omitempty"`
+	BinData          *BinData                                `json:"binData,omitempty" url:"binData,omitempty"`
+	HolderName       *Holdername                             `json:"HolderName,omitempty" url:"HolderName,omitempty"`
+	Initiator        *Initiator                              `json:"Initiator,omitempty" url:"Initiator,omitempty"`
+	MaskedAccount    *Maskedaccount                          `json:"MaskedAccount,omitempty" url:"MaskedAccount,omitempty"`
+	OrderDescription *Orderdescription                       `json:"orderDescription,omitempty" url:"orderDescription,omitempty"`
+	PaymentDetails   *PayoutSubscriptionPaymentDetailsPascal `json:"paymentDetails,omitempty" url:"paymentDetails,omitempty"`
+	// Signature captured on a card-present device. Always `null` for payout subscriptions.
+	PayorSignature *PayoutSubscriptionPaymentDataPascalPayorSignature `json:"payorSignature,omitempty" url:"payorSignature,omitempty"`
+	Sequence       *Sequence                                          `json:"Sequence,omitempty" url:"Sequence,omitempty"`
+	SignatureData  *Signaturedata                                     `json:"SignatureData,omitempty" url:"SignatureData,omitempty"`
+	// Digital wallet type if applicable.
+	WalletType *string `json:"WalletType,omitempty" url:"WalletType,omitempty"`
+	// Identifier of stored payment method used in transaction.
+	StoredId              *Storedmethodid        `json:"StoredId,omitempty" url:"StoredId,omitempty"`
+	StoredMethodUsageType *StoredMethodUsageType `json:"StoredMethodUsageType,omitempty" url:"StoredMethodUsageType,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PayoutSubscriptionPaymentDataPascal) GetAccountExp() *Accountexp {
+	if p == nil {
+		return nil
+	}
+	return p.AccountExp
+}
+
+func (p *PayoutSubscriptionPaymentDataPascal) GetAccountId() *AccountId {
+	if p == nil {
+		return nil
+	}
+	return p.AccountId
+}
+
+func (p *PayoutSubscriptionPaymentDataPascal) GetAccountType() *Accounttype {
+	if p == nil {
+		return nil
+	}
+	return p.AccountType
+}
+
+func (p *PayoutSubscriptionPaymentDataPascal) GetAccountZip() *Accountzip {
+	if p == nil {
+		return nil
+	}
+	return p.AccountZip
+}
+
+func (p *PayoutSubscriptionPaymentDataPascal) GetBinData() *BinData {
+	if p == nil {
+		return nil
+	}
+	return p.BinData
+}
+
+func (p *PayoutSubscriptionPaymentDataPascal) GetHolderName() *Holdername {
+	if p == nil {
+		return nil
+	}
+	return p.HolderName
+}
+
+func (p *PayoutSubscriptionPaymentDataPascal) GetInitiator() *Initiator {
+	if p == nil {
+		return nil
+	}
+	return p.Initiator
+}
+
+func (p *PayoutSubscriptionPaymentDataPascal) GetMaskedAccount() *Maskedaccount {
+	if p == nil {
+		return nil
+	}
+	return p.MaskedAccount
+}
+
+func (p *PayoutSubscriptionPaymentDataPascal) GetOrderDescription() *Orderdescription {
+	if p == nil {
+		return nil
+	}
+	return p.OrderDescription
+}
+
+func (p *PayoutSubscriptionPaymentDataPascal) GetPaymentDetails() *PayoutSubscriptionPaymentDetailsPascal {
+	if p == nil {
+		return nil
+	}
+	return p.PaymentDetails
+}
+
+func (p *PayoutSubscriptionPaymentDataPascal) GetPayorSignature() *PayoutSubscriptionPaymentDataPascalPayorSignature {
+	if p == nil {
+		return nil
+	}
+	return p.PayorSignature
+}
+
+func (p *PayoutSubscriptionPaymentDataPascal) GetSequence() *Sequence {
+	if p == nil {
+		return nil
+	}
+	return p.Sequence
+}
+
+func (p *PayoutSubscriptionPaymentDataPascal) GetSignatureData() *Signaturedata {
+	if p == nil {
+		return nil
+	}
+	return p.SignatureData
+}
+
+func (p *PayoutSubscriptionPaymentDataPascal) GetWalletType() *string {
+	if p == nil {
+		return nil
+	}
+	return p.WalletType
+}
+
+func (p *PayoutSubscriptionPaymentDataPascal) GetStoredId() *Storedmethodid {
+	if p == nil {
+		return nil
+	}
+	return p.StoredId
+}
+
+func (p *PayoutSubscriptionPaymentDataPascal) GetStoredMethodUsageType() *StoredMethodUsageType {
+	if p == nil {
+		return nil
+	}
+	return p.StoredMethodUsageType
+}
+
+func (p *PayoutSubscriptionPaymentDataPascal) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PayoutSubscriptionPaymentDataPascal) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetAccountExp sets the AccountExp field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDataPascal) SetAccountExp(accountExp *Accountexp) {
+	p.AccountExp = accountExp
+	p.require(payoutSubscriptionPaymentDataPascalFieldAccountExp)
+}
+
+// SetAccountId sets the AccountId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDataPascal) SetAccountId(accountId *AccountId) {
+	p.AccountId = accountId
+	p.require(payoutSubscriptionPaymentDataPascalFieldAccountId)
+}
+
+// SetAccountType sets the AccountType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDataPascal) SetAccountType(accountType *Accounttype) {
+	p.AccountType = accountType
+	p.require(payoutSubscriptionPaymentDataPascalFieldAccountType)
+}
+
+// SetAccountZip sets the AccountZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDataPascal) SetAccountZip(accountZip *Accountzip) {
+	p.AccountZip = accountZip
+	p.require(payoutSubscriptionPaymentDataPascalFieldAccountZip)
+}
+
+// SetBinData sets the BinData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDataPascal) SetBinData(binData *BinData) {
+	p.BinData = binData
+	p.require(payoutSubscriptionPaymentDataPascalFieldBinData)
+}
+
+// SetHolderName sets the HolderName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDataPascal) SetHolderName(holderName *Holdername) {
+	p.HolderName = holderName
+	p.require(payoutSubscriptionPaymentDataPascalFieldHolderName)
+}
+
+// SetInitiator sets the Initiator field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDataPascal) SetInitiator(initiator *Initiator) {
+	p.Initiator = initiator
+	p.require(payoutSubscriptionPaymentDataPascalFieldInitiator)
+}
+
+// SetMaskedAccount sets the MaskedAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDataPascal) SetMaskedAccount(maskedAccount *Maskedaccount) {
+	p.MaskedAccount = maskedAccount
+	p.require(payoutSubscriptionPaymentDataPascalFieldMaskedAccount)
+}
+
+// SetOrderDescription sets the OrderDescription field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDataPascal) SetOrderDescription(orderDescription *Orderdescription) {
+	p.OrderDescription = orderDescription
+	p.require(payoutSubscriptionPaymentDataPascalFieldOrderDescription)
+}
+
+// SetPaymentDetails sets the PaymentDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDataPascal) SetPaymentDetails(paymentDetails *PayoutSubscriptionPaymentDetailsPascal) {
+	p.PaymentDetails = paymentDetails
+	p.require(payoutSubscriptionPaymentDataPascalFieldPaymentDetails)
+}
+
+// SetPayorSignature sets the PayorSignature field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDataPascal) SetPayorSignature(payorSignature *PayoutSubscriptionPaymentDataPascalPayorSignature) {
+	p.PayorSignature = payorSignature
+	p.require(payoutSubscriptionPaymentDataPascalFieldPayorSignature)
+}
+
+// SetSequence sets the Sequence field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDataPascal) SetSequence(sequence *Sequence) {
+	p.Sequence = sequence
+	p.require(payoutSubscriptionPaymentDataPascalFieldSequence)
+}
+
+// SetSignatureData sets the SignatureData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDataPascal) SetSignatureData(signatureData *Signaturedata) {
+	p.SignatureData = signatureData
+	p.require(payoutSubscriptionPaymentDataPascalFieldSignatureData)
+}
+
+// SetWalletType sets the WalletType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDataPascal) SetWalletType(walletType *string) {
+	p.WalletType = walletType
+	p.require(payoutSubscriptionPaymentDataPascalFieldWalletType)
+}
+
+// SetStoredId sets the StoredId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDataPascal) SetStoredId(storedId *Storedmethodid) {
+	p.StoredId = storedId
+	p.require(payoutSubscriptionPaymentDataPascalFieldStoredId)
+}
+
+// SetStoredMethodUsageType sets the StoredMethodUsageType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDataPascal) SetStoredMethodUsageType(storedMethodUsageType *StoredMethodUsageType) {
+	p.StoredMethodUsageType = storedMethodUsageType
+	p.require(payoutSubscriptionPaymentDataPascalFieldStoredMethodUsageType)
+}
+
+func (p *PayoutSubscriptionPaymentDataPascal) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayoutSubscriptionPaymentDataPascal
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PayoutSubscriptionPaymentDataPascal(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PayoutSubscriptionPaymentDataPascal) MarshalJSON() ([]byte, error) {
+	type embed PayoutSubscriptionPaymentDataPascal
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PayoutSubscriptionPaymentDataPascal) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+// Signature captured on a card-present device. Always `null` for payout subscriptions.
+var (
+	payoutSubscriptionPaymentDataPascalPayorSignatureFieldStatus  = big.NewInt(1 << 0)
+	payoutSubscriptionPaymentDataPascalPayorSignatureFieldFormat  = big.NewInt(1 << 1)
+	payoutSubscriptionPaymentDataPascalPayorSignatureFieldContent = big.NewInt(1 << 2)
+)
+
+type PayoutSubscriptionPaymentDataPascalPayorSignature struct {
+	// Availability of the signature. One of `stored`, `pending`, or `unavailable`.
+	Status *string `json:"status,omitempty" url:"status,omitempty"`
+	// Image format of the stored signature, `png` or `jpeg`.
+	Format *string `json:"format,omitempty" url:"format,omitempty"`
+	// Base64-encoded signature image. Only set when `status` is `stored`.
+	Content *string `json:"content,omitempty" url:"content,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PayoutSubscriptionPaymentDataPascalPayorSignature) GetStatus() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Status
+}
+
+func (p *PayoutSubscriptionPaymentDataPascalPayorSignature) GetFormat() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Format
+}
+
+func (p *PayoutSubscriptionPaymentDataPascalPayorSignature) GetContent() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Content
+}
+
+func (p *PayoutSubscriptionPaymentDataPascalPayorSignature) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PayoutSubscriptionPaymentDataPascalPayorSignature) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDataPascalPayorSignature) SetStatus(status *string) {
+	p.Status = status
+	p.require(payoutSubscriptionPaymentDataPascalPayorSignatureFieldStatus)
+}
+
+// SetFormat sets the Format field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDataPascalPayorSignature) SetFormat(format *string) {
+	p.Format = format
+	p.require(payoutSubscriptionPaymentDataPascalPayorSignatureFieldFormat)
+}
+
+// SetContent sets the Content field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDataPascalPayorSignature) SetContent(content *string) {
+	p.Content = content
+	p.require(payoutSubscriptionPaymentDataPascalPayorSignatureFieldContent)
+}
+
+func (p *PayoutSubscriptionPaymentDataPascalPayorSignature) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayoutSubscriptionPaymentDataPascalPayorSignature
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PayoutSubscriptionPaymentDataPascalPayorSignature(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PayoutSubscriptionPaymentDataPascalPayorSignature) MarshalJSON() ([]byte, error) {
+	type embed PayoutSubscriptionPaymentDataPascalPayorSignature
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PayoutSubscriptionPaymentDataPascalPayorSignature) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+// Payment details for the payout subscription, as returned by the list payout subscriptions endpoint.
+var (
+	payoutSubscriptionPaymentDetailsPascalFieldTotalAmount        = big.NewInt(1 << 0)
+	payoutSubscriptionPaymentDetailsPascalFieldServiceFee         = big.NewInt(1 << 1)
+	payoutSubscriptionPaymentDetailsPascalFieldSurchargeFee       = big.NewInt(1 << 2)
+	payoutSubscriptionPaymentDetailsPascalFieldCheckNumber        = big.NewInt(1 << 3)
+	payoutSubscriptionPaymentDetailsPascalFieldCheckImage         = big.NewInt(1 << 4)
+	payoutSubscriptionPaymentDetailsPascalFieldCheckUniqueId      = big.NewInt(1 << 5)
+	payoutSubscriptionPaymentDetailsPascalFieldCurrency           = big.NewInt(1 << 6)
+	payoutSubscriptionPaymentDetailsPascalFieldOrderDescription   = big.NewInt(1 << 7)
+	payoutSubscriptionPaymentDetailsPascalFieldOrderId            = big.NewInt(1 << 8)
+	payoutSubscriptionPaymentDetailsPascalFieldOrderIdAlternative = big.NewInt(1 << 9)
+	payoutSubscriptionPaymentDetailsPascalFieldPaymentDescription = big.NewInt(1 << 10)
+	payoutSubscriptionPaymentDetailsPascalFieldGroupNumber        = big.NewInt(1 << 11)
+	payoutSubscriptionPaymentDetailsPascalFieldSource             = big.NewInt(1 << 12)
+	payoutSubscriptionPaymentDetailsPascalFieldPayabliTransId     = big.NewInt(1 << 13)
+	payoutSubscriptionPaymentDetailsPascalFieldUnbundled          = big.NewInt(1 << 14)
+	payoutSubscriptionPaymentDetailsPascalFieldCategories         = big.NewInt(1 << 15)
+	payoutSubscriptionPaymentDetailsPascalFieldSplitFunding       = big.NewInt(1 << 16)
+)
+
+type PayoutSubscriptionPaymentDetailsPascal struct {
+	// Total payout amount, including any service fee.
+	TotalAmount *float64 `json:"totalAmount,omitempty" url:"totalAmount,omitempty"`
+	// Service fee deducted from the total amount.
+	ServiceFee *float64 `json:"serviceFee,omitempty" url:"serviceFee,omitempty"`
+	// Surcharge amount. Always `0` for payout subscriptions.
+	SurchargeFee *float64 `json:"surchargeFee,omitempty" url:"surchargeFee,omitempty"`
+	// Check number for the payout. Set when the payment method is `check`.
+	CheckNumber *string `json:"checkNumber,omitempty" url:"checkNumber,omitempty"`
+	// Object containing an image of a paper check.
+	CheckImage map[string]any `json:"checkImage,omitempty" url:"checkImage,omitempty"`
+	// Unique identifier for a processed check image.
+	CheckUniqueId *string `json:"checkUniqueId,omitempty" url:"checkUniqueId,omitempty"`
+	// Currency code ISO-4217.
+	Currency *string `json:"currency,omitempty" url:"currency,omitempty"`
+	// Description of the payout order.
+	OrderDescription *string `json:"orderDescription,omitempty" url:"orderDescription,omitempty"`
+	// Order identifier associated with the payout.
+	OrderId *string `json:"orderId,omitempty" url:"orderId,omitempty"`
+	// Alternative order identifier.
+	OrderIdAlternative *string `json:"orderIdAlternative,omitempty" url:"orderIdAlternative,omitempty"`
+	// Description of the payment.
+	PaymentDescription *string `json:"paymentDescription,omitempty" url:"paymentDescription,omitempty"`
+	// Group number for the payout.
+	GroupNumber *string `json:"groupNumber,omitempty" url:"groupNumber,omitempty"`
+	// Source identifier for the payout.
+	Source *string `json:"source,omitempty" url:"source,omitempty"`
+	// Payabli transaction identifier.
+	PayabliTransId *string `json:"PayabliTransId,omitempty" url:"PayabliTransId,omitempty"`
+	// When `true`, each bill is processed as a separate payout.
+	Unbundled *bool `json:"Unbundled,omitempty" url:"Unbundled,omitempty"`
+	// Payment categories or line items describing the amount.
+	Categories   []*PaymentCategories `json:"categories,omitempty" url:"categories,omitempty"`
+	SplitFunding *SplitFunding        `json:"splitFunding,omitempty" url:"splitFunding,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PayoutSubscriptionPaymentDetailsPascal) GetTotalAmount() *float64 {
+	if p == nil {
+		return nil
+	}
+	return p.TotalAmount
+}
+
+func (p *PayoutSubscriptionPaymentDetailsPascal) GetServiceFee() *float64 {
+	if p == nil {
+		return nil
+	}
+	return p.ServiceFee
+}
+
+func (p *PayoutSubscriptionPaymentDetailsPascal) GetSurchargeFee() *float64 {
+	if p == nil {
+		return nil
+	}
+	return p.SurchargeFee
+}
+
+func (p *PayoutSubscriptionPaymentDetailsPascal) GetCheckNumber() *string {
+	if p == nil {
+		return nil
+	}
+	return p.CheckNumber
+}
+
+func (p *PayoutSubscriptionPaymentDetailsPascal) GetCheckImage() map[string]any {
+	if p == nil {
+		return nil
+	}
+	return p.CheckImage
+}
+
+func (p *PayoutSubscriptionPaymentDetailsPascal) GetCheckUniqueId() *string {
+	if p == nil {
+		return nil
+	}
+	return p.CheckUniqueId
+}
+
+func (p *PayoutSubscriptionPaymentDetailsPascal) GetCurrency() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Currency
+}
+
+func (p *PayoutSubscriptionPaymentDetailsPascal) GetOrderDescription() *string {
+	if p == nil {
+		return nil
+	}
+	return p.OrderDescription
+}
+
+func (p *PayoutSubscriptionPaymentDetailsPascal) GetOrderId() *string {
+	if p == nil {
+		return nil
+	}
+	return p.OrderId
+}
+
+func (p *PayoutSubscriptionPaymentDetailsPascal) GetOrderIdAlternative() *string {
+	if p == nil {
+		return nil
+	}
+	return p.OrderIdAlternative
+}
+
+func (p *PayoutSubscriptionPaymentDetailsPascal) GetPaymentDescription() *string {
+	if p == nil {
+		return nil
+	}
+	return p.PaymentDescription
+}
+
+func (p *PayoutSubscriptionPaymentDetailsPascal) GetGroupNumber() *string {
+	if p == nil {
+		return nil
+	}
+	return p.GroupNumber
+}
+
+func (p *PayoutSubscriptionPaymentDetailsPascal) GetSource() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Source
+}
+
+func (p *PayoutSubscriptionPaymentDetailsPascal) GetPayabliTransId() *string {
+	if p == nil {
+		return nil
+	}
+	return p.PayabliTransId
+}
+
+func (p *PayoutSubscriptionPaymentDetailsPascal) GetUnbundled() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.Unbundled
+}
+
+func (p *PayoutSubscriptionPaymentDetailsPascal) GetCategories() []*PaymentCategories {
+	if p == nil {
+		return nil
+	}
+	return p.Categories
+}
+
+func (p *PayoutSubscriptionPaymentDetailsPascal) GetSplitFunding() *SplitFunding {
+	if p == nil {
+		return nil
+	}
+	return p.SplitFunding
+}
+
+func (p *PayoutSubscriptionPaymentDetailsPascal) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PayoutSubscriptionPaymentDetailsPascal) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetailsPascal) SetTotalAmount(totalAmount *float64) {
+	p.TotalAmount = totalAmount
+	p.require(payoutSubscriptionPaymentDetailsPascalFieldTotalAmount)
+}
+
+// SetServiceFee sets the ServiceFee field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetailsPascal) SetServiceFee(serviceFee *float64) {
+	p.ServiceFee = serviceFee
+	p.require(payoutSubscriptionPaymentDetailsPascalFieldServiceFee)
+}
+
+// SetSurchargeFee sets the SurchargeFee field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetailsPascal) SetSurchargeFee(surchargeFee *float64) {
+	p.SurchargeFee = surchargeFee
+	p.require(payoutSubscriptionPaymentDetailsPascalFieldSurchargeFee)
+}
+
+// SetCheckNumber sets the CheckNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetailsPascal) SetCheckNumber(checkNumber *string) {
+	p.CheckNumber = checkNumber
+	p.require(payoutSubscriptionPaymentDetailsPascalFieldCheckNumber)
+}
+
+// SetCheckImage sets the CheckImage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetailsPascal) SetCheckImage(checkImage map[string]any) {
+	p.CheckImage = checkImage
+	p.require(payoutSubscriptionPaymentDetailsPascalFieldCheckImage)
+}
+
+// SetCheckUniqueId sets the CheckUniqueId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetailsPascal) SetCheckUniqueId(checkUniqueId *string) {
+	p.CheckUniqueId = checkUniqueId
+	p.require(payoutSubscriptionPaymentDetailsPascalFieldCheckUniqueId)
+}
+
+// SetCurrency sets the Currency field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetailsPascal) SetCurrency(currency *string) {
+	p.Currency = currency
+	p.require(payoutSubscriptionPaymentDetailsPascalFieldCurrency)
+}
+
+// SetOrderDescription sets the OrderDescription field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetailsPascal) SetOrderDescription(orderDescription *string) {
+	p.OrderDescription = orderDescription
+	p.require(payoutSubscriptionPaymentDetailsPascalFieldOrderDescription)
+}
+
+// SetOrderId sets the OrderId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetailsPascal) SetOrderId(orderId *string) {
+	p.OrderId = orderId
+	p.require(payoutSubscriptionPaymentDetailsPascalFieldOrderId)
+}
+
+// SetOrderIdAlternative sets the OrderIdAlternative field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetailsPascal) SetOrderIdAlternative(orderIdAlternative *string) {
+	p.OrderIdAlternative = orderIdAlternative
+	p.require(payoutSubscriptionPaymentDetailsPascalFieldOrderIdAlternative)
+}
+
+// SetPaymentDescription sets the PaymentDescription field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetailsPascal) SetPaymentDescription(paymentDescription *string) {
+	p.PaymentDescription = paymentDescription
+	p.require(payoutSubscriptionPaymentDetailsPascalFieldPaymentDescription)
+}
+
+// SetGroupNumber sets the GroupNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetailsPascal) SetGroupNumber(groupNumber *string) {
+	p.GroupNumber = groupNumber
+	p.require(payoutSubscriptionPaymentDetailsPascalFieldGroupNumber)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetailsPascal) SetSource(source *string) {
+	p.Source = source
+	p.require(payoutSubscriptionPaymentDetailsPascalFieldSource)
+}
+
+// SetPayabliTransId sets the PayabliTransId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetailsPascal) SetPayabliTransId(payabliTransId *string) {
+	p.PayabliTransId = payabliTransId
+	p.require(payoutSubscriptionPaymentDetailsPascalFieldPayabliTransId)
+}
+
+// SetUnbundled sets the Unbundled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetailsPascal) SetUnbundled(unbundled *bool) {
+	p.Unbundled = unbundled
+	p.require(payoutSubscriptionPaymentDetailsPascalFieldUnbundled)
+}
+
+// SetCategories sets the Categories field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetailsPascal) SetCategories(categories []*PaymentCategories) {
+	p.Categories = categories
+	p.require(payoutSubscriptionPaymentDetailsPascalFieldCategories)
+}
+
+// SetSplitFunding sets the SplitFunding field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetailsPascal) SetSplitFunding(splitFunding *SplitFunding) {
+	p.SplitFunding = splitFunding
+	p.require(payoutSubscriptionPaymentDetailsPascalFieldSplitFunding)
+}
+
+func (p *PayoutSubscriptionPaymentDetailsPascal) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayoutSubscriptionPaymentDetailsPascal
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PayoutSubscriptionPaymentDetailsPascal(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PayoutSubscriptionPaymentDetailsPascal) MarshalJSON() ([]byte, error) {
+	type embed PayoutSubscriptionPaymentDetailsPascal
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PayoutSubscriptionPaymentDetailsPascal) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+var (
+	payoutSubscriptionQueryRecordPascalFieldIdOutSubscription     = big.NewInt(1 << 0)
+	payoutSubscriptionQueryRecordPascalFieldStatus                = big.NewInt(1 << 1)
+	payoutSubscriptionQueryRecordPascalFieldEvents                = big.NewInt(1 << 2)
+	payoutSubscriptionQueryRecordPascalFieldVendor                = big.NewInt(1 << 3)
+	payoutSubscriptionQueryRecordPascalFieldBillData              = big.NewInt(1 << 4)
+	payoutSubscriptionQueryRecordPascalFieldExternalPaypointId    = big.NewInt(1 << 5)
+	payoutSubscriptionQueryRecordPascalFieldSameDayAch            = big.NewInt(1 << 6)
+	payoutSubscriptionQueryRecordPascalFieldDoNotCreateBills      = big.NewInt(1 << 7)
+	payoutSubscriptionQueryRecordPascalFieldAllowDuplicatedBills  = big.NewInt(1 << 8)
+	payoutSubscriptionQueryRecordPascalFieldAutoConvertSameDayAch = big.NewInt(1 << 9)
+	payoutSubscriptionQueryRecordPascalFieldMethod                = big.NewInt(1 << 10)
+	payoutSubscriptionQueryRecordPascalFieldPaypointId            = big.NewInt(1 << 11)
+	payoutSubscriptionQueryRecordPascalFieldTotalAmount           = big.NewInt(1 << 12)
+	payoutSubscriptionQueryRecordPascalFieldNetAmount             = big.NewInt(1 << 13)
+	payoutSubscriptionQueryRecordPascalFieldFeeAmount             = big.NewInt(1 << 14)
+	payoutSubscriptionQueryRecordPascalFieldPaymentData           = big.NewInt(1 << 15)
+	payoutSubscriptionQueryRecordPascalFieldStartDate             = big.NewInt(1 << 16)
+	payoutSubscriptionQueryRecordPascalFieldEndDate               = big.NewInt(1 << 17)
+	payoutSubscriptionQueryRecordPascalFieldNextDate              = big.NewInt(1 << 18)
+	payoutSubscriptionQueryRecordPascalFieldFrequency             = big.NewInt(1 << 19)
+	payoutSubscriptionQueryRecordPascalFieldTotalCycles           = big.NewInt(1 << 20)
+	payoutSubscriptionQueryRecordPascalFieldLeftCycles            = big.NewInt(1 << 21)
+	payoutSubscriptionQueryRecordPascalFieldLastRun               = big.NewInt(1 << 22)
+	payoutSubscriptionQueryRecordPascalFieldEntrypageId           = big.NewInt(1 << 23)
+	payoutSubscriptionQueryRecordPascalFieldUntilCancelled        = big.NewInt(1 << 24)
+	payoutSubscriptionQueryRecordPascalFieldLastUpdated           = big.NewInt(1 << 25)
+	payoutSubscriptionQueryRecordPascalFieldCreatedAt             = big.NewInt(1 << 26)
+	payoutSubscriptionQueryRecordPascalFieldPaypointLegalname     = big.NewInt(1 << 27)
+	payoutSubscriptionQueryRecordPascalFieldPaypointDbaname       = big.NewInt(1 << 28)
+	payoutSubscriptionQueryRecordPascalFieldPaypointEntryname     = big.NewInt(1 << 29)
+	payoutSubscriptionQueryRecordPascalFieldParentOrgName         = big.NewInt(1 << 30)
+	payoutSubscriptionQueryRecordPascalFieldParentOrgId           = big.NewInt(1 << 31)
+	payoutSubscriptionQueryRecordPascalFieldSource                = big.NewInt(1 << 32)
+	payoutSubscriptionQueryRecordPascalFieldSubscriptionType      = big.NewInt(1 << 33)
 )
 
 type PayoutSubscriptionQueryRecordPascal struct {
@@ -8423,6 +9233,14 @@ type PayoutSubscriptionQueryRecordPascal struct {
 	// Bills associated with the payout subscription.
 	BillData           []*BillPayOutData   `json:"BillData,omitempty" url:"BillData,omitempty"`
 	ExternalPaypointId *ExternalPaypointId `json:"ExternalPaypointID,omitempty" url:"ExternalPaypointID,omitempty"`
+	// When `true`, the payout subscription's payouts are processed as same-day ACH instead of standard ACH. Same-day ACH must be enabled for the paypoint. Only ACH payouts honor this setting.
+	SameDayAch *bool `json:"SameDayAch,omitempty" url:"SameDayAch,omitempty"`
+	// When `true`, Payabli doesn't automatically create a bill for the payout subscription's payouts.
+	DoNotCreateBills *bool `json:"DoNotCreateBills,omitempty" url:"DoNotCreateBills,omitempty"`
+	// When `true`, the payout subscription bypasses the requirement for unique bills, identified by vendor invoice number.
+	AllowDuplicatedBills *bool `json:"AllowDuplicatedBills,omitempty" url:"AllowDuplicatedBills,omitempty"`
+	// When `true`, a same-day ACH payout captured after the same-day ACH cutoff is converted to a standard ACH payment. When `false`, the capture is declined. Has no effect when `SameDayAch` is `false`.
+	AutoConvertSameDayAch *bool `json:"AutoConvertSameDayAch,omitempty" url:"AutoConvertSameDayAch,omitempty"`
 	// The payout subscription's payment method.
 	Method     *string     `json:"Method,omitempty" url:"Method,omitempty"`
 	PaypointId *PaypointId `json:"PaypointId,omitempty" url:"PaypointId,omitempty"`
@@ -8431,8 +9249,8 @@ type PayoutSubscriptionQueryRecordPascal struct {
 	// The payout subscription amount, minus any fees.
 	NetAmount *Netamountnullable `json:"NetAmount,omitempty" url:"NetAmount,omitempty"`
 	// Fee applied to the payout subscription.
-	FeeAmount   *float64          `json:"FeeAmount,omitempty" url:"FeeAmount,omitempty"`
-	PaymentData *QueryPaymentData `json:"PaymentData,omitempty" url:"PaymentData,omitempty"`
+	FeeAmount   *float64                             `json:"FeeAmount,omitempty" url:"FeeAmount,omitempty"`
+	PaymentData *PayoutSubscriptionPaymentDataPascal `json:"PaymentData,omitempty" url:"PaymentData,omitempty"`
 	// The payout subscription start date.
 	StartDate *time.Time `json:"StartDate,omitempty" url:"StartDate,omitempty"`
 	// The payout subscription's end date.
@@ -8463,6 +9281,8 @@ type PayoutSubscriptionQueryRecordPascal struct {
 	ParentOrgName     *OrgParentName   `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
 	ParentOrgId       *OrgParentId     `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
 	Source            *Source          `json:"Source,omitempty" url:"Source,omitempty"`
+	// Subscription type. Always `null` for payout subscriptions.
+	SubscriptionType *string `json:"SubscriptionType,omitempty" url:"SubscriptionType,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -8513,6 +9333,34 @@ func (p *PayoutSubscriptionQueryRecordPascal) GetExternalPaypointId() *ExternalP
 	return p.ExternalPaypointId
 }
 
+func (p *PayoutSubscriptionQueryRecordPascal) GetSameDayAch() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.SameDayAch
+}
+
+func (p *PayoutSubscriptionQueryRecordPascal) GetDoNotCreateBills() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.DoNotCreateBills
+}
+
+func (p *PayoutSubscriptionQueryRecordPascal) GetAllowDuplicatedBills() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.AllowDuplicatedBills
+}
+
+func (p *PayoutSubscriptionQueryRecordPascal) GetAutoConvertSameDayAch() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.AutoConvertSameDayAch
+}
+
 func (p *PayoutSubscriptionQueryRecordPascal) GetMethod() *string {
 	if p == nil {
 		return nil
@@ -8548,7 +9396,7 @@ func (p *PayoutSubscriptionQueryRecordPascal) GetFeeAmount() *float64 {
 	return p.FeeAmount
 }
 
-func (p *PayoutSubscriptionQueryRecordPascal) GetPaymentData() *QueryPaymentData {
+func (p *PayoutSubscriptionQueryRecordPascal) GetPaymentData() *PayoutSubscriptionPaymentDataPascal {
 	if p == nil {
 		return nil
 	}
@@ -8674,6 +9522,13 @@ func (p *PayoutSubscriptionQueryRecordPascal) GetSource() *Source {
 	return p.Source
 }
 
+func (p *PayoutSubscriptionQueryRecordPascal) GetSubscriptionType() *string {
+	if p == nil {
+		return nil
+	}
+	return p.SubscriptionType
+}
+
 func (p *PayoutSubscriptionQueryRecordPascal) GetExtraProperties() map[string]interface{} {
 	if p == nil {
 		return nil
@@ -8730,6 +9585,34 @@ func (p *PayoutSubscriptionQueryRecordPascal) SetExternalPaypointId(externalPayp
 	p.require(payoutSubscriptionQueryRecordPascalFieldExternalPaypointId)
 }
 
+// SetSameDayAch sets the SameDayAch field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionQueryRecordPascal) SetSameDayAch(sameDayAch *bool) {
+	p.SameDayAch = sameDayAch
+	p.require(payoutSubscriptionQueryRecordPascalFieldSameDayAch)
+}
+
+// SetDoNotCreateBills sets the DoNotCreateBills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionQueryRecordPascal) SetDoNotCreateBills(doNotCreateBills *bool) {
+	p.DoNotCreateBills = doNotCreateBills
+	p.require(payoutSubscriptionQueryRecordPascalFieldDoNotCreateBills)
+}
+
+// SetAllowDuplicatedBills sets the AllowDuplicatedBills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionQueryRecordPascal) SetAllowDuplicatedBills(allowDuplicatedBills *bool) {
+	p.AllowDuplicatedBills = allowDuplicatedBills
+	p.require(payoutSubscriptionQueryRecordPascalFieldAllowDuplicatedBills)
+}
+
+// SetAutoConvertSameDayAch sets the AutoConvertSameDayAch field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionQueryRecordPascal) SetAutoConvertSameDayAch(autoConvertSameDayAch *bool) {
+	p.AutoConvertSameDayAch = autoConvertSameDayAch
+	p.require(payoutSubscriptionQueryRecordPascalFieldAutoConvertSameDayAch)
+}
+
 // SetMethod sets the Method field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (p *PayoutSubscriptionQueryRecordPascal) SetMethod(method *string) {
@@ -8767,7 +9650,7 @@ func (p *PayoutSubscriptionQueryRecordPascal) SetFeeAmount(feeAmount *float64) {
 
 // SetPaymentData sets the PaymentData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayoutSubscriptionQueryRecordPascal) SetPaymentData(paymentData *QueryPaymentData) {
+func (p *PayoutSubscriptionQueryRecordPascal) SetPaymentData(paymentData *PayoutSubscriptionPaymentDataPascal) {
 	p.PaymentData = paymentData
 	p.require(payoutSubscriptionQueryRecordPascalFieldPaymentData)
 }
@@ -8889,6 +9772,13 @@ func (p *PayoutSubscriptionQueryRecordPascal) SetParentOrgId(parentOrgId *OrgPar
 func (p *PayoutSubscriptionQueryRecordPascal) SetSource(source *Source) {
 	p.Source = source
 	p.require(payoutSubscriptionQueryRecordPascalFieldSource)
+}
+
+// SetSubscriptionType sets the SubscriptionType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionQueryRecordPascal) SetSubscriptionType(subscriptionType *string) {
+	p.SubscriptionType = subscriptionType
+	p.require(payoutSubscriptionQueryRecordPascalFieldSubscriptionType)
 }
 
 func (p *PayoutSubscriptionQueryRecordPascal) UnmarshalJSON(data []byte) error {

@@ -1293,36 +1293,1200 @@ func (p *PayoutScheduleDetail) String() string {
 // Flag indicating if the payout subscription is paused. When a payout subscription is paused, no payouts are processed until it's unpaused, and the next payment date isn't calculated automatically.
 type PayoutSetPause = bool
 
+// A bill associated with the payout subscription.
 var (
-	payoutSubscriptionQueryRecordFieldIdOutSubscription  = big.NewInt(1 << 0)
-	payoutSubscriptionQueryRecordFieldStatus             = big.NewInt(1 << 1)
-	payoutSubscriptionQueryRecordFieldEvents             = big.NewInt(1 << 2)
-	payoutSubscriptionQueryRecordFieldVendor             = big.NewInt(1 << 3)
-	payoutSubscriptionQueryRecordFieldBillData           = big.NewInt(1 << 4)
-	payoutSubscriptionQueryRecordFieldExternalPaypointId = big.NewInt(1 << 5)
-	payoutSubscriptionQueryRecordFieldMethod             = big.NewInt(1 << 6)
-	payoutSubscriptionQueryRecordFieldPaypointId         = big.NewInt(1 << 7)
-	payoutSubscriptionQueryRecordFieldTotalAmount        = big.NewInt(1 << 8)
-	payoutSubscriptionQueryRecordFieldNetAmount          = big.NewInt(1 << 9)
-	payoutSubscriptionQueryRecordFieldFeeAmount          = big.NewInt(1 << 10)
-	payoutSubscriptionQueryRecordFieldPaymentData        = big.NewInt(1 << 11)
-	payoutSubscriptionQueryRecordFieldStartDate          = big.NewInt(1 << 12)
-	payoutSubscriptionQueryRecordFieldEndDate            = big.NewInt(1 << 13)
-	payoutSubscriptionQueryRecordFieldNextDate           = big.NewInt(1 << 14)
-	payoutSubscriptionQueryRecordFieldFrequency          = big.NewInt(1 << 15)
-	payoutSubscriptionQueryRecordFieldTotalCycles        = big.NewInt(1 << 16)
-	payoutSubscriptionQueryRecordFieldLeftCycles         = big.NewInt(1 << 17)
-	payoutSubscriptionQueryRecordFieldLastRun            = big.NewInt(1 << 18)
-	payoutSubscriptionQueryRecordFieldEntrypageId        = big.NewInt(1 << 19)
-	payoutSubscriptionQueryRecordFieldUntilCancelled     = big.NewInt(1 << 20)
-	payoutSubscriptionQueryRecordFieldLastUpdated        = big.NewInt(1 << 21)
-	payoutSubscriptionQueryRecordFieldCreatedAt          = big.NewInt(1 << 22)
-	payoutSubscriptionQueryRecordFieldPaypointLegalname  = big.NewInt(1 << 23)
-	payoutSubscriptionQueryRecordFieldPaypointDbaname    = big.NewInt(1 << 24)
-	payoutSubscriptionQueryRecordFieldPaypointEntryname  = big.NewInt(1 << 25)
-	payoutSubscriptionQueryRecordFieldParentOrgName      = big.NewInt(1 << 26)
-	payoutSubscriptionQueryRecordFieldParentOrgId        = big.NewInt(1 << 27)
-	payoutSubscriptionQueryRecordFieldSource             = big.NewInt(1 << 28)
+	payoutSubscriptionBillFieldBillId           = big.NewInt(1 << 0)
+	payoutSubscriptionBillFieldLotNumber        = big.NewInt(1 << 1)
+	payoutSubscriptionBillFieldAccountingField1 = big.NewInt(1 << 2)
+	payoutSubscriptionBillFieldAccountingField2 = big.NewInt(1 << 3)
+	payoutSubscriptionBillFieldTerms            = big.NewInt(1 << 4)
+	payoutSubscriptionBillFieldAdditionalData   = big.NewInt(1 << 5)
+	payoutSubscriptionBillFieldAttachments      = big.NewInt(1 << 6)
+	payoutSubscriptionBillFieldInvoiceNumber    = big.NewInt(1 << 7)
+	payoutSubscriptionBillFieldNetAmount        = big.NewInt(1 << 8)
+	payoutSubscriptionBillFieldInvoiceDate      = big.NewInt(1 << 9)
+	payoutSubscriptionBillFieldDueDate          = big.NewInt(1 << 10)
+	payoutSubscriptionBillFieldComments         = big.NewInt(1 << 11)
+	payoutSubscriptionBillFieldIdentifier       = big.NewInt(1 << 12)
+	payoutSubscriptionBillFieldDiscount         = big.NewInt(1 << 13)
+	payoutSubscriptionBillFieldTotalAmount      = big.NewInt(1 << 14)
+)
+
+type PayoutSubscriptionBill struct {
+	// Bill ID in Payabli.
+	BillId *int64 `json:"billId,omitempty" url:"billId,omitempty"`
+	// Lot number associated with the bill.
+	LotNumber        *string          `json:"lotNumber,omitempty" url:"lotNumber,omitempty"`
+	AccountingField1 *AccountingField `json:"accountingField1,omitempty" url:"accountingField1,omitempty"`
+	AccountingField2 *AccountingField `json:"accountingField2,omitempty" url:"accountingField2,omitempty"`
+	// Description of payment terms.
+	Terms          *Terms             `json:"terms,omitempty" url:"terms,omitempty"`
+	AdditionalData *AdditionalDataMap `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	// Bill image attachment. Send the bill image as Base64-encoded string, or as a publicly accessible link. For full details on using this field with a payout authorization, see [the documentation](/developers/developer-guides/pay-out-manage-payouts).
+	Attachments *Attachments `json:"attachments,omitempty" url:"attachments,omitempty"`
+	// Custom number identifying the bill. Must be unique in paypoint. **Required** for new bill and when `billId` isn't provided.
+	InvoiceNumber *InvoiceNumber `json:"invoiceNumber,omitempty" url:"invoiceNumber,omitempty"`
+	// Net Amount owed in bill. Required when adding a bill.
+	NetAmount *NetAmountstring `json:"netAmount,omitempty" url:"netAmount,omitempty"`
+	// Bill date in format YYYY-MM-DD or MM/DD/YYYY.
+	InvoiceDate *time.Time `json:"invoiceDate,omitempty" url:"invoiceDate,omitempty" format:"date"`
+	// Bill due date in format YYYY-MM-DD or MM/DD/YYYY.
+	DueDate *time.Time `json:"dueDate,omitempty" url:"dueDate,omitempty" format:"date"`
+	// Any comments about bill. **For managed payouts, this field has a limit of 100 characters**.
+	Comments *Comments `json:"comments,omitempty" url:"comments,omitempty"`
+	// Custom identifier for the bill.
+	Identifier *string `json:"identifier,omitempty" url:"identifier,omitempty"`
+	// Bill discount amount.
+	Discount *string `json:"discount,omitempty" url:"discount,omitempty"`
+	// Total amount of the bill.
+	TotalAmount *string `json:"totalAmount,omitempty" url:"totalAmount,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PayoutSubscriptionBill) GetBillId() *int64 {
+	if p == nil {
+		return nil
+	}
+	return p.BillId
+}
+
+func (p *PayoutSubscriptionBill) GetLotNumber() *string {
+	if p == nil {
+		return nil
+	}
+	return p.LotNumber
+}
+
+func (p *PayoutSubscriptionBill) GetAccountingField1() *AccountingField {
+	if p == nil {
+		return nil
+	}
+	return p.AccountingField1
+}
+
+func (p *PayoutSubscriptionBill) GetAccountingField2() *AccountingField {
+	if p == nil {
+		return nil
+	}
+	return p.AccountingField2
+}
+
+func (p *PayoutSubscriptionBill) GetTerms() *Terms {
+	if p == nil {
+		return nil
+	}
+	return p.Terms
+}
+
+func (p *PayoutSubscriptionBill) GetAdditionalData() *AdditionalDataMap {
+	if p == nil {
+		return nil
+	}
+	return p.AdditionalData
+}
+
+func (p *PayoutSubscriptionBill) GetAttachments() *Attachments {
+	if p == nil {
+		return nil
+	}
+	return p.Attachments
+}
+
+func (p *PayoutSubscriptionBill) GetInvoiceNumber() *InvoiceNumber {
+	if p == nil {
+		return nil
+	}
+	return p.InvoiceNumber
+}
+
+func (p *PayoutSubscriptionBill) GetNetAmount() *NetAmountstring {
+	if p == nil {
+		return nil
+	}
+	return p.NetAmount
+}
+
+func (p *PayoutSubscriptionBill) GetInvoiceDate() *time.Time {
+	if p == nil {
+		return nil
+	}
+	return p.InvoiceDate
+}
+
+func (p *PayoutSubscriptionBill) GetDueDate() *time.Time {
+	if p == nil {
+		return nil
+	}
+	return p.DueDate
+}
+
+func (p *PayoutSubscriptionBill) GetComments() *Comments {
+	if p == nil {
+		return nil
+	}
+	return p.Comments
+}
+
+func (p *PayoutSubscriptionBill) GetIdentifier() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Identifier
+}
+
+func (p *PayoutSubscriptionBill) GetDiscount() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Discount
+}
+
+func (p *PayoutSubscriptionBill) GetTotalAmount() *string {
+	if p == nil {
+		return nil
+	}
+	return p.TotalAmount
+}
+
+func (p *PayoutSubscriptionBill) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PayoutSubscriptionBill) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetBillId sets the BillId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionBill) SetBillId(billId *int64) {
+	p.BillId = billId
+	p.require(payoutSubscriptionBillFieldBillId)
+}
+
+// SetLotNumber sets the LotNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionBill) SetLotNumber(lotNumber *string) {
+	p.LotNumber = lotNumber
+	p.require(payoutSubscriptionBillFieldLotNumber)
+}
+
+// SetAccountingField1 sets the AccountingField1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionBill) SetAccountingField1(accountingField1 *AccountingField) {
+	p.AccountingField1 = accountingField1
+	p.require(payoutSubscriptionBillFieldAccountingField1)
+}
+
+// SetAccountingField2 sets the AccountingField2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionBill) SetAccountingField2(accountingField2 *AccountingField) {
+	p.AccountingField2 = accountingField2
+	p.require(payoutSubscriptionBillFieldAccountingField2)
+}
+
+// SetTerms sets the Terms field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionBill) SetTerms(terms *Terms) {
+	p.Terms = terms
+	p.require(payoutSubscriptionBillFieldTerms)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionBill) SetAdditionalData(additionalData *AdditionalDataMap) {
+	p.AdditionalData = additionalData
+	p.require(payoutSubscriptionBillFieldAdditionalData)
+}
+
+// SetAttachments sets the Attachments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionBill) SetAttachments(attachments *Attachments) {
+	p.Attachments = attachments
+	p.require(payoutSubscriptionBillFieldAttachments)
+}
+
+// SetInvoiceNumber sets the InvoiceNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionBill) SetInvoiceNumber(invoiceNumber *InvoiceNumber) {
+	p.InvoiceNumber = invoiceNumber
+	p.require(payoutSubscriptionBillFieldInvoiceNumber)
+}
+
+// SetNetAmount sets the NetAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionBill) SetNetAmount(netAmount *NetAmountstring) {
+	p.NetAmount = netAmount
+	p.require(payoutSubscriptionBillFieldNetAmount)
+}
+
+// SetInvoiceDate sets the InvoiceDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionBill) SetInvoiceDate(invoiceDate *time.Time) {
+	p.InvoiceDate = invoiceDate
+	p.require(payoutSubscriptionBillFieldInvoiceDate)
+}
+
+// SetDueDate sets the DueDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionBill) SetDueDate(dueDate *time.Time) {
+	p.DueDate = dueDate
+	p.require(payoutSubscriptionBillFieldDueDate)
+}
+
+// SetComments sets the Comments field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionBill) SetComments(comments *Comments) {
+	p.Comments = comments
+	p.require(payoutSubscriptionBillFieldComments)
+}
+
+// SetIdentifier sets the Identifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionBill) SetIdentifier(identifier *string) {
+	p.Identifier = identifier
+	p.require(payoutSubscriptionBillFieldIdentifier)
+}
+
+// SetDiscount sets the Discount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionBill) SetDiscount(discount *string) {
+	p.Discount = discount
+	p.require(payoutSubscriptionBillFieldDiscount)
+}
+
+// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionBill) SetTotalAmount(totalAmount *string) {
+	p.TotalAmount = totalAmount
+	p.require(payoutSubscriptionBillFieldTotalAmount)
+}
+
+func (p *PayoutSubscriptionBill) UnmarshalJSON(data []byte) error {
+	type embed PayoutSubscriptionBill
+	var unmarshaler = struct {
+		embed
+		InvoiceDate *internal.Date `json:"invoiceDate,omitempty"`
+		DueDate     *internal.Date `json:"dueDate,omitempty"`
+	}{
+		embed: embed(*p),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*p = PayoutSubscriptionBill(unmarshaler.embed)
+	p.InvoiceDate = unmarshaler.InvoiceDate.TimePtr()
+	p.DueDate = unmarshaler.DueDate.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PayoutSubscriptionBill) MarshalJSON() ([]byte, error) {
+	type embed PayoutSubscriptionBill
+	var marshaler = struct {
+		embed
+		InvoiceDate *internal.Date `json:"invoiceDate,omitempty"`
+		DueDate     *internal.Date `json:"dueDate,omitempty"`
+	}{
+		embed:       embed(*p),
+		InvoiceDate: internal.NewOptionalDate(p.InvoiceDate),
+		DueDate:     internal.NewOptionalDate(p.DueDate),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PayoutSubscriptionBill) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+// Payment method details for the payout subscription.
+var (
+	payoutSubscriptionPaymentDataFieldAccountExp            = big.NewInt(1 << 0)
+	payoutSubscriptionPaymentDataFieldAccountId             = big.NewInt(1 << 1)
+	payoutSubscriptionPaymentDataFieldAccountType           = big.NewInt(1 << 2)
+	payoutSubscriptionPaymentDataFieldAccountZip            = big.NewInt(1 << 3)
+	payoutSubscriptionPaymentDataFieldBinData               = big.NewInt(1 << 4)
+	payoutSubscriptionPaymentDataFieldHolderName            = big.NewInt(1 << 5)
+	payoutSubscriptionPaymentDataFieldInitiator             = big.NewInt(1 << 6)
+	payoutSubscriptionPaymentDataFieldMaskedAccount         = big.NewInt(1 << 7)
+	payoutSubscriptionPaymentDataFieldOrderDescription      = big.NewInt(1 << 8)
+	payoutSubscriptionPaymentDataFieldPaymentDetails        = big.NewInt(1 << 9)
+	payoutSubscriptionPaymentDataFieldPayorSignature        = big.NewInt(1 << 10)
+	payoutSubscriptionPaymentDataFieldSequence              = big.NewInt(1 << 11)
+	payoutSubscriptionPaymentDataFieldSignatureData         = big.NewInt(1 << 12)
+	payoutSubscriptionPaymentDataFieldWalletType            = big.NewInt(1 << 13)
+	payoutSubscriptionPaymentDataFieldStoredId              = big.NewInt(1 << 14)
+	payoutSubscriptionPaymentDataFieldStoredMethodUsageType = big.NewInt(1 << 15)
+)
+
+type PayoutSubscriptionPaymentData struct {
+	AccountExp  *Accountexp  `json:"accountExp,omitempty" url:"accountExp,omitempty"`
+	AccountId   *AccountId   `json:"accountId,omitempty" url:"accountId,omitempty"`
+	AccountType *Accounttype `json:"accountType,omitempty" url:"accountType,omitempty"`
+	AccountZip  *Accountzip  `json:"accountZip,omitempty" url:"accountZip,omitempty"`
+	// Card information. Always `null` on this endpoint.
+	BinData    *BinData    `json:"binData,omitempty" url:"binData,omitempty"`
+	HolderName *Holdername `json:"holderName,omitempty" url:"holderName,omitempty"`
+	// The transaction's initiator. Always `null` on this endpoint.
+	Initiator        *Initiator                        `json:"initiator,omitempty" url:"initiator,omitempty"`
+	MaskedAccount    *Maskedaccount                    `json:"maskedAccount,omitempty" url:"maskedAccount,omitempty"`
+	OrderDescription *Orderdescription                 `json:"orderDescription,omitempty" url:"orderDescription,omitempty"`
+	PaymentDetails   *PayoutSubscriptionPaymentDetails `json:"paymentDetails,omitempty" url:"paymentDetails,omitempty"`
+	// Signature captured on a card-present device. Always `null` for payout subscriptions.
+	PayorSignature *PayoutSubscriptionPaymentDataPayorSignature `json:"payorSignature,omitempty" url:"payorSignature,omitempty"`
+	// The order of the transaction for cardholder-initiated and merchant-initiated transaction purposes. Always `null` on this endpoint.
+	Sequence      *Sequence      `json:"sequence,omitempty" url:"sequence,omitempty"`
+	SignatureData *Signaturedata `json:"signatureData,omitempty" url:"signatureData,omitempty"`
+	// Digital wallet type if applicable. Always `null` on this endpoint.
+	WalletType *string `json:"walletType,omitempty" url:"walletType,omitempty"`
+	// Identifier of stored payment method used in transaction.
+	StoredId *Storedmethodid `json:"storedId,omitempty" url:"storedId,omitempty"`
+	// The usage type for the stored method. Always `null` on this endpoint.
+	StoredMethodUsageType *StoredMethodUsageType `json:"storedMethodUsageType,omitempty" url:"storedMethodUsageType,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PayoutSubscriptionPaymentData) GetAccountExp() *Accountexp {
+	if p == nil {
+		return nil
+	}
+	return p.AccountExp
+}
+
+func (p *PayoutSubscriptionPaymentData) GetAccountId() *AccountId {
+	if p == nil {
+		return nil
+	}
+	return p.AccountId
+}
+
+func (p *PayoutSubscriptionPaymentData) GetAccountType() *Accounttype {
+	if p == nil {
+		return nil
+	}
+	return p.AccountType
+}
+
+func (p *PayoutSubscriptionPaymentData) GetAccountZip() *Accountzip {
+	if p == nil {
+		return nil
+	}
+	return p.AccountZip
+}
+
+func (p *PayoutSubscriptionPaymentData) GetBinData() *BinData {
+	if p == nil {
+		return nil
+	}
+	return p.BinData
+}
+
+func (p *PayoutSubscriptionPaymentData) GetHolderName() *Holdername {
+	if p == nil {
+		return nil
+	}
+	return p.HolderName
+}
+
+func (p *PayoutSubscriptionPaymentData) GetInitiator() *Initiator {
+	if p == nil {
+		return nil
+	}
+	return p.Initiator
+}
+
+func (p *PayoutSubscriptionPaymentData) GetMaskedAccount() *Maskedaccount {
+	if p == nil {
+		return nil
+	}
+	return p.MaskedAccount
+}
+
+func (p *PayoutSubscriptionPaymentData) GetOrderDescription() *Orderdescription {
+	if p == nil {
+		return nil
+	}
+	return p.OrderDescription
+}
+
+func (p *PayoutSubscriptionPaymentData) GetPaymentDetails() *PayoutSubscriptionPaymentDetails {
+	if p == nil {
+		return nil
+	}
+	return p.PaymentDetails
+}
+
+func (p *PayoutSubscriptionPaymentData) GetPayorSignature() *PayoutSubscriptionPaymentDataPayorSignature {
+	if p == nil {
+		return nil
+	}
+	return p.PayorSignature
+}
+
+func (p *PayoutSubscriptionPaymentData) GetSequence() *Sequence {
+	if p == nil {
+		return nil
+	}
+	return p.Sequence
+}
+
+func (p *PayoutSubscriptionPaymentData) GetSignatureData() *Signaturedata {
+	if p == nil {
+		return nil
+	}
+	return p.SignatureData
+}
+
+func (p *PayoutSubscriptionPaymentData) GetWalletType() *string {
+	if p == nil {
+		return nil
+	}
+	return p.WalletType
+}
+
+func (p *PayoutSubscriptionPaymentData) GetStoredId() *Storedmethodid {
+	if p == nil {
+		return nil
+	}
+	return p.StoredId
+}
+
+func (p *PayoutSubscriptionPaymentData) GetStoredMethodUsageType() *StoredMethodUsageType {
+	if p == nil {
+		return nil
+	}
+	return p.StoredMethodUsageType
+}
+
+func (p *PayoutSubscriptionPaymentData) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PayoutSubscriptionPaymentData) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetAccountExp sets the AccountExp field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentData) SetAccountExp(accountExp *Accountexp) {
+	p.AccountExp = accountExp
+	p.require(payoutSubscriptionPaymentDataFieldAccountExp)
+}
+
+// SetAccountId sets the AccountId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentData) SetAccountId(accountId *AccountId) {
+	p.AccountId = accountId
+	p.require(payoutSubscriptionPaymentDataFieldAccountId)
+}
+
+// SetAccountType sets the AccountType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentData) SetAccountType(accountType *Accounttype) {
+	p.AccountType = accountType
+	p.require(payoutSubscriptionPaymentDataFieldAccountType)
+}
+
+// SetAccountZip sets the AccountZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentData) SetAccountZip(accountZip *Accountzip) {
+	p.AccountZip = accountZip
+	p.require(payoutSubscriptionPaymentDataFieldAccountZip)
+}
+
+// SetBinData sets the BinData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentData) SetBinData(binData *BinData) {
+	p.BinData = binData
+	p.require(payoutSubscriptionPaymentDataFieldBinData)
+}
+
+// SetHolderName sets the HolderName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentData) SetHolderName(holderName *Holdername) {
+	p.HolderName = holderName
+	p.require(payoutSubscriptionPaymentDataFieldHolderName)
+}
+
+// SetInitiator sets the Initiator field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentData) SetInitiator(initiator *Initiator) {
+	p.Initiator = initiator
+	p.require(payoutSubscriptionPaymentDataFieldInitiator)
+}
+
+// SetMaskedAccount sets the MaskedAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentData) SetMaskedAccount(maskedAccount *Maskedaccount) {
+	p.MaskedAccount = maskedAccount
+	p.require(payoutSubscriptionPaymentDataFieldMaskedAccount)
+}
+
+// SetOrderDescription sets the OrderDescription field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentData) SetOrderDescription(orderDescription *Orderdescription) {
+	p.OrderDescription = orderDescription
+	p.require(payoutSubscriptionPaymentDataFieldOrderDescription)
+}
+
+// SetPaymentDetails sets the PaymentDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentData) SetPaymentDetails(paymentDetails *PayoutSubscriptionPaymentDetails) {
+	p.PaymentDetails = paymentDetails
+	p.require(payoutSubscriptionPaymentDataFieldPaymentDetails)
+}
+
+// SetPayorSignature sets the PayorSignature field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentData) SetPayorSignature(payorSignature *PayoutSubscriptionPaymentDataPayorSignature) {
+	p.PayorSignature = payorSignature
+	p.require(payoutSubscriptionPaymentDataFieldPayorSignature)
+}
+
+// SetSequence sets the Sequence field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentData) SetSequence(sequence *Sequence) {
+	p.Sequence = sequence
+	p.require(payoutSubscriptionPaymentDataFieldSequence)
+}
+
+// SetSignatureData sets the SignatureData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentData) SetSignatureData(signatureData *Signaturedata) {
+	p.SignatureData = signatureData
+	p.require(payoutSubscriptionPaymentDataFieldSignatureData)
+}
+
+// SetWalletType sets the WalletType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentData) SetWalletType(walletType *string) {
+	p.WalletType = walletType
+	p.require(payoutSubscriptionPaymentDataFieldWalletType)
+}
+
+// SetStoredId sets the StoredId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentData) SetStoredId(storedId *Storedmethodid) {
+	p.StoredId = storedId
+	p.require(payoutSubscriptionPaymentDataFieldStoredId)
+}
+
+// SetStoredMethodUsageType sets the StoredMethodUsageType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentData) SetStoredMethodUsageType(storedMethodUsageType *StoredMethodUsageType) {
+	p.StoredMethodUsageType = storedMethodUsageType
+	p.require(payoutSubscriptionPaymentDataFieldStoredMethodUsageType)
+}
+
+func (p *PayoutSubscriptionPaymentData) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayoutSubscriptionPaymentData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PayoutSubscriptionPaymentData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PayoutSubscriptionPaymentData) MarshalJSON() ([]byte, error) {
+	type embed PayoutSubscriptionPaymentData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PayoutSubscriptionPaymentData) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+// Signature captured on a card-present device. Always `null` for payout subscriptions.
+var (
+	payoutSubscriptionPaymentDataPayorSignatureFieldStatus  = big.NewInt(1 << 0)
+	payoutSubscriptionPaymentDataPayorSignatureFieldFormat  = big.NewInt(1 << 1)
+	payoutSubscriptionPaymentDataPayorSignatureFieldContent = big.NewInt(1 << 2)
+)
+
+type PayoutSubscriptionPaymentDataPayorSignature struct {
+	// Availability of the signature. One of `stored`, `pending`, or `unavailable`.
+	Status *string `json:"status,omitempty" url:"status,omitempty"`
+	// Image format of the stored signature, `png` or `jpeg`.
+	Format *string `json:"format,omitempty" url:"format,omitempty"`
+	// Base64-encoded signature image. Only set when `status` is `stored`.
+	Content *string `json:"content,omitempty" url:"content,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PayoutSubscriptionPaymentDataPayorSignature) GetStatus() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Status
+}
+
+func (p *PayoutSubscriptionPaymentDataPayorSignature) GetFormat() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Format
+}
+
+func (p *PayoutSubscriptionPaymentDataPayorSignature) GetContent() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Content
+}
+
+func (p *PayoutSubscriptionPaymentDataPayorSignature) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PayoutSubscriptionPaymentDataPayorSignature) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetStatus sets the Status field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDataPayorSignature) SetStatus(status *string) {
+	p.Status = status
+	p.require(payoutSubscriptionPaymentDataPayorSignatureFieldStatus)
+}
+
+// SetFormat sets the Format field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDataPayorSignature) SetFormat(format *string) {
+	p.Format = format
+	p.require(payoutSubscriptionPaymentDataPayorSignatureFieldFormat)
+}
+
+// SetContent sets the Content field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDataPayorSignature) SetContent(content *string) {
+	p.Content = content
+	p.require(payoutSubscriptionPaymentDataPayorSignatureFieldContent)
+}
+
+func (p *PayoutSubscriptionPaymentDataPayorSignature) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayoutSubscriptionPaymentDataPayorSignature
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PayoutSubscriptionPaymentDataPayorSignature(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PayoutSubscriptionPaymentDataPayorSignature) MarshalJSON() ([]byte, error) {
+	type embed PayoutSubscriptionPaymentDataPayorSignature
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PayoutSubscriptionPaymentDataPayorSignature) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+// Payment details for the payout subscription.
+var (
+	payoutSubscriptionPaymentDetailsFieldTotalAmount          = big.NewInt(1 << 0)
+	payoutSubscriptionPaymentDetailsFieldServiceFee           = big.NewInt(1 << 1)
+	payoutSubscriptionPaymentDetailsFieldSurchargeFee         = big.NewInt(1 << 2)
+	payoutSubscriptionPaymentDetailsFieldCheckNumber          = big.NewInt(1 << 3)
+	payoutSubscriptionPaymentDetailsFieldCheckImage           = big.NewInt(1 << 4)
+	payoutSubscriptionPaymentDetailsFieldCheckUniqueId        = big.NewInt(1 << 5)
+	payoutSubscriptionPaymentDetailsFieldCurrency             = big.NewInt(1 << 6)
+	payoutSubscriptionPaymentDetailsFieldOrderDescription     = big.NewInt(1 << 7)
+	payoutSubscriptionPaymentDetailsFieldOrderId              = big.NewInt(1 << 8)
+	payoutSubscriptionPaymentDetailsFieldOrderIdAlternative   = big.NewInt(1 << 9)
+	payoutSubscriptionPaymentDetailsFieldPaymentDescription   = big.NewInt(1 << 10)
+	payoutSubscriptionPaymentDetailsFieldSettlementDescriptor = big.NewInt(1 << 11)
+	payoutSubscriptionPaymentDetailsFieldGroupNumber          = big.NewInt(1 << 12)
+	payoutSubscriptionPaymentDetailsFieldSource               = big.NewInt(1 << 13)
+	payoutSubscriptionPaymentDetailsFieldPayabliTransId       = big.NewInt(1 << 14)
+	payoutSubscriptionPaymentDetailsFieldUnbundled            = big.NewInt(1 << 15)
+	payoutSubscriptionPaymentDetailsFieldCategories           = big.NewInt(1 << 16)
+	payoutSubscriptionPaymentDetailsFieldSplitFunding         = big.NewInt(1 << 17)
+)
+
+type PayoutSubscriptionPaymentDetails struct {
+	// Total payout amount, including any service fee.
+	TotalAmount *float64 `json:"totalAmount,omitempty" url:"totalAmount,omitempty"`
+	// Service fee deducted from the total amount.
+	ServiceFee *float64 `json:"serviceFee,omitempty" url:"serviceFee,omitempty"`
+	// Surcharge amount. Always `0` for payout subscriptions.
+	SurchargeFee *float64 `json:"surchargeFee,omitempty" url:"surchargeFee,omitempty"`
+	// Check number for the payout. Set when the payment method is `check`.
+	CheckNumber *string `json:"checkNumber,omitempty" url:"checkNumber,omitempty"`
+	// Object containing an image of a paper check.
+	CheckImage map[string]any `json:"checkImage,omitempty" url:"checkImage,omitempty"`
+	// Unique identifier for a processed check image.
+	CheckUniqueId *string `json:"checkUniqueId,omitempty" url:"checkUniqueId,omitempty"`
+	// Currency code ISO-4217.
+	Currency *string `json:"currency,omitempty" url:"currency,omitempty"`
+	// Description of the payout order.
+	OrderDescription *string `json:"orderDescription,omitempty" url:"orderDescription,omitempty"`
+	// Order identifier associated with the payout.
+	OrderId *string `json:"orderId,omitempty" url:"orderId,omitempty"`
+	// Alternative order identifier.
+	OrderIdAlternative *string `json:"orderIdAlternative,omitempty" url:"orderIdAlternative,omitempty"`
+	// Description of the payment.
+	PaymentDescription *string `json:"paymentDescription,omitempty" url:"paymentDescription,omitempty"`
+	// Settlement descriptor for the payout. Always `null` on this endpoint.
+	SettlementDescriptor *string `json:"settlementDescriptor,omitempty" url:"settlementDescriptor,omitempty"`
+	// Group number for the payout.
+	GroupNumber *string `json:"groupNumber,omitempty" url:"groupNumber,omitempty"`
+	// Source identifier for the payout.
+	Source *string `json:"source,omitempty" url:"source,omitempty"`
+	// Payabli transaction identifier. Always `null` on this endpoint.
+	PayabliTransId *string `json:"payabliTransId,omitempty" url:"payabliTransId,omitempty"`
+	// When `true`, each bill is processed as a separate payout. Always `null` on this endpoint.
+	Unbundled *bool `json:"unbundled,omitempty" url:"unbundled,omitempty"`
+	// Payment categories or line items describing the amount.
+	Categories   []*PaymentCategories `json:"categories,omitempty" url:"categories,omitempty"`
+	SplitFunding *SplitFunding        `json:"splitFunding,omitempty" url:"splitFunding,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PayoutSubscriptionPaymentDetails) GetTotalAmount() *float64 {
+	if p == nil {
+		return nil
+	}
+	return p.TotalAmount
+}
+
+func (p *PayoutSubscriptionPaymentDetails) GetServiceFee() *float64 {
+	if p == nil {
+		return nil
+	}
+	return p.ServiceFee
+}
+
+func (p *PayoutSubscriptionPaymentDetails) GetSurchargeFee() *float64 {
+	if p == nil {
+		return nil
+	}
+	return p.SurchargeFee
+}
+
+func (p *PayoutSubscriptionPaymentDetails) GetCheckNumber() *string {
+	if p == nil {
+		return nil
+	}
+	return p.CheckNumber
+}
+
+func (p *PayoutSubscriptionPaymentDetails) GetCheckImage() map[string]any {
+	if p == nil {
+		return nil
+	}
+	return p.CheckImage
+}
+
+func (p *PayoutSubscriptionPaymentDetails) GetCheckUniqueId() *string {
+	if p == nil {
+		return nil
+	}
+	return p.CheckUniqueId
+}
+
+func (p *PayoutSubscriptionPaymentDetails) GetCurrency() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Currency
+}
+
+func (p *PayoutSubscriptionPaymentDetails) GetOrderDescription() *string {
+	if p == nil {
+		return nil
+	}
+	return p.OrderDescription
+}
+
+func (p *PayoutSubscriptionPaymentDetails) GetOrderId() *string {
+	if p == nil {
+		return nil
+	}
+	return p.OrderId
+}
+
+func (p *PayoutSubscriptionPaymentDetails) GetOrderIdAlternative() *string {
+	if p == nil {
+		return nil
+	}
+	return p.OrderIdAlternative
+}
+
+func (p *PayoutSubscriptionPaymentDetails) GetPaymentDescription() *string {
+	if p == nil {
+		return nil
+	}
+	return p.PaymentDescription
+}
+
+func (p *PayoutSubscriptionPaymentDetails) GetSettlementDescriptor() *string {
+	if p == nil {
+		return nil
+	}
+	return p.SettlementDescriptor
+}
+
+func (p *PayoutSubscriptionPaymentDetails) GetGroupNumber() *string {
+	if p == nil {
+		return nil
+	}
+	return p.GroupNumber
+}
+
+func (p *PayoutSubscriptionPaymentDetails) GetSource() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Source
+}
+
+func (p *PayoutSubscriptionPaymentDetails) GetPayabliTransId() *string {
+	if p == nil {
+		return nil
+	}
+	return p.PayabliTransId
+}
+
+func (p *PayoutSubscriptionPaymentDetails) GetUnbundled() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.Unbundled
+}
+
+func (p *PayoutSubscriptionPaymentDetails) GetCategories() []*PaymentCategories {
+	if p == nil {
+		return nil
+	}
+	return p.Categories
+}
+
+func (p *PayoutSubscriptionPaymentDetails) GetSplitFunding() *SplitFunding {
+	if p == nil {
+		return nil
+	}
+	return p.SplitFunding
+}
+
+func (p *PayoutSubscriptionPaymentDetails) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PayoutSubscriptionPaymentDetails) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetTotalAmount sets the TotalAmount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetails) SetTotalAmount(totalAmount *float64) {
+	p.TotalAmount = totalAmount
+	p.require(payoutSubscriptionPaymentDetailsFieldTotalAmount)
+}
+
+// SetServiceFee sets the ServiceFee field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetails) SetServiceFee(serviceFee *float64) {
+	p.ServiceFee = serviceFee
+	p.require(payoutSubscriptionPaymentDetailsFieldServiceFee)
+}
+
+// SetSurchargeFee sets the SurchargeFee field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetails) SetSurchargeFee(surchargeFee *float64) {
+	p.SurchargeFee = surchargeFee
+	p.require(payoutSubscriptionPaymentDetailsFieldSurchargeFee)
+}
+
+// SetCheckNumber sets the CheckNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetails) SetCheckNumber(checkNumber *string) {
+	p.CheckNumber = checkNumber
+	p.require(payoutSubscriptionPaymentDetailsFieldCheckNumber)
+}
+
+// SetCheckImage sets the CheckImage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetails) SetCheckImage(checkImage map[string]any) {
+	p.CheckImage = checkImage
+	p.require(payoutSubscriptionPaymentDetailsFieldCheckImage)
+}
+
+// SetCheckUniqueId sets the CheckUniqueId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetails) SetCheckUniqueId(checkUniqueId *string) {
+	p.CheckUniqueId = checkUniqueId
+	p.require(payoutSubscriptionPaymentDetailsFieldCheckUniqueId)
+}
+
+// SetCurrency sets the Currency field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetails) SetCurrency(currency *string) {
+	p.Currency = currency
+	p.require(payoutSubscriptionPaymentDetailsFieldCurrency)
+}
+
+// SetOrderDescription sets the OrderDescription field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetails) SetOrderDescription(orderDescription *string) {
+	p.OrderDescription = orderDescription
+	p.require(payoutSubscriptionPaymentDetailsFieldOrderDescription)
+}
+
+// SetOrderId sets the OrderId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetails) SetOrderId(orderId *string) {
+	p.OrderId = orderId
+	p.require(payoutSubscriptionPaymentDetailsFieldOrderId)
+}
+
+// SetOrderIdAlternative sets the OrderIdAlternative field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetails) SetOrderIdAlternative(orderIdAlternative *string) {
+	p.OrderIdAlternative = orderIdAlternative
+	p.require(payoutSubscriptionPaymentDetailsFieldOrderIdAlternative)
+}
+
+// SetPaymentDescription sets the PaymentDescription field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetails) SetPaymentDescription(paymentDescription *string) {
+	p.PaymentDescription = paymentDescription
+	p.require(payoutSubscriptionPaymentDetailsFieldPaymentDescription)
+}
+
+// SetSettlementDescriptor sets the SettlementDescriptor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetails) SetSettlementDescriptor(settlementDescriptor *string) {
+	p.SettlementDescriptor = settlementDescriptor
+	p.require(payoutSubscriptionPaymentDetailsFieldSettlementDescriptor)
+}
+
+// SetGroupNumber sets the GroupNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetails) SetGroupNumber(groupNumber *string) {
+	p.GroupNumber = groupNumber
+	p.require(payoutSubscriptionPaymentDetailsFieldGroupNumber)
+}
+
+// SetSource sets the Source field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetails) SetSource(source *string) {
+	p.Source = source
+	p.require(payoutSubscriptionPaymentDetailsFieldSource)
+}
+
+// SetPayabliTransId sets the PayabliTransId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetails) SetPayabliTransId(payabliTransId *string) {
+	p.PayabliTransId = payabliTransId
+	p.require(payoutSubscriptionPaymentDetailsFieldPayabliTransId)
+}
+
+// SetUnbundled sets the Unbundled field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetails) SetUnbundled(unbundled *bool) {
+	p.Unbundled = unbundled
+	p.require(payoutSubscriptionPaymentDetailsFieldUnbundled)
+}
+
+// SetCategories sets the Categories field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetails) SetCategories(categories []*PaymentCategories) {
+	p.Categories = categories
+	p.require(payoutSubscriptionPaymentDetailsFieldCategories)
+}
+
+// SetSplitFunding sets the SplitFunding field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionPaymentDetails) SetSplitFunding(splitFunding *SplitFunding) {
+	p.SplitFunding = splitFunding
+	p.require(payoutSubscriptionPaymentDetailsFieldSplitFunding)
+}
+
+func (p *PayoutSubscriptionPaymentDetails) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayoutSubscriptionPaymentDetails
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PayoutSubscriptionPaymentDetails(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PayoutSubscriptionPaymentDetails) MarshalJSON() ([]byte, error) {
+	type embed PayoutSubscriptionPaymentDetails
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PayoutSubscriptionPaymentDetails) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+var (
+	payoutSubscriptionQueryRecordFieldIdOutSubscription     = big.NewInt(1 << 0)
+	payoutSubscriptionQueryRecordFieldStatus                = big.NewInt(1 << 1)
+	payoutSubscriptionQueryRecordFieldEvents                = big.NewInt(1 << 2)
+	payoutSubscriptionQueryRecordFieldVendor                = big.NewInt(1 << 3)
+	payoutSubscriptionQueryRecordFieldBillData              = big.NewInt(1 << 4)
+	payoutSubscriptionQueryRecordFieldExternalPaypointId    = big.NewInt(1 << 5)
+	payoutSubscriptionQueryRecordFieldSameDayAch            = big.NewInt(1 << 6)
+	payoutSubscriptionQueryRecordFieldDoNotCreateBills      = big.NewInt(1 << 7)
+	payoutSubscriptionQueryRecordFieldAllowDuplicatedBills  = big.NewInt(1 << 8)
+	payoutSubscriptionQueryRecordFieldAutoConvertSameDayAch = big.NewInt(1 << 9)
+	payoutSubscriptionQueryRecordFieldMethod                = big.NewInt(1 << 10)
+	payoutSubscriptionQueryRecordFieldPaypointId            = big.NewInt(1 << 11)
+	payoutSubscriptionQueryRecordFieldTotalAmount           = big.NewInt(1 << 12)
+	payoutSubscriptionQueryRecordFieldNetAmount             = big.NewInt(1 << 13)
+	payoutSubscriptionQueryRecordFieldFeeAmount             = big.NewInt(1 << 14)
+	payoutSubscriptionQueryRecordFieldPaymentData           = big.NewInt(1 << 15)
+	payoutSubscriptionQueryRecordFieldStartDate             = big.NewInt(1 << 16)
+	payoutSubscriptionQueryRecordFieldEndDate               = big.NewInt(1 << 17)
+	payoutSubscriptionQueryRecordFieldNextDate              = big.NewInt(1 << 18)
+	payoutSubscriptionQueryRecordFieldFrequency             = big.NewInt(1 << 19)
+	payoutSubscriptionQueryRecordFieldTotalCycles           = big.NewInt(1 << 20)
+	payoutSubscriptionQueryRecordFieldLeftCycles            = big.NewInt(1 << 21)
+	payoutSubscriptionQueryRecordFieldLastRun               = big.NewInt(1 << 22)
+	payoutSubscriptionQueryRecordFieldEntrypageId           = big.NewInt(1 << 23)
+	payoutSubscriptionQueryRecordFieldUntilCancelled        = big.NewInt(1 << 24)
+	payoutSubscriptionQueryRecordFieldLastUpdated           = big.NewInt(1 << 25)
+	payoutSubscriptionQueryRecordFieldCreatedAt             = big.NewInt(1 << 26)
+	payoutSubscriptionQueryRecordFieldPaypointLegalname     = big.NewInt(1 << 27)
+	payoutSubscriptionQueryRecordFieldPaypointDbaname       = big.NewInt(1 << 28)
+	payoutSubscriptionQueryRecordFieldPaypointEntryname     = big.NewInt(1 << 29)
+	payoutSubscriptionQueryRecordFieldParentOrgName         = big.NewInt(1 << 30)
+	payoutSubscriptionQueryRecordFieldParentOrgId           = big.NewInt(1 << 31)
+	payoutSubscriptionQueryRecordFieldSource                = big.NewInt(1 << 32)
+	payoutSubscriptionQueryRecordFieldSubscriptionType      = big.NewInt(1 << 33)
 )
 
 type PayoutSubscriptionQueryRecord struct {
@@ -1333,11 +2497,19 @@ type PayoutSubscriptionQueryRecord struct {
 	// - 1: Active
 	Status *int `json:"status,omitempty" url:"status,omitempty"`
 	// Events associated with the payout subscription.
-	Events []*GeneralEvents   `json:"events,omitempty" url:"events,omitempty"`
-	Vendor *VendorQueryRecord `json:"vendor,omitempty" url:"vendor,omitempty"`
+	Events []*GeneralEvents          `json:"events,omitempty" url:"events,omitempty"`
+	Vendor *PayoutSubscriptionVendor `json:"vendor,omitempty" url:"vendor,omitempty"`
 	// Bills associated with the payout subscription.
-	BillData           []*BillPayOutData   `json:"billData,omitempty" url:"billData,omitempty"`
-	ExternalPaypointId *ExternalPaypointId `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	BillData           []*PayoutSubscriptionBill `json:"billData,omitempty" url:"billData,omitempty"`
+	ExternalPaypointId *ExternalPaypointId       `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	// When `true`, the payout subscription's payouts are processed as same-day ACH instead of standard ACH. Same-day ACH must be enabled for the paypoint. Only ACH payouts honor this setting.
+	SameDayAch *bool `json:"sameDayAch,omitempty" url:"sameDayAch,omitempty"`
+	// When `true`, Payabli doesn't automatically create a bill for the payout subscription's payouts.
+	DoNotCreateBills *bool `json:"doNotCreateBills,omitempty" url:"doNotCreateBills,omitempty"`
+	// When `true`, the payout subscription bypasses the requirement for unique bills, identified by vendor invoice number.
+	AllowDuplicatedBills *bool `json:"allowDuplicatedBills,omitempty" url:"allowDuplicatedBills,omitempty"`
+	// When `true`, a same-day ACH payout captured after the same-day ACH cutoff is converted to a standard ACH payment. When `false`, the capture is declined. Has no effect when `sameDayAch` is `false`.
+	AutoConvertSameDayAch *bool `json:"autoConvertSameDayAch,omitempty" url:"autoConvertSameDayAch,omitempty"`
 	// The payout subscription's payment method.
 	Method     *string     `json:"method,omitempty" url:"method,omitempty"`
 	PaypointId *PaypointId `json:"paypointId,omitempty" url:"paypointId,omitempty"`
@@ -1346,8 +2518,8 @@ type PayoutSubscriptionQueryRecord struct {
 	// The payout subscription amount, minus any fees.
 	NetAmount *Netamountnullable `json:"netAmount,omitempty" url:"netAmount,omitempty"`
 	// Fee applied to the payout subscription.
-	FeeAmount   *float64          `json:"feeAmount,omitempty" url:"feeAmount,omitempty"`
-	PaymentData *QueryPaymentData `json:"paymentData,omitempty" url:"paymentData,omitempty"`
+	FeeAmount   *float64                       `json:"feeAmount,omitempty" url:"feeAmount,omitempty"`
+	PaymentData *PayoutSubscriptionPaymentData `json:"paymentData,omitempty" url:"paymentData,omitempty"`
 	// The payout subscription start date.
 	StartDate *time.Time `json:"startDate,omitempty" url:"startDate,omitempty"`
 	// The payout subscription's end date.
@@ -1378,6 +2550,8 @@ type PayoutSubscriptionQueryRecord struct {
 	ParentOrgName     *OrgParentName   `json:"parentOrgName,omitempty" url:"parentOrgName,omitempty"`
 	ParentOrgId       *OrgParentId     `json:"parentOrgId,omitempty" url:"parentOrgId,omitempty"`
 	Source            *Source          `json:"source,omitempty" url:"source,omitempty"`
+	// Subscription type. Always `null` for payout subscriptions.
+	SubscriptionType *string `json:"subscriptionType,omitempty" url:"subscriptionType,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1407,14 +2581,14 @@ func (p *PayoutSubscriptionQueryRecord) GetEvents() []*GeneralEvents {
 	return p.Events
 }
 
-func (p *PayoutSubscriptionQueryRecord) GetVendor() *VendorQueryRecord {
+func (p *PayoutSubscriptionQueryRecord) GetVendor() *PayoutSubscriptionVendor {
 	if p == nil {
 		return nil
 	}
 	return p.Vendor
 }
 
-func (p *PayoutSubscriptionQueryRecord) GetBillData() []*BillPayOutData {
+func (p *PayoutSubscriptionQueryRecord) GetBillData() []*PayoutSubscriptionBill {
 	if p == nil {
 		return nil
 	}
@@ -1426,6 +2600,34 @@ func (p *PayoutSubscriptionQueryRecord) GetExternalPaypointId() *ExternalPaypoin
 		return nil
 	}
 	return p.ExternalPaypointId
+}
+
+func (p *PayoutSubscriptionQueryRecord) GetSameDayAch() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.SameDayAch
+}
+
+func (p *PayoutSubscriptionQueryRecord) GetDoNotCreateBills() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.DoNotCreateBills
+}
+
+func (p *PayoutSubscriptionQueryRecord) GetAllowDuplicatedBills() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.AllowDuplicatedBills
+}
+
+func (p *PayoutSubscriptionQueryRecord) GetAutoConvertSameDayAch() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.AutoConvertSameDayAch
 }
 
 func (p *PayoutSubscriptionQueryRecord) GetMethod() *string {
@@ -1463,7 +2665,7 @@ func (p *PayoutSubscriptionQueryRecord) GetFeeAmount() *float64 {
 	return p.FeeAmount
 }
 
-func (p *PayoutSubscriptionQueryRecord) GetPaymentData() *QueryPaymentData {
+func (p *PayoutSubscriptionQueryRecord) GetPaymentData() *PayoutSubscriptionPaymentData {
 	if p == nil {
 		return nil
 	}
@@ -1589,6 +2791,13 @@ func (p *PayoutSubscriptionQueryRecord) GetSource() *Source {
 	return p.Source
 }
 
+func (p *PayoutSubscriptionQueryRecord) GetSubscriptionType() *string {
+	if p == nil {
+		return nil
+	}
+	return p.SubscriptionType
+}
+
 func (p *PayoutSubscriptionQueryRecord) GetExtraProperties() map[string]interface{} {
 	if p == nil {
 		return nil
@@ -1626,14 +2835,14 @@ func (p *PayoutSubscriptionQueryRecord) SetEvents(events []*GeneralEvents) {
 
 // SetVendor sets the Vendor field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayoutSubscriptionQueryRecord) SetVendor(vendor_ *VendorQueryRecord) {
+func (p *PayoutSubscriptionQueryRecord) SetVendor(vendor_ *PayoutSubscriptionVendor) {
 	p.Vendor = vendor_
 	p.require(payoutSubscriptionQueryRecordFieldVendor)
 }
 
 // SetBillData sets the BillData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayoutSubscriptionQueryRecord) SetBillData(billData []*BillPayOutData) {
+func (p *PayoutSubscriptionQueryRecord) SetBillData(billData []*PayoutSubscriptionBill) {
 	p.BillData = billData
 	p.require(payoutSubscriptionQueryRecordFieldBillData)
 }
@@ -1643,6 +2852,34 @@ func (p *PayoutSubscriptionQueryRecord) SetBillData(billData []*BillPayOutData) 
 func (p *PayoutSubscriptionQueryRecord) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
 	p.ExternalPaypointId = externalPaypointId
 	p.require(payoutSubscriptionQueryRecordFieldExternalPaypointId)
+}
+
+// SetSameDayAch sets the SameDayAch field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionQueryRecord) SetSameDayAch(sameDayAch *bool) {
+	p.SameDayAch = sameDayAch
+	p.require(payoutSubscriptionQueryRecordFieldSameDayAch)
+}
+
+// SetDoNotCreateBills sets the DoNotCreateBills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionQueryRecord) SetDoNotCreateBills(doNotCreateBills *bool) {
+	p.DoNotCreateBills = doNotCreateBills
+	p.require(payoutSubscriptionQueryRecordFieldDoNotCreateBills)
+}
+
+// SetAllowDuplicatedBills sets the AllowDuplicatedBills field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionQueryRecord) SetAllowDuplicatedBills(allowDuplicatedBills *bool) {
+	p.AllowDuplicatedBills = allowDuplicatedBills
+	p.require(payoutSubscriptionQueryRecordFieldAllowDuplicatedBills)
+}
+
+// SetAutoConvertSameDayAch sets the AutoConvertSameDayAch field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionQueryRecord) SetAutoConvertSameDayAch(autoConvertSameDayAch *bool) {
+	p.AutoConvertSameDayAch = autoConvertSameDayAch
+	p.require(payoutSubscriptionQueryRecordFieldAutoConvertSameDayAch)
 }
 
 // SetMethod sets the Method field and marks it as non-optional;
@@ -1682,7 +2919,7 @@ func (p *PayoutSubscriptionQueryRecord) SetFeeAmount(feeAmount *float64) {
 
 // SetPaymentData sets the PaymentData field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayoutSubscriptionQueryRecord) SetPaymentData(paymentData *QueryPaymentData) {
+func (p *PayoutSubscriptionQueryRecord) SetPaymentData(paymentData *PayoutSubscriptionPaymentData) {
 	p.PaymentData = paymentData
 	p.require(payoutSubscriptionQueryRecordFieldPaymentData)
 }
@@ -1806,6 +3043,13 @@ func (p *PayoutSubscriptionQueryRecord) SetSource(source *Source) {
 	p.require(payoutSubscriptionQueryRecordFieldSource)
 }
 
+// SetSubscriptionType sets the SubscriptionType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionQueryRecord) SetSubscriptionType(subscriptionType *string) {
+	p.SubscriptionType = subscriptionType
+	p.require(payoutSubscriptionQueryRecordFieldSubscriptionType)
+}
+
 func (p *PayoutSubscriptionQueryRecord) UnmarshalJSON(data []byte) error {
 	type embed PayoutSubscriptionQueryRecord
 	var unmarshaler = struct {
@@ -1862,6 +3106,1348 @@ func (p *PayoutSubscriptionQueryRecord) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PayoutSubscriptionQueryRecord) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+// The vendor associated with the payout subscription.
+var (
+	payoutSubscriptionVendorFieldVendorNumber          = big.NewInt(1 << 0)
+	payoutSubscriptionVendorFieldName1                 = big.NewInt(1 << 1)
+	payoutSubscriptionVendorFieldName2                 = big.NewInt(1 << 2)
+	payoutSubscriptionVendorFieldEin                   = big.NewInt(1 << 3)
+	payoutSubscriptionVendorFieldPhone                 = big.NewInt(1 << 4)
+	payoutSubscriptionVendorFieldEmail                 = big.NewInt(1 << 5)
+	payoutSubscriptionVendorFieldRemitEmail            = big.NewInt(1 << 6)
+	payoutSubscriptionVendorFieldAddress1              = big.NewInt(1 << 7)
+	payoutSubscriptionVendorFieldAddress2              = big.NewInt(1 << 8)
+	payoutSubscriptionVendorFieldCity                  = big.NewInt(1 << 9)
+	payoutSubscriptionVendorFieldState                 = big.NewInt(1 << 10)
+	payoutSubscriptionVendorFieldZip                   = big.NewInt(1 << 11)
+	payoutSubscriptionVendorFieldCountry               = big.NewInt(1 << 12)
+	payoutSubscriptionVendorFieldMcc                   = big.NewInt(1 << 13)
+	payoutSubscriptionVendorFieldLocationCode          = big.NewInt(1 << 14)
+	payoutSubscriptionVendorFieldContacts              = big.NewInt(1 << 15)
+	payoutSubscriptionVendorFieldBillingData           = big.NewInt(1 << 16)
+	payoutSubscriptionVendorFieldPaymentMethod         = big.NewInt(1 << 17)
+	payoutSubscriptionVendorFieldVendorStatus          = big.NewInt(1 << 18)
+	payoutSubscriptionVendorFieldVendorId              = big.NewInt(1 << 19)
+	payoutSubscriptionVendorFieldEnrollmentStatus      = big.NewInt(1 << 20)
+	payoutSubscriptionVendorFieldSummary               = big.NewInt(1 << 21)
+	payoutSubscriptionVendorFieldPaypointLegalname     = big.NewInt(1 << 22)
+	payoutSubscriptionVendorFieldPaypointId            = big.NewInt(1 << 23)
+	payoutSubscriptionVendorFieldPaypointDbaname       = big.NewInt(1 << 24)
+	payoutSubscriptionVendorFieldPaypointEntryname     = big.NewInt(1 << 25)
+	payoutSubscriptionVendorFieldParentOrgName         = big.NewInt(1 << 26)
+	payoutSubscriptionVendorFieldParentOrgId           = big.NewInt(1 << 27)
+	payoutSubscriptionVendorFieldCreatedDate           = big.NewInt(1 << 28)
+	payoutSubscriptionVendorFieldLastUpdated           = big.NewInt(1 << 29)
+	payoutSubscriptionVendorFieldRemitAddress1         = big.NewInt(1 << 30)
+	payoutSubscriptionVendorFieldRemitAddress2         = big.NewInt(1 << 31)
+	payoutSubscriptionVendorFieldRemitCity             = big.NewInt(1 << 32)
+	payoutSubscriptionVendorFieldRemitState            = big.NewInt(1 << 33)
+	payoutSubscriptionVendorFieldRemitZip              = big.NewInt(1 << 34)
+	payoutSubscriptionVendorFieldRemitCountry          = big.NewInt(1 << 35)
+	payoutSubscriptionVendorFieldPayeeName1            = big.NewInt(1 << 36)
+	payoutSubscriptionVendorFieldPayeeName2            = big.NewInt(1 << 37)
+	payoutSubscriptionVendorFieldCustomField1          = big.NewInt(1 << 38)
+	payoutSubscriptionVendorFieldCustomField2          = big.NewInt(1 << 39)
+	payoutSubscriptionVendorFieldCustomerVendorAccount = big.NewInt(1 << 40)
+	payoutSubscriptionVendorFieldInternalReferenceId   = big.NewInt(1 << 41)
+	payoutSubscriptionVendorFieldPaymentPortalUrl      = big.NewInt(1 << 42)
+	payoutSubscriptionVendorFieldCardAccepted          = big.NewInt(1 << 43)
+	payoutSubscriptionVendorFieldAchAccepted           = big.NewInt(1 << 44)
+	payoutSubscriptionVendorFieldCheckAccepted         = big.NewInt(1 << 45)
+	payoutSubscriptionVendorFieldEnrichmentStatus      = big.NewInt(1 << 46)
+	payoutSubscriptionVendorFieldEnrichedBy            = big.NewInt(1 << 47)
+	payoutSubscriptionVendorFieldEnrichedAt            = big.NewInt(1 << 48)
+	payoutSubscriptionVendorFieldEnrichmentId          = big.NewInt(1 << 49)
+	payoutSubscriptionVendorFieldAdditionalData        = big.NewInt(1 << 50)
+	payoutSubscriptionVendorFieldExternalPaypointId    = big.NewInt(1 << 51)
+	payoutSubscriptionVendorFieldStoredMethods         = big.NewInt(1 << 52)
+	payoutSubscriptionVendorFieldVendorPortal          = big.NewInt(1 << 53)
+)
+
+type PayoutSubscriptionVendor struct {
+	VendorNumber VendorNumber `json:"vendorNumber" url:"vendorNumber"`
+	Name1        string       `json:"name1" url:"name1"`
+	Name2        *string      `json:"name2,omitempty" url:"name2,omitempty"`
+	Ein          *Ein         `json:"ein,omitempty" url:"ein,omitempty"`
+	Phone        *string      `json:"phone,omitempty" url:"phone,omitempty"`
+	Email        *Email       `json:"email,omitempty" url:"email,omitempty"`
+	RemitEmail   *RemitEmail  `json:"remitEmail,omitempty" url:"remitEmail,omitempty"`
+	// The address.
+	Address1 *string `json:"address1,omitempty" url:"address1,omitempty"`
+	// Additional line for the address.
+	Address2 *string `json:"address2,omitempty" url:"address2,omitempty"`
+	// The city.
+	City *string `json:"city,omitempty" url:"city,omitempty"`
+	// The state or province.
+	State        *string `json:"state,omitempty" url:"state,omitempty"`
+	Zip          *Zip    `json:"zip,omitempty" url:"zip,omitempty"`
+	Country      *string `json:"country,omitempty" url:"country,omitempty"`
+	Mcc          *Mcc    `json:"mcc,omitempty" url:"mcc,omitempty"`
+	LocationCode *string `json:"locationCode,omitempty" url:"locationCode,omitempty"`
+	// Array of objects describing the vendor's contacts.
+	Contacts         []*PayoutSubscriptionVendorContact `json:"contacts,omitempty" url:"contacts,omitempty"`
+	BillingData      *BillingDataResponse               `json:"billingData,omitempty" url:"billingData,omitempty"`
+	PaymentMethod    *VendorPaymentMethodString         `json:"paymentMethod,omitempty" url:"paymentMethod,omitempty"`
+	VendorStatus     Vendorstatus                       `json:"vendorStatus" url:"vendorStatus"`
+	VendorId         Vendorid                           `json:"vendorId" url:"vendorId"`
+	EnrollmentStatus *EnrollmentStatus                  `json:"enrollmentStatus,omitempty" url:"enrollmentStatus,omitempty"`
+	// Summary of the vendor's bills. Always `null` on this endpoint.
+	Summary           *VendorSummary `json:"summary,omitempty" url:"summary,omitempty"`
+	PaypointLegalname Legalname      `json:"paypointLegalname" url:"paypointLegalname"`
+	// The paypoint's ID. This is different from the entryname.
+	PaypointId            *int64              `json:"paypointId,omitempty" url:"paypointId,omitempty"`
+	PaypointDbaname       Dbaname             `json:"paypointDbaname" url:"paypointDbaname"`
+	PaypointEntryname     Entrypointfield     `json:"paypointEntryname" url:"paypointEntryname"`
+	ParentOrgName         OrgParentName       `json:"parentOrgName" url:"parentOrgName"`
+	ParentOrgId           OrgParentId         `json:"parentOrgId" url:"parentOrgId"`
+	CreatedDate           CreatedAt           `json:"createdDate" url:"createdDate"`
+	LastUpdated           LastModified        `json:"lastUpdated" url:"lastUpdated"`
+	RemitAddress1         *Remitaddress1      `json:"remitAddress1,omitempty" url:"remitAddress1,omitempty"`
+	RemitAddress2         *Remitaddress2      `json:"remitAddress2,omitempty" url:"remitAddress2,omitempty"`
+	RemitCity             *Remitcity          `json:"remitCity,omitempty" url:"remitCity,omitempty"`
+	RemitState            *Remitstate         `json:"remitState,omitempty" url:"remitState,omitempty"`
+	RemitZip              *Remitzip           `json:"remitZip,omitempty" url:"remitZip,omitempty"`
+	RemitCountry          *Remitcountry       `json:"remitCountry,omitempty" url:"remitCountry,omitempty"`
+	PayeeName1            *PayeeName          `json:"payeeName1,omitempty" url:"payeeName1,omitempty"`
+	PayeeName2            *PayeeName          `json:"payeeName2,omitempty" url:"payeeName2,omitempty"`
+	CustomField1          *string             `json:"customField1,omitempty" url:"customField1,omitempty"`
+	CustomField2          *string             `json:"customField2,omitempty" url:"customField2,omitempty"`
+	CustomerVendorAccount *string             `json:"customerVendorAccount,omitempty" url:"customerVendorAccount,omitempty"`
+	InternalReferenceId   InternalReferenceId `json:"internalReferenceId" url:"internalReferenceId"`
+	// URL for the vendor's online payment portal, if known. Populated by the vendor enrichment pipeline.
+	PaymentPortalUrl *string `json:"paymentPortalUrl,omitempty" url:"paymentPortalUrl,omitempty"`
+	// Whether the vendor accepts card payments. Values are `yes`, `no`, or `unable to determine`. Populated by the vendor enrichment pipeline.
+	CardAccepted *string `json:"cardAccepted,omitempty" url:"cardAccepted,omitempty"`
+	// Whether the vendor accepts ACH payments. Values are `yes`, `no`, or `unable to determine`. Populated by the vendor enrichment pipeline.
+	AchAccepted *string `json:"achAccepted,omitempty" url:"achAccepted,omitempty"`
+	// Whether the vendor accepts check payments. Values are `yes`, `no`, or `unable to determine`. Populated by the vendor enrichment pipeline.
+	CheckAccepted *string `json:"checkAccepted,omitempty" url:"checkAccepted,omitempty"`
+	// Current enrichment state of the vendor. Values are `not_enriched`, `partially_enriched`, `fully_enriched`, or `fallback_applied`.
+	EnrichmentStatus string `json:"enrichmentStatus" url:"enrichmentStatus"`
+	// Which enrichment method resolved the vendor's payment acceptance info. Values are `invoice_scan`, `web_search`, `vendor_network`, or `manual`.
+	EnrichedBy *string `json:"enrichedBy,omitempty" url:"enrichedBy,omitempty"`
+	// When the vendor was last enriched (UTC).
+	EnrichedAt *time.Time `json:"enrichedAt,omitempty" url:"enrichedAt,omitempty"`
+	// Identifier for the enrichment request that last updated this vendor.
+	EnrichmentId       *string             `json:"enrichmentId,omitempty" url:"enrichmentId,omitempty"`
+	AdditionalData     *AdditionalDataMap  `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	ExternalPaypointId *ExternalPaypointId `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
+	// The vendor's stored payment methods. Always `null` on this endpoint.
+	StoredMethods []*VendorResponseStoredMethod `json:"storedMethods,omitempty" url:"storedMethods,omitempty"`
+	// The vendor's vendor portal access. Always `null` on this endpoint.
+	VendorPortal *PayoutSubscriptionVendorVendorPortal `json:"vendorPortal,omitempty" url:"vendorPortal,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PayoutSubscriptionVendor) GetVendorNumber() VendorNumber {
+	if p == nil {
+		return ""
+	}
+	return p.VendorNumber
+}
+
+func (p *PayoutSubscriptionVendor) GetName1() string {
+	if p == nil {
+		return ""
+	}
+	return p.Name1
+}
+
+func (p *PayoutSubscriptionVendor) GetName2() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Name2
+}
+
+func (p *PayoutSubscriptionVendor) GetEin() *Ein {
+	if p == nil {
+		return nil
+	}
+	return p.Ein
+}
+
+func (p *PayoutSubscriptionVendor) GetPhone() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Phone
+}
+
+func (p *PayoutSubscriptionVendor) GetEmail() *Email {
+	if p == nil {
+		return nil
+	}
+	return p.Email
+}
+
+func (p *PayoutSubscriptionVendor) GetRemitEmail() *RemitEmail {
+	if p == nil {
+		return nil
+	}
+	return p.RemitEmail
+}
+
+func (p *PayoutSubscriptionVendor) GetAddress1() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Address1
+}
+
+func (p *PayoutSubscriptionVendor) GetAddress2() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Address2
+}
+
+func (p *PayoutSubscriptionVendor) GetCity() *string {
+	if p == nil {
+		return nil
+	}
+	return p.City
+}
+
+func (p *PayoutSubscriptionVendor) GetState() *string {
+	if p == nil {
+		return nil
+	}
+	return p.State
+}
+
+func (p *PayoutSubscriptionVendor) GetZip() *Zip {
+	if p == nil {
+		return nil
+	}
+	return p.Zip
+}
+
+func (p *PayoutSubscriptionVendor) GetCountry() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Country
+}
+
+func (p *PayoutSubscriptionVendor) GetMcc() *Mcc {
+	if p == nil {
+		return nil
+	}
+	return p.Mcc
+}
+
+func (p *PayoutSubscriptionVendor) GetLocationCode() *string {
+	if p == nil {
+		return nil
+	}
+	return p.LocationCode
+}
+
+func (p *PayoutSubscriptionVendor) GetContacts() []*PayoutSubscriptionVendorContact {
+	if p == nil {
+		return nil
+	}
+	return p.Contacts
+}
+
+func (p *PayoutSubscriptionVendor) GetBillingData() *BillingDataResponse {
+	if p == nil {
+		return nil
+	}
+	return p.BillingData
+}
+
+func (p *PayoutSubscriptionVendor) GetPaymentMethod() *VendorPaymentMethodString {
+	if p == nil {
+		return nil
+	}
+	return p.PaymentMethod
+}
+
+func (p *PayoutSubscriptionVendor) GetVendorStatus() Vendorstatus {
+	if p == nil {
+		return 0
+	}
+	return p.VendorStatus
+}
+
+func (p *PayoutSubscriptionVendor) GetVendorId() Vendorid {
+	if p == nil {
+		return 0
+	}
+	return p.VendorId
+}
+
+func (p *PayoutSubscriptionVendor) GetEnrollmentStatus() *EnrollmentStatus {
+	if p == nil {
+		return nil
+	}
+	return p.EnrollmentStatus
+}
+
+func (p *PayoutSubscriptionVendor) GetSummary() *VendorSummary {
+	if p == nil {
+		return nil
+	}
+	return p.Summary
+}
+
+func (p *PayoutSubscriptionVendor) GetPaypointLegalname() Legalname {
+	if p == nil {
+		return ""
+	}
+	return p.PaypointLegalname
+}
+
+func (p *PayoutSubscriptionVendor) GetPaypointId() *int64 {
+	if p == nil {
+		return nil
+	}
+	return p.PaypointId
+}
+
+func (p *PayoutSubscriptionVendor) GetPaypointDbaname() Dbaname {
+	if p == nil {
+		return ""
+	}
+	return p.PaypointDbaname
+}
+
+func (p *PayoutSubscriptionVendor) GetPaypointEntryname() Entrypointfield {
+	if p == nil {
+		return ""
+	}
+	return p.PaypointEntryname
+}
+
+func (p *PayoutSubscriptionVendor) GetParentOrgName() OrgParentName {
+	if p == nil {
+		return ""
+	}
+	return p.ParentOrgName
+}
+
+func (p *PayoutSubscriptionVendor) GetParentOrgId() OrgParentId {
+	if p == nil {
+		return 0
+	}
+	return p.ParentOrgId
+}
+
+func (p *PayoutSubscriptionVendor) GetCreatedDate() CreatedAt {
+	if p == nil {
+		return time.Time{}
+	}
+	return p.CreatedDate
+}
+
+func (p *PayoutSubscriptionVendor) GetLastUpdated() LastModified {
+	if p == nil {
+		return time.Time{}
+	}
+	return p.LastUpdated
+}
+
+func (p *PayoutSubscriptionVendor) GetRemitAddress1() *Remitaddress1 {
+	if p == nil {
+		return nil
+	}
+	return p.RemitAddress1
+}
+
+func (p *PayoutSubscriptionVendor) GetRemitAddress2() *Remitaddress2 {
+	if p == nil {
+		return nil
+	}
+	return p.RemitAddress2
+}
+
+func (p *PayoutSubscriptionVendor) GetRemitCity() *Remitcity {
+	if p == nil {
+		return nil
+	}
+	return p.RemitCity
+}
+
+func (p *PayoutSubscriptionVendor) GetRemitState() *Remitstate {
+	if p == nil {
+		return nil
+	}
+	return p.RemitState
+}
+
+func (p *PayoutSubscriptionVendor) GetRemitZip() *Remitzip {
+	if p == nil {
+		return nil
+	}
+	return p.RemitZip
+}
+
+func (p *PayoutSubscriptionVendor) GetRemitCountry() *Remitcountry {
+	if p == nil {
+		return nil
+	}
+	return p.RemitCountry
+}
+
+func (p *PayoutSubscriptionVendor) GetPayeeName1() *PayeeName {
+	if p == nil {
+		return nil
+	}
+	return p.PayeeName1
+}
+
+func (p *PayoutSubscriptionVendor) GetPayeeName2() *PayeeName {
+	if p == nil {
+		return nil
+	}
+	return p.PayeeName2
+}
+
+func (p *PayoutSubscriptionVendor) GetCustomField1() *string {
+	if p == nil {
+		return nil
+	}
+	return p.CustomField1
+}
+
+func (p *PayoutSubscriptionVendor) GetCustomField2() *string {
+	if p == nil {
+		return nil
+	}
+	return p.CustomField2
+}
+
+func (p *PayoutSubscriptionVendor) GetCustomerVendorAccount() *string {
+	if p == nil {
+		return nil
+	}
+	return p.CustomerVendorAccount
+}
+
+func (p *PayoutSubscriptionVendor) GetInternalReferenceId() InternalReferenceId {
+	if p == nil {
+		return 0
+	}
+	return p.InternalReferenceId
+}
+
+func (p *PayoutSubscriptionVendor) GetPaymentPortalUrl() *string {
+	if p == nil {
+		return nil
+	}
+	return p.PaymentPortalUrl
+}
+
+func (p *PayoutSubscriptionVendor) GetCardAccepted() *string {
+	if p == nil {
+		return nil
+	}
+	return p.CardAccepted
+}
+
+func (p *PayoutSubscriptionVendor) GetAchAccepted() *string {
+	if p == nil {
+		return nil
+	}
+	return p.AchAccepted
+}
+
+func (p *PayoutSubscriptionVendor) GetCheckAccepted() *string {
+	if p == nil {
+		return nil
+	}
+	return p.CheckAccepted
+}
+
+func (p *PayoutSubscriptionVendor) GetEnrichmentStatus() string {
+	if p == nil {
+		return ""
+	}
+	return p.EnrichmentStatus
+}
+
+func (p *PayoutSubscriptionVendor) GetEnrichedBy() *string {
+	if p == nil {
+		return nil
+	}
+	return p.EnrichedBy
+}
+
+func (p *PayoutSubscriptionVendor) GetEnrichedAt() *time.Time {
+	if p == nil {
+		return nil
+	}
+	return p.EnrichedAt
+}
+
+func (p *PayoutSubscriptionVendor) GetEnrichmentId() *string {
+	if p == nil {
+		return nil
+	}
+	return p.EnrichmentId
+}
+
+func (p *PayoutSubscriptionVendor) GetAdditionalData() *AdditionalDataMap {
+	if p == nil {
+		return nil
+	}
+	return p.AdditionalData
+}
+
+func (p *PayoutSubscriptionVendor) GetExternalPaypointId() *ExternalPaypointId {
+	if p == nil {
+		return nil
+	}
+	return p.ExternalPaypointId
+}
+
+func (p *PayoutSubscriptionVendor) GetStoredMethods() []*VendorResponseStoredMethod {
+	if p == nil {
+		return nil
+	}
+	return p.StoredMethods
+}
+
+func (p *PayoutSubscriptionVendor) GetVendorPortal() *PayoutSubscriptionVendorVendorPortal {
+	if p == nil {
+		return nil
+	}
+	return p.VendorPortal
+}
+
+func (p *PayoutSubscriptionVendor) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PayoutSubscriptionVendor) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetVendorNumber sets the VendorNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetVendorNumber(vendorNumber VendorNumber) {
+	p.VendorNumber = vendorNumber
+	p.require(payoutSubscriptionVendorFieldVendorNumber)
+}
+
+// SetName1 sets the Name1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetName1(name1 string) {
+	p.Name1 = name1
+	p.require(payoutSubscriptionVendorFieldName1)
+}
+
+// SetName2 sets the Name2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetName2(name2 *string) {
+	p.Name2 = name2
+	p.require(payoutSubscriptionVendorFieldName2)
+}
+
+// SetEin sets the Ein field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetEin(ein *Ein) {
+	p.Ein = ein
+	p.require(payoutSubscriptionVendorFieldEin)
+}
+
+// SetPhone sets the Phone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetPhone(phone *string) {
+	p.Phone = phone
+	p.require(payoutSubscriptionVendorFieldPhone)
+}
+
+// SetEmail sets the Email field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetEmail(email *Email) {
+	p.Email = email
+	p.require(payoutSubscriptionVendorFieldEmail)
+}
+
+// SetRemitEmail sets the RemitEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetRemitEmail(remitEmail *RemitEmail) {
+	p.RemitEmail = remitEmail
+	p.require(payoutSubscriptionVendorFieldRemitEmail)
+}
+
+// SetAddress1 sets the Address1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetAddress1(address1 *string) {
+	p.Address1 = address1
+	p.require(payoutSubscriptionVendorFieldAddress1)
+}
+
+// SetAddress2 sets the Address2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetAddress2(address2 *string) {
+	p.Address2 = address2
+	p.require(payoutSubscriptionVendorFieldAddress2)
+}
+
+// SetCity sets the City field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetCity(city *string) {
+	p.City = city
+	p.require(payoutSubscriptionVendorFieldCity)
+}
+
+// SetState sets the State field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetState(state *string) {
+	p.State = state
+	p.require(payoutSubscriptionVendorFieldState)
+}
+
+// SetZip sets the Zip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetZip(zip *Zip) {
+	p.Zip = zip
+	p.require(payoutSubscriptionVendorFieldZip)
+}
+
+// SetCountry sets the Country field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetCountry(country *string) {
+	p.Country = country
+	p.require(payoutSubscriptionVendorFieldCountry)
+}
+
+// SetMcc sets the Mcc field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetMcc(mcc *Mcc) {
+	p.Mcc = mcc
+	p.require(payoutSubscriptionVendorFieldMcc)
+}
+
+// SetLocationCode sets the LocationCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetLocationCode(locationCode *string) {
+	p.LocationCode = locationCode
+	p.require(payoutSubscriptionVendorFieldLocationCode)
+}
+
+// SetContacts sets the Contacts field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetContacts(contacts []*PayoutSubscriptionVendorContact) {
+	p.Contacts = contacts
+	p.require(payoutSubscriptionVendorFieldContacts)
+}
+
+// SetBillingData sets the BillingData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetBillingData(billingData *BillingDataResponse) {
+	p.BillingData = billingData
+	p.require(payoutSubscriptionVendorFieldBillingData)
+}
+
+// SetPaymentMethod sets the PaymentMethod field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetPaymentMethod(paymentMethod *VendorPaymentMethodString) {
+	p.PaymentMethod = paymentMethod
+	p.require(payoutSubscriptionVendorFieldPaymentMethod)
+}
+
+// SetVendorStatus sets the VendorStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetVendorStatus(vendorStatus Vendorstatus) {
+	p.VendorStatus = vendorStatus
+	p.require(payoutSubscriptionVendorFieldVendorStatus)
+}
+
+// SetVendorId sets the VendorId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetVendorId(vendorId Vendorid) {
+	p.VendorId = vendorId
+	p.require(payoutSubscriptionVendorFieldVendorId)
+}
+
+// SetEnrollmentStatus sets the EnrollmentStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetEnrollmentStatus(enrollmentStatus *EnrollmentStatus) {
+	p.EnrollmentStatus = enrollmentStatus
+	p.require(payoutSubscriptionVendorFieldEnrollmentStatus)
+}
+
+// SetSummary sets the Summary field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetSummary(summary *VendorSummary) {
+	p.Summary = summary
+	p.require(payoutSubscriptionVendorFieldSummary)
+}
+
+// SetPaypointLegalname sets the PaypointLegalname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetPaypointLegalname(paypointLegalname Legalname) {
+	p.PaypointLegalname = paypointLegalname
+	p.require(payoutSubscriptionVendorFieldPaypointLegalname)
+}
+
+// SetPaypointId sets the PaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetPaypointId(paypointId *int64) {
+	p.PaypointId = paypointId
+	p.require(payoutSubscriptionVendorFieldPaypointId)
+}
+
+// SetPaypointDbaname sets the PaypointDbaname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetPaypointDbaname(paypointDbaname Dbaname) {
+	p.PaypointDbaname = paypointDbaname
+	p.require(payoutSubscriptionVendorFieldPaypointDbaname)
+}
+
+// SetPaypointEntryname sets the PaypointEntryname field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetPaypointEntryname(paypointEntryname Entrypointfield) {
+	p.PaypointEntryname = paypointEntryname
+	p.require(payoutSubscriptionVendorFieldPaypointEntryname)
+}
+
+// SetParentOrgName sets the ParentOrgName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetParentOrgName(parentOrgName OrgParentName) {
+	p.ParentOrgName = parentOrgName
+	p.require(payoutSubscriptionVendorFieldParentOrgName)
+}
+
+// SetParentOrgId sets the ParentOrgId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetParentOrgId(parentOrgId OrgParentId) {
+	p.ParentOrgId = parentOrgId
+	p.require(payoutSubscriptionVendorFieldParentOrgId)
+}
+
+// SetCreatedDate sets the CreatedDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetCreatedDate(createdDate CreatedAt) {
+	p.CreatedDate = createdDate
+	p.require(payoutSubscriptionVendorFieldCreatedDate)
+}
+
+// SetLastUpdated sets the LastUpdated field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetLastUpdated(lastUpdated LastModified) {
+	p.LastUpdated = lastUpdated
+	p.require(payoutSubscriptionVendorFieldLastUpdated)
+}
+
+// SetRemitAddress1 sets the RemitAddress1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetRemitAddress1(remitAddress1 *Remitaddress1) {
+	p.RemitAddress1 = remitAddress1
+	p.require(payoutSubscriptionVendorFieldRemitAddress1)
+}
+
+// SetRemitAddress2 sets the RemitAddress2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetRemitAddress2(remitAddress2 *Remitaddress2) {
+	p.RemitAddress2 = remitAddress2
+	p.require(payoutSubscriptionVendorFieldRemitAddress2)
+}
+
+// SetRemitCity sets the RemitCity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetRemitCity(remitCity *Remitcity) {
+	p.RemitCity = remitCity
+	p.require(payoutSubscriptionVendorFieldRemitCity)
+}
+
+// SetRemitState sets the RemitState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetRemitState(remitState *Remitstate) {
+	p.RemitState = remitState
+	p.require(payoutSubscriptionVendorFieldRemitState)
+}
+
+// SetRemitZip sets the RemitZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetRemitZip(remitZip *Remitzip) {
+	p.RemitZip = remitZip
+	p.require(payoutSubscriptionVendorFieldRemitZip)
+}
+
+// SetRemitCountry sets the RemitCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetRemitCountry(remitCountry *Remitcountry) {
+	p.RemitCountry = remitCountry
+	p.require(payoutSubscriptionVendorFieldRemitCountry)
+}
+
+// SetPayeeName1 sets the PayeeName1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetPayeeName1(payeeName1 *PayeeName) {
+	p.PayeeName1 = payeeName1
+	p.require(payoutSubscriptionVendorFieldPayeeName1)
+}
+
+// SetPayeeName2 sets the PayeeName2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetPayeeName2(payeeName2 *PayeeName) {
+	p.PayeeName2 = payeeName2
+	p.require(payoutSubscriptionVendorFieldPayeeName2)
+}
+
+// SetCustomField1 sets the CustomField1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetCustomField1(customField1 *string) {
+	p.CustomField1 = customField1
+	p.require(payoutSubscriptionVendorFieldCustomField1)
+}
+
+// SetCustomField2 sets the CustomField2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetCustomField2(customField2 *string) {
+	p.CustomField2 = customField2
+	p.require(payoutSubscriptionVendorFieldCustomField2)
+}
+
+// SetCustomerVendorAccount sets the CustomerVendorAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetCustomerVendorAccount(customerVendorAccount *string) {
+	p.CustomerVendorAccount = customerVendorAccount
+	p.require(payoutSubscriptionVendorFieldCustomerVendorAccount)
+}
+
+// SetInternalReferenceId sets the InternalReferenceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetInternalReferenceId(internalReferenceId InternalReferenceId) {
+	p.InternalReferenceId = internalReferenceId
+	p.require(payoutSubscriptionVendorFieldInternalReferenceId)
+}
+
+// SetPaymentPortalUrl sets the PaymentPortalUrl field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetPaymentPortalUrl(paymentPortalUrl *string) {
+	p.PaymentPortalUrl = paymentPortalUrl
+	p.require(payoutSubscriptionVendorFieldPaymentPortalUrl)
+}
+
+// SetCardAccepted sets the CardAccepted field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetCardAccepted(cardAccepted *string) {
+	p.CardAccepted = cardAccepted
+	p.require(payoutSubscriptionVendorFieldCardAccepted)
+}
+
+// SetAchAccepted sets the AchAccepted field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetAchAccepted(achAccepted *string) {
+	p.AchAccepted = achAccepted
+	p.require(payoutSubscriptionVendorFieldAchAccepted)
+}
+
+// SetCheckAccepted sets the CheckAccepted field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetCheckAccepted(checkAccepted *string) {
+	p.CheckAccepted = checkAccepted
+	p.require(payoutSubscriptionVendorFieldCheckAccepted)
+}
+
+// SetEnrichmentStatus sets the EnrichmentStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetEnrichmentStatus(enrichmentStatus string) {
+	p.EnrichmentStatus = enrichmentStatus
+	p.require(payoutSubscriptionVendorFieldEnrichmentStatus)
+}
+
+// SetEnrichedBy sets the EnrichedBy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetEnrichedBy(enrichedBy *string) {
+	p.EnrichedBy = enrichedBy
+	p.require(payoutSubscriptionVendorFieldEnrichedBy)
+}
+
+// SetEnrichedAt sets the EnrichedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetEnrichedAt(enrichedAt *time.Time) {
+	p.EnrichedAt = enrichedAt
+	p.require(payoutSubscriptionVendorFieldEnrichedAt)
+}
+
+// SetEnrichmentId sets the EnrichmentId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetEnrichmentId(enrichmentId *string) {
+	p.EnrichmentId = enrichmentId
+	p.require(payoutSubscriptionVendorFieldEnrichmentId)
+}
+
+// SetAdditionalData sets the AdditionalData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetAdditionalData(additionalData *AdditionalDataMap) {
+	p.AdditionalData = additionalData
+	p.require(payoutSubscriptionVendorFieldAdditionalData)
+}
+
+// SetExternalPaypointId sets the ExternalPaypointId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetExternalPaypointId(externalPaypointId *ExternalPaypointId) {
+	p.ExternalPaypointId = externalPaypointId
+	p.require(payoutSubscriptionVendorFieldExternalPaypointId)
+}
+
+// SetStoredMethods sets the StoredMethods field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetStoredMethods(storedMethods []*VendorResponseStoredMethod) {
+	p.StoredMethods = storedMethods
+	p.require(payoutSubscriptionVendorFieldStoredMethods)
+}
+
+// SetVendorPortal sets the VendorPortal field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetVendorPortal(vendorPortal *PayoutSubscriptionVendorVendorPortal) {
+	p.VendorPortal = vendorPortal
+	p.require(payoutSubscriptionVendorFieldVendorPortal)
+}
+
+func (p *PayoutSubscriptionVendor) UnmarshalJSON(data []byte) error {
+	type embed PayoutSubscriptionVendor
+	var unmarshaler = struct {
+		embed
+		CreatedDate *internal.DateTime `json:"createdDate"`
+		LastUpdated *internal.DateTime `json:"lastUpdated"`
+		EnrichedAt  *internal.DateTime `json:"enrichedAt,omitempty"`
+	}{
+		embed: embed(*p),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*p = PayoutSubscriptionVendor(unmarshaler.embed)
+	p.CreatedDate = unmarshaler.CreatedDate.Time()
+	p.LastUpdated = unmarshaler.LastUpdated.Time()
+	p.EnrichedAt = unmarshaler.EnrichedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PayoutSubscriptionVendor) MarshalJSON() ([]byte, error) {
+	type embed PayoutSubscriptionVendor
+	var marshaler = struct {
+		embed
+		CreatedDate *internal.DateTime `json:"createdDate"`
+		LastUpdated *internal.DateTime `json:"lastUpdated"`
+		EnrichedAt  *internal.DateTime `json:"enrichedAt,omitempty"`
+	}{
+		embed:       embed(*p),
+		CreatedDate: internal.NewDateTime(p.CreatedDate),
+		LastUpdated: internal.NewDateTime(p.LastUpdated),
+		EnrichedAt:  internal.NewOptionalDateTime(p.EnrichedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PayoutSubscriptionVendor) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+// A vendor contact.
+var (
+	payoutSubscriptionVendorContactFieldContactName  = big.NewInt(1 << 0)
+	payoutSubscriptionVendorContactFieldContactEmail = big.NewInt(1 << 1)
+	payoutSubscriptionVendorContactFieldContactTitle = big.NewInt(1 << 2)
+	payoutSubscriptionVendorContactFieldContactPhone = big.NewInt(1 << 3)
+)
+
+type PayoutSubscriptionVendorContact struct {
+	// Contact name.
+	ContactName *string `json:"contactName,omitempty" url:"contactName,omitempty"`
+	// Contact email address.
+	ContactEmail *Email `json:"contactEmail,omitempty" url:"contactEmail,omitempty"`
+	// Contact title.
+	ContactTitle *string `json:"contactTitle,omitempty" url:"contactTitle,omitempty"`
+	// Contact phone number.
+	ContactPhone *string `json:"contactPhone,omitempty" url:"contactPhone,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PayoutSubscriptionVendorContact) GetContactName() *string {
+	if p == nil {
+		return nil
+	}
+	return p.ContactName
+}
+
+func (p *PayoutSubscriptionVendorContact) GetContactEmail() *Email {
+	if p == nil {
+		return nil
+	}
+	return p.ContactEmail
+}
+
+func (p *PayoutSubscriptionVendorContact) GetContactTitle() *string {
+	if p == nil {
+		return nil
+	}
+	return p.ContactTitle
+}
+
+func (p *PayoutSubscriptionVendorContact) GetContactPhone() *string {
+	if p == nil {
+		return nil
+	}
+	return p.ContactPhone
+}
+
+func (p *PayoutSubscriptionVendorContact) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PayoutSubscriptionVendorContact) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetContactName sets the ContactName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendorContact) SetContactName(contactName *string) {
+	p.ContactName = contactName
+	p.require(payoutSubscriptionVendorContactFieldContactName)
+}
+
+// SetContactEmail sets the ContactEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendorContact) SetContactEmail(contactEmail *Email) {
+	p.ContactEmail = contactEmail
+	p.require(payoutSubscriptionVendorContactFieldContactEmail)
+}
+
+// SetContactTitle sets the ContactTitle field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendorContact) SetContactTitle(contactTitle *string) {
+	p.ContactTitle = contactTitle
+	p.require(payoutSubscriptionVendorContactFieldContactTitle)
+}
+
+// SetContactPhone sets the ContactPhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendorContact) SetContactPhone(contactPhone *string) {
+	p.ContactPhone = contactPhone
+	p.require(payoutSubscriptionVendorContactFieldContactPhone)
+}
+
+func (p *PayoutSubscriptionVendorContact) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayoutSubscriptionVendorContact
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PayoutSubscriptionVendorContact(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PayoutSubscriptionVendorContact) MarshalJSON() ([]byte, error) {
+	type embed PayoutSubscriptionVendorContact
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PayoutSubscriptionVendorContact) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+// The vendor's vendor portal access. Always `null` on this endpoint.
+var (
+	payoutSubscriptionVendorVendorPortalFieldAnyoneHasAccess = big.NewInt(1 << 0)
+	payoutSubscriptionVendorVendorPortalFieldUsers           = big.NewInt(1 << 1)
+)
+
+type PayoutSubscriptionVendorVendorPortal struct {
+	// When `true`, at least one user has access to the vendor portal.
+	AnyoneHasAccess *bool `json:"anyoneHasAccess,omitempty" url:"anyoneHasAccess,omitempty"`
+	// Users with access to the vendor portal.
+	Users []*PayoutSubscriptionVendorVendorPortalUsersItem `json:"users,omitempty" url:"users,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PayoutSubscriptionVendorVendorPortal) GetAnyoneHasAccess() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.AnyoneHasAccess
+}
+
+func (p *PayoutSubscriptionVendorVendorPortal) GetUsers() []*PayoutSubscriptionVendorVendorPortalUsersItem {
+	if p == nil {
+		return nil
+	}
+	return p.Users
+}
+
+func (p *PayoutSubscriptionVendorVendorPortal) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PayoutSubscriptionVendorVendorPortal) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetAnyoneHasAccess sets the AnyoneHasAccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendorVendorPortal) SetAnyoneHasAccess(anyoneHasAccess *bool) {
+	p.AnyoneHasAccess = anyoneHasAccess
+	p.require(payoutSubscriptionVendorVendorPortalFieldAnyoneHasAccess)
+}
+
+// SetUsers sets the Users field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendorVendorPortal) SetUsers(users []*PayoutSubscriptionVendorVendorPortalUsersItem) {
+	p.Users = users
+	p.require(payoutSubscriptionVendorVendorPortalFieldUsers)
+}
+
+func (p *PayoutSubscriptionVendorVendorPortal) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayoutSubscriptionVendorVendorPortal
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PayoutSubscriptionVendorVendorPortal(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PayoutSubscriptionVendorVendorPortal) MarshalJSON() ([]byte, error) {
+	type embed PayoutSubscriptionVendorVendorPortal
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PayoutSubscriptionVendorVendorPortal) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+var (
+	payoutSubscriptionVendorVendorPortalUsersItemFieldUserId = big.NewInt(1 << 0)
+	payoutSubscriptionVendorVendorPortalUsersItemFieldEmail  = big.NewInt(1 << 1)
+	payoutSubscriptionVendorVendorPortalUsersItemFieldName   = big.NewInt(1 << 2)
+	payoutSubscriptionVendorVendorPortalUsersItemFieldPhone  = big.NewInt(1 << 3)
+)
+
+type PayoutSubscriptionVendorVendorPortalUsersItem struct {
+	// The user's ID.
+	UserId *int64 `json:"userId,omitempty" url:"userId,omitempty"`
+	// The user's email address.
+	Email *string `json:"email,omitempty" url:"email,omitempty"`
+	// The user's name.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// The user's phone number.
+	Phone *string `json:"phone,omitempty" url:"phone,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PayoutSubscriptionVendorVendorPortalUsersItem) GetUserId() *int64 {
+	if p == nil {
+		return nil
+	}
+	return p.UserId
+}
+
+func (p *PayoutSubscriptionVendorVendorPortalUsersItem) GetEmail() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Email
+}
+
+func (p *PayoutSubscriptionVendorVendorPortalUsersItem) GetName() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Name
+}
+
+func (p *PayoutSubscriptionVendorVendorPortalUsersItem) GetPhone() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Phone
+}
+
+func (p *PayoutSubscriptionVendorVendorPortalUsersItem) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PayoutSubscriptionVendorVendorPortalUsersItem) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetUserId sets the UserId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendorVendorPortalUsersItem) SetUserId(userId *int64) {
+	p.UserId = userId
+	p.require(payoutSubscriptionVendorVendorPortalUsersItemFieldUserId)
+}
+
+// SetEmail sets the Email field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendorVendorPortalUsersItem) SetEmail(email *string) {
+	p.Email = email
+	p.require(payoutSubscriptionVendorVendorPortalUsersItemFieldEmail)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendorVendorPortalUsersItem) SetName(name *string) {
+	p.Name = name
+	p.require(payoutSubscriptionVendorVendorPortalUsersItemFieldName)
+}
+
+// SetPhone sets the Phone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendorVendorPortalUsersItem) SetPhone(phone *string) {
+	p.Phone = phone
+	p.require(payoutSubscriptionVendorVendorPortalUsersItemFieldPhone)
+}
+
+func (p *PayoutSubscriptionVendorVendorPortalUsersItem) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayoutSubscriptionVendorVendorPortalUsersItem
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PayoutSubscriptionVendorVendorPortalUsersItem(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PayoutSubscriptionVendorVendorPortalUsersItem) MarshalJSON() ([]byte, error) {
+	type embed PayoutSubscriptionVendorVendorPortalUsersItem
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PayoutSubscriptionVendorVendorPortalUsersItem) String() string {
 	if p == nil {
 		return "<nil>"
 	}
