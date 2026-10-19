@@ -45,7 +45,7 @@ func NewClient(options *core.RequestOptions) *Client {
 //
 // Unlike single-use virtual cards issued as part of a payout transaction, ghost cards aren't tied to a specific payout. They're issued directly to a vendor and can be reused up to a configurable number of times within the card's spending limits.
 //
-// Only one ghost card can exist per vendor per paypoint. To issue a new card to the same vendor, cancel the existing card first.
+// Only one active ghost card can exist per vendor per paypoint. If the vendor already has one, the request fails with error `7067`. To issue a new card to the same vendor, cancel the existing card first. Canceled and expired cards don't count toward this limit. See [Cancel ghost card](/developers/api-reference/cards/cancel-ghost-card).
 //
 // Example:
 //
@@ -90,6 +90,35 @@ func (c *Client) CreateGhostCard(
 		ctx,
 		entry,
 		request,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
+// Cancels a ghost card. This is always a soft delete: Payabli keeps the card record, including its transaction history.
+//
+// Canceling a ghost card frees the vendor's slot, so you can issue a new ghost card to the same vendor. A card canceled with this endpoint can't be used, reactivated, or canceled again.
+//
+// Requires the `vcard_delete` permission.
+//
+// Example:
+//
+//	client.GhostCard.DeleteGhostCard(
+//	    context.TODO(),
+//	    "gc_abc123def456",
+//	)
+func (c *Client) DeleteGhostCard(
+	ctx context.Context,
+	// Token that identifies the ghost card to cancel. This is the `ReferenceId` returned when the card was created.
+	cardToken string,
+	opts ...option.RequestOption,
+) (*payabli.DeleteGhostCardResponse, error) {
+	response, err := c.WithRawResponse.DeleteGhostCard(
+		ctx,
+		cardToken,
 		opts...,
 	)
 	if err != nil {

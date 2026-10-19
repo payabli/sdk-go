@@ -488,9 +488,42 @@ func (c *Client) UpdateCheckPaymentStatus(
 	return response.Body, nil
 }
 
+// Returns a suggested check number for the next check payout from a paypoint's funding account. Payabli suggests the highest check number on the account's check payouts plus one, or `1` if the account has no check history. Canceled check payouts don't count toward the highest number.
+//
+// Use the suggested value with the `checkNumber` field when you reissue a check, or when you create a new check payout.
+//
+// Errors return HTTP `400`: `3005` when the paypoint ID is invalid or inactive, and `3758` when the account ID isn't valid for the paypoint.
+//
+// Example:
+//
+//	client.MoneyOut.GetNextCheckNumber(
+//	    context.TODO(),
+//	    int64(3040),
+//	    "123-456",
+//	)
+func (c *Client) GetNextCheckNumber(
+	ctx context.Context,
+	// The ID of the paypoint that owns the funding account.
+	paypointId int64,
+	// The `accountId` of the bank account linked to the paypoint's check service, such as `123-456`. Find it in the paypoint's bank account details (`BankData`).
+	accountId string,
+	opts ...option.RequestOption,
+) (*payabli.NextCheckNumberResponse, error) {
+	response, err := c.WithRawResponse.GetNextCheckNumber(
+		ctx,
+		paypointId,
+		accountId,
+		opts...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return response.Body, nil
+}
+
 // Reissues a payout transaction with a new payment method. This creates a new transaction linked to the original and marks the original transaction as reissued.
 //
-// The original transaction must be in **Processing** or **Processed** status. The payment method in the request body is used directly. The endpoint doesn't fall back to vendor-managed payment methods.
+// The original transaction must be in **Processing** or **Processed** status. An ACH payout with a **Returned** status can also be reissued. The payment method in the request body is used directly. The endpoint doesn't fall back to vendor-managed payment methods.
 //
 // The new transaction goes through the standard authorize-and-capture flow automatically. Both the original and new transactions are linked through their event histories for audit purposes.
 //

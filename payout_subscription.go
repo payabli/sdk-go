@@ -3137,45 +3137,46 @@ var (
 	payoutSubscriptionVendorFieldCountry               = big.NewInt(1 << 12)
 	payoutSubscriptionVendorFieldMcc                   = big.NewInt(1 << 13)
 	payoutSubscriptionVendorFieldLocationCode          = big.NewInt(1 << 14)
-	payoutSubscriptionVendorFieldContacts              = big.NewInt(1 << 15)
-	payoutSubscriptionVendorFieldBillingData           = big.NewInt(1 << 16)
-	payoutSubscriptionVendorFieldPaymentMethod         = big.NewInt(1 << 17)
-	payoutSubscriptionVendorFieldVendorStatus          = big.NewInt(1 << 18)
-	payoutSubscriptionVendorFieldVendorId              = big.NewInt(1 << 19)
-	payoutSubscriptionVendorFieldEnrollmentStatus      = big.NewInt(1 << 20)
-	payoutSubscriptionVendorFieldSummary               = big.NewInt(1 << 21)
-	payoutSubscriptionVendorFieldPaypointLegalname     = big.NewInt(1 << 22)
-	payoutSubscriptionVendorFieldPaypointId            = big.NewInt(1 << 23)
-	payoutSubscriptionVendorFieldPaypointDbaname       = big.NewInt(1 << 24)
-	payoutSubscriptionVendorFieldPaypointEntryname     = big.NewInt(1 << 25)
-	payoutSubscriptionVendorFieldParentOrgName         = big.NewInt(1 << 26)
-	payoutSubscriptionVendorFieldParentOrgId           = big.NewInt(1 << 27)
-	payoutSubscriptionVendorFieldCreatedDate           = big.NewInt(1 << 28)
-	payoutSubscriptionVendorFieldLastUpdated           = big.NewInt(1 << 29)
-	payoutSubscriptionVendorFieldRemitAddress1         = big.NewInt(1 << 30)
-	payoutSubscriptionVendorFieldRemitAddress2         = big.NewInt(1 << 31)
-	payoutSubscriptionVendorFieldRemitCity             = big.NewInt(1 << 32)
-	payoutSubscriptionVendorFieldRemitState            = big.NewInt(1 << 33)
-	payoutSubscriptionVendorFieldRemitZip              = big.NewInt(1 << 34)
-	payoutSubscriptionVendorFieldRemitCountry          = big.NewInt(1 << 35)
-	payoutSubscriptionVendorFieldPayeeName1            = big.NewInt(1 << 36)
-	payoutSubscriptionVendorFieldPayeeName2            = big.NewInt(1 << 37)
-	payoutSubscriptionVendorFieldCustomField1          = big.NewInt(1 << 38)
-	payoutSubscriptionVendorFieldCustomField2          = big.NewInt(1 << 39)
-	payoutSubscriptionVendorFieldCustomerVendorAccount = big.NewInt(1 << 40)
-	payoutSubscriptionVendorFieldInternalReferenceId   = big.NewInt(1 << 41)
-	payoutSubscriptionVendorFieldPaymentPortalUrl      = big.NewInt(1 << 42)
-	payoutSubscriptionVendorFieldCardAccepted          = big.NewInt(1 << 43)
-	payoutSubscriptionVendorFieldAchAccepted           = big.NewInt(1 << 44)
-	payoutSubscriptionVendorFieldCheckAccepted         = big.NewInt(1 << 45)
-	payoutSubscriptionVendorFieldEnrichmentStatus      = big.NewInt(1 << 46)
-	payoutSubscriptionVendorFieldEnrichedBy            = big.NewInt(1 << 47)
-	payoutSubscriptionVendorFieldEnrichedAt            = big.NewInt(1 << 48)
-	payoutSubscriptionVendorFieldEnrichmentId          = big.NewInt(1 << 49)
-	payoutSubscriptionVendorFieldAdditionalData        = big.NewInt(1 << 50)
-	payoutSubscriptionVendorFieldExternalPaypointId    = big.NewInt(1 << 51)
-	payoutSubscriptionVendorFieldStoredMethods         = big.NewInt(1 << 52)
-	payoutSubscriptionVendorFieldVendorPortal          = big.NewInt(1 << 53)
+	payoutSubscriptionVendorFieldIssue1099             = big.NewInt(1 << 15)
+	payoutSubscriptionVendorFieldContacts              = big.NewInt(1 << 16)
+	payoutSubscriptionVendorFieldBillingData           = big.NewInt(1 << 17)
+	payoutSubscriptionVendorFieldPaymentMethod         = big.NewInt(1 << 18)
+	payoutSubscriptionVendorFieldVendorStatus          = big.NewInt(1 << 19)
+	payoutSubscriptionVendorFieldVendorId              = big.NewInt(1 << 20)
+	payoutSubscriptionVendorFieldEnrollmentStatus      = big.NewInt(1 << 21)
+	payoutSubscriptionVendorFieldSummary               = big.NewInt(1 << 22)
+	payoutSubscriptionVendorFieldPaypointLegalname     = big.NewInt(1 << 23)
+	payoutSubscriptionVendorFieldPaypointId            = big.NewInt(1 << 24)
+	payoutSubscriptionVendorFieldPaypointDbaname       = big.NewInt(1 << 25)
+	payoutSubscriptionVendorFieldPaypointEntryname     = big.NewInt(1 << 26)
+	payoutSubscriptionVendorFieldParentOrgName         = big.NewInt(1 << 27)
+	payoutSubscriptionVendorFieldParentOrgId           = big.NewInt(1 << 28)
+	payoutSubscriptionVendorFieldCreatedDate           = big.NewInt(1 << 29)
+	payoutSubscriptionVendorFieldLastUpdated           = big.NewInt(1 << 30)
+	payoutSubscriptionVendorFieldRemitAddress1         = big.NewInt(1 << 31)
+	payoutSubscriptionVendorFieldRemitAddress2         = big.NewInt(1 << 32)
+	payoutSubscriptionVendorFieldRemitCity             = big.NewInt(1 << 33)
+	payoutSubscriptionVendorFieldRemitState            = big.NewInt(1 << 34)
+	payoutSubscriptionVendorFieldRemitZip              = big.NewInt(1 << 35)
+	payoutSubscriptionVendorFieldRemitCountry          = big.NewInt(1 << 36)
+	payoutSubscriptionVendorFieldPayeeName1            = big.NewInt(1 << 37)
+	payoutSubscriptionVendorFieldPayeeName2            = big.NewInt(1 << 38)
+	payoutSubscriptionVendorFieldCustomField1          = big.NewInt(1 << 39)
+	payoutSubscriptionVendorFieldCustomField2          = big.NewInt(1 << 40)
+	payoutSubscriptionVendorFieldCustomerVendorAccount = big.NewInt(1 << 41)
+	payoutSubscriptionVendorFieldInternalReferenceId   = big.NewInt(1 << 42)
+	payoutSubscriptionVendorFieldPaymentPortalUrl      = big.NewInt(1 << 43)
+	payoutSubscriptionVendorFieldCardAccepted          = big.NewInt(1 << 44)
+	payoutSubscriptionVendorFieldAchAccepted           = big.NewInt(1 << 45)
+	payoutSubscriptionVendorFieldCheckAccepted         = big.NewInt(1 << 46)
+	payoutSubscriptionVendorFieldEnrichmentStatus      = big.NewInt(1 << 47)
+	payoutSubscriptionVendorFieldEnrichedBy            = big.NewInt(1 << 48)
+	payoutSubscriptionVendorFieldEnrichedAt            = big.NewInt(1 << 49)
+	payoutSubscriptionVendorFieldEnrichmentId          = big.NewInt(1 << 50)
+	payoutSubscriptionVendorFieldAdditionalData        = big.NewInt(1 << 51)
+	payoutSubscriptionVendorFieldExternalPaypointId    = big.NewInt(1 << 52)
+	payoutSubscriptionVendorFieldStoredMethods         = big.NewInt(1 << 53)
+	payoutSubscriptionVendorFieldVendorPortal          = big.NewInt(1 << 54)
 )
 
 type PayoutSubscriptionVendor struct {
@@ -3193,11 +3194,12 @@ type PayoutSubscriptionVendor struct {
 	// The city.
 	City *string `json:"city,omitempty" url:"city,omitempty"`
 	// The state or province.
-	State        *string `json:"state,omitempty" url:"state,omitempty"`
-	Zip          *Zip    `json:"zip,omitempty" url:"zip,omitempty"`
-	Country      *string `json:"country,omitempty" url:"country,omitempty"`
-	Mcc          *Mcc    `json:"mcc,omitempty" url:"mcc,omitempty"`
-	LocationCode *string `json:"locationCode,omitempty" url:"locationCode,omitempty"`
+	State        *string   `json:"state,omitempty" url:"state,omitempty"`
+	Zip          *Zip      `json:"zip,omitempty" url:"zip,omitempty"`
+	Country      *string   `json:"country,omitempty" url:"country,omitempty"`
+	Mcc          *Mcc      `json:"mcc,omitempty" url:"mcc,omitempty"`
+	LocationCode *string   `json:"locationCode,omitempty" url:"locationCode,omitempty"`
+	Issue1099    Issue1099 `json:"issue1099" url:"issue1099"`
 	// Array of objects describing the vendor's contacts.
 	Contacts         []*PayoutSubscriptionVendorContact `json:"contacts,omitempty" url:"contacts,omitempty"`
 	BillingData      *BillingDataResponse               `json:"billingData,omitempty" url:"billingData,omitempty"`
@@ -3361,6 +3363,13 @@ func (p *PayoutSubscriptionVendor) GetLocationCode() *string {
 		return nil
 	}
 	return p.LocationCode
+}
+
+func (p *PayoutSubscriptionVendor) GetIssue1099() Issue1099 {
+	if p == nil {
+		return false
+	}
+	return p.Issue1099
 }
 
 func (p *PayoutSubscriptionVendor) GetContacts() []*PayoutSubscriptionVendorContact {
@@ -3753,6 +3762,13 @@ func (p *PayoutSubscriptionVendor) SetMcc(mcc *Mcc) {
 func (p *PayoutSubscriptionVendor) SetLocationCode(locationCode *string) {
 	p.LocationCode = locationCode
 	p.require(payoutSubscriptionVendorFieldLocationCode)
+}
+
+// SetIssue1099 sets the Issue1099 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionVendor) SetIssue1099(issue1099 Issue1099) {
+	p.Issue1099 = issue1099
+	p.require(payoutSubscriptionVendorFieldIssue1099)
 }
 
 // SetContacts sets the Contacts field and marks it as non-optional;

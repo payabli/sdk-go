@@ -3478,6 +3478,7 @@ type ListTransactionsRequest struct {
 	// - `customerShippingState` (ct, nct, eq, ne)
 	// - `customerShippingCountry` (ct, nct, eq, ne)
 	// - `deviceId` (ct, nct, in, nin, eq, ne)
+	// - `DeviceEntryMode` (eq, ne, in, nin). Filters by how the device read the card: `Chip`, `Contactless`, `Swipe`, `Manual`, `Fallback`, or `None`. Case-insensitive. Separate multiple values with `|`, for example `DeviceEntryMode(in)=Chip|Contactless`. `ne` and `nin` also return transactions with no entry mode, such as non-device transactions. An unrecognized value is ignored, so the filter isn't applied.
 	// - `AchSecCode` ( ct, nct, in, nin, eq, ne)
 	// - `AchHolderType` (ct, nct, in, nin, eq, and ne)
 	// - `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name related to customer data
@@ -3627,6 +3628,7 @@ type ListTransactionsOrgRequest struct {
 	// - `customerShippingState` (ct, nct, eq, ne)
 	// - `customerShippingCountry` (ct, nct, eq, ne)
 	// - `deviceId` (ct, nct, in, nin, eq, ne)
+	// - `DeviceEntryMode` (eq, ne, in, nin). Filters by how the device read the card: `Chip`, `Contactless`, `Swipe`, `Manual`, `Fallback`, or `None`. Case-insensitive. Separate multiple values with `|`, for example `DeviceEntryMode(in)=Chip|Contactless`. `ne` and `nin` also return transactions with no entry mode, such as non-device transactions. An unrecognized value is ignored, so the filter isn't applied.
 	// - `AchSecCode` ( ct, nct, in, nin, eq, ne)
 	// - `AchHolderType“ (ct, nct, in, nin, eq, and ne)
 	// - `additional-xxx` (ne, eq, ct, nct) where xxx is the additional field name related to customer data
@@ -4123,6 +4125,7 @@ type ListTransfersOutOrgRequest struct {
 	//   - `batchId` (ne, eq, in, nin)
 	//   - `detailType` (eq, ne, in, nin, ct, nct)
 	//   - `detailMethod` (eq, ne, in, nin, ct, nct)
+	//   - `paymentId` (ne, eq, in, nin): The payout's payment ID. Returns every transfer linked to that payout: the payout transfer, any refund and stale check refund transfers, and the billing fee transfer.
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
@@ -4210,6 +4213,7 @@ type ListTransfersOutPaypointRequest struct {
 	//   - `batchId` (ne, eq, in, nin)
 	//   - `detailType` (eq, ne, in, nin, ct, nct)
 	//   - `detailMethod` (eq, ne, in, nin, ct, nct)
+	//   - `paymentId` (ne, eq, in, nin): The payout's payment ID. Returns every transfer linked to that payout: the payout transfer, any refund and stale check refund transfers, and the billing fee transfer.
 	Parameters map[string]*string `json:"-" url:"parameters,omitempty"`
 	// The field name to use for sorting results. Use `desc(field_name)` to sort descending by `field_name`, and use `asc(field_name)` to sort ascending by `field_name`.
 	SortBy *string `json:"-" url:"sortBy,omitempty"`
@@ -5146,33 +5150,34 @@ var (
 	associatedVendorFieldCountry               = big.NewInt(1 << 11)
 	associatedVendorFieldMcc                   = big.NewInt(1 << 12)
 	associatedVendorFieldLocationCode          = big.NewInt(1 << 13)
-	associatedVendorFieldContacts              = big.NewInt(1 << 14)
-	associatedVendorFieldBillingData           = big.NewInt(1 << 15)
-	associatedVendorFieldPaymentMethod         = big.NewInt(1 << 16)
-	associatedVendorFieldVendorStatus          = big.NewInt(1 << 17)
-	associatedVendorFieldVendorId              = big.NewInt(1 << 18)
-	associatedVendorFieldEnrollmentStatus      = big.NewInt(1 << 19)
-	associatedVendorFieldSummary               = big.NewInt(1 << 20)
-	associatedVendorFieldPaypointLegalname     = big.NewInt(1 << 21)
-	associatedVendorFieldPaypointDbaname       = big.NewInt(1 << 22)
-	associatedVendorFieldPaypointEntryname     = big.NewInt(1 << 23)
-	associatedVendorFieldParentOrgName         = big.NewInt(1 << 24)
-	associatedVendorFieldCreatedDate           = big.NewInt(1 << 25)
-	associatedVendorFieldLastUpdated           = big.NewInt(1 << 26)
-	associatedVendorFieldRemitAddress1         = big.NewInt(1 << 27)
-	associatedVendorFieldRemitAddress2         = big.NewInt(1 << 28)
-	associatedVendorFieldRemitCity             = big.NewInt(1 << 29)
-	associatedVendorFieldRemitState            = big.NewInt(1 << 30)
-	associatedVendorFieldRemitZip              = big.NewInt(1 << 31)
-	associatedVendorFieldRemitCountry          = big.NewInt(1 << 32)
-	associatedVendorFieldPayeeName1            = big.NewInt(1 << 33)
-	associatedVendorFieldPayeeName2            = big.NewInt(1 << 34)
-	associatedVendorFieldCustomField1          = big.NewInt(1 << 35)
-	associatedVendorFieldCustomField2          = big.NewInt(1 << 36)
-	associatedVendorFieldCustomerVendorAccount = big.NewInt(1 << 37)
-	associatedVendorFieldInternalReferenceId   = big.NewInt(1 << 38)
-	associatedVendorFieldAdditionalData        = big.NewInt(1 << 39)
-	associatedVendorFieldExternalPaypointId    = big.NewInt(1 << 40)
+	associatedVendorFieldIssue1099             = big.NewInt(1 << 14)
+	associatedVendorFieldContacts              = big.NewInt(1 << 15)
+	associatedVendorFieldBillingData           = big.NewInt(1 << 16)
+	associatedVendorFieldPaymentMethod         = big.NewInt(1 << 17)
+	associatedVendorFieldVendorStatus          = big.NewInt(1 << 18)
+	associatedVendorFieldVendorId              = big.NewInt(1 << 19)
+	associatedVendorFieldEnrollmentStatus      = big.NewInt(1 << 20)
+	associatedVendorFieldSummary               = big.NewInt(1 << 21)
+	associatedVendorFieldPaypointLegalname     = big.NewInt(1 << 22)
+	associatedVendorFieldPaypointDbaname       = big.NewInt(1 << 23)
+	associatedVendorFieldPaypointEntryname     = big.NewInt(1 << 24)
+	associatedVendorFieldParentOrgName         = big.NewInt(1 << 25)
+	associatedVendorFieldCreatedDate           = big.NewInt(1 << 26)
+	associatedVendorFieldLastUpdated           = big.NewInt(1 << 27)
+	associatedVendorFieldRemitAddress1         = big.NewInt(1 << 28)
+	associatedVendorFieldRemitAddress2         = big.NewInt(1 << 29)
+	associatedVendorFieldRemitCity             = big.NewInt(1 << 30)
+	associatedVendorFieldRemitState            = big.NewInt(1 << 31)
+	associatedVendorFieldRemitZip              = big.NewInt(1 << 32)
+	associatedVendorFieldRemitCountry          = big.NewInt(1 << 33)
+	associatedVendorFieldPayeeName1            = big.NewInt(1 << 34)
+	associatedVendorFieldPayeeName2            = big.NewInt(1 << 35)
+	associatedVendorFieldCustomField1          = big.NewInt(1 << 36)
+	associatedVendorFieldCustomField2          = big.NewInt(1 << 37)
+	associatedVendorFieldCustomerVendorAccount = big.NewInt(1 << 38)
+	associatedVendorFieldInternalReferenceId   = big.NewInt(1 << 39)
+	associatedVendorFieldAdditionalData        = big.NewInt(1 << 40)
+	associatedVendorFieldExternalPaypointId    = big.NewInt(1 << 41)
 )
 
 type AssociatedVendor struct {
@@ -5200,6 +5205,7 @@ type AssociatedVendor struct {
 	Country      *string       `json:"Country,omitempty" url:"Country,omitempty"`
 	Mcc          *Mcc          `json:"Mcc,omitempty" url:"Mcc,omitempty"`
 	LocationCode *LocationCode `json:"LocationCode,omitempty" url:"LocationCode,omitempty"`
+	Issue1099    *Issue1099    `json:"Issue1099,omitempty" url:"Issue1099,omitempty"`
 	// Array of objects describing the vendor's contacts.
 	Contacts         []*Contacts          `json:"Contacts,omitempty" url:"Contacts,omitempty"`
 	BillingData      *BillingDataResponse `json:"BillingData,omitempty" url:"BillingData,omitempty"`
@@ -5335,6 +5341,13 @@ func (a *AssociatedVendor) GetLocationCode() *LocationCode {
 		return nil
 	}
 	return a.LocationCode
+}
+
+func (a *AssociatedVendor) GetIssue1099() *Issue1099 {
+	if a == nil {
+		return nil
+	}
+	return a.Issue1099
 }
 
 func (a *AssociatedVendor) GetContacts() []*Contacts {
@@ -5636,6 +5649,13 @@ func (a *AssociatedVendor) SetMcc(mcc *Mcc) {
 func (a *AssociatedVendor) SetLocationCode(locationCode *LocationCode) {
 	a.LocationCode = locationCode
 	a.require(associatedVendorFieldLocationCode)
+}
+
+// SetIssue1099 sets the Issue1099 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *AssociatedVendor) SetIssue1099(issue1099 *Issue1099) {
+	a.Issue1099 = issue1099
+	a.require(associatedVendorFieldIssue1099)
 }
 
 // SetContacts sets the Contacts field and marks it as non-optional;
@@ -7524,27 +7544,30 @@ var (
 	deviceQueryRecordFieldFriendlyName         = big.NewInt(1 << 4)
 	deviceQueryRecordFieldMake                 = big.NewInt(1 << 5)
 	deviceQueryRecordFieldModel                = big.NewInt(1 << 6)
-	deviceQueryRecordFieldDeviceType           = big.NewInt(1 << 7)
-	deviceQueryRecordFieldDeviceStatus         = big.NewInt(1 << 8)
-	deviceQueryRecordFieldDeviceOs             = big.NewInt(1 << 9)
-	deviceQueryRecordFieldMacAddress           = big.NewInt(1 << 10)
-	deviceQueryRecordFieldLastHealthCheck      = big.NewInt(1 << 11)
-	deviceQueryRecordFieldRegistrationCode     = big.NewInt(1 << 12)
-	deviceQueryRecordFieldActivationAttempts   = big.NewInt(1 << 13)
-	deviceQueryRecordFieldActivationCodeExpiry = big.NewInt(1 << 14)
-	deviceQueryRecordFieldCreatedAt            = big.NewInt(1 << 15)
-	deviceQueryRecordFieldUpdatedAt            = big.NewInt(1 << 16)
-	deviceQueryRecordFieldPaypointId           = big.NewInt(1 << 17)
-	deviceQueryRecordFieldPaypointDba          = big.NewInt(1 << 18)
-	deviceQueryRecordFieldPaypointLegal        = big.NewInt(1 << 19)
-	deviceQueryRecordFieldPaypointEntry        = big.NewInt(1 << 20)
-	deviceQueryRecordFieldPaypointLogo         = big.NewInt(1 << 21)
-	deviceQueryRecordFieldExternalPaypointId   = big.NewInt(1 << 22)
-	deviceQueryRecordFieldParentOrgId          = big.NewInt(1 << 23)
-	deviceQueryRecordFieldParentOrgName        = big.NewInt(1 << 24)
-	deviceQueryRecordFieldParentOrgLogo        = big.NewInt(1 << 25)
-	deviceQueryRecordFieldTransactionCount     = big.NewInt(1 << 26)
-	deviceQueryRecordFieldVolumeProcessed      = big.NewInt(1 << 27)
+	deviceQueryRecordFieldAppVersion           = big.NewInt(1 << 7)
+	deviceQueryRecordFieldOsVersion            = big.NewInt(1 << 8)
+	deviceQueryRecordFieldDeviceType           = big.NewInt(1 << 9)
+	deviceQueryRecordFieldDeviceStatus         = big.NewInt(1 << 10)
+	deviceQueryRecordFieldOperationalStatus    = big.NewInt(1 << 11)
+	deviceQueryRecordFieldDeviceOs             = big.NewInt(1 << 12)
+	deviceQueryRecordFieldMacAddress           = big.NewInt(1 << 13)
+	deviceQueryRecordFieldLastHealthCheck      = big.NewInt(1 << 14)
+	deviceQueryRecordFieldRegistrationCode     = big.NewInt(1 << 15)
+	deviceQueryRecordFieldActivationAttempts   = big.NewInt(1 << 16)
+	deviceQueryRecordFieldActivationCodeExpiry = big.NewInt(1 << 17)
+	deviceQueryRecordFieldCreatedAt            = big.NewInt(1 << 18)
+	deviceQueryRecordFieldUpdatedAt            = big.NewInt(1 << 19)
+	deviceQueryRecordFieldPaypointId           = big.NewInt(1 << 20)
+	deviceQueryRecordFieldPaypointDba          = big.NewInt(1 << 21)
+	deviceQueryRecordFieldPaypointLegal        = big.NewInt(1 << 22)
+	deviceQueryRecordFieldPaypointEntry        = big.NewInt(1 << 23)
+	deviceQueryRecordFieldPaypointLogo         = big.NewInt(1 << 24)
+	deviceQueryRecordFieldExternalPaypointId   = big.NewInt(1 << 25)
+	deviceQueryRecordFieldParentOrgId          = big.NewInt(1 << 26)
+	deviceQueryRecordFieldParentOrgName        = big.NewInt(1 << 27)
+	deviceQueryRecordFieldParentOrgLogo        = big.NewInt(1 << 28)
+	deviceQueryRecordFieldTransactionCount     = big.NewInt(1 << 29)
+	deviceQueryRecordFieldVolumeProcessed      = big.NewInt(1 << 30)
 )
 
 type DeviceQueryRecord struct {
@@ -7562,10 +7585,31 @@ type DeviceQueryRecord struct {
 	Make *string `json:"make,omitempty" url:"make,omitempty"`
 	// Model name of the device.
 	Model *string `json:"model,omitempty" url:"model,omitempty"`
+	// Version of the Payabli app running on the device.
+	AppVersion *string `json:"appVersion,omitempty" url:"appVersion,omitempty"`
+	// Version of Android running on the device.
+	OsVersion *string `json:"osVersion,omitempty" url:"osVersion,omitempty"`
 	// Type of device.
 	DeviceType *int `json:"deviceType,omitempty" url:"deviceType,omitempty"`
-	// Current status of the device.
+	// Lifecycle status of the device, as an integer. A value of `1` means the
+	// device is active. This field doesn't show whether the device is running
+	// a command. To check whether the device can accept a transaction now,
+	// use `operationalStatus`.
 	DeviceStatus *int `json:"deviceStatus,omitempty" url:"deviceStatus,omitempty"`
+	// Shows whether the device can accept a transaction now. The value
+	// reflects the device's state when you send the query.
+	//
+	//   - `online`: The device is active and isn't running a command. It can
+	//     accept a transaction.
+	//   - `busy`: The device is running a command that's pending, dispatched,
+	//     or processing, and the command hasn't expired. A new transaction sent
+	//     to the device fails with error `E7069` (Device busy). Wait for the
+	//     command to finish or expire, then query the device again.
+	//   - `offline`: The device isn't active, so it can't accept transactions.
+	//     Its lifecycle status (`deviceStatus`) isn't active.
+	//
+	// Check this field before you send a transaction to a device.
+	OperationalStatus DeviceQueryRecordOperationalStatus `json:"operationalStatus" url:"operationalStatus"`
 	// Operating system of the device.
 	DeviceOs *int `json:"deviceOs,omitempty" url:"deviceOs,omitempty"`
 	// MAC address of the device.
@@ -7661,6 +7705,20 @@ func (d *DeviceQueryRecord) GetModel() *string {
 	return d.Model
 }
 
+func (d *DeviceQueryRecord) GetAppVersion() *string {
+	if d == nil {
+		return nil
+	}
+	return d.AppVersion
+}
+
+func (d *DeviceQueryRecord) GetOsVersion() *string {
+	if d == nil {
+		return nil
+	}
+	return d.OsVersion
+}
+
 func (d *DeviceQueryRecord) GetDeviceType() *int {
 	if d == nil {
 		return nil
@@ -7673,6 +7731,13 @@ func (d *DeviceQueryRecord) GetDeviceStatus() *int {
 		return nil
 	}
 	return d.DeviceStatus
+}
+
+func (d *DeviceQueryRecord) GetOperationalStatus() DeviceQueryRecordOperationalStatus {
+	if d == nil {
+		return ""
+	}
+	return d.OperationalStatus
 }
 
 func (d *DeviceQueryRecord) GetDeviceOs() *int {
@@ -7871,6 +7936,20 @@ func (d *DeviceQueryRecord) SetModel(model *string) {
 	d.require(deviceQueryRecordFieldModel)
 }
 
+// SetAppVersion sets the AppVersion field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetAppVersion(appVersion *string) {
+	d.AppVersion = appVersion
+	d.require(deviceQueryRecordFieldAppVersion)
+}
+
+// SetOsVersion sets the OsVersion field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetOsVersion(osVersion *string) {
+	d.OsVersion = osVersion
+	d.require(deviceQueryRecordFieldOsVersion)
+}
+
 // SetDeviceType sets the DeviceType field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (d *DeviceQueryRecord) SetDeviceType(deviceType *int) {
@@ -7883,6 +7962,13 @@ func (d *DeviceQueryRecord) SetDeviceType(deviceType *int) {
 func (d *DeviceQueryRecord) SetDeviceStatus(deviceStatus *int) {
 	d.DeviceStatus = deviceStatus
 	d.require(deviceQueryRecordFieldDeviceStatus)
+}
+
+// SetOperationalStatus sets the OperationalStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeviceQueryRecord) SetOperationalStatus(operationalStatus DeviceQueryRecordOperationalStatus) {
+	d.OperationalStatus = operationalStatus
+	d.require(deviceQueryRecordFieldOperationalStatus)
 }
 
 // SetDeviceOs sets the DeviceOs field and marks it as non-optional;
@@ -8058,6 +8144,44 @@ func (d *DeviceQueryRecord) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", d)
+}
+
+// Shows whether the device can accept a transaction now. The value
+// reflects the device's state when you send the query.
+//
+//   - `online`: The device is active and isn't running a command. It can
+//     accept a transaction.
+//   - `busy`: The device is running a command that's pending, dispatched,
+//     or processing, and the command hasn't expired. A new transaction sent
+//     to the device fails with error `E7069` (Device busy). Wait for the
+//     command to finish or expire, then query the device again.
+//   - `offline`: The device isn't active, so it can't accept transactions.
+//     Its lifecycle status (`deviceStatus`) isn't active.
+//
+// Check this field before you send a transaction to a device.
+type DeviceQueryRecordOperationalStatus string
+
+const (
+	DeviceQueryRecordOperationalStatusOnline  DeviceQueryRecordOperationalStatus = "online"
+	DeviceQueryRecordOperationalStatusBusy    DeviceQueryRecordOperationalStatus = "busy"
+	DeviceQueryRecordOperationalStatusOffline DeviceQueryRecordOperationalStatus = "offline"
+)
+
+func NewDeviceQueryRecordOperationalStatusFromString(s string) (DeviceQueryRecordOperationalStatus, error) {
+	switch s {
+	case "online":
+		return DeviceQueryRecordOperationalStatusOnline, nil
+	case "busy":
+		return DeviceQueryRecordOperationalStatusBusy, nil
+	case "offline":
+		return DeviceQueryRecordOperationalStatusOffline, nil
+	}
+	var t DeviceQueryRecordOperationalStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (d DeviceQueryRecordOperationalStatus) Ptr() *DeviceQueryRecordOperationalStatus {
+	return &d
 }
 
 // The date the funds are expected to be deposited.
@@ -14021,7 +14145,7 @@ type QueryPayoutTransactionRecordsItem struct {
 	AchTraceNumber *string `json:"AchTraceNumber,omitempty" url:"AchTraceNumber,omitempty"`
 	// Unique identifier (ULID) of the payout transaction.
 	EntityId *string `json:"EntityId,omitempty" url:"EntityId,omitempty"`
-	// Operations currently permitted for this payout, derived from its status. Always present; empty for terminal statuses such as paid or canceled. Read this array directly rather than inferring available actions from `PaymentStatus`.
+	// Operations currently permitted for this payout, derived from its status and other payout details such as payment method. For example, a returned ACH payout can include `cancel` and `reissue`. Always present; empty for terminal statuses such as paid or canceled. Read this array directly rather than inferring available actions from `PaymentStatus`.
 	AllowedActions []QueryPayoutTransactionRecordsItemAllowedActionsItem `json:"allowedActions" url:"allowedActions"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
@@ -23076,36 +23200,37 @@ var (
 	transferOutDetailVendorFieldCountry               = big.NewInt(1 << 12)
 	transferOutDetailVendorFieldMcc                   = big.NewInt(1 << 13)
 	transferOutDetailVendorFieldLocationCode          = big.NewInt(1 << 14)
-	transferOutDetailVendorFieldContacts              = big.NewInt(1 << 15)
-	transferOutDetailVendorFieldBillingData           = big.NewInt(1 << 16)
-	transferOutDetailVendorFieldPaymentMethod         = big.NewInt(1 << 17)
-	transferOutDetailVendorFieldVendorStatus          = big.NewInt(1 << 18)
-	transferOutDetailVendorFieldVendorId              = big.NewInt(1 << 19)
-	transferOutDetailVendorFieldEnrollmentStatus      = big.NewInt(1 << 20)
-	transferOutDetailVendorFieldSummary               = big.NewInt(1 << 21)
-	transferOutDetailVendorFieldPaypointLegalname     = big.NewInt(1 << 22)
-	transferOutDetailVendorFieldPaypointId            = big.NewInt(1 << 23)
-	transferOutDetailVendorFieldPaypointDbaname       = big.NewInt(1 << 24)
-	transferOutDetailVendorFieldPaypointEntryname     = big.NewInt(1 << 25)
-	transferOutDetailVendorFieldParentOrgName         = big.NewInt(1 << 26)
-	transferOutDetailVendorFieldParentOrgId           = big.NewInt(1 << 27)
-	transferOutDetailVendorFieldCreatedDate           = big.NewInt(1 << 28)
-	transferOutDetailVendorFieldLastUpdated           = big.NewInt(1 << 29)
-	transferOutDetailVendorFieldRemitAddress1         = big.NewInt(1 << 30)
-	transferOutDetailVendorFieldRemitAddress2         = big.NewInt(1 << 31)
-	transferOutDetailVendorFieldRemitCity             = big.NewInt(1 << 32)
-	transferOutDetailVendorFieldRemitState            = big.NewInt(1 << 33)
-	transferOutDetailVendorFieldRemitZip              = big.NewInt(1 << 34)
-	transferOutDetailVendorFieldRemitCountry          = big.NewInt(1 << 35)
-	transferOutDetailVendorFieldPayeeName1            = big.NewInt(1 << 36)
-	transferOutDetailVendorFieldPayeeName2            = big.NewInt(1 << 37)
-	transferOutDetailVendorFieldCustomField1          = big.NewInt(1 << 38)
-	transferOutDetailVendorFieldCustomField2          = big.NewInt(1 << 39)
-	transferOutDetailVendorFieldCustomerVendorAccount = big.NewInt(1 << 40)
-	transferOutDetailVendorFieldInternalReferenceId   = big.NewInt(1 << 41)
-	transferOutDetailVendorFieldAdditionalData        = big.NewInt(1 << 42)
-	transferOutDetailVendorFieldExternalPaypointId    = big.NewInt(1 << 43)
-	transferOutDetailVendorFieldStoredMethods         = big.NewInt(1 << 44)
+	transferOutDetailVendorFieldIssue1099             = big.NewInt(1 << 15)
+	transferOutDetailVendorFieldContacts              = big.NewInt(1 << 16)
+	transferOutDetailVendorFieldBillingData           = big.NewInt(1 << 17)
+	transferOutDetailVendorFieldPaymentMethod         = big.NewInt(1 << 18)
+	transferOutDetailVendorFieldVendorStatus          = big.NewInt(1 << 19)
+	transferOutDetailVendorFieldVendorId              = big.NewInt(1 << 20)
+	transferOutDetailVendorFieldEnrollmentStatus      = big.NewInt(1 << 21)
+	transferOutDetailVendorFieldSummary               = big.NewInt(1 << 22)
+	transferOutDetailVendorFieldPaypointLegalname     = big.NewInt(1 << 23)
+	transferOutDetailVendorFieldPaypointId            = big.NewInt(1 << 24)
+	transferOutDetailVendorFieldPaypointDbaname       = big.NewInt(1 << 25)
+	transferOutDetailVendorFieldPaypointEntryname     = big.NewInt(1 << 26)
+	transferOutDetailVendorFieldParentOrgName         = big.NewInt(1 << 27)
+	transferOutDetailVendorFieldParentOrgId           = big.NewInt(1 << 28)
+	transferOutDetailVendorFieldCreatedDate           = big.NewInt(1 << 29)
+	transferOutDetailVendorFieldLastUpdated           = big.NewInt(1 << 30)
+	transferOutDetailVendorFieldRemitAddress1         = big.NewInt(1 << 31)
+	transferOutDetailVendorFieldRemitAddress2         = big.NewInt(1 << 32)
+	transferOutDetailVendorFieldRemitCity             = big.NewInt(1 << 33)
+	transferOutDetailVendorFieldRemitState            = big.NewInt(1 << 34)
+	transferOutDetailVendorFieldRemitZip              = big.NewInt(1 << 35)
+	transferOutDetailVendorFieldRemitCountry          = big.NewInt(1 << 36)
+	transferOutDetailVendorFieldPayeeName1            = big.NewInt(1 << 37)
+	transferOutDetailVendorFieldPayeeName2            = big.NewInt(1 << 38)
+	transferOutDetailVendorFieldCustomField1          = big.NewInt(1 << 39)
+	transferOutDetailVendorFieldCustomField2          = big.NewInt(1 << 40)
+	transferOutDetailVendorFieldCustomerVendorAccount = big.NewInt(1 << 41)
+	transferOutDetailVendorFieldInternalReferenceId   = big.NewInt(1 << 42)
+	transferOutDetailVendorFieldAdditionalData        = big.NewInt(1 << 43)
+	transferOutDetailVendorFieldExternalPaypointId    = big.NewInt(1 << 44)
+	transferOutDetailVendorFieldStoredMethods         = big.NewInt(1 << 45)
 )
 
 type TransferOutDetailVendor struct {
@@ -23138,7 +23263,8 @@ type TransferOutDetailVendor struct {
 	// Merchant Category Code.
 	Mcc *string `json:"Mcc,omitempty" url:"Mcc,omitempty"`
 	// Location code for the vendor.
-	LocationCode *string `json:"LocationCode,omitempty" url:"LocationCode,omitempty"`
+	LocationCode *string   `json:"LocationCode,omitempty" url:"LocationCode,omitempty"`
+	Issue1099    Issue1099 `json:"Issue1099" url:"Issue1099"`
 	// List of contacts for the vendor.
 	Contacts []*ContactsResponse `json:"Contacts,omitempty" url:"Contacts,omitempty"`
 	// Billing data for the vendor.
@@ -23310,6 +23436,13 @@ func (t *TransferOutDetailVendor) GetLocationCode() *string {
 		return nil
 	}
 	return t.LocationCode
+}
+
+func (t *TransferOutDetailVendor) GetIssue1099() Issue1099 {
+	if t == nil {
+		return false
+	}
+	return t.Issue1099
 }
 
 func (t *TransferOutDetailVendor) GetContacts() []*ContactsResponse {
@@ -23639,6 +23772,13 @@ func (t *TransferOutDetailVendor) SetMcc(mcc *string) {
 func (t *TransferOutDetailVendor) SetLocationCode(locationCode *string) {
 	t.LocationCode = locationCode
 	t.require(transferOutDetailVendorFieldLocationCode)
+}
+
+// SetIssue1099 sets the Issue1099 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailVendor) SetIssue1099(issue1099 Issue1099) {
+	t.Issue1099 = issue1099
+	t.require(transferOutDetailVendorFieldIssue1099)
 }
 
 // SetContacts sets the Contacts field and marks it as non-optional;

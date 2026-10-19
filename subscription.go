@@ -163,12 +163,15 @@ func (r *RequestSchedule) MarshalJSON() ([]byte, error) {
 }
 
 var (
-	requestUpdateScheduleFieldPaymentDetails  = big.NewInt(1 << 0)
-	requestUpdateScheduleFieldScheduleDetails = big.NewInt(1 << 1)
-	requestUpdateScheduleFieldSetPause        = big.NewInt(1 << 2)
+	requestUpdateScheduleFieldInvoiceData     = big.NewInt(1 << 0)
+	requestUpdateScheduleFieldPaymentDetails  = big.NewInt(1 << 1)
+	requestUpdateScheduleFieldScheduleDetails = big.NewInt(1 << 2)
+	requestUpdateScheduleFieldSetPause        = big.NewInt(1 << 3)
 )
 
 type RequestUpdateSchedule struct {
+	// Object describing an invoice linked to the subscription. Replaces the subscription's existing invoice data entirely. Send `null` to remove it, or leave it out to keep the current invoice data. See [Update a subscription](/guides/pay-in-developer-subscriptions-manage#update-a-subscription) for details.
+	InvoiceData *BillData `json:"invoiceData,omitempty" url:"-"`
 	// Object describing details of the payment. For Regular subscriptions, skip a payment by setting `totalAmount` to 0; payments pause until you update it to a non-zero value, and `serviceFee` must also be 0 when `totalAmount` is 0. For BalanceDriven subscriptions, any `totalAmount` you send is accepted but ignored at run time. Each run charges the payor's live balance, and a zero balance is skipped.
 	PaymentDetails *PaymentDetail `json:"paymentDetails,omitempty" url:"-"`
 	// Object describing the schedule for subscription
@@ -184,6 +187,13 @@ func (r *RequestUpdateSchedule) require(field *big.Int) {
 		r.explicitFields = big.NewInt(0)
 	}
 	r.explicitFields.Or(r.explicitFields, field)
+}
+
+// SetInvoiceData sets the InvoiceData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *RequestUpdateSchedule) SetInvoiceData(invoiceData *BillData) {
+	r.InvoiceData = invoiceData
+	r.require(requestUpdateScheduleFieldInvoiceData)
 }
 
 // SetPaymentDetails sets the PaymentDetails field and marks it as non-optional;

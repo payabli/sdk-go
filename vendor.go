@@ -1116,9 +1116,10 @@ var (
 	vendorDataFieldRemitZip              = big.NewInt(1 << 28)
 	vendorDataFieldState                 = big.NewInt(1 << 29)
 	vendorDataFieldVendorStatus          = big.NewInt(1 << 30)
-	vendorDataFieldZip                   = big.NewInt(1 << 31)
-	vendorDataFieldDefaultMethodId       = big.NewInt(1 << 32)
-	vendorDataFieldAttachment            = big.NewInt(1 << 33)
+	vendorDataFieldIssue1099             = big.NewInt(1 << 31)
+	vendorDataFieldZip                   = big.NewInt(1 << 32)
+	vendorDataFieldDefaultMethodId       = big.NewInt(1 << 33)
+	vendorDataFieldAttachment            = big.NewInt(1 << 34)
 )
 
 type VendorData struct {
@@ -1169,6 +1170,11 @@ type VendorData struct {
 	// Vendor's state or province. Required if any address field is provided. Must be a valid US state abbreviation (such as `CA`, `NY`) or Canadian province abbreviation (such as `ON`, `BC`), depending on the `country` value.
 	State        *string       `json:"state,omitempty" url:"state,omitempty"`
 	VendorStatus *Vendorstatus `json:"vendorStatus,omitempty" url:"vendorStatus,omitempty"`
+	// When `true`, a 1099 tax form is issued to this vendor. When you
+	// create a vendor and omit this field, it defaults to `false`. When
+	// you update a vendor and omit this field, the vendor keeps its
+	// current value.
+	Issue1099 *bool `json:"issue1099,omitempty" url:"issue1099,omitempty"`
 	// Vendor's ZIP or postal code. Required if any address field is provided. For US addresses, use five digits (`12345`) or ZIP+4 format (`12345-6789`).
 	Zip *string `json:"zip,omitempty" url:"zip,omitempty"`
 	// Identifier for the vendor's default stored payment method.
@@ -1403,6 +1409,13 @@ func (v *VendorData) GetVendorStatus() *Vendorstatus {
 		return nil
 	}
 	return v.VendorStatus
+}
+
+func (v *VendorData) GetIssue1099() *bool {
+	if v == nil {
+		return nil
+	}
+	return v.Issue1099
 }
 
 func (v *VendorData) GetZip() *string {
@@ -1655,6 +1668,13 @@ func (v *VendorData) SetState(state *string) {
 func (v *VendorData) SetVendorStatus(vendorStatus *Vendorstatus) {
 	v.VendorStatus = vendorStatus
 	v.require(vendorDataFieldVendorStatus)
+}
+
+// SetIssue1099 sets the Issue1099 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorData) SetIssue1099(issue1099 *bool) {
+	v.Issue1099 = issue1099
+	v.require(vendorDataFieldIssue1099)
 }
 
 // SetZip sets the Zip field and marks it as non-optional;

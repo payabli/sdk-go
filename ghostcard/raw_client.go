@@ -88,6 +88,59 @@ func (r *RawClient) CreateGhostCard(
 	}, nil
 }
 
+func (r *RawClient) DeleteGhostCard(
+	ctx context.Context,
+	// Token that identifies the ghost card to cancel. This is the `ReferenceId` returned when the card was created.
+	cardToken string,
+	opts ...option.RequestOption,
+) (*core.Response[*payabli.DeleteGhostCardResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://api-sandbox.payabli.com/api",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/MoneyOutCard/GhostCard/%v",
+		cardToken,
+	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
+	headers := internal.MergeHeaders(
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
+	)
+	var response *payabli.DeleteGhostCardResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodDelete,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*payabli.DeleteGhostCardResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
 func (r *RawClient) UpdateCard(
 	ctx context.Context,
 	// The entity's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)

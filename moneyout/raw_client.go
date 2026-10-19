@@ -767,6 +767,62 @@ func (r *RawClient) UpdateCheckPaymentStatus(
 	}, nil
 }
 
+func (r *RawClient) GetNextCheckNumber(
+	ctx context.Context,
+	// The ID of the paypoint that owns the funding account.
+	paypointId int64,
+	// The `accountId` of the bank account linked to the paypoint's check service, such as `123-456`. Find it in the paypoint's bank account details (`BankData`).
+	accountId string,
+	opts ...option.RequestOption,
+) (*core.Response[*payabli.NextCheckNumberResponse], error) {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		r.baseURL,
+		"https://api-sandbox.payabli.com/api",
+	)
+	endpointURL := internal.EncodeURL(
+		baseURL+"/MoneyOut/nextCheckNumber/%v/%v",
+		paypointId,
+		accountId,
+	)
+	authHeaders, authErr := r.options.AuthHeadersForEndpoint([][]string{{"BearerAuth"}, {"APIKeyAuth"}})
+	if authErr != nil {
+		return nil, authErr
+	}
+	headers := internal.MergeHeaders(
+		internal.MergeHeaders(
+			r.options.ToHeader(),
+			options.ToHeader(),
+		),
+		authHeaders,
+	)
+	var response *payabli.NextCheckNumberResponse
+	raw, err := r.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodGet,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			DisableRetries:  options.DisableRetries,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+			Response:        &response,
+			ErrorDecoder:    internal.NewErrorDecoder(payabli.ErrorCodes),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &core.Response[*payabli.NextCheckNumberResponse]{
+		StatusCode: raw.StatusCode,
+		Header:     raw.Header,
+		Body:       response,
+	}, nil
+}
+
 func (r *RawClient) ReissueOut(
 	ctx context.Context,
 	request *payabli.ReissueOutRequest,

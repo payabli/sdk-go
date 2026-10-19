@@ -1163,6 +1163,312 @@ func TestSettersMarkExplicitCreateGhostCardResponseData(t *testing.T) {
 
 }
 
+func TestSettersDeleteGhostCardResponse(t *testing.T) {
+	t.Run("SetIsSuccess", func(t *testing.T) {
+		obj := &DeleteGhostCardResponse{}
+		var fernTestValueIsSuccess *IsSuccess
+		obj.SetIsSuccess(fernTestValueIsSuccess)
+		assert.Equal(t, fernTestValueIsSuccess, obj.IsSuccess)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetResponseData", func(t *testing.T) {
+		obj := &DeleteGhostCardResponse{}
+		var fernTestValueResponseData *DeleteGhostCardResponseData
+		obj.SetResponseData(fernTestValueResponseData)
+		assert.Equal(t, fernTestValueResponseData, obj.ResponseData)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+}
+
+func TestGettersDeleteGhostCardResponse(t *testing.T) {
+	t.Run("GetIsSuccess", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &DeleteGhostCardResponse{}
+		var expected *IsSuccess
+		obj.IsSuccess = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetIsSuccess(), "getter should return the property value")
+	})
+
+	t.Run("GetIsSuccess_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &DeleteGhostCardResponse{}
+		obj.IsSuccess = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetIsSuccess(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetIsSuccess_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *DeleteGhostCardResponse
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetIsSuccess() // Should return zero value
+	})
+
+	t.Run("GetResponseData", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &DeleteGhostCardResponse{}
+		var expected *DeleteGhostCardResponseData
+		obj.ResponseData = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetResponseData(), "getter should return the property value")
+	})
+
+	t.Run("GetResponseData_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &DeleteGhostCardResponse{}
+		obj.ResponseData = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetResponseData(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetResponseData_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *DeleteGhostCardResponse
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetResponseData() // Should return zero value
+	})
+
+}
+
+func TestSettersMarkExplicitDeleteGhostCardResponse(t *testing.T) {
+	t.Run("SetIsSuccess_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &DeleteGhostCardResponse{}
+		var fernTestValueIsSuccess *IsSuccess
+
+		// Act
+		obj.SetIsSuccess(fernTestValueIsSuccess)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetResponseData_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &DeleteGhostCardResponse{}
+		var fernTestValueResponseData *DeleteGhostCardResponseData
+
+		// Act
+		obj.SetResponseData(fernTestValueResponseData)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+}
+
+func TestSettersDeleteGhostCardResponseData(t *testing.T) {
+	t.Run("SetDeleteType", func(t *testing.T) {
+		obj := &DeleteGhostCardResponseData{}
+		var fernTestValueDeleteType *string
+		obj.SetDeleteType(fernTestValueDeleteType)
+		assert.Equal(t, fernTestValueDeleteType, obj.DeleteType)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+	t.Run("SetCardToken", func(t *testing.T) {
+		obj := &DeleteGhostCardResponseData{}
+		var fernTestValueCardToken *string
+		obj.SetCardToken(fernTestValueCardToken)
+		assert.Equal(t, fernTestValueCardToken, obj.CardToken)
+		assert.NotNil(t, obj.explicitFields)
+	})
+
+}
+
+func TestGettersDeleteGhostCardResponseData(t *testing.T) {
+	t.Run("GetDeleteType", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &DeleteGhostCardResponseData{}
+		var expected *string
+		obj.DeleteType = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetDeleteType(), "getter should return the property value")
+	})
+
+	t.Run("GetDeleteType_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &DeleteGhostCardResponseData{}
+		obj.DeleteType = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetDeleteType(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetDeleteType_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *DeleteGhostCardResponseData
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetDeleteType() // Should return zero value
+	})
+
+	t.Run("GetCardToken", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &DeleteGhostCardResponseData{}
+		var expected *string
+		obj.CardToken = expected
+
+		// Act & Assert
+		assert.Equal(t, expected, obj.GetCardToken(), "getter should return the property value")
+	})
+
+	t.Run("GetCardToken_NilValue", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &DeleteGhostCardResponseData{}
+		obj.CardToken = nil
+
+		// Act & Assert
+		assert.Nil(t, obj.GetCardToken(), "getter should return nil when property is nil")
+	})
+
+	t.Run("GetCardToken_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *DeleteGhostCardResponseData
+		// Should not panic - getters should handle nil receiver gracefully
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("Getter panicked on nil receiver: %v", r)
+			}
+		}()
+		_ = obj.GetCardToken() // Should return zero value
+	})
+
+}
+
+func TestSettersMarkExplicitDeleteGhostCardResponseData(t *testing.T) {
+	t.Run("SetDeleteType_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &DeleteGhostCardResponseData{}
+		var fernTestValueDeleteType *string
+
+		// Act
+		obj.SetDeleteType(fernTestValueDeleteType)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+	t.Run("SetCardToken_MarksExplicit", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &DeleteGhostCardResponseData{}
+		var fernTestValueCardToken *string
+
+		// Act
+		obj.SetCardToken(fernTestValueCardToken)
+
+		// Assert - object with explicitly set field can be marshaled/unmarshaled
+		bytes, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed for test setup")
+
+		// This test ensures JSON marshaling and unmarshaling succeed when the field has a zero/nil value
+		// Detect if marshaled JSON is an object or primitive to use correct unmarshal target
+		if len(bytes) > 0 && bytes[0] == '{' {
+			// JSON object - unmarshal into map
+			var unmarshaled map[string]interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		} else {
+			// JSON primitive (string, number, boolean, null) - unmarshal into interface{}
+			var unmarshaled interface{}
+			err = json.Unmarshal(bytes, &unmarshaled)
+			require.NoError(t, err, "unmarshaling should succeed for test verification")
+		}
+
+		// Note: This does not explicitly assert the presence of a specific JSON field
+		// It verifies that setting a field via setter allows successful JSON round-trip
+	})
+
+}
+
 func TestJSONMarshalingCreateGhostCardResponse(t *testing.T) {
 	t.Run("MarshalUnmarshal", func(t *testing.T) {
 		t.Parallel()
@@ -1229,6 +1535,72 @@ func TestJSONMarshalingCreateGhostCardResponseData(t *testing.T) {
 	})
 }
 
+func TestJSONMarshalingDeleteGhostCardResponse(t *testing.T) {
+	t.Run("MarshalUnmarshal", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &DeleteGhostCardResponse{}
+
+		// Act - Marshal to JSON
+		data, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed")
+		assert.NotNil(t, data, "marshaled data should not be nil")
+		assert.NotEmpty(t, data, "marshaled data should not be empty")
+
+		// Unmarshal back and verify round-trip
+		var unmarshaled DeleteGhostCardResponse
+		err = json.Unmarshal(data, &unmarshaled)
+		assert.NoError(t, err, "round-trip unmarshal should succeed")
+	})
+
+	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
+		t.Parallel()
+		var obj DeleteGhostCardResponse
+		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
+		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
+	})
+
+	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
+		t.Parallel()
+		var obj DeleteGhostCardResponse
+		err := json.Unmarshal([]byte(`{}`), &obj)
+		assert.NoError(t, err, "unmarshaling empty object should succeed")
+	})
+}
+
+func TestJSONMarshalingDeleteGhostCardResponseData(t *testing.T) {
+	t.Run("MarshalUnmarshal", func(t *testing.T) {
+		t.Parallel()
+		// Arrange
+		obj := &DeleteGhostCardResponseData{}
+
+		// Act - Marshal to JSON
+		data, err := json.Marshal(obj)
+		require.NoError(t, err, "marshaling should succeed")
+		assert.NotNil(t, data, "marshaled data should not be nil")
+		assert.NotEmpty(t, data, "marshaled data should not be empty")
+
+		// Unmarshal back and verify round-trip
+		var unmarshaled DeleteGhostCardResponseData
+		err = json.Unmarshal(data, &unmarshaled)
+		assert.NoError(t, err, "round-trip unmarshal should succeed")
+	})
+
+	t.Run("UnmarshalInvalidJSON", func(t *testing.T) {
+		t.Parallel()
+		var obj DeleteGhostCardResponseData
+		err := json.Unmarshal([]byte(`{invalid json}`), &obj)
+		assert.Error(t, err, "unmarshaling invalid JSON should return an error")
+	})
+
+	t.Run("UnmarshalEmptyObject", func(t *testing.T) {
+		t.Parallel()
+		var obj DeleteGhostCardResponseData
+		err := json.Unmarshal([]byte(`{}`), &obj)
+		assert.NoError(t, err, "unmarshaling empty object should succeed")
+	})
+}
+
 func TestStringCreateGhostCardResponse(t *testing.T) {
 	t.Run("StringMethod", func(t *testing.T) {
 		t.Parallel()
@@ -1256,6 +1628,38 @@ func TestStringCreateGhostCardResponseData(t *testing.T) {
 	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *CreateGhostCardResponseData
+		result := obj.String()
+		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
+	})
+}
+
+func TestStringDeleteGhostCardResponse(t *testing.T) {
+	t.Run("StringMethod", func(t *testing.T) {
+		t.Parallel()
+		obj := &DeleteGhostCardResponse{}
+		result := obj.String()
+		assert.NotEmpty(t, result, "String() should return a non-empty representation")
+	})
+
+	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *DeleteGhostCardResponse
+		result := obj.String()
+		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
+	})
+}
+
+func TestStringDeleteGhostCardResponseData(t *testing.T) {
+	t.Run("StringMethod", func(t *testing.T) {
+		t.Parallel()
+		obj := &DeleteGhostCardResponseData{}
+		result := obj.String()
+		assert.NotEmpty(t, result, "String() should return a non-empty representation")
+	})
+
+	t.Run("StringMethod_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *DeleteGhostCardResponseData
 		result := obj.String()
 		assert.Equal(t, "<nil>", result, "String() should return <nil> for nil receiver")
 	})
@@ -1345,6 +1749,52 @@ func TestExtraPropertiesCreateGhostCardResponseData(t *testing.T) {
 	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
 		t.Parallel()
 		var obj *CreateGhostCardResponseData
+		extraProps := obj.GetExtraProperties()
+		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
+	})
+}
+
+func TestExtraPropertiesDeleteGhostCardResponse(t *testing.T) {
+	t.Run("GetExtraProperties", func(t *testing.T) {
+		t.Parallel()
+		obj := &DeleteGhostCardResponse{}
+		// Should not panic when calling GetExtraProperties()
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("GetExtraProperties() panicked: %v", r)
+			}
+		}()
+		extraProps := obj.GetExtraProperties()
+		// Result can be nil or an empty/non-empty map
+		_ = extraProps
+	})
+
+	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *DeleteGhostCardResponse
+		extraProps := obj.GetExtraProperties()
+		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
+	})
+}
+
+func TestExtraPropertiesDeleteGhostCardResponseData(t *testing.T) {
+	t.Run("GetExtraProperties", func(t *testing.T) {
+		t.Parallel()
+		obj := &DeleteGhostCardResponseData{}
+		// Should not panic when calling GetExtraProperties()
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("GetExtraProperties() panicked: %v", r)
+			}
+		}()
+		extraProps := obj.GetExtraProperties()
+		// Result can be nil or an empty/non-empty map
+		_ = extraProps
+	})
+
+	t.Run("GetExtraProperties_NilReceiver", func(t *testing.T) {
+		t.Parallel()
+		var obj *DeleteGhostCardResponseData
 		extraProps := obj.GetExtraProperties()
 		assert.Nil(t, extraProps, "nil receiver should return nil without panicking")
 	})

@@ -8752,38 +8752,41 @@ var (
 	transactionQueryRecordsCustomerFieldConnectorName                = big.NewInt(1 << 5)
 	transactionQueryRecordsCustomerFieldCustomer                     = big.NewInt(1 << 6)
 	transactionQueryRecordsCustomerFieldDeviceId                     = big.NewInt(1 << 7)
-	transactionQueryRecordsCustomerFieldEntrypageId                  = big.NewInt(1 << 8)
-	transactionQueryRecordsCustomerFieldExternalProcessorInformation = big.NewInt(1 << 9)
-	transactionQueryRecordsCustomerFieldFeeAmount                    = big.NewInt(1 << 10)
-	transactionQueryRecordsCustomerFieldGatewayTransId               = big.NewInt(1 << 11)
-	transactionQueryRecordsCustomerFieldInvoiceData                  = big.NewInt(1 << 12)
-	transactionQueryRecordsCustomerFieldMethod                       = big.NewInt(1 << 13)
-	transactionQueryRecordsCustomerFieldNetAmount                    = big.NewInt(1 << 14)
-	transactionQueryRecordsCustomerFieldOperation                    = big.NewInt(1 << 15)
-	transactionQueryRecordsCustomerFieldOrderId                      = big.NewInt(1 << 16)
-	transactionQueryRecordsCustomerFieldOrgId                        = big.NewInt(1 << 17)
-	transactionQueryRecordsCustomerFieldParentOrgName                = big.NewInt(1 << 18)
-	transactionQueryRecordsCustomerFieldPaymentData                  = big.NewInt(1 << 19)
-	transactionQueryRecordsCustomerFieldPaymentTransId               = big.NewInt(1 << 20)
-	transactionQueryRecordsCustomerFieldPayorId                      = big.NewInt(1 << 21)
-	transactionQueryRecordsCustomerFieldPaypointDbaname              = big.NewInt(1 << 22)
-	transactionQueryRecordsCustomerFieldPaypointEntryname            = big.NewInt(1 << 23)
-	transactionQueryRecordsCustomerFieldPaypointId                   = big.NewInt(1 << 24)
-	transactionQueryRecordsCustomerFieldPaypointLegalname            = big.NewInt(1 << 25)
-	transactionQueryRecordsCustomerFieldPendingFeeAmount             = big.NewInt(1 << 26)
-	transactionQueryRecordsCustomerFieldRefundId                     = big.NewInt(1 << 27)
-	transactionQueryRecordsCustomerFieldResponseData                 = big.NewInt(1 << 28)
-	transactionQueryRecordsCustomerFieldReturnedId                   = big.NewInt(1 << 29)
-	transactionQueryRecordsCustomerFieldScheduleReference            = big.NewInt(1 << 30)
-	transactionQueryRecordsCustomerFieldSettlementStatus             = big.NewInt(1 << 31)
-	transactionQueryRecordsCustomerFieldSource                       = big.NewInt(1 << 32)
-	transactionQueryRecordsCustomerFieldSplitFundingInstructions     = big.NewInt(1 << 33)
-	transactionQueryRecordsCustomerFieldSplitCount                   = big.NewInt(1 << 34)
-	transactionQueryRecordsCustomerFieldTotalAmount                  = big.NewInt(1 << 35)
-	transactionQueryRecordsCustomerFieldTransactionEvents            = big.NewInt(1 << 36)
-	transactionQueryRecordsCustomerFieldTransactionTime              = big.NewInt(1 << 37)
-	transactionQueryRecordsCustomerFieldTransAdditionalData          = big.NewInt(1 << 38)
-	transactionQueryRecordsCustomerFieldTransStatus                  = big.NewInt(1 << 39)
+	transactionQueryRecordsCustomerFieldDeviceData                   = big.NewInt(1 << 8)
+	transactionQueryRecordsCustomerFieldDeviceEntryMode              = big.NewInt(1 << 9)
+	transactionQueryRecordsCustomerFieldEmvAuthData                  = big.NewInt(1 << 10)
+	transactionQueryRecordsCustomerFieldEntrypageId                  = big.NewInt(1 << 11)
+	transactionQueryRecordsCustomerFieldExternalProcessorInformation = big.NewInt(1 << 12)
+	transactionQueryRecordsCustomerFieldFeeAmount                    = big.NewInt(1 << 13)
+	transactionQueryRecordsCustomerFieldGatewayTransId               = big.NewInt(1 << 14)
+	transactionQueryRecordsCustomerFieldInvoiceData                  = big.NewInt(1 << 15)
+	transactionQueryRecordsCustomerFieldMethod                       = big.NewInt(1 << 16)
+	transactionQueryRecordsCustomerFieldNetAmount                    = big.NewInt(1 << 17)
+	transactionQueryRecordsCustomerFieldOperation                    = big.NewInt(1 << 18)
+	transactionQueryRecordsCustomerFieldOrderId                      = big.NewInt(1 << 19)
+	transactionQueryRecordsCustomerFieldOrgId                        = big.NewInt(1 << 20)
+	transactionQueryRecordsCustomerFieldParentOrgName                = big.NewInt(1 << 21)
+	transactionQueryRecordsCustomerFieldPaymentData                  = big.NewInt(1 << 22)
+	transactionQueryRecordsCustomerFieldPaymentTransId               = big.NewInt(1 << 23)
+	transactionQueryRecordsCustomerFieldPayorId                      = big.NewInt(1 << 24)
+	transactionQueryRecordsCustomerFieldPaypointDbaname              = big.NewInt(1 << 25)
+	transactionQueryRecordsCustomerFieldPaypointEntryname            = big.NewInt(1 << 26)
+	transactionQueryRecordsCustomerFieldPaypointId                   = big.NewInt(1 << 27)
+	transactionQueryRecordsCustomerFieldPaypointLegalname            = big.NewInt(1 << 28)
+	transactionQueryRecordsCustomerFieldPendingFeeAmount             = big.NewInt(1 << 29)
+	transactionQueryRecordsCustomerFieldRefundId                     = big.NewInt(1 << 30)
+	transactionQueryRecordsCustomerFieldResponseData                 = big.NewInt(1 << 31)
+	transactionQueryRecordsCustomerFieldReturnedId                   = big.NewInt(1 << 32)
+	transactionQueryRecordsCustomerFieldScheduleReference            = big.NewInt(1 << 33)
+	transactionQueryRecordsCustomerFieldSettlementStatus             = big.NewInt(1 << 34)
+	transactionQueryRecordsCustomerFieldSource                       = big.NewInt(1 << 35)
+	transactionQueryRecordsCustomerFieldSplitFundingInstructions     = big.NewInt(1 << 36)
+	transactionQueryRecordsCustomerFieldSplitCount                   = big.NewInt(1 << 37)
+	transactionQueryRecordsCustomerFieldTotalAmount                  = big.NewInt(1 << 38)
+	transactionQueryRecordsCustomerFieldTransactionEvents            = big.NewInt(1 << 39)
+	transactionQueryRecordsCustomerFieldTransactionTime              = big.NewInt(1 << 40)
+	transactionQueryRecordsCustomerFieldTransAdditionalData          = big.NewInt(1 << 41)
+	transactionQueryRecordsCustomerFieldTransStatus                  = big.NewInt(1 << 42)
 )
 
 type TransactionQueryRecordsCustomer struct {
@@ -8798,6 +8801,9 @@ type TransactionQueryRecordsCustomer struct {
 	ConnectorName                *string                            `json:"ConnectorName,omitempty" url:"ConnectorName,omitempty"`
 	Customer                     *QueryTransactionPayorDataCustomer `json:"Customer,omitempty" url:"Customer,omitempty"`
 	DeviceId                     *Device                            `json:"DeviceId,omitempty" url:"DeviceId,omitempty"`
+	DeviceData                   *QueryDeviceData                   `json:"DeviceData,omitempty" url:"DeviceData,omitempty"`
+	DeviceEntryMode              DeviceEntryMode                    `json:"DeviceEntryMode,omitempty" url:"DeviceEntryMode,omitempty"`
+	EmvAuthData                  *EmvAuthData                       `json:"EmvAuthData,omitempty" url:"EmvAuthData,omitempty"`
 	EntrypageId                  *EntrypageId                       `json:"EntrypageId,omitempty" url:"EntrypageId,omitempty"`
 	ExternalProcessorInformation *ExternalProcessorInformation      `json:"ExternalProcessorInformation,omitempty" url:"ExternalProcessorInformation,omitempty"`
 	FeeAmount                    *FeeAmount                         `json:"FeeAmount,omitempty" url:"FeeAmount,omitempty"`
@@ -8907,6 +8913,27 @@ func (t *TransactionQueryRecordsCustomer) GetDeviceId() *Device {
 		return nil
 	}
 	return t.DeviceId
+}
+
+func (t *TransactionQueryRecordsCustomer) GetDeviceData() *QueryDeviceData {
+	if t == nil {
+		return nil
+	}
+	return t.DeviceData
+}
+
+func (t *TransactionQueryRecordsCustomer) GetDeviceEntryMode() DeviceEntryMode {
+	if t == nil {
+		return nil
+	}
+	return t.DeviceEntryMode
+}
+
+func (t *TransactionQueryRecordsCustomer) GetEmvAuthData() *EmvAuthData {
+	if t == nil {
+		return nil
+	}
+	return t.EmvAuthData
 }
 
 func (t *TransactionQueryRecordsCustomer) GetEntrypageId() *EntrypageId {
@@ -9201,6 +9228,27 @@ func (t *TransactionQueryRecordsCustomer) SetCustomer(customer *QueryTransaction
 func (t *TransactionQueryRecordsCustomer) SetDeviceId(deviceId *Device) {
 	t.DeviceId = deviceId
 	t.require(transactionQueryRecordsCustomerFieldDeviceId)
+}
+
+// SetDeviceData sets the DeviceData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetDeviceData(deviceData *QueryDeviceData) {
+	t.DeviceData = deviceData
+	t.require(transactionQueryRecordsCustomerFieldDeviceData)
+}
+
+// SetDeviceEntryMode sets the DeviceEntryMode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetDeviceEntryMode(deviceEntryMode DeviceEntryMode) {
+	t.DeviceEntryMode = deviceEntryMode
+	t.require(transactionQueryRecordsCustomerFieldDeviceEntryMode)
+}
+
+// SetEmvAuthData sets the EmvAuthData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecordsCustomer) SetEmvAuthData(emvAuthData *EmvAuthData) {
+	t.EmvAuthData = emvAuthData
+	t.require(transactionQueryRecordsCustomerFieldEmvAuthData)
 }
 
 // SetEntrypageId sets the EntrypageId field and marks it as non-optional;

@@ -159,6 +159,9 @@ func NewClient(options *core.RequestOptions) *Client {
 //	    VendorStatus: payabli.Int(
 //	        1,
 //	    ),
+//	    Issue1099: payabli.Bool(
+//	        true,
+//	    ),
 //	    Zip: payabli.String(
 //	        "33139",
 //	    ),

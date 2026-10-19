@@ -1998,33 +1998,34 @@ var (
 	getMethodResponseResponseDataVendorsItemFieldInternalReferenceId   = big.NewInt(1 << 15)
 	getMethodResponseResponseDataVendorsItemFieldLastUpdated           = big.NewInt(1 << 16)
 	getMethodResponseResponseDataVendorsItemFieldLocationCode          = big.NewInt(1 << 17)
-	getMethodResponseResponseDataVendorsItemFieldMcc                   = big.NewInt(1 << 18)
-	getMethodResponseResponseDataVendorsItemFieldName1                 = big.NewInt(1 << 19)
-	getMethodResponseResponseDataVendorsItemFieldName2                 = big.NewInt(1 << 20)
-	getMethodResponseResponseDataVendorsItemFieldParentOrgId           = big.NewInt(1 << 21)
-	getMethodResponseResponseDataVendorsItemFieldParentOrgName         = big.NewInt(1 << 22)
-	getMethodResponseResponseDataVendorsItemFieldPayeeName1            = big.NewInt(1 << 23)
-	getMethodResponseResponseDataVendorsItemFieldPayeeName2            = big.NewInt(1 << 24)
-	getMethodResponseResponseDataVendorsItemFieldPaymentMethod         = big.NewInt(1 << 25)
-	getMethodResponseResponseDataVendorsItemFieldPaypointDbaname       = big.NewInt(1 << 26)
-	getMethodResponseResponseDataVendorsItemFieldPaypointEntryname     = big.NewInt(1 << 27)
-	getMethodResponseResponseDataVendorsItemFieldPaypointId            = big.NewInt(1 << 28)
-	getMethodResponseResponseDataVendorsItemFieldPaypointLegalname     = big.NewInt(1 << 29)
-	getMethodResponseResponseDataVendorsItemFieldPhone                 = big.NewInt(1 << 30)
-	getMethodResponseResponseDataVendorsItemFieldRemitAddress1         = big.NewInt(1 << 31)
-	getMethodResponseResponseDataVendorsItemFieldRemitAddress2         = big.NewInt(1 << 32)
-	getMethodResponseResponseDataVendorsItemFieldRemitCity             = big.NewInt(1 << 33)
-	getMethodResponseResponseDataVendorsItemFieldRemitCountry          = big.NewInt(1 << 34)
-	getMethodResponseResponseDataVendorsItemFieldRemitEmail            = big.NewInt(1 << 35)
-	getMethodResponseResponseDataVendorsItemFieldRemitState            = big.NewInt(1 << 36)
-	getMethodResponseResponseDataVendorsItemFieldRemitZip              = big.NewInt(1 << 37)
-	getMethodResponseResponseDataVendorsItemFieldState                 = big.NewInt(1 << 38)
-	getMethodResponseResponseDataVendorsItemFieldStoredMethods         = big.NewInt(1 << 39)
-	getMethodResponseResponseDataVendorsItemFieldSummary               = big.NewInt(1 << 40)
-	getMethodResponseResponseDataVendorsItemFieldVendorId              = big.NewInt(1 << 41)
-	getMethodResponseResponseDataVendorsItemFieldVendorNumber          = big.NewInt(1 << 42)
-	getMethodResponseResponseDataVendorsItemFieldVendorStatus          = big.NewInt(1 << 43)
-	getMethodResponseResponseDataVendorsItemFieldZip                   = big.NewInt(1 << 44)
+	getMethodResponseResponseDataVendorsItemFieldIssue1099             = big.NewInt(1 << 18)
+	getMethodResponseResponseDataVendorsItemFieldMcc                   = big.NewInt(1 << 19)
+	getMethodResponseResponseDataVendorsItemFieldName1                 = big.NewInt(1 << 20)
+	getMethodResponseResponseDataVendorsItemFieldName2                 = big.NewInt(1 << 21)
+	getMethodResponseResponseDataVendorsItemFieldParentOrgId           = big.NewInt(1 << 22)
+	getMethodResponseResponseDataVendorsItemFieldParentOrgName         = big.NewInt(1 << 23)
+	getMethodResponseResponseDataVendorsItemFieldPayeeName1            = big.NewInt(1 << 24)
+	getMethodResponseResponseDataVendorsItemFieldPayeeName2            = big.NewInt(1 << 25)
+	getMethodResponseResponseDataVendorsItemFieldPaymentMethod         = big.NewInt(1 << 26)
+	getMethodResponseResponseDataVendorsItemFieldPaypointDbaname       = big.NewInt(1 << 27)
+	getMethodResponseResponseDataVendorsItemFieldPaypointEntryname     = big.NewInt(1 << 28)
+	getMethodResponseResponseDataVendorsItemFieldPaypointId            = big.NewInt(1 << 29)
+	getMethodResponseResponseDataVendorsItemFieldPaypointLegalname     = big.NewInt(1 << 30)
+	getMethodResponseResponseDataVendorsItemFieldPhone                 = big.NewInt(1 << 31)
+	getMethodResponseResponseDataVendorsItemFieldRemitAddress1         = big.NewInt(1 << 32)
+	getMethodResponseResponseDataVendorsItemFieldRemitAddress2         = big.NewInt(1 << 33)
+	getMethodResponseResponseDataVendorsItemFieldRemitCity             = big.NewInt(1 << 34)
+	getMethodResponseResponseDataVendorsItemFieldRemitCountry          = big.NewInt(1 << 35)
+	getMethodResponseResponseDataVendorsItemFieldRemitEmail            = big.NewInt(1 << 36)
+	getMethodResponseResponseDataVendorsItemFieldRemitState            = big.NewInt(1 << 37)
+	getMethodResponseResponseDataVendorsItemFieldRemitZip              = big.NewInt(1 << 38)
+	getMethodResponseResponseDataVendorsItemFieldState                 = big.NewInt(1 << 39)
+	getMethodResponseResponseDataVendorsItemFieldStoredMethods         = big.NewInt(1 << 40)
+	getMethodResponseResponseDataVendorsItemFieldSummary               = big.NewInt(1 << 41)
+	getMethodResponseResponseDataVendorsItemFieldVendorId              = big.NewInt(1 << 42)
+	getMethodResponseResponseDataVendorsItemFieldVendorNumber          = big.NewInt(1 << 43)
+	getMethodResponseResponseDataVendorsItemFieldVendorStatus          = big.NewInt(1 << 44)
+	getMethodResponseResponseDataVendorsItemFieldZip                   = big.NewInt(1 << 45)
 )
 
 type GetMethodResponseResponseDataVendorsItem struct {
@@ -2064,6 +2065,7 @@ type GetMethodResponseResponseDataVendorsItem struct {
 	LastUpdated *time.Time `json:"lastUpdated,omitempty" url:"lastUpdated,omitempty"`
 	// Location code for vendor
 	LocationCode *LocationCode `json:"locationCode,omitempty" url:"locationCode,omitempty"`
+	Issue1099    *Issue1099    `json:"issue1099,omitempty" url:"issue1099,omitempty"`
 	// Merchant category code
 	Mcc *Mcc `json:"mcc,omitempty" url:"mcc,omitempty"`
 	// Primary name for vendor
@@ -2250,6 +2252,13 @@ func (g *GetMethodResponseResponseDataVendorsItem) GetLocationCode() *LocationCo
 		return nil
 	}
 	return g.LocationCode
+}
+
+func (g *GetMethodResponseResponseDataVendorsItem) GetIssue1099() *Issue1099 {
+	if g == nil {
+		return nil
+	}
+	return g.Issue1099
 }
 
 func (g *GetMethodResponseResponseDataVendorsItem) GetMcc() *Mcc {
@@ -2579,6 +2588,13 @@ func (g *GetMethodResponseResponseDataVendorsItem) SetLastUpdated(lastUpdated *t
 func (g *GetMethodResponseResponseDataVendorsItem) SetLocationCode(locationCode *LocationCode) {
 	g.LocationCode = locationCode
 	g.require(getMethodResponseResponseDataVendorsItemFieldLocationCode)
+}
+
+// SetIssue1099 sets the Issue1099 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetMethodResponseResponseDataVendorsItem) SetIssue1099(issue1099 *Issue1099) {
+	g.Issue1099 = issue1099
+	g.require(getMethodResponseResponseDataVendorsItemFieldIssue1099)
 }
 
 // SetMcc sets the Mcc field and marks it as non-optional;

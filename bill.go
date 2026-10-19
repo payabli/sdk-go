@@ -1043,7 +1043,8 @@ var (
 	billQueryRecord2FieldPaidAmount         = big.NewInt(1 << 35)
 	billQueryRecord2FieldOutstandingBalance = big.NewInt(1 << 36)
 	billQueryRecord2FieldTransaction        = big.NewInt(1 << 37)
-	billQueryRecord2FieldVendor             = big.NewInt(1 << 38)
+	billQueryRecord2FieldTransactions       = big.NewInt(1 << 38)
+	billQueryRecord2FieldVendor             = big.NewInt(1 << 39)
 )
 
 type BillQueryRecord2 struct {
@@ -1116,7 +1117,11 @@ type BillQueryRecord2 struct {
 	OutstandingBalance *float64 `json:"OutstandingBalance,omitempty" url:"OutstandingBalance,omitempty"`
 	// MoneyOut transaction associated to the bill.
 	Transaction *TransactionOutQueryRecord `json:"Transaction,omitempty" url:"Transaction,omitempty"`
-	Vendor      *VendorOutData             `json:"Vendor,omitempty" url:"Vendor,omitempty"`
+	// All payout transactions that paid the bill, with one entry for each payout. When a bill is paid by several [partial payouts](/guides/pay-out-developer-bills-manage#partially-pay-a-bill), each one has an entry and `Transaction` holds the most recent. Canceled payouts aren't included.
+	//
+	// The value is `null` when the bill has no payouts, and an empty array when every payout on the bill has been canceled. For details, see `transactions` in [Get bill](/developers/api-reference/bill/get-bill).
+	Transactions []*BillTransactionReference `json:"transactions,omitempty" url:"transactions,omitempty"`
+	Vendor       *VendorOutData              `json:"Vendor,omitempty" url:"Vendor,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1389,6 +1394,13 @@ func (b *BillQueryRecord2) GetTransaction() *TransactionOutQueryRecord {
 		return nil
 	}
 	return b.Transaction
+}
+
+func (b *BillQueryRecord2) GetTransactions() []*BillTransactionReference {
+	if b == nil {
+		return nil
+	}
+	return b.Transactions
 }
 
 func (b *BillQueryRecord2) GetVendor() *VendorOutData {
@@ -1676,6 +1688,13 @@ func (b *BillQueryRecord2) SetOutstandingBalance(outstandingBalance *float64) {
 func (b *BillQueryRecord2) SetTransaction(transaction *TransactionOutQueryRecord) {
 	b.Transaction = transaction
 	b.require(billQueryRecord2FieldTransaction)
+}
+
+// SetTransactions sets the Transactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetTransactions(transactions []*BillTransactionReference) {
+	b.Transactions = transactions
+	b.require(billQueryRecord2FieldTransactions)
 }
 
 // SetVendor sets the Vendor field and marks it as non-optional;
@@ -2686,18 +2705,19 @@ var (
 	billResponseDataFieldLastUpdated        = big.NewInt(1 << 24)
 	billResponseDataFieldFrequency          = big.NewInt(1 << 25)
 	billResponseDataFieldTransaction        = big.NewInt(1 << 26)
-	billResponseDataFieldBillEvents         = big.NewInt(1 << 27)
-	billResponseDataFieldBillApprovals      = big.NewInt(1 << 28)
-	billResponseDataFieldPaypointLegalname  = big.NewInt(1 << 29)
-	billResponseDataFieldPaypointDbaname    = big.NewInt(1 << 30)
-	billResponseDataFieldParentOrgId        = big.NewInt(1 << 31)
-	billResponseDataFieldParentOrgName      = big.NewInt(1 << 32)
-	billResponseDataFieldPaypointEntryname  = big.NewInt(1 << 33)
-	billResponseDataFieldPaylinkId          = big.NewInt(1 << 34)
-	billResponseDataFieldDocumentsRef       = big.NewInt(1 << 35)
-	billResponseDataFieldExternalPaypointId = big.NewInt(1 << 36)
-	billResponseDataFieldLotNumber          = big.NewInt(1 << 37)
-	billResponseDataFieldEntityId           = big.NewInt(1 << 38)
+	billResponseDataFieldTransactions       = big.NewInt(1 << 27)
+	billResponseDataFieldBillEvents         = big.NewInt(1 << 28)
+	billResponseDataFieldBillApprovals      = big.NewInt(1 << 29)
+	billResponseDataFieldPaypointLegalname  = big.NewInt(1 << 30)
+	billResponseDataFieldPaypointDbaname    = big.NewInt(1 << 31)
+	billResponseDataFieldParentOrgId        = big.NewInt(1 << 32)
+	billResponseDataFieldParentOrgName      = big.NewInt(1 << 33)
+	billResponseDataFieldPaypointEntryname  = big.NewInt(1 << 34)
+	billResponseDataFieldPaylinkId          = big.NewInt(1 << 35)
+	billResponseDataFieldDocumentsRef       = big.NewInt(1 << 36)
+	billResponseDataFieldExternalPaypointId = big.NewInt(1 << 37)
+	billResponseDataFieldLotNumber          = big.NewInt(1 << 38)
+	billResponseDataFieldEntityId           = big.NewInt(1 << 39)
 )
 
 type BillResponseData struct {
@@ -2745,15 +2765,23 @@ type BillResponseData struct {
 	// Frequency for scheduled bills. Applied only in `Mode` = 1.
 	Frequency *Frequency `json:"Frequency,omitempty" url:"Frequency,omitempty"`
 	// MoneyOut transaction associated to the bill
-	Transaction       *TransactionOutQueryRecord `json:"Transaction,omitempty" url:"Transaction,omitempty"`
-	BillEvents        *BillEvents                `json:"billEvents,omitempty" url:"billEvents,omitempty"`
-	BillApprovals     *BillApprovals             `json:"billApprovals,omitempty" url:"billApprovals,omitempty"`
-	PaypointLegalname *Legalname                 `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
-	PaypointDbaname   *Dbaname                   `json:"PaypointDbaname,omitempty" url:"PaypointDbaname,omitempty"`
-	ParentOrgId       *OrgParentId               `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
-	ParentOrgName     *OrgParentName             `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
-	PaypointEntryname *Entrypointfield           `json:"PaypointEntryname,omitempty" url:"PaypointEntryname,omitempty"`
-	PaylinkId         *PaylinkId                 `json:"paylinkId,omitempty" url:"paylinkId,omitempty"`
+	Transaction *TransactionOutQueryRecord `json:"Transaction,omitempty" url:"Transaction,omitempty"`
+	// All payout transactions that paid the bill, with one entry for each payout. When a bill is paid by several [partial payouts](/guides/pay-out-developer-bills-manage#partially-pay-a-bill), each one has an entry and `Transaction` holds the most recent. A bill paid by a single payout has one entry, and its `idOut` and `paymentId` match those on `Transaction`.
+	//
+	// Canceled payouts aren't included.
+	//
+	// The value is `null` when the bill has no payouts. When every payout on the bill has been canceled, the value is an empty array. If partial payments aren't enabled, a bill whose only payout was canceled returns `null` instead.
+	//
+	// Each entry has identifiers only. For a transaction's details, see [Get payout details](/developers/api-reference/moneyout/get-details-for-a-processed-payout-transaction).
+	Transactions      []*BillTransactionReference `json:"transactions,omitempty" url:"transactions,omitempty"`
+	BillEvents        *BillEvents                 `json:"billEvents,omitempty" url:"billEvents,omitempty"`
+	BillApprovals     *BillApprovals              `json:"billApprovals,omitempty" url:"billApprovals,omitempty"`
+	PaypointLegalname *Legalname                  `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
+	PaypointDbaname   *Dbaname                    `json:"PaypointDbaname,omitempty" url:"PaypointDbaname,omitempty"`
+	ParentOrgId       *OrgParentId                `json:"ParentOrgId,omitempty" url:"ParentOrgId,omitempty"`
+	ParentOrgName     *OrgParentName              `json:"ParentOrgName,omitempty" url:"ParentOrgName,omitempty"`
+	PaypointEntryname *Entrypointfield            `json:"PaypointEntryname,omitempty" url:"PaypointEntryname,omitempty"`
+	PaylinkId         *PaylinkId                  `json:"paylinkId,omitempty" url:"paylinkId,omitempty"`
 	// Object with the attached documents.
 	DocumentsRef       *DocumentsRef       `json:"DocumentsRef,omitempty" url:"DocumentsRef,omitempty"`
 	ExternalPaypointId *ExternalPaypointId `json:"externalPaypointID,omitempty" url:"externalPaypointID,omitempty"`
@@ -2955,6 +2983,13 @@ func (b *BillResponseData) GetTransaction() *TransactionOutQueryRecord {
 		return nil
 	}
 	return b.Transaction
+}
+
+func (b *BillResponseData) GetTransactions() []*BillTransactionReference {
+	if b == nil {
+		return nil
+	}
+	return b.Transactions
 }
 
 func (b *BillResponseData) GetBillEvents() *BillEvents {
@@ -3244,6 +3279,13 @@ func (b *BillResponseData) SetTransaction(transaction *TransactionOutQueryRecord
 	b.require(billResponseDataFieldTransaction)
 }
 
+// SetTransactions sets the Transactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetTransactions(transactions []*BillTransactionReference) {
+	b.Transactions = transactions
+	b.require(billResponseDataFieldTransactions)
+}
+
 // SetBillEvents sets the BillEvents field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (b *BillResponseData) SetBillEvents(billEvents *BillEvents) {
@@ -3380,6 +3422,109 @@ func (b *BillResponseData) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BillResponseData) String() string {
+	if b == nil {
+		return "<nil>"
+	}
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+// Identifies a payout transaction that paid a bill.
+var (
+	billTransactionReferenceFieldIdOut     = big.NewInt(1 << 0)
+	billTransactionReferenceFieldPaymentId = big.NewInt(1 << 1)
+)
+
+type BillTransactionReference struct {
+	// Identifier of the payout transaction.
+	IdOut int64 `json:"idOut" url:"idOut"`
+	// Payment ID of the payout transaction.
+	PaymentId *string `json:"paymentId,omitempty" url:"paymentId,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BillTransactionReference) GetIdOut() int64 {
+	if b == nil {
+		return 0
+	}
+	return b.IdOut
+}
+
+func (b *BillTransactionReference) GetPaymentId() *string {
+	if b == nil {
+		return nil
+	}
+	return b.PaymentId
+}
+
+func (b *BillTransactionReference) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
+	return b.extraProperties
+}
+
+func (b *BillTransactionReference) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetIdOut sets the IdOut field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillTransactionReference) SetIdOut(idOut int64) {
+	b.IdOut = idOut
+	b.require(billTransactionReferenceFieldIdOut)
+}
+
+// SetPaymentId sets the PaymentId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillTransactionReference) SetPaymentId(paymentId *string) {
+	b.PaymentId = paymentId
+	b.require(billTransactionReferenceFieldPaymentId)
+}
+
+func (b *BillTransactionReference) UnmarshalJSON(data []byte) error {
+	type unmarshaler BillTransactionReference
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BillTransactionReference(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BillTransactionReference) MarshalJSON() ([]byte, error) {
+	type embed BillTransactionReference
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (b *BillTransactionReference) String() string {
 	if b == nil {
 		return "<nil>"
 	}
@@ -4718,35 +4863,36 @@ var (
 	vendorDataResponseFieldCountry               = big.NewInt(1 << 12)
 	vendorDataResponseFieldMcc                   = big.NewInt(1 << 13)
 	vendorDataResponseFieldLocationCode          = big.NewInt(1 << 14)
-	vendorDataResponseFieldContacts              = big.NewInt(1 << 15)
-	vendorDataResponseFieldBillingData           = big.NewInt(1 << 16)
-	vendorDataResponseFieldPaymentMethod         = big.NewInt(1 << 17)
-	vendorDataResponseFieldVendorStatus          = big.NewInt(1 << 18)
-	vendorDataResponseFieldVendorId              = big.NewInt(1 << 19)
-	vendorDataResponseFieldEnrollmentStatus      = big.NewInt(1 << 20)
-	vendorDataResponseFieldSummary               = big.NewInt(1 << 21)
-	vendorDataResponseFieldPaypointLegalname     = big.NewInt(1 << 22)
-	vendorDataResponseFieldPaypointDbaname       = big.NewInt(1 << 23)
-	vendorDataResponseFieldPaypointEntryname     = big.NewInt(1 << 24)
-	vendorDataResponseFieldParentOrgName         = big.NewInt(1 << 25)
-	vendorDataResponseFieldParentOrgId           = big.NewInt(1 << 26)
-	vendorDataResponseFieldCreatedDate           = big.NewInt(1 << 27)
-	vendorDataResponseFieldLastUpdated           = big.NewInt(1 << 28)
-	vendorDataResponseFieldRemitAddress1         = big.NewInt(1 << 29)
-	vendorDataResponseFieldRemitAddress2         = big.NewInt(1 << 30)
-	vendorDataResponseFieldRemitCity             = big.NewInt(1 << 31)
-	vendorDataResponseFieldRemitState            = big.NewInt(1 << 32)
-	vendorDataResponseFieldRemitZip              = big.NewInt(1 << 33)
-	vendorDataResponseFieldRemitCountry          = big.NewInt(1 << 34)
-	vendorDataResponseFieldPayeeName1            = big.NewInt(1 << 35)
-	vendorDataResponseFieldPayeeName2            = big.NewInt(1 << 36)
-	vendorDataResponseFieldCustomField1          = big.NewInt(1 << 37)
-	vendorDataResponseFieldCustomField2          = big.NewInt(1 << 38)
-	vendorDataResponseFieldCustomerVendorAccount = big.NewInt(1 << 39)
-	vendorDataResponseFieldInternalReferenceId   = big.NewInt(1 << 40)
-	vendorDataResponseFieldAdditionalData        = big.NewInt(1 << 41)
-	vendorDataResponseFieldExternalPaypointId    = big.NewInt(1 << 42)
-	vendorDataResponseFieldStoredMethods         = big.NewInt(1 << 43)
+	vendorDataResponseFieldIssue1099             = big.NewInt(1 << 15)
+	vendorDataResponseFieldContacts              = big.NewInt(1 << 16)
+	vendorDataResponseFieldBillingData           = big.NewInt(1 << 17)
+	vendorDataResponseFieldPaymentMethod         = big.NewInt(1 << 18)
+	vendorDataResponseFieldVendorStatus          = big.NewInt(1 << 19)
+	vendorDataResponseFieldVendorId              = big.NewInt(1 << 20)
+	vendorDataResponseFieldEnrollmentStatus      = big.NewInt(1 << 21)
+	vendorDataResponseFieldSummary               = big.NewInt(1 << 22)
+	vendorDataResponseFieldPaypointLegalname     = big.NewInt(1 << 23)
+	vendorDataResponseFieldPaypointDbaname       = big.NewInt(1 << 24)
+	vendorDataResponseFieldPaypointEntryname     = big.NewInt(1 << 25)
+	vendorDataResponseFieldParentOrgName         = big.NewInt(1 << 26)
+	vendorDataResponseFieldParentOrgId           = big.NewInt(1 << 27)
+	vendorDataResponseFieldCreatedDate           = big.NewInt(1 << 28)
+	vendorDataResponseFieldLastUpdated           = big.NewInt(1 << 29)
+	vendorDataResponseFieldRemitAddress1         = big.NewInt(1 << 30)
+	vendorDataResponseFieldRemitAddress2         = big.NewInt(1 << 31)
+	vendorDataResponseFieldRemitCity             = big.NewInt(1 << 32)
+	vendorDataResponseFieldRemitState            = big.NewInt(1 << 33)
+	vendorDataResponseFieldRemitZip              = big.NewInt(1 << 34)
+	vendorDataResponseFieldRemitCountry          = big.NewInt(1 << 35)
+	vendorDataResponseFieldPayeeName1            = big.NewInt(1 << 36)
+	vendorDataResponseFieldPayeeName2            = big.NewInt(1 << 37)
+	vendorDataResponseFieldCustomField1          = big.NewInt(1 << 38)
+	vendorDataResponseFieldCustomField2          = big.NewInt(1 << 39)
+	vendorDataResponseFieldCustomerVendorAccount = big.NewInt(1 << 40)
+	vendorDataResponseFieldInternalReferenceId   = big.NewInt(1 << 41)
+	vendorDataResponseFieldAdditionalData        = big.NewInt(1 << 42)
+	vendorDataResponseFieldExternalPaypointId    = big.NewInt(1 << 43)
+	vendorDataResponseFieldStoredMethods         = big.NewInt(1 << 44)
 )
 
 type VendorDataResponse struct {
@@ -4776,6 +4922,7 @@ type VendorDataResponse struct {
 	Country      string       `json:"Country" url:"Country"`
 	Mcc          Mcc          `json:"Mcc" url:"Mcc"`
 	LocationCode LocationCode `json:"LocationCode" url:"LocationCode"`
+	Issue1099    Issue1099    `json:"Issue1099" url:"Issue1099"`
 	// Array of objects describing the vendor's contacts.
 	Contacts []*ContactsResponse `json:"Contacts" url:"Contacts"`
 	// Object containing vendor's bank information.
@@ -4933,6 +5080,13 @@ func (v *VendorDataResponse) GetLocationCode() LocationCode {
 		return ""
 	}
 	return v.LocationCode
+}
+
+func (v *VendorDataResponse) GetIssue1099() Issue1099 {
+	if v == nil {
+		return false
+	}
+	return v.Issue1099
 }
 
 func (v *VendorDataResponse) GetContacts() []*ContactsResponse {
@@ -5257,6 +5411,13 @@ func (v *VendorDataResponse) SetLocationCode(locationCode LocationCode) {
 	v.require(vendorDataResponseFieldLocationCode)
 }
 
+// SetIssue1099 sets the Issue1099 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetIssue1099(issue1099 Issue1099) {
+	v.Issue1099 = issue1099
+	v.require(vendorDataResponseFieldIssue1099)
+}
+
 // SetContacts sets the Contacts field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (v *VendorDataResponse) SetContacts(contacts []*ContactsResponse) {
@@ -5556,24 +5717,25 @@ var (
 	vendorOutDataFieldEmail                 = big.NewInt(1 << 9)
 	vendorOutDataFieldInternalReferenceId   = big.NewInt(1 << 10)
 	vendorOutDataFieldLocationCode          = big.NewInt(1 << 11)
-	vendorOutDataFieldMcc                   = big.NewInt(1 << 12)
-	vendorOutDataFieldName1                 = big.NewInt(1 << 13)
-	vendorOutDataFieldName2                 = big.NewInt(1 << 14)
-	vendorOutDataFieldPayeeName1            = big.NewInt(1 << 15)
-	vendorOutDataFieldPayeeName2            = big.NewInt(1 << 16)
-	vendorOutDataFieldPaymentMethod         = big.NewInt(1 << 17)
-	vendorOutDataFieldPhone                 = big.NewInt(1 << 18)
-	vendorOutDataFieldRemitAddress1         = big.NewInt(1 << 19)
-	vendorOutDataFieldRemitAddress2         = big.NewInt(1 << 20)
-	vendorOutDataFieldRemitCity             = big.NewInt(1 << 21)
-	vendorOutDataFieldRemitCountry          = big.NewInt(1 << 22)
-	vendorOutDataFieldRemitState            = big.NewInt(1 << 23)
-	vendorOutDataFieldRemitZip              = big.NewInt(1 << 24)
-	vendorOutDataFieldState                 = big.NewInt(1 << 25)
-	vendorOutDataFieldVendorId              = big.NewInt(1 << 26)
-	vendorOutDataFieldVendorNumber          = big.NewInt(1 << 27)
-	vendorOutDataFieldVendorStatus          = big.NewInt(1 << 28)
-	vendorOutDataFieldZip                   = big.NewInt(1 << 29)
+	vendorOutDataFieldIssue1099             = big.NewInt(1 << 12)
+	vendorOutDataFieldMcc                   = big.NewInt(1 << 13)
+	vendorOutDataFieldName1                 = big.NewInt(1 << 14)
+	vendorOutDataFieldName2                 = big.NewInt(1 << 15)
+	vendorOutDataFieldPayeeName1            = big.NewInt(1 << 16)
+	vendorOutDataFieldPayeeName2            = big.NewInt(1 << 17)
+	vendorOutDataFieldPaymentMethod         = big.NewInt(1 << 18)
+	vendorOutDataFieldPhone                 = big.NewInt(1 << 19)
+	vendorOutDataFieldRemitAddress1         = big.NewInt(1 << 20)
+	vendorOutDataFieldRemitAddress2         = big.NewInt(1 << 21)
+	vendorOutDataFieldRemitCity             = big.NewInt(1 << 22)
+	vendorOutDataFieldRemitCountry          = big.NewInt(1 << 23)
+	vendorOutDataFieldRemitState            = big.NewInt(1 << 24)
+	vendorOutDataFieldRemitZip              = big.NewInt(1 << 25)
+	vendorOutDataFieldState                 = big.NewInt(1 << 26)
+	vendorOutDataFieldVendorId              = big.NewInt(1 << 27)
+	vendorOutDataFieldVendorNumber          = big.NewInt(1 << 28)
+	vendorOutDataFieldVendorStatus          = big.NewInt(1 << 29)
+	vendorOutDataFieldZip                   = big.NewInt(1 << 30)
 )
 
 type VendorOutData struct {
@@ -5603,6 +5765,7 @@ type VendorOutData struct {
 	// Internal identifier for global vendor account.
 	InternalReferenceId *int64        `json:"InternalReferenceId,omitempty" url:"InternalReferenceId,omitempty"`
 	LocationCode        *LocationCode `json:"LocationCode,omitempty" url:"LocationCode,omitempty"`
+	Issue1099           *Issue1099    `json:"Issue1099,omitempty" url:"Issue1099,omitempty"`
 	Mcc                 *Mcc          `json:"Mcc,omitempty" url:"Mcc,omitempty"`
 	// Primary name for vendor. Required for new vendor. Allowed characters are letters, numbers, spaces, and `. , ' & ( )
 	Name1 string `json:"Name1" url:"Name1"`
@@ -5717,6 +5880,13 @@ func (v *VendorOutData) GetLocationCode() *LocationCode {
 		return nil
 	}
 	return v.LocationCode
+}
+
+func (v *VendorOutData) GetIssue1099() *Issue1099 {
+	if v == nil {
+		return nil
+	}
+	return v.Issue1099
 }
 
 func (v *VendorOutData) GetMcc() *Mcc {
@@ -5941,6 +6111,13 @@ func (v *VendorOutData) SetInternalReferenceId(internalReferenceId *int64) {
 func (v *VendorOutData) SetLocationCode(locationCode *LocationCode) {
 	v.LocationCode = locationCode
 	v.require(vendorOutDataFieldLocationCode)
+}
+
+// SetIssue1099 sets the Issue1099 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorOutData) SetIssue1099(issue1099 *Issue1099) {
+	v.Issue1099 = issue1099
+	v.require(vendorOutDataFieldIssue1099)
 }
 
 // SetMcc sets the Mcc field and marks it as non-optional;

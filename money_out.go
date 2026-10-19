@@ -270,6 +270,7 @@ var (
 	reissueOutRequestFieldIdempotencyKey = big.NewInt(1 << 0)
 	reissueOutRequestFieldTransId        = big.NewInt(1 << 1)
 	reissueOutRequestFieldPaymentMethod  = big.NewInt(1 << 2)
+	reissueOutRequestFieldCheckNumber    = big.NewInt(1 << 3)
 )
 
 type ReissueOutRequest struct {
@@ -278,6 +279,7 @@ type ReissueOutRequest struct {
 	// The transaction ID of the payout to reissue.
 	TransId       string                `json:"-" url:"transId"`
 	PaymentMethod *ReissuePaymentMethod `json:"paymentMethod" url:"-"`
+	CheckNumber   *VendorCheckNumber    `json:"checkNumber,omitempty" url:"-"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -309,6 +311,13 @@ func (r *ReissueOutRequest) SetTransId(transId string) {
 func (r *ReissueOutRequest) SetPaymentMethod(paymentMethod *ReissuePaymentMethod) {
 	r.PaymentMethod = paymentMethod
 	r.require(reissueOutRequestFieldPaymentMethod)
+}
+
+// SetCheckNumber sets the CheckNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (r *ReissueOutRequest) SetCheckNumber(checkNumber *VendorCheckNumber) {
+	r.CheckNumber = checkNumber
+	r.require(reissueOutRequestFieldCheckNumber)
 }
 
 func (r *ReissueOutRequest) UnmarshalJSON(data []byte) error {
@@ -2650,6 +2659,92 @@ func (c *CaptureAllOutResponseResponseDataItem) String() string {
 // ID.
 type EntityIdString = string
 
+// Response body for the next check number lookup.
+var (
+	nextCheckNumberResponseFieldCheckNumber = big.NewInt(1 << 0)
+)
+
+type NextCheckNumberResponse struct {
+	// The suggested next check number for the paypoint and funding account. Payabli returns the highest check number on the account's check payouts plus one, or `1` if the account has no check history. Canceled check payouts don't count.
+	CheckNumber string `json:"checkNumber" url:"checkNumber"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (n *NextCheckNumberResponse) GetCheckNumber() string {
+	if n == nil {
+		return ""
+	}
+	return n.CheckNumber
+}
+
+func (n *NextCheckNumberResponse) GetExtraProperties() map[string]interface{} {
+	if n == nil {
+		return nil
+	}
+	return n.extraProperties
+}
+
+func (n *NextCheckNumberResponse) require(field *big.Int) {
+	if n.explicitFields == nil {
+		n.explicitFields = big.NewInt(0)
+	}
+	n.explicitFields.Or(n.explicitFields, field)
+}
+
+// SetCheckNumber sets the CheckNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (n *NextCheckNumberResponse) SetCheckNumber(checkNumber string) {
+	n.CheckNumber = checkNumber
+	n.require(nextCheckNumberResponseFieldCheckNumber)
+}
+
+func (n *NextCheckNumberResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler NextCheckNumberResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*n = NextCheckNumberResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *n)
+	if err != nil {
+		return err
+	}
+	n.extraProperties = extraProperties
+	n.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (n *NextCheckNumberResponse) MarshalJSON() ([]byte, error) {
+	type embed NextCheckNumberResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*n),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, n.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (n *NextCheckNumberResponse) String() string {
+	if n == nil {
+		return "<nil>"
+	}
+	if len(n.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(n.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(n); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", n)
+}
+
 var (
 	operationResultFieldSuccess = big.NewInt(1 << 0)
 	operationResultFieldMessage = big.NewInt(1 << 1)
@@ -4471,35 +4566,36 @@ var (
 	vCardGetResponseAssociatedVendorFieldCountry               = big.NewInt(1 << 12)
 	vCardGetResponseAssociatedVendorFieldMcc                   = big.NewInt(1 << 13)
 	vCardGetResponseAssociatedVendorFieldLocationCode          = big.NewInt(1 << 14)
-	vCardGetResponseAssociatedVendorFieldContacts              = big.NewInt(1 << 15)
-	vCardGetResponseAssociatedVendorFieldBillingData           = big.NewInt(1 << 16)
-	vCardGetResponseAssociatedVendorFieldPaymentMethod         = big.NewInt(1 << 17)
-	vCardGetResponseAssociatedVendorFieldVendorStatus          = big.NewInt(1 << 18)
-	vCardGetResponseAssociatedVendorFieldVendorId              = big.NewInt(1 << 19)
-	vCardGetResponseAssociatedVendorFieldEnrollmentStatus      = big.NewInt(1 << 20)
-	vCardGetResponseAssociatedVendorFieldSummary               = big.NewInt(1 << 21)
-	vCardGetResponseAssociatedVendorFieldPaypointLegalname     = big.NewInt(1 << 22)
-	vCardGetResponseAssociatedVendorFieldPaypointDbaname       = big.NewInt(1 << 23)
-	vCardGetResponseAssociatedVendorFieldPaypointEntryname     = big.NewInt(1 << 24)
-	vCardGetResponseAssociatedVendorFieldParentOrgName         = big.NewInt(1 << 25)
-	vCardGetResponseAssociatedVendorFieldParentOrgId           = big.NewInt(1 << 26)
-	vCardGetResponseAssociatedVendorFieldCreatedDate           = big.NewInt(1 << 27)
-	vCardGetResponseAssociatedVendorFieldLastUpdated           = big.NewInt(1 << 28)
-	vCardGetResponseAssociatedVendorFieldRemitAddress1         = big.NewInt(1 << 29)
-	vCardGetResponseAssociatedVendorFieldRemitAddress2         = big.NewInt(1 << 30)
-	vCardGetResponseAssociatedVendorFieldRemitCity             = big.NewInt(1 << 31)
-	vCardGetResponseAssociatedVendorFieldRemitState            = big.NewInt(1 << 32)
-	vCardGetResponseAssociatedVendorFieldRemitZip              = big.NewInt(1 << 33)
-	vCardGetResponseAssociatedVendorFieldRemitCountry          = big.NewInt(1 << 34)
-	vCardGetResponseAssociatedVendorFieldPayeeName1            = big.NewInt(1 << 35)
-	vCardGetResponseAssociatedVendorFieldPayeeName2            = big.NewInt(1 << 36)
-	vCardGetResponseAssociatedVendorFieldCustomField1          = big.NewInt(1 << 37)
-	vCardGetResponseAssociatedVendorFieldCustomField2          = big.NewInt(1 << 38)
-	vCardGetResponseAssociatedVendorFieldCustomerVendorAccount = big.NewInt(1 << 39)
-	vCardGetResponseAssociatedVendorFieldInternalReferenceId   = big.NewInt(1 << 40)
-	vCardGetResponseAssociatedVendorFieldAdditionalData        = big.NewInt(1 << 41)
-	vCardGetResponseAssociatedVendorFieldExternalPaypointId    = big.NewInt(1 << 42)
-	vCardGetResponseAssociatedVendorFieldStoredMethods         = big.NewInt(1 << 43)
+	vCardGetResponseAssociatedVendorFieldIssue1099             = big.NewInt(1 << 15)
+	vCardGetResponseAssociatedVendorFieldContacts              = big.NewInt(1 << 16)
+	vCardGetResponseAssociatedVendorFieldBillingData           = big.NewInt(1 << 17)
+	vCardGetResponseAssociatedVendorFieldPaymentMethod         = big.NewInt(1 << 18)
+	vCardGetResponseAssociatedVendorFieldVendorStatus          = big.NewInt(1 << 19)
+	vCardGetResponseAssociatedVendorFieldVendorId              = big.NewInt(1 << 20)
+	vCardGetResponseAssociatedVendorFieldEnrollmentStatus      = big.NewInt(1 << 21)
+	vCardGetResponseAssociatedVendorFieldSummary               = big.NewInt(1 << 22)
+	vCardGetResponseAssociatedVendorFieldPaypointLegalname     = big.NewInt(1 << 23)
+	vCardGetResponseAssociatedVendorFieldPaypointDbaname       = big.NewInt(1 << 24)
+	vCardGetResponseAssociatedVendorFieldPaypointEntryname     = big.NewInt(1 << 25)
+	vCardGetResponseAssociatedVendorFieldParentOrgName         = big.NewInt(1 << 26)
+	vCardGetResponseAssociatedVendorFieldParentOrgId           = big.NewInt(1 << 27)
+	vCardGetResponseAssociatedVendorFieldCreatedDate           = big.NewInt(1 << 28)
+	vCardGetResponseAssociatedVendorFieldLastUpdated           = big.NewInt(1 << 29)
+	vCardGetResponseAssociatedVendorFieldRemitAddress1         = big.NewInt(1 << 30)
+	vCardGetResponseAssociatedVendorFieldRemitAddress2         = big.NewInt(1 << 31)
+	vCardGetResponseAssociatedVendorFieldRemitCity             = big.NewInt(1 << 32)
+	vCardGetResponseAssociatedVendorFieldRemitState            = big.NewInt(1 << 33)
+	vCardGetResponseAssociatedVendorFieldRemitZip              = big.NewInt(1 << 34)
+	vCardGetResponseAssociatedVendorFieldRemitCountry          = big.NewInt(1 << 35)
+	vCardGetResponseAssociatedVendorFieldPayeeName1            = big.NewInt(1 << 36)
+	vCardGetResponseAssociatedVendorFieldPayeeName2            = big.NewInt(1 << 37)
+	vCardGetResponseAssociatedVendorFieldCustomField1          = big.NewInt(1 << 38)
+	vCardGetResponseAssociatedVendorFieldCustomField2          = big.NewInt(1 << 39)
+	vCardGetResponseAssociatedVendorFieldCustomerVendorAccount = big.NewInt(1 << 40)
+	vCardGetResponseAssociatedVendorFieldInternalReferenceId   = big.NewInt(1 << 41)
+	vCardGetResponseAssociatedVendorFieldAdditionalData        = big.NewInt(1 << 42)
+	vCardGetResponseAssociatedVendorFieldExternalPaypointId    = big.NewInt(1 << 43)
+	vCardGetResponseAssociatedVendorFieldStoredMethods         = big.NewInt(1 << 44)
 )
 
 type VCardGetResponseAssociatedVendor struct {
@@ -4532,6 +4628,7 @@ type VCardGetResponseAssociatedVendor struct {
 	// Merchant Category Code for the vendor.
 	Mcc          *string       `json:"Mcc,omitempty" url:"Mcc,omitempty"`
 	LocationCode *LocationCode `json:"LocationCode,omitempty" url:"LocationCode,omitempty"`
+	Issue1099    *Issue1099    `json:"Issue1099,omitempty" url:"Issue1099,omitempty"`
 	// Array of objects describing the vendor's contacts.
 	Contacts []*VCardGetResponseContact `json:"Contacts,omitempty" url:"Contacts,omitempty"`
 	// Billing data for the vendor.
@@ -4692,6 +4789,13 @@ func (v *VCardGetResponseAssociatedVendor) GetLocationCode() *LocationCode {
 		return nil
 	}
 	return v.LocationCode
+}
+
+func (v *VCardGetResponseAssociatedVendor) GetIssue1099() *Issue1099 {
+	if v == nil {
+		return nil
+	}
+	return v.Issue1099
 }
 
 func (v *VCardGetResponseAssociatedVendor) GetContacts() []*VCardGetResponseContact {
@@ -5014,6 +5118,13 @@ func (v *VCardGetResponseAssociatedVendor) SetMcc(mcc *string) {
 func (v *VCardGetResponseAssociatedVendor) SetLocationCode(locationCode *LocationCode) {
 	v.LocationCode = locationCode
 	v.require(vCardGetResponseAssociatedVendorFieldLocationCode)
+}
+
+// SetIssue1099 sets the Issue1099 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VCardGetResponseAssociatedVendor) SetIssue1099(issue1099 *Issue1099) {
+	v.Issue1099 = issue1099
+	v.require(vCardGetResponseAssociatedVendorFieldIssue1099)
 }
 
 // SetContacts sets the Contacts field and marks it as non-optional;
@@ -6046,9 +6157,10 @@ func (v *VCardGetResponseContact) String() string {
 	return fmt.Sprintf("%#v", v)
 }
 
-// A check number between 1 and 500,000,000. This value must be passed as
-// a string. This value can be used for fraud prevention with the
-// positive pay service. When no check number is provided, Payabli
+// A numeric check number of up to 8 digits. This value must be passed as
+// a string. Payabli rejects a check number longer than 8 digits with
+// error `3727`, and a non-numeric value with error `3728`. This value
+// can be used for fraud prevention with the positive pay service. When no check number is provided, Payabli
 // automatically manages check numbering and sequencing for checks issued
 // from the same bank account.
 type VendorCheckNumber = string

@@ -6078,6 +6078,20 @@ type Descriptor = string
 // Identifier of the registered device used in the transaction.
 type Device = string
 
+// How the device read the card for a device transaction. Possible values:
+//
+// - `Chip`: Card inserted and EMV chip read.
+// - `Contactless`: Card or digital wallet tapped.
+// - `Swipe`: Magnetic stripe swiped.
+// - `Manual`: Card details keyed in on the device.
+// - `Fallback`: Chip read failed, so the device fell back to the magnetic stripe.
+// - `None`: The device didn't report an entry mode.
+//
+// `null` when the transaction isn't a device transaction, or when the device
+// transaction never reached the processor (for example, a device timeout or a
+// cancellation on the device).
+type DeviceEntryMode = *string
+
 // Discount applied to the invoice.
 type Discount = float64
 
@@ -6414,6 +6428,111 @@ func (e *Element) String() string {
 
 // Email address.
 type Email = string
+
+// EMV data exchanged during the authorization of a device transaction. `null`
+// when both values are `null`, such as for swiped cards, device transactions
+// that never reached the processor, and non-device transactions.
+var (
+	emvAuthDataFieldRequestEmvData  = big.NewInt(1 << 0)
+	emvAuthDataFieldResponseEmvData = big.NewInt(1 << 1)
+)
+
+type EmvAuthData struct {
+	// EMV tag-length-value (TLV) data the device sent with the authorization request.
+	RequestEmvData *string `json:"RequestEmvData,omitempty" url:"RequestEmvData,omitempty"`
+	// EMV data returned in the authorization response. Same value as `ResponseData.emv_auth_response_data`.
+	ResponseEmvData *string `json:"ResponseEmvData,omitempty" url:"ResponseEmvData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (e *EmvAuthData) GetRequestEmvData() *string {
+	if e == nil {
+		return nil
+	}
+	return e.RequestEmvData
+}
+
+func (e *EmvAuthData) GetResponseEmvData() *string {
+	if e == nil {
+		return nil
+	}
+	return e.ResponseEmvData
+}
+
+func (e *EmvAuthData) GetExtraProperties() map[string]interface{} {
+	if e == nil {
+		return nil
+	}
+	return e.extraProperties
+}
+
+func (e *EmvAuthData) require(field *big.Int) {
+	if e.explicitFields == nil {
+		e.explicitFields = big.NewInt(0)
+	}
+	e.explicitFields.Or(e.explicitFields, field)
+}
+
+// SetRequestEmvData sets the RequestEmvData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EmvAuthData) SetRequestEmvData(requestEmvData *string) {
+	e.RequestEmvData = requestEmvData
+	e.require(emvAuthDataFieldRequestEmvData)
+}
+
+// SetResponseEmvData sets the ResponseEmvData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (e *EmvAuthData) SetResponseEmvData(responseEmvData *string) {
+	e.ResponseEmvData = responseEmvData
+	e.require(emvAuthDataFieldResponseEmvData)
+}
+
+func (e *EmvAuthData) UnmarshalJSON(data []byte) error {
+	type unmarshaler EmvAuthData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*e = EmvAuthData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *e)
+	if err != nil {
+		return err
+	}
+	e.extraProperties = extraProperties
+	e.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (e *EmvAuthData) MarshalJSON() ([]byte, error) {
+	type embed EmvAuthData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*e),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, e.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (e *EmvAuthData) String() string {
+	if e == nil {
+		return "<nil>"
+	}
+	if len(e.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(e); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", e)
+}
 
 // EMV authorization response data, applicable for card transactions.
 type EmvAuthResponseData = string
@@ -7702,6 +7821,9 @@ type IsSameDayAch = bool
 // indicates success. A `false` value indicates failure.
 type IsSuccess = bool
 
+// When `true`, a 1099 tax form is issued to this vendor. Defaults to `false`.
+type Issue1099 = bool
+
 // Item or product commodity code. Max length of 250 characters.
 type ItemCommodityCode = string
 
@@ -8098,7 +8220,7 @@ type License = string
 // Business license issuing state or province.
 type Licensestate = string
 
-// A location code used to identify the vendor's location.
+// A location code used to identify the vendor's location. Vendors in the same paypoint can't share a `vendorNumber`, even if their location codes are different.
 type LocationCode = string
 
 // The business's mailing address.
@@ -16545,6 +16667,213 @@ func (q *QueryCFeeTransaction) String() string {
 	return fmt.Sprintf("%#v", q)
 }
 
+// Details of the registered device used for the transaction. `null` when the
+// transaction has no `DeviceId`, or when no matching device is registered to
+// the paypoint.
+var (
+	queryDeviceDataFieldDeviceType   = big.NewInt(1 << 0)
+	queryDeviceDataFieldDeviceOs     = big.NewInt(1 << 1)
+	queryDeviceDataFieldFriendlyName = big.NewInt(1 << 2)
+	queryDeviceDataFieldSerialNumber = big.NewInt(1 << 3)
+	queryDeviceDataFieldMake         = big.NewInt(1 << 4)
+	queryDeviceDataFieldModel        = big.NewInt(1 << 5)
+	queryDeviceDataFieldMacAddress   = big.NewInt(1 << 6)
+	queryDeviceDataFieldDeviceStatus = big.NewInt(1 << 7)
+)
+
+type QueryDeviceData struct {
+	// Device type, for example `SemiIntegrated`, `Standalone`, or `Softpos`.
+	DeviceType *string `json:"deviceType,omitempty" url:"deviceType,omitempty"`
+	// Device operating system, for example `Ios` or `Android`.
+	DeviceOs *string `json:"deviceOs,omitempty" url:"deviceOs,omitempty"`
+	// Name assigned to the device at registration.
+	FriendlyName *string `json:"friendlyName,omitempty" url:"friendlyName,omitempty"`
+	// Device serial number.
+	SerialNumber *string `json:"serialNumber,omitempty" url:"serialNumber,omitempty"`
+	// Device manufacturer. Can be an empty string.
+	Make *string `json:"make,omitempty" url:"make,omitempty"`
+	// Device model.
+	Model *string `json:"model,omitempty" url:"model,omitempty"`
+	// Device MAC address.
+	MacAddress *string `json:"macAddress,omitempty" url:"macAddress,omitempty"`
+	// Device registration status: `Inactive`, `Active`, `Pending`, `Superseded`, `Unregistering`, or `Unregistered`.
+	DeviceStatus *string `json:"deviceStatus,omitempty" url:"deviceStatus,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (q *QueryDeviceData) GetDeviceType() *string {
+	if q == nil {
+		return nil
+	}
+	return q.DeviceType
+}
+
+func (q *QueryDeviceData) GetDeviceOs() *string {
+	if q == nil {
+		return nil
+	}
+	return q.DeviceOs
+}
+
+func (q *QueryDeviceData) GetFriendlyName() *string {
+	if q == nil {
+		return nil
+	}
+	return q.FriendlyName
+}
+
+func (q *QueryDeviceData) GetSerialNumber() *string {
+	if q == nil {
+		return nil
+	}
+	return q.SerialNumber
+}
+
+func (q *QueryDeviceData) GetMake() *string {
+	if q == nil {
+		return nil
+	}
+	return q.Make
+}
+
+func (q *QueryDeviceData) GetModel() *string {
+	if q == nil {
+		return nil
+	}
+	return q.Model
+}
+
+func (q *QueryDeviceData) GetMacAddress() *string {
+	if q == nil {
+		return nil
+	}
+	return q.MacAddress
+}
+
+func (q *QueryDeviceData) GetDeviceStatus() *string {
+	if q == nil {
+		return nil
+	}
+	return q.DeviceStatus
+}
+
+func (q *QueryDeviceData) GetExtraProperties() map[string]interface{} {
+	if q == nil {
+		return nil
+	}
+	return q.extraProperties
+}
+
+func (q *QueryDeviceData) require(field *big.Int) {
+	if q.explicitFields == nil {
+		q.explicitFields = big.NewInt(0)
+	}
+	q.explicitFields.Or(q.explicitFields, field)
+}
+
+// SetDeviceType sets the DeviceType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryDeviceData) SetDeviceType(deviceType *string) {
+	q.DeviceType = deviceType
+	q.require(queryDeviceDataFieldDeviceType)
+}
+
+// SetDeviceOs sets the DeviceOs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryDeviceData) SetDeviceOs(deviceOs *string) {
+	q.DeviceOs = deviceOs
+	q.require(queryDeviceDataFieldDeviceOs)
+}
+
+// SetFriendlyName sets the FriendlyName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryDeviceData) SetFriendlyName(friendlyName *string) {
+	q.FriendlyName = friendlyName
+	q.require(queryDeviceDataFieldFriendlyName)
+}
+
+// SetSerialNumber sets the SerialNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryDeviceData) SetSerialNumber(serialNumber *string) {
+	q.SerialNumber = serialNumber
+	q.require(queryDeviceDataFieldSerialNumber)
+}
+
+// SetMake sets the Make field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryDeviceData) SetMake(make_ *string) {
+	q.Make = make_
+	q.require(queryDeviceDataFieldMake)
+}
+
+// SetModel sets the Model field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryDeviceData) SetModel(model *string) {
+	q.Model = model
+	q.require(queryDeviceDataFieldModel)
+}
+
+// SetMacAddress sets the MacAddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryDeviceData) SetMacAddress(macAddress *string) {
+	q.MacAddress = macAddress
+	q.require(queryDeviceDataFieldMacAddress)
+}
+
+// SetDeviceStatus sets the DeviceStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryDeviceData) SetDeviceStatus(deviceStatus *string) {
+	q.DeviceStatus = deviceStatus
+	q.require(queryDeviceDataFieldDeviceStatus)
+}
+
+func (q *QueryDeviceData) UnmarshalJSON(data []byte) error {
+	type unmarshaler QueryDeviceData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*q = QueryDeviceData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *q)
+	if err != nil {
+		return err
+	}
+	q.extraProperties = extraProperties
+	q.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (q *QueryDeviceData) MarshalJSON() ([]byte, error) {
+	type embed QueryDeviceData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*q),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (q *QueryDeviceData) String() string {
+	if q == nil {
+		return "<nil>"
+	}
+	if len(q.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(q.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(q); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", q)
+}
+
 var (
 	queryPaymentDataFieldAccountExp            = big.NewInt(1 << 0)
 	queryPaymentDataFieldAccountId             = big.NewInt(1 << 1)
@@ -20544,38 +20873,41 @@ var (
 	transactionQueryRecordsFieldConnectorName                = big.NewInt(1 << 5)
 	transactionQueryRecordsFieldCustomer                     = big.NewInt(1 << 6)
 	transactionQueryRecordsFieldDeviceId                     = big.NewInt(1 << 7)
-	transactionQueryRecordsFieldEntrypageId                  = big.NewInt(1 << 8)
-	transactionQueryRecordsFieldExternalProcessorInformation = big.NewInt(1 << 9)
-	transactionQueryRecordsFieldFeeAmount                    = big.NewInt(1 << 10)
-	transactionQueryRecordsFieldGatewayTransId               = big.NewInt(1 << 11)
-	transactionQueryRecordsFieldInvoiceData                  = big.NewInt(1 << 12)
-	transactionQueryRecordsFieldMethod                       = big.NewInt(1 << 13)
-	transactionQueryRecordsFieldNetAmount                    = big.NewInt(1 << 14)
-	transactionQueryRecordsFieldOperation                    = big.NewInt(1 << 15)
-	transactionQueryRecordsFieldOrderId                      = big.NewInt(1 << 16)
-	transactionQueryRecordsFieldOrgId                        = big.NewInt(1 << 17)
-	transactionQueryRecordsFieldParentOrgName                = big.NewInt(1 << 18)
-	transactionQueryRecordsFieldPaymentData                  = big.NewInt(1 << 19)
-	transactionQueryRecordsFieldPaymentTransId               = big.NewInt(1 << 20)
-	transactionQueryRecordsFieldPayorId                      = big.NewInt(1 << 21)
-	transactionQueryRecordsFieldPaypointDbaname              = big.NewInt(1 << 22)
-	transactionQueryRecordsFieldPaypointEntryname            = big.NewInt(1 << 23)
-	transactionQueryRecordsFieldPaypointId                   = big.NewInt(1 << 24)
-	transactionQueryRecordsFieldPaypointLegalname            = big.NewInt(1 << 25)
-	transactionQueryRecordsFieldPendingFeeAmount             = big.NewInt(1 << 26)
-	transactionQueryRecordsFieldRefundId                     = big.NewInt(1 << 27)
-	transactionQueryRecordsFieldResponseData                 = big.NewInt(1 << 28)
-	transactionQueryRecordsFieldReturnedId                   = big.NewInt(1 << 29)
-	transactionQueryRecordsFieldScheduleReference            = big.NewInt(1 << 30)
-	transactionQueryRecordsFieldSettlementStatus             = big.NewInt(1 << 31)
-	transactionQueryRecordsFieldSource                       = big.NewInt(1 << 32)
-	transactionQueryRecordsFieldSplitFundingInstructions     = big.NewInt(1 << 33)
-	transactionQueryRecordsFieldSplitCount                   = big.NewInt(1 << 34)
-	transactionQueryRecordsFieldTotalAmount                  = big.NewInt(1 << 35)
-	transactionQueryRecordsFieldTransactionEvents            = big.NewInt(1 << 36)
-	transactionQueryRecordsFieldTransactionTime              = big.NewInt(1 << 37)
-	transactionQueryRecordsFieldTransAdditionalData          = big.NewInt(1 << 38)
-	transactionQueryRecordsFieldTransStatus                  = big.NewInt(1 << 39)
+	transactionQueryRecordsFieldDeviceData                   = big.NewInt(1 << 8)
+	transactionQueryRecordsFieldDeviceEntryMode              = big.NewInt(1 << 9)
+	transactionQueryRecordsFieldEmvAuthData                  = big.NewInt(1 << 10)
+	transactionQueryRecordsFieldEntrypageId                  = big.NewInt(1 << 11)
+	transactionQueryRecordsFieldExternalProcessorInformation = big.NewInt(1 << 12)
+	transactionQueryRecordsFieldFeeAmount                    = big.NewInt(1 << 13)
+	transactionQueryRecordsFieldGatewayTransId               = big.NewInt(1 << 14)
+	transactionQueryRecordsFieldInvoiceData                  = big.NewInt(1 << 15)
+	transactionQueryRecordsFieldMethod                       = big.NewInt(1 << 16)
+	transactionQueryRecordsFieldNetAmount                    = big.NewInt(1 << 17)
+	transactionQueryRecordsFieldOperation                    = big.NewInt(1 << 18)
+	transactionQueryRecordsFieldOrderId                      = big.NewInt(1 << 19)
+	transactionQueryRecordsFieldOrgId                        = big.NewInt(1 << 20)
+	transactionQueryRecordsFieldParentOrgName                = big.NewInt(1 << 21)
+	transactionQueryRecordsFieldPaymentData                  = big.NewInt(1 << 22)
+	transactionQueryRecordsFieldPaymentTransId               = big.NewInt(1 << 23)
+	transactionQueryRecordsFieldPayorId                      = big.NewInt(1 << 24)
+	transactionQueryRecordsFieldPaypointDbaname              = big.NewInt(1 << 25)
+	transactionQueryRecordsFieldPaypointEntryname            = big.NewInt(1 << 26)
+	transactionQueryRecordsFieldPaypointId                   = big.NewInt(1 << 27)
+	transactionQueryRecordsFieldPaypointLegalname            = big.NewInt(1 << 28)
+	transactionQueryRecordsFieldPendingFeeAmount             = big.NewInt(1 << 29)
+	transactionQueryRecordsFieldRefundId                     = big.NewInt(1 << 30)
+	transactionQueryRecordsFieldResponseData                 = big.NewInt(1 << 31)
+	transactionQueryRecordsFieldReturnedId                   = big.NewInt(1 << 32)
+	transactionQueryRecordsFieldScheduleReference            = big.NewInt(1 << 33)
+	transactionQueryRecordsFieldSettlementStatus             = big.NewInt(1 << 34)
+	transactionQueryRecordsFieldSource                       = big.NewInt(1 << 35)
+	transactionQueryRecordsFieldSplitFundingInstructions     = big.NewInt(1 << 36)
+	transactionQueryRecordsFieldSplitCount                   = big.NewInt(1 << 37)
+	transactionQueryRecordsFieldTotalAmount                  = big.NewInt(1 << 38)
+	transactionQueryRecordsFieldTransactionEvents            = big.NewInt(1 << 39)
+	transactionQueryRecordsFieldTransactionTime              = big.NewInt(1 << 40)
+	transactionQueryRecordsFieldTransAdditionalData          = big.NewInt(1 << 41)
+	transactionQueryRecordsFieldTransStatus                  = big.NewInt(1 << 42)
 )
 
 type TransactionQueryRecords struct {
@@ -20590,6 +20922,9 @@ type TransactionQueryRecords struct {
 	ConnectorName                *string                       `json:"ConnectorName,omitempty" url:"ConnectorName,omitempty"`
 	Customer                     *QueryTransactionPayorData    `json:"Customer,omitempty" url:"Customer,omitempty"`
 	DeviceId                     *Device                       `json:"DeviceId,omitempty" url:"DeviceId,omitempty"`
+	DeviceData                   *QueryDeviceData              `json:"DeviceData,omitempty" url:"DeviceData,omitempty"`
+	DeviceEntryMode              DeviceEntryMode               `json:"DeviceEntryMode,omitempty" url:"DeviceEntryMode,omitempty"`
+	EmvAuthData                  *EmvAuthData                  `json:"EmvAuthData,omitempty" url:"EmvAuthData,omitempty"`
 	EntrypageId                  *EntrypageId                  `json:"EntrypageId,omitempty" url:"EntrypageId,omitempty"`
 	ExternalProcessorInformation *ExternalProcessorInformation `json:"ExternalProcessorInformation,omitempty" url:"ExternalProcessorInformation,omitempty"`
 	FeeAmount                    *FeeAmount                    `json:"FeeAmount,omitempty" url:"FeeAmount,omitempty"`
@@ -20699,6 +21034,27 @@ func (t *TransactionQueryRecords) GetDeviceId() *Device {
 		return nil
 	}
 	return t.DeviceId
+}
+
+func (t *TransactionQueryRecords) GetDeviceData() *QueryDeviceData {
+	if t == nil {
+		return nil
+	}
+	return t.DeviceData
+}
+
+func (t *TransactionQueryRecords) GetDeviceEntryMode() DeviceEntryMode {
+	if t == nil {
+		return nil
+	}
+	return t.DeviceEntryMode
+}
+
+func (t *TransactionQueryRecords) GetEmvAuthData() *EmvAuthData {
+	if t == nil {
+		return nil
+	}
+	return t.EmvAuthData
 }
 
 func (t *TransactionQueryRecords) GetEntrypageId() *EntrypageId {
@@ -20993,6 +21349,27 @@ func (t *TransactionQueryRecords) SetCustomer(customer *QueryTransactionPayorDat
 func (t *TransactionQueryRecords) SetDeviceId(deviceId *Device) {
 	t.DeviceId = deviceId
 	t.require(transactionQueryRecordsFieldDeviceId)
+}
+
+// SetDeviceData sets the DeviceData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecords) SetDeviceData(deviceData *QueryDeviceData) {
+	t.DeviceData = deviceData
+	t.require(transactionQueryRecordsFieldDeviceData)
+}
+
+// SetDeviceEntryMode sets the DeviceEntryMode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecords) SetDeviceEntryMode(deviceEntryMode DeviceEntryMode) {
+	t.DeviceEntryMode = deviceEntryMode
+	t.require(transactionQueryRecordsFieldDeviceEntryMode)
+}
+
+// SetEmvAuthData sets the EmvAuthData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionQueryRecords) SetEmvAuthData(emvAuthData *EmvAuthData) {
+	t.EmvAuthData = emvAuthData
+	t.require(transactionQueryRecordsFieldEmvAuthData)
 }
 
 // SetEntrypageId sets the EntrypageId field and marks it as non-optional;
@@ -22376,8 +22753,10 @@ func (v *V2InternalServerError) String() string {
 
 type ValueTemplates = string
 
-// Custom number identifying the vendor. Must be unique in paypoint. Can't be
-// blank.
+// Custom number identifying the vendor. Must be unique within the
+// paypoint, regardless of `locationCode`. Inactive vendors keep their
+// number, so another vendor can't use it. Deleted vendors release their
+// number. Can't be blank.
 type VendorNumber = string
 
 // The vendor's preferred payment method. Can be one of:
@@ -22643,45 +23022,46 @@ var (
 	vendorQueryRecordFieldCountry               = big.NewInt(1 << 12)
 	vendorQueryRecordFieldMcc                   = big.NewInt(1 << 13)
 	vendorQueryRecordFieldLocationCode          = big.NewInt(1 << 14)
-	vendorQueryRecordFieldContacts              = big.NewInt(1 << 15)
-	vendorQueryRecordFieldBillingData           = big.NewInt(1 << 16)
-	vendorQueryRecordFieldPaymentMethod         = big.NewInt(1 << 17)
-	vendorQueryRecordFieldVendorStatus          = big.NewInt(1 << 18)
-	vendorQueryRecordFieldVendorId              = big.NewInt(1 << 19)
-	vendorQueryRecordFieldEnrollmentStatus      = big.NewInt(1 << 20)
-	vendorQueryRecordFieldSummary               = big.NewInt(1 << 21)
-	vendorQueryRecordFieldPaypointLegalname     = big.NewInt(1 << 22)
-	vendorQueryRecordFieldPaypointId            = big.NewInt(1 << 23)
-	vendorQueryRecordFieldPaypointDbaname       = big.NewInt(1 << 24)
-	vendorQueryRecordFieldPaypointEntryname     = big.NewInt(1 << 25)
-	vendorQueryRecordFieldParentOrgName         = big.NewInt(1 << 26)
-	vendorQueryRecordFieldParentOrgId           = big.NewInt(1 << 27)
-	vendorQueryRecordFieldCreatedDate           = big.NewInt(1 << 28)
-	vendorQueryRecordFieldLastUpdated           = big.NewInt(1 << 29)
-	vendorQueryRecordFieldRemitAddress1         = big.NewInt(1 << 30)
-	vendorQueryRecordFieldRemitAddress2         = big.NewInt(1 << 31)
-	vendorQueryRecordFieldRemitCity             = big.NewInt(1 << 32)
-	vendorQueryRecordFieldRemitState            = big.NewInt(1 << 33)
-	vendorQueryRecordFieldRemitZip              = big.NewInt(1 << 34)
-	vendorQueryRecordFieldRemitCountry          = big.NewInt(1 << 35)
-	vendorQueryRecordFieldPayeeName1            = big.NewInt(1 << 36)
-	vendorQueryRecordFieldPayeeName2            = big.NewInt(1 << 37)
-	vendorQueryRecordFieldCustomField1          = big.NewInt(1 << 38)
-	vendorQueryRecordFieldCustomField2          = big.NewInt(1 << 39)
-	vendorQueryRecordFieldCustomerVendorAccount = big.NewInt(1 << 40)
-	vendorQueryRecordFieldInternalReferenceId   = big.NewInt(1 << 41)
-	vendorQueryRecordFieldPaymentPortalUrl      = big.NewInt(1 << 42)
-	vendorQueryRecordFieldCardAccepted          = big.NewInt(1 << 43)
-	vendorQueryRecordFieldAchAccepted           = big.NewInt(1 << 44)
-	vendorQueryRecordFieldCheckAccepted         = big.NewInt(1 << 45)
-	vendorQueryRecordFieldEnrichmentStatus      = big.NewInt(1 << 46)
-	vendorQueryRecordFieldEnrichedBy            = big.NewInt(1 << 47)
-	vendorQueryRecordFieldEnrichedAt            = big.NewInt(1 << 48)
-	vendorQueryRecordFieldEnrichmentId          = big.NewInt(1 << 49)
-	vendorQueryRecordFieldAdditionalData        = big.NewInt(1 << 50)
-	vendorQueryRecordFieldExternalPaypointId    = big.NewInt(1 << 51)
-	vendorQueryRecordFieldStoredMethods         = big.NewInt(1 << 52)
-	vendorQueryRecordFieldVendorPortal          = big.NewInt(1 << 53)
+	vendorQueryRecordFieldIssue1099             = big.NewInt(1 << 15)
+	vendorQueryRecordFieldContacts              = big.NewInt(1 << 16)
+	vendorQueryRecordFieldBillingData           = big.NewInt(1 << 17)
+	vendorQueryRecordFieldPaymentMethod         = big.NewInt(1 << 18)
+	vendorQueryRecordFieldVendorStatus          = big.NewInt(1 << 19)
+	vendorQueryRecordFieldVendorId              = big.NewInt(1 << 20)
+	vendorQueryRecordFieldEnrollmentStatus      = big.NewInt(1 << 21)
+	vendorQueryRecordFieldSummary               = big.NewInt(1 << 22)
+	vendorQueryRecordFieldPaypointLegalname     = big.NewInt(1 << 23)
+	vendorQueryRecordFieldPaypointId            = big.NewInt(1 << 24)
+	vendorQueryRecordFieldPaypointDbaname       = big.NewInt(1 << 25)
+	vendorQueryRecordFieldPaypointEntryname     = big.NewInt(1 << 26)
+	vendorQueryRecordFieldParentOrgName         = big.NewInt(1 << 27)
+	vendorQueryRecordFieldParentOrgId           = big.NewInt(1 << 28)
+	vendorQueryRecordFieldCreatedDate           = big.NewInt(1 << 29)
+	vendorQueryRecordFieldLastUpdated           = big.NewInt(1 << 30)
+	vendorQueryRecordFieldRemitAddress1         = big.NewInt(1 << 31)
+	vendorQueryRecordFieldRemitAddress2         = big.NewInt(1 << 32)
+	vendorQueryRecordFieldRemitCity             = big.NewInt(1 << 33)
+	vendorQueryRecordFieldRemitState            = big.NewInt(1 << 34)
+	vendorQueryRecordFieldRemitZip              = big.NewInt(1 << 35)
+	vendorQueryRecordFieldRemitCountry          = big.NewInt(1 << 36)
+	vendorQueryRecordFieldPayeeName1            = big.NewInt(1 << 37)
+	vendorQueryRecordFieldPayeeName2            = big.NewInt(1 << 38)
+	vendorQueryRecordFieldCustomField1          = big.NewInt(1 << 39)
+	vendorQueryRecordFieldCustomField2          = big.NewInt(1 << 40)
+	vendorQueryRecordFieldCustomerVendorAccount = big.NewInt(1 << 41)
+	vendorQueryRecordFieldInternalReferenceId   = big.NewInt(1 << 42)
+	vendorQueryRecordFieldPaymentPortalUrl      = big.NewInt(1 << 43)
+	vendorQueryRecordFieldCardAccepted          = big.NewInt(1 << 44)
+	vendorQueryRecordFieldAchAccepted           = big.NewInt(1 << 45)
+	vendorQueryRecordFieldCheckAccepted         = big.NewInt(1 << 46)
+	vendorQueryRecordFieldEnrichmentStatus      = big.NewInt(1 << 47)
+	vendorQueryRecordFieldEnrichedBy            = big.NewInt(1 << 48)
+	vendorQueryRecordFieldEnrichedAt            = big.NewInt(1 << 49)
+	vendorQueryRecordFieldEnrichmentId          = big.NewInt(1 << 50)
+	vendorQueryRecordFieldAdditionalData        = big.NewInt(1 << 51)
+	vendorQueryRecordFieldExternalPaypointId    = big.NewInt(1 << 52)
+	vendorQueryRecordFieldStoredMethods         = big.NewInt(1 << 53)
+	vendorQueryRecordFieldVendorPortal          = big.NewInt(1 << 54)
 )
 
 type VendorQueryRecord struct {
@@ -22699,11 +23079,12 @@ type VendorQueryRecord struct {
 	// The city.
 	City *string `json:"City,omitempty" url:"City,omitempty"`
 	// The state or province.
-	State        *string `json:"State,omitempty" url:"State,omitempty"`
-	Zip          *Zip    `json:"Zip,omitempty" url:"Zip,omitempty"`
-	Country      *string `json:"Country,omitempty" url:"Country,omitempty"`
-	Mcc          *Mcc    `json:"Mcc,omitempty" url:"Mcc,omitempty"`
-	LocationCode *string `json:"LocationCode,omitempty" url:"LocationCode,omitempty"`
+	State        *string   `json:"State,omitempty" url:"State,omitempty"`
+	Zip          *Zip      `json:"Zip,omitempty" url:"Zip,omitempty"`
+	Country      *string   `json:"Country,omitempty" url:"Country,omitempty"`
+	Mcc          *Mcc      `json:"Mcc,omitempty" url:"Mcc,omitempty"`
+	LocationCode *string   `json:"LocationCode,omitempty" url:"LocationCode,omitempty"`
+	Issue1099    Issue1099 `json:"Issue1099" url:"Issue1099"`
 	// Array of objects describing the vendor's contacts.
 	Contacts          []*ContactsResponse        `json:"Contacts,omitempty" url:"Contacts,omitempty"`
 	BillingData       *BillingDataResponse       `json:"BillingData,omitempty" url:"BillingData,omitempty"`
@@ -22864,6 +23245,13 @@ func (v *VendorQueryRecord) GetLocationCode() *string {
 		return nil
 	}
 	return v.LocationCode
+}
+
+func (v *VendorQueryRecord) GetIssue1099() Issue1099 {
+	if v == nil {
+		return false
+	}
+	return v.Issue1099
 }
 
 func (v *VendorQueryRecord) GetContacts() []*ContactsResponse {
@@ -23256,6 +23644,13 @@ func (v *VendorQueryRecord) SetMcc(mcc *Mcc) {
 func (v *VendorQueryRecord) SetLocationCode(locationCode *string) {
 	v.LocationCode = locationCode
 	v.require(vendorQueryRecordFieldLocationCode)
+}
+
+// SetIssue1099 sets the Issue1099 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorQueryRecord) SetIssue1099(issue1099 Issue1099) {
+	v.Issue1099 = issue1099
+	v.require(vendorQueryRecordFieldIssue1099)
 }
 
 // SetContacts sets the Contacts field and marks it as non-optional;

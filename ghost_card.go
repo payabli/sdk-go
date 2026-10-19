@@ -525,3 +525,206 @@ func (c *CreateGhostCardResponseData) String() string {
 	}
 	return fmt.Sprintf("%#v", c)
 }
+
+// Response for canceling a ghost card.
+var (
+	deleteGhostCardResponseFieldIsSuccess    = big.NewInt(1 << 0)
+	deleteGhostCardResponseFieldResponseData = big.NewInt(1 << 1)
+)
+
+type DeleteGhostCardResponse struct {
+	IsSuccess    *IsSuccess                   `json:"isSuccess,omitempty" url:"isSuccess,omitempty"`
+	ResponseData *DeleteGhostCardResponseData `json:"responseData,omitempty" url:"responseData,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (d *DeleteGhostCardResponse) GetIsSuccess() *IsSuccess {
+	if d == nil {
+		return nil
+	}
+	return d.IsSuccess
+}
+
+func (d *DeleteGhostCardResponse) GetResponseData() *DeleteGhostCardResponseData {
+	if d == nil {
+		return nil
+	}
+	return d.ResponseData
+}
+
+func (d *DeleteGhostCardResponse) GetExtraProperties() map[string]interface{} {
+	if d == nil {
+		return nil
+	}
+	return d.extraProperties
+}
+
+func (d *DeleteGhostCardResponse) require(field *big.Int) {
+	if d.explicitFields == nil {
+		d.explicitFields = big.NewInt(0)
+	}
+	d.explicitFields.Or(d.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeleteGhostCardResponse) SetIsSuccess(isSuccess *IsSuccess) {
+	d.IsSuccess = isSuccess
+	d.require(deleteGhostCardResponseFieldIsSuccess)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeleteGhostCardResponse) SetResponseData(responseData *DeleteGhostCardResponseData) {
+	d.ResponseData = responseData
+	d.require(deleteGhostCardResponseFieldResponseData)
+}
+
+func (d *DeleteGhostCardResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler DeleteGhostCardResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*d = DeleteGhostCardResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *d)
+	if err != nil {
+		return err
+	}
+	d.extraProperties = extraProperties
+	d.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (d *DeleteGhostCardResponse) MarshalJSON() ([]byte, error) {
+	type embed DeleteGhostCardResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*d),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (d *DeleteGhostCardResponse) String() string {
+	if d == nil {
+		return "<nil>"
+	}
+	if len(d.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(d); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", d)
+}
+
+var (
+	deleteGhostCardResponseDataFieldDeleteType = big.NewInt(1 << 0)
+	deleteGhostCardResponseDataFieldCardToken  = big.NewInt(1 << 1)
+)
+
+type DeleteGhostCardResponseData struct {
+	// The type of delete performed. Always `soft`, because Payabli keeps the card record.
+	DeleteType *string `json:"deleteType,omitempty" url:"deleteType,omitempty"`
+	// Token of the canceled ghost card.
+	CardToken *string `json:"cardToken,omitempty" url:"cardToken,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (d *DeleteGhostCardResponseData) GetDeleteType() *string {
+	if d == nil {
+		return nil
+	}
+	return d.DeleteType
+}
+
+func (d *DeleteGhostCardResponseData) GetCardToken() *string {
+	if d == nil {
+		return nil
+	}
+	return d.CardToken
+}
+
+func (d *DeleteGhostCardResponseData) GetExtraProperties() map[string]interface{} {
+	if d == nil {
+		return nil
+	}
+	return d.extraProperties
+}
+
+func (d *DeleteGhostCardResponseData) require(field *big.Int) {
+	if d.explicitFields == nil {
+		d.explicitFields = big.NewInt(0)
+	}
+	d.explicitFields.Or(d.explicitFields, field)
+}
+
+// SetDeleteType sets the DeleteType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeleteGhostCardResponseData) SetDeleteType(deleteType *string) {
+	d.DeleteType = deleteType
+	d.require(deleteGhostCardResponseDataFieldDeleteType)
+}
+
+// SetCardToken sets the CardToken field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (d *DeleteGhostCardResponseData) SetCardToken(cardToken *string) {
+	d.CardToken = cardToken
+	d.require(deleteGhostCardResponseDataFieldCardToken)
+}
+
+func (d *DeleteGhostCardResponseData) UnmarshalJSON(data []byte) error {
+	type unmarshaler DeleteGhostCardResponseData
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*d = DeleteGhostCardResponseData(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *d)
+	if err != nil {
+		return err
+	}
+	d.extraProperties = extraProperties
+	d.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (d *DeleteGhostCardResponseData) MarshalJSON() ([]byte, error) {
+	type embed DeleteGhostCardResponseData
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*d),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, d.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (d *DeleteGhostCardResponseData) String() string {
+	if d == nil {
+		return "<nil>"
+	}
+	if len(d.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(d); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", d)
+}
