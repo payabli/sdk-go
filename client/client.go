@@ -8,9 +8,12 @@ import (
 	os "os"
 
 	payabli "github.com/payabli/sdk-go"
+	applications "github.com/payabli/sdk-go/applications"
 	bill "github.com/payabli/sdk-go/bill"
 	billing "github.com/payabli/sdk-go/billing"
 	boarding "github.com/payabli/sdk-go/boarding"
+	boardingtemplates "github.com/payabli/sdk-go/boardingtemplates"
+	businesses "github.com/payabli/sdk-go/businesses"
 	casemanagement "github.com/payabli/sdk-go/casemanagement"
 	chargebacks "github.com/payabli/sdk-go/chargebacks"
 	checkcapture "github.com/payabli/sdk-go/checkcapture"
@@ -36,8 +39,11 @@ import (
 	organization "github.com/payabli/sdk-go/organization"
 	paymentlink "github.com/payabli/sdk-go/paymentlink"
 	paymentmethoddomain "github.com/payabli/sdk-go/paymentmethoddomain"
+	paymentmethods "github.com/payabli/sdk-go/paymentmethods"
 	payoutsubscription "github.com/payabli/sdk-go/payoutsubscription"
 	paypoint "github.com/payabli/sdk-go/paypoint"
+	paypoints "github.com/payabli/sdk-go/paypoints"
+	people "github.com/payabli/sdk-go/people"
 	query "github.com/payabli/sdk-go/query"
 	statistic "github.com/payabli/sdk-go/statistic"
 	subscription "github.com/payabli/sdk-go/subscription"
@@ -71,6 +77,12 @@ type Client struct {
 	Taptopay            *taptopay.Client
 	Cloud               *cloud.Client
 	LineItem            *lineitem.Client
+	Businesses          *businesses.Client
+	People              *people.Client
+	Paypoints           *paypoints.Client
+	PaymentMethods      *paymentmethods.Client
+	BoardingTemplates   *boardingtemplates.Client
+	Applications        *applications.Client
 	Boarding            *boarding.Client
 	Templates           *templates.Client
 	Export              *export.Client
@@ -151,6 +163,12 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Taptopay:            taptopay.NewClient(options),
 		Cloud:               cloud.NewClient(options),
 		LineItem:            lineitem.NewClient(options),
+		Businesses:          businesses.NewClient(options),
+		People:              people.NewClient(options),
+		Paypoints:           paypoints.NewClient(options),
+		PaymentMethods:      paymentmethods.NewClient(options),
+		BoardingTemplates:   boardingtemplates.NewClient(options),
+		Applications:        applications.NewClient(options),
 		Boarding:            boarding.NewClient(options),
 		Templates:           templates.NewClient(options),
 		Export:              export.NewClient(options),

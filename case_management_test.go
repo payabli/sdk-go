@@ -2343,7 +2343,7 @@ func TestSettersMarkExplicitBankAccountChangeParameters(t *testing.T) {
 func TestSettersBankAccountServices(t *testing.T) {
 	t.Run("SetMoneyIn", func(t *testing.T) {
 		obj := &BankAccountServices{}
-		var fernTestValueMoneyIn []MoneyInService
+		var fernTestValueMoneyIn []CaseManagementMoneyInService
 		obj.SetMoneyIn(fernTestValueMoneyIn)
 		assert.Equal(t, fernTestValueMoneyIn, obj.MoneyIn)
 		assert.NotNil(t, obj.explicitFields)
@@ -2351,7 +2351,7 @@ func TestSettersBankAccountServices(t *testing.T) {
 
 	t.Run("SetMoneyOut", func(t *testing.T) {
 		obj := &BankAccountServices{}
-		var fernTestValueMoneyOut []MoneyOutService
+		var fernTestValueMoneyOut []CaseManagementMoneyOutService
 		obj.SetMoneyOut(fernTestValueMoneyOut)
 		assert.Equal(t, fernTestValueMoneyOut, obj.MoneyOut)
 		assert.NotNil(t, obj.explicitFields)
@@ -2364,7 +2364,7 @@ func TestGettersBankAccountServices(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BankAccountServices{}
-		var expected []MoneyInService
+		var expected []CaseManagementMoneyInService
 		obj.MoneyIn = expected
 
 		// Act & Assert
@@ -2397,7 +2397,7 @@ func TestGettersBankAccountServices(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BankAccountServices{}
-		var expected []MoneyOutService
+		var expected []CaseManagementMoneyOutService
 		obj.MoneyOut = expected
 
 		// Act & Assert
@@ -2433,7 +2433,7 @@ func TestSettersMarkExplicitBankAccountServices(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BankAccountServices{}
-		var fernTestValueMoneyIn []MoneyInService
+		var fernTestValueMoneyIn []CaseManagementMoneyInService
 
 		// Act
 		obj.SetMoneyIn(fernTestValueMoneyIn)
@@ -2464,7 +2464,7 @@ func TestSettersMarkExplicitBankAccountServices(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &BankAccountServices{}
-		var fernTestValueMoneyOut []MoneyOutService
+		var fernTestValueMoneyOut []CaseManagementMoneyOutService
 
 		// Act
 		obj.SetMoneyOut(fernTestValueMoneyOut)
@@ -8264,6 +8264,134 @@ func TestEnumCaseManagementBankAccountFunction(t *testing.T) {
 	})
 }
 
+func TestEnumCaseManagementMoneyInService(t *testing.T) {
+	t.Run("NewFromString_Ach", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewCaseManagementMoneyInServiceFromString("Ach")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, CaseManagementMoneyInService("Ach"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_Card", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewCaseManagementMoneyInServiceFromString("Card")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, CaseManagementMoneyInService("Card"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_Cloud", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewCaseManagementMoneyInServiceFromString("Cloud")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, CaseManagementMoneyInService("Cloud"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_Device", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewCaseManagementMoneyInServiceFromString("Device")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, CaseManagementMoneyInService("Device"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_Wallet", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewCaseManagementMoneyInServiceFromString("Wallet")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, CaseManagementMoneyInService("Wallet"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_Cash", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewCaseManagementMoneyInServiceFromString("Cash")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, CaseManagementMoneyInService("Cash"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_Check", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewCaseManagementMoneyInServiceFromString("Check")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, CaseManagementMoneyInService("Check"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_Invalid", func(t *testing.T) {
+		_, err := NewCaseManagementMoneyInServiceFromString("invalid_value_that_does_not_exist")
+		assert.Error(t, err)
+	})
+
+	t.Run("Ptr", func(t *testing.T) {
+		val, err := NewCaseManagementMoneyInServiceFromString("Ach")
+		assert.NoError(t, err)
+		ptr := val.Ptr()
+		assert.NotNil(t, ptr)
+		assert.Equal(t, val, *ptr)
+	})
+}
+
+func TestEnumCaseManagementMoneyOutService(t *testing.T) {
+	t.Run("NewFromString_Ach", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewCaseManagementMoneyOutServiceFromString("Ach")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, CaseManagementMoneyOutService("Ach"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_VCard", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewCaseManagementMoneyOutServiceFromString("VCard")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, CaseManagementMoneyOutService("VCard"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_Managed", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewCaseManagementMoneyOutServiceFromString("Managed")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, CaseManagementMoneyOutService("Managed"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_Check", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewCaseManagementMoneyOutServiceFromString("Check")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, CaseManagementMoneyOutService("Check"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_Rtp", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewCaseManagementMoneyOutServiceFromString("Rtp")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, CaseManagementMoneyOutService("Rtp"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_Wire", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewCaseManagementMoneyOutServiceFromString("Wire")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, CaseManagementMoneyOutService("Wire"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_Ghost", func(t *testing.T) {
+		t.Parallel()
+		val, err := NewCaseManagementMoneyOutServiceFromString("Ghost")
+		assert.NoError(t, err, "valid enum value should not return error")
+		assert.Equal(t, CaseManagementMoneyOutService("Ghost"), val, "enum value should match expected wire value")
+	})
+
+	t.Run("NewFromString_Invalid", func(t *testing.T) {
+		_, err := NewCaseManagementMoneyOutServiceFromString("invalid_value_that_does_not_exist")
+		assert.Error(t, err)
+	})
+
+	t.Run("Ptr", func(t *testing.T) {
+		val, err := NewCaseManagementMoneyOutServiceFromString("Ach")
+		assert.NoError(t, err)
+		ptr := val.Ptr()
+		assert.NotNil(t, ptr)
+		assert.Equal(t, val, *ptr)
+	})
+}
+
 func TestEnumCaseState(t *testing.T) {
 	t.Run("NewFromString_Submitted", func(t *testing.T) {
 		t.Parallel()
@@ -8477,134 +8605,6 @@ func TestEnumCaseType(t *testing.T) {
 
 	t.Run("Ptr", func(t *testing.T) {
 		val, err := NewCaseTypeFromString("BankAccountChange")
-		assert.NoError(t, err)
-		ptr := val.Ptr()
-		assert.NotNil(t, ptr)
-		assert.Equal(t, val, *ptr)
-	})
-}
-
-func TestEnumMoneyInService(t *testing.T) {
-	t.Run("NewFromString_Ach", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewMoneyInServiceFromString("Ach")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, MoneyInService("Ach"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_Card", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewMoneyInServiceFromString("Card")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, MoneyInService("Card"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_Cloud", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewMoneyInServiceFromString("Cloud")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, MoneyInService("Cloud"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_Device", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewMoneyInServiceFromString("Device")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, MoneyInService("Device"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_Wallet", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewMoneyInServiceFromString("Wallet")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, MoneyInService("Wallet"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_Cash", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewMoneyInServiceFromString("Cash")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, MoneyInService("Cash"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_Check", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewMoneyInServiceFromString("Check")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, MoneyInService("Check"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_Invalid", func(t *testing.T) {
-		_, err := NewMoneyInServiceFromString("invalid_value_that_does_not_exist")
-		assert.Error(t, err)
-	})
-
-	t.Run("Ptr", func(t *testing.T) {
-		val, err := NewMoneyInServiceFromString("Ach")
-		assert.NoError(t, err)
-		ptr := val.Ptr()
-		assert.NotNil(t, ptr)
-		assert.Equal(t, val, *ptr)
-	})
-}
-
-func TestEnumMoneyOutService(t *testing.T) {
-	t.Run("NewFromString_Ach", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewMoneyOutServiceFromString("Ach")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, MoneyOutService("Ach"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_VCard", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewMoneyOutServiceFromString("VCard")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, MoneyOutService("VCard"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_Managed", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewMoneyOutServiceFromString("Managed")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, MoneyOutService("Managed"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_Check", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewMoneyOutServiceFromString("Check")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, MoneyOutService("Check"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_Rtp", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewMoneyOutServiceFromString("Rtp")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, MoneyOutService("Rtp"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_Wire", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewMoneyOutServiceFromString("Wire")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, MoneyOutService("Wire"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_Ghost", func(t *testing.T) {
-		t.Parallel()
-		val, err := NewMoneyOutServiceFromString("Ghost")
-		assert.NoError(t, err, "valid enum value should not return error")
-		assert.Equal(t, MoneyOutService("Ghost"), val, "enum value should match expected wire value")
-	})
-
-	t.Run("NewFromString_Invalid", func(t *testing.T) {
-		_, err := NewMoneyOutServiceFromString("invalid_value_that_does_not_exist")
-		assert.Error(t, err)
-	})
-
-	t.Run("Ptr", func(t *testing.T) {
-		val, err := NewMoneyOutServiceFromString("Ach")
 		assert.NoError(t, err)
 		ptr := val.Ptr()
 		assert.NotNil(t, ptr)

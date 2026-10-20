@@ -31,7 +31,7 @@ func (b *BadRequestError) Unwrap() error {
 	return b.APIError
 }
 
-// Conflict. Another capture for the same payout is already in progress. Returned when capture requests race for the same payout: one request captures it and the others return this error. Capturing a payout that's already captured returns `7002` instead.
+// The request conflicts with the current state of the resource.
 type ConflictError struct {
 	*core.APIError
 	Body any
@@ -225,17 +225,14 @@ func (u *UnauthorizedError) Unwrap() error {
 	return u.APIError
 }
 
-// Blocked by fraud control. Returned when a risk policy blocks the transaction
-// (response code `9005`). This is a terminal outcome — the transaction is
-// rejected and won't proceed, so the body carries `isSuccess: false` and
-// `responseCode: 9005`.
+// The application has no signer (`SIGNER_REQUIRED`), or the person named in `signer.personReference` isn't an owner (`SIGNER_NOT_OWNER`).
 type UnprocessableEntityError struct {
 	*core.APIError
-	Body *PayabliErrorBody
+	Body any
 }
 
 func (u *UnprocessableEntityError) UnmarshalJSON(data []byte) error {
-	var body *PayabliErrorBody
+	var body any
 	if err := json.Unmarshal(data, &body); err != nil {
 		return err
 	}

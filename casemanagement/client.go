@@ -58,11 +58,11 @@ func NewClient(options *core.RequestOptions) *Client {
 //	    BankAccountHolderType: "business",
 //	    BankAccountFunction: payabli.CaseManagementBankAccountFunctionDeposits,
 //	    Services: &payabli.BankAccountServices{
-//	        MoneyIn: []payabli.MoneyInService{
-//	            payabli.MoneyInServiceAch,
+//	        MoneyIn: []payabli.CaseManagementMoneyInService{
+//	            payabli.CaseManagementMoneyInServiceAch,
 //	        },
-//	        MoneyOut: []payabli.MoneyOutService{
-//	            payabli.MoneyOutServiceAch,
+//	        MoneyOut: []payabli.CaseManagementMoneyOutService{
+//	            payabli.CaseManagementMoneyOutServiceAch,
 //	        },
 //	    },
 //	}
@@ -109,11 +109,11 @@ func (c *Client) ValidateBankAccountChange(
 //	    BankAccountHolderType: "business",
 //	    BankAccountFunction: payabli.CaseManagementBankAccountFunctionDeposits,
 //	    Services: &payabli.BankAccountServices{
-//	        MoneyIn: []payabli.MoneyInService{
-//	            payabli.MoneyInServiceAch,
+//	        MoneyIn: []payabli.CaseManagementMoneyInService{
+//	            payabli.CaseManagementMoneyInServiceAch,
 //	        },
-//	        MoneyOut: []payabli.MoneyOutService{
-//	            payabli.MoneyOutServiceAch,
+//	        MoneyOut: []payabli.CaseManagementMoneyOutService{
+//	            payabli.CaseManagementMoneyOutServiceAch,
 //	        },
 //	    },
 //	    Default: true,

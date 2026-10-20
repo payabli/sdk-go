@@ -43,8 +43,8 @@ var ErrorCodes internal.ErrorCodes = internal.ErrorCodes{
 			APIError: apiError,
 		}
 	},
-	429: func(apiError *core.APIError) error {
-		return &TooManyRequestsError{
+	409: func(apiError *core.APIError) error {
+		return &ConflictError{
 			APIError: apiError,
 		}
 	},
@@ -53,8 +53,8 @@ var ErrorCodes internal.ErrorCodes = internal.ErrorCodes{
 			APIError: apiError,
 		}
 	},
-	409: func(apiError *core.APIError) error {
-		return &ConflictError{
+	429: func(apiError *core.APIError) error {
+		return &TooManyRequestsError{
 			APIError: apiError,
 		}
 	},

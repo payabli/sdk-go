@@ -1077,9 +1077,9 @@ var (
 
 type BankAccountServices struct {
 	// Pay In services the account is used for.
-	MoneyIn []MoneyInService `json:"moneyIn,omitempty" url:"moneyIn,omitempty"`
+	MoneyIn []CaseManagementMoneyInService `json:"moneyIn,omitempty" url:"moneyIn,omitempty"`
 	// Pay Out services the account is used for.
-	MoneyOut []MoneyOutService `json:"moneyOut,omitempty" url:"moneyOut,omitempty"`
+	MoneyOut []CaseManagementMoneyOutService `json:"moneyOut,omitempty" url:"moneyOut,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -1088,14 +1088,14 @@ type BankAccountServices struct {
 	rawJSON         json.RawMessage
 }
 
-func (b *BankAccountServices) GetMoneyIn() []MoneyInService {
+func (b *BankAccountServices) GetMoneyIn() []CaseManagementMoneyInService {
 	if b == nil {
 		return nil
 	}
 	return b.MoneyIn
 }
 
-func (b *BankAccountServices) GetMoneyOut() []MoneyOutService {
+func (b *BankAccountServices) GetMoneyOut() []CaseManagementMoneyOutService {
 	if b == nil {
 		return nil
 	}
@@ -1118,14 +1118,14 @@ func (b *BankAccountServices) require(field *big.Int) {
 
 // SetMoneyIn sets the MoneyIn field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BankAccountServices) SetMoneyIn(moneyIn []MoneyInService) {
+func (b *BankAccountServices) SetMoneyIn(moneyIn []CaseManagementMoneyInService) {
 	b.MoneyIn = moneyIn
 	b.require(bankAccountServicesFieldMoneyIn)
 }
 
 // SetMoneyOut sets the MoneyOut field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BankAccountServices) SetMoneyOut(moneyOut []MoneyOutService) {
+func (b *BankAccountServices) SetMoneyOut(moneyOut []CaseManagementMoneyOutService) {
 	b.MoneyOut = moneyOut
 	b.require(bankAccountServicesFieldMoneyOut)
 }
@@ -1628,6 +1628,82 @@ func NewCaseManagementBankAccountFunctionFromString(s string) (CaseManagementBan
 }
 
 func (c CaseManagementBankAccountFunction) Ptr() *CaseManagementBankAccountFunction {
+	return &c
+}
+
+// A Pay In service the bank account is used for.
+type CaseManagementMoneyInService string
+
+const (
+	CaseManagementMoneyInServiceAch    CaseManagementMoneyInService = "Ach"
+	CaseManagementMoneyInServiceCard   CaseManagementMoneyInService = "Card"
+	CaseManagementMoneyInServiceCloud  CaseManagementMoneyInService = "Cloud"
+	CaseManagementMoneyInServiceDevice CaseManagementMoneyInService = "Device"
+	CaseManagementMoneyInServiceWallet CaseManagementMoneyInService = "Wallet"
+	CaseManagementMoneyInServiceCash   CaseManagementMoneyInService = "Cash"
+	CaseManagementMoneyInServiceCheck  CaseManagementMoneyInService = "Check"
+)
+
+func NewCaseManagementMoneyInServiceFromString(s string) (CaseManagementMoneyInService, error) {
+	switch s {
+	case "Ach":
+		return CaseManagementMoneyInServiceAch, nil
+	case "Card":
+		return CaseManagementMoneyInServiceCard, nil
+	case "Cloud":
+		return CaseManagementMoneyInServiceCloud, nil
+	case "Device":
+		return CaseManagementMoneyInServiceDevice, nil
+	case "Wallet":
+		return CaseManagementMoneyInServiceWallet, nil
+	case "Cash":
+		return CaseManagementMoneyInServiceCash, nil
+	case "Check":
+		return CaseManagementMoneyInServiceCheck, nil
+	}
+	var t CaseManagementMoneyInService
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c CaseManagementMoneyInService) Ptr() *CaseManagementMoneyInService {
+	return &c
+}
+
+// A Pay Out service the bank account is used for.
+type CaseManagementMoneyOutService string
+
+const (
+	CaseManagementMoneyOutServiceAch     CaseManagementMoneyOutService = "Ach"
+	CaseManagementMoneyOutServiceVCard   CaseManagementMoneyOutService = "VCard"
+	CaseManagementMoneyOutServiceManaged CaseManagementMoneyOutService = "Managed"
+	CaseManagementMoneyOutServiceCheck   CaseManagementMoneyOutService = "Check"
+	CaseManagementMoneyOutServiceRtp     CaseManagementMoneyOutService = "Rtp"
+	CaseManagementMoneyOutServiceWire    CaseManagementMoneyOutService = "Wire"
+	CaseManagementMoneyOutServiceGhost   CaseManagementMoneyOutService = "Ghost"
+)
+
+func NewCaseManagementMoneyOutServiceFromString(s string) (CaseManagementMoneyOutService, error) {
+	switch s {
+	case "Ach":
+		return CaseManagementMoneyOutServiceAch, nil
+	case "VCard":
+		return CaseManagementMoneyOutServiceVCard, nil
+	case "Managed":
+		return CaseManagementMoneyOutServiceManaged, nil
+	case "Check":
+		return CaseManagementMoneyOutServiceCheck, nil
+	case "Rtp":
+		return CaseManagementMoneyOutServiceRtp, nil
+	case "Wire":
+		return CaseManagementMoneyOutServiceWire, nil
+	case "Ghost":
+		return CaseManagementMoneyOutServiceGhost, nil
+	}
+	var t CaseManagementMoneyOutService
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c CaseManagementMoneyOutService) Ptr() *CaseManagementMoneyOutService {
 	return &c
 }
 
@@ -2402,82 +2478,6 @@ func (m *MessagePage) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", m)
-}
-
-// A Pay In service the bank account is used for.
-type MoneyInService string
-
-const (
-	MoneyInServiceAch    MoneyInService = "Ach"
-	MoneyInServiceCard   MoneyInService = "Card"
-	MoneyInServiceCloud  MoneyInService = "Cloud"
-	MoneyInServiceDevice MoneyInService = "Device"
-	MoneyInServiceWallet MoneyInService = "Wallet"
-	MoneyInServiceCash   MoneyInService = "Cash"
-	MoneyInServiceCheck  MoneyInService = "Check"
-)
-
-func NewMoneyInServiceFromString(s string) (MoneyInService, error) {
-	switch s {
-	case "Ach":
-		return MoneyInServiceAch, nil
-	case "Card":
-		return MoneyInServiceCard, nil
-	case "Cloud":
-		return MoneyInServiceCloud, nil
-	case "Device":
-		return MoneyInServiceDevice, nil
-	case "Wallet":
-		return MoneyInServiceWallet, nil
-	case "Cash":
-		return MoneyInServiceCash, nil
-	case "Check":
-		return MoneyInServiceCheck, nil
-	}
-	var t MoneyInService
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (m MoneyInService) Ptr() *MoneyInService {
-	return &m
-}
-
-// A Pay Out service the bank account is used for.
-type MoneyOutService string
-
-const (
-	MoneyOutServiceAch     MoneyOutService = "Ach"
-	MoneyOutServiceVCard   MoneyOutService = "VCard"
-	MoneyOutServiceManaged MoneyOutService = "Managed"
-	MoneyOutServiceCheck   MoneyOutService = "Check"
-	MoneyOutServiceRtp     MoneyOutService = "Rtp"
-	MoneyOutServiceWire    MoneyOutService = "Wire"
-	MoneyOutServiceGhost   MoneyOutService = "Ghost"
-)
-
-func NewMoneyOutServiceFromString(s string) (MoneyOutService, error) {
-	switch s {
-	case "Ach":
-		return MoneyOutServiceAch, nil
-	case "VCard":
-		return MoneyOutServiceVCard, nil
-	case "Managed":
-		return MoneyOutServiceManaged, nil
-	case "Check":
-		return MoneyOutServiceCheck, nil
-	case "Rtp":
-		return MoneyOutServiceRtp, nil
-	case "Wire":
-		return MoneyOutServiceWire, nil
-	case "Ghost":
-		return MoneyOutServiceGhost, nil
-	}
-	var t MoneyOutService
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (m MoneyOutService) Ptr() *MoneyOutService {
-	return &m
 }
 
 // A reference to the organization that owns the case.

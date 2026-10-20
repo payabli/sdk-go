@@ -314,6 +314,41 @@ type AddressAddtlNullable = string
 // The address.
 type AddressNullable = string
 
+// The role an address plays for a business.
+type AddressType string
+
+const (
+	AddressTypeLegal      AddressType = "legal"
+	AddressTypeBilling    AddressType = "billing"
+	AddressTypeShipping   AddressType = "shipping"
+	AddressTypeRemittance AddressType = "remittance"
+	AddressTypePhysical   AddressType = "physical"
+	AddressTypeMailing    AddressType = "mailing"
+)
+
+func NewAddressTypeFromString(s string) (AddressType, error) {
+	switch s {
+	case "legal":
+		return AddressTypeLegal, nil
+	case "billing":
+		return AddressTypeBilling, nil
+	case "shipping":
+		return AddressTypeShipping, nil
+	case "remittance":
+		return AddressTypeRemittance, nil
+	case "physical":
+		return AddressTypePhysical, nil
+	case "mailing":
+		return AddressTypeMailing, nil
+	}
+	var t AddressType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AddressType) Ptr() *AddressType {
+	return &a
+}
+
 // Whether the configured service fee can be overridden at the transaction
 // level.
 type AllowOverride = bool
@@ -420,6 +455,143 @@ func (a *AmountElement) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AmountElement) String() string {
+	if a == nil {
+		return "<nil>"
+	}
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+// The error body when a document request fails.
+var (
+	applicationDocumentErrorFieldSuccess = big.NewInt(1 << 0)
+	applicationDocumentErrorFieldError   = big.NewInt(1 << 1)
+	applicationDocumentErrorFieldMessage = big.NewInt(1 << 2)
+	applicationDocumentErrorFieldTraceId = big.NewInt(1 << 3)
+)
+
+type ApplicationDocumentError struct {
+	// Whether the request succeeded. Always `false`.
+	Success bool `json:"success" url:"success"`
+	// The error code, such as `VALIDATION_ERROR` or `NOT_FOUND`.
+	Error string `json:"error" url:"error"`
+	// A human-readable description of the error.
+	Message string `json:"message" url:"message"`
+	// The trace identifier for the request, useful for support.
+	TraceId *string `json:"traceId,omitempty" url:"traceId,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *ApplicationDocumentError) GetSuccess() bool {
+	if a == nil {
+		return false
+	}
+	return a.Success
+}
+
+func (a *ApplicationDocumentError) GetError() string {
+	if a == nil {
+		return ""
+	}
+	return a.Error
+}
+
+func (a *ApplicationDocumentError) GetMessage() string {
+	if a == nil {
+		return ""
+	}
+	return a.Message
+}
+
+func (a *ApplicationDocumentError) GetTraceId() *string {
+	if a == nil {
+		return nil
+	}
+	return a.TraceId
+}
+
+func (a *ApplicationDocumentError) GetExtraProperties() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
+	return a.extraProperties
+}
+
+func (a *ApplicationDocumentError) require(field *big.Int) {
+	if a.explicitFields == nil {
+		a.explicitFields = big.NewInt(0)
+	}
+	a.explicitFields.Or(a.explicitFields, field)
+}
+
+// SetSuccess sets the Success field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDocumentError) SetSuccess(success bool) {
+	a.Success = success
+	a.require(applicationDocumentErrorFieldSuccess)
+}
+
+// SetError sets the Error field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDocumentError) SetError(error_ string) {
+	a.Error = error_
+	a.require(applicationDocumentErrorFieldError)
+}
+
+// SetMessage sets the Message field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDocumentError) SetMessage(message string) {
+	a.Message = message
+	a.require(applicationDocumentErrorFieldMessage)
+}
+
+// SetTraceId sets the TraceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (a *ApplicationDocumentError) SetTraceId(traceId *string) {
+	a.TraceId = traceId
+	a.require(applicationDocumentErrorFieldTraceId)
+}
+
+func (a *ApplicationDocumentError) UnmarshalJSON(data []byte) error {
+	type unmarshaler ApplicationDocumentError
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = ApplicationDocumentError(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *ApplicationDocumentError) MarshalJSON() ([]byte, error) {
+	type embed ApplicationDocumentError
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*a),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, a.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (a *ApplicationDocumentError) String() string {
 	if a == nil {
 		return "<nil>"
 	}
@@ -3492,6 +3664,109 @@ type BoardingId = int64
 // ID is `91`.
 type BoardingLinkId = int
 
+// A non-blocking warning returned alongside a successful response.
+var (
+	boardingWarningFieldCode    = big.NewInt(1 << 0)
+	boardingWarningFieldMessage = big.NewInt(1 << 1)
+)
+
+type BoardingWarning struct {
+	// A machine-readable warning code.
+	Code *string `json:"code,omitempty" url:"code,omitempty"`
+	// A human-readable description of the warning.
+	Message *string `json:"message,omitempty" url:"message,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BoardingWarning) GetCode() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Code
+}
+
+func (b *BoardingWarning) GetMessage() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Message
+}
+
+func (b *BoardingWarning) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
+	return b.extraProperties
+}
+
+func (b *BoardingWarning) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetCode sets the Code field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BoardingWarning) SetCode(code *string) {
+	b.Code = code
+	b.require(boardingWarningFieldCode)
+}
+
+// SetMessage sets the Message field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BoardingWarning) SetMessage(message *string) {
+	b.Message = message
+	b.require(boardingWarningFieldMessage)
+}
+
+func (b *BoardingWarning) UnmarshalJSON(data []byte) error {
+	type unmarshaler BoardingWarning
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BoardingWarning(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BoardingWarning) MarshalJSON() ([]byte, error) {
+	type embed BoardingWarning
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (b *BoardingWarning) String() string {
+	if b == nil {
+		return "<nil>"
+	}
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
 // Business phone number.
 type Bphone = string
 
@@ -3500,6 +3775,825 @@ type Bstate = string
 
 // A summary of what the business sells in terms of goods or services.
 type Bsummary = string
+
+// An address associated with a business.
+var (
+	businessAddressFieldType             = big.NewInt(1 << 0)
+	businessAddressFieldLocation         = big.NewInt(1 << 1)
+	businessAddressFieldAddressLine1     = big.NewInt(1 << 2)
+	businessAddressFieldAddressLine2     = big.NewInt(1 << 3)
+	businessAddressFieldCityLocality     = big.NewInt(1 << 4)
+	businessAddressFieldStateProvince    = big.NewInt(1 << 5)
+	businessAddressFieldPostalCode       = big.NewInt(1 << 6)
+	businessAddressFieldCountry          = big.NewInt(1 << 7)
+	businessAddressFieldFloor            = big.NewInt(1 << 8)
+	businessAddressFieldSuiteApartNumber = big.NewInt(1 << 9)
+)
+
+type BusinessAddress struct {
+	// The address role.
+	Type *AddressType `json:"type,omitempty" url:"type,omitempty"`
+	// The physical use of the address. Defaults to `other`.
+	Location *BusinessAddressLocation `json:"location,omitempty" url:"location,omitempty"`
+	// The first line of the street address.
+	AddressLine1 *string `json:"addressLine1,omitempty" url:"addressLine1,omitempty"`
+	// The second line of the street address.
+	AddressLine2 *string `json:"addressLine2,omitempty" url:"addressLine2,omitempty"`
+	// The city or locality.
+	CityLocality *string `json:"cityLocality,omitempty" url:"cityLocality,omitempty"`
+	// The state or province.
+	StateProvince *string `json:"stateProvince,omitempty" url:"stateProvince,omitempty"`
+	// The postal or ZIP code.
+	PostalCode *string `json:"postalCode,omitempty" url:"postalCode,omitempty"`
+	// The two-character ISO country code.
+	Country *string `json:"country,omitempty" url:"country,omitempty"`
+	// The floor, if applicable.
+	Floor *string `json:"floor,omitempty" url:"floor,omitempty"`
+	// The suite or apartment number, if applicable.
+	SuiteApartNumber *string `json:"suiteApartNumber,omitempty" url:"suiteApartNumber,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BusinessAddress) GetType() *AddressType {
+	if b == nil {
+		return nil
+	}
+	return b.Type
+}
+
+func (b *BusinessAddress) GetLocation() *BusinessAddressLocation {
+	if b == nil {
+		return nil
+	}
+	return b.Location
+}
+
+func (b *BusinessAddress) GetAddressLine1() *string {
+	if b == nil {
+		return nil
+	}
+	return b.AddressLine1
+}
+
+func (b *BusinessAddress) GetAddressLine2() *string {
+	if b == nil {
+		return nil
+	}
+	return b.AddressLine2
+}
+
+func (b *BusinessAddress) GetCityLocality() *string {
+	if b == nil {
+		return nil
+	}
+	return b.CityLocality
+}
+
+func (b *BusinessAddress) GetStateProvince() *string {
+	if b == nil {
+		return nil
+	}
+	return b.StateProvince
+}
+
+func (b *BusinessAddress) GetPostalCode() *string {
+	if b == nil {
+		return nil
+	}
+	return b.PostalCode
+}
+
+func (b *BusinessAddress) GetCountry() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Country
+}
+
+func (b *BusinessAddress) GetFloor() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Floor
+}
+
+func (b *BusinessAddress) GetSuiteApartNumber() *string {
+	if b == nil {
+		return nil
+	}
+	return b.SuiteApartNumber
+}
+
+func (b *BusinessAddress) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
+	return b.extraProperties
+}
+
+func (b *BusinessAddress) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddress) SetType(type_ *AddressType) {
+	b.Type = type_
+	b.require(businessAddressFieldType)
+}
+
+// SetLocation sets the Location field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddress) SetLocation(location *BusinessAddressLocation) {
+	b.Location = location
+	b.require(businessAddressFieldLocation)
+}
+
+// SetAddressLine1 sets the AddressLine1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddress) SetAddressLine1(addressLine1 *string) {
+	b.AddressLine1 = addressLine1
+	b.require(businessAddressFieldAddressLine1)
+}
+
+// SetAddressLine2 sets the AddressLine2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddress) SetAddressLine2(addressLine2 *string) {
+	b.AddressLine2 = addressLine2
+	b.require(businessAddressFieldAddressLine2)
+}
+
+// SetCityLocality sets the CityLocality field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddress) SetCityLocality(cityLocality *string) {
+	b.CityLocality = cityLocality
+	b.require(businessAddressFieldCityLocality)
+}
+
+// SetStateProvince sets the StateProvince field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddress) SetStateProvince(stateProvince *string) {
+	b.StateProvince = stateProvince
+	b.require(businessAddressFieldStateProvince)
+}
+
+// SetPostalCode sets the PostalCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddress) SetPostalCode(postalCode *string) {
+	b.PostalCode = postalCode
+	b.require(businessAddressFieldPostalCode)
+}
+
+// SetCountry sets the Country field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddress) SetCountry(country *string) {
+	b.Country = country
+	b.require(businessAddressFieldCountry)
+}
+
+// SetFloor sets the Floor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddress) SetFloor(floor *string) {
+	b.Floor = floor
+	b.require(businessAddressFieldFloor)
+}
+
+// SetSuiteApartNumber sets the SuiteApartNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddress) SetSuiteApartNumber(suiteApartNumber *string) {
+	b.SuiteApartNumber = suiteApartNumber
+	b.require(businessAddressFieldSuiteApartNumber)
+}
+
+func (b *BusinessAddress) UnmarshalJSON(data []byte) error {
+	type unmarshaler BusinessAddress
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BusinessAddress(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BusinessAddress) MarshalJSON() ([]byte, error) {
+	type embed BusinessAddress
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (b *BusinessAddress) String() string {
+	if b == nil {
+		return "<nil>"
+	}
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+// An address sent when creating a business. `country` is required.
+var (
+	businessAddressCreateFieldType             = big.NewInt(1 << 0)
+	businessAddressCreateFieldLocation         = big.NewInt(1 << 1)
+	businessAddressCreateFieldAddressLine1     = big.NewInt(1 << 2)
+	businessAddressCreateFieldAddressLine2     = big.NewInt(1 << 3)
+	businessAddressCreateFieldCityLocality     = big.NewInt(1 << 4)
+	businessAddressCreateFieldStateProvince    = big.NewInt(1 << 5)
+	businessAddressCreateFieldPostalCode       = big.NewInt(1 << 6)
+	businessAddressCreateFieldCountry          = big.NewInt(1 << 7)
+	businessAddressCreateFieldFloor            = big.NewInt(1 << 8)
+	businessAddressCreateFieldSuiteApartNumber = big.NewInt(1 << 9)
+)
+
+type BusinessAddressCreate struct {
+	// The address role.
+	Type *AddressType `json:"type,omitempty" url:"type,omitempty"`
+	// The physical use of the address. Defaults to `other`.
+	Location *BusinessAddressLocation `json:"location,omitempty" url:"location,omitempty"`
+	// The first line of the street address.
+	AddressLine1 *string `json:"addressLine1,omitempty" url:"addressLine1,omitempty"`
+	// The second line of the street address.
+	AddressLine2 *string `json:"addressLine2,omitempty" url:"addressLine2,omitempty"`
+	// The city or locality.
+	CityLocality *string `json:"cityLocality,omitempty" url:"cityLocality,omitempty"`
+	// The state or province.
+	StateProvince *string `json:"stateProvince,omitempty" url:"stateProvince,omitempty"`
+	// The postal or ZIP code.
+	PostalCode *string `json:"postalCode,omitempty" url:"postalCode,omitempty"`
+	// The two-character ISO country code.
+	Country *string `json:"country,omitempty" url:"country,omitempty"`
+	// The floor, if applicable.
+	Floor *string `json:"floor,omitempty" url:"floor,omitempty"`
+	// The suite or apartment number, if applicable.
+	SuiteApartNumber *string `json:"suiteApartNumber,omitempty" url:"suiteApartNumber,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BusinessAddressCreate) GetType() *AddressType {
+	if b == nil {
+		return nil
+	}
+	return b.Type
+}
+
+func (b *BusinessAddressCreate) GetLocation() *BusinessAddressLocation {
+	if b == nil {
+		return nil
+	}
+	return b.Location
+}
+
+func (b *BusinessAddressCreate) GetAddressLine1() *string {
+	if b == nil {
+		return nil
+	}
+	return b.AddressLine1
+}
+
+func (b *BusinessAddressCreate) GetAddressLine2() *string {
+	if b == nil {
+		return nil
+	}
+	return b.AddressLine2
+}
+
+func (b *BusinessAddressCreate) GetCityLocality() *string {
+	if b == nil {
+		return nil
+	}
+	return b.CityLocality
+}
+
+func (b *BusinessAddressCreate) GetStateProvince() *string {
+	if b == nil {
+		return nil
+	}
+	return b.StateProvince
+}
+
+func (b *BusinessAddressCreate) GetPostalCode() *string {
+	if b == nil {
+		return nil
+	}
+	return b.PostalCode
+}
+
+func (b *BusinessAddressCreate) GetCountry() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Country
+}
+
+func (b *BusinessAddressCreate) GetFloor() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Floor
+}
+
+func (b *BusinessAddressCreate) GetSuiteApartNumber() *string {
+	if b == nil {
+		return nil
+	}
+	return b.SuiteApartNumber
+}
+
+func (b *BusinessAddressCreate) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
+	return b.extraProperties
+}
+
+func (b *BusinessAddressCreate) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddressCreate) SetType(type_ *AddressType) {
+	b.Type = type_
+	b.require(businessAddressCreateFieldType)
+}
+
+// SetLocation sets the Location field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddressCreate) SetLocation(location *BusinessAddressLocation) {
+	b.Location = location
+	b.require(businessAddressCreateFieldLocation)
+}
+
+// SetAddressLine1 sets the AddressLine1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddressCreate) SetAddressLine1(addressLine1 *string) {
+	b.AddressLine1 = addressLine1
+	b.require(businessAddressCreateFieldAddressLine1)
+}
+
+// SetAddressLine2 sets the AddressLine2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddressCreate) SetAddressLine2(addressLine2 *string) {
+	b.AddressLine2 = addressLine2
+	b.require(businessAddressCreateFieldAddressLine2)
+}
+
+// SetCityLocality sets the CityLocality field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddressCreate) SetCityLocality(cityLocality *string) {
+	b.CityLocality = cityLocality
+	b.require(businessAddressCreateFieldCityLocality)
+}
+
+// SetStateProvince sets the StateProvince field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddressCreate) SetStateProvince(stateProvince *string) {
+	b.StateProvince = stateProvince
+	b.require(businessAddressCreateFieldStateProvince)
+}
+
+// SetPostalCode sets the PostalCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddressCreate) SetPostalCode(postalCode *string) {
+	b.PostalCode = postalCode
+	b.require(businessAddressCreateFieldPostalCode)
+}
+
+// SetCountry sets the Country field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddressCreate) SetCountry(country *string) {
+	b.Country = country
+	b.require(businessAddressCreateFieldCountry)
+}
+
+// SetFloor sets the Floor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddressCreate) SetFloor(floor *string) {
+	b.Floor = floor
+	b.require(businessAddressCreateFieldFloor)
+}
+
+// SetSuiteApartNumber sets the SuiteApartNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddressCreate) SetSuiteApartNumber(suiteApartNumber *string) {
+	b.SuiteApartNumber = suiteApartNumber
+	b.require(businessAddressCreateFieldSuiteApartNumber)
+}
+
+func (b *BusinessAddressCreate) UnmarshalJSON(data []byte) error {
+	type unmarshaler BusinessAddressCreate
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BusinessAddressCreate(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BusinessAddressCreate) MarshalJSON() ([]byte, error) {
+	type embed BusinessAddressCreate
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (b *BusinessAddressCreate) String() string {
+	if b == nil {
+		return "<nil>"
+	}
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+// The physical use of an address.
+type BusinessAddressLocation string
+
+const (
+	BusinessAddressLocationOffice    BusinessAddressLocation = "office"
+	BusinessAddressLocationWarehouse BusinessAddressLocation = "warehouse"
+	BusinessAddressLocationRetail    BusinessAddressLocation = "retail"
+	BusinessAddressLocationHome      BusinessAddressLocation = "home"
+	BusinessAddressLocationOther     BusinessAddressLocation = "other"
+)
+
+func NewBusinessAddressLocationFromString(s string) (BusinessAddressLocation, error) {
+	switch s {
+	case "office":
+		return BusinessAddressLocationOffice, nil
+	case "warehouse":
+		return BusinessAddressLocationWarehouse, nil
+	case "retail":
+		return BusinessAddressLocationRetail, nil
+	case "home":
+		return BusinessAddressLocationHome, nil
+	case "other":
+		return BusinessAddressLocationOther, nil
+	}
+	var t BusinessAddressLocation
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (b BusinessAddressLocation) Ptr() *BusinessAddressLocation {
+	return &b
+}
+
+// A bank account or card attached to a business.
+var (
+	businessPaymentMethodFieldType                 = big.NewInt(1 << 0)
+	businessPaymentMethodFieldAccountOwner         = big.NewInt(1 << 1)
+	businessPaymentMethodFieldName                 = big.NewInt(1 << 2)
+	businessPaymentMethodFieldFinancialInstitution = big.NewInt(1 << 3)
+	businessPaymentMethodFieldOwnerType            = big.NewInt(1 << 4)
+	businessPaymentMethodFieldAccountType          = big.NewInt(1 << 5)
+	businessPaymentMethodFieldAccountNumber        = big.NewInt(1 << 6)
+	businessPaymentMethodFieldRoutingNumber        = big.NewInt(1 << 7)
+	businessPaymentMethodFieldCardNumber           = big.NewInt(1 << 8)
+	businessPaymentMethodFieldExpirationDate       = big.NewInt(1 << 9)
+	businessPaymentMethodFieldCvv                  = big.NewInt(1 << 10)
+	businessPaymentMethodFieldCardType             = big.NewInt(1 << 11)
+	businessPaymentMethodFieldUsage                = big.NewInt(1 << 12)
+	businessPaymentMethodFieldIsDefault            = big.NewInt(1 << 13)
+)
+
+type BusinessPaymentMethod struct {
+	// The payment method type, for example a bank account or card.
+	Type *string `json:"type,omitempty" url:"type,omitempty"`
+	// The name of the account owner.
+	AccountOwner *string `json:"accountOwner,omitempty" url:"accountOwner,omitempty"`
+	// An optional label for the payment method.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// The bank or financial institution that holds the account.
+	FinancialInstitution *string `json:"financialInstitution,omitempty" url:"financialInstitution,omitempty"`
+	// Whether the owner is a business or an individual.
+	OwnerType *string `json:"ownerType,omitempty" url:"ownerType,omitempty"`
+	// The account type, for example checking or savings.
+	AccountType *string `json:"accountType,omitempty" url:"accountType,omitempty"`
+	// The bank account number.
+	AccountNumber *string `json:"accountNumber,omitempty" url:"accountNumber,omitempty"`
+	// The bank routing number.
+	RoutingNumber *string `json:"routingNumber,omitempty" url:"routingNumber,omitempty"`
+	// The card number, for card payment methods.
+	CardNumber *string `json:"cardNumber,omitempty" url:"cardNumber,omitempty"`
+	// The card expiration date, for card payment methods.
+	ExpirationDate *string `json:"expirationDate,omitempty" url:"expirationDate,omitempty"`
+	// The card verification value, for card payment methods.
+	Cvv *string `json:"cvv,omitempty" url:"cvv,omitempty"`
+	// The card type, for card payment methods.
+	CardType *string `json:"cardType,omitempty" url:"cardType,omitempty"`
+	// What the payment method is used for.
+	Usage []string `json:"usage,omitempty" url:"usage,omitempty"`
+	// Whether this is the owner's default payment method. At most one payment
+	// method per owner can set `isDefault` to `true`; sending two `true` values
+	// in one request fails validation.
+	IsDefault *bool `json:"isDefault,omitempty" url:"isDefault,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BusinessPaymentMethod) GetType() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Type
+}
+
+func (b *BusinessPaymentMethod) GetAccountOwner() *string {
+	if b == nil {
+		return nil
+	}
+	return b.AccountOwner
+}
+
+func (b *BusinessPaymentMethod) GetName() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Name
+}
+
+func (b *BusinessPaymentMethod) GetFinancialInstitution() *string {
+	if b == nil {
+		return nil
+	}
+	return b.FinancialInstitution
+}
+
+func (b *BusinessPaymentMethod) GetOwnerType() *string {
+	if b == nil {
+		return nil
+	}
+	return b.OwnerType
+}
+
+func (b *BusinessPaymentMethod) GetAccountType() *string {
+	if b == nil {
+		return nil
+	}
+	return b.AccountType
+}
+
+func (b *BusinessPaymentMethod) GetAccountNumber() *string {
+	if b == nil {
+		return nil
+	}
+	return b.AccountNumber
+}
+
+func (b *BusinessPaymentMethod) GetRoutingNumber() *string {
+	if b == nil {
+		return nil
+	}
+	return b.RoutingNumber
+}
+
+func (b *BusinessPaymentMethod) GetCardNumber() *string {
+	if b == nil {
+		return nil
+	}
+	return b.CardNumber
+}
+
+func (b *BusinessPaymentMethod) GetExpirationDate() *string {
+	if b == nil {
+		return nil
+	}
+	return b.ExpirationDate
+}
+
+func (b *BusinessPaymentMethod) GetCvv() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Cvv
+}
+
+func (b *BusinessPaymentMethod) GetCardType() *string {
+	if b == nil {
+		return nil
+	}
+	return b.CardType
+}
+
+func (b *BusinessPaymentMethod) GetUsage() []string {
+	if b == nil {
+		return nil
+	}
+	return b.Usage
+}
+
+func (b *BusinessPaymentMethod) GetIsDefault() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.IsDefault
+}
+
+func (b *BusinessPaymentMethod) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
+	return b.extraProperties
+}
+
+func (b *BusinessPaymentMethod) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessPaymentMethod) SetType(type_ *string) {
+	b.Type = type_
+	b.require(businessPaymentMethodFieldType)
+}
+
+// SetAccountOwner sets the AccountOwner field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessPaymentMethod) SetAccountOwner(accountOwner *string) {
+	b.AccountOwner = accountOwner
+	b.require(businessPaymentMethodFieldAccountOwner)
+}
+
+// SetName sets the Name field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessPaymentMethod) SetName(name *string) {
+	b.Name = name
+	b.require(businessPaymentMethodFieldName)
+}
+
+// SetFinancialInstitution sets the FinancialInstitution field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessPaymentMethod) SetFinancialInstitution(financialInstitution *string) {
+	b.FinancialInstitution = financialInstitution
+	b.require(businessPaymentMethodFieldFinancialInstitution)
+}
+
+// SetOwnerType sets the OwnerType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessPaymentMethod) SetOwnerType(ownerType *string) {
+	b.OwnerType = ownerType
+	b.require(businessPaymentMethodFieldOwnerType)
+}
+
+// SetAccountType sets the AccountType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessPaymentMethod) SetAccountType(accountType *string) {
+	b.AccountType = accountType
+	b.require(businessPaymentMethodFieldAccountType)
+}
+
+// SetAccountNumber sets the AccountNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessPaymentMethod) SetAccountNumber(accountNumber *string) {
+	b.AccountNumber = accountNumber
+	b.require(businessPaymentMethodFieldAccountNumber)
+}
+
+// SetRoutingNumber sets the RoutingNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessPaymentMethod) SetRoutingNumber(routingNumber *string) {
+	b.RoutingNumber = routingNumber
+	b.require(businessPaymentMethodFieldRoutingNumber)
+}
+
+// SetCardNumber sets the CardNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessPaymentMethod) SetCardNumber(cardNumber *string) {
+	b.CardNumber = cardNumber
+	b.require(businessPaymentMethodFieldCardNumber)
+}
+
+// SetExpirationDate sets the ExpirationDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessPaymentMethod) SetExpirationDate(expirationDate *string) {
+	b.ExpirationDate = expirationDate
+	b.require(businessPaymentMethodFieldExpirationDate)
+}
+
+// SetCvv sets the Cvv field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessPaymentMethod) SetCvv(cvv *string) {
+	b.Cvv = cvv
+	b.require(businessPaymentMethodFieldCvv)
+}
+
+// SetCardType sets the CardType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessPaymentMethod) SetCardType(cardType *string) {
+	b.CardType = cardType
+	b.require(businessPaymentMethodFieldCardType)
+}
+
+// SetUsage sets the Usage field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessPaymentMethod) SetUsage(usage []string) {
+	b.Usage = usage
+	b.require(businessPaymentMethodFieldUsage)
+}
+
+// SetIsDefault sets the IsDefault field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessPaymentMethod) SetIsDefault(isDefault *bool) {
+	b.IsDefault = isDefault
+	b.require(businessPaymentMethodFieldIsDefault)
+}
+
+func (b *BusinessPaymentMethod) UnmarshalJSON(data []byte) error {
+	type unmarshaler BusinessPaymentMethod
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BusinessPaymentMethod(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BusinessPaymentMethod) MarshalJSON() ([]byte, error) {
+	type embed BusinessPaymentMethod
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (b *BusinessPaymentMethod) String() string {
+	if b == nil {
+		return "<nil>"
+	}
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
 
 // Business start date. Accepted formats:
 //
@@ -4264,6 +5358,631 @@ func (c *ContactsResponse) String() string {
 // The country in ISO-3166-1 alpha 2 format. See
 // [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1) for reference.
 type CountryNullable = string
+
+// Request body to create a business.
+var (
+	createBusinessRequestFieldExternalId              = big.NewInt(1 << 0)
+	createBusinessRequestFieldLegalName               = big.NewInt(1 << 1)
+	createBusinessRequestFieldDescription             = big.NewInt(1 << 2)
+	createBusinessRequestFieldLegalStructure          = big.NewInt(1 << 3)
+	createBusinessRequestFieldStockSymbol             = big.NewInt(1 << 4)
+	createBusinessRequestFieldIncorporationState      = big.NewInt(1 << 5)
+	createBusinessRequestFieldTaxIdCountry            = big.NewInt(1 << 6)
+	createBusinessRequestFieldEstablishedDate         = big.NewInt(1 << 7)
+	createBusinessRequestFieldNumberOfEmployees       = big.NewInt(1 << 8)
+	createBusinessRequestFieldAnnualRevenue           = big.NewInt(1 << 9)
+	createBusinessRequestFieldWebsite                 = big.NewInt(1 << 10)
+	createBusinessRequestFieldMerchantCatCode         = big.NewInt(1 << 11)
+	createBusinessRequestFieldTimezone                = big.NewInt(1 << 12)
+	createBusinessRequestFieldPhone                   = big.NewInt(1 << 13)
+	createBusinessRequestFieldEmails                  = big.NewInt(1 << 14)
+	createBusinessRequestFieldOperatingSeasons        = big.NewInt(1 << 15)
+	createBusinessRequestFieldAddressDetails          = big.NewInt(1 << 16)
+	createBusinessRequestFieldPaymentMethods          = big.NewInt(1 << 17)
+	createBusinessRequestFieldCustomData              = big.NewInt(1 << 18)
+	createBusinessRequestFieldIsForeignOwned          = big.NewInt(1 << 19)
+	createBusinessRequestFieldIsTaxExempt             = big.NewInt(1 << 20)
+	createBusinessRequestFieldTaxExemptClassification = big.NewInt(1 << 21)
+	createBusinessRequestFieldProcessingMetrics       = big.NewInt(1 << 22)
+	createBusinessRequestFieldPayoutMetrics           = big.NewInt(1 << 23)
+	createBusinessRequestFieldLicense                 = big.NewInt(1 << 24)
+	createBusinessRequestFieldLicenseState            = big.NewInt(1 << 25)
+	createBusinessRequestFieldTaxReference            = big.NewInt(1 << 26)
+	createBusinessRequestFieldParentReference         = big.NewInt(1 << 27)
+)
+
+type CreateBusinessRequest struct {
+	// Your own identifier for the business.
+	ExternalId *string `json:"externalId,omitempty" url:"externalId,omitempty"`
+	// The registered legal name of the business.
+	LegalName string `json:"legalName" url:"legalName"`
+	// A free-text description of the business.
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	// The business's legal structure. Case-insensitive, and several inputs normalize to the same canonical value on read (for example, `llc` and `limited-liability-company` both read back as `LimitedLiabilityCompany`).
+	LegalStructure *CreateBusinessRequestLegalStructure `json:"legalStructure,omitempty" url:"legalStructure,omitempty"`
+	// The stock ticker symbol, if the business is publicly traded.
+	StockSymbol *string `json:"stockSymbol,omitempty" url:"stockSymbol,omitempty"`
+	// The state where the business is incorporated.
+	IncorporationState *string `json:"incorporationState,omitempty" url:"incorporationState,omitempty"`
+	// The country that issued the business's tax identifier.
+	TaxIdCountry *string `json:"taxIdCountry,omitempty" url:"taxIdCountry,omitempty"`
+	// The date the business was established.
+	EstablishedDate *time.Time `json:"establishedDate,omitempty" url:"establishedDate,omitempty"`
+	// The number of employees.
+	NumberOfEmployees *int `json:"numberOfEmployees,omitempty" url:"numberOfEmployees,omitempty"`
+	// The business's annual revenue.
+	AnnualRevenue *float64 `json:"annualRevenue,omitempty" url:"annualRevenue,omitempty"`
+	// The business's website URL.
+	Website *string `json:"website,omitempty" url:"website,omitempty"`
+	// The merchant category code (MCC) that classifies the business.
+	MerchantCatCode *string `json:"merchantCatCode,omitempty" url:"merchantCatCode,omitempty"`
+	// The business's time zone.
+	Timezone *string `json:"timezone,omitempty" url:"timezone,omitempty"`
+	// Phone numbers for the business.
+	Phone []string `json:"phone,omitempty" url:"phone,omitempty"`
+	// Email addresses for the business.
+	Emails []string `json:"emails,omitempty" url:"emails,omitempty"`
+	// The seasons the business operates in. Values are case-insensitive on input and returned capitalized.
+	OperatingSeasons []CreateBusinessRequestOperatingSeasonsItem `json:"operatingSeasons,omitempty" url:"operatingSeasons,omitempty"`
+	// The business's addresses.
+	AddressDetails []*BusinessAddressCreate `json:"addressDetails,omitempty" url:"addressDetails,omitempty"`
+	// The bank accounts and cards attached to the business.
+	PaymentMethods []*BusinessPaymentMethod `json:"paymentMethods,omitempty" url:"paymentMethods,omitempty"`
+	// Arbitrary key-value data you attach to the business. Payabli
+	// stores the applicant's answers to a boarding template's custom
+	// questions under the `templateAnswers` key.
+	CustomData map[string]any `json:"customData,omitempty" url:"customData,omitempty"`
+	// Whether the business is foreign-owned.
+	IsForeignOwned *bool `json:"isForeignOwned,omitempty" url:"isForeignOwned,omitempty"`
+	// Whether the business is tax-exempt.
+	IsTaxExempt *bool `json:"isTaxExempt,omitempty" url:"isTaxExempt,omitempty"`
+	// The business's tax-exempt classification, such as `501(c)(3)`.
+	TaxExemptClassification *string            `json:"taxExemptClassification,omitempty" url:"taxExemptClassification,omitempty"`
+	ProcessingMetrics       *ProcessingMetrics `json:"processingMetrics,omitempty" url:"processingMetrics,omitempty"`
+	PayoutMetrics           *PayoutMetrics     `json:"payoutMetrics,omitempty" url:"payoutMetrics,omitempty"`
+	// The business's license number.
+	License *string `json:"license,omitempty" url:"license,omitempty"`
+	// The state that issued the business's license.
+	LicenseState *string `json:"licenseState,omitempty" url:"licenseState,omitempty"`
+	// The business tax identifier, for example an EIN.
+	TaxReference *string `json:"taxReference,omitempty" url:"taxReference,omitempty"`
+	// The organization entrypoint the business belongs to. Omit to use the organization your credential belongs to.
+	ParentReference *string `json:"parentReference,omitempty" url:"parentReference,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CreateBusinessRequest) GetExternalId() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ExternalId
+}
+
+func (c *CreateBusinessRequest) GetLegalName() string {
+	if c == nil {
+		return ""
+	}
+	return c.LegalName
+}
+
+func (c *CreateBusinessRequest) GetDescription() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Description
+}
+
+func (c *CreateBusinessRequest) GetLegalStructure() *CreateBusinessRequestLegalStructure {
+	if c == nil {
+		return nil
+	}
+	return c.LegalStructure
+}
+
+func (c *CreateBusinessRequest) GetStockSymbol() *string {
+	if c == nil {
+		return nil
+	}
+	return c.StockSymbol
+}
+
+func (c *CreateBusinessRequest) GetIncorporationState() *string {
+	if c == nil {
+		return nil
+	}
+	return c.IncorporationState
+}
+
+func (c *CreateBusinessRequest) GetTaxIdCountry() *string {
+	if c == nil {
+		return nil
+	}
+	return c.TaxIdCountry
+}
+
+func (c *CreateBusinessRequest) GetEstablishedDate() *time.Time {
+	if c == nil {
+		return nil
+	}
+	return c.EstablishedDate
+}
+
+func (c *CreateBusinessRequest) GetNumberOfEmployees() *int {
+	if c == nil {
+		return nil
+	}
+	return c.NumberOfEmployees
+}
+
+func (c *CreateBusinessRequest) GetAnnualRevenue() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.AnnualRevenue
+}
+
+func (c *CreateBusinessRequest) GetWebsite() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Website
+}
+
+func (c *CreateBusinessRequest) GetMerchantCatCode() *string {
+	if c == nil {
+		return nil
+	}
+	return c.MerchantCatCode
+}
+
+func (c *CreateBusinessRequest) GetTimezone() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Timezone
+}
+
+func (c *CreateBusinessRequest) GetPhone() []string {
+	if c == nil {
+		return nil
+	}
+	return c.Phone
+}
+
+func (c *CreateBusinessRequest) GetEmails() []string {
+	if c == nil {
+		return nil
+	}
+	return c.Emails
+}
+
+func (c *CreateBusinessRequest) GetOperatingSeasons() []CreateBusinessRequestOperatingSeasonsItem {
+	if c == nil {
+		return nil
+	}
+	return c.OperatingSeasons
+}
+
+func (c *CreateBusinessRequest) GetAddressDetails() []*BusinessAddressCreate {
+	if c == nil {
+		return nil
+	}
+	return c.AddressDetails
+}
+
+func (c *CreateBusinessRequest) GetPaymentMethods() []*BusinessPaymentMethod {
+	if c == nil {
+		return nil
+	}
+	return c.PaymentMethods
+}
+
+func (c *CreateBusinessRequest) GetCustomData() map[string]any {
+	if c == nil {
+		return nil
+	}
+	return c.CustomData
+}
+
+func (c *CreateBusinessRequest) GetIsForeignOwned() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.IsForeignOwned
+}
+
+func (c *CreateBusinessRequest) GetIsTaxExempt() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.IsTaxExempt
+}
+
+func (c *CreateBusinessRequest) GetTaxExemptClassification() *string {
+	if c == nil {
+		return nil
+	}
+	return c.TaxExemptClassification
+}
+
+func (c *CreateBusinessRequest) GetProcessingMetrics() *ProcessingMetrics {
+	if c == nil {
+		return nil
+	}
+	return c.ProcessingMetrics
+}
+
+func (c *CreateBusinessRequest) GetPayoutMetrics() *PayoutMetrics {
+	if c == nil {
+		return nil
+	}
+	return c.PayoutMetrics
+}
+
+func (c *CreateBusinessRequest) GetLicense() *string {
+	if c == nil {
+		return nil
+	}
+	return c.License
+}
+
+func (c *CreateBusinessRequest) GetLicenseState() *string {
+	if c == nil {
+		return nil
+	}
+	return c.LicenseState
+}
+
+func (c *CreateBusinessRequest) GetTaxReference() *string {
+	if c == nil {
+		return nil
+	}
+	return c.TaxReference
+}
+
+func (c *CreateBusinessRequest) GetParentReference() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ParentReference
+}
+
+func (c *CreateBusinessRequest) GetExtraProperties() map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.extraProperties
+}
+
+func (c *CreateBusinessRequest) require(field *big.Int) {
+	if c.explicitFields == nil {
+		c.explicitFields = big.NewInt(0)
+	}
+	c.explicitFields.Or(c.explicitFields, field)
+}
+
+// SetExternalId sets the ExternalId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetExternalId(externalId *string) {
+	c.ExternalId = externalId
+	c.require(createBusinessRequestFieldExternalId)
+}
+
+// SetLegalName sets the LegalName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetLegalName(legalName string) {
+	c.LegalName = legalName
+	c.require(createBusinessRequestFieldLegalName)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetDescription(description *string) {
+	c.Description = description
+	c.require(createBusinessRequestFieldDescription)
+}
+
+// SetLegalStructure sets the LegalStructure field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetLegalStructure(legalStructure *CreateBusinessRequestLegalStructure) {
+	c.LegalStructure = legalStructure
+	c.require(createBusinessRequestFieldLegalStructure)
+}
+
+// SetStockSymbol sets the StockSymbol field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetStockSymbol(stockSymbol *string) {
+	c.StockSymbol = stockSymbol
+	c.require(createBusinessRequestFieldStockSymbol)
+}
+
+// SetIncorporationState sets the IncorporationState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetIncorporationState(incorporationState *string) {
+	c.IncorporationState = incorporationState
+	c.require(createBusinessRequestFieldIncorporationState)
+}
+
+// SetTaxIdCountry sets the TaxIdCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetTaxIdCountry(taxIdCountry *string) {
+	c.TaxIdCountry = taxIdCountry
+	c.require(createBusinessRequestFieldTaxIdCountry)
+}
+
+// SetEstablishedDate sets the EstablishedDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetEstablishedDate(establishedDate *time.Time) {
+	c.EstablishedDate = establishedDate
+	c.require(createBusinessRequestFieldEstablishedDate)
+}
+
+// SetNumberOfEmployees sets the NumberOfEmployees field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetNumberOfEmployees(numberOfEmployees *int) {
+	c.NumberOfEmployees = numberOfEmployees
+	c.require(createBusinessRequestFieldNumberOfEmployees)
+}
+
+// SetAnnualRevenue sets the AnnualRevenue field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetAnnualRevenue(annualRevenue *float64) {
+	c.AnnualRevenue = annualRevenue
+	c.require(createBusinessRequestFieldAnnualRevenue)
+}
+
+// SetWebsite sets the Website field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetWebsite(website *string) {
+	c.Website = website
+	c.require(createBusinessRequestFieldWebsite)
+}
+
+// SetMerchantCatCode sets the MerchantCatCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetMerchantCatCode(merchantCatCode *string) {
+	c.MerchantCatCode = merchantCatCode
+	c.require(createBusinessRequestFieldMerchantCatCode)
+}
+
+// SetTimezone sets the Timezone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetTimezone(timezone *string) {
+	c.Timezone = timezone
+	c.require(createBusinessRequestFieldTimezone)
+}
+
+// SetPhone sets the Phone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetPhone(phone []string) {
+	c.Phone = phone
+	c.require(createBusinessRequestFieldPhone)
+}
+
+// SetEmails sets the Emails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetEmails(emails []string) {
+	c.Emails = emails
+	c.require(createBusinessRequestFieldEmails)
+}
+
+// SetOperatingSeasons sets the OperatingSeasons field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetOperatingSeasons(operatingSeasons []CreateBusinessRequestOperatingSeasonsItem) {
+	c.OperatingSeasons = operatingSeasons
+	c.require(createBusinessRequestFieldOperatingSeasons)
+}
+
+// SetAddressDetails sets the AddressDetails field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetAddressDetails(addressDetails []*BusinessAddressCreate) {
+	c.AddressDetails = addressDetails
+	c.require(createBusinessRequestFieldAddressDetails)
+}
+
+// SetPaymentMethods sets the PaymentMethods field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetPaymentMethods(paymentMethods []*BusinessPaymentMethod) {
+	c.PaymentMethods = paymentMethods
+	c.require(createBusinessRequestFieldPaymentMethods)
+}
+
+// SetCustomData sets the CustomData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetCustomData(customData map[string]any) {
+	c.CustomData = customData
+	c.require(createBusinessRequestFieldCustomData)
+}
+
+// SetIsForeignOwned sets the IsForeignOwned field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetIsForeignOwned(isForeignOwned *bool) {
+	c.IsForeignOwned = isForeignOwned
+	c.require(createBusinessRequestFieldIsForeignOwned)
+}
+
+// SetIsTaxExempt sets the IsTaxExempt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetIsTaxExempt(isTaxExempt *bool) {
+	c.IsTaxExempt = isTaxExempt
+	c.require(createBusinessRequestFieldIsTaxExempt)
+}
+
+// SetTaxExemptClassification sets the TaxExemptClassification field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetTaxExemptClassification(taxExemptClassification *string) {
+	c.TaxExemptClassification = taxExemptClassification
+	c.require(createBusinessRequestFieldTaxExemptClassification)
+}
+
+// SetProcessingMetrics sets the ProcessingMetrics field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetProcessingMetrics(processingMetrics *ProcessingMetrics) {
+	c.ProcessingMetrics = processingMetrics
+	c.require(createBusinessRequestFieldProcessingMetrics)
+}
+
+// SetPayoutMetrics sets the PayoutMetrics field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetPayoutMetrics(payoutMetrics *PayoutMetrics) {
+	c.PayoutMetrics = payoutMetrics
+	c.require(createBusinessRequestFieldPayoutMetrics)
+}
+
+// SetLicense sets the License field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetLicense(license *string) {
+	c.License = license
+	c.require(createBusinessRequestFieldLicense)
+}
+
+// SetLicenseState sets the LicenseState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetLicenseState(licenseState *string) {
+	c.LicenseState = licenseState
+	c.require(createBusinessRequestFieldLicenseState)
+}
+
+// SetTaxReference sets the TaxReference field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetTaxReference(taxReference *string) {
+	c.TaxReference = taxReference
+	c.require(createBusinessRequestFieldTaxReference)
+}
+
+// SetParentReference sets the ParentReference field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (c *CreateBusinessRequest) SetParentReference(parentReference *string) {
+	c.ParentReference = parentReference
+	c.require(createBusinessRequestFieldParentReference)
+}
+
+func (c *CreateBusinessRequest) UnmarshalJSON(data []byte) error {
+	type embed CreateBusinessRequest
+	var unmarshaler = struct {
+		embed
+		EstablishedDate *internal.DateTime `json:"establishedDate,omitempty"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = CreateBusinessRequest(unmarshaler.embed)
+	c.EstablishedDate = unmarshaler.EstablishedDate.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreateBusinessRequest) MarshalJSON() ([]byte, error) {
+	type embed CreateBusinessRequest
+	var marshaler = struct {
+		embed
+		EstablishedDate *internal.DateTime `json:"establishedDate,omitempty"`
+	}{
+		embed:           embed(*c),
+		EstablishedDate: internal.NewOptionalDateTime(c.EstablishedDate),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, c.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (c *CreateBusinessRequest) String() string {
+	if c == nil {
+		return "<nil>"
+	}
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+// The business's legal structure. Case-insensitive, and several inputs normalize to the same canonical value on read (for example, `llc` and `limited-liability-company` both read back as `LimitedLiabilityCompany`).
+type CreateBusinessRequestLegalStructure string
+
+const (
+	CreateBusinessRequestLegalStructureLimitedLiabilityCompany CreateBusinessRequestLegalStructure = "limited-liability-company"
+	CreateBusinessRequestLegalStructureLlc                     CreateBusinessRequestLegalStructure = "llc"
+	CreateBusinessRequestLegalStructureCorporation             CreateBusinessRequestLegalStructure = "corporation"
+	CreateBusinessRequestLegalStructurePartnership             CreateBusinessRequestLegalStructure = "partnership"
+	CreateBusinessRequestLegalStructureSoleProprietorship      CreateBusinessRequestLegalStructure = "sole-proprietorship"
+	CreateBusinessRequestLegalStructureNonProfit               CreateBusinessRequestLegalStructure = "non-profit"
+	CreateBusinessRequestLegalStructureGovernment              CreateBusinessRequestLegalStructure = "government"
+	CreateBusinessRequestLegalStructureSCorp                   CreateBusinessRequestLegalStructure = "s-corp"
+	CreateBusinessRequestLegalStructureSCorporation            CreateBusinessRequestLegalStructure = "s-corporation"
+)
+
+func NewCreateBusinessRequestLegalStructureFromString(s string) (CreateBusinessRequestLegalStructure, error) {
+	switch s {
+	case "limited-liability-company":
+		return CreateBusinessRequestLegalStructureLimitedLiabilityCompany, nil
+	case "llc":
+		return CreateBusinessRequestLegalStructureLlc, nil
+	case "corporation":
+		return CreateBusinessRequestLegalStructureCorporation, nil
+	case "partnership":
+		return CreateBusinessRequestLegalStructurePartnership, nil
+	case "sole-proprietorship":
+		return CreateBusinessRequestLegalStructureSoleProprietorship, nil
+	case "non-profit":
+		return CreateBusinessRequestLegalStructureNonProfit, nil
+	case "government":
+		return CreateBusinessRequestLegalStructureGovernment, nil
+	case "s-corp":
+		return CreateBusinessRequestLegalStructureSCorp, nil
+	case "s-corporation":
+		return CreateBusinessRequestLegalStructureSCorporation, nil
+	}
+	var t CreateBusinessRequestLegalStructure
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c CreateBusinessRequestLegalStructure) Ptr() *CreateBusinessRequestLegalStructure {
+	return &c
+}
+
+type CreateBusinessRequestOperatingSeasonsItem string
+
+const (
+	CreateBusinessRequestOperatingSeasonsItemSpring CreateBusinessRequestOperatingSeasonsItem = "Spring"
+	CreateBusinessRequestOperatingSeasonsItemSummer CreateBusinessRequestOperatingSeasonsItem = "Summer"
+	CreateBusinessRequestOperatingSeasonsItemFall   CreateBusinessRequestOperatingSeasonsItem = "Fall"
+	CreateBusinessRequestOperatingSeasonsItemWinter CreateBusinessRequestOperatingSeasonsItem = "Winter"
+)
+
+func NewCreateBusinessRequestOperatingSeasonsItemFromString(s string) (CreateBusinessRequestOperatingSeasonsItem, error) {
+	switch s {
+	case "Spring":
+		return CreateBusinessRequestOperatingSeasonsItemSpring, nil
+	case "Summer":
+		return CreateBusinessRequestOperatingSeasonsItemSummer, nil
+	case "Fall":
+		return CreateBusinessRequestOperatingSeasonsItemFall, nil
+	case "Winter":
+		return CreateBusinessRequestOperatingSeasonsItemWinter, nil
+	}
+	var t CreateBusinessRequestOperatingSeasonsItem
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c CreateBusinessRequestOperatingSeasonsItem) Ptr() *CreateBusinessRequestOperatingSeasonsItem {
+	return &c
+}
 
 // Timestamp of when record was created, in UTC.
 type CreatedAt = time.Time
@@ -12232,6 +13951,177 @@ func (p *PageSetting) String() string {
 // Number of records on each response page.
 type Pagesize = int
 
+// Pagination metadata for a list response.
+var (
+	paginationFieldPage         = big.NewInt(1 << 0)
+	paginationFieldTotalPages   = big.NewInt(1 << 1)
+	paginationFieldTotalRecords = big.NewInt(1 << 2)
+	paginationFieldPageSize     = big.NewInt(1 << 3)
+	paginationFieldHasNext      = big.NewInt(1 << 4)
+	paginationFieldHasPrevious  = big.NewInt(1 << 5)
+)
+
+type Pagination struct {
+	// The current page number.
+	Page *int `json:"page,omitempty" url:"page,omitempty"`
+	// The total number of pages available.
+	TotalPages *int `json:"totalPages,omitempty" url:"totalPages,omitempty"`
+	// The total number of records across all pages.
+	TotalRecords *int `json:"totalRecords,omitempty" url:"totalRecords,omitempty"`
+	// The number of records per page.
+	PageSize *int `json:"pageSize,omitempty" url:"pageSize,omitempty"`
+	// Whether a next page is available.
+	HasNext *bool `json:"hasNext,omitempty" url:"hasNext,omitempty"`
+	// Whether a previous page is available.
+	HasPrevious *bool `json:"hasPrevious,omitempty" url:"hasPrevious,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *Pagination) GetPage() *int {
+	if p == nil {
+		return nil
+	}
+	return p.Page
+}
+
+func (p *Pagination) GetTotalPages() *int {
+	if p == nil {
+		return nil
+	}
+	return p.TotalPages
+}
+
+func (p *Pagination) GetTotalRecords() *int {
+	if p == nil {
+		return nil
+	}
+	return p.TotalRecords
+}
+
+func (p *Pagination) GetPageSize() *int {
+	if p == nil {
+		return nil
+	}
+	return p.PageSize
+}
+
+func (p *Pagination) GetHasNext() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.HasNext
+}
+
+func (p *Pagination) GetHasPrevious() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.HasPrevious
+}
+
+func (p *Pagination) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *Pagination) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetPage sets the Page field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *Pagination) SetPage(page *int) {
+	p.Page = page
+	p.require(paginationFieldPage)
+}
+
+// SetTotalPages sets the TotalPages field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *Pagination) SetTotalPages(totalPages *int) {
+	p.TotalPages = totalPages
+	p.require(paginationFieldTotalPages)
+}
+
+// SetTotalRecords sets the TotalRecords field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *Pagination) SetTotalRecords(totalRecords *int) {
+	p.TotalRecords = totalRecords
+	p.require(paginationFieldTotalRecords)
+}
+
+// SetPageSize sets the PageSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *Pagination) SetPageSize(pageSize *int) {
+	p.PageSize = pageSize
+	p.require(paginationFieldPageSize)
+}
+
+// SetHasNext sets the HasNext field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *Pagination) SetHasNext(hasNext *bool) {
+	p.HasNext = hasNext
+	p.require(paginationFieldHasNext)
+}
+
+// SetHasPrevious sets the HasPrevious field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *Pagination) SetHasPrevious(hasPrevious *bool) {
+	p.HasPrevious = hasPrevious
+	p.require(paginationFieldHasPrevious)
+}
+
+func (p *Pagination) UnmarshalJSON(data []byte) error {
+	type unmarshaler Pagination
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = Pagination(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *Pagination) MarshalJSON() ([]byte, error) {
+	type embed Pagination
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *Pagination) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
 var (
 	pairFilesFieldOriginalName = big.NewInt(1 << 0)
 	pairFilesFieldZipName      = big.NewInt(1 << 1)
@@ -15629,6 +17519,143 @@ func (p *PayorFields) String() string {
 // value as the `customerId` used when creating or referencing a customer.
 type PayorId = int64
 
+// Expected Pay Out profile for the business.
+var (
+	payoutMetricsFieldMonthlyPayablesVolume = big.NewInt(1 << 0)
+	payoutMetricsFieldAveragePayablesSize   = big.NewInt(1 << 1)
+	payoutMetricsFieldLargestPayablesSize   = big.NewInt(1 << 2)
+	payoutMetricsFieldNumberOfTransactions  = big.NewInt(1 << 3)
+)
+
+type PayoutMetrics struct {
+	// Expected monthly Pay Out volume.
+	MonthlyPayablesVolume *float64 `json:"monthlyPayablesVolume,omitempty" url:"monthlyPayablesVolume,omitempty"`
+	// Expected average payout amount.
+	AveragePayablesSize *float64 `json:"averagePayablesSize,omitempty" url:"averagePayablesSize,omitempty"`
+	// Expected largest payout amount.
+	LargestPayablesSize *float64 `json:"largestPayablesSize,omitempty" url:"largestPayablesSize,omitempty"`
+	// Expected number of payouts per month.
+	NumberOfTransactions *int `json:"numberOfTransactions,omitempty" url:"numberOfTransactions,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PayoutMetrics) GetMonthlyPayablesVolume() *float64 {
+	if p == nil {
+		return nil
+	}
+	return p.MonthlyPayablesVolume
+}
+
+func (p *PayoutMetrics) GetAveragePayablesSize() *float64 {
+	if p == nil {
+		return nil
+	}
+	return p.AveragePayablesSize
+}
+
+func (p *PayoutMetrics) GetLargestPayablesSize() *float64 {
+	if p == nil {
+		return nil
+	}
+	return p.LargestPayablesSize
+}
+
+func (p *PayoutMetrics) GetNumberOfTransactions() *int {
+	if p == nil {
+		return nil
+	}
+	return p.NumberOfTransactions
+}
+
+func (p *PayoutMetrics) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PayoutMetrics) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetMonthlyPayablesVolume sets the MonthlyPayablesVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutMetrics) SetMonthlyPayablesVolume(monthlyPayablesVolume *float64) {
+	p.MonthlyPayablesVolume = monthlyPayablesVolume
+	p.require(payoutMetricsFieldMonthlyPayablesVolume)
+}
+
+// SetAveragePayablesSize sets the AveragePayablesSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutMetrics) SetAveragePayablesSize(averagePayablesSize *float64) {
+	p.AveragePayablesSize = averagePayablesSize
+	p.require(payoutMetricsFieldAveragePayablesSize)
+}
+
+// SetLargestPayablesSize sets the LargestPayablesSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutMetrics) SetLargestPayablesSize(largestPayablesSize *float64) {
+	p.LargestPayablesSize = largestPayablesSize
+	p.require(payoutMetricsFieldLargestPayablesSize)
+}
+
+// SetNumberOfTransactions sets the NumberOfTransactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutMetrics) SetNumberOfTransactions(numberOfTransactions *int) {
+	p.NumberOfTransactions = numberOfTransactions
+	p.require(payoutMetricsFieldNumberOfTransactions)
+}
+
+func (p *PayoutMetrics) UnmarshalJSON(data []byte) error {
+	type unmarshaler PayoutMetrics
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PayoutMetrics(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PayoutMetrics) MarshalJSON() ([]byte, error) {
+	type embed PayoutMetrics
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PayoutMetrics) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
 // The payout program associated with the transaction. Values are `Managed`
 // (managed payables) or `ODP` (on-demand payables).
 type PayoutProgram = string
@@ -16457,8 +18484,527 @@ type Paypointstatus = int
 // to learn more about pass-through fee settings.
 type PendingFeeAmount = float64
 
+// An address included in a person request.
+var (
+	personAddressRequestFieldAddressLine1  = big.NewInt(1 << 0)
+	personAddressRequestFieldAddressLine2  = big.NewInt(1 << 1)
+	personAddressRequestFieldCityLocality  = big.NewInt(1 << 2)
+	personAddressRequestFieldStateProvince = big.NewInt(1 << 3)
+	personAddressRequestFieldPostalCode    = big.NewInt(1 << 4)
+	personAddressRequestFieldCountry       = big.NewInt(1 << 5)
+	personAddressRequestFieldType          = big.NewInt(1 << 6)
+)
+
+type PersonAddressRequest struct {
+	// The first line of the street address.
+	AddressLine1 *string `json:"addressLine1,omitempty" url:"addressLine1,omitempty"`
+	// The second line of the street address (suite, unit, and so on).
+	AddressLine2 *string `json:"addressLine2,omitempty" url:"addressLine2,omitempty"`
+	// The city or locality.
+	CityLocality *string `json:"cityLocality,omitempty" url:"cityLocality,omitempty"`
+	// The two-letter state or province code.
+	StateProvince *string `json:"stateProvince,omitempty" url:"stateProvince,omitempty"`
+	// The postal or ZIP code.
+	PostalCode *string `json:"postalCode,omitempty" url:"postalCode,omitempty"`
+	// The two-letter ISO 3166-1 alpha-2 country code.
+	Country *string `json:"country,omitempty" url:"country,omitempty"`
+	// The role the address plays for the person.
+	Type *PersonAddressType `json:"type,omitempty" url:"type,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PersonAddressRequest) GetAddressLine1() *string {
+	if p == nil {
+		return nil
+	}
+	return p.AddressLine1
+}
+
+func (p *PersonAddressRequest) GetAddressLine2() *string {
+	if p == nil {
+		return nil
+	}
+	return p.AddressLine2
+}
+
+func (p *PersonAddressRequest) GetCityLocality() *string {
+	if p == nil {
+		return nil
+	}
+	return p.CityLocality
+}
+
+func (p *PersonAddressRequest) GetStateProvince() *string {
+	if p == nil {
+		return nil
+	}
+	return p.StateProvince
+}
+
+func (p *PersonAddressRequest) GetPostalCode() *string {
+	if p == nil {
+		return nil
+	}
+	return p.PostalCode
+}
+
+func (p *PersonAddressRequest) GetCountry() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Country
+}
+
+func (p *PersonAddressRequest) GetType() *PersonAddressType {
+	if p == nil {
+		return nil
+	}
+	return p.Type
+}
+
+func (p *PersonAddressRequest) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PersonAddressRequest) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetAddressLine1 sets the AddressLine1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PersonAddressRequest) SetAddressLine1(addressLine1 *string) {
+	p.AddressLine1 = addressLine1
+	p.require(personAddressRequestFieldAddressLine1)
+}
+
+// SetAddressLine2 sets the AddressLine2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PersonAddressRequest) SetAddressLine2(addressLine2 *string) {
+	p.AddressLine2 = addressLine2
+	p.require(personAddressRequestFieldAddressLine2)
+}
+
+// SetCityLocality sets the CityLocality field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PersonAddressRequest) SetCityLocality(cityLocality *string) {
+	p.CityLocality = cityLocality
+	p.require(personAddressRequestFieldCityLocality)
+}
+
+// SetStateProvince sets the StateProvince field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PersonAddressRequest) SetStateProvince(stateProvince *string) {
+	p.StateProvince = stateProvince
+	p.require(personAddressRequestFieldStateProvince)
+}
+
+// SetPostalCode sets the PostalCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PersonAddressRequest) SetPostalCode(postalCode *string) {
+	p.PostalCode = postalCode
+	p.require(personAddressRequestFieldPostalCode)
+}
+
+// SetCountry sets the Country field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PersonAddressRequest) SetCountry(country *string) {
+	p.Country = country
+	p.require(personAddressRequestFieldCountry)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PersonAddressRequest) SetType(type_ *PersonAddressType) {
+	p.Type = type_
+	p.require(personAddressRequestFieldType)
+}
+
+func (p *PersonAddressRequest) UnmarshalJSON(data []byte) error {
+	type unmarshaler PersonAddressRequest
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PersonAddressRequest(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PersonAddressRequest) MarshalJSON() ([]byte, error) {
+	type embed PersonAddressRequest
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PersonAddressRequest) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+// The role an address plays for a person. The API accepts any letter case and stores and returns the value in lowercase.
+type PersonAddressType string
+
+const (
+	PersonAddressTypeLegal       PersonAddressType = "legal"
+	PersonAddressTypeBilling     PersonAddressType = "billing"
+	PersonAddressTypeShipping    PersonAddressType = "shipping"
+	PersonAddressTypeRemittance  PersonAddressType = "remittance"
+	PersonAddressTypeMailing     PersonAddressType = "mailing"
+	PersonAddressTypePhysical    PersonAddressType = "physical"
+	PersonAddressTypeResidential PersonAddressType = "residential"
+)
+
+func NewPersonAddressTypeFromString(s string) (PersonAddressType, error) {
+	switch s {
+	case "legal":
+		return PersonAddressTypeLegal, nil
+	case "billing":
+		return PersonAddressTypeBilling, nil
+	case "shipping":
+		return PersonAddressTypeShipping, nil
+	case "remittance":
+		return PersonAddressTypeRemittance, nil
+	case "mailing":
+		return PersonAddressTypeMailing, nil
+	case "physical":
+		return PersonAddressTypePhysical, nil
+	case "residential":
+		return PersonAddressTypeResidential, nil
+	}
+	var t PersonAddressType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (p PersonAddressType) Ptr() *PersonAddressType {
+	return &p
+}
+
+// The role a person plays on a business. Applies only when the person is linked to a business.
+// Application validation holds every role except `Employee` to the owner requirements.
+// Link anyone who doesn't own part of the business, such as a contact, as an `Employee`.
+type PersonType string
+
+const (
+	PersonTypeOwner          PersonType = "Owner"
+	PersonTypeDirector       PersonType = "Director"
+	PersonTypeContact        PersonType = "Contact"
+	PersonTypeSigner         PersonType = "Signer"
+	PersonTypeAuthorizedUser PersonType = "AuthorizedUser"
+	PersonTypeEmployee       PersonType = "Employee"
+)
+
+func NewPersonTypeFromString(s string) (PersonType, error) {
+	switch s {
+	case "Owner":
+		return PersonTypeOwner, nil
+	case "Director":
+		return PersonTypeDirector, nil
+	case "Contact":
+		return PersonTypeContact, nil
+	case "Signer":
+		return PersonTypeSigner, nil
+	case "AuthorizedUser":
+		return PersonTypeAuthorizedUser, nil
+	case "Employee":
+		return PersonTypeEmployee, nil
+	}
+	var t PersonType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (p PersonType) Ptr() *PersonType {
+	return &p
+}
+
 // Phone number.
 type PhoneNumber = string
+
+// Expected Pay In processing profile for the business.
+var (
+	processingMetricsFieldMonthlyReceivablesVolume = big.NewInt(1 << 0)
+	processingMetricsFieldAverageReceivableSize    = big.NewInt(1 << 1)
+	processingMetricsFieldLargestReceivableSize    = big.NewInt(1 << 2)
+	processingMetricsFieldInboundPresentPercent    = big.NewInt(1 << 3)
+	processingMetricsFieldInboundOnlinePercent     = big.NewInt(1 << 4)
+	processingMetricsFieldInboundMotoPercent       = big.NewInt(1 << 5)
+	processingMetricsFieldRefundPolicy             = big.NewInt(1 << 6)
+	processingMetricsFieldAdvancedDelivery         = big.NewInt(1 << 7)
+	processingMetricsFieldPercentAdvancedDelivery  = big.NewInt(1 << 8)
+	processingMetricsFieldAdvancedDeliveryDays     = big.NewInt(1 << 9)
+	processingMetricsFieldNumberOfTransactions     = big.NewInt(1 << 10)
+)
+
+type ProcessingMetrics struct {
+	// Expected monthly Pay In volume.
+	MonthlyReceivablesVolume *float64 `json:"monthlyReceivablesVolume,omitempty" url:"monthlyReceivablesVolume,omitempty"`
+	// Expected average transaction amount.
+	AverageReceivableSize *float64 `json:"averageReceivableSize,omitempty" url:"averageReceivableSize,omitempty"`
+	// Expected largest transaction amount.
+	LargestReceivableSize *float64 `json:"largestReceivableSize,omitempty" url:"largestReceivableSize,omitempty"`
+	// Percent of volume from card-present transactions.
+	InboundPresentPercent *int `json:"inboundPresentPercent,omitempty" url:"inboundPresentPercent,omitempty"`
+	// Percent of volume from online transactions.
+	InboundOnlinePercent *int `json:"inboundOnlinePercent,omitempty" url:"inboundOnlinePercent,omitempty"`
+	// Percent of volume from mail-order/telephone-order transactions.
+	InboundMotoPercent *int `json:"inboundMotoPercent,omitempty" url:"inboundMotoPercent,omitempty"`
+	// The business's refund policy.
+	RefundPolicy *string `json:"refundPolicy,omitempty" url:"refundPolicy,omitempty"`
+	// Whether the business delivers goods or services before it's paid.
+	AdvancedDelivery *bool `json:"advancedDelivery,omitempty" url:"advancedDelivery,omitempty"`
+	// Percent of sales delivered before payment.
+	PercentAdvancedDelivery *int `json:"percentAdvancedDelivery,omitempty" url:"percentAdvancedDelivery,omitempty"`
+	// Average number of days between payment and delivery.
+	AdvancedDeliveryDays *float64 `json:"advancedDeliveryDays,omitempty" url:"advancedDeliveryDays,omitempty"`
+	// Expected number of transactions per month.
+	NumberOfTransactions *int `json:"numberOfTransactions,omitempty" url:"numberOfTransactions,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *ProcessingMetrics) GetMonthlyReceivablesVolume() *float64 {
+	if p == nil {
+		return nil
+	}
+	return p.MonthlyReceivablesVolume
+}
+
+func (p *ProcessingMetrics) GetAverageReceivableSize() *float64 {
+	if p == nil {
+		return nil
+	}
+	return p.AverageReceivableSize
+}
+
+func (p *ProcessingMetrics) GetLargestReceivableSize() *float64 {
+	if p == nil {
+		return nil
+	}
+	return p.LargestReceivableSize
+}
+
+func (p *ProcessingMetrics) GetInboundPresentPercent() *int {
+	if p == nil {
+		return nil
+	}
+	return p.InboundPresentPercent
+}
+
+func (p *ProcessingMetrics) GetInboundOnlinePercent() *int {
+	if p == nil {
+		return nil
+	}
+	return p.InboundOnlinePercent
+}
+
+func (p *ProcessingMetrics) GetInboundMotoPercent() *int {
+	if p == nil {
+		return nil
+	}
+	return p.InboundMotoPercent
+}
+
+func (p *ProcessingMetrics) GetRefundPolicy() *string {
+	if p == nil {
+		return nil
+	}
+	return p.RefundPolicy
+}
+
+func (p *ProcessingMetrics) GetAdvancedDelivery() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.AdvancedDelivery
+}
+
+func (p *ProcessingMetrics) GetPercentAdvancedDelivery() *int {
+	if p == nil {
+		return nil
+	}
+	return p.PercentAdvancedDelivery
+}
+
+func (p *ProcessingMetrics) GetAdvancedDeliveryDays() *float64 {
+	if p == nil {
+		return nil
+	}
+	return p.AdvancedDeliveryDays
+}
+
+func (p *ProcessingMetrics) GetNumberOfTransactions() *int {
+	if p == nil {
+		return nil
+	}
+	return p.NumberOfTransactions
+}
+
+func (p *ProcessingMetrics) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *ProcessingMetrics) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetMonthlyReceivablesVolume sets the MonthlyReceivablesVolume field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *ProcessingMetrics) SetMonthlyReceivablesVolume(monthlyReceivablesVolume *float64) {
+	p.MonthlyReceivablesVolume = monthlyReceivablesVolume
+	p.require(processingMetricsFieldMonthlyReceivablesVolume)
+}
+
+// SetAverageReceivableSize sets the AverageReceivableSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *ProcessingMetrics) SetAverageReceivableSize(averageReceivableSize *float64) {
+	p.AverageReceivableSize = averageReceivableSize
+	p.require(processingMetricsFieldAverageReceivableSize)
+}
+
+// SetLargestReceivableSize sets the LargestReceivableSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *ProcessingMetrics) SetLargestReceivableSize(largestReceivableSize *float64) {
+	p.LargestReceivableSize = largestReceivableSize
+	p.require(processingMetricsFieldLargestReceivableSize)
+}
+
+// SetInboundPresentPercent sets the InboundPresentPercent field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *ProcessingMetrics) SetInboundPresentPercent(inboundPresentPercent *int) {
+	p.InboundPresentPercent = inboundPresentPercent
+	p.require(processingMetricsFieldInboundPresentPercent)
+}
+
+// SetInboundOnlinePercent sets the InboundOnlinePercent field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *ProcessingMetrics) SetInboundOnlinePercent(inboundOnlinePercent *int) {
+	p.InboundOnlinePercent = inboundOnlinePercent
+	p.require(processingMetricsFieldInboundOnlinePercent)
+}
+
+// SetInboundMotoPercent sets the InboundMotoPercent field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *ProcessingMetrics) SetInboundMotoPercent(inboundMotoPercent *int) {
+	p.InboundMotoPercent = inboundMotoPercent
+	p.require(processingMetricsFieldInboundMotoPercent)
+}
+
+// SetRefundPolicy sets the RefundPolicy field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *ProcessingMetrics) SetRefundPolicy(refundPolicy *string) {
+	p.RefundPolicy = refundPolicy
+	p.require(processingMetricsFieldRefundPolicy)
+}
+
+// SetAdvancedDelivery sets the AdvancedDelivery field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *ProcessingMetrics) SetAdvancedDelivery(advancedDelivery *bool) {
+	p.AdvancedDelivery = advancedDelivery
+	p.require(processingMetricsFieldAdvancedDelivery)
+}
+
+// SetPercentAdvancedDelivery sets the PercentAdvancedDelivery field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *ProcessingMetrics) SetPercentAdvancedDelivery(percentAdvancedDelivery *int) {
+	p.PercentAdvancedDelivery = percentAdvancedDelivery
+	p.require(processingMetricsFieldPercentAdvancedDelivery)
+}
+
+// SetAdvancedDeliveryDays sets the AdvancedDeliveryDays field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *ProcessingMetrics) SetAdvancedDeliveryDays(advancedDeliveryDays *float64) {
+	p.AdvancedDeliveryDays = advancedDeliveryDays
+	p.require(processingMetricsFieldAdvancedDeliveryDays)
+}
+
+// SetNumberOfTransactions sets the NumberOfTransactions field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *ProcessingMetrics) SetNumberOfTransactions(numberOfTransactions *int) {
+	p.NumberOfTransactions = numberOfTransactions
+	p.require(processingMetricsFieldNumberOfTransactions)
+}
+
+func (p *ProcessingMetrics) UnmarshalJSON(data []byte) error {
+	type unmarshaler ProcessingMetrics
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = ProcessingMetrics(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *ProcessingMetrics) MarshalJSON() ([]byte, error) {
+	type embed ProcessingMetrics
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *ProcessingMetrics) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
 
 // Purchase order number.
 type PurchaseOrder = string
@@ -19574,6 +22120,143 @@ type Storedmethodid = string
 // Refers to the payment page identifier. If provided, then the
 // transaction is linked to the payment page.
 type Subdomain = string
+
+// The error body when an application can't be submitted.
+var (
+	submitApplicationErrorFieldSuccess = big.NewInt(1 << 0)
+	submitApplicationErrorFieldError   = big.NewInt(1 << 1)
+	submitApplicationErrorFieldMessage = big.NewInt(1 << 2)
+	submitApplicationErrorFieldTraceId = big.NewInt(1 << 3)
+)
+
+type SubmitApplicationError struct {
+	// Whether the request succeeded. Always `false`.
+	Success bool `json:"success" url:"success"`
+	// The error code, such as `VALIDATION_ERROR`, `SIGNER_REQUIRED`, or `SIGNER_NOT_OWNER`.
+	Error string `json:"error" url:"error"`
+	// A human-readable description of the error.
+	Message string `json:"message" url:"message"`
+	// The trace identifier for the request, useful for support.
+	TraceId *string `json:"traceId,omitempty" url:"traceId,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SubmitApplicationError) GetSuccess() bool {
+	if s == nil {
+		return false
+	}
+	return s.Success
+}
+
+func (s *SubmitApplicationError) GetError() string {
+	if s == nil {
+		return ""
+	}
+	return s.Error
+}
+
+func (s *SubmitApplicationError) GetMessage() string {
+	if s == nil {
+		return ""
+	}
+	return s.Message
+}
+
+func (s *SubmitApplicationError) GetTraceId() *string {
+	if s == nil {
+		return nil
+	}
+	return s.TraceId
+}
+
+func (s *SubmitApplicationError) GetExtraProperties() map[string]interface{} {
+	if s == nil {
+		return nil
+	}
+	return s.extraProperties
+}
+
+func (s *SubmitApplicationError) require(field *big.Int) {
+	if s.explicitFields == nil {
+		s.explicitFields = big.NewInt(0)
+	}
+	s.explicitFields.Or(s.explicitFields, field)
+}
+
+// SetSuccess sets the Success field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SubmitApplicationError) SetSuccess(success bool) {
+	s.Success = success
+	s.require(submitApplicationErrorFieldSuccess)
+}
+
+// SetError sets the Error field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SubmitApplicationError) SetError(error_ string) {
+	s.Error = error_
+	s.require(submitApplicationErrorFieldError)
+}
+
+// SetMessage sets the Message field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SubmitApplicationError) SetMessage(message string) {
+	s.Message = message
+	s.require(submitApplicationErrorFieldMessage)
+}
+
+// SetTraceId sets the TraceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (s *SubmitApplicationError) SetTraceId(traceId *string) {
+	s.TraceId = traceId
+	s.require(submitApplicationErrorFieldTraceId)
+}
+
+func (s *SubmitApplicationError) UnmarshalJSON(data []byte) error {
+	type unmarshaler SubmitApplicationError
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SubmitApplicationError(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SubmitApplicationError) MarshalJSON() ([]byte, error) {
+	type embed SubmitApplicationError
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*s),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, s.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (s *SubmitApplicationError) String() string {
+	if s == nil {
+		return "<nil>"
+	}
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
 
 var (
 	subscriptionQueryRecordsFieldCreatedAt          = big.NewInt(1 << 0)
