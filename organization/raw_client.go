@@ -197,10 +197,10 @@ func (r *RawClient) DeleteOrganization(
 
 func (r *RawClient) GetBasicOrganization(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+	// The organization's entry name (`OrgEntryName`).
 	entry string,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.OrganizationQueryRecord], error) {
+) (*core.Response[*payabli.GetBasicOrganizationResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -222,7 +222,7 @@ func (r *RawClient) GetBasicOrganization(
 		),
 		authHeaders,
 	)
-	var response *payabli.OrganizationQueryRecord
+	var response *payabli.GetBasicOrganizationResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -241,7 +241,7 @@ func (r *RawClient) GetBasicOrganization(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.OrganizationQueryRecord]{
+	return &core.Response[*payabli.GetBasicOrganizationResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,
@@ -253,7 +253,7 @@ func (r *RawClient) GetBasicOrganizationById(
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
 	opts ...option.RequestOption,
-) (*core.Response[*payabli.OrganizationQueryRecord], error) {
+) (*core.Response[*payabli.GetBasicOrganizationResponse], error) {
 	options := core.NewRequestOptions(opts...)
 	baseURL := internal.ResolveBaseURL(
 		options.BaseURL,
@@ -275,7 +275,7 @@ func (r *RawClient) GetBasicOrganizationById(
 		),
 		authHeaders,
 	)
-	var response *payabli.OrganizationQueryRecord
+	var response *payabli.GetBasicOrganizationResponse
 	raw, err := r.caller.Call(
 		ctx,
 		&internal.CallParams{
@@ -294,7 +294,7 @@ func (r *RawClient) GetBasicOrganizationById(
 	if err != nil {
 		return nil, err
 	}
-	return &core.Response[*payabli.OrganizationQueryRecord]{
+	return &core.Response[*payabli.GetBasicOrganizationResponse]{
 		StatusCode: raw.StatusCode,
 		Header:     raw.Header,
 		Body:       response,

@@ -9194,24 +9194,32 @@ type Idpaypoint = int64
 // The transaction's initiator. Indicates who initiated the transaction.
 type Initiator = string
 
+// The organization's billing information. Fields that aren't set return `null`.
 var (
-	instrumentFieldAchAccount     = big.NewInt(1 << 0)
-	instrumentFieldAchRouting     = big.NewInt(1 << 1)
-	instrumentFieldBillingAddress = big.NewInt(1 << 2)
-	instrumentFieldBillingCity    = big.NewInt(1 << 3)
-	instrumentFieldBillingCountry = big.NewInt(1 << 4)
-	instrumentFieldBillingState   = big.NewInt(1 << 5)
-	instrumentFieldBillingZip     = big.NewInt(1 << 6)
+	instrumentResponseFieldAchAccount     = big.NewInt(1 << 0)
+	instrumentResponseFieldAchRouting     = big.NewInt(1 << 1)
+	instrumentResponseFieldBillingAddress = big.NewInt(1 << 2)
+	instrumentResponseFieldBillingCity    = big.NewInt(1 << 3)
+	instrumentResponseFieldBillingCountry = big.NewInt(1 << 4)
+	instrumentResponseFieldBillingState   = big.NewInt(1 << 5)
+	instrumentResponseFieldBillingZip     = big.NewInt(1 << 6)
 )
 
-type Instrument struct {
-	AchAccount     Achaccount              `json:"achAccount" url:"achAccount"`
-	AchRouting     Achrouting              `json:"achRouting" url:"achRouting"`
-	BillingAddress *BillingAddressNullable `json:"billingAddress,omitempty" url:"billingAddress,omitempty"`
-	BillingCity    *BillingCityNullable    `json:"billingCity,omitempty" url:"billingCity,omitempty"`
-	BillingCountry *BillingCountryNullable `json:"billingCountry,omitempty" url:"billingCountry,omitempty"`
-	BillingState   *BillingStateNullable   `json:"billingState,omitempty" url:"billingState,omitempty"`
-	BillingZip     *BillingZip             `json:"billingZip,omitempty" url:"billingZip,omitempty"`
+type InstrumentResponse struct {
+	// Bank account number, masked.
+	AchAccount *string `json:"achAccount,omitempty" url:"achAccount,omitempty"`
+	// ABA/routing number of bank account.
+	AchRouting *string `json:"achRouting,omitempty" url:"achRouting,omitempty"`
+	// Billing address.
+	BillingAddress *string `json:"billingAddress,omitempty" url:"billingAddress,omitempty"`
+	// Billing city.
+	BillingCity *string `json:"billingCity,omitempty" url:"billingCity,omitempty"`
+	// Billing address country.
+	BillingCountry *string `json:"billingCountry,omitempty" url:"billingCountry,omitempty"`
+	// Billing state.
+	BillingState *string `json:"billingState,omitempty" url:"billingState,omitempty"`
+	// Billing address ZIP code.
+	BillingZip *string `json:"billingZip,omitempty" url:"billingZip,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -9220,63 +9228,63 @@ type Instrument struct {
 	rawJSON         json.RawMessage
 }
 
-func (i *Instrument) GetAchAccount() Achaccount {
+func (i *InstrumentResponse) GetAchAccount() *string {
 	if i == nil {
-		return ""
+		return nil
 	}
 	return i.AchAccount
 }
 
-func (i *Instrument) GetAchRouting() Achrouting {
+func (i *InstrumentResponse) GetAchRouting() *string {
 	if i == nil {
-		return ""
+		return nil
 	}
 	return i.AchRouting
 }
 
-func (i *Instrument) GetBillingAddress() *BillingAddressNullable {
+func (i *InstrumentResponse) GetBillingAddress() *string {
 	if i == nil {
 		return nil
 	}
 	return i.BillingAddress
 }
 
-func (i *Instrument) GetBillingCity() *BillingCityNullable {
+func (i *InstrumentResponse) GetBillingCity() *string {
 	if i == nil {
 		return nil
 	}
 	return i.BillingCity
 }
 
-func (i *Instrument) GetBillingCountry() *BillingCountryNullable {
+func (i *InstrumentResponse) GetBillingCountry() *string {
 	if i == nil {
 		return nil
 	}
 	return i.BillingCountry
 }
 
-func (i *Instrument) GetBillingState() *BillingStateNullable {
+func (i *InstrumentResponse) GetBillingState() *string {
 	if i == nil {
 		return nil
 	}
 	return i.BillingState
 }
 
-func (i *Instrument) GetBillingZip() *BillingZip {
+func (i *InstrumentResponse) GetBillingZip() *string {
 	if i == nil {
 		return nil
 	}
 	return i.BillingZip
 }
 
-func (i *Instrument) GetExtraProperties() map[string]interface{} {
+func (i *InstrumentResponse) GetExtraProperties() map[string]interface{} {
 	if i == nil {
 		return nil
 	}
 	return i.extraProperties
 }
 
-func (i *Instrument) require(field *big.Int) {
+func (i *InstrumentResponse) require(field *big.Int) {
 	if i.explicitFields == nil {
 		i.explicitFields = big.NewInt(0)
 	}
@@ -9285,60 +9293,60 @@ func (i *Instrument) require(field *big.Int) {
 
 // SetAchAccount sets the AchAccount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *Instrument) SetAchAccount(achAccount Achaccount) {
+func (i *InstrumentResponse) SetAchAccount(achAccount *string) {
 	i.AchAccount = achAccount
-	i.require(instrumentFieldAchAccount)
+	i.require(instrumentResponseFieldAchAccount)
 }
 
 // SetAchRouting sets the AchRouting field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *Instrument) SetAchRouting(achRouting Achrouting) {
+func (i *InstrumentResponse) SetAchRouting(achRouting *string) {
 	i.AchRouting = achRouting
-	i.require(instrumentFieldAchRouting)
+	i.require(instrumentResponseFieldAchRouting)
 }
 
 // SetBillingAddress sets the BillingAddress field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *Instrument) SetBillingAddress(billingAddress *BillingAddressNullable) {
+func (i *InstrumentResponse) SetBillingAddress(billingAddress *string) {
 	i.BillingAddress = billingAddress
-	i.require(instrumentFieldBillingAddress)
+	i.require(instrumentResponseFieldBillingAddress)
 }
 
 // SetBillingCity sets the BillingCity field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *Instrument) SetBillingCity(billingCity *BillingCityNullable) {
+func (i *InstrumentResponse) SetBillingCity(billingCity *string) {
 	i.BillingCity = billingCity
-	i.require(instrumentFieldBillingCity)
+	i.require(instrumentResponseFieldBillingCity)
 }
 
 // SetBillingCountry sets the BillingCountry field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *Instrument) SetBillingCountry(billingCountry *BillingCountryNullable) {
+func (i *InstrumentResponse) SetBillingCountry(billingCountry *string) {
 	i.BillingCountry = billingCountry
-	i.require(instrumentFieldBillingCountry)
+	i.require(instrumentResponseFieldBillingCountry)
 }
 
 // SetBillingState sets the BillingState field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *Instrument) SetBillingState(billingState *BillingStateNullable) {
+func (i *InstrumentResponse) SetBillingState(billingState *string) {
 	i.BillingState = billingState
-	i.require(instrumentFieldBillingState)
+	i.require(instrumentResponseFieldBillingState)
 }
 
 // SetBillingZip sets the BillingZip field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (i *Instrument) SetBillingZip(billingZip *BillingZip) {
+func (i *InstrumentResponse) SetBillingZip(billingZip *string) {
 	i.BillingZip = billingZip
-	i.require(instrumentFieldBillingZip)
+	i.require(instrumentResponseFieldBillingZip)
 }
 
-func (i *Instrument) UnmarshalJSON(data []byte) error {
-	type unmarshaler Instrument
+func (i *InstrumentResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler InstrumentResponse
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*i = Instrument(value)
+	*i = InstrumentResponse(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *i)
 	if err != nil {
 		return err
@@ -9348,8 +9356,8 @@ func (i *Instrument) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (i *Instrument) MarshalJSON() ([]byte, error) {
-	type embed Instrument
+func (i *InstrumentResponse) MarshalJSON() ([]byte, error) {
+	type embed InstrumentResponse
 	var marshaler = struct {
 		embed
 	}{
@@ -9359,7 +9367,7 @@ func (i *Instrument) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
-func (i *Instrument) String() string {
+func (i *InstrumentResponse) String() string {
 	if i == nil {
 		return "<nil>"
 	}
@@ -9938,6 +9946,280 @@ type License = string
 
 // Business license issuing state or province.
 type Licensestate = string
+
+// Standard boarding response envelope wrapping a page of paypoints.
+var (
+	listPaypointsEnvelopeFieldSuccess = big.NewInt(1 << 0)
+	listPaypointsEnvelopeFieldMessage = big.NewInt(1 << 1)
+	listPaypointsEnvelopeFieldTraceId = big.NewInt(1 << 2)
+	listPaypointsEnvelopeFieldData    = big.NewInt(1 << 3)
+)
+
+type ListPaypointsEnvelope struct {
+	// Whether the request succeeded.
+	Success bool `json:"success" url:"success"`
+	// A human-readable result message.
+	Message *string `json:"message,omitempty" url:"message,omitempty"`
+	// The trace identifier for the request, useful for support.
+	TraceId *string `json:"traceId,omitempty" url:"traceId,omitempty"`
+	// The page of paypoints.
+	Data *ListPaypointsResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListPaypointsEnvelope) GetSuccess() bool {
+	if l == nil {
+		return false
+	}
+	return l.Success
+}
+
+func (l *ListPaypointsEnvelope) GetMessage() *string {
+	if l == nil {
+		return nil
+	}
+	return l.Message
+}
+
+func (l *ListPaypointsEnvelope) GetTraceId() *string {
+	if l == nil {
+		return nil
+	}
+	return l.TraceId
+}
+
+func (l *ListPaypointsEnvelope) GetData() *ListPaypointsResponse {
+	if l == nil {
+		return nil
+	}
+	return l.Data
+}
+
+func (l *ListPaypointsEnvelope) GetExtraProperties() map[string]interface{} {
+	if l == nil {
+		return nil
+	}
+	return l.extraProperties
+}
+
+func (l *ListPaypointsEnvelope) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetSuccess sets the Success field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPaypointsEnvelope) SetSuccess(success bool) {
+	l.Success = success
+	l.require(listPaypointsEnvelopeFieldSuccess)
+}
+
+// SetMessage sets the Message field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPaypointsEnvelope) SetMessage(message *string) {
+	l.Message = message
+	l.require(listPaypointsEnvelopeFieldMessage)
+}
+
+// SetTraceId sets the TraceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPaypointsEnvelope) SetTraceId(traceId *string) {
+	l.TraceId = traceId
+	l.require(listPaypointsEnvelopeFieldTraceId)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPaypointsEnvelope) SetData(data *ListPaypointsResponse) {
+	l.Data = data
+	l.require(listPaypointsEnvelopeFieldData)
+}
+
+func (l *ListPaypointsEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListPaypointsEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListPaypointsEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListPaypointsEnvelope) MarshalJSON() ([]byte, error) {
+	type embed ListPaypointsEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListPaypointsEnvelope) String() string {
+	if l == nil {
+		return "<nil>"
+	}
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
+
+// A page of paypoints.
+var (
+	listPaypointsResponseFieldItems    = big.NewInt(1 << 0)
+	listPaypointsResponseFieldTotal    = big.NewInt(1 << 1)
+	listPaypointsResponseFieldPage     = big.NewInt(1 << 2)
+	listPaypointsResponseFieldPageSize = big.NewInt(1 << 3)
+)
+
+type ListPaypointsResponse struct {
+	// The paypoints on this page.
+	Items []*PaypointSummaryResponse `json:"items,omitempty" url:"items,omitempty"`
+	// The total number of paypoints across all pages.
+	Total int `json:"total" url:"total"`
+	// The current page number.
+	Page int `json:"page" url:"page"`
+	// The number of paypoints per page.
+	PageSize int `json:"pageSize" url:"pageSize"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (l *ListPaypointsResponse) GetItems() []*PaypointSummaryResponse {
+	if l == nil {
+		return nil
+	}
+	return l.Items
+}
+
+func (l *ListPaypointsResponse) GetTotal() int {
+	if l == nil {
+		return 0
+	}
+	return l.Total
+}
+
+func (l *ListPaypointsResponse) GetPage() int {
+	if l == nil {
+		return 0
+	}
+	return l.Page
+}
+
+func (l *ListPaypointsResponse) GetPageSize() int {
+	if l == nil {
+		return 0
+	}
+	return l.PageSize
+}
+
+func (l *ListPaypointsResponse) GetExtraProperties() map[string]interface{} {
+	if l == nil {
+		return nil
+	}
+	return l.extraProperties
+}
+
+func (l *ListPaypointsResponse) require(field *big.Int) {
+	if l.explicitFields == nil {
+		l.explicitFields = big.NewInt(0)
+	}
+	l.explicitFields.Or(l.explicitFields, field)
+}
+
+// SetItems sets the Items field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPaypointsResponse) SetItems(items []*PaypointSummaryResponse) {
+	l.Items = items
+	l.require(listPaypointsResponseFieldItems)
+}
+
+// SetTotal sets the Total field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPaypointsResponse) SetTotal(total int) {
+	l.Total = total
+	l.require(listPaypointsResponseFieldTotal)
+}
+
+// SetPage sets the Page field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPaypointsResponse) SetPage(page int) {
+	l.Page = page
+	l.require(listPaypointsResponseFieldPage)
+}
+
+// SetPageSize sets the PageSize field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (l *ListPaypointsResponse) SetPageSize(pageSize int) {
+	l.PageSize = pageSize
+	l.require(listPaypointsResponseFieldPageSize)
+}
+
+func (l *ListPaypointsResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ListPaypointsResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*l = ListPaypointsResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *l)
+	if err != nil {
+		return err
+	}
+	l.extraProperties = extraProperties
+	l.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (l *ListPaypointsResponse) MarshalJSON() ([]byte, error) {
+	type embed ListPaypointsResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*l),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, l.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (l *ListPaypointsResponse) String() string {
+	if l == nil {
+		return "<nil>"
+	}
+	if len(l.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(l.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(l); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", l)
+}
 
 // A location code used to identify the vendor's location. Vendors in the same paypoint can't share a `vendorNumber`, even if their location codes are different.
 type LocationCode = string
@@ -12165,18 +12447,18 @@ func (o *OrgXScope) String() string {
 type Orgaddress = string
 
 var (
-	organizationQueryRecordFieldServices                   = big.NewInt(1 << 0)
-	organizationQueryRecordFieldBillingInfo                = big.NewInt(1 << 1)
-	organizationQueryRecordFieldContacts                   = big.NewInt(1 << 2)
-	organizationQueryRecordFieldCreatedAt                  = big.NewInt(1 << 3)
-	organizationQueryRecordFieldHasBilling                 = big.NewInt(1 << 4)
-	organizationQueryRecordFieldHasResidual                = big.NewInt(1 << 5)
-	organizationQueryRecordFieldIdOrg                      = big.NewInt(1 << 6)
-	organizationQueryRecordFieldIsRoot                     = big.NewInt(1 << 7)
-	organizationQueryRecordFieldOrgAddress                 = big.NewInt(1 << 8)
-	organizationQueryRecordFieldOrgCity                    = big.NewInt(1 << 9)
-	organizationQueryRecordFieldOrgCountry                 = big.NewInt(1 << 10)
-	organizationQueryRecordFieldOrgEntryName               = big.NewInt(1 << 11)
+	organizationQueryRecordFieldBillingInfo                = big.NewInt(1 << 0)
+	organizationQueryRecordFieldContacts                   = big.NewInt(1 << 1)
+	organizationQueryRecordFieldCreatedAt                  = big.NewInt(1 << 2)
+	organizationQueryRecordFieldHasBilling                 = big.NewInt(1 << 3)
+	organizationQueryRecordFieldHasResidual                = big.NewInt(1 << 4)
+	organizationQueryRecordFieldIdOrg                      = big.NewInt(1 << 5)
+	organizationQueryRecordFieldIsRoot                     = big.NewInt(1 << 6)
+	organizationQueryRecordFieldOrgAddress                 = big.NewInt(1 << 7)
+	organizationQueryRecordFieldOrgCity                    = big.NewInt(1 << 8)
+	organizationQueryRecordFieldOrgCountry                 = big.NewInt(1 << 9)
+	organizationQueryRecordFieldOrgEntryName               = big.NewInt(1 << 10)
+	organizationQueryRecordFieldOrgFavicon                 = big.NewInt(1 << 11)
 	organizationQueryRecordFieldOrgId                      = big.NewInt(1 << 12)
 	organizationQueryRecordFieldOrgLogo                    = big.NewInt(1 << 13)
 	organizationQueryRecordFieldOrgName                    = big.NewInt(1 << 14)
@@ -12190,36 +12472,41 @@ var (
 	organizationQueryRecordFieldRecipientEmailNotification = big.NewInt(1 << 22)
 	organizationQueryRecordFieldReplyToEmail               = big.NewInt(1 << 23)
 	organizationQueryRecordFieldResumable                  = big.NewInt(1 << 24)
-	organizationQueryRecordFieldSummary                    = big.NewInt(1 << 25)
-	organizationQueryRecordFieldUsers                      = big.NewInt(1 << 26)
+	organizationQueryRecordFieldServices                   = big.NewInt(1 << 25)
+	organizationQueryRecordFieldSummary                    = big.NewInt(1 << 26)
+	organizationQueryRecordFieldUsers                      = big.NewInt(1 << 27)
 )
 
 type OrganizationQueryRecord struct {
-	Services                   []*OrganizationQueryRecordServicesItem `json:"services,omitempty" url:"services,omitempty"`
-	BillingInfo                *Instrument                            `json:"billingInfo,omitempty" url:"billingInfo,omitempty"`
-	Contacts                   *ContactsField                         `json:"contacts,omitempty" url:"contacts,omitempty"`
-	CreatedAt                  *CreatedAt                             `json:"createdAt,omitempty" url:"createdAt,omitempty"`
-	HasBilling                 *bool                                  `json:"hasBilling,omitempty" url:"hasBilling,omitempty"`
-	HasResidual                *bool                                  `json:"hasResidual,omitempty" url:"hasResidual,omitempty"`
-	IdOrg                      *Orgid                                 `json:"idOrg,omitempty" url:"idOrg,omitempty"`
-	IsRoot                     *IsRoot                                `json:"isRoot,omitempty" url:"isRoot,omitempty"`
-	OrgAddress                 *Orgaddress                            `json:"orgAddress,omitempty" url:"orgAddress,omitempty"`
-	OrgCity                    *Orgcity                               `json:"orgCity,omitempty" url:"orgCity,omitempty"`
-	OrgCountry                 *Orgcountry                            `json:"orgCountry,omitempty" url:"orgCountry,omitempty"`
-	OrgEntryName               *Orgentryname                          `json:"orgEntryName,omitempty" url:"orgEntryName,omitempty"`
-	OrgId                      *Orgidstring                           `json:"orgId,omitempty" url:"orgId,omitempty"`
-	OrgLogo                    *FileContent                           `json:"orgLogo,omitempty" url:"orgLogo,omitempty"`
-	OrgName                    *Orgname                               `json:"orgName,omitempty" url:"orgName,omitempty"`
-	OrgParentId                *OrgParentId                           `json:"orgParentId,omitempty" url:"orgParentId,omitempty"`
-	OrgParentName              *OrgParentName                         `json:"orgParentName,omitempty" url:"orgParentName,omitempty"`
-	OrgState                   *Orgstate                              `json:"orgState,omitempty" url:"orgState,omitempty"`
-	OrgTimezone                *Orgtimezone                           `json:"orgTimezone,omitempty" url:"orgTimezone,omitempty"`
-	OrgType                    *Orgtype                               `json:"orgType,omitempty" url:"orgType,omitempty"`
-	OrgWebsite                 *Orgwebsite                            `json:"orgWebsite,omitempty" url:"orgWebsite,omitempty"`
-	OrgZip                     *Orgzip                                `json:"orgZip,omitempty" url:"orgZip,omitempty"`
+	BillingInfo *InstrumentResponse `json:"BillingInfo,omitempty" url:"BillingInfo,omitempty"`
+	// List of contacts.
+	Contacts     []*ContactsResponse `json:"Contacts,omitempty" url:"Contacts,omitempty"`
+	CreatedAt    *CreatedAt          `json:"createdAt,omitempty" url:"createdAt,omitempty"`
+	HasBilling   *bool               `json:"HasBilling,omitempty" url:"HasBilling,omitempty"`
+	HasResidual  *bool               `json:"HasResidual,omitempty" url:"HasResidual,omitempty"`
+	IdOrg        *Orgid              `json:"idOrg,omitempty" url:"idOrg,omitempty"`
+	IsRoot       *IsRoot             `json:"isRoot,omitempty" url:"isRoot,omitempty"`
+	OrgAddress   *Orgaddress         `json:"OrgAddress,omitempty" url:"OrgAddress,omitempty"`
+	OrgCity      *Orgcity            `json:"OrgCity,omitempty" url:"OrgCity,omitempty"`
+	OrgCountry   *Orgcountry         `json:"OrgCountry,omitempty" url:"OrgCountry,omitempty"`
+	OrgEntryName *Orgentryname       `json:"OrgEntryName,omitempty" url:"OrgEntryName,omitempty"`
+	// URL of the organization's favicon.
+	OrgFavicon *string      `json:"OrgFavicon,omitempty" url:"OrgFavicon,omitempty"`
+	OrgId      *Orgidstring `json:"OrgId,omitempty" url:"OrgId,omitempty"`
+	// URL of the organization's logo.
+	OrgLogo                    *string                                `json:"OrgLogo,omitempty" url:"OrgLogo,omitempty"`
+	OrgName                    *Orgname                               `json:"OrgName,omitempty" url:"OrgName,omitempty"`
+	OrgParentId                *OrgParentId                           `json:"OrgParentId,omitempty" url:"OrgParentId,omitempty"`
+	OrgParentName              *OrgParentName                         `json:"OrgParentName,omitempty" url:"OrgParentName,omitempty"`
+	OrgState                   *Orgstate                              `json:"OrgState,omitempty" url:"OrgState,omitempty"`
+	OrgTimezone                *Orgtimezone                           `json:"OrgTimezone,omitempty" url:"OrgTimezone,omitempty"`
+	OrgType                    *Orgtype                               `json:"OrgType,omitempty" url:"OrgType,omitempty"`
+	OrgWebsite                 *Orgwebsite                            `json:"OrgWebsite,omitempty" url:"OrgWebsite,omitempty"`
+	OrgZip                     *Orgzip                                `json:"OrgZip,omitempty" url:"OrgZip,omitempty"`
 	RecipientEmailNotification *RecipientEmailNotification            `json:"recipientEmailNotification,omitempty" url:"recipientEmailNotification,omitempty"`
-	ReplyToEmail               *ReplyToEmail                          `json:"replyToEmail,omitempty" url:"replyToEmail,omitempty"`
+	ReplyToEmail               *ReplyToEmail                          `json:"ReplyToEmail,omitempty" url:"ReplyToEmail,omitempty"`
 	Resumable                  *Resumable                             `json:"resumable,omitempty" url:"resumable,omitempty"`
+	Services                   []*OrganizationQueryRecordServicesItem `json:"Services,omitempty" url:"Services,omitempty"`
 	Summary                    *SummaryOrg                            `json:"summary,omitempty" url:"summary,omitempty"`
 	Users                      []*UserQueryRecord                     `json:"users,omitempty" url:"users,omitempty"`
 
@@ -12230,21 +12517,14 @@ type OrganizationQueryRecord struct {
 	rawJSON         json.RawMessage
 }
 
-func (o *OrganizationQueryRecord) GetServices() []*OrganizationQueryRecordServicesItem {
-	if o == nil {
-		return nil
-	}
-	return o.Services
-}
-
-func (o *OrganizationQueryRecord) GetBillingInfo() *Instrument {
+func (o *OrganizationQueryRecord) GetBillingInfo() *InstrumentResponse {
 	if o == nil {
 		return nil
 	}
 	return o.BillingInfo
 }
 
-func (o *OrganizationQueryRecord) GetContacts() *ContactsField {
+func (o *OrganizationQueryRecord) GetContacts() []*ContactsResponse {
 	if o == nil {
 		return nil
 	}
@@ -12314,6 +12594,13 @@ func (o *OrganizationQueryRecord) GetOrgEntryName() *Orgentryname {
 	return o.OrgEntryName
 }
 
+func (o *OrganizationQueryRecord) GetOrgFavicon() *string {
+	if o == nil {
+		return nil
+	}
+	return o.OrgFavicon
+}
+
 func (o *OrganizationQueryRecord) GetOrgId() *Orgidstring {
 	if o == nil {
 		return nil
@@ -12321,7 +12608,7 @@ func (o *OrganizationQueryRecord) GetOrgId() *Orgidstring {
 	return o.OrgId
 }
 
-func (o *OrganizationQueryRecord) GetOrgLogo() *FileContent {
+func (o *OrganizationQueryRecord) GetOrgLogo() *string {
 	if o == nil {
 		return nil
 	}
@@ -12405,6 +12692,13 @@ func (o *OrganizationQueryRecord) GetResumable() *Resumable {
 	return o.Resumable
 }
 
+func (o *OrganizationQueryRecord) GetServices() []*OrganizationQueryRecordServicesItem {
+	if o == nil {
+		return nil
+	}
+	return o.Services
+}
+
 func (o *OrganizationQueryRecord) GetSummary() *SummaryOrg {
 	if o == nil {
 		return nil
@@ -12433,23 +12727,16 @@ func (o *OrganizationQueryRecord) require(field *big.Int) {
 	o.explicitFields.Or(o.explicitFields, field)
 }
 
-// SetServices sets the Services field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (o *OrganizationQueryRecord) SetServices(services []*OrganizationQueryRecordServicesItem) {
-	o.Services = services
-	o.require(organizationQueryRecordFieldServices)
-}
-
 // SetBillingInfo sets the BillingInfo field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (o *OrganizationQueryRecord) SetBillingInfo(billingInfo *Instrument) {
+func (o *OrganizationQueryRecord) SetBillingInfo(billingInfo *InstrumentResponse) {
 	o.BillingInfo = billingInfo
 	o.require(organizationQueryRecordFieldBillingInfo)
 }
 
 // SetContacts sets the Contacts field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (o *OrganizationQueryRecord) SetContacts(contacts *ContactsField) {
+func (o *OrganizationQueryRecord) SetContacts(contacts []*ContactsResponse) {
 	o.Contacts = contacts
 	o.require(organizationQueryRecordFieldContacts)
 }
@@ -12517,6 +12804,13 @@ func (o *OrganizationQueryRecord) SetOrgEntryName(orgEntryName *Orgentryname) {
 	o.require(organizationQueryRecordFieldOrgEntryName)
 }
 
+// SetOrgFavicon sets the OrgFavicon field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OrganizationQueryRecord) SetOrgFavicon(orgFavicon *string) {
+	o.OrgFavicon = orgFavicon
+	o.require(organizationQueryRecordFieldOrgFavicon)
+}
+
 // SetOrgId sets the OrgId field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (o *OrganizationQueryRecord) SetOrgId(orgId *Orgidstring) {
@@ -12526,7 +12820,7 @@ func (o *OrganizationQueryRecord) SetOrgId(orgId *Orgidstring) {
 
 // SetOrgLogo sets the OrgLogo field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (o *OrganizationQueryRecord) SetOrgLogo(orgLogo *FileContent) {
+func (o *OrganizationQueryRecord) SetOrgLogo(orgLogo *string) {
 	o.OrgLogo = orgLogo
 	o.require(organizationQueryRecordFieldOrgLogo)
 }
@@ -12606,6 +12900,13 @@ func (o *OrganizationQueryRecord) SetReplyToEmail(replyToEmail *ReplyToEmail) {
 func (o *OrganizationQueryRecord) SetResumable(resumable *Resumable) {
 	o.Resumable = resumable
 	o.require(organizationQueryRecordFieldResumable)
+}
+
+// SetServices sets the Services field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *OrganizationQueryRecord) SetServices(services []*OrganizationQueryRecordServicesItem) {
+	o.Services = services
+	o.require(organizationQueryRecordFieldServices)
 }
 
 // SetSummary sets the Summary field and marks it as non-optional;
@@ -15553,8 +15854,8 @@ func (p *PayabliCredentials) String() string {
 var (
 	payabliCredentialsPascalFieldService             = big.NewInt(1 << 0)
 	payabliCredentialsPascalFieldMode                = big.NewInt(1 << 1)
-	payabliCredentialsPascalFieldMinTicket           = big.NewInt(1 << 2)
-	payabliCredentialsPascalFieldMaxTicket           = big.NewInt(1 << 3)
+	payabliCredentialsPascalFieldMinticket           = big.NewInt(1 << 2)
+	payabliCredentialsPascalFieldMaxticket           = big.NewInt(1 << 3)
 	payabliCredentialsPascalFieldCfeeFix             = big.NewInt(1 << 4)
 	payabliCredentialsPascalFieldCfeeFloat           = big.NewInt(1 << 5)
 	payabliCredentialsPascalFieldCfeeMin             = big.NewInt(1 << 6)
@@ -15573,8 +15874,8 @@ type PayabliCredentialsPascal struct {
 	Service *string `json:"Service,omitempty" url:"Service,omitempty"`
 	// The payment mode supported by this service. `0` for one-time payments, `1` for recurring payments, `2` for both.
 	Mode      *int       `json:"Mode,omitempty" url:"Mode,omitempty"`
-	MinTicket *MinTicket `json:"MinTicket,omitempty" url:"MinTicket,omitempty"`
-	MaxTicket *MaxTicket `json:"MaxTicket,omitempty" url:"MaxTicket,omitempty"`
+	Minticket *MinTicket `json:"Minticket,omitempty" url:"Minticket,omitempty"`
+	Maxticket *MaxTicket `json:"Maxticket,omitempty" url:"Maxticket,omitempty"`
 	CfeeFix   *float64   `json:"CfeeFix,omitempty" url:"CfeeFix,omitempty"`
 	CfeeFloat *float64   `json:"CfeeFloat,omitempty" url:"CfeeFloat,omitempty"`
 	CfeeMin   *float64   `json:"CfeeMin,omitempty" url:"CfeeMin,omitempty"`
@@ -15610,18 +15911,18 @@ func (p *PayabliCredentialsPascal) GetMode() *int {
 	return p.Mode
 }
 
-func (p *PayabliCredentialsPascal) GetMinTicket() *MinTicket {
+func (p *PayabliCredentialsPascal) GetMinticket() *MinTicket {
 	if p == nil {
 		return nil
 	}
-	return p.MinTicket
+	return p.Minticket
 }
 
-func (p *PayabliCredentialsPascal) GetMaxTicket() *MaxTicket {
+func (p *PayabliCredentialsPascal) GetMaxticket() *MaxTicket {
 	if p == nil {
 		return nil
 	}
-	return p.MaxTicket
+	return p.Maxticket
 }
 
 func (p *PayabliCredentialsPascal) GetCfeeFix() *float64 {
@@ -15729,18 +16030,18 @@ func (p *PayabliCredentialsPascal) SetMode(mode *int) {
 	p.require(payabliCredentialsPascalFieldMode)
 }
 
-// SetMinTicket sets the MinTicket field and marks it as non-optional;
+// SetMinticket sets the Minticket field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliCredentialsPascal) SetMinTicket(minTicket *MinTicket) {
-	p.MinTicket = minTicket
-	p.require(payabliCredentialsPascalFieldMinTicket)
+func (p *PayabliCredentialsPascal) SetMinticket(minticket *MinTicket) {
+	p.Minticket = minticket
+	p.require(payabliCredentialsPascalFieldMinticket)
 }
 
-// SetMaxTicket sets the MaxTicket field and marks it as non-optional;
+// SetMaxticket sets the Maxticket field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (p *PayabliCredentialsPascal) SetMaxTicket(maxTicket *MaxTicket) {
-	p.MaxTicket = maxTicket
-	p.require(payabliCredentialsPascalFieldMaxTicket)
+func (p *PayabliCredentialsPascal) SetMaxticket(maxticket *MaxTicket) {
+	p.Maxticket = maxticket
+	p.require(payabliCredentialsPascalFieldMaxticket)
 }
 
 // SetCfeeFix sets the CfeeFix field and marks it as non-optional;
@@ -17660,6 +17961,339 @@ func (p *PayoutMetrics) String() string {
 // (managed payables) or `ODP` (on-demand payables).
 type PayoutProgram = string
 
+// Standard boarding response envelope wrapping a created paypoint.
+var (
+	paypointCreatedEnvelopeFieldSuccess = big.NewInt(1 << 0)
+	paypointCreatedEnvelopeFieldMessage = big.NewInt(1 << 1)
+	paypointCreatedEnvelopeFieldTraceId = big.NewInt(1 << 2)
+	paypointCreatedEnvelopeFieldData    = big.NewInt(1 << 3)
+)
+
+type PaypointCreatedEnvelope struct {
+	// Whether the request succeeded.
+	Success bool `json:"success" url:"success"`
+	// A human-readable result message.
+	Message *string `json:"message,omitempty" url:"message,omitempty"`
+	// The trace identifier for the request, useful for support.
+	TraceId *string `json:"traceId,omitempty" url:"traceId,omitempty"`
+	// The created paypoint.
+	Data *PaypointCreatedResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PaypointCreatedEnvelope) GetSuccess() bool {
+	if p == nil {
+		return false
+	}
+	return p.Success
+}
+
+func (p *PaypointCreatedEnvelope) GetMessage() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Message
+}
+
+func (p *PaypointCreatedEnvelope) GetTraceId() *string {
+	if p == nil {
+		return nil
+	}
+	return p.TraceId
+}
+
+func (p *PaypointCreatedEnvelope) GetData() *PaypointCreatedResponse {
+	if p == nil {
+		return nil
+	}
+	return p.Data
+}
+
+func (p *PaypointCreatedEnvelope) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PaypointCreatedEnvelope) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetSuccess sets the Success field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointCreatedEnvelope) SetSuccess(success bool) {
+	p.Success = success
+	p.require(paypointCreatedEnvelopeFieldSuccess)
+}
+
+// SetMessage sets the Message field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointCreatedEnvelope) SetMessage(message *string) {
+	p.Message = message
+	p.require(paypointCreatedEnvelopeFieldMessage)
+}
+
+// SetTraceId sets the TraceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointCreatedEnvelope) SetTraceId(traceId *string) {
+	p.TraceId = traceId
+	p.require(paypointCreatedEnvelopeFieldTraceId)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointCreatedEnvelope) SetData(data *PaypointCreatedResponse) {
+	p.Data = data
+	p.require(paypointCreatedEnvelopeFieldData)
+}
+
+func (p *PaypointCreatedEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler PaypointCreatedEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PaypointCreatedEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PaypointCreatedEnvelope) MarshalJSON() ([]byte, error) {
+	type embed PaypointCreatedEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PaypointCreatedEnvelope) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+// The reference and initial status of a newly created paypoint.
+var (
+	paypointCreatedResponseFieldPaypointReference = big.NewInt(1 << 0)
+	paypointCreatedResponseFieldBusinessReference = big.NewInt(1 << 1)
+	paypointCreatedResponseFieldDoingBusinessAs   = big.NewInt(1 << 2)
+	paypointCreatedResponseFieldPaypointStatus    = big.NewInt(1 << 3)
+	paypointCreatedResponseFieldTimezone          = big.NewInt(1 << 4)
+	paypointCreatedResponseFieldCreatedAt         = big.NewInt(1 << 5)
+	paypointCreatedResponseFieldLinks             = big.NewInt(1 << 6)
+)
+
+type PaypointCreatedResponse struct {
+	// The paypoint reference, used to read and manage the paypoint.
+	PaypointReference string `json:"paypointReference" url:"paypointReference"`
+	// The reference of the business the paypoint belongs to.
+	BusinessReference *string `json:"businessReference,omitempty" url:"businessReference,omitempty"`
+	// The name the paypoint does business as (DBA).
+	DoingBusinessAs *string `json:"doingBusinessAs,omitempty" url:"doingBusinessAs,omitempty"`
+	// The paypoint status. New paypoints start in `pending`.
+	PaypointStatus string `json:"paypointStatus" url:"paypointStatus"`
+	// The paypoint's time zone.
+	Timezone *string `json:"timezone,omitempty" url:"timezone,omitempty"`
+	// When the paypoint was created.
+	CreatedAt time.Time `json:"createdAt" url:"createdAt"`
+	// Hypermedia links for the paypoint resource.
+	Links *PaypointLinks `json:"_links" url:"_links"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PaypointCreatedResponse) GetPaypointReference() string {
+	if p == nil {
+		return ""
+	}
+	return p.PaypointReference
+}
+
+func (p *PaypointCreatedResponse) GetBusinessReference() *string {
+	if p == nil {
+		return nil
+	}
+	return p.BusinessReference
+}
+
+func (p *PaypointCreatedResponse) GetDoingBusinessAs() *string {
+	if p == nil {
+		return nil
+	}
+	return p.DoingBusinessAs
+}
+
+func (p *PaypointCreatedResponse) GetPaypointStatus() string {
+	if p == nil {
+		return ""
+	}
+	return p.PaypointStatus
+}
+
+func (p *PaypointCreatedResponse) GetTimezone() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Timezone
+}
+
+func (p *PaypointCreatedResponse) GetCreatedAt() time.Time {
+	if p == nil {
+		return time.Time{}
+	}
+	return p.CreatedAt
+}
+
+func (p *PaypointCreatedResponse) GetLinks() *PaypointLinks {
+	if p == nil {
+		return nil
+	}
+	return p.Links
+}
+
+func (p *PaypointCreatedResponse) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PaypointCreatedResponse) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetPaypointReference sets the PaypointReference field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointCreatedResponse) SetPaypointReference(paypointReference string) {
+	p.PaypointReference = paypointReference
+	p.require(paypointCreatedResponseFieldPaypointReference)
+}
+
+// SetBusinessReference sets the BusinessReference field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointCreatedResponse) SetBusinessReference(businessReference *string) {
+	p.BusinessReference = businessReference
+	p.require(paypointCreatedResponseFieldBusinessReference)
+}
+
+// SetDoingBusinessAs sets the DoingBusinessAs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointCreatedResponse) SetDoingBusinessAs(doingBusinessAs *string) {
+	p.DoingBusinessAs = doingBusinessAs
+	p.require(paypointCreatedResponseFieldDoingBusinessAs)
+}
+
+// SetPaypointStatus sets the PaypointStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointCreatedResponse) SetPaypointStatus(paypointStatus string) {
+	p.PaypointStatus = paypointStatus
+	p.require(paypointCreatedResponseFieldPaypointStatus)
+}
+
+// SetTimezone sets the Timezone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointCreatedResponse) SetTimezone(timezone *string) {
+	p.Timezone = timezone
+	p.require(paypointCreatedResponseFieldTimezone)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointCreatedResponse) SetCreatedAt(createdAt time.Time) {
+	p.CreatedAt = createdAt
+	p.require(paypointCreatedResponseFieldCreatedAt)
+}
+
+// SetLinks sets the Links field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointCreatedResponse) SetLinks(links *PaypointLinks) {
+	p.Links = links
+	p.require(paypointCreatedResponseFieldLinks)
+}
+
+func (p *PaypointCreatedResponse) UnmarshalJSON(data []byte) error {
+	type embed PaypointCreatedResponse
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+	}{
+		embed: embed(*p),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*p = PaypointCreatedResponse(unmarshaler.embed)
+	p.CreatedAt = unmarshaler.CreatedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PaypointCreatedResponse) MarshalJSON() ([]byte, error) {
+	type embed PaypointCreatedResponse
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+	}{
+		embed:     embed(*p),
+		CreatedAt: internal.NewDateTime(p.CreatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PaypointCreatedResponse) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
 var (
 	paypointDataFieldAddress1           = big.NewInt(1 << 0)
 	paypointDataFieldAddress2           = big.NewInt(1 << 1)
@@ -18116,6 +18750,484 @@ func (p *PaypointData) String() string {
 	return fmt.Sprintf("%#v", p)
 }
 
+// Standard boarding response envelope wrapping a paypoint detail.
+var (
+	paypointDetailEnvelopeFieldSuccess = big.NewInt(1 << 0)
+	paypointDetailEnvelopeFieldMessage = big.NewInt(1 << 1)
+	paypointDetailEnvelopeFieldTraceId = big.NewInt(1 << 2)
+	paypointDetailEnvelopeFieldData    = big.NewInt(1 << 3)
+)
+
+type PaypointDetailEnvelope struct {
+	// Whether the request succeeded.
+	Success bool `json:"success" url:"success"`
+	// A human-readable result message.
+	Message *string `json:"message,omitempty" url:"message,omitempty"`
+	// The trace identifier for the request, useful for support.
+	TraceId *string `json:"traceId,omitempty" url:"traceId,omitempty"`
+	// The paypoint detail.
+	Data *PaypointDetailResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PaypointDetailEnvelope) GetSuccess() bool {
+	if p == nil {
+		return false
+	}
+	return p.Success
+}
+
+func (p *PaypointDetailEnvelope) GetMessage() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Message
+}
+
+func (p *PaypointDetailEnvelope) GetTraceId() *string {
+	if p == nil {
+		return nil
+	}
+	return p.TraceId
+}
+
+func (p *PaypointDetailEnvelope) GetData() *PaypointDetailResponse {
+	if p == nil {
+		return nil
+	}
+	return p.Data
+}
+
+func (p *PaypointDetailEnvelope) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PaypointDetailEnvelope) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetSuccess sets the Success field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointDetailEnvelope) SetSuccess(success bool) {
+	p.Success = success
+	p.require(paypointDetailEnvelopeFieldSuccess)
+}
+
+// SetMessage sets the Message field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointDetailEnvelope) SetMessage(message *string) {
+	p.Message = message
+	p.require(paypointDetailEnvelopeFieldMessage)
+}
+
+// SetTraceId sets the TraceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointDetailEnvelope) SetTraceId(traceId *string) {
+	p.TraceId = traceId
+	p.require(paypointDetailEnvelopeFieldTraceId)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointDetailEnvelope) SetData(data *PaypointDetailResponse) {
+	p.Data = data
+	p.require(paypointDetailEnvelopeFieldData)
+}
+
+func (p *PaypointDetailEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler PaypointDetailEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PaypointDetailEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PaypointDetailEnvelope) MarshalJSON() ([]byte, error) {
+	type embed PaypointDetailEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PaypointDetailEnvelope) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+// The full detail of a paypoint.
+var (
+	paypointDetailResponseFieldPaypointReference       = big.NewInt(1 << 0)
+	paypointDetailResponseFieldBusinessReference       = big.NewInt(1 << 1)
+	paypointDetailResponseFieldParentPaypointReference = big.NewInt(1 << 2)
+	paypointDetailResponseFieldPaypointType            = big.NewInt(1 << 3)
+	paypointDetailResponseFieldPaypointStatus          = big.NewInt(1 << 4)
+	paypointDetailResponseFieldDoingBusinessAs         = big.NewInt(1 << 5)
+	paypointDetailResponseFieldDescription             = big.NewInt(1 << 6)
+	paypointDetailResponseFieldWebsite                 = big.NewInt(1 << 7)
+	paypointDetailResponseFieldTimezone                = big.NewInt(1 << 8)
+	paypointDetailResponseFieldCustomerServicePhone    = big.NewInt(1 << 9)
+	paypointDetailResponseFieldCustomerServiceEmail    = big.NewInt(1 << 10)
+	paypointDetailResponseFieldExternalId              = big.NewInt(1 << 11)
+	paypointDetailResponseFieldEntryName               = big.NewInt(1 << 12)
+	paypointDetailResponseFieldCreatedAt               = big.NewInt(1 << 13)
+	paypointDetailResponseFieldUpdatedAt               = big.NewInt(1 << 14)
+	paypointDetailResponseFieldLinks                   = big.NewInt(1 << 15)
+)
+
+type PaypointDetailResponse struct {
+	// The paypoint reference.
+	PaypointReference string `json:"paypointReference" url:"paypointReference"`
+	// The reference of the business the paypoint belongs to.
+	BusinessReference *string `json:"businessReference,omitempty" url:"businessReference,omitempty"`
+	// The reference of the parent paypoint this paypoint nests under. For a merchant boarded directly under an organization, this is the organization, which is itself a paypoint.
+	ParentPaypointReference string `json:"parentPaypointReference" url:"parentPaypointReference"`
+	// The paypoint type, for example `merchant`.
+	PaypointType *string `json:"paypointType,omitempty" url:"paypointType,omitempty"`
+	// The paypoint's current status.
+	PaypointStatus string `json:"paypointStatus" url:"paypointStatus"`
+	// The name the paypoint does business as (DBA).
+	DoingBusinessAs *string `json:"doingBusinessAs,omitempty" url:"doingBusinessAs,omitempty"`
+	// A free-text description of the paypoint.
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	// The paypoint's website URL.
+	Website *string `json:"website,omitempty" url:"website,omitempty"`
+	// The paypoint's time zone.
+	Timezone *string `json:"timezone,omitempty" url:"timezone,omitempty"`
+	// The customer service phone number.
+	CustomerServicePhone *string `json:"customerServicePhone,omitempty" url:"customerServicePhone,omitempty"`
+	// The customer service email address.
+	CustomerServiceEmail *string `json:"customerServiceEmail,omitempty" url:"customerServiceEmail,omitempty"`
+	// Your own identifier for the paypoint.
+	ExternalId *string `json:"externalId,omitempty" url:"externalId,omitempty"`
+	// The paypoint's entrypoint name, used as the `entry` value on endpoints that target the paypoint.
+	EntryName string `json:"entryName" url:"entryName"`
+	// When the paypoint was created.
+	CreatedAt string `json:"createdAt" url:"createdAt"`
+	// When the paypoint was last updated.
+	UpdatedAt string `json:"updatedAt" url:"updatedAt"`
+	// Hypermedia links for the paypoint resource.
+	Links *PaypointLinks `json:"_links" url:"_links"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PaypointDetailResponse) GetPaypointReference() string {
+	if p == nil {
+		return ""
+	}
+	return p.PaypointReference
+}
+
+func (p *PaypointDetailResponse) GetBusinessReference() *string {
+	if p == nil {
+		return nil
+	}
+	return p.BusinessReference
+}
+
+func (p *PaypointDetailResponse) GetParentPaypointReference() string {
+	if p == nil {
+		return ""
+	}
+	return p.ParentPaypointReference
+}
+
+func (p *PaypointDetailResponse) GetPaypointType() *string {
+	if p == nil {
+		return nil
+	}
+	return p.PaypointType
+}
+
+func (p *PaypointDetailResponse) GetPaypointStatus() string {
+	if p == nil {
+		return ""
+	}
+	return p.PaypointStatus
+}
+
+func (p *PaypointDetailResponse) GetDoingBusinessAs() *string {
+	if p == nil {
+		return nil
+	}
+	return p.DoingBusinessAs
+}
+
+func (p *PaypointDetailResponse) GetDescription() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Description
+}
+
+func (p *PaypointDetailResponse) GetWebsite() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Website
+}
+
+func (p *PaypointDetailResponse) GetTimezone() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Timezone
+}
+
+func (p *PaypointDetailResponse) GetCustomerServicePhone() *string {
+	if p == nil {
+		return nil
+	}
+	return p.CustomerServicePhone
+}
+
+func (p *PaypointDetailResponse) GetCustomerServiceEmail() *string {
+	if p == nil {
+		return nil
+	}
+	return p.CustomerServiceEmail
+}
+
+func (p *PaypointDetailResponse) GetExternalId() *string {
+	if p == nil {
+		return nil
+	}
+	return p.ExternalId
+}
+
+func (p *PaypointDetailResponse) GetEntryName() string {
+	if p == nil {
+		return ""
+	}
+	return p.EntryName
+}
+
+func (p *PaypointDetailResponse) GetCreatedAt() string {
+	if p == nil {
+		return ""
+	}
+	return p.CreatedAt
+}
+
+func (p *PaypointDetailResponse) GetUpdatedAt() string {
+	if p == nil {
+		return ""
+	}
+	return p.UpdatedAt
+}
+
+func (p *PaypointDetailResponse) GetLinks() *PaypointLinks {
+	if p == nil {
+		return nil
+	}
+	return p.Links
+}
+
+func (p *PaypointDetailResponse) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PaypointDetailResponse) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetPaypointReference sets the PaypointReference field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointDetailResponse) SetPaypointReference(paypointReference string) {
+	p.PaypointReference = paypointReference
+	p.require(paypointDetailResponseFieldPaypointReference)
+}
+
+// SetBusinessReference sets the BusinessReference field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointDetailResponse) SetBusinessReference(businessReference *string) {
+	p.BusinessReference = businessReference
+	p.require(paypointDetailResponseFieldBusinessReference)
+}
+
+// SetParentPaypointReference sets the ParentPaypointReference field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointDetailResponse) SetParentPaypointReference(parentPaypointReference string) {
+	p.ParentPaypointReference = parentPaypointReference
+	p.require(paypointDetailResponseFieldParentPaypointReference)
+}
+
+// SetPaypointType sets the PaypointType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointDetailResponse) SetPaypointType(paypointType *string) {
+	p.PaypointType = paypointType
+	p.require(paypointDetailResponseFieldPaypointType)
+}
+
+// SetPaypointStatus sets the PaypointStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointDetailResponse) SetPaypointStatus(paypointStatus string) {
+	p.PaypointStatus = paypointStatus
+	p.require(paypointDetailResponseFieldPaypointStatus)
+}
+
+// SetDoingBusinessAs sets the DoingBusinessAs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointDetailResponse) SetDoingBusinessAs(doingBusinessAs *string) {
+	p.DoingBusinessAs = doingBusinessAs
+	p.require(paypointDetailResponseFieldDoingBusinessAs)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointDetailResponse) SetDescription(description *string) {
+	p.Description = description
+	p.require(paypointDetailResponseFieldDescription)
+}
+
+// SetWebsite sets the Website field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointDetailResponse) SetWebsite(website *string) {
+	p.Website = website
+	p.require(paypointDetailResponseFieldWebsite)
+}
+
+// SetTimezone sets the Timezone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointDetailResponse) SetTimezone(timezone *string) {
+	p.Timezone = timezone
+	p.require(paypointDetailResponseFieldTimezone)
+}
+
+// SetCustomerServicePhone sets the CustomerServicePhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointDetailResponse) SetCustomerServicePhone(customerServicePhone *string) {
+	p.CustomerServicePhone = customerServicePhone
+	p.require(paypointDetailResponseFieldCustomerServicePhone)
+}
+
+// SetCustomerServiceEmail sets the CustomerServiceEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointDetailResponse) SetCustomerServiceEmail(customerServiceEmail *string) {
+	p.CustomerServiceEmail = customerServiceEmail
+	p.require(paypointDetailResponseFieldCustomerServiceEmail)
+}
+
+// SetExternalId sets the ExternalId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointDetailResponse) SetExternalId(externalId *string) {
+	p.ExternalId = externalId
+	p.require(paypointDetailResponseFieldExternalId)
+}
+
+// SetEntryName sets the EntryName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointDetailResponse) SetEntryName(entryName string) {
+	p.EntryName = entryName
+	p.require(paypointDetailResponseFieldEntryName)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointDetailResponse) SetCreatedAt(createdAt string) {
+	p.CreatedAt = createdAt
+	p.require(paypointDetailResponseFieldCreatedAt)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointDetailResponse) SetUpdatedAt(updatedAt string) {
+	p.UpdatedAt = updatedAt
+	p.require(paypointDetailResponseFieldUpdatedAt)
+}
+
+// SetLinks sets the Links field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointDetailResponse) SetLinks(links *PaypointLinks) {
+	p.Links = links
+	p.require(paypointDetailResponseFieldLinks)
+}
+
+func (p *PaypointDetailResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler PaypointDetailResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PaypointDetailResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PaypointDetailResponse) MarshalJSON() ([]byte, error) {
+	type embed PaypointDetailResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PaypointDetailResponse) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
 var (
 	paypointEntryConfigFieldEntryComment  = big.NewInt(1 << 0)
 	paypointEntryConfigFieldEntryLogo     = big.NewInt(1 << 1)
@@ -18315,6 +19427,109 @@ func (p *PaypointEntryConfig) String() string {
 // The paypoint's ID. Note that this is different than the entryname.
 type PaypointId = int64
 
+// Hypermedia links for a paypoint resource.
+var (
+	paypointLinksFieldSelf     = big.NewInt(1 << 0)
+	paypointLinksFieldBusiness = big.NewInt(1 << 1)
+)
+
+type PaypointLinks struct {
+	// Relative path to the paypoint resource.
+	Self *string `json:"self,omitempty" url:"self,omitempty"`
+	// Relative path to the business the paypoint belongs to.
+	Business *string `json:"business,omitempty" url:"business,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PaypointLinks) GetSelf() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Self
+}
+
+func (p *PaypointLinks) GetBusiness() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Business
+}
+
+func (p *PaypointLinks) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PaypointLinks) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetSelf sets the Self field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointLinks) SetSelf(self *string) {
+	p.Self = self
+	p.require(paypointLinksFieldSelf)
+}
+
+// SetBusiness sets the Business field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointLinks) SetBusiness(business *string) {
+	p.Business = business
+	p.require(paypointLinksFieldBusiness)
+}
+
+func (p *PaypointLinks) UnmarshalJSON(data []byte) error {
+	type unmarshaler PaypointLinks
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PaypointLinks(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PaypointLinks) MarshalJSON() ([]byte, error) {
+	type embed PaypointLinks
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PaypointLinks) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
 // The paypoint name.
 type PaypointName = string
 
@@ -18452,6 +19667,612 @@ func (p *PaypointSummary) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PaypointSummary) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+// A paypoint as it appears in a list response.
+var (
+	paypointSummaryResponseFieldPaypointReference       = big.NewInt(1 << 0)
+	paypointSummaryResponseFieldBusinessReference       = big.NewInt(1 << 1)
+	paypointSummaryResponseFieldParentPaypointReference = big.NewInt(1 << 2)
+	paypointSummaryResponseFieldPaypointType            = big.NewInt(1 << 3)
+	paypointSummaryResponseFieldPaypointStatus          = big.NewInt(1 << 4)
+	paypointSummaryResponseFieldDoingBusinessAs         = big.NewInt(1 << 5)
+	paypointSummaryResponseFieldDescription             = big.NewInt(1 << 6)
+	paypointSummaryResponseFieldWebsite                 = big.NewInt(1 << 7)
+	paypointSummaryResponseFieldTimezone                = big.NewInt(1 << 8)
+	paypointSummaryResponseFieldCustomerServicePhone    = big.NewInt(1 << 9)
+	paypointSummaryResponseFieldCustomerServiceEmail    = big.NewInt(1 << 10)
+	paypointSummaryResponseFieldExternalId              = big.NewInt(1 << 11)
+	paypointSummaryResponseFieldEntryName               = big.NewInt(1 << 12)
+	paypointSummaryResponseFieldCreatedAt               = big.NewInt(1 << 13)
+	paypointSummaryResponseFieldUpdatedAt               = big.NewInt(1 << 14)
+	paypointSummaryResponseFieldLinks                   = big.NewInt(1 << 15)
+)
+
+type PaypointSummaryResponse struct {
+	// The paypoint reference.
+	PaypointReference string `json:"paypointReference" url:"paypointReference"`
+	// The reference of the business the paypoint belongs to.
+	BusinessReference *string `json:"businessReference,omitempty" url:"businessReference,omitempty"`
+	// The reference of the parent paypoint this paypoint nests under. For a merchant boarded directly under an organization, this is the organization, which is itself a paypoint.
+	ParentPaypointReference string `json:"parentPaypointReference" url:"parentPaypointReference"`
+	// The paypoint type, for example `merchant`.
+	PaypointType *string `json:"paypointType,omitempty" url:"paypointType,omitempty"`
+	// The paypoint's current status.
+	PaypointStatus string `json:"paypointStatus" url:"paypointStatus"`
+	// The name the paypoint does business as (DBA).
+	DoingBusinessAs *string `json:"doingBusinessAs,omitempty" url:"doingBusinessAs,omitempty"`
+	// A free-text description of the paypoint.
+	Description *string `json:"description,omitempty" url:"description,omitempty"`
+	// The paypoint's website URL.
+	Website *string `json:"website,omitempty" url:"website,omitempty"`
+	// The paypoint's time zone.
+	Timezone *string `json:"timezone,omitempty" url:"timezone,omitempty"`
+	// The customer service phone number.
+	CustomerServicePhone *string `json:"customerServicePhone,omitempty" url:"customerServicePhone,omitempty"`
+	// The customer service email address.
+	CustomerServiceEmail *string `json:"customerServiceEmail,omitempty" url:"customerServiceEmail,omitempty"`
+	// Your own identifier for the paypoint. Omitted when you haven't set one.
+	ExternalId *string `json:"externalId,omitempty" url:"externalId,omitempty"`
+	// The paypoint's entrypoint name, used as the `entry` value on endpoints that target the paypoint.
+	EntryName string `json:"entryName" url:"entryName"`
+	// When the paypoint was created.
+	CreatedAt string `json:"createdAt" url:"createdAt"`
+	// When the paypoint was last updated.
+	UpdatedAt string `json:"updatedAt" url:"updatedAt"`
+	// Hypermedia links for the paypoint resource.
+	Links *PaypointLinks `json:"_links" url:"_links"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PaypointSummaryResponse) GetPaypointReference() string {
+	if p == nil {
+		return ""
+	}
+	return p.PaypointReference
+}
+
+func (p *PaypointSummaryResponse) GetBusinessReference() *string {
+	if p == nil {
+		return nil
+	}
+	return p.BusinessReference
+}
+
+func (p *PaypointSummaryResponse) GetParentPaypointReference() string {
+	if p == nil {
+		return ""
+	}
+	return p.ParentPaypointReference
+}
+
+func (p *PaypointSummaryResponse) GetPaypointType() *string {
+	if p == nil {
+		return nil
+	}
+	return p.PaypointType
+}
+
+func (p *PaypointSummaryResponse) GetPaypointStatus() string {
+	if p == nil {
+		return ""
+	}
+	return p.PaypointStatus
+}
+
+func (p *PaypointSummaryResponse) GetDoingBusinessAs() *string {
+	if p == nil {
+		return nil
+	}
+	return p.DoingBusinessAs
+}
+
+func (p *PaypointSummaryResponse) GetDescription() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Description
+}
+
+func (p *PaypointSummaryResponse) GetWebsite() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Website
+}
+
+func (p *PaypointSummaryResponse) GetTimezone() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Timezone
+}
+
+func (p *PaypointSummaryResponse) GetCustomerServicePhone() *string {
+	if p == nil {
+		return nil
+	}
+	return p.CustomerServicePhone
+}
+
+func (p *PaypointSummaryResponse) GetCustomerServiceEmail() *string {
+	if p == nil {
+		return nil
+	}
+	return p.CustomerServiceEmail
+}
+
+func (p *PaypointSummaryResponse) GetExternalId() *string {
+	if p == nil {
+		return nil
+	}
+	return p.ExternalId
+}
+
+func (p *PaypointSummaryResponse) GetEntryName() string {
+	if p == nil {
+		return ""
+	}
+	return p.EntryName
+}
+
+func (p *PaypointSummaryResponse) GetCreatedAt() string {
+	if p == nil {
+		return ""
+	}
+	return p.CreatedAt
+}
+
+func (p *PaypointSummaryResponse) GetUpdatedAt() string {
+	if p == nil {
+		return ""
+	}
+	return p.UpdatedAt
+}
+
+func (p *PaypointSummaryResponse) GetLinks() *PaypointLinks {
+	if p == nil {
+		return nil
+	}
+	return p.Links
+}
+
+func (p *PaypointSummaryResponse) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PaypointSummaryResponse) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetPaypointReference sets the PaypointReference field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointSummaryResponse) SetPaypointReference(paypointReference string) {
+	p.PaypointReference = paypointReference
+	p.require(paypointSummaryResponseFieldPaypointReference)
+}
+
+// SetBusinessReference sets the BusinessReference field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointSummaryResponse) SetBusinessReference(businessReference *string) {
+	p.BusinessReference = businessReference
+	p.require(paypointSummaryResponseFieldBusinessReference)
+}
+
+// SetParentPaypointReference sets the ParentPaypointReference field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointSummaryResponse) SetParentPaypointReference(parentPaypointReference string) {
+	p.ParentPaypointReference = parentPaypointReference
+	p.require(paypointSummaryResponseFieldParentPaypointReference)
+}
+
+// SetPaypointType sets the PaypointType field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointSummaryResponse) SetPaypointType(paypointType *string) {
+	p.PaypointType = paypointType
+	p.require(paypointSummaryResponseFieldPaypointType)
+}
+
+// SetPaypointStatus sets the PaypointStatus field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointSummaryResponse) SetPaypointStatus(paypointStatus string) {
+	p.PaypointStatus = paypointStatus
+	p.require(paypointSummaryResponseFieldPaypointStatus)
+}
+
+// SetDoingBusinessAs sets the DoingBusinessAs field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointSummaryResponse) SetDoingBusinessAs(doingBusinessAs *string) {
+	p.DoingBusinessAs = doingBusinessAs
+	p.require(paypointSummaryResponseFieldDoingBusinessAs)
+}
+
+// SetDescription sets the Description field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointSummaryResponse) SetDescription(description *string) {
+	p.Description = description
+	p.require(paypointSummaryResponseFieldDescription)
+}
+
+// SetWebsite sets the Website field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointSummaryResponse) SetWebsite(website *string) {
+	p.Website = website
+	p.require(paypointSummaryResponseFieldWebsite)
+}
+
+// SetTimezone sets the Timezone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointSummaryResponse) SetTimezone(timezone *string) {
+	p.Timezone = timezone
+	p.require(paypointSummaryResponseFieldTimezone)
+}
+
+// SetCustomerServicePhone sets the CustomerServicePhone field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointSummaryResponse) SetCustomerServicePhone(customerServicePhone *string) {
+	p.CustomerServicePhone = customerServicePhone
+	p.require(paypointSummaryResponseFieldCustomerServicePhone)
+}
+
+// SetCustomerServiceEmail sets the CustomerServiceEmail field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointSummaryResponse) SetCustomerServiceEmail(customerServiceEmail *string) {
+	p.CustomerServiceEmail = customerServiceEmail
+	p.require(paypointSummaryResponseFieldCustomerServiceEmail)
+}
+
+// SetExternalId sets the ExternalId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointSummaryResponse) SetExternalId(externalId *string) {
+	p.ExternalId = externalId
+	p.require(paypointSummaryResponseFieldExternalId)
+}
+
+// SetEntryName sets the EntryName field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointSummaryResponse) SetEntryName(entryName string) {
+	p.EntryName = entryName
+	p.require(paypointSummaryResponseFieldEntryName)
+}
+
+// SetCreatedAt sets the CreatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointSummaryResponse) SetCreatedAt(createdAt string) {
+	p.CreatedAt = createdAt
+	p.require(paypointSummaryResponseFieldCreatedAt)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointSummaryResponse) SetUpdatedAt(updatedAt string) {
+	p.UpdatedAt = updatedAt
+	p.require(paypointSummaryResponseFieldUpdatedAt)
+}
+
+// SetLinks sets the Links field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointSummaryResponse) SetLinks(links *PaypointLinks) {
+	p.Links = links
+	p.require(paypointSummaryResponseFieldLinks)
+}
+
+func (p *PaypointSummaryResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler PaypointSummaryResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PaypointSummaryResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PaypointSummaryResponse) MarshalJSON() ([]byte, error) {
+	type embed PaypointSummaryResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PaypointSummaryResponse) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+// Standard boarding response envelope wrapping an updated paypoint.
+var (
+	paypointUpdatedEnvelopeFieldSuccess = big.NewInt(1 << 0)
+	paypointUpdatedEnvelopeFieldMessage = big.NewInt(1 << 1)
+	paypointUpdatedEnvelopeFieldTraceId = big.NewInt(1 << 2)
+	paypointUpdatedEnvelopeFieldData    = big.NewInt(1 << 3)
+)
+
+type PaypointUpdatedEnvelope struct {
+	// Whether the request succeeded.
+	Success bool `json:"success" url:"success"`
+	// A human-readable result message.
+	Message *string `json:"message,omitempty" url:"message,omitempty"`
+	// The trace identifier for the request, useful for support.
+	TraceId *string `json:"traceId,omitempty" url:"traceId,omitempty"`
+	// The updated paypoint.
+	Data *PaypointUpdatedResponse `json:"data,omitempty" url:"data,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PaypointUpdatedEnvelope) GetSuccess() bool {
+	if p == nil {
+		return false
+	}
+	return p.Success
+}
+
+func (p *PaypointUpdatedEnvelope) GetMessage() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Message
+}
+
+func (p *PaypointUpdatedEnvelope) GetTraceId() *string {
+	if p == nil {
+		return nil
+	}
+	return p.TraceId
+}
+
+func (p *PaypointUpdatedEnvelope) GetData() *PaypointUpdatedResponse {
+	if p == nil {
+		return nil
+	}
+	return p.Data
+}
+
+func (p *PaypointUpdatedEnvelope) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PaypointUpdatedEnvelope) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetSuccess sets the Success field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointUpdatedEnvelope) SetSuccess(success bool) {
+	p.Success = success
+	p.require(paypointUpdatedEnvelopeFieldSuccess)
+}
+
+// SetMessage sets the Message field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointUpdatedEnvelope) SetMessage(message *string) {
+	p.Message = message
+	p.require(paypointUpdatedEnvelopeFieldMessage)
+}
+
+// SetTraceId sets the TraceId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointUpdatedEnvelope) SetTraceId(traceId *string) {
+	p.TraceId = traceId
+	p.require(paypointUpdatedEnvelopeFieldTraceId)
+}
+
+// SetData sets the Data field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointUpdatedEnvelope) SetData(data *PaypointUpdatedResponse) {
+	p.Data = data
+	p.require(paypointUpdatedEnvelopeFieldData)
+}
+
+func (p *PaypointUpdatedEnvelope) UnmarshalJSON(data []byte) error {
+	type unmarshaler PaypointUpdatedEnvelope
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PaypointUpdatedEnvelope(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PaypointUpdatedEnvelope) MarshalJSON() ([]byte, error) {
+	type embed PaypointUpdatedEnvelope
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PaypointUpdatedEnvelope) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
+// The reference and updated timestamp after a paypoint update.
+var (
+	paypointUpdatedResponseFieldPaypointReference = big.NewInt(1 << 0)
+	paypointUpdatedResponseFieldUpdatedAt         = big.NewInt(1 << 1)
+	paypointUpdatedResponseFieldLinks             = big.NewInt(1 << 2)
+)
+
+type PaypointUpdatedResponse struct {
+	// The paypoint reference.
+	PaypointReference string `json:"paypointReference" url:"paypointReference"`
+	// When the paypoint was last updated.
+	UpdatedAt time.Time `json:"updatedAt" url:"updatedAt"`
+	// Hypermedia links for the paypoint resource.
+	Links *PaypointLinks `json:"_links" url:"_links"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PaypointUpdatedResponse) GetPaypointReference() string {
+	if p == nil {
+		return ""
+	}
+	return p.PaypointReference
+}
+
+func (p *PaypointUpdatedResponse) GetUpdatedAt() time.Time {
+	if p == nil {
+		return time.Time{}
+	}
+	return p.UpdatedAt
+}
+
+func (p *PaypointUpdatedResponse) GetLinks() *PaypointLinks {
+	if p == nil {
+		return nil
+	}
+	return p.Links
+}
+
+func (p *PaypointUpdatedResponse) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PaypointUpdatedResponse) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetPaypointReference sets the PaypointReference field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointUpdatedResponse) SetPaypointReference(paypointReference string) {
+	p.PaypointReference = paypointReference
+	p.require(paypointUpdatedResponseFieldPaypointReference)
+}
+
+// SetUpdatedAt sets the UpdatedAt field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointUpdatedResponse) SetUpdatedAt(updatedAt time.Time) {
+	p.UpdatedAt = updatedAt
+	p.require(paypointUpdatedResponseFieldUpdatedAt)
+}
+
+// SetLinks sets the Links field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PaypointUpdatedResponse) SetLinks(links *PaypointLinks) {
+	p.Links = links
+	p.require(paypointUpdatedResponseFieldLinks)
+}
+
+func (p *PaypointUpdatedResponse) UnmarshalJSON(data []byte) error {
+	type embed PaypointUpdatedResponse
+	var unmarshaler = struct {
+		embed
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+	}{
+		embed: embed(*p),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*p = PaypointUpdatedResponse(unmarshaler.embed)
+	p.UpdatedAt = unmarshaler.UpdatedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PaypointUpdatedResponse) MarshalJSON() ([]byte, error) {
+	type embed PaypointUpdatedResponse
+	var marshaler = struct {
+		embed
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+	}{
+		embed:     embed(*p),
+		UpdatedAt: internal.NewDateTime(p.UpdatedAt),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PaypointUpdatedResponse) String() string {
 	if p == nil {
 		return "<nil>"
 	}

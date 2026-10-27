@@ -819,6 +819,318 @@ func (e *EditOrganizationResponse) String() string {
 }
 
 var (
+	getBasicOrganizationResponseFieldIsSuccess      = big.NewInt(1 << 0)
+	getBasicOrganizationResponseFieldPageidentifier = big.NewInt(1 << 1)
+	getBasicOrganizationResponseFieldResponseData   = big.NewInt(1 << 2)
+	getBasicOrganizationResponseFieldResponseText   = big.NewInt(1 << 3)
+)
+
+type GetBasicOrganizationResponse struct {
+	IsSuccess      IsSuccess                `json:"isSuccess" url:"isSuccess"`
+	Pageidentifier *PageIdentifier          `json:"pageidentifier,omitempty" url:"pageidentifier,omitempty"`
+	ResponseData   *OrganizationQueryRecord `json:"responseData,omitempty" url:"responseData,omitempty"`
+	ResponseText   ResponseText             `json:"responseText" url:"responseText"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GetBasicOrganizationResponse) GetIsSuccess() IsSuccess {
+	if g == nil {
+		return false
+	}
+	return g.IsSuccess
+}
+
+func (g *GetBasicOrganizationResponse) GetPageidentifier() *PageIdentifier {
+	if g == nil {
+		return nil
+	}
+	return g.Pageidentifier
+}
+
+func (g *GetBasicOrganizationResponse) GetResponseData() *OrganizationQueryRecord {
+	if g == nil {
+		return nil
+	}
+	return g.ResponseData
+}
+
+func (g *GetBasicOrganizationResponse) GetResponseText() ResponseText {
+	if g == nil {
+		return ""
+	}
+	return g.ResponseText
+}
+
+func (g *GetBasicOrganizationResponse) GetExtraProperties() map[string]interface{} {
+	if g == nil {
+		return nil
+	}
+	return g.extraProperties
+}
+
+func (g *GetBasicOrganizationResponse) require(field *big.Int) {
+	if g.explicitFields == nil {
+		g.explicitFields = big.NewInt(0)
+	}
+	g.explicitFields.Or(g.explicitFields, field)
+}
+
+// SetIsSuccess sets the IsSuccess field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBasicOrganizationResponse) SetIsSuccess(isSuccess IsSuccess) {
+	g.IsSuccess = isSuccess
+	g.require(getBasicOrganizationResponseFieldIsSuccess)
+}
+
+// SetPageidentifier sets the Pageidentifier field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBasicOrganizationResponse) SetPageidentifier(pageidentifier *PageIdentifier) {
+	g.Pageidentifier = pageidentifier
+	g.require(getBasicOrganizationResponseFieldPageidentifier)
+}
+
+// SetResponseData sets the ResponseData field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBasicOrganizationResponse) SetResponseData(responseData *OrganizationQueryRecord) {
+	g.ResponseData = responseData
+	g.require(getBasicOrganizationResponseFieldResponseData)
+}
+
+// SetResponseText sets the ResponseText field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (g *GetBasicOrganizationResponse) SetResponseText(responseText ResponseText) {
+	g.ResponseText = responseText
+	g.require(getBasicOrganizationResponseFieldResponseText)
+}
+
+func (g *GetBasicOrganizationResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler GetBasicOrganizationResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GetBasicOrganizationResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GetBasicOrganizationResponse) MarshalJSON() ([]byte, error) {
+	type embed GetBasicOrganizationResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*g),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, g.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (g *GetBasicOrganizationResponse) String() string {
+	if g == nil {
+		return "<nil>"
+	}
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+var (
+	instrumentFieldAchAccount     = big.NewInt(1 << 0)
+	instrumentFieldAchRouting     = big.NewInt(1 << 1)
+	instrumentFieldBillingAddress = big.NewInt(1 << 2)
+	instrumentFieldBillingCity    = big.NewInt(1 << 3)
+	instrumentFieldBillingCountry = big.NewInt(1 << 4)
+	instrumentFieldBillingState   = big.NewInt(1 << 5)
+	instrumentFieldBillingZip     = big.NewInt(1 << 6)
+)
+
+type Instrument struct {
+	AchAccount     Achaccount              `json:"achAccount" url:"achAccount"`
+	AchRouting     Achrouting              `json:"achRouting" url:"achRouting"`
+	BillingAddress *BillingAddressNullable `json:"billingAddress,omitempty" url:"billingAddress,omitempty"`
+	BillingCity    *BillingCityNullable    `json:"billingCity,omitempty" url:"billingCity,omitempty"`
+	BillingCountry *BillingCountryNullable `json:"billingCountry,omitempty" url:"billingCountry,omitempty"`
+	BillingState   *BillingStateNullable   `json:"billingState,omitempty" url:"billingState,omitempty"`
+	BillingZip     *BillingZip             `json:"billingZip,omitempty" url:"billingZip,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (i *Instrument) GetAchAccount() Achaccount {
+	if i == nil {
+		return ""
+	}
+	return i.AchAccount
+}
+
+func (i *Instrument) GetAchRouting() Achrouting {
+	if i == nil {
+		return ""
+	}
+	return i.AchRouting
+}
+
+func (i *Instrument) GetBillingAddress() *BillingAddressNullable {
+	if i == nil {
+		return nil
+	}
+	return i.BillingAddress
+}
+
+func (i *Instrument) GetBillingCity() *BillingCityNullable {
+	if i == nil {
+		return nil
+	}
+	return i.BillingCity
+}
+
+func (i *Instrument) GetBillingCountry() *BillingCountryNullable {
+	if i == nil {
+		return nil
+	}
+	return i.BillingCountry
+}
+
+func (i *Instrument) GetBillingState() *BillingStateNullable {
+	if i == nil {
+		return nil
+	}
+	return i.BillingState
+}
+
+func (i *Instrument) GetBillingZip() *BillingZip {
+	if i == nil {
+		return nil
+	}
+	return i.BillingZip
+}
+
+func (i *Instrument) GetExtraProperties() map[string]interface{} {
+	if i == nil {
+		return nil
+	}
+	return i.extraProperties
+}
+
+func (i *Instrument) require(field *big.Int) {
+	if i.explicitFields == nil {
+		i.explicitFields = big.NewInt(0)
+	}
+	i.explicitFields.Or(i.explicitFields, field)
+}
+
+// SetAchAccount sets the AchAccount field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *Instrument) SetAchAccount(achAccount Achaccount) {
+	i.AchAccount = achAccount
+	i.require(instrumentFieldAchAccount)
+}
+
+// SetAchRouting sets the AchRouting field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *Instrument) SetAchRouting(achRouting Achrouting) {
+	i.AchRouting = achRouting
+	i.require(instrumentFieldAchRouting)
+}
+
+// SetBillingAddress sets the BillingAddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *Instrument) SetBillingAddress(billingAddress *BillingAddressNullable) {
+	i.BillingAddress = billingAddress
+	i.require(instrumentFieldBillingAddress)
+}
+
+// SetBillingCity sets the BillingCity field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *Instrument) SetBillingCity(billingCity *BillingCityNullable) {
+	i.BillingCity = billingCity
+	i.require(instrumentFieldBillingCity)
+}
+
+// SetBillingCountry sets the BillingCountry field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *Instrument) SetBillingCountry(billingCountry *BillingCountryNullable) {
+	i.BillingCountry = billingCountry
+	i.require(instrumentFieldBillingCountry)
+}
+
+// SetBillingState sets the BillingState field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *Instrument) SetBillingState(billingState *BillingStateNullable) {
+	i.BillingState = billingState
+	i.require(instrumentFieldBillingState)
+}
+
+// SetBillingZip sets the BillingZip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (i *Instrument) SetBillingZip(billingZip *BillingZip) {
+	i.BillingZip = billingZip
+	i.require(instrumentFieldBillingZip)
+}
+
+func (i *Instrument) UnmarshalJSON(data []byte) error {
+	type unmarshaler Instrument
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*i = Instrument(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *i)
+	if err != nil {
+		return err
+	}
+	i.extraProperties = extraProperties
+	i.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *Instrument) MarshalJSON() ([]byte, error) {
+	type embed Instrument
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*i),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, i.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (i *Instrument) String() string {
+	if i == nil {
+		return "<nil>"
+	}
+	if len(i.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
+}
+
+var (
 	serviceCostFieldDescription   = big.NewInt(1 << 0)
 	serviceCostFieldEnabled       = big.NewInt(1 << 1)
 	serviceCostFieldMonthlyCost   = big.NewInt(1 << 2)

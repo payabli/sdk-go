@@ -266,14 +266,14 @@ func (c *Client) DeleteOrganization(
 //
 //	client.Organization.GetBasicOrganization(
 //	    context.TODO(),
-//	    "8cfec329267",
+//	    "pilgrim-planner",
 //	)
 func (c *Client) GetBasicOrganization(
 	ctx context.Context,
-	// The paypoint's entrypoint identifier. [Learn more](/developers/api-reference/api-overview#entrypoint-vs-entry)
+	// The organization's entry name (`OrgEntryName`).
 	entry string,
 	opts ...option.RequestOption,
-) (*payabli.OrganizationQueryRecord, error) {
+) (*payabli.GetBasicOrganizationResponse, error) {
 	response, err := c.WithRawResponse.GetBasicOrganization(
 		ctx,
 		entry,
@@ -298,7 +298,7 @@ func (c *Client) GetBasicOrganizationById(
 	// The numeric identifier for organization, assigned by Payabli.
 	orgId int,
 	opts ...option.RequestOption,
-) (*payabli.OrganizationQueryRecord, error) {
+) (*payabli.GetBasicOrganizationResponse, error) {
 	response, err := c.WithRawResponse.GetBasicOrganizationById(
 		ctx,
 		orgId,

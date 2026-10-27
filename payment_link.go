@@ -771,7 +771,9 @@ func (m *MethodElementOut) String() string {
 var (
 	methodsListOutFieldAch   = big.NewInt(1 << 0)
 	methodsListOutFieldCheck = big.NewInt(1 << 1)
-	methodsListOutFieldVcard = big.NewInt(1 << 2)
+	methodsListOutFieldRtp   = big.NewInt(1 << 2)
+	methodsListOutFieldVcard = big.NewInt(1 << 3)
+	methodsListOutFieldWire  = big.NewInt(1 << 4)
 )
 
 type MethodsListOut struct {
@@ -779,8 +781,12 @@ type MethodsListOut struct {
 	Ach *bool `json:"ach,omitempty" url:"ach,omitempty"`
 	// When `true`, physical check is offered as a payout method.
 	Check *bool `json:"check,omitempty" url:"check,omitempty"`
+	// When `true`, Real-Time Payments (RTP) is offered as a payout method.
+	Rtp *bool `json:"rtp,omitempty" url:"rtp,omitempty"`
 	// When `true`, virtual card (vCard) is offered as a payout method.
 	Vcard *bool `json:"vcard,omitempty" url:"vcard,omitempty"`
+	// When `true`, wire transfer is offered as a payout method.
+	Wire *bool `json:"wire,omitempty" url:"wire,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -803,11 +809,25 @@ func (m *MethodsListOut) GetCheck() *bool {
 	return m.Check
 }
 
+func (m *MethodsListOut) GetRtp() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.Rtp
+}
+
 func (m *MethodsListOut) GetVcard() *bool {
 	if m == nil {
 		return nil
 	}
 	return m.Vcard
+}
+
+func (m *MethodsListOut) GetWire() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.Wire
 }
 
 func (m *MethodsListOut) GetExtraProperties() map[string]interface{} {
@@ -838,11 +858,25 @@ func (m *MethodsListOut) SetCheck(check *bool) {
 	m.require(methodsListOutFieldCheck)
 }
 
+// SetRtp sets the Rtp field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodsListOut) SetRtp(rtp *bool) {
+	m.Rtp = rtp
+	m.require(methodsListOutFieldRtp)
+}
+
 // SetVcard sets the Vcard field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (m *MethodsListOut) SetVcard(vcard *bool) {
 	m.Vcard = vcard
 	m.require(methodsListOutFieldVcard)
+}
+
+// SetWire sets the Wire field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (m *MethodsListOut) SetWire(wire *bool) {
+	m.Wire = wire
+	m.require(methodsListOutFieldWire)
 }
 
 func (m *MethodsListOut) UnmarshalJSON(data []byte) error {

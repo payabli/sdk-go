@@ -37,6 +37,7 @@ import (
 	ocr "github.com/payabli/sdk-go/ocr"
 	option "github.com/payabli/sdk-go/option"
 	organization "github.com/payabli/sdk-go/organization"
+	organizations "github.com/payabli/sdk-go/organizations"
 	paymentlink "github.com/payabli/sdk-go/paymentlink"
 	paymentmethoddomain "github.com/payabli/sdk-go/paymentmethoddomain"
 	paymentmethods "github.com/payabli/sdk-go/paymentmethods"
@@ -80,6 +81,7 @@ type Client struct {
 	Businesses          *businesses.Client
 	People              *people.Client
 	Paypoints           *paypoints.Client
+	Organizations       *organizations.Client
 	PaymentMethods      *paymentmethods.Client
 	BoardingTemplates   *boardingtemplates.Client
 	Applications        *applications.Client
@@ -166,6 +168,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 		Businesses:          businesses.NewClient(options),
 		People:              people.NewClient(options),
 		Paypoints:           paypoints.NewClient(options),
+		Organizations:       organizations.NewClient(options),
 		PaymentMethods:      paymentmethods.NewClient(options),
 		BoardingTemplates:   boardingtemplates.NewClient(options),
 		Applications:        applications.NewClient(options),
