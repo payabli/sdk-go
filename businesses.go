@@ -1061,6 +1061,245 @@ func (u *UpdateBusinessPersonRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(explicitMarshaler)
 }
 
+// An address associated with a business.
+var (
+	businessAddressFieldType             = big.NewInt(1 << 0)
+	businessAddressFieldLocation         = big.NewInt(1 << 1)
+	businessAddressFieldAddressLine1     = big.NewInt(1 << 2)
+	businessAddressFieldAddressLine2     = big.NewInt(1 << 3)
+	businessAddressFieldCityLocality     = big.NewInt(1 << 4)
+	businessAddressFieldStateProvince    = big.NewInt(1 << 5)
+	businessAddressFieldPostalCode       = big.NewInt(1 << 6)
+	businessAddressFieldCountry          = big.NewInt(1 << 7)
+	businessAddressFieldFloor            = big.NewInt(1 << 8)
+	businessAddressFieldSuiteApartNumber = big.NewInt(1 << 9)
+)
+
+type BusinessAddress struct {
+	// The address role.
+	Type *AddressType `json:"type,omitempty" url:"type,omitempty"`
+	// The physical use of the address. Defaults to `other`.
+	Location *BusinessAddressLocation `json:"location,omitempty" url:"location,omitempty"`
+	// The first line of the street address.
+	AddressLine1 *string `json:"addressLine1,omitempty" url:"addressLine1,omitempty"`
+	// The second line of the street address.
+	AddressLine2 *string `json:"addressLine2,omitempty" url:"addressLine2,omitempty"`
+	// The city or locality.
+	CityLocality *string `json:"cityLocality,omitempty" url:"cityLocality,omitempty"`
+	// The state or province.
+	StateProvince *string `json:"stateProvince,omitempty" url:"stateProvince,omitempty"`
+	// The postal or ZIP code.
+	PostalCode *string `json:"postalCode,omitempty" url:"postalCode,omitempty"`
+	// The two-character ISO country code.
+	Country *string `json:"country,omitempty" url:"country,omitempty"`
+	// The floor, if applicable.
+	Floor *string `json:"floor,omitempty" url:"floor,omitempty"`
+	// The suite or apartment number, if applicable.
+	SuiteApartNumber *string `json:"suiteApartNumber,omitempty" url:"suiteApartNumber,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BusinessAddress) GetType() *AddressType {
+	if b == nil {
+		return nil
+	}
+	return b.Type
+}
+
+func (b *BusinessAddress) GetLocation() *BusinessAddressLocation {
+	if b == nil {
+		return nil
+	}
+	return b.Location
+}
+
+func (b *BusinessAddress) GetAddressLine1() *string {
+	if b == nil {
+		return nil
+	}
+	return b.AddressLine1
+}
+
+func (b *BusinessAddress) GetAddressLine2() *string {
+	if b == nil {
+		return nil
+	}
+	return b.AddressLine2
+}
+
+func (b *BusinessAddress) GetCityLocality() *string {
+	if b == nil {
+		return nil
+	}
+	return b.CityLocality
+}
+
+func (b *BusinessAddress) GetStateProvince() *string {
+	if b == nil {
+		return nil
+	}
+	return b.StateProvince
+}
+
+func (b *BusinessAddress) GetPostalCode() *string {
+	if b == nil {
+		return nil
+	}
+	return b.PostalCode
+}
+
+func (b *BusinessAddress) GetCountry() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Country
+}
+
+func (b *BusinessAddress) GetFloor() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Floor
+}
+
+func (b *BusinessAddress) GetSuiteApartNumber() *string {
+	if b == nil {
+		return nil
+	}
+	return b.SuiteApartNumber
+}
+
+func (b *BusinessAddress) GetExtraProperties() map[string]interface{} {
+	if b == nil {
+		return nil
+	}
+	return b.extraProperties
+}
+
+func (b *BusinessAddress) require(field *big.Int) {
+	if b.explicitFields == nil {
+		b.explicitFields = big.NewInt(0)
+	}
+	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetType sets the Type field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddress) SetType(type_ *AddressType) {
+	b.Type = type_
+	b.require(businessAddressFieldType)
+}
+
+// SetLocation sets the Location field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddress) SetLocation(location *BusinessAddressLocation) {
+	b.Location = location
+	b.require(businessAddressFieldLocation)
+}
+
+// SetAddressLine1 sets the AddressLine1 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddress) SetAddressLine1(addressLine1 *string) {
+	b.AddressLine1 = addressLine1
+	b.require(businessAddressFieldAddressLine1)
+}
+
+// SetAddressLine2 sets the AddressLine2 field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddress) SetAddressLine2(addressLine2 *string) {
+	b.AddressLine2 = addressLine2
+	b.require(businessAddressFieldAddressLine2)
+}
+
+// SetCityLocality sets the CityLocality field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddress) SetCityLocality(cityLocality *string) {
+	b.CityLocality = cityLocality
+	b.require(businessAddressFieldCityLocality)
+}
+
+// SetStateProvince sets the StateProvince field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddress) SetStateProvince(stateProvince *string) {
+	b.StateProvince = stateProvince
+	b.require(businessAddressFieldStateProvince)
+}
+
+// SetPostalCode sets the PostalCode field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddress) SetPostalCode(postalCode *string) {
+	b.PostalCode = postalCode
+	b.require(businessAddressFieldPostalCode)
+}
+
+// SetCountry sets the Country field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddress) SetCountry(country *string) {
+	b.Country = country
+	b.require(businessAddressFieldCountry)
+}
+
+// SetFloor sets the Floor field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddress) SetFloor(floor *string) {
+	b.Floor = floor
+	b.require(businessAddressFieldFloor)
+}
+
+// SetSuiteApartNumber sets the SuiteApartNumber field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddress) SetSuiteApartNumber(suiteApartNumber *string) {
+	b.SuiteApartNumber = suiteApartNumber
+	b.require(businessAddressFieldSuiteApartNumber)
+}
+
+func (b *BusinessAddress) UnmarshalJSON(data []byte) error {
+	type unmarshaler BusinessAddress
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BusinessAddress(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BusinessAddress) MarshalJSON() ([]byte, error) {
+	type embed BusinessAddress
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*b),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (b *BusinessAddress) String() string {
+	if b == nil {
+		return "<nil>"
+	}
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
 // Standard boarding response envelope wrapping a removed business address.
 var (
 	businessAddressDeletedEnvelopeFieldSuccess = big.NewInt(1 << 0)

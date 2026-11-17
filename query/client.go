@@ -98,7 +98,7 @@ func (c *Client) ListBatchDetails(
 //	}
 //	client.Query.ListBatchDetailsOrg(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	    request,
 //	)
 func (c *Client) ListBatchDetailsOrg(
@@ -176,7 +176,7 @@ func (c *Client) ListBatches(
 //	}
 //	client.Query.ListBatchesOrg(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	    request,
 //	)
 func (c *Client) ListBatchesOrg(
@@ -254,7 +254,7 @@ func (c *Client) ListBatchesOut(
 //	}
 //	client.Query.ListBatchesOutOrg(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	    request,
 //	)
 func (c *Client) ListBatchesOutOrg(
@@ -332,7 +332,7 @@ func (c *Client) ListChargebacks(
 //	}
 //	client.Query.ListChargebacksOrg(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	    request,
 //	)
 func (c *Client) ListChargebacksOrg(
@@ -410,7 +410,7 @@ func (c *Client) ListCustomers(
 //	}
 //	client.Query.ListCustomersOrg(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	    request,
 //	)
 func (c *Client) ListCustomersOrg(
@@ -488,7 +488,7 @@ func (c *Client) ListDevices(
 //	}
 //	client.Query.ListDevicesOrg(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	    request,
 //	)
 func (c *Client) ListDevicesOrg(
@@ -566,7 +566,7 @@ func (c *Client) ListNotificationReports(
 //	}
 //	client.Query.ListNotificationReportsOrg(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	    request,
 //	)
 func (c *Client) ListNotificationReportsOrg(
@@ -644,7 +644,7 @@ func (c *Client) ListNotifications(
 //	}
 //	client.Query.ListNotificationsOrg(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	    request,
 //	)
 func (c *Client) ListNotificationsOrg(
@@ -683,7 +683,7 @@ func (c *Client) ListNotificationsOrg(
 //	}
 //	client.Query.ListOrganizations(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	    request,
 //	)
 func (c *Client) ListOrganizations(
@@ -761,7 +761,7 @@ func (c *Client) ListPayout(
 //	}
 //	client.Query.ListPayoutOrg(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	    request,
 //	)
 func (c *Client) ListPayoutOrg(
@@ -800,7 +800,7 @@ func (c *Client) ListPayoutOrg(
 //	}
 //	client.Query.ListPaypoints(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	    request,
 //	)
 func (c *Client) ListPaypoints(
@@ -878,7 +878,7 @@ func (c *Client) ListSettlements(
 //	}
 //	client.Query.ListSettlementsOrg(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	    request,
 //	)
 func (c *Client) ListSettlementsOrg(
@@ -956,7 +956,7 @@ func (c *Client) ListSubscriptions(
 //	}
 //	client.Query.ListSubscriptionsOrg(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	    request,
 //	)
 func (c *Client) ListSubscriptionsOrg(
@@ -1034,7 +1034,7 @@ func (c *Client) ListPayoutSubscriptions(
 //	}
 //	client.Query.ListPayoutSubscriptionsOrg(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	    request,
 //	)
 func (c *Client) ListPayoutSubscriptionsOrg(
@@ -1134,7 +1134,7 @@ func (c *Client) ListTransactions(
 //	}
 //	client.Query.ListTransactionsOrg(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	    request,
 //	)
 func (c *Client) ListTransactionsOrg(
@@ -1239,7 +1239,7 @@ func (c *Client) ListTransfers(
 //	}
 //	client.Query.ListTransfersOrg(
 //	    context.TODO(),
-//	    int64(123),
+//	    int64(900123),
 //	    request,
 //	)
 func (c *Client) ListTransfersOrg(
@@ -1275,7 +1275,7 @@ func (c *Client) ListTransfersOrg(
 //	}
 //	client.Query.ListTransfersOutOrg(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	    request,
 //	)
 func (c *Client) ListTransfersOutOrg(
@@ -1390,7 +1390,7 @@ func (c *Client) ListTransferDetailsOut(
 //	}
 //	client.Query.ListUsersOrg(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	    request,
 //	)
 func (c *Client) ListUsersOrg(
@@ -1507,7 +1507,7 @@ func (c *Client) ListVendors(
 //	}
 //	client.Query.ListVendorsOrg(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	    request,
 //	)
 func (c *Client) ListVendorsOrg(
@@ -1624,7 +1624,7 @@ func (c *Client) ListVcardsTransactions(
 //	}
 //	client.Query.ListVcardsTransactionsOrg(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	    request,
 //	)
 func (c *Client) ListVcardsTransactionsOrg(
@@ -1663,7 +1663,7 @@ func (c *Client) ListVcardsTransactionsOrg(
 //	}
 //	client.Query.ListVcardsOrg(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	    request,
 //	)
 func (c *Client) ListVcardsOrg(

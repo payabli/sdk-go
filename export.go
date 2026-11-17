@@ -28,11 +28,11 @@ type ExportApplicationsRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -134,11 +134,11 @@ type ExportBatchDetailsRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -251,11 +251,11 @@ type ExportBatchDetailsOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -368,11 +368,11 @@ type ExportBatchesRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -475,11 +475,11 @@ type ExportBatchesOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
@@ -580,11 +580,11 @@ type ExportBatchesOutRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -668,11 +668,11 @@ type ExportBatchesOutOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -756,11 +756,11 @@ type ExportBillsRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -861,11 +861,11 @@ type ExportBillsOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -966,11 +966,11 @@ type ExportChargebacksRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -1092,11 +1092,11 @@ type ExportChargebacksOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -1218,11 +1218,11 @@ type ExportCustomersRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -1337,11 +1337,11 @@ type ExportCustomersOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -1456,11 +1456,11 @@ type ExportInvoicesRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -1585,11 +1585,11 @@ type ExportInvoicesOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -1714,11 +1714,11 @@ type ExportOrganizationsRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -1818,11 +1818,11 @@ type ExportPayoutRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -1921,11 +1921,11 @@ type ExportPayoutOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -2024,11 +2024,11 @@ type ExportPaypointsRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -2129,11 +2129,11 @@ type ExportSettlementsRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -2254,11 +2254,11 @@ type ExportSettlementsOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -2379,11 +2379,11 @@ type ExportSubscriptionsRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -2506,11 +2506,11 @@ type ExportSubscriptionsOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -2633,11 +2633,11 @@ type ExportTransactionsRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -2764,11 +2764,11 @@ type ExportTransactionsOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -2896,11 +2896,11 @@ type ExportTransferDetailsRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -3001,11 +3001,11 @@ type ExportTransfersRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -3107,11 +3107,11 @@ type ExportVendorsRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -3216,11 +3216,11 @@ type ExportVendorsOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//

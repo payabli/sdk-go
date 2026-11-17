@@ -72,11 +72,11 @@ type ListBillsRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response isn't filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
@@ -180,11 +180,11 @@ type ListBillsOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response isn't filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
@@ -1038,13 +1038,14 @@ var (
 	billQueryRecord2FieldPaypointLegalname  = big.NewInt(1 << 30)
 	billQueryRecord2FieldSource             = big.NewInt(1 << 31)
 	billQueryRecord2FieldStatus             = big.NewInt(1 << 32)
-	billQueryRecord2FieldTerms              = big.NewInt(1 << 33)
-	billQueryRecord2FieldTotalAmount        = big.NewInt(1 << 34)
-	billQueryRecord2FieldPaidAmount         = big.NewInt(1 << 35)
-	billQueryRecord2FieldOutstandingBalance = big.NewInt(1 << 36)
-	billQueryRecord2FieldTransaction        = big.NewInt(1 << 37)
-	billQueryRecord2FieldTransactions       = big.NewInt(1 << 38)
-	billQueryRecord2FieldVendor             = big.NewInt(1 << 39)
+	billQueryRecord2FieldStatusLabel        = big.NewInt(1 << 33)
+	billQueryRecord2FieldTerms              = big.NewInt(1 << 34)
+	billQueryRecord2FieldTotalAmount        = big.NewInt(1 << 35)
+	billQueryRecord2FieldPaidAmount         = big.NewInt(1 << 36)
+	billQueryRecord2FieldOutstandingBalance = big.NewInt(1 << 37)
+	billQueryRecord2FieldTransaction        = big.NewInt(1 << 38)
+	billQueryRecord2FieldTransactions       = big.NewInt(1 << 39)
+	billQueryRecord2FieldVendor             = big.NewInt(1 << 40)
 )
 
 type BillQueryRecord2 struct {
@@ -1107,6 +1108,11 @@ type BillQueryRecord2 struct {
 	// Source of the bill.
 	Source *string     `json:"Source,omitempty" url:"Source,omitempty"`
 	Status *Billstatus `json:"Status,omitempty" url:"Status,omitempty"`
+	// The name of the bill's `Status`: `Canceled`, `None`, `Active`, `Sent to Approval`,
+	// `Partially Approved`, `Rejected`, `Approved`, `In Transit`, `Partially Paid`, or `Paid`.
+	// Returns `null` for an unrecognized code. See
+	// [Pay Out statuses](/guides/pay-out-status-reference#bill-statuses).
+	StatusLabel *string `json:"StatusLabel,omitempty" url:"StatusLabel,omitempty"`
 	// The payment terms for invoice. If no terms were defined initially, then response data for this field will default to `N30`.
 	Terms *Terms `json:"Terms,omitempty" url:"Terms,omitempty"`
 	// Total amount of the bill including taxes and fees.
@@ -1359,6 +1365,13 @@ func (b *BillQueryRecord2) GetStatus() *Billstatus {
 		return nil
 	}
 	return b.Status
+}
+
+func (b *BillQueryRecord2) GetStatusLabel() *string {
+	if b == nil {
+		return nil
+	}
+	return b.StatusLabel
 }
 
 func (b *BillQueryRecord2) GetTerms() *Terms {
@@ -1653,6 +1666,13 @@ func (b *BillQueryRecord2) SetSource(source *string) {
 func (b *BillQueryRecord2) SetStatus(status *Billstatus) {
 	b.Status = status
 	b.require(billQueryRecord2FieldStatus)
+}
+
+// SetStatusLabel sets the StatusLabel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillQueryRecord2) SetStatusLabel(statusLabel *string) {
+	b.StatusLabel = statusLabel
+	b.require(billQueryRecord2FieldStatusLabel)
 }
 
 // SetTerms sets the Terms field and marks it as non-optional;
@@ -2700,24 +2720,25 @@ var (
 	billResponseDataFieldAdditionalData     = big.NewInt(1 << 19)
 	billResponseDataFieldVendor             = big.NewInt(1 << 20)
 	billResponseDataFieldStatus             = big.NewInt(1 << 21)
-	billResponseDataFieldCreatedAt          = big.NewInt(1 << 22)
-	billResponseDataFieldEndDate            = big.NewInt(1 << 23)
-	billResponseDataFieldLastUpdated        = big.NewInt(1 << 24)
-	billResponseDataFieldFrequency          = big.NewInt(1 << 25)
-	billResponseDataFieldTransaction        = big.NewInt(1 << 26)
-	billResponseDataFieldTransactions       = big.NewInt(1 << 27)
-	billResponseDataFieldBillEvents         = big.NewInt(1 << 28)
-	billResponseDataFieldBillApprovals      = big.NewInt(1 << 29)
-	billResponseDataFieldPaypointLegalname  = big.NewInt(1 << 30)
-	billResponseDataFieldPaypointDbaname    = big.NewInt(1 << 31)
-	billResponseDataFieldParentOrgId        = big.NewInt(1 << 32)
-	billResponseDataFieldParentOrgName      = big.NewInt(1 << 33)
-	billResponseDataFieldPaypointEntryname  = big.NewInt(1 << 34)
-	billResponseDataFieldPaylinkId          = big.NewInt(1 << 35)
-	billResponseDataFieldDocumentsRef       = big.NewInt(1 << 36)
-	billResponseDataFieldExternalPaypointId = big.NewInt(1 << 37)
-	billResponseDataFieldLotNumber          = big.NewInt(1 << 38)
-	billResponseDataFieldEntityId           = big.NewInt(1 << 39)
+	billResponseDataFieldStatusLabel        = big.NewInt(1 << 22)
+	billResponseDataFieldCreatedAt          = big.NewInt(1 << 23)
+	billResponseDataFieldEndDate            = big.NewInt(1 << 24)
+	billResponseDataFieldLastUpdated        = big.NewInt(1 << 25)
+	billResponseDataFieldFrequency          = big.NewInt(1 << 26)
+	billResponseDataFieldTransaction        = big.NewInt(1 << 27)
+	billResponseDataFieldTransactions       = big.NewInt(1 << 28)
+	billResponseDataFieldBillEvents         = big.NewInt(1 << 29)
+	billResponseDataFieldBillApprovals      = big.NewInt(1 << 30)
+	billResponseDataFieldPaypointLegalname  = big.NewInt(1 << 31)
+	billResponseDataFieldPaypointDbaname    = big.NewInt(1 << 32)
+	billResponseDataFieldParentOrgId        = big.NewInt(1 << 33)
+	billResponseDataFieldParentOrgName      = big.NewInt(1 << 34)
+	billResponseDataFieldPaypointEntryname  = big.NewInt(1 << 35)
+	billResponseDataFieldPaylinkId          = big.NewInt(1 << 36)
+	billResponseDataFieldDocumentsRef       = big.NewInt(1 << 37)
+	billResponseDataFieldExternalPaypointId = big.NewInt(1 << 38)
+	billResponseDataFieldLotNumber          = big.NewInt(1 << 39)
+	billResponseDataFieldEntityId           = big.NewInt(1 << 40)
 )
 
 type BillResponseData struct {
@@ -2758,7 +2779,12 @@ type BillResponseData struct {
 	AdditionalData *AdditionalDataMap  `json:"AdditionalData,omitempty" url:"AdditionalData,omitempty"`
 	Vendor         *VendorDataResponse `json:"Vendor,omitempty" url:"Vendor,omitempty"`
 	Status         *Billstatus         `json:"Status,omitempty" url:"Status,omitempty"`
-	CreatedAt      *CreatedAt          `json:"CreatedAt,omitempty" url:"CreatedAt,omitempty"`
+	// The name of the bill's `Status`: `Canceled`, `None`, `Active`, `Sent to Approval`,
+	// `Partially Approved`, `Rejected`, `Approved`, `In Transit`, `Partially Paid`, or `Paid`.
+	// Returns `null` for an unrecognized code. See
+	// [Pay Out statuses](/guides/pay-out-status-reference#bill-statuses).
+	StatusLabel *string    `json:"StatusLabel,omitempty" url:"StatusLabel,omitempty"`
+	CreatedAt   *CreatedAt `json:"CreatedAt,omitempty" url:"CreatedAt,omitempty"`
 	// End date for scheduled bills. Applied only in `Mode` = 1.
 	EndDate     *time.Time    `json:"EndDate,omitempty" url:"EndDate,omitempty" format:"date"`
 	LastUpdated *LastModified `json:"LastUpdated,omitempty" url:"LastUpdated,omitempty"`
@@ -2948,6 +2974,13 @@ func (b *BillResponseData) GetStatus() *Billstatus {
 		return nil
 	}
 	return b.Status
+}
+
+func (b *BillResponseData) GetStatusLabel() *string {
+	if b == nil {
+		return nil
+	}
+	return b.StatusLabel
 }
 
 func (b *BillResponseData) GetCreatedAt() *CreatedAt {
@@ -3242,6 +3275,13 @@ func (b *BillResponseData) SetVendor(vendor_ *VendorDataResponse) {
 func (b *BillResponseData) SetStatus(status *Billstatus) {
 	b.Status = status
 	b.require(billResponseDataFieldStatus)
+}
+
+// SetStatusLabel sets the StatusLabel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillResponseData) SetStatusLabel(statusLabel *string) {
+	b.StatusLabel = statusLabel
+	b.require(billResponseDataFieldStatusLabel)
 }
 
 // SetCreatedAt sets the CreatedAt field and marks it as non-optional;
@@ -4133,38 +4173,39 @@ var (
 	transactionOutQueryRecordFieldPaypointDbaname      = big.NewInt(1 << 4)
 	transactionOutQueryRecordFieldPaypointLegalname    = big.NewInt(1 << 5)
 	transactionOutQueryRecordFieldStatus               = big.NewInt(1 << 6)
-	transactionOutQueryRecordFieldLastUpdated          = big.NewInt(1 << 7)
-	transactionOutQueryRecordFieldTotalAmount          = big.NewInt(1 << 8)
-	transactionOutQueryRecordFieldNetAmount            = big.NewInt(1 << 9)
-	transactionOutQueryRecordFieldFeeAmount            = big.NewInt(1 << 10)
-	transactionOutQueryRecordFieldSource               = big.NewInt(1 << 11)
-	transactionOutQueryRecordFieldParentOrgName        = big.NewInt(1 << 12)
-	transactionOutQueryRecordFieldParentOrgId          = big.NewInt(1 << 13)
-	transactionOutQueryRecordFieldBatchNumber          = big.NewInt(1 << 14)
-	transactionOutQueryRecordFieldPaymentStatus        = big.NewInt(1 << 15)
-	transactionOutQueryRecordFieldPaymentMethod        = big.NewInt(1 << 16)
-	transactionOutQueryRecordFieldCardToken            = big.NewInt(1 << 17)
-	transactionOutQueryRecordFieldCheckNumber          = big.NewInt(1 << 18)
-	transactionOutQueryRecordFieldCheckData            = big.NewInt(1 << 19)
-	transactionOutQueryRecordFieldPaymentId            = big.NewInt(1 << 20)
-	transactionOutQueryRecordFieldPaymentData          = big.NewInt(1 << 21)
-	transactionOutQueryRecordFieldBills                = big.NewInt(1 << 22)
-	transactionOutQueryRecordFieldEvents               = big.NewInt(1 << 23)
-	transactionOutQueryRecordFieldExternalPaypointId   = big.NewInt(1 << 24)
-	transactionOutQueryRecordFieldEntryName            = big.NewInt(1 << 25)
-	transactionOutQueryRecordFieldGateway              = big.NewInt(1 << 26)
-	transactionOutQueryRecordFieldBatchId              = big.NewInt(1 << 27)
-	transactionOutQueryRecordFieldHasVcardTransactions = big.NewInt(1 << 28)
-	transactionOutQueryRecordFieldIsSameDayAch         = big.NewInt(1 << 29)
-	transactionOutQueryRecordFieldScheduleId           = big.NewInt(1 << 30)
-	transactionOutQueryRecordFieldSettlementStatus     = big.NewInt(1 << 31)
-	transactionOutQueryRecordFieldRiskFlagged          = big.NewInt(1 << 32)
-	transactionOutQueryRecordFieldRiskFlaggedOn        = big.NewInt(1 << 33)
-	transactionOutQueryRecordFieldRiskStatus           = big.NewInt(1 << 34)
-	transactionOutQueryRecordFieldRiskReason           = big.NewInt(1 << 35)
-	transactionOutQueryRecordFieldRiskAction           = big.NewInt(1 << 36)
-	transactionOutQueryRecordFieldRiskActionCode       = big.NewInt(1 << 37)
-	transactionOutQueryRecordFieldPayoutProgram        = big.NewInt(1 << 38)
+	transactionOutQueryRecordFieldStatusLabel          = big.NewInt(1 << 7)
+	transactionOutQueryRecordFieldLastUpdated          = big.NewInt(1 << 8)
+	transactionOutQueryRecordFieldTotalAmount          = big.NewInt(1 << 9)
+	transactionOutQueryRecordFieldNetAmount            = big.NewInt(1 << 10)
+	transactionOutQueryRecordFieldFeeAmount            = big.NewInt(1 << 11)
+	transactionOutQueryRecordFieldSource               = big.NewInt(1 << 12)
+	transactionOutQueryRecordFieldParentOrgName        = big.NewInt(1 << 13)
+	transactionOutQueryRecordFieldParentOrgId          = big.NewInt(1 << 14)
+	transactionOutQueryRecordFieldBatchNumber          = big.NewInt(1 << 15)
+	transactionOutQueryRecordFieldPaymentStatus        = big.NewInt(1 << 16)
+	transactionOutQueryRecordFieldPaymentMethod        = big.NewInt(1 << 17)
+	transactionOutQueryRecordFieldCardToken            = big.NewInt(1 << 18)
+	transactionOutQueryRecordFieldCheckNumber          = big.NewInt(1 << 19)
+	transactionOutQueryRecordFieldCheckData            = big.NewInt(1 << 20)
+	transactionOutQueryRecordFieldPaymentId            = big.NewInt(1 << 21)
+	transactionOutQueryRecordFieldPaymentData          = big.NewInt(1 << 22)
+	transactionOutQueryRecordFieldBills                = big.NewInt(1 << 23)
+	transactionOutQueryRecordFieldEvents               = big.NewInt(1 << 24)
+	transactionOutQueryRecordFieldExternalPaypointId   = big.NewInt(1 << 25)
+	transactionOutQueryRecordFieldEntryName            = big.NewInt(1 << 26)
+	transactionOutQueryRecordFieldGateway              = big.NewInt(1 << 27)
+	transactionOutQueryRecordFieldBatchId              = big.NewInt(1 << 28)
+	transactionOutQueryRecordFieldHasVcardTransactions = big.NewInt(1 << 29)
+	transactionOutQueryRecordFieldIsSameDayAch         = big.NewInt(1 << 30)
+	transactionOutQueryRecordFieldScheduleId           = big.NewInt(1 << 31)
+	transactionOutQueryRecordFieldSettlementStatus     = big.NewInt(1 << 32)
+	transactionOutQueryRecordFieldRiskFlagged          = big.NewInt(1 << 33)
+	transactionOutQueryRecordFieldRiskFlaggedOn        = big.NewInt(1 << 34)
+	transactionOutQueryRecordFieldRiskStatus           = big.NewInt(1 << 35)
+	transactionOutQueryRecordFieldRiskReason           = big.NewInt(1 << 36)
+	transactionOutQueryRecordFieldRiskAction           = big.NewInt(1 << 37)
+	transactionOutQueryRecordFieldRiskActionCode       = big.NewInt(1 << 38)
+	transactionOutQueryRecordFieldPayoutProgram        = big.NewInt(1 << 39)
 )
 
 type TransactionOutQueryRecord struct {
@@ -4179,6 +4220,11 @@ type TransactionOutQueryRecord struct {
 	PaypointLegalname *Legalname         `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
 	// Internal status of transaction.
 	Status *int `json:"Status,omitempty" url:"Status,omitempty"`
+	// The name of the payout's `Status`: `Canceled`, `Captured`, `Processing`, `Processed`,
+	// `Held`, `Paid`, `Authorized`, `Capturing`, `Returned`, `Rejected`, `Reissued`, or
+	// `Refunded`. Returns `null` for an unrecognized code. See
+	// [Pay Out statuses](/guides/pay-out-status-reference#payout-transaction-statuses).
+	StatusLabel *string `json:"StatusLabel,omitempty" url:"StatusLabel,omitempty"`
 	// Timestamp when payment record was updated, in UTC.
 	LastUpdated *LastModified `json:"LastUpdated,omitempty" url:"LastUpdated,omitempty"`
 	// Transaction total amount (including service fee or sub-charge).
@@ -4276,6 +4322,13 @@ func (t *TransactionOutQueryRecord) GetStatus() *int {
 		return nil
 	}
 	return t.Status
+}
+
+func (t *TransactionOutQueryRecord) GetStatusLabel() *string {
+	if t == nil {
+		return nil
+	}
+	return t.StatusLabel
 }
 
 func (t *TransactionOutQueryRecord) GetLastUpdated() *LastModified {
@@ -4563,6 +4616,13 @@ func (t *TransactionOutQueryRecord) SetPaypointLegalname(paypointLegalname *Lega
 func (t *TransactionOutQueryRecord) SetStatus(status *int) {
 	t.Status = status
 	t.require(transactionOutQueryRecordFieldStatus)
+}
+
+// SetStatusLabel sets the StatusLabel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransactionOutQueryRecord) SetStatusLabel(statusLabel *string) {
+	t.StatusLabel = statusLabel
+	t.require(transactionOutQueryRecordFieldStatusLabel)
 }
 
 // SetLastUpdated sets the LastUpdated field and marks it as non-optional;
@@ -4868,31 +4928,32 @@ var (
 	vendorDataResponseFieldBillingData           = big.NewInt(1 << 17)
 	vendorDataResponseFieldPaymentMethod         = big.NewInt(1 << 18)
 	vendorDataResponseFieldVendorStatus          = big.NewInt(1 << 19)
-	vendorDataResponseFieldVendorId              = big.NewInt(1 << 20)
-	vendorDataResponseFieldEnrollmentStatus      = big.NewInt(1 << 21)
-	vendorDataResponseFieldSummary               = big.NewInt(1 << 22)
-	vendorDataResponseFieldPaypointLegalname     = big.NewInt(1 << 23)
-	vendorDataResponseFieldPaypointDbaname       = big.NewInt(1 << 24)
-	vendorDataResponseFieldPaypointEntryname     = big.NewInt(1 << 25)
-	vendorDataResponseFieldParentOrgName         = big.NewInt(1 << 26)
-	vendorDataResponseFieldParentOrgId           = big.NewInt(1 << 27)
-	vendorDataResponseFieldCreatedDate           = big.NewInt(1 << 28)
-	vendorDataResponseFieldLastUpdated           = big.NewInt(1 << 29)
-	vendorDataResponseFieldRemitAddress1         = big.NewInt(1 << 30)
-	vendorDataResponseFieldRemitAddress2         = big.NewInt(1 << 31)
-	vendorDataResponseFieldRemitCity             = big.NewInt(1 << 32)
-	vendorDataResponseFieldRemitState            = big.NewInt(1 << 33)
-	vendorDataResponseFieldRemitZip              = big.NewInt(1 << 34)
-	vendorDataResponseFieldRemitCountry          = big.NewInt(1 << 35)
-	vendorDataResponseFieldPayeeName1            = big.NewInt(1 << 36)
-	vendorDataResponseFieldPayeeName2            = big.NewInt(1 << 37)
-	vendorDataResponseFieldCustomField1          = big.NewInt(1 << 38)
-	vendorDataResponseFieldCustomField2          = big.NewInt(1 << 39)
-	vendorDataResponseFieldCustomerVendorAccount = big.NewInt(1 << 40)
-	vendorDataResponseFieldInternalReferenceId   = big.NewInt(1 << 41)
-	vendorDataResponseFieldAdditionalData        = big.NewInt(1 << 42)
-	vendorDataResponseFieldExternalPaypointId    = big.NewInt(1 << 43)
-	vendorDataResponseFieldStoredMethods         = big.NewInt(1 << 44)
+	vendorDataResponseFieldVendorStatusLabel     = big.NewInt(1 << 20)
+	vendorDataResponseFieldVendorId              = big.NewInt(1 << 21)
+	vendorDataResponseFieldEnrollmentStatus      = big.NewInt(1 << 22)
+	vendorDataResponseFieldSummary               = big.NewInt(1 << 23)
+	vendorDataResponseFieldPaypointLegalname     = big.NewInt(1 << 24)
+	vendorDataResponseFieldPaypointDbaname       = big.NewInt(1 << 25)
+	vendorDataResponseFieldPaypointEntryname     = big.NewInt(1 << 26)
+	vendorDataResponseFieldParentOrgName         = big.NewInt(1 << 27)
+	vendorDataResponseFieldParentOrgId           = big.NewInt(1 << 28)
+	vendorDataResponseFieldCreatedDate           = big.NewInt(1 << 29)
+	vendorDataResponseFieldLastUpdated           = big.NewInt(1 << 30)
+	vendorDataResponseFieldRemitAddress1         = big.NewInt(1 << 31)
+	vendorDataResponseFieldRemitAddress2         = big.NewInt(1 << 32)
+	vendorDataResponseFieldRemitCity             = big.NewInt(1 << 33)
+	vendorDataResponseFieldRemitState            = big.NewInt(1 << 34)
+	vendorDataResponseFieldRemitZip              = big.NewInt(1 << 35)
+	vendorDataResponseFieldRemitCountry          = big.NewInt(1 << 36)
+	vendorDataResponseFieldPayeeName1            = big.NewInt(1 << 37)
+	vendorDataResponseFieldPayeeName2            = big.NewInt(1 << 38)
+	vendorDataResponseFieldCustomField1          = big.NewInt(1 << 39)
+	vendorDataResponseFieldCustomField2          = big.NewInt(1 << 40)
+	vendorDataResponseFieldCustomerVendorAccount = big.NewInt(1 << 41)
+	vendorDataResponseFieldInternalReferenceId   = big.NewInt(1 << 42)
+	vendorDataResponseFieldAdditionalData        = big.NewInt(1 << 43)
+	vendorDataResponseFieldExternalPaypointId    = big.NewInt(1 << 44)
+	vendorDataResponseFieldStoredMethods         = big.NewInt(1 << 45)
 )
 
 type VendorDataResponse struct {
@@ -4930,7 +4991,10 @@ type VendorDataResponse struct {
 	// Preferred payment method for vendor.
 	PaymentMethod VendorDataResponsePaymentMethod `json:"PaymentMethod" url:"PaymentMethod"`
 	VendorStatus  Vendorstatus                    `json:"VendorStatus" url:"VendorStatus"`
-	VendorId      Vendorid                        `json:"VendorId" url:"VendorId"`
+	// The name of the `VendorStatus`: `Inactive`, `Active`, or `Deleted`. Returns `null` for
+	// an unrecognized code.
+	VendorStatusLabel *string  `json:"VendorStatusLabel,omitempty" url:"VendorStatusLabel,omitempty"`
+	VendorId          Vendorid `json:"VendorId" url:"VendorId"`
 	// Vendor enrollment status
 	EnrollmentStatus *string `json:"EnrollmentStatus,omitempty" url:"EnrollmentStatus,omitempty"`
 	// Vendor bill summary statistics
@@ -5115,6 +5179,13 @@ func (v *VendorDataResponse) GetVendorStatus() Vendorstatus {
 		return 0
 	}
 	return v.VendorStatus
+}
+
+func (v *VendorDataResponse) GetVendorStatusLabel() *string {
+	if v == nil {
+		return nil
+	}
+	return v.VendorStatusLabel
 }
 
 func (v *VendorDataResponse) GetVendorId() Vendorid {
@@ -5444,6 +5515,13 @@ func (v *VendorDataResponse) SetPaymentMethod(paymentMethod VendorDataResponsePa
 func (v *VendorDataResponse) SetVendorStatus(vendorStatus Vendorstatus) {
 	v.VendorStatus = vendorStatus
 	v.require(vendorDataResponseFieldVendorStatus)
+}
+
+// SetVendorStatusLabel sets the VendorStatusLabel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorDataResponse) SetVendorStatusLabel(vendorStatusLabel *string) {
+	v.VendorStatusLabel = vendorStatusLabel
+	v.require(vendorDataResponseFieldVendorStatusLabel)
 }
 
 // SetVendorId sets the VendorId field and marks it as non-optional;

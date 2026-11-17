@@ -59,7 +59,7 @@ func NewClient(options *core.RequestOptions) *Client {
 //	}
 //	client.Billing.ListProfiles(
 //	    context.TODO(),
-//	    int64(123),
+//	    int64(900123),
 //	    request,
 //	)
 func (c *Client) ListProfiles(
@@ -97,7 +97,7 @@ func (c *Client) ListProfiles(
 //	    context.TODO(),
 //	    payabli.GetProfileBillingRequestServiceGroupPayIn.Ptr(),
 //	    payabli.GetProfileBillingRequestEntityTypeOrganization.Ptr(),
-//	    int64(123),
+//	    int64(900123),
 //	)
 func (c *Client) GetProfile(
 	ctx context.Context,

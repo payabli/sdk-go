@@ -126,7 +126,7 @@ func (c *Client) SaveLogo(
 //
 //	request := &payabli.PaypointMoveRequest{
 //	    EntryPoint: "8cfec329267",
-//	    NewParentOrganizationId: 123,
+//	    NewParentOrganizationId: 900123,
 //	    NotificationRequest: &payabli.NotificationRequest{
 //	        NotificationUrl: "https://webhook-test.yoursie.com",
 //	        WebHeaderParameters: []*payabli.WebHeaderParameter{

@@ -1140,24 +1140,25 @@ var (
 	billDetailResponseFieldPaypointLegalname    = big.NewInt(1 << 20)
 	billDetailResponseFieldSource               = big.NewInt(1 << 21)
 	billDetailResponseFieldStatus               = big.NewInt(1 << 22)
-	billDetailResponseFieldStatusText           = big.NewInt(1 << 23)
-	billDetailResponseFieldTotalAmount          = big.NewInt(1 << 24)
-	billDetailResponseFieldVendor               = big.NewInt(1 << 25)
-	billDetailResponseFieldExternalPaypointId   = big.NewInt(1 << 26)
-	billDetailResponseFieldEntryName            = big.NewInt(1 << 27)
-	billDetailResponseFieldBatchId              = big.NewInt(1 << 28)
-	billDetailResponseFieldHasVcardTransactions = big.NewInt(1 << 29)
-	billDetailResponseFieldIsSameDayAch         = big.NewInt(1 << 30)
-	billDetailResponseFieldScheduleId           = big.NewInt(1 << 31)
-	billDetailResponseFieldSettlementStatus     = big.NewInt(1 << 32)
-	billDetailResponseFieldSettlementStatusName = big.NewInt(1 << 33)
-	billDetailResponseFieldRiskFlagged          = big.NewInt(1 << 34)
-	billDetailResponseFieldRiskFlaggedOn        = big.NewInt(1 << 35)
-	billDetailResponseFieldRiskStatus           = big.NewInt(1 << 36)
-	billDetailResponseFieldRiskReason           = big.NewInt(1 << 37)
-	billDetailResponseFieldRiskAction           = big.NewInt(1 << 38)
-	billDetailResponseFieldRiskActionCode       = big.NewInt(1 << 39)
-	billDetailResponseFieldEntityId             = big.NewInt(1 << 40)
+	billDetailResponseFieldStatusLabel          = big.NewInt(1 << 23)
+	billDetailResponseFieldStatusText           = big.NewInt(1 << 24)
+	billDetailResponseFieldTotalAmount          = big.NewInt(1 << 25)
+	billDetailResponseFieldVendor               = big.NewInt(1 << 26)
+	billDetailResponseFieldExternalPaypointId   = big.NewInt(1 << 27)
+	billDetailResponseFieldEntryName            = big.NewInt(1 << 28)
+	billDetailResponseFieldBatchId              = big.NewInt(1 << 29)
+	billDetailResponseFieldHasVcardTransactions = big.NewInt(1 << 30)
+	billDetailResponseFieldIsSameDayAch         = big.NewInt(1 << 31)
+	billDetailResponseFieldScheduleId           = big.NewInt(1 << 32)
+	billDetailResponseFieldSettlementStatus     = big.NewInt(1 << 33)
+	billDetailResponseFieldSettlementStatusName = big.NewInt(1 << 34)
+	billDetailResponseFieldRiskFlagged          = big.NewInt(1 << 35)
+	billDetailResponseFieldRiskFlaggedOn        = big.NewInt(1 << 36)
+	billDetailResponseFieldRiskStatus           = big.NewInt(1 << 37)
+	billDetailResponseFieldRiskReason           = big.NewInt(1 << 38)
+	billDetailResponseFieldRiskAction           = big.NewInt(1 << 39)
+	billDetailResponseFieldRiskActionCode       = big.NewInt(1 << 40)
+	billDetailResponseFieldEntityId             = big.NewInt(1 << 41)
 )
 
 type BillDetailResponse struct {
@@ -1207,6 +1208,11 @@ type BillDetailResponse struct {
 	// | **OnHold** | 4 | A payout has been placed on hold and requires review before proceeding. | OnHold |
 	// | **Paid** | 5 | A payout has been paid and the recipient has redeemed the funds. | Paid (check cleared, vCard used, ACH settled) |
 	Status *int `json:"Status,omitempty" url:"Status,omitempty"`
+	// The name of the payout's `Status`: `Canceled`, `Captured`, `Processing`, `Processed`,
+	// `Held`, `Paid`, `Authorized`, `Capturing`, `Returned`, `Rejected`, `Reissued`, or
+	// `Refunded`. Returns `null` for an unrecognized code. See
+	// [Pay Out statuses](/guides/pay-out-status-reference#payout-transaction-statuses).
+	StatusLabel *string `json:"StatusLabel,omitempty" url:"StatusLabel,omitempty"`
 	// Text description of the payout transaction status.
 	StatusText *string `json:"StatusText,omitempty" url:"StatusText,omitempty"`
 	// Transaction total amount (including service fee or sub-charge).
@@ -1396,6 +1402,13 @@ func (b *BillDetailResponse) GetStatus() *int {
 		return nil
 	}
 	return b.Status
+}
+
+func (b *BillDetailResponse) GetStatusLabel() *string {
+	if b == nil {
+		return nil
+	}
+	return b.StatusLabel
 }
 
 func (b *BillDetailResponse) GetStatusText() *string {
@@ -1697,6 +1710,13 @@ func (b *BillDetailResponse) SetSource(source *Source) {
 func (b *BillDetailResponse) SetStatus(status *int) {
 	b.Status = status
 	b.require(billDetailResponseFieldStatus)
+}
+
+// SetStatusLabel sets the StatusLabel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BillDetailResponse) SetStatusLabel(statusLabel *string) {
+	b.StatusLabel = statusLabel
+	b.require(billDetailResponseFieldStatusLabel)
 }
 
 // SetStatusText sets the StatusText field and marks it as non-optional;

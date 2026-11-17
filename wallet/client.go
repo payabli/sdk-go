@@ -53,7 +53,7 @@ func NewClient(options *core.RequestOptions) *Client {
 //	        true,
 //	    ),
 //	    OrgId: payabli.Int64(
-//	        int64(123),
+//	        int64(900123),
 //	    ),
 //	}
 //	client.Wallet.ConfigureApplePayOrganization(
@@ -120,7 +120,7 @@ func (c *Client) ConfigureApplePayPaypoint(
 //	        true,
 //	    ),
 //	    OrgId: payabli.Int64(
-//	        int64(123),
+//	        int64(900123),
 //	    ),
 //	}
 //	client.Wallet.ConfigureGooglePayOrganization(

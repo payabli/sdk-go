@@ -227,7 +227,7 @@ func NewClient(options *core.RequestOptions) *Client {
 //	            "37615",
 //	        ),
 //	        OrgId: payabli.Int64(
-//	            int64(123),
+//	            int64(900123),
 //	        ),
 //	        Ownership: []payabli.ApplicationDataPayInOwnershipItem{
 //	            &payabli.Owners{
@@ -348,7 +348,7 @@ func NewClient(options *core.RequestOptions) *Client {
 //	            "Sunshine LLC",
 //	        ),
 //	        TemplateId: payabli.Int64(
-//	            int64(22),
+//	            int64(900022),
 //	        ),
 //	        Ticketamt: payabli.Float64(
 //	            1000,
@@ -389,6 +389,8 @@ func (c *Client) AddApplication(
 // </Warning>
 //
 // Updates a boarding application by ID. This endpoint requires an application API token.
+//
+// If you send `ownership`, it replaces the application's owners. Include every owner, and set `primaryOwner` again on the primary owner, or the application loses its primary owner. If you leave `ownership` out, the owners don't change.
 //
 // Example:
 //
@@ -564,7 +566,7 @@ func (c *Client) GetByIdLinkApplication(
 //
 //	client.Boarding.GetByTemplateIdLinkApplication(
 //	    context.TODO(),
-//	    80,
+//	    900022,
 //	)
 func (c *Client) GetByTemplateIdLinkApplication(
 	ctx context.Context,
@@ -676,7 +678,7 @@ func (c *Client) GetLinkApplication(
 //	}
 //	client.Boarding.ListApplications(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	    request,
 //	)
 func (c *Client) ListApplications(
@@ -721,7 +723,7 @@ func (c *Client) ListApplications(
 //	}
 //	client.Boarding.ListBoardingLinks(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	    request,
 //	)
 func (c *Client) ListBoardingLinks(
@@ -755,7 +757,7 @@ func (c *Client) ListBoardingLinks(
 //
 //	request := &payabli.CreateApplicationFromPaypointRequest{
 //	    PaypointId: int64(3040),
-//	    TemplateId: int64(456),
+//	    TemplateId: int64(900022),
 //	    RecipientEmail: "merchant@example.com",
 //	    ReturnBoardingAccessInfoInLine: payabli.Bool(
 //	        true,

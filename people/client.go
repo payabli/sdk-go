@@ -346,7 +346,7 @@ func (c *Client) GetPersonUnmasked(
 //
 //	request := &payabli.SearchPeopleRequest{
 //	    Entry: "8cfec329267",
-//	    OrgId: int64(123),
+//	    OrgId: int64(900123),
 //	    Body: &payabli.PeopleSearchRequest{
 //	        Unknown: map[string]any{
 //	            "firstName": "Marcus",
@@ -383,7 +383,7 @@ func (c *Client) SearchPeople(
 //
 //	request := &payabli.SearchPeopleUnmaskedRequest{
 //	    Entry: "8cfec329267",
-//	    OrgId: int64(123),
+//	    OrgId: int64(900123),
 //	    Body: &payabli.PeopleSearchRequest{
 //	        Unknown: map[string]any{
 //	            "firstName": "Marcus",

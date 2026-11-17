@@ -66,7 +66,7 @@ func NewClient(options *core.RequestOptions) *Client {
 //	        true,
 //	    ),
 //	    OrgId: payabli.Int64(
-//	        int64(123),
+//	        int64(900123),
 //	    ),
 //	}
 //	client.Notificationlogs.SearchNotificationLogs(

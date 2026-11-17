@@ -53,7 +53,7 @@ func NewClient(options *core.RequestOptions) *Client {
 //
 //	client.Templates.DeleteTemplate(
 //	    context.TODO(),
-//	    80,
+//	    900022,
 //	)
 func (c *Client) DeleteTemplate(
 	ctx context.Context,
@@ -84,7 +84,7 @@ func (c *Client) DeleteTemplate(
 //
 //	client.Templates.GetlinkTemplate(
 //	    context.TODO(),
-//	    80,
+//	    900022,
 //	    true,
 //	)
 func (c *Client) GetlinkTemplate(
@@ -119,7 +119,7 @@ func (c *Client) GetlinkTemplate(
 //
 //	client.Templates.GetTemplate(
 //	    context.TODO(),
-//	    80,
+//	    900022,
 //	)
 func (c *Client) GetTemplate(
 	ctx context.Context,
@@ -161,7 +161,7 @@ func (c *Client) GetTemplate(
 //	}
 //	client.Templates.ListTemplates(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	    request,
 //	)
 func (c *Client) ListTemplates(

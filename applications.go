@@ -4592,9 +4592,10 @@ func (s *StatusHistoryResult) String() string {
 // with `isSigner` on the business, and Payabli records the signer's identity
 // from their person record and business link. Keep the signer's details
 // current with the people endpoints before you submit, because you can't
-// correct them here. Provide a signature with `signature` and
-// `signatureType`, or, if the signer signed in your own e-sign tool, send
-// `signedDocumentReference` instead. Signer identity fields such as `name`,
+// correct them here. Every submit needs a signature in `signature` and
+// `signatureType`. If the signer also signed in your own e-sign tool, send
+// `signedDocumentReference` too, and Payabli records it with the
+// signature. Signer identity fields such as `name`,
 // `email`, `ssn`, and `address` aren't part of this object, and Payabli
 // ignores them if you send them.
 var (
@@ -4611,11 +4612,11 @@ var (
 type SubmitSigner struct {
 	// The reference of an owner linked to this business, to make them the signer before the application is submitted. Works only while the application is a draft. Leave it out when the business already has a signer. If the person isn't linked to this business, the request fails with `404`. If the person isn't an owner, the request fails with `422` and the error `SIGNER_NOT_OWNER`.
 	PersonReference *string `json:"personReference,omitempty" url:"personReference,omitempty"`
-	// The signature. For `type` and `checkbox`, send the signer's name. For `draw`, send the image as a base64 data URL, such as the output of `canvas.toDataURL()`. Required unless you send `signedDocumentReference`.
-	Signature *string `json:"signature,omitempty" url:"signature,omitempty"`
-	// How the signer signed. Required with `signature`.
-	SignatureType *SignatureType `json:"signatureType,omitempty" url:"signatureType,omitempty"`
-	// The reference for a document the signer signed in your own e-sign tool, such as a DocuSign envelope ID. Send it instead of `signature` and `signatureType`.
+	// The signature. For `type` and `checkbox`, send the signer's name. For `draw`, send the image as a base64 data URL, such as the output of `canvas.toDataURL()`. Can't be empty or only whitespace.
+	Signature string `json:"signature" url:"signature"`
+	// How the signer signed.
+	SignatureType SignatureType `json:"signatureType" url:"signatureType"`
+	// The reference for a document the signer signed in your own e-sign tool, such as a DocuSign envelope ID. Payabli records it with the signature. It doesn't replace `signature` and `signatureType`, which every submit needs.
 	SignedDocumentReference *string `json:"signedDocumentReference,omitempty" url:"signedDocumentReference,omitempty"`
 	// Whether the signer accepted the terms. If you leave it out, Payabli records `false`.
 	Acceptance *bool `json:"acceptance,omitempty" url:"acceptance,omitempty"`
@@ -4646,16 +4647,16 @@ func (s *SubmitSigner) GetPersonReference() *string {
 	return s.PersonReference
 }
 
-func (s *SubmitSigner) GetSignature() *string {
+func (s *SubmitSigner) GetSignature() string {
 	if s == nil {
-		return nil
+		return ""
 	}
 	return s.Signature
 }
 
-func (s *SubmitSigner) GetSignatureType() *SignatureType {
+func (s *SubmitSigner) GetSignatureType() SignatureType {
 	if s == nil {
-		return nil
+		return ""
 	}
 	return s.SignatureType
 }
@@ -4718,14 +4719,14 @@ func (s *SubmitSigner) SetPersonReference(personReference *string) {
 
 // SetSignature sets the Signature field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SubmitSigner) SetSignature(signature *string) {
+func (s *SubmitSigner) SetSignature(signature string) {
 	s.Signature = signature
 	s.require(submitSignerFieldSignature)
 }
 
 // SetSignatureType sets the SignatureType field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
-func (s *SubmitSigner) SetSignatureType(signatureType *SignatureType) {
+func (s *SubmitSigner) SetSignatureType(signatureType SignatureType) {
 	s.SignatureType = signatureType
 	s.require(submitSignerFieldSignatureType)
 }

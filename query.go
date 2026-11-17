@@ -32,11 +32,11 @@ type ListBatchDetailsRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -172,11 +172,11 @@ type ListBatchDetailsOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for more information.
@@ -311,11 +311,11 @@ type ListBatchesRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -430,11 +430,11 @@ type ListBatchesOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -547,6 +547,7 @@ type ListBatchesOutRequest struct {
 	// **Accepted field names**:
 	//
 	// - `batchDate` (gt, ge, lt, le, eq, ne)
+	// - `transferDate` (gt, ge, lt, le, eq, ne)
 	// - `batchNumber` (ne, eq)
 	// - `batchAmount` (gt, ge, lt, le, eq, ne)
 	// - `parentOrgId` (ne, eq, nin, in)
@@ -629,11 +630,11 @@ type ListBatchesOutOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -642,6 +643,7 @@ type ListBatchesOutOrgRequest struct {
 	// **Accepted field names**:
 	//
 	// - `batchDate` (gt, ge, lt, le, eq, ne)
+	// - `transferDate` (gt, ge, lt, le, eq, ne)
 	// - `batchNumber` (ne, eq)
 	// - `batchAmount` (gt, ge, lt, le, eq, ne)
 	// - `parentOrgId` (ne, eq, nin, in)
@@ -724,11 +726,11 @@ type ListChargebacksRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
@@ -864,11 +866,11 @@ type ListChargebacksOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info> See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
 	//
@@ -1004,11 +1006,11 @@ type ListCustomersRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for more details.
@@ -1134,11 +1136,11 @@ type ListCustomersOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for more details.
@@ -1429,11 +1431,11 @@ type ListDevicesOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/devices/org/236?parameters=status=1&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/devices/org/900123?parameters=status=1&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/devices/org/236?status=1&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/devices/org/900123?status=1&limitRecord=20
 	//
 	// </Info>
 	//
@@ -1587,11 +1589,11 @@ type ListNotificationReportsRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -1679,11 +1681,11 @@ type ListNotificationReportsOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
@@ -1771,11 +1773,11 @@ type ListNotificationsRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
@@ -1866,11 +1868,11 @@ type ListNotificationsOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
@@ -1964,11 +1966,11 @@ type ListOrganizationsRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// **Accepted field names:**
@@ -2081,11 +2083,11 @@ type ListPayoutRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -2278,11 +2280,11 @@ type ListPayoutOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// Accepted field names:
@@ -2602,11 +2604,11 @@ type ListPayoutSubscriptionsOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/payoutsubscriptions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/payoutsubscriptions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/payoutsubscriptions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/payoutsubscriptions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for more information.
@@ -2730,11 +2732,11 @@ type ListPaypointsRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// **Accepted field names:**
@@ -2852,11 +2854,11 @@ type ListSettlementsRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -2992,11 +2994,11 @@ type ListSettlementsOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -3132,11 +3134,11 @@ type ListSubscriptionsRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for more information.
@@ -3274,11 +3276,11 @@ type ListSubscriptionsOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for more information.
@@ -3416,11 +3418,11 @@ type ListTransactionsRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for more information.
@@ -3567,11 +3569,11 @@ type ListTransactionsOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for more information.
@@ -3719,11 +3721,11 @@ type ListTransfersPaypointRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	//
@@ -3817,11 +3819,11 @@ type ListTransferDetailsOutRequest struct {
 	//
 	//	For example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// Accepted field names:
@@ -3904,11 +3906,11 @@ type ListTransfersRequest struct {
 	//
 	//	For example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// Accepted field names:
@@ -4006,11 +4008,11 @@ type ListTransfersRequestOrg struct {
 	//
 	//	For example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// Accepted field names:
@@ -4102,11 +4104,11 @@ type ListTransfersOutOrgRequest struct {
 	//
 	//	For example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// Accepted field names:
@@ -4190,11 +4192,11 @@ type ListTransfersOutPaypointRequest struct {
 	//
 	//	For example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// Accepted field names:
@@ -4276,11 +4278,11 @@ type ListUsersOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
@@ -4373,11 +4375,11 @@ type ListUsersPaypointRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
@@ -4473,11 +4475,11 @@ type ListVcardsRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// Accepted field names:
@@ -4587,11 +4589,11 @@ type ListVcardsOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// Accepted field names:
@@ -4807,11 +4809,11 @@ type ListVcardsTransactionsOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/vcardsTransactions/org/236?parameters=transactionAmount(gt)=100&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/vcardsTransactions/org/900123?parameters=transactionAmount(gt)=100&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/vcardsTransactions/org/236?transactionAmount(gt)=100&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/vcardsTransactions/org/900123?transactionAmount(gt)=100&limitRecord=20
 	//
 	// </Info>
 	//
@@ -4917,11 +4919,11 @@ type ListVendorsRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
@@ -5037,11 +5039,11 @@ type ListVendorsOrgRequest struct {
 	//
 	//	Because of a technical limitation, you can't make a request that includes filters from the API console on this page. The response won't be filtered. Instead, copy the request, remove `parameters=` and run the request in a different client, for example:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?parameters=totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?parameters=totalAmount(gt)=1000&limitRecord=20
 	//
 	//	should become:
 	//
-	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/236?totalAmount(gt)=1000&limitRecord=20
+	//	--url https://api-sandbox.payabli.com/api/Query/transactions/org/900123?totalAmount(gt)=1000&limitRecord=20
 	//
 	// </Info>
 	// See [Filters and Conditions Reference](/developers/developer-guides/pay-ops-reporting-engine-overview#filters-and-conditions-reference) for help.
@@ -9310,38 +9312,39 @@ func (p *PayoutSubscriptionPaymentDetailsPascal) String() string {
 var (
 	payoutSubscriptionQueryRecordPascalFieldIdOutSubscription     = big.NewInt(1 << 0)
 	payoutSubscriptionQueryRecordPascalFieldStatus                = big.NewInt(1 << 1)
-	payoutSubscriptionQueryRecordPascalFieldEvents                = big.NewInt(1 << 2)
-	payoutSubscriptionQueryRecordPascalFieldVendor                = big.NewInt(1 << 3)
-	payoutSubscriptionQueryRecordPascalFieldBillData              = big.NewInt(1 << 4)
-	payoutSubscriptionQueryRecordPascalFieldExternalPaypointId    = big.NewInt(1 << 5)
-	payoutSubscriptionQueryRecordPascalFieldSameDayAch            = big.NewInt(1 << 6)
-	payoutSubscriptionQueryRecordPascalFieldDoNotCreateBills      = big.NewInt(1 << 7)
-	payoutSubscriptionQueryRecordPascalFieldAllowDuplicatedBills  = big.NewInt(1 << 8)
-	payoutSubscriptionQueryRecordPascalFieldAutoConvertSameDayAch = big.NewInt(1 << 9)
-	payoutSubscriptionQueryRecordPascalFieldMethod                = big.NewInt(1 << 10)
-	payoutSubscriptionQueryRecordPascalFieldPaypointId            = big.NewInt(1 << 11)
-	payoutSubscriptionQueryRecordPascalFieldTotalAmount           = big.NewInt(1 << 12)
-	payoutSubscriptionQueryRecordPascalFieldNetAmount             = big.NewInt(1 << 13)
-	payoutSubscriptionQueryRecordPascalFieldFeeAmount             = big.NewInt(1 << 14)
-	payoutSubscriptionQueryRecordPascalFieldPaymentData           = big.NewInt(1 << 15)
-	payoutSubscriptionQueryRecordPascalFieldStartDate             = big.NewInt(1 << 16)
-	payoutSubscriptionQueryRecordPascalFieldEndDate               = big.NewInt(1 << 17)
-	payoutSubscriptionQueryRecordPascalFieldNextDate              = big.NewInt(1 << 18)
-	payoutSubscriptionQueryRecordPascalFieldFrequency             = big.NewInt(1 << 19)
-	payoutSubscriptionQueryRecordPascalFieldTotalCycles           = big.NewInt(1 << 20)
-	payoutSubscriptionQueryRecordPascalFieldLeftCycles            = big.NewInt(1 << 21)
-	payoutSubscriptionQueryRecordPascalFieldLastRun               = big.NewInt(1 << 22)
-	payoutSubscriptionQueryRecordPascalFieldEntrypageId           = big.NewInt(1 << 23)
-	payoutSubscriptionQueryRecordPascalFieldUntilCancelled        = big.NewInt(1 << 24)
-	payoutSubscriptionQueryRecordPascalFieldLastUpdated           = big.NewInt(1 << 25)
-	payoutSubscriptionQueryRecordPascalFieldCreatedAt             = big.NewInt(1 << 26)
-	payoutSubscriptionQueryRecordPascalFieldPaypointLegalname     = big.NewInt(1 << 27)
-	payoutSubscriptionQueryRecordPascalFieldPaypointDbaname       = big.NewInt(1 << 28)
-	payoutSubscriptionQueryRecordPascalFieldPaypointEntryname     = big.NewInt(1 << 29)
-	payoutSubscriptionQueryRecordPascalFieldParentOrgName         = big.NewInt(1 << 30)
-	payoutSubscriptionQueryRecordPascalFieldParentOrgId           = big.NewInt(1 << 31)
-	payoutSubscriptionQueryRecordPascalFieldSource                = big.NewInt(1 << 32)
-	payoutSubscriptionQueryRecordPascalFieldSubscriptionType      = big.NewInt(1 << 33)
+	payoutSubscriptionQueryRecordPascalFieldStatusLabel           = big.NewInt(1 << 2)
+	payoutSubscriptionQueryRecordPascalFieldEvents                = big.NewInt(1 << 3)
+	payoutSubscriptionQueryRecordPascalFieldVendor                = big.NewInt(1 << 4)
+	payoutSubscriptionQueryRecordPascalFieldBillData              = big.NewInt(1 << 5)
+	payoutSubscriptionQueryRecordPascalFieldExternalPaypointId    = big.NewInt(1 << 6)
+	payoutSubscriptionQueryRecordPascalFieldSameDayAch            = big.NewInt(1 << 7)
+	payoutSubscriptionQueryRecordPascalFieldDoNotCreateBills      = big.NewInt(1 << 8)
+	payoutSubscriptionQueryRecordPascalFieldAllowDuplicatedBills  = big.NewInt(1 << 9)
+	payoutSubscriptionQueryRecordPascalFieldAutoConvertSameDayAch = big.NewInt(1 << 10)
+	payoutSubscriptionQueryRecordPascalFieldMethod                = big.NewInt(1 << 11)
+	payoutSubscriptionQueryRecordPascalFieldPaypointId            = big.NewInt(1 << 12)
+	payoutSubscriptionQueryRecordPascalFieldTotalAmount           = big.NewInt(1 << 13)
+	payoutSubscriptionQueryRecordPascalFieldNetAmount             = big.NewInt(1 << 14)
+	payoutSubscriptionQueryRecordPascalFieldFeeAmount             = big.NewInt(1 << 15)
+	payoutSubscriptionQueryRecordPascalFieldPaymentData           = big.NewInt(1 << 16)
+	payoutSubscriptionQueryRecordPascalFieldStartDate             = big.NewInt(1 << 17)
+	payoutSubscriptionQueryRecordPascalFieldEndDate               = big.NewInt(1 << 18)
+	payoutSubscriptionQueryRecordPascalFieldNextDate              = big.NewInt(1 << 19)
+	payoutSubscriptionQueryRecordPascalFieldFrequency             = big.NewInt(1 << 20)
+	payoutSubscriptionQueryRecordPascalFieldTotalCycles           = big.NewInt(1 << 21)
+	payoutSubscriptionQueryRecordPascalFieldLeftCycles            = big.NewInt(1 << 22)
+	payoutSubscriptionQueryRecordPascalFieldLastRun               = big.NewInt(1 << 23)
+	payoutSubscriptionQueryRecordPascalFieldEntrypageId           = big.NewInt(1 << 24)
+	payoutSubscriptionQueryRecordPascalFieldUntilCancelled        = big.NewInt(1 << 25)
+	payoutSubscriptionQueryRecordPascalFieldLastUpdated           = big.NewInt(1 << 26)
+	payoutSubscriptionQueryRecordPascalFieldCreatedAt             = big.NewInt(1 << 27)
+	payoutSubscriptionQueryRecordPascalFieldPaypointLegalname     = big.NewInt(1 << 28)
+	payoutSubscriptionQueryRecordPascalFieldPaypointDbaname       = big.NewInt(1 << 29)
+	payoutSubscriptionQueryRecordPascalFieldPaypointEntryname     = big.NewInt(1 << 30)
+	payoutSubscriptionQueryRecordPascalFieldParentOrgName         = big.NewInt(1 << 31)
+	payoutSubscriptionQueryRecordPascalFieldParentOrgId           = big.NewInt(1 << 32)
+	payoutSubscriptionQueryRecordPascalFieldSource                = big.NewInt(1 << 33)
+	payoutSubscriptionQueryRecordPascalFieldSubscriptionType      = big.NewInt(1 << 34)
 )
 
 type PayoutSubscriptionQueryRecordPascal struct {
@@ -9351,6 +9354,9 @@ type PayoutSubscriptionQueryRecordPascal struct {
 	// - 0: Paused
 	// - 1: Active
 	Status *int `json:"Status,omitempty" url:"Status,omitempty"`
+	// The name of the payout subscription's `Status`: `Paused`, `Active`, `Completed`, `Marked
+	// for Deletion`, or `In Progress`. Returns `null` for an unrecognized code.
+	StatusLabel *string `json:"StatusLabel,omitempty" url:"StatusLabel,omitempty"`
 	// Events associated with the payout subscription.
 	Events []*GeneralEvents   `json:"Events,omitempty" url:"Events,omitempty"`
 	Vendor *VendorQueryRecord `json:"Vendor,omitempty" url:"Vendor,omitempty"`
@@ -9427,6 +9433,13 @@ func (p *PayoutSubscriptionQueryRecordPascal) GetStatus() *int {
 		return nil
 	}
 	return p.Status
+}
+
+func (p *PayoutSubscriptionQueryRecordPascal) GetStatusLabel() *string {
+	if p == nil {
+		return nil
+	}
+	return p.StatusLabel
 }
 
 func (p *PayoutSubscriptionQueryRecordPascal) GetEvents() []*GeneralEvents {
@@ -9679,6 +9692,13 @@ func (p *PayoutSubscriptionQueryRecordPascal) SetIdOutSubscription(idOutSubscrip
 func (p *PayoutSubscriptionQueryRecordPascal) SetStatus(status *int) {
 	p.Status = status
 	p.require(payoutSubscriptionQueryRecordPascalFieldStatus)
+}
+
+// SetStatusLabel sets the StatusLabel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionQueryRecordPascal) SetStatusLabel(statusLabel *string) {
+	p.StatusLabel = statusLabel
+	p.require(payoutSubscriptionQueryRecordPascalFieldStatusLabel)
 }
 
 // SetEvents sets the Events field and marks it as non-optional;
@@ -10195,30 +10215,32 @@ var (
 	queryBatchesOutResponseRecordsItemFieldBatchProcessingRecords = big.NewInt(1 << 14)
 	queryBatchesOutResponseRecordsItemFieldBatchRecords           = big.NewInt(1 << 15)
 	queryBatchesOutResponseRecordsItemFieldBatchStatus            = big.NewInt(1 << 16)
-	queryBatchesOutResponseRecordsItemFieldBatchStatusText        = big.NewInt(1 << 17)
-	queryBatchesOutResponseRecordsItemFieldCardAmount             = big.NewInt(1 << 18)
-	queryBatchesOutResponseRecordsItemFieldCardRecords            = big.NewInt(1 << 19)
-	queryBatchesOutResponseRecordsItemFieldCardStatus             = big.NewInt(1 << 20)
-	queryBatchesOutResponseRecordsItemFieldCardStatusText         = big.NewInt(1 << 21)
-	queryBatchesOutResponseRecordsItemFieldCheckAmount            = big.NewInt(1 << 22)
-	queryBatchesOutResponseRecordsItemFieldCheckRecords           = big.NewInt(1 << 23)
-	queryBatchesOutResponseRecordsItemFieldCheckStatus            = big.NewInt(1 << 24)
-	queryBatchesOutResponseRecordsItemFieldCheckStatusText        = big.NewInt(1 << 25)
-	queryBatchesOutResponseRecordsItemFieldEntryName              = big.NewInt(1 << 26)
-	queryBatchesOutResponseRecordsItemFieldExternalPaypointId     = big.NewInt(1 << 27)
-	queryBatchesOutResponseRecordsItemFieldIdBatch                = big.NewInt(1 << 28)
-	queryBatchesOutResponseRecordsItemFieldParentOrgName          = big.NewInt(1 << 29)
-	queryBatchesOutResponseRecordsItemFieldPaypointDba            = big.NewInt(1 << 30)
-	queryBatchesOutResponseRecordsItemFieldPaypointId             = big.NewInt(1 << 31)
-	queryBatchesOutResponseRecordsItemFieldPaypointName           = big.NewInt(1 << 32)
-	queryBatchesOutResponseRecordsItemFieldVcardAmount            = big.NewInt(1 << 33)
-	queryBatchesOutResponseRecordsItemFieldVcardRecords           = big.NewInt(1 << 34)
-	queryBatchesOutResponseRecordsItemFieldVcardStatus            = big.NewInt(1 << 35)
-	queryBatchesOutResponseRecordsItemFieldVcardStatusText        = big.NewInt(1 << 36)
-	queryBatchesOutResponseRecordsItemFieldWireAmount             = big.NewInt(1 << 37)
-	queryBatchesOutResponseRecordsItemFieldWireRecords            = big.NewInt(1 << 38)
-	queryBatchesOutResponseRecordsItemFieldWireStatus             = big.NewInt(1 << 39)
-	queryBatchesOutResponseRecordsItemFieldWireStatusText         = big.NewInt(1 << 40)
+	queryBatchesOutResponseRecordsItemFieldBatchStatusLabel       = big.NewInt(1 << 17)
+	queryBatchesOutResponseRecordsItemFieldBatchStatusText        = big.NewInt(1 << 18)
+	queryBatchesOutResponseRecordsItemFieldCardAmount             = big.NewInt(1 << 19)
+	queryBatchesOutResponseRecordsItemFieldCardRecords            = big.NewInt(1 << 20)
+	queryBatchesOutResponseRecordsItemFieldCardStatus             = big.NewInt(1 << 21)
+	queryBatchesOutResponseRecordsItemFieldCardStatusText         = big.NewInt(1 << 22)
+	queryBatchesOutResponseRecordsItemFieldCheckAmount            = big.NewInt(1 << 23)
+	queryBatchesOutResponseRecordsItemFieldCheckRecords           = big.NewInt(1 << 24)
+	queryBatchesOutResponseRecordsItemFieldCheckStatus            = big.NewInt(1 << 25)
+	queryBatchesOutResponseRecordsItemFieldCheckStatusText        = big.NewInt(1 << 26)
+	queryBatchesOutResponseRecordsItemFieldEntryName              = big.NewInt(1 << 27)
+	queryBatchesOutResponseRecordsItemFieldExternalPaypointId     = big.NewInt(1 << 28)
+	queryBatchesOutResponseRecordsItemFieldIdBatch                = big.NewInt(1 << 29)
+	queryBatchesOutResponseRecordsItemFieldParentOrgName          = big.NewInt(1 << 30)
+	queryBatchesOutResponseRecordsItemFieldPaypointDba            = big.NewInt(1 << 31)
+	queryBatchesOutResponseRecordsItemFieldPaypointId             = big.NewInt(1 << 32)
+	queryBatchesOutResponseRecordsItemFieldPaypointName           = big.NewInt(1 << 33)
+	queryBatchesOutResponseRecordsItemFieldTransferDate           = big.NewInt(1 << 34)
+	queryBatchesOutResponseRecordsItemFieldVcardAmount            = big.NewInt(1 << 35)
+	queryBatchesOutResponseRecordsItemFieldVcardRecords           = big.NewInt(1 << 36)
+	queryBatchesOutResponseRecordsItemFieldVcardStatus            = big.NewInt(1 << 37)
+	queryBatchesOutResponseRecordsItemFieldVcardStatusText        = big.NewInt(1 << 38)
+	queryBatchesOutResponseRecordsItemFieldWireAmount             = big.NewInt(1 << 39)
+	queryBatchesOutResponseRecordsItemFieldWireRecords            = big.NewInt(1 << 40)
+	queryBatchesOutResponseRecordsItemFieldWireStatus             = big.NewInt(1 << 41)
+	queryBatchesOutResponseRecordsItemFieldWireStatusText         = big.NewInt(1 << 42)
 )
 
 type QueryBatchesOutResponseRecordsItem struct {
@@ -10243,6 +10265,10 @@ type QueryBatchesOutResponseRecordsItem struct {
 	BatchRecords *int `json:"BatchRecords,omitempty" url:"BatchRecords,omitempty"`
 	// The batch status. See [Batch Status](/developers/references/money-out-statuses#batch-statuses) for more.
 	BatchStatus *int `json:"BatchStatus,omitempty" url:"BatchStatus,omitempty"`
+	// The name of the `BatchStatus`: `Open`, `Closed`, `Funded`, `Processed`, `Paid`,
+	// `Canceled`, `Funding Pending`, `Held`, or `Released`. Returns `null` for an unrecognized
+	// code. See [Pay Out statuses](/guides/pay-out-status-reference#batch-statuses).
+	BatchStatusLabel *string `json:"BatchStatusLabel,omitempty" url:"BatchStatusLabel,omitempty"`
 	// A text description of the batch status.
 	BatchStatusText    *string             `json:"BatchStatusText,omitempty" url:"BatchStatusText,omitempty"`
 	CardAmount         *float64            `json:"CardAmount,omitempty" url:"CardAmount,omitempty"`
@@ -10264,15 +10290,19 @@ type QueryBatchesOutResponseRecordsItem struct {
 	// Paypoint ID.
 	PaypointId *int `json:"PaypointId,omitempty" url:"PaypointId,omitempty"`
 	// Paypoint legal name.
-	PaypointName    *string  `json:"PaypointName,omitempty" url:"PaypointName,omitempty"`
-	VcardAmount     *float64 `json:"VcardAmount,omitempty" url:"VcardAmount,omitempty"`
-	VcardRecords    *int     `json:"VcardRecords,omitempty" url:"VcardRecords,omitempty"`
-	VcardStatus     *int     `json:"VcardStatus,omitempty" url:"VcardStatus,omitempty"`
-	VcardStatusText *string  `json:"VcardStatusText,omitempty" url:"VcardStatusText,omitempty"`
-	WireAmount      *float64 `json:"WireAmount,omitempty" url:"WireAmount,omitempty"`
-	WireRecords     *int     `json:"WireRecords,omitempty" url:"WireRecords,omitempty"`
-	WireStatus      *int     `json:"WireStatus,omitempty" url:"WireStatus,omitempty"`
-	WireStatusText  *string  `json:"WireStatusText,omitempty" url:"WireStatusText,omitempty"`
+	PaypointName *string `json:"PaypointName,omitempty" url:"PaypointName,omitempty"`
+	// The date and time, in UTC, of the transfer that funds the batch. For a batch that
+	// hasn't been funded yet, this field returns the time of the request instead, and
+	// `transferDate` filters don't match that value.
+	TransferDate    *time.Time `json:"TransferDate,omitempty" url:"TransferDate,omitempty"`
+	VcardAmount     *float64   `json:"VcardAmount,omitempty" url:"VcardAmount,omitempty"`
+	VcardRecords    *int       `json:"VcardRecords,omitempty" url:"VcardRecords,omitempty"`
+	VcardStatus     *int       `json:"VcardStatus,omitempty" url:"VcardStatus,omitempty"`
+	VcardStatusText *string    `json:"VcardStatusText,omitempty" url:"VcardStatusText,omitempty"`
+	WireAmount      *float64   `json:"WireAmount,omitempty" url:"WireAmount,omitempty"`
+	WireRecords     *int       `json:"WireRecords,omitempty" url:"WireRecords,omitempty"`
+	WireStatus      *int       `json:"WireStatus,omitempty" url:"WireStatus,omitempty"`
+	WireStatusText  *string    `json:"WireStatusText,omitempty" url:"WireStatusText,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -10400,6 +10430,13 @@ func (q *QueryBatchesOutResponseRecordsItem) GetBatchStatus() *int {
 	return q.BatchStatus
 }
 
+func (q *QueryBatchesOutResponseRecordsItem) GetBatchStatusLabel() *string {
+	if q == nil {
+		return nil
+	}
+	return q.BatchStatusLabel
+}
+
 func (q *QueryBatchesOutResponseRecordsItem) GetBatchStatusText() *string {
 	if q == nil {
 		return nil
@@ -10510,6 +10547,13 @@ func (q *QueryBatchesOutResponseRecordsItem) GetPaypointName() *string {
 		return nil
 	}
 	return q.PaypointName
+}
+
+func (q *QueryBatchesOutResponseRecordsItem) GetTransferDate() *time.Time {
+	if q == nil {
+		return nil
+	}
+	return q.TransferDate
 }
 
 func (q *QueryBatchesOutResponseRecordsItem) GetVcardAmount() *float64 {
@@ -10701,6 +10745,13 @@ func (q *QueryBatchesOutResponseRecordsItem) SetBatchStatus(batchStatus *int) {
 	q.require(queryBatchesOutResponseRecordsItemFieldBatchStatus)
 }
 
+// SetBatchStatusLabel sets the BatchStatusLabel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetBatchStatusLabel(batchStatusLabel *string) {
+	q.BatchStatusLabel = batchStatusLabel
+	q.require(queryBatchesOutResponseRecordsItemFieldBatchStatusLabel)
+}
+
 // SetBatchStatusText sets the BatchStatusText field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (q *QueryBatchesOutResponseRecordsItem) SetBatchStatusText(batchStatusText *string) {
@@ -10813,6 +10864,13 @@ func (q *QueryBatchesOutResponseRecordsItem) SetPaypointName(paypointName *strin
 	q.require(queryBatchesOutResponseRecordsItemFieldPaypointName)
 }
 
+// SetTransferDate sets the TransferDate field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryBatchesOutResponseRecordsItem) SetTransferDate(transferDate *time.Time) {
+	q.TransferDate = transferDate
+	q.require(queryBatchesOutResponseRecordsItemFieldTransferDate)
+}
+
 // SetVcardAmount sets the VcardAmount field and marks it as non-optional;
 // this prevents an empty or null value for this field from being omitted during serialization.
 func (q *QueryBatchesOutResponseRecordsItem) SetVcardAmount(vcardAmount *float64) {
@@ -10873,7 +10931,8 @@ func (q *QueryBatchesOutResponseRecordsItem) UnmarshalJSON(data []byte) error {
 	type embed QueryBatchesOutResponseRecordsItem
 	var unmarshaler = struct {
 		embed
-		BatchDate *internal.DateTime `json:"BatchDate,omitempty"`
+		BatchDate    *internal.DateTime `json:"BatchDate,omitempty"`
+		TransferDate *internal.DateTime `json:"TransferDate,omitempty"`
 	}{
 		embed: embed(*q),
 	}
@@ -10882,6 +10941,7 @@ func (q *QueryBatchesOutResponseRecordsItem) UnmarshalJSON(data []byte) error {
 	}
 	*q = QueryBatchesOutResponseRecordsItem(unmarshaler.embed)
 	q.BatchDate = unmarshaler.BatchDate.TimePtr()
+	q.TransferDate = unmarshaler.TransferDate.TimePtr()
 	extraProperties, err := internal.ExtractExtraProperties(data, *q)
 	if err != nil {
 		return err
@@ -10895,10 +10955,12 @@ func (q *QueryBatchesOutResponseRecordsItem) MarshalJSON() ([]byte, error) {
 	type embed QueryBatchesOutResponseRecordsItem
 	var marshaler = struct {
 		embed
-		BatchDate *internal.DateTime `json:"BatchDate,omitempty"`
+		BatchDate    *internal.DateTime `json:"BatchDate,omitempty"`
+		TransferDate *internal.DateTime `json:"TransferDate,omitempty"`
 	}{
-		embed:     embed(*q),
-		BatchDate: internal.NewOptionalDateTime(q.BatchDate),
+		embed:        embed(*q),
+		BatchDate:    internal.NewOptionalDateTime(q.BatchDate),
+		TransferDate: internal.NewOptionalDateTime(q.TransferDate),
 	}
 	explicitMarshaler := internal.HandleExplicitFields(marshaler, q.explicitFields)
 	return json.Marshal(explicitMarshaler)
@@ -14025,49 +14087,50 @@ var (
 	queryPayoutTransactionRecordsItemFieldPaypointLegalname    = big.NewInt(1 << 5)
 	queryPayoutTransactionRecordsItemFieldPaypointId           = big.NewInt(1 << 6)
 	queryPayoutTransactionRecordsItemFieldStatus               = big.NewInt(1 << 7)
-	queryPayoutTransactionRecordsItemFieldPaymentId            = big.NewInt(1 << 8)
-	queryPayoutTransactionRecordsItemFieldOrderId              = big.NewInt(1 << 9)
-	queryPayoutTransactionRecordsItemFieldTransId              = big.NewInt(1 << 10)
-	queryPayoutTransactionRecordsItemFieldTransStatus          = big.NewInt(1 << 11)
-	queryPayoutTransactionRecordsItemFieldTransStatusDetail    = big.NewInt(1 << 12)
-	queryPayoutTransactionRecordsItemFieldTransStatusName      = big.NewInt(1 << 13)
-	queryPayoutTransactionRecordsItemFieldTransStatusCategory  = big.NewInt(1 << 14)
-	queryPayoutTransactionRecordsItemFieldLastUpdated          = big.NewInt(1 << 15)
-	queryPayoutTransactionRecordsItemFieldTotalAmount          = big.NewInt(1 << 16)
-	queryPayoutTransactionRecordsItemFieldNetAmount            = big.NewInt(1 << 17)
-	queryPayoutTransactionRecordsItemFieldFeeAmount            = big.NewInt(1 << 18)
-	queryPayoutTransactionRecordsItemFieldSource               = big.NewInt(1 << 19)
-	queryPayoutTransactionRecordsItemFieldParentOrgName        = big.NewInt(1 << 20)
-	queryPayoutTransactionRecordsItemFieldParentOrgId          = big.NewInt(1 << 21)
-	queryPayoutTransactionRecordsItemFieldBatchNumber          = big.NewInt(1 << 22)
-	queryPayoutTransactionRecordsItemFieldPaymentStatus        = big.NewInt(1 << 23)
-	queryPayoutTransactionRecordsItemFieldPaymentMethod        = big.NewInt(1 << 24)
-	queryPayoutTransactionRecordsItemFieldCardToken            = big.NewInt(1 << 25)
-	queryPayoutTransactionRecordsItemFieldCheckNumber          = big.NewInt(1 << 26)
-	queryPayoutTransactionRecordsItemFieldCheckData            = big.NewInt(1 << 27)
-	queryPayoutTransactionRecordsItemFieldPaymentData          = big.NewInt(1 << 28)
-	queryPayoutTransactionRecordsItemFieldBills                = big.NewInt(1 << 29)
-	queryPayoutTransactionRecordsItemFieldEvents               = big.NewInt(1 << 30)
-	queryPayoutTransactionRecordsItemFieldExternalPaypointId   = big.NewInt(1 << 31)
-	queryPayoutTransactionRecordsItemFieldEntryName            = big.NewInt(1 << 32)
-	queryPayoutTransactionRecordsItemFieldGateway              = big.NewInt(1 << 33)
-	queryPayoutTransactionRecordsItemFieldBatchId              = big.NewInt(1 << 34)
-	queryPayoutTransactionRecordsItemFieldHasVcardTransactions = big.NewInt(1 << 35)
-	queryPayoutTransactionRecordsItemFieldIsSameDayAch         = big.NewInt(1 << 36)
-	queryPayoutTransactionRecordsItemFieldScheduleId           = big.NewInt(1 << 37)
-	queryPayoutTransactionRecordsItemFieldSettlementStatus     = big.NewInt(1 << 38)
-	queryPayoutTransactionRecordsItemFieldSettlementStatusName = big.NewInt(1 << 39)
-	queryPayoutTransactionRecordsItemFieldSettlementDate       = big.NewInt(1 << 40)
-	queryPayoutTransactionRecordsItemFieldRiskFlagged          = big.NewInt(1 << 41)
-	queryPayoutTransactionRecordsItemFieldRiskFlaggedOn        = big.NewInt(1 << 42)
-	queryPayoutTransactionRecordsItemFieldRiskStatus           = big.NewInt(1 << 43)
-	queryPayoutTransactionRecordsItemFieldRiskReason           = big.NewInt(1 << 44)
-	queryPayoutTransactionRecordsItemFieldRiskAction           = big.NewInt(1 << 45)
-	queryPayoutTransactionRecordsItemFieldRiskActionCode       = big.NewInt(1 << 46)
-	queryPayoutTransactionRecordsItemFieldPayoutProgram        = big.NewInt(1 << 47)
-	queryPayoutTransactionRecordsItemFieldAchTraceNumber       = big.NewInt(1 << 48)
-	queryPayoutTransactionRecordsItemFieldEntityId             = big.NewInt(1 << 49)
-	queryPayoutTransactionRecordsItemFieldAllowedActions       = big.NewInt(1 << 50)
+	queryPayoutTransactionRecordsItemFieldStatusLabel          = big.NewInt(1 << 8)
+	queryPayoutTransactionRecordsItemFieldPaymentId            = big.NewInt(1 << 9)
+	queryPayoutTransactionRecordsItemFieldOrderId              = big.NewInt(1 << 10)
+	queryPayoutTransactionRecordsItemFieldTransId              = big.NewInt(1 << 11)
+	queryPayoutTransactionRecordsItemFieldTransStatus          = big.NewInt(1 << 12)
+	queryPayoutTransactionRecordsItemFieldTransStatusDetail    = big.NewInt(1 << 13)
+	queryPayoutTransactionRecordsItemFieldTransStatusName      = big.NewInt(1 << 14)
+	queryPayoutTransactionRecordsItemFieldTransStatusCategory  = big.NewInt(1 << 15)
+	queryPayoutTransactionRecordsItemFieldLastUpdated          = big.NewInt(1 << 16)
+	queryPayoutTransactionRecordsItemFieldTotalAmount          = big.NewInt(1 << 17)
+	queryPayoutTransactionRecordsItemFieldNetAmount            = big.NewInt(1 << 18)
+	queryPayoutTransactionRecordsItemFieldFeeAmount            = big.NewInt(1 << 19)
+	queryPayoutTransactionRecordsItemFieldSource               = big.NewInt(1 << 20)
+	queryPayoutTransactionRecordsItemFieldParentOrgName        = big.NewInt(1 << 21)
+	queryPayoutTransactionRecordsItemFieldParentOrgId          = big.NewInt(1 << 22)
+	queryPayoutTransactionRecordsItemFieldBatchNumber          = big.NewInt(1 << 23)
+	queryPayoutTransactionRecordsItemFieldPaymentStatus        = big.NewInt(1 << 24)
+	queryPayoutTransactionRecordsItemFieldPaymentMethod        = big.NewInt(1 << 25)
+	queryPayoutTransactionRecordsItemFieldCardToken            = big.NewInt(1 << 26)
+	queryPayoutTransactionRecordsItemFieldCheckNumber          = big.NewInt(1 << 27)
+	queryPayoutTransactionRecordsItemFieldCheckData            = big.NewInt(1 << 28)
+	queryPayoutTransactionRecordsItemFieldPaymentData          = big.NewInt(1 << 29)
+	queryPayoutTransactionRecordsItemFieldBills                = big.NewInt(1 << 30)
+	queryPayoutTransactionRecordsItemFieldEvents               = big.NewInt(1 << 31)
+	queryPayoutTransactionRecordsItemFieldExternalPaypointId   = big.NewInt(1 << 32)
+	queryPayoutTransactionRecordsItemFieldEntryName            = big.NewInt(1 << 33)
+	queryPayoutTransactionRecordsItemFieldGateway              = big.NewInt(1 << 34)
+	queryPayoutTransactionRecordsItemFieldBatchId              = big.NewInt(1 << 35)
+	queryPayoutTransactionRecordsItemFieldHasVcardTransactions = big.NewInt(1 << 36)
+	queryPayoutTransactionRecordsItemFieldIsSameDayAch         = big.NewInt(1 << 37)
+	queryPayoutTransactionRecordsItemFieldScheduleId           = big.NewInt(1 << 38)
+	queryPayoutTransactionRecordsItemFieldSettlementStatus     = big.NewInt(1 << 39)
+	queryPayoutTransactionRecordsItemFieldSettlementStatusName = big.NewInt(1 << 40)
+	queryPayoutTransactionRecordsItemFieldSettlementDate       = big.NewInt(1 << 41)
+	queryPayoutTransactionRecordsItemFieldRiskFlagged          = big.NewInt(1 << 42)
+	queryPayoutTransactionRecordsItemFieldRiskFlaggedOn        = big.NewInt(1 << 43)
+	queryPayoutTransactionRecordsItemFieldRiskStatus           = big.NewInt(1 << 44)
+	queryPayoutTransactionRecordsItemFieldRiskReason           = big.NewInt(1 << 45)
+	queryPayoutTransactionRecordsItemFieldRiskAction           = big.NewInt(1 << 46)
+	queryPayoutTransactionRecordsItemFieldRiskActionCode       = big.NewInt(1 << 47)
+	queryPayoutTransactionRecordsItemFieldPayoutProgram        = big.NewInt(1 << 48)
+	queryPayoutTransactionRecordsItemFieldAchTraceNumber       = big.NewInt(1 << 49)
+	queryPayoutTransactionRecordsItemFieldEntityId             = big.NewInt(1 << 50)
+	queryPayoutTransactionRecordsItemFieldAllowedActions       = big.NewInt(1 << 51)
 )
 
 type QueryPayoutTransactionRecordsItem struct {
@@ -14084,9 +14147,14 @@ type QueryPayoutTransactionRecordsItem struct {
 	PaypointLegalname *Legalname  `json:"PaypointLegalname,omitempty" url:"PaypointLegalname,omitempty"`
 	PaypointId        *PaypointId `json:"PaypointId,omitempty" url:"PaypointId,omitempty"`
 	// Internal status of transaction.
-	Status    *int             `json:"Status,omitempty" url:"Status,omitempty"`
-	PaymentId *PaymentIdString `json:"PaymentId,omitempty" url:"PaymentId,omitempty"`
-	OrderId   *OrderId         `json:"orderId,omitempty" url:"orderId,omitempty"`
+	Status *int `json:"Status,omitempty" url:"Status,omitempty"`
+	// The name of the payout's `Status`: `Canceled`, `Captured`, `Processing`, `Processed`,
+	// `Held`, `Paid`, `Authorized`, `Capturing`, `Returned`, `Rejected`, `Reissued`, or
+	// `Refunded`. Returns `null` for an unrecognized code. See
+	// [Pay Out statuses](/guides/pay-out-status-reference#payout-transaction-statuses).
+	StatusLabel *string          `json:"StatusLabel,omitempty" url:"StatusLabel,omitempty"`
+	PaymentId   *PaymentIdString `json:"PaymentId,omitempty" url:"PaymentId,omitempty"`
+	OrderId     *OrderId         `json:"orderId,omitempty" url:"orderId,omitempty"`
 	// ID of the transaction linked to this payout, when applicable.
 	TransId *string `json:"TransId,omitempty" url:"TransId,omitempty"`
 	// Status of the linked transaction.
@@ -14209,6 +14277,13 @@ func (q *QueryPayoutTransactionRecordsItem) GetStatus() *int {
 		return nil
 	}
 	return q.Status
+}
+
+func (q *QueryPayoutTransactionRecordsItem) GetStatusLabel() *string {
+	if q == nil {
+		return nil
+	}
+	return q.StatusLabel
 }
 
 func (q *QueryPayoutTransactionRecordsItem) GetPaymentId() *PaymentIdString {
@@ -14580,6 +14655,13 @@ func (q *QueryPayoutTransactionRecordsItem) SetPaypointId(paypointId *PaypointId
 func (q *QueryPayoutTransactionRecordsItem) SetStatus(status *int) {
 	q.Status = status
 	q.require(queryPayoutTransactionRecordsItemFieldStatus)
+}
+
+// SetStatusLabel sets the StatusLabel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (q *QueryPayoutTransactionRecordsItem) SetStatusLabel(statusLabel *string) {
+	q.StatusLabel = statusLabel
+	q.require(queryPayoutTransactionRecordsItemFieldStatusLabel)
 }
 
 // SetPaymentId sets the PaymentId field and marks it as non-optional;
@@ -22069,46 +22151,47 @@ var (
 	transferOutDetailRecordFieldPaypointLegalname    = big.NewInt(1 << 20)
 	transferOutDetailRecordFieldPaypointId           = big.NewInt(1 << 21)
 	transferOutDetailRecordFieldStatus               = big.NewInt(1 << 22)
-	transferOutDetailRecordFieldPaymentId            = big.NewInt(1 << 23)
-	transferOutDetailRecordFieldTransId              = big.NewInt(1 << 24)
-	transferOutDetailRecordFieldTransStatus          = big.NewInt(1 << 25)
-	transferOutDetailRecordFieldTransStatusDetail    = big.NewInt(1 << 26)
-	transferOutDetailRecordFieldTransStatusName      = big.NewInt(1 << 27)
-	transferOutDetailRecordFieldTransStatusCategory  = big.NewInt(1 << 28)
-	transferOutDetailRecordFieldLastUpdated          = big.NewInt(1 << 29)
-	transferOutDetailRecordFieldTotalAmount          = big.NewInt(1 << 30)
-	transferOutDetailRecordFieldNetAmount            = big.NewInt(1 << 31)
-	transferOutDetailRecordFieldFeeAmount            = big.NewInt(1 << 32)
-	transferOutDetailRecordFieldSource               = big.NewInt(1 << 33)
-	transferOutDetailRecordFieldParentOrgName        = big.NewInt(1 << 34)
-	transferOutDetailRecordFieldParentOrgId          = big.NewInt(1 << 35)
-	transferOutDetailRecordFieldBatchNumber          = big.NewInt(1 << 36)
-	transferOutDetailRecordFieldPaymentStatus        = big.NewInt(1 << 37)
-	transferOutDetailRecordFieldPaymentMethod        = big.NewInt(1 << 38)
-	transferOutDetailRecordFieldCardToken            = big.NewInt(1 << 39)
-	transferOutDetailRecordFieldCheckNumber          = big.NewInt(1 << 40)
-	transferOutDetailRecordFieldCheckData            = big.NewInt(1 << 41)
-	transferOutDetailRecordFieldPaymentData          = big.NewInt(1 << 42)
-	transferOutDetailRecordFieldBills                = big.NewInt(1 << 43)
-	transferOutDetailRecordFieldEvents               = big.NewInt(1 << 44)
-	transferOutDetailRecordFieldExternalPaypointId   = big.NewInt(1 << 45)
-	transferOutDetailRecordFieldEntryName            = big.NewInt(1 << 46)
-	transferOutDetailRecordFieldGateway              = big.NewInt(1 << 47)
-	transferOutDetailRecordFieldBatchId              = big.NewInt(1 << 48)
-	transferOutDetailRecordFieldHasVcardTransactions = big.NewInt(1 << 49)
-	transferOutDetailRecordFieldIsSameDayAch         = big.NewInt(1 << 50)
-	transferOutDetailRecordFieldScheduleId           = big.NewInt(1 << 51)
-	transferOutDetailRecordFieldSettlementStatus     = big.NewInt(1 << 52)
-	transferOutDetailRecordFieldSettlementStatusName = big.NewInt(1 << 53)
-	transferOutDetailRecordFieldSettlementDate       = big.NewInt(1 << 54)
-	transferOutDetailRecordFieldRiskFlagged          = big.NewInt(1 << 55)
-	transferOutDetailRecordFieldRiskFlaggedOn        = big.NewInt(1 << 56)
-	transferOutDetailRecordFieldRiskStatus           = big.NewInt(1 << 57)
-	transferOutDetailRecordFieldRiskReason           = big.NewInt(1 << 58)
-	transferOutDetailRecordFieldRiskAction           = big.NewInt(1 << 59)
-	transferOutDetailRecordFieldRiskActionCode       = big.NewInt(1 << 60)
-	transferOutDetailRecordFieldPayoutProgram        = big.NewInt(1 << 61)
-	transferOutDetailRecordFieldAchTraceNumber       = big.NewInt(1 << 62)
+	transferOutDetailRecordFieldStatusLabel          = big.NewInt(1 << 23)
+	transferOutDetailRecordFieldPaymentId            = big.NewInt(1 << 24)
+	transferOutDetailRecordFieldTransId              = big.NewInt(1 << 25)
+	transferOutDetailRecordFieldTransStatus          = big.NewInt(1 << 26)
+	transferOutDetailRecordFieldTransStatusDetail    = big.NewInt(1 << 27)
+	transferOutDetailRecordFieldTransStatusName      = big.NewInt(1 << 28)
+	transferOutDetailRecordFieldTransStatusCategory  = big.NewInt(1 << 29)
+	transferOutDetailRecordFieldLastUpdated          = big.NewInt(1 << 30)
+	transferOutDetailRecordFieldTotalAmount          = big.NewInt(1 << 31)
+	transferOutDetailRecordFieldNetAmount            = big.NewInt(1 << 32)
+	transferOutDetailRecordFieldFeeAmount            = big.NewInt(1 << 33)
+	transferOutDetailRecordFieldSource               = big.NewInt(1 << 34)
+	transferOutDetailRecordFieldParentOrgName        = big.NewInt(1 << 35)
+	transferOutDetailRecordFieldParentOrgId          = big.NewInt(1 << 36)
+	transferOutDetailRecordFieldBatchNumber          = big.NewInt(1 << 37)
+	transferOutDetailRecordFieldPaymentStatus        = big.NewInt(1 << 38)
+	transferOutDetailRecordFieldPaymentMethod        = big.NewInt(1 << 39)
+	transferOutDetailRecordFieldCardToken            = big.NewInt(1 << 40)
+	transferOutDetailRecordFieldCheckNumber          = big.NewInt(1 << 41)
+	transferOutDetailRecordFieldCheckData            = big.NewInt(1 << 42)
+	transferOutDetailRecordFieldPaymentData          = big.NewInt(1 << 43)
+	transferOutDetailRecordFieldBills                = big.NewInt(1 << 44)
+	transferOutDetailRecordFieldEvents               = big.NewInt(1 << 45)
+	transferOutDetailRecordFieldExternalPaypointId   = big.NewInt(1 << 46)
+	transferOutDetailRecordFieldEntryName            = big.NewInt(1 << 47)
+	transferOutDetailRecordFieldGateway              = big.NewInt(1 << 48)
+	transferOutDetailRecordFieldBatchId              = big.NewInt(1 << 49)
+	transferOutDetailRecordFieldHasVcardTransactions = big.NewInt(1 << 50)
+	transferOutDetailRecordFieldIsSameDayAch         = big.NewInt(1 << 51)
+	transferOutDetailRecordFieldScheduleId           = big.NewInt(1 << 52)
+	transferOutDetailRecordFieldSettlementStatus     = big.NewInt(1 << 53)
+	transferOutDetailRecordFieldSettlementStatusName = big.NewInt(1 << 54)
+	transferOutDetailRecordFieldSettlementDate       = big.NewInt(1 << 55)
+	transferOutDetailRecordFieldRiskFlagged          = big.NewInt(1 << 56)
+	transferOutDetailRecordFieldRiskFlaggedOn        = big.NewInt(1 << 57)
+	transferOutDetailRecordFieldRiskStatus           = big.NewInt(1 << 58)
+	transferOutDetailRecordFieldRiskReason           = big.NewInt(1 << 59)
+	transferOutDetailRecordFieldRiskAction           = big.NewInt(1 << 60)
+	transferOutDetailRecordFieldRiskActionCode       = big.NewInt(1 << 61)
+	transferOutDetailRecordFieldPayoutProgram        = big.NewInt(1 << 62)
+	transferOutDetailRecordFieldAchTraceNumber       = big.NewInt(0).Lsh(big.NewInt(1), 63)
 )
 
 type TransferOutDetailRecord struct {
@@ -22158,6 +22241,11 @@ type TransferOutDetailRecord struct {
 	PaypointId *int `json:"PaypointId,omitempty" url:"PaypointId,omitempty"`
 	// Status of the transfer detail.
 	Status *int `json:"Status,omitempty" url:"Status,omitempty"`
+	// The name of the payout's `Status`: `Canceled`, `Captured`, `Processing`, `Processed`,
+	// `Held`, `Paid`, `Authorized`, `Capturing`, `Returned`, `Rejected`, `Reissued`, or
+	// `Refunded`. Returns `null` for an unrecognized code. See
+	// [Pay Out statuses](/guides/pay-out-status-reference#payout-transaction-statuses).
+	StatusLabel *string `json:"StatusLabel,omitempty" url:"StatusLabel,omitempty"`
 	// Payment ID.
 	PaymentId *string `json:"PaymentId,omitempty" url:"PaymentId,omitempty"`
 	// Transaction ID.
@@ -22404,6 +22492,13 @@ func (t *TransferOutDetailRecord) GetStatus() *int {
 		return nil
 	}
 	return t.Status
+}
+
+func (t *TransferOutDetailRecord) GetStatusLabel() *string {
+	if t == nil {
+		return nil
+	}
+	return t.StatusLabel
 }
 
 func (t *TransferOutDetailRecord) GetPaymentId() *string {
@@ -22859,6 +22954,13 @@ func (t *TransferOutDetailRecord) SetPaypointId(paypointId *int) {
 func (t *TransferOutDetailRecord) SetStatus(status *int) {
 	t.Status = status
 	t.require(transferOutDetailRecordFieldStatus)
+}
+
+// SetStatusLabel sets the StatusLabel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutDetailRecord) SetStatusLabel(statusLabel *string) {
+	t.StatusLabel = statusLabel
+	t.require(transferOutDetailRecordFieldStatusLabel)
 }
 
 // SetPaymentId sets the PaymentId field and marks it as non-optional;
@@ -24946,20 +25048,21 @@ var (
 	transferOutRecordFieldTransferDate         = big.NewInt(1 << 19)
 	transferOutRecordFieldProcessor            = big.NewInt(1 << 20)
 	transferOutRecordFieldTransferStatus       = big.NewInt(1 << 21)
-	transferOutRecordFieldGrossAmount          = big.NewInt(1 << 22)
-	transferOutRecordFieldChargeBackAmount     = big.NewInt(1 << 23)
-	transferOutRecordFieldReturnedAmount       = big.NewInt(1 << 24)
-	transferOutRecordFieldHoldAmount           = big.NewInt(1 << 25)
-	transferOutRecordFieldReleasedAmount       = big.NewInt(1 << 26)
-	transferOutRecordFieldBillingFeesAmount    = big.NewInt(1 << 27)
-	transferOutRecordFieldThirdPartyPaidAmount = big.NewInt(1 << 28)
-	transferOutRecordFieldAdjustmentsAmount    = big.NewInt(1 << 29)
-	transferOutRecordFieldNetTransferAmount    = big.NewInt(1 << 30)
-	transferOutRecordFieldSplitAmount          = big.NewInt(1 << 31)
-	transferOutRecordFieldEventsData           = big.NewInt(1 << 32)
-	transferOutRecordFieldMessages             = big.NewInt(1 << 33)
-	transferOutRecordFieldType                 = big.NewInt(1 << 34)
-	transferOutRecordFieldMethod               = big.NewInt(1 << 35)
+	transferOutRecordFieldTransferStatusLabel  = big.NewInt(1 << 22)
+	transferOutRecordFieldGrossAmount          = big.NewInt(1 << 23)
+	transferOutRecordFieldChargeBackAmount     = big.NewInt(1 << 24)
+	transferOutRecordFieldReturnedAmount       = big.NewInt(1 << 25)
+	transferOutRecordFieldHoldAmount           = big.NewInt(1 << 26)
+	transferOutRecordFieldReleasedAmount       = big.NewInt(1 << 27)
+	transferOutRecordFieldBillingFeesAmount    = big.NewInt(1 << 28)
+	transferOutRecordFieldThirdPartyPaidAmount = big.NewInt(1 << 29)
+	transferOutRecordFieldAdjustmentsAmount    = big.NewInt(1 << 30)
+	transferOutRecordFieldNetTransferAmount    = big.NewInt(1 << 31)
+	transferOutRecordFieldSplitAmount          = big.NewInt(1 << 32)
+	transferOutRecordFieldEventsData           = big.NewInt(1 << 33)
+	transferOutRecordFieldMessages             = big.NewInt(1 << 34)
+	transferOutRecordFieldType                 = big.NewInt(1 << 35)
+	transferOutRecordFieldMethod               = big.NewInt(1 << 36)
 )
 
 type TransferOutRecord struct {
@@ -24967,15 +25070,15 @@ type TransferOutRecord struct {
 	TransferId *int `json:"transferId,omitempty" url:"transferId,omitempty"`
 	// The ID of the paypoint associated with the transfer.
 	PaypointId *int `json:"paypointId,omitempty" url:"paypointId,omitempty"`
-	// The batch number for the transfer.
+	// The batch number for the transfer. Vendor enrichment and bank account verification billing transfers aren't tied to a batch, so this is an empty string for those transfers.
 	BatchNumber *string `json:"batchNumber,omitempty" url:"batchNumber,omitempty"`
 	// The currency of the batch.
 	BatchCurrency *string `json:"batchCurrency,omitempty" url:"batchCurrency,omitempty"`
-	// The number of records in the batch.
+	// The number of records in the batch. Vendor enrichment and bank account verification billing transfers aren't tied to a batch, so this is `0` for those transfers.
 	BatchRecords *int `json:"batchRecords,omitempty" url:"batchRecords,omitempty"`
-	// An identifier for the transfer.
+	// An identifier for the transfer. Vendor enrichment and bank account verification billing transfers use the format `BILL_{paypointId}_{yyyyMMdd}_{feeType}`, where `feeType` is `VendorEnrichment` or `BankAccountVerification`.
 	TransferIdentifier *string `json:"transferIdentifier,omitempty" url:"transferIdentifier,omitempty"`
-	// The ID of the batch.
+	// The ID of the batch. Vendor enrichment and bank account verification billing transfers aren't tied to a batch, so this is `0` for those transfers.
 	BatchId *int `json:"batchId,omitempty" url:"batchId,omitempty"`
 	// The net amount of the batch.
 	BatchNetAmount *float64 `json:"batchNetAmount,omitempty" url:"batchNetAmount,omitempty"`
@@ -25003,10 +25106,14 @@ type TransferOutRecord struct {
 	BankAccount *TransferOutBankAccount `json:"bankAccount,omitempty" url:"bankAccount,omitempty"`
 	// The date of the transfer.
 	TransferDate *time.Time `json:"transferDate,omitempty" url:"transferDate,omitempty"`
-	// The processor used for the transfer.
+	// The processor used for the transfer. This is `billing` for vendor enrichment and bank account verification billing transfers.
 	Processor *string `json:"processor,omitempty" url:"processor,omitempty"`
 	// The status of the transfer.
 	TransferStatus *int `json:"transferStatus,omitempty" url:"transferStatus,omitempty"`
+	// The name of the `transferStatus`: `Pending`, `In Transit`, `Transferred`, `Funded
+	// (settled)`, `Resolved`, `Exception`, `ACH Return or Chargeback`, `Held`, `Released`,
+	// `Refunded`, or `None`. Returns `null` for an unrecognized code.
+	TransferStatusLabel *string `json:"transferStatusLabel,omitempty" url:"transferStatusLabel,omitempty"`
 	// The gross amount of the transfer.
 	GrossAmount *float64 `json:"grossAmount,omitempty" url:"grossAmount,omitempty"`
 	// The chargeback amount deducted from the transfer.
@@ -25031,7 +25138,7 @@ type TransferOutRecord struct {
 	EventsData []*TransferOutEventData `json:"eventsData,omitempty" url:"eventsData,omitempty"`
 	// List of messages associated with the transfer.
 	Messages []*TransferOutMessage `json:"messages,omitempty" url:"messages,omitempty"`
-	// The transfer type. One of `debit`, `credit`, or `billing`.
+	// The transfer type. One of `debit`, `credit`, or `billing`. A `billing` transfer is an ACH debit from the paypoint that collects fees. Billing transfers for payout fees belong to the payout's batch. Vendor enrichment and bank account verification charges are collected in a separate daily debit for each paypoint and fee type. These transfers aren't tied to a batch, so `batchId` and `batchRecords` are `0` and `batchNumber` is empty. Their `grossAmount`, `billingFeesAmount`, and `netTransferAmount` each hold the charge total as a negative value.
 	Type *string `json:"type,omitempty" url:"type,omitempty"`
 	// The payment method for the transfer, such as `ach`, `vcard`, or `check`.
 	Method *string `json:"method,omitempty" url:"method,omitempty"`
@@ -25195,6 +25302,13 @@ func (t *TransferOutRecord) GetTransferStatus() *int {
 		return nil
 	}
 	return t.TransferStatus
+}
+
+func (t *TransferOutRecord) GetTransferStatusLabel() *string {
+	if t == nil {
+		return nil
+	}
+	return t.TransferStatusLabel
 }
 
 func (t *TransferOutRecord) GetGrossAmount() *float64 {
@@ -25461,6 +25575,13 @@ func (t *TransferOutRecord) SetProcessor(processor *string) {
 func (t *TransferOutRecord) SetTransferStatus(transferStatus *int) {
 	t.TransferStatus = transferStatus
 	t.require(transferOutRecordFieldTransferStatus)
+}
+
+// SetTransferStatusLabel sets the TransferStatusLabel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (t *TransferOutRecord) SetTransferStatusLabel(transferStatusLabel *string) {
+	t.TransferStatusLabel = transferStatusLabel
+	t.require(transferOutRecordFieldTransferStatusLabel)
 }
 
 // SetGrossAmount sets the GrossAmount field and marks it as non-optional;

@@ -1,11 +1,12 @@
 # Payabli Go Library
 
-[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Fpayabli%2Fsdk-go)
+[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=Payabli%2FGo)
 
 The Payabli Go library provides convenient access to the Payabli APIs from Go.
 
 ## Table of Contents
 
+- [Reference](#reference)
 - [Changelog](#changelog)
 - [Getting Started](#getting-started)
 - [Passing Query Parameters](#passing-query-parameters)
@@ -20,8 +21,10 @@ The Payabli Go library provides convenient access to the Payabli APIs from Go.
   - [Timeouts](#timeouts)
   - [Explicit Null](#explicit-null)
 - [Contributing](#contributing)
-- [Documentation](#documentation)
-- [Reference](#reference)
+
+## Reference
+
+A full reference for this library is available [here](./reference.md).
 
 ## Changelog
 
@@ -309,11 +312,3 @@ a proof of concept, but know that we will not be able to merge it as-is. We sugg
 an issue first to discuss with us!
 
 On the other hand, contributions to the README are always very welcome!
-## Documentation
-
-API reference documentation is available [here](https://docs.payabli.com).
-
-## Reference
-
-A full reference for this library is available [here](https://github.com/payabli/sdk-go/blob/HEAD/./reference.md).
-

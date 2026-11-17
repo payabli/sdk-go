@@ -2455,38 +2455,39 @@ func (p *PayoutSubscriptionPaymentDetails) String() string {
 var (
 	payoutSubscriptionQueryRecordFieldIdOutSubscription     = big.NewInt(1 << 0)
 	payoutSubscriptionQueryRecordFieldStatus                = big.NewInt(1 << 1)
-	payoutSubscriptionQueryRecordFieldEvents                = big.NewInt(1 << 2)
-	payoutSubscriptionQueryRecordFieldVendor                = big.NewInt(1 << 3)
-	payoutSubscriptionQueryRecordFieldBillData              = big.NewInt(1 << 4)
-	payoutSubscriptionQueryRecordFieldExternalPaypointId    = big.NewInt(1 << 5)
-	payoutSubscriptionQueryRecordFieldSameDayAch            = big.NewInt(1 << 6)
-	payoutSubscriptionQueryRecordFieldDoNotCreateBills      = big.NewInt(1 << 7)
-	payoutSubscriptionQueryRecordFieldAllowDuplicatedBills  = big.NewInt(1 << 8)
-	payoutSubscriptionQueryRecordFieldAutoConvertSameDayAch = big.NewInt(1 << 9)
-	payoutSubscriptionQueryRecordFieldMethod                = big.NewInt(1 << 10)
-	payoutSubscriptionQueryRecordFieldPaypointId            = big.NewInt(1 << 11)
-	payoutSubscriptionQueryRecordFieldTotalAmount           = big.NewInt(1 << 12)
-	payoutSubscriptionQueryRecordFieldNetAmount             = big.NewInt(1 << 13)
-	payoutSubscriptionQueryRecordFieldFeeAmount             = big.NewInt(1 << 14)
-	payoutSubscriptionQueryRecordFieldPaymentData           = big.NewInt(1 << 15)
-	payoutSubscriptionQueryRecordFieldStartDate             = big.NewInt(1 << 16)
-	payoutSubscriptionQueryRecordFieldEndDate               = big.NewInt(1 << 17)
-	payoutSubscriptionQueryRecordFieldNextDate              = big.NewInt(1 << 18)
-	payoutSubscriptionQueryRecordFieldFrequency             = big.NewInt(1 << 19)
-	payoutSubscriptionQueryRecordFieldTotalCycles           = big.NewInt(1 << 20)
-	payoutSubscriptionQueryRecordFieldLeftCycles            = big.NewInt(1 << 21)
-	payoutSubscriptionQueryRecordFieldLastRun               = big.NewInt(1 << 22)
-	payoutSubscriptionQueryRecordFieldEntrypageId           = big.NewInt(1 << 23)
-	payoutSubscriptionQueryRecordFieldUntilCancelled        = big.NewInt(1 << 24)
-	payoutSubscriptionQueryRecordFieldLastUpdated           = big.NewInt(1 << 25)
-	payoutSubscriptionQueryRecordFieldCreatedAt             = big.NewInt(1 << 26)
-	payoutSubscriptionQueryRecordFieldPaypointLegalname     = big.NewInt(1 << 27)
-	payoutSubscriptionQueryRecordFieldPaypointDbaname       = big.NewInt(1 << 28)
-	payoutSubscriptionQueryRecordFieldPaypointEntryname     = big.NewInt(1 << 29)
-	payoutSubscriptionQueryRecordFieldParentOrgName         = big.NewInt(1 << 30)
-	payoutSubscriptionQueryRecordFieldParentOrgId           = big.NewInt(1 << 31)
-	payoutSubscriptionQueryRecordFieldSource                = big.NewInt(1 << 32)
-	payoutSubscriptionQueryRecordFieldSubscriptionType      = big.NewInt(1 << 33)
+	payoutSubscriptionQueryRecordFieldStatusLabel           = big.NewInt(1 << 2)
+	payoutSubscriptionQueryRecordFieldEvents                = big.NewInt(1 << 3)
+	payoutSubscriptionQueryRecordFieldVendor                = big.NewInt(1 << 4)
+	payoutSubscriptionQueryRecordFieldBillData              = big.NewInt(1 << 5)
+	payoutSubscriptionQueryRecordFieldExternalPaypointId    = big.NewInt(1 << 6)
+	payoutSubscriptionQueryRecordFieldSameDayAch            = big.NewInt(1 << 7)
+	payoutSubscriptionQueryRecordFieldDoNotCreateBills      = big.NewInt(1 << 8)
+	payoutSubscriptionQueryRecordFieldAllowDuplicatedBills  = big.NewInt(1 << 9)
+	payoutSubscriptionQueryRecordFieldAutoConvertSameDayAch = big.NewInt(1 << 10)
+	payoutSubscriptionQueryRecordFieldMethod                = big.NewInt(1 << 11)
+	payoutSubscriptionQueryRecordFieldPaypointId            = big.NewInt(1 << 12)
+	payoutSubscriptionQueryRecordFieldTotalAmount           = big.NewInt(1 << 13)
+	payoutSubscriptionQueryRecordFieldNetAmount             = big.NewInt(1 << 14)
+	payoutSubscriptionQueryRecordFieldFeeAmount             = big.NewInt(1 << 15)
+	payoutSubscriptionQueryRecordFieldPaymentData           = big.NewInt(1 << 16)
+	payoutSubscriptionQueryRecordFieldStartDate             = big.NewInt(1 << 17)
+	payoutSubscriptionQueryRecordFieldEndDate               = big.NewInt(1 << 18)
+	payoutSubscriptionQueryRecordFieldNextDate              = big.NewInt(1 << 19)
+	payoutSubscriptionQueryRecordFieldFrequency             = big.NewInt(1 << 20)
+	payoutSubscriptionQueryRecordFieldTotalCycles           = big.NewInt(1 << 21)
+	payoutSubscriptionQueryRecordFieldLeftCycles            = big.NewInt(1 << 22)
+	payoutSubscriptionQueryRecordFieldLastRun               = big.NewInt(1 << 23)
+	payoutSubscriptionQueryRecordFieldEntrypageId           = big.NewInt(1 << 24)
+	payoutSubscriptionQueryRecordFieldUntilCancelled        = big.NewInt(1 << 25)
+	payoutSubscriptionQueryRecordFieldLastUpdated           = big.NewInt(1 << 26)
+	payoutSubscriptionQueryRecordFieldCreatedAt             = big.NewInt(1 << 27)
+	payoutSubscriptionQueryRecordFieldPaypointLegalname     = big.NewInt(1 << 28)
+	payoutSubscriptionQueryRecordFieldPaypointDbaname       = big.NewInt(1 << 29)
+	payoutSubscriptionQueryRecordFieldPaypointEntryname     = big.NewInt(1 << 30)
+	payoutSubscriptionQueryRecordFieldParentOrgName         = big.NewInt(1 << 31)
+	payoutSubscriptionQueryRecordFieldParentOrgId           = big.NewInt(1 << 32)
+	payoutSubscriptionQueryRecordFieldSource                = big.NewInt(1 << 33)
+	payoutSubscriptionQueryRecordFieldSubscriptionType      = big.NewInt(1 << 34)
 )
 
 type PayoutSubscriptionQueryRecord struct {
@@ -2496,6 +2497,9 @@ type PayoutSubscriptionQueryRecord struct {
 	// - 0: Paused
 	// - 1: Active
 	Status *int `json:"status,omitempty" url:"status,omitempty"`
+	// The name of the payout subscription's `status`: `Paused`, `Active`, `Completed`, `Marked
+	// for Deletion`, or `In Progress`. Returns `null` for an unrecognized code.
+	StatusLabel *string `json:"statusLabel,omitempty" url:"statusLabel,omitempty"`
 	// Events associated with the payout subscription.
 	Events []*GeneralEvents          `json:"events,omitempty" url:"events,omitempty"`
 	Vendor *PayoutSubscriptionVendor `json:"vendor,omitempty" url:"vendor,omitempty"`
@@ -2572,6 +2576,13 @@ func (p *PayoutSubscriptionQueryRecord) GetStatus() *int {
 		return nil
 	}
 	return p.Status
+}
+
+func (p *PayoutSubscriptionQueryRecord) GetStatusLabel() *string {
+	if p == nil {
+		return nil
+	}
+	return p.StatusLabel
 }
 
 func (p *PayoutSubscriptionQueryRecord) GetEvents() []*GeneralEvents {
@@ -2824,6 +2835,13 @@ func (p *PayoutSubscriptionQueryRecord) SetIdOutSubscription(idOutSubscription *
 func (p *PayoutSubscriptionQueryRecord) SetStatus(status *int) {
 	p.Status = status
 	p.require(payoutSubscriptionQueryRecordFieldStatus)
+}
+
+// SetStatusLabel sets the StatusLabel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayoutSubscriptionQueryRecord) SetStatusLabel(statusLabel *string) {
+	p.StatusLabel = statusLabel
+	p.require(payoutSubscriptionQueryRecordFieldStatusLabel)
 }
 
 // SetEvents sets the Events field and marks it as non-optional;

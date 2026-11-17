@@ -2162,8 +2162,7 @@ type BillItem struct {
 	ItemCost        *float64         `json:"itemCost,omitempty" url:"itemCost,omitempty"`
 	ItemDescription *ItemDescription `json:"itemDescription,omitempty" url:"itemDescription,omitempty"`
 	// Internal class of item or product: value `0` is only for invoices,
-	// `1` for bills, and `2` is common for both. Required on invoice line
-	// items — invoice creation fails with `Invalid item data` if it's omitted.
+	// `1` for bills, and `2` is common for both.
 	ItemMode        *int             `json:"itemMode,omitempty" url:"itemMode,omitempty"`
 	ItemProductCode *ItemProductCode `json:"itemProductCode,omitempty" url:"itemProductCode,omitempty"`
 	ItemProductName *ItemProductName `json:"itemProductName,omitempty" url:"itemProductName,omitempty"`
@@ -2174,7 +2173,9 @@ type BillItem struct {
 	// Tax rate applied to item or product.
 	ItemTaxRate *float64 `json:"itemTaxRate,omitempty" url:"itemTaxRate,omitempty"`
 	// Per-line total for this item (unit cost times quantity). Distinct from
-	// the invoice's overall total, `invoiceAmount`. Required on invoice line items.
+	// the invoice's overall total, `invoiceAmount`. Required on invoice line
+	// items when `itemQty` and `itemCost` are greater than 0. If it's missing,
+	// 0, or less, invoice creation fails with `Invalid item data`.
 	ItemTotalAmount   *float64           `json:"itemTotalAmount,omitempty" url:"itemTotalAmount,omitempty"`
 	ItemUnitOfMeasure *ItemUnitofMeasure `json:"itemUnitOfMeasure,omitempty" url:"itemUnitOfMeasure,omitempty"`
 
@@ -3776,260 +3777,23 @@ type Bstate = string
 // A summary of what the business sells in terms of goods or services.
 type Bsummary = string
 
-// An address associated with a business.
-var (
-	businessAddressFieldType             = big.NewInt(1 << 0)
-	businessAddressFieldLocation         = big.NewInt(1 << 1)
-	businessAddressFieldAddressLine1     = big.NewInt(1 << 2)
-	businessAddressFieldAddressLine2     = big.NewInt(1 << 3)
-	businessAddressFieldCityLocality     = big.NewInt(1 << 4)
-	businessAddressFieldStateProvince    = big.NewInt(1 << 5)
-	businessAddressFieldPostalCode       = big.NewInt(1 << 6)
-	businessAddressFieldCountry          = big.NewInt(1 << 7)
-	businessAddressFieldFloor            = big.NewInt(1 << 8)
-	businessAddressFieldSuiteApartNumber = big.NewInt(1 << 9)
-)
-
-type BusinessAddress struct {
-	// The address role.
-	Type *AddressType `json:"type,omitempty" url:"type,omitempty"`
-	// The physical use of the address. Defaults to `other`.
-	Location *BusinessAddressLocation `json:"location,omitempty" url:"location,omitempty"`
-	// The first line of the street address.
-	AddressLine1 *string `json:"addressLine1,omitempty" url:"addressLine1,omitempty"`
-	// The second line of the street address.
-	AddressLine2 *string `json:"addressLine2,omitempty" url:"addressLine2,omitempty"`
-	// The city or locality.
-	CityLocality *string `json:"cityLocality,omitempty" url:"cityLocality,omitempty"`
-	// The state or province.
-	StateProvince *string `json:"stateProvince,omitempty" url:"stateProvince,omitempty"`
-	// The postal or ZIP code.
-	PostalCode *string `json:"postalCode,omitempty" url:"postalCode,omitempty"`
-	// The two-character ISO country code.
-	Country *string `json:"country,omitempty" url:"country,omitempty"`
-	// The floor, if applicable.
-	Floor *string `json:"floor,omitempty" url:"floor,omitempty"`
-	// The suite or apartment number, if applicable.
-	SuiteApartNumber *string `json:"suiteApartNumber,omitempty" url:"suiteApartNumber,omitempty"`
-
-	// Private bitmask of fields set to an explicit value and therefore not to be omitted
-	explicitFields *big.Int `json:"-" url:"-"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (b *BusinessAddress) GetType() *AddressType {
-	if b == nil {
-		return nil
-	}
-	return b.Type
-}
-
-func (b *BusinessAddress) GetLocation() *BusinessAddressLocation {
-	if b == nil {
-		return nil
-	}
-	return b.Location
-}
-
-func (b *BusinessAddress) GetAddressLine1() *string {
-	if b == nil {
-		return nil
-	}
-	return b.AddressLine1
-}
-
-func (b *BusinessAddress) GetAddressLine2() *string {
-	if b == nil {
-		return nil
-	}
-	return b.AddressLine2
-}
-
-func (b *BusinessAddress) GetCityLocality() *string {
-	if b == nil {
-		return nil
-	}
-	return b.CityLocality
-}
-
-func (b *BusinessAddress) GetStateProvince() *string {
-	if b == nil {
-		return nil
-	}
-	return b.StateProvince
-}
-
-func (b *BusinessAddress) GetPostalCode() *string {
-	if b == nil {
-		return nil
-	}
-	return b.PostalCode
-}
-
-func (b *BusinessAddress) GetCountry() *string {
-	if b == nil {
-		return nil
-	}
-	return b.Country
-}
-
-func (b *BusinessAddress) GetFloor() *string {
-	if b == nil {
-		return nil
-	}
-	return b.Floor
-}
-
-func (b *BusinessAddress) GetSuiteApartNumber() *string {
-	if b == nil {
-		return nil
-	}
-	return b.SuiteApartNumber
-}
-
-func (b *BusinessAddress) GetExtraProperties() map[string]interface{} {
-	if b == nil {
-		return nil
-	}
-	return b.extraProperties
-}
-
-func (b *BusinessAddress) require(field *big.Int) {
-	if b.explicitFields == nil {
-		b.explicitFields = big.NewInt(0)
-	}
-	b.explicitFields.Or(b.explicitFields, field)
-}
-
-// SetType sets the Type field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BusinessAddress) SetType(type_ *AddressType) {
-	b.Type = type_
-	b.require(businessAddressFieldType)
-}
-
-// SetLocation sets the Location field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BusinessAddress) SetLocation(location *BusinessAddressLocation) {
-	b.Location = location
-	b.require(businessAddressFieldLocation)
-}
-
-// SetAddressLine1 sets the AddressLine1 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BusinessAddress) SetAddressLine1(addressLine1 *string) {
-	b.AddressLine1 = addressLine1
-	b.require(businessAddressFieldAddressLine1)
-}
-
-// SetAddressLine2 sets the AddressLine2 field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BusinessAddress) SetAddressLine2(addressLine2 *string) {
-	b.AddressLine2 = addressLine2
-	b.require(businessAddressFieldAddressLine2)
-}
-
-// SetCityLocality sets the CityLocality field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BusinessAddress) SetCityLocality(cityLocality *string) {
-	b.CityLocality = cityLocality
-	b.require(businessAddressFieldCityLocality)
-}
-
-// SetStateProvince sets the StateProvince field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BusinessAddress) SetStateProvince(stateProvince *string) {
-	b.StateProvince = stateProvince
-	b.require(businessAddressFieldStateProvince)
-}
-
-// SetPostalCode sets the PostalCode field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BusinessAddress) SetPostalCode(postalCode *string) {
-	b.PostalCode = postalCode
-	b.require(businessAddressFieldPostalCode)
-}
-
-// SetCountry sets the Country field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BusinessAddress) SetCountry(country *string) {
-	b.Country = country
-	b.require(businessAddressFieldCountry)
-}
-
-// SetFloor sets the Floor field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BusinessAddress) SetFloor(floor *string) {
-	b.Floor = floor
-	b.require(businessAddressFieldFloor)
-}
-
-// SetSuiteApartNumber sets the SuiteApartNumber field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BusinessAddress) SetSuiteApartNumber(suiteApartNumber *string) {
-	b.SuiteApartNumber = suiteApartNumber
-	b.require(businessAddressFieldSuiteApartNumber)
-}
-
-func (b *BusinessAddress) UnmarshalJSON(data []byte) error {
-	type unmarshaler BusinessAddress
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*b = BusinessAddress(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *b)
-	if err != nil {
-		return err
-	}
-	b.extraProperties = extraProperties
-	b.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (b *BusinessAddress) MarshalJSON() ([]byte, error) {
-	type embed BusinessAddress
-	var marshaler = struct {
-		embed
-	}{
-		embed: embed(*b),
-	}
-	explicitMarshaler := internal.HandleExplicitFields(marshaler, b.explicitFields)
-	return json.Marshal(explicitMarshaler)
-}
-
-func (b *BusinessAddress) String() string {
-	if b == nil {
-		return "<nil>"
-	}
-	if len(b.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(b); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", b)
-}
-
 // An address sent when creating a business. `country` is required.
 var (
-	businessAddressCreateFieldType             = big.NewInt(1 << 0)
-	businessAddressCreateFieldLocation         = big.NewInt(1 << 1)
-	businessAddressCreateFieldAddressLine1     = big.NewInt(1 << 2)
-	businessAddressCreateFieldAddressLine2     = big.NewInt(1 << 3)
-	businessAddressCreateFieldCityLocality     = big.NewInt(1 << 4)
-	businessAddressCreateFieldStateProvince    = big.NewInt(1 << 5)
-	businessAddressCreateFieldPostalCode       = big.NewInt(1 << 6)
-	businessAddressCreateFieldCountry          = big.NewInt(1 << 7)
+	businessAddressCreateFieldCountry          = big.NewInt(1 << 0)
+	businessAddressCreateFieldType             = big.NewInt(1 << 1)
+	businessAddressCreateFieldLocation         = big.NewInt(1 << 2)
+	businessAddressCreateFieldAddressLine1     = big.NewInt(1 << 3)
+	businessAddressCreateFieldAddressLine2     = big.NewInt(1 << 4)
+	businessAddressCreateFieldCityLocality     = big.NewInt(1 << 5)
+	businessAddressCreateFieldStateProvince    = big.NewInt(1 << 6)
+	businessAddressCreateFieldPostalCode       = big.NewInt(1 << 7)
 	businessAddressCreateFieldFloor            = big.NewInt(1 << 8)
 	businessAddressCreateFieldSuiteApartNumber = big.NewInt(1 << 9)
 )
 
 type BusinessAddressCreate struct {
+	// The two-character ISO country code.
+	Country string `json:"country" url:"country"`
 	// The address role.
 	Type *AddressType `json:"type,omitempty" url:"type,omitempty"`
 	// The physical use of the address. Defaults to `other`.
@@ -4044,8 +3808,6 @@ type BusinessAddressCreate struct {
 	StateProvince *string `json:"stateProvince,omitempty" url:"stateProvince,omitempty"`
 	// The postal or ZIP code.
 	PostalCode *string `json:"postalCode,omitempty" url:"postalCode,omitempty"`
-	// The two-character ISO country code.
-	Country *string `json:"country,omitempty" url:"country,omitempty"`
 	// The floor, if applicable.
 	Floor *string `json:"floor,omitempty" url:"floor,omitempty"`
 	// The suite or apartment number, if applicable.
@@ -4056,6 +3818,13 @@ type BusinessAddressCreate struct {
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
+}
+
+func (b *BusinessAddressCreate) GetCountry() string {
+	if b == nil {
+		return ""
+	}
+	return b.Country
 }
 
 func (b *BusinessAddressCreate) GetType() *AddressType {
@@ -4107,13 +3876,6 @@ func (b *BusinessAddressCreate) GetPostalCode() *string {
 	return b.PostalCode
 }
 
-func (b *BusinessAddressCreate) GetCountry() *string {
-	if b == nil {
-		return nil
-	}
-	return b.Country
-}
-
 func (b *BusinessAddressCreate) GetFloor() *string {
 	if b == nil {
 		return nil
@@ -4140,6 +3902,13 @@ func (b *BusinessAddressCreate) require(field *big.Int) {
 		b.explicitFields = big.NewInt(0)
 	}
 	b.explicitFields.Or(b.explicitFields, field)
+}
+
+// SetCountry sets the Country field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (b *BusinessAddressCreate) SetCountry(country string) {
+	b.Country = country
+	b.require(businessAddressCreateFieldCountry)
 }
 
 // SetType sets the Type field and marks it as non-optional;
@@ -4189,13 +3958,6 @@ func (b *BusinessAddressCreate) SetStateProvince(stateProvince *string) {
 func (b *BusinessAddressCreate) SetPostalCode(postalCode *string) {
 	b.PostalCode = postalCode
 	b.require(businessAddressCreateFieldPostalCode)
-}
-
-// SetCountry sets the Country field and marks it as non-optional;
-// this prevents an empty or null value for this field from being omitted during serialization.
-func (b *BusinessAddressCreate) SetCountry(country *string) {
-	b.Country = country
-	b.require(businessAddressCreateFieldCountry)
 }
 
 // SetFloor sets the Floor field and marks it as non-optional;
@@ -13272,6 +13034,7 @@ var (
 	ownersFieldOstate         = big.NewInt(1 << 13)
 	ownersFieldOzip           = big.NewInt(1 << 14)
 	ownersFieldAdditionalData = big.NewInt(1 << 15)
+	ownersFieldPrimaryOwner   = big.NewInt(1 << 16)
 )
 
 type Owners struct {
@@ -13306,6 +13069,12 @@ type Owners struct {
 	// Owner address ZIP.
 	Ozip           *string            `json:"ozip,omitempty" url:"ozip,omitempty"`
 	AdditionalData *AdditionalDataMap `json:"additionalData,omitempty" url:"additionalData,omitempty"`
+	// When `true`, marks this owner as the primary owner, the main principal that Payabli sends to the processor. Set it on exactly one owner. If you flag more than one owner, the request fails with HTTP 400 and the response text `Only one owner can be primary`.
+	//
+	// If the application has one owner and you don't flag it, Payabli flags that owner as the primary owner. If the application has two or more owners, flag one of them. Payabli accepts an application with no primary owner, but the processor can reject it at submission.
+	//
+	// Responses return `null` for owners that aren't the primary owner.
+	PrimaryOwner *bool `json:"primaryOwner,omitempty" url:"primaryOwner,omitempty"`
 
 	// Private bitmask of fields set to an explicit value and therefore not to be omitted
 	explicitFields *big.Int `json:"-" url:"-"`
@@ -13424,6 +13193,13 @@ func (o *Owners) GetAdditionalData() *AdditionalDataMap {
 		return nil
 	}
 	return o.AdditionalData
+}
+
+func (o *Owners) GetPrimaryOwner() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.PrimaryOwner
 }
 
 func (o *Owners) GetExtraProperties() map[string]interface{} {
@@ -13550,6 +13326,13 @@ func (o *Owners) SetOzip(ozip *string) {
 func (o *Owners) SetAdditionalData(additionalData *AdditionalDataMap) {
 	o.AdditionalData = additionalData
 	o.require(ownersFieldAdditionalData)
+}
+
+// SetPrimaryOwner sets the PrimaryOwner field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (o *Owners) SetPrimaryOwner(primaryOwner *bool) {
+	o.PrimaryOwner = primaryOwner
+	o.require(ownersFieldPrimaryOwner)
 }
 
 func (o *Owners) UnmarshalJSON(data []byte) error {
@@ -15852,24 +15635,37 @@ func (p *PayabliCredentials) String() string {
 }
 
 var (
-	payabliCredentialsPascalFieldService             = big.NewInt(1 << 0)
-	payabliCredentialsPascalFieldMode                = big.NewInt(1 << 1)
-	payabliCredentialsPascalFieldMinticket           = big.NewInt(1 << 2)
-	payabliCredentialsPascalFieldMaxticket           = big.NewInt(1 << 3)
-	payabliCredentialsPascalFieldCfeeFix             = big.NewInt(1 << 4)
-	payabliCredentialsPascalFieldCfeeFloat           = big.NewInt(1 << 5)
-	payabliCredentialsPascalFieldCfeeMin             = big.NewInt(1 << 6)
-	payabliCredentialsPascalFieldCfeeMax             = big.NewInt(1 << 7)
-	payabliCredentialsPascalFieldAccountId           = big.NewInt(1 << 8)
-	payabliCredentialsPascalFieldReferenceId         = big.NewInt(1 << 9)
-	payabliCredentialsPascalFieldAcceptSameDayAch    = big.NewInt(1 << 10)
-	payabliCredentialsPascalFieldCurrency            = big.NewInt(1 << 11)
-	payabliCredentialsPascalFieldGreaterValueAllowed = big.NewInt(1 << 12)
-	payabliCredentialsPascalFieldAbsorbDifference    = big.NewInt(1 << 13)
-	payabliCredentialsPascalFieldAllowOverride       = big.NewInt(1 << 14)
+	payabliCredentialsPascalFieldActive              = big.NewInt(1 << 0)
+	payabliCredentialsPascalFieldCustomerId          = big.NewInt(1 << 1)
+	payabliCredentialsPascalFieldClientId            = big.NewInt(1 << 2)
+	payabliCredentialsPascalFieldService             = big.NewInt(1 << 3)
+	payabliCredentialsPascalFieldMode                = big.NewInt(1 << 4)
+	payabliCredentialsPascalFieldMinticket           = big.NewInt(1 << 5)
+	payabliCredentialsPascalFieldMaxticket           = big.NewInt(1 << 6)
+	payabliCredentialsPascalFieldCfeeFix             = big.NewInt(1 << 7)
+	payabliCredentialsPascalFieldCfeeFloat           = big.NewInt(1 << 8)
+	payabliCredentialsPascalFieldCfeeMin             = big.NewInt(1 << 9)
+	payabliCredentialsPascalFieldCfeeMax             = big.NewInt(1 << 10)
+	payabliCredentialsPascalFieldAccountId           = big.NewInt(1 << 11)
+	payabliCredentialsPascalFieldReferenceId         = big.NewInt(1 << 12)
+	payabliCredentialsPascalFieldAcceptSameDayAch    = big.NewInt(1 << 13)
+	payabliCredentialsPascalFieldCurrency            = big.NewInt(1 << 14)
+	payabliCredentialsPascalFieldGreaterValueAllowed = big.NewInt(1 << 15)
+	payabliCredentialsPascalFieldAbsorbDifference    = big.NewInt(1 << 16)
+	payabliCredentialsPascalFieldAllowOverride       = big.NewInt(1 << 17)
 )
 
 type PayabliCredentialsPascal struct {
+	// When `true`, the gateway for this credential is enabled for the paypoint. The value is
+	// `null` when the credential isn't linked to a gateway.
+	Active *bool `json:"active,omitempty" url:"active,omitempty"`
+	// The customer ID configured for this gateway. Returned only for gateways that use a
+	// customer ID. For all other gateways, or when no customer ID is configured, the value is
+	// `null`.
+	CustomerId *string `json:"customerId,omitempty" url:"customerId,omitempty"`
+	// The client ID configured for this gateway. Returned only for gateways that use a client
+	// ID. For all other gateways, or when no client ID is configured, the value is `null`.
+	ClientId *string `json:"clientId,omitempty" url:"clientId,omitempty"`
 	// The payment service that this credential applies to. A paypoint can support multiple services, each represented by its own credential object in the array. Possible values are `card` (credit/debit card), `ach` (ACH bank transfer), `check` (paper check), `vcard` (virtual card), `cloud` (card-present), `cash`, `managed` (managed payment service), and `wallet`.
 	Service *string `json:"Service,omitempty" url:"Service,omitempty"`
 	// The payment mode supported by this service. `0` for one-time payments, `1` for recurring payments, `2` for both.
@@ -15895,6 +15691,27 @@ type PayabliCredentialsPascal struct {
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
+}
+
+func (p *PayabliCredentialsPascal) GetActive() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.Active
+}
+
+func (p *PayabliCredentialsPascal) GetCustomerId() *string {
+	if p == nil {
+		return nil
+	}
+	return p.CustomerId
+}
+
+func (p *PayabliCredentialsPascal) GetClientId() *string {
+	if p == nil {
+		return nil
+	}
+	return p.ClientId
 }
 
 func (p *PayabliCredentialsPascal) GetService() *string {
@@ -16014,6 +15831,27 @@ func (p *PayabliCredentialsPascal) require(field *big.Int) {
 		p.explicitFields = big.NewInt(0)
 	}
 	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetActive sets the Active field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliCredentialsPascal) SetActive(active *bool) {
+	p.Active = active
+	p.require(payabliCredentialsPascalFieldActive)
+}
+
+// SetCustomerId sets the CustomerId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliCredentialsPascal) SetCustomerId(customerId *string) {
+	p.CustomerId = customerId
+	p.require(payabliCredentialsPascalFieldCustomerId)
+}
+
+// SetClientId sets the ClientId field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PayabliCredentialsPascal) SetClientId(clientId *string) {
+	p.ClientId = clientId
+	p.require(payabliCredentialsPascalFieldClientId)
 }
 
 // SetService sets the Service field and marks it as non-optional;
@@ -27531,41 +27369,42 @@ var (
 	vendorQueryRecordFieldBillingData           = big.NewInt(1 << 17)
 	vendorQueryRecordFieldPaymentMethod         = big.NewInt(1 << 18)
 	vendorQueryRecordFieldVendorStatus          = big.NewInt(1 << 19)
-	vendorQueryRecordFieldVendorId              = big.NewInt(1 << 20)
-	vendorQueryRecordFieldEnrollmentStatus      = big.NewInt(1 << 21)
-	vendorQueryRecordFieldSummary               = big.NewInt(1 << 22)
-	vendorQueryRecordFieldPaypointLegalname     = big.NewInt(1 << 23)
-	vendorQueryRecordFieldPaypointId            = big.NewInt(1 << 24)
-	vendorQueryRecordFieldPaypointDbaname       = big.NewInt(1 << 25)
-	vendorQueryRecordFieldPaypointEntryname     = big.NewInt(1 << 26)
-	vendorQueryRecordFieldParentOrgName         = big.NewInt(1 << 27)
-	vendorQueryRecordFieldParentOrgId           = big.NewInt(1 << 28)
-	vendorQueryRecordFieldCreatedDate           = big.NewInt(1 << 29)
-	vendorQueryRecordFieldLastUpdated           = big.NewInt(1 << 30)
-	vendorQueryRecordFieldRemitAddress1         = big.NewInt(1 << 31)
-	vendorQueryRecordFieldRemitAddress2         = big.NewInt(1 << 32)
-	vendorQueryRecordFieldRemitCity             = big.NewInt(1 << 33)
-	vendorQueryRecordFieldRemitState            = big.NewInt(1 << 34)
-	vendorQueryRecordFieldRemitZip              = big.NewInt(1 << 35)
-	vendorQueryRecordFieldRemitCountry          = big.NewInt(1 << 36)
-	vendorQueryRecordFieldPayeeName1            = big.NewInt(1 << 37)
-	vendorQueryRecordFieldPayeeName2            = big.NewInt(1 << 38)
-	vendorQueryRecordFieldCustomField1          = big.NewInt(1 << 39)
-	vendorQueryRecordFieldCustomField2          = big.NewInt(1 << 40)
-	vendorQueryRecordFieldCustomerVendorAccount = big.NewInt(1 << 41)
-	vendorQueryRecordFieldInternalReferenceId   = big.NewInt(1 << 42)
-	vendorQueryRecordFieldPaymentPortalUrl      = big.NewInt(1 << 43)
-	vendorQueryRecordFieldCardAccepted          = big.NewInt(1 << 44)
-	vendorQueryRecordFieldAchAccepted           = big.NewInt(1 << 45)
-	vendorQueryRecordFieldCheckAccepted         = big.NewInt(1 << 46)
-	vendorQueryRecordFieldEnrichmentStatus      = big.NewInt(1 << 47)
-	vendorQueryRecordFieldEnrichedBy            = big.NewInt(1 << 48)
-	vendorQueryRecordFieldEnrichedAt            = big.NewInt(1 << 49)
-	vendorQueryRecordFieldEnrichmentId          = big.NewInt(1 << 50)
-	vendorQueryRecordFieldAdditionalData        = big.NewInt(1 << 51)
-	vendorQueryRecordFieldExternalPaypointId    = big.NewInt(1 << 52)
-	vendorQueryRecordFieldStoredMethods         = big.NewInt(1 << 53)
-	vendorQueryRecordFieldVendorPortal          = big.NewInt(1 << 54)
+	vendorQueryRecordFieldVendorStatusLabel     = big.NewInt(1 << 20)
+	vendorQueryRecordFieldVendorId              = big.NewInt(1 << 21)
+	vendorQueryRecordFieldEnrollmentStatus      = big.NewInt(1 << 22)
+	vendorQueryRecordFieldSummary               = big.NewInt(1 << 23)
+	vendorQueryRecordFieldPaypointLegalname     = big.NewInt(1 << 24)
+	vendorQueryRecordFieldPaypointId            = big.NewInt(1 << 25)
+	vendorQueryRecordFieldPaypointDbaname       = big.NewInt(1 << 26)
+	vendorQueryRecordFieldPaypointEntryname     = big.NewInt(1 << 27)
+	vendorQueryRecordFieldParentOrgName         = big.NewInt(1 << 28)
+	vendorQueryRecordFieldParentOrgId           = big.NewInt(1 << 29)
+	vendorQueryRecordFieldCreatedDate           = big.NewInt(1 << 30)
+	vendorQueryRecordFieldLastUpdated           = big.NewInt(1 << 31)
+	vendorQueryRecordFieldRemitAddress1         = big.NewInt(1 << 32)
+	vendorQueryRecordFieldRemitAddress2         = big.NewInt(1 << 33)
+	vendorQueryRecordFieldRemitCity             = big.NewInt(1 << 34)
+	vendorQueryRecordFieldRemitState            = big.NewInt(1 << 35)
+	vendorQueryRecordFieldRemitZip              = big.NewInt(1 << 36)
+	vendorQueryRecordFieldRemitCountry          = big.NewInt(1 << 37)
+	vendorQueryRecordFieldPayeeName1            = big.NewInt(1 << 38)
+	vendorQueryRecordFieldPayeeName2            = big.NewInt(1 << 39)
+	vendorQueryRecordFieldCustomField1          = big.NewInt(1 << 40)
+	vendorQueryRecordFieldCustomField2          = big.NewInt(1 << 41)
+	vendorQueryRecordFieldCustomerVendorAccount = big.NewInt(1 << 42)
+	vendorQueryRecordFieldInternalReferenceId   = big.NewInt(1 << 43)
+	vendorQueryRecordFieldPaymentPortalUrl      = big.NewInt(1 << 44)
+	vendorQueryRecordFieldCardAccepted          = big.NewInt(1 << 45)
+	vendorQueryRecordFieldAchAccepted           = big.NewInt(1 << 46)
+	vendorQueryRecordFieldCheckAccepted         = big.NewInt(1 << 47)
+	vendorQueryRecordFieldEnrichmentStatus      = big.NewInt(1 << 48)
+	vendorQueryRecordFieldEnrichedBy            = big.NewInt(1 << 49)
+	vendorQueryRecordFieldEnrichedAt            = big.NewInt(1 << 50)
+	vendorQueryRecordFieldEnrichmentId          = big.NewInt(1 << 51)
+	vendorQueryRecordFieldAdditionalData        = big.NewInt(1 << 52)
+	vendorQueryRecordFieldExternalPaypointId    = big.NewInt(1 << 53)
+	vendorQueryRecordFieldStoredMethods         = big.NewInt(1 << 54)
+	vendorQueryRecordFieldVendorPortal          = big.NewInt(1 << 55)
 )
 
 type VendorQueryRecord struct {
@@ -27590,14 +27429,17 @@ type VendorQueryRecord struct {
 	LocationCode *string   `json:"LocationCode,omitempty" url:"LocationCode,omitempty"`
 	Issue1099    Issue1099 `json:"Issue1099" url:"Issue1099"`
 	// Array of objects describing the vendor's contacts.
-	Contacts          []*ContactsResponse        `json:"Contacts,omitempty" url:"Contacts,omitempty"`
-	BillingData       *BillingDataResponse       `json:"BillingData,omitempty" url:"BillingData,omitempty"`
-	PaymentMethod     *VendorPaymentMethodString `json:"PaymentMethod,omitempty" url:"PaymentMethod,omitempty"`
-	VendorStatus      Vendorstatus               `json:"VendorStatus" url:"VendorStatus"`
-	VendorId          Vendorid                   `json:"VendorId" url:"VendorId"`
-	EnrollmentStatus  *EnrollmentStatus          `json:"EnrollmentStatus,omitempty" url:"EnrollmentStatus,omitempty"`
-	Summary           *VendorSummary             `json:"Summary,omitempty" url:"Summary,omitempty"`
-	PaypointLegalname Legalname                  `json:"PaypointLegalname" url:"PaypointLegalname"`
+	Contacts      []*ContactsResponse        `json:"Contacts,omitempty" url:"Contacts,omitempty"`
+	BillingData   *BillingDataResponse       `json:"BillingData,omitempty" url:"BillingData,omitempty"`
+	PaymentMethod *VendorPaymentMethodString `json:"PaymentMethod,omitempty" url:"PaymentMethod,omitempty"`
+	VendorStatus  Vendorstatus               `json:"VendorStatus" url:"VendorStatus"`
+	// The name of the `VendorStatus`: `Inactive`, `Active`, or `Deleted`. Returns `null` for
+	// an unrecognized code.
+	VendorStatusLabel *string           `json:"VendorStatusLabel,omitempty" url:"VendorStatusLabel,omitempty"`
+	VendorId          Vendorid          `json:"VendorId" url:"VendorId"`
+	EnrollmentStatus  *EnrollmentStatus `json:"EnrollmentStatus,omitempty" url:"EnrollmentStatus,omitempty"`
+	Summary           *VendorSummary    `json:"Summary,omitempty" url:"Summary,omitempty"`
+	PaypointLegalname Legalname         `json:"PaypointLegalname" url:"PaypointLegalname"`
 	// The paypoint's ID. This is different from the entryname.
 	PaypointId            *int64              `json:"PaypointId,omitempty" url:"PaypointId,omitempty"`
 	PaypointDbaname       Dbaname             `json:"PaypointDbaname" url:"PaypointDbaname"`
@@ -27784,6 +27626,13 @@ func (v *VendorQueryRecord) GetVendorStatus() Vendorstatus {
 		return 0
 	}
 	return v.VendorStatus
+}
+
+func (v *VendorQueryRecord) GetVendorStatusLabel() *string {
+	if v == nil {
+		return nil
+	}
+	return v.VendorStatusLabel
 }
 
 func (v *VendorQueryRecord) GetVendorId() Vendorid {
@@ -28183,6 +28032,13 @@ func (v *VendorQueryRecord) SetPaymentMethod(paymentMethod *VendorPaymentMethodS
 func (v *VendorQueryRecord) SetVendorStatus(vendorStatus Vendorstatus) {
 	v.VendorStatus = vendorStatus
 	v.require(vendorQueryRecordFieldVendorStatus)
+}
+
+// SetVendorStatusLabel sets the VendorStatusLabel field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (v *VendorQueryRecord) SetVendorStatusLabel(vendorStatusLabel *string) {
+	v.VendorStatusLabel = vendorStatusLabel
+	v.require(vendorQueryRecordFieldVendorStatusLabel)
 }
 
 // SetVendorId sets the VendorId field and marks it as non-optional;

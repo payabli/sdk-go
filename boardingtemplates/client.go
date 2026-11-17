@@ -49,7 +49,7 @@ func NewClient(options *core.RequestOptions) *Client {
 // Example:
 //
 //	request := &payabli.ListTemplatesBoardingTemplatesRequest{
-//	    OrgId: 123,
+//	    OrgId: 900123,
 //	}
 //	client.BoardingTemplates.ListTemplates(
 //	    context.TODO(),

@@ -11104,7 +11104,7 @@ func TestSettersSubmitSigner(t *testing.T) {
 
 	t.Run("SetSignature", func(t *testing.T) {
 		obj := &SubmitSigner{}
-		var fernTestValueSignature *string
+		var fernTestValueSignature string
 		obj.SetSignature(fernTestValueSignature)
 		assert.Equal(t, fernTestValueSignature, obj.Signature)
 		assert.NotNil(t, obj.explicitFields)
@@ -11112,7 +11112,7 @@ func TestSettersSubmitSigner(t *testing.T) {
 
 	t.Run("SetSignatureType", func(t *testing.T) {
 		obj := &SubmitSigner{}
-		var fernTestValueSignatureType *SignatureType
+		var fernTestValueSignatureType SignatureType
 		obj.SetSignatureType(fernTestValueSignatureType)
 		assert.Equal(t, fernTestValueSignatureType, obj.SignatureType)
 		assert.NotNil(t, obj.explicitFields)
@@ -11198,21 +11198,11 @@ func TestGettersSubmitSigner(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &SubmitSigner{}
-		var expected *string
+		var expected string
 		obj.Signature = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetSignature(), "getter should return the property value")
-	})
-
-	t.Run("GetSignature_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &SubmitSigner{}
-		obj.Signature = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetSignature(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetSignature_NilReceiver", func(t *testing.T) {
@@ -11231,21 +11221,11 @@ func TestGettersSubmitSigner(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &SubmitSigner{}
-		var expected *SignatureType
+		var expected SignatureType
 		obj.SignatureType = expected
 
 		// Act & Assert
 		assert.Equal(t, expected, obj.GetSignatureType(), "getter should return the property value")
-	})
-
-	t.Run("GetSignatureType_NilValue", func(t *testing.T) {
-		t.Parallel()
-		// Arrange
-		obj := &SubmitSigner{}
-		obj.SignatureType = nil
-
-		// Act & Assert
-		assert.Nil(t, obj.GetSignatureType(), "getter should return nil when property is nil")
 	})
 
 	t.Run("GetSignatureType_NilReceiver", func(t *testing.T) {
@@ -11463,7 +11443,7 @@ func TestSettersMarkExplicitSubmitSigner(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &SubmitSigner{}
-		var fernTestValueSignature *string
+		var fernTestValueSignature string
 
 		// Act
 		obj.SetSignature(fernTestValueSignature)
@@ -11494,7 +11474,7 @@ func TestSettersMarkExplicitSubmitSigner(t *testing.T) {
 		t.Parallel()
 		// Arrange
 		obj := &SubmitSigner{}
-		var fernTestValueSignatureType *SignatureType
+		var fernTestValueSignatureType SignatureType
 
 		// Act
 		obj.SetSignatureType(fernTestValueSignatureType)

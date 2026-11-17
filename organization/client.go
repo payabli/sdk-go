@@ -103,7 +103,7 @@ func NewClient(options *core.RequestOptions) *Client {
 //	        "pilgrim-planner",
 //	    ),
 //	    OrgId: payabli.String(
-//	        "123",
+//	        "900123",
 //	    ),
 //	    OrgLogo: &payabli.FileContent{
 //	        FContent: payabli.String(
@@ -119,7 +119,7 @@ func NewClient(options *core.RequestOptions) *Client {
 //	    },
 //	    OrgName: "Pilgrim Planner",
 //	    OrgParentId: payabli.Int64(
-//	        int64(236),
+//	        int64(900123),
 //	    ),
 //	    OrgState: payabli.String(
 //	        "TN",
@@ -190,7 +190,7 @@ func (c *Client) AddOrganization(
 //	        "pilgrim-planner",
 //	    ),
 //	    OrgId: payabli.String(
-//	        "123",
+//	        "900123",
 //	    ),
 //	    OrgName: payabli.String(
 //	        "Pilgrim Planner",
@@ -213,7 +213,7 @@ func (c *Client) AddOrganization(
 //	}
 //	client.Organization.EditOrganization(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	    request,
 //	)
 func (c *Client) EditOrganization(
@@ -241,7 +241,7 @@ func (c *Client) EditOrganization(
 //
 //	client.Organization.DeleteOrganization(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	)
 func (c *Client) DeleteOrganization(
 	ctx context.Context,
@@ -291,7 +291,7 @@ func (c *Client) GetBasicOrganization(
 //
 //	client.Organization.GetBasicOrganizationById(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	)
 func (c *Client) GetBasicOrganizationById(
 	ctx context.Context,
@@ -316,7 +316,7 @@ func (c *Client) GetBasicOrganizationById(
 //
 //	client.Organization.GetOrganization(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	)
 func (c *Client) GetOrganization(
 	ctx context.Context,
@@ -341,7 +341,7 @@ func (c *Client) GetOrganization(
 //
 //	client.Organization.GetSettingsOrganization(
 //	    context.TODO(),
-//	    123,
+//	    900123,
 //	)
 func (c *Client) GetSettingsOrganization(
 	ctx context.Context,

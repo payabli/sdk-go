@@ -1760,6 +1760,144 @@ func (l *ListPeopleResponse) String() string {
 	return fmt.Sprintf("%#v", l)
 }
 
+// An address on a people search result. Search results use a shorter address
+// format than the person record: `street`, `city`, `state`, and `zip`.
+var (
+	peopleSearchAddressResponseFieldStreet = big.NewInt(1 << 0)
+	peopleSearchAddressResponseFieldCity   = big.NewInt(1 << 1)
+	peopleSearchAddressResponseFieldState  = big.NewInt(1 << 2)
+	peopleSearchAddressResponseFieldZip    = big.NewInt(1 << 3)
+)
+
+type PeopleSearchAddressResponse struct {
+	// The street address.
+	Street *string `json:"street,omitempty" url:"street,omitempty"`
+	// The city.
+	City *string `json:"city,omitempty" url:"city,omitempty"`
+	// The state or province.
+	State *string `json:"state,omitempty" url:"state,omitempty"`
+	// The ZIP or postal code.
+	Zip *string `json:"zip,omitempty" url:"zip,omitempty"`
+
+	// Private bitmask of fields set to an explicit value and therefore not to be omitted
+	explicitFields *big.Int `json:"-" url:"-"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *PeopleSearchAddressResponse) GetStreet() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Street
+}
+
+func (p *PeopleSearchAddressResponse) GetCity() *string {
+	if p == nil {
+		return nil
+	}
+	return p.City
+}
+
+func (p *PeopleSearchAddressResponse) GetState() *string {
+	if p == nil {
+		return nil
+	}
+	return p.State
+}
+
+func (p *PeopleSearchAddressResponse) GetZip() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Zip
+}
+
+func (p *PeopleSearchAddressResponse) GetExtraProperties() map[string]interface{} {
+	if p == nil {
+		return nil
+	}
+	return p.extraProperties
+}
+
+func (p *PeopleSearchAddressResponse) require(field *big.Int) {
+	if p.explicitFields == nil {
+		p.explicitFields = big.NewInt(0)
+	}
+	p.explicitFields.Or(p.explicitFields, field)
+}
+
+// SetStreet sets the Street field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PeopleSearchAddressResponse) SetStreet(street *string) {
+	p.Street = street
+	p.require(peopleSearchAddressResponseFieldStreet)
+}
+
+// SetCity sets the City field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PeopleSearchAddressResponse) SetCity(city *string) {
+	p.City = city
+	p.require(peopleSearchAddressResponseFieldCity)
+}
+
+// SetState sets the State field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PeopleSearchAddressResponse) SetState(state *string) {
+	p.State = state
+	p.require(peopleSearchAddressResponseFieldState)
+}
+
+// SetZip sets the Zip field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PeopleSearchAddressResponse) SetZip(zip *string) {
+	p.Zip = zip
+	p.require(peopleSearchAddressResponseFieldZip)
+}
+
+func (p *PeopleSearchAddressResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler PeopleSearchAddressResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*p = PeopleSearchAddressResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *p)
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *PeopleSearchAddressResponse) MarshalJSON() ([]byte, error) {
+	type embed PeopleSearchAddressResponse
+	var marshaler = struct {
+		embed
+	}{
+		embed: embed(*p),
+	}
+	explicitMarshaler := internal.HandleExplicitFields(marshaler, p.explicitFields)
+	return json.Marshal(explicitMarshaler)
+}
+
+func (p *PeopleSearchAddressResponse) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
 // Standard boarding response envelope wrapping people search results.
 var (
 	peopleSearchEnvelopeFieldSuccess = big.NewInt(1 << 0)
@@ -1951,11 +2089,13 @@ var (
 	peopleSearchResultResponseFieldMatchScore      = big.NewInt(1 << 7)
 	peopleSearchResultResponseFieldIsTopMatch      = big.NewInt(1 << 8)
 	peopleSearchResultResponseFieldIsFromVendor    = big.NewInt(1 << 9)
-	peopleSearchResultResponseFieldPhones          = big.NewInt(1 << 10)
-	peopleSearchResultResponseFieldEmails          = big.NewInt(1 << 11)
-	peopleSearchResultResponseFieldAddressCount    = big.NewInt(1 << 12)
-	peopleSearchResultResponseFieldPhoneCount      = big.NewInt(1 << 13)
-	peopleSearchResultResponseFieldEmailCount      = big.NewInt(1 << 14)
+	peopleSearchResultResponseFieldPrimaryAddress  = big.NewInt(1 << 10)
+	peopleSearchResultResponseFieldAddresses       = big.NewInt(1 << 11)
+	peopleSearchResultResponseFieldPhones          = big.NewInt(1 << 12)
+	peopleSearchResultResponseFieldEmails          = big.NewInt(1 << 13)
+	peopleSearchResultResponseFieldAddressCount    = big.NewInt(1 << 14)
+	peopleSearchResultResponseFieldPhoneCount      = big.NewInt(1 << 15)
+	peopleSearchResultResponseFieldEmailCount      = big.NewInt(1 << 16)
 )
 
 type PeopleSearchResultResponse struct {
@@ -1979,6 +2119,10 @@ type PeopleSearchResultResponse struct {
 	IsTopMatch *bool `json:"isTopMatch,omitempty" url:"isTopMatch,omitempty"`
 	// When `true`, no existing person matched, and this result comes only from the identity vendor. A vendor result has no `personReference`.
 	IsFromVendor *bool `json:"isFromVendor,omitempty" url:"isFromVendor,omitempty"`
+	// The person's primary address. `null` when the person has no address on file.
+	PrimaryAddress *PeopleSearchAddressResponse `json:"primaryAddress,omitempty" url:"primaryAddress,omitempty"`
+	// The person's addresses on file. Empty when the person has no address.
+	Addresses []*PeopleSearchAddressResponse `json:"addresses,omitempty" url:"addresses,omitempty"`
 	// The person's phone numbers.
 	Phones []string `json:"phones,omitempty" url:"phones,omitempty"`
 	// The person's email addresses.
@@ -2065,6 +2209,20 @@ func (p *PeopleSearchResultResponse) GetIsFromVendor() *bool {
 		return nil
 	}
 	return p.IsFromVendor
+}
+
+func (p *PeopleSearchResultResponse) GetPrimaryAddress() *PeopleSearchAddressResponse {
+	if p == nil {
+		return nil
+	}
+	return p.PrimaryAddress
+}
+
+func (p *PeopleSearchResultResponse) GetAddresses() []*PeopleSearchAddressResponse {
+	if p == nil {
+		return nil
+	}
+	return p.Addresses
 }
 
 func (p *PeopleSearchResultResponse) GetPhones() []string {
@@ -2184,6 +2342,20 @@ func (p *PeopleSearchResultResponse) SetIsTopMatch(isTopMatch *bool) {
 func (p *PeopleSearchResultResponse) SetIsFromVendor(isFromVendor *bool) {
 	p.IsFromVendor = isFromVendor
 	p.require(peopleSearchResultResponseFieldIsFromVendor)
+}
+
+// SetPrimaryAddress sets the PrimaryAddress field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PeopleSearchResultResponse) SetPrimaryAddress(primaryAddress *PeopleSearchAddressResponse) {
+	p.PrimaryAddress = primaryAddress
+	p.require(peopleSearchResultResponseFieldPrimaryAddress)
+}
+
+// SetAddresses sets the Addresses field and marks it as non-optional;
+// this prevents an empty or null value for this field from being omitted during serialization.
+func (p *PeopleSearchResultResponse) SetAddresses(addresses []*PeopleSearchAddressResponse) {
+	p.Addresses = addresses
+	p.require(peopleSearchResultResponseFieldAddresses)
 }
 
 // SetPhones sets the Phones field and marks it as non-optional;
